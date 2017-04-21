@@ -549,7 +549,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         shopFitmentArea.setPageId(pageId);
         shopFitmentArea.setAfterAreaId(sideId);
         shopFitmentArea.setShopId(page.getShopId());
-        shopFitmentArea.setAreaType(FitmentAreaType.LEFTRIGHT.value());
+        shopFitmentArea.setAreaType(type);
         if (firstArea) {
             ShopFitmentAreaExample areaExample = new ShopFitmentAreaExample();
             areaExample.createCriteria().andAfterAreaIdEqualTo(0L).andPageIdEqualTo(pageId);
