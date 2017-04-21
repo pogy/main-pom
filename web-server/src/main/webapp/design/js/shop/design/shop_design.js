@@ -272,6 +272,7 @@ $(document).ready(function() {
                     return;
                 }
             }
+            area.remove();
             // $.ajax({
             //     url: '/seller/design/remArea.json',
             //     type: 'GET',

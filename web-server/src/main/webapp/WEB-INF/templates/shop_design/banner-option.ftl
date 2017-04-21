@@ -1,7 +1,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>页头编辑 - 旗舰店装修 - 网商园</title>
+    <title>页头编辑 - 旗舰店装修 - 星座网</title>
     <link rel="stylesheet" href="/design/css/shop/design/option.css?t=20170419U" type="text/css"/>
     <link rel="stylesheet" href="/design/theme/xzw/js/layer/skin/layer.css" type="text/css"/>
     <link href="//cdn.bootcss.com/jquery-minicolors/2.2.4/jquery.minicolors.min.css" rel="stylesheet">
