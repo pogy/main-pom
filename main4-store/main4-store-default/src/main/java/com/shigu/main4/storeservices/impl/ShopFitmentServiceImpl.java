@@ -468,21 +468,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         }
         //本页面下,没有其它区域
         if(shopFitmentAreaMapper.countAreaNome(areaId)>0){
-            ShopFitmentArea area=shopFitmentAreaMapper.selectByPrimaryKey(areaId);
-            ShopFitmentArea after=new ShopFitmentArea();
-            after.setAfterAreaId(areaId);
-            after=shopFitmentAreaMapper.selectOne(after);
-            //删除
-            shopFitmentAreaMapper.deleteByPrimaryKey(areaId);
-            //把后面一个接上来
-            if(after!=null){
-                //把后面一个区域接上来
-                ShopFitmentArea upafter=new ShopFitmentArea();
-                upafter.setAreaId(after.getAreaId());
-                upafter.setAfterAreaId(area.getAfterAreaId());
-                shopFitmentAreaMapper.updateByPrimaryKeySelective(upafter);
-            }
-
+            rmArea(areaId);
         }
     }
 
