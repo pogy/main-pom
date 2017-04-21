@@ -44,6 +44,11 @@ public class ShopFitmentServiceImplTest extends BaseSpringTest {
     }
 
     @Test
+    public void tryRmAreatest(){
+        shopFitmentService.tryRmArea(186L);
+    }
+
+    @Test
     public void createPage() throws Exception {
         Long test1 = shopFitmentService.createPage(32888L, "测试一", null, 1);
         System.out.println(JSON.toJSONString(shopFitmentService.selPage(test1), SerializerFeature.PrettyFormat));

@@ -177,5 +177,11 @@ public interface ShopFitmentService {
      */
     Long selIndexPageIdByShopId(Long shopId) throws ShopFitmentException;
 
-
+    /**
+     * 尝试删除区域
+     * 1、如果区域内有模块,不删除
+     * 2、如果区域是顶级区域,after_area_id=0 页面中再没有其它区域,不删除
+     * @param areaId
+     */
+    void tryRmArea(Long areaId);
 }

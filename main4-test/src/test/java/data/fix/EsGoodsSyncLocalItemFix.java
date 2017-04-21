@@ -227,8 +227,12 @@ public class EsGoodsSyncLocalItemFix {
         }
     }
 
+    /**
+     * 同步Es与mysql
+     * @throws Exception
+     */
     @Test
     public void syncOne() throws Exception {
-        syncEs(shiguShopMapper.selectByPrimaryKey(41049L));
+        syncEs(shiguShopMapper.selectByPrimaryKey(42407L));
     }
 }

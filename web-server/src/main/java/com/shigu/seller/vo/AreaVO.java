@@ -28,6 +28,7 @@ public class AreaVO extends FitmentArea{
         this.setAllarea(area.getAllarea());
         this.setRightarea(area.getRightarea());
         this.setLeftarea(area.getLeftarea());
+        this.setAreaType(area.getAreaType());
     }
 
     /**

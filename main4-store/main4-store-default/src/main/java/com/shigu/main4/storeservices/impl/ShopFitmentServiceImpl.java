@@ -453,6 +453,38 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
             throw new ShopFitmentException("该店铺不存在首页");
         }
     }
+    /**
+     * 尝试删除区域
+     * 1、如果区域内有模块,不删除
+     * 2、如果区域是顶级区域,after_area_id=0 页面中再没有其它区域,不删除
+     * @param areaId
+     */
+    @Override
+    public void tryRmArea(Long areaId) {
+        ShopFitmentModuleExample moduleExample=new ShopFitmentModuleExample();
+        moduleExample.createCriteria().andAreaIdEqualTo(areaId);
+        if(shopFitmentModuleMapper.countByExample(moduleExample)>0){
+            return;
+        }
+        //本页面下,没有其它区域
+        if(shopFitmentAreaMapper.countAreaNome(areaId)>0){
+            ShopFitmentArea area=shopFitmentAreaMapper.selectByPrimaryKey(areaId);
+            ShopFitmentArea after=new ShopFitmentArea();
+            after.setAfterAreaId(areaId);
+            after=shopFitmentAreaMapper.selectOne(after);
+            //删除
+            shopFitmentAreaMapper.deleteByPrimaryKey(areaId);
+            //把后面一个接上来
+            if(after!=null){
+                //把后面一个区域接上来
+                ShopFitmentArea upafter=new ShopFitmentArea();
+                upafter.setAreaId(after.getAreaId());
+                upafter.setAfterAreaId(area.getAfterAreaId());
+                shopFitmentAreaMapper.updateByPrimaryKeySelective(upafter);
+            }
+
+        }
+    }
 
     @Override
     public <T extends FitmentModule> T selModuleByModuleId(Long moduleId) {
