@@ -62,6 +62,13 @@ public interface ShopForCdnService {
     ShiguPager<ItemShowBlock> searchItemOnsale(String keyword,Long shopId,String orderBy,int pageNo,int pageSize);
 
     /**
+     * 根据id列表分页查询
+     * @param ids
+     * @return
+     */
+    ShiguPager<ItemShowBlock> searchItemOnsale(List<Long> ids,int pageNo,int pageSize);
+
+    /**
      * 查询店内出售中的商品
      * @param keyword 关键字
      * @param cid 淘宝标准类目ID

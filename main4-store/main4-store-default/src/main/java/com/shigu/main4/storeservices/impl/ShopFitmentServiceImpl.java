@@ -636,7 +636,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
                 ShopFitmentArea afterArea = shopFitmentAreaMapper.selectByPrimaryKey(shopFitmentArea.getAfterAreaId());
                 Long afterAreaId = 0L;
                 if (afterArea != null) {
-                    afterAreaId = afterArea.getAfterAreaId();
+                    afterAreaId = afterArea.getAreaId();
                 }
                 ShopFitmentArea area = new ShopFitmentArea();
                 area.setAfterAreaId(afterAreaId);

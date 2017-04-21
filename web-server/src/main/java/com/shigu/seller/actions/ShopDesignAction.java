@@ -1,10 +1,12 @@
 package com.shigu.seller.actions;
 
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.vo.FitmentModule;
+import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.fitment.CustomModule;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.main4.vo.fitment.ItemSearchModule;
@@ -195,7 +197,9 @@ public class ShopDesignAction {
     public String goodsTuiGetGoodsList(PromotePagerBo bo, HttpSession session, Model model){
         Long shopId = getShopSession(session).getShopId();
         model.addAttribute("bo", bo);
-        model.addAttribute("items", shopDesignService.selPromoteItems(bo, shopId));
+        bo.setIds(shopDesignService.selPromoteItemIds(bo));
+        ShiguPager<ItemShowBlock> pager = shopDesignService.selPromoteItems(bo, shopId);
+        model.addAttribute("pager", pager);
         return "/shop_design/goods-tui-get-goods-list";
     }
 

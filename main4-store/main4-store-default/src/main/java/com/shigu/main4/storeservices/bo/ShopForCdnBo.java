@@ -2,6 +2,7 @@ package com.shigu.main4.storeservices.bo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 店铺CDN服务BO
@@ -16,6 +17,9 @@ public class ShopForCdnBo implements Serializable{
 
     /** 排序规则 */
     private String orderBy;
+
+    /** 商品id表 */
+    private List<Long> goodsIds;
 
     /** 淘宝类目 */
     private Long cid;
@@ -61,6 +65,14 @@ public class ShopForCdnBo implements Serializable{
 
     public void setOrderBy(String orderBy) {
         this.orderBy = orderBy;
+    }
+
+    public List<Long> getGoodsIds() {
+        return goodsIds;
+    }
+
+    public void setGoodsIds(List<Long> goodsIds) {
+        this.goodsIds = goodsIds;
     }
 
     public Long getCid() {

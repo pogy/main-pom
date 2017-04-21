@@ -14,21 +14,21 @@
     <div class="item-srch">
         <div class="srch-conds clearfix">
             <form action="" method="get">
-                <input type="hidden" name="id" value="6115249d3a2da17ebbc74776280f9462">
-                <input type="hidden" name="area" value="856b32b5a54cd945">
+                <input type="hidden" name="id" value="${bo.id}">
+                <input type="hidden" name="area" value="${bo.area}">
                 <div class="control-group srch-cond keyword">
                     <div class="control">
                         <span>筛选：</span>
-                        <input placeholder="关键字" class="J_TKeywordInput" name="q" type="text" value="" autocomplete="off">
+                        <input placeholder="关键字" class="J_TKeywordInput" name="q" type="text" value="${bo.q!}" autocomplete="off">
                     </div>
                 </div>
                 <div class="control-group srch-cond price" style="margin-left: 10px;">
                     <div class="control">
                         <label>
                             <span>价格：</span>
-                            <input class="low-price-input J_TPriceInput" name="lowPrice" type="text" value="">
+                            <input class="low-price-input J_TPriceInput" name="lowPrice" type="text" value="${bo.lowPrice!}">
                             <span>-</span>
-                            <input class="high-price-input J_TPriceInput" name="highPrice" type="text" value="">
+                            <input class="high-price-input J_TPriceInput" name="highPrice" type="text" value="${bo.highPrice!}">
                         </label>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
         </div>
         <div class="items-count">
             <a class="want-opt selected" href="?id=${bo.id}&area=${bo.area}&type=1"
-               style="display:inline-block;min-width: 60px; text-align: center; padding: 1px 3px;">全部商品(${items.totalCount})</a>
+               style="display:inline-block;min-width: 60px; text-align: center; padding: 1px 3px;">全部商品(${pager.totalCount})</a>
             <a class="want-opt " href="?id=${bo.id}&area=${bo.area}&type=2"
                style="display:inline-block;min-width: 60px; text-align: center; padding: 1px 3px;">已推荐(<span id="tuiCount">0</span>)</a>
             <span style="margin-left: 5px; color: gray;">
@@ -51,7 +51,7 @@
     <!-- 手动推荐 -->
     <div class="form_nav2_con" style="width: calc(100% - 50px);">
         <ul class="all">
-            <#list items.content as item>
+            <#list pager.content as item>
             <li class="clearfix" style="height: 45px;">
                 <div class="img clearfix" style="background-color: #fff;">
                     <a href="/item.htm?id=4014162" target="_blank">
@@ -81,13 +81,13 @@
         <div class="page-link">
 
             <ul class="page-link-ul">
-                <li<#if items.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${items.number - 1}">«</a></#if></li>
-                <#list 1..items.totalPages as p>
-                    <li <#if items.number == p>class="current"><a href="javascript:;">${p}</a><#else>><a href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${p}">${p}</a></#if></li>
+                <li<#if pager.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${pager.number - 1}">«</a></#if></li>
+                <#list 1..pager.totalPages as p>
+                    <li <#if pager.number == p>class="current"><a href="javascript:;">${p}</a><#else>><a href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${p}">${p}</a></#if></li>
                 </#list>
-                <li<#if items.number == items.totalPages> class="disabled"><a href="javascript:;">»</a><#else>><a title="下一页" href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${items.number + 1}">»</a></#if></li>
+                <li<#if pager.number == pager.totalPages> class="disabled"><a href="javascript:;">»</a><#else>><a title="下一页" href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${pager.number + 1}">»</a></#if></li>
             </ul>
-            <span>${items.number!}/${items.totalPages}</span>
+            <span>${pager.number!}/${pager.totalPages}</span>
         </div>
     </div>
 </div>
@@ -96,7 +96,7 @@
     $(function(){
         $('.tj').click(function() {
             var _this = $(this),
-                    mid = '',
+                    mid = '${bo.id}',
                     id = _this.data('item'),
                     area = '${bo.area!}',
                     type = '2',

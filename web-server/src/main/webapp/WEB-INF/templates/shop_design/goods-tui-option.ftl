@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
                                 <div class="manual-rec-content clearfix" style="display: none;">
-                                    <iframe style="border: 0; width: 100%; height: 480px;" src="/seller/design/goods-tui-get-goods-list.htm?size=5&id=${moduleSet.moduleId}&area=${moduleSet.areaId}&_type=3">                            </iframe>
+                                    <iframe style="border: 0; width: 100%; height: 480px;" src="/seller/design/goods-tui-get-goods-list.htm?size=5&id=${moduleSet.moduleId}&area=${moduleSet.areaId}&type=3">                            </iframe>
                                 </div>
                             </div>
                             <!--显示设置开始-->
