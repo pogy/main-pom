@@ -549,6 +549,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
     /**
      * @param pageId 页面ID
      * @param sideId 邻模块ID
+     * @param type 区域类型
      * @param after   1代表上方，2代表下方 NotNull
      * @return 新加区域ID
      * @throws ShopFitmentException 区域添加异常
@@ -597,7 +598,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
                 }
                 break;
             default:
-                throw new ShopFitmentException("type:" + after + ", 未知区域添加方式");
+                throw new ShopFitmentException("after:" + after + ", 未知区域添加方式");
         }
         return shopFitmentArea.getAreaId();
     }
@@ -741,6 +742,8 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
                 ShopFitmentModule module = new ShopFitmentModule();
                 module.setAfterModuleId(afterId);
                 shopFitmentModuleMapper.updateByExampleSelective(module, moduleExample);
+
+                tryRmArea(shopFitmentModule.getAreaId());
             }
         }
     }
