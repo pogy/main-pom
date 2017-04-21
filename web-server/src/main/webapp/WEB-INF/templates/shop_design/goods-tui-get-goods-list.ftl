@@ -39,15 +39,18 @@
             </form>
         </div>
         <div class="items-count">
-            <a class="want-opt selected" href="?id=${bo.id}&area=${bo.area}&type=1"
+            <a class="want-opt <#if bo.type == 1>selected</#if>" href="?id=${bo.id}&area=${bo.area}&type=1"
                style="display:inline-block;min-width: 60px; text-align: center; padding: 1px 3px;">全部商品(${pager.totalCount})</a>
-            <a class="want-opt " href="?id=${bo.id}&area=${bo.area}&type=2"
-               style="display:inline-block;min-width: 60px; text-align: center; padding: 1px 3px;">已推荐(<span id="tuiCount">0</span>)</a>
+            <a class="want-opt <#if bo.type == 2>selected</#if>" href="?id=${bo.id}&area=${bo.area}&type=2"
+               style="display:inline-block;min-width: 60px; text-align: center; padding: 1px 3px;">已推荐(<span id="tuiCount">${promotes.totalCount}</span>)</a>
             <span style="margin-left: 5px; color: gray;">
                                 最多可推荐16个商品
                             </span>
         </div>
     </div>
+    <#if bo.type == 2>
+        <#assign pager = promotes>
+    </#if>
     <!-- 手动推荐 -->
     <div class="form_nav2_con" style="width: calc(100% - 50px);">
         <ul class="all">
@@ -73,23 +76,32 @@
                 </div>
             </li>
             </#list>
+            <#if pager.content?size == 0>
+                <li class="clearfix">
+                    <span>抱歉，没有商品哦~</span>
+                </li>
+            </#if>
         </ul>
         <ul class="done"></ul>
     </div>
     <!-- 翻页 -->
+    <#if pager.content?size gt 0>
     <div class="editpage clearfix" style="margin-top: 25px;">
         <div class="page-link">
 
             <ul class="page-link-ul">
                 <li<#if pager.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${pager.number - 1}">«</a></#if></li>
                 <#list 1..pager.totalPages as p>
+                    <#if p gt 0>
                     <li <#if pager.number == p>class="current"><a href="javascript:;">${p}</a><#else>><a href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${p}">${p}</a></#if></li>
+                    </#if>
                 </#list>
-                <li<#if pager.number == pager.totalPages> class="disabled"><a href="javascript:;">»</a><#else>><a title="下一页" href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${pager.number + 1}">»</a></#if></li>
+                <li<#if pager.number &gt;= pager.totalPages> class="disabled"><a href="javascript:;">»</a><#else>><a title="下一页" href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${pager.number + 1}">»</a></#if></li>
             </ul>
             <span>${pager.number!}/${pager.totalPages}</span>
         </div>
     </div>
+    </#if>
 </div>
 <script type="text/javascript" src="/design/js/jquery-min.js"></script>
 <script type="text/javascript">

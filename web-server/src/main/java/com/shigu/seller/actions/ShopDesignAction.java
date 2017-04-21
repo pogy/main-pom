@@ -23,6 +23,7 @@ import com.shigu.seller.vo.ShopForModuleVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.zhb.utils.BeanMapper;
 import freemarker.template.Template;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -192,9 +193,14 @@ public class ShopDesignAction {
     public String goodsTuiGetGoodsList(PromotePagerBo bo, HttpSession session, Model model){
         Long shopId = getShopSession(session).getShopId();
         model.addAttribute("bo", bo);
-        bo.setIds(shopDesignService.selPromoteItemIds(bo));
-        ShiguPager<ItemShowBlock> pager = shopDesignService.selPromoteItems(bo, shopId);
-        model.addAttribute("pager", pager);
+        PromotePagerBo allItem = BeanMapper.map(bo, PromotePagerBo.class);
+        allItem.setType(1);
+        model.addAttribute("pager", shopDesignService.selPromoteItems(allItem, shopId));
+
+        PromotePagerBo promoteItems = BeanMapper.map(bo, PromotePagerBo.class);
+        promoteItems.setType(2);
+        promoteItems.setIds(shopDesignService.selPromoteItemIds(bo));
+        model.addAttribute("promotes", shopDesignService.selPromoteItems(promoteItems, shopId));
         return "/shop_design/goods-tui-get-goods-list";
     }
 
