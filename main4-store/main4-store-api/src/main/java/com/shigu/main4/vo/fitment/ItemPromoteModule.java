@@ -39,7 +39,7 @@ public class ItemPromoteModule extends TitleShowModule {
     /**
      * 显示筛选
      */
-    private Integer filter = 1;
+    private Integer filter = 0;
 
     public ItemPromoteModule() {
         setTitle("推荐宝贝");
