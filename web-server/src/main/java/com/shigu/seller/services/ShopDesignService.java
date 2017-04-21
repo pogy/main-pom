@@ -377,7 +377,7 @@ public class ShopDesignService {
      * @return
      * @throws ShopFitmentException
      */
-    public ModuleVO addModule(String id,Long area,Integer sideType,Long side,Integer after) throws ShopFitmentException, IOException {
+    public ModuleVO addModule(String id,Long area,Integer sideType,Long side,Integer after,ShopForModuleVO shop) throws ShopFitmentException, IOException {
         Integer moduleType=0;
         if("goods-tui".equals(id)){
             moduleType=1;
@@ -406,7 +406,7 @@ public class ShopDesignService {
         }
         Long mid=shopFitmentService.addModule(area,side,moduleType,sideType,after);
         FitmentModule module=shopFitmentService.selModuleByModuleId(mid);
-        return parseModule(module,null,true);
+        return parseModule(module,shop,true);
     }
 
     /**

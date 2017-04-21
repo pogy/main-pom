@@ -272,16 +272,16 @@ $(document).ready(function() {
                     return;
                 }
             }
-            $.ajax({
-                url: '/seller/design/remArea.json',
-                type: 'GET',
-                data: {
-                    'id': areaId
-                },
-                success: function() {
-                    area.remove();
-                }
-            });
+            // $.ajax({
+            //     url: '/seller/design/remArea.json',
+            //     type: 'GET',
+            //     data: {
+            //         'id': areaId
+            //     },
+            //     success: function() {
+            //         area.remove();
+            //     }
+            // });
         }
     }).delegate('.bar-moveup', 'click', function() {
         var module = $(this).parent().parent(),

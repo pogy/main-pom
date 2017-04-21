@@ -123,9 +123,8 @@ public class ShopDesignAction {
             sideId=Long.valueOf(bo.getSide());
         }
         try {
-            ModuleVO mv=shopDesignService.addModule(bo.getId(),bo.getArea(),bo.getType(),sideId,bo.getAfter());
+            ModuleVO mv=shopDesignService.addModule(bo.getId(),bo.getArea(),bo.getType(),sideId,bo.getAfter(),selShopForModule(session));
             model.addAllAttributes(mv.getData());
-            model.addAttribute("shop",selShopForModule(session));
             return "/shop_design/"+bo.getId();
         } catch (ShopFitmentException | IOException e) {
             e.printStackTrace();
