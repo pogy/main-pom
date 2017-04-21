@@ -399,6 +399,7 @@ public class ShopDesignAction {
             return "redirect:/seller/designManage.htm";
         }
         model.addAttribute("code", shopDesignService.randomPageCode(shopSession.getShopId()));
+        model.addAttribute("shop", shopSession.getShopId());
         return "/shop_design/page-add";
     }
 

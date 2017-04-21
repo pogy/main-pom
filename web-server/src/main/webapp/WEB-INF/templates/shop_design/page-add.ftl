@@ -20,7 +20,7 @@
         <div class="control-group">
             <label class="control-label">页面地址：</label>
             <div class="control">
-                <span class="J_TUrl">http://www.wsy.com/store/p/628368/${code}.htm</span>
+                <span class="J_TUrl">http://www.571xz.com/shop/${shop}/${code}.htm</span>
                 <input type="hidden" id="page-address" value="${code}" name="alias">
                 <p class="tips" style="display: block">买家访问该页面的地址，可以直接在导航模块添加该链接</p>
             </div>
