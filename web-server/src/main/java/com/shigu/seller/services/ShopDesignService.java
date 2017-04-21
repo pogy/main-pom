@@ -156,7 +156,18 @@ public class ShopDesignService {
         return mv;
     }
 
+    public List<Long> selPromoteItemIds(PromotePagerBo bo) {
+        ItemPromoteModule promoteModule = shopFitmentService.selModuleByModuleId(bo.getMid());
+        if (promoteModule != null) {
+            return promoteModule.getPromoteItems();
+        }
+        return Collections.emptyList();
+    }
+
     public ShiguPager<ItemShowBlock> selPromoteItems(PromotePagerBo bo, Long shopId) {
+        if (bo.getType() == 2) {
+            return shopForCdnService.searchItemOnsale(bo.getIds(), bo.getPage(), bo.getSize());
+        }
         return shopForCdnService.searchItemOnsale(bo.getQ(), shopId, bo.getLowPrice(), bo.getHighPrice(), null, bo.getPage(), bo.getSize());
     }
 
@@ -439,4 +450,5 @@ public class ShopDesignService {
         }
         return vo;
     }
+
 }

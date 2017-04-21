@@ -1,5 +1,7 @@
 package com.shigu.seller.bo;
 
+import java.util.List;
+
 /**
  * 手动推荐商品获取
  * Created by Administrator on 2017/4/20 0020.
@@ -15,6 +17,8 @@ public class PromotePagerBo {
     private String q;
     private Double lowPrice;
     private Double highPrice;
+
+    private List<Long> ids;
 
     public Integer getSize() {
         return size;
@@ -86,5 +90,13 @@ public class PromotePagerBo {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public List<Long> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<Long> ids) {
+        this.ids = ids;
     }
 }

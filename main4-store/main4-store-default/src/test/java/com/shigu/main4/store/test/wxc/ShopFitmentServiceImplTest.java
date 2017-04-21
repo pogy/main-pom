@@ -11,6 +11,7 @@ import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.store.test.BaseSpringTest;
 import com.shigu.main4.storeservices.ShopFitmentService;
+import com.shigu.main4.vo.FitmentArea;
 import com.shigu.main4.vo.FitmentPage;
 import com.shigu.main4.vo.fitment.WideImageModule;
 import org.junit.Test;
@@ -73,7 +74,23 @@ public class ShopFitmentServiceImplTest extends BaseSpringTest {
     }
 
     @Test
+    @Transactional
     public void rmArea() throws Exception {
+        Long page = shopFitmentService.createPage(32888L, "测试啦啦啦", 10010L, 1);
+        Long first = shopFitmentService.selAreaByPageId(page).get(0).getAreaId();
+        Long second = shopFitmentService.addArea(page, first, FitmentAreaType.CENTER.value(), 2);
+        Long third = shopFitmentService.addArea(page, second, FitmentAreaType.LEFTRIGHT.value(), 2);
+
+        shopFitmentService.rmArea(second);
+
+        ShopFitmentArea fitmentArea = shopFitmentAreaMapper.selectByPrimaryKey(first);
+        assertTrue(fitmentArea.getAfterAreaId() == 0L);
+
+        ShopFitmentArea secondArea = shopFitmentAreaMapper.selectByPrimaryKey(second);
+        assertNull(secondArea);
+
+        ShopFitmentArea thirdArea = shopFitmentAreaMapper.selectByPrimaryKey(third);
+        assertEquals(thirdArea.getAfterAreaId() , first);
     }
 
     @Test
