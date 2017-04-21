@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>模块编辑 - 网商园</title>
+    <title>模块编辑 - 星座网</title>
     <link rel="stylesheet" href="/design/css/shop/design/option.css?t=20161219A"  type="text/css"/>
     <script type="text/javascript" src="/design/js/jquery-min.js"></script>
     <script type="text/javascript" src="/design/s/editor/kindeditor-min.js"></script>

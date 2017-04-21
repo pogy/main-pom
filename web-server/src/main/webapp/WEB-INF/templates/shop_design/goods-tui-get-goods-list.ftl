@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>商品推荐-模块编辑-网商园</title>
+    <title>商品推荐-模块编辑-星座网</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/design/css/shop/design/option.css?t=20161219A"  type="text/css"/>
     <link rel="stylesheet" href="/design/css/common/page-link.css?t=20161219" />
