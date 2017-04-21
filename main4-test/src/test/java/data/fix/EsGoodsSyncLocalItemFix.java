@@ -106,18 +106,18 @@ public class EsGoodsSyncLocalItemFix {
                 if (is_off != null && (Integer) is_off == 0) {
                     ShiguGoodsTiny tiny = JSON.parseObject(hit.getSourceAsString(), ShiguGoodsTiny.class);
                     if (tinyGoodsIds.keySet().contains(tiny.getGoodsId())) {
-//                        ShiguGoodsTiny goodsTiny = tinyGoodsIds.get(tiny.getGoodsId());
-//                        ESGoods esGoods = esGoodsService.createEsGoods(goodsTiny);
-//                        insert(webSite, esGoods);
+                        ShiguGoodsTiny goodsTiny = tinyGoodsIds.get(tiny.getGoodsId());
+                        ESGoods esGoods = esGoodsService.createEsGoods(goodsTiny);
+                        insert(webSite, esGoods);
                     } else {
                         sebs.add(new SimpleElaBean("goods", webSite, hit.getId()));
                     }
                 } else {
                     ShiguGoodsSoldout soldout = JSON.parseObject(hit.getSourceAsString(), ShiguGoodsSoldout.class);
                     if (soldoutGoodsIds.keySet().contains(soldout.getGoodsId())) {
-//                        ShiguGoodsSoldout goodsSoldout = soldoutGoodsIds.get(soldout.getGoodsId());
-//                        ESGoods esGoods = esGoodsService.createEsGoods(goodsSoldout);
-//                        insert(webSite, esGoods);
+                        ShiguGoodsSoldout goodsSoldout = soldoutGoodsIds.get(soldout.getGoodsId());
+                        ESGoods esGoods = esGoodsService.createEsGoods(goodsSoldout);
+                        insert(webSite, esGoods);
                     } else {
                         sebs.add(new SimpleElaBean("goods", webSite, soldout.getGoodsId() + ""));
                     }
@@ -134,14 +134,14 @@ public class EsGoodsSyncLocalItemFix {
             insert(webSite, esGoods);
         }
 
-//        ArrayList<Long> soldoutLong = new ArrayList<>(soldoutGoodsIds.keySet());
-//        soldoutLong.removeAll(esGoodsIds);
-//        logger.debug("下架缺少" + soldoutLong.size());
-//        for (Long aLong : soldoutLong) {
-//            ShiguGoodsSoldout soldout = soldoutGoodsIds.get(aLong);
-//            ESGoods esGoods = esGoodsService.createEsGoods(soldout);
-//            insert(webSite, esGoods);
-//        }
+        ArrayList<Long> soldoutLong = new ArrayList<>(soldoutGoodsIds.keySet());
+        soldoutLong.removeAll(esGoodsIds);
+        logger.debug("下架缺少" + soldoutLong.size());
+        for (Long aLong : soldoutLong) {
+            ShiguGoodsSoldout soldout = soldoutGoodsIds.get(aLong);
+            ESGoods esGoods = esGoodsService.createEsGoods(soldout);
+            insert(webSite, esGoods);
+        }
 
     }
 
