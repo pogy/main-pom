@@ -1,0 +1,7 @@
+1	modify_id	bigint	11	0	0		主键	1	0	0
+0	has_set_piprice	tinyint	2	0	0	0	0代表没有改过批发价，1代表改过	0	0	0
+0	has_set_price	tinyint	2	0	0	0	0代表没有改过，1代表改过	0	0	0
+0	has_set_title	tinyint	2	0	0	0	0代表没有改过标题，1代表改过	0	0	0
+0	has_set_goodsno	tinyint	2	0	0	0	0代表没有改过货号，1代表改过	0	0	0
+0	item_id	bigint	11	0	0		商品ID	0	0	0
+0	has_mod_instock	tinyint	2	0	0		0代表没有做过下架，1代表改过	0	0	0

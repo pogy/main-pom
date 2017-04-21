@@ -1,0 +1,158 @@
+{
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"date_detection": false,
+			"properties": {
+				"supperStoreId": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperServers": {
+					"type":"string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperStoreName": {
+					"type":"string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperQq": {
+					"type":"string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperTelephone": {
+					"type":"string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperStorenum": {
+					"type":"string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperMarketId": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperMarket": {
+					"type":"string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperImww": {
+					"type":"string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperTaobaoUrl": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"fenUserNick": {
+					"type":"string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"fenUserId": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperNumiid": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperGoodsId": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperGoodsName": {
+					"type":"string",
+					"analyzer": "ik_max_word",
+					"search_analyzer": "ik_max_word"
+				},
+				"supperPrice": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"supperPiPrice": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"supperImage": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"fenPrice": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"fenPiPrice": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"fenImage": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"fenNumiid": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"fenGoodsName": {
+					"type":"string",
+					"analyzer": "ik_max_word",
+					"search_analyzer": "ik_max_word"
+				},
+				"daiTime": {
+					"type":"date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"store":"no"
+				},
+				"webSite": {
+					"type":"string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"status": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"isDel": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"flag": {
+					"type":"string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"batafrom": {
+					"type":"Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				}
+			}
+		}
+	}
+}

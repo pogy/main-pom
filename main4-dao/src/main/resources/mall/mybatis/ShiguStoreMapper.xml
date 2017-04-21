@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguStoreMapper" >
+  <resultMap id="BaseResultMap" type="com.opentae.data.mall.beans.ShiguStore" >
+  	<id column="store_id" property="storeId"/>	
+	<result column="store_name" property="storeName"/>
+	<result column="taobao_url" property="taobaoUrl"/>
+	<result column="main_bus" property="mainBus"/>
+	<result column="nick" property="nick"/>
+	<result column="buycity_id" property="buycityId"/>
+	<result column="market_id" property="marketId"/>
+	<result column="market" property="market"/>
+	<result column="parent_market_id" property="parentMarketId"/>
+	<result column="parent_market" property="parentMarket"/>
+	<result column="today_goodsnum" property="todayGoodsnum"/>
+	<result column="last_goods_date" property="lastGoodsDate"/>
+	<result column="price_role" property="priceRole"/>
+	<result column="store_num" property="storeNum"/>
+	<result column="address" property="address"/>
+	<result column="zipcode" property="zipcode"/>
+	<result column="telephone" property="telephone"/>
+	<result column="phone" property="phone"/>
+	<result column="im_qq" property="imQq"/>
+	<result column="im_aliww" property="imAliww"/>
+	<result column="info_from" property="infoFrom"/>
+	<result column="servers" property="servers"/>
+	<result column="domain" property="domain"/>
+	<result column="store_erwei" property="storeErwei"/>
+	<result column="phone_erwei" property="phoneErwei"/>
+	<result column="pc_erwei" property="pcErwei"/>
+	<result column="user_id" property="userId"/>
+	<result column="user_name" property="userName"/>
+	<result column="use_status" property="useStatus"/>
+	<result column="no_check_reason" property="noCheckReason"/>
+	<result column="bind_time" property="bindTime"/>
+	<result column="bind_status" property="bindStatus"/>
+	<result column="visit_sum" property="visitSum"/>
+	<result column="store_status" property="storeStatus"/>
+	<result column="close_reason" property="closeReason"/>
+	<result column="create_date" property="createDate"/>
+	<result column="end_date" property="endDate"/>
+	<result column="sort_order" property="sortOrder"/>
+	<result column="taobao_shop_id" property="taobaoShopId"/>
+	<result column="taobao_user_id" property="taobaoUserId"/>
+	<result column="taobao_key" property="taobaoKey"/>
+	<result column="taobao_sec" property="taobaoSec"/>
+	<result column="taobao_session" property="taobaoSession"/>
+	<result column="taobao_nice" property="taobaoNice"/>
+	<result column="owner_name" property="ownerName"/>
+	<result column="owner_card" property="ownerCard"/>
+	<result column="store_model" property="storeModel"/>
+	<result column="packet_url" property="packetUrl"/>
+	<result column="remark1" property="remark1"/>
+	<result column="remark2" property="remark2"/>
+	<result column="remark3" property="remark3"/>
+	<result column="remark4" property="remark4"/>
+	<result column="remark5" property="remark5"/>
+	<result column="remark6" property="remark6"/>
+	<result column="remark7" property="remark7"/>
+	<result column="remark8" property="remark8"/>
+	<result column="remark9" property="remark9"/>
+	<result column="remark10" property="remark10"/>
+	<result column="remark11" property="remark11"/>
+	<result column="remark12" property="remark12"/>
+	<result column="remark13" property="remark13"/>
+	<result column="remark14" property="remark14"/>
+	<result column="remark15" property="remark15"/>
+	<result column="remark16" property="remark16"/>
+	<result column="remark17" property="remark17"/>
+	<result column="remark18" property="remark18"/>
+	<result column="remark19" property="remark19"/>
+	<result column="remark20" property="remark20"/>
+	<result column="id_card_img" property="idCardImg"/>
+	<result column="business_license_img" property="businessLicenseImg"/>
+	<result column="contract_of_tenancy_img" property="contractOfTenancyImg"/>
+	<result column="price_matcher_rule" property="priceMatcherRule"/>
+	<result column="star_num" property="starNum"/>
+	<result column="last_modify_time" property="lastModifyTime"/>
+  </resultMap>
+
+  <!-- 查询店铺特定联系信息 -->
+  <select id="selectStoreRelationByIdWebSite" resultMap="BaseResultMap">
+	SELECT
+		store_id,
+		store_num,
+		telephone,
+		im_qq,
+		im_aliww,
+		parent_market,
+		market
+	FROM
+		shigu_store_${website}
+	WHERE
+		store_id = #{storeId}
+	limit 1
+  </select>
+
+  <!-- 更新店铺特定联系信息 -->
+  <update id="updateStoreRelationByIdWebSite">
+	  UPDATE shigu_store_${website}
+	  	SET
+	  		<if test="store.storeNum !=null and store.storeNum !=''">
+				store_num = #{store.storeNum},
+			</if>
+	  		<if test="store.telephone !=null and store.telephone !=''">
+				telephone = #{store.telephone},
+			</if>
+			<if test="store.imQq !=null and store.imQq!='' ">
+				im_qq = #{store.imQq},
+			</if>
+	  		<if test="store.imAliww !=null and store.imAliww!='' ">
+				im_aliww = #{store.imAliww},
+			</if>
+	  	last_modify_time = now()
+	  WHERE store_id = #{store.storeId}
+  </update>
+</mapper>

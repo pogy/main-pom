@@ -1,0 +1,72 @@
+{
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"date_detection": false,
+			"properties": {
+				"scid": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"scName": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"parentTaobaoScid": {//--这个 是我弄混掉了，但是没事，将错就错。实际代表的是 parentScId
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"parentScName": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"isParent": {
+					"type":"Integer",
+					"index":"not_analyzed",
+					"store":"no"
+				},
+				"storeId": {
+					"type":"long",
+					"index":"not_analyzed",
+					"store":"no"
+				},
+				"created": {
+					"type":"date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "no",
+					"store":"no"
+				},
+				"modified": {
+					"type":"date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "no",
+					"store":"no"
+				},
+				"picUrl": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"type": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"sortOrder": {
+					"type":"long",
+					"index":"no",
+					"store":"no"
+				}
+				
+			}
+		}
+	}
+}

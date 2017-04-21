@@ -1,0 +1,21 @@
+{
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"date_detection": false,
+			"properties": {
+				"storeId": {
+					"type":"long"
+				},
+				"goodsId": {
+					"type":"long"
+				},
+				"createTime": {
+					"type":"long"
+				}
+			}
+		}
+	}
+}

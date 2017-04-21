@@ -1,0 +1,240 @@
+{
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"date_detection": false,
+			"properties": {
+				"storeId": {
+					"type": "long",
+					"index": "not_analyzed"
+				},
+				"storeName": {
+					"type":"string",
+					"index":"not_analyzed",
+					"store":"no"
+				},
+				"storeNum": {
+					"type":"string",
+					"index":"not_analyzed"
+				},
+				"taobaoUrl": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"mainBus": {
+					"type":"string",
+					"index":"not_analyzed",
+					"store":"no"
+				},
+				"nick": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"buycityId": {
+					"type":"Integer",
+					"index":"not_analyzed",
+					"store":"no"
+				},
+				"marketId": {
+					"type":"Integer",
+					"index":"not_analyzed",
+					"store":"no"
+				},
+				"market": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"parentMarketId": {
+					"type":"Integer",
+					"index":"not_analyzed",
+					"store":"no"
+				},
+				"parentMarket": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"todayGoodsnum": {
+					"type":"long",
+					"index":"no",
+					"store":"no"
+				},
+				"lastGoodsDate": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"priceRole": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"address": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"zipcode": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"telephone": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"phone": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"imQq": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"imAliww": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"infoFrom": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"servers": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"domain": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"userId": {
+					"type":"long",
+					"index":"no",
+					"store":"no"
+				},
+				"userName": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"useStatus": {
+					"type":"Integer",
+					"index":"not_analyzed"
+				},
+				"noCheckReason": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"bindTime": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"bindStatus": {
+					"type":"Integer",
+					"index":"not_analyzed"
+				},
+				"visitSum": {
+					"type": "long",
+					"index":"no",
+					"store":"no"
+				},
+				"storeStatus": {
+					"type":"Integer",
+					"index":"not_analyzed"
+				},
+				"closeReason": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"createDate": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"endDate": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"sortOrder": {
+					"type":"Integer",
+					"index":"no",
+					"store":"no"
+				},
+				"taobaoShopId": {
+					"type":"long",
+					"index":"no",
+					"store":"no"
+				},
+				"taobaoUserId": {
+					"type":"long",
+					"index":"no",
+					"store":"no"
+				},
+				"taobaoNice": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"ownerName": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"ownerCard": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"storeModel": {
+					"type":"Integer",
+					"index":"no",
+					"store":"no"
+				},
+				"packetUrl": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"webSite": {
+					"type":"string",
+					"index":"no",
+					"store":"no"
+				},
+				"last_update_xs": {
+					"type": "string",
+					"index": "no",
+					"store":"no"
+				},
+				"store_num_id": {
+					"type":"long",
+					"index": "not_analyzed",
+					"store":"no"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.MemberUserCopy2Mapper" >
+
+	<!-- 手机号绑定了两个以上的用户 -->
+	<select id="selLoginPhoneRepeat" resultType="com.opentae.data.mall.beans.MemberUserPhoneRepeatVo">
+		SELECT
+			m.login_phone,
+			GROUP_CONCAT(CONCAT(m.user_id,'')) as user_ids,
+			count(1) AS counts
+		FROM
+			member_user m
+		WHERE
+			m.login_phone IS NOT NULL
+		AND m.login_phone != ''
+		GROUP BY
+			m.login_phone
+		HAVING
+			counts > 1;
+	</select>
+
+	<select id="selDoubleSubUserName" resultType="string">
+		select t.userids from (
+select count(1) as gcount,GROUP_CONCAT(CONCAT(sub_user_id,'')) as userids from member_user_sub where account_type=5 group by sub_user_name,account_type)
+t where t.gcount>1
+	</select>
+
+	<select id="selyue" resultType="long">
+		select a.total_money from
+pay_site2.pay_xzb a,pay_site2.pay_account b where a.account_id=b.account_id
+and b.xz_user_id=${userId};
+	</select>
+
+	<select id="selDoubleSubUser" resultType="string">
+		select t.subUsers from (select user_id,count(1) as gcount,GROUP_CONCAT(CONCAT(sub_user_id,'')) as subUsers,account_type
+		from member_user_sub group by user_id,account_type) t where t.gcount>1
+	</select>
+
+	<select id="nosubUser" resultType="long">
+		select a.user_id from member_user a left join member_user_sub b on a.user_id=b.user_id where b.user_id is null
+	</select>
+
+	<select id="selUserNamByTb" resultType="long">
+		select a.user_id from
+		member_user a,member_user_sub b
+		where a.user_id = b.user_id
+		and (b.sub_user_password is null or b.sub_user_password='')
+		and b.account_type=7
+		and a.user_name not regexp '^[0-9]{11}$'
+		and a.user_name not LIKE '%__bad__'
+	</select>
+	<select id="selMemberSubRepeat" resultType="string">
+		SELECT t.sub_user_ids from
+(select count(1) as gcount,GROUP_CONCAT(CONCAT(sub_user_id,'')) as sub_user_ids from member_user_sub where account_type=7 group by user_id) t
+where t.gcount>1
+	</select>
+
+	<select id="usernamePhoneDf" resultType="com.opentae.data.mall.beans.DfUserNamePhone">
+		SELECT
+	u.user_id as userId,
+	u.user_name as userName,
+	u.login_phone as loginPhone
+FROM
+	member_user u
+WHERE
+	u.user_name != u.login_phone
+AND LENGTH(u.user_name) = 11
+AND u.user_name regexp '^[0-9]+$'
+AND u.login_phone IS NOT NULL
+AND u.login_phone != ''
+	</select>
+
+	<!-- 查好用户下的店铺 -->
+	<select id="selShopIntByUserId" resultType="int">
+		select count(s.shop_id) from shigu_shop s where s.user_id = #{userId}
+	</select>
+
+	<!-- 账户余额 -->
+	<select id="selXzbTotalMoney" resultType="Long">
+		SELECT
+			x.total_money
+		FROM
+			pay_xzb x,
+			pay_account pc
+		WHERE
+			x.account_id = pc.account_id
+		AND pc.xz_user_id = #{userId}
+		limit 1
+	</select>
+
+	<!-- 批量删除数据 -->
+	<delete id="delMemberUserByIds">
+		DELETE
+			FROM
+				member_user
+			WHERE
+				user_id in
+		<foreach collection="userIdList" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

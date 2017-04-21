@@ -1,0 +1,31 @@
+{
+  "vo":{
+    "scoreAvg":4.5,
+    "discus":{
+      "content":[
+        {
+          "who":"张三疯",
+          "say":"你好,你家这个货有吗",
+          "giveScore":4
+        },
+        {
+          "who":"张三疯",
+          "say":"你好,你家这个货有吗",
+          "giveScore":5
+        },
+        {
+          "who":"张三疯",
+          "say":"你好,你家这个货有吗",
+          "giveScore":3
+        },
+        {
+          "who":"张三疯",
+          "say":"你好,你家这个货有吗",
+          "giveScore":2
+        }
+      ],
+      "number":1,
+      "totalCount":100
+    }
+  }
+}

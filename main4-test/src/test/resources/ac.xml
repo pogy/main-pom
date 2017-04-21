@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+  http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+<context:component-scan base-package="com.opentae.*,com.shigu.*,com.openJar.*,com.common.base.*,com.alibaba.*,com.searchtool.configs" >
+	</context:component-scan>
+
+    <dubbo:reference interface="com.shigu.tb.finder.services.TaobaoSynService" id="taobaoSynService" cluster="failfast" timeout="100000"/>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:*.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!--<bean id="myfactory" class="com.shigu.main4.test.factory.TestFactory"/>-->
+    <!--<bean id="productBean2" factory-bean="myfactory" factory-method="makeTestBean" scope="prototype">-->
+        <!--<property name="memberUserCopy2Mapper" ref="tae_mall_memberUserCopy2Mapper"/>-->
+        <!--<constructor-arg name="userId" value="1"/>-->
+    <!--</bean>-->
+    <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
+        <property name="properties">
+            <map>
+                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"/>
+            </map>
+        </property>
+    </bean>
+    <import resource="spring-database/mall.xml"/>
+     <bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+  </bean>
+
+<bean
+    class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="proxyTargetClass" value="true" />
+    <property name="beanNames">
+        <list>
+            <!-- 这里配置需要拦截的bean id列表 -->
+            <value>*Service</value>
+        </list>
+    </property>
+    <property name="interceptorNames">
+        <list>
+            <value>druid-stat-interceptor</value>
+        </list>
+    </property>
+</bean>
+    <import resource="store.xml" />
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+</beans>

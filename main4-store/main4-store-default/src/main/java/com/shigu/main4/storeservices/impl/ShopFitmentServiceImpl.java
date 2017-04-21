@@ -1,0 +1,822 @@
+package com.shigu.main4.storeservices.impl;
+
+
+import com.alibaba.fastjson.JSON;
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.ShiguShopFitment;
+import com.opentae.data.mall.beans.ShopFitmentArea;
+import com.opentae.data.mall.beans.ShopFitmentModule;
+import com.opentae.data.mall.beans.ShopFitmentPage;
+import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.enums.FitmentAreaType;
+import com.shigu.main4.enums.FitmentModuleType;
+import com.shigu.main4.enums.FitmentPageType;
+import com.shigu.main4.exceptions.ShopFitmentException;
+import com.shigu.main4.storeservices.ShopFitmentService;
+import com.shigu.main4.storeservices.ShopForCdnService;
+import com.shigu.main4.vo.*;
+import com.shigu.main4.vo.fitment.BannerNav;
+import com.shigu.main4.vo.fitment.BannerOption;
+import com.shigu.main4.vo.fitment.ItemPromoteModule;
+import com.shigu.main4.vo.fitment.ShopBanner;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.*;
+
+/**
+ * 供商户中心修改
+ *
+ * @author shigu_zjb
+ * @date 2017/02/25 15:24
+ */
+@Service("shopFitmentService")
+public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitmentService {
+
+    private static final Logger logger = Logger.getLogger(ShopFitmentServiceImpl.class);
+
+    @Resource(name = "shopForCdnService")
+    private ShopForCdnService shopForCdnService;
+
+    @Resource(name = "tae_mall_shiguShopFitmentMapper")
+    private ShiguShopFitmentMapper shiguShopFitmentMapper;
+
+    @Autowired
+    private ShopFitmentAreaMapper shopFitmentAreaMapper;
+
+    @Autowired
+    private ShopFitmentFtlMapper shopFitmentFtlMapper;
+
+    @Autowired
+    private ShopFitmentModuleMapper shopFitmentModuleMapper;
+
+    @Autowired
+    private ShopFitmentPageMapper shopFitmentPageMapper;
+
+    /**
+     * 查询店内装修情况
+     *
+     * @param shopId .
+     * @return .
+     */
+    @Override
+    public ShopFitmentForUpadte selFitmentForUpadte(Long shopId) {
+        if (shopId == null) {
+            return null;
+        }
+        ShiguShopFitmentExample example = new ShiguShopFitmentExample();
+        example.createCriteria().andShopIdEqualTo(shopId);
+        List<ShiguShopFitment> shiguShopFitmentList = shiguShopFitmentMapper.selectByExample(example);
+        if (shiguShopFitmentList.size() == 0) {
+            return null;
+        }
+        ShiguShopFitment shiguShopFitment = shiguShopFitmentList.get(0);
+        return BeanMapper.map(shiguShopFitment, ShopFitmentForUpadte.class);
+    }
+
+    /**
+     * 更新店内装修
+     *
+     * @param shopId           店铺ID
+     * @param fitmentForUpadte 更新的数据
+     * @throws ShopFitmentException .
+     */
+    @Override
+    public void updateFitment(Long shopId, ShopFitmentForUpadte fitmentForUpadte) throws ShopFitmentException {
+        if (shopId == null || fitmentForUpadte == null) {
+            throw new ShopFitmentException("更新店内装修失败,店铺ID不能为空");
+        }
+        ShiguShopFitmentExample example = new ShiguShopFitmentExample();
+        example.createCriteria().andShopIdEqualTo(shopId);
+        ShiguShopFitment shiguShopFitment = BeanMapper.map(fitmentForUpadte, ShiguShopFitment.class);
+        shiguShopFitment.setShopId(shopId);
+        if (shiguShopFitmentMapper.countByExample(example) == 0) {
+            shiguShopFitmentMapper.insertSelective(shiguShopFitment);
+        } else {
+            shiguShopFitmentMapper.updateByExampleSelective(shiguShopFitment, example);
+        }
+        Cache cache = cacheManager.getCache("shopFitmentCache");
+        cache.evict(shopId);
+    }
+
+    /**
+     * 初始化店铺装修
+     *
+     * @param shopId
+     */
+    @Override
+    public void initShopFitment(Long shopId) throws ShopFitmentException {
+        if (shopId == null) {
+            return;
+        }
+        // 重置该店铺所有装修
+        fitmentReset(shopId);
+
+        Long index = addPage(shopId, FitmentPageType.INDEX.name, null, FitmentPageType.INDEX.value);
+        Long indexFirstArea = addArea(index, null, FitmentAreaType.LEFTRIGHT.value(), null);
+        addModule(indexFirstArea, null, FitmentModuleType.Category.value, 1, null);
+        addModule(indexFirstArea, null, FitmentModuleType.Promote.value, 2, null);
+
+        Long search = addPage(shopId, FitmentPageType.SEARCH.name, null, FitmentPageType.SEARCH.value);
+        Long searchFirstArea = addArea(search, null, FitmentAreaType.LEFTRIGHT.value(),null);
+        addModule(searchFirstArea, null, FitmentModuleType.Category.value, 1, null, false);
+        addModule(searchFirstArea, null, FitmentModuleType.SearchItems.value, 2, null, false);
+
+        createBanner(shopId);
+    }
+
+    private void fitmentReset(Long shopId) {
+        ShopFitmentPageExample shopFitmentPageExample = new ShopFitmentPageExample();
+        shopFitmentPageExample.createCriteria().andShopIdEqualTo(shopId);
+        List<ShopFitmentPage> pages
+                = shopFitmentPageMapper.selectFieldsByExample(shopFitmentPageExample, FieldUtil.codeFields("page_id"));
+        List<Long> pageIds = BeanMapper.getFieldList(pages, "pageId", Long.class);
+        shopFitmentPageMapper.deleteByExample(shopFitmentPageExample);
+
+        if (!pageIds.isEmpty()) {
+            ShopFitmentFtlExample fitmentFtlExample = new ShopFitmentFtlExample();
+            fitmentFtlExample.createCriteria().andPageIdIn(pageIds);
+            shopFitmentFtlMapper.deleteByExample(fitmentFtlExample);
+        }
+
+        ShopFitmentAreaExample areaExample = new ShopFitmentAreaExample();
+        areaExample.createCriteria().andShopIdEqualTo(shopId);
+        List<ShopFitmentArea> areas = shopFitmentAreaMapper.selectFieldsByExample(areaExample, FieldUtil.codeFields("area_id"));
+        List<Long> areaIds = BeanMapper.getFieldList(areas, "areaId", Long.class);
+        shopFitmentAreaMapper.deleteByExample(areaExample);
+
+        if (!areaIds.isEmpty()) {
+            ShopFitmentModuleExample moduleExample = new ShopFitmentModuleExample();
+            moduleExample.createCriteria().andAreaIdIn(areaIds);
+            shopFitmentModuleMapper.deleteByExample(moduleExample);
+        }
+    }
+
+    private void createBanner(Long shopId) {
+        ShopFitmentAreaExample areaExample = new ShopFitmentAreaExample();
+        areaExample.createCriteria().andShopIdEqualTo(shopId).andAreaTypeEqualTo(FitmentAreaType.BANNER.value());
+        List<ShopFitmentArea> shopFitmentAreas = shopFitmentAreaMapper.selectByExample(areaExample);
+
+        ShopFitmentArea bannerArea;
+        if (shopFitmentAreas.isEmpty()) {
+            bannerArea = new ShopFitmentArea();
+            bannerArea.setAreaType(FitmentAreaType.BANNER.value());
+            bannerArea.setCanDel(false);
+            bannerArea.setShopId(shopId);
+            shopFitmentAreaMapper.insertSelective(bannerArea);
+        } else {
+            bannerArea = shopFitmentAreas.get(0);
+        }
+
+        ShopFitmentModuleExample moduleExample = new ShopFitmentModuleExample();
+        moduleExample.createCriteria().andAreaIdEqualTo(bannerArea.getAreaId()).andTypeEqualTo(FitmentModuleType.Banner.value);
+        List<ShopFitmentModule> shopFitmentModules = shopFitmentModuleMapper.selectByExample(moduleExample);
+
+        ShopFitmentModule banner;
+        if (shopFitmentModules.isEmpty()) {
+            banner = new ShopFitmentModule();
+            banner.setAreaId(bannerArea.getAreaId());
+            banner.setType(FitmentModuleType.Banner.value);
+            banner.setSideType(3);
+            banner.setCanDel(false);
+            shopFitmentModuleMapper.insertSelective(banner);
+        }
+    }
+
+    /**
+     * 创建页面
+     *
+     * @param pageName 页面代称
+     * @param pageType 版式
+     * @return 页面id
+     */
+    public Long createPage(Long shopId, String pageName, Long code, Integer pageType) throws ShopFitmentException {
+        Long page = addPage(shopId, pageName, code, FitmentPageType.CUSTOM.value);
+        Long firstArea = addArea(page, null, FitmentAreaType.CENTER.value(),null);
+        Long secondArea;
+        switch (pageType) {
+            case 1://通栏
+                addModule(firstArea, null, FitmentModuleType.Custom.value, 3, null);
+                secondArea = addArea(page, firstArea, FitmentAreaType.CENTER.value(),2);
+                addModule(secondArea, null, FitmentModuleType.Promote.value, 3, null);
+                break;
+            case 2://左右栏
+                addModule(firstArea, null, FitmentModuleType.WideImage.value, 3, null);
+                secondArea = addArea(page, firstArea, FitmentAreaType.LEFTRIGHT.value(),2);
+                addModule(secondArea, null, FitmentModuleType.Category.value, 1, null);
+                addModule(secondArea, null, FitmentModuleType.Promote.value, 2, null);
+                break;
+            default://空白页面
+        }
+        return page;
+    }
+    public Long addPage(Long shopId, String pageName, Long code, Integer pageType) {
+        ShopFitmentPage page = new ShopFitmentPage();
+        page.setName(pageName);
+        page.setType(pageType);
+        page.setShopId(shopId);
+        page.setCode(code);
+        shopFitmentPageMapper.insertSelective(page);
+        return page.getPageId();
+    }
+
+    /**
+     * 删除一个页面
+     *
+     * @param pageId
+     */
+    @Override
+    @Transactional
+    public void rmPage(Long pageId) throws ShopFitmentException {
+        if (pageId != null) {
+            ShopFitmentPageExample pageExample = new ShopFitmentPageExample();
+            pageExample.createCriteria().andPageIdEqualTo(pageId).andTypeEqualTo(FitmentPageType.CUSTOM.value);
+            List<ShopFitmentPage> shopFitmentPages = shopFitmentPageMapper.selectByExample(pageExample);
+            if (!shopFitmentPages.isEmpty()) {
+                ShopFitmentPage page = shopFitmentPages.get(0);
+                //1. 删除页面
+                shopFitmentPageMapper.deleteByExample(pageExample);
+
+                //2. 删除ftl
+                ShopFitmentFtlExample fitmentFtlExample = new ShopFitmentFtlExample();
+                fitmentFtlExample.createCriteria().andPageIdEqualTo(pageId);
+                shopFitmentFtlMapper.deleteByExample(fitmentFtlExample);
+
+                //3. 删除该页面的所有区域
+                ShopFitmentAreaExample areaExample = new ShopFitmentAreaExample();
+                areaExample.createCriteria().andPageIdEqualTo(pageId);
+                List<ShopFitmentArea> areas = shopFitmentAreaMapper.selectFieldsByExample(areaExample, FieldUtil.codeFields("area_id"));
+                List<Long> areaIds = BeanMapper.getFieldList(areas, "areaId", Long.class);
+                shopFitmentAreaMapper.deleteByExample(areaExample);
+                //4. 删除该页面的所有模块
+                if (!areaIds.isEmpty()) {
+                    ShopFitmentModuleExample moduleExample = new ShopFitmentModuleExample();
+                    moduleExample.createCriteria().andAreaIdIn(areaIds);
+                    shopFitmentModuleMapper.deleteByExample(moduleExample);
+                }
+
+                FitmentArea fitmentArea = selShopHead(page.getShopId());
+                List<FitmentModule> allarea = fitmentArea.getAllarea();
+                if (!allarea.isEmpty()) {
+                    ShopBanner banner = (ShopBanner) allarea.get(0);
+                    BannerNav storeNav = banner.getStoreNav();
+                    if (storeNav != null) {
+                        List<Long> pages = storeNav.getPages();
+                        if (pages != null) {
+                            if (pages.contains(pageId)) {
+                                pages.remove(pageId);
+                                revalueModule(banner.getModuleId(), banner);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 查页面的属主店铺ID
+     *
+     * @param pageId
+     * @return
+     */
+    @Override
+    public Long selShopIdByPageId(Long pageId) {
+        ShopFitmentPage page;
+        if (pageId != null && (page = shopFitmentPageMapper.selectByPrimaryKey(pageId)) != null) {
+            return page.getShopId();
+        }
+        return null;
+    }
+
+    @Override
+    public FitmentArea selShopHead(Long shopId) {
+        FitmentArea fitmentArea = FitmentArea.emptyArea();
+        if (shopId != null) {
+            ShopFitmentAreaExample areaExample = new ShopFitmentAreaExample();
+            areaExample.createCriteria().andShopIdEqualTo(shopId).andAreaTypeEqualTo(FitmentAreaType.BANNER.value());
+            List<ShopFitmentArea> shopFitmentAreas = shopFitmentAreaMapper.selectByExample(areaExample);
+            if (!shopFitmentAreas.isEmpty()) {
+                ShopFitmentArea shopFitmentArea = shopFitmentAreas.get(0);
+                fitmentArea = selAreaByAreaId(shopFitmentArea.getAreaId());
+            }
+        }
+        return fitmentArea;
+    }
+
+    /**
+     * 按areaID查区域
+     *
+     * @param pageId 页面id
+     * @return 页面下区域
+     */
+    @Override
+    public List<FitmentArea> selAreaByPageId(Long pageId) {
+        List<FitmentArea> areas = Collections.emptyList();
+        if (pageId != null) {
+            ShopFitmentAreaExample areaExample = new ShopFitmentAreaExample();
+            areaExample.createCriteria().andPageIdEqualTo(pageId);
+            List<ShopFitmentArea> shopFitmentAreas = shopFitmentAreaMapper.selectFieldsByExample(areaExample, FieldUtil.codeFields("area_id, after_area_id"));
+            if (!shopFitmentAreas.isEmpty()) {
+                areas = new ArrayList<>(shopFitmentAreas.size());
+                Map<Long, ShopFitmentArea> afterAreaMap = BeanMapper.list2Map(shopFitmentAreas, "afterAreaId", Long.class);
+                ShopFitmentArea fitmentArea = afterAreaMap.get(0L);
+                while (fitmentArea != null) {
+                    areas.add(selAreaByAreaId(fitmentArea.getAreaId()));
+                    fitmentArea = afterAreaMap.get(fitmentArea.getAreaId());
+                }
+            }
+        }
+        return areas;
+    }
+
+    @Override
+    public FitmentArea selAreaByAreaId(Long areaId) {
+        FitmentArea fitmentArea = null;
+        if (areaId != null) {
+            ShopFitmentArea shopFitmentArea = shopFitmentAreaMapper.selectByPrimaryKey(areaId);
+            if (shopFitmentArea != null) {
+                fitmentArea = FitmentArea.emptyArea();
+                fitmentArea.setAreaId(areaId);
+                fitmentArea.setAreaType(shopFitmentArea.getAreaType());
+                Map<Long, FitmentModule> leftMap = new HashMap<>();
+                Map<Long, FitmentModule> rightMap = new HashMap<>();
+                Map<Long, FitmentModule> centerMap = new HashMap<>();
+                for (FitmentModule module : selModuleByAreaId(areaId)) {
+                    switch (module.getSideType()) {
+                        case 1:
+                            leftMap.put(module.getAfter(), module);
+                            break;
+                        case 2:
+                            rightMap.put(module.getAfter(), module);
+                            break;
+                        default:
+                            centerMap.put(module.getAfter(), module);
+                    }
+                }
+                moduleSort(fitmentArea.getLeftarea(), leftMap);
+                moduleSort(fitmentArea.getRightarea(), rightMap);
+                moduleSort(fitmentArea.getAllarea(), centerMap);
+            }
+        }
+        return fitmentArea;
+    }
+
+    private void moduleSort(List<FitmentModule> modules, Map<Long, FitmentModule> moduleMap) {
+        FitmentModule fitmentModule = moduleMap.get(0L);
+        while (fitmentModule != null) {
+            modules.add(fitmentModule);
+            fitmentModule = moduleMap.get(fitmentModule.getModuleId());
+        }
+    }
+
+    /**
+     * 按区域ID获取所有模块
+     *
+     * @param areaId 区域id
+     * @return 区域下模块列表
+     */
+    @Override
+    public <T extends FitmentModule> List<T> selModuleByAreaId(Long areaId) {
+        List<T> modules = Collections.emptyList();
+        if (areaId != null) {
+            ShopFitmentModuleExample shopFitmentModuleExample = new ShopFitmentModuleExample();
+            shopFitmentModuleExample.createCriteria().andAreaIdEqualTo(areaId);
+            List<ShopFitmentModule> shopFitmentModules = shopFitmentModuleMapper.selectByExample(shopFitmentModuleExample);
+            if (!shopFitmentModules.isEmpty()) {
+                modules = new ArrayList<>(shopFitmentModules.size());
+                for (ShopFitmentModule shopFitmentModule : shopFitmentModules) {
+                    modules.add((T) packModule(shopFitmentModule));
+                }
+            }
+        }
+        return modules;
+    }
+
+    /**
+     * 查询推荐位的商品
+     *
+     * @param promoteModule
+     * @return
+     */
+    @Override
+    public ShiguPager<ItemShowBlock> selItemByPromote(ItemPromoteModule promoteModule) {
+        Long shopId = selShopIdByAreaId(promoteModule.getAreaId());
+        String sort = "common";
+        switch (promoteModule.getSort()) {
+            case 1:
+                break;
+            case 2:
+                sort = "time_down";
+                break;
+            case 3:
+                sort = "price_up";
+                break;
+            case 4:
+                sort = "price_down";
+                break;
+            case 5:
+                break;
+        }
+        return shopForCdnService.searchItemOnsale(
+                promoteModule.getKeyword(),
+                shopId,
+                promoteModule.getLowerLimitPrice(),
+                promoteModule.getUpperLimitPrice(),
+                sort,
+                1,
+                promoteModule.getItemNum()
+        );
+    }
+
+    /**
+     * 取首页pageId
+     *
+     * @param shopId
+     * @return
+     */
+    @Override
+    public Long selIndexPageIdByShopId(Long shopId) throws ShopFitmentException {
+        try {
+            ShopFitmentPageExample pageExample = new ShopFitmentPageExample();
+            pageExample.createCriteria().andShopIdEqualTo(shopId).andTypeEqualTo(FitmentPageType.INDEX.value);
+            return shopFitmentPageMapper.selectByExample(pageExample).get(0).getPageId();
+        } catch (Exception e) {
+            throw new ShopFitmentException("该店铺不存在首页");
+        }
+    }
+
+    @Override
+    public <T extends FitmentModule> T selModuleByModuleId(Long moduleId) {
+        T t = null;
+        if (moduleId != null) {
+            t = packModule(shopFitmentModuleMapper.selectByPrimaryKey(moduleId));
+        }
+        return t;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends FitmentModule> T packModule(ShopFitmentModule shopFitmentModule) {
+        T t = null;
+        if (shopFitmentModule != null) {
+            FitmentModuleType fitmentModuleType = FitmentModuleType.typeOf(shopFitmentModule.getType());
+            t = (T) JSON.parseObject(shopFitmentModule.getModuleValue(), fitmentModuleType.moduleType.getClazz());
+            t.setModuleId(shopFitmentModule.getModuleId());
+            t.setAreaId(shopFitmentModule.getAreaId());
+            t.setSideType(shopFitmentModule.getSideType());
+            t.setAfter(shopFitmentModule.getAfterModuleId());
+            setModileOption(shopFitmentModule, t);
+        }
+        return t;
+    }
+
+    /**
+     * 为模块设置特殊选项
+     * @param shopFitmentModule
+     * @param t
+     * @param <T>
+     */
+    private <T extends FitmentModule> void setModileOption(ShopFitmentModule shopFitmentModule, T t) {
+        switch (FitmentModuleType.typeOf(shopFitmentModule.getType())) {
+            case Banner:
+                ShopBanner banner = (ShopBanner) t;
+                banner.setBannerOption(JSON.parseObject(shopFitmentModule.getModuleData(), BannerOption.class));
+                break;
+            case Promote:
+                ItemPromoteModule promoteModule = (ItemPromoteModule) t;
+                List<Long> ids = JSON.parseArray(shopFitmentModule.getModuleData(), Long.class);
+                if (ids != null) {
+                    promoteModule.setPromoteItems(ids);
+                }
+                break;
+            case Search:
+                break;
+            case Custom:
+                break;
+            case Category:
+                break;
+            case WideImage:
+                break;
+            case Viwepager:
+                break;
+            case Slideshow:
+                break;
+            case SearchItems:
+                break;
+        }
+    }
+
+    @Override
+    public FitmentPage selPage(Long pageId) {
+        ShopFitmentPage page;
+        if (pageId == null || (page = shopFitmentPageMapper.selectByPrimaryKey(pageId)) == null) {
+            return null;
+        }
+        FitmentPage fitmentPage = new FitmentPage();
+        fitmentPage.setUserDefineAreas(selAreaByPageId(pageId));
+        fitmentPage.setHeadArea(selShopHead(page.getShopId()));
+        fitmentPage.setPageId(pageId);
+        fitmentPage.setPageName(page.getName());
+        return fitmentPage;
+    }
+
+    /**
+     * @param pageId 页面ID
+     * @param sideId 邻模块ID
+     * @param after   1代表上方，2代表下方 NotNull
+     * @return 新加区域ID
+     * @throws ShopFitmentException 区域添加异常
+     */
+    @Override
+    @Transactional
+    public Long addArea(Long pageId, Long sideId, Integer type, Integer after) throws ShopFitmentException {
+        ShopFitmentPage page;
+        if (pageId == null || (page = shopFitmentPageMapper.selectByPrimaryKey(pageId)) == null) {
+            throw new ShopFitmentException("所指定页面不存在");
+        }
+        boolean firstArea = sideId == null || sideId == 0;
+        if (!firstArea && after == null) {
+            throw new ShopFitmentException("存在临区域时，type不能为null");
+        }
+        ShopFitmentArea shopFitmentArea = new ShopFitmentArea();
+        shopFitmentArea.setPageId(pageId);
+        shopFitmentArea.setAfterAreaId(sideId);
+        shopFitmentArea.setShopId(page.getShopId());
+        shopFitmentArea.setAreaType(FitmentAreaType.LEFTRIGHT.value());
+        if (firstArea) {
+            ShopFitmentAreaExample areaExample = new ShopFitmentAreaExample();
+            areaExample.createCriteria().andAfterAreaIdEqualTo(0L).andPageIdEqualTo(pageId);
+            if (shopFitmentAreaMapper.countByExample(areaExample) > 0)
+                throw new ShopFitmentException("添加区域失败, 该页面已经存在区域了，添加请指定上层区域");
+            shopFitmentArea.setAfterAreaId(0L);
+            shopFitmentAreaMapper.insertSelective(shopFitmentArea);
+        } else switch (after) {
+            case 1://top
+                ShopFitmentArea topSideArea = shopFitmentAreaMapper.selectByPrimaryKey(sideId);
+                if (topSideArea == null) {
+                    throw new ShopFitmentException("相邻区域不存在");
+                }
+                insertBefore(shopFitmentArea, topSideArea);
+                break;
+            case 2://bottom
+                ShopFitmentAreaExample shopFitmentAreaExample = new ShopFitmentAreaExample();
+                shopFitmentAreaExample.createCriteria().andAfterAreaIdEqualTo(sideId);
+                List<ShopFitmentArea> shopFitmentAreas = shopFitmentAreaMapper.selectByExample(shopFitmentAreaExample);
+                if (shopFitmentAreas.isEmpty()) {
+                    shopFitmentArea.setAfterAreaId(sideId);
+                    shopFitmentAreaMapper.insertSelective(shopFitmentArea);
+                } else {
+                    ShopFitmentArea bottomSideArea = shopFitmentAreas.get(0);
+                    insertBefore(shopFitmentArea, bottomSideArea);
+                }
+                break;
+            default:
+                throw new ShopFitmentException("type:" + after + ", 未知区域添加方式");
+        }
+        return shopFitmentArea.getAreaId();
+    }
+
+    /**
+     * 查区域的属主店铺ID
+     *
+     * @param areaId
+     * @return
+     */
+    @Override
+    public Long selShopIdByAreaId(Long areaId) {
+        ShopFitmentArea shopFitmentArea;
+        if (areaId != null && (shopFitmentArea = shopFitmentAreaMapper.selectByPrimaryKey(areaId)) != null) {
+            return shopFitmentArea.getShopId();
+        }
+        return null;
+    }
+
+    /**
+     * 删除一个区域
+     *
+     * @param areaId 区域id
+     */
+    @Override
+    public void rmArea(Long areaId) {
+        if (areaId != null) {
+            ShopFitmentArea shopFitmentArea = shopFitmentAreaMapper.selectByPrimaryKey(areaId);
+            if (shopFitmentArea != null) {
+                shopFitmentAreaMapper.deleteByPrimaryKey(areaId);
+                ShopFitmentModuleExample moduleExample = new ShopFitmentModuleExample();
+                moduleExample.createCriteria().andAreaIdEqualTo(areaId);
+                shopFitmentModuleMapper.deleteByExample(moduleExample);
+
+                ShopFitmentArea afterArea = shopFitmentAreaMapper.selectByPrimaryKey(shopFitmentArea.getAfterAreaId());
+                Long afterAreaId = 0L;
+                if (afterArea != null) {
+                    afterAreaId = afterArea.getAfterAreaId();
+                }
+                ShopFitmentArea area = new ShopFitmentArea();
+                area.setAfterAreaId(afterAreaId);
+                ShopFitmentAreaExample areaExample = new ShopFitmentAreaExample();
+                areaExample.createCriteria().andAfterAreaIdEqualTo(areaId);
+                shopFitmentAreaMapper.updateByExampleSelective(area, areaExample);
+            }
+        }
+    }
+
+    /**
+     * 在原区域上层添加一个新区域
+     * @param newArea 新区域
+     * @param oldArea 原区域
+     */
+    @Transactional
+    private void insertBefore(ShopFitmentArea newArea, ShopFitmentArea oldArea) {
+        newArea.setAfterAreaId(oldArea.getAfterAreaId());
+        shopFitmentAreaMapper.insertSelective(newArea);
+        oldArea.setAfterAreaId(newArea.getAreaId());
+        shopFitmentAreaMapper.updateByPrimaryKeySelective(oldArea);
+    }
+
+    /**
+     * 在原模块上层添加一个新模块
+     * @param newModule 新模块
+     * @param oldModule 原模块
+     */
+    @Transactional
+    private void insertBefore(ShopFitmentModule newModule, ShopFitmentModule oldModule) {
+        newModule.setAfterModuleId(oldModule.getAfterModuleId());
+        shopFitmentModuleMapper.insertSelective(newModule);
+        oldModule.setAfterModuleId(newModule.getModuleId());
+        shopFitmentModuleMapper.updateByPrimaryKeySelective(oldModule);
+    }
+
+    @Override
+    @Transactional
+    public Long addModule(Long areaId,Long sideId,Integer type,Integer sideType,Integer after) throws ShopFitmentException {
+        return addModule(areaId, sideId, type, sideType, after, null);
+    }
+    private Long addModule(Long areaId,Long sideId,Integer type,Integer sideType,Integer after, Boolean canDel) throws ShopFitmentException {
+        if (areaId == null || shopFitmentAreaMapper.selectByPrimaryKey(areaId) == null) {
+            throw new ShopFitmentException("无效区域");
+        }
+        if (sideId != null && after == null) {
+            throw new ShopFitmentException("有临模块时必须指定相邻方式:after");
+        }
+        ShopFitmentModule module = new ShopFitmentModule();
+        module.setAreaId(areaId);
+        module.setSideType(sideType);
+        module.setType(type);
+        module.setAfterModuleId(sideId);
+        module.setCanDel(canDel);
+        if (sideId == null) {
+            module.setAfterModuleId(0L);
+            shopFitmentModuleMapper.insertSelective(module);
+        } else switch (after) {
+            case 1://top
+                ShopFitmentModule shopFitmentModule = shopFitmentModuleMapper.selectByPrimaryKey(sideId);
+                if (shopFitmentModule == null) {
+                    throw new ShopFitmentException("所临模块不存在：" + sideId);
+                }
+                insertBefore(module, shopFitmentModule);
+                break;
+            case 2://bottom
+                ShopFitmentModuleExample moduleExample = new ShopFitmentModuleExample();
+                moduleExample.createCriteria().andAfterModuleIdEqualTo(sideId).andAreaIdEqualTo(areaId);
+                List<ShopFitmentModule> shopFitmentModules = shopFitmentModuleMapper.selectByExample(moduleExample);
+                if (shopFitmentModules.isEmpty()) {
+                    //说明后面没有模块了，传入的sideid是该区域最后一个模块，下面在它下方添加模块
+                    shopFitmentModuleMapper.insertSelective(module);
+                } else {
+                    //如果还有模块，拿到传入sideId 模块原来下方的模块，在其上添加新模块
+                    ShopFitmentModule fitmentModule = shopFitmentModules.get(0);
+                    insertBefore(module, fitmentModule);
+                }
+                break;
+            default:
+                throw new ShopFitmentException("不允许的after位置:" + sideType);
+        }
+        return module.getModuleId();
+    }
+
+    /**
+     * 删除一个模块
+     *
+     * @param moduleId
+     */
+    @Override
+    public void rmModule(Long moduleId) {
+        if (moduleId != null) {
+            ShopFitmentModule shopFitmentModule = shopFitmentModuleMapper.selectByPrimaryKey(moduleId);
+            if (shopFitmentModule != null) {
+                shopFitmentModuleMapper.deleteByPrimaryKey(moduleId);
+                ShopFitmentModule after = shopFitmentModuleMapper.selectByPrimaryKey(shopFitmentModule.getAfterModuleId());
+                Long afterId = 0L;
+                if (after != null) {
+                    afterId = after.getModuleId();
+                }
+                ShopFitmentModuleExample moduleExample = new ShopFitmentModuleExample();
+                moduleExample.createCriteria().andAfterModuleIdEqualTo(moduleId);
+                ShopFitmentModule module = new ShopFitmentModule();
+                module.setAfterModuleId(afterId);
+                shopFitmentModuleMapper.updateByExampleSelective(module, moduleExample);
+            }
+        }
+    }
+
+    /**
+     * 查模块的属主店铺ID
+     *
+     * @param moduleId
+     * @return
+     */
+    @Override
+    public Long selShopIdByModuleId(Long moduleId) {
+        if (moduleId != null) {
+            ShopFitmentModule shopFitmentModule = shopFitmentModuleMapper.selectByPrimaryKey(moduleId);
+            if (shopFitmentModule != null && shopFitmentModule.getAreaId() != null) {
+                ShopFitmentArea shopFitmentArea = shopFitmentAreaMapper.selectByPrimaryKey(shopFitmentModule.getAreaId());
+                if (shopFitmentArea != null) {
+                    return shopFitmentArea.getShopId();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void revalueModule(Long moduleId, FitmentModule module) throws ShopFitmentException {
+        if (moduleId == null) {
+            throw new ShopFitmentException("模块不存在");
+        }
+        ShopFitmentModule shopFitmentModule = new ShopFitmentModule();
+        shopFitmentModule.setModuleId(moduleId);
+        shopFitmentModule.setModuleValue(JSON.toJSONString(module));
+        shopFitmentModuleMapper.updateByPrimaryKeySelective(shopFitmentModule);
+    }
+
+    public void revalueModuleOption(Long moduleId, String Option) throws ShopFitmentException {
+        if (moduleId == null) {
+            throw new ShopFitmentException("模块不存在");
+        }
+        ShopFitmentModule shopFitmentModule = new ShopFitmentModule();
+        shopFitmentModule.setModuleId(moduleId);
+        shopFitmentModule.setModuleData(Option);
+        shopFitmentModuleMapper.updateByPrimaryKeySelective(shopFitmentModule);
+
+    }
+
+    /**
+     * 移动
+     *
+     * @param moduleId 模块id
+     * @param type     1代表上移，2代表下移
+     */
+    @Override
+    @Transactional
+    public void changeModuleLocation(Long moduleId, Integer type) {
+        if (moduleId != null && type != null) {
+            ShopFitmentModule thisModule = shopFitmentModuleMapper.selectByPrimaryKey(moduleId);
+            ShopFitmentModule parentModule = shopFitmentModuleMapper.selectByPrimaryKey(thisModule.getAfterModuleId());
+            ShopFitmentModuleExample moduleExample = new ShopFitmentModuleExample();
+            moduleExample.createCriteria().andAreaIdEqualTo(thisModule.getAreaId())
+                    .andAfterModuleIdEqualTo(thisModule.getModuleId());
+            List<ShopFitmentModule> subFitmentModules = shopFitmentModuleMapper.selectByExample(moduleExample);
+            switch (type) {
+                case 1://move up
+                    if (parentModule != null) {
+                        Long parentAfterModuleId = parentModule.getAfterModuleId();
+                        parentModule.setAfterModuleId(thisModule.getModuleId());
+                        thisModule.setAfterModuleId(parentAfterModuleId);
+                        shopFitmentModuleMapper.updateByPrimaryKeySelective(thisModule);
+                        shopFitmentModuleMapper.updateByPrimaryKeySelective(parentModule);
+                        // if exist, only one.
+                        for (ShopFitmentModule subFitmentModule : subFitmentModules) {
+                            subFitmentModule.setAfterModuleId(parentModule.getModuleId());
+                            shopFitmentModuleMapper.updateByPrimaryKeySelective(subFitmentModule);
+                        }
+                    }
+                    break;
+                case 2://move down
+                    if (!subFitmentModules.isEmpty()) {
+                        ShopFitmentModule shopFitmentModule = subFitmentModules.get(0);
+                        Long thisAfterModuleId = thisModule.getAfterModuleId();
+                        thisModule.setAfterModuleId(shopFitmentModule.getModuleId());
+                        shopFitmentModule.setAfterModuleId(thisAfterModuleId);
+
+                        ShopFitmentModuleExample subExample = new ShopFitmentModuleExample();
+                        subExample.createCriteria().andAfterModuleIdEqualTo(shopFitmentModule.getModuleId());
+                        ShopFitmentModule t = new ShopFitmentModule();
+                        t.setAfterModuleId(thisModule.getModuleId());
+                        shopFitmentModuleMapper.updateByExampleSelective(t, subExample);
+                        shopFitmentModuleMapper.updateByPrimaryKeySelective(thisModule);
+                        shopFitmentModuleMapper.updateByPrimaryKeySelective(shopFitmentModule);
+                    }
+                    break;
+                default:
+            }
+        }
+    }
+}

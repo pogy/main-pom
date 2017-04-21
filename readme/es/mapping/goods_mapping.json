@@ -1,0 +1,298 @@
+{
+	"settings": {
+		"analysis":{
+			"char_filter":{
+			"douhao_to_kongge": {
+					"type":"mapping",
+					"mappings": [",=> and "]
+								}
+			}
+			,
+			"analyzer":{
+			"cid_all_analyzer":{
+				 "type":"custom",
+				 "char_filter":"douhao_to_kongge",
+				 "tokenizer":"standard",
+				 "filter":"lowercase"
+								}
+			}
+			
+		
+		}
+	},
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"date_detection": false,
+			"properties": {
+				"title": {
+					"type": "string",
+					"norms": { "enabled": false },
+					"store":"yes",
+					"analyzer": "ik_max_word",
+					"search_analyzer": "ik_max_word",
+					"boost": 1
+				},
+				"cidAll": {
+					"type": "string",
+					"analyzer": "ik_max_word"
+				},
+				"postFee": {
+					"type": "string",
+					"index": "no",
+					"store":"no"
+				},
+				"emsFee": {
+					"type": "string",
+					"index": "no",
+					"store":"no"
+				},
+				"listTime": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"city": {
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"expressFee": {
+					"type": "string",
+					"index": "no",
+					"store":"no"
+				},
+				"parent_cid": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"goodsNo": {
+					"type": "string"
+				},
+				"isExcelImp": {
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store":"no",
+					"null_value":0
+				},
+				"num": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"numIid": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"type": {
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"is_other": {
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"relation_level_id": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"nick": {
+					"type": "string",
+					"index": "no",
+					"store":"no"
+				},
+				"parentMarketId": {
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"inStoreSortOrder": {
+					"type": "long",
+					"index": "no",
+					"store":"no"
+				},
+				"price": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"parentMarketName": {
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"modified": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"prov": {
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"sortOrder": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"storeId": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"created": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"goodsId": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"marketId": {
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"loadDate": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"services": {
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"piPrice": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store": "no"
+				},
+				"is_hezuo": {
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"market": {
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"goods_level": {
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"delistTime": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"soldOutTime": {
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"is_off": {
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"storeNum": {
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"picUrl": {
+					"type": "string",
+					"index": "no",
+					"store":"no"
+				},
+				"webSite": {
+					"type": "string",
+					"index":"no",
+					"store":"no"
+				},
+				"cid": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"last_update_xs": {
+					"type": "string",
+					"index": "no",
+					"store":"no"
+				},
+				"cname":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"parent_cname":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				
+				},
+				"v_tradingVolume":{
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no",
+					"null_value":0
+				},
+				"v_clicks":{
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no",
+					"null_value":0
+				},
+				"v_bounceRate":{
+					"type": "float",
+					"index": "not_analyzed",
+					"store":"no",
+					"null_value":0
+				},
+				"remark1":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				
+				},
+				"remark2":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				
+				},
+				"remark3":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				
+				}
+			}
+		}
+	}
+}

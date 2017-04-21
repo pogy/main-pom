@@ -1,0 +1,8 @@
+var cats=$('#catatat a');
+for(var i=0;i<cats.length;i++){
+	var a=$(cats[i]);
+    a.find('font').remove();
+    var href=a.attr('href');
+    href=href.substring(href.indexOf('cid=')+4,href.indexOf('&sort'));
+    console.log('insert into search_category_sub(type,parent_cate_value,cate_name,cate_value,sort) values(1,50010404,\''+a.text()+'\','+href+','+i+');')
+}

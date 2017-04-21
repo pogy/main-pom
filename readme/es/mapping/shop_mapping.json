@@ -1,0 +1,89 @@
+{
+  "mappings": {
+    "_default_": {
+      "_all": {
+        "enabled": false
+      },
+      "date_detection": false,
+      "properties": {
+        "shop_id": {
+          "type":"long"
+        },
+        "market_id": {
+          "type":"long",
+          "index": "not_analyzed",
+          "store":"no"
+        },
+        "market": {
+          "type":"string",
+          "store":"yes"
+        },
+        "floor_id": {
+          "type":"long",
+          "index": "not_analyzed",
+          "store":"no"
+        },
+        "floor": {
+          "type":"string"
+        },
+        "user_id": {
+          "type":"long",
+          "index": "not_analyzed",
+          "store":"no"
+        },
+        "shop_name": {
+          "type":"string"
+        },
+        "taobao_url": {
+          "type":"string"
+        },
+        "tb_nick": {
+          "type":"string"
+        },
+        "shop_num": {
+          "type": "string"
+        },
+        "address": {
+          "type":"string"
+        },
+        "telephone": {
+          "type":"string"
+        },
+        "im_qq": {
+          "type":"string"
+        },
+        "im_aliww": {
+          "type":"string"
+        },
+        "im_wx": {
+          "type":"string"
+        },
+        "domain": {
+          "type":"string",
+          "index": "no",
+          "store":"no"
+        },
+        "create_date": {
+          "type":"date",
+          "format": "yyyy-MM-dd HH:mm:ss",
+          "ignore_malformed":true,
+          "store":"no"
+        },
+        "shop_status": {
+          "type":"long"
+        },
+        "data_packet_url": {
+          "type":"string",
+          "index": "no",
+          "store":"no"
+        },
+        "main_bus": {
+          "type":"string"
+        },
+        "system_recommon": {
+          "type":"string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.MemberUserCopy2Mapper" >
+
+	<!-- 手机号绑定了两个以上的用户 -->
+	<select id="selLoginPhoneRepeat" resultType="com.opentae.data.mall.beans.MemberUserPhoneRepeatVo">
+		SELECT
+			m.login_phone,
+			GROUP_CONCAT(CONCAT(m.user_id,'')) as user_ids,
+			count(1) AS counts
+		FROM
+			member_user_copy2 m
+		WHERE
+			m.login_phone IS NOT NULL
+		AND m.login_phone != ''
+		GROUP BY
+			m.login_phone
+		HAVING
+			counts > 1;
+	</select>
+
+	<!-- 查好用户下的店铺 -->
+	<select id="selShopIntByUserId" resultType="int">
+		select count(s.shop_id) from shigu_shop s where s.user_id = #{userId}
+	</select>
+
+	<select id="selUserNamByTb" resultType="long">
+		select a.user_id from
+member_user a,member_user_sub b
+where a.user_id = b.user_id
+and (b.sub_user_password is null or b.sub_user_password='')
+and b.account_type=7
+	</select>
+
+	<!-- 账户余额 -->
+	<select id="selXzbTotalMoney" resultType="Long">
+		SELECT
+			x.total_money
+		FROM
+			pay_xzb x,
+			pay_account pc
+		WHERE
+			x.account_id = pc.account_id
+		AND pc.xz_user_id = #{userId};
+		limit 1
+	</select>
+
+	<!-- 批量删除数据 -->
+	<delete id="delMemberUserByIds">
+		DELETE
+			FROM
+				member_user_copy2
+			WHERE
+				user_id in
+		<foreach collection="userIdList" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>

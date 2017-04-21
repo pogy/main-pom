@@ -1,0 +1,99 @@
+{
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"date_detection": false,
+			"properties": {
+				"createTime": {
+					"type":"date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"startTime": {
+					"type":"date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "no",
+					"store":"no"
+				},
+				"endTime": {
+					"type":"date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "no",
+					"store":"no"
+				},
+				"isSuccess": {
+					"type":"Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"nowintervalTime": {
+					"type":"long",
+					"index": "no",
+					"store":"no"
+				},
+				"typeH": {
+					"type":"Integer",
+					"index": "no",
+					"store":"no"
+				},
+				"tyle": {
+					"type":"Integer",
+					"index": "no",
+					"store":"no"
+				},
+				"intervalTime": {
+					"type":"long",
+					"index": "no",
+					"store":"no"
+				},
+				"sql": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"task_id": {
+					"type":"Integer",
+					"index":"not_analyzed",
+					"store":"no"
+				},
+				"task_EName": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"name": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"variable_parameter": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"other_remark0": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"other_remark1": {
+					"type":"string",
+					"index": "no",
+					"store":"no"
+				},
+				"useTime": {
+					"type":"long",
+					"index": "no",
+					"store":"no"
+				}
+				
+			}
+		}
+	}
+}

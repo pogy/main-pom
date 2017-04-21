@@ -1,0 +1,853 @@
+body, html {
+    height: 100%;
+}
+blockquote, body, button, code, dd, div, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, input, legend, li, ol, p, pre, td, textarea, th, ul {
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft YaHei", Tahoma, Helvetica, Arial, SimSun, sans-serif;
+    font-size: 12px
+}
+
+img {
+    border: none;
+
+}
+
+a {
+    text-decoration: none;
+    color: #369
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+ul {
+    list-style-type: none;
+}
+
+.clearfix {
+    *zoom: 1
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+
+.hidden {
+    display: none
+}
+
+
+/*�����༭-������ʽ*/
+
+#edit-shopsigns .nav-head {
+    padding-left: 15px;
+    height: 18px;
+    line-height: 18px;
+    margin-bottom: 7px;
+    position: relative;
+}
+
+#edit-shopsigns .nav-head .link-out {
+    position: absolute;
+    right: 15px;
+    top: 0;
+}
+
+#edit-shopsigns .panel-content {
+    margin: 2px 10px 0;
+    width: 650px;
+    height: 300px;
+    /*overflow-y: auto;*/
+    /*overflow-x: hidden;*/
+    overflow: auto \9;
+    border: 1px solid #E0E0E0;
+    position: relative;
+}
+
+#edit-shopsigns .diy-pages-content .text-tips {
+    margin-left: 15px;
+    margin-bottom: 5px;
+}
+
+#edit-shopsigns .checkbox {
+    display: inline-block;
+    font-size: 1px;
+    height: 11px;
+    width: 11px;
+    position: relative;
+    _overflow: hidden;
+    vertical-align: middle;
+    outline: 0;
+    background-color: rgba(255, 255, 255, .05);
+    border: 1px solid #C6C6C6;
+    border: 1px solid rgba(155, 155, 155, .57);
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+    cursor: default;
+}
+
+#edit-shopsigns .diy-pages-content .diy-page {
+    padding: 3px 0 3px 25px;
+}
+
+#edit-shopsigns .lb_bd {
+    padding: 20px 20px 36px;
+}
+
+#edit-shopsigns.lb_wrap td {
+    padding: 6px;
+}
+
+#edit-shopsigns .item_line_all {
+    background: #f8f8f8;
+    color: #666;
+    font-size: 12px;
+    line-height: 25px;
+    margin-bottom: 10px;
+}
+
+#edit-shopsigns .item_line_all .oper {
+    width: 120px;
+}
+
+#edit-shopsigns .item_line_all .oper label {
+    padding: 0 15px 0 4px;
+}
+
+#edit-shopsigns .item_line_all .name_all {
+    padding-left: 15px;
+}
+
+#edit-shopsigns .item_line_all .links {
+    padding-left: 15px;
+}
+
+#edit-shopsigns .item_name {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+#edit-shopsigns .name {
+    position: relative;
+    float: left;
+    width: 110px;
+}
+
+#edit-shopsigns .link {
+    position: relative;
+    float: left;
+    width: 307px;
+}
+
+#edit-shopsigns .name label, #edit-shopsigns .link label {
+    position: absolute;
+    font-size: 12px;
+    color: #999;
+    left: 0;
+    top: -20px;
+}
+
+#edit-shopsigns .select {
+    float: left;
+    width: 130px;
+    min-height: 27px;
+    position: relative;
+}
+
+#edit-shopsigns .selectholder {
+    width: 287px;
+}
+
+#edit-shopsigns .item_line .oper {
+    width: 75px;
+    position: absolute;
+    left: 542px;
+    top: 31px;
+}
+
+#edit-shopsigns .name .nav_name {
+    border: 1px solid #dcdcdc;
+    color: #666;
+    font-size: 12px;
+    line-height: 25px;
+    padding: 0 10px;
+    width: 78px;
+}
+
+#edit-shopsigns .oper i {
+    float: left;
+    margin: 4px 0 0 5px;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+    text-indent: -999em;
+    background: url(/design/img/shop/huibaijiantou.png) no-repeat;
+    cursor: pointer;
+}
+
+#edit-shopsigns .oper .del {
+    background-position: -3px -122px;
+    margin-left: 0;
+}
+
+#edit-shopsigns .oper .up {
+    background-position: -3px -159px;
+}
+
+#edit-shopsigns .oper .down {
+    background-position: -53px -122px;
+}
+
+#edit-shopsigns .oper .first_up, #edit-shopsigns .oper .last_down {
+    opacity: .5;
+    cursor: default;
+}
+
+#edit-shopsigns .link .img_link {
+    border: 1px solid #dcdcdc;
+    color: #999;
+    font-size: 12px;
+    line-height: 25px;
+    padding: 0 10px;
+    width: 258px;
+}
+
+#edit-shopsigns .item_line {
+    padding: 32px 0 20px 10px;
+    position: relative;
+}
+
+#edit-shopsigns .item_line:nth-child(odd) {
+    background: #f8f8f8;
+}
+
+#edit-shopsigns.add_wrap {
+    padding: 12px 0 24px 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+#edit-shopsigns .add_line {
+    display: block;
+    width: 115px;
+    height: 28px;
+    margin-top: 1px;
+    line-height: 28px;
+    color: #fff;
+    background: #666;
+    font-size: 12px;
+    border-radius: 3px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#edit-shopsigns .add_line span {
+    display: block;
+    padding-left: 34px;
+    background: url(/design/img/shop/huibaijiantou.png) no-repeat 13px -84px;
+}
+
+
+/* �༭��*/
+.content {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    position: relative;
+}
+.edit-bigpic .tips,.edit-recommend .tips {
+    background: #eee;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+}
+.tab .nav {
+    border-bottom: 1px solid #E0E0E0;
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 20px;
+}
+.tab .nav li.selected {
+    background-color: #fff;
+    color: #000;
+    height: 26px;
+    position: relative;
+    top: 1px;
+}
+
+.tab .nav li {
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+    display: block;
+    float: left;
+    height: 24px;
+    background-color: #ededed;
+    border: 1px solid #d4d4d4;
+    border-bottom-width: 0;
+    position: relative;
+    top: 2px;
+    padding: 0 10px;
+    margin-left: 3px;
+}
+
+.tab .nav li span {
+    cursor: pointer;
+    display: block;
+    line-height: 24px;
+}
+
+.form-default {
+    margin-top: 30px;
+}
+
+.form-default .edit-module {
+    position: relative;
+    width: 780px;
+}
+
+.form-default .edit-module .edit-item:after {
+    content: '\20';
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.form-default .edit-module .edit-item {
+    position: relative;
+    color: #000;
+    margin-left: 50px;
+    padding: 5px;
+}
+
+.form-default .edit-module .edit-item .column1 {
+    position: relative;
+    width: 217px;
+}
+
+.form-default .edit-module .edit-item .column2 {
+    width: 217px;
+}
+.form-default .edit-module .edit-item .column3 {
+    width: 240px;
+}
+.form-default .edit-module .edit-item .column {
+    float: left;
+}
+
+.form-default .edit-head .column1 {
+    background-image: none;
+}
+
+.form-default .edit-module .pic-list {
+    border-bottom: 1px solid #E0E0E0;
+    padding-bottom: 5px;
+}
+
+.form-default .edit-module .even {
+    background-color: #fff;
+}
+
+.form-default .edit-module .odd {
+    background-color: #F0F0F0;
+}
+
+
+.form-default .edit-module .column3 .up {
+    background-position: 5px -108px;
+}
+
+.form-default .edit-module .edit-item .column3 .down {
+    background-position: 5px -172px;
+}
+
+.form-default .edit-module .edit-item .column3 .delete {
+    background-position: 5px -203px;
+}
+
+.form-default .edit-module .edit-item .column3 a {
+    display: inline-block;
+    width: 20px;
+    height: 22px;
+    margin-right: 20px;
+}
+
+.form-default .edit-module .first .column3 .up {
+    background-position: 5px -75px;
+}
+
+.form-default .edit-module .last .column3 .down {
+    background-position: 5px -140px;
+}
+
+.form-default .edit-module .edit-item input {
+    width: 165px;
+}
+
+.form-default input, .form-default select {
+
+    height: 21px;
+    padding-left: 5px;
+    vertical-align: middle;
+    border: 1px solid #d9d9d9;
+    line-height: 21px;
+}
+
+.opt-footer {
+    margin-left: 25px;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+.ctset-opt-footer {
+    margin-top: 0;
+    margin-left: 50px;
+    padding-left: 5px;
+    padding-top: 20px;
+    clear: both;
+}
+
+#J_EditorBox div.edit-item:nth-child(odd) {
+    background: #f8f8f8;
+}
+
+.btn-ok {
+    border: 0 none;
+    background-color: #2D2D2D;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 12px;
+    /*vertical-align: middle;*/
+    padding: 6px 9px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    margin-left: 10px;
+}
+
+.btn-cancel {
+    border: 0 none;
+    background: none repeat scroll 0 0 transparent;
+    color: #000;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 12px;
+    vertical-align: middle;
+    padding: 6px 9px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+.form-default .edit-module .bottom {
+    height: 26px;
+    margin-top: 5px;
+    margin-left: 525px;
+}
+
+.form-default .edit-module .bottom .add-one {
+    text-decoration: none;
+    padding: 0 24px;
+}
+
+.btn-style-1 {
+    border: 1px solid #d4d4d4;
+    color: #000;
+    cursor: pointer;
+    display: inline-block;
+    height: 24px;
+    line-height: 22px;
+    padding: 0 12px;
+    vertical-align: middle;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+.form-default .control-group {
+    position: relative;
+}
+
+.form-default .control-group {
+    margin-bottom: 10px;
+}
+.srch-action {
+    float: left;
+    height: 25px;
+    line-height: 21px;
+}
+.form-default .control-label, .form-default .input-radio, .form-default .input-checkbox {
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+    vertical-align: middle;
+}
+
+.form-default .control-label {
+    float: left;
+    width: 100px;
+    text-align: right;
+}
+
+.form-default label {
+    color: #2d2d2d;
+}
+.form-default .control-group .input-radio {
+    width: auto;
+    margin-right: 3px;
+}
+
+.form-default .control-group .show-title-true {
+    margin-left: 10px;
+}
+
+.form-default .control-group .title-input {
+    width: 150px;
+    margin-left: 15px;
+}
+
+.form-default input.keyword-input {
+    width: 87px;
+}
+.form-default .module-height .msg {
+    margin-top: 5px;
+    float: left;
+}
+
+.form-default .edit-module .edit-item .sys-images {
+    position: absolute;
+    top: 0;
+    right: 19px;
+    display: block;
+    width: 23px;
+    height: 23px;
+    font-size: 0;
+    background-position: 0 -20px;
+    cursor: pointer;
+}
+
+.form-default .up, .form-default .down, .form-default .delete, .form-default .prompt, .form-default .sys-links {
+    background-image: url(/design/img/shop/icon2.png);
+    background-repeat: no-repeat;
+}
+
+.form-default .sys-links {
+    display: inline-block;
+    margin-left: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    text-indent: -9999px;
+    vertical-align: middle;
+    width: 14px;
+    height: 14px;
+    background: url(/design/img/shop/link.jpg) no-repeat;
+    opacity: .5;
+}
+
+.form-default .edit-module .item-number-msg {
+    margin-left: 505px;
+}
+
+.form-default .edit-module .msg {
+    margin-top: 5px;
+}
+
+.failure {
+    display: inline-block;
+    border-color: #ff8080;
+    background-color: #fff2f2;
+}
+
+.msg {
+    height: 23px;
+    border-width: 1px;
+    border-style: solid;
+    padding: 0 5px;
+    color: #424a4d;
+}
+
+.failure .msg-icon {
+    background-position: 0px -284px;
+}
+
+.msg-icon {
+    background: url(/design/img/shop/icon2.png) no-repeat scroll 0 0 transparent;
+    display: inline-block;
+    height: 16px;
+    line-height: 23px;
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.disappear {
+    display: none;
+}
+
+.msg .text {
+    display: inline-block;
+    height: 23px;
+    line-height: 23px;
+    vertical-align: middle;
+}
+
+
+/*design*/
+#design_main .btn_submit {
+    width: 80px;
+    height: 28px;
+    color: #fff;
+    font-size: 12px;
+    background: #2c8ee1;
+    margin-left: 300px;
+    margin-top: 20px;
+}
+
+#design_main .btn {
+    display: inline-block;
+    padding: 4px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+
+
+/*�Ƽ���Ʒ*/
+.itemsLayout {
+    float: left;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+
+.itemsLayout dt a {
+    width: 149px;
+    height: 103px;
+    display: block;
+    border: 1px solid #ccc;
+    background: url(/design/img/shop/tj-model.jpg);
+}
+
+.line-item3 dt a {
+    background-position: 0 0;
+}
+
+.line-item4 dt a {
+    background-position: 0 -110px;
+}
+
+.line-item5 dt a {
+    background-position: 0 -220px;
+}
+
+.line-item7 dt a {
+    background-position: 0 -330px;
+}
+
+.itemsLayout .dtselected {
+    border: 4px solid #f4c41c;
+    position: relative;
+}
+
+.form-default .control-label {
+    float: left;
+    width: 100px;
+    text-align: right;
+}
+
+.form-default .control {
+    margin-left: 110px;
+}
+
+.form-default .input-radio, .form-default .input-checkbox {
+    width: auto !important;
+    margin-right: 3px;
+}
+
+.item-srch {
+    background-color: #e8e8e8;
+    margin: 0 25px;
+    padding: 10px 0 10px 10px;
+}
+
+.srch-cond {
+    float: left;
+}
+
+.srch-cond .control {
+    margin-left: 0;
+}
+.form-default span.tips {
+    color: #999;
+    display: inline-block;
+    padding-left: 6px;
+}
+
+.srch-cond input.input-box {
+    width: 130px;
+}
+.srch-conds input.input-box, .srch-conds select.input-box {
+    display: inline-block;
+    height: 23px;
+    line-height: 23px;
+    vertical-align: middle;
+    border-top: 1px solid silver;
+    border-bottom: 1px solid #d9d9d9;
+    border-left: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+}
+
+.srch-cond .keyword-label {
+    color: #a9a9a9;
+    position: absolute;
+    top: 3px;
+    left: 10px;
+}
+.srch-conds .price .control-label {
+    width: 30px;
+    height: 25px;
+    line-height: 25px;
+    vertical-align: middle;
+    margin: 0 3px 0 7px;
+    color: #A9A9A9;
+}
+.srch-conds .price .control {
+    float: left;
+}
+.srch-conds .price input {
+    width: 35px;
+}
+
+.item-srch .srch-btn, .pagination .pg-prev, .pagination .pg-next {
+    background: url(/design/img/shop/tuijianicon.png) no-repeat scroll 0 0 transparent;
+}
+
+.srch-btn {
+    display: inline-block;
+    width: 21px;
+    height: 20px;
+    margin-left: 8px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.items-count {
+    margin-top: 5px;
+    position: relative;
+}
+.items-count .want-opt {
+    cursor: pointer;
+    color: #2d2d2d;
+}
+.items-count .all {
+    margin-right: 15px;
+}
+
+.items-count .selected {
+    background-color: #2D2D2D;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    height: 18px;
+    line-height: 18px;
+    padding: 1px 3px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+
+.items-count .remain-rec {
+    position: absolute;
+    right: 0;
+    margin-right: 10px;
+    padding: 3px 7px;
+    color: #6e6e6e;
+    border: 1px solid #ffcc7f;
+    background-color: #ffffe5;
+}
+.items-count .remain-rec .count {
+    font-weight: 700;
+    padding: 0 5px;
+}
+.items-count .recommended-count {
+    color: #f40;
+}
+.form_nav2_con{padding: 10px 0px 10px 25px;}
+.form_nav2_con .all, .form_nav2_con .done {
+    max-height: 305px;
+}
+.form_nav2_con ul li {
+    display: block;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+.form_nav2_con .img {
+    width: 40px;
+    height: 40px;
+    background: #f40;
+    float: left;
+}
+.form_nav2_con .img img {
+    width: 40px;
+    height: 40px;
+    border: 0;
+}
+.form_nav2_con .intro {
+    margin-left: 20px;
+}
+.form_nav2_con .intro {
+    width: 490px;
+    float: left;
+}
+.form_nav2_con .i1 {
+    width: 490px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.form_nav2_con .i2 {
+    color: #ff671d;
+}
+.form_nav2_con .fnbtn {
+    margin-left: 20px;
+}
+.form_nav2_con .fnbtn a {
+    color: #2c8ee1;
+    margin-right: 20px;
+}
+
+.custom-set .preview-box {
+    width: 698px;
+    height: 86px;
+    margin-left: 110px;
+    margin-bottom: 10px;
+    border: 1px solid #999;
+    color: #999;
+    font-size: 28px;
+    line-height: 86px;
+    text-align: center;
+    overflow: hidden;
+}
+.shop-file-input {
+    display: block;
+    height: 40px;
+    width:175px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+}

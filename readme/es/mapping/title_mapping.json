@@ -1,0 +1,122 @@
+{
+	"mappings":{
+		"_default_":{
+			"_all":{
+				"enabled": false
+			},
+			"date_detection": false,
+			"dynamic": "false",
+			"properties":{
+				"title":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"title_standard":{
+					"type": "Completion",
+					"analyzer": "standard",
+					"search_analyzer":"standard",
+					"payloads":"true"
+				},
+				"title_simple":{
+					"type": "Completion",
+					"analyzer": "simple",
+					"search_analyzer":"simple",
+					"payloads":"true"
+				},
+				"city":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"parent_cid":{
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"goodsNo":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"numIid":{
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"parentMarketId":{
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"parentMarketName":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"prov":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"storeId":{
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"created":{
+					"type": "date",
+					"format": "yyyy-MM-dd HH:mm:ss",
+					"ignore_malformed":true,
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"goodsId":{
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"marketId":{
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"market":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"is_off":{
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"storeNum":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"cid":{
+					"type": "long",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"last_update_xs":{
+					"type": "string",
+					"index": "no",
+					"store":"no"
+				},
+				"cname":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				},
+				"parent_cname":{
+					"type": "string",
+					"index": "not_analyzed",
+					"store":"no"
+				}
+			}
+		}
+	}
+}

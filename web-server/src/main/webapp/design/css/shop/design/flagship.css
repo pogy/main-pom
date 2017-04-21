@@ -1,0 +1,95 @@
+.fs-shop-name .shop-name{
+    max-width:120px;
+}
+
+
+.fg-shop-logo{
+    width: 37px;
+    height: 37px;
+    background: url(/design/theme/xzw/images/shop-icon1.png) 0px  -98px no-repeat;
+}
+
+.fg-shop-info .fs-shop-name{
+    margin-left: 10px;
+}
+.fg-shop-info .fs-shop-name div,.fg-shop-info .shop-grade div{
+    float:none;
+}
+
+.fg-shop-info .shop-flag{
+    min-width: 60px;
+    background: #ec3a3a;
+    color: #fff;
+    font-size: 12px;
+    text-align: center;
+    padding: 2px 5px;
+    vertical-align: middle;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 190px;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+
+}
+.fg-shop-info .shop-grade .shopIcon {
+    margin-left: 10px;
+    margin-top: 2px;
+}
+.fg-shop-search .shop-search2 a:first-child {
+    background: #c40000;
+}
+.fg-shop-search  .fg-shop-search2 a{ background-color: #333}
+.fg-shop-search   .shop-search1 input {
+    border: 2px solid #c40000;
+}
+
+.shop-information .fs-shop-msg-con-bottom {
+    border-top: 1px solid #EEE;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+.shop-information  .fs-shop-msg-con-bottom .btn1,.shop-information  .fs-shop-msg-con-bottom .btn3{
+    margin-right:20px;
+    float: left;
+    width: 60px;
+    color: #000;
+    background: #f8f8f8;
+    height: 30px;
+    border-radius: 3px;
+    border:1px solid #ccc;
+
+}
+.shop-information  .fs-shop-msg-con-bottom .btn3{ width: 100px;}
+.shop-information  .fs-shop-msg-con-bottom .btn1 a ,.shop-information  .fs-shop-msg-con-bottom .btn3 a{
+    display: block;
+    line-height: 30px;
+    text-align: center;
+    color:#000;
+}
+.shop-information  .fs-shop-msg-con-bottom .btn3 i {
+    display: inline-block;
+    width: 21px;
+    height: 21px;
+    background: url(/design/img/shop/icon.png) -440px -47px no-repeat;
+    vertical-align: middle;
+}
+div.shopIcon i{
+    float: left;
+    display: inline-block;
+    width: 18px;
+    height: 20px;
+    margin-right: 5px;
+    background: url(/design/theme/xzw/images/shop-icon1.png) no-repeat 0 -2px;
+}
+div.shopIcon i.icon-h{
+    background-position-x: -23px;
+}
+
+div.shopIcon i.icon-d{
+    background-position-x: -70px;
+}
+
+div.shopIcon i.icon-hz{
+    background-position-x: -46px;
+}

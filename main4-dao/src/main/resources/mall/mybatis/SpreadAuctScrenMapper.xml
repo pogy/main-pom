@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.SpreadAuctScrenMapper" >
+
+	<!-- 正在进行的广告活动 -->
+	<select id="selectSpreadScrenNow" resultType="com.opentae.data.mall.beans.SpreadAuctScren">
+		select * from spread_auct_scren s where s.spread_pm_id  = #{spreadTypeId} and s.start_time &lt; now() and s.end_time &gt; now() limit 1
+	</select>
+
+	<!-- 上一期活动 -->
+	<select id="selectSpreadScrenPre" resultType="com.opentae.data.mall.beans.SpreadAuctScren">
+		select * from spread_auct_scren s where s.spread_pm_id = #{spreadTypeId} and s.end_time &lt;  now() ORDER BY s.end_time DESC limit 1
+	</select>
+
+	<!-- 下一期活动 -->
+	<select id="selectSpreadScrenNext" resultType="com.opentae.data.mall.beans.SpreadAuctScren">
+		select * from spread_auct_scren s where s.spread_pm_id = #{spreadTypeId} and s.start_time &gt; now() ORDER BY s.start_time ASC LIMIT 1
+	</select>
+
+</mapper>

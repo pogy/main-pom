@@ -1,0 +1,1 @@
+window.onbeforeunload = function () {$.getJSON("/monitor/out_page.json",{"idKey":"${idKey}"},function(){})};

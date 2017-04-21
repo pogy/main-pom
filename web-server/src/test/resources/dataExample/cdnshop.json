@@ -1,0 +1,212 @@
+{
+  "vo": {
+    "recommens": [
+      {
+        "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+        "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+        "itemId": 9972146,
+        "price": "48.00",
+        "webSite": "hz"
+      },
+      {
+        "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+        "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+        "itemId": 9972146,
+        "price": "48.00",
+        "webSite": "hz"
+      },
+      {
+        "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+        "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+        "itemId": 9972146,
+        "price": "48.00",
+        "webSite": "hz"
+      },
+      {
+        "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+        "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+        "itemId": 9972146,
+        "price": "48.00",
+        "webSite": "hz"
+      },
+      {
+        "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+        "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+        "itemId": 9972146,
+        "price": "48.00",
+        "webSite": "hz"
+      }
+    ],
+    "catPolymerizations": [
+      {
+        "name": "男装",
+        "cid": 30,
+        "number": 500,
+        "subPolymerizations": [
+          {
+            "name": "牛仔",
+            "cid": 3021,
+            "number": 100
+          },
+          {
+            "name": "T恤",
+            "cid": 3021,
+            "number": 100
+          },
+          {
+            "name": "长裤",
+            "cid": 3021,
+            "number": 300
+          }
+        ]
+      },
+      {
+        "name": "女装",
+        "cid": 801,
+        "number": 500,
+        "subPolymerizations": [
+          {
+            "name": "牛仔",
+            "cid": 30212,
+            "number": 100
+          },
+          {
+            "name": "T恤",
+            "cid": 30213,
+            "number": 100
+          },
+          {
+            "name": "长裤",
+            "cid": 30215,
+            "number": 300
+          }
+        ]
+      }
+    ],
+    "shopCats": [
+      {
+        "cid": "23031323",
+        "name": "2017新上款",
+        "sort": 10,
+        "subCats": [
+          {
+            "cid": "23031324",
+            "name": "上装"
+          },
+          {
+            "cid": "23031325",
+            "name": "下装"
+          }
+        ]
+      },
+      {
+        "cid": "2303143",
+        "name": "2018新上款",
+        "sort": 12
+      }
+    ],
+    "storeRelation": {
+      "marketName": "四季星座",
+      "floor": "1F",
+      "storeId": 1234,
+      "storeNum": "8303",
+      "telephone": "18888971970",
+      "imQq": "81682024",
+      "imWw": "张三",
+      "imWx": "Mr.Zhao"
+    },
+    "itemList": {
+      "number": 1,
+      "totalCount": 100,
+      "content": [
+        {
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+          "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+          "itemId": 9972146,
+          "price": "48.00",
+          "webSite": "hz"
+        },
+        {
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+          "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+          "itemId": 9972146,
+          "price": "48.00",
+          "webSite": "hz"
+        },
+        {
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+          "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+          "itemId": 9972146,
+          "price": "48.00",
+          "webSite": "hz"
+        },
+        {
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+          "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+          "itemId": 9972146,
+          "price": "48.00",
+          "webSite": "hz"
+        },
+        {
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+          "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+          "itemId": 9972146,
+          "price": "48.00",
+          "webSite": "hz"
+        },
+        {
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+          "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+          "itemId": 9972146,
+          "price": "48.00",
+          "webSite": "hz"
+        },
+        {
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+          "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+          "itemId": 9972146,
+          "price": "48.00",
+          "webSite": "hz"
+        },
+        {
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+          "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+          "itemId": 9972146,
+          "price": "48.00",
+          "webSite": "hz"
+        },
+        {
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+          "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+          "itemId": 9972146,
+          "price": "48.00",
+          "webSite": "hz"
+        },
+        {
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i4/TB1EjWvPFXXXXcHXFXXXXXXXXXX_!!0-item_pic.jpg",
+          "title": "B239-T611-P48 个性连袖 宽松 T恤男",
+          "itemId": 9972146,
+          "price": "48.00",
+          "webSite": "hz"
+        }
+      ]
+    },
+    "other": {
+      "mainBus": "男装",
+      "openTime": "2017-05-12"
+    },
+    "shopFitment": {
+      "shopLogo": "http://sgimage.571xz.com/new_image_site/SGimg/ef4e0021192545d9d43647220b488956.jpg",
+      "banners": [
+        "http://sgimage.571xz.com/new_image_site/SGimg/a5f2e532be7e8c649769f026dc1c7da3.jpg",
+        "http://sgimage.571xz.com/new_image_site/SGimg/a5f2e532be7e8c649769f026dc1c7da3..jpg",
+        "http://sgimage.571xz.com/new_image_site/SGimg/a5f2e532be7e8c649769f026dc1c7da3..jpg"
+      ],
+      "description": "<html>1111</html>"
+    },
+    "shopLicenses":[
+      2,3
+    ],
+    "hasAuth":1
+  }
+}

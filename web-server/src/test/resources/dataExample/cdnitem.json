@@ -1,0 +1,120 @@
+{
+  "vo": {
+    "storeRelation": {
+      "marketName": "四季星座",
+      "floor": "1F",
+      "storeId": 1234,
+      "storeNum": "8303",
+      "telephone": "18888971970",
+      "imQq": "81682024",
+      "imWw": "张三",
+      "imWx": "Mr.Zhao"
+    },
+    "cdnItem": {
+      "title": "【10双批】日韩系堆堆袜E6-1-101 P14",
+      "imgUrl": [
+        "https://img.alicdn.com/bao/uploaded/i4/832596596/TB2TxdJnFXXXXbtXXXXXXXXXXXX_!!832596596.jpg",
+        "https://img.alicdn.com/bao/uploaded/i4/832596596/TB2B.donFXXXXXyXXXXXXXXXXXX_!!832596596.jpg",
+        "https://img.alicdn.com/bao/uploaded/i2/832596596/TB2344xnFXXXXaVXpXXXXXXXXXX_!!832596596.jpg",
+        "https://img.alicdn.com/bao/uploaded/i1/832596596/TB2s34BnFXXXXXLXpXXXXXXXXXX_!!832596596.jpg",
+        "https://img.alicdn.com/bao/uploaded/i4/832596596/TB2FmpKnFXXXXblXXXXXXXXXXXX_!!832596596.jpg",
+        "https://img.alicdn.com/bao/uploaded/i2/TB1TvV5MFXXXXXGXXXXXXXXXXXX_!!0-item_pic.jpg"
+      ],
+      "sizes": [
+        {
+          "pid": 111,
+          "vid": 222,
+          "pname": "尺码",
+          "value": "L"
+        },
+        {
+          "pid": 111,
+          "vid": 223,
+          "pname": "尺码",
+          "value": "XL"
+        },
+        {
+          "pid": 111,
+          "vid": 224,
+          "pname": "尺码",
+          "value": "XXL"
+        },
+        {
+          "pid": 111,
+          "vid": 225,
+          "pname": "尺码",
+          "value": "XXXL"
+        }
+      ],
+      "color": [
+        {
+          "pid": 112,
+          "vid": 123,
+          "pname": "颜色",
+          "value": "蓝",
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i2/832596596/TB2QzRJnFXXXXccXXXXXXXXXXXX_!!832596596.jpg"
+        },
+        {
+          "pid": 112,
+          "vid": 124,
+          "pname": "颜色",
+          "value": "黑",
+          "imgUrl": "https://img.alicdn.com/bao/uploaded/i2/832596596/TB2QzRJnFXXXXccXXXXXXXXXXXX_!!832596596.jpg"
+        }
+      ],
+      "normalProps": [
+        {
+          "pname": "细分风格",
+          "value": "潮"
+        },
+        {
+          "pname": "花型图案",
+          "value": "条纹"
+        },
+        {
+          "pname": "适用季节",
+          "value": "夏季"
+        }
+      ],
+      "shopId": 1234,
+      "tbNumIid": 123456789,
+      "itemFrom": {
+        "title": "来自淘宝",
+        "value": "taobao"
+      },
+      "description": "<p>这是商品详情</p>",
+      "listTime": "2017-02-22",
+      "sendFrom": "浙江 杭州",
+      "huohao": "PB032",
+      "marketId": 601,
+      "price":"20.10",
+      "piPrice":"19.00",
+      "num":1000
+    },
+    "onsale": "true",
+    "shopCats": [
+      {
+        "cid": "23031323",
+        "name": "2017新上款",
+        "sort": 10,
+        "subCats": [
+          {
+            "cid": "23031324",
+            "name": "上装"
+          },
+          {
+            "cid": "23031325",
+            "name": "下装"
+          }
+        ]
+      },
+      {
+        "cid": "2303143",
+        "name": "2018新上款",
+        "sort": 12
+      }
+    ],
+    "clicks":123456,
+    "starNum":888
+  }
+}

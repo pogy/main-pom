@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.MemberUserSubCopy2Mapper" >
+
+	<!-- 清理无主账号的子账号 -->
+	<delete id="delMemberSubNoMaster">
+		  DELETE
+			FROM
+				member_user_sub_copy2
+			WHERE
+				sub_user_id IN (
+					SELECT
+						a.id
+					FROM
+						(
+							SELECT
+								sc2.sub_user_id AS id
+							FROM
+								member_user_sub_copy2 sc2
+							LEFT JOIN member_user_copy2 uc ON sc2.user_id = uc.user_id
+							WHERE
+								uc.user_id IS NULL
+						) a
+				);
+	</delete>
+
+	<!-- 查找子账号对应的重复账户 -->
+	<select id="selMembeSubRepeat" resultType="com.opentae.data.mall.user.beans.MembeSubRepeatVo">
+		SELECT
+			ms.user_id as a_id,
+			u.user_id as b_id
+		FROM
+			member_user_sub_copy2 ms
+		INNER JOIN member_user_copy2 u ON ms.sub_user_name = u.user_name
+		WHERE
+			ms.account_type = 7
+		AND ms.user_id != u.user_id
+	</select>
+
+
+	<!-- 删除子账号数据 -->
+	<delete id="delMemberSubByUserIds">
+		DELETE
+			FROM
+				member_user_sub_copy2
+			WHERE
+				user_id IN
+		<foreach collection="userIdList" index="index" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+
+</mapper>

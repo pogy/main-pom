@@ -1,0 +1,71 @@
+{
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"date_detection": false,
+			"properties": {
+					"dealer_order_id": {
+						"type": "long",
+						"store":"no"
+					},
+					"jdp_response": {
+						"type": "string",
+						"index": "no",
+						"store":"no"
+					},
+					"supplier_nick": {
+						"type": "string",
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"modified_time": {
+						"type":"date",
+						"format": "yyyy-MM-dd HH:mm:ss",
+						"ignore_malformed":true,
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"applied_time": {
+						"type":"date",
+						"format": "yyyy-MM-dd HH:mm:ss",
+						"ignore_malformed":true,
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"jdp_modified": {
+						"type":"date",
+						"format": "yyyy-MM-dd HH:mm:ss",
+						"ignore_malformed":true,
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"jdp_created": {
+						"type":"date",
+						"format": "yyyy-MM-dd HH:mm:ss",
+						"ignore_malformed":true,
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"order_status": {
+						"type": "string",
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"jdp_hashcode": {
+						"type": "string",
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"applier_nick": {
+						"type": "string",
+						"index": "not_analyzed",
+						"store":"no"
+					}
+
+
+			}
+		}
+	}
+}

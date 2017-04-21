@@ -1,0 +1,74 @@
+{
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"date_detection": false,
+			"properties": {
+					"tid": {
+						"type": "long",
+						"store":"no"
+					},
+					"jdp_response": {
+						"type": "string",
+						"index": "no",
+						"store":"no"
+					},
+					"buyer_nick": {
+						"type": "string",
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"status": {
+						"type": "string",
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"created": {
+						"type":"date",
+						"format": "yyyy-MM-dd HH:mm:ss",
+						"ignore_malformed":true,
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"jdp_modified": {
+						"type":"date",
+						"format": "yyyy-MM-dd HH:mm:ss",
+						"ignore_malformed":true,
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"type": {
+						"type": "string",
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"jdp_created": {
+						"type":"date",
+						"format": "yyyy-MM-dd HH:mm:ss",
+						"ignore_malformed":true,
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"seller_nick": {
+						"type": "string",
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"jdp_hashcode": {
+						"type": "string",
+						"index": "not_analyzed",
+						"store":"no"
+					},
+					"modified": {
+						"type":"date",
+						"format": "yyyy-MM-dd HH:mm:ss",
+						"ignore_malformed":true,
+						"index": "not_analyzed",
+						"store":"no"
+					}
+			}
+		}
+	}
+}

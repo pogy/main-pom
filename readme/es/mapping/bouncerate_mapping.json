@@ -1,0 +1,33 @@
+{
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"date_detection": false,
+			"properties": {
+				"goodsId": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store": "no"
+				},
+				"bounceRateNum ": {
+					"type": "long",
+					"index": "no",
+					"store": "no"
+				},
+				"time": {
+					"type": "long",
+					"index": "not_analyzed",
+					"store": "no"
+				},
+				"haveDone": {
+					"type": "Integer",
+					"index": "not_analyzed",
+					"store": "no",
+					"null_value":0
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,21 @@
+package com.shigu.main4.vo.fitment;
+
+/**
+ * 自定义模块
+ * Created by Administrator on 2017/4/18 0018.
+ */
+public class CustomModule extends TitleShowModule {
+    public CustomModule() {
+        this.setTitle("自定义内容区");
+    }
+
+    private String content = "<p style=\"text-align: center; padding: 20px 0 30px;\">自定义内容，可以用来展示店铺特色的宝贝、活动。</p>";
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+}

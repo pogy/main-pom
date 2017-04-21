@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguStoreIdGeneratorMapper">
+
+    <select id="selStoreAuth" resultType="com.opentae.data.mall.beans.StoreAuthDetail">
+        SELECT a.store_id as storeId,UNIX_TIMESTAMP(b.fresh_time)+b.expires_in as endTime from shigu_store_${webSite} a,taobao_session_map b
+        where a.nick=b.nick and a.use_status=1 and a.store_status=0
+    </select>
+    <select id="selMarketId" resultType="java.lang.Long">
+        SELECT UNIX_TIMESTAMP(a.fresh_time)+expires_in as endTime,b.store_id as storeId
+        from taobao_session_map a,
+        (SELECT DISTINCT c.nick,c.store_id from shigu_store_${webSite} c,shigu_market d
+        where c.parent_market_id=d.market_id and c.store_id=${storeId}
+        and c.use_status=1
+        and c.store_status=0) b
+        where a.nick=b.nick
+    </select>
+    <select id="selSessionById" resultType="java.lang.String">
+        select b.session from shigu_store_${webSite} a,taobao_session_map b
+        where a.nick=b.nick and a.store_id=${storeId} and b.appkey=#{appKey} limit 0,1
+    </select>
+    <select id="selSessionIdByStoreId" resultType="java.lang.Long">
+        select b.tsm_id from shigu_store_${webSite} a,taobao_session_map b
+        where a.nick=b.nick and a.store_id=${storeId} and b.appkey=#{appKey} limit 0,1
+    </select>
+    <update id="guoqiStore">
+        update shigu_store_${webSite} set taobao_nice=2 where store_id=${storeId}
+    </update>
+
+    <update id="guoqiSessionMap">
+        update taobao_session_map set expires_in=0 where tsm_id=${tsmId};
+    </update>
+
+    <!-- 查询店铺生成信息 -->
+    <select id="selectStoreGenById" resultType="com.opentae.data.mall.beans.ShiguStoreIdGenerator">
+        SELECT g.store_id,g.user_id,g.web_site,g.remark FROM shigu_store_id_generator g WHERE g.store_id = #{storeId} limit 1
+    </select>
+</mapper>

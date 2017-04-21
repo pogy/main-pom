@@ -1,0 +1,32 @@
+{
+	"mappings": {
+		"_default_": {
+			"_all": {
+				"enabled": false
+			},
+			"date_detection": false,
+			"properties": {
+				"useTimes": {
+					"type":"long"
+				},
+				"lastTime": {
+					"type":"long"
+				},
+				"createTime": {
+					"type":"long"
+				},
+				"Score": {
+					"type":"long"
+				},
+				"title":{
+					"type":"string",
+					"index": "not_analyzed"
+				},
+				"webSite":{
+					"type":"string",
+					"index": "not_analyzed"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.GoatItemMapper" >
+
+    <!-- 查广告，带上属性值 -->
+    <select id="selItemsWithField" resultType="com.opentae.data.mall.beans.GoatItemWithField">
+        SELECT a.goat_id as goatId,a.local_id as localId,a.start_time as startTime,a.end_time as endTime,
+        a.dis_enabled as disEnabled,a.sort,b.fid,b.vid,b.value
+        from goat_item a,goat_field_value b
+        where a.goat_id=b.goat_id
+         and a.dis_enabled=0
+         and a.local_id=${locationId}
+         ORDER BY a.sort ASC
+    </select>
+
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:task="http://www.springframework.org/schema/task"
+        xmlns:mvc="http://www.springframework.org/schema/mvc"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/mvc
+     http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+    <context:component-scan base-package="com.opentae.*,com.shigu.*,com.shigu.sysman.*,com.openJar.*,com.searchtool.*">
+    </context:component-scan>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:mall_config.properties</value>
+                <value>classpath:manager_config.properties</value>
+                <value>classpath:xz_sdk.properties</value>
+                <value>classpath:oss.properties</value>
+                <value>classpath:redis.properties</value>
+                <value>classpath:rd3.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <task:executor id="shiguexecutor" pool-size="5"/>
+    <task:annotation-driven executor="shiguexecutor"/>
+
+    <!--星座的sdk-->
+    <bean id="xzSdkClient" class="com.shigu.tools.XzSdkClient">
+        <property name="appkey" value="${xz_appkey}"/>
+        <property name="secret" value="${xz_secret}"/>
+        <property name="type" value="${xz_type}"/>
+        <property name="mainHost" value="${xz_main_host}"/>
+        <property name="yjHost" value="${xz_yj_host}"/>
+        <property name="xzMainBus" value="${xz_mainbus}"/>
+
+        <property name="mailfrom" value="${xz_mailfrom}"/>
+        <property name="smtphost" value="${xz_smtphost}"/>
+        <property name="mailuser" value="${xz_mailuser}"/>
+        <property name="mailpwd" value="${xz_mailpwd}"/>
+        <property name="smtpauth" value="${xz_smtpauth}"/>
+        <property name="smtptimeout" value="${xz_smtptimeout}"/>
+
+    </bean>
+
+    <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
+        <property name="properties">
+            <map>
+                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"/>
+            </map>
+        </property>
+    </bean>
+    <import resource="spring-database/mall.xml"/>
+    <import resource="spring-database/manager.xml"/>
+    <bean id="druid-stat-interceptor"
+          class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+    </bean>
+
+    <mvc:interceptors>
+        <!-- IP密度拦截器 - 发送短信-->
+        <mvc:interceptor>
+            <mvc:mapping path="/loginPhoneVerification.*"/>
+            <mvc:mapping path="/forgetPhoneVerification.*"/>
+            <mvc:mapping path="/bindPhoneVerification.*"/>
+            <mvc:mapping path="/registPhoneVerification.*"/>
+
+            <!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
+            <bean class="com.shigu.interceptors.PhoneDensityInterceptor">
+                <property name="minMillionSecond" value="10000"/>
+                <property name="startNum" value="1"/>
+                <property name="redisIO" ref="redisIO"/>
+                <!--记录存活时间-->
+                <property name="refuseSecond" value="20"/>
+            </bean>
+        </mvc:interceptor>
+
+        <!-- 用户密度拦截器 - 创建数据包-->
+        <mvc:interceptor>
+            <mvc:mapping path="/member/mk_mydp.*"/>
+            <!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
+            <bean class="com.shigu.interceptors.UserDensityInterceptor">
+                <property name="minMillionSecond" value="10000"/>
+                <property name="startNum" value="1"/>
+                <property name="redisIO" ref="redisIO"/>
+                <!--记录存活时间-->
+                <property name="refuseSecond" value="20"/>
+            </bean>
+        </mvc:interceptor>
+        <!-- 用户密度拦截器 - 下载图片包-->
+        <mvc:interceptor>
+            <mvc:mapping path="/downloadImg.*"/>
+            <!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
+            <bean class="com.shigu.interceptors.UserDensityInterceptor">
+                <property name="minMillionSecond" value="5000"/>
+                <property name="startNum" value="1"/>
+                <property name="redisIO" ref="redisIO"/>
+                <!--记录存活时间-->
+                <property name="refuseSecond" value="10"/>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- shiro 配置文件 -->
+    <import resource="classpath*:main4/spring/*.xml"/>
+    <import resource="dubbo_application.xml"/>
+    <!--<import resource="dubbo_application_test.xml"/>-->
+    <bean id="exceptionResolver" class="com.shigu.resolver.ExceptionResolver">
+    </bean>
+</beans>

@@ -1,0 +1,39 @@
+package com.shigu.main4.storeservices.vo;
+
+import com.shigu.main4.vo.ShopShow;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Comparator;
+
+
+/**
+ * 市场列表店铺档口排序
+ *
+ * @author shigu_zjb
+ * @date 2017/02/2/28 13:47
+ *
+ * <p>排序规则</p>
+ * 1.按shopNum进行字母顺序升序排列
+ * 2.如果碰到-，则只识别-前面部分，如果-前面部分一样，则-后面部分进行字母升序
+ *
+ * method<compare>return:1升序 -1降序 0保持不变
+ *
+ */
+public class MarketShopListComparator implements Comparator<ShopShow>{
+
+    @Override
+    public int compare(ShopShow o1, ShopShow o2) {
+        if(o1 == null || o2 == null){
+            return 0;
+        }
+        String shopNumo1 = o1.getSortOrderKey().trim();
+        String shopNumo2 = o2.getSortOrderKey().trim();
+        if(StringUtils.equals(shopNumo1, shopNumo2)){
+            return 0;
+        }
+        int sortInt = shopNumo1.compareTo(shopNumo2);
+        if(sortInt == 2){return 1;}
+        if(sortInt == -2){return -1;}
+        return sortInt;
+    }
+}

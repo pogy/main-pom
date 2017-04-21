@@ -1,0 +1,104 @@
+
+修改字段
+
+goods/_mapping/_default_?update_all_types
+{
+  "properties": {
+    "title": {
+      "store": true,
+      "analyzer": "ik_max_word",
+      "type": "string",
+      "norms": {
+        "enabled": false
+      }
+    }
+  }
+}
+////////////////////////
+查看 分析
+http://122.224.105.246:9214/
+goods/hz/_search?explain POST
+{
+
+}
+
+//////////////////////
+score_functions
+
+
+{
+	"mappings": {
+		"search": {
+			"properties": {
+				"modifier": {
+					"type": "string"
+				},
+				"field": {
+					"type": "string"
+				},
+				"factor": {
+					"type": "double"
+				},
+				"miss": {
+					"type": "double",
+					"index": "not_analyzed"
+				}
+			}
+		},
+		"kw_search": {
+			"properties": {
+				"modifier": {
+					"type": "string"
+				},
+				"field": {
+					"type": "string"
+				},
+				"factor": {
+					"type": "double"
+				},
+				"miss": {
+					"type": "double",
+					"index": "not_analyzed"
+				}
+			}
+		},
+		"should_search": {
+			"properties": {
+				"modifier": {
+					"type": "string"
+				},
+				"field": {
+					"type": "string"
+				},
+				"factor": {
+					"type": "double"
+				},
+				"miss": {
+					"type": "double",
+					"index": "not_analyzed"
+				}
+			}
+		}
+	}
+}
+
+////////////
+
+bouncerate/bouncerate/_search
+
+查看 跳出 统计的一个例子
+
+{
+  "from": 0,
+  "size": 40,
+  "query": {
+    "term": {
+      "time": "2016041915"
+    }
+  },
+  "sort": {
+    "bounceRateNum": {
+      "order": "desc"
+    }
+  }
+}

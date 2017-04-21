@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+.page-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+.page-link-ul {
+    display: inline-block;
+}
+.page-link-ul li {
+    display: inline-block;
+    border: 1px solid #eee;
+    margin: 1px;
+    margin-bottom: 10px;
+}
+.page-link-ul li a {
+    display: block;
+    padding: 8px 15px;
+    margin: 0;
+}
+.page-link-ul li a:hover {
+    text-decoration: underline;
+}
+.page-link-ul .disabled,
+.page-link-ul .current {
+    background-color: #fafafa;
+}
+.page-link span {
+    margin-left: 10px;
+}
