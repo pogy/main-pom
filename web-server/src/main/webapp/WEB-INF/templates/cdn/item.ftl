@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>${vo.cdnItem.title!}-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-å››å­£æ˜Ÿåº§ç½‘</title>
+    <title>${vo.cdnItem.title!}-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-ËÄ¼¾ÐÇ×ùÍø</title>
     
-    <meta name="keywords" content="æ¬¢è¿Žå‰æ¥å››å­£æ˜Ÿåº§ç½‘å®žåŠ›æ¡£å£ï¼Œé€‰æ‹© ${vo.cdnItem.title!}">
+    <meta name="keywords" content="»¶Ó­Ç°À´ËÄ¼¾ÐÇ×ùÍøÊµÁ¦µµ¿Ú£¬Ñ¡Ôñ ${vo.cdnItem.title!}">
     
-    <meta name="description" content="å››å­£æ˜Ÿåº§ï¼Œå››å­£æ˜Ÿåº§ç½‘ï¼Œä»£æ‹¿å•†å“ï¼Œç½‘åº—è´§æºï¼Œä¸€é”®ä»£å‘ï¼Œä¸€é”®ä¸Šä¼ ï¼Œ${vo.cdnItem.title!}">
+    <meta name="description" content="ËÄ¼¾ÐÇ×ù£¬ËÄ¼¾ÐÇ×ùÍø£¬´úÄÃÉÌÆ·£¬Íøµê»õÔ´£¬Ò»¼ü´ú·¢£¬Ò»¼üÉÏ´«£¬${vo.cdnItem.title!}">
     
     
     
@@ -27,100 +27,100 @@
         <div class="navLeft">
             <span style="float:left">Hi,</span>
             <div class="menuHome" style="display: inline-block;">
-            æ¬¢è¿Žæ¥åˆ°å››å­£æ˜Ÿåº§ç½‘!
+            »¶Ó­À´µ½ËÄ¼¾ÐÇ×ùÍø!
                 <span class="c_margin_l20">
-                    <em>è¯·</em>
-                    <a onclick="login_backs()" target="_blank"><span class="login">ç™»å½•</span></a>
+                    <em>Çë</em>
+                    <a onclick="login_backs()" target="_blank"><span class="login">µÇÂ¼</span></a>
                 </span>
-                <a href="${main_host!}regedit.htm" target="_blank" class="c_margin_l10">å…è´¹æ³¨å†Œ</a>
-                <a class="login c_margin_l20" href="${main_host!}ortherLogin.htm?ortherLoginType=1">æ·˜å®ç™»å½•</a>
+                <a href="${main_host!}regedit.htm" target="_blank" class="c_margin_l10">Ãâ·Ñ×¢²á</a>
+                <a class="login c_margin_l20" href="${main_host!}ortherLogin.htm?ortherLoginType=1">ÌÔ±¦µÇÂ¼</a>
             </div>
         </div>
         <div class="navRight">
             <ul class="clearfix">
                 <li class="navMap">
                     <div class="navIn">
-                        <a href="${main_host!}member/index.htm">æˆ‘æ˜¯ä»£ç†<span class="ico1 c_ico_jiantou"></span></a>
+                        <a href="${main_host!}member/index.htm">ÎÒÊÇ´úÀí<span class="ico1 c_ico_jiantou"></span></a>
                     </div>
                     <div id="xzInfo" class="showBox">
                         <dl>
-                        <dt style="display:none;">æˆ‘æ˜¯ä»£ç†</dt>
+                        <dt style="display:none;">ÎÒÊÇ´úÀí</dt>
                             <dd>
-                                <a rel="nofollow" href="${main_host!}member/shiguOnekeyRecordinit.htm" target="_blank">å·²ä¸Šä¼ çš„å•†å“</a>
+                                <a rel="nofollow" href="${main_host!}member/shiguOnekeyRecordinit.htm" target="_blank">ÒÑÉÏ´«µÄÉÌÆ·</a>
                             </dd>
                             <dd>
-                                <a rel="nofollow" href="${main_host!}carts.htm" target="_blank">æˆ‘çš„è´­ç‰©è½¦</a>
+                                <a rel="nofollow" href="${main_host!}carts.htm" target="_blank">ÎÒµÄ¹ºÎï³µ</a>
                             </dd>
                         </dl>
                     </div>
                 </li>
                 <li class="navMap">
                     <div class="navIn">
-                        <a href="javascript:;"><span class="iconfont ico2">&#xe615;</span>æ”¶è—å¤¹<span class="ico1 c_ico_jiantou"></span></a>
+                        <a href="javascript:;"><span class="iconfont ico2">&#xe615;</span>ÊÕ²Ø¼Ð<span class="ico1 c_ico_jiantou"></span></a>
                     </div>
                     <div class="showBox" id="shoucang" >
-                        <a rel="nofollow" class="favorite-offer" title="æˆ‘çš„æ”¶è—" href="${main_host!}member/storeCollectinit.htm?index=0" target="_blank">æˆ‘çš„æ”¶è—</a>
-                        <a rel="nofollow" class="favorite-seller" title="æˆ‘çš„æ•°æ®åŒ…" href="${main_host!}member/goodsCollectinit.htm?webSite=hz" target="_blank">æˆ‘çš„æ•°æ®åŒ…</a>
+                        <a rel="nofollow" class="favorite-offer" title="ÎÒµÄÊÕ²Ø" href="${main_host!}member/storeCollectinit.htm?index=0" target="_blank">ÎÒµÄÊÕ²Ø</a>
+                        <a rel="nofollow" class="favorite-seller" title="ÎÒµÄÊý¾Ý°ü" href="${main_host!}member/goodsCollectinit.htm?webSite=hz" target="_blank">ÎÒµÄÊý¾Ý°ü</a>
                     </div>
                 </li>
                 <li class="navMap">
                     <div class="navIn">
-                        <a href="${main_host!}seller/index.htm" target="_blank">æ¡£å£ä¸­å¿ƒ<span class="ico1 c_ico_jiantou"></span></a>
+                        <a href="${main_host!}seller/index.htm" target="_blank">µµ¿ÚÖÐÐÄ<span class="ico1 c_ico_jiantou"></span></a>
                     </div>
                     <div class="showBox" id="ghsht">
-                        <a rel="nofollow" title="å‘å¸ƒå®è´" href="${main_host!}seller/releaseGoodsinit.htm" target="_blank">å‘å¸ƒå®è´</a>
-                        <a rel="nofollow" title="å·²å‘å¸ƒçš„å®è´" href="${main_host!}seller/storeGoodsListinit.htm" target="_blank">å·²å‘å¸ƒçš„å®è´</a>
+                        <a rel="nofollow" title="·¢²¼±¦±´" href="${main_host!}seller/releaseGoodsinit.htm" target="_blank">·¢²¼±¦±´</a>
+                        <a rel="nofollow" title="ÒÑ·¢²¼µÄ±¦±´" href="${main_host!}seller/storeGoodsListinit.htm" target="_blank">ÒÑ·¢²¼µÄ±¦±´</a>
                     </div>
                 </li>
                 <li class="navMap">
                     <div class="customSe navIn">
-                        <a href="<%=qq_qiye%>" target="_blank">å®¢æœä¸­å¿ƒ<span class="ico1 c_ico_jiantou"></span></a>
+                        <a href="<%=qq_qiye%>" target="_blank">¿Í·þÖÐÐÄ<span class="ico1 c_ico_jiantou"></span></a>
                     </div>
                     <div class="showBox" id="kfzx">
                           <dl>
-                          <dt style="display:none;"><a href="<%=qq_qiye%>" target="_blank">å®¢æœä¸­å¿ƒ</a></dt>
+                          <dt style="display:none;"><a href="<%=qq_qiye%>" target="_blank">¿Í·þÖÐÐÄ</a></dt>
                             <dd>
-                                <a rel="nofollow" title="è”ç³»å®¢æœ" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}"  target="_blank">åœ¨çº¿å®¢æœ</a>
+                                <a rel="nofollow" title="ÁªÏµ¿Í·þ" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}"  target="_blank">ÔÚÏß¿Í·þ</a>
                             </dd>
                             <dd>
-                                <a rel="nofollow" title="è”ç³»æˆ‘ä»¬" href="http://zixun.571xz.com/article?id=87"  target="_blank">è”ç³»æˆ‘ä»¬</a>
+                                <a rel="nofollow" title="ÁªÏµÎÒÃÇ" href="http://zixun.571xz.com/article?id=87"  target="_blank">ÁªÏµÎÒÃÇ</a>
                             </dd>
                              <dd>
-                                <a rel="nofollow" title="æ–°æ‰‹å…¥é—¨" href="http://zixun.571xz.com/article?id=14" old_href="${main_host!}member/releaseGoodsinit.htm" target="_blank">æ–°æ‰‹å…¥é—¨</a>
+                                <a rel="nofollow" title="ÐÂÊÖÈëÃÅ" href="http://zixun.571xz.com/article?id=14" old_href="${main_host!}member/releaseGoodsinit.htm" target="_blank">ÐÂÊÖÈëÃÅ</a>
                             </dd>
                         </dl>
                     </div>
                 </li>
             </ul>
         </div>
-        <div class="c_back_index fr clearfix"><a href="${main_host!}"><span class="iconfont">&#xe61e;</span>å››å­£æ˜Ÿåº§ç½‘é¦–é¡µ<span class="ico1 c_ico_jiantou"></span></a></div>
+        <div class="c_back_index fr clearfix"><a href="${main_host!}"><span class="iconfont">&#xe61e;</span>ËÄ¼¾ÐÇ×ùÍøÊ×Ò³<span class="ico1 c_ico_jiantou"></span></a></div>
     </div>
 </div>
 <div class="rect-wrap clearfix">
     <div class="shopName">
-    <a class="logo iconfont c_logo2016" href="http://${vo.storeRelation.webSite!}.571xz.com/index.html"><img src="http://style.571xz.com/global_temp/css/images/LOGO_2.png" title="å››å­£æ˜Ÿåº§ç½‘-é¦–é¡µ" width="200" height="46"></a>
+    <a class="logo iconfont c_logo2016" href="http://${vo.storeRelation.webSite!}.571xz.com/index.html"><img src="http://style.571xz.com/global_temp/css/images/LOGO_2.png" title="ËÄ¼¾ÐÇ×ùÍø-Ê×Ò³" width="200" height="46"></a>
 <div class="changeCity">
     <strong>
-        <#if vo.storeRelation.webSite == "cs">å¸¸ç†Ÿ<#elseif vo.storeRelation.webSite == "hz">æ­å·ž<#elseif vo.storeRelation.webSite == "bj">åŒ—äº¬<#elseif vo.storeRelation.webSite == "ss">çŸ³ç‹®<#elseif vo.storeRelation.webSite == "wa">è¾½æº<#elseif vo.storeRelation.webSite == "gz">å¹¿å·ž</#if>
+        <#if vo.storeRelation.webSite == "cs">³£Êì<#elseif vo.storeRelation.webSite == "hz">º¼ÖÝ<#elseif vo.storeRelation.webSite == "bj">±±¾©<#elseif vo.storeRelation.webSite == "ss">Ê¯Ê¨<#elseif vo.storeRelation.webSite == "wa">ÁÉÔ´<#elseif vo.storeRelation.webSite == "gz">¹ãÖÝ</#if>
     </strong>
     <div class="topSelect">
-     <a class="selectTit" href="javascript:;">åˆ‡æ¢åŸŽå¸‚</a>
+     <a class="selectTit" href="javascript:;">ÇÐ»»³ÇÊÐ</a>
      <span class="c_ico_jiantou"></span>
      <ul>
-      <li<#if vo.storeRelation.webSite == "hz"> class="select"</#if>><a href="http://hz.571xz.com">æ­å·ž<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
-      <li<#if vo.storeRelation.webSite == "cs"> class="select"</#if>><a href="http://cs.571xz.com" target="_blank">å¸¸ç†Ÿ<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
-      <li<#if vo.storeRelation.webSite == "ss"> class="select"</#if>><a href="http://ss.571xz.com" target="_blank">çŸ³ç‹®<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
-      <li<#if vo.storeRelation.webSite == "bj"> class="select"</#if>><a href="http://bj.571xz.com" target="_blank">åŒ—äº¬<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
-      <li<#if vo.storeRelation.webSite == "gz"> class="select"</#if>><a href="http://gz.571xz.com" target="_blank">å¹¿å·ž<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
-      <li<#if vo.storeRelation.webSite == "wa"> class="select"</#if>><a href="http://wa.571xz.com" target="_blank">è¾½æº<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "hz"> class="select"</#if>><a href="http://hz.571xz.com">º¼ÖÝ<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "cs"> class="select"</#if>><a href="http://cs.571xz.com" target="_blank">³£Êì<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "ss"> class="select"</#if>><a href="http://ss.571xz.com" target="_blank">Ê¯Ê¨<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "bj"> class="select"</#if>><a href="http://bj.571xz.com" target="_blank">±±¾©<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "gz"> class="select"</#if>><a href="http://gz.571xz.com" target="_blank">¹ãÖÝ<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
+      <li<#if vo.storeRelation.webSite == "wa"> class="select"</#if>><a href="http://wa.571xz.com" target="_blank">ÁÉÔ´<img src="http://static.571xz.com:86/images/xz.png" alt="selected" width="20" height="19"></a></li>
      </ul>
     </div>
 </div>
         <h2>
             ${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}
-            <a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${vo.storeRelation.imWw!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><img src="http://static.571xz.com:86/resources2016/images/ww2016.png" alt="è”ç³»æ—ºæ—º" width="16" height="18"></a>
+            <a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${vo.storeRelation.imWw!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><img src="http://static.571xz.com:86/resources2016/images/ww2016.png" alt="ÁªÏµÍúÍú" width="16" height="18"></a>
             <#if vo.storeRelation.imQq?? && vo.storeRelation.imQq != "">
-            <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=${vo.storeRelation.imQq!}&amp;site=qq&amp;menu=yes" target="_blank"><img src="http://static.571xz.com:86/resources2016/images/qq2016.png" alt="è”ç³»qq" width="16" height="18"></a>
+            <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=${vo.storeRelation.imQq!}&amp;site=qq&amp;menu=yes" target="_blank"><img src="http://static.571xz.com:86/resources2016/images/qq2016.png" alt="ÁªÏµqq" width="16" height="18"></a>
             </#if>
         </h2>
         <div class="Diamonds pdl0 xinyuxingxingB">
@@ -214,23 +214,23 @@
        </div>
     </div>
     <form id="searchgo3" class="c_shop_search_2016" action="http://so.571xz.com/${vo.storeRelation.webSite!}search.htm">
-    <button id="allSearchbtn">æœå…¨ç«™</button>
+    <button id="allSearchbtn">ËÑÈ«Õ¾</button>
     <div class="shopSecrh">
         <div class="search">
-            <input id="keyword" name="keyword" class="text-search" placeholder="è¯·è¾“å…¥æœç´¢å…³é”®å­—" type="text">
-            <input id="soInStore" class="btn-search" value="æœæœ¬åº—é“º" type="button">
+            <input id="keyword" name="keyword" class="text-search" placeholder="ÇëÊäÈëËÑË÷¹Ø¼ü×Ö" type="text">
+            <input id="soInStore" class="btn-search" value="ËÑ±¾µêÆÌ" type="button">
         </div>
     </div>
     </form>
 </div>
 <div class="shopNav">
     <ul>
-        <li><a href='<#if vo.domain != "">http://${vo.domain!}.571xz.com<#else>http://${vo.storeRelation.webSite!}.571xz.com/shop.htm?id=${vo.storeRelation.storeId!}</#if>'>åº—é“ºé¦–é¡µ</a></li>
-        <li><a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=2">å…¨éƒ¨å•†å“</a></li>
+        <li><a href='<#if vo.domain != "">http://${vo.domain!}.571xz.com<#else>http://${vo.storeRelation.webSite!}.571xz.com/shop.htm?id=${vo.storeRelation.storeId!}</#if>'>µêÆÌÊ×Ò³</a></li>
+        <li><a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=2">È«²¿ÉÌÆ·</a></li>
         
-        <li><a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=4">ä¸‹æž¶å•†å“</a></li>
-            <li><a href="shopcomment.htm?id=${vo.storeRelation.storeId!}">åº—é“ºè®¨è®ºåŒº</a></li>
-        <li class="all" style="float:right;"><a href="http://${vo.storeRelation.webSite!}.571xz.com/<#if vo.storeRelation.webSite == 'hz'>market.htm<#else>huoyuan</#if>">è¿”å›žå¸‚åœº</a></li>
+        <li><a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=4">ÏÂ¼ÜÉÌÆ·</a></li>
+            <li><a href="shopcomment.htm?id=${vo.storeRelation.storeId!}">µêÆÌÌÖÂÛÇø</a></li>
+        <li class="all" style="float:right;"><a href="http://${vo.storeRelation.webSite!}.571xz.com/<#if vo.storeRelation.webSite == 'hz'>market.htm<#else>huoyuan</#if>">·µ»ØÊÐ³¡</a></li>
     </ul>
 </div>
 <div class="content_top layout">
@@ -256,41 +256,41 @@
                     </ul>
                 </div>
                 <div class="shareBox">
-                    <a class="red" href="javascript:;" onclick="sc_goods(${vo.itemId!})" ><span class="iconfont">&#xe649;</span>æ”¶è—å•†å“<!--ï¼ˆ228äººæ°”ï¼‰--></a>
-                    <a class="green" href="${qq_qy!}" target="_blankt"><span class="iconfont">&#xe677;</span>ä¸¾æŠ¥</a>
+                    <a class="red" href="javascript:;" onclick="sc_goods(${vo.itemId!})" ><span class="iconfont">&#xe649;</span>ÊÕ²ØÉÌÆ·<!--£¨228ÈËÆø£©--></a>
+                    <a class="green" href="${qq_qy!}" target="_blankt"><span class="iconfont">&#xe677;</span>¾Ù±¨</a>
                 </div>
             </div>
             <div class="proconInfo">
                 <#if vo.onsale == true>
                 <div class="ewm">
                     <span><div id="j_erweimahhh" style="width:100px;height:100px;background:url(http://www.571xz.com/images/loading_s.gif) center no-repeat;margin: 0 auto;"></div></span>
-                    <p>æ‰«äºŒç»´ç ä¸Šä¼ å¾®ä¿¡<a style="font-size: 12px; color: #1179EA;" href="http://www.571xz.com/help_site/help.htm?p=xzwfx">(å¸®åŠ©)</a></p>
+                    <p>É¨¶þÎ¬ÂëÉÏ´«Î¢ÐÅ<a style="font-size: 12px; color: #1179EA;" href="http://www.571xz.com/help_site/help.htm?p=xzwfx">(°ïÖú)</a></p>
                 </div>
                 </#if>
-                <div id="proTitle"><!--è¿™é‡Œæœ‰ä¸‰ç§æƒ…å†µ æ‰€ä»¥è¦è¿™æ ·æ··,0 æ·˜å® 1 æ•°æ®åŒ… 2æœ¬ç«™è¾“å…¥ 3:å‰½çªƒ -->
+                <div id="proTitle"><!--ÕâÀïÓÐÈýÖÖÇé¿ö ËùÒÔÒªÕâÑù»ì,0 ÌÔ±¦ 1 Êý¾Ý°ü 2±¾Õ¾ÊäÈë 3:ØâÇÔ -->
                     <#if vo.cdnItem.itemFrom.value == "taobao">
-                    <a class="tb-main-title"  rel="nofollow" href="https://item.taobao.com/item.htm?id=${vo.cdnItem.tbNumIid!}" target="_blankt"><span class="iconfont" title="è·³è½¬è‡³ä¾›è´§å•†æ·˜å®é¡µé¢ï¼ŒæŸ¥çœ‹è´§æº" >&#xe679;</span></a><h2>${vo.cdnItem.title!}</h2>
+                    <a class="tb-main-title"  rel="nofollow" href="https://item.taobao.com/item.htm?id=${vo.cdnItem.tbNumIid!}" target="_blankt"><span class="iconfont" title="Ìø×ªÖÁ¹©»õÉÌÌÔ±¦Ò³Ãæ£¬²é¿´»õÔ´" >&#xe679;</span></a><h2>${vo.cdnItem.title!}</h2>
                     <#elseif vo.cdnItem.itemFrom.value == "package">
-                    <span class="iconfont" title="æ­¤å•†å“ä¸ºæ•°æ®åŒ…ä¸Šä¼ ">&#xe6a6;</span><h2>${vo.cdnItem.title!}</h2>
+                    <span class="iconfont" title="´ËÉÌÆ·ÎªÊý¾Ý°üÉÏ´«">&#xe6a6;</span><h2>${vo.cdnItem.title!}</h2>
                     <#else>
                     <h2>${vo.cdnItem.title!}</h2>
                     </#if>
                 </div>
                 <div class="proPrice">
-                    <p>é›¶å”®ä»·ï¼š<span class="style1">Â¥${vo.cdnItem.price!}</span><a href="http://zixun.571xz.com/article?id=382" target="_blank" style="color: #ff4400; margin-left: 10px;">ä»€ä¹ˆæ˜¯é›¶å”®ä»·ï¼Ÿ</a></p>
+                    <p>ÁãÊÛ¼Û£º<span class="style1">?${vo.cdnItem.price!}</span><a href="http://zixun.571xz.com/article?id=382" target="_blank" style="color: #ff4400; margin-left: 10px;">Ê²Ã´ÊÇÁãÊÛ¼Û£¿</a></p>
                     <#if vo.cdnItem.price == vo.cdnItem.piPrice>
-                    <p>æ‹¿è´§ä»·ï¼š<span class="style2" style="position: relative;">Â¥${vo.cdnItem.piPrice!}<b class='iconfont alt_no_pi_price' alt='å–å®¶å¯èƒ½æœªå¯¹è¯¥å•†å“è®¾ç½®æ‰¹å‘ä»·ï¼Œè¯·é€šçŸ¥å–å®¶æ¥æ˜Ÿåº§ç½‘è®¾ç½®æ‰¹å‘ä»·' title='å–å®¶å¯èƒ½æœªå¯¹è¯¥å•†å“è®¾ç½®æ‰¹å‘ä»·ï¼Œè¯·é€šçŸ¥å–å®¶æ¥æ˜Ÿåº§ç½‘è®¾ç½®æ‰¹å‘ä»·'>&#xe630;</b></span></p>
+                    <p>ÄÃ»õ¼Û£º<span class="style2" style="position: relative;">?${vo.cdnItem.piPrice!}<b class='iconfont alt_no_pi_price' alt='Âô¼Ò¿ÉÄÜÎ´¶Ô¸ÃÉÌÆ·ÉèÖÃÅú·¢¼Û£¬ÇëÍ¨ÖªÂô¼ÒÀ´ÐÇ×ùÍøÉèÖÃÅú·¢¼Û' title='Âô¼Ò¿ÉÄÜÎ´¶Ô¸ÃÉÌÆ·ÉèÖÃÅú·¢¼Û£¬ÇëÍ¨ÖªÂô¼ÒÀ´ÐÇ×ùÍøÉèÖÃÅú·¢¼Û'>&#xe630;</b></span></p>
                     <#else>
-                    <p>æ‹¿è´§ä»·ï¼š<span class="style2">Â¥${vo.cdnItem.piPrice!}</span></p>
+                    <p>ÄÃ»õ¼Û£º<span class="style2">?${vo.cdnItem.piPrice!}</span></p>
                     </#if>
                 </div>
                 <table class="proconTable" width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td class="name" width="64">ä¸Šæž¶æ—¶é—´ï¼š</td>
-                    <td>${vo.cdnItem.listTime!} <em>è´§å·ï¼š</em>${vo.cdnItem.huohao!}<em>å‘è´§åœ°ï¼š</em>${vo.cdnItem.sendFrom!}</td>
+                    <td class="name" width="64">ÉÏ¼ÜÊ±¼ä£º</td>
+                    <td>${vo.cdnItem.listTime!} <em>»õºÅ£º</em>${vo.cdnItem.huohao!}<em>·¢»õµØ£º</em>${vo.cdnItem.sendFrom!}</td>
                   </tr>
                   <tr>
-                    <td class="name">é€‰æ‹©å°ºç ï¼š</td>
+                    <td class="name">Ñ¡Ôñ³ßÂë£º</td>
                     <td class="selectStyle"  id="size_id">
                     <#list vo.cdnItem.sizes as size>
                     <span class="radioBtn">
@@ -302,7 +302,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td class="name">é€‰æ‹©é¢œè‰²ï¼š</td>
+                    <td class="name">Ñ¡ÔñÑÕÉ«£º</td>
                     <td class="selectStyle" id="color_id">
                         <#list vo.cdnItem.colors as fcolor>
                             <#if fcolor.imgUrl?? && fcolor.imgUrl != "">
@@ -315,7 +315,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td class="name">é€‰æ‹©æ•°é‡ï¼š</td>
+                    <td class="name">Ñ¡ÔñÊýÁ¿£º</td>
                     <td>
                         <div class="selectNum">
                             <a href="javascript:;" id="Cuts">-</a>
@@ -331,12 +331,12 @@
                         <div  id="j_upload_btns"></div>
                         <div>
                             <button class="addPro imgDownload" xzclick="showDownloadWindow" data-goodsid="${vo.itemId!}">
-                                <span>å›¾ç‰‡ä¸‹è½½</span>
+                                <span>Í¼Æ¬ÏÂÔØ</span>
                             </button>
                         </div>
                         <div id="j_upload_items">
                             <button class="keyUpload"  onclick="showOnkeyUploadWindow();this.blur();"  >
-                                <span>ä¸€é”®ä¸Šä¼ </span>
+                                <span>Ò»¼üÉÏ´«</span>
                             </button>
                         </div>
                       </td>
@@ -345,23 +345,23 @@
                   <tr class="j_upload_item">
                     <td colspan="2">
                         <div class="boxBtn">
-                            <a  class="first" href="http://www.571xz.net/publish.htm?id=${vo.itemId!}" target="_blankt"  alt="ä¸Šä¼ æ·˜å®"  title="ç‚¹å‡»æŒ‰é’®ï¼Œå¯å°†æœ¬å•†å“ç›´æŽ¥ä¸Šä¼ è‡³æ‚¨çš„æ·˜å®åº—" >ä¼ æ·˜å®</a>
-                            <a href="http://1688.571xz.com/offer/publish.htm?id=${vo.itemId!}" target="_blankt" alt="ä¸Šä¼ é˜¿é‡Œ"  title="ç‚¹å‡»æŒ‰é’®ï¼Œå¯å°†æœ¬å•†å“ç›´æŽ¥ä¸Šä¼ è‡³æ‚¨çš„é˜¿é‡Œå·´å·´">ä¼ é˜¿é‡Œ</a>
+                            <a  class="first" href="http://www.571xz.net/publish.htm?id=${vo.itemId!}" target="_blankt"  alt="ÉÏ´«ÌÔ±¦"  title="µã»÷°´Å¥£¬¿É½«±¾ÉÌÆ·Ö±½ÓÉÏ´«ÖÁÄúµÄÌÔ±¦µê" >´«ÌÔ±¦</a>
+                            <a href="http://1688.571xz.com/offer/publish.htm?id=${vo.itemId!}" target="_blankt" alt="ÉÏ´«°¢Àï"  title="µã»÷°´Å¥£¬¿É½«±¾ÉÌÆ·Ö±½ÓÉÏ´«ÖÁÄúµÄ°¢Àï°Í°Í">´«°¢Àï</a>
                              
-                            <a href="javascript:;" onclick="sc_goods(${vo.itemId!})" title="ç‚¹å‡»æŒ‰é’®ï¼Œå¯å°†æœ¬å•†å“åœ¨çº¿ç”Ÿæˆæ•°æ®åŒ…"  data-hhh="20160307test4" >åŠ æ•°æ®åŒ…</a>
+                            <a href="javascript:;" onclick="sc_goods(${vo.itemId!})" title="µã»÷°´Å¥£¬¿É½«±¾ÉÌÆ·ÔÚÏßÉú³ÉÊý¾Ý°ü"  data-hhh="20160307test4" >¼ÓÊý¾Ý°ü</a>
                         </div>
                     </td>
                   </tr>
                   <tr>
                     <td colspan="2">
-                        <!--<p style="color:#ff4901"><font color="#666">æç¤ºï¼š</font>ä»£å‘æœ¬å•†å“ä¸ºè®¤è¯ä»£å‘å›¢é˜ŸæŽ¥å•ï¼Œåœ¨çº¿è¿›è´§ç›´æŽ¥å‘æœ¬å•†å®¶ä¸‹å•ã€‚</p>-->
+                        <!--<p style="color:#ff4901"><font color="#666">ÌáÊ¾£º</font>´ú·¢±¾ÉÌÆ·ÎªÈÏÖ¤´ú·¢ÍÅ¶Ó½Óµ¥£¬ÔÚÏß½ø»õÖ±½ÓÏò±¾ÉÌ¼ÒÏÂµ¥¡£</p>-->
                     </td>
                   </tr>
                   <#else>
                   <tr>
                     <td colspan="2">
                     <div style="width: 100%;height: 150px;text-align: center;line-height: 150px;font-size: 42px;border: 3px #ddd dashed;">
-                    å•†å“å·²ä¸‹æž¶!
+                    ÉÌÆ·ÒÑÏÂ¼Ü!
                     </div>
                     </td>
                   </tr>
@@ -487,45 +487,45 @@ if(gysShopId && gysShopId != ""){
                 <#if vo.storeRelation.webSite == "hz" || vo.storeRelation.webSite == "cs" || vo.storeRelation.webSite == "ss" >
                 <li>
                     <div class="iconfont cor1">&#xe63d;</div>
-                    <p>ä¸€ä»¶ä»£å‘</p>
+                    <p>Ò»¼þ´ú·¢</p>
                 </li>
                 </#if>
                 <#list vo.tags as tag>
                 <#if tag == 1>
-                    <li><div class="iconfont cor2">&#xe67a;</div><p>é€€çŽ°é‡‘</p></li>
+                    <li><div class="iconfont cor2">&#xe67a;</div><p>ÍËÏÖ½ð</p></li>
                 </#if>
                 <#if tag == 2>
-                <li><div class="iconfont cor3">&#xe673;</div><p>åŒ…æ¢æ¬¾</p></li>
+                <li><div class="iconfont cor3">&#xe673;</div><p>°ü»»¿î</p></li>
                 </#if>
                 </#list>
                 
             </ul>
             <div class="txtInfo">
-                <p>å¸‚åœºï¼š${vo.storeRelation.marketName!} ${vo.storeRelation.floor!}</p>
-                <p>ç”µè¯ï¼š<font color="#ff4901">${vo.storeRelation.telephone!}</font></p>
-                <p>æœ¬å•†å“åº“å­˜ï¼š${vo.cdnItem.num!}</p> 
+                <p>ÊÐ³¡£º${vo.storeRelation.marketName!} ${vo.storeRelation.floor!}</p>
+                <p>µç»°£º<font color="#ff4901">${vo.storeRelation.telephone!}</font></p>
+                <p>±¾ÉÌÆ·¿â´æ£º${vo.cdnItem.num!}</p>
                 
             </div>
             <ul class="contactUl" style="display:none">
-                <li>åœ¨çº¿å®¢æœï¼š</li>
+                <li>ÔÚÏß¿Í·þ£º</li>
                 <li>
                     <#if vo.storeRelation.imQq?? && vo.storeRelation.imQq != "">
-                    <a class="online" href="http://wpa.qq.com/msgrd?v=3&amp;uin=${vo.storeRelation.imQq!}&amp;site=qq&amp;menu=yes" target="_blank" style="color:#333"><i class="qq"></i>å’Œæˆ‘è”ç³»</a>
+                    <a class="online" href="http://wpa.qq.com/msgrd?v=3&amp;uin=${vo.storeRelation.imQq!}&amp;site=qq&amp;menu=yes" target="_blank" style="color:#333"><i class="qq"></i>ºÍÎÒÁªÏµ</a>
                     </#if>
                     
                     
-                    <a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${vo.storeRelation.imWw!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8"><img src="http://amos.alicdn.com/online.aw?v=2&amp;uid=${vo.storeRelation.imWw!}&amp;site=cntaobao&amp;s=1&amp;charset=utf-8" alt="ç‚¹è¿™é‡Œç»™æˆ‘å‘æ¶ˆæ¯" border="0"></a>
+                    <a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${vo.storeRelation.imWw!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8"><img src="http://amos.alicdn.com/online.aw?v=2&amp;uid=${vo.storeRelation.imWw!}&amp;site=cntaobao&amp;s=1&amp;charset=utf-8" alt="µãÕâÀï¸øÎÒ·¢ÏûÏ¢" border="0"></a>
         
         
                 </li>
             </ul>
             <div class="Coll">
                 <ul>
-                    <li><a href="javascript:;" id="scStore" data-id="${vo.storeRelation.storeId!}" title="æ”¶è—æœ¬åº—">æ”¶è—æœ¬åº—</a></li>
+                    <li><a href="javascript:;" id="scStore" data-id="${vo.storeRelation.storeId!}" title="ÊÕ²Ø±¾µê">ÊÕ²Ø±¾µê</a></li>
                     <#if vo.other.taobaoUrl != "">
-                    <li><a href="${vo.other.taobaoUrl!}" rel="nofollow" target="_blank" title="è¿›å…¥æ‰¹å‘å•†æ·˜å®åº—é“º">è¿›å…¥æ·˜å®åº—</a></li>
+                    <li><a href="${vo.other.taobaoUrl!}" rel="nofollow" target="_blank" title="½øÈëÅú·¢ÉÌÌÔ±¦µêÆÌ">½øÈëÌÔ±¦µê</a></li>
                     <#else>
-                    <li><a class="disabled" rel="nofollow" target="_blank" title="è¿›å…¥æ‰¹å‘å•†æ·˜å®åº—é“º">è¿›å…¥æ·˜å®åº—</a></li>
+                    <li><a class="disabled" rel="nofollow" target="_blank" title="½øÈëÅú·¢ÉÌÌÔ±¦µêÆÌ">½øÈëÌÔ±¦µê</a></li>
                     </#if>
                 </ul>
             </div>
@@ -554,23 +554,23 @@ var goodsId = '${vo.itemId!}';
             </#list>
         </form>
         
-        <h2 class="shopStyle">ç«™å†…æœç´¢</h2>
+        <h2 class="shopStyle">Õ¾ÄÚËÑË÷</h2>
         <ul class="searchInfo">
         <form>
             <input name="storeNumId" value="${vo.storeRelation.storeId!}" type="hidden">
-            <li>å•†å“ï¼š<input class="pro" name="keyword" id="pstring" value="" type="text"></li>
-            <li>ä»·æ ¼ï¼š<input class="price j_Num" name="" placeholder="ï¿¥" value="" id="beginPrice" type="text"><span>-</span><input class="price j_Num" name="" placeholder="ï¿¥" value="" id="endPrice" type="text"></li>
-            <li><input class="button" id="dosearchOnShop" value="ç¡®å®š" type="button"></li>
+            <li>ÉÌÆ·£º<input class="pro" name="keyword" id="pstring" value="" type="text"></li>
+            <li>¼Û¸ñ£º<input class="price j_Num" name="" placeholder="£¤" value="" id="beginPrice" type="text"><span>-</span><input class="price j_Num" name="" placeholder="£¤" value="" id="endPrice" type="text"></li>
+            <li><input class="button" id="dosearchOnShop" value="È·¶¨" type="button"></li>
         </form>
         </ul>
         
-        <h2 class="shopStyle">å•†å“åˆ†ç±»</h2>
+        <h2 class="shopStyle">ÉÌÆ··ÖÀà</h2>
         <ul class="sxUl">
-            <li class="all"><a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=2"><span class="iconfont">î™•</span>æŸ¥çœ‹æ‰€æœ‰å®è´</a></li>
+            <li class="all"><a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=2"><span class="iconfont">¥O</span>²é¿´ËùÓÐ±¦±´</a></li>
             <li class="allTime">
-                <a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=3">ä»Šæ—¥æ–°æ¬¾</a>
-                <a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=5">æœ¬å‘¨æ›´æ–°</a>
-                <a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=6">æœ¬æœˆæ›´æ–°</a>
+                <a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=3">½ñÈÕÐÂ¿î</a>
+                <a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=5">±¾ÖÜ¸üÐÂ</a>
+                <a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=6">±¾ÔÂ¸üÐÂ</a>
             </li>
         </ul>
         
@@ -600,8 +600,8 @@ var goodsId = '${vo.itemId!}';
     <div class="right">
         <div class="conRight">
             <h1 class="conTitle">
-                <a class="select" href="javascript:;">å•†å“è¯¦æƒ…</a>
-                <!-- <a href="javascript:;">äº’åŠ¨è¯„è®º</a> -->
+                <a class="select" href="javascript:;">ÉÌÆ·ÏêÇé</a>
+                <!-- <a href="javascript:;">»¥¶¯ÆÀÂÛ</a> -->
             </h1>
             <ul class="shopConTab">
                 <li class="shopli" style="display:block">
@@ -623,19 +623,19 @@ var goodsId = '${vo.itemId!}';
         <div id="onkeyupFixbar" class="onkeyupFixbar">
             <div class="innerbox">
                 <ul class="keybox">
-                    <li><a class="btn" href="http://www.571xz.net/publish.htm?id=${vo.itemId!}" target="_blank"><i class="ii"></i><span>ä¸Šä¼ åˆ°æ·˜å®</span></a></li>
-                    <li><a class="btn" href="http://1688.571xz.com/offer/publish.htm?id=${vo.itemId!}" target="_blank"><i class="ii"></i><span>ä¸Šä¼ åˆ°é˜¿é‡Œ</span></a></li>
-                    <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${vo.itemId!}"><i class="ii"></i><span>åˆ†äº«æœ‹å‹åœˆ</span></b><div id="wxEwmbox"></div></li>
-                    <li class="addData"><b xzclick="addGoodsData"><i class="ii"></i><span>åŠ å…¥æ•°æ®åŒ…</span></b></li>
+                    <li><a class="btn" href="http://www.571xz.net/publish.htm?id=${vo.itemId!}" target="_blank"><i class="ii"></i><span>ÉÏ´«µ½ÌÔ±¦</span></a></li>
+                    <li><a class="btn" href="http://1688.571xz.com/offer/publish.htm?id=${vo.itemId!}" target="_blank"><i class="ii"></i><span>ÉÏ´«µ½°¢Àï</span></a></li>
+                    <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${vo.itemId!}"><i class="ii"></i><span>·ÖÏíÅóÓÑÈ¦</span></b><div id="wxEwmbox"></div></li>
+                    <li class="addData"><b xzclick="addGoodsData"><i class="ii"></i><span>¼ÓÈëÊý¾Ý°ü</span></b></li>
                 </ul>
                 <div class="grewLine"></div>
                 <div class="contactbox">
-                    <h3>è”ç³»æ¡£å£</h3>
-                    <#if vo.storeRelation.imWw??><p class="wangwang">æ¡£å£æ—ºæ—º<#assign text>{"id":"${vo.storeRelation.imWw!}"}</#assign>
+                    <h3>ÁªÏµµµ¿Ú</h3>
+                    <#if vo.storeRelation.imWw??><p class="wangwang">µµ¿ÚÍúÍú<#assign text>{"id":"${vo.storeRelation.imWw!}"}</#assign>
 <#assign $it=text?eval />
 <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
         </p></#if>
-                    <#if vo.storeRelation.imQq??><p class="qq">æ¡£å£QQ<#assign text>{"id":"${vo.storeRelation.imQq!}"}</#assign>
+                    <#if vo.storeRelation.imQq??><p class="qq">µµ¿ÚQQ<#assign text>{"id":"${vo.storeRelation.imQq!}"}</#assign>
 <#assign $it=text?eval />
 <#if $it.id != "">
         <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
@@ -648,7 +648,7 @@ var goodsId = '${vo.itemId!}';
 </div>
 <#if newGoodsList??>
 <div class="newGoods layout">
-    <h3>åº—é“ºæ–°å“</h3>
+    <h3>µêÆÌÐÂÆ·</h3>
     <#list newGoodsList as goods>
     <div class="goodsitem">
         <a class="imgbox" href="item.htm?id=${goods.itemId!}" target="_blank">
@@ -665,30 +665,30 @@ var goodsId = '${vo.itemId!}';
 <div class="footer">
     <div class="inner">
         <p class="sitemap" style="width:650px;"> 
-            <a href="/" target="_blank">é¦–é¡µ</a>
-            <a href="http://hz.571xz.com" target="_blank">æ­å·žç«™</a>
-            <a href="http://bj.571xz.com" target="_blank">åŒ—äº¬ç«™</a>
-            <a href="http://gz.571xz.com" target="_blank">å¹¿å·žç«™</a>
-            <a href="http://ss.571xz.com" target="_blank">çŸ³ç‹®ç«™</a>
-            <a href="http://cs.571xz.com" target="_blank">å¸¸ç†Ÿç«™</a>
-            <a href="http://wa.571xz.com" target="_blank">è¾½æºç«™</a>
-            <a href="http://zixun.571xz.com" target="_blank">èµ„è®¯</a>
+            <a href="/" target="_blank">Ê×Ò³</a>
+            <a href="http://hz.571xz.com" target="_blank">º¼ÖÝÕ¾</a>
+            <a href="http://bj.571xz.com" target="_blank">±±¾©Õ¾</a>
+            <a href="http://gz.571xz.com" target="_blank">¹ãÖÝÕ¾</a>
+            <a href="http://ss.571xz.com" target="_blank">Ê¯Ê¨Õ¾</a>
+            <a href="http://cs.571xz.com" target="_blank">³£ÊìÕ¾</a>
+            <a href="http://wa.571xz.com" target="_blank">ÁÉÔ´Õ¾</a>
+            <a href="http://zixun.571xz.com" target="_blank">×ÊÑ¶</a>
             
             
-            <a href="http://zixun.571xz.com/article?id=87" target="_blank">è”ç³»æˆ‘ä»¬</a>
+            <a href="http://zixun.571xz.com/article?id=87" target="_blank">ÁªÏµÎÒÃÇ</a>
             
         </p>
         <p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
             <a class="img-yyzz" href="http://idinfo.zjaic.gov.cn/bscx.do?method=hddoc&amp;id=33010200000476" target="_blank" ></a>
-            <a class="img-jyxkz" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" title="äº’è”ç½‘ç»è¥è®¸å¯è¯" target="_blank"></a>
+            <a class="img-jyxkz" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" title="»¥ÁªÍø¾­ÓªÐí¿ÉÖ¤" target="_blank"></a>
             <a class="img-jybz" href="http://www.315online.com.cn/" target="_blank"></a>
             <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
         </p>
         <p class="jyga">
-            <span>&copy; 2009-2017 571xz.com ç‰ˆæƒæ‰€æœ‰</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">ç½‘ä¸Šäº¤æ˜“å¸‚åœºç™»è®°è¯</a>
+            <span>&copy; 2009-2017 571xz.com °æÈ¨ËùÓÐ</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">ÍøÉÏ½»Ò×ÊÐ³¡µÇ¼ÇÖ¤</a>
             <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">å¢žå€¼ç”µä¿¡ä¸šåŠ¡ç»è¥è®¸å¯è¯ï¼š æµ™B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="æµ™å…¬ç½‘å®‰å¤‡"> æµ™å…¬ç½‘å®‰å¤‡ 33010202000302å· </a> 
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">ÔöÖµµçÐÅÒµÎñ¾­ÓªÐí¿ÉÖ¤£º ÕãB2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="Õã¹«Íø°²±¸"> Õã¹«Íø°²±¸ 33010202000302ºÅ </a>
         </p>
     </div>
 </div>
