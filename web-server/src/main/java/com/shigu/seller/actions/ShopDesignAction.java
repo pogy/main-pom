@@ -119,19 +119,14 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/addModule")
-    public String addModule(AddModuleBO bo,HttpSession session,Model model){
+    public String addModule(AddModuleBO bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
         Long sideId=null;
         if(bo.getSide()!=null&&!"none".equals(bo.getSide())){
             sideId=Long.valueOf(bo.getSide());
         }
-        try {
-            ModuleVO mv=shopDesignService.addModule(bo.getId(),bo.getArea(),bo.getType(),sideId,bo.getAfter(),selShopForModule(session));
-            model.addAllAttributes(mv.getData());
-            return "/shop_design/"+bo.getId();
-        } catch (ShopFitmentException | IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        ModuleVO mv=shopDesignService.addModule(bo.getId(),bo.getArea(),bo.getType(),sideId,bo.getAfter(),selShopForModule(session));
+        model.addAllAttributes(mv.getData());
+        return "/shop_design/"+bo.getId();
     }
 
     /**
@@ -293,7 +288,7 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/saveGoodsSearchOption")
-    public String saveGoodsSearchOption(ItemSearchModule bo,HttpSession session,Model model){
+    public String saveGoodsSearchOption(ItemSearchModule bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
 
@@ -305,7 +300,7 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/saveCustomOption")
-    public String saveCustomOption(CustomModule bo,HttpSession session,Model model){
+    public String saveCustomOption(CustomModule bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
 
@@ -314,7 +309,7 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/saveBigcarouselOption")
-    public String saveBigcarouselOption(SlideshowModule bo, HttpSession session, Model model){
+    public String saveBigcarouselOption(SlideshowModule bo, HttpSession session, Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
 
@@ -326,7 +321,7 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/saveBigpicOption")
-    public String saveBigpicOption(WideImageModule bo, HttpSession session, Model model){
+    public String saveBigpicOption(WideImageModule bo, HttpSession session, Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
 
@@ -338,7 +333,7 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/savePromoteOption")
-    public String savePromoteOption(ItemPromoteModule bo, HttpSession session, Model model){
+    public String savePromoteOption(ItemPromoteModule bo, HttpSession session, Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
     /**
@@ -349,20 +344,15 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/savePiccarouselOption")
-    public String savePiccarouselOption(ViwepagerModule bo, HttpSession session, Model model){
+    public String savePiccarouselOption(ViwepagerModule bo, HttpSession session, Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
 
-    private String saveModuleOption(FitmentModule module,HttpSession session,Model model){
-        try {
-            shopDesignService.revalueModule(module.getModuleId(),module);
-            ModuleVO mv=shopDesignService.selModuleByModuleIdWithData(module.getModuleId(),selShopForModule(session),true);
-            model.addAllAttributes(mv.getData());
-            return "/"+mv.getTemplate().getSourceName().replace(".ftl","");
-        } catch (Exception e) {
-            logger.error("setGoodsSearch error!!",e);
-        }
-        return null;
+    private String saveModuleOption(FitmentModule module,HttpSession session,Model model) throws ShopFitmentException, IOException {
+        shopDesignService.revalueModule(module.getModuleId(),module);
+        ModuleVO mv=shopDesignService.selModuleByModuleIdWithData(module.getModuleId(),selShopForModule(session),true);
+        model.addAllAttributes(mv.getData());
+        return "/"+mv.getTemplate().getSourceName().replace(".ftl","");
     }
 
     @RequestMapping("design/move-module")
