@@ -1,14 +1,2 @@
 .idea/
-*/*.iml
-main4-item/main4-item-api/main4-item-api.iml
-main4-item/main4-item-default/main4-item-default.iml
-main4-item/main4-item-update/main4-item-update.iml
-main4-monitor/main4-monitor-api/main4-monitor-api.iml
-main4-monitor/main4-monitor-default/main4-monitor-default.iml
-main4-spread/main4-spread-api/main4-spread-api.iml
-main4-spread/main4-spread-default/main4-spread-default.iml
-main4-store/main4-store-api/main4-store-api.iml
-main4-store/main4-store-default/main4-store-default.iml
-main4-store/main4-store-inmarket/main4-store-inmarket.iml
-main4-ucenter/main4-ucenter-api/main4-ucenter-api.iml
-main4-ucenter/main4-ucenter-default/main4-ucenter-default.iml
+*.iml
