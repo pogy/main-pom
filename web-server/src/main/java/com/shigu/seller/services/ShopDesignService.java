@@ -304,7 +304,7 @@ public class ShopDesignService {
             Long id = bo.getId();
             if (module != null) {
                 List<Long> ids = module.getPromoteItems();
-                if (sd ? ids.add(id) : ids.remove(id))
+                if (sd ? !ids.contains(id) && ids.add(id) : ids.remove(id))
                     shopFitmentService.revalueModuleOption(bo.getMid(), JSON.toJSONString(ids));
             } else {
                 vo.setStatus(1);
