@@ -268,7 +268,7 @@
                     </li>
                 </ul>
                 <div class="signBtn">
-                    <a href="dtggapply.htm?id=${item.id!}">立即报名</a>
+                    <a href="dtggapply.htm?id=${item.id!}">查看结果</a>
                 </div>
             </div>
             </#list>
