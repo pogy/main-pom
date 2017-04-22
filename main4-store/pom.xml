@@ -5,13 +5,11 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>4.0.7-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>sites.main</groupId>
     <artifactId>main4-store</artifactId>
-    <version>4.0.0-SNAPSHOT</version>
     <modules>
         <module>main4-store-api</module>
         <module>main4-store-default</module>
