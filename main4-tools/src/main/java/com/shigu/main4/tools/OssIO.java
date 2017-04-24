@@ -59,6 +59,28 @@ public class OssIO {
     }
 
     /**
+     * 流式上传
+     * @param inputStream
+     * @param filePath
+     * @return
+     */
+    public String uploadFile(InputStream inputStream,String filePath){
+        // 创建OSSClient实例
+        OSSClient ossClient = null;
+        try {
+            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+// 上传文件流
+            ossClient.putObject(bucketName, filePath, new BufferedInputStream(inputStream));
+// 关闭client
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
+        return domain+filePath;
+    }
+
+    /**
      * 上传一个文件
      * @param data 文件
      * @param filePath 上传的目录,不能以/开头

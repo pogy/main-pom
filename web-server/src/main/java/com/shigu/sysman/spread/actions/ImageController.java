@@ -37,6 +37,7 @@ public class ImageController extends BackBaseController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ImageController.class);
 
+	@Autowired
 	OssIO ossIO;
 
 	/**
@@ -57,7 +58,6 @@ public class ImageController extends BackBaseController {
 			Map.Entry<String, MultipartFile> entity = fileMap.entrySet().iterator().next();
 			// 上传文件
 			MultipartFile mf = entity.getValue();
-			String fileName = mf.getOriginalFilename();
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
 			String years = sdf.format(new Date());
 			SimpleDateFormat sdfmm = new SimpleDateFormat("MM");
@@ -71,7 +71,7 @@ public class ImageController extends BackBaseController {
 			Random random = new Random();
 			String name = random.nextInt(10000) + System.currentTimeMillis() + substring;
 
-			String imgUrl=ossIO.uploadFile(mf.getBytes(),filePath+name);
+			String imgUrl=ossIO.uploadFile(mf.getInputStream(),filePath+name);
 
 			Map<String, String> dataMap = new HashMap<String, String>();
 			dataMap.put("phPath", imgUrl);
