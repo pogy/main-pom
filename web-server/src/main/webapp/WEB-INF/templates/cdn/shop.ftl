@@ -669,5 +669,6 @@ ${vo.shopFitment.description}
         </p>
     </div>
 </div>
+<#include "/common/cnzz.ftl">
 </body>
 </html>

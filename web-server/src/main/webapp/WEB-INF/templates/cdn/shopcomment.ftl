@@ -559,5 +559,6 @@ var storeId = ${vo.storeRelation.storeId!};
         </p>
     </div>
 </div>
+<#include "/common/cnzz.ftl">
 </body>
 </html>
