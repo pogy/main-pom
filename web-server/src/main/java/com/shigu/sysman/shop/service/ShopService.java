@@ -240,15 +240,16 @@ public class ShopService {
             throw new Main4Exception("店铺信息有误");
         }
         String tbNick = shiguShop.getTbNick();
-        if(StringUtils.isEmpty(tbNick)){
-            // 查询用户淘宝昵称
-            MemberUser memberUser = new MemberUser();
-            memberUser.setUserId(shiguShop.getUserId());
-            memberUser = memberUserMapper.selectOne(memberUser);
-            if(memberUser != null){
-                tbNick = memberUser.getImAliww();
-            }
-        }
+        //为什么要去查?????
+//        if(StringUtils.isEmpty(tbNick)){
+//            // 查询用户淘宝昵称
+//            MemberUser memberUser = new MemberUser();
+//            memberUser.setUserId(shiguShop.getUserId());
+//            memberUser = memberUserMapper.selectOne(memberUser);
+//            if(memberUser != null){
+//                tbNick = memberUser.getImAliww();
+//            }
+//        }
         return tbNick;
     }
 
