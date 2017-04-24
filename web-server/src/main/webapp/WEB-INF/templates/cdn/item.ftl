@@ -10,15 +10,9 @@
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
 
 
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=" rel="stylesheet">
 
-
-    <link href="http://style.571xz.com/shop_itemV2/css/item.css?t=1492654616644" rel="stylesheet">
-
-
-    <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/shop_itemV2/js/item.js?t=1492654616644"></script>
-
-  </head>
+</head>
 <body>
 <#include "/common/host_config.ftl">
 
@@ -396,11 +390,11 @@ ${navCon}
                 </#if>
                 </div>
                 <div class="proPrice">
-                    <p>零售价：<span class="style1">?${vo.cdnItem.price!}</span><a href="http://zixun.571xz.com/article?id=382" target="_blank" style="color: #ff4400; margin-left: 10px;">什么是零售价？</a></p>
+                    <p>零售价：<span class="style1">¥${vo.cdnItem.price!}</span><a href="http://zixun.571xz.com/article?id=382" target="_blank" style="color: #ff4400; margin-left: 10px;">什么是零售价？</a></p>
                 <#if vo.cdnItem.price == vo.cdnItem.piPrice>
-                    <p>拿货价：<span class="style2" style="position: relative;">?${vo.cdnItem.piPrice!}<b class='iconfont alt_no_pi_price' alt='卖家可能未对该商品设置批发价，请通知卖家来星座网设置批发价' title='卖家可能未对该商品设置批发价，请通知卖家来星座网设置批发价'>&#xe630;</b></span></p>
+                    <p>拿货价：<span class="style2" style="position: relative;">¥${vo.cdnItem.piPrice!}<b class='iconfont alt_no_pi_price' alt='卖家可能未对该商品设置批发价，请通知卖家来星座网设置批发价' title='卖家可能未对该商品设置批发价，请通知卖家来星座网设置批发价'>&#xe630;</b></span></p>
                 <#else>
-                    <p>拿货价：<span class="style2">?${vo.cdnItem.piPrice!}</span></p>
+                    <p>拿货价：<span class="style2">¥${vo.cdnItem.piPrice!}</span></p>
                 </#if>
                 </div>
                 <table class="proconTable" width="100%" border="0" cellspacing="0" cellpadding="0">

@@ -25,16 +25,9 @@
         </#if>
 
 
+    <link href="http://style.571xz.com/shopItemCopy/css/shop.css?t=" rel="stylesheet">
 
-
-    <link href="http://style.571xz.com/shop_itemV2/css/shop.css?t=1492654617798" rel="stylesheet">
-
-
-    <script src="http://style.571xz.com/global/js/jquery.js"></script>
-        <script src="http://style.571xz.com/shop_itemV2/js/temp/ekoo.min.js"></script>
-<script src="http://style.571xz.com/shop_itemV2/js/shop.js?t=1492654617798"></script>
-
-  </head>
+</head>
 <body>
 <#include "/common/host_config.ftl">
 
