@@ -435,5 +435,141 @@ public class ShopFitmentFtlExample implements SgExample{
             this.addCriterion("context not between", value1, value2, "context");
             return (ShopFitmentFtlExample.Criteria)this;
         }
+
+        public ShopFitmentFtlExample.Criteria andShopIdIsNull() {
+            this.addCriterion("shop_id is null");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdIsNotNull() {
+            this.addCriterion("shop_id is not null");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdEqualTo(Long value) {
+            this.addCriterion("shop_id =", value, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdNotEqualTo(Long value) {
+            this.addCriterion("shop_id <>", value, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdGreaterThan(Long value) {
+            this.addCriterion("shop_id >", value, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("shop_id >=", value, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdLessThan(Long value) {
+            this.addCriterion("shop_id <", value, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("shop_id <=", value, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdLike(String value) {
+            this.addCriterion("shop_id like", value, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdNotLike(String value) {
+            this.addCriterion("shop_id not like", value, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }        public ShopFitmentFtlExample.Criteria andShopIdIn(List<Long> values) {
+            this.addCriterion("shop_id in", values, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdNotIn(List<Long> values) {
+            this.addCriterion("shop_id not in", values, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdBetween(Long value1, Long value2) {
+            this.addCriterion("shop_id between", value1, value2, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andShopIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("shop_id not between", value1, value2, "shopId");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeIsNull() {
+            this.addCriterion("type is null");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeIsNotNull() {
+            this.addCriterion("type is not null");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeEqualTo(Integer value) {
+            this.addCriterion("type =", value, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeNotEqualTo(Integer value) {
+            this.addCriterion("type <>", value, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeGreaterThan(Integer value) {
+            this.addCriterion("type >", value, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            this.addCriterion("type >=", value, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeLessThan(Integer value) {
+            this.addCriterion("type <", value, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            this.addCriterion("type <=", value, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeLike(String value) {
+            this.addCriterion("type like", value, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeNotLike(String value) {
+            this.addCriterion("type not like", value, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }        public ShopFitmentFtlExample.Criteria andTypeIn(List<Integer> values) {
+            this.addCriterion("type in", values, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeNotIn(List<Integer> values) {
+            this.addCriterion("type not in", values, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            this.addCriterion("type between", value1, value2, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
+
+        public ShopFitmentFtlExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            this.addCriterion("type not between", value1, value2, "type");
+            return (ShopFitmentFtlExample.Criteria)this;
+        }
     }
 }
