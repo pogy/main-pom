@@ -113,6 +113,11 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             boleanQueryBuilder.must(qb);
         }
 
+        List<Long> goodsIds = shopForCdnBo.getGoodsIds();
+        if (goodsIds != null && !goodsIds.isEmpty()) {
+            boleanQueryBuilder.must(QueryBuilders.termsQuery("goodsId", shopForCdnBo.getGoodsIds()));
+        }
+
         // 标题
         if (!StringUtils.isEmpty(shopForCdnBo.getKeyword())) {
             boleanQueryBuilder.should(QueryBuilders.matchQuery("title", shopForCdnBo.getKeyword()).minimumShouldMatch("100%"));
@@ -128,16 +133,15 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
 
         // 价格区间条件
         if (shopForCdnBo.getPriceFrom() != null) {
-            RangeQueryBuilder qb = QueryBuilders.rangeQuery("price").from(shopForCdnBo.getPriceFrom() * 100);
-            if (shopForCdnBo.getPriceTo() != null) {
-                qb.to(shopForCdnBo.getPriceTo() * 100);
-            }
+            Double fromPrice = shopForCdnBo.getPriceFrom() * 100;
+            RangeQueryBuilder qb = QueryBuilders.rangeQuery("piPrice").from(fromPrice.longValue());
             boleanQueryBuilder.must(qb);
-        } else {
-            if (shopForCdnBo.getPriceTo() != null) {
-                RangeQueryBuilder qb = QueryBuilders.rangeQuery("price").to(shopForCdnBo.getPriceFrom() * 100);
-                boleanQueryBuilder.must(qb);
-            }
+        }
+
+        if (shopForCdnBo.getPriceTo() != null) {
+            Double toPrice = shopForCdnBo.getPriceTo() * 100;
+            RangeQueryBuilder qb = QueryBuilders.rangeQuery("piPrice").to(toPrice.longValue());
+            boleanQueryBuilder.must(qb);
         }
 
         // 时间范围区间
@@ -220,6 +224,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                 itemShowBlock.setPrice(shiguGoodsTiny.getPiPrice().toString());
                 itemShowBlock.setTitle(shiguGoodsTiny.getTitle());
                 itemShowBlock.setWebSite(shiguGoodsTiny.getWebSite());
+                itemShowBlock.setGoodsNo(shiguGoodsTiny.getGoodsNo());
                 itemShowBlock.setSoldOutTime(DateUtil.dateToString(shiguGoodsTiny.getSoldOutTime(),DateUtil.patternD));
                 itemShowBlockList.add(itemShowBlock);
             }
@@ -502,6 +507,27 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         if (bucket != null)
             polymerization.setNumber(bucket.getDocCount());
         return polymerization;
+    }
+
+    @Override
+    public ShiguPager<ItemShowBlock> searchItemOnsale(List<Long> ids, int pageNo, int pageSize) {
+        ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<>();
+        if (ids.isEmpty()) {
+            shiguPager.setContent(Collections.<ItemShowBlock>emptyList());
+            shiguPager.calPages(0,5);
+            shiguPager.setNumber(1);
+            return shiguPager;
+        }
+        ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
+        shopForCdnBo.setPageNo(pageNo);
+        shopForCdnBo.setPageSize(pageSize);
+        shopForCdnBo.setIsOff(0);
+        shopForCdnBo.setGoodsIds(ids);
+        shiguPager.setContent(selectItemShowBlockByEsBo(shopForCdnBo));
+        Long resultCount = selectCountByEsBo(shopForCdnBo);
+        shiguPager.calPages(resultCount.intValue(), pageSize);
+        shiguPager.setNumber(pageNo);
+        return shiguPager;
     }
 
     /**

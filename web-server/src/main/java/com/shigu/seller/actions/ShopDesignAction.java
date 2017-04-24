@@ -1,10 +1,12 @@
 package com.shigu.seller.actions;
 
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.vo.FitmentModule;
+import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.fitment.CustomModule;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.main4.vo.fitment.ItemSearchModule;
@@ -21,6 +23,7 @@ import com.shigu.seller.vo.ShopForModuleVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.zhb.utils.BeanMapper;
 import freemarker.template.Template;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -117,19 +120,14 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/addModule")
-    public String addModule(AddModuleBO bo,HttpSession session,Model model){
+    public String addModule(AddModuleBO bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
         Long sideId=null;
         if(bo.getSide()!=null&&!"none".equals(bo.getSide())){
             sideId=Long.valueOf(bo.getSide());
         }
-        try {
-            ModuleVO mv=shopDesignService.addModule(bo.getId(),bo.getArea(),bo.getType(),sideId,bo.getAfter(),selShopForModule(session));
-            model.addAllAttributes(mv.getData());
-            return "/shop_design/"+bo.getId();
-        } catch (ShopFitmentException | IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        ModuleVO mv=shopDesignService.addModule(bo.getId(),bo.getArea(),bo.getType(),sideId,bo.getAfter(),selShopForModule(session));
+        model.addAllAttributes(mv.getData());
+        return "/shop_design/"+bo.getId();
     }
 
     /**
@@ -195,7 +193,14 @@ public class ShopDesignAction {
     public String goodsTuiGetGoodsList(PromotePagerBo bo, HttpSession session, Model model){
         Long shopId = getShopSession(session).getShopId();
         model.addAttribute("bo", bo);
-        model.addAttribute("items", shopDesignService.selPromoteItems(bo, shopId));
+        PromotePagerBo allItem = BeanMapper.map(bo, PromotePagerBo.class);
+        allItem.setType(1);
+        model.addAttribute("pager", shopDesignService.selPromoteItems(allItem, shopId));
+
+        PromotePagerBo promoteItems = BeanMapper.map(bo, PromotePagerBo.class);
+        promoteItems.setType(2);
+        promoteItems.setIds(shopDesignService.selPromoteItemIds(bo));
+        model.addAttribute("promotes", shopDesignService.selPromoteItems(promoteItems, shopId));
         return "/shop_design/goods-tui-get-goods-list";
     }
 
@@ -289,7 +294,7 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/saveGoodsSearchOption")
-    public String saveGoodsSearchOption(ItemSearchModule bo,HttpSession session,Model model){
+    public String saveGoodsSearchOption(ItemSearchModule bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
 
@@ -301,7 +306,7 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/saveCustomOption")
-    public String saveCustomOption(CustomModule bo,HttpSession session,Model model){
+    public String saveCustomOption(CustomModule bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
 
@@ -310,7 +315,7 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/saveBigcarouselOption")
-    public String saveBigcarouselOption(SlideshowModule bo, HttpSession session, Model model){
+    public String saveBigcarouselOption(SlideshowModule bo, HttpSession session, Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
 
@@ -322,7 +327,7 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/saveBigpicOption")
-    public String saveBigpicOption(WideImageModule bo, HttpSession session, Model model){
+    public String saveBigpicOption(WideImageModule bo, HttpSession session, Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
 
@@ -334,7 +339,7 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/savePromoteOption")
-    public String savePromoteOption(ItemPromoteModule bo, HttpSession session, Model model){
+    public String savePromoteOption(ItemPromoteModule bo, HttpSession session, Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
     /**
@@ -345,20 +350,15 @@ public class ShopDesignAction {
      * @return
      */
     @RequestMapping("design/savePiccarouselOption")
-    public String savePiccarouselOption(ViwepagerModule bo, HttpSession session, Model model){
+    public String savePiccarouselOption(ViwepagerModule bo, HttpSession session, Model model) throws ShopFitmentException, IOException {
         return saveModuleOption(bo,session,model);
     }
 
-    private String saveModuleOption(FitmentModule module,HttpSession session,Model model){
-        try {
-            shopDesignService.revalueModule(module.getModuleId(),module);
-            ModuleVO mv=shopDesignService.selModuleByModuleIdWithData(module.getModuleId(),selShopForModule(session),true);
-            model.addAllAttributes(mv.getData());
-            return "/"+mv.getTemplate().getSourceName().replace(".ftl","");
-        } catch (Exception e) {
-            logger.error("setGoodsSearch error!!",e);
-        }
-        return null;
+    private String saveModuleOption(FitmentModule module,HttpSession session,Model model) throws ShopFitmentException, IOException {
+        shopDesignService.revalueModule(module.getModuleId(),module);
+        ModuleVO mv=shopDesignService.selModuleByModuleIdWithData(module.getModuleId(),selShopForModule(session),true);
+        model.addAllAttributes(mv.getData());
+        return "/"+mv.getTemplate().getSourceName().replace(".ftl","");
     }
 
     @RequestMapping("design/move-module")

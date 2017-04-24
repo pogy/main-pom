@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>首页 - 装修预览 - 网商园</title>
+    <title>首页 - 装修预览 - 星座网</title>
     <link rel="stylesheet" type="text/css" href="/design/theme/xzw/css/global_new-min.css?t=20170413U">
     <link rel="stylesheet" type="text/css" href="/design/theme/xzw/shop/css/newshop-min.css?t=20170413U">
     <link rel="stylesheet" type="text/css" href="/design/css/shop/design/preview.css?t=20170413U1" />
@@ -32,7 +32,7 @@
                 <div class="site-nav-js site-nav-r">
                     <dl class="no-xl">
                         <dt>
-                            <a href="/" style="color: #f60;">网商园首页</a>
+                            <a href="/" style="color: #f60;">星座网首页</a>
                         </dt>
                     </dl>
                     <dl class="spacer"></dl>
@@ -162,7 +162,7 @@
                 <div class="top-search">
                     <div class="search-box">
                         <div class="search-logo">
-                            <img src="/theme/wsy/images/logo2016828.png" alt="网商园" style="width: 80px;">
+                            <img src="/theme/wsy/images/logo2016828.png" alt="星座网" style="width: 80px;">
                         </div>
                         <div class="search-con">
                             <div class="search-tab">

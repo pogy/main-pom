@@ -12,7 +12,7 @@
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.0.0-SNAPSHOT</version>
+    <version>4.0.7-SNAPSHOT</version>
     <modules>
         <module>main4-dao</module>
         <module>main4-common</module>
@@ -32,16 +32,24 @@
 
 
     <properties>
-        <main4.version>4.0.7-SNAPSHOT</main4.version>
+        <main4-admin.version>${project.version}</main4-admin.version>
+        <main4-tools.version>${project.version}</main4-tools.version>
+        <main4-item-api.version>${project.version}</main4-item-api.version>
+        <main4-monitor-api.version>${project.version}</main4-monitor-api.version>
+        <main4-spread-api.version>${project.version}</main4-spread-api.version>
+        <main4-spread-default.version>${project.version}</main4-spread-default.version>
+        <main4-store-api.version>${project.version}</main4-store-api.version>
+        <main4-session.version>${project.version}</main4-session.version>
+        <main4-ucenter-api.version>${project.version}</main4-ucenter-api.version>
+        <main4-common.version>${project.version}</main4-common.version>
+        <main4-dao.version>${project.version}</main4-dao.version>
+        <main4-store-default.version>${project.version}</main4-store-default.version>
+        <main4-store-inmarket.version>${project.version}</main4-store-inmarket.version>
+        <main4-item-default.version>${project.version}</main4-item-default.version>
+        <main4-item-update.version>${project.version}</main4-item-update.version>
+        <main4-monitor-default.version>${project.version}</main4-monitor-default.version>
 
         <spring.version>4.1.6.RELEASE</spring.version>
-        <main4-common.version>4.0.0-SNAPSHOT</main4-common.version>
-        <main4-dao.version>4.0.0-SNAPSHOT</main4-dao.version>
-        <main4-store-default.version>4.0.0-SNAPSHOT</main4-store-default.version>
-        <main4-store-inmarket.version>4.0.0-SNAPSHOT</main4-store-inmarket.version>
-        <main4-item-default.version>4.0.0-SNAPSHOT</main4-item-default.version>
-        <main4-item-update.version>4.0.0-SNAPSHOT</main4-item-update.version>
-        <main4-monitor-default.version>4.0.1-SNAPSHOT</main4-monitor-default.version>
         <syn-finder-api.version>4.0.0-SNAPSHOT</syn-finder-api.version>
         <web-server.version>4.0.0-SNAPSHOT</web-server.version>
         <orika.version>1.4.6</orika.version>

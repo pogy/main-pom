@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>模块编辑 - 网商园</title>
+    <title>模块编辑 - 星座网</title>
     <link rel="stylesheet" href="/design/css/shop/design/option.css?t=20161219A"  type="text/css"/>
     <script type="text/javascript" src="/design/js/jquery-min.js"></script>
     <script type="text/javascript" src="/design/s/editor/kindeditor-min.js"></script>
@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
                                 <div class="manual-rec-content clearfix" style="display: none;">
-                                    <iframe style="border: 0; width: 100%; height: 480px;" src="/seller/design/goods-tui-get-goods-list.htm?size=5&id=${moduleSet.moduleId}&area=${moduleSet.areaId}&_type=3">                            </iframe>
+                                    <iframe style="border: 0; width: 100%; height: 480px;" src="/seller/design/goods-tui-get-goods-list.htm?size=5&id=${moduleSet.moduleId}&area=${moduleSet.areaId}&type=1">                            </iframe>
                                 </div>
                             </div>
                             <!--显示设置开始-->
