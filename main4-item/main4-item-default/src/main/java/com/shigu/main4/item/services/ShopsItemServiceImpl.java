@@ -369,7 +369,7 @@ public class ShopsItemServiceImpl implements ShopsItemService {
 
         String savePath = tmpdirPath + "/" + yearMm + "/" + fileFolder;
 
-        String filePath = "imgzip/"+ savePath + ".zip";
+        String filePath = "imgzip/"+ fileFolder + ".zip";
 
         if(ossIO.fileExist(filePath)){
             return ossIO.getDomain()+filePath;
