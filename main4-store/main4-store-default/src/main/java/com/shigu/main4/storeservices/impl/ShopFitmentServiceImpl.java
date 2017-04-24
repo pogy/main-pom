@@ -633,13 +633,13 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
                 moduleExample.createCriteria().andAreaIdEqualTo(areaId);
                 shopFitmentModuleMapper.deleteByExample(moduleExample);
 
-                ShopFitmentArea afterArea = shopFitmentAreaMapper.selectByPrimaryKey(shopFitmentArea.getAfterAreaId());
-                Long afterAreaId = 0L;
-                if (afterArea != null) {
-                    afterAreaId = afterArea.getAfterAreaId();
-                }
+//                ShopFitmentArea afterArea = shopFitmentAreaMapper.selectByPrimaryKey(shopFitmentArea.getAfterAreaId());
+//                Long afterAreaId = 0L;
+//                if (afterArea != null) {
+//                    afterAreaId = afterArea.getAfterAreaId();
+//                }
                 ShopFitmentArea area = new ShopFitmentArea();
-                area.setAfterAreaId(afterAreaId);
+                area.setAfterAreaId(shopFitmentArea.getAfterAreaId());
                 ShopFitmentAreaExample areaExample = new ShopFitmentAreaExample();
                 areaExample.createCriteria().andAfterAreaIdEqualTo(areaId);
                 shopFitmentAreaMapper.updateByExampleSelective(area, areaExample);
