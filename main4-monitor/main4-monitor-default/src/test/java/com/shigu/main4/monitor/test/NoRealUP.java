@@ -75,13 +75,13 @@ public class NoRealUP {
 //                    }
                     set.add(sgt.getGoodsId());
                 }
-                if(Math.random()<0.3){
-                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
-//                    if(set.contains(sgt.getGoodsId())){
-//                        System.out.println(sgt.getGoodsId());
-//                    }
-                    set.add(sgt.getGoodsId());
-                }
+//                if(Math.random()<0.3){
+//                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+////                    if(set.contains(sgt.getGoodsId())){
+////                        System.out.println(sgt.getGoodsId());
+////                    }
+//                    set.add(sgt.getGoodsId());
+//                }
 //                if(Math.random()<0.4){
 //                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
 ////                    if(set.contains(sgt.getGoodsId())){
@@ -129,12 +129,12 @@ public class NoRealUP {
 //                if(Math.random()<0.4){
 //                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
 //                }
-                if(Math.random()<0.3){
-                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
-                }
-                if(Math.random()<0.2){
-                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
-                }
+//                if(Math.random()<0.3){
+//                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+//                }
+//                if(Math.random()<0.2){
+//                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+//                }
                 if(Math.random()<0.1){
                     itemUpRecordService.addItemUpRecord(upGoods(sgt));
                 }

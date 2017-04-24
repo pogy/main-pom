@@ -12,8 +12,8 @@
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.0.7-SNAPSHOT</version>
-    <!--set -DnewVersion=4.0.7-SNAPSHOT-->
+    <version>4.0.7-RELEASE</version>
+    <!--versions:update-child-modules-->
     <modules>
         <module>main4-dao</module>
         <module>main4-common</module>
