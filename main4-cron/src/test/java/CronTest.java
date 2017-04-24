@@ -1,6 +1,7 @@
 import com.alibaba.fastjson.JSON;
 import com.searchtool.domain.SimpleElaBean;
 import com.shigu.main4.cron.BulkGoodsToEs;
+import com.shigu.main4.cron.SynStorecat;
 import com.shigu.main4.tools.RedisIO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,14 @@ public class CronTest {
 
     @Autowired
     BulkGoodsToEs bulkGoodsToEs;
+
+    @Autowired
+    SynStorecat synStorecat;
+
+    @Test
+    public void testTbcat(){
+        synStorecat.doContext();
+    }
     @Test
     public void test() throws InterruptedException {
 //        System.out.println(11);
