@@ -18,6 +18,14 @@ public class FitmentModule implements Serializable{
     private Integer sideType;
 
     private Long after;
+    /**
+     * 模块类别,只能get不能set
+     */
+    private Integer moduleType;
+
+    public Integer getModuleType() {
+        return moduleType;
+    }
 
     public Long getAreaId() {
         return areaId;

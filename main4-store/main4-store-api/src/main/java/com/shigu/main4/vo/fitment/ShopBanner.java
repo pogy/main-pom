@@ -1,6 +1,7 @@
 package com.shigu.main4.vo.fitment;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.vo.FitmentModule;
 
 import java.util.ArrayList;
@@ -30,6 +31,11 @@ public class ShopBanner extends FitmentModule {
 
     @JSONField(serialize = false)
     private BannerOption bannerOption = new BannerOption();
+
+    @Override
+    public Integer getModuleType() {
+        return FitmentModuleType.Banner.value;
+    }
 
     public BannerImage getStoreImg() {
         return storeImg;

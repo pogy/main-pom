@@ -1,5 +1,7 @@
 package com.shigu.main4.vo.fitment;
 
+import com.shigu.main4.enums.FitmentModuleType;
+
 import java.util.List;
 
 /**
@@ -23,6 +25,11 @@ public class ItemSearchModule extends TitleShowModule {
      * 是否显示价格筛选
      */
     private Integer priceScreen = 1;
+
+    @Override
+    public Integer getModuleType() {
+        return FitmentModuleType.Search.value;
+    }
 
     public String getKeyword() {
         return keyword;

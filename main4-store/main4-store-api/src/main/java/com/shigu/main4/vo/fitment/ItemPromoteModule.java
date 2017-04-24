@@ -1,6 +1,7 @@
 package com.shigu.main4.vo.fitment;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.shigu.main4.enums.FitmentModuleType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,11 @@ public class ItemPromoteModule extends TitleShowModule {
      * 显示筛选
      */
     private Integer filter = 0;
+
+    @Override
+    public Integer getModuleType() {
+        return FitmentModuleType.Promote.value;
+    }
 
     public ItemPromoteModule() {
         setTitle("推荐宝贝");
@@ -109,7 +115,6 @@ public class ItemPromoteModule extends TitleShowModule {
         this.itemNum = itemNum;
     }
 
-    @JSONField(serialize = false)
     public List<Long> getPromoteItems() {
         return promoteItems;
     }

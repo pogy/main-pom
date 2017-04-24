@@ -362,7 +362,7 @@
         </form>
     </div>
 </div>
-${shopCon}
+${container.html!}
 <div class="footer">
     <div class="inner">
         <p class="sitemap" style="width:650px;"> 

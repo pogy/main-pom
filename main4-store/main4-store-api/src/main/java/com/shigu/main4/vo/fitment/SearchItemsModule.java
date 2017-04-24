@@ -1,5 +1,6 @@
 package com.shigu.main4.vo.fitment;
 
+import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.vo.FitmentModule;
 
 /**
@@ -7,4 +8,9 @@ import com.shigu.main4.vo.FitmentModule;
  * Created by Administrator on 2017/4/19 0019.
  */
 public class SearchItemsModule extends FitmentModule {
+
+    @Override
+    public Integer getModuleType() {
+        return FitmentModuleType.SearchItems.value;
+    }
 }

@@ -340,12 +340,10 @@ public class CdnAction {
      * @return
      */
     private void packageShopData(ShopCdnBO bo,Model model){
-        ShopShowVO shopShowVO=new ShopShowVO();
-        shopShowVO.setOther(shopForCdnService.selShopBase(bo.getId()));
+        ShopShowVO shopShowVO=cdnService.shopSimpleVo(bo.getId());
+        //聚合类目信息
         shopShowVO.setCatPolymerizations(shopForCdnService.selCatRolymerizations(bo.getId()));
-        shopShowVO.setDomain(shopBaseService.selDomain(bo.getId()));
-        shopShowVO.setHasAuth(shopBaseService.shopAuthState(bo.getId()));
-        shopShowVO.setStoreRelation(storeRelationService.selRelationById(bo.getId()));
+        //查店内类目
         shopShowVO.setShopCats(shopForCdnService.selShopCatsById(bo.getId()));
         //查商品
         //如果是仓库
@@ -382,7 +380,6 @@ public class CdnAction {
             model.addAttribute("totalpage",pager.getTotalPages());
             shopShowVO.setItemList(pager);
         }
-        shopShowVO.setShopLicenses(shopLicenseService.selShopLicenses(bo.getId()));
         if(bo.isIndex()){//加装修与推荐
             shopShowVO.setRecommens(shopForCdnService.selRecomments(bo.getId()));
             shopShowVO.setShopFitment(shopForCdnService.selShopFitment(bo.getId()));
@@ -393,12 +390,6 @@ public class CdnAction {
                         .replace("</script>",""));
             }
         }
-        //得到商品ID
-        shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(bo.getId()));
-
-        Long starNum=shopForCdnService.selShopStarById(bo.getId());
-        starNum=starNum==null?0:starNum;
-        shopShowVO.setStarNum(starNum);
         model.addAttribute("vo",shopShowVO);
         model.addAttribute("query",bo);
     }

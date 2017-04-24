@@ -1,5 +1,6 @@
 package com.shigu.seller.actions;
 
+import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.storeservices.ShopBaseService;
@@ -55,6 +56,9 @@ public class ShopDesignAction {
 
     @Autowired
     ShopForCdnService shopForCdnService;
+
+    @Autowired
+    CdnService cdnService;
 
     /**
      * 给模块用的店铺基本信息
@@ -112,7 +116,8 @@ public class ShopDesignAction {
             containerVO.getSearchModule().getData().put("catPolymerizations",shopForCdnService.selCatRolymerizations(shopSession.getShopId()));//类目聚合
             containerVO.getSearchModule().getData().put("goodsList",shopForCdnService.searchItemOnsale(null,shopSession.getShopId(),"time_down",1,20));
         }
-        return "/shop_design/preview";
+        model.addAttribute("vo",cdnService.shopSimpleVo(shopSession.getShopId()));
+        return "/cdn/shop";
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.shigu.main4.vo.fitment;
 
+import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.vo.FitmentModule;
 
 /**
@@ -10,6 +11,11 @@ public class WideImageModule extends FitmentModule {
 
     private String picUrl="http://img.alicdn.com/tps/TB1iG39KXXXXXbBXVXXXXXXXXXX-1920-540.png";
     private String targetUrl="javascript:;";
+
+    @Override
+    public Integer getModuleType() {
+        return FitmentModuleType.WideImage.value;
+    }
 
     public String getPicUrl() {
         return picUrl;

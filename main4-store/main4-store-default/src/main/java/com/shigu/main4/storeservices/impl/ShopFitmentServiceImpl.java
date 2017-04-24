@@ -2,9 +2,12 @@ package com.shigu.main4.storeservices.impl;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguShopFitment;
 import com.opentae.data.mall.beans.ShopFitmentArea;
+import com.opentae.data.mall.beans.ShopFitmentFtl;
 import com.opentae.data.mall.beans.ShopFitmentModule;
 import com.opentae.data.mall.beans.ShopFitmentPage;
 import com.opentae.data.mall.examples.*;
@@ -14,6 +17,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.enums.FitmentAreaType;
 import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.enums.FitmentPageType;
+import com.shigu.main4.enums.FitmentPublished;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -130,6 +134,8 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         addModule(searchFirstArea, null, FitmentModuleType.SearchItems.value, 2, null, false);
 
         createBanner(shopId);
+//初始化发布
+        initPublish(shopId);
     }
 
     private void fitmentReset(Long shopId) {
@@ -453,6 +459,24 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
             throw new ShopFitmentException("该店铺不存在首页");
         }
     }
+
+    /**
+     * 取搜索页面
+     * @param shopId 店铺ID
+     * @return 搜索页面ID
+     * @throws ShopFitmentException
+     */
+    @Override
+    public Long selSearchPageIdByShopId(Long shopId) throws ShopFitmentException {
+        try {
+            ShopFitmentPageExample pageExample = new ShopFitmentPageExample();
+            pageExample.createCriteria().andShopIdEqualTo(shopId).andTypeEqualTo(FitmentPageType.SEARCH.value);
+            return shopFitmentPageMapper.selectByExample(pageExample).get(0).getPageId();
+        } catch (Exception e) {
+            throw new ShopFitmentException("该店铺不存在搜索页面");
+        }
+    }
+
     /**
      * 尝试删除区域
      * 1、如果区域内有模块,不删除
@@ -470,6 +494,142 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         if(shopFitmentAreaMapper.countAreaNome(areaId)>0){
             rmArea(areaId);
         }
+    }
+
+    /**
+     * 初始化发布
+     * @param shopId
+     */
+    @Override
+    public void initPublish(Long shopId) throws ShopFitmentException {
+        //先删除老的
+        ShopFitmentFtlExample ftlExample=new ShopFitmentFtlExample();
+        ftlExample.createCriteria().andShopIdEqualTo(shopId);
+        shopFitmentFtlMapper.deleteByExample(ftlExample);
+        //初始化banner数据
+        ShopFitmentFtl bannerFtl=new ShopFitmentFtl();
+        bannerFtl.setContext(bannerJson(shopId).toJSONString());
+        bannerFtl.setShopId(shopId);
+        bannerFtl.setType(FitmentPublished.BANNER.value);
+        shopFitmentFtlMapper.insertSelective(bannerFtl);
+        //初始化首页
+        Long firstPage=selIndexPageIdByShopId(shopId);
+        FitmentPage fitmentPage = new FitmentPage();
+        fitmentPage.setUserDefineAreas(selAreaByPageId(firstPage));
+        fitmentPage.setPageId(firstPage);
+
+        ShopFitmentFtl indexFtl=new ShopFitmentFtl();
+        indexFtl.setContext(JSON.toJSONString(fitmentPage));
+        indexFtl.setType(FitmentPublished.PAGE.value);
+        indexFtl.setShopId(shopId);
+        indexFtl.setPageId(firstPage);
+        shopFitmentFtlMapper.insertSelective(indexFtl);
+        //初始化搜索
+        Long searchPage=selSearchPageIdByShopId(shopId);
+        FitmentPage search = new FitmentPage();
+        search.setUserDefineAreas(selAreaByPageId(searchPage));
+        search.setPageId(searchPage);
+
+        ShopFitmentFtl searchFtl=new ShopFitmentFtl();
+        searchFtl.setContext(JSON.toJSONString(search));
+        searchFtl.setType(FitmentPublished.PAGE.value);
+        searchFtl.setShopId(shopId);
+        searchFtl.setPageId(searchPage);
+        shopFitmentFtlMapper.insertSelective(searchFtl);
+    }
+
+    /**
+     * 发布店铺banner
+     * @param shopId 店铺ID
+     */
+    @Override
+    public void publishBanner(Long shopId) {
+        //直接更新发布区,当发布区是有的
+        ShopFitmentFtlExample example=new ShopFitmentFtlExample();
+        example.createCriteria().andShopIdEqualTo(shopId).andTypeEqualTo(FitmentPublished.BANNER.value);
+        ShopFitmentFtl sff=new ShopFitmentFtl();
+        sff.setContext(bannerJson(shopId).toJSONString());
+        shopFitmentFtlMapper.updateByExampleSelective(sff,example);
+    }
+
+    /**
+     * 查出要发布的banner的json数据
+     * @param shopId
+     * @return
+     */
+    private JSONObject bannerJson(Long shopId){
+        ShopBanner banner=(ShopBanner) selShopHead(shopId).getAllarea().get(0);//拿到banner
+        JSONObject bannerJson= (JSONObject) JSON.toJSON(banner);
+        bannerJson.put("bannerOption",JSON.toJSON(banner.getBannerOption()));
+        //重新包装成area
+        return bannerJson;
+    }
+
+    @Override
+    public FitmentArea bannerOnpub(Long shopId) {
+        ShopFitmentFtl banner=new ShopFitmentFtl();
+        banner.setShopId(shopId);
+        banner.setType(FitmentPublished.BANNER.value);
+        banner=shopFitmentFtlMapper.selectOne(banner);
+        FitmentArea area=FitmentArea.emptyArea();
+        area.getAllarea().add(JSON.parseObject(banner.getContext(),ShopBanner.class));
+        return area;
+    }
+
+    @Override
+    public void publishPage(Long pageId) {
+        FitmentPage fitmentPage = new FitmentPage();
+        fitmentPage.setUserDefineAreas(selAreaByPageId(pageId));
+        fitmentPage.setPageId(pageId);
+        ShopFitmentFtlExample example=new ShopFitmentFtlExample();
+        example.createCriteria().andPageIdEqualTo(pageId);
+        ShopFitmentFtl sff=new ShopFitmentFtl();
+        sff.setContext(JSON.toJSONString(fitmentPage));
+        shopFitmentFtlMapper.updateByExampleSelective(sff,example);
+    }
+
+    @Override
+    public FitmentPage selPageOnpub(Long pageId) {
+        ShopFitmentFtl pageFtl=new ShopFitmentFtl();
+        pageFtl.setPageId(pageId);
+        pageFtl=shopFitmentFtlMapper.selectOne(pageFtl);
+        JSONObject pageJson=JSON.parseObject(pageFtl.getContext());
+        //查shopId
+        ShopFitmentPage sfpage=shopFitmentPageMapper.selectFieldsByPrimaryKey(pageId,FieldUtil.codeFields("page_id,shop_id"));
+
+        FitmentPage page=new FitmentPage();
+        page.setPageId(pageId);
+        page.setHeadArea(bannerOnpub(sfpage.getShopId()));
+        JSONArray areas=pageJson.getJSONArray("userDefineAreas");
+        List<FitmentArea> fitmentAreas=new ArrayList<>();
+        for(int i=0;i<areas.size();i++){
+            JSONObject areaJson=areas.getJSONObject(i);
+            FitmentArea area=new FitmentArea();
+            area.setAreaId(areaJson.getLong("areaId"));
+            area.setAreaType(areaJson.getInteger("areaType"));
+            area.setAllarea(parseJsonModule(areaJson.getJSONArray("allarea")));
+            area.setLeftarea(parseJsonModule(areaJson.getJSONArray("leftarea")));
+            area.setRightarea(parseJsonModule(areaJson.getJSONArray("rightarea")));
+            fitmentAreas.add(area);
+        }
+        page.setUserDefineAreas(fitmentAreas);
+        return page;
+    }
+
+    /**
+     * 包装module数组
+     * @param moduleArr
+     * @return
+     */
+    private List<FitmentModule> parseJsonModule(JSONArray moduleArr){
+        List<FitmentModule> modules=new ArrayList<>();
+        if(moduleArr!=null)
+        for(int i=0;i<moduleArr.size();i++){
+            JSONObject module=moduleArr.getJSONObject(i);
+            Integer moduleType=module.getInteger("moduleType");
+            modules.add(JSON.parseObject(module.toJSONString(),FitmentModuleType.typeOf(moduleType).moduleType.getClazz()));
+        }
+        return modules;
     }
 
     @Override
@@ -775,7 +935,11 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         }
         ShopFitmentModule shopFitmentModule = new ShopFitmentModule();
         shopFitmentModule.setModuleId(moduleId);
-        shopFitmentModule.setModuleValue(JSON.toJSONString(module));
+        JSONObject moduleObj= (JSONObject) JSON.toJSON(module);
+        if(module instanceof ItemPromoteModule){
+            moduleObj.remove("promoteItems");
+        }
+        shopFitmentModule.setModuleValue(moduleObj.toJSONString());
         shopFitmentModuleMapper.updateByPrimaryKeySelective(shopFitmentModule);
     }
 

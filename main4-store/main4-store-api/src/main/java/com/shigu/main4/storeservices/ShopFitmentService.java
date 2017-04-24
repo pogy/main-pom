@@ -5,6 +5,7 @@ import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.vo.*;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
+import com.shigu.main4.vo.fitment.ShopBanner;
 
 import java.util.List;
 
@@ -178,10 +179,48 @@ public interface ShopFitmentService {
     Long selIndexPageIdByShopId(Long shopId) throws ShopFitmentException;
 
     /**
+     * 取搜索页面pageId
+     * @param shopId
+     * @return
+     */
+    Long selSearchPageIdByShopId(Long shopId) throws ShopFitmentException;
+
+    /**
      * 尝试删除区域
      * 1、如果区域内有模块,不删除
      * 2、如果区域是顶级区域,after_area_id=0 页面中再没有其它区域,不删除
      * @param areaId
      */
     void tryRmArea(Long areaId);
+
+    /**
+     * 初始化发布
+     * @param shopId
+     */
+    void initPublish(Long shopId) throws ShopFitmentException;
+
+    /**
+     * 发布banner
+     * @param shopId
+     */
+    void publishBanner(Long shopId);
+
+    /**
+     * 查询已发布的banner
+     * @param shopId
+     * @return
+     */
+    FitmentArea bannerOnpub(Long shopId);
+    /**
+     * 发布页面
+     * @param pageId
+     */
+    void publishPage(Long pageId);
+
+    /**
+     * 查询已发布的页面设置
+     * @param pageId
+     * @return
+     */
+    FitmentPage selPageOnpub(Long pageId);
 }
