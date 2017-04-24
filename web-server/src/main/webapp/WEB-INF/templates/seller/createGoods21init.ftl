@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys3/css/createGoods21init.css" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/createGoods21init.css?t=" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/gys3/" type="hidden">
+<input id="mainhost" value="http://192.168.1.188:55/gys4/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -181,7 +181,7 @@
                     <a href="javascript:;" jbtn="toConnact">${store.market!}${store.shopNum!}</a>
                     </#list>
                     
-<#assign text>{                        "jid":'toConnact',                        "options":{                            "tipConText":'抱歉，账号异常！',                             "href_":'http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=4000761116',                             "tipIcon":'errorTipIcon',                             "btText":'联系客服'}                    }</#assign>
+<#assign text>{                        "jid":'toConnact',                        "options":[                            {"name":'tipConText', "value":'抱歉，账号异常！'},                             {"name":'href_', "value":'http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=4000761116'},                             {"name":'tipIcon', "value":'errorTipIcon'},                             {"name":'btText', "value":'联系客服'}                        ]                    }</#assign>
 <#assign $it=text?eval />
                                         <div jid="toConnact">
                         <input type="hidden" name="tipConText" value="抱歉，账号异常！" />
@@ -227,7 +227,7 @@
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001"  >广告派位</a></li> 
+            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >广告派位</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
         </ul> 
     </div>
@@ -280,11 +280,11 @@
 <#assign $it=text?eval />
                                                         <button class="gyButton" jbtn="toSq" id="">立即同步</button>
                             
-<#assign text>{                        "jid":'toSq',                         "options":{                            "tipConText":'您未授权淘宝店铺',                             "href_":"${main_host!}seller/ghTongbu.htm",                             "tipIcon":'errorTipIcon',                             "btText":'立即授权'}}</#assign>
+<#assign text>{                        "jid":'toSq',                         "options":[                            {"name":'tipConText', "value":'您未授权淘宝店铺'},                            {"name":'href_', "value":"${main_host!}seller/ghTongbu.htm"},                            {"name":'tipIcon', "value":'errorTipIcon'},                            {"name":'btText', "value":'立即授权'}                        ],                        "freemarker":true}</#assign>
 <#assign $it=text?eval />
                                                 <div jid="${$it.jid!}">
-                                <#list $it.options?keys as value>
-                                <input type="hidden" name="${($it.options)[value]!}" value="${value!}" />
+                                <#list $it.options as option> 
+                                <input type="hidden" name="${option.name!}" value="${option.value!}" />
                                 </#list>
                             </div>
                             <#elseif get.feedback == 2>
@@ -292,11 +292,11 @@
 <#assign $it=text?eval />
                                                         <button class="gyButton" jbtn="againSq" id="">立即同步</button>
                             
-<#assign text>{                        "jid":'againSq',                         "options":{                            "tipConText":'您的淘宝店授权过期',                             "href_":"${main_host!}ortherLogin.htm?ortherLoginType=1&backUrl=${main_host!}seller/createGoods21init.htm",                             "tipIcon":'errorTipIcon',                             "btText":'重新授权'},                        "freemarker":true}</#assign>
+<#assign text>{                        "jid":'againSq',                         "options":[                            {"name":'tipConText', "value":'您的淘宝店授权过期'},                            {"name":'href_', "value":"${main_host!}ortherLogin.htm?ortherLoginType=1&backUrl=${main_host!}seller/createGoods21init.htm"},                            {"name":'tipIcon', "value":'errorTipIcon'},                            {"name":'btText', "value":'重新授权'}                        ],                        "freemarker":true}</#assign>
 <#assign $it=text?eval />
                                                 <div jid="${$it.jid!}">
-                                <#list $it.options?keys as value>
-                                <input type="hidden" name="${($it.options)[value]!}" value="${value!}" />
+                                <#list $it.options as option> 
+                                <input type="hidden" name="${option.name!}" value="${option.value!}" />
                                 </#list>
                             </div>
                             </#if>
@@ -363,7 +363,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys3/js/createGoods21init.js"></script>
+<script src="http://style.571xz.com/gys4/js/createGoods21init.js?t="></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

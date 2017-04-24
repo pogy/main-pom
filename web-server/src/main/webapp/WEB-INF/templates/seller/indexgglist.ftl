@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys3/css/indexgglist.css" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/indexgglist.css?t=" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/gys3/" type="hidden">
+<input id="mainhost" value="http://192.168.1.188:55/gys4/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -194,7 +194,7 @@
                     <a href="javascript:;" jbtn="toConnact">${store.market!}${store.shopNum!}</a>
                     </#list>
                     
-<#assign text>{                        "jid":'toConnact',                        "options":{                            "tipConText":'抱歉，账号异常！',                             "href_":'http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=4000761116',                             "tipIcon":'errorTipIcon',                             "btText":'联系客服'}                    }</#assign>
+<#assign text>{                        "jid":'toConnact',                        "options":[                            {"name":'tipConText', "value":'抱歉，账号异常！'},                             {"name":'href_', "value":'http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=4000761116'},                             {"name":'tipIcon', "value":'errorTipIcon'},                             {"name":'btText', "value":'联系客服'}                        ]                    }</#assign>
 <#assign $it=text?eval />
                                         <div jid="toConnact">
                         <input type="hidden" name="tipConText" value="抱歉，账号异常！" />
@@ -214,39 +214,40 @@
     <div class="sidebar shadow-box">
         <h2>商品管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/createGoods21init.htm"  >发布商品</a></li>
-            <li><a href="${main_host!}seller/storeGoodsList21init.htm"  >出售中的商品</a></li>
-            <li><a href="${main_host!}seller/storeGoodsListinit.htm?pinteger=2"  >仓库中的商品</a></li>
-            <li><a href="${main_host!}seller/storeGoodsNoListinit.htm"  >批量修改货号</a></li>
-            <li><a href="${main_host!}seller/xiufuGoods21init.htm"  >商品类目管理</a></li>
+            <li><a href="${main_host!}seller/createGoods21init.htm"  >发布商品</a></li> 
+            <li><a href="${main_host!}seller/storeGoodsList21init.htm"  >出售中的商品</a></li> 
+            <li><a href="${main_host!}seller/storeGoodsListinit.htm?pinteger=2"  >仓库中的商品</a></li> 
+            <li><a href="${main_host!}seller/storeGoodsNoListinit.htm"  >批量修改货号</a></li> 
+            <li><a href="${main_host!}seller/xiufuGoods21init.htm"  >商品类目管理</a></li> 
         </ul> 
         <h2>店铺管理</h2>
         <ul>
-            <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li>
-            <li><a href="${main_host!}seller/fitmentStorefitmentStore.htm?tab=1"  >店铺装修</a></li>
-            <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li>
-            <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li>
-            <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li>
+            <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
+            <li><a href="${main_host!}seller/fitmentStorefitmentStore.htm?tab=1"  >店铺装修</a></li> 
+            <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
+            <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
+            <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
         </ul> 
         <h2>财务信息</h2>
         <ul>
-            <li><a href="${main_host!}seller/iwantToRechargein5.htm"  >充值</a></li>
-            <li><a href="${main_host!}seller/withdraw5Apply.htm"  >提现</a></li>
+            <li><a href="${main_host!}seller/iwantToRechargein5.htm"  >充值</a></li> 
+            <li><a href="${main_host!}seller/withdraw5Apply.htm"  >提现</a></li> 
         </ul> 
         <h2>账号管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/safeindex.htm"  >安全设置</a></li>
-            <li><a href="${main_host!}seller/sysSetsindex.htm"  >个人信息</a></li>
+            <li><a href="${main_host!}seller/safeindex.htm"  >安全设置</a></li> 
+            <li><a href="${main_host!}seller/sysSetsindex.htm"  >个人信息</a></li> 
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001"  >广告派位</a></li>
-            <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li>
+            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >广告派位</a></li> 
+            <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li> 
         </ul> 
     </div>
     
     <div class="content shadow-box">
         <h3 class="title">广告区域</h3>
+        <a href="${main_host!}seller/dtgglistFinish.htm" target="_blank" class="searAllRe">查看所有结果 ＞</a>
         <div class="adsBoxs clearfix">
             <#if (adsBoxList?size) gt 0>
             <#list adsBoxList as item>
@@ -268,7 +269,11 @@
                     </li>
                 </ul>
                 <div class="signBtn">
+                    <#if item.hdFinish??>
                     <a href="dtggapply.htm?id=${item.id!}">查看结果</a>
+                    <#else>
+                    <a href="dtggapply.htm?id=${item.id!}">立即报名</a>
+                    </#if>
                 </div>
             </div>
             </#list>
@@ -315,7 +320,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys3/js/indexgglist.js"></script>
+<script src="http://style.571xz.com/gys4/js/indexgglist.js?t="></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
