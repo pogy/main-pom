@@ -177,7 +177,7 @@
     <div class="layout">
         <div class="logoBox">
             <a href="http://www.571xz.com/">
-                <img src="/style/xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
+                <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
         <div class="splitline"></div>
