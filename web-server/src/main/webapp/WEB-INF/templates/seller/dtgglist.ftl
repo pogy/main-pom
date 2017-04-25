@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys3/css/dtgglist.css" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/dtgglist.css?t=" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/gys3/" type="hidden">
+<input id="mainhost" value="http://192.168.1.188:55/gys4/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -194,7 +194,7 @@
                     <a href="javascript:;" jbtn="toConnact">${store.market!}${store.shopNum!}</a>
                     </#list>
                     
-<#assign text>{                        "jid":'toConnact',                        "options":{                            "tipConText":'抱歉，账号异常！',                             "href_":'http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=4000761116',                             "tipIcon":'errorTipIcon',                             "btText":'联系客服'}                    }</#assign>
+<#assign text>{                        "jid":'toConnact',                        "options":[                            {"name":'tipConText', "value":'抱歉，账号异常！'},                             {"name":'href_', "value":'http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=4000761116'},                             {"name":'tipIcon', "value":'errorTipIcon'},                             {"name":'btText', "value":'联系客服'}                        ]                    }</#assign>
 <#assign $it=text?eval />
                                         <div jid="toConnact">
                         <input type="hidden" name="tipConText" value="抱歉，账号异常！" />
@@ -240,7 +240,7 @@
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a class="selected"  href="${main_host!}seller/dtggapply.htm?id=1001">广告派位</a></li> 
+            <li><a class="selected dtgg"  href="${main_host!}seller/dtggapply.htm?id=1001">广告派位</a></li> 
             <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li> 
         </ul>
     </div>
@@ -248,30 +248,29 @@
     <div class="content shadow-box">
         
         <p class="resultInfo">本次活动已结束！<#if (ggList?size) gt 0>派位结果如下：</#if></p>
-        <div class="ggList">
-            <#if (ggList?size) gt 0>
-            <table>
-            <tr class="tbhd">
-                <th>序号</th>
-                <th>市场</th>
-                <th>店铺</th>
-                <th>联系人</th>
-                <th>电话</th>
-            </tr>
-            <#list ggList as item>
-                <tr>
-                    <td>${item.num!}</td>
-                    <td>${item.marketText!}</td>
-                    <td>${item.storeNum!}</td>
-                    <td>${item.lxuser!}</td>
-                    <td><#if item.lxtel ??>${item.lxtel[0..2]}****${item.lxtel[7..10]}</#if></td>
+            <div class="ggList">
+                <#if (ggList?size) gt 0>
+                <table>
+                <tr class="tbhd">
+                    <th>序号</th>
+                    <th>市场</th>
+                    <th>店铺</th>
+                    <th>联系人</th>
+                    <th>电话</th>
                 </tr>
-            </#list>
-            </table>
-            
-            </#if>
-        </div>
-        
+                <#list ggList as item>
+                    <tr>
+                        <td>${item.num!}</td>
+                        <td>${item.marketText!}</td>
+                        <td>${item.storeNum!}</td>
+                        <td>${item.lxuser!}</td>
+                    <td><#if item.lxtel ??>${item.lxtel[0..2]}****${item.lxtel[7..10]}</#if></td>
+                    </tr>
+                </#list>
+                </table>
+                
+                </#if>
+            </div>
         <p class="nexttime">下次活动时间：${nexttimeText!}</p>
         
         <div class="introduction">
@@ -312,7 +311,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys3/js/dtgglist.js"></script>
+<script src="http://style.571xz.com/gys4/js/dtgglist.js?t="></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

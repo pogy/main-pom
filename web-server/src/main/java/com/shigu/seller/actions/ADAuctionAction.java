@@ -4,6 +4,7 @@ import com.opentae.data.mall.beans.SpreadAuctScren;
 import com.opentae.data.mall.beans.SpreadAuctShop;
 import com.opentae.data.mall.beans.SpreadAuctType;
 import com.shigu.seller.bo.AuctionApplyBo;
+import com.shigu.seller.services.AuctionService;
 import com.shigu.seller.services.api.ADAuctionService;
 import com.shigu.seller.vo.SpreadTypeViewVo;
 import com.shigu.seller.vo.WinnerVo;
@@ -39,6 +40,11 @@ public class ADAuctionAction {
 
     @Autowired
     private ADAuctionService adAuctionService;
+    /**
+     * 自行包装用的service
+     */
+    @Autowired
+    private AuctionService auctionService;
 
     String ftlDir="seller";
 
@@ -63,7 +69,7 @@ public class ADAuctionAction {
         // 电商基地&精品男装& (!测试店铺32888)
 
         if(id == 1001){
-            if (logshop.getShopId() != 32888 && logshop.getMarketId() != 1087 && logshop.getMarketId() != 613) {
+            if (logshop.getShopId() != 35992 && logshop.getMarketId() != 1087 && logshop.getMarketId() != 613) {
                 return ftlDir+"/dtggapplyNull";
             }
         }
@@ -136,5 +142,15 @@ public class ADAuctionAction {
             model.addAttribute("msg", "很抱歉，该活动已经结束");
             return "redirect:/seller/dtggapply.htm?id="+spreadAuctScren.getSpreadPmId();
         }
+    }
+
+    /**
+     * 查看所有结果
+     * @return
+     */
+    @RequestMapping("/dtgglistFinish")
+    public String dtgglistFinish(Model model){
+        model.addAttribute("indexggList",auctionService.auctionResults());
+        return ftlDir+"/dtgglistFinish";
     }
 }

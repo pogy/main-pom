@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>四季星座网-供应商中心-安全设置</title>
+    <title>广告派位结果-供应商后台-[四季星座网]</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/safeindex.css?t=" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/dtgglistFinish.css?t=" rel="stylesheet">
     
   </head>
 <body>
@@ -235,7 +235,7 @@
         </ul> 
         <h2>账号管理</h2>
         <ul>
-            <li><a class="selected"  href="${main_host!}seller/safeindex.htm">安全设置</a></li> 
+            <li><a href="${main_host!}seller/safeindex.htm"  >安全设置</a></li> 
             <li><a href="${main_host!}seller/sysSetsindex.htm"  >个人信息</a></li> 
         </ul> 
         <h2>营销管理</h2>
@@ -245,108 +245,40 @@
         </ul> 
     </div>
     
-    <div class="content">
-        <ul class="safe_level shadow-box">
-            <li class="d1">安全等级</li>
-            <li class="d2">${safe_level!}</li>
-            <li class="d3">
-                <div class="iwrapper">
-                    <em class="e1"></em>
-                    <em class="e2" style="width:${safe_level!}%"></em>
-                </div>
-            </li>
-        </ul>
+    <div class="content shadow-box">
         
-        <div class="infobox shadow-box">
-            
-            
-            <ul class="clearfix">
-                <li class="d1"><i class="iconfont rz"></i></li>
-                <li class="d2">
-                    <p>
-                        身份认证 
-                        <#if info_card == true>
-                        <em class="yes"><i class="iconfont">&#xe68a;</i>已认证</em>
-                        <#else>
-                        <em class="no"><i class="iconfont">&#xe697;</i>未认证</em>
-                        </#if>
-                    </p>
-                    <p class="desc">用于提升账号的安全性和信任级别。认证后的有卖家记录的账号不能修改认证信息。</p>
-                </li>
-                <li class="d3">
-                    <a href="${main_host!}seller/saferz.htm">实名认证</a>
-                </li>
-            </ul>
-            
-            
-            <ul class="clearfix">
-                <li class="d1"><i class="iconfont mm"></i></li>
-                <li class="d2">
-                    <p>
-                        登录密码 
-                        <#if info_pwd == 'low'>
-                        <em class="no"><i class="iconfont">&#xe697;</i>低</em>
-                        <#elseif info_pwd == 'hign'>
-                        <em class="yes"><i class="iconfont">&#xe68a;</i>高</em>
-                        <#else>
-                        <em class="yes"><i class="iconfont">&#xe68a;</i>中</em>
-                        </#if>
-                    </p>
-                    <p class="desc">安全性高的密码可以使账号更安全。建议您定期更换密码，且设置一个包含数字和字母，并长度超过6位以上的密码。</p>
-                </li>
-                <li class="d3">
-                    <a href="${main_host!}seller/safexgmm.htm">修改密码</a>
-                </li>
-            </ul>
-            
-            
-            <ul class="clearfix">
-                <li class="d1"><i class="iconfont yx"></i></li>
-                <li class="d2">
-                    <p>
-                        安全邮箱 
-                        <#if info_email == true>
-                        <em class="yes"><i class="iconfont">&#xe68a;</i>已绑定</em>
-                        <#else>
-                        <em class="no"><i class="iconfont">&#xe697;</i>未绑定</em>
-                        </#if>
-                    </p>
-                    <p class="desc">是您找回登陆密码的方式之一，更有效的保障你的密码安全。</p>
-                </li>
-                <li class="d3">
-                    <a href="${main_host!}seller/safeszyx.htm">设置邮箱</a>
-                </li>
-            </ul>
-            
-            
-            <ul class="clearfix">
-                <li class="d1"><i class="iconfont phone"></i></li>
-                <li class="d2">
-                    <p>
-                        手机绑定 
-                        <#if info_mobile == true>
-                        <em>${text_mobile!}</em>
-                        <#else>
-                        <em class="no"><i class="iconfont">&#xe697;</i>未绑定</em>
-                        </#if>
-                    </p>
-                    <p class="desc">绑定手机后，便于支付时接收动态密码及发货等方便用户的功能。</p>
-                </li>
-                <li class="d3">
+        <p class="resultInfo">本次活动已结束！<#if (indexggList?size) gt 0>派位结果如下：</#if></p>
+            <#if indexggList?? && (indexggList?size) gt 0>
+                <#list indexggList as indexgg>
+                <h3 class="syIntro">${indexgg.title!}</h3>
+                <div class="ggList">
+                    <#if (indexgg.ggList?size) gt 0>
+                    <table>
+                    <tr class="tbhd">
+                        <th>序号</th>
+                        <th>市场</th>
+                        <th>店铺</th>
+                        <th>联系人</th>
+                        <th>电话</th>
+                    </tr>
+                    <#list indexgg.ggList as item>
+                        <tr>
+                            <td>${item_index + 1}</td>
+                            <td>${item.marketText!}</td>
+                            <td>${item.storeNum!}</td>
+                            <td>${item.lxuser!}</td>
+                            <td><#if item.lxtel ??>${item.lxtel[0..2]}****${item.lxtel[7..10]}</#if></td>
+                        </tr>
+                    </#list>
+                    </table>
                     
-                    
-                    
-                    
-                </li>
-            </ul>
+                    </#if>
+                </div>
+                </#list>
             
-            
-        </div>
-    
+            </#if>
+        
     </div>
-    
-    
-    
 </div>
 <div class="footer">
     <div class="inner">
@@ -379,7 +311,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/safeindex.js?t="></script>
+<script src="http://style.571xz.com/gys4/js/dtgglistFinish.js?t="></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

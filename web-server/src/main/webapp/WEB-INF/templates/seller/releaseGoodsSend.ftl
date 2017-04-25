@@ -14,12 +14,12 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys3/css/releaseGoodsSend.css" rel="stylesheet">
-            <link href="http://style.571xz.com/gys3/temp/webuploader/webuploader.css" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/releaseGoodsSend.css?t=" rel="stylesheet">
+            <link href="http://style.571xz.com/gys4/temp/webuploader/webuploader.css" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/gys3/" type="hidden">
+<input id="mainhost" value="http://192.168.1.188:55/gys4/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -195,7 +195,7 @@
                     <a href="javascript:;" jbtn="toConnact">${store.market!}${store.shopNum!}</a>
                     </#list>
                     
-<#assign text>{                        "jid":'toConnact',                        "options":{                            "tipConText":'抱歉，账号异常！',                             "href_":'http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=4000761116',                             "tipIcon":'errorTipIcon',                             "btText":'联系客服'}                    }</#assign>
+<#assign text>{                        "jid":'toConnact',                        "options":[                            {"name":'tipConText', "value":'抱歉，账号异常！'},                             {"name":'href_', "value":'http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=4000761116'},                             {"name":'tipIcon', "value":'errorTipIcon'},                             {"name":'btText', "value":'联系客服'}                        ]                    }</#assign>
 <#assign $it=text?eval />
                                         <div jid="toConnact">
                         <input type="hidden" name="tipConText" value="抱歉，账号异常！" />
@@ -241,7 +241,7 @@
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001"  >广告派位</a></li> 
+            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >广告派位</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
         </ul> 
     </div>
@@ -462,7 +462,7 @@
     
     <link href="http://g.alicdn.com/kissy/k/1.4.7/editor/theme/cool/editor-min.css?1" rel="stylesheet">
     <script src="http://g.alicdn.com/kissy/k/1.4.7/seed.js" data-config="{combine:true}"></script>
-    <script src="http://style.571xz.com/gys3/temp/deonkey.js"></script>
+    <script src="http://style.571xz.com/gys4/temp/deonkey.js"></script>
     
 </div>
 <div class="footer">
@@ -496,8 +496,8 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-        <script src="http://style.571xz.com/gys3/temp/webuploader/webuploader.js"></script>
-<script src="http://style.571xz.com/gys3/js/releaseGoodsSend.js"></script>
+        <script src="http://style.571xz.com/gys4/temp/webuploader/webuploader.js"></script>
+<script src="http://style.571xz.com/gys4/js/releaseGoodsSend.js?t="></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
