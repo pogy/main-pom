@@ -304,7 +304,7 @@ public class ShopDesignService {
             Long id = bo.getId();
             if (module != null) {
                 List<Long> ids = module.getPromoteItems();
-                if (sd && ids.size() > 16) {
+                if (sd && ids.size() >= 16) {
                     vo.setStatus(1);
                     vo.setMessage("已达到最大推荐数量");
                     return vo;
