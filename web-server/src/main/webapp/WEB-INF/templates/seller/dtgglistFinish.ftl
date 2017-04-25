@@ -247,7 +247,7 @@
     
     <div class="content shadow-box">
         
-        <p class="resultInfo">本次活动已结束！<#if (ggList?size) gt 0>派位结果如下：</#if></p>
+        <p class="resultInfo">本次活动已结束！<#if (indexggList?size) gt 0>派位结果如下：</#if></p>
             <#if indexggList?? && (indexggList?size) gt 0>
                 <#list indexggList as indexgg>
                 <h3 class="syIntro">${indexgg.title!}</h3>
@@ -263,11 +263,11 @@
                     </tr>
                     <#list indexgg.ggList as item>
                         <tr>
-                            <td>${item.num!}</td>
+                            <td>${item_index + 1}</td>
                             <td>${item.marketText!}</td>
                             <td>${item.storeNum!}</td>
                             <td>${item.lxuser!}</td>
-                            <td>#if item.lxtel ??>${item.lxtel[0..2]}****${item.lxtel[7..10]}</#if></td>
+                            <td><#if item.lxtel ??>${item.lxtel[0..2]}****${item.lxtel[7..10]}</#if></td>
                         </tr>
                     </#list>
                     </table>
@@ -277,13 +277,6 @@
                 </#list>
             
             </#if>
-        
-        <p class="nexttime">下次活动时间：${nexttimeText!}</p>
-        
-        <div class="introduction">
-            ${introductionHtml}
-            
-        </div>
         
     </div>
 </div>
