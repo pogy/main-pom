@@ -21,7 +21,7 @@
                     <label><input type="radio" name="titleShow" value="0" <#if moduleSet.titleShow==0>checked</#if>> 不显示</label>
                     <label><input type="radio" name="titleShow" value="1" <#if moduleSet.titleShow==1>checked</#if>> 显示</label>
                     <label>
-                        <input type="text" name="title" value="自定义内容区" placeholder="自定义内容区">
+                        <input type="text" name="title" value="${moduleSet.title!"自定义内容区"}" placeholder="自定义内容区">
                     </label>
                 </p>
                 <p style="margin-bottom: 8px; display: none;">
