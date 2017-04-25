@@ -304,6 +304,11 @@ public class ShopDesignService {
             Long id = bo.getId();
             if (module != null) {
                 List<Long> ids = module.getPromoteItems();
+                if (sd && ids.size() > 16) {
+                    vo.setStatus(1);
+                    vo.setMessage("已达到最大推荐数量");
+                    return vo;
+                }
                 if (sd ? !ids.contains(id) && ids.add(id) : ids.remove(id))
                     shopFitmentService.revalueModuleOption(bo.getMid(), JSON.toJSONString(ids));
             } else {
