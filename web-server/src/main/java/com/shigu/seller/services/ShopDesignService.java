@@ -11,6 +11,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.enums.FitmentPageType;
 import com.shigu.main4.exceptions.ShopFitmentException;
+import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.vo.FitmentArea;
@@ -58,6 +59,9 @@ public class ShopDesignService {
     @Autowired
     ShopFitmentAreaMapper shopFitmentAreaMapper;
 
+    @Autowired
+    ShopBaseService shopBaseService;
+
     /**
      * 得到模块
      * @param moduleId
@@ -85,6 +89,18 @@ public class ShopDesignService {
     public ModuleVO selHeadModule(Long shopId){
         return new ModuleVO(shopFitmentService.selShopHead(shopId).getAllarea().get(0),cfg);
     }
+
+    /**
+     * 带数据的head
+     * @param shopId
+     * @return
+     * @throws IOException
+     */
+    public ModuleVO selHeadModuleWithData(Long shopId,String webSite,Boolean isEditer) throws IOException {
+        return parseModule(shopFitmentService.selShopHead(shopId).getAllarea().get(0),selShopForModule(shopId,webSite)
+                ,isEditer);
+    }
+
     /**
      * 查页面ID
      * @param shopId
@@ -94,12 +110,46 @@ public class ShopDesignService {
         return shopFitmentService.selIndexPageIdByShopId(shopId);
     }
 
+
+    /**
+     * 给模块用的店铺基本信息
+     * @return
+     */
+    public ShopForModuleVO selShopForModule(Long shopId,String webSite){
+        ShopForModuleVO shop=new ShopForModuleVO();
+        shop.setShopId(shopId);
+        shop.setWebSite(webSite);
+        shop.setDomain(shopBaseService.selDomain(shopId));
+        return shop;
+    }
     /**
      * 查页面模块
      * @return
      */
     public ContainerVO selPageById(Long pageId,ShopForModuleVO shop,Boolean isEditer) throws ShopFitmentException, IOException {
-        FitmentPage page=shopFitmentService.selPage(pageId);
+        return parseToContainer(shopFitmentService.selPage(pageId),shop,isEditer);
+    }
+
+    /**
+     * 已发布的页面模块
+     * @param pageId
+     * @param shop
+     * @return
+     * @throws IOException
+     */
+    public ContainerVO selPagePublishedById(Long pageId,ShopForModuleVO shop) throws IOException {
+        return parseToContainer(shopFitmentService.selPageOnpub(pageId),shop,false);
+    }
+
+    /**
+     * 包装成内容对象
+     * @param page
+     * @param shop
+     * @param isEditer
+     * @return
+     * @throws IOException
+     */
+    public ContainerVO parseToContainer(FitmentPage page,ShopForModuleVO shop,Boolean isEditer) throws IOException {
         ContainerVO containerVO=new ContainerVO(cfg);
         containerVO.setPageName(page.getPageName());
         AreaVO bannerArea=new AreaVO(page.getHeadArea());
@@ -113,21 +163,22 @@ public class ShopDesignService {
             AreaVO areaVO=new AreaVO(fa);
             containerVO.getFitmentAreas().add(areaVO);
             if(areaVO.getAllarea() != null)
-            for(FitmentModule fm:areaVO.getAllarea()){
-                areaVO.addAllModule(parseModule(fm,shop,isEditer));
-            }
-            if(areaVO.getLeftarea() != null)
-            for(FitmentModule fm:areaVO.getLeftarea()){
-                areaVO.addLeftModule(parseModule(fm,shop,isEditer));
-            }
-            if(areaVO.getRightarea() != null)
-            for(FitmentModule fm:areaVO.getRightarea()){
-                ModuleVO mv=parseModule(fm,shop,isEditer);
-                if(mv instanceof SearchModuleVO){
-                    containerVO.setSearchModule((SearchModuleVO) mv);
+                for(FitmentModule fm:areaVO.getAllarea()){
+                    areaVO.addAllModule(parseModule(fm,shop,isEditer));
                 }
-                areaVO.addRightModule(mv);
-            }
+            if(areaVO.getLeftarea() != null)
+                for(FitmentModule fm:areaVO.getLeftarea()){
+                    areaVO.addLeftModule(parseModule(fm,shop,isEditer));
+                }
+            if(areaVO.getRightarea() != null)
+                for(FitmentModule fm:areaVO.getRightarea()){
+                    ModuleVO mv=parseModule(fm,shop,isEditer);
+                    if(mv instanceof SearchModuleVO){
+                        containerVO.setSearchModule((SearchModuleVO) mv);
+                        containerVO.getData().put("searchModule",mv);
+                    }
+                    areaVO.addRightModule(mv);
+                }
         }
         return containerVO;
     }

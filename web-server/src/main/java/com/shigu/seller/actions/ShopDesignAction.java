@@ -55,19 +55,6 @@ public class ShopDesignAction {
     @Autowired
     CdnService cdnService;
 
-    /**
-     * 给模块用的店铺基本信息
-     * @param session
-     * @return
-     */
-    private ShopForModuleVO selShopForModule(HttpSession session){
-        ShopSession shopSession=getShopSession(session);
-        ShopForModuleVO shop=new ShopForModuleVO();
-        shop.setShopId(shopSession.getShopId());
-        shop.setWebSite(shopSession.getWebSite());
-        shop.setDomain(shopBaseService.selDomain(shopSession.getShopId()));
-        return shop;
-    }
 
     /**
      * 店铺装修
@@ -79,7 +66,8 @@ public class ShopDesignAction {
         if(pageId==null){
             pageId=shopDesignService.selPageIdByShopId(shopSession.getShopId());
         }
-        ContainerVO containerVO=shopDesignService.selPageById(pageId,selShopForModule(session),true);
+        ContainerVO containerVO=shopDesignService.selPageById(pageId,shopDesignService.selShopForModule(shopSession.getShopId(),
+                shopSession.getWebSite()),true);
         model.addAttribute("page_id",pageId);
         model.addAttribute("container",containerVO);
         model.addAttribute("pages",shopDesignService.selAllPage(shopSession.getShopId()));
@@ -102,7 +90,8 @@ public class ShopDesignAction {
         if(pageId==null){
             pageId=shopDesignService.selPageIdByShopId(shopSession.getShopId());
         }
-        ContainerVO containerVO=shopDesignService.selPageById(pageId,selShopForModule(session),false);
+        ContainerVO containerVO=shopDesignService.selPageById(pageId,shopDesignService.selShopForModule(shopSession.getShopId(),
+                shopSession.getWebSite()),false);
         model.addAttribute("container",containerVO);
         model.addAttribute("pages",shopDesignService.selAllPage(shopSession.getShopId()));
         model.addAttribute("isEditer",false);
@@ -129,11 +118,13 @@ public class ShopDesignAction {
      */
     @RequestMapping("design/addModule")
     public String addModule(AddModuleBO bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
+        ShopSession shopSession=getShopSession(session);
         Long sideId=null;
         if(bo.getSide()!=null&&!"none".equals(bo.getSide())){
             sideId=Long.valueOf(bo.getSide());
         }
-        ModuleVO mv=shopDesignService.addModule(bo.getId(),bo.getArea(),bo.getType(),sideId,bo.getAfter(),selShopForModule(session));
+        ModuleVO mv=shopDesignService.addModule(bo.getId(),bo.getArea(),bo.getType(),sideId,bo.getAfter(),shopDesignService.selShopForModule(shopSession.getShopId(),
+                shopSession.getWebSite()));
         model.addAllAttributes(mv.getData());
         return "/shop_design/"+bo.getId();
     }
@@ -358,8 +349,10 @@ public class ShopDesignAction {
     }
 
     private String saveModuleOption(FitmentModule module,HttpSession session,Model model) throws ShopFitmentException, IOException {
+        ShopSession shopSession=getShopSession(session);
         shopDesignService.revalueModule(module.getModuleId(),module);
-        ModuleVO mv=shopDesignService.selModuleByModuleIdWithData(module.getModuleId(),selShopForModule(session),true);
+        ModuleVO mv=shopDesignService.selModuleByModuleIdWithData(module.getModuleId(),shopDesignService.selShopForModule(shopSession.getShopId(),
+                shopSession.getWebSite()),true);
         model.addAllAttributes(mv.getData());
         return "/"+mv.getTemplate().getSourceName().replace(".ftl","");
     }

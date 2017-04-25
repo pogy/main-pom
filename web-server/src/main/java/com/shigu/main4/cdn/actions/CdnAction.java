@@ -16,6 +16,7 @@ import com.shigu.main4.cdn.vo.ShopShowVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
@@ -32,6 +33,8 @@ import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.ShopBaseForCdn;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.seller.services.ShopDesignService;
+import com.shigu.seller.vo.ContainerVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
@@ -41,6 +44,7 @@ import com.shigu.spread.services.SpreadService;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
+import freemarker.template.TemplateException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +111,9 @@ public class CdnAction {
 
     @Autowired
     ItemUpRecordService itemUpRecordService;
+
+    @Autowired
+    ShopDesignService shopDesignService;
 
     /**
      * 杭州首页动态页面
@@ -226,7 +233,7 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("item")
-    public String item(Long id,Model model) throws CdnException {
+    public String item(Long id,Model model) throws CdnException, IOException, TemplateException {
         //如果东北商品,用东北的模板
         ItemShowVO itemShowVO=new ItemShowVO();
         itemShowVO.setItemId(id);
@@ -238,6 +245,8 @@ public class CdnAction {
         if(cdnItem==null){//商品不存在
             throw new CdnException("商品不存在");
         }
+        //店招
+        model.addAttribute("navCon",cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite()));
         // 商品详情懒加载
         if(cdnItem.getDescription()!=null)
             cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
@@ -255,6 +264,7 @@ public class CdnAction {
         itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
         model.addAttribute("newGoodsList",shopForCdnService.searchItemOnsale(null,cdnItem.getShopId(),"time_down",1,5).getContent());
         model.addAttribute("vo",itemShowVO);
+        model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
         return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
     }
 
@@ -313,7 +323,7 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("shop")
-    public String shop(@Valid ShopCdnBO bo, BindingResult result,Model model) throws CdnException {
+    public String shop(@Valid ShopCdnBO bo, BindingResult result,Model model) throws CdnException, ShopFitmentException, IOException {
         // TODO: 17/3/20 如果分站过来的,跳现在的shopID
 
         if(bo.getId()>1000000){
@@ -325,9 +335,17 @@ public class CdnAction {
         if(result.hasErrors()){
             throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
         }
-        packageShopData(bo,model);
         StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
         String webSite=storeRelation.getWebSite();
+
+        Long pageId=shopDesignService.selPageIdByShopId(bo.getId());
+        ContainerVO containerVO=shopDesignService.selPagePublishedById(pageId,shopDesignService.selShopForModule(bo.getId(),
+                webSite));
+        model.addAttribute("container",containerVO);
+        model.addAttribute("pages",shopDesignService.selAllPage(bo.getId()));
+        model.addAttribute("isEditer",false);
+        model.addAttribute("vo",cdnService.shopSimpleVo(bo.getId()));
+
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
             return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";

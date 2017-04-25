@@ -22,9 +22,12 @@ import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.seller.services.ShopDesignService;
+import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -58,6 +61,18 @@ public class CdnService {
 
     @Autowired
     ShopLicenseService shopLicenseService;
+
+    @Autowired
+    ShopDesignService shopDesignService;
+
+    /**
+     * banner部分的html
+     * @param shopId
+     * @return
+     */
+    public String bannerHtml(Long shopId,String webSite) throws IOException, TemplateException {
+        return shopDesignService.selHeadModuleWithData(shopId,webSite,false).getHtml();
+    }
 
 
     /**

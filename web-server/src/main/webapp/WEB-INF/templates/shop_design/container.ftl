@@ -10,7 +10,7 @@
                         <#list fitmentAreas as area>
                         <div class="area clearfix" data-id="${area.areaId}">
                             <#if area.areaType==1>
-                                <div class="area-1190" data-type="3">
+                                <div class="area-1190" data-type="<#if searchModule??>0<#else>3</#if>">
                                 <#if area.allModules??>
                                     <#list area.allModules as module>
                                     ${module.html}
@@ -24,7 +24,7 @@
                                     </#if>
                                 </div>
                             <#else>
-                                    <div class="area-190" data-type="1">
+                                    <div class="area-190" data-type="<#if searchModule??>0<#else>1</#if>">
                                 <#if area.leftModules??>
                                         <#list area.leftModules as module>
                                         ${module.html}
@@ -38,7 +38,7 @@
                                 </#if>
                                     </div>
 
-                                    <div class="area-990" data-type="2">
+                                    <div class="area-990" data-type="<#if searchModule??>0<#else>2</#if>">
                                 <#if area.rightModules??>
                                         <#list area.rightModules as module>
                                         ${module.html}
