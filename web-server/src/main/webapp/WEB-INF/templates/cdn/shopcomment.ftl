@@ -15,7 +15,7 @@
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/shopItemCopy/js/shopcomment.js"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shopcomment.js"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -324,11 +324,12 @@
                     <em class="disabled">淘宝店铺</em>
                     </#if>
                     <#if session_user_redis__.logshop.shopId??>
-                        <b xzclick="addGoodsData" data-goodsid="${vo.itemId!}">数据包</b>
+                        
+                        <b xzclick="collectShopCannot" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
                     <#else>
-                        <b xzclick="addGoodsDataCannot">数据包</b>
+                        
+                        <b xzclick="collectShop" data-shopid="${vo.storeRelation.storeId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
                     </#if>
-                    <b xzclick="collectShop" data-shopid="${vo.storeRelation.storeId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
             
             
             
@@ -505,7 +506,13 @@ ${navCon}
         </ul>
         <div class="Coll">
             <ul>
-                <li><a href="javascript:;" id="scStore" data-id="${vo.storeRelation.storeId!}" title="收藏本店">收藏本店</a></li>
+                <li>
+                    <#if session_user_redis__.logshop.shopId??>
+                    <a href="javascript:;" xzclick="collectShopCannot" title="收藏本店">收藏本店</a>
+                    <#else>
+                    <a href="javascript:;" xzclick="collectShop" data-id="${vo.storeRelation.storeId!}" title="收藏本店">收藏本店</a>
+                    </#if>
+                </li>
                 <#if vo.other.taobaoUrl != "">
                 <li><a href="${vo.other.taobaoUrl!}" rel="nofollow" target="_blank" title="进入批发商淘宝店铺">进入淘宝店</a></li>
                 <#else>
