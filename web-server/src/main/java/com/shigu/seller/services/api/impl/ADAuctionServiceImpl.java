@@ -69,6 +69,7 @@ public class ADAuctionServiceImpl implements ADAuctionService{
             spreadTypeViewVo.setCount(spreadAuctType.getSpreadNum().intValue());
             spreadTypeViewVo.setBeginTime(DateUtil.dateToString(spreadAuctType.getDelverStartTime(),DateUtil.patternA));
             spreadTypeViewVo.setEndTime(DateUtil.dateToString(spreadAuctType.getDetDelverEndTime(),DateUtil.patternA));
+            spreadTypeViewVo.setHdFinish(auctScren==null?1:(auctScren.getEndTime().getTime()<System.currentTimeMillis()?1:0));
             spreadTypeViewVo.setPrice(String.valueOf(spreadAuctType.getPrice()/100));
             spreadTypeViewVo.setTitle(spreadAuctType.getName());
             typeViewVoList.add(spreadTypeViewVo);

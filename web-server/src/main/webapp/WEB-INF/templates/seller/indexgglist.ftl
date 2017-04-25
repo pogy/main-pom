@@ -269,7 +269,7 @@
                     </li>
                 </ul>
                 <div class="signBtn">
-                    <#if item.hdFinish??>
+                    <#if item.hdFinish == 1>
                     <a href="dtggapply.htm?id=${item.id!}">查看结果</a>
                     <#else>
                     <a href="dtggapply.htm?id=${item.id!}">立即报名</a>

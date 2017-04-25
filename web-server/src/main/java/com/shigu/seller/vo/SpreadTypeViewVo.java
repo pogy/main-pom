@@ -22,6 +22,19 @@ public class SpreadTypeViewVo {
 
     private String price;
 
+    /**
+     * 1代表已经结束,0代表没结束
+     */
+    private int hdFinish;
+
+    public int getHdFinish() {
+        return hdFinish;
+    }
+
+    public void setHdFinish(int hdFinish) {
+        this.hdFinish = hdFinish;
+    }
+
     public String getTitle() {
         return title;
     }
