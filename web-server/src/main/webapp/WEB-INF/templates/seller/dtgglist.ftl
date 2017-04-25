@@ -264,7 +264,7 @@
                         <td>${item.marketText!}</td>
                         <td>${item.storeNum!}</td>
                         <td>${item.lxuser!}</td>
-                    <td>#if item.lxtel ??>${item.lxtel[0..2]}****${item.lxtel[7..10]}</#if></td>
+                    <td><#if item.lxtel ??>${item.lxtel[0..2]}****${item.lxtel[7..10]}</#if></td>
                     </tr>
                 </#list>
                 </table>
