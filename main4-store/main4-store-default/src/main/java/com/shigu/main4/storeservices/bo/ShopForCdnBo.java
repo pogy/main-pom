@@ -41,6 +41,14 @@ public class ShopForCdnBo implements Serializable{
 
     /** 时间结束 */
     private Date dateTo;
+    /**
+     * 下架时间开始
+     */
+    private Date soldDateFrom;
+    /**
+     * 下架时间结束
+     */
+    private Date soldDateTo;
 
     /** shop id */
     private Long shopId;
@@ -153,5 +161,21 @@ public class ShopForCdnBo implements Serializable{
 
     public void setShopId(Long shopId) {
         this.shopId = shopId;
+    }
+
+    public Date getSoldDateFrom() {
+        return soldDateFrom;
+    }
+
+    public void setSoldDateFrom(Date soldDateFrom) {
+        this.soldDateFrom = soldDateFrom;
+    }
+
+    public Date getSoldDateTo() {
+        return soldDateTo;
+    }
+
+    public void setSoldDateTo(Date soldDateTo) {
+        this.soldDateTo = soldDateTo;
     }
 }

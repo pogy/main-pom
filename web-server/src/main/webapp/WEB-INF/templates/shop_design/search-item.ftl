@@ -1,5 +1,6 @@
 <div class="J_TModule clearfix ui-droppable">
     <link rel="stylesheet" href="/design/css/common/page-link.css?t=20161216" />
+    <script type="text/javascript" src="/design/theme/xzw/js/laydate/laydate.js"></script>
     <div class="js-module" data-not-edit="" data-not-del="">
         <div class="mr-title">
             <a>所有宝贝</a>
@@ -20,9 +21,9 @@
                                 </div>
                             <div class="sl-value">
                             <ul>
-                                <li class="">
-                                    <a href="/shop/search.htm?id=${shop.shopId}&cid=${poly.cid}">全部</a>
-                                </li>
+                                <#--<li class="">-->
+                                    <#--<a href="/shop/search.htm?id=${shop.shopId}&cid=${poly.cid}">全部</a>-->
+                                <#--</li>-->
                             <#list poly.subPolymerizations as subpoly>
                                 <li class="">
                                     <a href="/shop/search.htm?id=${shop.shopId}&cid=${subpoly.cid}">${subpoly.name}(${subpoly.number})</a>
@@ -43,16 +44,14 @@
             </div>
             <div class="search-input">
                 <form id="search" action="" method="get">
-                    <input type="hidden" name="id" value="628368">
+                    <input type="hidden" name="id" value="${shop.shopId}">
                     <span>关键字:&nbsp;&nbsp;</span>
-                    <input type="text" name="keyword" value="" style="width: 130px;">
+                    <input type="text" name="pstring" value="${bo.pstring!}" style="width: 130px;">
                     <span>价格:&nbsp;&nbsp;</span>
-                    <input id="lowPrice" type="text" name="lowPrice" value="" style="width:40px;">
+                    <input id="lowPrice" type="text" name="beginPrice" value="${bo.beginPrice!}" style="width:40px;">
                     <span>—&nbsp;&nbsp;&nbsp;</span>
-                    <input id="highPrice" type="text" name="highPrice" value="" style="width:40px;">
+                    <input id="highPrice" type="text" name="endPrice" value="${bo.endPrice!}" style="width:40px;">
                     <button type="submit">搜索</button>
-
-                    <input type="hidden" name="pageId" value="312">
                     <!---->
                 </form>
             </div>
@@ -62,11 +61,11 @@
             <div class="sort-row clearfix">
                 <div class="sort-inner">
                     <ul class="sorts">
+                        <#--<li class="sort">-->
+                            <#--<a href="/shop/search.htm?id=${shop.shopId}&amp;order=" class="link " title="">综合</a>-->
+                        <#--</li>-->
                         <li class="sort">
-                            <a href="/store/p/628368/search.htm?sort=1&amp;pageId=312" class="link " title="">综合</a>
-                        </li>
-                        <li class="sort">
-                            <a href="/store/p/628368/search.htm?sort=5&amp;pageId=312" class="link first" title="">新品</a>
+                            <a href="/shop/search.htm?id=${shop.shopId}&amp;order=time_down" class="link first" title="">新品</a>
                         </li>
                         <li class="sort has-droplist">
                             <div class="trigger">
@@ -77,10 +76,10 @@
                             </div>
                             <ul class="droplist">
                                 <li class="sort">
-                                    <a class="J_Ajax link" href="/store/p/628368/search.htm?sort=3&amp;pageId=312" title="价格从低到高">价格从低到高</a>
+                                    <a class="J_Ajax link" href="/shop/search.htm?id=${shop.shopId}&amp;order=price_up" title="价格从低到高">价格从低到高</a>
                                 </li>
                                 <li class="sort">
-                                    <a class="J_Ajax link" href="/store/p/628368/search.htm?sort=4&amp;pageId=312" title="价格从高到低">价格从高到低</a>
+                                    <a class="J_Ajax link" href="/shop/search.htm?id=${shop.shopId}&amp;order=price_down" title="价格从高到低">价格从高到低</a>
                                 </li>
                             </ul>
                         </li>
@@ -88,21 +87,56 @@
                     <div class="location" id="alltime">
                         <div class="trigger">
                             <div class="inner">
-                                        <span class="text" title="">
-                                                                                            全部时间
+                                        <span class="text" title=""><#if bo??>
+                                            <#if bo.dd??>
+                                                <#if bo.dd==-1>
+                                                    自定义
+                                                </#if>
+                                                <#if bo.dd==0>
+                                                    全部时间
+                                                </#if>
+                                                <#if bo.dd==1>
+                                                    1日内
+                                                </#if>
+                                                <#if bo.dd==7>
+                                                    1周内
+                                                </#if>
+                                                <#if bo.dd==30>
+                                                    1月内
+                                                </#if>
+                                                <#if bo.dd==90>
+                                                    3月内
+                                                </#if>
+                                                <#if bo.dd==180>
+                                                    6月内
+                                                </#if>
+                                                <#if bo.dd==365>
+                                                    1年内
+                                                </#if>
+                                            <#else>
+                                                全部时间
+                                            </#if>
+                                        <#else>
+                                            全部时间
+                                        </#if>
+
                                                                                     </span>
                                 <span class="icon icon-btn-arrow-2-h"></span>
                             </div>
                         </div>
+                        <#assign timeparam="id="+shop.shopId/>
+                        <#if bo??>
+                            <#assign timeparam=timeparam+bo.keyword/>
+                        </#if>
                         <div class="sections">
                             <ul class="clearfix">
-                                <li><a href="?pageId=312&amp;dd=0">全部</a></li>
-                                <li><a href="?pageId=312&amp;dd=1">1日内</a></li>
-                                <li><a href="?pageId=312&amp;dd=7">1周内</a></li>
-                                <li><a href="?pageId=312&amp;dd=30">1月内</a></li>
-                                <li><a href="?pageId=312&amp;dd=90">3月内</a></li>
-                                <li><a href="?pageId=312&amp;dd=180">6月内</a></li>
-                                <li><a href="?pageId=312&amp;dd=365">1年内</a></li>
+                                <li><a href="?${timeparam}&amp;dd=0">全部</a></li>
+                                <li><a href="?id=${shop.shopId}&amp;dd=1">1日内</a></li>
+                                <li><a href="?id=${shop.shopId}&amp;dd=7">1周内</a></li>
+                                <li><a href="?id=${shop.shopId}&amp;dd=30">1月内</a></li>
+                                <li><a href="?id=${shop.shopId}&amp;dd=90">3月内</a></li>
+                                <li><a href="?id=${shop.shopId}&amp;dd=180">6月内</a></li>
+                                <li><a href="?id=${shop.shopId}&amp;dd=365">1年内</a></li>
                                 <li><a class="J_defind" href="javascript:;">自定义</a></li>
                             </ul>
                         </div>
@@ -116,7 +150,7 @@
                                 <span style="font-weight: bold">-</span>
                                 <input type="text" value="" maxlength="64" name="endDate" class="laydate-icon" placeholder="请输入日期" onclick="laydate()">
 
-                                <input type="hidden" name="pageId" value="312">
+                                <input type="hidden" name="id" value="${shop.shopId}">
                                 <!---->
 
                                 <input type="hidden" name="dd" value="-1">
@@ -142,7 +176,7 @@
 
                         <div class="pri-dk">
                             <div class="pri">
-                                <span>¥</span> <strong>${price!}</strong>
+                                <span>¥</span> <strong>${g.price!}</strong>
                             </div>
                         </div>
 
@@ -169,7 +203,23 @@
 </#list>
             </div>
         </div>
-        <div class="page-link"><ul class="page-link-ul"><li class="disabled"><a>«</a></li><li class="current"><a>1</a></li><li><a href="?pageId=312&amp;page=2">2</a></li><li><a href="?pageId=312&amp;page=3">3</a></li><li><a href="?pageId=312&amp;page=4">4</a></li><li><a href="?pageId=312&amp;page=5">5</a></li><li><a href="?pageId=312&amp;page=6">6</a></li><li><a href="?pageId=312&amp;page=7">7</a></li><li><a title="下一页" href="?pageId=312&amp;page=2">»</a></li></ul><span>1/7</span></div>
+    <#if goodsList.content?size gt 0>
+        <div class="editpage clearfix" style="margin-top: 25px;">
+            <div class="page-link">
+                <#assign href = "?size=5&mid=" + bo.mid + "&area=" + bo.area + "&type=" + bo.type + "&page=">
+                <ul class="page-link-ul">
+                    <li<#if goodsList.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="${href}${goodsList.number - 1}">«</a></#if></li>
+                    <#list 1..goodsList.totalPages as p>
+                        <#if p gt 0>
+                            <li <#if goodsList.number == p>class="current"><a href="javascript:;">${p}</a><#else>><a href="${href}${p}">${p}</a></#if></li>
+                        </#if>
+                    </#list>
+                    <li<#if goodsList.number &gt;= goodsList.totalPages> class="disabled"><a href="javascript:;">»</a><#else>><a title="下一页" href="${href}${goodsList.number + 1}">»</a></#if></li>
+                </ul>
+                <span>${goodsList.number!}/${goodsList.totalPages}</span>
+            </div>
+        </div>
+    </#if>
     </div>
     <#if isEditer>
         <div class="edit-bar">

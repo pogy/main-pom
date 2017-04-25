@@ -126,6 +126,15 @@ public class RedisIO {
         }
     }
 
+    public Long countList(String key){
+        Jedis jedis = getJedis();
+        try {
+            return jedis.llen(key);
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+
     /**
      * 获取队列值
      * @param key

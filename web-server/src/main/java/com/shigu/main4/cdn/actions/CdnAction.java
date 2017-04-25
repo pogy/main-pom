@@ -61,6 +61,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -201,7 +202,7 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("/index.html")
-    public String domainindex(HttpServletRequest request,Model model){
+    public String domainindex(HttpServletRequest request,Model model) throws ShopFitmentException, CdnException, IOException {
         String url=request.getRequestURL().toString();
         if(!url.contains(".571xz.com")){
 //            return "redirect:"+xzSdkClient.getMainHost();
@@ -220,12 +221,11 @@ public class CdnAction {
         }
         ShopCdnBO bo=new ShopCdnBO();
         bo.setId(shopId);
-        packageShopData(bo,model);
-        //拼baseUrl
         StoreRelation storeRelation=storeRelationService.selRelationById(shopId);
         String webSite=storeRelation.getWebSite();
         model.addAttribute("baseUrl","http://"+webSite+".571xz.com/");
-        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+        return shop(bo,null,model);
+        //拼baseUrl
     }
     /**
      * 商品页面
@@ -332,25 +332,81 @@ public class CdnAction {
                 return "redirect:/shop.htm?id="+shopId;
             }
         }
-        if(result.hasErrors()){
+        if(result!=null&&result.hasErrors()){
             throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
         }
         StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
         String webSite=storeRelation.getWebSite();
-
         Long pageId=shopDesignService.selPageIdByShopId(bo.getId());
-        ContainerVO containerVO=shopDesignService.selPagePublishedById(pageId,shopDesignService.selShopForModule(bo.getId(),
-                webSite));
-        model.addAttribute("container",containerVO);
-        model.addAttribute("pages",shopDesignService.selAllPage(bo.getId()));
-        model.addAttribute("isEditer",false);
-        model.addAttribute("vo",cdnService.shopSimpleVo(bo.getId()));
-
+        shopData(bo.getId(),pageId,webSite,model);
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
             return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
         }
         return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+    }
+
+    /**
+     * 搜索页面
+     * @return
+     */
+    @RequestMapping("shop/search")
+    public String shopSearch(@Valid ShopCdnBO bo,BindingResult result,Model model) throws ShopFitmentException, IOException, CdnException {
+        if(result.hasErrors()){
+            throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        Long pageId=shopDesignService.selSearchIdByShopId(bo.getId());
+        StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
+        String webSite=storeRelation.getWebSite();
+        shopData(bo.getId(),pageId,webSite,model);
+        ContainerVO containerVO= (ContainerVO) model.asMap().get("container");
+        containerVO.getSearchModule().getData().put("catPolymerizations",shopForCdnService.selCatRolymerizations(bo.getId()));//类目聚合
+        ShiguPager<ItemShowBlock> pager;
+        Date startDate;
+        Date endDate;
+        if(bo.getDd()!=null&&bo.getDd()>0){
+            Calendar cal=Calendar.getInstance();
+            endDate=cal.getTime();
+            cal.add(Calendar.DATE,-bo.getDd());
+            startDate=cal.getTime();
+        }else{
+            startDate=DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd");
+            endDate=DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd");
+        }
+        if(bo.getCid()!=null||bo.getScid()!=null){//类目型
+            pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
+                    bo.getCid(),bo.getScid(),bo.getOrder(),startDate,endDate,bo.getPageNo(),bo.getPageSize());
+        }else{
+            pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
+                    bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),startDate,endDate,bo.getPageNo(),bo.getPageSize());
+        }
+        containerVO.getSearchModule().getData().put("goodsList",pager);
+        containerVO.getSearchModule().getData().put("bo",bo);
+        model.addAttribute("container",containerVO);
+        //处理搜索条件
+        int shopStatus = shopBaseService.getShopStatus(bo.getId());
+        if(shopStatus == 1){
+            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+        }
+        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+    }
+
+    /**
+     * 包装店铺数据
+     * @param shopId
+     * @param pageId
+     * @param webSite
+     * @param model
+     * @throws ShopFitmentException
+     * @throws IOException
+     */
+    private void shopData(Long shopId,Long pageId,String webSite,Model model) throws ShopFitmentException, IOException {
+        ContainerVO containerVO=shopDesignService.selPagePublishedById(pageId,shopDesignService.selShopForModule(shopId,
+                webSite));
+        model.addAttribute("container",containerVO);
+        model.addAttribute("pages",shopDesignService.selAllPage(shopId));
+        model.addAttribute("isEditer",false);
+        model.addAttribute("vo",cdnService.shopSimpleVo(shopId));
     }
 
     /**
@@ -387,10 +443,12 @@ public class CdnAction {
             ShiguPager<ItemShowBlock> pager;
             if(bo.getCid()!=null||bo.getScid()!=null){//类目型
                 pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
-                        bo.getCid(),bo.getScid(),bo.getOrder(),bo.getPageNo(),bo.getPageSize());
+                        bo.getCid(),bo.getScid(),bo.getOrder(),DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd"),
+                        DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd"),bo.getPageNo(),bo.getPageSize());
             }else{
                 pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
-                        bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),bo.getPageNo(),bo.getPageSize());
+                        bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd"),
+                        DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd"),bo.getPageNo(),bo.getPageSize());
             }
 //            shopShowVO.setPageOption(pager.selPageOption(bo.getPageSize()));
             model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));

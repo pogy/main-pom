@@ -147,7 +147,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         // 时间范围区间
         if (shopForCdnBo.getDateFrom() != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            RangeQueryBuilder qb = QueryBuilders.rangeQuery("soldOutTime").from(sdf.format(shopForCdnBo.getDateFrom()));
+            RangeQueryBuilder qb = QueryBuilders.rangeQuery("created").from(sdf.format(shopForCdnBo.getDateFrom()));
             if (shopForCdnBo.getDateTo() != null) {
                 qb.to(sdf.format(shopForCdnBo.getDateTo()));
             }
@@ -155,7 +155,23 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         } else {
             if (shopForCdnBo.getDateTo() != null) {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                RangeQueryBuilder qb = QueryBuilders.rangeQuery("soldOutTime").to(sdf.format(shopForCdnBo.getDateTo()));
+                RangeQueryBuilder qb = QueryBuilders.rangeQuery("created").to(sdf.format(shopForCdnBo.getDateTo()));
+                boleanQueryBuilder.must(qb);
+            }
+        }
+
+        // 时间范围区间
+        if (shopForCdnBo.getSoldDateFrom() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            RangeQueryBuilder qb = QueryBuilders.rangeQuery("soldOutTime").from(sdf.format(shopForCdnBo.getSoldDateFrom()));
+            if (shopForCdnBo.getSoldDateTo() != null) {
+                qb.to(sdf.format(shopForCdnBo.getSoldDateTo()));
+            }
+            boleanQueryBuilder.must(qb);
+        } else {
+            if (shopForCdnBo.getSoldDateTo() != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                RangeQueryBuilder qb = QueryBuilders.rangeQuery("soldOutTime").to(sdf.format(shopForCdnBo.getSoldDateTo()));
                 boleanQueryBuilder.must(qb);
             }
         }
@@ -570,7 +586,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块分页信息
      */
     @Override
-    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Long cid, String scid, String orderBy, int pageNo, int pageSize) {
+    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Long cid, String scid, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
         if (cid == null && StringUtils.isEmpty(scid)) {
             return searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
         }
@@ -583,6 +599,8 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shopForCdnBo.setScid(scid);
         shopForCdnBo.setShopId(shopId);
         shopForCdnBo.setIsOff(0);
+        shopForCdnBo.setDateFrom(startTime);
+        shopForCdnBo.setDateTo(endTime);
         List<ItemShowBlock> itemShowBlockList = selectItemShowBlockByEsBo(shopForCdnBo);
         Long resultCount = selectCountByEsBo(shopForCdnBo);
         ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
@@ -604,7 +622,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块分页信息
      */
     @Override
-    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Double priceFrom, Double priceTo, String orderBy, int pageNo, int pageSize) {
+    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Double priceFrom, Double priceTo, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
         if (priceFrom == null || priceTo == null) {
             return searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
         }
@@ -617,6 +635,8 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shopForCdnBo.setPriceTo(priceTo);
         shopForCdnBo.setShopId(shopId);
         shopForCdnBo.setIsOff(0);
+        shopForCdnBo.setDateFrom(startTime);
+        shopForCdnBo.setDateTo(endTime);
         List<ItemShowBlock> itemShowBlockList = selectItemShowBlockByEsBo(shopForCdnBo);
         ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
         Long resultCount = selectCountByEsBo(shopForCdnBo);
@@ -641,8 +661,8 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shopForCdnBo.setPageNo(pageNo);
         shopForCdnBo.setPageSize(pageSize);
         shopForCdnBo.setShopId(shopId);
-        shopForCdnBo.setDateFrom(from);
-        shopForCdnBo.setDateTo(to);
+        shopForCdnBo.setSoldDateFrom(from);
+        shopForCdnBo.setSoldDateTo(to);
         shopForCdnBo.setIsOff(1);
         shopForCdnBo.setOrderBy("soldOutTime_desc");
         List<ItemShowBlock> itemShowBlockList = selectItemShowBlockByEsBo(shopForCdnBo);

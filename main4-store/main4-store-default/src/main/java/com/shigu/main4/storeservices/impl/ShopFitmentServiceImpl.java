@@ -438,6 +438,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
                 promoteModule.getLowerLimitPrice(),
                 promoteModule.getUpperLimitPrice(),
                 sort,
+                null,null,
                 1,
                 promoteModule.getItemNum()
         );

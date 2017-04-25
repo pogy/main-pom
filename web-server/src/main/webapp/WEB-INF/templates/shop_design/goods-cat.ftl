@@ -1,5 +1,5 @@
-<div class=" J_TModule" data-title="宝贝分类" data-id="${moduleSet.moduleId}">
-    <div class="js-module clearfix" style="width: 190px; position: relative; margin-bottom: 5px;" data-not-edit>
+<div class=" J_TModule" data-title="宝贝分类" data-id="${moduleSet.moduleId}" >
+    <div class="js-module clearfix" style="width: 190px; position: relative; margin-bottom: 5px;" data-not-edit<#if noedit??> data-not-del</#if>>
         <div class="main-left">
             <div class="ml-c">
                 <dl>
@@ -14,19 +14,19 @@
                         </ul>
                         <ul>
                             <li class="list">
-                                <a href="/shop/search.htm?id=${shop.shopId}&d=1">
+                                <a href="/shop/search.htm?id=${shop.shopId}&dd=1">
                                     <i class="show-down"></i>
                                     今日新品
                                 </a>
                             </li>
                             <li class="list">
-                                <a href="/shop/search.htm?id=${shop.shopId}&d=7">
+                                <a href="/shop/search.htm?id=${shop.shopId}&dd=7">
                                     <i class="show-down"></i>
                                     7日新品
                                 </a>
                             </li>
                             <li class="list">
-                                <a href="/shop/search.htm?id=${shop.shopId}&d=30">
+                                <a href="/shop/search.htm?id=${shop.shopId}&dd=30">
                                     <i class="show-down"></i>
                                     30日新品
                                 </a>

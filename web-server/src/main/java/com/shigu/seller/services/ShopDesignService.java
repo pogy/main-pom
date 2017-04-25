@@ -110,6 +110,16 @@ public class ShopDesignService {
         return shopFitmentService.selIndexPageIdByShopId(shopId);
     }
 
+    /**
+     * 查搜索页的pageID
+     * @param shopId
+     * @return
+     * @throws ShopFitmentException
+     */
+    public Long selSearchIdByShopId(Long shopId) throws ShopFitmentException {
+        return shopFitmentService.selSearchPageIdByShopId(shopId);
+    }
+
 
     /**
      * 给模块用的店铺基本信息
@@ -180,6 +190,11 @@ public class ShopDesignService {
                     areaVO.addRightModule(mv);
                 }
         }
+        //把搜索里面变成不可编辑
+        if(isEditer&&containerVO.getSearchModule()!=null){
+            //如果是搜索的,以下为必有
+            containerVO.getFitmentAreas().get(0).getLeftModules().get(0).getData().put("noedit",true);
+        }
         return containerVO;
     }
 
@@ -197,10 +212,11 @@ public class ShopDesignService {
             mv.getData().put("shopcats",shopForCdnService.selShopCatsById(shop.getShopId()));
         }else if(module instanceof ItemPromoteModule){//推荐需要查数据
             ShiguPager<ItemShowBlock> promotePage=shopFitmentService.selItemByPromote((ItemPromoteModule) module);
-            mv.getData().put("promotes",promotePage.getContent());
+            mv.getData().put("promotes",promotePage);
         }else if(module instanceof SearchItemsModule){//搜索
             //栏目,+搜索条件
             mv=new SearchModuleVO(module,cfg);
+            mv.getData().put("shop",shop);
         }else if(module instanceof ShopBanner){
             mv.getData().put("checkedNavs",selCheckedPageNav(shop.getShopId(),((ShopBanner) module).getStoreNav().getPages()));
         }
@@ -219,7 +235,7 @@ public class ShopDesignService {
         if (bo.getType() == 2) {
             return shopForCdnService.searchItemOnsale(bo.getIds(), bo.getPage(), bo.getSize());
         }
-        return shopForCdnService.searchItemOnsale(bo.getQ(), shopId, bo.getLowPrice(), bo.getHighPrice(), null, bo.getPage(), bo.getSize());
+        return shopForCdnService.searchItemOnsale(bo.getQ(), shopId, bo.getLowPrice(), bo.getHighPrice(), null,null,null, bo.getPage(), bo.getSize());
     }
 
     public List<PageManageVo> selAllPage(Long shopId) {

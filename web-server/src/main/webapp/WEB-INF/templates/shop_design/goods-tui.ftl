@@ -8,16 +8,15 @@
         <#if moduleSet.filter==1>
             <div style="border-bottom: 1px solid #eee; width: 100%; height: 28px; margin-bottom: 10px; background-color: #fff;">
                 <span style="font-weight: bold; margin-left: 10px;">筛选：</span>
-                <a href="/store/p/628368/search.htm?sort=5" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">新品</a>
-                <a href="/store/p/628368/search.htm?sort=2" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">人气</a>
-                <a href="/store/p/628368/search.htm?sort=3" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">价格从低到高</a>
-                <a href="/store/p/628368/search.htm?sort=4" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">价格从高到低</a>
-                <a href="/store/p/628368/search.htm" style="display: inline-block; padding: 5px 10px; float: right;">&lt;&lt;查看更多</a>
+                <a href="/shop/search.htm?id=${shop.shopId}&order=time_down" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">新品</a>
+                <a href="/shop/search.htm?id=${shop.shopId}&order=price_up" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">价格从低到高</a>
+                <a href="/shop/search.htm?id=${shop.shopId}&order=price_down" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">价格从高到低</a>
+                <a href="/shop/search.htm?id=${shop.shopId}" style="display: inline-block; padding: 5px 10px; float: right;">&lt;&lt;查看更多</a>
             </div>
         </#if>
         <div class="skin-box-bd">
             <ul class="clearfix goods-list" style="font-size: 0px">
-                <#list promotes as p>
+                <#list promotes.content as p>
                 <li class="li0"><a style="text-align: center; border: 1px dotted #eee" href="/item.htm?id=${p.itemId}" target="_blank">
                     <img style="display:block;margin: 0 auto;" class="lazy"
                          src="${p.imgUrl!}_400x400.jpg"
@@ -37,9 +36,23 @@
                 </#list>
                 <#if moduleSet.showPage==1>
                     <link rel="stylesheet" href="/design/css/common/page-link.css?t=20170314" />
-                    <div class="page-link"><ul class="page-link-ul"><li class="disabled"><a>«</a></li><li class="current"><a>1</a></li><li><a href="/store/p/628368/search.htm?pageId=4285&sort=1&keyword=&size=16&lowPrice=&highPrice=&page=2">2</a></li><li><a href="/store/p/628368/search.htm?pageId=4285&sort=1&keyword=&size=16&lowPrice=&highPrice=&page=3">3</a></li><li><a href="/store/p/628368/search.htm?pageId=4285&sort=1&keyword=&size=16&lowPrice=&highPrice=&page=4">4</a></li><li><a href="/store/p/628368/search.htm?pageId=4285&sort=1&keyword=&size=16&lowPrice=&highPrice=&page=5">5</a></li><li><a href="/store/p/628368/search.htm?pageId=4285&sort=1&keyword=&size=16&lowPrice=&highPrice=&page=6">6</a></li><li><a href="/store/p/628368/search.htm?pageId=4285&sort=1&keyword=&size=16&lowPrice=&highPrice=&page=7">7</a></li><li><a href="/store/p/628368/search.htm?pageId=4285&sort=1&keyword=&size=16&lowPrice=&highPrice=&page=8">8</a></li><li><a title="下一页" href="/store/p/628368/search.htm?pageId=4285&sort=1&keyword=&size=16&lowPrice=&highPrice=&page=2">»</a></li></ul><span>1/9</span></div>
-                </ul>
-                </div>
+                    <#if promotes.content?size gt 0>
+                        <div class="editpage clearfix" style="margin-top: 25px;">
+                            <div class="page-link">
+                                <#assign href = "shop/search.htm?id=${shop.shopId}&keyword=${moduleSet.keyword}&beginPrice=${moduleSet.lowerLimitPrice}&endPrice=${moduleSet.upperLimitPrice}">
+                                <ul class="page-link-ul">
+                                    <li<#if promotes.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="${href}${promotes.number - 1}">«</a></#if></li>
+                                    <#list 1..promotes.totalPages as p>
+                                        <#if p gt 0>
+                                            <li <#if promotes.number == p>class="current"><a href="javascript:;">${p}</a><#else>><a href="${href}${p}">${p}</a></#if></li>
+                                        </#if>
+                                    </#list>
+                                    <li<#if promotes.number &gt;= promotes.totalPages> class="disabled"><a href="javascript:;">»</a><#else>><a title="下一页" href="${href}${promotes.number + 1}">»</a></#if></li>
+                                </ul>
+                                <span>${promotes.number!}/${promotes.totalPages}</span>
+                            </div>
+                        </div>
+                    </#if>
                 </#if>
             </ul>
         </div>
