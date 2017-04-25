@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV4/css/goods.css" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/goods.css" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/searchV4/js/goods.js"></script>
+    <script src="http://style.571xz.com/searchV5/js/goods.js"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -363,14 +363,20 @@
             </div>
             
             <div class="rtbox">
-                
+                <div class="dateClassify">
+                    <div class="inner">
+                        <b jbtn="searchTime" <#if !query.d && !query.et> class="selected"</#if>>全部</b>
+                        <b jbtn="searchTime" <#if query.d =="1"> class="selected"</#if> d="1">1日内</b>
+                        <b jbtn="searchTime" <#if query.d =="2"> class="selected"</#if> d="2">2日内</b>
+                        <b jbtn="searchTime" <#if query.d =="3"> class="selected"</#if> d="3">3日内</b>
+                    </div>
+                </div>
                 <div class="sortTimeBox">
                     <div class="bg1"></div>
-                    <b class="initial">
+                    <b class="initial" <#if query.dgt"3" || query.st??> id="selected" </#if>>
+                        
                         <#if query.d??>
-                            <#if query.d == '1'>
-                            1日内
-                            <#elseif query.d == '7'>
+                            <#if query.d == '7'>
                             1周内
                             <#elseif query.d == '30'>
                             1月内
@@ -380,28 +386,42 @@
                             6月内
                             <#elseif query.d == '365'>
                             1年内
-                            <#else>
-                            全部时间
+                            <#elseif query.d == '1' || query.d == '2' || query.d == '3'>
+                            其他
                             </#if>
+                            
                         <#else>
-                        全部时间
+                            <#if query.et?? || query.st??>
+                            自定义时间
+                             <#else>
+                             其他
+                             </#if>
                         </#if>
                     <i class="imgicon16"></i></b>
                     <div class="hoverBox">
-                        <div class="innerbox">
-                            <b jbtn="searchTime" d="">全部</b>
-                            <b jbtn="searchTime" d="1">1日内</b>
-                            <b jbtn="searchTime" d="7">1周内</b>
-                            <b jbtn="searchTime" d="30">1月内</b>
-                            <b jbtn="searchTime" d="90">3月内</b>
-                            <b jbtn="searchTime" d="180">6月内</b>
-                            <b jbtn="searchTime" d="365">1年内</b>
+                         <div class="innerbox">
+                            <b jbtn="searchTime" <#if query.d =="7"> class="selected"</#if> d="7">1周内</b>
+                            <b jbtn="searchTime" <#if query.d =="30"> class="selected"</#if> d="30">1月内</b>
+                            <b jbtn="searchTime" <#if query.d =="90"> class="selected"</#if> d="90">3月内</b>
+                            <b jbtn="searchTime" <#if query.d =="180"> class="selected"</#if> d="180">6月内</b>
+                            <b jbtn="searchTime" <#if query.d =="365"> class="selected"</#if> d="365">1年内</b>
+                            <b jbtn="selfDefine" id="selfDefine" <#if query.st?? && query.et??> class="selected"</#if>>自定义</b>
                         </div>
+                        
                     </div>
+                   
                 </div>
+                 <div class="defineTime">
+        
+                                <i class="cal"></i>
+                                <input type="text" id="u_startTime" class="jq_datepicker" placeholder="请输入日期" >
+                                <input type="text" id="u_endTime" class="jq_datepicker" placeholder="请输入日期" >
+                                <button id="searchByUserTime">确定</button>
+                    </div>
                 
                     
                 <div class="paginationBox">
+        
                     <i jbtn="prevPage" class="iconfont prev<#if query.page == 1> disabled</#if>">&#xe61a;</i>
                     <span><em class="curPage">${query.page!}</em>/<em class="totalPage">${totalPage!}</em></span>
                     <i jbtn="nextPage" class="iconfont next<#if query.page == totalPage> disabled</#if>">&#xe61a;</i>
@@ -458,7 +478,7 @@
              </#list>
         </div>
         
-        <script>/*============ searchV4/page#goodslistWindow BEGIN ============*/
+        <script>/*============ searchV5/page#goodslistWindow BEGIN ============*/
 
 '${hacker!}';
 $(function(){
@@ -468,7 +488,7 @@ $(function(){
     });
 });
 
-/*============ searchV4/page#goodslistWindow END ============*/
+/*============ searchV5/page#goodslistWindow END ============*/
 
 
 </script>
