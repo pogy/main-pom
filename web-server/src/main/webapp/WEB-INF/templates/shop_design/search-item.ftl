@@ -206,10 +206,25 @@
     <#if goodsList.content?size gt 0>
         <div class="editpage clearfix" style="margin-top: 25px;">
             <div class="page-link">
-                <#assign href = "?size=5&mid=" + bo.mid + "&area=" + bo.area + "&type=" + bo.type + "&page=">
+                <#assign href = "?id=${shop.shopId}&pageNo=">
                 <ul class="page-link-ul">
                     <li<#if goodsList.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="${href}${goodsList.number - 1}">«</a></#if></li>
-                    <#list 1..goodsList.totalPages as p>
+                    <#if goodsList.number <= 5 || goodsList.totalPages < 10>
+                        <#assign start = 1>
+                        <#if goodsList.totalPages < 9>
+                            <#assign end = goodsList.totalPages>
+                        <#else>
+                            <#assign end = 9>
+                        </#if>
+                    <#else>
+                        <#assign start = goodsList.number - 4>
+                        <#assign end = goodsList.number + 4>
+                        <#if goodsList.totalPages < end>
+                            <#assign start = goodsList.totalPages - 8>
+                            <#assign end = goodsList.totalPages>
+                        </#if>
+                    </#if>
+                    <#list start..end as p>
                         <#if p gt 0>
                             <li <#if goodsList.number == p>class="current"><a href="javascript:;">${p}</a><#else>><a href="${href}${p}">${p}</a></#if></li>
                         </#if>

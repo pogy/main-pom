@@ -89,7 +89,22 @@
             <#assign href = "?size=5&mid=" + bo.mid + "&area=" + bo.area + "&type=" + bo.type + "&page=">
             <ul class="page-link-ul">
                 <li<#if pager.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="${href}${pager.number - 1}">«</a></#if></li>
-                <#list 1..pager.totalPages as p>
+                <#if pager.number <= 5 || pager.totalPages < 10>
+                    <#assign start = 1>
+                    <#if pager.totalPages < 9>
+                        <#assign end = pager.totalPages>
+                    <#else>
+                        <#assign end = 9>
+                    </#if>
+                <#else>
+                    <#assign start = pager.number - 4>
+                    <#assign end = pager.number + 4>
+                    <#if pager.totalPages < end>
+                        <#assign start = pager.totalPages - 8>
+                        <#assign end = pager.totalPages>
+                    </#if>
+                </#if>
+                <#list start..end as p>
                     <#if p gt 0>
                     <li <#if pager.number == p>class="current"><a href="javascript:;">${p}</a><#else>><a href="${href}${p}">${p}</a></#if></li>
                     </#if>
