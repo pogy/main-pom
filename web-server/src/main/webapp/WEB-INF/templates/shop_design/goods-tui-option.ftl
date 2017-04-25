@@ -152,7 +152,7 @@
                                     <div class="control clearfix">
 
                                         <dl class="itemsLayout line-item4">
-                                            <dt class="itemsLayoutShot dtselected">
+                                            <dt class="itemsLayoutShot <#if moduleSet.radio==4>dtselected</#if>">
                                                 <a href="#" class="J_itemsLayoutTrigger" data-value="230" data-layout="950">
                                                     <span></span>
                                                 </a>
@@ -163,7 +163,7 @@
                                             </dd>
                                         </dl>
                                         <dl class="itemsLayout line-item5">
-                                            <dt class="itemsLayoutShot ">
+                                            <dt class="itemsLayoutShot <#if moduleSet.radio==5>dtselected</#if>">
                                                 <a href="#" class="J_itemsLayoutTrigger" data-value="180" data-layout="950">
                                                     <span></span>
                                                 </a>
@@ -174,7 +174,7 @@
                                             </dd>
                                         </dl>
                                         <dl class="itemsLayout line-item7">
-                                            <dt class="itemsLayoutShot ">
+                                            <dt class="itemsLayoutShot <#if moduleSet.radio==7>dtselected</#if>">
                                                 <a href="#" class="J_itemsLayoutTrigger" data-value="130" data-layout="950">
                                                     <span></span>
                                                 </a>
