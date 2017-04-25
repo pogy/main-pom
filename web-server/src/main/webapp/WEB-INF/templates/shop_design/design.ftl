@@ -74,7 +74,7 @@
         });
         $('.page-publish-btn').click(function () {
             $.ajax({
-                url: '/seller/design/publish.htm',
+                url: '/seller/design/publish.json',
                 type: 'GET',
                 dataType: 'json',
                 success: function (d) {

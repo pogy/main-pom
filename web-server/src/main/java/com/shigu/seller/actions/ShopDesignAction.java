@@ -1,13 +1,10 @@
 package com.shigu.seller.actions;
 
 import com.shigu.main4.cdn.services.CdnService;
-import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.storeservices.ShopBaseService;
-import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.vo.FitmentModule;
-import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.fitment.CustomModule;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.main4.vo.fitment.ItemSearchModule;
@@ -24,8 +21,6 @@ import com.shigu.seller.vo.ShopForModuleVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.zhb.utils.BeanMapper;
-import freemarker.template.Template;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,6 +113,14 @@ public class ShopDesignAction {
         }
         model.addAttribute("vo",cdnService.shopSimpleVo(shopSession.getShopId()));
         return "/cdn/shop";
+    }
+
+    @RequestMapping("design/publish")
+    @ResponseBody
+    public DesignJsonVO publish(HttpSession session) {
+        ShopSession shopSession = getShopSession(session);
+        Long shopId = shopSession.getShopId();
+        return shopDesignService.publishOneShop(shopId);
     }
 
     /**

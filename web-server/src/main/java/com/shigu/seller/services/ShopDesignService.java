@@ -456,4 +456,19 @@ public class ShopDesignService {
         return vo;
     }
 
+    /**
+     * 发布全店页面
+     * @param shopId 店铺id
+     */
+    public DesignJsonVO publishOneShop(Long shopId) {
+        shopFitmentService.publishBanner(shopId);
+        for (PageManageVo vo : selAllPage(shopId)) {
+            shopFitmentService.publishPage(vo.getPageId());
+        }
+        DesignJsonVO vo = new DesignJsonVO();
+        vo.setStatus(0);
+        vo.setMessage("发布成功");
+        return vo;
+    }
+
 }
