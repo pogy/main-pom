@@ -587,9 +587,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      */
     @Override
     public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Long cid, String scid, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
-        if (cid == null && StringUtils.isEmpty(scid)) {
-            return searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
-        }
+//        if (cid == null && StringUtils.isEmpty(scid)) {
+//            return searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
+//        }
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setKeyword(keyword);
         shopForCdnBo.setOrderBy(orderBy);
@@ -623,9 +623,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      */
     @Override
     public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Double priceFrom, Double priceTo, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
-        if (priceFrom == null || priceTo == null) {
-            return searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
-        }
+//        if (priceFrom == null || priceTo == null) {
+//            return searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
+//        }
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setKeyword(keyword);
         shopForCdnBo.setOrderBy(orderBy);

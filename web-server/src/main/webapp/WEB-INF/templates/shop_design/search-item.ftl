@@ -64,22 +64,49 @@
                         <#--<li class="sort">-->
                             <#--<a href="/shop/search.htm?id=${shop.shopId}&amp;order=" class="link " title="">综合</a>-->
                         <#--</li>-->
+                        <#assign sortparam="id="+shop.shopId/>
+                        <#if bo??>
+                            <#if bo.pstring??>
+                                <#assign sortparam=sortparam+"&pstring="+bo.pstring/>
+                            </#if>
+                            <#if bo.cid??>
+                                <#assign sortparam=sortparam+"&cid="+bo.cid/>
+                            </#if>
+                            <#if bo.scid??>
+                                <#assign sortparam=sortparam+"&scid="+bo.scid/>
+                            </#if>
+                            <#if bo.beginPrice??>
+                                <#assign sortparam=sortparam+"&beginPrice="+bo.beginPrice/>
+                            </#if>
+                            <#if bo.endPrice??>
+                                <#assign sortparam=sortparam+"&endPrice="+bo.endPrice/>
+                            </#if>
+                            <#if bo.dd??>
+                                <#assign sortparam=sortparam+"&dd="+bo.dd/>
+                            </#if>
+                            <#if bo.startDate??>
+                                <#assign sortparam=sortparam+"&startDate="+bo.startDate/>
+                            </#if>
+                            <#if bo.endDate??>
+                                <#assign sortparam=sortparam+"&endDate="+bo.endDate/>
+                            </#if>
+                        </#if>
                         <li class="sort">
-                            <a href="/shop/search.htm?id=${shop.shopId}&amp;order=time_down" class="link first" title="">新品</a>
+                            <a href="/shop/search.htm?${sortparam}&amp;order=time_down" class="link <#if bo??><#if bo.order=='time_down'>first</#if></#if>" title="">新品</a>
                         </li>
                         <li class="sort has-droplist">
                             <div class="trigger">
-                                <div class="link ">
+                                <div class="link <#if bo??><#if bo.order=='price_down'>first</#if><#if bo.order=='price_up'>first</#if></#if>">
                                     <span class="text" title="价格从低到高">价格</span>
                                     <span class="icon icon-btn-arrow-2-h"></span>
                                 </div>
                             </div>
                             <ul class="droplist">
                                 <li class="sort">
-                                    <a class="J_Ajax link" href="/shop/search.htm?id=${shop.shopId}&amp;order=price_up" title="价格从低到高">价格从低到高</a>
+                                    <a class="J_Ajax link" href="/shop/search.htm?${sortparam}&amp;order=price_up" title="价格从低到高">价格从低到高</a>
                                 </li>
                                 <li class="sort">
-                                    <a class="J_Ajax link" href="/shop/search.htm?id=${shop.shopId}&amp;order=price_down" title="价格从高到低">价格从高到低</a>
+                                    <a class="J_Ajax link" href="/shop/search.htm?${sortparam}&amp;order=price_down" title="价格从高到低">价格从高到低</a>
                                 </li>
                             </ul>
                         </li>
@@ -126,17 +153,34 @@
                         </div>
                         <#assign timeparam="id="+shop.shopId/>
                         <#if bo??>
-                            <#assign timeparam=timeparam+bo.keyword/>
+                            <#if bo.pstring??>
+                                <#assign timeparam=timeparam+"&pstring="+bo.pstring/>
+                            </#if>
+                            <#if bo.cid??>
+                                <#assign timeparam=timeparam+"&cid="+bo.cid/>
+                            </#if>
+                            <#if bo.scid??>
+                                <#assign timeparam=timeparam+"&scid="+bo.scid/>
+                            </#if>
+                            <#if bo.priceFrom??>
+                                <#assign timeparam=timeparam+"&priceFrom="+bo.priceFrom/>
+                            </#if>
+                            <#if bo.priceTo??>
+                                <#assign timeparam=timeparam+"&priceTo="+bo.priceTo/>
+                            </#if>
+                            <#if bo.order??>
+                                <#assign timeparam=timeparam+"&order="+bo.order/>
+                            </#if>
                         </#if>
                         <div class="sections">
                             <ul class="clearfix">
-                                <li><a href="?${timeparam}&amp;dd=0">全部</a></li>
-                                <li><a href="?id=${shop.shopId}&amp;dd=1">1日内</a></li>
-                                <li><a href="?id=${shop.shopId}&amp;dd=7">1周内</a></li>
-                                <li><a href="?id=${shop.shopId}&amp;dd=30">1月内</a></li>
-                                <li><a href="?id=${shop.shopId}&amp;dd=90">3月内</a></li>
-                                <li><a href="?id=${shop.shopId}&amp;dd=180">6月内</a></li>
-                                <li><a href="?id=${shop.shopId}&amp;dd=365">1年内</a></li>
+                                <li><a href="?${timeparam}&dd=0">全部</a></li>
+                                <li><a href="?${timeparam}&dd=1">1日内</a></li>
+                                <li><a href="?${timeparam}&dd=7">1周内</a></li>
+                                <li><a href="?${timeparam}&dd=30">1月内</a></li>
+                                <li><a href="?${timeparam}&dd=90">3月内</a></li>
+                                <li><a href="?${timeparam}&dd=180">6月内</a></li>
+                                <li><a href="?${timeparam}&dd=365">1年内</a></li>
                                 <li><a class="J_defind" href="javascript:;">自定义</a></li>
                             </ul>
                         </div>
@@ -193,7 +237,7 @@
                                 <i></i>
                                 阿里
                             </a>
-                            <a class="contrast sjb package" href="javascript:;" data-id="${g.itemId}" title="加入数据包">
+                            <a class="contrast sjb package" xzclick="addGoodsData" href="javascript:;" data-goodsid="${g.itemId}" title="加入数据包">
                                 <i></i>
                                 数据包
                             </a>
@@ -203,10 +247,40 @@
 </#list>
             </div>
         </div>
+    <#assign pageparam="id="+shop.shopId/>
+    <#if bo??>
+        <#if bo.pstring??>
+            <#assign pageparam=pageparam+"&pstring="+bo.pstring/>
+        </#if>
+        <#if bo.cid??>
+            <#assign pageparam=pageparam+"&cid="+bo.cid/>
+        </#if>
+        <#if bo.scid??>
+            <#assign pageparam=pageparam+"&scid="+bo.scid/>
+        </#if>
+        <#if bo.priceFrom??>
+            <#assign pageparam=pageparam+"&priceFrom="+bo.priceFrom/>
+        </#if>
+        <#if bo.priceTo??>
+            <#assign pageparam=pageparam+"&priceTo="+bo.priceTo/>
+        </#if>
+        <#if bo.order??>
+            <#assign pageparam=pageparam+"&order="+bo.order/>
+        </#if>
+        <#if bo.dd??>
+            <#assign pageparam=pageparam+"&dd="+bo.dd/>
+        </#if>
+        <#if bo.startDate??>
+            <#assign pageparam=pageparam+"&startDate="+bo.startDate/>
+        </#if>
+        <#if bo.endDate??>
+            <#assign pageparam=pageparam+"&endDate="+bo.endDate/>
+        </#if>
+    </#if>
+    <#assign href = "?${pageparam}&pageNo=">
     <#if goodsList.content?size gt 0>
         <div class="editpage clearfix" style="margin-top: 25px;">
             <div class="page-link">
-                <#assign href = "?id=${shop.shopId}&pageNo=">
                 <ul class="page-link-ul">
                     <li<#if goodsList.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="${href}${goodsList.number - 1}">«</a></#if></li>
                     <#if goodsList.number <= 5 || goodsList.totalPages < 10>
