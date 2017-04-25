@@ -950,6 +950,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         ShopFitmentModule shopFitmentModule = new ShopFitmentModule();
         shopFitmentModule.setModuleId(moduleId);
         shopFitmentModule.setModuleData(Option);
+        shopFitmentModule.setModuleValue(null);
         shopFitmentModuleMapper.updateByPrimaryKeySelective(shopFitmentModule);
 
     }

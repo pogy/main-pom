@@ -197,15 +197,10 @@ public class ShopDesignAction {
     @RequestMapping("design/goods-tui-get-goods-list")
     public String goodsTuiGetGoodsList(PromotePagerBo bo, HttpSession session, Model model){
         Long shopId = getShopSession(session).getShopId();
+        bo.setIds(shopDesignService.selPromoteItemIds(bo));
         model.addAttribute("bo", bo);
-        PromotePagerBo allItem = BeanMapper.map(bo, PromotePagerBo.class);
-        allItem.setType(1);
-        model.addAttribute("pager", shopDesignService.selPromoteItems(allItem, shopId));
-
-        PromotePagerBo promoteItems = BeanMapper.map(bo, PromotePagerBo.class);
-        promoteItems.setType(2);
-        promoteItems.setIds(shopDesignService.selPromoteItemIds(bo));
-        model.addAttribute("promotes", shopDesignService.selPromoteItems(promoteItems, shopId));
+        model.addAttribute("pager", shopDesignService.selPromoteItems(bo, shopId));
+        model.addAttribute("totalOnsale", shopForCdnService.selItemNumberById(shopId));
         return "/shop_design/goods-tui-get-goods-list";
     }
 
