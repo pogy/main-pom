@@ -5,17 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
     
-        <title>今日新品 - 四季星座网</title>
+        <title>发现好货 - 四季星座网</title>
     
-    <meta name="keywords" content="四季星座，四季星座网，男装货源，女装货源，男鞋货源，女鞋货源，杭州服装批发，四季青服饰，淘宝货源，网店货源，服饰批发，代发平台！">
+    <meta name="keywords" content="四季星座网,四季星座论坛,四季星座,服装批发市场,男装批发,女装批发,一件代发,一键上传,网店货源,淘宝货源,男装货源,女装货源,服装货源,服装进货渠道。">
     
-    <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
+    <meta name="description" content="四季星座网拥有丰富的线下服装批发进货渠道，四季星座、置地国际、电商基地、钱塘大厦、保太和、星座女装、新杭派、九天女装、意法服饰等杭州四季青实体批发市场都已入驻，实体批发档口高达15000多家，为全国淘宝网店代理商提供一手货源。同时支持一件代发，一键上传到淘宝、到阿里、到微信，数据包下载，无理由退换货服务。">
     
-    <link href="http://style.571xz.com/searchV5/css/newgoods.css" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/styleHuodong.css?t=" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/newgoods.js"></script>
+    <script src="http://style.571xz.com/searchV5/js/styleHuodong.js?t="></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -218,7 +218,7 @@
                 <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
                 <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 <li ><a href="http://so.571xz.com/hzgoods.htm" target="_blank">商品库</a></li>
-                <li class="select"><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
+                <li ><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
@@ -226,106 +226,47 @@
         </div>
     </div>
 </div>
-<#assign text>{    "fields":[        {"name":'webSite', "value":"${query.webSite!}"},        {"name":'keyword', "value":"${query.keyword!}"},        {"name":'cid', "value":"${query.cid!}"}    ]}</#assign>
-<#assign $it=text?eval />
-<form id="wgt_search">
-    <#list $it.fields as field>
-    <input type=hidden name="${field.name!}" value="${field.value!}">
-    </#list>
-</form>
-<div class="bgbox">
-<div class="layout">
-    <div class="iconCateNav">
-        <ul>
-            <#list iconCateNav as cate>
-            <li <#if cate.id?? && cate.id == query.cid>class="selected"</#if>>
-                <a href="?cid=${cate.id!}">
-                    <i class="iconfont ${cate.name!}">&#xe${cate.icon!};</i>
-                    <span>${cate.text!}</span>
-                </a>
-            </li>
-            </#list>
-        </ul>
-    </div>
-    <#if styleCateNavs?? && (styleCateNavs?size) gt 0>
-    <div id="styleCateNav" class="styleCateNav clearfix">
-        <em class="label">风格</em>
-        <ul>
-            
-            <#list styleCateNavs as cate>
-            <li><a href="?keyword=${cate.keyword!}<#if query.cid??>&cid=${query.cid!}</#if>" <#if query.keyword == cate.keyword>class="selected"</#if>>${cate.text!}</a></li>
-            </#list>
-        </ul>
-        <b class="show" jbtn="showHide">点击展开<i class="downRow"></i></b>
-    </div>
-    </#if>
-    <#if (goodslist?size) gt 0>
-    
-    <div class="goodslistWindow clearfix">
-         <#list goodslist as goods>
-         <div class="goodsitem" data-goodsid="${goods.id!}">
-            <a class="imgbox" href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}" target="_blank">
-                
-                <#if goods_index lt 20> 
-                    <img class="img" src="${goods.imgsrc!}_300x300.jpg" data-original="${goods.imgsrc!}_300x300.jpg" data-original="${goods.imgsrc!}_300x300.jpg">
-                <#else>
-                    <img class="lazyload img" src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${goods.imgsrc!}_300x300.jpg">
-                </#if>
-                
-            </a> 
-            
-            
-            <div class="p1">
-                <span class="pricebox">&yen; ${goods.piprice!}</span>
-                <div class="upload">
-                    <em><i class="iconUp"></i>一键上传</em>
-                    <div class="list">
-                        <ul>
-                            <li><a href="http://upload.571xz.com/publish.htm?id=${goods.id!}" target="_blank" title="淘宝一键上传"><em class="iconUp"></em>上传淘宝</a></li>
-                            <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goods.id!}" target="_blank" title="阿里一键上传"><em class="iconUp"></em>上传阿里</a></li>
-                            <li><a href="#" jbtn="showGoodsWx"><em class="iconUp"></em>分享朋友圈</a></li>
-                            <li><a href="javascript:;" xzclick="addGoodsData" data-goodsid="${goods.id!}"><em class="iconAdd"></em>加入数据包</a></li>
-                        </ul>
-                        <i class="i2"></i>
-                        <i class="i1"></i>
-                    </div>
-                </div>
-                
-            </div>
-            <p class="title"><a href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}" target="_blank">${goods.title!}</a></p>
-            <div class="p3">
-                <span class="storeName"><a href="http://${webSite!}.571xz.com/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}"><i class="icon1p"></i>${goods.fullStoreName!}</a></span>
-                
-    <#assign text>{"id":"${goods.aliww!}"}</#assign>
-<#assign $it=text?eval />
-            <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
-                    <#if goods.postTimeText??><span class="viewCountBox">${goods.postTimeText!}</span></#if>
-            </div>
+<div class="fdCon">
+    <div class="slider">
+        <div class="flexslider">
+          <ul class="slides">
+            <li>
+              <img src="http://style.571xz.com/searchV5/css/img/banner.jpg" />
+              </li>
+              
+          </ul>
         </div>
-         </#list>
     </div>
-    <script>/*============ searchV5/newgoods#goodslistWindow BEGIN ============*/
+     
+    
+</div>
+<script>/*============ searchV5/styleHuodong#pageRender BEGIN ============*/
 
-'${hacker!}';
-$(function(){
-    $(".goodsitem img.lazyload").lazyload({
-        effect: "fadeIn",
-        threshold: 400
-    });
-});
+${test!}
+var ajaxHost = 'http://xb.571xz.com/';
 
-/*============ searchV5/newgoods#goodslistWindow END ============*/
+/*============ searchV5/styleHuodong#pageRender END ============*/
 
 
 </script>
-    <div class="jq_pagination" data-option="${pageOption!}"></div>
-    <#else>
-    <div class="goodslistEmptyCon">
-        <p>Sorry, 未查询到相应商品~</p>
+<div class="leftSidebar">
+    <h3>发现好货</h3>
+    <div class="styleDot">
+        <ul id="leftSidebarbox">
+            
+            
+        </ul>
+    </div>
+    <div class="toTop"><i class="topRow"></i>顶部</div>
+</div>
+<div class="imgLoading">
+    <div class="layout">
+        <p>数据加载中……</p>
+        <div class="loading">
     </div>
     
-    </#if>
-</div>
+    
+</div> 
 </div>
 <div class="footer">
     <div class="inner">
