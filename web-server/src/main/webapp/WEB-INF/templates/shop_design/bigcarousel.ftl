@@ -26,7 +26,7 @@
     </style>
     <div class="skin-box" style="width: 1920px;">
         <div class="fullscreen-img">
-            <div class="J_TWidget slide-box" style="min-height: 100px; height: ${viewPager.modHeight}px;">
+            <div class="J_TWidget slide-box" style="min-height: 100px; height: ${moduleSet.modHeight}px;">
                 <div id="_${moduleSet.moduleId!}" class="swiper-container swiper-container-horizontal">
                     <ul class="swiper-wrapper">
                         <#if moduleSet.images??>
@@ -37,6 +37,13 @@
                                 </a>
                             </li>
                             </#list>
+                            <#if moduleSet.images?size=0>
+                                <li class="swiper-slide" style="width: 1920px; margin-right: 30px;">
+                                    <a href="" target="_blank">
+                                        <img style="width: 100%;" src="">
+                                    </a>
+                                </li>
+                            </#if>
                         </#if>
                     </ul>
                     <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets"><span class="swiper-pagination-bullet swiper-pagination-bullet-active"></span></div>

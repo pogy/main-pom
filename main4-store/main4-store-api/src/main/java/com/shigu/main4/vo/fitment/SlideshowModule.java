@@ -15,7 +15,7 @@ public class SlideshowModule extends FitmentModule {
     /**
      * 模块高度
      */
-    private Integer modHeight;
+    private Integer modHeight=540;
 
     @Override
     public Integer getModuleType() {
