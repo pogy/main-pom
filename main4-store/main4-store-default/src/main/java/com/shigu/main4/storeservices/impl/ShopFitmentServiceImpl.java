@@ -704,6 +704,8 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         fitmentPage.setHeadArea(selShopHead(page.getShopId()));
         fitmentPage.setPageId(pageId);
         fitmentPage.setPageName(page.getName());
+        fitmentPage.setBackgroundPic(page.getBackgroundPic());
+        fitmentPage.setBackgroundType(page.getBackgroundType());
         return fitmentPage;
     }
 
