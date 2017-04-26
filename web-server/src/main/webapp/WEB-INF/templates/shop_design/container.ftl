@@ -11,7 +11,7 @@
                     <#if backgroundType==2>background-repeat: repeat-y;</#if>
                     <#if backgroundType==3>background-repeat: repeat-x;</#if>
                     <#if backgroundType==4>background-repeat: no-repeat;</#if>
-                    </#if>">
+                    </#if> overflow:hidden">
                     <div id="bd" class="js-grid-body" data-index="0" style="position: relative;">
                         <#list fitmentAreas as area>
                         <div class="area clearfix" data-id="${area.areaId}">
