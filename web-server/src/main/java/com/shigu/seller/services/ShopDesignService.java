@@ -120,6 +120,21 @@ public class ShopDesignService {
         return shopFitmentService.selSearchPageIdByShopId(shopId);
     }
 
+    /**
+     * 查普通页面的页面ID
+     * @param shopId
+     * @param key
+     * @return
+     */
+    public Long selNormalIdByKey(Long shopId,Long key){
+        ShopFitmentPageExample example=new ShopFitmentPageExample();
+        example.createCriteria().andShopIdEqualTo(shopId).andCodeEqualTo(key);
+        List<ShopFitmentPage> pages=shopFitmentPageMapper.selectByExample(example);
+        if(pages.size()>0){
+            return pages.get(0).getPageId();
+        }
+        return null;
+    }
 
     /**
      * 给模块用的店铺基本信息
@@ -530,7 +545,7 @@ public class ShopDesignService {
     public DesignJsonVO publishOneShop(Long shopId) {
         shopFitmentService.publishBanner(shopId);
         for (PageManageVo vo : selAllPage(shopId)) {
-            shopFitmentService.publishPage(vo.getPageId());
+            shopFitmentService.publishPage(vo.getPageId(),shopId);
         }
         DesignJsonVO vo = new DesignJsonVO();
         vo.setStatus(0);

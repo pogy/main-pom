@@ -68,7 +68,7 @@
                             </label>
                         </div>
                     </div>
-                    <div class="J_DefaultType ">
+                    <div class="J_DefaultType <#if moduleSet.storeImg.type ==2 >hidden</#if>">
                         <div class="control-group">
                             <label class="control-label">背景图：</label>
                             <div class="control"
@@ -96,7 +96,7 @@
                             <img style="width:698px" src="${moduleSet.storeImg.imgPic!}">
                         </div>
                     </div>
-                    <div class="J_CustomType hidden">
+                    <div class="J_CustomType <#if moduleSet.storeImg.type ==1 >hidden</#if>">
                         <div class="control-group">
                             <label class="control-label" for="content">自定义内容：</label>
                             <div class="control" id="design_main">

@@ -515,28 +515,27 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         shopFitmentFtlMapper.insertSelective(bannerFtl);
         //初始化首页
         Long firstPage=selIndexPageIdByShopId(shopId);
-        FitmentPage fitmentPage = new FitmentPage();
-        fitmentPage.setUserDefineAreas(selAreaByPageId(firstPage));
-        fitmentPage.setPageId(firstPage);
-
-        ShopFitmentFtl indexFtl=new ShopFitmentFtl();
-        indexFtl.setContext(JSON.toJSONString(fitmentPage));
-        indexFtl.setType(FitmentPublished.PAGE.value);
-        indexFtl.setShopId(shopId);
-        indexFtl.setPageId(firstPage);
-        shopFitmentFtlMapper.insertSelective(indexFtl);
+        shopFitmentFtlMapper.insertSelective(getFtlFromActive(firstPage,shopId));
         //初始化搜索
         Long searchPage=selSearchPageIdByShopId(shopId);
-        FitmentPage search = new FitmentPage();
-        search.setUserDefineAreas(selAreaByPageId(searchPage));
-        search.setPageId(searchPage);
+        shopFitmentFtlMapper.insertSelective(getFtlFromActive(searchPage,shopId));
+    }
 
-        ShopFitmentFtl searchFtl=new ShopFitmentFtl();
-        searchFtl.setContext(JSON.toJSONString(search));
-        searchFtl.setType(FitmentPublished.PAGE.value);
-        searchFtl.setShopId(shopId);
-        searchFtl.setPageId(searchPage);
-        shopFitmentFtlMapper.insertSelective(searchFtl);
+    /**
+     * 取得动态里面的ftl页面信息
+     * @param pageId
+     * @param shopId
+     * @return
+     */
+    public ShopFitmentFtl getFtlFromActive(Long pageId,Long shopId){
+        FitmentPage page = selPage(pageId);
+        page.setHeadArea(null);
+        ShopFitmentFtl ftl=new ShopFitmentFtl();
+        ftl.setContext(JSON.toJSONString(page));
+        ftl.setType(FitmentPublished.PAGE.value);
+        ftl.setShopId(shopId);
+        ftl.setPageId(pageId);
+        return ftl;
     }
 
     /**
@@ -578,7 +577,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
     }
 
     @Override
-    public void publishPage(Long pageId) {
+    public void publishPage(Long pageId,Long shopId) {
         FitmentPage fitmentPage = new FitmentPage();
         fitmentPage.setUserDefineAreas(selAreaByPageId(pageId));
         fitmentPage.setPageId(pageId);
@@ -586,7 +585,9 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         example.createCriteria().andPageIdEqualTo(pageId);
         ShopFitmentFtl sff=new ShopFitmentFtl();
         sff.setContext(JSON.toJSONString(fitmentPage));
-        shopFitmentFtlMapper.updateByExampleSelective(sff,example);
+        if(shopFitmentFtlMapper.updateByExampleSelective(sff,example)==0){
+            shopFitmentFtlMapper.insertSelective(getFtlFromActive(pageId,shopId));
+        }
     }
 
     @Override

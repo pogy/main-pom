@@ -51,6 +51,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -93,9 +94,6 @@ public class CdnAction {
     ShopDiscusService shopDiscusService;
 
     @Autowired
-    XzSdkClient xzSdkClient;
-
-    @Autowired
     ShopLicenseService shopLicenseService;
 
     @Autowired
@@ -115,6 +113,9 @@ public class CdnAction {
 
     @Autowired
     ShopDesignService shopDesignService;
+
+    @Autowired
+    XzSdkClient xzSdkClient;
 
     /**
      * 杭州首页动态页面
@@ -340,6 +341,26 @@ public class CdnAction {
         Long pageId=shopDesignService.selPageIdByShopId(bo.getId());
         shopData(bo.getId(),pageId,webSite,model);
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
+        if(shopStatus == 1){
+            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+        }
+        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+    }
+
+    /**
+     * 用户自定义页面
+     * @return
+     */
+    @RequestMapping("shop/{shopId}/{pageKey}")
+    public String shopDefine(@PathVariable("shopId")Long shopId,@PathVariable("pageKey") Long pageKey,Model model) throws ShopFitmentException, IOException {
+        if(shopId==null||pageKey==null){
+            return "redirect:"+xzSdkClient.getMainHost();
+        }
+        StoreRelation storeRelation=storeRelationService.selRelationById(shopId);
+        String webSite=storeRelation.getWebSite();
+        Long pageId=shopDesignService.selNormalIdByKey(shopId,pageKey);
+        shopData(shopId,pageId,webSite,model);
+        int shopStatus = shopBaseService.getShopStatus(shopId);
         if(shopStatus == 1){
             return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
         }

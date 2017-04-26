@@ -215,7 +215,7 @@ public interface ShopFitmentService {
      * 发布页面
      * @param pageId
      */
-    void publishPage(Long pageId);
+    void publishPage(Long pageId,Long shopId);
 
     /**
      * 查询已发布的页面设置
