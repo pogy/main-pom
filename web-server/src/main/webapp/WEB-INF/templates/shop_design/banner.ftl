@@ -48,17 +48,17 @@
                                         <div class="sec_con">
                                             <ul class="second">
                                                 <li>
-                                                    <a href="/shop/search.htm?id=${shop.shopId}&d=1">
+                                                    <a href="/shop/search.htm?id=${shop.shopId}&dd=1">
                                                         今日新品
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="/shop/search.htm?id=${shop.shopId}&d=7">
+                                                    <a href="/shop/search.htm?id=${shop.shopId}&dd=7">
                                                         7日新品
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="/shop/search.htm?id=${shop.shopId}&d=30">
+                                                    <a href="/shop/search.htm?id=${shop.shopId}&dd=30">
                                                         30日新品
                                                     </a>
                                                 </li>
