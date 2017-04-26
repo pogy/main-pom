@@ -234,20 +234,14 @@
                             <label>页面背景图：</label>
                         </div>
                         <div class="bgimg">
-                            <img class="J_pageBgImage" src="<#if container.data['backgroundPic']??>
-                                ${container.data['backgroundPic']}
-                                <#else>
-                                /design/img/shop/img.gif
-                            </#if>" alt="">
+                            <img class="J_pageBgImage" src="<#if container.data['backgroundPic']??>${container.data['backgroundPic']}<#else>/design/img/shop/img.gif</#if>" alt="">
                         </div>
                         <div class="action">
                             <div class="action-btn">
                                 <a href="javascript:;" class="ks-uploader-button">
                                     <span class="btn-text" style="cursor: pointer">更换图片</span>
                                     <div class="file-input-wrapper" style="overflow: hidden;">
-                                        <input style="width: 60px; height: 30px;" type="hidden" name="hdfile" value="<#if container.data['backgroundPic']??>
-                                ${container.data['backgroundPic']}
-                            </#if>" class="file-input">
+                                        <input style="width: 60px; height: 30px;" type="hidden" name="hdfile" value="<#if container.data['backgroundPic']??>${container.data['backgroundPic']}</#if>" class="file-input">
                                     </div>
                                 </a>
                                 <a class="delete">删除</a>
