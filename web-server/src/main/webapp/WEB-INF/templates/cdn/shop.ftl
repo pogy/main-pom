@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <#if query.timeflag == 2>
-        <title>全部商品-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
+        <title>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-全部商品-四季星座网</title>
         <#elseif query.timeflag == 3>
-        <title>今日新品-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
+        <title>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-今日新品-四季星座网</title>
         <#elseif query.timeflag == 4>
-        <title>下架商品-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
+        <title>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-下架商品-四季星座网</title>
         <#elseif query.timeflag == 5>
-        <title>本周更新-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
+        <title>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-本周更新-四季星座网</title>
         <#elseif query.timeflag == 6>
-        <title>本月更新-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
+        <title>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-本月更新-四季星座网</title>
         <#else>
-        <title>首页-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
+        <title>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-首页-四季星座网</title>
         </#if>
 
         <meta name="keywords" content="欢迎前来四季星座网 ${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!} 优质档口，众多商品任你选择  ">
