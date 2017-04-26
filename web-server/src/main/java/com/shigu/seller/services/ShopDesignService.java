@@ -25,6 +25,7 @@ import com.shigu.main4.vo.fitment.ShopBanner;
 import com.shigu.seller.bo.*;
 import com.shigu.seller.vo.*;
 import com.shigu.tools.XzSdkClient;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,6 +184,9 @@ public class ShopDesignService {
         bannerArea.addAllModule(parseModule(banner,shop,isEditer));
         containerVO.setBanner(bannerArea);
         containerVO.getData().put("isEditer",isEditer);
+        if(StringUtils.isNotEmpty(page.getBackgroundPic()))
+        containerVO.getData().put("backgroundPic",page.getBackgroundPic());
+        containerVO.getData().put("backgroundType",page.getBackgroundType());
         containerVO.setFitmentAreas(new ArrayList<AreaVO>());
         for(FitmentArea fa:page.getUserDefineAreas()){
             AreaVO areaVO=new AreaVO(fa);
@@ -234,6 +238,7 @@ public class ShopDesignService {
             mv.getData().put("shop",shop);
         }else if(module instanceof ShopBanner){
             mv.getData().put("checkedNavs",selCheckedPageNav(shop.getShopId(),((ShopBanner) module).getStoreNav().getPages()));
+            mv.getData().put("shopcats",shopForCdnService.selShopCatsById(shop.getShopId()));
         }
         return mv;
     }

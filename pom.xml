@@ -25,7 +25,6 @@
         <module>main4-monitor</module>
         <module>main4-spread</module>
         <module>main4-tools</module>
-        <module>main4-cron</module>
         <module>web-server</module>
     </modules>
     <packaging>pom</packaging>
