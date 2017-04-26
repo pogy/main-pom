@@ -13,7 +13,7 @@ import java.util.List;
 public class ItemPromoteModule extends TitleShowModule {
 
     /**
-     * 推荐方式 0/1  自动/手动
+     * 推荐方式 1/2  自动/手动
      */
     private Integer promoteType = 1;
     private Integer sort = 1;

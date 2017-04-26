@@ -143,7 +143,7 @@
                                                    name="titleShow"
                                                    value="1" <#if moduleSet.titleShow==1>checked</#if>> 显示</label>
                                         <input class="J_TTitleInput input-box title-input" type="text" maxlength="30"
-                                               name="title" value="宝贝推荐">
+                                               name="title" value="${moduleSet.title!}">
                                     </div>
                                 </div>
                                 <div class="control-group clearfix">
