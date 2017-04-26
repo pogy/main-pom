@@ -258,6 +258,9 @@ public class ShopDesignAction {
     @RequestMapping("design/page-update-background")
     @ResponseBody
     public DesignJsonVO pageBackgroundOption(PageBackBo bo, HttpSession session) {
+        if (bo.getPic() != null) {
+            bo.setPic(bo.getPic().trim());
+        }
         return shopDesignService.pageBackOptionUpdate(bo, getShopSession(session).getShopId());
     }
 

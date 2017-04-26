@@ -66,6 +66,7 @@ public class ShiguShopFitmentTrans {
     public void trans() throws ShopFitmentException {
 
         int size = 200;
+//        int start = 21800;
         int start = 17000;
         ShiguShopExample shiguShopExample = new ShiguShopExample();
         shiguShopExample.setStartIndex(start);
@@ -78,14 +79,16 @@ public class ShiguShopFitmentTrans {
                 Long shopId = shop.getShopId();
                 ShopFitmentAreaExample exm = new ShopFitmentAreaExample();
                 exm.createCriteria().andShopIdEqualTo(shopId);
-                if (0 < shopFitmentAreaMapper.countByExample(exm)) {
+                int areaSize = shopFitmentAreaMapper.countByExample(exm);
+                if (5 == areaSize) {
                     logger.info(shopId + "已导入，跳过");
                     continue;
                 }
-                if (shop.getShopStatus() == 0) {
+                if (areaSize < 3)
+                    shopFitmentService.initShopFitment(shopId);
+                if (shop.getShopStatus() == 0 && shopFitmentAreaMapper.countByExample(exm) == 3) {
                     shopIds.add(shopId);
                 }
-                shopFitmentService.initShopFitment(shopId);
             }
             if (!shopIds.isEmpty()) {
                 ShiguShopFitmentExample fitmentExample = new ShiguShopFitmentExample();
