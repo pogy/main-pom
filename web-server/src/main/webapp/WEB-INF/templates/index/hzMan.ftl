@@ -683,9 +683,15 @@ if(session_shopId != ""){
                 </a>
                 
                 
+                    <#if item_index % 2 == 0>
+                    <div class="sendPhone">
+                        
+                    </div>
+                    <#else>
                     <div class="sendComputer">
                         
                     </div>
+                    </#if>
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
