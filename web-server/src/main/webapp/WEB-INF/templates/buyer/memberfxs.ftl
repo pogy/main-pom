@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/memberfxs.css" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=20170426" rel="stylesheet">
     
   </head>
 <body>
@@ -289,7 +289,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/memberfxs.js"></script>
+<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=20170426"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
