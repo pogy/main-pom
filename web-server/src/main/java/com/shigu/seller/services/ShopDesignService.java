@@ -238,6 +238,7 @@ public class ShopDesignService {
             mv.getData().put("shop",shop);
         }else if(module instanceof ShopBanner){
             mv.getData().put("checkedNavs",selCheckedPageNav(shop.getShopId(),((ShopBanner) module).getStoreNav().getPages()));
+            mv.getData().put("shopcats",shopForCdnService.selShopCatsById(shop.getShopId()));
         }
         return mv;
     }

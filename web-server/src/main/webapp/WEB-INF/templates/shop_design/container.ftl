@@ -6,7 +6,7 @@
                 <!-- end header -->
                 <!-- body -->
                 <div class="bg" style="width: 100%;<#if banner.allModules[0].moduleSet.bannerOption.spacing == 1>padding-top: 10px;</#if>
-                <#if backgroundPic??>background-image: url("${backgroundPic}");
+                <#if backgroundPic??>background-image: url('${backgroundPic}');
                     <#if backgroundType==1>background-repeat: repeat;</#if>
                     <#if backgroundType==2>background-repeat: repeat-y;</#if>
                     <#if backgroundType==3>background-repeat: repeat-x;</#if>

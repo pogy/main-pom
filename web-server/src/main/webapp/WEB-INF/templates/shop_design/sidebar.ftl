@@ -234,14 +234,20 @@
                             <label>页面背景图：</label>
                         </div>
                         <div class="bgimg">
-                            <img class="J_pageBgImage" src="/design/img/shop/img.gif" alt="">
+                            <img class="J_pageBgImage" src="<#if container.data['backgroundPic']??>
+                                ${container.data['backgroundPic']}
+                                <#else>
+                                /design/img/shop/img.gif
+                            </#if>" alt="">
                         </div>
                         <div class="action">
                             <div class="action-btn">
                                 <a href="javascript:;" class="ks-uploader-button">
                                     <span class="btn-text" style="cursor: pointer">更换图片</span>
                                     <div class="file-input-wrapper" style="overflow: hidden;">
-                                        <input style="width: 60px; height: 30px;" type="hidden" name="hdfile" value="" class="file-input">
+                                        <input style="width: 60px; height: 30px;" type="hidden" name="hdfile" value="<#if container.data['backgroundPic']??>
+                                ${container.data['backgroundPic']}
+                            </#if>" class="file-input">
                                     </div>
                                 </a>
                                 <a class="delete">删除</a>
@@ -257,15 +263,15 @@
                         <table>
                             <tbody>
                             <tr>
-                                <td class="J_pageShowSelect onselected" data-value="1" data-bg-show="repeat">平铺
+                                <td class="J_pageShowSelect <#if container.data['backgroundType']==1>onselected</#if>" data-value="1" data-bg-show="repeat">平铺
                                 </td>
-                                <td class="J_pageShowSelect " data-value="2" data-bg-show="repeat-y">纵向平铺
+                                <td class="J_pageShowSelect <#if container.data['backgroundType']==2>onselected</#if>" data-value="2" data-bg-show="repeat-y">纵向平铺
                                 </td>
                             </tr>
                             <tr>
-                                <td class="J_pageShowSelect " data-value="3" data-bg-show="repeat-x">横向平铺
+                                <td class="J_pageShowSelect <#if container.data['backgroundType']==3>onselected</#if>" data-value="3" data-bg-show="repeat-x">横向平铺
                                 </td>
-                                <td class="J_pageShowSelect " data-value="4" data-bg-show="no-repeat">不平铺
+                                <td class="J_pageShowSelect <#if container.data['backgroundType']==4>onselected</#if>" data-value="4" data-bg-show="no-repeat">不平铺
                                 </td>
                             </tr>
                             </tbody>
