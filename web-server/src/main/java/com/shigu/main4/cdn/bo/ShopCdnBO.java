@@ -5,6 +5,7 @@ import com.shigu.tools.EncodeParamter;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 店铺类别参数
@@ -62,6 +63,14 @@ public class ShopCdnBO implements Serializable{
      * 价格结束
      */
     private Double endPrice;
+    /**
+     * 几天内
+     */
+    private Integer dd;
+
+    private String startDate;
+    private String endDate;
+
     /**
      * 判断是否首页,决定要不要装修
      * @return
@@ -161,5 +170,29 @@ public class ShopCdnBO implements Serializable{
 
     public void setEndPrice(Double endPrice) {
         this.endPrice = endPrice;
+    }
+
+    public Integer getDd() {
+        return dd;
+    }
+
+    public void setDd(Integer dd) {
+        this.dd = dd;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 }

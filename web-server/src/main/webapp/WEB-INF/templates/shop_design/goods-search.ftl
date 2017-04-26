@@ -6,7 +6,7 @@
             </div>
         </#if>
         <div class="skin-box-bd">
-            <form name="SearchForm" action="/shop/search.htm?id=${shop.shopId}" method="get">
+            <form name="SearchForm" action="/shop/search.htm" method="get">
                 <ul class="clearfix">
                     <li class="keyword">
                         <label>
@@ -36,6 +36,7 @@
                         </#if>
                     </li>
                 </ul>
+                <input type="hidden" name="id" value="${shop.shopId}">
             </form>
         </div>
     </div>

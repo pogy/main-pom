@@ -16,6 +16,7 @@ import com.shigu.main4.cdn.vo.ShopShowVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
@@ -32,6 +33,8 @@ import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.ShopBaseForCdn;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.seller.services.ShopDesignService;
+import com.shigu.seller.vo.ContainerVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
@@ -41,12 +44,14 @@ import com.shigu.spread.services.SpreadService;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
+import freemarker.template.TemplateException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -57,6 +62,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -88,9 +94,6 @@ public class CdnAction {
     ShopDiscusService shopDiscusService;
 
     @Autowired
-    XzSdkClient xzSdkClient;
-
-    @Autowired
     ShopLicenseService shopLicenseService;
 
     @Autowired
@@ -107,6 +110,12 @@ public class CdnAction {
 
     @Autowired
     ItemUpRecordService itemUpRecordService;
+
+    @Autowired
+    ShopDesignService shopDesignService;
+
+    @Autowired
+    XzSdkClient xzSdkClient;
 
     /**
      * 杭州首页动态页面
@@ -194,7 +203,7 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("/index.html")
-    public String domainindex(HttpServletRequest request,Model model){
+    public String domainindex(HttpServletRequest request,Model model) throws ShopFitmentException, CdnException, IOException {
         String url=request.getRequestURL().toString();
         if(!url.contains(".571xz.com")){
 //            return "redirect:"+xzSdkClient.getMainHost();
@@ -213,12 +222,11 @@ public class CdnAction {
         }
         ShopCdnBO bo=new ShopCdnBO();
         bo.setId(shopId);
-        packageShopData(bo,model);
-        //拼baseUrl
         StoreRelation storeRelation=storeRelationService.selRelationById(shopId);
         String webSite=storeRelation.getWebSite();
         model.addAttribute("baseUrl","http://"+webSite+".571xz.com/");
-        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+        return shop(bo,null,model);
+        //拼baseUrl
     }
     /**
      * 商品页面
@@ -226,7 +234,7 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("item")
-    public String item(Long id,Model model) throws CdnException {
+    public String item(Long id,Model model) throws CdnException, IOException, TemplateException {
         //如果东北商品,用东北的模板
         ItemShowVO itemShowVO=new ItemShowVO();
         itemShowVO.setItemId(id);
@@ -238,6 +246,8 @@ public class CdnAction {
         if(cdnItem==null){//商品不存在
             throw new CdnException("商品不存在");
         }
+        //店招
+        model.addAttribute("navCon",cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite()));
         // 商品详情懒加载
         if(cdnItem.getDescription()!=null)
             cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
@@ -255,6 +265,7 @@ public class CdnAction {
         itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
         model.addAttribute("newGoodsList",shopForCdnService.searchItemOnsale(null,cdnItem.getShopId(),"time_down",1,5).getContent());
         model.addAttribute("vo",itemShowVO);
+        model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
         return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
     }
 
@@ -313,7 +324,7 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("shop")
-    public String shop(@Valid ShopCdnBO bo, BindingResult result,Model model) throws CdnException {
+    public String shop(@Valid ShopCdnBO bo, BindingResult result,Model model) throws CdnException, ShopFitmentException, IOException {
         // TODO: 17/3/20 如果分站过来的,跳现在的shopID
 
         if(bo.getId()>1000000){
@@ -322,12 +333,78 @@ public class CdnAction {
                 return "redirect:/shop.htm?id="+shopId;
             }
         }
+        if(result!=null&&result.hasErrors()){
+            throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
+        String webSite=storeRelation.getWebSite();
+        Long pageId=shopDesignService.selPageIdByShopId(bo.getId());
+        shopData(bo.getId(),pageId,webSite,model);
+        int shopStatus = shopBaseService.getShopStatus(bo.getId());
+        if(shopStatus == 1){
+            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+        }
+        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+    }
+
+    /**
+     * 用户自定义页面
+     * @return
+     */
+    @RequestMapping("shop/{shopId}/{pageKey}")
+    public String shopDefine(@PathVariable("shopId")Long shopId,@PathVariable("pageKey") Long pageKey,Model model) throws ShopFitmentException, IOException {
+        if(shopId==null||pageKey==null){
+            return "redirect:"+xzSdkClient.getMainHost();
+        }
+        StoreRelation storeRelation=storeRelationService.selRelationById(shopId);
+        String webSite=storeRelation.getWebSite();
+        Long pageId=shopDesignService.selNormalIdByKey(shopId,pageKey);
+        shopData(shopId,pageId,webSite,model);
+        int shopStatus = shopBaseService.getShopStatus(shopId);
+        if(shopStatus == 1){
+            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+        }
+        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+    }
+
+    /**
+     * 搜索页面
+     * @return
+     */
+    @RequestMapping("shop/search")
+    public String shopSearch(@Valid ShopCdnBO bo,BindingResult result,Model model) throws ShopFitmentException, IOException, CdnException {
         if(result.hasErrors()){
             throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
         }
-        packageShopData(bo,model);
+        Long pageId=shopDesignService.selSearchIdByShopId(bo.getId());
         StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
         String webSite=storeRelation.getWebSite();
+        shopData(bo.getId(),pageId,webSite,model);
+        ContainerVO containerVO= (ContainerVO) model.asMap().get("container");
+        containerVO.getSearchModule().getData().put("catPolymerizations",shopForCdnService.selCatRolymerizations(bo.getId()));//类目聚合
+        ShiguPager<ItemShowBlock> pager;
+        Date startDate;
+        Date endDate;
+        if(bo.getDd()!=null&&bo.getDd()>0){
+            Calendar cal=Calendar.getInstance();
+            endDate=cal.getTime();
+            cal.add(Calendar.DATE,-bo.getDd());
+            startDate=cal.getTime();
+        }else{
+            startDate=DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd");
+            endDate=DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd");
+        }
+        if(bo.getCid()!=null||bo.getScid()!=null){//类目型
+            pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
+                    bo.getCid(),bo.getScid(),bo.getOrder(),startDate,endDate,bo.getPageNo(),bo.getPageSize());
+        }else{
+            pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
+                    bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),startDate,endDate,bo.getPageNo(),bo.getPageSize());
+        }
+        containerVO.getSearchModule().getData().put("goodsList",pager);
+        containerVO.getSearchModule().getData().put("bo",bo);
+        model.addAttribute("container",containerVO);
+        //处理搜索条件
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
             return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
@@ -337,15 +414,31 @@ public class CdnAction {
 
     /**
      * 包装店铺数据
+     * @param shopId
+     * @param pageId
+     * @param webSite
+     * @param model
+     * @throws ShopFitmentException
+     * @throws IOException
+     */
+    private void shopData(Long shopId,Long pageId,String webSite,Model model) throws ShopFitmentException, IOException {
+        ContainerVO containerVO=shopDesignService.selPagePublishedById(pageId,shopDesignService.selShopForModule(shopId,
+                webSite));
+        model.addAttribute("container",containerVO);
+        model.addAttribute("pages",shopDesignService.selAllPage(shopId));
+        model.addAttribute("isEditer",false);
+        model.addAttribute("vo",cdnService.shopSimpleVo(shopId));
+    }
+
+    /**
+     * 包装店铺数据
      * @return
      */
     private void packageShopData(ShopCdnBO bo,Model model){
-        ShopShowVO shopShowVO=new ShopShowVO();
-        shopShowVO.setOther(shopForCdnService.selShopBase(bo.getId()));
+        ShopShowVO shopShowVO=cdnService.shopSimpleVo(bo.getId());
+        //聚合类目信息
         shopShowVO.setCatPolymerizations(shopForCdnService.selCatRolymerizations(bo.getId()));
-        shopShowVO.setDomain(shopBaseService.selDomain(bo.getId()));
-        shopShowVO.setHasAuth(shopBaseService.shopAuthState(bo.getId()));
-        shopShowVO.setStoreRelation(storeRelationService.selRelationById(bo.getId()));
+        //查店内类目
         shopShowVO.setShopCats(shopForCdnService.selShopCatsById(bo.getId()));
         //查商品
         //如果是仓库
@@ -371,10 +464,12 @@ public class CdnAction {
             ShiguPager<ItemShowBlock> pager;
             if(bo.getCid()!=null||bo.getScid()!=null){//类目型
                 pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
-                        bo.getCid(),bo.getScid(),bo.getOrder(),bo.getPageNo(),bo.getPageSize());
+                        bo.getCid(),bo.getScid(),bo.getOrder(),DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd"),
+                        DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd"),bo.getPageNo(),bo.getPageSize());
             }else{
                 pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
-                        bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),bo.getPageNo(),bo.getPageSize());
+                        bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd"),
+                        DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd"),bo.getPageNo(),bo.getPageSize());
             }
 //            shopShowVO.setPageOption(pager.selPageOption(bo.getPageSize()));
             model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
@@ -382,7 +477,6 @@ public class CdnAction {
             model.addAttribute("totalpage",pager.getTotalPages());
             shopShowVO.setItemList(pager);
         }
-        shopShowVO.setShopLicenses(shopLicenseService.selShopLicenses(bo.getId()));
         if(bo.isIndex()){//加装修与推荐
             shopShowVO.setRecommens(shopForCdnService.selRecomments(bo.getId()));
             shopShowVO.setShopFitment(shopForCdnService.selShopFitment(bo.getId()));
@@ -393,12 +487,6 @@ public class CdnAction {
                         .replace("</script>",""));
             }
         }
-        //得到商品ID
-        shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(bo.getId()));
-
-        Long starNum=shopForCdnService.selShopStarById(bo.getId());
-        starNum=starNum==null?0:starNum;
-        shopShowVO.setStarNum(starNum);
         model.addAttribute("vo",shopShowVO);
         model.addAttribute("query",bo);
     }

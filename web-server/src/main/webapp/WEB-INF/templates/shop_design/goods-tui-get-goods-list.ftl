@@ -39,18 +39,15 @@
             </form>
         </div>
         <div class="items-count">
-            <a class="want-opt <#if bo.type == 1>selected</#if>" href="?id=${bo.id}&area=${bo.area}&type=1"
-               style="display:inline-block;min-width: 60px; text-align: center; padding: 1px 3px;">全部商品(${pager.totalCount})</a>
-            <a class="want-opt <#if bo.type == 2>selected</#if>" href="?id=${bo.id}&area=${bo.area}&type=2"
-               style="display:inline-block;min-width: 60px; text-align: center; padding: 1px 3px;">已推荐(<span id="tuiCount">${promotes.totalCount}</span>)</a>
+            <a class="want-opt <#if bo.type == 1>selected</#if>" href="?mid=${bo.mid}&area=${bo.area}&type=1"
+               style="display:inline-block;min-width: 60px; text-align: center; padding: 1px 3px;">全部商品(<#if bo.type == 1>${pager.totalCount}<#else>${totalOnsale}</#if>)</a>
+            <a class="want-opt <#if bo.type == 2>selected</#if>" href="?mid=${bo.mid}&area=${bo.area}&type=2"
+               style="display:inline-block;min-width: 60px; text-align: center; padding: 1px 3px;">已推荐(<span id="tuiCount">${bo.ids?size}</span>)</a>
             <span style="margin-left: 5px; color: gray;">
                                 最多可推荐16个商品
                             </span>
         </div>
     </div>
-    <#if bo.type == 2>
-        <#assign pager = promotes>
-    </#if>
     <!-- 手动推荐 -->
     <div class="form_nav2_con" style="width: calc(100% - 50px);">
         <ul class="all">
@@ -72,7 +69,8 @@
                         ￥${item.price!}                                            </div>
                 </div>
                 <div class="fnbtn clearfix">
-                    <a href="javascript:;" data-item="${item.itemId!}" class="tj" data-type="1">推荐</a>
+                    <#assign isPromote = bo.ids?seq_contains(item.itemId)>
+                    <a href="javascript:;" data-item="${item.itemId!}" class="tj" data-type="${isPromote?string("2","1")}"><#if isPromote>取消</#if>推荐</a>
                 </div>
             </li>
             </#list>
@@ -88,15 +86,30 @@
     <#if pager.content?size gt 0>
     <div class="editpage clearfix" style="margin-top: 25px;">
         <div class="page-link">
-
+            <#assign href = "?size=5&mid=" + bo.mid + "&area=" + bo.area + "&type=" + bo.type + "&page=">
             <ul class="page-link-ul">
-                <li<#if pager.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${pager.number - 1}">«</a></#if></li>
-                <#list 1..pager.totalPages as p>
+                <li<#if pager.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="${href}${pager.number - 1}">«</a></#if></li>
+                <#if pager.number <= 5 || pager.totalPages < 10>
+                    <#assign start = 1>
+                    <#if pager.totalPages < 9>
+                        <#assign end = pager.totalPages>
+                    <#else>
+                        <#assign end = 9>
+                    </#if>
+                <#else>
+                    <#assign start = pager.number - 4>
+                    <#assign end = pager.number + 4>
+                    <#if pager.totalPages < end>
+                        <#assign start = pager.totalPages - 8>
+                        <#assign end = pager.totalPages>
+                    </#if>
+                </#if>
+                <#list start..end as p>
                     <#if p gt 0>
-                    <li <#if pager.number == p>class="current"><a href="javascript:;">${p}</a><#else>><a href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${p}">${p}</a></#if></li>
+                    <li <#if pager.number == p>class="current"><a href="javascript:;">${p}</a><#else>><a href="${href}${p}">${p}</a></#if></li>
                     </#if>
                 </#list>
-                <li<#if pager.number &gt;= pager.totalPages> class="disabled"><a href="javascript:;">»</a><#else>><a title="下一页" href="?size=5&id=${bo.id!}&area=${bo.area!}&type=${bo.type!}&page=${pager.number + 1}">»</a></#if></li>
+                <li<#if pager.number &gt;= pager.totalPages> class="disabled"><a href="javascript:;">»</a><#else>><a title="下一页" href="${href}${pager.number + 1}">»</a></#if></li>
             </ul>
             <span>${pager.number!}/${pager.totalPages}</span>
         </div>
@@ -108,7 +121,7 @@
     $(function(){
         $('.tj').click(function() {
             var _this = $(this),
-                    mid = '${bo.id}',
+                    mid = '${bo.mid}',
                     id = _this.data('item'),
                     area = '${bo.area!}',
                     type = '2',

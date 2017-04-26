@@ -78,7 +78,7 @@ public interface ShopForCdnService {
      * @param pageSize 每页数量
      * @return 商品豆腐块分页信息
      */
-    ShiguPager<ItemShowBlock> searchItemOnsale(String keyword,Long shopId,Long cid,String scid,String orderBy,int pageNo,int pageSize);
+    ShiguPager<ItemShowBlock> searchItemOnsale(String keyword,Long shopId,Long cid,String scid,String orderBy,Date startTime,Date endTime,int pageNo,int pageSize);
 
     /**
      * 查询店内出售中的商品
@@ -90,7 +90,7 @@ public interface ShopForCdnService {
      * @param pageSize 每页数量
      * @return 商品豆腐块分页信息
      */
-    ShiguPager<ItemShowBlock> searchItemOnsale(String keyword,Long shopId,Double priceFrom,Double priceTo,String orderBy,int pageNo
+    ShiguPager<ItemShowBlock> searchItemOnsale(String keyword,Long shopId,Double priceFrom,Double priceTo,String orderBy,Date startTime,Date endTime,int pageNo
             ,int pageSize);
 
     /**

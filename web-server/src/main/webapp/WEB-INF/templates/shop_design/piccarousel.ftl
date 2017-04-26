@@ -25,11 +25,13 @@
         }
     </style>
     <div class="skin-box">
+    <#if moduleSet.titleShow == 1>
         <div class="skin-box-hd">
-            <h3>图片轮播</h3>
+            <h3>${moduleSet.title!}</h3>
         </div>
+    </#if>
         <div class="skin-box-bd">
-            <div class="J_TWidget slide-box" style="min-height: 100px; height: 250px;">
+            <div class="J_TWidget slide-box" style="min-height: 100px; height: ${moduleSet.modHeight}px;">
                 <div id="_${moduleSet.moduleId}" class="swiper-container swiper-container-horizontal">
                     <ul class="swiper-wrapper">
                         <#list moduleSet.images as img>

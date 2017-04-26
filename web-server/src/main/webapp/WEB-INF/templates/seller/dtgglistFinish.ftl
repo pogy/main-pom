@@ -24,19 +24,6 @@
 <div class="topbar">
     <div class="layout">
         <div class="leftbox">
-            <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源</#if></em><i class="downArrow"></i></span>
-                <div class="cityCon">
-                    <ul>
-                        <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
-                        <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
-                        <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
-                    </ul>
-                </div>
-            </div>
             <div class="login">
                 <span>你好，</span>
                 <em>请</em>
@@ -223,7 +210,7 @@
         <h2>店铺管理</h2>
         <ul>
             <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
-            <li><a href="${main_host!}seller/fitmentStorefitmentStore.htm?tab=1"  >店铺装修</a></li> 
+            <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修</a></li> 
             <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
             <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
             <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
@@ -247,7 +234,7 @@
     
     <div class="content shadow-box">
         
-        <p class="resultInfo">本次活动已结束！<#if (indexggList?size) gt 0>派位结果如下：</#if></p>
+        <p class="resultInfo">本次活动已结束！<#if (ggList?size) gt 0>派位结果如下：</#if></p>
             <#if indexggList?? && (indexggList?size) gt 0>
                 <#list indexggList as indexgg>
                 <h3 class="syIntro">${indexgg.title!}</h3>
@@ -263,11 +250,11 @@
                     </tr>
                     <#list indexgg.ggList as item>
                         <tr>
-                            <td>${item_index + 1}</td>
+                            <td>${item.num!}</td>
                             <td>${item.marketText!}</td>
                             <td>${item.storeNum!}</td>
                             <td>${item.lxuser!}</td>
-                            <td><#if item.lxtel ??>${item.lxtel[0..2]}****${item.lxtel[7..10]}</#if></td>
+                            <td>#if item.lxtel ??>${item.lxtel[0..2]}****${item.lxtel[7..10]}</#if></td>
                         </tr>
                     </#list>
                     </table>
@@ -277,6 +264,13 @@
                 </#list>
             
             </#if>
+        
+        <p class="nexttime">下次活动时间：${nexttimeText!}</p>
+        
+        <div class="introduction">
+            ${introductionHtml}
+            
+        </div>
         
     </div>
 </div>

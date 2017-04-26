@@ -1,12 +1,10 @@
 package com.shigu.seller.actions;
 
-import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.storeservices.ShopBaseService;
-import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.vo.FitmentModule;
-import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.fitment.CustomModule;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.main4.vo.fitment.ItemSearchModule;
@@ -23,9 +21,9 @@ import com.shigu.seller.vo.ShopForModuleVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.zhb.utils.BeanMapper;
-import freemarker.template.Template;
 import net.sf.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,19 +54,9 @@ public class ShopDesignAction {
     @Autowired
     ShopForCdnService shopForCdnService;
 
-    /**
-     * 给模块用的店铺基本信息
-     * @param session
-     * @return
-     */
-    private ShopForModuleVO selShopForModule(HttpSession session){
-        ShopSession shopSession=getShopSession(session);
-        ShopForModuleVO shop=new ShopForModuleVO();
-        shop.setShopId(shopSession.getShopId());
-        shop.setWebSite(shopSession.getWebSite());
-        shop.setDomain(shopBaseService.selDomain(shopSession.getShopId()));
-        return shop;
-    }
+    @Autowired
+    CdnService cdnService;
+
 
     /**
      * 店铺装修
@@ -80,7 +68,8 @@ public class ShopDesignAction {
         if(pageId==null){
             pageId=shopDesignService.selPageIdByShopId(shopSession.getShopId());
         }
-        ContainerVO containerVO=shopDesignService.selPageById(pageId,selShopForModule(session),true);
+        ContainerVO containerVO=shopDesignService.selPageById(pageId,shopDesignService.selShopForModule(shopSession.getShopId(),
+                shopSession.getWebSite()),true);
         model.addAttribute("page_id",pageId);
         model.addAttribute("container",containerVO);
         model.addAttribute("pages",shopDesignService.selAllPage(shopSession.getShopId()));
@@ -103,7 +92,8 @@ public class ShopDesignAction {
         if(pageId==null){
             pageId=shopDesignService.selPageIdByShopId(shopSession.getShopId());
         }
-        ContainerVO containerVO=shopDesignService.selPageById(pageId,selShopForModule(session),false);
+        ContainerVO containerVO=shopDesignService.selPageById(pageId,shopDesignService.selShopForModule(shopSession.getShopId(),
+                shopSession.getWebSite()),false);
         model.addAttribute("container",containerVO);
         model.addAttribute("pages",shopDesignService.selAllPage(shopSession.getShopId()));
         model.addAttribute("isEditer",false);
@@ -112,7 +102,16 @@ public class ShopDesignAction {
             containerVO.getSearchModule().getData().put("catPolymerizations",shopForCdnService.selCatRolymerizations(shopSession.getShopId()));//类目聚合
             containerVO.getSearchModule().getData().put("goodsList",shopForCdnService.searchItemOnsale(null,shopSession.getShopId(),"time_down",1,20));
         }
-        return "/shop_design/preview";
+        model.addAttribute("vo",cdnService.shopSimpleVo(shopSession.getShopId()));
+        return "/cdn/shop";
+    }
+
+    @RequestMapping("design/publish")
+    @ResponseBody
+    public DesignJsonVO publish(HttpSession session) {
+        ShopSession shopSession = getShopSession(session);
+        Long shopId = shopSession.getShopId();
+        return shopDesignService.publishOneShop(shopId);
     }
 
     /**
@@ -121,11 +120,13 @@ public class ShopDesignAction {
      */
     @RequestMapping("design/addModule")
     public String addModule(AddModuleBO bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
+        ShopSession shopSession=getShopSession(session);
         Long sideId=null;
         if(bo.getSide()!=null&&!"none".equals(bo.getSide())){
             sideId=Long.valueOf(bo.getSide());
         }
-        ModuleVO mv=shopDesignService.addModule(bo.getId(),bo.getArea(),bo.getType(),sideId,bo.getAfter(),selShopForModule(session));
+        ModuleVO mv=shopDesignService.addModule(bo.getId(),bo.getArea(),bo.getType(),sideId,bo.getAfter(),shopDesignService.selShopForModule(shopSession.getShopId(),
+                shopSession.getWebSite()));
         model.addAllAttributes(mv.getData());
         return "/shop_design/"+bo.getId();
     }
@@ -192,15 +193,10 @@ public class ShopDesignAction {
     @RequestMapping("design/goods-tui-get-goods-list")
     public String goodsTuiGetGoodsList(PromotePagerBo bo, HttpSession session, Model model){
         Long shopId = getShopSession(session).getShopId();
+        bo.setIds(shopDesignService.selPromoteItemIds(bo));
         model.addAttribute("bo", bo);
-        PromotePagerBo allItem = BeanMapper.map(bo, PromotePagerBo.class);
-        allItem.setType(1);
-        model.addAttribute("pager", shopDesignService.selPromoteItems(allItem, shopId));
-
-        PromotePagerBo promoteItems = BeanMapper.map(bo, PromotePagerBo.class);
-        promoteItems.setType(2);
-        promoteItems.setIds(shopDesignService.selPromoteItemIds(bo));
-        model.addAttribute("promotes", shopDesignService.selPromoteItems(promoteItems, shopId));
+        model.addAttribute("pager", shopDesignService.selPromoteItems(bo, shopId));
+        model.addAttribute("totalOnsale", shopForCdnService.selItemNumberById(shopId));
         return "/shop_design/goods-tui-get-goods-list";
     }
 
@@ -307,6 +303,9 @@ public class ShopDesignAction {
      */
     @RequestMapping("design/saveCustomOption")
     public String saveCustomOption(CustomModule bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
+        if (bo.getContent() != null) {
+            bo.setContent(bo.getContent().replace("网商园","").replace("wsy.com",""));
+        }
         return saveModuleOption(bo,session,model);
     }
 
@@ -355,8 +354,10 @@ public class ShopDesignAction {
     }
 
     private String saveModuleOption(FitmentModule module,HttpSession session,Model model) throws ShopFitmentException, IOException {
+        ShopSession shopSession=getShopSession(session);
         shopDesignService.revalueModule(module.getModuleId(),module);
-        ModuleVO mv=shopDesignService.selModuleByModuleIdWithData(module.getModuleId(),selShopForModule(session),true);
+        ModuleVO mv=shopDesignService.selModuleByModuleIdWithData(module.getModuleId(),shopDesignService.selShopForModule(shopSession.getShopId(),
+                shopSession.getWebSite()),true);
         model.addAllAttributes(mv.getData());
         return "/"+mv.getTemplate().getSourceName().replace(".ftl","");
     }

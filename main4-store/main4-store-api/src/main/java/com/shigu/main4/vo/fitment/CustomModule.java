@@ -1,5 +1,7 @@
 package com.shigu.main4.vo.fitment;
 
+import com.shigu.main4.enums.FitmentModuleType;
+
 /**
  * 自定义模块
  * Created by Administrator on 2017/4/18 0018.
@@ -17,5 +19,10 @@ public class CustomModule extends TitleShowModule {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Override
+    public Integer getModuleType() {
+        return FitmentModuleType.Custom.value;
     }
 }

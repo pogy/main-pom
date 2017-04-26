@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
                                 <div class="manual-rec-content clearfix" style="display: none;">
-                                    <iframe style="border: 0; width: 100%; height: 480px;" src="/seller/design/goods-tui-get-goods-list.htm?size=5&id=${moduleSet.moduleId}&area=${moduleSet.areaId}&type=1">                            </iframe>
+                                    <iframe style="border: 0; width: 100%; height: 480px;" src="/seller/design/goods-tui-get-goods-list.htm?size=5&mid=${moduleSet.moduleId}&area=${moduleSet.areaId}&type=1">                            </iframe>
                                 </div>
                             </div>
                             <!--显示设置开始-->
@@ -152,7 +152,7 @@
                                     <div class="control clearfix">
 
                                         <dl class="itemsLayout line-item4">
-                                            <dt class="itemsLayoutShot dtselected">
+                                            <dt class="itemsLayoutShot <#if moduleSet.radio==4>dtselected</#if>">
                                                 <a href="#" class="J_itemsLayoutTrigger" data-value="230" data-layout="950">
                                                     <span></span>
                                                 </a>
@@ -163,7 +163,7 @@
                                             </dd>
                                         </dl>
                                         <dl class="itemsLayout line-item5">
-                                            <dt class="itemsLayoutShot ">
+                                            <dt class="itemsLayoutShot <#if moduleSet.radio==5>dtselected</#if>">
                                                 <a href="#" class="J_itemsLayoutTrigger" data-value="180" data-layout="950">
                                                     <span></span>
                                                 </a>
@@ -174,7 +174,7 @@
                                             </dd>
                                         </dl>
                                         <dl class="itemsLayout line-item7">
-                                            <dt class="itemsLayoutShot ">
+                                            <dt class="itemsLayoutShot <#if moduleSet.radio==7>dtselected</#if>">
                                                 <a href="#" class="J_itemsLayoutTrigger" data-value="130" data-layout="950">
                                                     <span></span>
                                                 </a>

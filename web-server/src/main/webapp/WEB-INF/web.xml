@@ -134,5 +134,4 @@
 		<error-code>500</error-code>
 		<location>/500.html</location>
 	</error-page>
-
 </web-app>

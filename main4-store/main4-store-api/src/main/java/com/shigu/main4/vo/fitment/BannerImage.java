@@ -14,7 +14,7 @@ public class BannerImage {
     /**
      * 图
      */
-    private String imgPic = "http://imgs.571xz.net/mall/default_fitment_logo.jpg";
+    private String imgPic = "http://imgs.571xz.net/mall/default_fitment_logo.png";
 
     /**
      * 自定义banner

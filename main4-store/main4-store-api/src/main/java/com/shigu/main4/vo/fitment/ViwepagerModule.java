@@ -1,5 +1,7 @@
 package com.shigu.main4.vo.fitment;
 
+import com.shigu.main4.enums.FitmentModuleType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +27,11 @@ public class ViwepagerModule extends TitleShowModule {
      * 切换效果
      */
     private Integer modType = 1;
+
+    @Override
+    public Integer getModuleType() {
+        return FitmentModuleType.Viwepager.value;
+    }
 
     public boolean isDefault() {
         return isDefault;

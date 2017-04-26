@@ -12,7 +12,7 @@ public class PromotePagerBo {
     private Long id;
     private Long mid;
     private Long area;
-    private Integer type;
+    private Integer type = 1;
 
     private String q;
     private Double lowPrice;

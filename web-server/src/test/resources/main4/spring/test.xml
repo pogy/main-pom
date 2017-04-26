@@ -16,16 +16,16 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.opentae.*,com.shigu.services.*" >
+    <context:component-scan base-package="com.opentae.*,com.shigu.seller.services.*,com.shigu.main4.*,com.shigu.buyer.*">
     </context:component-scan>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath:mall_config.properties</value>
+                <value>classpath:*.properties</value>
             </list>
         </property>
     </bean>
@@ -35,6 +35,24 @@
                 <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"></entry>
             </map>
         </property>
+    </bean>
+
+    <!--星座的sdk-->
+    <bean id="xzSdkClient" class="com.shigu.tools.XzSdkClient">
+        <property name="appkey" value="${xz_appkey}"/>
+        <property name="secret" value="${xz_secret}"/>
+        <property name="type" value="${xz_type}"/>
+        <property name="mainHost" value="${xz_main_host}"/>
+        <property name="yjHost" value="${xz_yj_host}"/>
+        <property name="xzMainBus" value="${xz_mainbus}"/>
+
+        <property name="mailfrom" value="${xz_mailfrom}"/>
+        <property name="smtphost" value="${xz_smtphost}"/>
+        <property name="mailuser" value="${xz_mailuser}"/>
+        <property name="mailpwd" value="${xz_mailpwd}"/>
+        <property name="smtpauth" value="${xz_smtpauth}"/>
+        <property name="smtptimeout" value="${xz_smtptimeout}"/>
+
     </bean>
 
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
@@ -93,4 +111,9 @@
         <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
     </bean>
+
+    <!--</bean>-->
+    <import resource="apache-shiro.xml"></import>
+    <import resource="classpath:dubbo_application_test.xml"/>
+
 </beans>

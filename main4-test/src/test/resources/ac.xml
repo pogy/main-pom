@@ -7,7 +7,7 @@
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
   http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
-<context:component-scan base-package="com.opentae.*,com.shigu.*,com.openJar.*,com.common.base.*,com.alibaba.*,com.searchtool.configs" >
+<context:component-scan base-package="com.opentae.*,com.shigu.*,com.alibaba.*,com.searchtool.configs" >
 	</context:component-scan>
 
     <dubbo:reference interface="com.shigu.tb.finder.services.TaobaoSynService" id="taobaoSynService" cluster="failfast" timeout="100000"/>

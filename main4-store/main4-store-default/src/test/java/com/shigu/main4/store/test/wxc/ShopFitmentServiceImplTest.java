@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.opentae.data.mall.beans.ShopFitmentArea;
 import com.opentae.data.mall.beans.ShopFitmentModule;
+import com.opentae.data.mall.examples.ShopFitmentFtlExample;
 import com.opentae.data.mall.interfaces.ShopFitmentAreaMapper;
+import com.opentae.data.mall.interfaces.ShopFitmentFtlMapper;
 import com.opentae.data.mall.interfaces.ShopFitmentModuleMapper;
 import com.shigu.main4.enums.FitmentAreaType;
 import com.shigu.main4.enums.FitmentModuleType;
@@ -38,10 +40,13 @@ public class ShopFitmentServiceImplTest extends BaseSpringTest {
     @Autowired
     private ShopFitmentModuleMapper shopFitmentModuleMapper;
 
+    @Autowired
+    private ShopFitmentFtlMapper shopFitmentFtlMapper;
+
     @Test
     public void initShopFitment() throws Exception {
 //        shopFitmentService.initShopFitment(32888L);
-        shopFitmentService.initShopFitment(35992L);
+        shopFitmentService.initShopFitment(41452L);
     }
 
     @Test
@@ -55,6 +60,19 @@ public class ShopFitmentServiceImplTest extends BaseSpringTest {
         System.out.println(JSON.toJSONString(shopFitmentService.selPage(test1), SerializerFeature.PrettyFormat));
         Long test2 = shopFitmentService.createPage(32888L, "测试2", null, 2);
         System.out.println(JSON.toJSONString(shopFitmentService.selPage(test2), SerializerFeature.PrettyFormat));
+    }
+
+    @Test
+    public void publishBannerTest(){
+        shopFitmentService.publishBanner(35992L);
+        ShopFitmentFtlExample example=new ShopFitmentFtlExample();
+        example.createCriteria().andShopIdEqualTo(35992L);
+        System.out.println(shopFitmentFtlMapper.selectByExample(example));
+    }
+
+    @Test
+    public void bannerOnpubTest(){
+        shopFitmentService.bannerOnpub(35992L);
     }
 
     @Test

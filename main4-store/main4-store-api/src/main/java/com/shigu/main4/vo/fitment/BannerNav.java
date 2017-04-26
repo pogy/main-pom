@@ -12,9 +12,9 @@ public class BannerNav {
 
     private List<Long> pages = new ArrayList<>();
 
-    private String background = "#F5F5F5";
+    private String background = "#000000";
 
-    private String color = "#333";
+    private String color = "#ffffff";
 
     public List<Long> getPages() {
         return pages;

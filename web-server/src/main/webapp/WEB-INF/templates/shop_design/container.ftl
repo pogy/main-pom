@@ -5,12 +5,18 @@
                 ${banner.allModules[0].html}
                 <!-- end header -->
                 <!-- body -->
-                <div class="bg" style="width: 100%;<#if banner.allModules[0].moduleSet.bannerOption.spacing == 1>padding-top: 10px;</#if>">
+                <div class="bg" style="width: 100%;<#if banner.allModules[0].moduleSet.bannerOption.spacing == 1>padding-top: 10px;</#if>
+                <#if backgroundPic??>background-image: url('${backgroundPic}');
+                    <#if backgroundType==1>background-repeat: repeat;</#if>
+                    <#if backgroundType==2>background-repeat: repeat-y;</#if>
+                    <#if backgroundType==3>background-repeat: repeat-x;</#if>
+                    <#if backgroundType==4>background-repeat: no-repeat;</#if>
+                    </#if> overflow:hidden">
                     <div id="bd" class="js-grid-body" data-index="0" style="position: relative;">
                         <#list fitmentAreas as area>
                         <div class="area clearfix" data-id="${area.areaId}">
                             <#if area.areaType==1>
-                                <div class="area-1190" data-type="3">
+                                <div class="area-1190" data-type="<#if searchModule??>0<#else>3</#if>">
                                 <#if area.allModules??>
                                     <#list area.allModules as module>
                                     ${module.html}
@@ -24,7 +30,7 @@
                                     </#if>
                                 </div>
                             <#else>
-                                    <div class="area-190" data-type="1">
+                                    <div class="area-190" data-type="<#if searchModule??>0<#else>1</#if>">
                                 <#if area.leftModules??>
                                         <#list area.leftModules as module>
                                         ${module.html}
@@ -38,7 +44,7 @@
                                 </#if>
                                     </div>
 
-                                    <div class="area-990" data-type="2">
+                                    <div class="area-990" data-type="<#if searchModule??>0<#else>2</#if>">
                                 <#if area.rightModules??>
                                         <#list area.rightModules as module>
                                         ${module.html}

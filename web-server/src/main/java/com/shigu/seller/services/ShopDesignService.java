@@ -11,6 +11,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.enums.FitmentPageType;
 import com.shigu.main4.exceptions.ShopFitmentException;
+import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.vo.FitmentArea;
@@ -24,6 +25,7 @@ import com.shigu.main4.vo.fitment.ShopBanner;
 import com.shigu.seller.bo.*;
 import com.shigu.seller.vo.*;
 import com.shigu.tools.XzSdkClient;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +60,9 @@ public class ShopDesignService {
     @Autowired
     ShopFitmentAreaMapper shopFitmentAreaMapper;
 
+    @Autowired
+    ShopBaseService shopBaseService;
+
     /**
      * 得到模块
      * @param moduleId
@@ -85,6 +90,18 @@ public class ShopDesignService {
     public ModuleVO selHeadModule(Long shopId){
         return new ModuleVO(shopFitmentService.selShopHead(shopId).getAllarea().get(0),cfg);
     }
+
+    /**
+     * 带数据的head
+     * @param shopId
+     * @return
+     * @throws IOException
+     */
+    public ModuleVO selHeadModuleWithData(Long shopId,String webSite,Boolean isEditer) throws IOException {
+        return parseModule(shopFitmentService.selShopHead(shopId).getAllarea().get(0),selShopForModule(shopId,webSite)
+                ,isEditer);
+    }
+
     /**
      * 查页面ID
      * @param shopId
@@ -95,11 +112,70 @@ public class ShopDesignService {
     }
 
     /**
+     * 查搜索页的pageID
+     * @param shopId
+     * @return
+     * @throws ShopFitmentException
+     */
+    public Long selSearchIdByShopId(Long shopId) throws ShopFitmentException {
+        return shopFitmentService.selSearchPageIdByShopId(shopId);
+    }
+
+    /**
+     * 查普通页面的页面ID
+     * @param shopId
+     * @param key
+     * @return
+     */
+    public Long selNormalIdByKey(Long shopId,Long key){
+        ShopFitmentPageExample example=new ShopFitmentPageExample();
+        example.createCriteria().andShopIdEqualTo(shopId).andCodeEqualTo(key);
+        List<ShopFitmentPage> pages=shopFitmentPageMapper.selectByExample(example);
+        if(pages.size()>0){
+            return pages.get(0).getPageId();
+        }
+        return null;
+    }
+
+    /**
+     * 给模块用的店铺基本信息
+     * @return
+     */
+    public ShopForModuleVO selShopForModule(Long shopId,String webSite){
+        ShopForModuleVO shop=new ShopForModuleVO();
+        shop.setShopId(shopId);
+        shop.setWebSite(webSite);
+        shop.setDomain(shopBaseService.selDomain(shopId));
+        return shop;
+    }
+    /**
      * 查页面模块
      * @return
      */
     public ContainerVO selPageById(Long pageId,ShopForModuleVO shop,Boolean isEditer) throws ShopFitmentException, IOException {
-        FitmentPage page=shopFitmentService.selPage(pageId);
+        return parseToContainer(shopFitmentService.selPage(pageId),shop,isEditer);
+    }
+
+    /**
+     * 已发布的页面模块
+     * @param pageId
+     * @param shop
+     * @return
+     * @throws IOException
+     */
+    public ContainerVO selPagePublishedById(Long pageId,ShopForModuleVO shop) throws IOException {
+        return parseToContainer(shopFitmentService.selPageOnpub(pageId),shop,false);
+    }
+
+    /**
+     * 包装成内容对象
+     * @param page
+     * @param shop
+     * @param isEditer
+     * @return
+     * @throws IOException
+     */
+    public ContainerVO parseToContainer(FitmentPage page,ShopForModuleVO shop,Boolean isEditer) throws IOException {
         ContainerVO containerVO=new ContainerVO(cfg);
         containerVO.setPageName(page.getPageName());
         AreaVO bannerArea=new AreaVO(page.getHeadArea());
@@ -108,26 +184,35 @@ public class ShopDesignService {
         bannerArea.addAllModule(parseModule(banner,shop,isEditer));
         containerVO.setBanner(bannerArea);
         containerVO.getData().put("isEditer",isEditer);
+        if(StringUtils.isNotEmpty(page.getBackgroundPic()))
+        containerVO.getData().put("backgroundPic",page.getBackgroundPic());
+        containerVO.getData().put("backgroundType",page.getBackgroundType());
         containerVO.setFitmentAreas(new ArrayList<AreaVO>());
         for(FitmentArea fa:page.getUserDefineAreas()){
             AreaVO areaVO=new AreaVO(fa);
             containerVO.getFitmentAreas().add(areaVO);
             if(areaVO.getAllarea() != null)
-            for(FitmentModule fm:areaVO.getAllarea()){
-                areaVO.addAllModule(parseModule(fm,shop,isEditer));
-            }
-            if(areaVO.getLeftarea() != null)
-            for(FitmentModule fm:areaVO.getLeftarea()){
-                areaVO.addLeftModule(parseModule(fm,shop,isEditer));
-            }
-            if(areaVO.getRightarea() != null)
-            for(FitmentModule fm:areaVO.getRightarea()){
-                ModuleVO mv=parseModule(fm,shop,isEditer);
-                if(mv instanceof SearchModuleVO){
-                    containerVO.setSearchModule((SearchModuleVO) mv);
+                for(FitmentModule fm:areaVO.getAllarea()){
+                    areaVO.addAllModule(parseModule(fm,shop,isEditer));
                 }
-                areaVO.addRightModule(mv);
-            }
+            if(areaVO.getLeftarea() != null)
+                for(FitmentModule fm:areaVO.getLeftarea()){
+                    areaVO.addLeftModule(parseModule(fm,shop,isEditer));
+                }
+            if(areaVO.getRightarea() != null)
+                for(FitmentModule fm:areaVO.getRightarea()){
+                    ModuleVO mv=parseModule(fm,shop,isEditer);
+                    if(mv instanceof SearchModuleVO){
+                        containerVO.setSearchModule((SearchModuleVO) mv);
+                        containerVO.getData().put("searchModule",mv);
+                    }
+                    areaVO.addRightModule(mv);
+                }
+        }
+        //把搜索里面变成不可编辑
+        if(isEditer&&containerVO.getSearchModule()!=null){
+            //如果是搜索的,以下为必有
+            containerVO.getFitmentAreas().get(0).getLeftModules().get(0).getData().put("noedit",true);
         }
         return containerVO;
     }
@@ -146,12 +231,14 @@ public class ShopDesignService {
             mv.getData().put("shopcats",shopForCdnService.selShopCatsById(shop.getShopId()));
         }else if(module instanceof ItemPromoteModule){//推荐需要查数据
             ShiguPager<ItemShowBlock> promotePage=shopFitmentService.selItemByPromote((ItemPromoteModule) module);
-            mv.getData().put("promotes",promotePage.getContent());
+            mv.getData().put("promotes",promotePage);
         }else if(module instanceof SearchItemsModule){//搜索
             //栏目,+搜索条件
             mv=new SearchModuleVO(module,cfg);
+            mv.getData().put("shop",shop);
         }else if(module instanceof ShopBanner){
             mv.getData().put("checkedNavs",selCheckedPageNav(shop.getShopId(),((ShopBanner) module).getStoreNav().getPages()));
+            mv.getData().put("shopcats",shopForCdnService.selShopCatsById(shop.getShopId()));
         }
         return mv;
     }
@@ -168,7 +255,7 @@ public class ShopDesignService {
         if (bo.getType() == 2) {
             return shopForCdnService.searchItemOnsale(bo.getIds(), bo.getPage(), bo.getSize());
         }
-        return shopForCdnService.searchItemOnsale(bo.getQ(), shopId, bo.getLowPrice(), bo.getHighPrice(), null, bo.getPage(), bo.getSize());
+        return shopForCdnService.searchItemOnsale(bo.getQ(), shopId, bo.getLowPrice(), bo.getHighPrice(), null,null,null, bo.getPage(), bo.getSize());
     }
 
     public List<PageManageVo> selAllPage(Long shopId) {
@@ -304,6 +391,11 @@ public class ShopDesignService {
             Long id = bo.getId();
             if (module != null) {
                 List<Long> ids = module.getPromoteItems();
+                if (sd && ids.size() >= 16) {
+                    vo.setStatus(1);
+                    vo.setMessage("已达到最大推荐数量");
+                    return vo;
+                }
                 if (sd ? !ids.contains(id) && ids.add(id) : ids.remove(id))
                     shopFitmentService.revalueModuleOption(bo.getMid(), JSON.toJSONString(ids));
             } else {
@@ -448,6 +540,21 @@ public class ShopDesignService {
             vo.setStatus(1);
             vo.setMessage("更新失败");
         }
+        return vo;
+    }
+
+    /**
+     * 发布全店页面
+     * @param shopId 店铺id
+     */
+    public DesignJsonVO publishOneShop(Long shopId) {
+        shopFitmentService.publishBanner(shopId);
+        for (PageManageVo vo : selAllPage(shopId)) {
+            shopFitmentService.publishPage(vo.getPageId(),shopId);
+        }
+        DesignJsonVO vo = new DesignJsonVO();
+        vo.setStatus(0);
+        vo.setMessage("发布成功");
         return vo;
     }
 

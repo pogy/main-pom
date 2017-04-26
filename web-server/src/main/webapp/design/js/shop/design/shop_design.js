@@ -264,13 +264,14 @@ $(document).ready(function() {
         var len = area.find('.J_TModule').length;
         if (len == 0) {
             // 是否还有多个区域（保留1个950区域）
-            if (area.parent().children('.area').length >= 1) {
+            if (area.parent().children('.area').length == 1) {
                 // 1190区域的总数
-                var area1190 = area.parent().find('.area-1190').length;
-                // 是否只剩当前区域
-                if (area1190 == area.find('.area-1190').length) {
-                    return;
-                }
+                // var area1190 = area.parent().find('.area-1190').length;
+                // // 是否只剩当前区域
+                // if (area1190 == area.find('.area-1190').length) {
+                //     return;
+                // }
+                return;
             }
             area.remove();
             // $.ajax({
@@ -415,7 +416,7 @@ $(document).ready(function() {
     //使用默认图片
     $(".J_BackDefaultImg").click(function() {
         var img = $(this).parents(".J_DefaultType").find(".preview-box img");
-        fault = '/share/shopid/default_logo.jpg';
+        fault = 'http://imgs.571xz.net/mall/default_fitment_logo.png';
         img.attr('src', fault);
         //保存图片的链接
         $('#store_img_pic').val(fault);

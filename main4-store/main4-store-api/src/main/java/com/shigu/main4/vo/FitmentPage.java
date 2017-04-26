@@ -25,6 +25,16 @@ public class FitmentPage implements Serializable{
      */
     private List<FitmentArea> userDefineAreas;
 
+    /**
+     * 页面背景图
+     */
+    private String backgroundPic;
+
+    /**
+     * 背景图平铺方式：1、平铺，2、纵向平铺，3、横向平铺，4、不平铺',
+     */
+    private Integer backgroundType = 1;
+
     public FitmentArea getHeadArea() {
         return headArea;
     }
@@ -55,5 +65,21 @@ public class FitmentPage implements Serializable{
 
     public void setPageId(Long pageId) {
         this.pageId = pageId;
+    }
+
+    public String getBackgroundPic() {
+        return backgroundPic;
+    }
+
+    public void setBackgroundPic(String backgroundPic) {
+        this.backgroundPic = backgroundPic;
+    }
+
+    public Integer getBackgroundType() {
+        return backgroundType;
+    }
+
+    public void setBackgroundType(Integer backgroundType) {
+        this.backgroundType = backgroundType;
     }
 }

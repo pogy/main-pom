@@ -64,8 +64,8 @@
                                 <div class="control-group">
                                     <label class="control-label">显示标题:</label>
                                     <div class="control show-title">
-                                        <label><input type="radio" name="title_show" value="0" <#if moduleSet.titleShow==0>checked</#if>>不显示</label>
-                                        <label><input type="radio" name="title_show" value="1" <#if moduleSet.titleShow==1>checked</#if>>显示</label>
+                                        <label><input type="radio" name="titleShow" value="0" <#if moduleSet.titleShow==0>checked</#if>>不显示</label>
+                                        <label><input type="radio" name="titleShow" value="1" <#if moduleSet.titleShow==1>checked</#if>>显示</label>
                                         <label><input type="text" name="title" value="图片轮播"></label>
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                                     <div class="control">
                                         <div>
                                             <label>
-                                                <input autocomplete="off" name="mod_height" type="text" value="${moduleSet.modHeight}">
+                                                <input autocomplete="off" name="modHeight" type="text" value="${moduleSet.modHeight}">
                                                 <span>px</span>&nbsp;<span>*请设置在100-600px之间</span>
                                             </label>
                                         </div>
@@ -87,7 +87,7 @@
                                     <label class="control-label">切换效果:</label>
                                     <div class="control">
                                         <label>
-                                            <select name="mod_type">
+                                            <select name="modType">
                                                 <option value="1" <#if moduleSet.modType==1>selected</#if>>左右滚动</option>
                                                 <option value="2" <#if moduleSet.modType==2>selected</#if>>渐变切换</option>
                                             </select>

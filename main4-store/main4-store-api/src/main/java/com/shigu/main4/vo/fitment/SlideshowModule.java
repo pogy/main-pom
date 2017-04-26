@@ -1,5 +1,6 @@
 package com.shigu.main4.vo.fitment;
 
+import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.vo.FitmentModule;
 
 import java.util.List;
@@ -14,7 +15,12 @@ public class SlideshowModule extends FitmentModule {
     /**
      * 模块高度
      */
-    private Integer modHeight;
+    private Integer modHeight=540;
+
+    @Override
+    public Integer getModuleType() {
+        return FitmentModuleType.Slideshow.value;
+    }
 
     public List<ImageInfo> getImages() {
         return images;
