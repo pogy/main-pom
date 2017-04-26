@@ -340,6 +340,7 @@ public class CdnAction {
         String webSite=storeRelation.getWebSite();
         Long pageId=shopDesignService.selPageIdByShopId(bo.getId());
         shopData(bo.getId(),pageId,webSite,model);
+        model.addAttribute("webSite",webSite);
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
             return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
@@ -360,6 +361,7 @@ public class CdnAction {
         String webSite=storeRelation.getWebSite();
         Long pageId=shopDesignService.selNormalIdByKey(shopId,pageKey);
         shopData(shopId,pageId,webSite,model);
+        model.addAttribute("webSite",webSite);
         int shopStatus = shopBaseService.getShopStatus(shopId);
         if(shopStatus == 1){
             return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
@@ -404,6 +406,7 @@ public class CdnAction {
         containerVO.getSearchModule().getData().put("goodsList",pager);
         containerVO.getSearchModule().getData().put("bo",bo);
         model.addAttribute("container",containerVO);
+        model.addAttribute("webSite",webSite);
         //处理搜索条件
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
