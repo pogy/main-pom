@@ -233,7 +233,7 @@
                                 <i></i>
                                 淘宝
                             </a>
-                            <a href="http://1688.571xz.com/publish.htm?id=${g.itemId}" target="_blank" class="contrast">
+                            <a href="http://1688.571xz.com/offer/publish.htm?id=${g.itemId}" target="_blank" class="contrast">
                                 <i></i>
                                 阿里
                             </a>
