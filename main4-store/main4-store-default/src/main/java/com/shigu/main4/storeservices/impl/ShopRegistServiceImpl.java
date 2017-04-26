@@ -15,9 +15,11 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.exceptions.ShopExamineException;
+import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.exceptions.TaobaoNickBindException;
 import com.shigu.main4.storeservices.ShopBaseService;
+import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.vo.*;
 import org.apache.commons.lang3.StringUtils;
@@ -63,6 +65,9 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
 
     @Autowired
     private ShopBaseService shopBaseService;
+
+    @Autowired
+    private ShopFitmentService shopFitmentService;
 
     /**
      * 注册用户
@@ -429,6 +434,13 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
         shiguShopMapper.insertSelective(shiguShop);
         Long shopId = shiguShop.getShopId();
         shopBaseService.addToEs(shopId);
+
+        //初始化装修
+        try {
+            shopFitmentService.initShopFitment(shopId);
+        } catch (ShopFitmentException e) {
+            logger.error("初始化装修失败",e);
+        }
 
         //把审核申请变成不可审核
         ShiguShopApply apply=new ShiguShopApply();
