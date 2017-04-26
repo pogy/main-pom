@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/memberghs.css?t=" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/memberghs.css?t=20170426" rel="stylesheet">
     
   </head>
 <body>
@@ -362,7 +362,7 @@
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys4/temp/echarts.js"></script>
         <script src="http://style.571xz.com/gys4/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/gys4/js/memberghs.js?t="></script>
+<script src="http://style.571xz.com/gys4/js/memberghs.js?t=20170426"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
