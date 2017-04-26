@@ -160,7 +160,7 @@ $(document).ready(function() {
     }
     //页面删除背景
     $(".page-slide .action-btn .delete").click(function() {
-        $(this).parents(".page-slide").find(".J_pageBgImage").attr('src', "/design/img/shop/img.gif");
+        $(this).parents(".page-slide").find(".J_pageBgImage").attr('src', "http://www.571xz.com/design/img/shop/img.gif");
         $("#J_Page .bg").css({
             "background-image": "",
             "background-repeat": ""

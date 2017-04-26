@@ -1,9 +1,9 @@
 <html lang="en"><head>
     <meta charset="UTF-8">
     <title>新建页面 - 店铺装修</title>
-    <link rel="stylesheet" href="/design/css/shop/design/page.css" type="text/css">
-    <script type="text/javascript" src="/design/js/jquery-min.js"></script>
-    <script type="text/javascript" src="/design/js/shop/design/page.js"></script>
+    <link rel="stylesheet" href="http://www.571xz.com/design/css/shop/design/page.css" type="text/css">
+    <script type="text/javascript" src="http://www.571xz.com/design/js/jquery-min.js"></script>
+    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/page.js"></script>
 </head>
 <body>
 
@@ -36,7 +36,7 @@
                                     <input type="radio" name="type" value="1" checked="checked" class="prepare">
                                 </div>
                                 <div class="thumb">
-                                    <img src="/design/img/shop/rightleft60.jpg" alt="">
+                                    <img src="http://www.571xz.com/design/img/shop/rightleft60.jpg" alt="">
                                 </div>
                                 <div class="detail">
                                     <h3>左右栏自定义页</h3>
@@ -48,7 +48,7 @@
                                     <input type="radio" name="type" value="2" class="prepare">
                                 </div>
                                 <div class="thumb">
-                                    <img src="/design/img/shop/topbottom60.jpg" alt="">
+                                    <img src="http://www.571xz.com/design/img/shop/topbottom60.jpg" alt="">
                                 </div>
                                 <div class="detail">
                                     <h3>通栏自定义页</h3>

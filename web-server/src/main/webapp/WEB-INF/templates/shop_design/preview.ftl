@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <title>首页 - 装修预览 - 星座网</title>
-    <link rel="stylesheet" type="text/css" href="/design/theme/xzw/css/global_new-min.css?t=20170413U">
-    <link rel="stylesheet" type="text/css" href="/design/theme/xzw/shop/css/newshop-min.css?t=20170413U">
-    <link rel="stylesheet" type="text/css" href="/design/css/shop/design/preview.css?t=20170413U1" />
-    <link rel="stylesheet" type="text/css" href="/design/css/shop/design/flagship.css" />
-    <script type="text/javascript" src="/design/js/jquery-min.js"></script>
-    <script type="text/javascript" src="/design/theme/xzw/js/laydate/laydate.js"></script>
-    <script type="text/javascript" src="/design/theme/xzw/js/global-min.js?t=20170413U"></script>
-    <script type="text/javascript" src="/design/js/shop/design/shop_preview.js?t=20170413U"></script>
+    <link rel="stylesheet" type="text/css" href="http://www.571xz.com/design/theme/xzw/css/global_new-min.css?t=20170413U">
+    <link rel="stylesheet" type="text/css" href="http://www.571xz.com/design/theme/xzw/shop/css/newshop-min.css?t=20170413U">
+    <link rel="stylesheet" type="text/css" href="http://www.571xz.com/design/css/shop/design/preview.css?t=20170413U1" />
+    <link rel="stylesheet" type="text/css" href="http://www.571xz.com/design/css/shop/design/flagship.css" />
+    <script type="text/javascript" src="http://www.571xz.com/design/js/jquery-min.js"></script>
+    <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/laydate/laydate.js"></script>
+    <script type="text/javascript" src="http://www.571xz.com/design/theme/xzw/js/global-min.js?t=20170413U"></script>
+    <script type="text/javascript" src="http://www.571xz.com/design/js/shop/design/shop_preview.js?t=20170413U"></script>
 
 </head>
 <body style="overflow-x:hidden">
