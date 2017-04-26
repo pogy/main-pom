@@ -14,6 +14,9 @@ public class CustomModule extends TitleShowModule {
     private String content = "<p style=\"text-align: center; padding: 20px 0 30px;\">自定义内容，可以用来展示店铺特色的宝贝、活动。</p>";
 
     public String getContent() {
+        if (content != null) {
+            content=content.replace("网商园","").replace("wsy.com","");
+        }
         return content;
     }
 
