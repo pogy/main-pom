@@ -7,10 +7,10 @@
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/indexV3/css/hzMan.css" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV4/css/hzMan.css" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/indexV3/js/jquery.cookie.js"></script>
-<script>/*============ indexV3/page#layoutHeader BEGIN ============*/
+    <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
+<script>/*============ indexV4/page#layoutHeader BEGIN ============*/
 
 '${test!}'
         var hreflocation=window.location.href;
@@ -31,11 +31,11 @@
               }) ;
           }
 
-/*============ indexV3/page#layoutHeader END ============*/
+/*============ indexV4/page#layoutHeader END ============*/
 
 
-</script>    <script src="http://style.571xz.com/indexV3/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV3/js/hzMan.js"></script>
+</script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
+    <script src="http://style.571xz.com/indexV4/js/hzMan.js"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -589,7 +589,7 @@
                 
                 <div class="p1 clearfix">
                     <div class="userIcon">
-                        <img src="http://style.571xz.com/indexV3/css/img/touxiang.png">
+                        <img src="http://style.571xz.com/indexV4/css/img/touxiang.png">
                     </div>
                     <div class="wellcom">
                         <p class="s1">Hi，欢迎来到</p>
@@ -619,7 +619,7 @@
             </div>
             
         </div>
-        <script>/*============ indexV3/page#topRtbox BEGIN ============*/
+        <script>/*============ indexV4/page#topRtbox BEGIN ============*/
 
 ${test!}
 var isgys = false;
@@ -630,7 +630,7 @@ if(session_shopId != ""){
     isgys = false;
 }
 
-/*============ indexV3/page#topRtbox END ============*/
+/*============ indexV4/page#topRtbox END ============*/
 
 
 </script>
@@ -647,6 +647,7 @@ if(session_shopId != ""){
                 <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
                     <img src="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
+                
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
@@ -680,6 +681,11 @@ if(session_shopId != ""){
                 <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
                     <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
+                
+                
+                    <div class="sendComputer">
+                        
+                    </div>
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
@@ -713,6 +719,7 @@ if(session_shopId != ""){
                 <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
                     <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
+                
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
@@ -774,6 +781,7 @@ if(session_shopId != ""){
                 <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
                     <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
+                
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
@@ -843,7 +851,7 @@ if(session_shopId != ""){
                 <h5>供应商</h5>
                 <p><a href="${main_host!}ruzhu.htm" target="_blank">商家入驻</a></p>
                 <p><a href="${main_host!}seller/memberghs.htm" target="_blank">档口后台</a></p>
-                <p><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;amp;uin=653157838" target="_blank">广告投放</a></p>
+                <p><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=653157838&amp;site=qq&amp;menu=yes" target="_blank">广告投放</a></p>
             </li>
             <li>
                 <h5>帮助中心</h5>
@@ -875,7 +883,7 @@ if(session_shopId != ""){
 <div class="sideNavbar" id="sideNavbar">
     
 </div>
-<script>/*============ indexV3/hzMan#main BEGIN ============*/
+<script>/*============ indexV4/hzMan#main BEGIN ============*/
 
 '${hacker!}';
 $(".imgBox img").lazyload({
@@ -883,7 +891,7 @@ $(".imgBox img").lazyload({
     threshold: 400 // 提前开始加载
 });
 
-/*============ indexV3/hzMan#main END ============*/
+/*============ indexV4/hzMan#main END ============*/
 
 
 </script>
