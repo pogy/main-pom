@@ -14,29 +14,16 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/indexgglist.css?t=" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/indexgglist.css?t=1493289038802" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/gys4/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/gys4/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
     <div class="layout">
         <div class="leftbox">
-            <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源</#if></em><i class="downArrow"></i></span>
-                <div class="cityCon">
-                    <ul>
-                        <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
-                        <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
-                        <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
-                    </ul>
-                </div>
-            </div>
             <div class="login">
                 <span>你好，</span>
                 <em>请</em>
@@ -214,29 +201,29 @@
     <div class="sidebar shadow-box">
         <h2>商品管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/createGoods21init.htm"  >发布商品</a></li>
-            <li><a href="${main_host!}seller/storeGoodsList21init.htm"  >出售中的商品</a></li>
-            <li><a href="${main_host!}seller/storeGoodsListinit.htm?pinteger=2"  >仓库中的商品</a></li>
-            <li><a href="${main_host!}seller/storeGoodsNoListinit.htm"  >批量修改货号</a></li>
-            <li><a href="${main_host!}seller/xiufuGoods21init.htm"  >商品类目管理</a></li>
+            <li><a href="${main_host!}seller/createGoods21init.htm"  >发布商品</a></li> 
+            <li><a href="${main_host!}seller/storeGoodsList21init.htm"  >出售中的商品</a></li> 
+            <li><a href="${main_host!}seller/storeGoodsListinit.htm?pinteger=2"  >仓库中的商品</a></li> 
+            <li><a href="${main_host!}seller/storeGoodsNoListinit.htm"  >批量修改货号</a></li> 
+            <li><a href="${main_host!}seller/xiufuGoods21init.htm"  >商品类目管理</a></li> 
         </ul> 
         <h2>店铺管理</h2>
         <ul>
-            <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li>
-            <li><a href="${main_host!}seller/fitmentStorefitmentStore.htm?tab=1"  >店铺装修</a></li>
-            <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li>
-            <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li>
-            <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li>
+            <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
+            <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
+            <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
+            <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
+            <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
         </ul> 
         <h2>财务信息</h2>
         <ul>
-            <li><a href="${main_host!}seller/iwantToRechargein5.htm"  >充值</a></li>
-            <li><a href="${main_host!}seller/withdraw5Apply.htm"  >提现</a></li>
+            <li><a href="${main_host!}seller/iwantToRechargein5.htm"  >充值</a></li> 
+            <li><a href="${main_host!}seller/withdraw5Apply.htm"  >提现</a></li> 
         </ul> 
         <h2>账号管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/safeindex.htm"  >安全设置</a></li>
-            <li><a href="${main_host!}seller/sysSetsindex.htm"  >个人信息</a></li>
+            <li><a href="${main_host!}seller/safeindex.htm"  >安全设置</a></li> 
+            <li><a href="${main_host!}seller/sysSetsindex.htm"  >个人信息</a></li> 
         </ul> 
         <h2>营销管理</h2>
         <ul>
@@ -320,7 +307,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/indexgglist.js?t="></script>
+<script src="http://style.571xz.com/gys4/js/indexgglist.js?t=1493289038802"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
