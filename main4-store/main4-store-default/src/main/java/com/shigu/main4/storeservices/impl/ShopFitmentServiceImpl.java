@@ -416,9 +416,13 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
     @Override
     public ShiguPager<ItemShowBlock> selItemByPromote(ItemPromoteModule promoteModule) {
         Long shopId = selShopIdByAreaId(promoteModule.getAreaId());
+        if (promoteModule.getPromoteType() == 2) {
+            return shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(), 1, promoteModule.getItemNum());
+        }
         String sort = "common";
         switch (promoteModule.getSort()) {
             case 1:
+                sort = "time_down";
                 break;
             case 2:
                 sort = "time_down";
@@ -578,9 +582,8 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
 
     @Override
     public void publishPage(Long pageId,Long shopId) {
-        FitmentPage fitmentPage = new FitmentPage();
-        fitmentPage.setUserDefineAreas(selAreaByPageId(pageId));
-        fitmentPage.setPageId(pageId);
+        FitmentPage fitmentPage = selPage(pageId);
+        fitmentPage.setHeadArea(null);
         ShopFitmentFtlExample example=new ShopFitmentFtlExample();
         example.createCriteria().andPageIdEqualTo(pageId);
         ShopFitmentFtl sff=new ShopFitmentFtl();
@@ -601,6 +604,8 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
 
         FitmentPage page=new FitmentPage();
         page.setPageId(pageId);
+        page.setBackgroundPic(pageJson.getString("backgroundPic"));
+        page.setBackgroundType(pageJson.getInteger("backgroundType"));
         page.setHeadArea(bannerOnpub(sfpage.getShopId()));
         JSONArray areas=pageJson.getJSONArray("userDefineAreas");
         List<FitmentArea> fitmentAreas=new ArrayList<>();

@@ -19,7 +19,7 @@
             <div class="nav-main clearfix">
                 <ul class="clearfix">
                     <li>
-                        <#if shop.domain??>
+                        <#if shop.domain != "" && shop.domain??>
                             <a href="http://${shop.domain}.571xz.com" style="color:${moduleSet.storeNav.color};">
                                 首页
                             </a>
@@ -74,6 +74,7 @@
                                             </span>
                                         </a>
                                         <#if cat.subCats??>
+                                           <#if cat.subCats?size gt 0>
                                             <div class="sec_con">
                                                 <ul class="second">
                                                     <#list cat.subCats as subcat>
@@ -85,6 +86,7 @@
                                                     </#list>
                                                 </ul>
                                             </div>
+                                           </#if>
                                         </#if>
                                     </li>
                                 </#list>

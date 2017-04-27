@@ -416,7 +416,7 @@ $(document).ready(function() {
     //使用默认图片
     $(".J_BackDefaultImg").click(function() {
         var img = $(this).parents(".J_DefaultType").find(".preview-box img");
-        fault = '/share/shopid/default_logo.jpg';
+        fault = 'http://imgs.571xz.net/mall/default_fitment_logo.png';
         img.attr('src', fault);
         //保存图片的链接
         $('#store_img_pic').val(fault);

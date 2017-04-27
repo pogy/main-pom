@@ -22,6 +22,8 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -301,6 +303,9 @@ public class ShopDesignAction {
      */
     @RequestMapping("design/saveCustomOption")
     public String saveCustomOption(CustomModule bo,HttpSession session,Model model) throws ShopFitmentException, IOException {
+        if (bo.getContent() != null) {
+            bo.setContent(bo.getContent().replace("网商园","").replace("wsy.com",""));
+        }
         return saveModuleOption(bo,session,model);
     }
 

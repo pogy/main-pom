@@ -6,6 +6,7 @@ import com.opentae.data.mall.examples.MemberLicenseExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.shigu.seller.services.ShopDesignService;
 import com.shigu.services.SendMsgService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,6 +30,14 @@ public class AdMst {
 
     @Autowired
     MemberLicenseMapper memberLicenseMapper;
+
+    @Autowired
+    ShopDesignService shopDesignService;
+
+    @Test
+    public void publish(){
+        shopDesignService.publishOneShop(40388L);
+    }
     @Test
     public void sendMsg(){
         ShiguShopExample example=new ShiguShopExample();
