@@ -422,6 +422,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         String sort = "common";
         switch (promoteModule.getSort()) {
             case 1:
+                sort = "time_down";
                 break;
             case 2:
                 sort = "time_down";

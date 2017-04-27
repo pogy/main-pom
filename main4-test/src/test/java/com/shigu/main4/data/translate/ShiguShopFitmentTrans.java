@@ -153,7 +153,7 @@ public class ShiguShopFitmentTrans {
         shiguShopExample.setStartIndex(start);
         shiguShopExample.setEndIndex(size);
         shiguShopExample.setOrderByClause("shop_id ASC");
-        shiguShopExample.createCriteria().andShopStatusEqualTo(0).andWebSiteEqualTo("hz");
+        shiguShopExample.createCriteria().andShopStatusEqualTo(0).andWebSiteNotEqualTo("hz");
         List<ShiguShop> shiguShops;
         boolean ignore = true;
         while (!(shiguShops = shiguShopMapper.selectByConditionList(shiguShopExample)).isEmpty()) {
