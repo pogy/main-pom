@@ -19,6 +19,6 @@ public class ImgSearchTest {
 
     @Test
     public void test(){
-        itemAddOrUpdateService.addImgToSearch(20224369L,"https://img.alicdn.com/bao/uploaded/i1/1122621970/TB20BQ4hthvOuFjSZFBXXcZgFXa_!!1122621970.jpg",1);
+        itemAddOrUpdateService.addImgToSearch(20224369L,"hz","https://img.alicdn.com/bao/uploaded/i1/1122621970/TB20BQ4hthvOuFjSZFBXXcZgFXa_!!1122621970.jpg",1);
     }
 }
