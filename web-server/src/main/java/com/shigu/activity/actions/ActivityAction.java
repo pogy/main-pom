@@ -1,6 +1,7 @@
 package com.shigu.activity.actions;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ActivityAction {
 
     @RequestMapping("activity/redbull")
-    public String findGodos(){
+    public String findGodos(Model model){
+        model.addAttribute("webSite","hz");
         return "activity/styleHuodong";
     }
 }
