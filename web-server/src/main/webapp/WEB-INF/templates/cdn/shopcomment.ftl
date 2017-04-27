@@ -11,11 +11,11 @@
     
     
     
-    <link href="http://style.571xz.com/shopItemCopy/css/shopcomment.css?t=1493182110678" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/shopcomment.css?t=1493276750227" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/shopcomment.js?t=1493182110678"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shopcomment.js?t=1493276750227"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
