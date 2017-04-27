@@ -98,4 +98,12 @@ public interface ItemAddOrUpdateService {
      * @return
      */
     boolean hasUpdated(SynItem item);
+
+    /**
+     * 添加图片到图搜引擎
+     * @param goodsId
+     * @param url
+     * @param type
+     */
+    void addImgToSearch(Long goodsId,String url,int type);
 }
