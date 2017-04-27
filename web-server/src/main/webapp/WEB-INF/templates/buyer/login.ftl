@@ -21,7 +21,9 @@
 <div class="c_w100 c_m0auto c_body_2016">
     <div class="c_w1190 c_m0auto">
         <div class="c_w990 c_m0auto clearfix">
-            ${loginGost1}
+            <a href="${index_goat.href!}" target="_blank">
+                <img src="${index_goat.imgsrc!}" width="572px" height="440px" class="fl c_img">
+            </a>
             <div class="c_login_from j_login_from login571">
                 <form method="post" id="login_form" action="login.htm<#if backUrl??>?backUrl=${backUrl!}</#if>">
                     <div class="head clearfix">

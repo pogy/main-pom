@@ -2,12 +2,7 @@ package com.shigu.buyer.actions;
 
 import com.openJar.commons.MD5Attestation;
 import com.opentae.auth.utils.LoginLinkUtil;
-import com.shigu.buyer.bo.BindPhoneBO;
-import com.shigu.buyer.bo.JsonpLoginBO;
-import com.shigu.buyer.bo.LoginBO;
-import com.shigu.buyer.bo.LoginBackBO;
-import com.shigu.buyer.bo.LoginByPhoneBO;
-import com.shigu.buyer.services.SpreadShowService;
+import com.shigu.buyer.bo.*;
 import com.shigu.buyer.vo.LoginMsgVO;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
@@ -21,36 +16,32 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
-import com.shigu.services.DubboAllService;
 import com.shigu.services.SendMsgService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.spread.exceptions.SpreadReadException;
+import com.shigu.spread.enums.SpreadEnum;
+import com.shigu.spread.services.ObjFromCache;
+import com.shigu.spread.services.SpreadService;
+import com.shigu.spread.vo.ImgBannerVO;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.RedomUtil;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
 import net.sf.json.JSONObject;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -62,6 +53,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -76,9 +68,6 @@ public class UserLoginAction {
     MemberFilter memberFilter;
 
     @Autowired
-    SpreadShowService spreadShowService;
-
-    @Autowired
     SendMsgService sendMsgService;
 
     @Autowired
@@ -89,6 +78,9 @@ public class UserLoginAction {
 
     @Autowired
     XzSdkClient xzSdkClient;
+
+    @Autowired
+    SpreadService spreadService;
 
     String ftlDir="buyer";
     /**
@@ -141,16 +133,12 @@ public class UserLoginAction {
             }
         }
         //加广告
-        try {
-            String tag="LG_01";
-            Map<String,String> map=spreadShowService.selByTags(tag);
-            if(map!=null&&map.get(tag)!=null){
-                model.addAttribute("loginGost1",map.get(tag));
-            }
-        } catch (SpreadReadException e) {
-            logger.error("广告加载失败",e);
-        }
 
+        ObjFromCache<List<ImgBannerVO>> listObjFromCache = spreadService.selImgBanners(SpreadEnum.LOGIN_GT);
+        List<ImgBannerVO> vos = listObjFromCache.selReal();
+        if (!vos.isEmpty()) {
+            model.addAttribute("index_goat", vos.get(0));
+        }
         return "buyer/login";
     }
 
