@@ -24,11 +24,11 @@
             <base href="${baseUrl!}">
         </#if>
     
-    <link href="http://style.571xz.com/shopItemCopy/css/shop.css?t=1493182108166" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/shop.css?t=1493276747863" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/shop.js?t=1493182108166"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shop.js?t=1493276747863"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -373,6 +373,13 @@ var webSite = '${webSite!}';
 </script>        
     </div>
 </div>
+<#assign text>{    "freemarker":true,    "fields":[        {"name":'id', "value":${vo.storeRelation.storeId!}},        {"name":'timeflag', "value":"${query.timeflag!}"},        {"name":'pageNo', "value":"${query.pageNo!}"},        {"name":'order', "value":"${query.order!}"},        {"name":'pstring', "value":"${query.pstring!}"},        {"name":'beginPrice', "value":"${query.beginPrice!}"},        {"name":'endPrice', "value":"${query.endPrice!}"},        {"name":'cid', "value":"${query.cid!}"},        {"name":'scid', "value":"${query.scid!}"},        {"name":'option', "value":"${query.option!}"}    ]}</#assign>
+<#assign $it=text?eval />
+<form id="wgt_search">
+    <#list $it.fields as field>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
+    </#list>
+</form>
 ${container.html!}
 <div class="footer">
     <div class="inner">
