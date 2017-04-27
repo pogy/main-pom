@@ -207,6 +207,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
         //7、商品操作清除缓存
         cleanItemCache(itemId);
+
+        //8、图搜首图添加
+        addImgToSearch(itemId, tiny.getPicUrl(), 1);
     }
 
     private void cleanItemCache(Long itemId) {
@@ -353,6 +356,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
         //7、商品操作清除缓存
         cleanItemCache(itemId);
+
+        //8、图搜主图删除
+        addImgToSearch(itemId, tiny.getPicUrl(), 0);
     }
 
     /**
@@ -488,6 +494,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             }
             //11、商品操作清除缓存
             cleanItemCache(itemId);
+
+            //12、图搜主图删除
+            addImgToSearch(itemId, goodsTiny.getPicUrl(), 0);
         }
     }
 
@@ -750,6 +759,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             updatePiPrice(item, synItem.getTitle(), synItem.getGoodsNo(), synItem.getOuterId());
         }
         boolean changed = false;
+        boolean picChange = false;
         for (Field field : clazz.getDeclaredFields()) {
             // 忽略比较字段
             Boolean ignored = ignore.get(field.getName());
@@ -763,13 +773,20 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 if (o != null && !o.equals(field.get(synItem))) {
                     changed = true;
                     field.set(synItem, o);
+                    if (field.getName().equals("picUrl")) {
+                        picChange = true;
+                    }
                 }
             } catch (IllegalAccessException e) {
                 logger.error("商品更新操作->对象比较失败.字段" + field.getName() + "无法访问.", e);
             }
         }
-        if (changed)
+        if (changed){
+            if (picChange) {
+                addImgToSearch(synItem.getGoodsId(), synItem.getPicUrl(), 1);
+            }
             return updateItem(synItem);
+        }
         return 0;
     }
 
@@ -877,12 +894,17 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         boolean modify = false;
         // shigu_goods_modified 中的字段无(false)修改
         boolean modifield = false;
+        // 主图更新？
+        boolean picModifild = false;
         // 比较
         try {
             for (Field field : item.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
                 Object o = field.get(item);//所有比较过程中，null默认跳过，空字条串认为有内容
                 if (o != null && !o.equals(field.get(synItem))) {
+                    if (field.getName().equals("picUrl")) {
+                        picModifild = true;
+                    }
                     modify = true;
                     for (Map.Entry<String, Boolean> entry : modifiedMap.entrySet()) {
                         if (entry.getKey().equals(field.getName())) {
@@ -917,6 +939,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 if (modifiedMap.get("piPriceString"))
                     goodsModified.setHasSetPiprice(1);
                 shiguGoodsModifiedMapper.updateByPrimaryKeySelective(goodsModified);
+            }
+            if (picModifild) {
+                addImgToSearch(synItem.getGoodsId(), synItem.getPicUrl(), 1);
             }
             return updateItem(item);
         }
