@@ -9,6 +9,7 @@ import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
@@ -265,6 +266,13 @@ public class GoodsSearchService {
             end=cal.getTime();
             cal.add(Calendar.DAY_OF_YEAR,0-bo.getD());
             start=cal.getTime();
+        }else{
+            if (bo.getSt() != null) {
+                start = DateUtil.stringToDate(bo.getSt(),"yyyy.MM.dd");
+            }
+            if (bo.getEt() != null) {
+                end = DateUtil.stringToDate(bo.getEt(),"yyyy.MM.dd");
+            }
         }
         ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),"hz",bo.getMid(),
                 cids.size()==0?null:cids,
