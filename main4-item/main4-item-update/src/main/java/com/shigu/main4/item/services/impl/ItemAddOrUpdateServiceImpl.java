@@ -1000,7 +1000,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     public void addImgToSearch(Long goodsId, String url, int type) {
         if(goodsId!=null&&StringUtils.isNotEmpty(url)){
             ImgToSearch imgToSearch=new ImgToSearch(goodsId,url,type);
-//            redisIO.rpush("")
+            redisIO.rpush("update_del_img_search",imgToSearch);
         }
     }
 
