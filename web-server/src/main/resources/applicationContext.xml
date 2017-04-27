@@ -109,6 +109,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <import resource="classpath*:main4/spring/*.xml"/>
     <import resource="dubbo_application.xml"/>
     <!--<import resource="dubbo_application_test.xml"/>-->
-    <bean id="exceptionResolver" class="com.shigu.resolver.ExceptionResolver">
-    </bean>
+    <bean id="exceptionResolver" class="com.shigu.resolver.ExceptionResolver"/>
 </beans>

@@ -1,6 +1,5 @@
 package com.shigu.services;
 
-import com.shigu.spread.services.SelSpreadService;
 import com.shigu.tb.finder.services.MainTbOnsaleService;
 import com.shigu.tb.finder.services.TaobaoSynService;
 import com.shigu.tb.finder.services.TaobaoTmcService;
@@ -11,10 +10,6 @@ import com.shigu.tb.finder.services.TbPropsService;
  * Created by zhaohongbo on 17/2/28.
  */
 public class DubboAllService {
-    /**
-     * 广告服务类
-     */
-    private SelSpreadService selSpreadService;
     /**
      * 淘宝店出售中的
      */
@@ -41,14 +36,6 @@ public class DubboAllService {
 
     public void setTbPropsService(TbPropsService tbPropsService) {
         this.tbPropsService = tbPropsService;
-    }
-
-    public SelSpreadService getSelSpreadService() {
-        return selSpreadService;
-    }
-
-    public void setSelSpreadService(SelSpreadService selSpreadService) {
-        this.selSpreadService = selSpreadService;
     }
 
     public MainTbOnsaleService getMaintbOnsaleService() {

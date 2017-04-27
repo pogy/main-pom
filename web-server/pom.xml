@@ -350,17 +350,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.zgj</groupId>
-            <artifactId>spread-dubbo-sdk</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>data-mall</groupId>
-                    <artifactId>member_user</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.opentae.tae</groupId>
             <artifactId>opentae_utils_authlogin</artifactId>
             <version>1.0.2_releases</version>

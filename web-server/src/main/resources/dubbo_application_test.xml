@@ -4,15 +4,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
     <bean class="com.shigu.services.DubboAllService">
-        <!--<property name="selSpreadService" ref="selSpreadService"/>-->
         <!--<property name="maintbOnsaleService" ref="mainTbOnsaleService"/>-->
         <!--<property name="tbPropsService" ref="tbPropsService"/>-->
         <!--<property name="taobaoSynService" ref="taobaoSynService"/>-->
         <!--<property name="taobaoTmcService" ref="taobaoTmcService"/>-->
     </bean>
     <!-- 要引用的服务 -->
-    <!--<dubbo:reference interface="com.shigu.spread.services.SelSpreadService" id="selSpreadService"/>-->
-
     <!--<dubbo:reference interface="com.shigu.tb.finder.services.MainTbOnsaleService" id="mainTbOnsaleService"/>-->
 
     <!--<dubbo:reference interface="com.shigu.tb.finder.services.TaobaoSynService" id="taobaoSynService" cluster="failfast" timeout="1000000"/>-->
