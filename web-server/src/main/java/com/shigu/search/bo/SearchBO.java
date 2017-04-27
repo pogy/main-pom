@@ -40,6 +40,14 @@ public class SearchBO extends PageInSearchBO implements Serializable{
      */
     private Double ep;
     /**
+     * 开始时间
+     */
+    private String st;
+    /**
+     * 结束时间
+     */
+    private String et;
+    /**
      * 筛选关键字
      */
     private String keyword;
@@ -116,4 +124,19 @@ public class SearchBO extends PageInSearchBO implements Serializable{
         this.keyword = keyword;
     }
 
+    public String getSt() {
+        return st;
+    }
+
+    public void setSt(String st) {
+        this.st = st;
+    }
+
+    public String getEt() {
+        return et;
+    }
+
+    public void setEt(String et) {
+        this.et = et;
+    }
 }
