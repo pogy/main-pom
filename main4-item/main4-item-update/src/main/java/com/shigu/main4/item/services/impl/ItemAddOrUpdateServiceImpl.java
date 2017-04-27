@@ -1027,7 +1027,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Override
     public void addImgToSearch(Long goodsId,String webSite, String url, int type) {
         if(goodsId!=null&&StringUtils.isNotEmpty(url)){
-            ImgToSearch imgToSearch=new ImgToSearch(goodsId,url,webSite,type);
+            ImgToSearch imgToSearch=new ImgToSearch(goodsId,webSite,url,type);
             redisIO.rpush("update_del_img_search",imgToSearch);
         }
     }

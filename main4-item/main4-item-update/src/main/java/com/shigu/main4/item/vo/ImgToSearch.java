@@ -16,7 +16,7 @@ public class ImgToSearch {
      */
     private Integer type;
 
-    public ImgToSearch(Long goodsId, String picUrl, String webSite, Integer type) {
+    public ImgToSearch(Long goodsId, String webSite,String picUrl,  Integer type) {
         this.goodsId = goodsId;
         this.picUrl = picUrl;
         this.webSite = webSite;
