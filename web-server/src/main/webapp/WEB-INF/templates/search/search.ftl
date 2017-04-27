@@ -383,7 +383,7 @@
                 </div>
                 <div class="sortTimeBox">
                     <div class="bg1"></div>
-                    <b class="initial" <#if query.dgt"3" || query.st??> id="selected" </#if>>
+                    <b class="initial" <#if query.d gt 3 || query.st??> id="selected" </#if>>
                         
                         <#if query.d??>
                             <#if query.d == '7'>
