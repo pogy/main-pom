@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/dtgglist.css?t=" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/dtgglist.css?t=1493289043903" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/gys4/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/gys4/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -210,7 +210,7 @@
         <h2>店铺管理</h2>
         <ul>
             <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
-            <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修</a></li> 
+            <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
             <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
             <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
             <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
@@ -234,7 +234,7 @@
     
     <div class="content shadow-box">
         
-        <p class="resultInfo">本次活动已结束！<#if (ggList?size) gt 0>派位结果如下：</#if></p>
+        <p class="resultInfo">本次活动已结束！<#if (indexggList?size) gt 0>派位结果如下：</#if></p>
             <div class="ggList">
                 <#if (ggList?size) gt 0>
                 <table>
@@ -258,7 +258,7 @@
                 
                 </#if>
             </div>
-        <p class="nexttime">下次活动时间：${nexttimeText!}</p>
+            <p class="nexttime">下次活动时间：${nexttimeText!}</p>
         
         <div class="introduction">
             ${introductionHtml}
@@ -298,7 +298,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/dtgglist.js?t="></script>
+<script src="http://style.571xz.com/gys4/js/dtgglist.js?t=1493289043903"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

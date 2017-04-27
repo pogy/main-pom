@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/storeGoodsList21init.css?t=" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/storeGoodsList21init.css?t=1493289046648" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/gys4/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/gys4/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -210,7 +210,7 @@
         <h2>店铺管理</h2>
         <ul>
             <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
-            <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修</a></li> 
+            <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
             <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
             <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
             <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
@@ -239,11 +239,6 @@
         </div>
         <div class="splitline"></div>
         <div class="infobox">
-            <span>${goods_counts.tj!}/${goods_counts.sale!}</span>
-            <em>橱窗位总数（件）</em>
-        </div>
-        <div class="splitline"></div>
-        <div class="infobox">
             <span>${goods_counts.store!}</span>
             <em>仓库中宝贝（件）</em>
         </div>
@@ -251,8 +246,6 @@
     <div class="content shadow-box">
         <div class="goods-tabbox clearfix">
             <div class="tabbutton selected"><a href="${main_host!}seller/storeGoodsList21init.htm">出售中的宝贝<em>${goods_counts.sale!}</em></a></div>
-            <div class="splitline"></div>
-            <div class="tabbutton"><a href="${main_host!}seller/storeRecommendListinit.htm">推荐宝贝<em>${goods_counts.tj!}</em></a></div>
         </div>
         <div class="goods-search">
             <input type="hidden" id="webSite" value="${webSite!}">
@@ -277,9 +270,6 @@
                 <li>
                     <button class="tbGoods someTbGoods">批量同步商品</button>
                     <button class="tbGoods allTbGoods" data-id="${session_user_redis__.logshop.shopId!}">同步整店商品</button>
-                    
-                    <button class="tjgoods">推荐</button>
-                    
                 </li>
             </ul>
             <#list goodslist as item>
@@ -305,10 +295,6 @@
                 </li>
                 <li class="upcount">${item.count!}</li>
                 <li class="control">
-                    <#if !item.tj>
-                    <p><em class="tjgoods">推荐</em></p>
-                    </#if>
-                    
                     <#if item.detailUrlnew != null>
                     <p><b class="tbGoods">同步商品</b></p>
                     <#else>
@@ -386,7 +372,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/storeGoodsList21init.js?t="></script>
+<script src="http://style.571xz.com/gys4/js/storeGoodsList21init.js?t=1493289046648"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
