@@ -14,6 +14,7 @@ import com.shigu.main4.item.services.PriceCalculateService;
 import com.shigu.main4.item.tools.GoodsAddToRedis;
 import com.shigu.main4.item.tools.ItemHelper;
 import com.shigu.main4.item.tools.OSSUtil;
+import com.shigu.main4.item.vo.ImgToSearch;
 import com.shigu.main4.item.vo.NowItemInfo;
 import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.tools.RedisIO;
@@ -92,6 +93,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
     @Autowired
     GoodsAddToRedis goodsAddToRedis;
+
+    @Autowired
+    RedisIO redisIO;
 
     /**
      * 系统上架一款商品
@@ -990,6 +994,14 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Override
     public boolean hasUpdated(SynItem item) {
         return false;
+    }
+
+    @Override
+    public void addImgToSearch(Long goodsId, String url, int type) {
+        if(goodsId!=null&&StringUtils.isNotEmpty(url)){
+            ImgToSearch imgToSearch=new ImgToSearch(goodsId,url,type);
+//            redisIO.rpush("")
+        }
     }
 
     /**
