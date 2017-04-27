@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/goods.css" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1493285369504" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/goods.js"></script>
+    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1493285369504"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -365,7 +365,7 @@
             <div class="rtbox">
                 <div class="dateClassify">
                     <div class="inner">
-                        <b jbtn="searchTime" <#if !query.d && !query.et> class="selected"</#if>>全部</b>
+                        <b jbtn="searchTime" <#if !query.d && !query.et> class="selected"</#if> d="">全部</b>
                         <b jbtn="searchTime" <#if query.d =="1"> class="selected"</#if> d="1">1日内</b>
                         <b jbtn="searchTime" <#if query.d =="2"> class="selected"</#if> d="2">2日内</b>
                         <b jbtn="searchTime" <#if query.d =="3"> class="selected"</#if> d="3">3日内</b>
@@ -373,9 +373,10 @@
                 </div>
                 <div class="sortTimeBox">
                     <div class="bg1"></div>
-                    <b class="initial" <#if query.dgt"3" || query.st??> id="selected" </#if>>
+                    <b class="initial" <#if query.d gt 3 || query.st??> id="selected" </#if>>
                         
                         <#if query.d??>
+                            
                             <#if query.d == '7'>
                             1周内
                             <#elseif query.d == '30'>
@@ -414,8 +415,8 @@
                  <div class="defineTime">
         
                                 <i class="cal"></i>
-                                <input type="text" id="u_startTime" class="jq_datepicker" placeholder="请输入日期" >
-                                <input type="text" id="u_endTime" class="jq_datepicker" placeholder="请输入日期" >
+                                <input type="text" id="u_startTime" class="jq_datepicker" placeholder="请输入日期" disabled >
+                                <input type="text" id="u_endTime" class="jq_datepicker" placeholder="请输入日期" disabled>
                                 <button id="searchByUserTime">确定</button>
                     </div>
                 
