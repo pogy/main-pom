@@ -27,6 +27,7 @@
                 <value>classpath:mall_config.properties</value>
                 <value>classpath:ESConfig.properties</value>
                 <value>classpath:redis.properties</value>
+                <value>classpath:oss.properties</value>
             </list>
         </property>
     </bean>
