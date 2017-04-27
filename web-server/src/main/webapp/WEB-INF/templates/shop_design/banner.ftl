@@ -19,7 +19,7 @@
             <div class="nav-main clearfix">
                 <ul class="clearfix">
                     <li>
-                        <#if shop.domain??>
+                        <#if shop.domain != "" && shop.domain??>
                             <a href="http://${shop.domain}.571xz.com" style="color:${moduleSet.storeNav.color};">
                                 首页
                             </a>
