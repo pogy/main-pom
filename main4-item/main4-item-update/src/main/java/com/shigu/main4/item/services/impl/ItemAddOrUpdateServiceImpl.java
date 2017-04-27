@@ -209,7 +209,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         cleanItemCache(itemId);
 
         //8、图搜首图添加
-        addImgToSearch(itemId, tiny.getPicUrl(), 1);
+        addImgToSearch(itemId,webSite, tiny.getPicUrl(), 1);
     }
 
     private void cleanItemCache(Long itemId) {
@@ -358,7 +358,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         cleanItemCache(itemId);
 
         //8、图搜主图删除
-        addImgToSearch(itemId, tiny.getPicUrl(), 0);
+        addImgToSearch(itemId,webSite, tiny.getPicUrl(), 0);
     }
 
     /**
@@ -418,8 +418,10 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             tiny.setGoodsId(itemId);
             ShiguGoodsTiny goodsTiny
                     = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
+            String picUrl;
             if (goodsTiny != null) {
                 //9.4
+                picUrl=goodsTiny.getPicUrl();
                 ossImgs.add(goodsTiny.getPicUrl());
                 numIid = goodsTiny.getNumIid();
                 shiguGoodsTinyMapper.deleteByPrimaryKey(tiny);
@@ -427,6 +429,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 ShiguGoodsSoldout goodsSoldout=shiguGoodsSoldoutMapper.selectByPrimaryKey(tiny);
                 //删除下架的
                 isSoldout=true;
+                picUrl=goodsSoldout.getPicUrl();
                 ossImgs.add(goodsSoldout.getPicUrl());
                 numIid = goodsSoldout.getNumIid();
                 shiguGoodsSoldoutMapper.deleteByPrimaryKey(tiny);
@@ -496,7 +499,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             cleanItemCache(itemId);
 
             //12、图搜主图删除
-            addImgToSearch(itemId, goodsTiny.getPicUrl(), 0);
+            addImgToSearch(itemId,webSite, picUrl, 0);
         }
     }
 
@@ -783,7 +786,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         }
         if (changed){
             if (picChange) {
-                addImgToSearch(synItem.getGoodsId(), synItem.getPicUrl(), 1);
+                addImgToSearch(synItem.getGoodsId(),item.getWebSite(), synItem.getPicUrl(), 1);
             }
             return updateItem(synItem);
         }
@@ -941,7 +944,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 shiguGoodsModifiedMapper.updateByPrimaryKeySelective(goodsModified);
             }
             if (picModifild) {
-                addImgToSearch(synItem.getGoodsId(), synItem.getPicUrl(), 1);
+                addImgToSearch(synItem.getGoodsId(),item.getWebSite(), synItem.getPicUrl(), 1);
             }
             return updateItem(item);
         }
@@ -1022,9 +1025,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     }
 
     @Override
-    public void addImgToSearch(Long goodsId, String url, int type) {
+    public void addImgToSearch(Long goodsId,String webSite, String url, int type) {
         if(goodsId!=null&&StringUtils.isNotEmpty(url)){
-            ImgToSearch imgToSearch=new ImgToSearch(goodsId,url,type);
+            ImgToSearch imgToSearch=new ImgToSearch(goodsId,webSite,url,type);
             redisIO.rpush("update_del_img_search",imgToSearch);
         }
     }
