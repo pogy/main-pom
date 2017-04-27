@@ -10,11 +10,11 @@
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
 
     
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1493182109352" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1493276748400" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1493182109352"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1493276748400"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -768,7 +768,7 @@ var goodsId = '${vo.itemId!}';
 <#assign $it=text?eval />
 <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
         </p></#if>
-                    <#if vo.storeRelation.imQq??><p class="qq">档口QQ<#assign text>{"id":"${vo.storeRelation.imQq!}"}</#assign>
+                    <#if vo.storeRelation.imQq?? && vo.storeRelation.imQq != ""><p class="qq">档口QQ<#assign text>{"id":"${vo.storeRelation.imQq!}"}</#assign>
 <#assign $it=text?eval />
 <#if $it.id != "">
         <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>

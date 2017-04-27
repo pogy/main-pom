@@ -15,12 +15,12 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/shopItemCopy/css/shopDown.css?t=1493182108775" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/shopDown.css?t=1493276749775" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
             <script src="http://style.571xz.com/shopItemCopy/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/shopDown.js?t=1493182108775"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shopDown.js?t=1493276749775"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
