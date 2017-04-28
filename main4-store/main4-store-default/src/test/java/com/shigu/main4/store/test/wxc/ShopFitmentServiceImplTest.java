@@ -46,7 +46,7 @@ public class ShopFitmentServiceImplTest extends BaseSpringTest {
     @Test
     public void initShopFitment() throws Exception {
 //        shopFitmentService.initShopFitment(32888L);
-        shopFitmentService.initShopFitment(41452L);
+        shopFitmentService.initShopFitment(42695L);
     }
 
     @Test

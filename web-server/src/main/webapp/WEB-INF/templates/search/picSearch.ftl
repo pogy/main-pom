@@ -189,7 +189,7 @@
            <div class="searchInput">
                <input class="searchUrl" type="text" name="" placeholder="用图片找到你想要的商品" value=""/>
                 <div class="camera">
-                    <img src="/searchV5/css/img/imgsearch_03.png" alt="" />
+                    <img src="http://style.571xz.com/searchV5/css/img/imgsearch_03.png" alt="" />
                     <input type="file" name="file" class="" accept=".jpg,.jpeg,.bmp,.gif,.png">
                 </div>
                
