@@ -302,7 +302,7 @@ public class GoodsSearchService {
         //得到IDs
         RetrieveImageRequest request=new RetrieveImageRequest();
         request.setPicUrl(picUrl);
-        request.setMinSim(0.2f);
+//        request.setMinSim(0.2f);
         request.setWp("intfield1");
         request.setWs("textfield1 = '"+webSite+"'");
         RetrieveImageResponse response=new ImgSearchClient(dbUid,dbSeckey).execute(request);
