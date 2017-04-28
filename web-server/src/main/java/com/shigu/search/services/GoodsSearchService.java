@@ -7,8 +7,13 @@ import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.shigu.imgsearch.ImgSearchClient;
+import com.shigu.imgsearch.beans.Record;
+import com.shigu.imgsearch.requests.RetrieveImageRequest;
+import com.shigu.imgsearch.responses.RetrieveImageResponse;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
@@ -16,7 +21,10 @@ import com.shigu.main4.item.vo.AggMarketAndCats;
 import com.shigu.main4.item.vo.AggsCount;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
+import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopSearchService;
+import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.SearchShopSimple;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.utils.ShopWeightComparator;
@@ -39,6 +47,7 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -79,6 +88,12 @@ public class GoodsSearchService {
 
     @Autowired
     SpreadService spreadService;
+
+    String dbUid="aliyun_1572395";
+    String dbSeckey="RbCMlio9EeeHHwAWPhwgkg";
+
+    @Autowired
+    RedisIO redisIO;
 
 
     /**
@@ -278,6 +293,44 @@ public class GoodsSearchService {
         return vo;
     }
 
-
-
+    /**
+     * 图搜
+     * @param picUrl
+     * @param webSite
+     */
+    public List<GoodsInSearch> searchByPic(String picUrl, String webSite) throws IOException {
+        //得到IDs
+        RetrieveImageRequest request=new RetrieveImageRequest();
+        request.setPicUrl(picUrl);
+        request.setMinSim(0.2f);
+        request.setWp("intfield1");
+        request.setWs("textfield1 = '"+webSite+"'");
+        RetrieveImageResponse response=new ImgSearchClient(dbUid,dbSeckey).execute(request);
+        //添加搜索记录
+        String dateKey="img_search_"+ DateUtil.dateToString(new Date(),"yyyy_MM");
+        Long searched=redisIO.get(dateKey,Long.class);
+        if(searched==null){
+            searched=0L;
+        }
+        searched++;
+        redisIO.put(dateKey,searched);
+        if(response.getRetcode()==0&&response.getRecord()!=null){
+            List<Long> goodsId=new ArrayList<>();
+            for(Record r:response.getRecord()){
+                List<String> para=r.getPara();
+                if(para!=null&&para.size()>0){
+                    goodsId.add(Long.valueOf(para.get(0)));
+                }
+            }
+            if(goodsId.size()>0){
+                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,"hz",1,100);
+                ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager);
+                if (goodsPager != null) {
+//                    return pager.getContent();
+                    return goodsPager.getContent();
+                }
+            }
+        }
+        return new ArrayList<>();
+    }
 }

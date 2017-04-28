@@ -1,9 +1,11 @@
 package com.shigu.search.actions;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
+import com.shigu.main4.tools.OssIO;
 import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.services.CategoryInSearchService;
@@ -21,8 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -43,6 +48,54 @@ public class GoodsSearchAction {
     @Autowired
     StoreSelFromEsService storeSelFromEsService;
 
+    @Autowired
+    OssIO ossIO;
+
+    /**
+     * 图搜
+     * @return
+     */
+    @RequestMapping("picSearch")
+    public String picSearch(){
+
+        return "search/picSearch";
+    }
+
+    /**
+     * 上传图搜用的图片
+     * @param file
+     * @return
+     * @throws JsonErrException
+     */
+    @RequestMapping("uploadGoodsImg")
+    @ResponseBody
+    public JSONObject uploadGoodsImg(@RequestParam(value = "file", required = false) MultipartFile file) throws JsonErrException {
+        String url="";
+        try {
+            url=ossIO.uploadFile(file.getBytes(),"picsearch/"+System.currentTimeMillis() + ".jpg");
+//            url=fileUploadService.fileUpload("item/"+shopSession.getShopId()+"/"+System.currentTimeMillis() + ".jpg",file.getBytes());
+        } catch (IOException e) {
+            throw new JsonErrException("").addErrMap("err","图片数据读取失败");
+        }
+        return JsonResponseUtil.success().element("imgurl",url);
+    }
+
+    /**
+     * 图搜
+     * @return
+     */
+    @RequestMapping("goodsUrlSearch")
+    @ResponseBody
+    public JSONObject goodsUrlSearch(String imgAdress) throws JsonErrException {
+        JSONObject result=JsonResponseUtil.success();
+        try {
+            result.element("imgurl",imgAdress);
+            result.element("goodslist",JSONArray.fromObject(goodsSearchService.searchByPic(imgAdress,"hz")));
+        } catch (IOException e) {
+            throw new JsonErrException("搜索接口调用异常");
+        }
+        return result;
+    }
     /**
      * 新品发布
      *
