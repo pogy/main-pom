@@ -234,7 +234,7 @@
     
     <div class="content shadow-box">
         
-        <p class="resultInfo">本次活动已结束！<#if (indexggList?size) gt 0>派位结果如下：</#if></p>
+        <p class="resultInfo">本次活动已结束！<#if (ggList?size) gt 0>派位结果如下：</#if></p>
             <div class="ggList">
                 <#if (ggList?size) gt 0>
                 <table>
