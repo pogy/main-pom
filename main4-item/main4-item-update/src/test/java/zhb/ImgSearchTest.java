@@ -34,7 +34,7 @@ public class ImgSearchTest {
 
     @Test
     public void picImgTrans() {
-        Jobs<List<ShiguGoodsTiny>> jobs = new Jobs<List<ShiguGoodsTiny>>() {
+        Jobs<List<ShiguGoodsTiny>> jobs = new Jobs<List<ShiguGoodsTiny>>(20) {
             @Override
             public void doWork(List<ShiguGoodsTiny> shiguGoodsTinies) throws Exception {
                 for (ShiguGoodsTiny tiny : shiguGoodsTinies) {
@@ -46,15 +46,15 @@ public class ImgSearchTest {
 
         String[] sites = {
                 "hz",
-                "cs",
-                "bb",
-                "bj",
-                "gz",
-                "jf",
-                "jx",
-                "ss",
-                "wa",
-                "xh",
+//                "cs",
+//                "bb",
+//                "bj",
+//                "gz",
+//                "jf",
+//                "jx",
+//                "ss",
+//                "wa",
+//                "xh",
         };
 
         for (String site : sites) {
@@ -64,6 +64,7 @@ public class ImgSearchTest {
             tinyExample.setWebSite(site);
             tinyExample.setStartIndex(start);
             tinyExample.setEndIndex(size);
+            tinyExample.createCriteria().andParentMarketIdNotEqualTo(674L);
             List<ShiguGoodsTiny> goodsTinies;
             while (!(goodsTinies = shiguGoodsTinyMapper.selectFieldsByConditionList(tinyExample, FieldUtil.codeFields("goods_id, pic_url, web_site"))).isEmpty()) {
                 jobs.addJob(goodsTinies);
