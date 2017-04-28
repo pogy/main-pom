@@ -1,5 +1,7 @@
 package com.shigu.search.vo;
 
+import com.shigu.main4.vo.ItemShowBlock;
+
 import java.io.Serializable;
 
 /**
@@ -53,6 +55,10 @@ public class GoodsInSearch implements Serializable{
      * 高亮货号
      */
     private String highLightGoodsNo;
+
+    public GoodsInSearch() {
+    }
+
     /**
      * 货号
      * @return
