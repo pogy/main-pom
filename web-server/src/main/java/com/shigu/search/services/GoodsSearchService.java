@@ -89,8 +89,8 @@ public class GoodsSearchService {
     @Autowired
     SpreadService spreadService;
 
-    String dbUid="aliyun_1572395";
-    String dbSeckey="RbCMlio9EeeHHwAWPhwgkg";
+    String dbUid="aliyun_1582227";
+    String dbSeckey="vsDnnCviEeeHHwAWPhwgkg";
 
     @Autowired
     RedisIO redisIO;
