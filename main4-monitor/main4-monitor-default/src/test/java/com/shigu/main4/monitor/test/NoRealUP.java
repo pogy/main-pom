@@ -126,7 +126,8 @@ public class NoRealUP {
 //                if(Math.random()<0.5){
 //                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
 //                }
-                if(Math.random()<0.4){
+                for(int i=0;i<10;i++)
+                if(Math.random()<0.3){
                     itemUpRecordService.addItemUpRecord(upGoods(sgt));
                 }
 //                if(Math.random()<0.3){
@@ -135,9 +136,9 @@ public class NoRealUP {
 //                if(Math.random()<0.2){
 //                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
 //                }
-                if(Math.random()<0.1){
-                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
-                }
+//                if(Math.random()<0.1){
+//                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+//                }
             }
     }
 
