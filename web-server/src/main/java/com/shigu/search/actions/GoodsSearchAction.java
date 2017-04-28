@@ -56,8 +56,8 @@ public class GoodsSearchAction {
      * @return
      */
     @RequestMapping("picSearch")
-    public String picSearch(){
-
+    public String picSearch(Model model){
+        model.addAttribute("webSite","hz");
         return "search/picSearch";
     }
 
