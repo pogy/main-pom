@@ -302,7 +302,7 @@ public class GoodsSearchService {
         //得到IDs
         RetrieveImageRequest request=new RetrieveImageRequest();
         request.setPicUrl(picUrl);
-//        request.setMinSim(0.2f);
+//        request.setMinSim(0.1f);
         request.setWp("intfield1");
         request.setWs("textfield1 = '"+webSite+"'");
         RetrieveImageResponse response=new ImgSearchClient(dbUid,dbSeckey).execute(request);
@@ -322,14 +322,23 @@ public class GoodsSearchService {
                     goodsId.add(Long.valueOf(para.get(0)));
                 }
             }
+            List<GoodsInSearch> imgGoods=new ArrayList<>();
             if(goodsId.size()>0){
-                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,"hz",1,100);
+                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,"hz",1,50);
                 ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager);
                 if (goodsPager != null) {
 //                    return pager.getContent();
-                    return goodsPager.getContent();
+                    List<GoodsInSearch> imgs = goodsPager.getContent();
+                    Map<Long,GoodsInSearch> imgMap=new HashMap<>();
+                    for(GoodsInSearch gis:imgs){
+                        imgMap.put(Long.valueOf(gis.getId()),gis);
+                    }
+                    for(Long gid:goodsId){
+                        imgGoods.add(imgMap.get(gid));
+                    }
                 }
             }
+            return imgGoods;
         }
         return new ArrayList<>();
     }
