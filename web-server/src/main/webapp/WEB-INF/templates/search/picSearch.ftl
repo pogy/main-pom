@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/picSearch.css?t=" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/picSearch.css?t=1493371771285" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/picSearch.js?t="></script>
+    <script src="http://style.571xz.com/searchV5/js/picSearch.js?t=1493371771285"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -189,7 +189,7 @@
            <div class="searchInput">
                <input class="searchUrl" type="text" name="" placeholder="用图片找到你想要的商品" value=""/>
                 <div class="camera">
-                    <img src="/searchV5/css/img/imgsearch_03.png" alt="" />
+                    <img src="http://style.571xz.com/searchV5/css/img/imgsearch_03.png" alt="" />
                     <input type="file" name="file" class="" accept=".jpg,.jpeg,.bmp,.gif,.png">
                 </div>
                

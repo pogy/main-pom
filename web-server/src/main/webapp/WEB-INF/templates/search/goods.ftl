@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1493285369504" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1493371778040" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1493285369504"></script>
+    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1493371778040"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -196,7 +196,9 @@
                     
                     <li type="goods" class="select">商品</li>
                     <li type="store" >档口</li>
-                </ul>   
+                    
+                </ul>
+                <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
             </div>
             <div class="searchBox">
                 
@@ -415,8 +417,8 @@
                  <div class="defineTime">
         
                                 <i class="cal"></i>
-                                <input type="text" id="u_startTime" class="jq_datepicker" placeholder="请输入日期" disabled >
-                                <input type="text" id="u_endTime" class="jq_datepicker" placeholder="请输入日期" disabled>
+                                <input type="text" id="u_startTime" class="jq_datepicker" placeholder="请选择日期" readonly>
+                                <input type="text" id="u_endTime" class="jq_datepicker" placeholder="请选择日期" readonly>
                                 <button id="searchByUserTime">确定</button>
                     </div>
                 

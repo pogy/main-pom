@@ -7,6 +7,7 @@ import com.opentae.data.mall.examples.SearchCategorySubExample;
 import com.opentae.data.mall.interfaces.SearchCategoryMapper;
 import com.opentae.data.mall.interfaces.SearchCategorySubMapper;
 import com.searchtool.configs.ElasticConfiguration;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
@@ -204,11 +205,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             pager.setContent(new ArrayList<SearchItem>(pageSize));
 
             for (SearchHit hit : hits.getHits()) {
-                ESGoods esGoods = JSON.parseObject(hit.getSourceAsString(), ESGoods.class);
-                SearchItem searchItem = BeanMapper.map(esGoods, SearchItem.class);
-                searchItem.setItemId(esGoods.getGoodsId());
-                Long piPrice = esGoods.getPiPrice();
-                searchItem.setPrice(String.format("%.2f", piPrice * .01));
+                SearchItem searchItem = packSearchItem(hit);
                 // 高亮字段
                 Map<String, HighlightField> highlightFields = hit.getHighlightFields();
                 HighlightField title = highlightFields.get("title");
@@ -235,6 +232,15 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             }
         }
         return pager;
+    }
+
+    private SearchItem packSearchItem(SearchHit hit) {
+        ESGoods esGoods = JSON.parseObject(hit.getSourceAsString(), ESGoods.class);
+        SearchItem searchItem = BeanMapper.map(esGoods, SearchItem.class);
+        searchItem.setItemId(esGoods.getGoodsId());
+        Long piPrice = esGoods.getPiPrice();
+        searchItem.setPrice(String.format("%.2f", piPrice * .01));
+        return searchItem;
     }
 
     private void buildBoostingQuery(String keyword, SearchRequestBuilder sb, BoolQueryBuilder boolQuery) {
@@ -332,5 +338,35 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         List<CategoryValue> categoryValues;
         Collections.sort(categoryValues = BeanMapper.mapList(searchCategorySubMapper.selectByExample(subExample), CategoryValue.class));
         return categoryValues;
+    }
+
+    /**
+     * 按ID查询
+     *
+     * @param ids
+     * @param webSite
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public ShiguPager<SearchItem> searchItemByIds(List<Long> ids, String webSite, Integer page, Integer pageSize) {
+        ShiguPager<SearchItem> pager = new ShiguPager<>();
+        pager.setNumber(page);
+        SearchResponse searchResponse = ElasticConfiguration.searchClient
+                .prepareSearch("goods")
+                .setTypes(webSite)
+                .setSize(pageSize)
+                .setFrom((page - 1) * pageSize)
+                .setQuery(QueryBuilders.termsQuery("goodsId", ids)).execute().actionGet();
+        int totalHits = (int) searchResponse.getHits().getTotalHits();
+        pager.calPages(totalHits, pageSize);
+        pager.setTotalCount(totalHits);
+        pager.setContent(new ArrayList<SearchItem>());
+        for (SearchHit hit : searchResponse.getHits().getHits()) {
+            SearchItem searchItem = packSearchItem(hit);
+            pager.getContent().add(searchItem);
+        }
+        return pager;
     }
 }

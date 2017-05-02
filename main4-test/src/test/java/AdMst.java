@@ -6,8 +6,6 @@ import com.opentae.data.mall.examples.MemberLicenseExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.seller.services.ShopDesignService;
-import com.shigu.services.SendMsgService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
@@ -22,7 +20,7 @@ import java.util.List;
  * Created by zhaohongbo on 17/4/25.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(value = "/main4/spring/test.xml")
+@ContextConfiguration(value = "classpath:ac.xml")
 public class AdMst {
 
     @Autowired
@@ -31,17 +29,14 @@ public class AdMst {
     @Autowired
     MemberLicenseMapper memberLicenseMapper;
 
-    @Autowired
-    ShopDesignService shopDesignService;
-
     @Test
-    public void publish(){
-        shopDesignService.publishOneShop(40388L);
+    public void testMsg(){
+        System.out.println(sendSms_quick("18888971970","温馨提示：（报名时间为4月28日-4月30日20时）网站广告位报名入口已发布，本期总计首页29个位置，轮转播区1个，轮转播下方区1个，首页热卖10个，推荐档口7个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
     }
     @Test
     public void sendMsg(){
         ShiguShopExample example=new ShiguShopExample();
-        example.createCriteria().andMarketIdEqualTo(617L).andShopStatusEqualTo(0);
+        example.createCriteria().andMarketIdEqualTo(621L).andShopStatusEqualTo(0);
         List<ShiguShop> shopList=shiguShopMapper.selectByExample(example);
 
         for(ShiguShop s:shopList){
@@ -56,15 +51,14 @@ public class AdMst {
             }
             if(telephone!=null){
                 System.out.println(telephone);
-                System.out.println(sendSms_quick(telephone,"温馨提示：（报名时间为4月25日-4月27日20时）网站广 告位报名入口已发布，本期总计首页26个位置，轮转播区2个，轮转播下方区1个，首页热卖10个，推荐档口8个，元素馆5个（注意：所有广 告位不同一区域同一时段内，可重复报名）报名入口为供应商后台。【四季星座网】"));
+                System.out.println(sendSms_quick(telephone,"温馨提示：（报名时间为4月28日-4月30日20时）网站广告位报名入口已发布，本期总计首页29个位置，轮转播区1个，轮转播下方区1个，首页热卖10个，推荐档口7个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
             }
 
         }
 //        System.out.println(sendSms_quick("18857193391","温馨提示：（报名时间为4月25日-4月27日20时）网站广告位报名入口已发布，本期总计首页26个位置，轮转播区2个，轮转播下方区1个，首页热卖10个，推荐档口8个，元素馆5个（注意：所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台。【四季星座网】"));
     }
 
-    String msg="温馨提示：（报名时间为4月25日-4月27日20时）网站广告位报名入口已发布，本期总计首页26个位置，轮转播区2个，轮转播下方区1个，首页热卖10个，推荐档口8个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】";
-    private static final Logger logger = LoggerFactory.getLogger(SendMsgService.class);
+    String msg="温馨提示：（报名时间为4月28日-4月30日20时）网站广告位报名入口已发布，本期总计首页29个位置，轮转播区1个，轮转播下方区1个，首页热卖10个，推荐档口7个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】";
 
     private static String account_quick = "sdk_sgwl";
     private static String pwd_quick = "20150630";

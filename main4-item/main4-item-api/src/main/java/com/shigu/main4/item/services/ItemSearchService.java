@@ -1,8 +1,10 @@
 package com.shigu.main4.item.services;
 
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.vo.CategoryValue;
+import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
 
 import java.util.Date;
@@ -36,6 +38,16 @@ public interface ItemSearchService {
     ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds,
                               Double priceFrom, Double priceTo,
                               Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs);
+
+    /**
+     * 按ID查询
+     * @param ids
+     * @param webSite
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    ShiguPager<SearchItem> searchItemByIds(List<Long> ids,String webSite,Integer page,Integer pageSize);
     /**
      * 查询搜索类目
      * @param category
@@ -49,4 +61,5 @@ public interface ItemSearchService {
      * @return
      */
     List<CategoryValue> selSubCategory(String parentCateValue, SearchCategory category);
+
 }
