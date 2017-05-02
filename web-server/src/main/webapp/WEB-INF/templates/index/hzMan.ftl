@@ -7,7 +7,7 @@
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1493372336193" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1493718918744" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
 <script>/*============ indexV4/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1493372336193"></script>
+    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1493718918744"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -53,6 +53,7 @@
                         <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
                         <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
                         <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
+                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>嘉兴</a></li>
                     </ul>
                 </div>
             </div>
