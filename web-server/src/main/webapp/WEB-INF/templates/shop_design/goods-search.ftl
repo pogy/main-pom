@@ -11,7 +11,7 @@
                     <li class="keyword">
                         <label>
                             <span class="key">关键字:</span>
-                            <input type="text" size="18" name="keyword" autocomplete="off" value="${moduleSet.keyword!}" class="keyword-input prompt" placeholder="标题或货号">
+                            <input type="text" size="18" name="pstring" autocomplete="off" value="${moduleSet.keyword!}" class="keyword-input prompt" placeholder="标题或货号">
                         </label>
                     </li>
                     <#if moduleSet.priceScreen == 1>
