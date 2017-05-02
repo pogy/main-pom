@@ -302,9 +302,11 @@ public class GoodsSearchService {
         //得到IDs
         RetrieveImageRequest request=new RetrieveImageRequest();
         request.setPicUrl(picUrl);
-//        request.setMinSim(0.1f);
+        request.setMinSim(0.1f);
         request.setWp("intfield1");
         request.setWs("textfield1 = '"+webSite+"'");
+        request.setSel2(20);
+
         RetrieveImageResponse response=new ImgSearchClient(dbUid,dbSeckey).execute(request);
         //添加搜索记录
         String dateKey="img_search_"+ DateUtil.dateToString(new Date(),"yyyy_MM");
@@ -324,7 +326,7 @@ public class GoodsSearchService {
             }
             List<GoodsInSearch> imgGoods=new ArrayList<>();
             if(goodsId.size()>0){
-                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,"hz",1,50);
+                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,"hz",1,20);
                 ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager);
                 if (goodsPager != null) {
 //                    return pager.getContent();

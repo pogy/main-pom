@@ -179,8 +179,14 @@ public class CdnAction {
         List<LoveGoodsList> loves=new ArrayList<>();
         loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤",webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHTX:SpreadEnum.MAN_XHTX)));
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHNZ:SpreadEnum.MAN_XHNZ)));
+        if(manOrWoman.equals("Woman")){
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔",webSite,
+                    SpreadEnum.WOMAN_XHNZ)));
+        }else{
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
+                    SpreadEnum.MAN_XHNZ)));
+        }
+
         loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
         model.addAttribute("loveGoodslist",loves);
