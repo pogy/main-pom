@@ -124,6 +124,8 @@
         <script type="text/javascript" src="${back_man_host}/sysman/datas/spread_nav_wen.js"></script>
     <#elseif loginName == 'spreadother'>
         <script type="text/javascript" src="${back_man_host}/sysman/datas/spread_nav_other.js"></script>
+    <#elseif loginName == 'py_admin'>
+        <script type="text/javascript" src="${back_man_host}/sysman/datas/puyuan_nav.js"></script>
     <#else>
         <script type="text/javascript" src="${back_man_host}/sysman/datas/nav.js"></script>
     </#if>
