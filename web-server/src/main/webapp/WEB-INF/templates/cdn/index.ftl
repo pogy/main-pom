@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/market/css/index.css" rel="stylesheet">
+    <link href="http://style.571xz.com/market/css/index.css?t=1493719007726" rel="stylesheet">
     
   </head>
 <body>
@@ -27,6 +27,7 @@
                         <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
                         <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
                         <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
+                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>嘉兴</a></li>
                     </ul>
                 </div>
             </div>
@@ -186,6 +187,7 @@
                 <li class="select" type="store">档口</li>
                 
             </ul>
+            <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
         </div>
         <div class="searchBox">
             <form id="formSearch" action="http://www.571xz.com/storenum.htm">
@@ -353,7 +355,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/market/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/market/js/nprogress.js"></script>
-<script src="http://style.571xz.com/market/js/index.js"></script>
+<script src="http://style.571xz.com/market/js/index.js?t=1493719007726"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
