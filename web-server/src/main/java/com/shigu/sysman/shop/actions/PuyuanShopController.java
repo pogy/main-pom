@@ -45,8 +45,14 @@ public class PuyuanShopController {
 
     @RequestMapping("register")
     @ResponseBody
-    public JSONObject submit(RegisterUser user, ShopRegister shop) throws Main4Exception {
-        puyuanShopRegistService.register(user, shop);
-        return JSONObject.fromObject("{'status':'success'}");
+    public JSONObject submit(RegisterUser user, ShopRegister shop) {
+        JSONObject result;
+        try {
+            puyuanShopRegistService.register(user, shop);
+            result = JSONObject.fromObject("{'status':'success'}");
+        } catch (Main4Exception e) {
+            result = JSONObject.fromObject("{'status':'error','msg':'" + e.getMessage() + "'}");
+        }
+        return result;
     }
 }
