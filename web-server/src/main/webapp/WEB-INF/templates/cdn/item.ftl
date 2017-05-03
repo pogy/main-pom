@@ -398,9 +398,9 @@ ${navCon}
                 <div id="proTitle"><!--这里有三种情况 所以要这样混,0 淘宝 1 数据包 2本站输入 3:剽窃 -->
                     <#if vo.cdnItem.itemFrom.value == "taobao">
                     <#if vo.cdnItem.tbNumIid != null>
-                    <a class="tb-main-title"  rel="nofollow" href="https://item.taobao.com/item.htm?id=${vo.cdnItem.tbNumIid!}" target="_blankt"><h2>${vo.cdnItem.title!}</h2></a>
+                    <a class="tb-main-title"  rel="nofollow" href="https://item.taobao.com/item.htm?id=${vo.cdnItem.tbNumIid!}" target="_blankt">${vo.cdnItem.title!}</a>
                     <#else>
-                    <a class="tb-main-title"  rel="nofollow" href="javascript:;" target="_blankt"><h2>${vo.cdnItem.title!}</h2></a>
+                    <a class="tb-main-title"  rel="nofollow" href="javascript:;" target="_blankt">${vo.cdnItem.title!}</a>
                     </#if>
                     <#elseif vo.cdnItem.itemFrom.value == "package">
                     <span class="iconfont" title="此商品为数据包上传">&#xe6a6;</span><h2>${vo.cdnItem.title!}</h2>
