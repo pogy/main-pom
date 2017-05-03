@@ -13,50 +13,62 @@ class SpreadTerm{
 -Long termId
 -SpreadType type
 
-+Long throwSpread()
++Long throwSpread() //投放广告
 }
 
 note left of SpreadTerm:活动期次
 
-abstract class SpreadThrow{
-#Long throwId  //投放ID
-#Long termId   //其次
+abstract class SpreadActivity{
+#Long activityId  //投放ID
+#Long termId   //期次
 #String description //描述
 #Date pubFromTime  //公布时间
 #Date pubToTime   //公布结束时间
-#Boolean autoPublish  //是否需要自动公布
+#Integer order  //排序
 
-+boolean limit() : 活动限制
-+Long joinSpread(Long userId,String name,String phone) : 参加活动
+abstract boolean limit() //活动限制
+Long joinSpread(Long userId,String name,String phone) //参加活动
+List<SpreadEnlist> randomHit(Integer number) //随机命中
 }
 
-note left of SpreadThrow:投放的活动,\n一期里面可能\n投放多个活动
+note left of SpreadActivity:投放的活动,\n一期里面可能\n投放多个活动
 
-class GoatThrow{
+class GoatActivity{
+-Long goatId
 -String code
 }
 
-class LedThrow{
+class LedActivity{
 -Date givePicTime
 -Date endGivePicTime
 }
 
 class SpreadEnlist{
+-Long enId
 -Long userId
--Long throwId
+-Long activityId
 -String name
 -String telephone
-+void hit() : 命中
+
++void prepareHit() //预定
++void hit() //报名命中
 }
 
+interface SpreadFactory{
+SpreadTerm selTermByTime(SpreadType type,Date time) //按时间查有效期次
+List<SpreadActivity> selActivityByTermId(Long termId) //按期次ID查投放的广告
+List<SpreadEnlist> selEnlistByActivityId(Long activityId,Boolean hit) //按广告投放ID查报名单
 
+}
 
-GoatThrow --|> SpreadThrow
+note left of SpreadFactory:活动服务接口
+SpreadActivity <|-- GoatActivity
 
-LedThrow --|> SpreadThrow
+SpreadActivity <|-- LedActivity
 
-SpreadTerm *-- SpreadThrow
+SpreadTerm *-- SpreadActivity
 
-SpreadEnlist <--> SpreadThrow
+GoatActivity <--> SpreadEnlist
+LedActivity <--> SpreadEnlist
 
 @enduml

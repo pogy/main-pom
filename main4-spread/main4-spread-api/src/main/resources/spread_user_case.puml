@@ -6,8 +6,8 @@ shanghu --> (查询往期记录)
 
 :管理员: as Admin
 
-Admin -> (发布广告)
-(发布广告) --> shanghu
+Admin -> (发布活动)
+(发布活动) --> shanghu
 Admin <- (选择中奖人员)
 (报名) --> (选择中奖人员)
 @enduml
