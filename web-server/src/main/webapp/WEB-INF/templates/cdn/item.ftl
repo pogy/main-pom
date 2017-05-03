@@ -10,11 +10,11 @@
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
 
     
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1493779572337" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1493785998003" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1493779572337"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1493785998003"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -385,7 +385,7 @@ ${navCon}
                 </div>
                 <div class="shareBox">
                     <a class="red" href="javascript:;" onclick="sc_goods(${vo.itemId!})" ><span class="iconfont">&#xe649;</span>收藏商品<!--（228人气）--></a>
-                    <a class="green" href="${qq_qy!}" target="_blankt"><span class="iconfont">&#xe677;</span>举报</a>
+                    <a class="green" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blankt"><span class="iconfont">&#xe677;</span>举报</a>
                 </div>
             </div>
             <div class="proconInfo">
@@ -398,9 +398,9 @@ ${navCon}
                 <div id="proTitle"><!--这里有三种情况 所以要这样混,0 淘宝 1 数据包 2本站输入 3:剽窃 -->
                     <#if vo.cdnItem.itemFrom.value == "taobao">
                     <#if vo.cdnItem.tbNumIid != null>
-                    <a class="tb-main-title"  rel="nofollow" href="https://item.taobao.com/item.htm?id=${vo.cdnItem.tbNumIid!}" target="_blankt"><span class="iconfont" title="跳转至供货商淘宝页面，查看货源" >&#xe679;</span><h2>${vo.cdnItem.title!}</h2></a>
+                    <a class="tb-main-title"  rel="nofollow" href="https://item.taobao.com/item.htm?id=${vo.cdnItem.tbNumIid!}" target="_blankt"><h2>${vo.cdnItem.title!}</h2></a>
                     <#else>
-                    <a class="tb-main-title"  rel="nofollow" href="javascript:;" target="_blankt"><span class="iconfont" title="跳转至供货商淘宝页面，查看货源" >&#xe679;</span><h2>${vo.cdnItem.title!}</h2></a>
+                    <a class="tb-main-title"  rel="nofollow" href="javascript:;" target="_blankt"><h2>${vo.cdnItem.title!}</h2></a>
                     </#if>
                     <#elseif vo.cdnItem.itemFrom.value == "package">
                     <span class="iconfont" title="此商品为数据包上传">&#xe6a6;</span><h2>${vo.cdnItem.title!}</h2>
