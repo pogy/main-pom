@@ -6,7 +6,7 @@ var navs = [{
 		{
 		"title": "濮院店铺列表",
 		"icon": "&#xe63c;",
-		"href": "/sysman/shop/list.htm?website=jx"
+		"href": "/sysman/shop/list.htm?website=jx&canAddShop=true"
 	}]
 },{
 	"title": "店铺审核",

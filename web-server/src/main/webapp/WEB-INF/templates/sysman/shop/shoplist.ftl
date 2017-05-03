@@ -80,6 +80,9 @@
                 <div class="layui-input-inline" style="width: 100px;">
                     <input type="tel" name="userName" lay-verify="phone" autocomplete="off" class="layui-input" value="${bo.userName!}">
                 </div>
+            <#if bo.canAddShop>
+                <input type="hidden" name="canAddShop" value="${bo.canAddShop}">
+            </#if>
             </div>
         </form>
 
@@ -87,6 +90,11 @@
         <a href="javascript:;" class="layui-btn layui-btn-small" id="search">
             <i class="layui-icon">&#xe615;</i> 搜索
         </a>
+        <#if bo.canAddShop>
+            <a href="javascript:;" class="layui-btn layui-btn-small" id="addShop">
+                <i class="layui-icon">&#xe618;</i> 添加
+            </a>
+        </#if>
     </blockquote>
 
             <div id="xx" style="width:100%; border: 1px solid #DDDDDD;">
@@ -249,6 +257,18 @@
 
         $('#search').on('click', function() {
             $("#searchForm").submit();
+        });
+        $('#addShop').on('click', function() {
+            layer.open({
+                type: 2,
+                title:false,
+                shadeClose: false,
+                shade: [0.3, '#000'],
+                maxmin: false, //开启最大化最小化按钮
+                offset: '80px',
+                area: ['700px' , '500px'],
+                content: getRealPath() + '/sysman/pyshop/openView.htm?webSite='+$("#webSite").val()
+            });
         });
 
 

@@ -39,6 +39,8 @@ public class ShopBo extends PageParameter {
 
     private String tbNick;
 
+    private boolean canAddShop;
+
     public String getWebsite() {
         return website;
     }
@@ -117,5 +119,13 @@ public class ShopBo extends PageParameter {
 
     public void setTbNick(String tbNick) {
         this.tbNick = tbNick;
+    }
+
+    public boolean isCanAddShop() {
+        return canAddShop;
+    }
+
+    public void setCanAddShop(boolean canAddShop) {
+        this.canAddShop = canAddShop;
     }
 }

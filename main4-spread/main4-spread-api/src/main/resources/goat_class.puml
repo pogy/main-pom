@@ -1,0 +1,41 @@
+@startuml
+
+class GoatLocation{
+-Long localId
+-String model
+-String code
+}
+
+abstract class Goat{
+-Long localId
+
++void publish()
++void preparePublish(Long second)
+}
+
+class ImgGoat{
+-String picUrl
+-String linkUrl
+}
+
+class ItemGoat{
+-Long itemId
+-String title
+-String picUrl
+}
+
+GoatLocation *-- Goat
+
+Goat <|-- ImgGoat
+
+Goat <|-- ItemGoat
+
+interface GoatFactory{
+GoatLocation getALocation(String code)
+GoatLocation getLocationData(String code)
+Goat selGoatById(Long goatId)
+}
+
+note left of GoatFactory:广告服务
+
+@enduml
