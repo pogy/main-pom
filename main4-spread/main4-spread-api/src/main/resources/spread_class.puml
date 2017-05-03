@@ -24,7 +24,7 @@ abstract class SpreadActivity{
 #String description //描述
 #Date pubFromTime  //公布时间
 #Date pubToTime   //公布结束时间
-#Integer order  //排序
+#Integer sort  //排序
 
 abstract boolean limit() //活动限制
 Long joinSpread(Long userId,String name,String phone) //参加活动
