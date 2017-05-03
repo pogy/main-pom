@@ -1,0 +1,13 @@
+@startuml
+:商户: as shanghu
+
+shanghu -> (报名)
+shanghu --> (查询往期记录)
+
+:管理员: as Admin
+
+Admin -> (发布广告)
+(发布广告) --> shanghu
+Admin <- (选择中奖人员)
+(报名) --> (选择中奖人员)
+@enduml

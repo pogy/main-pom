@@ -1,0 +1,62 @@
+@startuml
+
+enum SpreadType{
+GOAT_SELL:广告售卖
+GOAT_LED:led活动
+}
+
+note left of SpreadType:活动类别
+
+class SpreadTerm{
+-Date startTime
+-Date endTime
+-Long termId
+-SpreadType type
+
++Long throwSpread()
+}
+
+note left of SpreadTerm:活动期次
+
+abstract class SpreadThrow{
+#Long throwId  //投放ID
+#Long termId   //其次
+#String description //描述
+#Date pubFromTime  //公布时间
+#Date pubToTime   //公布结束时间
+#Boolean autoPublish  //是否需要自动公布
+
++boolean limit() : 活动限制
++Long joinSpread(Long userId,String name,String phone) : 参加活动
+}
+
+note left of SpreadThrow:投放的活动,\n一期里面可能\n投放多个活动
+
+class GoatThrow{
+-String code
+}
+
+class LedThrow{
+-Date givePicTime
+-Date endGivePicTime
+}
+
+class SpreadEnlist{
+-Long userId
+-Long throwId
+-String name
+-String telephone
++void hit() : 命中
+}
+
+
+
+GoatThrow --|> SpreadThrow
+
+LedThrow --|> SpreadThrow
+
+SpreadTerm *-- SpreadThrow
+
+SpreadEnlist <--> SpreadThrow
+
+@enduml
