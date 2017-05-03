@@ -302,13 +302,19 @@ public class GoodsSearchService {
 
     /**
      * 图搜
+     *
+     *
      * @param picUrl
      * @param webSite
      */
     public List<GoodsInSearch> searchByPic(String picUrl, String webSite) throws IOException {
         //得到IDs
         RetrieveImageRequest request=new RetrieveImageRequest();
-        request.setPicUrl(picUrl);
+        if(picUrl!=null){
+            request.setPicUrl(picUrl);
+        }else{
+            return new ArrayList<>();
+        }
         request.setMinSim(0.1f);
         request.setWp("intfield1");
         request.setWs("textfield1 = '"+webSite+"'");

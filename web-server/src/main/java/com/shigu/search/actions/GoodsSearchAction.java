@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -86,9 +87,14 @@ public class GoodsSearchAction {
      */
     @RequestMapping("goodsUrlSearch")
     @ResponseBody
-    public JSONObject goodsUrlSearch(String imgAdress) throws JsonErrException {
+    public JSONObject goodsUrlSearch(String imgAdress,String baseCode) throws JsonErrException {
         JSONObject result=JsonResponseUtil.success();
         try {
+            if(baseCode!=null&&imgAdress==null){
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] data=decoder.decodeBuffer(baseCode);
+                imgAdress=ossIO.uploadFile(data,"picsearch/"+System.currentTimeMillis() + ".jpg");
+            }
             result.element("imgurl",imgAdress);
             result.element("goodslist",JSONArray.fromObject(goodsSearchService.searchByPic(imgAdress,"hz")));
         } catch (IOException e) {
