@@ -1,0 +1,20 @@
+@startuml
+
+enum SpreadType{
+GOAT_SELL
+GOAT_LED
+}
+
+class SpreadTerm{
+Date startTime
+Date endTime
+Long termId
+SpreadType type
+}
+
+class SpreadThrow{
+Long termId
+
+}
+
+@enduml
