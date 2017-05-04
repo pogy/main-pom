@@ -126,7 +126,7 @@ public class NoRealUP {
 //                if(Math.random()<0.5){
 //                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
 //                }
-                for(int i=0;i<10;i++)
+                for(int i=0;i<5;i++)
                 if(Math.random()<0.3){
                     itemUpRecordService.addItemUpRecord(upGoods(sgt));
                 }
