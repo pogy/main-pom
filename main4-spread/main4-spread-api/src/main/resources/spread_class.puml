@@ -48,7 +48,7 @@ class ActivityVO{
 -Integer sort  //排序
 }
 
-class GoatVO{
+class GoatActivityVO{
 -Long goatId
 -String code
 }
@@ -58,7 +58,7 @@ abstract class LedActivity{
 -Date endGivePicTime
 }
 
-class LedVO{
+class LedActivityVO{
 -Date givePicTime
 -Date endGivePicTime
 }
@@ -102,7 +102,7 @@ GoatActivity <--> SpreadEnlist
 LedActivity <--> SpreadEnlist
 SpreadFactory --o SpreadEnlistVO
 SpreadFactory --o ActivityVO
-ActivityVO <|-- LedVO
-ActivityVO <|-- GoatVO
+ActivityVO <|-- LedActivityVO
+ActivityVO <|-- GoatActivityVO
 
 @enduml

@@ -13,12 +13,12 @@ abstract class Goat{
 +void preparePublish(Long second)
 }
 
-class ImgGoat{
+abstract class ImgGoat{
 -String picUrl
 -String linkUrl
 }
 
-class ItemGoat{
+abstract class ItemGoat{
 -Long itemId
 -String title
 -String picUrl
@@ -34,6 +34,7 @@ interface GoatFactory{
 GoatLocation getALocation(String code)
 GoatLocation getLocationData(String code)
 Goat selGoatById(Long goatId)
+Goat selGoatByVo(Long goatId)
 }
 
 note left of GoatFactory:广告服务
