@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网拥有丰富的线下服装批发进货渠道，四季星座、置地国际、电商基地、钱塘大厦、保太和、星座女装、新杭派、九天女装、意法服饰等杭州四季青实体批发市场都已入驻，实体批发档口高达15000多家，为全国淘宝网店代理商提供一手货源。同时支持一件代发，一键上传到淘宝、到阿里、到微信，数据包下载，无理由退换货服务。">
     
-    <link href="http://style.571xz.com/searchV5/css/styleHuodong.css?t=" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/styleHuodong.css?t=1493779558468" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/styleHuodong.js?t="></script>
+    <script src="http://style.571xz.com/searchV5/js/styleHuodong.js?t=1493779558468"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -33,6 +33,7 @@
                         <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
                         <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
                         <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
+                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
                     </ul>
                 </div>
             </div>
@@ -196,7 +197,9 @@
                     
                     <li type="goods" class="select">商品</li>
                     <li type="store" >档口</li>
-                </ul>   
+                    
+                </ul>
+                <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
             </div>
             <div class="searchBox">
                 
@@ -219,7 +222,7 @@
                 <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 <li ><a href="http://so.571xz.com/hzgoods.htm" target="_blank">商品库</a></li>
                 <li ><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
-                <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
+                <li class="select"><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
             </ul>
