@@ -1,9 +1,13 @@
 @startuml
 
-class GoatLocation{
+class GoatLocationVO{
 -Long localId
--String model
 -String code
+-String description
+}
+
+abstract class GoatLocation{
++List<Goat> selGoats()
 }
 
 interface Goat{
@@ -14,11 +18,17 @@ void preparePublish(Long second)
 
 class GoatVO{
 -Long localId
+-Long goatId
 }
 
 class ImgGoatVO{
 -String picUrl
 -String linkUrl
+}
+
+class ItemUpVO{
+-Long realNum //真实上款量
+-Long unRealNum //不真实的上款量
 }
 
 class ItemGoatVO{
@@ -36,11 +46,13 @@ abstract class ItemGoat{
 }
 
 interface ItemResort{
-selUp() //查询真实上款量与虚假上款量
+ItemUpVO selUp() //查询真实上款量与虚假上款量
 void modifyUp(Integer num) //修改虚假上款量
-Integer selWeight() //查询权重
-void updateWeight(Integer num)  //修改权重
+Double selWeight() //查询权重
+void updateWeight(Double num)  //修改权重
 }
+
+GoatLocationVO <|-- GoatLocation
 
 GoatLocation *-- Goat
 
@@ -55,15 +67,15 @@ ImgGoatVO <|-- ImgGoat
 
 ItemGoatVO <|-- ItemGoat
 
-ItemResort <|.. ImgGoat
-
 ItemResort <|.. ItemGoat
+
+ItemUpVO o-- ItemResort
 
 interface GoatFactory{
 GoatLocation getALocation(String code)
-GoatLocation getLocationData(String code)
+GoatLocation getALocationByVo(GoatLocationVO vo)
 Goat selGoatById(Long goatId)
-Goat selGoatByVo(Long goatId)
+Goat selGoatByVo(GoatVO goatVO)
 }
 
 note left of GoatFactory:广告服务
