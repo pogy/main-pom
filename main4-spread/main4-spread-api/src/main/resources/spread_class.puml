@@ -18,15 +18,8 @@ class SpreadTerm{
 
 note left of SpreadTerm:活动期次
 
-abstract class SpreadActivity{
-#Long activityId  //投放ID
-#Long termId   //期次
-#String description //描述
-#Date pubFromTime  //公布时间
-#Date pubToTime   //公布结束时间
-#Integer sort  //排序
-
-abstract boolean limit() //活动限制
+interface SpreadActivity{
+boolean limit() //活动限制
 Long joinSpread(Long userId,String name,String phone) //参加活动
 List<SpreadEnlist> randomHit(Integer number) //随机命中
 List<SpreadEnlist> selEnlist(Boolean hit) //查询报名列表
@@ -92,9 +85,9 @@ SpreadEnlist selEnlistByVo(SpreadEnlistVO vo) //按广告投放ID查报名单
 }
 
 note left of SpreadFactory:活动服务接口
-SpreadActivity <|-- GoatActivity
+SpreadActivity <|.. GoatActivity
 
-SpreadActivity <|-- LedActivity
+SpreadActivity <|.. LedActivity
 
 SpreadTerm *-- SpreadActivity
 
@@ -105,4 +98,6 @@ SpreadFactory --o ActivityVO
 ActivityVO <|-- LedActivityVO
 ActivityVO <|-- GoatActivityVO
 
+LedActivityVO <|-- LedActivity
+GoatActivityVO <|-- GoatActivity
 @enduml

@@ -13,7 +13,16 @@ abstract class Goat{
 +void preparePublish(Long second)
 }
 
+class GoatVO{
+-Long localId
+}
+
 abstract class ImgGoat{
+-String picUrl
+-String linkUrl
+}
+
+class ImgGoat{
 -String picUrl
 -String linkUrl
 }
