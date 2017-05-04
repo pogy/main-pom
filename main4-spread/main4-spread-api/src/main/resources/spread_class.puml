@@ -28,8 +28,6 @@ List<SpreadEnlist> selEnlist(Boolean hit) //查询报名列表
 note left of SpreadActivity:投放的活动,\n一期里面可能\n投放多个活动
 
 abstract class GoatActivity{
--Long goatId
--String code
 }
 
 class ActivityVO{
@@ -47,8 +45,6 @@ class GoatActivityVO{
 }
 
 abstract class LedActivity{
--Date givePicTime
--Date endGivePicTime
 }
 
 class LedActivityVO{
@@ -100,4 +96,5 @@ ActivityVO <|-- GoatActivityVO
 
 LedActivityVO <|-- LedActivity
 GoatActivityVO <|-- GoatActivity
+SpreadEnlist --|> SpreadEnlistVO
 @enduml
