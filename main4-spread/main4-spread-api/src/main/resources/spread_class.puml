@@ -29,21 +29,41 @@ abstract class SpreadActivity{
 abstract boolean limit() //活动限制
 Long joinSpread(Long userId,String name,String phone) //参加活动
 List<SpreadEnlist> randomHit(Integer number) //随机命中
+List<SpreadEnlist> selEnlist(Boolean hit) //查询报名列表
 }
 
 note left of SpreadActivity:投放的活动,\n一期里面可能\n投放多个活动
 
-class GoatActivity{
+abstract class GoatActivity{
 -Long goatId
 -String code
 }
 
-class LedActivity{
+class ActivityVO{
+-Long activityId  //投放ID
+-Long termId   //期次
+-String description //描述
+-Date pubFromTime  //公布时间
+-Date pubToTime   //公布结束时间
+-Integer sort  //排序
+}
+
+class GoatVO{
+-Long goatId
+-String code
+}
+
+abstract class LedActivity{
 -Date givePicTime
 -Date endGivePicTime
 }
 
-class SpreadEnlist{
+class LedVO{
+-Date givePicTime
+-Date endGivePicTime
+}
+
+abstract class SpreadEnlist{
 -Long enId
 -Long userId
 -Long activityId
@@ -54,10 +74,20 @@ class SpreadEnlist{
 +void hit() //报名命中
 }
 
+class SpreadEnlistVO{
+-Long enId
+-Long userId
+-Long activityId
+-String name
+-String telephone
+}
+
 interface SpreadFactory{
 SpreadTerm selTermByTime(SpreadType type,Date time) //按时间查有效期次
-List<SpreadActivity> selActivityByTermId(Long termId) //按期次ID查投放的广告
-List<SpreadEnlist> selEnlistByActivityId(Long activityId,Boolean hit) //按广告投放ID查报名单
+SpreadActivity selActivityById(Long activityId) //按期次ID查投放的广告
+SpreadActivity selActivityByVo(ActivityVO vo) //按期次ID查投放的广告
+SpreadEnlist selEnlistById(Long enlistId) //按广告投放ID查报名单
+SpreadEnlist selEnlistByVo(SpreadEnlistVO vo) //按广告投放ID查报名单
 
 }
 
@@ -70,5 +100,9 @@ SpreadTerm *-- SpreadActivity
 
 GoatActivity <--> SpreadEnlist
 LedActivity <--> SpreadEnlist
+SpreadFactory --o SpreadEnlistVO
+SpreadFactory --o ActivityVO
+ActivityVO <|-- LedVO
+ActivityVO <|-- GoatVO
 
 @enduml
