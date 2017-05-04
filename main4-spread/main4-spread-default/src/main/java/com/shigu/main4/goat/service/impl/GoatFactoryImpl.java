@@ -5,6 +5,7 @@ import com.shigu.main4.goat.service.Goat;
 import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.GoatLocationVO;
 import com.shigu.main4.goat.vo.GoatVO;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,7 +13,9 @@ import java.util.List;
  * 广告工厂
  * Created by zhaohongbo on 17/5/4.
  */
+@Service
 public class GoatFactoryImpl implements GoatFactory{
+
 
     @Override
     public GoatLocation getALocation(String code) {

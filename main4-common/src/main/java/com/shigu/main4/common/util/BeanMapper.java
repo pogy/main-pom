@@ -19,6 +19,19 @@ public class BeanMapper {
     }
 
     /**
+     * 值拷贝
+     * @param source
+     * @param destination
+     * @param <S>
+     * @param <D>
+     * @return
+     */
+    public static <S,D> D map(S source,D destination){
+        mapper.map(source,destination);
+        return destination;
+    }
+
+    /**
      * 基于Dozer转换对象的类型.
      */
     public static <S, D> D map(S source, Class<D> destinationClass) {

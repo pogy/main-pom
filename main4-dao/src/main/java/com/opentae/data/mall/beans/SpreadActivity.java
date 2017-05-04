@@ -1,52 +1,50 @@
-package com.shigu.main4.activity.vo;
+package com.opentae.data.mall.beans;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
-import java.io.Serializable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
- * 活动数据体
- *
- * -Long activityId  //投放ID
- -Long termId   //期次
- -String description //描述
- -Date pubFromTime  //公布时间
- -Date pubToTime   //公布结束时间
- -Integer sort  //排序
+ * 活动投放
  * Created by zhaohongbo on 17/5/4.
  */
-public class ActivityVO implements Serializable{
+public class SpreadActivity {
     /**
-     * 活动Id
+     * 活动ID
      */
-    @JSONField(serialize=false)
+    @Id
+    @GeneratedValue(
+            generator = "JDBC"
+    )
     private Long activityId;
     /**
      * 期次ID
      */
-    @JSONField(serialize=false)
     private Long termId;
     /**
-     * 活动描述
+     * 描述
      */
-    @JSONField(serialize=false)
     private String description;
     /**
-     * 生效开始时间,如果是led表示上广告时间,如果卖广告,表示广告挂到网站的时间
+     * 公示开始时间
      */
-    @JSONField(serialize=false)
     private Date pubFromTime;
     /**
-     * 生效结束时间
+     * 公示结束时间
      */
-    @JSONField(serialize=false)
     private Date pubToTime;
     /**
-     * 排序,按降序
+     * 排序
      */
-    @JSONField(serialize=false)
     private Integer sort;
+    /**
+     * 0卖广告服务，1LED服务
+     */
+    private Integer type;
+    /**
+     * 内容
+     */
+    private String context;
 
     public Long getActivityId() {
         return activityId;
@@ -94,5 +92,21 @@ public class ActivityVO implements Serializable{
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
     }
 }

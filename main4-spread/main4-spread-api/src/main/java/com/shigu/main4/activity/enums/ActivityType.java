@@ -7,4 +7,6 @@ package com.shigu.main4.activity.enums;
 public enum ActivityType {
     GOAT_SELL,//广告售卖
     GOAT_LED//led活动
+
+
 }

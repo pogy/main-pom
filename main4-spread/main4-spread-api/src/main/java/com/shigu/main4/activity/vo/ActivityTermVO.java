@@ -25,7 +25,7 @@ public class ActivityTermVO {
     /**
      * 活动类型
      */
-    private ActivityType type;
+    private ActivityType activityType;
 
     public Date getStartTime() {
         return startTime;
@@ -51,11 +51,11 @@ public class ActivityTermVO {
         this.termId = termId;
     }
 
-    public ActivityType getType() {
-        return type;
+    public ActivityType getActivityType() {
+        return activityType;
     }
 
-    public void setType(ActivityType type) {
-        this.type = type;
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 }

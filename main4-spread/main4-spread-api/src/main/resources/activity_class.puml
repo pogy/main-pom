@@ -8,14 +8,14 @@ GOAT_LED:led活动
 note left of ActivityType:活动类别
 
 abstract class ActivityTerm{
-+Long throwActivity(ActivityVO activity) //投放广告
++<T extends ActivityVO> Long throwActivity(T activity) //投放广告
 }
 
 class ActivityTermVO{
 -Date startTime
 -Date endTime
 -Long termId
--ActivityType type
+-ActivityType activityType
 }
 
 note left of ActivityTerm:活动期次
@@ -69,6 +69,7 @@ class ActivityEnlistVO{
 }
 
 interface ActivityFactory{
+ActivityTerm addAndGetTerm(ActivityTermVO vo) //添加并取得一期
 ActivityTerm selTermByTime(ActivityType type,Date time) //按时间查有效期次
 ActivityTerm selTermById(Long termId) //按期ID查某一期次
 Activity selActivityById(Long activityId) //按期次ID查投放的广告

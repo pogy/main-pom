@@ -3,7 +3,9 @@ package com.shigu.main4.activity.service;
 import com.shigu.main4.activity.beans.ActivityEnlist;
 import com.shigu.main4.activity.beans.ActivityTerm;
 import com.shigu.main4.activity.enums.ActivityType;
+import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
+import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
 
 import java.util.Date;
@@ -14,6 +16,12 @@ import java.util.Date;
  * Created by zhaohongbo on 17/5/4.
  */
 public interface ActivityFactory {
+    /**
+     * 添加并取得一期
+     * @param vo
+     * @return
+     */
+    ActivityTerm addAndGetTerm(ActivityTermVO vo) throws ActivityException;
     /**
      * 获得某一类别活动中,某一时间有效的一期
      * @param type 活动类别

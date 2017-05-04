@@ -9,5 +9,5 @@ import com.shigu.main4.activity.vo.ActivityVO;
  */
 public abstract class ActivityTerm extends ActivityTermVO{
 
-    public abstract Long throwActivity(ActivityVO activity);
+    public abstract <T extends ActivityVO> Long throwActivity(T activity);
 }
