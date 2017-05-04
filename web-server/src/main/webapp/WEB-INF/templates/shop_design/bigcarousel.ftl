@@ -32,7 +32,7 @@
                         <#if moduleSet.images??>
                             <#list moduleSet.images as img>
                             <li class="swiper-slide" style="width: 1920px;">
-                                <a href="${img.targetUrl!}" target="_blank">
+                                <a href="<#if img.targetUrl != ''>${img.targetUrl!}<#else>javascript:void(0)</#if>" target="_blank">
                                     <img style="width: 1920px;" src="${img.picUrl!}">
                                 </a>
                             </li>
