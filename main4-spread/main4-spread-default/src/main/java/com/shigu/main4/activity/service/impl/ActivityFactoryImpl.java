@@ -118,7 +118,8 @@ public class ActivityFactoryImpl implements ActivityFactory{
 
     @Override
     public <T extends Activity> T selActivityById(Long activityId) {
-        return (T)selLedActivityWithFunc();
+        T activity=(T)selLedActivityWithFunc();
+        return activity;
     }
 
     /**
