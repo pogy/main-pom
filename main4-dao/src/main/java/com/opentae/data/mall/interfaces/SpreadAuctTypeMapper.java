@@ -13,5 +13,6 @@ import org.springframework.context.annotation.Scope;
 @MyBatisRepository("tae_mall_spreadAuctTypeMapper")
 @Scope("singleton")
 @Lazy(true)
+@Deprecated
 public interface SpreadAuctTypeMapper extends Mapper<SpreadAuctType> {
 }

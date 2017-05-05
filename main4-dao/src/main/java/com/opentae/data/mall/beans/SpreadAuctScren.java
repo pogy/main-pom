@@ -11,6 +11,7 @@ import java.util.Date;
  * @date 2017/3/22 17:19
  *
  */
+@Deprecated
 public class SpreadAuctScren {
 
     /** 竞拍ID */

@@ -2,37 +2,27 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.Date;
 
 /**
- * 广告
- * Created by zhaohongbo on 17/4/9.
+ * 一个广告
+ * Created by zhaohongbo on 17/5/5.
  */
-public class GoatItem {
-    /**
-     * 主键
-     */
+public class GoatOneItem {
+
     @Id
     @GeneratedValue(generator="JDBC")
     private Long goatId;
+
     /**
      * 广告位置ID
      */
     private Long localId;
     /**
-     * 广告开始时间
-     */
-    private Date startTime;
-    /**
-     * 广告结束时间
-     */
-    private Date endTime;
-    /**
-     * 是否不可用
+     * 是否禁用,true为禁用
      */
     private Boolean disEnabled;
     /**
-     * 排序
+     * 排序,升序
      */
     private Integer sort;
 
@@ -50,22 +40,6 @@ public class GoatItem {
 
     public void setLocalId(Long localId) {
         this.localId = localId;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 
     public Boolean getDisEnabled() {

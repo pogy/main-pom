@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import com.opentae.core.mybatis.SgExample;
 
+@Deprecated
 public class SpreadAuctTypeExample implements SgExample{
     protected String orderByClause;
     protected boolean distinct;
