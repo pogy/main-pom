@@ -53,6 +53,11 @@ public class GoatFactoryImpl implements GoatFactory{
             public <T extends GoatVO> List<T> selGoats() {
                 return null;
             }
+
+            @Override
+            public <T extends GoatVO> List<T> selPrepareGoats() {
+                return null;
+            }
         };
         return BeanMapper.map(vo,location);
     }

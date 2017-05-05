@@ -8,6 +8,7 @@ class GoatLocationVO{
 
 abstract class GoatLocation{
 +<T extends GoatVO> List<T> selGoats()
++<T extends GoatVO> List<T> selPrepareGoats()
 }
 
 interface Goat{
@@ -16,9 +17,19 @@ void publish()
 void preparePublish(Long second)
 }
 
+enum GoatType{
+ImgGoat
+ItemGoat
+TextGoat
+}
+
 class GoatVO{
 -Long localId
 -Long goatId
+-Long fromActivityId
+-Date fromTime
+-Date toTime
+-Long userId
 }
 
 class ImgGoatVO{

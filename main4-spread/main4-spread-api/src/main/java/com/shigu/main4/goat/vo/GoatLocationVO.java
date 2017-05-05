@@ -1,5 +1,7 @@
 package com.shigu.main4.goat.vo;
 
+import com.shigu.main4.goat.enums.GoatType;
+
 import java.io.Serializable;
 
 /**
@@ -19,6 +21,18 @@ public class GoatLocationVO implements Serializable{
      * 广告描述
      */
     private String description;
+    /**
+     * 广告类型，0图片广告，1商品广告，2文字广告
+     */
+    private Integer goatType;
+
+    public Integer getGoatType() {
+        return goatType;
+    }
+
+    public void setGoatType(Integer goatType) {
+        this.goatType = goatType;
+    }
 
     public Long getLocalId() {
         return localId;

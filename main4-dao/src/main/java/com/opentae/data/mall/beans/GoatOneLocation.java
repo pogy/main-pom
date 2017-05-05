@@ -31,6 +31,10 @@ public class GoatOneLocation {
      * 分站标识
      */
     private String webSite;
+    /**
+     * 广告类型，0图片广告，1商品广告，2文字广告
+     */
+    private Integer goatType;
 
     public Long getLocalId() {
         return localId;
@@ -78,5 +82,13 @@ public class GoatOneLocation {
 
     public void setWebSite(String webSite) {
         this.webSite = webSite;
+    }
+
+    public Integer getGoatType() {
+        return goatType;
+    }
+
+    public void setGoatType(Integer goatType) {
+        this.goatType = goatType;
     }
 }

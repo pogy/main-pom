@@ -639,5 +639,73 @@ public class GoatOneLocationExample implements SgExample{
             this.addCriterion("web_site not between", value1, value2, "webSite");
             return (GoatOneLocationExample.Criteria)this;
         }
+
+        public GoatOneLocationExample.Criteria andGoatTypeIsNull() {
+            this.addCriterion("goat_type is null");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeIsNotNull() {
+            this.addCriterion("goat_type is not null");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeEqualTo(Integer value) {
+            this.addCriterion("goat_type =", value, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeNotEqualTo(Integer value) {
+            this.addCriterion("goat_type <>", value, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeGreaterThan(Integer value) {
+            this.addCriterion("goat_type >", value, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeGreaterThanOrEqualTo(Integer value) {
+            this.addCriterion("goat_type >=", value, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeLessThan(Integer value) {
+            this.addCriterion("goat_type <", value, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeLessThanOrEqualTo(Integer value) {
+            this.addCriterion("goat_type <=", value, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeLike(String value) {
+            this.addCriterion("goat_type like", value, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeNotLike(String value) {
+            this.addCriterion("goat_type not like", value, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }        public GoatOneLocationExample.Criteria andGoatTypeIn(List<Integer> values) {
+            this.addCriterion("goat_type in", values, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeNotIn(List<Integer> values) {
+            this.addCriterion("goat_type not in", values, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeBetween(Integer value1, Integer value2) {
+            this.addCriterion("goat_type between", value1, value2, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeNotBetween(Integer value1, Integer value2) {
+            this.addCriterion("goat_type not between", value1, value2, "goatType");
+            return (GoatOneLocationExample.Criteria)this;
+        }
     }
 }

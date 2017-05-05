@@ -1,5 +1,7 @@
 package com.shigu.main4.goat.vo;
 
+import java.util.Date;
+
 /**
  * 广告值
  * -Long localId
@@ -11,6 +13,47 @@ public class GoatVO {
     private Long localId;
 
     private Long goatId;
+
+    private Long fromActivityId;
+
+    private Date fromTime;
+
+    private Date toTime;
+
+    private Long userId;
+
+
+    public Long getFromActivityId() {
+        return fromActivityId;
+    }
+
+    public void setFromActivityId(Long fromActivityId) {
+        this.fromActivityId = fromActivityId;
+    }
+
+    public Date getFromTime() {
+        return fromTime;
+    }
+
+    public void setFromTime(Date fromTime) {
+        this.fromTime = fromTime;
+    }
+
+    public Date getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(Date toTime) {
+        this.toTime = toTime;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public Long getLocalId() {
         return localId;

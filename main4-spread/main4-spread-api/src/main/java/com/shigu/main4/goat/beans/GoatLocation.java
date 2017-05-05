@@ -11,4 +11,5 @@ import java.util.List;
  */
 public abstract class GoatLocation extends GoatLocationVO{
     public abstract <T extends GoatVO> List<T> selGoats();
+    public abstract <T extends GoatVO> List<T> selPrepareGoats();
 }
