@@ -164,10 +164,14 @@ public class ActivityFactoryImpl implements ActivityFactory{
                    se.setName (name);
                    se.setDraw (0);
                    try {
-                       spreadEnlistMapper.insert (se);
-                   } catch (Exception e) {
-                       e.printStackTrace ();
-                       throw new ActivityException ("重复参加");
+                       spreadEnlistMapper.insertSelective (se);
+                   } catch (RuntimeException e) {
+                       if(e.getMessage()!=null&&e.getMessage().contains("Duplicate entry")){
+                           throw new ActivityException ("重复参加");
+                       }else{
+                            throw e;
+                       }
+
                    }
                    return se.getEnlistId ();
 

@@ -13,17 +13,32 @@ public enum GoatType {
     ItemGoat(ItemGoatVO.class),
     TextGoat(TextGoatVO.class);
 
-    GoatType(Class<?> goatTypeClass) {
-        this.goatTypeClass = goatTypeClass;
+    GoatType(Class<?> goatVoClass) {
+        this.goatVoClass = goatVoClass;
     }
 
-    private Class<?> goatTypeClass;
+    /**
+     * 值中类别
+     */
+    private Class<?> goatVoClass;
+    /**
+     * 对象类别
+     */
+    private Class<?> goatBeanClass;
 
-    public Class<?> getGoatTypeClass() {
-        return goatTypeClass;
+    public Class<?> getGoatVoClass() {
+        return goatVoClass;
     }
 
-    public void setGoatTypeClass(Class<?> goatTypeClass) {
-        this.goatTypeClass = goatTypeClass;
+    public void setGoatVoClass(Class<?> goatVoClass) {
+        this.goatVoClass = goatVoClass;
+    }
+
+    public Class<?> getGoatBeanClass() {
+        return goatBeanClass;
+    }
+
+    public void setGoatBeanClass(Class<?> goatBeanClass) {
+        this.goatBeanClass = goatBeanClass;
     }
 }
