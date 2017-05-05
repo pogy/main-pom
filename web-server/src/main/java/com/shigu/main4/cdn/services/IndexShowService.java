@@ -3,6 +3,7 @@ package com.shigu.main4.cdn.services;
 import com.opentae.data.mall.examples.ShiguGoodsIdGeneratorExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.cdn.vo.IndexNavVO;
 import com.shigu.main4.cdn.vo.LoveGoodsList;
 import com.shigu.main4.goat.beans.GoatLocation;
@@ -109,11 +110,15 @@ public class IndexShowService {
             @Override
             public List<IndexNavVO> selReal() {
                 List<IndexNavVO> navVOs=new ArrayList<>();
-                    GoatLocation location=goatFactory.getALocation(spread.getCode());
-                    List<TextGoatVO> goats=location.selGoats();
-                    for(TextGoatVO tgv:goats){
-                        navVOs.add(new IndexNavVO(tgv.getHref(),tgv.getText()));
+                try {
+                    GoatLocation location = goatFactory.getALocation(spread.getCode());
+                    List<TextGoatVO> goats = location.selGoats();
+                    for (TextGoatVO tgv : goats) {
+                        navVOs.add(new IndexNavVO(tgv.getHref(), tgv.getText()));
                     }
+                }catch (ActivityException e){
+                    logger.error("查询标签类广告,miss",e);
+                }
                 return navVOs;
             }
         };

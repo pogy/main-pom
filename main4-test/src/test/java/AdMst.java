@@ -37,7 +37,7 @@ public class AdMst {
     @Test
     public void sendMsg(){
         ShiguShopExample example=new ShiguShopExample();
-        example.createCriteria().andMarketIdEqualTo(617L).andShopStatusEqualTo(0);
+        example.createCriteria().andMarketIdEqualTo(621L).andShopStatusEqualTo(0);
         List<ShiguShop> shopList=shiguShopMapper.selectByExample(example);
 
         for(ShiguShop s:shopList){
@@ -52,7 +52,8 @@ public class AdMst {
             }
             if(telephone!=null){
                 System.out.println(telephone);
-                System.out.println(sendSms_quick(telephone,"温馨提示：（报名时间为5月2日-5月4日12时）网站广告位报名入口已发布，本期总计首页32个位置，轮转播区1个，轮转播下方区3个，首页热卖10个，推荐档口8个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
+                System.out.println(sendSms_quick(telephone,"四季星座网温馨提示：（报名时间为5月5日-5月8日20时）网站广告位报名入口已发布，本期总计首页27个位置，首页热卖10个，推荐档口7个，元素馆5个，商品库右侧5个（注意：所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
+//                System.out.println(sendSms_quick(telephone,"温馨提示：（报名时间为5月2日-5月4日12时）网站广告位报名入口已发布，本期总计首页32个位置，轮转播区1个，轮转播下方区3个，首页热卖10个，推荐档口8个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
             }
 
         }

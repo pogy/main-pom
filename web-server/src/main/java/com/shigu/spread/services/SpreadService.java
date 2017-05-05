@@ -2,6 +2,7 @@ package com.shigu.spread.services;
 
 import com.opentae.data.mall.beans.ItemForList;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.GoatVO;
@@ -113,11 +114,15 @@ public class SpreadService {
             @Override
             public List<ImgBannerVO> selReal() {
                 List<ImgBannerVO> vos=new ArrayList<>();
-                    GoatLocation location=goatFactory.getALocation(spread.getCode());
-                    List<ImgGoatVO> goats=location.selGoats();
-                    for(ImgGoatVO gv:goats){
-                        vos.add(new ImgBannerVO(gv.getLinkUrl(),gv.getPicUrl(),null));
+                try {
+                    GoatLocation location = goatFactory.getALocation(spread.getCode());
+                    List<ImgGoatVO> goats = location.selGoats();
+                    for (ImgGoatVO gv : goats) {
+                        vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), null));
                     }
+                }catch (ActivityException e){
+                    logger.error("查图片类广告Miss",e);
+                }
                 return vos;
             }
         };
