@@ -16,5 +16,5 @@ public abstract class ActivityEnlist extends ActivityEnlistVO {
     /**
      * 取消命中
      */
-    public abstract void unhit();
+    public abstract void unhit() throws ActivityException;
 }
