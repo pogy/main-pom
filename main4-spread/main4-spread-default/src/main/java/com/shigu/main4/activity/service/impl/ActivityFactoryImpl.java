@@ -11,6 +11,7 @@ import com.opentae.data.mall.interfaces.SpreadTermMapper;
 import com.shigu.main4.activity.beans.ActivityEnlist;
 import com.shigu.main4.activity.beans.ActivityTerm;
 import com.shigu.main4.activity.beans.GoatActivity;
+import com.shigu.main4.activity.beans.LedActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.service.Activity;
@@ -117,7 +118,36 @@ public class ActivityFactoryImpl implements ActivityFactory{
     }
 
     /**
-     * 查询广告报名对象
+     * led功能对你赋能
+     * @return
+     */
+    private LedActivity selLedActivityWithFunc(){
+        return new LedActivity() {
+            @Override
+            public boolean limit(Object... param) {
+                return (Long)(param[0])==1087L;
+            }
+
+            @Override
+            public Long joinActivity(Long userId, Long shopId, String name, String phone) {
+                System.out.println(shopId);
+                return null;
+            }
+
+            @Override
+            public List<ActivityEnlistVO> randomHit(Integer number) {
+                return null;
+            }
+
+            @Override
+            public List<ActivityEnlistVO> selEnlist(int hitType) {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * 广告报名对象赋能
      * @return
      */
     private GoatActivity selGoatActivityWithFunc(){

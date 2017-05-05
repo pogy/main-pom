@@ -1,5 +1,6 @@
 package com.shigu.main4.activity.service;
 
+import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface Activity {
      * @param phone 联系电话
      * @return 报名记录ID
      */
-    Long joinActivity(Long userId,Long shopId,String name,String phone);
+    Long joinActivity(Long userId,Long shopId,String name,String phone) throws ActivityException;
 
     /**
      * 在报名人中,随机命中指定人数
