@@ -3,6 +3,7 @@ package com.shigu.main4.activity.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.SpreadActivity;
+import com.opentae.data.mall.beans.SpreadEnlist;
 import com.opentae.data.mall.beans.SpreadTerm;
 import com.opentae.data.mall.examples.SpreadTermExample;
 import com.opentae.data.mall.interfaces.SpreadActivityMapper;
