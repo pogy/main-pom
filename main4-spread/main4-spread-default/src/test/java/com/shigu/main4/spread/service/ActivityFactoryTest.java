@@ -46,6 +46,36 @@ public class ActivityFactoryTest {
     @Autowired
     SpreadEnlistMapper spreadEnlistMapper;
 
+
+    @Test
+    @Transactional
+    public void selEnlistById_hitTest() throws ActivityException {
+        SpreadEnlist se=new SpreadEnlist ();
+        se.setDraw (0);
+        se.setName ("zhongjiang");
+        se.setShopId (24806L);
+        se.setTelephone ("18857193391");
+        se.setUserId (35377L);
+        se.setActivityId (1L);
+        spreadEnlistMapper.insert (se);
+        //System.out.println("返回ID="+se.getEnlistId ());
+
+        ActivityEnlist ae=activityFactory.selEnlistById (se.getEnlistId ());
+        //第一种情况ID为空时中签
+        ae.setEnId (null);
+        try {
+            ae.hit ();
+            Assert.fail ();
+        } catch (ActivityException e) {
+            // e.printStackTrace ();
+        }
+        //第二种中签
+        ActivityEnlist ae1=activityFactory.selEnlistById (se.getEnlistId ());
+        ae1.setEnId (se.getEnlistId ());
+        ae1.hit ();
+        SpreadEnlist se1= spreadEnlistMapper.selectByPrimaryKey (se.getEnlistId ());
+        assertEquals (se1.getDraw ().longValue (),1L);
+    }
     @Test
     @Transactional
     public void selEnlistById_unhitTest() throws ActivityException {
@@ -57,7 +87,7 @@ public class ActivityFactoryTest {
         se.setUserId (35377L);
         se.setActivityId (1L);
         spreadEnlistMapper.insert (se);
-        System.out.println("返回ID="+se.getEnlistId ());
+       // System.out.println("返回ID="+se.getEnlistId ());
 
         ActivityEnlist ae=activityFactory.selEnlistById (se.getEnlistId ());
         //第一种情况ID为空时取消中签
