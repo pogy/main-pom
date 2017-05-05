@@ -2,10 +2,12 @@ package com.shigu.main4.activity.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.SpreadActivity;
 import com.opentae.data.mall.beans.SpreadEnlist;
 import com.opentae.data.mall.beans.SpreadTerm;
 import com.opentae.data.mall.examples.SpreadTermExample;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.SpreadActivityMapper;
 import com.opentae.data.mall.interfaces.SpreadEnlistMapper;
 import com.opentae.data.mall.interfaces.SpreadTermMapper;
@@ -41,7 +43,8 @@ public class ActivityFactoryImpl implements ActivityFactory{
 
     @Autowired
     SpreadTermMapper spreadTermMapper;
-
+    @Autowired
+    ShiguShopMapper shiguShopMapper;
     @Override
     public ActivityTerm addAndGetTerm(ActivityTermVO vo) throws ActivityException {
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
@@ -115,7 +118,7 @@ public class ActivityFactoryImpl implements ActivityFactory{
 
     @Override
     public <T extends Activity> T selActivityById(Long activityId) {
-        return null;
+        return (T)selLedActivityWithFunc();
     }
 
     /**
@@ -130,9 +133,42 @@ public class ActivityFactoryImpl implements ActivityFactory{
             }
 
             @Override
-            public Long joinActivity(Long userId, Long shopId, String name, String phone) {
-                System.out.println(shopId);
-                return null;
+            public Long joinActivity(Long userId, Long shopId, String name, String phone) throws ActivityException {
+
+                if(userId==null){
+                    throw new ActivityException ("userId不能为空");
+                }
+                if(shopId==null){
+                    throw new ActivityException ("shopId不能为空");
+                }
+                if(name==null||"".equals (name)){
+                    throw new ActivityException ("name不能为空");
+                }
+                if(phone==null||"".equals (phone)){
+                    throw new ActivityException ("phone不能为空");
+                }
+
+               ShiguShop ss= shiguShopMapper.selectByPrimaryKey (shopId);
+               if(limit (ss.getMarketId ())){
+                   SpreadEnlist se=new SpreadEnlist ();
+                   se.setActivityId (this.getActivityId ());
+                   se.setUserId (userId);
+                   se.setTelephone (phone);
+                   se.setShopId (shopId);
+                   se.setName (name);
+                   se.setDraw (0);
+                   try {
+                       spreadEnlistMapper.insert (se);
+                   } catch (Exception e) {
+                       e.printStackTrace ();
+                       throw new ActivityException ("重复参加");
+                   }
+                   return se.getEnlistId ();
+
+               }else{
+                   throw new ActivityException ("不符合活动条件");
+               }
+
             }
 
             @Override

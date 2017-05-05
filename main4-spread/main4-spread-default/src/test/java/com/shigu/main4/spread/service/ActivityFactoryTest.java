@@ -1,11 +1,14 @@
 package com.shigu.main4.spread.service;
 
+import com.opentae.data.mall.beans.SpreadActivity;
 import com.opentae.data.mall.beans.SpreadEnlist;
+import com.opentae.data.mall.examples.SpreadEnlistExample;
 import com.opentae.data.mall.interfaces.SpreadActivityMapper;
 import com.opentae.data.mall.interfaces.SpreadEnlistMapper;
 import com.opentae.data.mall.interfaces.SpreadTermMapper;
 import com.shigu.main4.activity.beans.ActivityEnlist;
 import com.shigu.main4.activity.beans.ActivityTerm;
+import com.shigu.main4.activity.beans.LedActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.service.ActivityFactory;
@@ -23,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -46,7 +50,91 @@ public class ActivityFactoryTest {
     @Autowired
     SpreadEnlistMapper spreadEnlistMapper;
 
+    @Test
+    @Transactional
+    public void selLedActivityWithFunc_joinActivity(){
+        //4个参数不能为空
+        //参数//Long userId, Long shopId, String name, String phone
 
+        SpreadActivity sa=new SpreadActivity ();
+        sa.setContext ("{}");
+        sa.setDescription ("");
+        sa.setPubFromTime (new Date());
+        sa.setPubToTime (new Date());
+        sa.setSort (1);
+        sa.setTermId (20170501L);
+        sa.setType (ActivityType.GOAT_LED.ordinal ());
+        spreadActivityMapper.insert (sa);
+
+        LedActivity la=activityFactory.selActivityById(sa.getActivityId ());
+        //userId为空
+        try {//1000012151L  40435L  良品元素男装钱塘4010  18868412681
+            la.joinActivity (null,40435L,"良品元素男装钱塘4010","18868412681");
+            Assert.fail ();
+        } catch (ActivityException e) {
+            // e.printStackTrace ();
+        }
+        //shopId为空
+        try {//1000012151L  40435L  良品元素男装钱塘4010  18868412681
+            la.joinActivity (1000012151L,null,"良品元素男装钱塘4010","18868412681");
+            Assert.fail ();
+        } catch (ActivityException e) {
+            // e.printStackTrace ();
+        }
+        //name为空
+        try {//1000012151L  40435L  良品元素男装钱塘4010  18868412681
+            la.joinActivity (1000012151L,40435L,null,"18868412681");
+            Assert.fail ();
+        } catch (ActivityException e) {
+            // e.printStackTrace ();
+        }
+        //name为""
+        try {//1000012151L  40435L  良品元素男装钱塘4010  18868412681
+            la.joinActivity (1000012151L,40435L,"","18868412681");
+            Assert.fail ();
+        } catch (ActivityException e) {
+            // e.printStackTrace ();
+        }
+        //name为空
+        try {//1000012151L  40435L  良品元素男装钱塘4010  18868412681
+            la.joinActivity (1000012151L,40435L,"良品元素男装钱塘4010",null);
+            Assert.fail ();
+        } catch (ActivityException e) {
+            // e.printStackTrace ();
+        }
+        //name为""
+        try {//1000012151L  40435L  良品元素男装钱塘4010  18868412681
+            la.joinActivity (1000012151L,40435L,"良品元素男装钱塘4010","");
+            Assert.fail ();
+        } catch (ActivityException e) {
+            // e.printStackTrace ();
+        }
+        //保存
+        try {//1000012151L  40435L  良品元素男装钱塘4010  18868412681
+            la.joinActivity (1000012151L,40435L,"良品元素男装钱塘4010","18868412681");
+            //查询spread_enlist 中是否有值
+            SpreadEnlistExample see=new SpreadEnlistExample ();
+            //所有字段有值
+            see.createCriteria ().andActivityIdEqualTo (sa.getActivityId ()).andUserIdEqualTo (1000012151L).andShopIdEqualTo (40435L)
+                    .andNameEqualTo ("良品元素男装钱塘4010").andTelephoneEqualTo ("18868412681").andDrawEqualTo (0);
+            List<SpreadEnlist> list= spreadEnlistMapper.selectByExample (see);
+            assertEquals (list.size (),1L);//
+
+        } catch (ActivityException e) {
+            // e.printStackTrace ();
+        }
+        //重复参加
+        try {//1000012151L  40435L  良品元素男装钱塘4010  18868412681
+            la.joinActivity (1000012151L,40435L,"良品元素男装钱塘4010","18868412681");
+            //报错
+            Assert.fail ();
+
+        } catch (ActivityException e) {
+             e.printStackTrace ();
+        }
+
+
+    }
     @Test
     @Transactional
     public void selEnlistById_hitTest() throws ActivityException {
