@@ -559,7 +559,11 @@ public class UserLoginAction {
                  * 如果是手机来的,就是星座号绑定手机
                  */
                 if(rds3TempUser.getLoginFromType().equals(LoginFromType.PHONE)){
-                    userLicenseService.bindPhone(Long.valueOf(rds3TempUser.getSubUserKey()),bo.getTelephone());
+                    if (registerAndLoginService.userCanRegist(bo.getTelephone(), LoginFromType.PHONE)) {
+                        userLicenseService.bindPhone(Long.valueOf(rds3TempUser.getSubUserKey()),bo.getTelephone());
+                    } else {
+                        throw new Main4Exception("该手机号已被使用");
+                    }
                     rds3TempUser.setSubUserName(bo.getTelephone());
                 }else{
                     registerAndLoginService.bind3RdUser(bo.getTelephone(),rds3TempUser);

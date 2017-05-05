@@ -90,7 +90,7 @@ public class UnReal {
         for (Terms.Bucket bucket : count.getBuckets()) {
             GoodsupNoreal noreal = new GoodsupNoreal();
             noreal.setRealNum((int) bucket.getDocCount());
-            noreal.setActiveNum(24);
+            noreal.setActiveNum(25);
             GoodsupNorealExample goodsupNorealExample = new GoodsupNorealExample();
             goodsupNorealExample.createCriteria().andItemIdEqualTo((long) bucket.getKeyAsNumber());
             if (goodsupNorealMapper.countByExample(goodsupNorealExample) == 0) {
