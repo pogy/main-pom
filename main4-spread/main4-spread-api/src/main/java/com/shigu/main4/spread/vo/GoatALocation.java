@@ -12,7 +12,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 /**
- * 一个位置的广告位
+ * 一个位置的广告位00
  * Created by Licca on 17/4/9.
  */
 public class GoatALocation {
