@@ -31,7 +31,7 @@ public interface Activity {
      * @param number 人数
      * @return 命中的人列表
      */
-    List<ActivityEnlistVO> randomHit(Integer number);
+    List<ActivityEnlistVO> randomHit(Integer number) throws ActivityException;
 
     /**
      * 查询报名列表
