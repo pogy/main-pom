@@ -6,6 +6,7 @@ import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.SpreadActivity;
 import com.opentae.data.mall.beans.SpreadEnlist;
 import com.opentae.data.mall.beans.SpreadTerm;
+import com.opentae.data.mall.examples.SpreadEnlistExample;
 import com.opentae.data.mall.examples.SpreadTermExample;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.SpreadActivityMapper;
@@ -26,6 +27,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -118,6 +120,9 @@ public class ActivityFactoryImpl implements ActivityFactory{
 
     @Override
     public <T extends Activity> T selActivityById(Long activityId) {
+        if(activityId==-1){
+            return (T) selGoatActivityWithFunc();
+        }
         T activity=(T)selLedActivityWithFunc();
         return activity;
     }
@@ -208,7 +213,35 @@ public class ActivityFactoryImpl implements ActivityFactory{
 
             @Override
             public List<ActivityEnlistVO> selEnlist(int hitType) {
-                return null;
+                if(this.getActivityId()==null){
+                    return null;
+                }
+                SpreadEnlistExample example=new SpreadEnlistExample();
+                SpreadEnlistExample.Criteria ce=example.createCriteria();
+                switch (hitType){
+                    case 0:
+                        ce.andDrawEqualTo(0);
+                        break;
+                    case 1:
+                        ce.andDrawEqualTo(1);
+                        break;
+                    default:
+                        break;
+                }
+                example.setOrderByClause("create_time desc");
+                List<SpreadEnlist> selist=spreadEnlistMapper.selectByExample(example);
+                List<ActivityEnlistVO> vos=new ArrayList<>();
+                for(SpreadEnlist se:selist){
+                    ActivityEnlistVO vo=new ActivityEnlistVO();
+                    vo.setActivityId(se.getActivityId());
+                    vo.setEnId(se.getEnlistId());
+                    vo.setName(se.getName());
+                    vo.setShopId(se.getShopId());
+                    vo.setTelephone(se.getTelephone());
+                    vo.setUserId(se.getUserId());
+                    vos.add(vo);
+                }
+                return vos;
             }
         };
     }
