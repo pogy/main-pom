@@ -181,18 +181,25 @@ public class ActivityFactoryImpl implements ActivityFactory{
     }
 
     @Override
-    public ActivityEnlist selEnlistById(Long enlistId) {
-        return new ActivityEnlist() {
-            @Override
-            public void hit() {
+    public ActivityEnlist selEnlistById(Long enlistId) throws ActivityException {
 
-            }
 
-            @Override
-            public void unhit() {
+        return new ActivityEnlist () {
+                @Override public void hit () {
 
-            }
-        };
+                }
+
+                @Override public void unhit () throws ActivityException {
+                    if (this.getEnId () == null) {
+
+                        throw new ActivityException ("没有EnId");
+                    }
+                    SpreadEnlist se= spreadEnlistMapper.selectByPrimaryKey (this.getEnId ());
+                    se.setDraw (0);
+                    spreadEnlistMapper.updateByPrimaryKey (se);
+                }
+            };
+      //
     }
 
     @Override

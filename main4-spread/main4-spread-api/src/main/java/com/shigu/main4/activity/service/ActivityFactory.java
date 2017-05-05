@@ -56,7 +56,7 @@ public interface ActivityFactory {
      * @param enlistId 报名记录ID
      * @return 报名记录对象
      */
-    ActivityEnlist selEnlistById(Long enlistId);
+    ActivityEnlist selEnlistById(Long enlistId) throws ActivityException;
 
     /**
      * 按广告投放值对象查报名单

@@ -1,7 +1,10 @@
 package com.shigu.main4.spread.service;
 
+import com.opentae.data.mall.beans.SpreadEnlist;
 import com.opentae.data.mall.interfaces.SpreadActivityMapper;
+import com.opentae.data.mall.interfaces.SpreadEnlistMapper;
 import com.opentae.data.mall.interfaces.SpreadTermMapper;
+import com.shigu.main4.activity.beans.ActivityEnlist;
 import com.shigu.main4.activity.beans.ActivityTerm;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
@@ -40,6 +43,38 @@ public class ActivityFactoryTest {
 
     @Autowired
     SpreadActivityMapper spreadActivityMapper;
+    @Autowired
+    SpreadEnlistMapper spreadEnlistMapper;
+
+    @Test
+    @Transactional
+    public void selEnlistById_unhitTest() throws ActivityException {
+        SpreadEnlist se=new SpreadEnlist ();
+        se.setDraw (1);
+        se.setName ("zhongjiang");
+        se.setShopId (24806L);
+        se.setTelephone ("18857193391");
+        se.setUserId (35377L);
+        se.
+        spreadEnlistMapper.insert (se);
+        System.out.println("返回ID="+se.getEnlistId ());
+
+        ActivityEnlist ae=activityFactory.selEnlistById (se.getEnlistId ());
+        //第一种情况ID为空时取消中签
+        ae.setEnId (null);
+        try {
+            ae.unhit ();
+            Assert.fail ();
+        } catch (ActivityException e) {
+            e.printStackTrace ();
+        }
+        //第二种
+        ActivityEnlist ae1=activityFactory.selEnlistById (se.getEnlistId ());
+        ae1.unhit ();
+        SpreadEnlist se1= spreadEnlistMapper.selectByPrimaryKey (se.getEnlistId ());
+        assertEquals (se1.getDraw ().longValue (),0L);
+    }
+
 
     @Test
     @Transactional
