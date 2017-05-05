@@ -186,8 +186,14 @@ public class ActivityFactoryImpl implements ActivityFactory{
 
 
         return new ActivityEnlist () {
-                @Override public void hit () {
+                @Override public void hit () throws ActivityException {
+                    if (this.getEnId () == null) {
 
+                        throw new ActivityException ("没有EnId");
+                    }
+                    SpreadEnlist se= spreadEnlistMapper.selectByPrimaryKey (this.getEnId ());
+                    se.setDraw (1);
+                    spreadEnlistMapper.updateByPrimaryKey (se);
                 }
 
                 @Override public void unhit () throws ActivityException {
