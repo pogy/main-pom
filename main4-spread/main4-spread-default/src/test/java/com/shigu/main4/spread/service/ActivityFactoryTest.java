@@ -55,7 +55,7 @@ public class ActivityFactoryTest {
         se.setShopId (24806L);
         se.setTelephone ("18857193391");
         se.setUserId (35377L);
-        se.
+        se.setActivityId (1L);
         spreadEnlistMapper.insert (se);
         System.out.println("返回ID="+se.getEnlistId ());
 
@@ -66,10 +66,11 @@ public class ActivityFactoryTest {
             ae.unhit ();
             Assert.fail ();
         } catch (ActivityException e) {
-            e.printStackTrace ();
+           // e.printStackTrace ();
         }
         //第二种
         ActivityEnlist ae1=activityFactory.selEnlistById (se.getEnlistId ());
+        ae1.setEnId (se.getEnlistId ());
         ae1.unhit ();
         SpreadEnlist se1= spreadEnlistMapper.selectByPrimaryKey (se.getEnlistId ());
         assertEquals (se1.getDraw ().longValue (),0L);
