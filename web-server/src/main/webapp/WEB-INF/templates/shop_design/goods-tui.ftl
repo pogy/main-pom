@@ -39,7 +39,7 @@
                     <#if promotes.content?size gt 0>
                         <div class="editpage clearfix" style="margin-top: 25px;">
                             <div class="page-link">
-                                <#assign href = "shop/search.htm?id=${shop.shopId}&keyword=${moduleSet.keyword}&beginPrice=${moduleSet.lowerLimitPrice}&endPrice=${moduleSet.upperLimitPrice}">
+                                <#assign href = "shop/search.htm?id=${shop.shopId}&keyword=${moduleSet.keyword}&beginPrice=${moduleSet.lowerLimitPrice}&endPrice=${moduleSet.upperLimitPrice}&pageNo=">
                                 <ul class="page-link-ul">
                                     <li<#if promotes.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="${href}${promotes.number - 1}">«</a></#if></li>
                                     <#list 1..promotes.totalPages as p>

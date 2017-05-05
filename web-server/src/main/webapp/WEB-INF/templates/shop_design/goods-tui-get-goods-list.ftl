@@ -15,6 +15,7 @@
         <div class="srch-conds clearfix">
             <form action="" method="get">
                 <input type="hidden" name="id" value="${bo.id}">
+                <input type="hidden" name="mid" value="${bo.mid}">
                 <input type="hidden" name="area" value="${bo.area}">
                 <div class="control-group srch-cond keyword">
                     <div class="control">
@@ -86,7 +87,7 @@
     <#if pager.content?size gt 0>
     <div class="editpage clearfix" style="margin-top: 25px;">
         <div class="page-link">
-            <#assign href = "?size=5&mid=" + bo.mid + "&area=" + bo.area + "&type=" + bo.type + "&page=">
+            <#assign href = "?size=5&mid=" + bo.mid + "&area=" + bo.area + "&type=" + bo.type + "&q=" + bo.q + "&lowPrice=" + bo.lowPrice + "&highPrice=" + bo.highPrice + "&page=">
             <ul class="page-link-ul">
                 <li<#if pager.number == 1> class="disabled"><a href="javascript:;">«</a><#else>><a title="上一页" href="${href}${pager.number - 1}">«</a></#if></li>
                 <#if pager.number <= 5 || pager.totalPages < 10>

@@ -41,7 +41,7 @@ public class ShopFitmentModule implements Serializable {
      */
     private Long areaId;
 
-    private String moduleValue = "{}";
+    private String moduleValue;
     private String moduleData;
 
     private Boolean canDel;
