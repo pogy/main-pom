@@ -193,6 +193,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
             banner.setSideType(3);
             banner.setCanDel(false);
             banner.setModuleData("{\"imgShow\":1,\"spacing\":1}");
+            banner.setModuleValue("{}");
             shopFitmentModuleMapper.insertSelective(banner);
         }
     }
