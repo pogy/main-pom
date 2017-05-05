@@ -182,7 +182,17 @@ public class ActivityFactoryImpl implements ActivityFactory{
 
     @Override
     public ActivityEnlist selEnlistById(Long enlistId) {
-        return null;
+        return new ActivityEnlist() {
+            @Override
+            public void hit() {
+
+            }
+
+            @Override
+            public void unhit() {
+
+            }
+        };
     }
 
     @Override
