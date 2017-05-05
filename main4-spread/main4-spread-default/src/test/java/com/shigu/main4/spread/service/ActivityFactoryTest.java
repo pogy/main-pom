@@ -67,6 +67,7 @@ public class ActivityFactoryTest {
         spreadActivityMapper.insert (sa);
 
         LedActivity la=activityFactory.selActivityById(sa.getActivityId ());
+        la.setActivityId(sa.getActivityId());
         //userId为空
         try {//1000012151L  40435L  良品元素男装钱塘4010  18868412681
             la.joinActivity (null,40435L,"良品元素男装钱塘4010","18868412681");
