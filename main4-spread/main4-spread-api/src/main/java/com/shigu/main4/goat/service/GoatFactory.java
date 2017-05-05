@@ -1,5 +1,6 @@
 package com.shigu.main4.goat.service;
 
+import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.vo.GoatLocationVO;
 import com.shigu.main4.goat.vo.GoatVO;
@@ -19,7 +20,7 @@ public interface GoatFactory {
      * @param code
      * @return
      */
-    GoatLocation getALocation(String code);
+    GoatLocation getALocation(String code) throws ActivityException;
 
     /**
      * 按广告位值获取广告对象
