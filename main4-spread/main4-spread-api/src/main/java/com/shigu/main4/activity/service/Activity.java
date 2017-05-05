@@ -13,7 +13,7 @@ public interface Activity {
      * 活动参与限制
      * @return true允许
      */
-    boolean limit();
+    boolean limit(Object... param);
 
     /**
      * 参加活动

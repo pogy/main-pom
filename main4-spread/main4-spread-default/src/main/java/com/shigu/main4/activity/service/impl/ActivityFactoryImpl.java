@@ -10,6 +10,7 @@ import com.opentae.data.mall.interfaces.SpreadEnlistMapper;
 import com.opentae.data.mall.interfaces.SpreadTermMapper;
 import com.shigu.main4.activity.beans.ActivityEnlist;
 import com.shigu.main4.activity.beans.ActivityTerm;
+import com.shigu.main4.activity.beans.GoatActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.service.Activity;
@@ -113,6 +114,35 @@ public class ActivityFactoryImpl implements ActivityFactory{
     @Override
     public <T extends Activity> T selActivityById(Long activityId) {
         return null;
+    }
+
+    /**
+     * 查询广告报名对象
+     * @return
+     */
+    private GoatActivity selGoatActivityWithFunc(){
+        return new GoatActivity() {
+
+            @Override
+            public boolean limit(Object... param) {
+                return false;
+            }
+
+            @Override
+            public Long joinActivity(Long userId, Long shopId, String name, String phone) {
+                return null;
+            }
+
+            @Override
+            public List<ActivityEnlistVO> randomHit(Integer number) {
+                return null;
+            }
+
+            @Override
+            public List<ActivityEnlistVO> selEnlist(int hitType) {
+                return null;
+            }
+        };
     }
 
     @Override
