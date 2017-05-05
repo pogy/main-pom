@@ -3,6 +3,7 @@ package com.opentae.data.mall.beans;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 报名记录
@@ -37,6 +38,26 @@ public class SpreadEnlist implements Serializable{
      * 1中奖，0不中
      */
     private Integer draw;
+
+    private Long activityId;
+
+    private Date createTime;
+
+    public Long getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Long activityId) {
+        this.activityId = activityId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public Long getEnlistId() {
         return enlistId;
