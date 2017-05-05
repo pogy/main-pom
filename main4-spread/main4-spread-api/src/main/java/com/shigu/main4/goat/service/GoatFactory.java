@@ -42,5 +42,5 @@ public interface GoatFactory {
      * @param <T>
      * @return
      */
-    <T extends Goat>T selGoatByVo(GoatVO goatVO);
+    <T extends Goat,D extends GoatVO> T selGoatByVo(D goatVO);
 }

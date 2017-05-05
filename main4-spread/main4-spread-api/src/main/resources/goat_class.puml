@@ -7,7 +7,7 @@ class GoatLocationVO{
 }
 
 abstract class GoatLocation{
-+List<Goat> selGoats()
++<T extends GoatVO> List<T> selGoats()
 }
 
 interface Goat{
@@ -24,6 +24,11 @@ class GoatVO{
 class ImgGoatVO{
 -String picUrl
 -String linkUrl
+}
+
+class TextGoatVO{
+-String text
+-String href
 }
 
 class ItemUpVO{
@@ -45,6 +50,10 @@ abstract class ItemGoat{
 
 }
 
+abstract class TextGoat{
+
+}
+
 interface ItemResort{
 ItemUpVO selUp() //查询真实上款量与虚假上款量
 void modifyUp(Integer num) //修改虚假上款量
@@ -60,12 +69,17 @@ Goat <|.. ImgGoat
 
 Goat <|.. ItemGoat
 
+Goat <|.. TextGoat
+
 GoatVO <|-- ImgGoatVO
 GoatVO <|-- ItemGoatVO
+GoatVO <|-- TextGoatVO
 
 ImgGoatVO <|-- ImgGoat
 
 ItemGoatVO <|-- ItemGoat
+
+TextGoatVO <|-- TextGoat
 
 ItemResort <|.. ItemGoat
 

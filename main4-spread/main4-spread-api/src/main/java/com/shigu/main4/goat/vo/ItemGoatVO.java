@@ -21,6 +21,18 @@ public class ItemGoatVO extends GoatVO{
      * 图片链接
       */
     private String picUrl;
+    /**
+     * 风格
+     */
+    private String style;
+    /**
+     * 元素
+     */
+    private String element;
+    /**
+     * 店铺标题
+     */
+    private String shopTitle;
 
     public Long getItemId() {
         return itemId;
@@ -44,5 +56,29 @@ public class ItemGoatVO extends GoatVO{
 
     public void setPicUrl(String picUrl) {
         this.picUrl = picUrl;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getElement() {
+        return element;
+    }
+
+    public void setElement(String element) {
+        this.element = element;
+    }
+
+    public String getShopTitle() {
+        return shopTitle;
+    }
+
+    public void setShopTitle(String shopTitle) {
+        this.shopTitle = shopTitle;
     }
 }

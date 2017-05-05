@@ -1,6 +1,8 @@
 package com.shigu.main4.goat.service.impl;
 
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.goat.beans.GoatLocation;
+import com.shigu.main4.goat.beans.ImgGoat;
 import com.shigu.main4.goat.service.Goat;
 import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.GoatLocationVO;
@@ -19,12 +21,7 @@ public class GoatFactoryImpl implements GoatFactory{
 
     @Override
     public GoatLocation getALocation(String code) {
-        return new GoatLocation() {
-            @Override
-            public List<Goat> selGoats() {
-                return null;
-            }
-        };
+        return null;
     }
 
     @Override
@@ -38,7 +35,8 @@ public class GoatFactoryImpl implements GoatFactory{
     }
 
     @Override
-    public <T extends Goat> T selGoatByVo(GoatVO goatVO) {
+    public <T extends Goat,D extends GoatVO> T selGoatByVo(D goatVO) {
         return null;
     }
+
 }
