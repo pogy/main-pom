@@ -26,6 +26,7 @@ TextGoat
 class GoatVO{
 -Long localId
 -Long goatId
+-Long dataId
 -Long fromActivityId
 -Date fromTime
 -Date toTime

@@ -14,6 +14,8 @@ public class GoatVO {
 
     private Long goatId;
 
+    private Long dataId;
+
     private Long fromActivityId;
 
     private Date fromTime;
@@ -22,6 +24,13 @@ public class GoatVO {
 
     private Long userId;
 
+    public Long getDataId() {
+        return dataId;
+    }
+
+    public void setDataId(Long dataId) {
+        this.dataId = dataId;
+    }
 
     public Long getFromActivityId() {
         return fromActivityId;
