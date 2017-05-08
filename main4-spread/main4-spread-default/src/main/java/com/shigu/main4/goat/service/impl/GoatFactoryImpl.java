@@ -33,7 +33,7 @@ import java.util.List;
  * 广告工厂
  * Created by zhaohongbo on 17/5/4.
  */
-@Service
+@Service("goatFactory")
 public class GoatFactoryImpl implements GoatFactory{
 
     @Autowired

@@ -33,7 +33,7 @@ import java.util.*;
  * 活动工厂
  * Created by zhaohongbo on 17/5/4.
  */
-@Service
+@Service("activityFactory")
 public class ActivityFactoryImpl implements ActivityFactory {
     @Autowired
     SpreadActivityMapper spreadActivityMapper;
