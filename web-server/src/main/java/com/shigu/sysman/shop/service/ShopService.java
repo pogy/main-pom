@@ -194,6 +194,7 @@ public class ShopService {
     @Transactional
     public void examineShopPanss(Long applyId) throws Main4Exception{
         Long shopId = shopRegistService.toExamine(applyId);
+        shopBaseService.addToEs(shopId);
         // 推送
         String tbNick = tbNickByShopId(shopId);
         if(!StringUtils.isEmpty(tbNick)){

@@ -6,6 +6,7 @@ import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.vo.RegisterUser;
@@ -36,6 +37,9 @@ public class PuyuanShopRegistService {
 
     @Autowired
     private MemberUserSubMapper memberUserSubMapper;
+
+    @Autowired
+    private ShopBaseService shopBaseService;
 
     @Transactional
     public void register(RegisterUser user, ShopRegister shop) throws Main4Exception {
@@ -77,6 +81,7 @@ public class PuyuanShopRegistService {
         long registId = shopRegistService.registShop(shop);
 
         //4、审核通过
-        shopRegistService.toExamine(registId);
+        shopBaseService.addToEs(shopRegistService.toExamine(registId));
+
     }
 }

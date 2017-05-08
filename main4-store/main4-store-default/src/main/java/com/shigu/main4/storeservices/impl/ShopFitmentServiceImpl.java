@@ -193,6 +193,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
             banner.setSideType(3);
             banner.setCanDel(false);
             banner.setModuleData("{\"imgShow\":1,\"spacing\":1}");
+            banner.setModuleValue("{}");
             shopFitmentModuleMapper.insertSelective(banner);
         }
     }
@@ -860,6 +861,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         module.setType(type);
         module.setAfterModuleId(sideId);
         module.setCanDel(canDel);
+        module.setModuleValue("{}");
         if (sideId == null) {
             module.setAfterModuleId(0L);
             shopFitmentModuleMapper.insertSelective(module);

@@ -16,14 +16,12 @@ import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.MemberLicenseException;
-import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.vo.RealNameApplyInfo;
 import com.shigu.main4.ucenter.vo.SafeAbout;
 import com.shigu.main4.ucenter.vo.UserLicense;
 import com.shigu.session.main4.enums.LoginFromType;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.chainsaw.Main;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,9 +52,6 @@ public class UserLicenseServiceImpl implements UserLicenseService {
 
     @Resource(name = "tae_mall_memberLicenseApplyMapper")
     private MemberLicenseApplyMapper memberLicenseApplyMapper;
-
-    @Resource(name = "registerAndLoginService")
-    private RegisterAndLoginService registerAndLoginService;
 
     @Override
     public Long selUserScore(Long userId) {
@@ -258,10 +253,6 @@ public class UserLicenseServiceImpl implements UserLicenseService {
             throw new Main4Exception("绑定手机号数据有误");
         }
 
-        boolean panss = registerAndLoginService.userCanRegist(phone, LoginFromType.PHONE);
-        if(!panss){
-            throw new Main4Exception("该手机号已被使用");
-        }
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
         if (memberUser == null) {
             throw new Main4Exception("该用户不存在");
