@@ -26,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -254,74 +251,86 @@ public class ActivityFactoryTest {
     @Test
     @Transactional
     public void selGoatActivityWithFunc_selEnlistTest(){
-        GoatActivity ga=activityFactory.selActivityById(-1l);
-        ga.setActivityId(-1l);
+        Map<Long,SpreadEnlist> inseMap=new HashMap<>();
+        for(int i=0;i<10;i++){
+            SpreadEnlist se=new SpreadEnlist();
+            se.setActivityId(-99l);
+            se.setCreateTime(new Date());
+            se.setName("testname"+i);
+            se.setTelephone("tsetphone"+1);
+            se.setDraw(i%2);
+            spreadEnlistMapper.insertSelective(se);
+            inseMap.put(se.getEnlistId(),se);
+        }
+
+        GoatActivity ga=activityFactory.selActivityById(-99l);
+        ga.setActivityId(-99l);
         //测试一,hitType=0
         List<ActivityEnlistVO> list=ga.selEnlist(0);
-        if(list.size()>0){
-            List<Long> enids1=new ArrayList<>();
-            for(ActivityEnlistVO vo:list){
-                enids1.add(vo.getEnId());
-                //验证activity_id\name\telephone是否为空
-                assertNotEquals(vo.getActivityId(),null);
-                assertNotEquals(vo.getName(),null);
-                assertNotEquals(vo.getTelephone(),null);
-            }
-            SpreadEnlistExample example=new SpreadEnlistExample();
-            SpreadEnlistExample.Criteria ce=example.createCriteria().andDrawEqualTo(0).andEnlistIdIn(enids1);
-            example.setOrderByClause("create_time desc");
-            List<SpreadEnlist> selist=spreadEnlistMapper.selectByExample(example);
-            List<Long> enids2=new ArrayList<>();
-            for(SpreadEnlist se:selist){
-                enids2.add(se.getEnlistId());
-            }
-            assertEquals(enids1,enids2);
+        List<Long> enids1=new ArrayList<>();
+        for(ActivityEnlistVO vo:list){
+            enids1.add(vo.getEnId());
+            //验证activity_id\name\telephone是否为空
+            SpreadEnlist setmp=inseMap.get(vo.getEnId());
+            assertNotEquals(setmp,null);
+            assertEquals(vo.getActivityId(),setmp.getActivityId());
+            assertEquals(vo.getName(),setmp.getName());
+            assertEquals(vo.getTelephone(),setmp.getTelephone());
         }
+        SpreadEnlistExample example=new SpreadEnlistExample();
+        SpreadEnlistExample.Criteria ce=example.createCriteria().andDrawEqualTo(0).andEnlistIdIn(enids1);
+        example.setOrderByClause("create_time desc");
+        List<SpreadEnlist> selist=spreadEnlistMapper.selectByExample(example);
+        List<Long> enids2=new ArrayList<>();
+        for(SpreadEnlist se:selist){
+            enids2.add(se.getEnlistId());
+        }
+        assertEquals(enids1,enids2);
 
 
         //测试二,hitType=1
         list=ga.selEnlist(1);
-        if(list.size()>0){
-            List<Long> enids1=new ArrayList<>();
-            for(ActivityEnlistVO vo:list){
-                enids1.add(vo.getEnId());
-                //验证activity_id\name\telephone是否为空
-                assertNotEquals(vo.getActivityId(),null);
-                assertNotEquals(vo.getName(),null);
-                assertNotEquals(vo.getTelephone(),null);
-            }
-            SpreadEnlistExample example=new SpreadEnlistExample();
-            SpreadEnlistExample.Criteria ce=example.createCriteria().andDrawEqualTo(1).andEnlistIdIn(enids1);
-            example.setOrderByClause("create_time desc");
-            List<SpreadEnlist> selist=spreadEnlistMapper.selectByExample(example);
-            List<Long> enids2=new ArrayList<>();
-            for(SpreadEnlist se:selist){
-                enids2.add(se.getEnlistId());
-            }
-            assertEquals(enids1,enids2);
+        enids1=new ArrayList<>();
+        for(ActivityEnlistVO vo:list){
+            enids1.add(vo.getEnId());
+            //验证activity_id\name\telephone是否为空
+            SpreadEnlist setmp=inseMap.get(vo.getEnId());
+            assertNotEquals(setmp,null);
+            assertEquals(vo.getActivityId(),setmp.getActivityId());
+            assertEquals(vo.getName(),setmp.getName());
+            assertEquals(vo.getTelephone(),setmp.getTelephone());
         }
+        example=new SpreadEnlistExample();
+        ce=example.createCriteria().andDrawEqualTo(1).andEnlistIdIn(enids1);
+        example.setOrderByClause("create_time desc");
+        selist=spreadEnlistMapper.selectByExample(example);
+        enids2=new ArrayList<>();
+        for(SpreadEnlist se:selist){
+            enids2.add(se.getEnlistId());
+        }
+        assertEquals(enids1,enids2);
 
         //测试三,hitType=2
         list=ga.selEnlist(2);
-        if(list.size()>0){
-            List<Long> enids1=new ArrayList<>();
-            for(ActivityEnlistVO vo:list){
-                enids1.add(vo.getEnId());
-                //验证activity_id\name\telephone是否为空
-                assertNotEquals(vo.getActivityId(),null);
-                assertNotEquals(vo.getName(),null);
-                assertNotEquals(vo.getTelephone(),null);
-            }
-            SpreadEnlistExample example=new SpreadEnlistExample();
-            SpreadEnlistExample.Criteria ce=example.createCriteria().andDrawEqualTo(2).andEnlistIdIn(enids1);
-            example.setOrderByClause("create_time desc");
-            List<SpreadEnlist> selist=spreadEnlistMapper.selectByExample(example);
-            List<Long> enids2=new ArrayList<>();
-            for(SpreadEnlist se:selist){
-                enids2.add(se.getEnlistId());
-            }
-            assertEquals(enids1,enids2);
+        enids1=new ArrayList<>();
+        for(ActivityEnlistVO vo:list){
+            enids1.add(vo.getEnId());
+            //验证activity_id\name\telephone是否为空
+            SpreadEnlist setmp=inseMap.get(vo.getEnId());
+            assertNotEquals(setmp,null);
+            assertEquals(vo.getActivityId(),setmp.getActivityId());
+            assertEquals(vo.getName(),setmp.getName());
+            assertEquals(vo.getTelephone(),setmp.getTelephone());
         }
+        example=new SpreadEnlistExample();
+        ce=example.createCriteria().andEnlistIdIn(enids1);
+        example.setOrderByClause("create_time desc");
+        selist=spreadEnlistMapper.selectByExample(example);
+        enids2=new ArrayList<>();
+        for(SpreadEnlist se:selist){
+            enids2.add(se.getEnlistId());
+        }
+        assertEquals(enids1,enids2);
 
         //测试四,activity_id为空
         ga.setActivityId(null);
