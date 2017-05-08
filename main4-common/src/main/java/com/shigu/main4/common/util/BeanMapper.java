@@ -4,6 +4,7 @@ import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -15,9 +16,17 @@ public class BeanMapper {
     static {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
         mapper = mapperFactory.getMapperFacade();
-
     }
 
+    public static <S,D> D mapAbstact(S source,D destination){
+        Class<S> sourceClass= (Class<S>) source.getClass();
+        Class<D> destinationClass= (Class<D>) destination.getClass();
+        Field[] fields=sourceClass.getFields();
+        for(Field f:fields){
+            System.out.println(f.getModifiers());
+        }
+        return null;
+    }
     /**
      * 值拷贝
      * @param source
