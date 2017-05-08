@@ -50,11 +50,11 @@ public class StoreSelFromEsService {
      * 按档口号查询
      * @param shopNum
      */
-    public List<TopShop> selByShopNum(String shopNum){
+    public List<TopShop> selByShopNum(String shopNum, String website){
         if(shopNum==null||"".equals(shopNum)){
             return null;
         }
-        List<SearchShopSimple> simples=shopSearchService.selShopByShopNum(shopNum,"hz");
+        List<SearchShopSimple> simples=shopSearchService.selShopByShopNum(shopNum,website);
         List<TopShop> topShops=new ArrayList<>();
         if(simples!=null&&simples.size()>0){
             Collections.sort(simples,new ShopWeightComparator());

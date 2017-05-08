@@ -108,7 +108,7 @@ public class GoodsSearchService {
         }
         //分类
         if(bo.getPid()!=null){
-            String name=selNavName(categoryInSearchService.selCates(),bo.getPid().toString());
+            String name=selNavName(categoryInSearchService.selCates(null),bo.getPid().toString());
             beforeUrl+="&pid="+bo.getPid();
             keys.add(new SearchKey(name,beforeUrl));
             if(bo.getCid()!=null){
@@ -120,7 +120,7 @@ public class GoodsSearchService {
         }
         //市场
         if (bo.getMid() != null) {
-            String name=selNavName(categoryInSearchService.selMarkets(),bo.getMid().toString());
+            String name=selNavName(categoryInSearchService.selMarkets(bo.getWebSite()),bo.getMid().toString());
             beforeUrl+="&mid="+bo.getMid();
             keys.add(new SearchKey(name,beforeUrl));
         }
@@ -265,7 +265,7 @@ public class GoodsSearchService {
             cids.addAll(categoryInSearchService.selCidsFromCid(bo.getPid()));
         }
         //查店
-        List<SearchShopSimple> shops=shopSearchService.selShopByShopNum(bo.getKeyword(),"hz");
+        List<SearchShopSimple> shops=shopSearchService.selShopByShopNum(bo.getKeyword(),bo.getWebSite());
         List<Long> shouldShopId=new ArrayList<>();
         if(shops!=null&&shops.size()!=0){
             //按电商基地  >  钱塘大厦  >  四季星座 排序
@@ -288,7 +288,7 @@ public class GoodsSearchService {
                 end = DateUtil.stringToDate(bo.getEt(),"yyyy.MM.dd");
             }
         }
-        ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),"hz",bo.getMid(),
+        ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),bo.getWebSite(),bo.getMid(),
                 cids.size()==0?null:cids,
                 shouldShopId.size()==0?null:shouldShopId,
                 bo.getSp(),bo.getEp(),start,end,orderBy,bo.getPage(),bo.getRows(), needaggs
