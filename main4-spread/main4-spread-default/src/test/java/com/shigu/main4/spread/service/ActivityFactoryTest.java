@@ -251,10 +251,16 @@ public class ActivityFactoryTest {
     @Test
     @Transactional
     public void selGoatActivityWithFunc_selEnlistTest() throws ActivityException {
+        SpreadActivity activity=new SpreadActivity();
+        activity.setActivityId(20170508L);
+        activity.setTermId(20170508L);
+        activity.setType(ActivityType.GOAT_SELL.ordinal());
+        spreadActivityMapper.insertSelective(activity);
+
         Map<Long,SpreadEnlist> inseMap=new HashMap<>();
         for(int i=0;i<10;i++){
             SpreadEnlist se=new SpreadEnlist();
-            se.setActivityId(-99l);
+            se.setActivityId(20170508L);
             se.setCreateTime(new Date());
             se.setName("testname"+i);
             se.setTelephone("tsetphone"+1);
@@ -263,8 +269,8 @@ public class ActivityFactoryTest {
             inseMap.put(se.getEnlistId(),se);
         }
 
-        GoatActivity ga=activityFactory.selActivityById(-99l);
-        ga.setActivityId(-99l);
+        GoatActivity ga=activityFactory.selActivityById(20170508L);
+        ga.setActivityId(20170508L);
         //测试一,hitType=0
         List<ActivityEnlistVO> list=ga.selEnlist(0);
         List<Long> enids1=new ArrayList<>();

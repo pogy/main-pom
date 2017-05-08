@@ -127,7 +127,7 @@ public class ActivityFactoryImpl implements ActivityFactory{
         if(activity.getType().equals(ActivityType.GOAT_LED.ordinal())){
             return (T)BeanMapper.map(activity,selLedActivityWithFunc());
         }else if(activity.getType().equals(ActivityType.GOAT_SELL.ordinal())){
-            return (T)BeanMapper.map(activity,selGoatActivityWithFunc());
+            return (T)selGoatActivityWithFunc();
         }
         return null;
     }
