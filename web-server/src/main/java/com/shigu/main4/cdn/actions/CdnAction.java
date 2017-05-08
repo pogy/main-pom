@@ -33,6 +33,9 @@ import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.ShopBaseForCdn;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.search.bo.NewGoodsBO;
+import com.shigu.search.services.TodayNewGoodsService;
+import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.ContainerVO;
 import com.shigu.session.main4.PersonalSession;
@@ -117,6 +120,9 @@ public class CdnAction {
     @Autowired
     XzSdkClient xzSdkClient;
 
+    @Autowired
+    TodayNewGoodsService todayNewGoodsService;
+
     /**
      * 杭州首页动态页面
      * @return
@@ -193,6 +199,33 @@ public class CdnAction {
         model.addAttribute("webSite",webSite);
         return "index/hz"+manOrWoman;
     }
+
+    /**
+     * 濮院站首页
+     * @return
+     */
+    public String jxindex4show(HttpServletRequest request,Model model){
+        String website = "jx";
+
+        // 商户总数
+        int shopsNum = indexShowService.getShopAllCount(website);
+        // 商品总数
+        ObjFromCache<List<Integer>> goodsNum = indexShowService.selNumList();
+
+        // 今日新品
+        NewGoodsBO newGoodsBO = new NewGoodsBO();
+        newGoodsBO.setWebSite("jx");
+        ShiguPager<GoodsInSearch> newGoodsPager = todayNewGoodsService.selGoodsNew(newGoodsBO);
+
+        // 男装数据
+
+        // 女装数据
+
+        // 童装数据
+
+        return "";
+    }
+
 
     /**
      * 创建缓存
