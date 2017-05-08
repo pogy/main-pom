@@ -12,6 +12,8 @@ public class GoodsCollectBO implements Serializable{
      */
     private String website;
 
+    private String keyword;
+
     private Integer page;
 
     private Integer rows=12;
@@ -44,5 +46,13 @@ public class GoodsCollectBO implements Serializable{
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 }

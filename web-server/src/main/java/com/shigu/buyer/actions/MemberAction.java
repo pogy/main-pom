@@ -176,7 +176,7 @@ public class MemberAction {
     @RequestMapping("member/goodsCollectinit")
     public String goodsCollectinit(GoodsCollectBO bo,HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<ItemCollectVO> pager=userCollectService.selItemCollections(ps.getUserId(),bo.getWebsite(),
+        ShiguPager<ItemCollectVO> pager=userCollectService.selItemCollections(ps.getUserId(),bo.getKeyword(), bo.getWebsite(),
                 bo.getPage(),bo.getRows());
         if(pager.getContent()!=null)
         model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
