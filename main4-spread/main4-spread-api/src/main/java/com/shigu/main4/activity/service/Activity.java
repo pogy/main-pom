@@ -42,11 +42,4 @@ public interface Activity {
      */
     List<ActivityEnlistVO> selEnlist(int hitType);
 
-    /**
-     * 修改期
-     * @param type 活动类别
-     * @param start 开始时间
-     * @param end 结束时间
-     */
-    void modify(ActivityType type, Date start, Date end);
 }

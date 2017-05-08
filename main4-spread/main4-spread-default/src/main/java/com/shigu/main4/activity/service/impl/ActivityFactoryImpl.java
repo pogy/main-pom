@@ -49,12 +49,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
     @Override
     public ActivityTerm addAndGetTerm(ActivityTermVO vo) throws ActivityException {
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
-        SpreadTermExample termExample = new SpreadTermExample();
-        termExample.createCriteria().andEndTimeGreaterThan(vo.getStartTime()).andTypeEqualTo(vo.getActivityType().ordinal());
-        termExample.or().andStartTimeLessThan(vo.getEndTime()).andTypeEqualTo(vo.getActivityType().ordinal());
-        if (spreadTermMapper.countByExample(termExample) > 0) {
-            throw new ActivityException("本类活动,与上一期时间上有重叠");
-        }
+        termTimeCheck(null,vo.getActivityType(),vo.getStartTime(),vo.getEndTime());
         SpreadTerm term = BeanMapper.map(vo, SpreadTerm.class);
         term.setType(vo.getActivityType().ordinal());
         spreadTermMapper.insertSelective(term);
@@ -64,6 +59,30 @@ public class ActivityFactoryImpl implements ActivityFactory {
         at.setTermId(term.getTermId());
         at.setActivityType(ActivityType.values()[term.getType()]);
         return at;
+    }
+
+    /**
+     * 期时间重叠验证
+     * @param termId 期次ID,排除自己用
+     * @param type
+     * @param startTime
+     * @param endTime
+     * @throws ActivityException
+     */
+    private void termTimeCheck(Long termId,ActivityType type,Date startTime,Date endTime) throws ActivityException {
+        //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
+        SpreadTermExample termExample = new SpreadTermExample();
+        SpreadTermExample.Criteria cri1=termExample.createCriteria().andEndTimeGreaterThan(startTime)
+                .andStartTimeLessThan(startTime).andTypeEqualTo(type.ordinal());
+        SpreadTermExample.Criteria cri2=termExample.or().andStartTimeLessThan(endTime).andEndTimeGreaterThan(endTime)
+                .andTypeEqualTo(type.ordinal());
+        if (termId != null) {
+            cri1.andTermIdNotEqualTo(termId);
+            cri2.andTermIdNotEqualTo(termId);
+        }
+        if (spreadTermMapper.countByExample(termExample) > 0) {
+            throw new ActivityException("本类活动,与上一期时间上有重叠");
+        }
     }
 
     @Override
@@ -93,7 +112,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
             return null;
         }
         ActivityTerm term = selTermWithFunc();
-        BeanMapper.map(sterm, term);
+        BeanMapper.mapAbstact(sterm, term);
         return term;
     }
 
@@ -114,6 +133,17 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 sactivity.setActivityId(null);
                 spreadActivityMapper.insertSelective(sactivity);
                 return sactivity.getActivityId();
+            }
+
+            @Override
+            public void modify(ActivityType type, Date start, Date end) throws ActivityException {
+                termTimeCheck(this.getTermId(),type,start,end);
+                SpreadTerm term=new SpreadTerm();
+                term.setTermId(this.getTermId());
+                term.setType(type.ordinal());
+                term.setStartTime(start);
+                term.setEndTime(end);
+                spreadTermMapper.updateByPrimaryKeySelective(term);
             }
         };
     }
@@ -208,10 +238,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 return selEnlistCommon(this.getActivityId(),hitType);
             }
 
-            @Override
-            public void modify(ActivityType type, Date start, Date end) {
-
-            }
         };
     }
 
@@ -243,11 +269,18 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 return selEnlistCommon(this.getActivityId(),hitType);
             }
 
-            @Override
-            public void modify(ActivityType type, Date start, Date end) {
-
-            }
         };
+    }
+
+    /**
+     * 修改期
+     * @param termId
+     * @param type
+     * @param start
+     * @param end
+     */
+    private void modifyTermCommon(Long termId,ActivityType type, Date start, Date end){
+
     }
 
     /**

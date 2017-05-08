@@ -2,6 +2,7 @@ package com.shigu.main4.spread.service;
 
 import com.opentae.data.mall.beans.SpreadActivity;
 import com.opentae.data.mall.beans.SpreadEnlist;
+import com.opentae.data.mall.beans.SpreadTerm;
 import com.opentae.data.mall.examples.SpreadEnlistExample;
 import com.opentae.data.mall.interfaces.SpreadActivityMapper;
 import com.opentae.data.mall.interfaces.SpreadEnlistMapper;
@@ -428,4 +429,43 @@ public class ActivityFactoryTest {
 
     }
 
+    /**
+     * 修改其次测试
+     */
+    @Test
+    @Transactional
+    public void selTermWithFunc_modify() throws ParseException {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        SpreadTerm term=new SpreadTerm();
+        term.setType(ActivityType.GOAT_SELL.ordinal());
+        term.setStartTime(sdf.parse("2010-05-12"));
+        term.setEndTime(sdf.parse("2010-05-15"));
+        spreadTermMapper.insertSelective(term);
+        SpreadTerm term2=new SpreadTerm();
+        term2.setType(ActivityType.GOAT_SELL.ordinal());
+        term2.setStartTime(sdf.parse("2010-05-16"));
+        term2.setEndTime(sdf.parse("2010-05-18"));
+        spreadTermMapper.insertSelective(term2);
+        //测试修改,时间与自己重叠
+        ActivityTerm at=activityFactory.selTermById(term2.getTermId());
+        try {
+            at.modify(ActivityType.GOAT_LED,sdf.parse("2010-05-17"),sdf.parse("2010-05-18"));
+            SpreadTerm st=spreadTermMapper.selectByPrimaryKey(term2.getTermId());
+            assertEquals(ActivityType.GOAT_LED.ordinal(),st.getType().intValue());
+        } catch (ActivityException e) {
+            Assert.fail();
+        }
+        //异常情况,时间重叠
+        try {
+            at.modify(ActivityType.GOAT_SELL,sdf.parse("2010-05-14"),sdf.parse("2010-05-16"));
+            Assert.fail();
+        } catch (ActivityException e) {
+        }
+        //异常情况,时间小于
+        try {
+            at.modify(ActivityType.GOAT_SELL,sdf.parse("2010-05-09"),sdf.parse("2010-05-10"));
+        } catch (ActivityException e) {
+            Assert.fail();
+        }
+    }
 }
