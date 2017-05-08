@@ -385,7 +385,7 @@ public class ActivityFactoryTest {
             la.randomHit(num);
             Assert.fail();
         } catch (ActivityException e) {
-            System.err.println(e.getMessage());
+           // System.err.println(e.getMessage());
         }
        // try {
             num=4;
