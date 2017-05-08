@@ -27,9 +27,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 活动工厂
@@ -125,7 +123,7 @@ public class ActivityFactoryImpl implements ActivityFactory{
             throw new ActivityException(activityId+"活动不存在");
         }
         if(activity.getType().equals(ActivityType.GOAT_LED.ordinal())){
-            return (T)BeanMapper.map(activity,selLedActivityWithFunc());
+            return (T)selLedActivityWithFunc();
         }else if(activity.getType().equals(ActivityType.GOAT_SELL.ordinal())){
             return (T)BeanMapper.map(activity,selGoatActivityWithFunc());
         }
@@ -187,8 +185,51 @@ public class ActivityFactoryImpl implements ActivityFactory{
             }
 
             @Override
-            public List<ActivityEnlistVO> randomHit(Integer number) {
-                return null;
+            public List<ActivityEnlistVO> randomHit(Integer number) throws ActivityException{
+                Long activityId=this.getActivityId();
+                if(activityId==null){
+                   throw new ActivityException("活动Id不存在");
+                }
+                SpreadEnlistExample seex=new SpreadEnlistExample();
+                seex.createCriteria().andActivityIdEqualTo(activityId);
+                List<SpreadEnlist> selsit=spreadEnlistMapper.selectByExample(seex);
+
+                if(number>selsit.size()){
+                    throw new ActivityException(activityId+":数量大于报名人数");
+                }
+                for(SpreadEnlist enlist:selsit){
+                    if(enlist.getDraw()==1){
+                        throw new ActivityException(activityId+":该活动已存在中签数据");
+                    }
+
+                }
+                //随机选取元素。。
+                List<SpreadEnlist> eidSet=new ArrayList<>();
+                Random random = new Random();
+                for(int i=0;i<number;i++){
+                    int index =  random.nextInt(selsit.size());
+                    eidSet.add(selsit.get(index));
+                    selsit.remove(index);
+
+                }
+                //遍历set更新draw并传出list
+                List<ActivityEnlistVO> volist=new ArrayList<>();
+
+                for(SpreadEnlist enlist:eidSet){
+                    ActivityEnlistVO vo=new ActivityEnlistVO();
+                    enlist.setDraw(1);
+                    spreadEnlistMapper.updateByPrimaryKeySelective(enlist);
+                    vo.setActivityId(enlist.getActivityId());
+                    vo.setEnId(enlist.getEnlistId());
+                    vo.setName(enlist.getName());
+                    vo.setShopId(enlist.getShopId());
+                    vo.setTelephone(enlist.getTelephone());
+                    vo.setUserId(enlist.getUserId());
+                    volist.add(vo);
+
+                }
+
+                return volist;
             }
 
             @Override

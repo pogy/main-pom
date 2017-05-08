@@ -13,6 +13,7 @@ import com.shigu.main4.activity.beans.LedActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.service.ActivityFactory;
+import com.shigu.main4.activity.service.impl.ActivityFactoryImpl;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.GoatActivityVO;
@@ -24,6 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -328,4 +330,87 @@ public class ActivityFactoryTest {
         list=ga.selEnlist(-1);
         assertEquals(list,null);
     }
+
+    @Test
+    @Transactional
+    public void selLedActivityWithFunc_randomHitTest() throws ActivityException {
+
+        //4个参数不能为空
+        //参数//Long userId, Long shopId, String name, String phone
+
+        SpreadActivity sa = new SpreadActivity();
+        sa.setContext("{}");
+        sa.setDescription("");
+        sa.setPubFromTime(new Date());
+        sa.setPubToTime(new Date());
+        sa.setSort(1);
+        sa.setTermId(20170501L);
+        sa.setType(ActivityType.GOAT_LED.ordinal());
+        spreadActivityMapper.insert(sa);
+
+        LedActivity la = activityFactory.selActivityById(sa.getActivityId());
+        la.setActivityId(sa.getActivityId());
+
+        //先插入五条全部合格的数据
+        for (int i = 0; i < 5; i++) {
+            SpreadEnlist se = new SpreadEnlist();
+            se.setDraw(0);
+            se.setActivityId(la.getActivityId());
+            se.setCreateTime(new Date());
+            se.setName("我的天" + i);
+            se.setShopId((long) (100 + i));
+            se.setTelephone("12118128122");
+            se.setUserId(1000000808 + (long) i);
+            spreadEnlistMapper.insertSelective(se);
+        }
+        //测试数量异常
+        int num=0;
+        try {
+             num=6;
+            la.randomHit(num);
+        } catch (ActivityException e) {
+            System.err.println(e.getMessage());
+        }
+        try {
+            num=4;
+            List<ActivityEnlistVO> volsit=la.randomHit(num);
+            List<Long> eidlist=new ArrayList<>();
+            for(ActivityEnlistVO avo:volsit){
+                eidlist.add(avo.getEnId());
+            }
+
+            SpreadEnlistExample seex=new SpreadEnlistExample();
+            seex.createCriteria().andActivityIdEqualTo(la.getActivityId()).andEnlistIdIn(eidlist);
+
+            List<SpreadEnlist> sdlist=spreadEnlistMapper.selectByExample(seex);
+            if(sdlist.size()!=num){
+                System.err.println("测试异常:数量不同于数据库中签数量");
+            }
+            for(SpreadEnlist se:sdlist){
+                if(se.getDraw()!=1){
+                    System.err.println("测试异常:"+se.getEnlistId()+"没有将draw设置成1");
+                }
+            }
+        } catch (ActivityException e) {
+            System.err.println(e.getMessage());
+        }
+
+        try {
+            SpreadEnlist se = new SpreadEnlist();
+            se.setDraw(1);
+            se.setActivityId(la.getActivityId());
+            se.setCreateTime(new Date());
+            se.setName("我的天" + 110);
+            se.setShopId((long) (100 + 110));
+            se.setTelephone("12118128122");
+            se.setUserId(1000000808 + (long) 110);
+            spreadEnlistMapper.insertSelective(se);
+            la.randomHit(num);
+        } catch (ActivityException e) {
+            System.err.println(e.getMessage());
+        }
+
+
+    }
+
 }
