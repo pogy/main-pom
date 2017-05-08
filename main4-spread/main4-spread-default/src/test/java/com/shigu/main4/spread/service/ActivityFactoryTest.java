@@ -54,7 +54,7 @@ public class ActivityFactoryTest {
 
     @Test
     @Transactional
-    public void selLedActivityWithFunc_joinActivity() throws ActivityException {
+    public void selLedActivityWithFunc_joinActivityTest() throws ActivityException {
         //4个参数不能为空
         //参数//Long userId, Long shopId, String name, String phone
 
