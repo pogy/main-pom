@@ -1,8 +1,10 @@
 package com.shigu.main4.activity.service;
 
+import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,4 +41,12 @@ public interface Activity {
      * @return 命中的人列表
      */
     List<ActivityEnlistVO> selEnlist(int hitType);
+
+    /**
+     * 修改期
+     * @param type 活动类别
+     * @param start 开始时间
+     * @param end 结束时间
+     */
+    void modify(ActivityType type, Date start, Date end);
 }

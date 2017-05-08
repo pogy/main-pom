@@ -237,6 +237,11 @@ public class ActivityFactoryImpl implements ActivityFactory{
             public List<ActivityEnlistVO> selEnlist(int hitType) {
                 return null;
             }
+
+            @Override
+            public void modify(ActivityType type, Date start, Date end) {
+
+            }
         };
     }
 
@@ -288,6 +293,11 @@ public class ActivityFactoryImpl implements ActivityFactory{
                     vos.add(vo);
                 }
                 return vos;
+            }
+
+            @Override
+            public void modify(ActivityType type, Date start, Date end) {
+
             }
         };
     }

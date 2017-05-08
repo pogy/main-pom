@@ -25,6 +25,7 @@ boolean limit(Object... param) //活动限制
 Long joinActivity(Long userId,Long shopId,String name,String phone) //参加活动
 List<ActivityEnlistVO> randomHit(Integer number) //随机命中
 List<ActivityEnlistVO> selEnlist(int hitType) //查询报名列表
+void modify(ActivityType type,Date start,Date end) //修改期次
 }
 
 note left of Activity:投放的活动,\n一期里面可能\n投放多个活动
