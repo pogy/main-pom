@@ -36,7 +36,7 @@
                     <ul class="swiper-wrapper">
                         <#list moduleSet.images as img>
                             <li class="swiper-slide" style="width: 100%;">
-                                <a href="${img.targetUrl!}" target="_blank">
+                                <a href="<#if img.targetUrl != ''>${img.targetUrl!}<#else>javascript:void(0)</#if>" target="_blank">
                                     <img style="width: 100%;" src="${img.picUrl!}">
                                 </a>
                             </li>

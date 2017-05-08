@@ -42,7 +42,7 @@ public interface ActivityFactory {
      * @param activityId 活动ID
      * @return 具体活动对象
      */
-    <T extends Activity> T selActivityById(Long activityId);
+    <T extends Activity> T selActivityById(Long activityId) throws ActivityException;
 
     /**
      * 按期次ID查投放的广告

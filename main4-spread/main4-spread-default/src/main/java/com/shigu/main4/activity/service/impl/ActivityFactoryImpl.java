@@ -119,12 +119,17 @@ public class ActivityFactoryImpl implements ActivityFactory{
     }
 
     @Override
-    public <T extends Activity> T selActivityById(Long activityId) {
-        if(activityId==-99l){
-            return (T) selGoatActivityWithFunc();
+    public <T extends Activity> T selActivityById(Long activityId) throws ActivityException {
+        SpreadActivity activity=spreadActivityMapper.selectByPrimaryKey(activityId);
+        if(activity==null){
+            throw new ActivityException(activityId+"活动不存在");
         }
-        T activity=(T)selLedActivityWithFunc();
-        return activity;
+        if(activity.getType().equals(ActivityType.GOAT_LED.ordinal())){
+            return (T)BeanMapper.map(activity,selLedActivityWithFunc());
+        }else if(activity.getType().equals(ActivityType.GOAT_SELL.ordinal())){
+            return (T)BeanMapper.map(activity,selGoatActivityWithFunc());
+        }
+        return null;
     }
 
     /**

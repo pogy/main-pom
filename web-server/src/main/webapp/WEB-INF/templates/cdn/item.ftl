@@ -10,11 +10,11 @@
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
 
     
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1493785998003" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1493976455025" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1493785998003"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1493976455025"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -23,7 +23,7 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
                         <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
@@ -655,13 +655,13 @@ if(gysShopId && gysShopId != ""){
                 <ul>
                     <li>
                         <#if session_user_redis__.logshop.shopId??>
-                        <a href="javascript:;" xzclick="collectShopCannot" title="收藏本店">收藏本店</a>
+                        <a href="javascript:;" id="scStore" xzclick="collectShopCannot" title="收藏本店">收藏本店</a>
                         <#else>
-                        <a href="javascript:;" xzclick="collectShop" data-id="${vo.storeRelation.storeId!}" title="收藏本店">收藏本店</a>
+                        <a href="javascript:;" id="scStore" xzclick="collectShop" data-id="${vo.storeRelation.storeId!}" title="收藏本店">收藏本店</a>
                         </#if>
                     </li>
                     <#if vo.other.taobaoUrl != "">
-                    <li><a href="${vo.other.taobaoUrl!}" rel="nofollow" target="_blank" title="进入批发商淘宝店铺">进入淘宝店</a></li>
+                    <li><a href="${vo.other.taobaoUrl!}"  rel="nofollow" target="_blank" title="进入批发商淘宝店铺">进入淘宝店</a></li>
                     <#else>
                     <li><a class="disabled" rel="nofollow" target="_blank" title="进入批发商淘宝店铺">进入淘宝店</a></li>
                     </#if>

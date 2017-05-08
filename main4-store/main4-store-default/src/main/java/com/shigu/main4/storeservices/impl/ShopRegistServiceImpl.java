@@ -64,9 +64,6 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
     private MemberUserSubMapper memberUserSubMapper;
 
     @Autowired
-    private ShopBaseService shopBaseService;
-
-    @Autowired
     private ShopFitmentService shopFitmentService;
 
     /**
@@ -433,7 +430,6 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
         shiguShop.setLastModifyTime(new Date());
         shiguShopMapper.insertSelective(shiguShop);
         Long shopId = shiguShop.getShopId();
-        shopBaseService.addToEs(shopId);
 
         //初始化装修
         try {
