@@ -125,7 +125,7 @@ public class ActivityFactoryImpl implements ActivityFactory{
         if(activity.getType().equals(ActivityType.GOAT_LED.ordinal())){
             return (T)selLedActivityWithFunc();
         }else if(activity.getType().equals(ActivityType.GOAT_SELL.ordinal())){
-            return (T)BeanMapper.map(activity,selGoatActivityWithFunc());
+            return (T)selGoatActivityWithFunc();
         }
         return null;
     }
@@ -267,7 +267,7 @@ public class ActivityFactoryImpl implements ActivityFactory{
                     return null;
                 }
                 SpreadEnlistExample example=new SpreadEnlistExample();
-                SpreadEnlistExample.Criteria ce=example.createCriteria();
+                SpreadEnlistExample.Criteria ce=example.createCriteria().andActivityIdEqualTo(this.getActivityId());
                 switch (hitType){
                     case 0:
                         ce.andDrawEqualTo(0);
@@ -282,13 +282,8 @@ public class ActivityFactoryImpl implements ActivityFactory{
                 List<SpreadEnlist> selist=spreadEnlistMapper.selectByExample(example);
                 List<ActivityEnlistVO> vos=new ArrayList<>();
                 for(SpreadEnlist se:selist){
-                    ActivityEnlistVO vo=new ActivityEnlistVO();
-                    vo.setActivityId(se.getActivityId());
+                    ActivityEnlistVO vo=BeanMapper.map(se,ActivityEnlistVO.class);
                     vo.setEnId(se.getEnlistId());
-                    vo.setName(se.getName());
-                    vo.setShopId(se.getShopId());
-                    vo.setTelephone(se.getTelephone());
-                    vo.setUserId(se.getUserId());
                     vos.add(vo);
                 }
                 return vos;
