@@ -18,14 +18,34 @@ public class BeanMapper {
         mapper = mapperFactory.getMapperFacade();
     }
 
+    /**
+     * 转化抽象类
+     * @param source
+     * @param destination
+     * @param <S>
+     * @param <D>
+     * @return
+     */
     public static <S,D> D mapAbstact(S source,D destination){
         Class<S> sourceClass= (Class<S>) source.getClass();
         Class<D> destinationClass= (Class<D>) destination.getClass();
-        Field[] fields=sourceClass.getFields();
+        Field[] fields=sourceClass.getDeclaredFields();
         for(Field f:fields){
-            System.out.println(f.getModifiers());
+            if(f.getModifiers()!=2){
+                continue;
+            }
+            String fieldName=f.getName();
+            fieldName=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+            String setFieldName="set"+fieldName;
+            String getFieldName="get"+fieldName;
+            try {
+                Method getMethod=sourceClass.getMethod(getFieldName);
+                Method method=destinationClass.getMethod(setFieldName,f.getType());
+                method.invoke(destination,getMethod.invoke(source));
+            } catch (Exception e) {
+            }
         }
-        return null;
+        return destination;
     }
     /**
      * 值拷贝

@@ -117,15 +117,16 @@ public class ActivityFactoryImpl implements ActivityFactory{
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T extends Activity> T selActivityById(Long activityId) throws ActivityException {
         SpreadActivity activity=spreadActivityMapper.selectByPrimaryKey(activityId);
         if(activity==null){
             throw new ActivityException(activityId+"活动不存在");
         }
         if(activity.getType().equals(ActivityType.GOAT_LED.ordinal())){
-            return (T)selLedActivityWithFunc();
+            return (T)BeanMapper.mapAbstact(activity,selLedActivityWithFunc());
         }else if(activity.getType().equals(ActivityType.GOAT_SELL.ordinal())){
-            return (T)selGoatActivityWithFunc();
+            return (T)BeanMapper.mapAbstact(activity,selGoatActivityWithFunc());
         }
         return null;
     }
