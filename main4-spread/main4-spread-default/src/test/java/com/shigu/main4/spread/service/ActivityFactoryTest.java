@@ -383,10 +383,11 @@ public class ActivityFactoryTest {
         try {
              num=6;
             la.randomHit(num);
+            Assert.fail();
         } catch (ActivityException e) {
             System.err.println(e.getMessage());
         }
-        try {
+       // try {
             num=4;
             List<ActivityEnlistVO> volsit=la.randomHit(num);
             List<Long> eidlist=new ArrayList<>();
@@ -398,17 +399,19 @@ public class ActivityFactoryTest {
             seex.createCriteria().andActivityIdEqualTo(la.getActivityId()).andEnlistIdIn(eidlist);
 
             List<SpreadEnlist> sdlist=spreadEnlistMapper.selectByExample(seex);
-            if(sdlist.size()!=num){
+            assertEquals(sdlist.size(),num);
+           /* if(sdlist.size()!=num){
                 System.err.println("测试异常:数量不同于数据库中签数量");
-            }
+            }*/
             for(SpreadEnlist se:sdlist){
-                if(se.getDraw()!=1){
-                    System.err.println("测试异常:"+se.getEnlistId()+"没有将draw设置成1");
-                }
+               // if(se.getDraw()!=1){
+                    assertEquals(se.getDraw ().intValue (),1);
+                    //System.err.println("测试异常:"+se.getEnlistId()+"没有将draw设置成1");
+               // }
             }
-        } catch (ActivityException e) {
-            System.err.println(e.getMessage());
-        }
+        //} catch (ActivityException e) {
+        //    System.err.println(e.getMessage());
+       // }
 
         try {
             SpreadEnlist se = new SpreadEnlist();
@@ -421,6 +424,7 @@ public class ActivityFactoryTest {
             se.setUserId(1000000808 + (long) 110);
             spreadEnlistMapper.insertSelective(se);
             la.randomHit(num);
+            Assert.fail();
         } catch (ActivityException e) {
             System.err.println(e.getMessage());
         }
