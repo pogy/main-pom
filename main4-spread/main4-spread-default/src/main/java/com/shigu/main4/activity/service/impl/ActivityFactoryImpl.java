@@ -23,6 +23,7 @@ import com.shigu.main4.activity.service.ActivityFactory;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
+import com.shigu.main4.activity.vo.LedActivityVO;
 import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -127,7 +128,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
             public <T extends ActivityVO> Long throwActivity(T activity) {
                 //防止数据有变,通通用本活动的ID,不管有没有传入
                 activity.setTermId(this.getTermId());
-
                 SpreadActivity sactivity = BeanMapper.map(activity, SpreadActivity.class);
                 sactivity.setContext(JSON.toJSONString(activity));
                 sactivity.setActivityId(null);
@@ -149,19 +149,25 @@ public class ActivityFactoryImpl implements ActivityFactory {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends Activity> T selActivityById(Long activityId) throws ActivityException {
         SpreadActivity activity = spreadActivityMapper.selectByPrimaryKey(activityId);
         if (activity == null) {
             throw new ActivityException(activityId + "活动不存在");
         }
+        ActivityVO vo= (ActivityVO) JSON.parseObject(activity.getContext(),ActivityType.values()[activity.getType()].getActivityVoClass());
+        return selActivityByVo(BeanMapper.map(activity,vo));
+    }
 
-        if (activity.getType().equals(ActivityType.GOAT_LED.ordinal())) {
-            return (T) BeanMapper.mapAbstact(activity, selLedActivityWithFunc());
-        } else if (activity.getType().equals(ActivityType.GOAT_SELL.ordinal())) {
-            return (T) BeanMapper.mapAbstact(activity, selGoatActivityWithFunc());
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Activity> T selActivityByVo(ActivityVO vo) {
+        T activity;
+        if(vo.getClass().equals(ActivityType.GOAT_SELL.getActivityVoClass())){
+            activity= (T) selGoatActivityWithFunc();
+        }else{
+            activity= (T) selLedActivityWithFunc();
         }
-        return null;
+        return BeanMapper.mapAbstact(vo,activity);
     }
 
     /**
@@ -357,11 +363,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
 
         }
         return se.getEnlistId();
-    }
-
-    @Override
-    public <T extends Activity> T selActivityByVo(ActivityVO vo) {
-        return null;
     }
 
     @Override
