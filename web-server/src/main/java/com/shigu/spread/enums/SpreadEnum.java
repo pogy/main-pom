@@ -14,7 +14,15 @@ public enum SpreadEnum {
     WOMAN_TJDK("推荐档口","WOMAN-TJDK"),WOMAN_XHTX("喜欢T恤","WOMAN-XHTX"),WOMAN_XHNZ("喜欢牛仔","WOMAN-XHNZ"),
     WOMAN_XHXZ("喜欢鞋子","WOMAN-XHXZ"),WOMAN_HOTBOT("热卖下方条形广告","WOMAN-HOTBOT"),WOMAN_STYLEBOT("风格下方条形广告","WOMAN-STYLEBOT"),MAN_GOODS_RIGHT("男装商品库右侧","MAN-GOODS-RIGHT"),
     WOMAN_GOODS_RIGHT("女装商品库右侧","WOMAN-GOODS-RIGHT"),
-    SEARCH_RIGHT("搜索右侧","SEARCH-RIGHT"),INDEX_TOP("首页顶部","INDEX-TOP"),LOGIN_GT("登录页", "LOGIN_GT");
+    SEARCH_RIGHT("搜索右侧","SEARCH-RIGHT"),INDEX_TOP("首页顶部","INDEX-TOP"),LOGIN_GT("登录页", "LOGIN_GT"),
+
+
+
+    JX_SPREAD_INDEX_WOMAN("濮院站首页男装商品广告", "JX_SPREAD_INDEX_WOMAN"),
+    JX_SPREAD_INDEX_MENSHOES("濮院站首页男鞋商品广告", "JX_SPREAD_INDEX_MENSHOES"),
+    JX_SPREAD_INDEX_CHILDRENCOLTHING("濮院站首页童装商品广告", "JX_SPREAD_INDEX_CHILDRENCOLTHING"),
+
+    ;
 
     SpreadEnum(String title, String code) {
         this.title = title;

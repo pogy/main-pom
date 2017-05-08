@@ -8,13 +8,10 @@ import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.services.OldStoreNumShowService;
-import com.shigu.main4.cdn.vo.IndexPageVO;
-import com.shigu.main4.cdn.vo.ItemShowVO;
-import com.shigu.main4.cdn.vo.LoveGoodsList;
-import com.shigu.main4.cdn.vo.ShopCommentVO;
-import com.shigu.main4.cdn.vo.ShopShowVO;
+import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.item.enums.SearchCategory;
@@ -56,6 +53,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
@@ -204,6 +202,7 @@ public class CdnAction {
      * 濮院站首页
      * @return
      */
+    @RequestMapping(value = "jxindex4show" , method = RequestMethod.GET)
     public String jxindex4show(HttpServletRequest request,Model model){
         String website = "jx";
 
@@ -217,13 +216,47 @@ public class CdnAction {
         newGoodsBO.setWebSite("jx");
         ShiguPager<GoodsInSearch> newGoodsPager = todayNewGoodsService.selGoodsNew(newGoodsBO);
 
+        List<IndexGoodsVo> indexNewGoodsVoList = new ArrayList<IndexGoodsVo>();
+        if(newGoodsPager != null && newGoodsPager.getContent() != null){
+            for(GoodsInSearch goodsInSearch : newGoodsPager.getContent()){
+                IndexGoodsVo indexGoodsVo = BeanMapper.map(goodsInSearch, IndexGoodsVo.class);
+                if(!StringUtils.isEmpty(goodsInSearch.getPostTimeText())){
+                    int kgIndex = goodsInSearch.getPostTimeText().indexOf(" ");
+                    if(kgIndex != -1){
+                        String marketName = goodsInSearch.getPostTimeText().substring(0,kgIndex);
+                        String storeNum = goodsInSearch.getPostTimeText().substring(kgIndex + 1,goodsInSearch.getPostTimeText().length());
+                        indexGoodsVo.setParentMarketName(marketName);
+                        indexGoodsVo.setStoreNum(storeNum);
+                    }
+                }
+                indexNewGoodsVoList.add(indexGoodsVo);
+            }
+        }
+
         // 男装数据
-
-        // 女装数据
-
+        Object womanSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_WOMAN));
+        // 男鞋数据
+        Object menShoesSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_MENSHOES));
         // 童装数据
+        Object chilrenSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_CHILDRENCOLTHING));
 
+
+
+        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
+        model.addAttribute("hasGoods", goodsNum);
+        model.addAttribute("hasStore", shopsNum);
+        model.addAttribute("webSite", website);
+        model.addAttribute("list_newGoods", newGoodsPager.getContent());
+        model.addAttribute("nzgoods", indexNewGoodsVoList);
+        model.addAttribute("list_childGoods", chilrenSpread);
+        model.addAttribute("xiebaogoods", menShoesSpread);
         return "";
+    }
+
+
+    public void changeGoods(){
+
+
     }
 
 
