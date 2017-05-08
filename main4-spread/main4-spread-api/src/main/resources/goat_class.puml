@@ -7,7 +7,8 @@ class GoatLocationVO{
 }
 
 abstract class GoatLocation{
-+List<Goat> selGoats()
++<T extends GoatVO> List<T> selGoats()
++<T extends GoatVO> List<T> selPrepareGoats()
 }
 
 interface Goat{
@@ -16,14 +17,29 @@ void publish()
 void preparePublish(Long second)
 }
 
+enum GoatType{
+ImgGoat
+ItemGoat
+TextGoat
+}
+
 class GoatVO{
 -Long localId
 -Long goatId
+-Long fromActivityId
+-Date fromTime
+-Date toTime
+-Long userId
 }
 
 class ImgGoatVO{
 -String picUrl
 -String linkUrl
+}
+
+class TextGoatVO{
+-String text
+-String href
 }
 
 class ItemUpVO{
@@ -45,6 +61,10 @@ abstract class ItemGoat{
 
 }
 
+abstract class TextGoat{
+
+}
+
 interface ItemResort{
 ItemUpVO selUp() //查询真实上款量与虚假上款量
 void modifyUp(Integer num) //修改虚假上款量
@@ -60,12 +80,17 @@ Goat <|.. ImgGoat
 
 Goat <|.. ItemGoat
 
+Goat <|.. TextGoat
+
 GoatVO <|-- ImgGoatVO
 GoatVO <|-- ItemGoatVO
+GoatVO <|-- TextGoatVO
 
 ImgGoatVO <|-- ImgGoat
 
 ItemGoatVO <|-- ItemGoat
+
+TextGoatVO <|-- TextGoat
 
 ItemResort <|.. ItemGoat
 

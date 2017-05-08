@@ -639,5 +639,141 @@ public class SpreadEnlistExample implements SgExample{
             this.addCriterion("draw not between", value1, value2, "draw");
             return (SpreadEnlistExample.Criteria)this;
         }
+
+        public SpreadEnlistExample.Criteria andActivityIdIsNull() {
+            this.addCriterion("activity_id is null");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdIsNotNull() {
+            this.addCriterion("activity_id is not null");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdEqualTo(Long value) {
+            this.addCriterion("activity_id =", value, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdNotEqualTo(Long value) {
+            this.addCriterion("activity_id <>", value, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdGreaterThan(Long value) {
+            this.addCriterion("activity_id >", value, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("activity_id >=", value, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdLessThan(Long value) {
+            this.addCriterion("activity_id <", value, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("activity_id <=", value, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdLike(String value) {
+            this.addCriterion("activity_id like", value, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdNotLike(String value) {
+            this.addCriterion("activity_id not like", value, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }        public SpreadEnlistExample.Criteria andActivityIdIn(List<Long> values) {
+            this.addCriterion("activity_id in", values, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdNotIn(List<Long> values) {
+            this.addCriterion("activity_id not in", values, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdBetween(Long value1, Long value2) {
+            this.addCriterion("activity_id between", value1, value2, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andActivityIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("activity_id not between", value1, value2, "activityId");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeIsNull() {
+            this.addCriterion("create_time is null");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeIsNotNull() {
+            this.addCriterion("create_time is not null");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeEqualTo(Date value) {
+            this.addCriterion("create_time =", value, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeNotEqualTo(Date value) {
+            this.addCriterion("create_time <>", value, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeGreaterThan(Date value) {
+            this.addCriterion("create_time >", value, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            this.addCriterion("create_time >=", value, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeLessThan(Date value) {
+            this.addCriterion("create_time <", value, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            this.addCriterion("create_time <=", value, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeLike(String value) {
+            this.addCriterion("create_time like", value, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeNotLike(String value) {
+            this.addCriterion("create_time not like", value, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }        public SpreadEnlistExample.Criteria andCreateTimeIn(List<Date> values) {
+            this.addCriterion("create_time in", values, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeNotIn(List<Date> values) {
+            this.addCriterion("create_time not in", values, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
+            this.addCriterion("create_time between", value1, value2, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
+
+        public SpreadEnlistExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            this.addCriterion("create_time not between", value1, value2, "createTime");
+            return (SpreadEnlistExample.Criteria)this;
+        }
     }
 }

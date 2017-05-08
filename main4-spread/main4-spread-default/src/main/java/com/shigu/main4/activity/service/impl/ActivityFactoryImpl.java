@@ -2,14 +2,20 @@ package com.shigu.main4.activity.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.SpreadActivity;
+import com.opentae.data.mall.beans.SpreadEnlist;
 import com.opentae.data.mall.beans.SpreadTerm;
+import com.opentae.data.mall.examples.SpreadEnlistExample;
 import com.opentae.data.mall.examples.SpreadTermExample;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.SpreadActivityMapper;
 import com.opentae.data.mall.interfaces.SpreadEnlistMapper;
 import com.opentae.data.mall.interfaces.SpreadTermMapper;
 import com.shigu.main4.activity.beans.ActivityEnlist;
 import com.shigu.main4.activity.beans.ActivityTerm;
+import com.shigu.main4.activity.beans.GoatActivity;
+import com.shigu.main4.activity.beans.LedActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.service.Activity;
@@ -21,6 +27,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +45,8 @@ public class ActivityFactoryImpl implements ActivityFactory{
 
     @Autowired
     SpreadTermMapper spreadTermMapper;
-
+    @Autowired
+    ShiguShopMapper shiguShopMapper;
     @Override
     public ActivityTerm addAndGetTerm(ActivityTermVO vo) throws ActivityException {
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
@@ -111,8 +119,140 @@ public class ActivityFactoryImpl implements ActivityFactory{
     }
 
     @Override
-    public <T extends Activity> T selActivityById(Long activityId) {
+    public <T extends Activity> T selActivityById(Long activityId) throws ActivityException {
+        SpreadActivity activity=spreadActivityMapper.selectByPrimaryKey(activityId);
+        if(activity==null){
+            throw new ActivityException(activityId+"活动不存在");
+        }
+        if(activity.getType().equals(ActivityType.GOAT_LED.ordinal())){
+            return (T)BeanMapper.map(activity,selLedActivityWithFunc());
+        }else if(activity.getType().equals(ActivityType.GOAT_SELL.ordinal())){
+            return (T)BeanMapper.map(activity,selGoatActivityWithFunc());
+        }
         return null;
+    }
+
+    /**
+     * led功能对你赋能
+     * @return
+     */
+    private LedActivity selLedActivityWithFunc(){
+        return new LedActivity() {
+            @Override
+            public boolean limit(Object... param) {
+                return (Long)(param[0])==1087L;
+            }
+
+            @Override
+            public Long joinActivity(Long userId, Long shopId, String name, String phone) throws ActivityException {
+
+                if(userId==null){
+                    throw new ActivityException ("userId不能为空");
+                }
+                if(shopId==null){
+                    throw new ActivityException ("shopId不能为空");
+                }
+                if(name==null||"".equals (name)){
+                    throw new ActivityException ("name不能为空");
+                }
+                if(phone==null||"".equals (phone)){
+                    throw new ActivityException ("phone不能为空");
+                }
+
+               ShiguShop ss= shiguShopMapper.selectByPrimaryKey (shopId);
+               if(limit (ss.getMarketId ())){
+                   SpreadEnlist se=new SpreadEnlist ();
+                   se.setActivityId (this.getActivityId ());
+                   se.setUserId (userId);
+                   se.setTelephone (phone);
+                   se.setShopId (shopId);
+                   se.setName (name);
+                   se.setDraw (0);
+                   try {
+                       spreadEnlistMapper.insertSelective (se);
+                   } catch (RuntimeException e) {
+                       if(e.getMessage()!=null&&e.getMessage().contains("Duplicate entry")){
+                           throw new ActivityException ("重复参加");
+                       }else{
+                            throw e;
+                       }
+
+                   }
+                   return se.getEnlistId ();
+
+               }else{
+                   throw new ActivityException ("不符合活动条件");
+               }
+
+            }
+
+            @Override
+            public List<ActivityEnlistVO> randomHit(Integer number) {
+                return null;
+            }
+
+            @Override
+            public List<ActivityEnlistVO> selEnlist(int hitType) {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * 广告报名对象赋能
+     * @return
+     */
+    private GoatActivity selGoatActivityWithFunc(){
+        return new GoatActivity() {
+
+            @Override
+            public boolean limit(Object... param) {
+                return false;
+            }
+
+            @Override
+            public Long joinActivity(Long userId, Long shopId, String name, String phone) {
+                return null;
+            }
+
+            @Override
+            public List<ActivityEnlistVO> randomHit(Integer number) {
+                return null;
+            }
+
+            @Override
+            public List<ActivityEnlistVO> selEnlist(int hitType) {
+                if(this.getActivityId()==null){
+                    return null;
+                }
+                SpreadEnlistExample example=new SpreadEnlistExample();
+                SpreadEnlistExample.Criteria ce=example.createCriteria();
+                switch (hitType){
+                    case 0:
+                        ce.andDrawEqualTo(0);
+                        break;
+                    case 1:
+                        ce.andDrawEqualTo(1);
+                        break;
+                    default:
+                        break;
+                }
+                example.setOrderByClause("create_time desc");
+                List<SpreadEnlist> selist=spreadEnlistMapper.selectByExample(example);
+                List<ActivityEnlistVO> vos=new ArrayList<>();
+                for(SpreadEnlist se:selist){
+                    ActivityEnlistVO vo=new ActivityEnlistVO();
+                    vo.setActivityId(se.getActivityId());
+                    vo.setEnId(se.getEnlistId());
+                    vo.setName(se.getName());
+                    vo.setShopId(se.getShopId());
+                    vo.setTelephone(se.getTelephone());
+                    vo.setUserId(se.getUserId());
+                    vos.add(vo);
+                }
+                return vos;
+            }
+        };
     }
 
     @Override
@@ -121,8 +261,31 @@ public class ActivityFactoryImpl implements ActivityFactory{
     }
 
     @Override
-    public ActivityEnlist selEnlistById(Long enlistId) {
-        return null;
+    public ActivityEnlist selEnlistById(Long enlistId) throws ActivityException {
+
+
+        return new ActivityEnlist () {
+                @Override public void hit () throws ActivityException {
+                    if (this.getEnId () == null) {
+
+                        throw new ActivityException ("没有EnId");
+                    }
+                    SpreadEnlist se= spreadEnlistMapper.selectByPrimaryKey (this.getEnId ());
+                    se.setDraw (1);
+                    spreadEnlistMapper.updateByPrimaryKey (se);
+                }
+
+                @Override public void unhit () throws ActivityException {
+                    if (this.getEnId () == null) {
+
+                        throw new ActivityException ("没有EnId");
+                    }
+                    SpreadEnlist se= spreadEnlistMapper.selectByPrimaryKey (this.getEnId ());
+                    se.setDraw (0);
+                    spreadEnlistMapper.updateByPrimaryKey (se);
+                }
+            };
+      //
     }
 
     @Override

@@ -14,6 +14,7 @@ import java.util.Date;
  * @date 2017/04/14 11:47
  *
  */
+@Deprecated
 public class SpreadAuctType implements Serializable {
     /** 主键ID */
     @Id

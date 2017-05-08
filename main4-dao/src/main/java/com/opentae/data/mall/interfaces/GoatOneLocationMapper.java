@@ -2,7 +2,7 @@ package com.opentae.data.mall.interfaces;
 
 import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
-import com.opentae.data.mall.beans.SpreadAuctType;
+import com.opentae.data.mall.beans.GoatOneLocation;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
@@ -10,9 +10,8 @@ import org.springframework.context.annotation.Scope;
  * 
  * Created by exampleCreater.
  */
-@MyBatisRepository("tae_mall_spreadAuctTypeMapper")
+@MyBatisRepository("tae_mall_goatOneLocationMapper")
 @Scope("singleton")
 @Lazy(true)
-@Deprecated
-public interface SpreadAuctTypeMapper extends Mapper<SpreadAuctType> {
+public interface GoatOneLocationMapper extends Mapper<GoatOneLocation> {
 }

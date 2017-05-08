@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Scope;
 @MyBatisRepository("tae_mall_spreadAuctScrenMapper")
 @Scope("singleton")
 @Lazy(true)
+@Deprecated
 public interface SpreadAuctScrenMapper extends Mapper<SpreadAuctScren> {
 
     /** 当前活动 */

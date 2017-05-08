@@ -1,5 +1,6 @@
 package com.shigu.main4.activity.service;
 
+import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface Activity {
      * 活动参与限制
      * @return true允许
      */
-    boolean limit();
+    boolean limit(Object... param);
 
     /**
      * 参加活动
@@ -23,14 +24,14 @@ public interface Activity {
      * @param phone 联系电话
      * @return 报名记录ID
      */
-    Long joinActivity(Long userId,Long shopId,String name,String phone);
+    Long joinActivity(Long userId,Long shopId,String name,String phone) throws ActivityException;
 
     /**
      * 在报名人中,随机命中指定人数
      * @param number 人数
      * @return 命中的人列表
      */
-    List<ActivityEnlistVO> randomHit(Integer number);
+    List<ActivityEnlistVO> randomHit(Integer number) throws ActivityException;
 
     /**
      * 查询报名列表

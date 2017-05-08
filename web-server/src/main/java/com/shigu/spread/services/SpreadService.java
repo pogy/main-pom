@@ -2,9 +2,12 @@ package com.shigu.spread.services;
 
 import com.opentae.data.mall.beans.ItemForList;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.shigu.main4.spread.exceptions.GoatException;
-import com.shigu.main4.spread.service.GoatGetService;
-import com.shigu.main4.spread.vo.GoatALocation;
+import com.shigu.main4.activity.exceptions.ActivityException;
+import com.shigu.main4.goat.beans.GoatLocation;
+import com.shigu.main4.goat.service.GoatFactory;
+import com.shigu.main4.goat.vo.GoatVO;
+import com.shigu.main4.goat.vo.ImgGoatVO;
+import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.vo.ImgBannerVO;
 import com.shigu.spread.vo.ItemSimpleInfo;
@@ -30,7 +33,7 @@ public class SpreadService {
     private static final Logger logger = LoggerFactory.getLogger(SpreadService.class);
 
     @Autowired
-    GoatGetService goatGetService;
+    GoatFactory goatFactory;
     
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
@@ -50,19 +53,17 @@ public class SpreadService {
             public List<ItemSpreadVO> selReal() {
                 List<ItemSpreadVO> vos=new ArrayList<>();
                 try {
-                    GoatALocation location=goatGetService.getLocationData(spread.getCode());
+                    GoatLocation location=goatFactory.getALocation(spread.getCode());
                     List<Long> goodsIds=new ArrayList<>();
                     Map<Long,ItemSimpleInfo> itemMap=new HashMap<>();
-                    for(GoatALocation.GoatAItem gai:location.getItems()){
-                        String goodsId=gai.selValueByFieldName("goods_id");
-                        String style=gai.selValueByFieldName("style");
-                        String element=gai.selValueByFieldName("element");
-                        String shopTitle=gai.selValueByFieldName("shop_title");
-                        if (goodsId != null) {
-                            goodsId=goodsId.trim();
-                            Long goodsIdLong=Long.valueOf(goodsId);
-                            itemMap.put(goodsIdLong,new ItemSimpleInfo(goodsIdLong,style,element,shopTitle));
-                            goodsIds.add(goodsIdLong);
+                    List<ItemGoatVO> goats=location.selGoats();
+                    for(ItemGoatVO igv:goats){
+                        String style=igv.getStyle();
+                        String element=igv.getElement();
+                        String shopTitle=igv.getShopTitle();
+                        if (igv.getItemId() != null) {
+                            itemMap.put(igv.getItemId(),new ItemSimpleInfo(igv.getItemId(),style,element,shopTitle));
+                            goodsIds.add(igv.getItemId());
                         }
                     }
                     List<Long> sortIds=new ArrayList<>();
@@ -114,12 +115,13 @@ public class SpreadService {
             public List<ImgBannerVO> selReal() {
                 List<ImgBannerVO> vos=new ArrayList<>();
                 try {
-                    GoatALocation location=goatGetService.getLocationData(spread.getCode());
-                    for(GoatALocation.GoatAItem gai:location.getItems()){
-                        vos.add(new ImgBannerVO(gai.selValueByFieldName("link"),gai.selValueByFieldName("pic"),null));
+                    GoatLocation location = goatFactory.getALocation(spread.getCode());
+                    List<ImgGoatVO> goats = location.selGoats();
+                    for (ImgGoatVO gv : goats) {
+                        vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), null));
                     }
-                } catch (GoatException e) {
-                    logger.error("获取广告位数据["+spread+"]失败");
+                }catch (ActivityException e){
+                    logger.error("查图片类广告Miss",e);
                 }
                 return vos;
             }

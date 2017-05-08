@@ -13,6 +13,7 @@ import java.util.Date;
  * @date 2017/3/22 17:02
  *
  */
+@Deprecated
 public class SpreadAuctShop implements Serializable{
 
     /** 主键ID */

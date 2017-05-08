@@ -21,7 +21,7 @@ class ActivityTermVO{
 note left of ActivityTerm:活动期次
 
 interface Activity{
-boolean limit() //活动限制
+boolean limit(Object... param) //活动限制
 Long joinActivity(Long userId,Long shopId,String name,String phone) //参加活动
 List<ActivityEnlistVO> randomHit(Integer number) //随机命中
 List<ActivityEnlistVO> selEnlist(int hitType) //查询报名列表

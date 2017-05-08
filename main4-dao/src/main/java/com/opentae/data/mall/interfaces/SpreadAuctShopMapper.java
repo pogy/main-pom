@@ -16,6 +16,7 @@ import java.util.List;
 @MyBatisRepository("tae_mall_spreadAuctShopMapper")
 @Scope("singleton")
 @Lazy(true)
+@Deprecated
 public interface SpreadAuctShopMapper extends Mapper<SpreadAuctShop> {
 
     /** 广告竞拍列表 */
