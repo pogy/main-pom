@@ -47,6 +47,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
     @Autowired
     ShiguShopMapper shiguShopMapper;
 
+
     @Override
     public ActivityTerm addAndGetTerm(ActivityTermVO vo) throws ActivityException {
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
@@ -184,6 +185,9 @@ public class ActivityFactoryImpl implements ActivityFactory {
 
             @Override
             public Long joinActivity(Long userId, Long shopId, String name, String phone) throws ActivityException {
+                if (shopId == null) {
+                    throw new ActivityException("shopId不能为空");
+                }
                 ShiguShop ss = shiguShopMapper.selectByPrimaryKey(shopId);
                 if (limit(ss.getMarketId())) {
                     throw new ActivityException("不符合活动条件");
@@ -279,17 +283,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
     }
 
     /**
-     * 修改期
-     * @param termId
-     * @param type
-     * @param start
-     * @param end
-     */
-    private void modifyTermCommon(Long termId,ActivityType type, Date start, Date end){
-
-    }
-
-    /**
      * 查询报名列表公共
      * @param activityId
      * @param hitType
@@ -367,13 +360,19 @@ public class ActivityFactoryImpl implements ActivityFactory {
 
     @Override
     public ActivityEnlist selEnlistById(Long enlistId) throws ActivityException {
+        SpreadEnlist en=spreadEnlistMapper.selectByPrimaryKey(enlistId);
+        if(en==null){
+            throw new ActivityException(enlistId+" 报名信息不存在");
+        }
+        return selEnlistByVo(BeanMapper.map(en,ActivityEnlistVO.class));
+    }
 
-
-        return new ActivityEnlist() {
+    @Override
+    public ActivityEnlist selEnlistByVo(ActivityEnlistVO vo) {
+        ActivityEnlist enlist=new ActivityEnlist() {
             @Override
             public void hit() throws ActivityException {
                 if (this.getEnId() == null) {
-
                     throw new ActivityException("没有EnId");
                 }
                 SpreadEnlist se = spreadEnlistMapper.selectByPrimaryKey(this.getEnId());
@@ -384,7 +383,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
             @Override
             public void unhit() throws ActivityException {
                 if (this.getEnId() == null) {
-
                     throw new ActivityException("没有EnId");
                 }
                 SpreadEnlist se = spreadEnlistMapper.selectByPrimaryKey(this.getEnId());
@@ -392,11 +390,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 spreadEnlistMapper.updateByPrimaryKey(se);
             }
         };
-        //
-    }
-
-    @Override
-    public ActivityEnlist selEnlistByVo(ActivityEnlistVO vo) {
-        return null;
+        return BeanMapper.mapAbstact(vo,enlist);
     }
 }

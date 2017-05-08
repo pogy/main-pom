@@ -258,6 +258,7 @@ public class ActivityFactoryTest {
         activity.setActivityId(20170508L);
         activity.setTermId(20170508L);
         activity.setType(ActivityType.GOAT_SELL.ordinal());
+        activity.setContext("{}");
         spreadActivityMapper.insertSelective(activity);
 
         Map<Long,SpreadEnlist> inseMap=new HashMap<>();
