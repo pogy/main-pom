@@ -24,6 +24,12 @@ public class GoatVO {
 
     private Long userId;
 
+    private String code;
+
+    private String description;
+
+    private Integer sort;
+
     public Long getDataId() {
         return dataId;
     }
@@ -78,5 +84,29 @@ public class GoatVO {
 
     public void setGoatId(Long goatId) {
         this.goatId = goatId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }

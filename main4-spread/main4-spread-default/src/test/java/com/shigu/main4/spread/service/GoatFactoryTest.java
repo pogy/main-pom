@@ -7,6 +7,7 @@ import com.opentae.data.mall.interfaces.GoatOneItemMapper;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.enums.GoatType;
+import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.GoatLocationVO;
 import com.shigu.main4.goat.vo.GoatVO;
@@ -46,7 +47,7 @@ public class GoatFactoryTest {
     GoatItemDataMapper goatItemDataMapper;
     @Test
     @Transactional
-    public <T extends GoatVO>void getALocationByVo_selGoatsTest() throws ActivityException{
+    public <T extends GoatVO>void getALocationByVo_selGoatsTest() throws ActivityException, GoatException {
 
         GoatOneItem oneItem=new GoatOneItem();
         oneItem.setDisEnabled(false);
@@ -78,7 +79,7 @@ public class GoatFactoryTest {
             //添加详细数据
 
             GoatItemData data=new GoatItemData();
-            data.setContext("{}");
+            data.setContext("{\"itemId\":556363,\"title\":\"张大山\"}");
             data.setFromActivityId(1L+(long)i);
             data.setFromTime(ca.getTime());
             data.setToTime(new Date());
