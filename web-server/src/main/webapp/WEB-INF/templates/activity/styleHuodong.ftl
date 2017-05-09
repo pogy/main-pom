@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网拥有丰富的线下服装批发进货渠道，四季星座、置地国际、电商基地、钱塘大厦、保太和、星座女装、新杭派、九天女装、意法服饰等杭州四季青实体批发市场都已入驻，实体批发档口高达15000多家，为全国淘宝网店代理商提供一手货源。同时支持一件代发，一键上传到淘宝、到阿里、到微信，数据包下载，无理由退换货服务。">
     
-    <link href="http://style.571xz.com/searchV5/css/styleHuodong.css?t=1493779558468" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/newHuodong.css?t=1494229084918" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/styleHuodong.js?t=1493779558468"></script>
+    <script src="http://style.571xz.com/searchV5/js/newHuodong.js?t=1494229084918"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -24,7 +24,7 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
                         <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
@@ -234,21 +234,29 @@
         <div class="flexslider">
           <ul class="slides">
             <li>
-              <img src="http://style.571xz.com/searchV5/css/img/banner.jpg" />
+              <img src="http://style.571xz.com/searchV5/css/img/banner1.jpg" />
               </li>
               
           </ul>
         </div>
     </div>
      
-    
+    <div class="awardUser layout">
+        <h3>获奖名单<span class="abortDate">（截止xx月xx日）</span>:</h3>
+        <div class="userName">
+            <ul>
+                
+            </ul>
+        </div>
+    </div>
 </div>
-<script>/*============ searchV5/styleHuodong#pageRender BEGIN ============*/
+<script>/*============ searchV5/newHuodong#pageRender BEGIN ============*/
 
 ${test!}
 var ajaxHost = 'http://xb.571xz.com/';
+//var ajaxHost = 'http://192.168.1.144/';
 
-/*============ searchV5/styleHuodong#pageRender END ============*/
+/*============ searchV5/newHuodong#pageRender END ============*/
 
 
 </script>

@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/market/css/index.css?t=1493779618357" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1494311401988" rel="stylesheet">
     
   </head>
 <body>
@@ -18,7 +18,7 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
                         <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
@@ -175,7 +175,7 @@
 <div class="header layout">
     <div class="logoLeft">
         <a href="${main_host!}">
-            <img src="http://style.571xz.com/market/css/img/mtLogo.png" alt width=168 height=30 />
+            <img src="http://style.571xz.com/marketV3/css/img/mtLogo.png" alt width=168 height=30 />
         </a>
         <em>逛市场</em>
     </div>
@@ -187,16 +187,26 @@
                 <li class="select" type="store">档口</li>
                 
             </ul>
+            <#if webSite == 'hz'>
             <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
+            </#if>
         </div>
         <div class="searchBox">
-            <form id="formSearch" action="http://www.571xz.com/storenum.htm">
+            <form id="formSearch" action="http://www.571xz.com/storenum.htm?webSite=${webSite!}">
                 <input type="text" class="searchCon" name="keyword" placeholder="输入档口号进行查询">
                 <button class="searchBtn">搜索</button>
             </form>
         </div>
     </div>
     
+    <script>/*============ marketV3/page#search BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ marketV3/page#search END ============*/
+
+
+</script>
 </div>
 <div class="nav">
     <div class="layout navCon">
@@ -259,10 +269,30 @@
 </div>
 <div class="marketList layout">
     <#list marketList as markets>
-        <h3>
+        <#if marketId == '5'>
+            <#if markets.title == '8F'>
+            <h3 data-lm='${markets.title!}'>
+                <span>${markets.title!} 石狮工厂店</span>
+                <i></i>
+            </h3>
+            <#elseif markets.title == '9F'>
+            <h3 data-lm='${markets.title!}'>
+                <span>${markets.title!} 牛仔城</span>
+                <i></i>
+            </h3>
+            <#else>
+            <h3 data-lm='${markets.title!}'>
+                <span>${markets.title!}</span>
+                <i></i>
+            </h3>
+            </#if>
+        
+        <#else>
+        <h3 data-lm='${markets.title!}'>
             <span>${markets.title!}</span>
             <i></i>
         </h3>
+        </#if>
         <ul class="storeList clearfix">
         <#list markets.stores as store>
             <li>
@@ -289,17 +319,17 @@
         </ul>
     </#list>
 </div>
-<script>/*============ market/index#marketList BEGIN ============*/
+<script>/*============ marketV3/index#marketList BEGIN ============*/
 
 '${hack!}';
 if(this.$wgt && $wgt.setBg){
     $wgt.setBg();
 }
 
-/*============ market/index#marketList END ============*/
+/*============ marketV3/index#marketList END ============*/
 
 
-</script><script>/*============ market/index#marketList BEGIN ============*/
+</script><script>/*============ marketV3/index#marketList BEGIN ============*/
 
 '${hack!}';
 var marketName = '${marketName!}';
@@ -309,7 +339,7 @@ if(this.$wgt){
     $wgt.marketBar &&$wgt.marketBar();
 }
 
-/*============ market/index#marketList END ============*/
+/*============ marketV3/index#marketList END ============*/
 
 
 </script>
@@ -353,9 +383,9 @@ if(this.$wgt){
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-        <script src="http://style.571xz.com/market/js/jquery.pjax.js"></script>
-        <script src="http://style.571xz.com/market/js/nprogress.js"></script>
-<script src="http://style.571xz.com/market/js/index.js?t=1493779618357"></script>
+        <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
+        <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1494311401988"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

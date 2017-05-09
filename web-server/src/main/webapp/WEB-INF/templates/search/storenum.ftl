@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/storenum.css?t=1493779562805" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/storenum.css?t=1494310981895" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/storenum.js?t=1493779562805"></script>
+    <script src="http://style.571xz.com/searchV5/js/storenum.js?t=1494310981895"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -24,7 +24,7 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
                         <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
@@ -194,17 +194,18 @@
                     
                     
                     
-                    
                     <li type="goods" >商品</li>
                     <li type="store" class="select">档口</li>
                     
                 </ul>
+                <#if webSite == 'hz'>
                 <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
+                </#if>
             </div>
             <div class="searchBox">
                 
+                <form id="formSearch" action="http://www.571xz.com/storenum.htm?webSite=${webSite!}" >
                 
-                <form id="formSearch" action="http://www.571xz.com/storenum.htm" >
                     
                     
                     <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
@@ -212,6 +213,14 @@
                 </form>
             </div>
         </div>
+        <script>/*============ xz/page#search BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#search END ============*/
+
+
+</script>
     </div>
 </div>
 <div class="nav">
