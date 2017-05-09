@@ -58,6 +58,7 @@ import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
@@ -176,6 +177,13 @@ public class MemberAction {
     @RequestMapping("member/goodsCollectinit")
     public String goodsCollectinit(GoodsCollectBO bo,HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        try {
+            if(!StringUtils.isEmpty(bo.getKeyword())){
+                bo.setKeyword(URLDecoder.decode(bo.getKeyword(),"UTF-8"));
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         ShiguPager<ItemCollectVO> pager=userCollectService.selItemCollections(ps.getUserId(),bo.getKeyword(), bo.getWebsite(),
                 bo.getPage(),bo.getRows());
         if(pager.getContent()!=null)
