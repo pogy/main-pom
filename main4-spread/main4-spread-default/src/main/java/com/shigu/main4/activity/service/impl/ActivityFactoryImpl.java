@@ -192,31 +192,25 @@ public class ActivityFactoryImpl implements ActivityFactory {
                     throw new ActivityException("活动Id不存在");
                 }
                 SpreadEnlistExample seex = new SpreadEnlistExample();
-                seex.createCriteria().andActivityIdEqualTo(activityId);
-                List<SpreadEnlist> selsit = spreadEnlistMapper.selectByExample(seex);
+                SpreadEnlistExample.Criteria ce=seex.createCriteria();
+                ce.andActivityIdEqualTo(activityId);
+                int count = spreadEnlistMapper.countByExample(seex);
 
-                if (number > selsit.size()) {
+                if (number > count) {
                     throw new ActivityException(activityId + ":数量大于报名人数");
                 }
-                for (SpreadEnlist enlist : selsit) {
-                    if (enlist.getDraw() == 1) {
-                        throw new ActivityException(activityId + ":该活动已存在中签数据");
-                    }
+                ce.andDrawEqualTo(1);
+                int dcount = spreadEnlistMapper.countByExample(seex);
 
+                if (dcount>=1) {
+                    throw new ActivityException(activityId + ":该活动已存在中签数据");
                 }
                 //随机选取元素。。
-                List<SpreadEnlist> eidSet = new ArrayList<>();
-                Random random = new Random();
-                for (int i = 0; i < number; i++) {
-                    int index = random.nextInt(selsit.size());
-                    eidSet.add(selsit.get(index));
-                    selsit.remove(index);
-
-                }
+                List<SpreadEnlist> ranList=spreadEnlistMapper.romSelectData(activityId,number);
                 //遍历set更新draw并传出list
                 List<ActivityEnlistVO> volist = new ArrayList<>();
 
-                for (SpreadEnlist enlist : eidSet) {
+                for (SpreadEnlist enlist : ranList) {
                     ActivityEnlistVO vo = new ActivityEnlistVO();
                     enlist.setDraw(1);
                     spreadEnlistMapper.updateByPrimaryKeySelective(enlist);

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.SpreadEnlistMapper" >
+
+	<select id="romSelectData" resultType="com.opentae.data.mall.beans.SpreadEnlist">
+		SELECT t1.enlist_Id ,t1.NAME,t1.telephone,t1.userId,t1.draw,t1.activityId FROM SPREAD_ENLIST t1
+		where t1.draw=${activityId} ORDER BY RAND() LIMIT ${NUM}
+	</select>
+
+</mapper>

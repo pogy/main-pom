@@ -3,8 +3,11 @@ package com.opentae.data.mall.interfaces;
 import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.mall.beans.SpreadEnlist;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
+
+import java.util.List;
 
 /**
  * 
@@ -14,4 +17,10 @@ import org.springframework.context.annotation.Scope;
 @Scope("singleton")
 @Lazy(true)
 public interface SpreadEnlistMapper extends Mapper<SpreadEnlist> {
+
+    /**
+     *
+     * @return
+     */
+     List<SpreadEnlist> romSelectData(@Param("activityId")Long activityId ,@Param("num")Integer num);
 }
