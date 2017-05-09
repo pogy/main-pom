@@ -41,6 +41,7 @@ import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
+import com.shigu.spread.vo.ItemSpreadVO;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
@@ -125,7 +126,7 @@ public class CdnAction {
      * 杭州首页动态页面
      * @return
      */
-//    @RequestMapping("hzindex4show")
+    @RequestMapping("hzindex4show")
     public String hzindex4show(HttpServletRequest request,Model model){
         Cookie[] cookies=request.getCookies();
         String manOrWoman="Man";
@@ -162,7 +163,7 @@ public class CdnAction {
         //热卖
         model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_RM:SpreadEnum.MAN_RM)));
-        //风格商品
+        // 风格商品
         model.addAttribute("styleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_FG:SpreadEnum.MAN_FG)));
         //元素商品
@@ -190,7 +191,6 @@ public class CdnAction {
             loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
                     SpreadEnum.MAN_XHNZ)));
         }
-
         loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
         model.addAttribute("loveGoodslist",loves);
@@ -210,6 +210,16 @@ public class CdnAction {
         int shopsNum = indexShowService.getShopAllCount(website);
         // 商品总数
         ObjFromCache<List<Integer>> goodsNum = indexShowService.selNumList();
+        if(goodsNum != null){
+            List<Integer> goodsNumList = (List<Integer>)goodsNum.selObj();
+            StringBuffer stringBuffer = new StringBuffer();
+            if(goodsNumList!=null){
+                for(Integer integer : goodsNumList){
+                    stringBuffer.append(integer);
+                }
+                model.addAttribute("hasGoods",stringBuffer.toString());
+            }
+        }
 
         // 今日新品
         NewGoodsBO newGoodsBO = new NewGoodsBO();
@@ -240,23 +250,35 @@ public class CdnAction {
         // 童装数据
         Object chilrenSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_CHILDRENCOLTHING));
 
-
+        List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>)womanSpread);
+        List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>)menShoesSpread);
+        List<IndexGoodsVo> chilrenSpreadList = changeGoods((List<ItemSpreadVO>)chilrenSpread);
 
         model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
-        model.addAttribute("hasGoods", goodsNum);
         model.addAttribute("hasStore", shopsNum);
         model.addAttribute("webSite", website);
-        model.addAttribute("list_newGoods", newGoodsPager.getContent());
-        model.addAttribute("nzgoods", indexNewGoodsVoList);
-        model.addAttribute("list_childGoods", chilrenSpread);
-        model.addAttribute("xiebaogoods", menShoesSpread);
-        return "";
+        model.addAttribute("list_newGoods", indexNewGoodsVoList);
+        model.addAttribute("nzgoods", womanSpreadList);
+        model.addAttribute("xiebaogoods", menShoesSpreadList);
+        model.addAttribute("list_childGoods", chilrenSpreadList);
+        return "index/py";
     }
 
-
-    public void changeGoods(){
-
-
+    /**
+     * 数据转化
+     * @return
+     */
+    public List<IndexGoodsVo> changeGoods(List<ItemSpreadVO> spreadVOList){
+        if(spreadVOList == null || spreadVOList.size() == 0){
+            return null;
+        }
+        List<IndexGoodsVo> indexGoodsVoList = new ArrayList<IndexGoodsVo>();
+        for(ItemSpreadVO itemSpreadVO : spreadVOList){
+            IndexGoodsVo indexGoodsVo = BeanMapper.map(itemSpreadVO, IndexGoodsVo.class);
+            indexGoodsVo.setParentMarketName(itemSpreadVO.getMarketText());
+            indexGoodsVoList.add(indexGoodsVo);
+        }
+        return indexGoodsVoList;
     }
 
 
