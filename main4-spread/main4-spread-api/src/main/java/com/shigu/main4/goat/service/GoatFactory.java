@@ -1,6 +1,5 @@
 package com.shigu.main4.goat.service;
 
-import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.vo.GoatLocationVO;
@@ -17,11 +16,18 @@ import com.shigu.main4.goat.vo.GoatVO;
  */
 public interface GoatFactory {
     /**
+     * 按localID查
+     * @param localId
+     * @return
+     * @throws GoatException
+     */
+    GoatLocation getAlocation(Long localId) throws GoatException;
+    /**
      * 按广告位编号获取广告对象
      * @param code
      * @return
      */
-    GoatLocation getALocation(String code) throws ActivityException;
+    GoatLocation getALocation(String code) throws GoatException;
 
     /**
      * 按广告位值获取广告对象
