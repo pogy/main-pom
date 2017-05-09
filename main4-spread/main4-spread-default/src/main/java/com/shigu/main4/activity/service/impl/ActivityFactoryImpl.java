@@ -33,7 +33,7 @@ import java.util.*;
  * 活动工厂
  * Created by zhaohongbo on 17/5/4.
  */
-@Service
+@Service("activityFactory")
 public class ActivityFactoryImpl implements ActivityFactory {
     @Autowired
     SpreadActivityMapper spreadActivityMapper;
@@ -45,6 +45,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
     SpreadTermMapper spreadTermMapper;
     @Autowired
     ShiguShopMapper shiguShopMapper;
+
 
     @Override
     public ActivityTerm addAndGetTerm(ActivityTermVO vo) throws ActivityException {
@@ -127,7 +128,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
             public <T extends ActivityVO> Long throwActivity(T activity) {
                 //防止数据有变,通通用本活动的ID,不管有没有传入
                 activity.setTermId(this.getTermId());
-
                 SpreadActivity sactivity = BeanMapper.map(activity, SpreadActivity.class);
                 sactivity.setContext(JSON.toJSONString(activity));
                 sactivity.setActivityId(null);
@@ -149,19 +149,25 @@ public class ActivityFactoryImpl implements ActivityFactory {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends Activity> T selActivityById(Long activityId) throws ActivityException {
         SpreadActivity activity = spreadActivityMapper.selectByPrimaryKey(activityId);
         if (activity == null) {
             throw new ActivityException(activityId + "活动不存在");
         }
+        ActivityVO vo= (ActivityVO) JSON.parseObject(activity.getContext(),ActivityType.values()[activity.getType()].getActivityVoClass());
+        return selActivityByVo(BeanMapper.map(activity,vo));
+    }
 
-        if (activity.getType().equals(ActivityType.GOAT_LED.ordinal())) {
-            return (T) BeanMapper.mapAbstact(activity, selLedActivityWithFunc());
-        } else if (activity.getType().equals(ActivityType.GOAT_SELL.ordinal())) {
-            return (T) BeanMapper.mapAbstact(activity, selGoatActivityWithFunc());
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Activity> T selActivityByVo(ActivityVO vo) {
+        T activity;
+        if(vo.getClass().equals(ActivityType.GOAT_SELL.getActivityVoClass())){
+            activity= (T) selGoatActivityWithFunc();
+        }else{
+            activity= (T) selLedActivityWithFunc();
         }
-        return null;
+        return BeanMapper.mapAbstact(vo,activity);
     }
 
     /**
@@ -178,6 +184,9 @@ public class ActivityFactoryImpl implements ActivityFactory {
 
             @Override
             public Long joinActivity(Long userId, Long shopId, String name, String phone) throws ActivityException {
+                if (shopId == null) {
+                    throw new ActivityException("shopId不能为空");
+                }
                 ShiguShop ss = shiguShopMapper.selectByPrimaryKey(shopId);
                 if (limit(ss.getMarketId())) {
                     throw new ActivityException("不符合活动条件");
@@ -267,17 +276,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
     }
 
     /**
-     * 修改期
-     * @param termId
-     * @param type
-     * @param start
-     * @param end
-     */
-    private void modifyTermCommon(Long termId,ActivityType type, Date start, Date end){
-
-    }
-
-    /**
      * 查询报名列表公共
      * @param activityId
      * @param hitType
@@ -354,19 +352,20 @@ public class ActivityFactoryImpl implements ActivityFactory {
     }
 
     @Override
-    public <T extends Activity> T selActivityByVo(ActivityVO vo) {
-        return null;
+    public ActivityEnlist selEnlistById(Long enlistId) throws ActivityException {
+        SpreadEnlist en=spreadEnlistMapper.selectByPrimaryKey(enlistId);
+        if(en==null){
+            throw new ActivityException(enlistId+" 报名信息不存在");
+        }
+        return selEnlistByVo(BeanMapper.map(en,ActivityEnlistVO.class));
     }
 
     @Override
-    public ActivityEnlist selEnlistById(Long enlistId) throws ActivityException {
-
-
-        return new ActivityEnlist() {
+    public ActivityEnlist selEnlistByVo(ActivityEnlistVO vo) {
+        ActivityEnlist enlist=new ActivityEnlist() {
             @Override
             public void hit() throws ActivityException {
                 if (this.getEnId() == null) {
-
                     throw new ActivityException("没有EnId");
                 }
                 SpreadEnlist se = spreadEnlistMapper.selectByPrimaryKey(this.getEnId());
@@ -377,7 +376,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
             @Override
             public void unhit() throws ActivityException {
                 if (this.getEnId() == null) {
-
                     throw new ActivityException("没有EnId");
                 }
                 SpreadEnlist se = spreadEnlistMapper.selectByPrimaryKey(this.getEnId());
@@ -385,11 +383,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 spreadEnlistMapper.updateByPrimaryKey(se);
             }
         };
-        //
-    }
-
-    @Override
-    public ActivityEnlist selEnlistByVo(ActivityEnlistVO vo) {
-        return null;
+        return BeanMapper.mapAbstact(vo,enlist);
     }
 }

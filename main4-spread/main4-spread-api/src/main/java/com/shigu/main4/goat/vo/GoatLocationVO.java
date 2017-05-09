@@ -1,7 +1,5 @@
 package com.shigu.main4.goat.vo;
 
-import com.shigu.main4.goat.enums.GoatType;
-
 import java.io.Serializable;
 
 /**

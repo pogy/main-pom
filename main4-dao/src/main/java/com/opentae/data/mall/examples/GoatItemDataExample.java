@@ -707,5 +707,141 @@ public class GoatItemDataExample implements SgExample{
             this.addCriterion("context not between", value1, value2, "context");
             return (GoatItemDataExample.Criteria)this;
         }
+
+        public GoatItemDataExample.Criteria andStatusIsNull() {
+            this.addCriterion("status is null");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusIsNotNull() {
+            this.addCriterion("status is not null");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusEqualTo(Integer value) {
+            this.addCriterion("status =", value, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusNotEqualTo(Integer value) {
+            this.addCriterion("status <>", value, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusGreaterThan(Integer value) {
+            this.addCriterion("status >", value, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+            this.addCriterion("status >=", value, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusLessThan(Integer value) {
+            this.addCriterion("status <", value, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusLessThanOrEqualTo(Integer value) {
+            this.addCriterion("status <=", value, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusLike(String value) {
+            this.addCriterion("status like", value, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusNotLike(String value) {
+            this.addCriterion("status not like", value, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }        public GoatItemDataExample.Criteria andStatusIn(List<Integer> values) {
+            this.addCriterion("status in", values, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusNotIn(List<Integer> values) {
+            this.addCriterion("status not in", values, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusBetween(Integer value1, Integer value2) {
+            this.addCriterion("status between", value1, value2, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andStatusNotBetween(Integer value1, Integer value2) {
+            this.addCriterion("status not between", value1, value2, "status");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdIsNull() {
+            this.addCriterion("message_id is null");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdIsNotNull() {
+            this.addCriterion("message_id is not null");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdEqualTo(String value) {
+            this.addCriterion("message_id =", value, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdNotEqualTo(String value) {
+            this.addCriterion("message_id <>", value, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdGreaterThan(String value) {
+            this.addCriterion("message_id >", value, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdGreaterThanOrEqualTo(String value) {
+            this.addCriterion("message_id >=", value, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdLessThan(String value) {
+            this.addCriterion("message_id <", value, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdLessThanOrEqualTo(String value) {
+            this.addCriterion("message_id <=", value, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdLike(String value) {
+            this.addCriterion("message_id like", value, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdNotLike(String value) {
+            this.addCriterion("message_id not like", value, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }        public GoatItemDataExample.Criteria andMessageIdIn(List<String> values) {
+            this.addCriterion("message_id in", values, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdNotIn(List<String> values) {
+            this.addCriterion("message_id not in", values, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdBetween(String value1, String value2) {
+            this.addCriterion("message_id between", value1, value2, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andMessageIdNotBetween(String value1, String value2) {
+            this.addCriterion("message_id not between", value1, value2, "messageId");
+            return (GoatItemDataExample.Criteria)this;
+        }
     }
 }

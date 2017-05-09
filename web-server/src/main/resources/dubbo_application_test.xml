@@ -33,4 +33,7 @@
 
     <dubbo:service interface="com.shigu.main4.ucenter.services.UserBaseService" ref="userBaseService" timeout="20000"/>
 
+    <dubbo:service interface="com.shigu.main4.activity.service.ActivityFactory" ref="activityFactory" timeout="20000"/>
+
+    <dubbo:service interface="com.shigu.main4.goat.service.GoatFactory" ref="goatFactory" timeout="20000"/>
 </beans>

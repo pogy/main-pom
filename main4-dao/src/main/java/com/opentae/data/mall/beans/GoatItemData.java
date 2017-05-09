@@ -39,6 +39,14 @@ public class GoatItemData {
      * 广告私有数据
      */
     private String context;
+    /**
+     * 1有效，0无效，2预设
+     */
+    private Integer status;
+    /**
+     * 发送定时队列的ID值
+     */
+    private String messageId;
 
     public Long getDataId() {
         return dataId;
@@ -94,5 +102,21 @@ public class GoatItemData {
 
     public void setContext(String context) {
         this.context = context;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 }

@@ -2,6 +2,7 @@ package com.shigu.main4.goat.service;
 
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.goat.beans.GoatLocation;
+import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.vo.GoatLocationVO;
 import com.shigu.main4.goat.vo.GoatVO;
 
@@ -35,7 +36,7 @@ public interface GoatFactory {
      * @param <T>
      * @return
      */
-    <T extends Goat>T selGoatById(Long goatId);
+    <T extends Goat>T selGoatById(Long goatId) throws GoatException;
 
     /**
      * 按广告值获取广告对象
