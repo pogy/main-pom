@@ -243,7 +243,7 @@ public class GoatFactoryImpl implements GoatFactory {
         TextGoat goat = new TextGoat() {
             @Override
             public void publish() {
-
+                publishCommon(this);
             }
 
             @Override
@@ -287,7 +287,6 @@ public class GoatFactoryImpl implements GoatFactory {
      *
      * @param vo
      */
-    private void publishCommon(GoatVO vo) {
-
+    private <T extends GoatVO> void publishCommon(T vo) {
     }
 }
