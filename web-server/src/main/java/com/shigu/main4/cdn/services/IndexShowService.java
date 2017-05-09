@@ -8,6 +8,7 @@ import com.shigu.main4.cdn.vo.IndexNavVO;
 import com.shigu.main4.cdn.vo.LoveGoodsList;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.beans.TextGoat;
+import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.GoatVO;
 import com.shigu.main4.goat.vo.TextGoatVO;
@@ -116,7 +117,7 @@ public class IndexShowService {
                     for (TextGoatVO tgv : goats) {
                         navVOs.add(new IndexNavVO(tgv.getHref(), tgv.getText()));
                     }
-                }catch (ActivityException e){
+                }catch (GoatException e){
                     logger.error("查询标签类广告,miss",e);
                 }
                 return navVOs;
