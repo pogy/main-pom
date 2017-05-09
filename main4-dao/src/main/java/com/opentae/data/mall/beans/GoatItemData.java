@@ -46,7 +46,7 @@ public class GoatItemData {
     /**
      * 发送定时队列的ID值
      */
-    private String messageId;
+    private Date publishSchdule;
 
     public Long getDataId() {
         return dataId;
@@ -112,11 +112,11 @@ public class GoatItemData {
         this.status = status;
     }
 
-    public String getMessageId() {
-        return messageId;
+    public Date getPublishSchdule() {
+        return publishSchdule;
     }
 
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
+    public void setPublishSchdule(Date publishSchdule) {
+        this.publishSchdule = publishSchdule;
     }
 }

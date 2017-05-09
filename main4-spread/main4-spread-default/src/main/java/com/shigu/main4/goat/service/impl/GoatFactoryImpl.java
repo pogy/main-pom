@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,12 +203,12 @@ public class GoatFactoryImpl implements GoatFactory {
         ItemGoat goat = new ItemGoat() {
             @Override
             public void publish() {
-
+                publishCommon(this);
             }
 
             @Override
             public void preparePublish(Long second) {
-
+                preparePublishCommon(this,second);
             }
 
             @Override
@@ -248,7 +249,7 @@ public class GoatFactoryImpl implements GoatFactory {
 
             @Override
             public void preparePublish(Long second) {
-
+                preparePublishCommon(this,second);
             }
         };
         return BeanMapper.mapAbstact(textGoatVO, goat);
@@ -288,5 +289,26 @@ public class GoatFactoryImpl implements GoatFactory {
      * @param vo
      */
     private <T extends GoatVO> void publishCommon(T vo) {
+        GoatItemDataExample example=new GoatItemDataExample();
+        example.createCriteria().andStatusEqualTo(1).andGoatIdEqualTo(vo.getGoatId());
+        GoatItemData gid=new GoatItemData();
+        gid.setStatus(0);
+        goatItemDataMapper.updateByExampleSelective(gid,example);
+        gid=serializeGoat(vo);
+        goatItemDataMapper.insertSelective(gid);
+    }
+
+    private <T extends GoatVO> void preparePublishCommon(T vo,Long second){
+        GoatItemDataExample example=new GoatItemDataExample();
+        example.createCriteria().andStatusEqualTo(1).andGoatIdEqualTo(vo.getGoatId());
+        GoatItemData gid=new GoatItemData();
+        gid.setStatus(0);
+        goatItemDataMapper.updateByExampleSelective(gid,example);
+        gid=serializeGoat(vo);
+        gid.setStatus(2);
+        Calendar cal=Calendar.getInstance();
+        cal.add(Calendar.SECOND,second.intValue());
+        gid.setPublishSchdule(cal.getTime());
+        goatItemDataMapper.insertSelective(gid);
     }
 }
