@@ -280,12 +280,9 @@ $('.fixtopbar .tabbox li').on('click', function(){
             <div class="notice">
                 <h3>星座公告</h3>
                 <ul> 
-                    <li><a title="淘宝7月第一周规则合集" target="_blank" href="http://zixun.571xz.com/detail?id=187">[规则]淘宝7月第一周规则合集！</a></li> 
-                    <li><a title="男装市场调研报告" target="_blank" href="http://zixun.571xz.com/detail?id=189">[调研]男装市场调研报告 </a></li> 
-                    <li><a title="这个夏天最活跃的衣橱单品你入了吗" target="_blank" href="http://zixun.571xz.com/detail?id=190">[推荐]这个夏天最活跃的衣橱单品你入了吗？</a></li> 
-                    <li><a target="_blank" href="http://zixun.571xz.com/detail?id=82">[帮助]如何玩转一件代发？</a></li> 
-                    <li><a target="_blank" href="http://www.571xz.com/help_site/help.htm?p=xzwfx">[帮助]星座微分享使用方法</a></li> 
-                    <li><a target="_blank" href="http://zixun.571xz.com/detail?id=14">[新手入门]用户使用手册</a></li>
+                    <#list notices as item>
+                    <li><a title="${item.text!}" target="_blank" href="${item.href!}">${item.text!}</a></li> 
+                    </#list>
                 </ul>
             </div>
             <div class="rzbox"> 
@@ -473,8 +470,10 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </div>
     </div>
 </div>
-<script>
 <!--#mobile-jump-js 移动端跳转js-->
+<script>/*============ otherIndex/page#footerinfo BEGIN ============*/
+
+${test!}
 var oldonload;
 if (/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))) {
     try {
@@ -504,6 +503,10 @@ function setTimeout_addbackchange(){
          oldonload();
      }
 }
+
+/*============ otherIndex/page#footerinfo END ============*/
+
+
 </script>
 <div class="footer">
     <div class="inner">
