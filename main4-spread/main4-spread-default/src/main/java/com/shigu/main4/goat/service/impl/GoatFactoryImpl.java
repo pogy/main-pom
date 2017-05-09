@@ -1,12 +1,16 @@
 package com.shigu.main4.goat.service.impl;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.GoatItemData;
 import com.opentae.data.mall.beans.GoatOneLocation;
+import com.opentae.data.mall.beans.GoodsupNoreal;
 import com.opentae.data.mall.examples.GoatItemDataExample;
 import com.opentae.data.mall.examples.GoatOneLocationExample;
+import com.opentae.data.mall.examples.GoodsupNorealExample;
 import com.opentae.data.mall.interfaces.GoatItemDataMapper;
 import com.opentae.data.mall.interfaces.GoatOneItemMapper;
 import com.opentae.data.mall.interfaces.GoatOneLocationMapper;
+import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.goat.beans.GoatLocation;
@@ -44,6 +48,8 @@ public class GoatFactoryImpl implements GoatFactory{
 
     @Autowired
     GoatItemDataMapper goatItemDataMapper;
+    @Autowired
+    GoodsupNorealMapper goodsupNorealMapper;
 
     /**
      * 查一个广告位
@@ -157,7 +163,20 @@ public class GoatFactoryImpl implements GoatFactory{
 
             @Override
             public void modifyUp(Integer num) {
-
+                GoodsupNoreal gn=new GoodsupNoreal();
+                gn.setItemId(this.getItemId());
+                gn=goodsupNorealMapper.selectOne(gn);
+                if(gn==null){
+                    gn=new GoodsupNoreal();
+                    gn.setItemId(this.getItemId());
+                    gn.setAddNum(num);
+                    goodsupNorealMapper.insertSelective(gn);
+                }else{
+                    GoodsupNoreal g=new GoodsupNoreal();
+                    g.setNorealId(gn.getNorealId());
+                    g.setAddNum(gn.getAddNum()+num);
+                    goodsupNorealMapper.updateByPrimaryKeySelective(g);
+                }
             }
 
             @Override
