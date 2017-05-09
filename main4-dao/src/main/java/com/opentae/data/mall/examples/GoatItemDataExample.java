@@ -776,71 +776,71 @@ public class GoatItemDataExample implements SgExample{
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdIsNull() {
-            this.addCriterion("message_id is null");
+        public GoatItemDataExample.Criteria andPublishSchduleIsNull() {
+            this.addCriterion("publish_schdule is null");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdIsNotNull() {
-            this.addCriterion("message_id is not null");
+        public GoatItemDataExample.Criteria andPublishSchduleIsNotNull() {
+            this.addCriterion("publish_schdule is not null");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdEqualTo(String value) {
-            this.addCriterion("message_id =", value, "messageId");
+        public GoatItemDataExample.Criteria andPublishSchduleEqualTo(Date value) {
+            this.addCriterion("publish_schdule =", value, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdNotEqualTo(String value) {
-            this.addCriterion("message_id <>", value, "messageId");
+        public GoatItemDataExample.Criteria andPublishSchduleNotEqualTo(Date value) {
+            this.addCriterion("publish_schdule <>", value, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdGreaterThan(String value) {
-            this.addCriterion("message_id >", value, "messageId");
+        public GoatItemDataExample.Criteria andPublishSchduleGreaterThan(Date value) {
+            this.addCriterion("publish_schdule >", value, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdGreaterThanOrEqualTo(String value) {
-            this.addCriterion("message_id >=", value, "messageId");
+        public GoatItemDataExample.Criteria andPublishSchduleGreaterThanOrEqualTo(Date value) {
+            this.addCriterion("publish_schdule >=", value, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdLessThan(String value) {
-            this.addCriterion("message_id <", value, "messageId");
+        public GoatItemDataExample.Criteria andPublishSchduleLessThan(Date value) {
+            this.addCriterion("publish_schdule <", value, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdLessThanOrEqualTo(String value) {
-            this.addCriterion("message_id <=", value, "messageId");
+        public GoatItemDataExample.Criteria andPublishSchduleLessThanOrEqualTo(Date value) {
+            this.addCriterion("publish_schdule <=", value, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdLike(String value) {
-            this.addCriterion("message_id like", value, "messageId");
+        public GoatItemDataExample.Criteria andPublishSchduleLike(String value) {
+            this.addCriterion("publish_schdule like", value, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdNotLike(String value) {
-            this.addCriterion("message_id not like", value, "messageId");
+        public GoatItemDataExample.Criteria andPublishSchduleNotLike(String value) {
+            this.addCriterion("publish_schdule not like", value, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
-        }        public GoatItemDataExample.Criteria andMessageIdIn(List<String> values) {
-            this.addCriterion("message_id in", values, "messageId");
-            return (GoatItemDataExample.Criteria)this;
-        }
-
-        public GoatItemDataExample.Criteria andMessageIdNotIn(List<String> values) {
-            this.addCriterion("message_id not in", values, "messageId");
+        }        public GoatItemDataExample.Criteria andPublishSchduleIn(List<Date> values) {
+            this.addCriterion("publish_schdule in", values, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdBetween(String value1, String value2) {
-            this.addCriterion("message_id between", value1, value2, "messageId");
+        public GoatItemDataExample.Criteria andPublishSchduleNotIn(List<Date> values) {
+            this.addCriterion("publish_schdule not in", values, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
         }
 
-        public GoatItemDataExample.Criteria andMessageIdNotBetween(String value1, String value2) {
-            this.addCriterion("message_id not between", value1, value2, "messageId");
+        public GoatItemDataExample.Criteria andPublishSchduleBetween(Date value1, Date value2) {
+            this.addCriterion("publish_schdule between", value1, value2, "publishSchdule");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andPublishSchduleNotBetween(Date value1, Date value2) {
+            this.addCriterion("publish_schdule not between", value1, value2, "publishSchdule");
             return (GoatItemDataExample.Criteria)this;
         }
     }
