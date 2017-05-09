@@ -74,10 +74,10 @@ public class ActivityFactoryImpl implements ActivityFactory {
     private void termTimeCheck(Long termId,ActivityType type,Date startTime,Date endTime) throws ActivityException {
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
         SpreadTermExample termExample = new SpreadTermExample();
-        SpreadTermExample.Criteria cri1=termExample.createCriteria().andEndTimeGreaterThan(startTime)
-                .andStartTimeLessThan(startTime).andTypeEqualTo(type.ordinal());
-        SpreadTermExample.Criteria cri2=termExample.or().andStartTimeLessThan(endTime).andEndTimeGreaterThan(endTime)
-                .andTypeEqualTo(type.ordinal());
+        SpreadTermExample.Criteria cri1=termExample.createCriteria().andEndTimeGreaterThanOrEqualTo(startTime)
+                .andStartTimeLessThanOrEqualTo(startTime).andTypeEqualTo(type.ordinal());
+        SpreadTermExample.Criteria cri2=termExample.or().andStartTimeLessThanOrEqualTo(endTime)
+                .andEndTimeGreaterThanOrEqualTo(endTime).andTypeEqualTo(type.ordinal());
         if (termId != null) {
             cri1.andTermIdNotEqualTo(termId);
             cri2.andTermIdNotEqualTo(termId);
@@ -115,6 +115,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
         }
         ActivityTerm term = selTermWithFunc();
         BeanMapper.mapAbstact(sterm, term);
+        term.setActivityType(ActivityType.values()[sterm.getType()]);
         return term;
     }
 

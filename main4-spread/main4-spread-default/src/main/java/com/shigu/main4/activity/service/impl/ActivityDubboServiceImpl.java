@@ -1,16 +1,22 @@
 package com.shigu.main4.activity.service.impl;
 
 import com.shigu.main4.activity.beans.ActivityTerm;
+import com.shigu.main4.activity.beans.GoatActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
+import com.shigu.main4.activity.service.Activity;
 import com.shigu.main4.activity.service.ActivityDubboService;
 import com.shigu.main4.activity.service.ActivityFactory;
+import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
+import com.shigu.main4.activity.vo.GoatActivityWithEnlist;
+import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 活动对外接口
@@ -29,7 +35,7 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
 
     @Override
     public ActivityTermVO selByTermId(Long termId) {
-        return activityFactory.selTermById(termId);
+        return BeanMapper.map(activityFactory.selTermById(termId),ActivityTermVO.class);
     }
 
     @Override
@@ -43,4 +49,13 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
         ActivityTerm term=activityFactory.selTermById(termId);
         return term.throwActivity(activity);
     }
+
+    @Override
+    public GoatActivityWithEnlist selActivityEnlists(Long activityId, Integer hitType) throws ActivityException {
+        GoatActivity activity=activityFactory.selActivityById(activityId);
+        GoatActivityWithEnlist gawe=BeanMapper.map(activity,GoatActivityWithEnlist.class);
+        gawe.setEnlists(activity.selEnlist(hitType));
+        return gawe;
+    }
+
 }

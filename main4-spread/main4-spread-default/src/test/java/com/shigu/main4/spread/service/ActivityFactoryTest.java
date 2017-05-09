@@ -13,6 +13,7 @@ import com.shigu.main4.activity.beans.GoatActivity;
 import com.shigu.main4.activity.beans.LedActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
+import com.shigu.main4.activity.service.ActivityDubboService;
 import com.shigu.main4.activity.service.ActivityFactory;
 import com.shigu.main4.activity.service.impl.ActivityFactoryImpl;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
@@ -52,6 +53,15 @@ public class ActivityFactoryTest {
     SpreadActivityMapper spreadActivityMapper;
     @Autowired
     SpreadEnlistMapper spreadEnlistMapper;
+
+    @Autowired
+    ActivityDubboService activityDubboService;
+
+//    @Test
+//    public void testId(){
+//        ActivityTermVO atv=activityDubboService.selByTermId(50L);
+//        System.out.println(atv);
+//    }
 
     @Test
     @Transactional
