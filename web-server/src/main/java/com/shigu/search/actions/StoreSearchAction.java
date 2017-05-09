@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.concurrent.ExecutorService;
+
 /**
  * 店铺类搜索
  * Created by zhaohongbo on 17/4/5.

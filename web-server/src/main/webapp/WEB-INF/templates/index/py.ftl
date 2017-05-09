@@ -473,6 +473,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </div>
     </div>
 </div>
+<script>
 <!--#mobile-jump-js 移动端跳转js-->
 var oldonload;
 if (/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))) {
@@ -503,6 +504,7 @@ function setTimeout_addbackchange(){
          oldonload();
      }
 }
+</script>
 <div class="footer">
     <div class="inner">
         <p class="sitemap" style="width:650px;"> 

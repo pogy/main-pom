@@ -1,5 +1,6 @@
 package com.shigu.main4.cdn.actions;
 
+import com.alibaba.fastjson.JSON;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.bo.ShopCdnBO;
@@ -243,6 +244,10 @@ public class CdnAction {
             }
         }
 
+        // 首页幻灯片广告
+        Object dtSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_DT));
+        // 幻灯片下方广告
+        Object xtSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_XT));
         // 男装数据
         Object womanSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_WOMAN));
         // 男鞋数据
@@ -257,10 +262,10 @@ public class CdnAction {
         model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
         model.addAttribute("hasStore", shopsNum);
         model.addAttribute("webSite", website);
-        model.addAttribute("list_newGoods", indexNewGoodsVoList);
-        model.addAttribute("nzgoods", womanSpreadList);
-        model.addAttribute("xiebaogoods", menShoesSpreadList);
-        model.addAttribute("list_childGoods", chilrenSpreadList);
+        model.addAttribute("list_newGoods", JSON.toJSONString(indexNewGoodsVoList));
+        model.addAttribute("nzgoods", JSON.toJSONString(womanSpreadList));
+        model.addAttribute("xiebaogoods", JSON.toJSONString(menShoesSpreadList));
+        model.addAttribute("list_childGoods", JSON.toJSONString(chilrenSpreadList));
         return "index/py";
     }
 
