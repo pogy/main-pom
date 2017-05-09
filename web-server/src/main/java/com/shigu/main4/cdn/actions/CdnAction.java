@@ -225,17 +225,19 @@ public class CdnAction {
         // 今日新品
         NewGoodsBO newGoodsBO = new NewGoodsBO();
         newGoodsBO.setWebSite("jx");
+        newGoodsBO.setRows(15);
         ShiguPager<GoodsInSearch> newGoodsPager = todayNewGoodsService.selGoodsNew(newGoodsBO);
 
         List<IndexGoodsVo> indexNewGoodsVoList = new ArrayList<IndexGoodsVo>();
         if(newGoodsPager != null && newGoodsPager.getContent() != null){
             for(GoodsInSearch goodsInSearch : newGoodsPager.getContent()){
                 IndexGoodsVo indexGoodsVo = BeanMapper.map(goodsInSearch, IndexGoodsVo.class);
-                if(!StringUtils.isEmpty(goodsInSearch.getPostTimeText())){
-                    int kgIndex = goodsInSearch.getPostTimeText().indexOf(" ");
+                indexGoodsVo.setStoreId(goodsInSearch.getStoreid().toString());
+                if(!StringUtils.isEmpty(goodsInSearch.getFullStoreName())){
+                    int kgIndex = goodsInSearch.getFullStoreName().indexOf(" ");
                     if(kgIndex != -1){
-                        String marketName = goodsInSearch.getPostTimeText().substring(0,kgIndex);
-                        String storeNum = goodsInSearch.getPostTimeText().substring(kgIndex + 1,goodsInSearch.getPostTimeText().length());
+                        String marketName = goodsInSearch.getFullStoreName().substring(0,kgIndex);
+                        String storeNum = goodsInSearch.getFullStoreName().substring(kgIndex + 1,goodsInSearch.getFullStoreName().length());
                         indexGoodsVo.setParentMarketName(marketName);
                         indexGoodsVo.setStoreNum(storeNum);
                     }
@@ -244,10 +246,6 @@ public class CdnAction {
             }
         }
 
-        // 首页幻灯片广告
-        Object dtSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_DT));
-        // 幻灯片下方广告
-        Object xtSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_XT));
         // 男装数据
         Object womanSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_WOMAN));
         // 男鞋数据
@@ -258,6 +256,15 @@ public class CdnAction {
         List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>)womanSpread);
         List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>)menShoesSpread);
         List<IndexGoodsVo> chilrenSpreadList = changeGoods((List<ItemSpreadVO>)chilrenSpread);
+
+        //全站公告
+        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
+        //大图
+        model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
+                SpreadEnum.JX_SPREAD_INDEX_DT)));
+        //轮播下方小图
+        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
+                SpreadEnum.JX_SPREAD_INDEX_XT)));
 
         model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
         model.addAttribute("hasStore", shopsNum);

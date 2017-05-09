@@ -127,11 +127,11 @@ public class ShopSearchServiceImpl implements ShopSearchService {
      * @return
      */
     @Override
-    public List<SearchShopSimple> selShopByIds(List<Long> shopIds) {
+    public List<SearchShopSimple> selShopByIds(List<Long> shopIds, String website) {
         if (shopIds == null || shopIds.isEmpty()) {
             return Collections.emptyList();
         }
-        return selShopSimpleFromEs(QueryBuilders.termsQuery("shop_id", shopIds),"hz");
+        return selShopSimpleFromEs(QueryBuilders.termsQuery("shop_id", shopIds),website);
     }
 
     /**
@@ -157,6 +157,7 @@ public class ShopSearchServiceImpl implements ShopSearchService {
     }
 
     private List<SearchShopSimple> selShopSimpleFromEs(QueryBuilder qb,String type) {
+        System.out.println(qb.toString());
         SearchHits response = ElasticConfiguration.searchClient.prepareSearch("shop").setSize(1000)
                 .setQuery(QueryBuilders.boolQuery()
                         .must(qb).filter(QueryBuilders.termQuery("shop_status", 0L))
@@ -167,7 +168,7 @@ public class ShopSearchServiceImpl implements ShopSearchService {
                 ShopInES shopInES = JSON.parseObject(hit.getSourceAsString(), ShopInES.class);
                 SearchShopSimple searchShopSimple = BeanMapper.map(shopInES, SearchShopSimple.class);
                 searchShopSimple.setMainCase(shopInES.getMainBus());
-                shopSimples.add(searchShopSimple);
+                    shopSimples.add(searchShopSimple);
             }
         }
         return shopSimples;

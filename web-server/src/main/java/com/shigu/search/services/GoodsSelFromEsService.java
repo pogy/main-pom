@@ -55,7 +55,7 @@ public class GoodsSelFromEsService {
         ShiguPager<SearchItem> pager=itemSearchService.searchItem(keyword, webSite,mid,cids,null,null,null,from,to
                 , SearchOrderBy.NEW,page.getPage(),page.getRows(), true);
         //加工对象
-        return addShopInfoToGoods(pager);
+        return addShopInfoToGoods(pager,webSite);
     }
 
     /**
@@ -63,7 +63,7 @@ public class GoodsSelFromEsService {
      * @param itemShiguPager
      * @return
      */
-    public ShiguPager<GoodsInSearch> addShopInfoToGoods(ShiguPager<SearchItem> itemShiguPager){
+    public ShiguPager<GoodsInSearch> addShopInfoToGoods(ShiguPager<SearchItem> itemShiguPager,String website){
         List<SearchItem> items=itemShiguPager.getContent();
         Set<Long> storeIds=new HashSet<>();
         ShiguPager<GoodsInSearch> pager=new ShiguPager<>();
@@ -74,7 +74,7 @@ public class GoodsSelFromEsService {
             for(SearchItem si:items){
                 storeIds.add(si.getStoreId());
             }
-            List<SearchShopSimple> shops=shopSearchService.selShopByIds(new ArrayList<Long>(storeIds));
+            List<SearchShopSimple> shops=shopSearchService.selShopByIds(new ArrayList<Long>(storeIds),website);
 //            System.out.println(storeIds);
 //            System.out.println("storeIds "+storeIds.size());
 //            System.out.println(shops);

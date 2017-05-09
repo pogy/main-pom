@@ -206,7 +206,7 @@ public class GoodsSearchService {
         }
         ShiguPager<SearchItem> pager=new ShiguPager<>();
         pager.setContent(searches);
-        List<GoodsInSearch> goods=goodsSelFromEsService.addShopInfoToGoods(pager).getContent();
+        List<GoodsInSearch> goods=goodsSelFromEsService.addShopInfoToGoods(pager,"hz").getContent();
         cache.put("3",goods);
         return rangeRedBull(goods,ids);
     }
@@ -294,7 +294,7 @@ public class GoodsSearchService {
                 bo.getSp(),bo.getEp(),start,end,orderBy,bo.getPage(),bo.getRows(), needaggs
         );
         SearchVO vo=new SearchVO();
-        vo.setSearchData(goodsSelFromEsService.addShopInfoToGoods(pager));
+        vo.setSearchData(goodsSelFromEsService.addShopInfoToGoods(pager,bo.getWebSite()));
         vo.setMarkets(pager.getMarkets());
         vo.setParentCats(pager.getParentCats());
         return vo;
@@ -334,7 +334,7 @@ public class GoodsSearchService {
             List<GoodsInSearch> imgGoods=new ArrayList<>();
             if(goodsId.size()>0){
                 ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,"hz",1,20);
-                ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager);
+                ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager,"hz");
                 if (goodsPager != null) {
 //                    return pager.getContent();
                     List<GoodsInSearch> imgs = goodsPager.getContent();
