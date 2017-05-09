@@ -264,8 +264,9 @@ $('.fixtopbar .tabbox li').on('click', function(){
         <div class="slides" id="slides"> 
          <div class="ulDiv"> 
           <ul id="myLunb" style="position: relative;"> 
-           <li><a rel="nofollow" target="_blank" href="javascript:;"><img width="700" height="320" alt="" src="http://imgs.571xz.net/imgzip/py/py1.jpg"></a></li>
-           <li><a rel="nofollow" target="_blank" href="javascript:;"><img width="700" height="320" alt="" src="http://imgs.571xz.net/imgzip/py/py2.jpg"></a></li>
+          <#list topBanner as item>
+           <li><a rel="nofollow" target="_blank" href="${item.href!}"><img width="700" height="320" alt="" src="${item.imgsrc!}"></a></li>
+           </#list>
           </ul> 
          </div>
          
@@ -298,10 +299,9 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </div>
         
         <ul class="storewindow"> 
-            <li><a rel="nofollow" target="_blank" href="javascript:;"><img width="175" height="195" alt="" src="http://imgs.571xz.net/imgzip/py/1.jpg"></a></li>
-            <li><a rel="nofollow" target="_blank" href="javascript:;"><img width="175" height="195" alt="" src="http://imgs.571xz.net/imgzip/py/2.jpg"></a></li>
-            <li><a rel="nofollow" target="_blank" href="javascript:;"><img width="175" height="195" alt="" src="http://imgs.571xz.net/imgzip/py/3.jpg"></a></li>
-            <li><a rel="nofollow" target="_blank" href="javascript:;"><img width="175" height="195" alt="" src="http://imgs.571xz.net/imgzip/py/4.jpg"></a></li> 
+        <#list topStoread as item>
+            <li><a rel="nofollow" target="_blank" href="${item.href!}"><img width="175" height="195" alt="" src="${item.imgsrc!}"></a></li>
+        </#list>
         </ul>
     </div>
 </div>
@@ -316,9 +316,12 @@ $('.fixtopbar .tabbox li').on('click', function(){
         <a class="linkqq" target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116"><i class="iconfont">&#xe60d;</i><span>客服</span></a>
     </div>
     
+<#assign text>{        "type":'今日新品',        "nF":'0F',        "goods":${list_newGoods!}}</#assign>
+<#assign $it=text?eval />
     <div class="goods-list layout goodslist-cols5">
         <h2 id="0F">今日新品</h2> 
         <ul class="clearfix">
+            <#list $it.goods as item>
             <li>
                 <div> 
                     <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
@@ -330,67 +333,16 @@ $('.fixtopbar .tabbox li').on('click', function(){
                     </p> 
                 </div> 
             </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
+            </#list>
         </ul>
     </div>
     
+<#assign text>{        "type":'男装',        "nF":'1F',        "goods":${nzgoods!}}</#assign>
+<#assign $it=text?eval />
     <div class="goods-list layout goodslist-cols5">
         <h2 id="1F">男装</h2> 
         <ul class="clearfix">
+            <#list $it.goods as item>
             <li>
                 <div> 
                     <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
@@ -402,66 +354,15 @@ $('.fixtopbar .tabbox li').on('click', function(){
                     </p> 
                 </div> 
             </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
+            </#list>
         </ul>
     </div>
+<#assign text>{        "type":'童装',        "nF":'2F',        "goods":${list_childGoods!}}</#assign>
+<#assign $it=text?eval />
     <div class="goods-list layout goodslist-cols5">
         <h2 id="2F">童装</h2> 
         <ul class="clearfix">
+            <#list $it.goods as item>
             <li>
                 <div> 
                     <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
@@ -473,66 +374,15 @@ $('.fixtopbar .tabbox li').on('click', function(){
                     </p> 
                 </div> 
             </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
+            </#list>
         </ul>
     </div>
+<#assign text>{        "type":'男鞋',        "nF":'3F',        "goods":${xiebaogoods!}}</#assign>
+<#assign $it=text?eval />
     <div class="goods-list layout goodslist-cols5">
         <h2 id="3F">男鞋</h2> 
         <ul class="clearfix">
+            <#list $it.goods as item>
             <li>
                 <div> 
                     <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
@@ -544,61 +394,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
                     </p> 
                 </div> 
             </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
-            <li>
-                <div> 
-                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
-                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
-                    </a> 
-                    <p class="introduce">
-                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
-                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
-                    </p> 
-                </div> 
-            </li>
+            </#list>
         </ul>
     </div>
     
