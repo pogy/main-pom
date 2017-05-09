@@ -1,5 +1,6 @@
 package com.shigu.main4.goat.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  -Long goatId
  * Created by zhaohongbo on 17/5/4.
  */
-public class GoatVO {
+public class GoatVO implements Serializable{
 
     private Long localId;
 

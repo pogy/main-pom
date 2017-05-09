@@ -1,10 +1,12 @@
 package com.shigu.main4.goat.vo;
 
+import java.io.Serializable;
+
 /**
  * 文字形广告
  * Created by zhaohongbo on 17/5/5.
  */
-public class TextGoatVO extends GoatVO{
+public class TextGoatVO extends GoatVO implements Serializable{
     /**
      * 标题
      */

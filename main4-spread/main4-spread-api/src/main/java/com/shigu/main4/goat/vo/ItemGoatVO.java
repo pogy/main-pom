@@ -1,5 +1,7 @@
 package com.shigu.main4.goat.vo;
 
+import java.io.Serializable;
+
 /**
  * 商品广告
  *
@@ -8,7 +10,7 @@ package com.shigu.main4.goat.vo;
  -String picUrl
  * Created by zhaohongbo on 17/5/4.
  */
-public class ItemGoatVO extends GoatVO{
+public class ItemGoatVO extends GoatVO implements Serializable{
     /**
      * 商品ID
      */

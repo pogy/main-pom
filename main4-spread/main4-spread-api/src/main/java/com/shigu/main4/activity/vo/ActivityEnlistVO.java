@@ -1,10 +1,12 @@
 package com.shigu.main4.activity.vo;
 
+import java.io.Serializable;
+
 /**
  * 报名记录
  * Created by zhaohongbo on 17/5/4.
  */
-public class ActivityEnlistVO {
+public class ActivityEnlistVO implements Serializable{
     /**
      * 记录ID
      */

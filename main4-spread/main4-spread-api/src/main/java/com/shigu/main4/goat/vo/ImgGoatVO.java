@@ -1,11 +1,13 @@
 package com.shigu.main4.goat.vo;
 
+import java.io.Serializable;
+
 /**
  * 图片类型广告
  *
  * Created by zhaohongbo on 17/5/4.
  */
-public class ImgGoatVO extends GoatVO{
+public class ImgGoatVO extends GoatVO implements Serializable{
     /**
      * 图片链接
      */

@@ -1,5 +1,7 @@
 package com.shigu.main4.goat.vo;
 
+import java.io.Serializable;
+
 /**
  * 上款量数据
  *
@@ -7,7 +9,7 @@ package com.shigu.main4.goat.vo;
  -Long unRealNum //不真实的上款量
  * Created by zhaohongbo on 17/5/4.
  */
-public class ItemUpVO {
+public class ItemUpVO implements Serializable{
     /**
      * 真实上款量
      */

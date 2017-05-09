@@ -1,5 +1,6 @@
 package com.shigu.main4.activity.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Date;
  -Date endGivePicTime
  * Created by zhaohongbo on 17/5/4.
  */
-public class LedActivityVO extends ActivityVO{
+public class LedActivityVO extends ActivityVO implements Serializable{
 
     /**
      * 给图时间

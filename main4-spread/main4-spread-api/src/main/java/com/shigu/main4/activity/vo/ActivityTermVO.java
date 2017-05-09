@@ -2,6 +2,7 @@ package com.shigu.main4.activity.vo;
 
 import com.shigu.main4.activity.enums.ActivityType;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Date;
  *
  * Created by zhaohongbo on 17/5/4.
  */
-public class ActivityTermVO {
+public class ActivityTermVO implements Serializable{
     /**
      * 开始时间
      */

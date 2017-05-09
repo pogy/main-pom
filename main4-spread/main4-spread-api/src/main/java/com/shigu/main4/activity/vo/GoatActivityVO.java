@@ -1,10 +1,12 @@
 package com.shigu.main4.activity.vo;
 
+import java.io.Serializable;
+
 /**
  * 广告售卖活动数据体
  * Created by zhaohongbo on 17/5/4.
  */
-public class GoatActivityVO extends ActivityVO{
+public class GoatActivityVO extends ActivityVO implements Serializable{
     /**
      * 广告ID
      */
