@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/goodsCollectinit.css" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/goodsCollectinit.css?t=1494298231868" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/fxs2/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/fxs2/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -87,10 +87,10 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="#">
+                        <a href="${main_host!}carts.htm">
                             <i class="cgcatIcon"></i>
                             <span>购物车</span>
-                            <em class="cgNum">0</em>
+                            <em class="cgNum"></em>
                         </a>
                     </li>
                     <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
@@ -128,7 +128,7 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}">联系客服</a></li>
+                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -234,6 +234,15 @@
         </div>
     </div>
     
+    <div class="packSearch">
+        <form action="" id="searchPackBag">
+            <label>商品标题：<input type="text" class="packWord" name="keyword" value="${keyword!}" /></label>
+            <button type="button" class="searchBtn">搜索</button>
+        </form>
+    </div>
+    
+    
+    
     <#if (goodslist?size) gt 0>
     <div class="goodslist">
         <ul class="head clearfix">
@@ -308,7 +317,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/goodsCollectinit.js"></script>
+<script src="http://style.571xz.com/fxs2/js/goodsCollectinit.js?t=1494298231868"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
