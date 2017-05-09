@@ -183,6 +183,7 @@ public class MemberAction {
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
         model.addAttribute("get",bo);
         model.addAttribute("website",bo.getWebsite());
+        model.addAttribute("keyword", bo.getKeyword());
         return ftlDir+"/goodsCollectinit";
     }
 

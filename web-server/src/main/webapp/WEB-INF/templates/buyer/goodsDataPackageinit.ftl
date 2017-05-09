@@ -213,14 +213,6 @@
             <div class="splitline"></div>
             <div class="tabbutton selected"><a href="goodsDataPackageinit.htm">已生成的数据包</a></div>
         </div>
-    
-        
-        <div class="packSearch">
-            <form action="" id="searchPackBag">
-                <label>商品标题：<input type="text" class="packWord" name="keyword" value="${keyword!}" /></label>
-                <button type="button" class="searchBtn">搜索</button>
-            </form>
-        </div>
         
         
         
