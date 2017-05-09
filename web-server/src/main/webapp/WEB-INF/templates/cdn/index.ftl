@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1494311401988" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1494314539497" rel="stylesheet">
     
   </head>
 <body>
@@ -194,6 +194,7 @@
         <div class="searchBox">
             <form id="formSearch" action="http://www.571xz.com/storenum.htm?webSite=${webSite!}">
                 <input type="text" class="searchCon" name="keyword" placeholder="输入档口号进行查询">
+                <input type=hidden name="webSite" value="${webSite!}">
                 <button class="searchBtn">搜索</button>
             </form>
         </div>
@@ -385,7 +386,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1494311401988"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1494314539497"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
