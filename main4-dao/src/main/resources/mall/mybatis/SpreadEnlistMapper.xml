@@ -3,8 +3,8 @@
 <mapper namespace="com.opentae.data.mall.interfaces.SpreadEnlistMapper" >
 
 	<select id="romSelectData" resultType="com.opentae.data.mall.beans.SpreadEnlist">
-		SELECT t1.enlist_Id ,t1.NAME,t1.telephone,t1.userId,t1.draw,t1.activityId FROM SPREAD_ENLIST t1
-		where t1.draw=${activityId} ORDER BY RAND() LIMIT ${NUM}
+		SELECT t1.enlist_Id ,t1.NAME,t1.telephone,t1.user_Id,t1.draw,t1.activity_Id FROM SPREAD_ENLIST t1
+		where t1.activity_Id=${activityId} ORDER BY RAND() LIMIT ${num}
 	</select>
 
 </mapper>
