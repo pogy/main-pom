@@ -11,6 +11,7 @@ import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.GoatLocationVO;
 import com.shigu.main4.goat.vo.GoatVO;
+import com.shigu.main4.goat.vo.ItemGoatVO;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,12 +20,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Created by pc on 2017-05-08.
@@ -47,50 +46,101 @@ public class GoatFactoryTest {
     GoatItemDataMapper goatItemDataMapper;
     @Test
     @Transactional
+    @SuppressWarnings("unchecked")
     public <T extends GoatVO>void getALocationByVo_selGoatsTest() throws ActivityException, GoatException {
-
+        Calendar ca=Calendar.getInstance();
+        ca.add(Calendar.DAY_OF_WEEK,-1);
         GoatOneItem oneItem=new GoatOneItem();
         oneItem.setDisEnabled(false);
-        oneItem.setGoatId(1l);
         oneItem.setLocalId(1l);
         goatOneItemMapper.insertSelective(oneItem);
+        GoatItemData oneData=new GoatItemData();
+        oneData.setStatus(1);
+        oneData.setGoatId(oneItem.getGoatId());
+        oneData.setUserId(1000000808L);
+        oneData.setFromTime(ca.getTime());
+        oneData.setToTime(new Date());
+        oneData.setContext("{\"itemId\":556363,\"title\":\"张大仙\"}");
+        goatItemDataMapper.insertSelective(oneData);
 
         GoatLocationVO vo=new GoatLocationVO();
         vo.setLocalId(1l);
         vo.setGoatType(1);
         GoatLocation go= goatFactory.getALocationByVo(vo);
-        List<T> tt= go.selGoats();
-        //添加4条数据
-        Calendar ca=Calendar.getInstance();
-        ca.add(Calendar.DAY_OF_WEEK,-1);
-        //启用的广告数量
-        int enu=1;
-        for(int i=2;i<6;i++){
-            GoatOneItem omg=new GoatOneItem();
-            Random rom=new Random();
-            int z=rom.nextInt(2);
 
-            omg.setDisEnabled(z==1?true:false);
-            if(!omg.getDisEnabled()){
-                enu++;
-            }
+        List<T> tt= go.selGoats();
+
+        for(T t:tt){
+            //1. 验证dis_enabled有效性，添加dis_enabled=0的goat_one_item，添加，判断查询结果中是否出现
+            assertEquals(t.getGoatId(),oneItem.getGoatId());
+        }
+        //第一条验证完成 删除数据
+        goatOneItemMapper.deleteByPrimaryKey(oneItem.getGoatId());
+        goatItemDataMapper.deleteByPrimaryKey(oneData.getDataId());
+
+        //添加3条可用完整数据
+        Map<Long,GoatItemData>  cmap=new HashMap<>();
+        for(int i=0;i<3;i++){
+            GoatOneItem omg=new GoatOneItem();
+            omg.setDisEnabled(false);
             omg.setLocalId(1l);
             goatOneItemMapper.insertSelective(omg);
             //添加详细数据
 
             GoatItemData data=new GoatItemData();
-            data.setContext("{\"itemId\":556363,\"title\":\"张大山\"}");
+            data.setContext("{\"itemId\":556363,\"title\":\"张大山"+i+"\"}");
             data.setFromActivityId(1L+(long)i);
             data.setFromTime(ca.getTime());
             data.setToTime(new Date());
             data.setGoatId(omg.getGoatId());
             data.setUserId(1000000808l+(long)i);
+            data.setStatus(1);
             goatItemDataMapper.insertSelective(data);
+            cmap.put(omg.getGoatId(),data);
+
+        }
+        //2.正常格式添加goat_one_item、goat_item_data数据若干条，验证返回数据正确性
+        List<T> tt2= go.selGoats();
+        for(T t:tt2){
+            GoatItemData cdata= cmap.get(t.getGoatId());
+            if(cdata==null){
+                Assert.fail("验证数据正确性失败");
+            }
+            assertEquals(t.getDataId(),cdata.getDataId());
 
         }
 
-        List<T> tt2= go.selGoats();
-        assertEquals(tt2.size(),enu);
+        GoatOneItem goNoData=new GoatOneItem();
+        goNoData.setDisEnabled(false);
+        goNoData.setLocalId(1l);
+        goatOneItemMapper.insertSelective(goNoData);
+        System.out.println(goNoData.getGoatId());
+        //添加详细数据状态为不可用
+        GoatItemData data=new GoatItemData();
+        data.setContext("{\"itemId\":556363,\"title\":\"张大山no\"}");
+        data.setFromActivityId(4444L);
+        data.setFromTime(ca.getTime());
+        data.setToTime(new Date());
+        data.setGoatId(goNoData.getGoatId());
+        data.setUserId(1000000808l);
+        data.setStatus(0);
+        goatItemDataMapper.insertSelective(data);
+        List<T> tt3= go.selGoats();
+        //3.验证广告没数据的情况，添加goat_one_item，不添加goat_item_data的对应，验证是否有该条广告返回，理论上该
+        boolean isexist=false;
+        for(T t:tt3){
+            if(t.getGoatId().longValue()==goNoData.getGoatId()){
+                assertEquals(t.getDataId(),null);
+                isexist=true;
+            }
+
+        }
+        if(!isexist){
+            Assert.fail("item查询不到数据~~");
+        }
+        //4、验证最终返回List的size与goat_one_item有效数量是否相等
+        assertEquals(tt3.size(),4);
+
 
 
 
