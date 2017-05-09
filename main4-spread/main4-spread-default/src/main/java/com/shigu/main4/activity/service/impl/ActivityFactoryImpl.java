@@ -216,7 +216,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 }
                 //随机选取元素。。
                 List<SpreadEnlist> ranList=spreadEnlistMapper.romSelectData(activityId,number);
-                //遍历set更新draw并传出list
                 List<ActivityEnlistVO> volist = new ArrayList<>();
 
                 for (SpreadEnlist enlist : ranList) {
