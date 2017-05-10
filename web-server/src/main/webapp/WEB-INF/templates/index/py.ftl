@@ -152,9 +152,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
         <li><a href="http://www.571xz.com/" target="_blank">首页</a></li> 
         <li><a href="http://jx.571xz.com/market.htm?mid=33" target="_blank">逛市场</a><i class="img-tjdk"></i></li> 
         <li><a href="http://so.571xz.com/jxgoods.htm" target="_blank">商品库</a></li> 
-        <li><a href="http://so.571xz.com/jxsearch.htm" target="_blank">今日新品</a></li> 
-        <li><a href="http://daifa.571xz.com/" target="_blank">星座代发</a></li> 
-        <li><a href="http://zixun.571xz.com" target="_blank">资讯</a></li>
+        
         
     </ul>
 </div>
@@ -166,17 +164,16 @@ $('.fixtopbar .tabbox li').on('click', function(){
         
             <h2><a href="http://so.571xz.com/huoyuan/index.html" target="_blank"><i class="iconfont">&#xe604;</i>市场列表</a></h2>
             <ul class="clearfix">
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/wangpizhongxin/">羊毛衫市场</a></li>
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/fuzhuangchengbeiqu/">中央商场</a></li>
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/zhongjun/">时尚裤都</a></li>
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/tongzhuangqu/">国贸大厦</a></li>
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/huwaiyundongqu/">世贸大厦</a></li>
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/fuzhuangchengnanqu/">国际时装城</a></li>
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/zhoubianshichang/">臭豆豆童贸</a></li>
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/zhoubianshichang/">环贸中心</a></li>
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/zhoubianshichang/">中国毛衫城</a></li>
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/zhoubianshichang/">洪合市场</a></li>
-                <li><a target="_blank" href="http://ss.571xz.com/huoyuan/zhoubianshichang/">周边市场</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=33">羊毛衫市场</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=42">中央商场</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=37">外贸区</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=34">时尚裤都</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=38">国贸大厦</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=40">世贸大厦</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=39">国际时装城</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=35">臭豆豆童贸</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=41">环贸中心</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=36">交易中心</a></li>
             </ul>
         </div>
         
@@ -230,6 +227,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
                 <li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=校服">校服/校服定制</a></li>
                 <li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010524">马甲</a></li>
                 <li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50012424">亲子装/亲子时装</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010518">卫衣/绒衫</a></li>
             </ul>
         </div>
         
@@ -312,7 +310,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </ul> 
         <a class="linkqq" target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116"><i class="iconfont">&#xe60d;</i><span>客服</span></a>
     </div>
-    
+    <#if (list_newGoods?size) gt 0>
 <#assign text>{        "type":'今日新品',        "nF":'0F',        "goods":${list_newGoods!}}</#assign>
 <#assign $it=text?eval />
     <div class="goods-list layout goodslist-cols5">
@@ -333,7 +331,9 @@ $('.fixtopbar .tabbox li').on('click', function(){
             </#list>
         </ul>
     </div>
+    </#if>
     
+    <#if (nzgoods?size) gt 0>
 <#assign text>{        "type":'男装',        "nF":'1F',        "goods":${nzgoods!}}</#assign>
 <#assign $it=text?eval />
     <div class="goods-list layout goodslist-cols5">
@@ -354,6 +354,8 @@ $('.fixtopbar .tabbox li').on('click', function(){
             </#list>
         </ul>
     </div>
+    </#if>
+    <#if (list_childGoods?size) gt 0>
 <#assign text>{        "type":'童装',        "nF":'2F',        "goods":${list_childGoods!}}</#assign>
 <#assign $it=text?eval />
     <div class="goods-list layout goodslist-cols5">
@@ -374,6 +376,8 @@ $('.fixtopbar .tabbox li').on('click', function(){
             </#list>
         </ul>
     </div>
+    </#if>
+    <#if (xiebaogoods?size) gt 0>
 <#assign text>{        "type":'男鞋',        "nF":'3F',        "goods":${xiebaogoods!}}</#assign>
 <#assign $it=text?eval />
     <div class="goods-list layout goodslist-cols5">
@@ -394,6 +398,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
             </#list>
         </ul>
     </div>
+    </#if>
     
     
 </div>
