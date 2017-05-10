@@ -310,9 +310,9 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </ul> 
         <a class="linkqq" target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116"><i class="iconfont">&#xe60d;</i><span>客服</span></a>
     </div>
-    <#if (list_newGoods?size) gt 0>
 <#assign text>{        "type":'今日新品',        "nF":'0F',        "goods":${list_newGoods!}}</#assign>
 <#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
     <div class="goods-list layout goodslist-cols5">
         <h2 id="0F">今日新品</h2> 
         <ul class="clearfix">
@@ -333,9 +333,9 @@ $('.fixtopbar .tabbox li').on('click', function(){
     </div>
     </#if>
     
-    <#if (nzgoods?size) gt 0>
 <#assign text>{        "type":'男装',        "nF":'1F',        "goods":${nzgoods!}}</#assign>
 <#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
     <div class="goods-list layout goodslist-cols5">
         <h2 id="1F">男装</h2> 
         <ul class="clearfix">
@@ -355,9 +355,9 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </ul>
     </div>
     </#if>
-    <#if (list_childGoods?size) gt 0>
 <#assign text>{        "type":'童装',        "nF":'2F',        "goods":${list_childGoods!}}</#assign>
 <#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
     <div class="goods-list layout goodslist-cols5">
         <h2 id="2F">童装</h2> 
         <ul class="clearfix">
@@ -377,9 +377,9 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </ul>
     </div>
     </#if>
-    <#if (xiebaogoods?size) gt 0>
 <#assign text>{        "type":'男鞋',        "nF":'3F',        "goods":${xiebaogoods!}}</#assign>
 <#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
     <div class="goods-list layout goodslist-cols5">
         <h2 id="3F">男鞋</h2> 
         <ul class="clearfix">
