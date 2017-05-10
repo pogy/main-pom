@@ -19,9 +19,11 @@ import com.shigu.tools.EncodeParamter;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -129,8 +131,12 @@ public class GoodsSearchAction {
      *
      * @return
      */
-    @RequestMapping("hzsearch")
-    public String hzsearch(SearchBO bo, Model model) {
+    @RequestMapping("{website}search")
+    public String hzsearch(@PathVariable("website") String website, SearchBO bo, Model model) {
+        bo.setWebSite(website);
+        if(StringUtils.isEmpty(website)){
+            bo.setWebSite("hz");
+        }
         bo.setRows(40);
         if (bo.getKeyword() != null)
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
@@ -157,14 +163,14 @@ public class GoodsSearchAction {
         ShiguPager<GoodsInSearch> pager = vo.getSearchData();
         //得到聚合后的结果
 //        CateNavsInSearch cateNavsInSearch=goodsSearchService.selCateAfterAggs(bo);
-        model.addAttribute("markets", goodsSearchService.aggOneCate(categoryInSearchService.selMarkets(),
+        model.addAttribute("markets", goodsSearchService.aggOneCate(categoryInSearchService.selMarkets(bo.getWebSite()),
                 vo.getMarkets()));
         //查顶级类目
-        model.addAttribute("cates", goodsSearchService.aggOneCate(categoryInSearchService.selCates(),
+        model.addAttribute("cates", goodsSearchService.aggOneCate(categoryInSearchService.selCates(bo.getWebSite()),
                 vo.getParentCats()));
         //查匹配店铺
         if (bo.getPage() == 1) {
-            model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword()));
+            model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(),bo.getWebSite()));
         }
         model.addAttribute("goodslist", pager.getContent() == null ? Collections.emptyList() : pager.getContent());
         model.addAttribute("tjGoodsList", goodsSearchService.selTj(bo.getWebSite(), 1, bo.getPid()));
@@ -188,11 +194,20 @@ public class GoodsSearchAction {
      * @param model
      * @return
      */
-    @RequestMapping("hzgoods")
-    public String hzgoods(SearchBO bo, Model model) {
+    @RequestMapping("{website}goods")
+    public String hzgoods(SearchBO bo,@PathVariable("website")String website, Model model) {
+        bo.setWebSite(website);
+        if (StringUtils.isEmpty(website) || StringUtils.equals("new", website)) {
+            bo.setWebSite("hz");
+        }
         bo.setRows(56);
         if (bo.getPid() == null) {
-            bo.setPid(30L);
+            if(StringUtils.equals("hz",bo.getWebSite())){
+                bo.setPid(30L);
+            }
+            if(StringUtils.equals("jx",bo.getWebSite())){
+                bo.setPid(701L);
+            }
         }
         if (bo.getKeyword() != null)
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
@@ -219,7 +234,7 @@ public class GoodsSearchAction {
         //处理市场
         model.addAttribute("markets", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.MARKET));
         //查顶级类目
-        model.addAttribute("navCate", categoryInSearchService.selCatesForGoods());
+        model.addAttribute("navCate", categoryInSearchService.selCatesForGoods(bo.getWebSite()));
         if (bo.getPid() != null) {
             model.addAttribute("cates", categoryInSearchService.selSubCates(bo.getPid().toString(),
                     SearchCategory.CATEGORY)
@@ -228,7 +243,7 @@ public class GoodsSearchAction {
             model.addAttribute("elements", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.ELEMENT));
         }
         //查匹配店铺
-        model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword()));
+        model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(),bo.getWebSite()));
 
         model.addAttribute("goodslist", pager.getContent() == null ? new ArrayList<>() : pager.getContent());
         model.addAttribute("tjGoodsList", goodsSearchService.selTj(bo.getWebSite(), 0, bo.getPid()));
