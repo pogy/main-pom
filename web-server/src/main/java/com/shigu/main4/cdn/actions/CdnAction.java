@@ -203,7 +203,7 @@ public class CdnAction {
      * 濮院站首页
      * @return
      */
-    //@RequestMapping(value = "jxindex4show" , method = RequestMethod.GET)
+    @RequestMapping(value = "jxindex4show" , method = RequestMethod.GET)
     public String jxindex4show(HttpServletRequest request,Model model){
         String website = "jx";
 
@@ -327,9 +327,6 @@ public class CdnAction {
         Long shopId=shopBaseService.selShopIdByDomain(url);
         if("www".equals(url)||"hz".equals(url)){
             return hzindex4show(request,model);
-        }
-        if("jx".equals(url)){
-            return jxindex4show(request,model);
         }
         if(shopId==null){
             return "redirect:"+xzSdkClient.getMainHost();
