@@ -1,16 +1,22 @@
 package com.shigu.main4.goat.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.GoatItemData;
 import com.opentae.data.mall.beans.GoatOneItem;
 import com.opentae.data.mall.beans.GoatOneLocation;
+import com.opentae.data.mall.beans.GoodsupNoreal;
 import com.opentae.data.mall.examples.GoatItemDataExample;
 import com.opentae.data.mall.examples.GoatOneItemExample;
 import com.opentae.data.mall.examples.GoatOneLocationExample;
+import com.opentae.data.mall.examples.GoodsupNorealExample;
 import com.opentae.data.mall.interfaces.GoatItemDataMapper;
 import com.opentae.data.mall.interfaces.GoatOneItemMapper;
 import com.opentae.data.mall.interfaces.GoatOneLocationMapper;
+import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
+import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.beans.ImgGoat;
 import com.shigu.main4.goat.beans.ItemGoat;
@@ -25,6 +31,12 @@ import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.main4.goat.vo.ItemUpVO;
 import com.shigu.main4.goat.vo.TextGoatVO;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +63,9 @@ public class GoatFactoryImpl implements GoatFactory {
 
     @Resource(name = "tae_mall_goatItemDataMapper")
     GoatItemDataMapper goatItemDataMapper;
+
+    @Resource(name="tae_mall_goodsupNorealMapper")
+    GoodsupNorealMapper goodsupNorealMapper;
 
     @Override
     public GoatLocation getAlocation(Long localId) throws GoatException {
@@ -213,7 +228,30 @@ public class GoatFactoryImpl implements GoatFactory {
 
             @Override
             public ItemUpVO selUp() {
-                return null;
+                //查询真实值
+                SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+                BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+
+                QueryBuilder qb1 = QueryBuilders.termQuery("supperGoodsId", this.getItemId());//可能有微信上传的//所以直接用用户ID
+                boleanQueryBuilder.must(qb1);
+                srb.setQuery(boleanQueryBuilder);
+                srb.setSearchType(SearchType.COUNT);
+                SearchResponse response = srb.execute().actionGet();
+                Long total = response.getHits().getTotalHits();
+
+                //查询虚假值
+                GoodsupNorealExample gnex=new GoodsupNorealExample();
+                gnex.createCriteria().andItemIdEqualTo(this.getItemId());
+                List<GoodsupNoreal> gunlist=goodsupNorealMapper.selectFieldsByExample(gnex
+                        ,FieldUtil.codeFields("add_num "));
+                GoodsupNoreal gun=null;
+                if(gunlist.size()>0)
+                    gun=gunlist.get(0);
+                ItemUpVO iUVo=new ItemUpVO();
+                iUVo.setRealNum(total==0?null:total);
+                iUVo.setUnRealNum(gun==null?null:gun.getAddNum().longValue());
+                return iUVo;
+
             }
 
             @Override
@@ -311,4 +349,8 @@ public class GoatFactoryImpl implements GoatFactory {
         gid.setPublishSchdule(cal.getTime());
         goatItemDataMapper.insertSelective(gid);
     }
+
+
+
+
 }
