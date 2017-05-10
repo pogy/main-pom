@@ -71,7 +71,7 @@ public class ActivityFactoryTest {
         activity.setActivityId(20170508L);
         activity.setTermId(20170508L);
         activity.setType(ActivityType.GOAT_SELL.ordinal());
-        activity.setKey("123");
+        activity.setActivityKey("123");
         activity.setContext("{}");
         spreadActivityMapper.insertSelective(activity);
         GoatActivity goatActivity=activityFactory.selActivityById(activity.getActivityId());
@@ -81,6 +81,33 @@ public class ActivityFactoryTest {
         vo.setPubToTime(new Date());
         goatActivity.addGoat(vo);
 
+        GoatActivity goatActivity2=activityFactory.selActivityById(activity.getActivityId());
+        assertEquals(goatActivity2.getActivityKey(),"123");
+        assertEquals(goatActivity2.getGoats().size(),1);
+        assertEquals(goatActivity2.getGoats().get(0).getGoatId().longValue(),555L);
+
+        //添加等于更新,测试
+        GoatSimpleVO vo2=new GoatSimpleVO();
+        vo2.setGoatId(555L);
+        vo2.setPubFromTime(new Date());
+        vo2.setPubToTime(new Date());
+        goatActivity.addGoat(vo2);
+
+        GoatActivity goatActivity3=activityFactory.selActivityById(activity.getActivityId());
+        assertEquals(goatActivity3.getActivityKey(),"123");
+        assertEquals(goatActivity3.getGoats().size(),1);
+        assertEquals(goatActivity3.getGoats().get(0).getGoatId().longValue(),555L);
+
+        //添加新广告,测试
+        GoatSimpleVO vo3=new GoatSimpleVO();
+        vo3.setGoatId(556L);
+        vo3.setPubFromTime(new Date());
+        vo3.setPubToTime(new Date());
+        goatActivity.addGoat(vo3);
+
+        GoatActivity goatActivity4=activityFactory.selActivityById(activity.getActivityId());
+        assertEquals(goatActivity4.getActivityKey(),"123");
+        assertEquals(goatActivity4.getGoats().size(),2);
     }
 
     @Test

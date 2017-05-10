@@ -640,71 +640,71 @@ public class SpreadActivityExample implements SgExample{
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyIsNull() {
-            this.addCriterion("key is null");
+        public SpreadActivityExample.Criteria andActivityKeyIsNull() {
+            this.addCriterion("activity_key is null");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyIsNotNull() {
-            this.addCriterion("key is not null");
+        public SpreadActivityExample.Criteria andActivityKeyIsNotNull() {
+            this.addCriterion("activity_key is not null");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyEqualTo(String value) {
-            this.addCriterion("key =", value, "key");
+        public SpreadActivityExample.Criteria andActivityKeyEqualTo(String value) {
+            this.addCriterion("activity_key =", value, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyNotEqualTo(String value) {
-            this.addCriterion("key <>", value, "key");
+        public SpreadActivityExample.Criteria andActivityKeyNotEqualTo(String value) {
+            this.addCriterion("activity_key <>", value, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyGreaterThan(String value) {
-            this.addCriterion("key >", value, "key");
+        public SpreadActivityExample.Criteria andActivityKeyGreaterThan(String value) {
+            this.addCriterion("activity_key >", value, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyGreaterThanOrEqualTo(String value) {
-            this.addCriterion("key >=", value, "key");
+        public SpreadActivityExample.Criteria andActivityKeyGreaterThanOrEqualTo(String value) {
+            this.addCriterion("activity_key >=", value, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyLessThan(String value) {
-            this.addCriterion("key <", value, "key");
+        public SpreadActivityExample.Criteria andActivityKeyLessThan(String value) {
+            this.addCriterion("activity_key <", value, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyLessThanOrEqualTo(String value) {
-            this.addCriterion("key <=", value, "key");
+        public SpreadActivityExample.Criteria andActivityKeyLessThanOrEqualTo(String value) {
+            this.addCriterion("activity_key <=", value, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyLike(String value) {
-            this.addCriterion("key like", value, "key");
+        public SpreadActivityExample.Criteria andActivityKeyLike(String value) {
+            this.addCriterion("activity_key like", value, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyNotLike(String value) {
-            this.addCriterion("key not like", value, "key");
+        public SpreadActivityExample.Criteria andActivityKeyNotLike(String value) {
+            this.addCriterion("activity_key not like", value, "activityKey");
             return (SpreadActivityExample.Criteria)this;
-        }        public SpreadActivityExample.Criteria andKeyIn(List<String> values) {
-            this.addCriterion("key in", values, "key");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andKeyNotIn(List<String> values) {
-            this.addCriterion("key not in", values, "key");
+        }        public SpreadActivityExample.Criteria andActivityKeyIn(List<String> values) {
+            this.addCriterion("activity_key in", values, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyBetween(String value1, String value2) {
-            this.addCriterion("key between", value1, value2, "key");
+        public SpreadActivityExample.Criteria andActivityKeyNotIn(List<String> values) {
+            this.addCriterion("activity_key not in", values, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andKeyNotBetween(String value1, String value2) {
-            this.addCriterion("key not between", value1, value2, "key");
+        public SpreadActivityExample.Criteria andActivityKeyBetween(String value1, String value2) {
+            this.addCriterion("activity_key between", value1, value2, "activityKey");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andActivityKeyNotBetween(String value1, String value2) {
+            this.addCriterion("activity_key not between", value1, value2, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
     }

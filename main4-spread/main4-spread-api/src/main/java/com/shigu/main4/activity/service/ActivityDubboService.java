@@ -5,6 +5,7 @@ import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
 import com.shigu.main4.activity.vo.GoatActivityWithEnlist;
+import com.shigu.main4.activity.vo.GoatSimpleVO;
 
 import java.util.Date;
 
@@ -20,6 +21,8 @@ public interface ActivityDubboService {
     void modifyTerm(Long termId,ActivityType type, Date start, Date end) throws ActivityException;
 
     <T extends ActivityVO> Long throwActivity(Long termId,T activity);
+
+    void addGoatToActivity(Long activityId, GoatSimpleVO vo) throws ActivityException;
 
     GoatActivityWithEnlist selActivityEnlists(Long activityId, Integer hitType) throws ActivityException;
 }

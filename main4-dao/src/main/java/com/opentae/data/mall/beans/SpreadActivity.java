@@ -38,14 +38,14 @@ public class SpreadActivity {
      */
     private String context;
 
-    private String key;
+    private String activityKey;
 
-    public String getKey() {
-        return key;
+    public String getActivityKey() {
+        return activityKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setActivityKey(String activityKey) {
+        this.activityKey = activityKey;
     }
 
     public Long getActivityId() {

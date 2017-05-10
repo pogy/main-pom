@@ -142,7 +142,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
             @Override
             public <T extends Activity> T selActivityByKey(String key) throws ActivityException {
                 SpreadActivityExample example=new SpreadActivityExample();
-                example.createCriteria().andKeyEqualTo(key);
+                example.createCriteria().andActivityKeyEqualTo(key);
                 example.setStartIndex(0);
                 example.setEndIndex(1);
                 List<SpreadActivity> activities=spreadActivityMapper.selectByConditionList(example);
@@ -285,6 +285,9 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 }else{
                     goats.add(goat);
                 }
+                SpreadActivity activity=BeanMapper.map(this,SpreadActivity.class);
+                activity.setContext(JSON.toJSONString(this));
+                spreadActivityMapper.updateByPrimaryKeySelective(activity);
             }
 
             @Override

@@ -30,7 +30,11 @@ public class BeanMapper {
         Class<S> sourceClass= (Class<S>) source.getClass();
         Class<D> destinationClass= (Class<D>) destination.getClass();
         Field[] fields=sourceClass.getDeclaredFields();
-        for(Field f:fields){
+        Field[] fieldsSupper=sourceClass.getSuperclass().getDeclaredFields();
+        List<Field> fieldList=new ArrayList<>();
+        fieldList.addAll(Arrays.asList(fields));
+        fieldList.addAll(Arrays.asList(fieldsSupper));
+        for(Field f:fieldList){
             if(f.getModifiers()!=2){
                 continue;
             }
