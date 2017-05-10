@@ -26,14 +26,6 @@ public class SpreadActivity {
      */
     private String description;
     /**
-     * 公示开始时间
-     */
-    private Date pubFromTime;
-    /**
-     * 公示结束时间
-     */
-    private Date pubToTime;
-    /**
      * 排序
      */
     private Integer sort;
@@ -45,6 +37,16 @@ public class SpreadActivity {
      * 内容
      */
     private String context;
+
+    private String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public Long getActivityId() {
         return activityId;
@@ -68,22 +70,6 @@ public class SpreadActivity {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getPubFromTime() {
-        return pubFromTime;
-    }
-
-    public void setPubFromTime(Date pubFromTime) {
-        this.pubFromTime = pubFromTime;
-    }
-
-    public Date getPubToTime() {
-        return pubToTime;
-    }
-
-    public void setPubToTime(Date pubToTime) {
-        this.pubToTime = pubToTime;
     }
 
     public Integer getSort() {

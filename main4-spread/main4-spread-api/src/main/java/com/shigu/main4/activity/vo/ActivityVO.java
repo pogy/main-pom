@@ -33,16 +33,6 @@ public class ActivityVO implements Serializable{
     @JSONField(serialize=false)
     private String description;
     /**
-     * 生效开始时间,如果是led表示上广告时间,如果卖广告,表示广告挂到网站的时间
-     */
-    @JSONField(serialize=false)
-    private Date pubFromTime;
-    /**
-     * 生效结束时间
-     */
-    @JSONField(serialize=false)
-    private Date pubToTime;
-    /**
      * 排序,按降序
      */
     @JSONField(serialize=false)
@@ -70,22 +60,6 @@ public class ActivityVO implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getPubFromTime() {
-        return pubFromTime;
-    }
-
-    public void setPubFromTime(Date pubFromTime) {
-        this.pubFromTime = pubFromTime;
-    }
-
-    public Date getPubToTime() {
-        return pubToTime;
-    }
-
-    public void setPubToTime(Date pubToTime) {
-        this.pubToTime = pubToTime;
     }
 
     public Integer getSort() {

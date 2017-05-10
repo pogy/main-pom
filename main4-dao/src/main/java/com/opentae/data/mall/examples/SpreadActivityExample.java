@@ -436,142 +436,6 @@ public class SpreadActivityExample implements SgExample{
             return (SpreadActivityExample.Criteria)this;
         }
 
-        public SpreadActivityExample.Criteria andPubFromTimeIsNull() {
-            this.addCriterion("pub_from_time is null");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeIsNotNull() {
-            this.addCriterion("pub_from_time is not null");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeEqualTo(Date value) {
-            this.addCriterion("pub_from_time =", value, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeNotEqualTo(Date value) {
-            this.addCriterion("pub_from_time <>", value, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeGreaterThan(Date value) {
-            this.addCriterion("pub_from_time >", value, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("pub_from_time >=", value, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeLessThan(Date value) {
-            this.addCriterion("pub_from_time <", value, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("pub_from_time <=", value, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeLike(String value) {
-            this.addCriterion("pub_from_time like", value, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeNotLike(String value) {
-            this.addCriterion("pub_from_time not like", value, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }        public SpreadActivityExample.Criteria andPubFromTimeIn(List<Date> values) {
-            this.addCriterion("pub_from_time in", values, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeNotIn(List<Date> values) {
-            this.addCriterion("pub_from_time not in", values, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeBetween(Date value1, Date value2) {
-            this.addCriterion("pub_from_time between", value1, value2, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubFromTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("pub_from_time not between", value1, value2, "pubFromTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeIsNull() {
-            this.addCriterion("pub_to_time is null");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeIsNotNull() {
-            this.addCriterion("pub_to_time is not null");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeEqualTo(Date value) {
-            this.addCriterion("pub_to_time =", value, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeNotEqualTo(Date value) {
-            this.addCriterion("pub_to_time <>", value, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeGreaterThan(Date value) {
-            this.addCriterion("pub_to_time >", value, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("pub_to_time >=", value, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeLessThan(Date value) {
-            this.addCriterion("pub_to_time <", value, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("pub_to_time <=", value, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeLike(String value) {
-            this.addCriterion("pub_to_time like", value, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeNotLike(String value) {
-            this.addCriterion("pub_to_time not like", value, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }        public SpreadActivityExample.Criteria andPubToTimeIn(List<Date> values) {
-            this.addCriterion("pub_to_time in", values, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeNotIn(List<Date> values) {
-            this.addCriterion("pub_to_time not in", values, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeBetween(Date value1, Date value2) {
-            this.addCriterion("pub_to_time between", value1, value2, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
-        public SpreadActivityExample.Criteria andPubToTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("pub_to_time not between", value1, value2, "pubToTime");
-            return (SpreadActivityExample.Criteria)this;
-        }
-
         public SpreadActivityExample.Criteria andSortIsNull() {
             this.addCriterion("sort is null");
             return (SpreadActivityExample.Criteria)this;
@@ -773,6 +637,74 @@ public class SpreadActivityExample implements SgExample{
 
         public SpreadActivityExample.Criteria andContextNotBetween(String value1, String value2) {
             this.addCriterion("context not between", value1, value2, "context");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyIsNull() {
+            this.addCriterion("key is null");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyIsNotNull() {
+            this.addCriterion("key is not null");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyEqualTo(String value) {
+            this.addCriterion("key =", value, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyNotEqualTo(String value) {
+            this.addCriterion("key <>", value, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyGreaterThan(String value) {
+            this.addCriterion("key >", value, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyGreaterThanOrEqualTo(String value) {
+            this.addCriterion("key >=", value, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyLessThan(String value) {
+            this.addCriterion("key <", value, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyLessThanOrEqualTo(String value) {
+            this.addCriterion("key <=", value, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyLike(String value) {
+            this.addCriterion("key like", value, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyNotLike(String value) {
+            this.addCriterion("key not like", value, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }        public SpreadActivityExample.Criteria andKeyIn(List<String> values) {
+            this.addCriterion("key in", values, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyNotIn(List<String> values) {
+            this.addCriterion("key not in", values, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyBetween(String value1, String value2) {
+            this.addCriterion("key between", value1, value2, "key");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andKeyNotBetween(String value1, String value2) {
+            this.addCriterion("key not between", value1, value2, "key");
             return (SpreadActivityExample.Criteria)this;
         }
     }

@@ -37,14 +37,19 @@ class ActivityVO{
 -Long activityId  //投放ID
 -Long termId   //期次
 -String description //描述
--Date pubFromTime  //公布时间
--Date pubToTime   //公布结束时间
 -Integer sort  //排序
 }
 
 class GoatActivityVO{
--Long goatId
+-Long localId
 -String code
+-List<GoatSimpleVO> goats
+}
+
+class GoatSimpleVO{
+-Long goatId
+-Date pubFromTime  //公布时间
+-Date pubToTime   //公布结束时间
 }
 
 abstract class LedActivity{
@@ -53,6 +58,8 @@ abstract class LedActivity{
 class LedActivityVO{
 -Date givePicTime
 -Date endGivePicTime
+-Date pubFromTime  //公布时间
+-Date pubToTime   //公布结束时间
 }
 
 abstract class ActivityEnlist{
