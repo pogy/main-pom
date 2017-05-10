@@ -194,11 +194,20 @@ public class GoodsSearchAction {
      * @param model
      * @return
      */
-    @RequestMapping("hzgoods")
-    public String hzgoods(SearchBO bo, Model model) {
+    @RequestMapping("{website}goods")
+    public String hzgoods(SearchBO bo,@PathVariable("website")String website, Model model) {
+        bo.setWebSite(website);
+        if (StringUtils.isEmpty(website) || StringUtils.equals("new", website)) {
+            bo.setWebSite("hz");
+        }
         bo.setRows(56);
         if (bo.getPid() == null) {
-            bo.setPid(30L);
+            if(StringUtils.equals("hz",bo.getWebSite())){
+                bo.setPid(30L);
+            }
+            if(StringUtils.equals("jx",bo.getWebSite())){
+                bo.setPid(701L);
+            }
         }
         if (bo.getKeyword() != null)
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
@@ -225,7 +234,7 @@ public class GoodsSearchAction {
         //处理市场
         model.addAttribute("markets", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.MARKET));
         //查顶级类目
-        model.addAttribute("navCate", categoryInSearchService.selCatesForGoods());
+        model.addAttribute("navCate", categoryInSearchService.selCatesForGoods(bo.getWebSite()));
         if (bo.getPid() != null) {
             model.addAttribute("cates", categoryInSearchService.selSubCates(bo.getPid().toString(),
                     SearchCategory.CATEGORY)

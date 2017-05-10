@@ -76,7 +76,7 @@ public class StoreSelFromEsService {
      * @return
      */
     public ShiguPager<StoreInSearch> searchStore(StorenumBO bo){
-        ShiguPager<SearchShop> shopPager=shopSearchService.searchShop(bo.getKeyword(),"hz",bo.getMid(),bo.getPage(),bo.getRows());
+        ShiguPager<SearchShop> shopPager=shopSearchService.searchShop(bo.getKeyword(),bo.getWebSite(),bo.getMid(),bo.getPage(),bo.getRows());
         ShiguPager<StoreInSearch> pager=new ShiguPager<>();
         pager.setTotalPages(shopPager.getTotalPages());
         pager.setNumber(shopPager.getNumber());

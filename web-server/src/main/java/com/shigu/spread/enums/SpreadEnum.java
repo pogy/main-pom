@@ -22,7 +22,7 @@ public enum SpreadEnum {
     JX_SPREAD_INDEX_WOMAN("濮院站首页男装商品广告", "JX_SPREAD_INDEX_WOMAN"),
     JX_SPREAD_INDEX_MENSHOES("濮院站首页男鞋商品广告", "JX_SPREAD_INDEX_MENSHOES"),
     JX_SPREAD_INDEX_CHILDRENCOLTHING("濮院站首页童装商品广告", "JX_SPREAD_INDEX_CHILDRENCOLTHING"),
-
+    JX_QZGG("濮院站首页公告管理广告", "JX_QZGG"),
     ;
 
     SpreadEnum(String title, String code) {

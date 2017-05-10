@@ -67,7 +67,9 @@ public class ShopSearchServiceImpl implements ShopSearchService {
             }
             String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
             qb.should(QueryBuilders.matchQuery("shop_num", keywordNum)).boost(5);
-            qb.should(QueryBuilders.termQuery("market_id", 1087));
+            if(StringUtils.equals(webSite,"hz")){
+                qb.should(QueryBuilders.termQuery("market_id", 1087));
+            }
             Matcher numMatch = NUMBER_PATTERN.matcher(keywordNum);
             while (numMatch.find()) {
                 qb.must(QueryBuilders.wildcardQuery("shop_num", "*" + numMatch.group()+"*"));
@@ -157,7 +159,6 @@ public class ShopSearchServiceImpl implements ShopSearchService {
     }
 
     private List<SearchShopSimple> selShopSimpleFromEs(QueryBuilder qb,String type) {
-        System.out.println(qb.toString());
         SearchHits response = ElasticConfiguration.searchClient.prepareSearch("shop").setSize(1000)
                 .setQuery(QueryBuilders.boolQuery()
                         .must(qb).filter(QueryBuilders.termQuery("shop_status", 0L))

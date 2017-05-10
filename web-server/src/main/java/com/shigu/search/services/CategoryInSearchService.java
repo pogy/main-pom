@@ -85,9 +85,9 @@ public class CategoryInSearchService {
      * 给商品库用的主类目
      * @return
      */
-    public List<CateNav> selCatesForGoods(){
+    public List<CateNav> selCatesForGoods(String website){
         List<CateNav> cates=new ArrayList<>();
-        cates.addAll(selCates(null));
+        cates.addAll(selCates(website));
         cates.add(new CateNav("风格馆",null,"风格馆"));
         cates.add(new CateNav("大码区",null,"大码区"));
         return cates;

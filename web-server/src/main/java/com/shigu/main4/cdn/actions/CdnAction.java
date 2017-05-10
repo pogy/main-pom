@@ -256,9 +256,15 @@ public class CdnAction {
         List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>)womanSpread);
         List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>)menShoesSpread);
         List<IndexGoodsVo> chilrenSpreadList = changeGoods((List<ItemSpreadVO>)chilrenSpread);
+        if(menShoesSpreadList == null){
+            menShoesSpreadList = new ArrayList<IndexGoodsVo>();
+        }
+        if(chilrenSpreadList == null){
+            chilrenSpreadList = new ArrayList<IndexGoodsVo>();
+        }
 
         //全站公告
-        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
+        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.JX_QZGG)));
         //大图
         model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
                 SpreadEnum.JX_SPREAD_INDEX_DT)));
@@ -266,7 +272,6 @@ public class CdnAction {
         model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
                 SpreadEnum.JX_SPREAD_INDEX_XT)));
 
-        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
         model.addAttribute("hasStore", shopsNum);
         model.addAttribute("webSite", website);
         model.addAttribute("list_newGoods", JSON.toJSONString(indexNewGoodsVoList));
