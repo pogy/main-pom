@@ -142,7 +142,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
             @Override
             public <T extends Activity> T selActivityByKey(String key) throws ActivityException {
                 SpreadActivityExample example=new SpreadActivityExample();
-                example.createCriteria().andActivityKeyEqualTo(key);
+                example.createCriteria().andActivityKeyEqualTo(key).andTermIdEqualTo(this.getTermId());
                 example.setStartIndex(0);
                 example.setEndIndex(1);
                 List<SpreadActivity> activities=spreadActivityMapper.selectByConditionList(example);
@@ -162,6 +162,15 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 term.setStartTime(start);
                 term.setEndTime(end);
                 spreadTermMapper.updateByPrimaryKeySelective(term);
+            }
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public <T extends ActivityVO> T selActivitys() {
+                SpreadActivityExample example=new SpreadActivityExample();
+                example.createCriteria().andTermIdEqualTo(this.getTermId());
+                List<SpreadActivity> activities=spreadActivityMapper.selectByExample(example);
+                return (T) BeanMapper.mapList(activities,this.getActivityType().getActivityVoClass());
             }
         };
     }

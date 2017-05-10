@@ -8,6 +8,7 @@ import com.shigu.main4.activity.vo.GoatActivityWithEnlist;
 import com.shigu.main4.activity.vo.GoatSimpleVO;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 活动对外接口
@@ -17,6 +18,8 @@ public interface ActivityDubboService {
     Long addTerm(ActivityTermVO vo) throws ActivityException;
 
     ActivityTermVO selByTermId(Long termId);
+
+    List<ActivityVO> selActivityInTerm(Long termId);
 
     void modifyTerm(Long termId,ActivityType type, Date start, Date end) throws ActivityException;
 

@@ -26,4 +26,6 @@ public abstract class ActivityTerm extends ActivityTermVO implements Serializabl
      * @param end 结束时间
      */
     public abstract void modify(ActivityType type, Date start, Date end) throws ActivityException;
+
+    public abstract <T extends ActivityVO> T selActivitys();
 }

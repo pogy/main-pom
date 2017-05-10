@@ -41,6 +41,11 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
     }
 
     @Override
+    public List<ActivityVO> selActivityInTerm(Long termId) {
+        return activityFactory.selTermById(termId).selActivitys();
+    }
+
+    @Override
     public void modifyTerm(Long termId,ActivityType type, Date start, Date end) throws ActivityException {
         ActivityTerm term=activityFactory.selTermById(termId);
         term.modify(type,start,end);

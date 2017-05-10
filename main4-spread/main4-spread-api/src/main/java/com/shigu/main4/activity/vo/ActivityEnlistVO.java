@@ -32,6 +32,16 @@ public class ActivityEnlistVO implements Serializable{
      */
     private String telephone;
 
+    private Integer draw;
+
+    public Integer getDraw() {
+        return draw;
+    }
+
+    public void setDraw(Integer draw) {
+        this.draw = draw;
+    }
+
     public Long getEnId() {
         return enId;
     }

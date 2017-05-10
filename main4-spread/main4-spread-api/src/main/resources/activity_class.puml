@@ -11,6 +11,7 @@ abstract class ActivityTerm{
 +<T extends ActivityVO> Long throwActivity(T activity) //投放广告
 +void modify(ActivityType type,Date start,Date end) //修改期次
 +<T extends Activity> T selActivityByKey(String key)
++<T extends ActivityVO> T selActivitys()
 }
 
 class ActivityTermVO{
