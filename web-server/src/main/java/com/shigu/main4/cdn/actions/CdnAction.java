@@ -127,7 +127,7 @@ public class CdnAction {
      * 杭州首页动态页面
      * @return
      */
-    @RequestMapping("hzindex4show")
+    //@RequestMapping("hzindex4show")
     public String hzindex4show(HttpServletRequest request,Model model){
         Cookie[] cookies=request.getCookies();
         String manOrWoman="Man";
@@ -203,7 +203,7 @@ public class CdnAction {
      * 濮院站首页
      * @return
      */
-    @RequestMapping(value = "jxindex4show" , method = RequestMethod.GET)
+    //@RequestMapping(value = "jxindex4show" , method = RequestMethod.GET)
     public String jxindex4show(HttpServletRequest request,Model model){
         String website = "jx";
 
@@ -327,6 +327,9 @@ public class CdnAction {
         Long shopId=shopBaseService.selShopIdByDomain(url);
         if("www".equals(url)||"hz".equals(url)){
             return hzindex4show(request,model);
+        }
+        if("jx".equals(url)){
+            return jxindex4show(request,model);
         }
         if(shopId==null){
             return "redirect:"+xzSdkClient.getMainHost();
@@ -558,15 +561,15 @@ public class CdnAction {
         //如果是仓库
         if(bo.getTimeflag()!=null&&bo.getTimeflag()==4){
             Calendar cal=Calendar.getInstance();
-            if(bo.getOption()!=null&&bo.getOption().equals("month")){//一个月内
-                cal.add(Calendar.MONTH,-1);
-            }else if(bo.getOption()!=null&&bo.getOption().equals("week")){//一周内
-                cal.add(Calendar.WEEK_OF_MONTH,-1);
-            }else if(bo.getOption()!=null&&bo.getOption().equals("day")){//一天内
-                cal.add(Calendar.DATE,-1);
-            }else{//默认1年内的下架
-                cal.add(Calendar.YEAR,-1);
-            }
+                if(bo.getOption()!=null&&bo.getOption().equals("month")){//一个月内
+                    cal.add(Calendar.MONTH,-1);
+                }else if(bo.getOption()!=null&&bo.getOption().equals("week")){//一周内
+                    cal.add(Calendar.WEEK_OF_MONTH,-1);
+                }else if(bo.getOption()!=null&&bo.getOption().equals("day")){//一天内
+                    cal.add(Calendar.DATE,-1);
+                }else{//默认1年内的下架
+                    cal.add(Calendar.YEAR,-1);
+                }
             Date  dateFrom=cal.getTime();
             ShiguPager<ItemShowBlock> pager=shopForCdnService.searchItemInstock(dateFrom,new Date(),bo.getId(),
                     bo.getPageNo(),bo.getPageSize());
