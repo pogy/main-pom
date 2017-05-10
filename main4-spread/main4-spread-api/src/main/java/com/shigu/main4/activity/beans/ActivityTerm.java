@@ -8,6 +8,7 @@ import com.shigu.main4.activity.vo.ActivityVO;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 活动期对象
@@ -27,5 +28,5 @@ public abstract class ActivityTerm extends ActivityTermVO implements Serializabl
      */
     public abstract void modify(ActivityType type, Date start, Date end) throws ActivityException;
 
-    public abstract <T extends ActivityVO> T selActivitys();
+    public abstract <T extends ActivityVO> List<T> selActivitys();
 }

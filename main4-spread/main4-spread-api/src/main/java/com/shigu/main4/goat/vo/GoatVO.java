@@ -30,6 +30,18 @@ public class GoatVO implements Serializable{
     private String description;
 
     private Integer sort;
+    /**
+     * 备注
+     */
+    private String recommon;
+
+    public String getRecommon() {
+        return recommon;
+    }
+
+    public void setRecommon(String recommon) {
+        this.recommon = recommon;
+    }
 
     public Long getDataId() {
         return dataId;

@@ -503,5 +503,73 @@ public class GoatOneItemExample implements SgExample{
             this.addCriterion("sort not between", value1, value2, "sort");
             return (GoatOneItemExample.Criteria)this;
         }
+
+        public GoatOneItemExample.Criteria andRecommonIsNull() {
+            this.addCriterion("recommon is null");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonIsNotNull() {
+            this.addCriterion("recommon is not null");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonEqualTo(String value) {
+            this.addCriterion("recommon =", value, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonNotEqualTo(String value) {
+            this.addCriterion("recommon <>", value, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonGreaterThan(String value) {
+            this.addCriterion("recommon >", value, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonGreaterThanOrEqualTo(String value) {
+            this.addCriterion("recommon >=", value, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonLessThan(String value) {
+            this.addCriterion("recommon <", value, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonLessThanOrEqualTo(String value) {
+            this.addCriterion("recommon <=", value, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonLike(String value) {
+            this.addCriterion("recommon like", value, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonNotLike(String value) {
+            this.addCriterion("recommon not like", value, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }        public GoatOneItemExample.Criteria andRecommonIn(List<String> values) {
+            this.addCriterion("recommon in", values, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonNotIn(List<String> values) {
+            this.addCriterion("recommon not in", values, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonBetween(String value1, String value2) {
+            this.addCriterion("recommon between", value1, value2, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
+
+        public GoatOneItemExample.Criteria andRecommonNotBetween(String value1, String value2) {
+            this.addCriterion("recommon not between", value1, value2, "recommon");
+            return (GoatOneItemExample.Criteria)this;
+        }
     }
 }

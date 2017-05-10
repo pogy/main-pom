@@ -166,11 +166,11 @@ public class ActivityFactoryImpl implements ActivityFactory {
 
             @Override
             @SuppressWarnings("unchecked")
-            public <T extends ActivityVO> T selActivitys() {
+            public <T extends ActivityVO> List<T> selActivitys() {
                 SpreadActivityExample example=new SpreadActivityExample();
                 example.createCriteria().andTermIdEqualTo(this.getTermId());
                 List<SpreadActivity> activities=spreadActivityMapper.selectByExample(example);
-                return (T) BeanMapper.mapList(activities,this.getActivityType().getActivityVoClass());
+                return (List<T>) BeanMapper.mapList(activities,this.getActivityType().getActivityVoClass());
             }
         };
     }

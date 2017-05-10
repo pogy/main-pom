@@ -129,6 +129,9 @@ public class GoatFactoryImpl implements GoatFactory {
                 gid.setGoatId(oneItem.getGoatId());
                 gid.setContext("{}");
             }
+            T t=unserializeGoat(gid, local);
+            t.setSort(oneItem.getSort());
+            t.setRecommon(oneItem.getRecommon());
             rlist.add((T) unserializeGoat(gid, local));
         }
         return rlist;

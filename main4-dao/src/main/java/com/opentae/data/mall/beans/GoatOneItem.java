@@ -26,6 +26,16 @@ public class GoatOneItem {
      */
     private Integer sort;
 
+    private String recommon;
+
+    public String getRecommon() {
+        return recommon;
+    }
+
+    public void setRecommon(String recommon) {
+        this.recommon = recommon;
+    }
+
     public Long getGoatId() {
         return goatId;
     }
