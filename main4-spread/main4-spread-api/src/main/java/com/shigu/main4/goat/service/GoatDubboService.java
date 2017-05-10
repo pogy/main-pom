@@ -1,5 +1,6 @@
 package com.shigu.main4.goat.service;
 
+import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.vo.GoatVO;
 import com.shigu.main4.goat.vo.ItemUpVO;
@@ -11,37 +12,37 @@ import java.util.List;
  * Created by zhaohongbo on 17/5/9.
  */
 public interface GoatDubboService {
-    <T extends GoatVO>T selGoatById(Long goatId) throws GoatException;
-    <T extends GoatVO> List<T> selGoatByLocalId(Long localId) throws GoatException;
+    <T extends GoatVO> T selGoatById(Long goatId,GoatType type) throws GoatException;
+    <T extends GoatVO> List<T> selGoatByLocalId(Long localId,GoatType type) throws GoatException;
 
     /**
      * 查询真实上款量与虚假上款量
      * @return 真实上款量与虚假上款量
      */
-    ItemUpVO selUp(Long goatId);
+    ItemUpVO selUp(Long goatId) throws GoatException;
 
     /**
      * 修改虚假上款量
      * @param num 修改后的虚假上款量
      */
-    void modifyUp(Long goatId, Integer num);
+    void modifyUp(Long goatId, Integer num) throws GoatException;
 
     /**
      * 查询权重
      * @return 商品的权重
      */
-    Double selWeight(Long goatId);
+    Double selWeight(Long goatId) throws GoatException;
 
     /**
      * 修改权重
      * @param weight 修改后的权重
      */
-    void updateWeight(Long goatId, Double weight);
+    void updateWeight(Long goatId, Double weight) throws GoatException;
 
     /**
      * 发布上线
      */
-    void publish(GoatVO vo);
+    void publish(GoatVO vo) throws GoatException;
 
     /**
      * 预发布

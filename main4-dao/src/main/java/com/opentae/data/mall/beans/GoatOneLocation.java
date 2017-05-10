@@ -1,5 +1,7 @@
 package com.opentae.data.mall.beans;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 
 /**
@@ -10,6 +12,8 @@ public class GoatOneLocation {
     /**
      * 广告位置ID
      */
+    @Id
+    @GeneratedValue(generator="JDBC")
     private Long localId;
     /**
      * 广告位编号

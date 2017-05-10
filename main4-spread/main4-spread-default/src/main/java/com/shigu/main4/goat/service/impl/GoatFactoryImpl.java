@@ -276,6 +276,9 @@ public class GoatFactoryImpl implements GoatFactory {
      * @return 广告数据
      */
     private <T extends GoatVO> T unserializeGoat(GoatItemData data, GoatLocation location) {
+        if (data.getContext() == null) {
+            data.setContext("{}");
+        }
         T t = (T) JSON.parseObject(data.getContext(),
                 GoatType.values()[location.getGoatType()].getGoatVoClass());
         BeanMapper.map(data, t);

@@ -1,5 +1,8 @@
 package com.shigu.main4.goat.enums;
 
+import com.shigu.main4.goat.beans.ImgGoat;
+import com.shigu.main4.goat.beans.ItemGoat;
+import com.shigu.main4.goat.beans.TextGoat;
 import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.main4.goat.vo.TextGoatVO;
@@ -9,12 +12,13 @@ import com.shigu.main4.goat.vo.TextGoatVO;
  * Created by zhaohongbo on 17/5/5.
  */
 public enum GoatType {
-    ImgGoat(ImgGoatVO.class),
-    ItemGoat(ItemGoatVO.class),
-    TextGoat(TextGoatVO.class);
+    ImgGoat(ImgGoatVO.class,com.shigu.main4.goat.beans.ImgGoat.class),
+    ItemGoat(ItemGoatVO.class,com.shigu.main4.goat.beans.ItemGoat.class),
+    TextGoat(TextGoatVO.class,com.shigu.main4.goat.beans.TextGoat.class);
 
-    GoatType(Class<?> goatVoClass) {
+    GoatType(Class<?> goatVoClass, Class<?> goatBeanClass) {
         this.goatVoClass = goatVoClass;
+        this.goatBeanClass = goatBeanClass;
     }
 
     /**

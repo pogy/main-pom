@@ -25,4 +25,11 @@ public interface ActivityDubboService {
     void addGoatToActivity(Long activityId, GoatSimpleVO vo) throws ActivityException;
 
     GoatActivityWithEnlist selActivityEnlists(Long activityId, Integer hitType) throws ActivityException;
+
+    /**
+     * 中签不中签
+     * @param enId 报名ID
+     * @param ishit 是否中签
+     */
+    void hitUnhit(Long enId,Boolean ishit) throws ActivityException;
 }

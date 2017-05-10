@@ -1,6 +1,10 @@
 package com.shigu.main4.goat.service.impl;
 
+import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.goat.beans.ItemGoat;
+import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.goat.service.Goat;
 import com.shigu.main4.goat.service.GoatDubboService;
 import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.GoatVO;
@@ -20,43 +24,52 @@ public class GoatDubboServiceImpl implements GoatDubboService {
     GoatFactory goatFactory;
 
     @Override
-    public <T extends GoatVO> T selGoatById(Long goatId) throws GoatException {
-        return goatFactory.selGoatById(goatId);
+    public <T extends GoatVO> T selGoatById(Long goatId,GoatType type) throws GoatException {
+        Goat goat=goatFactory.selGoatById(goatId);
+        return (T) BeanMapper.map(goat,type.getGoatVoClass());
     }
 
     @Override
-    public <T extends GoatVO> List<T> selGoatByLocalId(Long localId) throws GoatException {
-        return null;
+    @SuppressWarnings("unchecked")
+    public <T extends GoatVO> List<T> selGoatByLocalId(Long localId,GoatType type) throws GoatException {
+        List<T> goats=goatFactory.getAlocation(localId).selGoats();
+        return (List<T>) BeanMapper.mapList(goats,type.getGoatVoClass());
     }
 
     @Override
-    public ItemUpVO selUp(Long goatId) {
-        return null;
+    public ItemUpVO selUp(Long goatId) throws GoatException {
+        ItemGoat ig=goatFactory.selGoatById(goatId);
+        return ig.selUp();
     }
 
     @Override
-    public void modifyUp(Long goatId, Integer num) {
-
+    public void modifyUp(Long goatId, Integer num) throws GoatException {
+        ItemGoat ig=goatFactory.selGoatById(goatId);
+        ig.modifyUp(num);
     }
 
     @Override
-    public Double selWeight(Long goatId) {
-        return null;
+    public Double selWeight(Long goatId) throws GoatException {
+        ItemGoat ig=goatFactory.selGoatById(goatId);
+        return ig.selWeight();
     }
 
     @Override
-    public void updateWeight(Long goatId, Double weight) {
-
+    public void updateWeight(Long goatId, Double weight) throws GoatException {
+        ItemGoat ig=goatFactory.selGoatById(goatId);
+        ig.updateWeight(weight);
     }
 
     @Override
-    public void publish(GoatVO vo) {
-
+    public void publish(GoatVO vo) throws GoatException {
+        Goat goat=goatFactory.selGoatByVo(vo);
+        goat.publish();
     }
 
     @Override
     public void preparePublish(GoatVO vo, Long second) {
-
+        Goat goat=goatFactory.selGoatByVo(vo);
+        goat.preparePublish(second);
     }
 
 }

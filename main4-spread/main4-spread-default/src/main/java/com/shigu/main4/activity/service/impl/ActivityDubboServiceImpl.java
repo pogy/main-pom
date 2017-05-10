@@ -1,5 +1,6 @@
 package com.shigu.main4.activity.service.impl;
 
+import com.shigu.main4.activity.beans.ActivityEnlist;
 import com.shigu.main4.activity.beans.ActivityTerm;
 import com.shigu.main4.activity.beans.GoatActivity;
 import com.shigu.main4.activity.enums.ActivityType;
@@ -63,6 +64,16 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
         GoatActivityWithEnlist gawe=BeanMapper.map(activity,GoatActivityWithEnlist.class);
         gawe.setEnlists(activity.selEnlist(hitType));
         return gawe;
+    }
+
+    @Override
+    public void hitUnhit(Long enId, Boolean ishit) throws ActivityException {
+        ActivityEnlist enlist=activityFactory.selEnlistById(enId);
+        if(ishit){
+            enlist.hit();
+        }else{
+            enlist.unhit();
+        }
     }
 
 }
