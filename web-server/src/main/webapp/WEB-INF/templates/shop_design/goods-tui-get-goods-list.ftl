@@ -13,7 +13,7 @@
     </span>
     <div class="item-srch">
         <div class="srch-conds clearfix">
-            <form action="" method="get">
+            <form action="" method="post">
                 <input type="hidden" name="id" value="${bo.id}">
                 <input type="hidden" name="mid" value="${bo.mid}">
                 <input type="hidden" name="area" value="${bo.area}">
