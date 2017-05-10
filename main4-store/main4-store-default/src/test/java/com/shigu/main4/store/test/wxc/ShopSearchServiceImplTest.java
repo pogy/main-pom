@@ -35,7 +35,7 @@ public class ShopSearchServiceImplTest extends BaseSpringTest {
         ids.add(32888L);
         ids.add(16589L);
         Long[] stores = {35749L, 32861L, 16573L, 41603L, 35782L, 41836L, 29858L, 39959L, 40721L, 15908L, 40097L, 42538L, 39055L};
-        show(shopSearchService.selShopByIds(Arrays.asList(stores)));
+        show(shopSearchService.selShopByIds(Arrays.asList(stores),"hz"));
     }
 
     @Test

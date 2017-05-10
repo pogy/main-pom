@@ -1,8 +1,10 @@
 package com.shigu.main4.cdn.services;
 
 import com.opentae.data.mall.examples.ShiguGoodsIdGeneratorExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.cdn.vo.IndexNavVO;
 import com.shigu.main4.cdn.vo.LoveGoodsList;
 import com.shigu.main4.item.enums.SearchCategory;
@@ -15,6 +17,7 @@ import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.EhCacheForIndexPage;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +52,15 @@ public class IndexShowService {
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
+
     @Autowired
     EhCacheForIndexPage ehCacheForIndexPage;
 
     @Autowired
     SpreadService spreadService;
+
+    @Autowired
+    private ShiguShopMapper shiguShopMapper;
 
     /**
      * 把商品总数数字按个排出
@@ -138,5 +145,18 @@ public class IndexShowService {
             }
         };
     }
+
+
+    /**
+     * 商户个数
+     * @param webSite
+     * @return
+     */
+    public int getShopAllCount(String webSite){
+        int shopcount = shiguShopMapper.selectShopCountByBo(null,null,null,null,
+                null,null,null,null,null);
+        return shopcount;
+    }
+
 
 }

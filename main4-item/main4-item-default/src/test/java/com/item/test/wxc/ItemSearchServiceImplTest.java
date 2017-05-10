@@ -42,7 +42,7 @@ public class ItemSearchServiceImplTest extends BaseSpringTest {
 
     @Test
     public void selCategory() throws Exception {
-        show(itemSearchService.selCategory(SearchCategory.CATEGORY));
+        show(itemSearchService.selCategory(SearchCategory.CATEGORY,"hz"));
     }
 
     @Test

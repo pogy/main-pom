@@ -52,7 +52,7 @@ public class MarketShopTest {
      */
     @Test
     public void marketListSort(){
-        Long marketId = 601L;
+        Long marketId = 35L;
         MarketShow marketShowList = marketShopService.selMarketShow(marketId);
         System.out.println(JSON.toJSONString(marketShowList));
     }
