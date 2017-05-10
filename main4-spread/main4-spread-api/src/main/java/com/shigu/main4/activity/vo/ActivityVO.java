@@ -37,6 +37,11 @@ public class ActivityVO implements Serializable{
      */
     @JSONField(serialize=false)
     private Integer sort;
+    /**
+     * 活动唯一key
+     */
+    @JSONField(serialize=false)
+    private String key;
 
     public Long getActivityId() {
         return activityId;
@@ -68,5 +73,13 @@ public class ActivityVO implements Serializable{
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

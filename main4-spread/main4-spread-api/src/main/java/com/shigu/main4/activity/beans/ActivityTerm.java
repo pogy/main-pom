@@ -2,6 +2,7 @@ package com.shigu.main4.activity.beans;
 
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
+import com.shigu.main4.activity.service.Activity;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
 
@@ -15,6 +16,8 @@ import java.util.Date;
 public abstract class ActivityTerm extends ActivityTermVO implements Serializable{
 
     public abstract <T extends ActivityVO> Long throwActivity(T activity);
+
+    public abstract <T extends Activity> T selActivityByKey(String key) throws ActivityException;
 
     /**
      * 修改期

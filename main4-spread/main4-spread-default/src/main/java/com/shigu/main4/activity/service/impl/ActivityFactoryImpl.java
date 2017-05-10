@@ -6,6 +6,7 @@ import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.SpreadActivity;
 import com.opentae.data.mall.beans.SpreadEnlist;
 import com.opentae.data.mall.beans.SpreadTerm;
+import com.opentae.data.mall.examples.SpreadActivityExample;
 import com.opentae.data.mall.examples.SpreadEnlistExample;
 import com.opentae.data.mall.examples.SpreadTermExample;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
@@ -23,6 +24,7 @@ import com.shigu.main4.activity.service.ActivityFactory;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
+import com.shigu.main4.activity.vo.GoatSimpleVO;
 import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -135,6 +137,20 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 sactivity.setActivityId(null);
                 spreadActivityMapper.insertSelective(sactivity);
                 return sactivity.getActivityId();
+            }
+
+            @Override
+            public <T extends Activity> T selActivityByKey(String key) throws ActivityException {
+                SpreadActivityExample example=new SpreadActivityExample();
+                example.createCriteria().andKeyEqualTo(key);
+                example.setStartIndex(0);
+                example.setEndIndex(1);
+                List<SpreadActivity> activities=spreadActivityMapper.selectByConditionList(example);
+                if(activities.size()==0){
+                    return null;
+                }
+                SpreadActivity spreadActivity=activities.get(0);
+                return selActivityById(spreadActivity.getActivityId());
             }
 
             @Override
@@ -252,6 +268,24 @@ public class ActivityFactoryImpl implements ActivityFactory {
      */
     private GoatActivity selGoatActivityWithFunc() {
         return new GoatActivity() {
+            /**
+             * 如果有了,变成更新,如果没有添加
+             * @param goat
+             */
+            @Override
+            public void addGoat(GoatSimpleVO goat) {
+                List<GoatSimpleVO> goats=this.getGoats();
+                if (goats == null) {
+                    goats=new ArrayList<>();
+                    this.setGoats(goats);
+                }
+                if(goats.contains(goat)){
+                    goats.remove(goat);//删除旧的
+                    goats.add(goat);//添加新的
+                }else{
+                    goats.add(goat);
+                }
+            }
 
             @Override
             public boolean limit(Object... param) {

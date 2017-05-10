@@ -10,6 +10,7 @@ note left of ActivityType:活动类别
 abstract class ActivityTerm{
 +<T extends ActivityVO> Long throwActivity(T activity) //投放广告
 +void modify(ActivityType type,Date start,Date end) //修改期次
++<T extends Activity> T selActivityByKey(String key)
 }
 
 class ActivityTermVO{
@@ -31,6 +32,7 @@ List<ActivityEnlistVO> selEnlist(int hitType) //查询报名列表
 note left of Activity:投放的活动,\n一期里面可能\n投放多个活动
 
 abstract class GoatActivity{
+ void addGoat(GoatSimpleVO goat)
 }
 
 class ActivityVO{

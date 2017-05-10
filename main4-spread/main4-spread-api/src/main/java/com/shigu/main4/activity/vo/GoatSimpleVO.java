@@ -1,5 +1,6 @@
 package com.shigu.main4.activity.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -9,13 +10,29 @@ import java.util.Date;
  -Date pubToTime   //公布结束时间
  * Created by zhaohongbo on 17/5/10.
  */
-public class GoatSimpleVO {
+public class GoatSimpleVO implements Serializable{
 
     private Long goatId;
 
     private Date pubFromTime;
 
     private Date pubToTime;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GoatSimpleVO that = (GoatSimpleVO) o;
+
+        return goatId.equals(that.goatId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return goatId.hashCode();
+    }
 
     public Long getGoatId() {
         return goatId;

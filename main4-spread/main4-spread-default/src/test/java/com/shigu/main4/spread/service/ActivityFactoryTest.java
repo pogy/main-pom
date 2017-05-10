@@ -19,6 +19,7 @@ import com.shigu.main4.activity.service.impl.ActivityFactoryImpl;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.GoatActivityVO;
+import com.shigu.main4.activity.vo.GoatSimpleVO;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,6 +66,25 @@ public class ActivityFactoryTest {
 
     @Test
     @Transactional
+    public void selGoatActivityWithFunc_addGoat() throws ActivityException {
+        SpreadActivity activity=new SpreadActivity();
+        activity.setActivityId(20170508L);
+        activity.setTermId(20170508L);
+        activity.setType(ActivityType.GOAT_SELL.ordinal());
+        activity.setKey("123");
+        activity.setContext("{}");
+        spreadActivityMapper.insertSelective(activity);
+        GoatActivity goatActivity=activityFactory.selActivityById(activity.getActivityId());
+        GoatSimpleVO vo=new GoatSimpleVO();
+        vo.setGoatId(555L);
+        vo.setPubFromTime(new Date());
+        vo.setPubToTime(new Date());
+        goatActivity.addGoat(vo);
+
+    }
+
+    @Test
+    @Transactional
     public void selLedActivityWithFunc_joinActivityTest() throws ActivityException {
         //4个参数不能为空
         //参数//Long userId, Long shopId, String name, String phone
@@ -72,8 +92,6 @@ public class ActivityFactoryTest {
         SpreadActivity sa=new SpreadActivity ();
         sa.setContext ("{}");
         sa.setDescription ("");
-        sa.setPubFromTime (new Date());
-        sa.setPubToTime (new Date());
         sa.setSort (1);
         sa.setTermId (20170501L);
         sa.setType (ActivityType.GOAT_LED.ordinal ());
@@ -368,8 +386,6 @@ public class ActivityFactoryTest {
         SpreadActivity sa = new SpreadActivity();
         sa.setContext("{}");
         sa.setDescription("");
-        sa.setPubFromTime(new Date());
-        sa.setPubToTime(new Date());
         sa.setSort(1);
         sa.setTermId(20170501L);
         sa.setType(ActivityType.GOAT_LED.ordinal());
