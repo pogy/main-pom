@@ -25,8 +25,6 @@ public interface ActivityDubboService {
 
     <T extends ActivityVO> Long throwActivity(Long termId,T activity);
 
-    void addGoatToActivity(Long activityId, GoatSimpleVO vo) throws ActivityException;
-
     GoatActivityWithEnlist selActivityEnlists(Long activityId, Integer hitType) throws ActivityException;
 
     /**

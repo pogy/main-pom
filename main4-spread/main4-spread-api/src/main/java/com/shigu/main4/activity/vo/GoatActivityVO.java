@@ -17,7 +17,25 @@ public class GoatActivityVO extends ActivityVO implements Serializable{
      */
     private String code;
 
-    private List<GoatSimpleVO> goats;
+    private Integer number;
+
+    private String time;
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public Long getLocalId() {
         return localId;
@@ -27,19 +45,16 @@ public class GoatActivityVO extends ActivityVO implements Serializable{
         this.localId = localId;
     }
 
-    public List<GoatSimpleVO> getGoats() {
-        return goats;
-    }
-
-    public void setGoats(List<GoatSimpleVO> goats) {
-        this.goats = goats;
-    }
-
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Override
+    public String toString() {
+        return this.getDescription()+"x"+this.getNumber();
     }
 }

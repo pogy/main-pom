@@ -1,6 +1,7 @@
 package com.shigu.main4.activity.vo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.shigu.main4.common.util.DateUtil;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -60,5 +61,10 @@ public class LedActivityVO extends ActivityVO implements Serializable{
 
     public void setEndGivePicTime(Date endGivePicTime) {
         this.endGivePicTime = endGivePicTime;
+    }
+
+    @Override
+    public String toString() {
+        return DateUtil.dateToString(pubFromTime,"yyyy-MM-dd HH:mm:ss")+"~"+DateUtil.dateToString(pubToTime,"yyyy-MM-dd HH:mm:ss");
     }
 }

@@ -9,5 +9,4 @@ import com.shigu.main4.activity.vo.GoatSimpleVO;
  * Created by zhaohongbo on 17/5/4.
  */
 public abstract class GoatActivity extends GoatActivityVO implements Activity {
-    public abstract void addGoat(GoatSimpleVO goat);
 }

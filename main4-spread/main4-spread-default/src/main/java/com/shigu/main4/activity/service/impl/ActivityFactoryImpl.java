@@ -193,6 +193,11 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 List<SpreadActivity> activities=spreadActivityMapper.selectByExample(example);
                 return (List<T>) BeanMapper.mapList(activities,this.getActivityType().getActivityVoClass());
             }
+
+            @Override
+            public void delActivity(Long activityId) {
+                spreadActivityMapper.deleteByPrimaryKey(activityId);
+            }
         };
     }
 
@@ -298,27 +303,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
      */
     private GoatActivity selGoatActivityWithFunc() {
         return new GoatActivity() {
-            /**
-             * 如果有了,变成更新,如果没有添加
-             * @param goat
-             */
-            @Override
-            public void addGoat(GoatSimpleVO goat) {
-                List<GoatSimpleVO> goats=this.getGoats();
-                if (goats == null) {
-                    goats=new ArrayList<>();
-                    this.setGoats(goats);
-                }
-                if(goats.contains(goat)){
-                    goats.remove(goat);//删除旧的
-                    goats.add(goat);//添加新的
-                }else{
-                    goats.add(goat);
-                }
-                SpreadActivity activity=BeanMapper.map(this,SpreadActivity.class);
-                activity.setContext(JSON.toJSONString(this));
-                spreadActivityMapper.updateByPrimaryKeySelective(activity);
-            }
 
             @Override
             public boolean limit(Object... param) {
@@ -339,7 +323,6 @@ public class ActivityFactoryImpl implements ActivityFactory {
             public List<ActivityEnlistVO> selEnlist(int hitType) {
                 return selEnlistCommon(this.getActivityId(),hitType);
             }
-
         };
     }
 

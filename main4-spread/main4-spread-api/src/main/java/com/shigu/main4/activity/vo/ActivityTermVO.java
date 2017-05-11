@@ -27,6 +27,10 @@ public class ActivityTermVO implements Serializable{
      * 活动类型
      */
     private ActivityType activityType;
+    /**
+     * 简单要内容,用于描述期内有什么
+     */
+    private String content;
 
     public Date getStartTime() {
         return startTime;
@@ -58,5 +62,13 @@ public class ActivityTermVO implements Serializable{
 
     public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

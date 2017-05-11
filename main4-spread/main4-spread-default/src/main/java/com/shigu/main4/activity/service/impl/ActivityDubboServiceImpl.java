@@ -37,7 +37,10 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
 
     @Override
     public ActivityTermVO selByTermId(Long termId) {
-        return BeanMapper.map(activityFactory.selTermById(termId),ActivityTermVO.class);
+        ActivityTerm term=activityFactory.selTermById(termId);
+        ActivityTermVO termVO=BeanMapper.map(term,ActivityTermVO.class);
+        List<ActivityVO> vos=term.selActivitys();
+        return null;
     }
 
     @Override
@@ -55,12 +58,6 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
     public <T extends ActivityVO> Long throwActivity(Long termId, T activity) {
         ActivityTerm term=activityFactory.selTermById(termId);
         return term.throwActivity(activity);
-    }
-
-    @Override
-    public void addGoatToActivity(Long activityId, GoatSimpleVO vo) throws ActivityException {
-        GoatActivity activity=activityFactory.selActivityById(activityId);
-        activity.addGoat(vo);
     }
 
     @Override

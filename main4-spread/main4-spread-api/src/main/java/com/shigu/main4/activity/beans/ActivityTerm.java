@@ -29,4 +29,6 @@ public abstract class ActivityTerm extends ActivityTermVO implements Serializabl
     public abstract void modify(ActivityType type, Date start, Date end) throws ActivityException;
 
     public abstract <T extends ActivityVO> List<T> selActivitys();
+
+    public abstract void delActivity(Long activityId);
 }
