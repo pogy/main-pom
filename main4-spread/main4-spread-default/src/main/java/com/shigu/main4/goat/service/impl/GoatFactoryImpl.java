@@ -63,6 +63,8 @@ public class GoatFactoryImpl implements GoatFactory {
 
     @Resource(name = "tae_mall_goatItemDataMapper")
     GoatItemDataMapper goatItemDataMapper;
+    @Autowired
+    GoodsupNorealMapper goodsupNorealMapper;
 
     @Resource(name="tae_mall_goodsupNorealMapper")
     GoodsupNorealMapper goodsupNorealMapper;
@@ -270,7 +272,20 @@ public class GoatFactoryImpl implements GoatFactory {
 
             @Override
             public void modifyUp(Integer num) {
-
+                GoodsupNoreal gn=new GoodsupNoreal();
+                gn.setItemId(this.getItemId());
+                gn=goodsupNorealMapper.selectOne(gn);
+                if(gn==null){
+                    gn=new GoodsupNoreal();
+                    gn.setItemId(this.getItemId());
+                    gn.setAddNum(num);
+                    goodsupNorealMapper.insertSelective(gn);
+                }else{
+                    GoodsupNoreal g=new GoodsupNoreal();
+                    g.setNorealId(gn.getNorealId());
+                    g.setAddNum(gn.getAddNum()+num);
+                    goodsupNorealMapper.updateByPrimaryKeySelective(g);
+                }
             }
 
             @Override
