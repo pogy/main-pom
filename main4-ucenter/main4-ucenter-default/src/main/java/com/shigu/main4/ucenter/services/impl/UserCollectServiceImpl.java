@@ -114,7 +114,7 @@ public class UserCollectServiceImpl implements UserCollectService {
     /**
      * 按主键批量删除收藏记录
      *
-     * @param userId     用户ID
+     * @param userId     用户IDs
      * @param collectIds 主键
      */
     @Override

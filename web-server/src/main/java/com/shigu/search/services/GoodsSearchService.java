@@ -108,7 +108,7 @@ public class GoodsSearchService {
         }
         //分类
         if(bo.getPid()!=null){
-            String name=selNavName(categoryInSearchService.selCates(),bo.getPid().toString());
+            String name=selNavName(categoryInSearchService.selCates(null),bo.getPid().toString());
             beforeUrl+="&pid="+bo.getPid();
             keys.add(new SearchKey(name,beforeUrl));
             if(bo.getCid()!=null){
@@ -120,7 +120,7 @@ public class GoodsSearchService {
         }
         //市场
         if (bo.getMid() != null) {
-            String name=selNavName(categoryInSearchService.selMarkets(),bo.getMid().toString());
+            String name=selNavName(categoryInSearchService.selMarkets(bo.getWebSite()),bo.getMid().toString());
             beforeUrl+="&mid="+bo.getMid();
             keys.add(new SearchKey(name,beforeUrl));
         }
@@ -206,7 +206,7 @@ public class GoodsSearchService {
         }
         ShiguPager<SearchItem> pager=new ShiguPager<>();
         pager.setContent(searches);
-        List<GoodsInSearch> goods=goodsSelFromEsService.addShopInfoToGoods(pager).getContent();
+        List<GoodsInSearch> goods=goodsSelFromEsService.addShopInfoToGoods(pager,"hz").getContent();
         cache.put("3",goods);
         return rangeRedBull(goods,ids);
     }
@@ -265,7 +265,7 @@ public class GoodsSearchService {
             cids.addAll(categoryInSearchService.selCidsFromCid(bo.getPid()));
         }
         //查店
-        List<SearchShopSimple> shops=shopSearchService.selShopByShopNum(bo.getKeyword(),"hz");
+        List<SearchShopSimple> shops=shopSearchService.selShopByShopNum(bo.getKeyword(),bo.getWebSite());
         List<Long> shouldShopId=new ArrayList<>();
         if(shops!=null&&shops.size()!=0){
             //按电商基地  >  钱塘大厦  >  四季星座 排序
@@ -288,13 +288,13 @@ public class GoodsSearchService {
                 end = DateUtil.stringToDate(bo.getEt(),"yyyy.MM.dd");
             }
         }
-        ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),"hz",bo.getMid(),
+        ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),bo.getWebSite(),bo.getMid(),
                 cids.size()==0?null:cids,
                 shouldShopId.size()==0?null:shouldShopId,
                 bo.getSp(),bo.getEp(),start,end,orderBy,bo.getPage(),bo.getRows(), needaggs
         );
         SearchVO vo=new SearchVO();
-        vo.setSearchData(goodsSelFromEsService.addShopInfoToGoods(pager));
+        vo.setSearchData(goodsSelFromEsService.addShopInfoToGoods(pager,bo.getWebSite()));
         vo.setMarkets(pager.getMarkets());
         vo.setParentCats(pager.getParentCats());
         return vo;
@@ -302,13 +302,19 @@ public class GoodsSearchService {
 
     /**
      * 图搜
+     *
+     *
      * @param picUrl
      * @param webSite
      */
     public List<GoodsInSearch> searchByPic(String picUrl, String webSite) throws IOException {
         //得到IDs
         RetrieveImageRequest request=new RetrieveImageRequest();
-        request.setPicUrl(picUrl);
+        if(picUrl!=null){
+            request.setPicUrl(picUrl);
+        }else{
+            return new ArrayList<>();
+        }
         request.setMinSim(0.1f);
         request.setWp("intfield1");
         request.setWs("textfield1 = '"+webSite+"'");
@@ -334,7 +340,7 @@ public class GoodsSearchService {
             List<GoodsInSearch> imgGoods=new ArrayList<>();
             if(goodsId.size()>0){
                 ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,"hz",1,20);
-                ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager);
+                ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager,"hz");
                 if (goodsPager != null) {
 //                    return pager.getContent();
                     List<GoodsInSearch> imgs = goodsPager.getContent();

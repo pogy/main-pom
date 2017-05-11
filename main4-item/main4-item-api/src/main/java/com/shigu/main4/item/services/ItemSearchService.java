@@ -53,7 +53,7 @@ public interface ItemSearchService {
      * @param category
      * @return
      */
-    List<CategoryValue> selCategory(SearchCategory category);
+    List<CategoryValue> selCategory(SearchCategory category, String webSite);
 
     /**
      * 查询子级搜索类目
