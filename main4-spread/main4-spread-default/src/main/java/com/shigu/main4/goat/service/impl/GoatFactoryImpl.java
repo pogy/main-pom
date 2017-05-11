@@ -201,7 +201,17 @@ public class GoatFactoryImpl implements GoatFactory {
 
             @Override
             public void recommon(String recommon) {
+                recommonCommon(this.getGoatId(),recommon);
+            }
 
+            @Override
+            public void moveUp() throws GoatException {
+                moveGoatCommon(this,true);
+            }
+
+            @Override
+            public void moveDown() throws GoatException {
+                moveGoatCommon(this,false);
             }
         };
         return BeanMapper.mapAbstact(imgGoatVO, goat);
@@ -228,6 +238,16 @@ public class GoatFactoryImpl implements GoatFactory {
             @Override
             public void recommon(String recommon) {
                 recommonCommon(this.getGoatId(),recommon);
+            }
+
+            @Override
+            public void moveUp() throws GoatException {
+                moveGoatCommon(this,true);
+            }
+
+            @Override
+            public void moveDown() throws GoatException {
+                moveGoatCommon(this,false);
             }
 
             @Override
@@ -311,6 +331,16 @@ public class GoatFactoryImpl implements GoatFactory {
             public void recommon(String recommon) {
                 recommonCommon(this.getGoatId(),recommon);
             }
+
+            @Override
+            public void moveUp() throws GoatException {
+                moveGoatCommon(this,true);
+            }
+
+            @Override
+            public void moveDown() throws GoatException {
+                moveGoatCommon(this,false);
+            }
         };
         return BeanMapper.mapAbstact(textGoatVO, goat);
     }
@@ -386,5 +416,33 @@ public class GoatFactoryImpl implements GoatFactory {
         goatOneItemMapper.updateByPrimaryKeySelective(goi);
     }
 
-
+    /**
+     * 移动广告
+     * @param up
+     */
+    private void moveGoatCommon(GoatVO goat,Boolean up) throws GoatException {
+        GoatOneItemExample example=new GoatOneItemExample();
+        GoatOneItemExample.Criteria cri=example.createCriteria().andLocalIdEqualTo(goat.getLocalId());
+        if(up){
+            cri.andSortLessThan(goat.getSort());
+        }else{
+            cri.andSortGreaterThan(goat.getSort());
+        }
+        example.setStartIndex(0);
+        example.setEndIndex(1);
+        List<GoatOneItem> gois=goatOneItemMapper.selectByConditionList(example);
+        if(gois.size()==0){
+            throw new GoatException("上方没有广告位");
+        }
+        GoatOneItem target=gois.get(0);
+        //交换两个sort
+        GoatOneItem goi=new GoatOneItem();
+        goi.setGoatId(goat.getGoatId());
+        goi.setSort(target.getSort());
+        goatOneItemMapper.updateByPrimaryKeySelective(goi);
+        GoatOneItem goi2=new GoatOneItem();
+        goi2.setGoatId(target.getGoatId());
+        goi2.setSort(goat.getSort());
+        goatOneItemMapper.updateByPrimaryKeySelective(goi2);
+    }
 }

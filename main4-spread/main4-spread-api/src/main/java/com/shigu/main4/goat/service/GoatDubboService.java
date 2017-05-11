@@ -70,4 +70,16 @@ public interface GoatDubboService {
      */
     void recommon(Long goatId,String recommon) throws GoatException;
 
+    /**
+     * 上移
+     * @param goatId
+     */
+    void moveUp(Long goatId);
+
+    /**
+     * 下移
+     * @param goatId
+     */
+    void moveDown(Long goatId);
+
 }

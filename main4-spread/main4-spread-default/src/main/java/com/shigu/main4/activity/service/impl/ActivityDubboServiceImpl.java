@@ -40,7 +40,14 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
         ActivityTerm term=activityFactory.selTermById(termId);
         ActivityTermVO termVO=BeanMapper.map(term,ActivityTermVO.class);
         List<ActivityVO> vos=term.selActivitys();
-        return null;
+        String content="";
+        if (vos != null) {
+            for(ActivityVO vo:vos){
+                content+=","+vo.toString();
+            }
+        }
+        termVO.setContent(content);
+        return termVO;
     }
 
     @Override

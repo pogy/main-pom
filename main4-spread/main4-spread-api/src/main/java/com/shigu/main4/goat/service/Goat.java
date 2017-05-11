@@ -1,5 +1,7 @@
 package com.shigu.main4.goat.service;
 
+import com.shigu.main4.goat.exceptions.GoatException;
+
 /**
  * 广告功能接口
  * Created by zhaohongbo on 17/5/4.
@@ -21,4 +23,14 @@ public interface Goat {
      * @param recommon
      */
     void recommon(String recommon);
+
+    /**
+     * 上移
+     */
+    void moveUp() throws GoatException;
+
+    /**
+     * 下移
+     */
+    void moveDown() throws GoatException;
 }
