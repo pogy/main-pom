@@ -60,34 +60,13 @@ public class GoatDubboServiceImpl implements GoatDubboService {
         giv.setGoats(goats);
         result.add(giv);
         //查预定
-        ActivityTerm term=activityFactory.selTermByTime(ActivityType.GOAT_SELL,new Date());
-        if (term != null) {
-            GoatIntermVO g=parseGoatVOByTermId(term.getTermId(),location);
-            if (g != null) {
-                result.add(g);
-            }
-        }
-        //查排期中的
-        ActivityTerm paiqi=activityFactory.selTermInPaiqi(ActivityType.GOAT_SELL);
-        if (paiqi != null) {
-            GoatIntermVO g=parseGoatVOByTermId(paiqi.getTermId(),location);
-            if (g != null) {
-                result.add(g);
-            }
-        }
+        GoatIntermVO prep=new GoatIntermVO();
+        prep.setType(1);
+        prep.setGoats(location.selPrepareGoats());
+        result.add(prep);
         return result;
     }
 
-    private GoatIntermVO parseGoatVOByTermId(Long termId,GoatLocation location) throws GoatException {
-//        List<GoatVO> goatsInterms=location.selGoatsByTermId(termId);
-//        if (goatsInterms != null) {
-//            GoatIntermVO g=new GoatIntermVO();
-//            g.setType(1);
-//            g.setGoats(goatsInterms);
-//            return g;
-//        }
-        return null;
-    }
 
     @Override
     public ItemUpVO selUp(Long goatId) throws GoatException {

@@ -10,7 +10,6 @@ public class GoatIntermVO{
     /**
      * 0表示 在线
      * 1表示 预定
-     * 2表示 排期
      */
     private Integer type;
     private List<GoatVO> goats;
