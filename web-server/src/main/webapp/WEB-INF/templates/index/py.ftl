@@ -305,6 +305,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
         <ul class="nav">
                 <li><a href="#0F"><i class="iconfont">&#xe62d;</i><span>新品</span></a></li> 
                 <li><a href="#1F"><i class="iconfont">&#xe60e;</i><span>男装</span></a></li> 
+                <li><a href="#2F"><i class="iconfont">&#xe606</i><span>女装</span></a></li> 
         </ul> 
         <a class="linkqq" target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116"><i class="iconfont">&#xe60d;</i><span>客服</span></a>
     </div>
@@ -353,11 +354,11 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </ul>
     </div>
     </#if>
-<#assign text>{        "type":'童装',        "nF":'2F',        "goods":${list_childGoods!}}</#assign>
+<#assign text>{        "type":'女装',        "nF":'2F',        "goods":${nvzgoods!}}</#assign>
 <#assign $it=text?eval />
     <#if ($it.goods?size) gt 0 >
     <div class="goods-list layout goodslist-cols5">
-        <h2 id="2F">童装</h2> 
+        <h2 id="2F">女装</h2> 
         <ul class="clearfix">
             <#list $it.goods as item>
             <li>
@@ -375,11 +376,33 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </ul>
     </div>
     </#if>
-<#assign text>{        "type":'男鞋',        "nF":'3F',        "goods":${xiebaogoods!}}</#assign>
+<#assign text>{        "type":'童装',        "nF":'3F',        "goods":${list_childGoods!}}</#assign>
 <#assign $it=text?eval />
     <#if ($it.goods?size) gt 0 >
     <div class="goods-list layout goodslist-cols5">
-        <h2 id="3F">男鞋</h2> 
+        <h2 id="3F">童装</h2> 
+        <ul class="clearfix">
+            <#list $it.goods as item>
+            <li>
+                <div> 
+                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
+                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
+                    </a> 
+                    <p class="introduce">
+                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
+                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
+                    </p> 
+                </div> 
+            </li>
+            </#list>
+        </ul>
+    </div>
+    </#if>
+<#assign text>{        "type":'男鞋',        "nF":'4F',        "goods":${xiebaogoods!}}</#assign>
+<#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
+    <div class="goods-list layout goodslist-cols5">
+        <h2 id="4F">男鞋</h2> 
         <ul class="clearfix">
             <#list $it.goods as item>
             <li>
