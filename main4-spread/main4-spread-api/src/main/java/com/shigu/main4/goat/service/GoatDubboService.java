@@ -74,12 +74,12 @@ public interface GoatDubboService {
      * 上移
      * @param goatId
      */
-    void moveUp(Long goatId);
+    void moveUp(Long goatId) throws GoatException;
 
     /**
      * 下移
      * @param goatId
      */
-    void moveDown(Long goatId);
+    void moveDown(Long goatId) throws GoatException;
 
 }

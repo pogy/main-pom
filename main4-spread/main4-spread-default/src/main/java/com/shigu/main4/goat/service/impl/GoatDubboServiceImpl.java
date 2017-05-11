@@ -105,4 +105,16 @@ public class GoatDubboServiceImpl implements GoatDubboService {
         goat.recommon(recommon);
     }
 
+    @Override
+    public void moveUp(Long goatId) throws GoatException {
+        Goat goat=goatFactory.selGoatById(goatId);
+        goat.moveUp();
+    }
+
+    @Override
+    public void moveDown(Long goatId) throws GoatException {
+        Goat goat=goatFactory.selGoatById(goatId);
+        goat.moveDown();
+    }
+
 }
