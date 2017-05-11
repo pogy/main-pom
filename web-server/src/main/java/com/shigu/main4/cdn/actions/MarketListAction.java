@@ -7,6 +7,7 @@ import com.shigu.main4.cdn.vo.MarketTagVO;
 import com.shigu.main4.cdn.vo.MarketVO;
 import com.shigu.main4.storeservices.MarketShopService;
 import com.shigu.main4.vo.MarketNavShow;
+import com.shigu.tools.ResultRetUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,13 +54,13 @@ public class MarketListAction {
      * @param webSite
      * @return
      */
-    @RequestMapping(value = "/marketDataList" , method = RequestMethod.POST)
+    @RequestMapping(value = "/marketDataList" )
     @ResponseBody
-    public String marketList(String webSite, HttpServletRequest request){
+    public void marketList(String callback, String webSite, HttpServletResponse response) throws IOException {
         if(StringUtils.isEmpty(webSite)){
             webSite = "hz";
         }
         List<MarketNavShow> marketNavShowList = marketListService.selMarketNavShow(webSite);
-        return JSON.toJSONString(marketNavShowList);
+        ResultRetUtil.returnJsonp(callback,JSON.toJSONString(marketNavShowList),response);
     }
 }
