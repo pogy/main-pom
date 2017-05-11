@@ -79,13 +79,13 @@ public class GoatDubboServiceImpl implements GoatDubboService {
     }
 
     private GoatIntermVO parseGoatVOByTermId(Long termId,GoatLocation location) throws GoatException {
-        List<GoatVO> goatsInterms=location.selGoatsByTermId(termId);
-        if (goatsInterms != null) {
-            GoatIntermVO g=new GoatIntermVO();
-            g.setType(1);
-            g.setGoats(goatsInterms);
-            return g;
-        }
+//        List<GoatVO> goatsInterms=location.selGoatsByTermId(termId);
+//        if (goatsInterms != null) {
+//            GoatIntermVO g=new GoatIntermVO();
+//            g.setType(1);
+//            g.setGoats(goatsInterms);
+//            return g;
+//        }
         return null;
     }
 

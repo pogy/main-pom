@@ -12,5 +12,5 @@ import java.util.List;
  */
 public abstract class GoatLocation extends GoatLocationVO{
     public abstract <T extends GoatVO> List<T> selGoats() throws GoatException;
-    public abstract <T extends GoatVO> List<T> selGoatsByTermId(Long termId) throws GoatException;
+    public abstract <T extends GoatVO> List<T> selPrepareGoats() throws GoatException;
 }

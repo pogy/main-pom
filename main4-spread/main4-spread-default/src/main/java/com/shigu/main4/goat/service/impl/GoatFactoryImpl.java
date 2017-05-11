@@ -101,12 +101,12 @@ public class GoatFactoryImpl implements GoatFactory {
         GoatLocation location = new GoatLocation() {
             @Override
             public <T extends GoatVO> List<T> selGoats() throws GoatException {
-                return selGoatCommon(this,null, 1);
+                return selGoatCommon(this, 1);
             }
 
             @Override
-            public <T extends GoatVO> List<T> selGoatsByTermId(Long termId) throws GoatException {
-                return null;
+            public <T extends GoatVO> List<T> selPrepareGoats() throws GoatException {
+                return selGoatCommon(this, 1);
             }
 
         };
@@ -121,7 +121,7 @@ public class GoatFactoryImpl implements GoatFactory {
      * @return
      */
     @SuppressWarnings("unchecked")
-    private <T extends GoatVO> List<T> selGoatCommon(GoatLocation local,Long termId, Integer status) throws GoatException {
+    private <T extends GoatVO> List<T> selGoatCommon(GoatLocation local, Integer status) throws GoatException {
         GoatOneItemExample goiex = new GoatOneItemExample();
         goiex.createCriteria().andLocalIdEqualTo(local.getLocalId()).andDisEnabledEqualTo(false);
         goiex.setOrderByClause("sort asc");
@@ -133,9 +133,6 @@ public class GoatFactoryImpl implements GoatFactory {
         if (gIdlist.size() > 0) {
             GoatItemDataExample gidex = new GoatItemDataExample();
             GoatItemDataExample.Criteria cri=gidex.createCriteria().andGoatIdIn(gIdlist).andStatusEqualTo(status);
-            if (termId != null) {
-                cri.andFromTermIdEqualTo(termId);
-            }
             List<GoatItemData> gidlist = goatItemDataMapper.selectByExample(gidex);
             dataMap = BeanMapper.list2Map(gidlist, "goatId", Long.TYPE);
         }

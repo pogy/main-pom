@@ -8,7 +8,7 @@ class GoatLocationVO{
 
 abstract class GoatLocation{
 +<T extends GoatVO> List<T> selGoats()
-+<T extends GoatVO> List<T> selGoatsByTermId(Long termId)
++<T extends GoatVO> List<T> selPrepareGoats()
 }
 
 interface Goat{
