@@ -63,4 +63,11 @@ public interface GoatDubboService {
      */
     void preparePublish(GoatVO vo, Long second);
 
+    /**
+     * 修改评论
+     * @param goatId
+     * @param recommon
+     */
+    void recommon(Long goatId,String recommon) throws GoatException;
+
 }

@@ -63,8 +63,6 @@ public class GoatFactoryImpl implements GoatFactory {
 
     @Resource(name = "tae_mall_goatItemDataMapper")
     GoatItemDataMapper goatItemDataMapper;
-    @Autowired
-    GoodsupNorealMapper goodsupNorealMapper;
 
     @Resource(name="tae_mall_goodsupNorealMapper")
     GoodsupNorealMapper goodsupNorealMapper;

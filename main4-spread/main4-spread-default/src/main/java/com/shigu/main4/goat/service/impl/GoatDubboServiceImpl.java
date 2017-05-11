@@ -1,11 +1,7 @@
 package com.shigu.main4.goat.service.impl;
 
-import com.shigu.main4.activity.beans.ActivityTerm;
-import com.shigu.main4.activity.beans.GoatActivity;
-import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.service.ActivityFactory;
-import com.shigu.main4.activity.vo.GoatSimpleVO;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.beans.ItemGoat;
@@ -21,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -102,6 +97,12 @@ public class GoatDubboServiceImpl implements GoatDubboService {
     public void preparePublish(GoatVO vo, Long second) {
         Goat goat=goatFactory.selGoatByVo(vo);
         goat.preparePublish(second);
+    }
+
+    @Override
+    public void recommon(Long goatId, String recommon) throws GoatException {
+        Goat goat=goatFactory.selGoatById(goatId);
+        goat.recommon(recommon);
     }
 
 }
