@@ -1,12 +1,13 @@
 package com.shigu.main4.goat.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 期内的广告
  * Created by zhaohongbo on 17/5/11.
  */
-public class GoatIntermVO{
+public class GoatIntermVO implements Serializable{
     /**
      * 0表示 在线
      * 1表示 预定
