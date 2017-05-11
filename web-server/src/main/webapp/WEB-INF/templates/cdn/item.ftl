@@ -10,11 +10,11 @@
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
 
     
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1493976455025" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1494324111611" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1493976455025"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1494324111611"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -437,12 +437,9 @@ ${navCon}
                     <td class="name">选择颜色：</td>
                     <td class="selectStyle" id="color_id">
                         <#list vo.cdnItem.colors as fcolor>
-                            <#if fcolor.imgUrl?? && fcolor.imgUrl != "">
-                            <span class="radioBtn" data-value='${fcolor.pid!}:${fcolor.vid!}' title="${fcolor.value!}" style='width:30px;height:30px;background:url(${fcolor.imgUrl!}_30x30.jpg) center no-repeat;' alt='${fcolor.value!}'
-                                  data_img='${fcolor.imgUrl!}' ><img src='${fcolor.imgUrl!}_30x30.jpg' width="30"></span>
-                            <#else>
+                            
                             <span class="radioBtn" data-value='${fcolor.pid!}:${fcolor.vid!}' title="${fcolor.value!}" ><label><input name="color" type="radio" data-value='${fcolor.pid!}:${fcolor.vid!}' title="${fcolor.value!}"  />${fcolor.value!}</label></span>
-                            </#if>
+                            
                         </#list>
                     </td>
                   </tr>
