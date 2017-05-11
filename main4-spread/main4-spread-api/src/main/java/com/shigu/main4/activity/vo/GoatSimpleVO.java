@@ -14,9 +14,9 @@ public class GoatSimpleVO implements Serializable{
 
     private Long goatId;
 
-    private Date pubFromTime;
+    private String time;
 
-    private Date pubToTime;
+    private String price;
 
     @Override
     public boolean equals(Object o) {
@@ -42,19 +42,19 @@ public class GoatSimpleVO implements Serializable{
         this.goatId = goatId;
     }
 
-    public Date getPubFromTime() {
-        return pubFromTime;
+    public String getTime() {
+        return time;
     }
 
-    public void setPubFromTime(Date pubFromTime) {
-        this.pubFromTime = pubFromTime;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public Date getPubToTime() {
-        return pubToTime;
+    public String getPrice() {
+        return price;
     }
 
-    public void setPubToTime(Date pubToTime) {
-        this.pubToTime = pubToTime;
+    public void setPrice(String price) {
+        this.price = price;
     }
 }
