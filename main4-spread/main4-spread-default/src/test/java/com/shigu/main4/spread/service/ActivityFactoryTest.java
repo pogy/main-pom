@@ -78,7 +78,6 @@ public class ActivityFactoryTest {
         GoatActivity goatActivity=activityFactory.selActivityById(activity.getActivityId());
         GoatSimpleVO vo=new GoatSimpleVO();
         vo.setGoatId(555L);
-        vo.setPrice("3000");
         vo.setTime("从2017到2017");
         goatActivity.addGoat(vo);
 
@@ -90,7 +89,6 @@ public class ActivityFactoryTest {
         //添加等于更新,测试
         GoatSimpleVO vo2=new GoatSimpleVO();
         vo2.setGoatId(555L);
-        vo.setPrice("3000");
         vo.setTime("从2017到2017");
         goatActivity.addGoat(vo2);
 
@@ -102,7 +100,6 @@ public class ActivityFactoryTest {
         //添加新广告,测试
         GoatSimpleVO vo3=new GoatSimpleVO();
         vo3.setGoatId(556L);
-        vo.setPrice("3000");
         vo.setTime("从2017到2017");
         goatActivity.addGoat(vo3);
 

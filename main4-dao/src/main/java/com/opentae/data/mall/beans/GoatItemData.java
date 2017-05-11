@@ -24,14 +24,6 @@ public class GoatItemData {
      */
     private Long userId;
     /**
-     * 来自报名的期次
-     */
-    private Long fromTermId;
-    /**
-     * 来自哪一个报名活动
-     */
-    private Long fromActivityId;
-    /**
      * 广告开始时间
      */
     private Date fromTime;
@@ -47,10 +39,6 @@ public class GoatItemData {
      * 1有效，0无效，2预设
      */
     private Integer status;
-    /**
-     * 发送定时队列的ID值
-     */
-    private Date publishSchdule;
 
     public Long getDataId() {
         return dataId;
@@ -74,14 +62,6 @@ public class GoatItemData {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public Long getFromActivityId() {
-        return fromActivityId;
-    }
-
-    public void setFromActivityId(Long fromActivityId) {
-        this.fromActivityId = fromActivityId;
     }
 
     public Date getFromTime() {
@@ -116,19 +96,4 @@ public class GoatItemData {
         this.status = status;
     }
 
-    public Date getPublishSchdule() {
-        return publishSchdule;
-    }
-
-    public void setPublishSchdule(Date publishSchdule) {
-        this.publishSchdule = publishSchdule;
-    }
-
-    public Long getFromTermId() {
-        return fromTermId;
-    }
-
-    public void setFromTermId(Long fromTermId) {
-        this.fromTermId = fromTermId;
-    }
 }

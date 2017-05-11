@@ -707,5 +707,73 @@ public class SpreadActivityExample implements SgExample{
             this.addCriterion("activity_key not between", value1, value2, "activityKey");
             return (SpreadActivityExample.Criteria)this;
         }
+
+        public SpreadActivityExample.Criteria andPriceIsNull() {
+            this.addCriterion("price is null");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceIsNotNull() {
+            this.addCriterion("price is not null");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceEqualTo(Long value) {
+            this.addCriterion("price =", value, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceNotEqualTo(Long value) {
+            this.addCriterion("price <>", value, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceGreaterThan(Long value) {
+            this.addCriterion("price >", value, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("price >=", value, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceLessThan(Long value) {
+            this.addCriterion("price <", value, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceLessThanOrEqualTo(Long value) {
+            this.addCriterion("price <=", value, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceLike(String value) {
+            this.addCriterion("price like", value, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceNotLike(String value) {
+            this.addCriterion("price not like", value, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }        public SpreadActivityExample.Criteria andPriceIn(List<Long> values) {
+            this.addCriterion("price in", values, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceNotIn(List<Long> values) {
+            this.addCriterion("price not in", values, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceBetween(Long value1, Long value2) {
+            this.addCriterion("price between", value1, value2, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
+
+        public SpreadActivityExample.Criteria andPriceNotBetween(Long value1, Long value2) {
+            this.addCriterion("price not between", value1, value2, "price");
+            return (SpreadActivityExample.Criteria)this;
+        }
     }
 }

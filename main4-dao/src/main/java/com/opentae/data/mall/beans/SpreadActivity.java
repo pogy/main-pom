@@ -39,6 +39,18 @@ public class SpreadActivity {
     private String context;
 
     private String activityKey;
+    /**
+     * 活动费用
+     */
+    private Long price;
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
 
     public String getActivityKey() {
         return activityKey;

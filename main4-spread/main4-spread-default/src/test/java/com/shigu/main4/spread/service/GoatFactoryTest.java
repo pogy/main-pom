@@ -97,7 +97,6 @@ public class GoatFactoryTest {
 
             GoatItemData data=new GoatItemData();
             data.setContext("{\"itemId\":556363,\"title\":\"张大山"+i+"\"}");
-            data.setFromActivityId(1L+(long)i);
             data.setFromTime(ca.getTime());
             data.setToTime(new Date());
             data.setGoatId(omg.getGoatId());
@@ -126,7 +125,6 @@ public class GoatFactoryTest {
         //添加详细数据状态为不可用
         GoatItemData data=new GoatItemData();
         data.setContext("{\"itemId\":556363,\"title\":\"张大山no\"}");
-        data.setFromActivityId(4444L);
         data.setFromTime(ca.getTime());
         data.setToTime(new Date());
         data.setGoatId(goNoData.getGoatId());

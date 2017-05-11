@@ -148,7 +148,7 @@ public class GoatFactoryImpl implements GoatFactory {
             T t=unserializeGoat(gid, local);
             t.setSort(oneItem.getSort());
             t.setRecommon(oneItem.getRecommon());
-            rlist.add((T) unserializeGoat(gid, local));
+            rlist.add(t);
         }
         return rlist;
     }
@@ -353,7 +353,6 @@ public class GoatFactoryImpl implements GoatFactory {
         gid.setStatus(2);
         Calendar cal=Calendar.getInstance();
         cal.add(Calendar.SECOND,second.intValue());
-        gid.setPublishSchdule(cal.getTime());
         goatItemDataMapper.insertSelective(gid);
     }
 

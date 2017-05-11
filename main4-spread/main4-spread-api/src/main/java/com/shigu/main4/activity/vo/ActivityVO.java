@@ -43,6 +43,9 @@ public class ActivityVO implements Serializable{
     @JSONField(serialize=false)
     private String activityKey;
 
+    @JSONField(serialize=false)
+    private Long price;
+
     public Long getActivityId() {
         return activityId;
     }
@@ -81,5 +84,13 @@ public class ActivityVO implements Serializable{
 
     public void setActivityKey(String activityKey) {
         this.activityKey = activityKey;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 }

@@ -16,8 +16,6 @@ public class GoatSimpleVO implements Serializable{
 
     private String time;
 
-    private String price;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,11 +48,4 @@ public class GoatSimpleVO implements Serializable{
         this.time = time;
     }
 
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
 }
