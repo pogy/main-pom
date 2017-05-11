@@ -2,16 +2,20 @@ package com.shigu.main4.spread.service;
 
 import com.opentae.data.mall.beans.GoatItemData;
 import com.opentae.data.mall.beans.GoatOneItem;
+import com.opentae.data.mall.beans.GoodsupNoreal;
 import com.opentae.data.mall.interfaces.GoatItemDataMapper;
 import com.opentae.data.mall.interfaces.GoatOneItemMapper;
+import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.goat.beans.GoatLocation;
+import com.shigu.main4.goat.beans.ItemGoat;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.GoatLocationVO;
 import com.shigu.main4.goat.vo.GoatVO;
 import com.shigu.main4.goat.vo.ItemGoatVO;
+import com.shigu.main4.goat.vo.ItemUpVO;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.fail;
 
 /**
@@ -44,6 +49,9 @@ public class GoatFactoryTest {
 
     @Autowired
     GoatItemDataMapper goatItemDataMapper;
+    @Autowired
+    GoodsupNorealMapper goodsupNorealMapper;
+
     @Test
     @Transactional
     @SuppressWarnings("unchecked")
@@ -145,8 +153,58 @@ public class GoatFactoryTest {
 
 
     }
+
+    @SuppressWarnings("unchecked")
     @Test
-    public  void test1() {
+    @Transactional
+    public void selItemGoat_selUpTest() {
+        //1.Es中没数据、goodsup_noreal有数据的情况
+        GoodsupNoreal gn=new GoodsupNoreal();
+        gn.setActiveNum(1);
+        gn.setAddNum(100);
+        gn.setItemId(9000l);
+        gn.setRealNum(50);
+        goodsupNorealMapper.insertSelective(gn);
+
+        ItemGoatVO vo=new ItemGoatVO();
+        vo.setItemId(gn.getItemId());
+
+        ItemGoat go=goatFactory.selGoatByVo(vo);
+        ItemUpVO upvo = go.selUp();
+
+        assertEquals( upvo.getUnRealNum(),(Long)gn.getAddNum().longValue());
+        assertEquals(upvo.getRealNum(),null);
+        //2.Es中有数据、goodsup_noreal没数据的情况
+        goodsupNorealMapper.deleteByPrimaryKey(gn.getNorealId());
+
+        vo.setItemId(1653046l);
+        go=goatFactory.selGoatByVo(vo);
+        upvo = go.selUp();
+        assertEquals( upvo.getUnRealNum(),null);
+        assertNotEquals(upvo.getRealNum(),null);
+
+        //3、Es、goodsup_noreal都没数据的情况
+
+        vo.setItemId(9000l);
+        go=goatFactory.selGoatByVo(vo);
+        upvo = go.selUp();
+        assertEquals( upvo.getUnRealNum(),null);
+        assertEquals(upvo.getRealNum(),null);
+
+        //4.Es、goodsup_noreal都有数据的情况
+
+        GoodsupNoreal gn2=new GoodsupNoreal();
+        gn2.setActiveNum(1);
+        gn2.setAddNum(100);
+        gn2.setItemId(1653046l);
+        gn2.setRealNum(50);
+        goodsupNorealMapper.insertSelective(gn2);
+        vo.setItemId(1653046l);
+        go=goatFactory.selGoatByVo(vo);
+        upvo = go.selUp();
+        assertEquals( upvo.getUnRealNum(),(Long)gn2.getAddNum().longValue());
+        assertNotEquals(upvo.getRealNum(),null);
+        goodsupNorealMapper.deleteByPrimaryKey(gn.getNorealId());
 
     }
 
