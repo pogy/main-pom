@@ -15,4 +15,10 @@ public interface Goat {
      * @param second 多久后发布以秒为单位
      */
     void preparePublish(Long second);
+
+    /**
+     * 备注
+     * @param recommon
+     */
+    void recommon(String recommon);
 }

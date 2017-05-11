@@ -201,11 +201,16 @@ public class GoatFactoryImpl implements GoatFactory {
         ImgGoat goat = new ImgGoat() {
             @Override
             public void publish() {
-
+                publishCommon(this);
             }
 
             @Override
             public void preparePublish(Long second) {
+                preparePublishCommon(this,second);
+            }
+
+            @Override
+            public void recommon(String recommon) {
 
             }
         };
@@ -228,6 +233,11 @@ public class GoatFactoryImpl implements GoatFactory {
             @Override
             public void preparePublish(Long second) {
                 preparePublishCommon(this,second);
+            }
+
+            @Override
+            public void recommon(String recommon) {
+                recommonCommon(this.getGoatId(),recommon);
             }
 
             @Override
@@ -293,6 +303,11 @@ public class GoatFactoryImpl implements GoatFactory {
             public void preparePublish(Long second) {
                 preparePublishCommon(this,second);
             }
+
+            @Override
+            public void recommon(String recommon) {
+                recommonCommon(this.getGoatId(),recommon);
+            }
         };
         return BeanMapper.mapAbstact(textGoatVO, goat);
     }
@@ -356,7 +371,17 @@ public class GoatFactoryImpl implements GoatFactory {
         goatItemDataMapper.insertSelective(gid);
     }
 
-
+    /**
+     * 公共广告评论
+     * @param goatId
+     * @param recommon
+     */
+    private void recommonCommon(Long goatId,String recommon){
+        GoatOneItem goi=new GoatOneItem();
+        goi.setGoatId(goatId);
+        goi.setRecommon(recommon);
+        goatOneItemMapper.updateByPrimaryKeySelective(goi);
+    }
 
 
 }
