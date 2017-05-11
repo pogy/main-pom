@@ -4,6 +4,7 @@ package com.shigu.main4.storeservices.test.zjb;
 import com.alibaba.fastjson.JSON;
 import com.shigu.main4.storeservices.MarketShopService;
 import com.shigu.main4.vo.FloorShow;
+import com.shigu.main4.vo.MarketNavShow;
 import com.shigu.main4.vo.MarketShow;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,6 +70,13 @@ public class MarketShopTest {
 
         floorShow = marketShopService.selFloorShow(outFloorId);
         System.out.println("按照规则排序显示店铺列表：" + JSON.toJSONString(floorShow));
+    }
+
+    @Test
+    public void marketNavShow(){
+        String webSite = "jx";
+        List<MarketNavShow> marketNavShowList = marketShopService.selMarketNavShowList(webSite);
+        System.out.println(JSON.toJSON(marketNavShowList));
     }
 
 }

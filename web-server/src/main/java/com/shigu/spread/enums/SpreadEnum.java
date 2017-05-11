@@ -19,7 +19,8 @@ public enum SpreadEnum {
 
     JX_SPREAD_INDEX_DT("濮院站首页幻灯片商品广告", "JX_SPREAD_INDEX_DT"),
     JX_SPREAD_INDEX_XT("濮院站首页幻灯片下方商品广告", "JX_SPREAD_INDEX_XT"),
-    JX_SPREAD_INDEX_WOMAN("濮院站首页男装商品广告", "JX_SPREAD_INDEX_WOMAN"),
+    JX_SPREAD_INDEX_MENS("濮院站首页男装商品广告", "JX_SPREAD_INDEX_MENS"),
+    JX_SPREAD_INDEX_WOMAN("濮院站首页女装商品广告", "JX_SPREAD_INDEX_WOMAN"),
     JX_SPREAD_INDEX_MENSHOES("濮院站首页男鞋商品广告", "JX_SPREAD_INDEX_MENSHOES"),
     JX_SPREAD_INDEX_CHILDRENCOLTHING("濮院站首页童装商品广告", "JX_SPREAD_INDEX_CHILDRENCOLTHING"),
     JX_QZGG("濮院站首页公告管理广告", "JX_QZGG"),
