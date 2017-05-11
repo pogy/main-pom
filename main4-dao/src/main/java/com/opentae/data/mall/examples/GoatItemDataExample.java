@@ -436,6 +436,74 @@ public class GoatItemDataExample implements SgExample{
             return (GoatItemDataExample.Criteria)this;
         }
 
+        public GoatItemDataExample.Criteria andFromTermIdIsNull() {
+            this.addCriterion("from_term_id is null");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdIsNotNull() {
+            this.addCriterion("from_term_id is not null");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdEqualTo(Long value) {
+            this.addCriterion("from_term_id =", value, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdNotEqualTo(Long value) {
+            this.addCriterion("from_term_id <>", value, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdGreaterThan(Long value) {
+            this.addCriterion("from_term_id >", value, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("from_term_id >=", value, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdLessThan(Long value) {
+            this.addCriterion("from_term_id <", value, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("from_term_id <=", value, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdLike(String value) {
+            this.addCriterion("from_term_id like", value, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdNotLike(String value) {
+            this.addCriterion("from_term_id not like", value, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }        public GoatItemDataExample.Criteria andFromTermIdIn(List<Long> values) {
+            this.addCriterion("from_term_id in", values, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdNotIn(List<Long> values) {
+            this.addCriterion("from_term_id not in", values, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdBetween(Long value1, Long value2) {
+            this.addCriterion("from_term_id between", value1, value2, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
+        public GoatItemDataExample.Criteria andFromTermIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("from_term_id not between", value1, value2, "fromTermId");
+            return (GoatItemDataExample.Criteria)this;
+        }
+
         public GoatItemDataExample.Criteria andFromActivityIdIsNull() {
             this.addCriterion("from_activity_id is null");
             return (GoatItemDataExample.Criteria)this;

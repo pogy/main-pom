@@ -1,5 +1,6 @@
 package com.shigu.main4.spread.service;
 
+import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatDubboService;
@@ -20,7 +21,7 @@ public class GoatDubboServiceTest {
     GoatDubboService goatDubboService;
 
     @Test
-    public void selGoatByIdTest() throws GoatException {
+    public void selGoatByIdTest() throws GoatException, ActivityException {
         ItemGoatVO igv=goatDubboService.selGoatById(1L, GoatType.ItemGoat);
         System.out.println(igv);
         goatDubboService.selGoatByLocalId(1L,GoatType.ItemGoat);

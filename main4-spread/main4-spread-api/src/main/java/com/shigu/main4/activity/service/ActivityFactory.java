@@ -31,6 +31,13 @@ public interface ActivityFactory {
     ActivityTerm selTermByTime(ActivityType type, Date time);
 
     /**
+     * 查排期中的
+     * @param type
+     * @return
+     */
+    ActivityTerm selTermInPaiqi(ActivityType type);
+
+    /**
      * 按期ID查某一期次
      * @param termId 期次ID
      * @return 期次对象

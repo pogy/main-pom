@@ -18,6 +18,10 @@ public class GoatVO implements Serializable{
     private Long dataId;
 
     private Long fromActivityId;
+    /**
+     * 来自报名期次
+     */
+    private Long fromTermId;
 
     private Date fromTime;
 
@@ -121,5 +125,13 @@ public class GoatVO implements Serializable{
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public Long getFromTermId() {
+        return fromTermId;
+    }
+
+    public void setFromTermId(Long fromTermId) {
+        this.fromTermId = fromTermId;
     }
 }

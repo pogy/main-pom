@@ -4,6 +4,7 @@ import com.opentae.data.mall.beans.SpreadActivity;
 import com.opentae.data.mall.beans.SpreadEnlist;
 import com.opentae.data.mall.beans.SpreadTerm;
 import com.opentae.data.mall.examples.SpreadEnlistExample;
+import com.opentae.data.mall.examples.SpreadTermExample;
 import com.opentae.data.mall.interfaces.SpreadActivityMapper;
 import com.opentae.data.mall.interfaces.SpreadEnlistMapper;
 import com.opentae.data.mall.interfaces.SpreadTermMapper;
@@ -257,20 +258,26 @@ public class ActivityFactoryTest {
     @Test
     @Transactional
     public void addAndGetTermTest() throws ActivityException, ParseException {
+        spreadTermMapper.deleteByExample(new SpreadTermExample());
+        Calendar cal=Calendar.getInstance();
+        cal.add(Calendar.DATE,-1);
+        Date start=cal.getTime();
+        cal.add(Calendar.DATE,2);
+        Date end=cal.getTime();
         //正常测试
         ActivityTermVO vo=new ActivityTermVO();
         vo.setActivityType(ActivityType.GOAT_LED);
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        vo.setStartTime(sdf.parse("2017-09-06"));
-        vo.setEndTime(sdf.parse("2017-09-16"));
+        vo.setStartTime(start);
+        vo.setEndTime(end);
         ActivityTerm t1=activityFactory.addAndGetTerm(vo);
         //正常添加了,会非空
         assertNotEquals(spreadTermMapper.selectByPrimaryKey(t1.getTermId()),null);
         //重叠情况一测试
         ActivityTermVO vo1=new ActivityTermVO();
         vo1.setActivityType(ActivityType.GOAT_LED);
-        vo1.setStartTime(sdf.parse("2017-09-04"));
-        vo1.setEndTime(sdf.parse("2017-09-10"));
+        vo1.setStartTime(end);
+        vo1.setEndTime(sdf.parse("2019-09-10"));
         try {
             activityFactory.addAndGetTerm(vo1);
             //不报错不行
@@ -281,8 +288,8 @@ public class ActivityFactoryTest {
         //重叠情况二测试
         ActivityTermVO vo2=new ActivityTermVO();
         vo2.setActivityType(ActivityType.GOAT_LED);
-        vo2.setStartTime(sdf.parse("2017-09-07"));
-        vo2.setEndTime(sdf.parse("2017-09-10"));
+        vo2.setStartTime(sdf.parse("2019-09-07"));
+        vo2.setEndTime(sdf.parse("2019-09-10"));
         try {
             activityFactory.addAndGetTerm(vo2);
             //不报错不行
@@ -293,8 +300,8 @@ public class ActivityFactoryTest {
         //重叠情况三测试
         ActivityTermVO vo3=new ActivityTermVO();
         vo3.setActivityType(ActivityType.GOAT_LED);
-        vo3.setStartTime(sdf.parse("2017-09-07"));
-        vo3.setEndTime(sdf.parse("2017-09-10"));
+        vo3.setStartTime(sdf.parse("2019-09-07"));
+        vo3.setEndTime(sdf.parse("2019-09-10"));
         try {
             activityFactory.addAndGetTerm(vo3);
             //不报错不行

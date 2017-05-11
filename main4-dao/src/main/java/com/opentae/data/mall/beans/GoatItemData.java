@@ -24,6 +24,10 @@ public class GoatItemData {
      */
     private Long userId;
     /**
+     * 来自报名的期次
+     */
+    private Long fromTermId;
+    /**
      * 来自哪一个报名活动
      */
     private Long fromActivityId;
@@ -118,5 +122,13 @@ public class GoatItemData {
 
     public void setPublishSchdule(Date publishSchdule) {
         this.publishSchdule = publishSchdule;
+    }
+
+    public Long getFromTermId() {
+        return fromTermId;
+    }
+
+    public void setFromTermId(Long fromTermId) {
+        this.fromTermId = fromTermId;
     }
 }

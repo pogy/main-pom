@@ -52,6 +52,14 @@ public class ActivityFactoryImpl implements ActivityFactory {
 
     @Override
     public ActivityTerm addAndGetTerm(ActivityTermVO vo) throws ActivityException {
+        //如果是未来期,数据中已经存在未来期的情况下,异常
+        if(vo.getStartTime().getTime()>System.currentTimeMillis()){
+            SpreadTermExample example=new SpreadTermExample();
+            example.createCriteria().andStartTimeGreaterThan(new Date()).andTypeEqualTo(vo.getActivityType().ordinal());
+            if(spreadTermMapper.countByExample(example)>0){
+                throw new ActivityException("同一类活动,排期最多只能有一期");
+            }
+        }
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
         termTimeCheck(null,vo.getActivityType(),vo.getStartTime(),vo.getEndTime());
         SpreadTerm term = BeanMapper.map(vo, SpreadTerm.class);
@@ -76,9 +84,9 @@ public class ActivityFactoryImpl implements ActivityFactory {
     private void termTimeCheck(Long termId,ActivityType type,Date startTime,Date endTime) throws ActivityException {
         //验证是否可加,如果同一类别活动,时间上有重叠,视为加失败
         SpreadTermExample termExample = new SpreadTermExample();
-        SpreadTermExample.Criteria cri1=termExample.createCriteria().andEndTimeGreaterThanOrEqualTo(startTime)
+        SpreadTermExample.Criteria cri1=termExample.createCriteria().andEndTimeGreaterThan(startTime)
                 .andStartTimeLessThanOrEqualTo(startTime).andTypeEqualTo(type.ordinal());
-        SpreadTermExample.Criteria cri2=termExample.or().andStartTimeLessThanOrEqualTo(endTime)
+        SpreadTermExample.Criteria cri2=termExample.or().andStartTimeLessThan(endTime)
                 .andEndTimeGreaterThanOrEqualTo(endTime).andTypeEqualTo(type.ordinal());
         if (termId != null) {
             cri1.andTermIdNotEqualTo(termId);
@@ -95,6 +103,19 @@ public class ActivityFactoryImpl implements ActivityFactory {
         SpreadTermExample example = new SpreadTermExample();
         example.createCriteria().andTypeEqualTo(type.ordinal()).andStartTimeLessThanOrEqualTo(time)
                 .andEndTimeGreaterThanOrEqualTo(time);
+        example.setStartIndex(0);
+        example.setEndIndex(1);
+        List<SpreadTerm> terms = spreadTermMapper.selectFieldsByConditionList(example, FieldUtil.codeFields("term_id"));
+        if (terms.size() > 0) {
+            return selTermById(terms.get(0).getTermId());
+        }
+        return null;
+    }
+
+    @Override
+    public ActivityTerm selTermInPaiqi(ActivityType type) {
+        SpreadTermExample example = new SpreadTermExample();
+        example.createCriteria().andTypeEqualTo(type.ordinal()).andStartTimeGreaterThan(new Date());
         example.setStartIndex(0);
         example.setEndIndex(1);
         List<SpreadTerm> terms = spreadTermMapper.selectFieldsByConditionList(example, FieldUtil.codeFields("term_id"));
