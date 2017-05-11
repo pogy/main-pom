@@ -1,6 +1,5 @@
 package com.shigu.main4.goat.service.impl;
 
-import com.opentae.core.mybatis.utils.FieldUtil;
 import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.GoatItemData;
@@ -16,10 +15,7 @@ import com.opentae.data.mall.interfaces.GoatOneItemMapper;
 import com.opentae.data.mall.interfaces.GoatOneLocationMapper;
 import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
 import com.searchtool.configs.ElasticConfiguration;
-import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
-import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.common.util.FileUtil;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.beans.ImgGoat;
 import com.shigu.main4.goat.beans.ItemGoat;
@@ -28,12 +24,7 @@ import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.Goat;
 import com.shigu.main4.goat.service.GoatFactory;
-import com.shigu.main4.goat.vo.GoatLocationVO;
-import com.shigu.main4.goat.vo.GoatVO;
-import com.shigu.main4.goat.vo.ImgGoatVO;
-import com.shigu.main4.goat.vo.ItemGoatVO;
-import com.shigu.main4.goat.vo.ItemUpVO;
-import com.shigu.main4.goat.vo.TextGoatVO;
+import com.shigu.main4.goat.vo.*;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -44,11 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -66,8 +53,6 @@ public class GoatFactoryImpl implements GoatFactory {
 
     @Resource(name = "tae_mall_goatItemDataMapper")
     GoatItemDataMapper goatItemDataMapper;
-    @Autowired
-    GoodsupNorealMapper goodsupNorealMapper;
 
     @Resource(name="tae_mall_goodsupNorealMapper")
     GoodsupNorealMapper goodsupNorealMapper;
