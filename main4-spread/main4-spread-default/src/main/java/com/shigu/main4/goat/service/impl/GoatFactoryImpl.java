@@ -163,7 +163,10 @@ public class GoatFactoryImpl implements GoatFactory {
             gid = new GoatItemData();
             gid.setGoatId(goatId);
         }
-        return selGoatByVo(unserializeGoat(gid, getAlocation(goi.getLocalId())));
+        GoatVO vo=unserializeGoat(gid, getAlocation(goi.getLocalId()));
+        vo.setSort(goi.getSort());
+        vo.setRecommon(goi.getRecommon());
+        return selGoatByVo(vo);
     }
 
     @Override
@@ -431,10 +434,23 @@ public class GoatFactoryImpl implements GoatFactory {
         example.setStartIndex(0);
         example.setEndIndex(1);
         List<GoatOneItem> gois=goatOneItemMapper.selectByConditionList(example);
-        if(gois.size()==0){
-            throw new GoatException("上方没有广告位");
+        GoatOneItem target;
+        if(gois.size()==0){//到顶了
+            example.clear();
+            example.createCriteria().andLocalIdEqualTo(goat.getLocalId());
+            if(up){
+                example.setOrderByClause("sort desc");
+            }else{
+                example.setOrderByClause("sort asc");
+            }
+            example.setStartIndex(0);
+            example.setEndIndex(1);
+            gois=goatOneItemMapper.selectByConditionList(example);
+            if(gois.size()==0){
+                throw new GoatException("广告数据异常");
+            }
         }
-        GoatOneItem target=gois.get(0);
+        target=gois.get(0);
         //交换两个sort
         GoatOneItem goi=new GoatOneItem();
         goi.setGoatId(goat.getGoatId());

@@ -1,15 +1,20 @@
 package com.shigu.main4.spread.service;
 
 import com.shigu.main4.activity.exceptions.ActivityException;
+import com.shigu.main4.goat.beans.ImgGoat;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.GoatDubboService;
+import com.shigu.main4.goat.vo.GoatIntermVO;
+import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.goat.vo.ItemGoatVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 /**
  * Created by zhaohongbo on 17/5/10.
@@ -22,8 +27,9 @@ public class GoatDubboServiceTest {
 
     @Test
     public void selGoatByIdTest() throws GoatException, ActivityException {
-        ItemGoatVO igv=goatDubboService.selGoatById(1L, GoatType.ItemGoat);
+        ImgGoatVO igv=goatDubboService.selGoatById(25L, GoatType.ImgGoat);
         System.out.println(igv);
-        goatDubboService.selGoatByLocalId(1L,GoatType.ItemGoat);
+        List<GoatIntermVO> givs=goatDubboService.selGoatByLocalId(1L,GoatType.ImgGoat);
+        System.out.println(givs);
     }
 }
