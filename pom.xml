@@ -12,7 +12,7 @@
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.1.4-SNAPSHOT</version>
+    <version>4.1.4-RELEASE</version>
     <!--versions:update-child-modules-->
     <modules>
         <module>main4-dao</module>
