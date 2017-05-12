@@ -48,6 +48,7 @@ public class ADAuctionServiceImpl implements ADAuctionService{
      */
     public List<SpreadTypeViewVo> getSpreadAuctTypeList(){
         SpreadAuctTypeExample spreadAuctTypeExample = new SpreadAuctTypeExample();
+        spreadAuctTypeExample.setOrderByClause("create_time asc");
         spreadAuctTypeExample.createCriteria().andDisEnabledEqualTo(false);
         List<SpreadAuctType> auctTypeList = spreadAuctTypeMapper.selectByExample(spreadAuctTypeExample);
         List<SpreadTypeViewVo> typeViewVoList = new ArrayList<SpreadTypeViewVo>();
