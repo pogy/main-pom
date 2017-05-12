@@ -10,11 +10,11 @@
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
 
     
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1494324111611" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1494584798412" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1494324111611"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1494584798412"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -177,6 +177,14 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
@@ -293,7 +301,7 @@
             <div class="storeDetailInfobox">
                 <div class="p1 clearfix">
                     <ul class="r1">
-                        <li><label>地址：</label><#if vo.storeRelation.webSite == "hz">杭州<#elseif vo.storeRelation.webSite == "cs">常熟<#elseif vo.storeRelation.webSite == "gz">广州<#elseif vo.storeRelation.webSite == "ss">石狮<#elseif vo.storeRelation.webSite == "wa">辽源</#if>—${vo.storeRelation.marketName!}${vo.storeRelation.floor!}</li>
+                        <li><label>地址：</label><#if vo.storeRelation.webSite == "hz">杭州<#elseif vo.storeRelation.webSite == "cs">常熟<#elseif vo.storeRelation.webSite == "gz">广州<#elseif vo.storeRelation.webSite == "ss">石狮<#elseif vo.storeRelation.webSite == "wa">辽源<#elseif vo.storeRelation.webSite == 'jx'>濮院</#if>—${vo.storeRelation.marketName!}${vo.storeRelation.floor!}</li>
                         <li><label>电话：</label>${vo.storeRelation.telephone!}</li>
                         <li><label>主营：</label>${vo.other.mainBus!}</li>
                         <li><label>开店时间：</label>${vo.other.openTime!}</li>
