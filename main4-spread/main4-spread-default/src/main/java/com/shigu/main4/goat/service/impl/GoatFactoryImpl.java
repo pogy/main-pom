@@ -393,7 +393,7 @@ public class GoatFactoryImpl implements GoatFactory {
 
     private <T extends GoatVO> void preparePublishCommon(T vo,Long second){
         GoatItemDataExample example=new GoatItemDataExample();
-        example.createCriteria().andStatusEqualTo(1).andGoatIdEqualTo(vo.getGoatId());
+        example.createCriteria().andStatusEqualTo(2).andGoatIdEqualTo(vo.getGoatId());
         GoatItemData gid=new GoatItemData();
         gid.setStatus(0);
         goatItemDataMapper.updateByExampleSelective(gid,example);
