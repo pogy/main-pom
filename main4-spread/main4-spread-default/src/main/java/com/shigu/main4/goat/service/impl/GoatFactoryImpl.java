@@ -96,7 +96,7 @@ public class GoatFactoryImpl implements GoatFactory {
 
             @Override
             public <T extends GoatVO> List<T> selPrepareGoats() throws GoatException {
-                return selGoatCommon(this, 1);
+                return selGoatCommon(this, 2);
             }
 
         };
