@@ -24,7 +24,7 @@ public class ShopsItemServiceTest {
 
     @Test
     public void downuploadItem(){
-        Long goodsId = 9955889L;
+        Long goodsId = 20396142L;
         String uploadUrl = shopsItemService.itemImgzipUrl(goodsId);
         System.out.println("OSS下载路径：" + uploadUrl);
     }

@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/search.css?t=1493779563460" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/search.css?t=1494399807125" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/search.js?t=1493779563460"></script>
+    <script src="http://style.571xz.com/searchV5/js/search.js?t=1494399807125"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -24,7 +24,7 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
                         <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
@@ -194,17 +194,18 @@
                     
                     
                     
-                    
                     <li type="goods" class="select">商品</li>
                     <li type="store" >档口</li>
                     
                 </ul>
+                <#if webSite == 'hz'>
                 <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
+                </#if>
             </div>
             <div class="searchBox">
                 
+                <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" >
                 
-                <form id="formSearch" action="http://so.571xz.com/hzsearch.htm" >
                     
                     
                     <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
@@ -212,6 +213,14 @@
                 </form>
             </div>
         </div>
+        <script>/*============ xz/page#search BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#search END ============*/
+
+
+</script>
     </div>
 </div>
 <div class="nav">
@@ -219,12 +228,18 @@
         <div class="navList">
             <ul>
                 <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
+                <#if webSite != 'jx'>
                 <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
-                <li ><a href="http://so.571xz.com/hzgoods.htm" target="_blank">商品库</a></li>
+                <#else>
+                <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
+                </#if>
+                <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
+                <#if webSite !="jx">
                 <li ><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
+                </#if>
             </ul>
         </div>
     </div>
