@@ -25,7 +25,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/withdraw5Apply.css?t=1493289051562" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/withdraw5Apply.css?t=1494492260750" rel="stylesheet">
     
   </head>
 <body>
@@ -176,6 +176,14 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="header">
     <div class="layout">
         <a class="logo iconfont" href="http://www.571xz.com"></a>
@@ -240,6 +248,7 @@
         <ul>
             <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >广告派位</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
+            <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
         </ul> 
     </div>
     
@@ -335,7 +344,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/withdraw5Apply.js?t=1493289051562"></script>
+<script src="http://style.571xz.com/gys4/js/withdraw5Apply.js?t=1494492260750"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

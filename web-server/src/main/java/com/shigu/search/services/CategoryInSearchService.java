@@ -10,6 +10,7 @@ import com.shigu.search.bo.SearchBO;
 import com.shigu.search.vo.CateNav;
 import com.shigu.search.vo.MarketNav;
 import com.shigu.search.vo.SearchNav;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.Cacheable;
@@ -40,18 +41,21 @@ public class CategoryInSearchService {
      * 查搜索档口
      * @return
      */
-    public List<CateNav> selMarkets(){
+    public List<CateNav> selMarkets(String website){
+        if(StringUtils.isEmpty(website)){
+            website = "hz";
+        }
         Cache cache=cacheManager.getCache("searchCatesCache");
-        List<CateNav> cateNavs=cache.get("1",List.class);
+        List<CateNav> cateNavs=cache.get(website + "1",List.class);
         if(cateNavs!=null){
             return cateNavs;
         }
-        List<CategoryValue> catlist=itemSearchService.selCategory(SearchCategory.MARKET);
+        List<CategoryValue> catlist=itemSearchService.selCategory(SearchCategory.MARKET,website);
         List<CateNav> markets=new ArrayList<>();
         for(CategoryValue gv:catlist){
             markets.add(new CateNav(gv.getCateValue(),gv.getCateName()));
         }
-        cache.put("1",markets);
+        cache.put(website + "1",markets);
         return markets;
     }
 
@@ -59,18 +63,21 @@ public class CategoryInSearchService {
      * 查主类目
      * @return
      */
-    public List<CateNav> selCates(){
+    public List<CateNav> selCates(String website){
+        if(StringUtils.isEmpty(website)){
+            website = "hz";
+        }
         Cache cache=cacheManager.getCache("searchCatesCache");
-        List<CateNav> cateNavs=cache.get("2",List.class);
+        List<CateNav> cateNavs=cache.get(website + "2",List.class);
         if(cateNavs!=null){
             return cateNavs;
         }
-        List<CategoryValue> cates=itemSearchService.selCategory(SearchCategory.CATEGORY);
+        List<CategoryValue> cates=itemSearchService.selCategory(SearchCategory.CATEGORY,website);
         List<CateNav> navs=new ArrayList<>();
         for(CategoryValue gv:cates){
             navs.add(new CateNav(gv.getCateValue(),gv.getCateName()));
         }
-        cache.put("2",navs);
+        cache.put(website + "2",navs);
         return navs;
     }
 
@@ -78,9 +85,9 @@ public class CategoryInSearchService {
      * 给商品库用的主类目
      * @return
      */
-    public List<CateNav> selCatesForGoods(){
+    public List<CateNav> selCatesForGoods(String website){
         List<CateNav> cates=new ArrayList<>();
-        cates.addAll(selCates());
+        cates.addAll(selCates(website));
         cates.add(new CateNav("风格馆",null,"风格馆"));
         cates.add(new CateNav("大码区",null,"大码区"));
         return cates;
@@ -126,7 +133,7 @@ public class CategoryInSearchService {
         ShiguTaobaocat taobaocat=shiguTaobaocatMapper.selectByPrimaryKey(cid);
         List<Long> cids=new ArrayList<>();
         if (taobaocat != null) {
-            if(taobaocat.getIsParent()==1){//父类
+            if(taobaocat.getIsParent() == 1){//父类
                 //查出所有子类目
                 ShiguTaobaocatExample example=new ShiguTaobaocatExample();
                 example.createCriteria().andParentCidEqualTo(taobaocat.getCid());

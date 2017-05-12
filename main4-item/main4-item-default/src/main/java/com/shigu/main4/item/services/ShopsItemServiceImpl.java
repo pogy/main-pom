@@ -404,7 +404,11 @@ public class ShopsItemServiceImpl implements ShopsItemService {
             String zipUrl = tmpdirPath + "/" + yearMm + "/" + fileFolder + ".zip";
             FileImgsUtil.zip(savePath + "/", zipUrl);
             File zipFile = new File(zipUrl);
-            return ossIO.uploadFile(zipFile,filePath);
+            String uploadurl = ossIO.uploadFile(zipFile,filePath);
+            // 删除文件夹
+            FileUtil.deleteDir(file);
+            zipFile.delete();
+            return uploadurl;
         } catch (Exception e) {
             e.printStackTrace();
         }

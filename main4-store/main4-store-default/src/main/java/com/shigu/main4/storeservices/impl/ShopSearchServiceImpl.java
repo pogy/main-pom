@@ -67,7 +67,9 @@ public class ShopSearchServiceImpl implements ShopSearchService {
             }
             String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
             qb.should(QueryBuilders.matchQuery("shop_num", keywordNum)).boost(5);
-            qb.should(QueryBuilders.termQuery("market_id", 1087));
+            if(StringUtils.equals(webSite,"hz")){
+                qb.should(QueryBuilders.termQuery("market_id", 1087));
+            }
             Matcher numMatch = NUMBER_PATTERN.matcher(keywordNum);
             while (numMatch.find()) {
                 qb.must(QueryBuilders.wildcardQuery("shop_num", "*" + numMatch.group()+"*"));
@@ -127,11 +129,11 @@ public class ShopSearchServiceImpl implements ShopSearchService {
      * @return
      */
     @Override
-    public List<SearchShopSimple> selShopByIds(List<Long> shopIds) {
+    public List<SearchShopSimple> selShopByIds(List<Long> shopIds, String website) {
         if (shopIds == null || shopIds.isEmpty()) {
             return Collections.emptyList();
         }
-        return selShopSimpleFromEs(QueryBuilders.termsQuery("shop_id", shopIds),"hz");
+        return selShopSimpleFromEs(QueryBuilders.termsQuery("shop_id", shopIds),website);
     }
 
     /**
@@ -167,7 +169,7 @@ public class ShopSearchServiceImpl implements ShopSearchService {
                 ShopInES shopInES = JSON.parseObject(hit.getSourceAsString(), ShopInES.class);
                 SearchShopSimple searchShopSimple = BeanMapper.map(shopInES, SearchShopSimple.class);
                 searchShopSimple.setMainCase(shopInES.getMainBus());
-                shopSimples.add(searchShopSimple);
+                    shopSimples.add(searchShopSimple);
             }
         }
         return shopSimples;
