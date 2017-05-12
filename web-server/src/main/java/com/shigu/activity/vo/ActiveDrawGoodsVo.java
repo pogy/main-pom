@@ -10,21 +10,28 @@ package com.shigu.activity.vo;
  */
 public class ActiveDrawGoodsVo {
 
-    /** 3 */
+    /** 期次ID */
     private Long pemId;
 
+    /** 商品ID */
     private Long goodsId;
 
+    /** 商品类别 */
     private String type;
 
+    /** 图片 */
     private String imgsrc;
 
+    /** 标题 */
     private String title;
 
+    /** 市场名称 */
     private String marketName;
 
+    /** 档口号 */
     private String shopNum;
 
+    /** 批发价 */
     private String piprice;
 
     public Long getPemId() {
