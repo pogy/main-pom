@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/search.css?t=1494399807125" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/search.css?t=1494584749989" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/search.js?t=1494399807125"></script>
+    <script src="http://style.571xz.com/searchV5/js/search.js?t=1494584749989"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -178,10 +178,18 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="headerV1">
     <div class="layout">
         <div class="logoLeft">
-            <a href="${main_host!}">
+            <a href="<#if webSite == 'jx'>http://jx.571xz.com<#else>${main_host!}</#if>">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
             </a>
             <em></em>
@@ -227,7 +235,11 @@ var webSite = '${webSite!}';
     <div class="layout navCon">
         <div class="navList">
             <ul>
+                <#if webSite == 'jx'>
+                <li class="first"><a href="http://jx.571xz.com" target="_blank">首页</a></li>
+                <#else>
                 <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
+                </#if>
                 <#if webSite != 'jx'>
                 <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 <#else>
