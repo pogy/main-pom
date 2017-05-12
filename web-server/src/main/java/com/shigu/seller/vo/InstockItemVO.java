@@ -1,6 +1,7 @@
 package com.shigu.seller.vo;
 
 import com.alibaba.druid.util.StringUtils;
+import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.vo.InstockItem;
 
 import java.text.SimpleDateFormat;
@@ -53,6 +54,17 @@ public class InstockItemVO {
         setImgsrc(instockItem.getPicUrl());
         setPrice2(instockItem.getPiPrice());
         setTitle(instockItem.getTitle());
+        if(instockItem!=null){
+            if(instockItem.getItemFrom().equals(ItemFrom.TAOBAO)){
+                this.type = "淘宝同步";
+            }else if(instockItem.getItemFrom().equals(ItemFrom.MEMBER)){
+                this.type = "手工发布";
+            }else if(instockItem.getItemFrom().equals(ItemFrom.PACKAGE)) {
+                this.type = "数据包发布";
+            }else{
+                this.type = "其它";
+            }
+        }
 //        setDetailUrlnew(instockItem);
 //        setCount(instockItem.);
 //        setPrice1(instockItem.get);
