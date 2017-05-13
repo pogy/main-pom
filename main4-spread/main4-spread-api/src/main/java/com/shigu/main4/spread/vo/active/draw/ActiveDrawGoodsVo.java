@@ -12,6 +12,8 @@ import java.io.Serializable;
  */
 public class ActiveDrawGoodsVo implements Serializable {
 
+    private Long id;
+
     /** 期次ID */
     private Long pemId;
 
@@ -118,5 +120,13 @@ public class ActiveDrawGoodsVo implements Serializable {
 
     public void setParsentMarketId(Long parsentMarketId) {
         this.parsentMarketId = parsentMarketId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
