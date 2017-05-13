@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网拥有丰富的线下服装批发进货渠道，四季星座、置地国际、电商基地、钱塘大厦、保太和、星座女装、新杭派、九天女装、意法服饰等杭州四季青实体批发市场都已入驻，实体批发档口高达15000多家，为全国淘宝网店代理商提供一手货源。同时支持一件代发，一键上传到淘宝、到阿里、到微信，数据包下载，无理由退换货服务。">
     
-    <link href="http://style.571xz.com/searchV5/css/newStyleHd.css?t=1494653976608" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/newStyleHd.css?t=1494655164769" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/newStyleHd.js?t=1494653976608"></script>
+    <script src="http://style.571xz.com/searchV5/js/newStyleHd.js?t=1494655164769"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -321,13 +321,13 @@ var webSite = '${webSite!}';
                                 <div class="awardDemand">上传3件</div>
                                 
                                 <div class="awardStatus">
-                                    <#if award.receivesYes == true>
+                                    <#if award.ward == 'A1' && award.receivesYes == true>
                                     <p class="ylq"><i></i>已领取奖品</p>
-                                    <#elseif award.drawStatus == 1>
+                                    <#elseif award.ward == 'A1' && award.drawStatus == 1>
                                     <p class="render">等待抽奖中</p>
-                                    <#elseif award.drawStatus == 2>
+                                    <#elseif award.ward == 'A1' && award.drawStatus == 2>
                                     <p class="render">未中奖</p>
-                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <#elseif award.ward == 'A1' && award.drawStatus == 3 && award.drawCode != ''>
                                     <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
                                     </#if>
                                     <p><em class="noFinish">未完成</em></p>
@@ -341,13 +341,13 @@ var webSite = '${webSite!}';
                                 <div class="adStatus"></div>
                                 <div class="awardDemand">上传5件</div>
                                 <div class="awardStatus">
-                                    <#if award.receivesYes == true>
+                                    <#if award.ward == 'A2' && award.receivesYes == true>
                                     <p class="ylq"><i></i>已领取奖品</p>
-                                    <#elseif award.drawStatus == 1>
+                                    <#elseif award.ward == 'A2' && award.drawStatus == 1>
                                     <p class="render">等待抽奖中</p>
-                                    <#elseif award.drawStatus == 2>
+                                    <#elseif award.ward == 'A2' && award.drawStatus == 2>
                                     <p class="render">未中奖</p>
-                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <#elseif award.ward == 'A2' && award.drawStatus == 3 && award.drawCode != ''>
                                     <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
                                     </#if>
                                     <p><em class="noFinish">未完成</em></p>
@@ -361,13 +361,13 @@ var webSite = '${webSite!}';
                                 <div class="adStatus"></div>
                                 <div class="awardDemand">上传8件</div>
                                 <div class="awardStatus ">
-                                    <#if award.receivesYes == true>
+                                    <#if award.ward == 'A3' && award.receivesYes == true>
                                     <p class="ylq"><i></i>已领取奖品</p>
-                                    <#elseif award.drawStatus == 1>
+                                    <#elseif award.ward == 'A3' && award.drawStatus == 1>
                                     <p class="render">等待抽奖中</p>
-                                    <#elseif award.drawStatus == 2>
+                                    <#elseif award.ward == 'A3' && award.drawStatus == 2>
                                     <p class="render">未中奖</p>
-                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <#elseif award.ward == 'A3' && award.drawStatus == 3 && award.drawCode != ''>
                                     <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
                                     </#if>
                                     <p><em class="noFinish">未完成</em></p>
@@ -380,13 +380,13 @@ var webSite = '${webSite!}';
                                 <div class="adStatus"></div>
                                 <div class="awardDemand">上传10件</div>
                                 <div class="awardStatus">
-                                    <#if award.receivesYes == true>
+                                    <#if award.ward == 'A4' && award.receivesYes == true>
                                     <p class="ylq"><i></i>已领取奖品</p>
-                                    <#elseif award.drawStatus == 1>
+                                    <#elseif award.ward == 'A4' &&  award.drawStatus == 1>
                                     <p class="render">等待抽奖中</p>
-                                    <#elseif award.drawStatus == 2>
+                                    <#elseif award.ward == 'A4' &&  award.drawStatus == 2>
                                     <p class="render">未中奖</p>
-                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <#elseif award.ward == 'A4' &&  award.drawStatus == 3 && award.drawCode != ''>
                                     <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
                                     </#if>
                                     <p><em class="noFinish">未完成</em></p>
@@ -477,13 +477,13 @@ var webSite = '${webSite!}';
                                 <div class="awardDemand">上传3件</div>
                                 
                                 <div class="awardStatus">
-                                    <#if award.receivesYes == true>
+                                    <#if award.ward == 'B1' && award.receivesYes == true>
                                     <p class="ylq"><i></i>已领取奖品</p>
-                                    <#elseif award.drawStatus == 1>
+                                    <#elseif award.ward == 'B1' && award.drawStatus == 1>
                                     <p class="render">等待抽奖中</p>
-                                    <#elseif award.drawStatus == 2>
+                                    <#elseif award.ward == 'B1' && award.drawStatus == 2>
                                     <p class="render">未中奖</p>
-                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <#elseif award.ward == 'B1' && award.drawStatus == 3 && award.drawCode != ''>
                                     <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
                                     </#if>
                                     <p><em class="noFinish">未完成</em></p>
@@ -497,13 +497,13 @@ var webSite = '${webSite!}';
                                 <div class="adStatus"></div>
                                 <div class="awardDemand">上传5件</div>
                                 <div class="awardStatus">
-                                    <#if award.receivesYes == true>
+                                    <#if award.ward == 'B2' && award.receivesYes == true>
                                     <p class="ylq"><i></i>已领取奖品</p>
-                                    <#elseif award.drawStatus == 1>
+                                    <#elseif award.ward == 'B2' && award.drawStatus == 1>
                                     <p class="render">等待抽奖中</p>
-                                    <#elseif award.drawStatus == 2>
+                                    <#elseif award.ward == 'B2' && award.drawStatus == 2>
                                     <p class="render">未中奖</p>
-                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <#elseif award.ward == 'B2' && award.drawStatus == 3 && award.drawCode != ''>
                                     <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
                                     </#if>
                                     <p><em class="noFinish">未完成</em></p>
