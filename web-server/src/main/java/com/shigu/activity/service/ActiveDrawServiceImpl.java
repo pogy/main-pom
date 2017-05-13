@@ -94,7 +94,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         drawPitExample.createCriteria().andTypeEqualTo(ActiveDrawPit.TYPE_GOODS);
         drawPitExample.setOrderByClause("num asc");
         List<ActiveDrawPit> drawPitList = activeDrawPitMapper.selectByExample(drawPitExample);
-        if(drawPitList.size() == 0){
+        if(drawPitList.size() == 0 && StringUtils.equals(ActiveDrawGoods.TYPE_FAGOODS,type)){
             return Collections.emptyList();
         }
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
@@ -132,6 +132,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                 activeDrawGoodsVo.setMarketName(shiguGoodsTiny.getParentMarketName());
                 activeDrawGoodsVo.setShopNum(shiguGoodsTiny.getStoreNum());
                 activeDrawGoodsVo.setPemId(pemId);
+
                 DecimalFormat df2=(DecimalFormat) DecimalFormat.getInstance();
                 df2.applyPattern("0.00");
                 activeDrawGoodsVo.setPiPriceString(df2.format(shiguGoodsTiny.getPiPrice()/100));
@@ -155,6 +156,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                 for(ActiveDrawGoods drawGoods : drawGoodsList){
                     if(drawGoods.getGoodsId().intValue() == shiguGoodsTiny.getGoodsId().intValue()){
                         activeDrawGoodsVo.setId(drawGoods.getId());
+                        activeDrawGoodsVo.setPitId(drawGoods.getPitId());
                         break;
                     }
                 }
@@ -172,7 +174,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             Boolean panss = false;
             for (int j = 0; j < drawGoodsVoList.size(); j++) {
                 ActiveDrawGoodsVo drawGoodsVo = drawGoodsVoList.get(j);
-                if(drawPit.getId().intValue() == drawGoodsVo.getPitId().intValue()){
+                if(drawGoodsVo.getPitId()!=null && drawPit.getId().intValue() == drawGoodsVo.getPitId().intValue()){
                     drawGoodsVo.setNum(drawPit.getNum());
                     newDrawGoodsVoList.add(drawGoodsVo);
                     panss = true;
@@ -376,6 +378,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                     drawShopVo.setShopNum(shiguShop.getShopNum());
                     drawShopVo.setuText(activeDrawShop.getuText());
                     drawShopVo.setdText(activeDrawShop.getdText());
+                    drawShopVo.setPitId(activeDrawShop.getPitId());
                     if(StringUtils.isEmpty(drawShopVo.getMarketName())){
                         ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguShop.getMarketId(),
                                 FieldUtil.codeFields("market_id,market_name"));
@@ -395,7 +398,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             Boolean panss = false;
             for (int j = 0; j < newDrawShopVoList.size(); j++) {
                 ActiveDrawShopVo drawShopVo = newDrawShopVoList.get(j);
-                if(drawPit.getId().intValue() == drawShopVo.getPitId().intValue()){
+                if(drawShopVo.getPitId() != null && drawPit.getId().intValue() == drawShopVo.getPitId().intValue()){
                     drawShopVo.setNum(drawPit.getNum());
                     newDrawShopVoList.add(drawShopVo);
                     panss = true;
