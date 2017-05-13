@@ -50,9 +50,9 @@ public interface ActiveDrawService {
 
     /**
      * 修改商品
-     * @param activeDrawGoodsVo
+     * @param
      */
-    public void changeDrawGoods(ActiveDrawGoodsVo activeDrawGoodsVo);
+    public void changeDrawGoods(Long id, Long goodsId);
 
     /**
      * 新增商品
