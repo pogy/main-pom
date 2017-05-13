@@ -1,11 +1,6 @@
 package com.shigu.seller.actions;
 
-import com.opentae.data.mall.beans.SpreadAuctScren;
-import com.opentae.data.mall.beans.SpreadAuctShop;
-import com.opentae.data.mall.beans.SpreadAuctType;
 import com.shigu.seller.bo.AuctionApplyBo;
-import com.shigu.seller.services.AuctionService;
-import com.shigu.seller.services.api.ADAuctionService;
 import com.shigu.seller.vo.SpreadTypeViewVo;
 import com.shigu.seller.vo.WinnerVo;
 import com.shigu.session.main4.PersonalSession;
@@ -38,13 +33,6 @@ import java.util.List;
 @RequestMapping("seller")
 public class ADAuctionAction {
 
-    @Autowired
-    private ADAuctionService adAuctionService;
-    /**
-     * 自行包装用的service
-     */
-    @Autowired
-    private AuctionService auctionService;
 
     String ftlDir="seller";
 
@@ -54,8 +42,8 @@ public class ADAuctionAction {
      */
     @RequestMapping(value = "/indexgglist" , method = RequestMethod.GET)
     public String dtgTypeList(HttpServletRequest request){
-        List<SpreadTypeViewVo> spreadAuctTypeList = adAuctionService.getSpreadAuctTypeList();
-        request.setAttribute("adsBoxList", spreadAuctTypeList);
+//        List<SpreadTypeViewVo> spreadAuctTypeList = adAuctionService.getSpreadAuctTypeList();
+//        request.setAttribute("adsBoxList", spreadAuctTypeList);
         return ftlDir + "/indexgglist";
     }
 
@@ -74,45 +62,45 @@ public class ADAuctionAction {
             }
         }
 
-        String introductionHtml = adAuctionService.getActRulesDesc(id);
-        model.addAttribute("introductionHtml", introductionHtml);
+//        String introductionHtml = adAuctionService.getActRulesDesc(id);
+//        model.addAttribute("introductionHtml", introductionHtml);
 
-        SpreadAuctScren currentAuction = adAuctionService.getCurrentAuction(id);
-
-        if(currentAuction != null){
-            model.addAttribute("id",currentAuction.getId());
-        }
-
-        model.addAttribute("typeId",id);
-
-        // 正在进行活动
-        if (currentAuction != null) {
-            SpreadAuctShop spreadAuctShop = adAuctionService.checkWin(logshop.getShopId(),id);
-            // 没有加入活动
-            if (spreadAuctShop == null) {
-                return ftlDir+"/dtggapply";
-            } else {
-                model.addAttribute("lxtel", spreadAuctShop.getContactsPhone());
-                 model.addAttribute("lxuser",  spreadAuctShop.getContactsName());
-                model.addAttribute("marketText", spreadAuctShop.getMarketName());
-                model.addAttribute("storeNum", spreadAuctShop.getShopNum());
-                model.addAttribute("countdownValue", currentAuction.getEndTime().getTime());
-                model.addAttribute("nowTimeValue", System.currentTimeMillis());
-                return ftlDir+"/dtggapplyinfo";
-            }
-        }
-        // 当前没有活动
-        List<WinnerVo> winners = adAuctionService.getWinners(id);
-        for (int i = 0; i < winners.size(); i++) {
-            winners.get(i).setNum(i + 1L);
-        }
-
-        model.addAttribute("ggList", winners);
-
-        Date nexttime =  adAuctionService.nextAuctionTime(id);
-        if(nexttime != null){
-            model.addAttribute("nexttimeText", DateFormatUtils.format(nexttime, "yyyy-MM-dd"));
-        }
+//        SpreadAuctScren currentAuction = adAuctionService.getCurrentAuction(id);
+//
+//        if(currentAuction != null){
+//            model.addAttribute("id",currentAuction.getId());
+//        }
+//
+//        model.addAttribute("typeId",id);
+//
+//        // 正在进行活动
+//        if (currentAuction != null) {
+//            SpreadAuctShop spreadAuctShop = adAuctionService.checkWin(logshop.getShopId(),id);
+//            // 没有加入活动
+//            if (spreadAuctShop == null) {
+//                return ftlDir+"/dtggapply";
+//            } else {
+//                model.addAttribute("lxtel", spreadAuctShop.getContactsPhone());
+//                 model.addAttribute("lxuser",  spreadAuctShop.getContactsName());
+//                model.addAttribute("marketText", spreadAuctShop.getMarketName());
+//                model.addAttribute("storeNum", spreadAuctShop.getShopNum());
+//                model.addAttribute("countdownValue", currentAuction.getEndTime().getTime());
+//                model.addAttribute("nowTimeValue", System.currentTimeMillis());
+//                return ftlDir+"/dtggapplyinfo";
+//            }
+//        }
+//        // 当前没有活动
+//        List<WinnerVo> winners = adAuctionService.getWinners(id);
+//        for (int i = 0; i < winners.size(); i++) {
+//            winners.get(i).setNum(i + 1L);
+//        }
+//
+//        model.addAttribute("ggList", winners);
+//
+//        Date nexttime =  adAuctionService.nextAuctionTime(id);
+//        if(nexttime != null){
+//            model.addAttribute("nexttimeText", DateFormatUtils.format(nexttime, "yyyy-MM-dd"));
+//        }
         return ftlDir+"/dtgglist";
     }
 
@@ -125,23 +113,24 @@ public class ADAuctionAction {
         if (StringUtils.isEmpty(bo.getLxuser())) {
             msg = "请输入联系人";
         }
-        SpreadAuctScren spreadAuctScren = adAuctionService.getSpreadScrenById(bo.getId());
-        if (msg != null) {
-            model.addAttribute("msg", msg);
-            model.addAttribute("lxuser", bo.getLxuser());
-            model.addAttribute("lxtel", bo.getLxtel());
-            return "redirect:/seller/dtggapply.htm?id="+spreadAuctScren.getSpreadPmId();
-        }
+//        SpreadAuctScren spreadAuctScren = adAuctionService.getSpreadScrenById(bo.getId());
+//        if (msg != null) {
+//            model.addAttribute("msg", msg);
+//            model.addAttribute("lxuser", bo.getLxuser());
+//            model.addAttribute("lxtel", bo.getLxtel());
+//            return "redirect:/seller/dtggapply.htm?id="+spreadAuctScren.getSpreadPmId();
+//        }
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         bo.setShopId(ps.getLogshop().getShopId());
         try {
 
-            adAuctionService.applyAuction(bo);
-            return "redirect:/seller/dtggapply.htm?id="+spreadAuctScren.getSpreadPmId();
+//            adAuctionService.applyAuction(bo);
+//            return "redirect:/seller/dtggapply.htm?id="+spreadAuctScren.getSpreadPmId();
         } catch (Exception e) {
             model.addAttribute("msg", "很抱歉，该活动已经结束");
-            return "redirect:/seller/dtggapply.htm?id="+spreadAuctScren.getSpreadPmId();
+//            return "redirect:/seller/dtggapply.htm?id="+spreadAuctScren.getSpreadPmId();
         }
+        return null;
     }
 
     /**
@@ -150,7 +139,7 @@ public class ADAuctionAction {
      */
     @RequestMapping("/dtgglistFinish")
     public String dtgglistFinish(Model model){
-        model.addAttribute("indexggList",auctionService.auctionResults());
+//        model.addAttribute("indexggList",auctionService.auctionResults());
         return ftlDir+"/dtgglistFinish";
     }
 }
