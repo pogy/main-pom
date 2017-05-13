@@ -30,6 +30,12 @@ public interface ActiveDrawService {
     public List<ActiveDrawPemVo> selDrawPemQueList();
 
     /**
+     * 查询全部期次
+     * @return
+     */
+    public List<ActiveDrawPemVo> selDrawPemList();
+
+    /**
      * 排序交换
      * @param type 1 上 2 下
      * @param drawGoodsId 主键ID
