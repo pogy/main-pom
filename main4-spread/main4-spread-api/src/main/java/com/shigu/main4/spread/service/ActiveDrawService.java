@@ -116,4 +116,10 @@ public interface ActiveDrawService {
      * @return
      */
     public int selWardDrawYes(Long pemId, String ward);
+
+    /**
+     * 选择用户中奖
+     * @param recordId
+     */
+    public void chooseDrawWard(Long recordId);
 }
