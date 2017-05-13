@@ -124,46 +124,48 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         SearchHit[] hits = response.getHits().getHits();
         List<ActiveDrawGoodsVo> drawGoodsVoList = new ArrayList<ActiveDrawGoodsVo>();
         if (hits != null && hits.length > 0) {
-            for (SearchHit hit : hits) {
-                ShiguGoodsTiny shiguGoodsTiny = JSON.parseObject(hit.getSourceAsString(), ShiguGoodsTiny.class);
-                ActiveDrawGoodsVo activeDrawGoodsVo = new ActiveDrawGoodsVo();
-                activeDrawGoodsVo.setGoodsId(shiguGoodsTiny.getGoodsId());
-                activeDrawGoodsVo.setImgSrc(shiguGoodsTiny.getPicUrl());
-                activeDrawGoodsVo.setMarketName(shiguGoodsTiny.getParentMarketName());
-                activeDrawGoodsVo.setShopNum(shiguGoodsTiny.getStoreNum());
-                activeDrawGoodsVo.setPemId(pemId);
-                ESGoods esGoods = JSON.parseObject(hit.getSourceAsString(), ESGoods.class);
-                activeDrawGoodsVo.setIsOff(esGoods.getIs_off());
-
-                DecimalFormat df2=(DecimalFormat) DecimalFormat.getInstance();
-                df2.applyPattern("0.00");
-                activeDrawGoodsVo.setPiPriceString(df2.format(shiguGoodsTiny.getPiPrice()/100));
-                activeDrawGoodsVo.setTitle(shiguGoodsTiny.getTitle());
-                activeDrawGoodsVo.setShopId(shiguGoodsTiny.getStoreId());
-                if(StringUtils.isEmpty(shiguGoodsTiny.getParentMarketName())){
-                    ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguGoodsTiny.getParentMarketId(),
-                            FieldUtil.codeFields("market_id,market_name"));
-                    if(shiguMarket != null){
-                        activeDrawGoodsVo.setMarketName(shiguMarket.getMarketName());
-                    }
-                }
-                if(StringUtils.isEmpty(activeDrawGoodsVo.getShopNum())){
-                    ShiguShop shiguShop = shiguShopMapper.selectFieldsByPrimaryKey(activeDrawGoodsVo.getShopId(),
-                            FieldUtil.codeFields("shop_id,shop_num"));
-                    if(shiguShop != null){
-                        activeDrawGoodsVo.setShopNum(shiguShop.getShopNum());
-                    }
-                }
-
-                for(ActiveDrawGoods drawGoods : drawGoodsList){
+            for(ActiveDrawGoods drawGoods : drawGoodsList){
+                for (SearchHit hit : hits) {
+                    ShiguGoodsTiny shiguGoodsTiny = JSON.parseObject(hit.getSourceAsString(), ShiguGoodsTiny.class);
                     if(drawGoods.getGoodsId().intValue() == shiguGoodsTiny.getGoodsId().intValue()){
+                        ActiveDrawGoodsVo activeDrawGoodsVo = new ActiveDrawGoodsVo();
+                        activeDrawGoodsVo.setGoodsId(shiguGoodsTiny.getGoodsId());
+                        activeDrawGoodsVo.setImgSrc(shiguGoodsTiny.getPicUrl());
+                        activeDrawGoodsVo.setMarketName(shiguGoodsTiny.getParentMarketName());
+                        activeDrawGoodsVo.setShopNum(shiguGoodsTiny.getStoreNum());
+                        activeDrawGoodsVo.setPemId(pemId);
+                        ESGoods esGoods = JSON.parseObject(hit.getSourceAsString(), ESGoods.class);
+                        activeDrawGoodsVo.setIsOff(esGoods.getIs_off());
+
+                        DecimalFormat df2=(DecimalFormat) DecimalFormat.getInstance();
+                        df2.applyPattern("0.00");
+                        activeDrawGoodsVo.setPiPriceString(df2.format(shiguGoodsTiny.getPiPrice()/100));
+                        activeDrawGoodsVo.setTitle(shiguGoodsTiny.getTitle());
+                        activeDrawGoodsVo.setShopId(shiguGoodsTiny.getStoreId());
+                        if(StringUtils.isEmpty(shiguGoodsTiny.getParentMarketName())){
+                            ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguGoodsTiny.getParentMarketId(),
+                                    FieldUtil.codeFields("market_id,market_name"));
+                            if(shiguMarket != null){
+                                activeDrawGoodsVo.setMarketName(shiguMarket.getMarketName());
+                            }
+                        }
+                        if(StringUtils.isEmpty(activeDrawGoodsVo.getShopNum())){
+                            ShiguShop shiguShop = shiguShopMapper.selectFieldsByPrimaryKey(activeDrawGoodsVo.getShopId(),
+                                    FieldUtil.codeFields("shop_id,shop_num"));
+                            if(shiguShop != null){
+                                activeDrawGoodsVo.setShopNum(shiguShop.getShopNum());
+                            }
+                        }
+
+
+                        drawGoodsVoList.add(activeDrawGoodsVo);
                         activeDrawGoodsVo.setId(drawGoods.getId());
                         activeDrawGoodsVo.setPitId(drawGoods.getPitId());
                         break;
                     }
                 }
-                drawGoodsVoList.add(activeDrawGoodsVo);
             }
+
         }
 
         if(ActiveDrawGoods.TYPE_DAILYFIND.equals(type)){
@@ -292,8 +294,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     @Override
     public void changeDrawGoods(Long id, Long goodsId, Long pemId, String type) {
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
-        drawGoodsExample.createCriteria().andGoodsIdEqualTo(goodsId)
-                .andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id);
+        drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id);
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
         if(drawGoodsList.size() == 0){
             ActiveDrawGoods drawGoods = new ActiveDrawGoods();
@@ -304,6 +305,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             drawGoods.setPemId(pemId);
             drawGoods.setType(type);
             drawGoods.setSort(id.intValue());
+            drawGoods.setPitId(id);
             activeDrawGoodsMapper.insertSelective(drawGoods);
             return;
         }
@@ -424,9 +426,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      */
     @Override
     public void changeShop(ActiveDrawShopVo drawShopVo) {
-        if(drawShopVo == null || drawShopVo.getId() == null || drawShopVo.getPemId() == null
-                || StringUtils.isEmpty(drawShopVo.getImgSrc()) || StringUtils.isEmpty(drawShopVo.getuText())
-                || StringUtils.isEmpty(drawShopVo.getdText()) || drawShopVo.getPitId() == null){
+        if(drawShopVo == null || drawShopVo.getPemId() == null || drawShopVo.getPitId() == null){
             return;
         }
         ActiveDrawShopExample drawShopExample = new ActiveDrawShopExample();
@@ -443,13 +443,16 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             drawShop.setPemId(drawShopVo.getPemId());
             drawShop.setPicUrl(drawShopVo.getImgSrc());
             drawShop.setSort(drawShopVo.getPitId().intValue());
+            drawShop.setShopId(drawShopVo.getShopId());
+            drawShop.setPitId(drawShopVo.getPitId());
             activeDrawShopMapper.insertSelective(drawShop);
+            return;
         }
-
-        ActiveDrawShop drawShop = activeDrawShopMapper.selectByPrimaryKey(drawShopVo.getId());
+        ActiveDrawShop drawShop = drawShopList.get(0);
         if(drawShop == null){
             return;
         }
+        drawShop.setShopId(drawShopVo.getShopId());
         drawShop.setPicUrl(drawShopVo.getImgSrc());
         drawShop.setuText(drawShopVo.getuText());
         drawShop.setdText(drawShopVo.getdText());
@@ -511,7 +514,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         ActiveDrawShopExample drawShopExample = new ActiveDrawShopExample();
         drawShopExample.createCriteria().andPemIdEqualTo(drawShopVo.getPemId()).andEnabledEqualTo(false);
         int count = activeDrawShopMapper.countByExample(drawShopExample);
-        drawShop.setSort(count + 10);
+        drawShop.setSort(count*10 + 10);
         activeDrawShopMapper.insertSelective(drawShop);
     }
 
@@ -552,7 +555,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             drawRecordUserVos = poUserGoodsUp(pemId, ActiveDrawGoods.TYPE_FAGOODS, drawRecordList);
             return drawRecordUserVos;
         }
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -587,6 +590,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             for(ActiveDrawRecord drawRecord : drawRecordList){
                 if(drawRecord.getUserId().intValue() == userId.intValue()){
                     ActiveDrawRecordUserVo drawRecordUserVo = new ActiveDrawRecordUserVo();
+                    drawRecordUserVo.setId(drawRecord.getId());
                     drawRecordUserVo.setUserId(userId);
                     drawRecordUserVo.setUserNick(drawRecord.getUserNick());
                     drawRecordUserVo.setDrawStatus(drawRecord.getDrawStatus());
