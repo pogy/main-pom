@@ -428,20 +428,26 @@ public class GoatFactoryImpl implements GoatFactory {
         GoatOneItemExample.Criteria cri=example.createCriteria().andLocalIdEqualTo(goat.getLocalId());
         if(up){
             cri.andSortLessThan(goat.getSort());
+            example.setOrderByClause("sort desc");
         }else{
             cri.andSortGreaterThan(goat.getSort());
+            example.setOrderByClause("sort asc");
         }
         example.setStartIndex(0);
         example.setEndIndex(1);
+
         List<GoatOneItem> gois=goatOneItemMapper.selectByConditionList(example);
         GoatOneItem target;
+        int pianyi=0;//偏移量
         if(gois.size()==0){//到顶了
             example.clear();
             example.createCriteria().andLocalIdEqualTo(goat.getLocalId());
             if(up){
                 example.setOrderByClause("sort desc");
+                pianyi=1;
             }else{
                 example.setOrderByClause("sort asc");
+                pianyi=-1;
             }
             example.setStartIndex(0);
             example.setEndIndex(1);
@@ -454,11 +460,13 @@ public class GoatFactoryImpl implements GoatFactory {
         //交换两个sort
         GoatOneItem goi=new GoatOneItem();
         goi.setGoatId(goat.getGoatId());
-        goi.setSort(target.getSort());
+        goi.setSort(target.getSort()+pianyi);
         goatOneItemMapper.updateByPrimaryKeySelective(goi);
-        GoatOneItem goi2=new GoatOneItem();
-        goi2.setGoatId(target.getGoatId());
-        goi2.setSort(goat.getSort());
-        goatOneItemMapper.updateByPrimaryKeySelective(goi2);
+        if(pianyi==0){
+            GoatOneItem goi2=new GoatOneItem();
+            goi2.setGoatId(target.getGoatId());
+            goi2.setSort(goat.getSort());
+            goatOneItemMapper.updateByPrimaryKeySelective(goi2);
+        }
     }
 }
