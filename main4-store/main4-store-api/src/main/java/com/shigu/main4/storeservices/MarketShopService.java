@@ -1,6 +1,7 @@
 package com.shigu.main4.storeservices;
 
 import com.shigu.main4.vo.FloorShow;
+import com.shigu.main4.vo.MarketNavShow;
 import com.shigu.main4.vo.MarketShow;
 import com.shigu.main4.vo.ShopShow;
 
@@ -31,4 +32,10 @@ public interface MarketShopService {
      * @return
      */
     void getShopComparator(List<ShopShow> shopShowList);
+
+    /**
+     * 查询站点市场展现数据
+     * @return
+     */
+    List<MarketNavShow> selMarketNavShowList(String website);
 }

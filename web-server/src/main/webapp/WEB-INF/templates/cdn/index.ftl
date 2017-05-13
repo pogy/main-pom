@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1493951991873" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1494399874470" rel="stylesheet">
     
   </head>
 <body>
@@ -187,16 +187,27 @@
                 <li class="select" type="store">档口</li>
                 
             </ul>
+            <#if webSite == 'hz'>
             <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
+            </#if>
         </div>
         <div class="searchBox">
-            <form id="formSearch" action="http://www.571xz.com/storenum.htm">
+            <form id="formSearch" action="http://www.571xz.com/storenum.htm?webSite=${webSite!}">
                 <input type="text" class="searchCon" name="keyword" placeholder="输入档口号进行查询">
+                <input type=hidden name="webSite" value="${webSite!}">
                 <button class="searchBtn">搜索</button>
             </form>
         </div>
     </div>
     
+    <script>/*============ marketV3/page#search BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ marketV3/page#search END ============*/
+
+
+</script>
 </div>
 <div class="nav">
     <div class="layout navCon">
@@ -212,10 +223,12 @@
             <ul>
                 <li><a href="${main_host!}" target="_blank">首页</a></li>
                 <li class="select"><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
-                <li><a href="http://so.571xz.com/hzgoods.htm" target="_blank">商品库</a></li>
+                <li><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
+                <#if webSite != 'jx'>
                 <li><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
                 <li><a href="http://xb.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
+                </#if>
             </ul>
         </div>
         <div class="storeIn">
@@ -375,7 +388,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1493951991873"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1494399874470"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

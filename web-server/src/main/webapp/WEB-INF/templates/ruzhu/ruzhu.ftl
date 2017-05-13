@@ -206,15 +206,9 @@
                 <div class="label"><span class="red">*</span> 主营商品：</div>
                 <div class="inner">
                     <ul class="clearfix screenList">
-                        <li class="fl"><label><input type="radio" value="女装" name="mainCate">女装</label></li>
-                        <li class="fl"><label><input type="radio" value="男装" name="mainCate">男装</label></li>
-                        <li class="fl"><label><input type="radio" value="童装" name="mainCate">童装</label></li>
-                        <li class="fl"><label><input type="radio" value="包包" name="mainCate">包包</label></li>
-                        <li class="fl"><label><input type="radio" value="男鞋" name="mainCate">男鞋</label></li>
-                        <li class="fl"><label><input type="radio" value="女鞋" name="mainCate">女鞋</label></li>
-                        <li class="fl"><label><input type="radio" value="服饰配件" name="mainCate">服饰配件</label></li>
-                        <li class="fl"><label><input type="radio" value="情侣装" name="mainCate">情侣装</label></li>
-                        <li class="fl"><label><input type="radio" value="其他" name="mainCate">其他</label></li>
+                        <#list mainbusList as mainbus>
+                            <li class="fl"><label><input type="radio" value="${mainbus}" name="mainCate">${mainbus}</label></li>
+                        </#list>
                     </ul>
                 </div>
             </div>

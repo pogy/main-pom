@@ -225,7 +225,7 @@
                         </div>
 
                         <div class="tit">
-                            <a href="/item.htm?id=4014162" target="_blank">${g.title!}</a>
+                            <a href="/item.htm?id=${g.itemId}" target="_blank">${g.title!}</a>
                         </div>
 
                         <div class="btnview">

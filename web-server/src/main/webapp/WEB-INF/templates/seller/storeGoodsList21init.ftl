@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/storeGoodsList21init.css?t=1493289046648" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/storeGoodsList21init.css?t=1494492246788" rel="stylesheet">
     
   </head>
 <body>
@@ -165,6 +165,14 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="header">
     <div class="layout">
         <a class="logo iconfont" href="http://www.571xz.com"></a>
@@ -229,6 +237,7 @@
         <ul>
             <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >广告派位</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
+            <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
         </ul> 
     </div>
     
@@ -237,6 +246,7 @@
             <span>${goods_counts.sale!}</span>
             <em>出售中的宝贝（件）</em>
         </div>
+        
         <div class="splitline"></div>
         <div class="infobox">
             <span>${goods_counts.store!}</span>
@@ -246,6 +256,7 @@
     <div class="content shadow-box">
         <div class="goods-tabbox clearfix">
             <div class="tabbutton selected"><a href="${main_host!}seller/storeGoodsList21init.htm">出售中的宝贝<em>${goods_counts.sale!}</em></a></div>
+            
         </div>
         <div class="goods-search">
             <input type="hidden" id="webSite" value="${webSite!}">
@@ -270,6 +281,9 @@
                 <li>
                     <button class="tbGoods someTbGoods">批量同步商品</button>
                     <button class="tbGoods allTbGoods" data-id="${session_user_redis__.logshop.shopId!}">同步整店商品</button>
+                    
+                    
+                    
                 </li>
             </ul>
             <#list goodslist as item>
@@ -295,6 +309,7 @@
                 </li>
                 <li class="upcount">${item.count!}</li>
                 <li class="control">
+                    
                     <#if item.detailUrlnew != null>
                     <p><b class="tbGoods">同步商品</b></p>
                     <#else>
@@ -372,7 +387,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/storeGoodsList21init.js?t=1493289046648"></script>
+<script src="http://style.571xz.com/gys4/js/storeGoodsList21init.js?t=1494492246788"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

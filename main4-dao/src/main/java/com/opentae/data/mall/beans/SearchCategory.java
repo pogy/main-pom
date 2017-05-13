@@ -27,6 +27,8 @@ public class SearchCategory implements Serializable {
     private String cateValue;
     /** 排序 */
     private Integer sort;
+    /** 站点 */
+    private String webSite;
 
     public Long getCategoryId() {
         return categoryId;
@@ -66,5 +68,13 @@ public class SearchCategory implements Serializable {
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
     }
 }

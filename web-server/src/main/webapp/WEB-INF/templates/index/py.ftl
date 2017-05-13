@@ -1,0 +1,570 @@
+<#assign text>{}</#assign><#assign $it=text?eval /><!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    
+        <title>濮院站-四季星座网</title>
+    
+        <#if $it.keywords??>
+        <meta name="keywords" content="${$it.keywords!}">
+        </#if>
+    
+        <#if $it.description??>
+        <meta name="description" content="${$it.description!}">
+        </#if>
+    
+    <link href="http://style.571xz.com/otherIndex/css/py.css?t=" rel="stylesheet">
+    
+    
+    <script src="http://style.571xz.com/global/js/jquery.js"></script>
+    <script src="http://style.571xz.com/otherIndex/js/py.js?t="></script>
+  </head>
+<body>
+<#include "/common/host_config.ftl">
+
+<div class="topbar">
+    <div class="inner">
+        <div class="topbar-left">
+            <span>Hi,</span> 
+            欢迎来到四季星座网!
+            <a class="login" href="http://www.571xz.com/login.htm" target="_blank">请登录</a>
+            <a class="register" href="http://www.571xz.com/regedit.htm" target="_blank">免费注册</a>
+        </div>
+        <ul class="topbar-right clearfix">
+            <li> 
+                <div class="nav-name"><em>我是代理<i class="img-jiantou"></i></em></div>
+                <div class="nav-list">
+                    <a href="http://www.571xz.com/member/shiguOnekeyRecordinit.htm" target="_blank" rel="nofollow">已上传的商品</a>
+                    <a href="http://www.571xz.com/carts.htm" target="_blank" rel="nofollow">我的购物车</a>
+                </div>
+            </li>
+            
+            
+            <li>
+                <div class="nav-name"><em><i class="iconfont iconsc">&#xe615;</i>收藏夹<i class="img-jiantou"></i></em></div>
+                <div class="nav-list">
+                    <a href="http://www.571xz.com/member/storeCollectinit.htm?index=0" target="_blank" rel="nofollow">我的收藏</a>
+                    <a href="http://www.571xz.com/member/goodsCollectinit.htm?webSite=hz" target="_blank" rel="nofollow">我的数据包</a>
+                </div>
+            </li>
+            <li> 
+                <div class="nav-name"><a href="http://www.571xz.com/seller/memberghs.htm" target="_blank">档口中心<i class="img-jiantou"></i></a></div>
+                <div class="nav-list">
+                    <a href="http://www.571xz.com/seller/releaseGoodsinit.htm" target="_blank" rel="nofollow">发布宝贝</a>
+                    <a href="http://www.571xz.com/seller/storeGoodsListinit.htm" target="_blank" rel="nofollow">已发布的宝贝</a>
+                </div>    
+            </li>
+            <li class="last">
+                <div class="nav-name"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116"  target="_blank" >客服中心<i class="img-jiantou"></i></a></div>
+                <div class="nav-list">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116" rel="nofollow">在线客服</a>
+                    <a href="http://zixun.571xz.com/detail?id=87" target="_blank" rel="nofollow">联系我们</a>
+                    <a href="http://zixun.571xz.com/detail?id=14" target="_blank" rel="nofollow">新手入门</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--公用顶部条结束-->
+<div class="fixtopbar">
+    <div class="innner">
+        <a class="logo" href="http://www.571xz.com/index.html"><img src="http://www.571xz.com/images/LOGO_3.png" title="四季星座网-首页" height="42" width="180"></a>
+         <div class="searchbar">
+            <div class="btnbox"><span>商品</span></div>
+            <form action="http://so.571xz.com/jxsearch.htm" target="_blank" id="searchgo3">
+                <input style="text-indent:1em;" class="text-search" name="keyword" type="text">
+                <button class="btn-search">搜索</button>
+            </form>
+        </div>
+        <div class="rightbox"> 
+            <a href="http://www.571xz.com/seller/index.htm">进入代理商后台</a> 
+        </div> 
+    </div>
+</div>
+<script>/*============ otherIndex/page#fixtopbar BEGIN ============*/
+
+/*====== 头部浮动工具条 ======*/
+$(window).on('scroll',function(){
+    $(window).scrollTop() > 180 ? $('.fixtopbar').fadeIn() : $('.fixtopbar').fadeOut();
+});
+
+$(function(){
+var webSite = '{{pageid}}';
+var typeToAction = {
+    '宝贝': 'http://so.571xz.com/'+ webSite +'search.htm',
+    '商品': 'http://so.571xz.com/'+ webSite +'search.htm',
+    '货号': 'http://www.571xz.com/'+ webSite +'goodsNoSearch.htm',
+    '档口': 'http://www.571xz.com/storenum.htm'
+};
+
+$('.fixtopbar .tabbox li').on('click', function(){
+    var type = $(this).html();
+    var first = $(this).parent().children().first();
+    if(type == first.html())return;
+    $(this).insertBefore(first);
+    $('#searchgo3').attr('action', typeToAction[type]);
+});
+    
+});
+
+/*============ otherIndex/page#fixtopbar END ============*/
+
+
+</script>
+<div class="header layout">
+    <a  class="logo" href="http://www.571xz.com/" title="四季星座网-首页">四季星座网</a>
+    <div class="changecity">
+        <strong>濮院</strong>
+        <div class="citylist">
+            <span class="changebutton">切换城市<i class="img-jiantou"></i></span>
+            <ul>
+                        <li><a href="http://hz.571xz.com">杭州</a></li>
+                        <li><a href="http://cs.571xz.com">常熟</a></li>
+                        <li><a href="http://ss.571xz.com">石狮</a></li>
+                        <li><a href="http://bj.571xz.com">北京</a></li>
+                        <li><a href="http://gz.571xz.com">广州</a></li>
+                        <li><a href="http://wa.571xz.com">辽源</a></li>
+                        <li class="selected"><a href="http://py.571xz.com">濮院</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="sobar">
+        <ul class="tabs clearfix"> 
+            <li class="so-goods selected">商品</li>
+        </ul>
+        <form class="so-form" action="http://so.571xz.com/jxsearch.htm" target="_blank">
+            <input class="so-input" type="text" name="keyword" placeholder="输入产品名称"> <button class="so-go">搜索</button>
+        </form>
+    </div>
+    <div class="downloadapp"> 
+        <a href="http://www.571xz.com/static/NewDown/" target="_blank"><div>手机客户端</div><img width="80" height="80" alt="手机客户端二维码" src="http://style.571xz.com/otherIndex/css/img/appQrCode.png"></a> 
+    </div>
+</div>
+<div class="topnav layout">
+    <div class="fastnav">
+        <i class="iconfont">&#xe616;</i>
+        <span>快速导航</span>
+    </div>
+    <ul class="pagenav">
+        
+        <li><a href="http://www.571xz.com/" target="_blank">首页</a></li> 
+        <li><a href="http://jx.571xz.com/market.htm?mid=33" target="_blank">逛市场</a><i class="img-tjdk"></i></li> 
+        <li><a href="http://so.571xz.com/jxgoods.htm" target="_blank">商品库</a></li> 
+        
+        
+    </ul>
+</div>
+<div class="topcontent layout">
+    <div class="fastnav-list">
+        
+        
+        <div class="list">
+        
+            <h2><a href="http://so.571xz.com/huoyuan/index.html" target="_blank"><i class="iconfont">&#xe604;</i>市场列表</a></h2>
+            <ul class="clearfix">
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=33">羊毛衫市场</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=42">中央商场</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=37">外贸区</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=34">时尚裤都</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=38">国贸大厦</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=40">世贸大厦</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=39">国际时装城</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=35">臭豆豆童贸</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=41">环贸中心</a></li>
+                <li><a target="_blank" href="http://jx.571xz.com/market.htm?mid=36">交易中心</a></li>
+            </ul>
+        </div>
+        
+            <span class="splitline"></span>
+            
+        
+        <div class="list j-list" data-id="j-manclo">
+        
+            <h2><a href="http://so.571xz.com/jxgoods.htm?pid=701" target="_blank"><i class="iconfont">&#xe605;</i>男装</a></h2>
+            <ul class="clearfix">
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000436&amp;pid=701">T恤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011123&amp;pid=701">衬衫</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010159&amp;pid=701">卫衣</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010402&amp;pid=701">Polo衫</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011159&amp;pid=701">风衣</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=3035&amp;pid=701">休闲裤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010167&amp;pid=701">牛仔裤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=运动裤&amp;pid=701">运动裤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=短裤&amp;pid=701">短裤</a></li>
+            </ul>
+        </div>
+        
+            <span class="splitline"></span>
+            
+        
+        <div class="list j-list" data-id="j-womanclo">
+        
+            <h2><a href="http://so.571xz.com/jxgoods.htm?pid=702" target="_blank"><i class="iconfont">&#xe606;</i>女装</a></h2>
+            <ul class="clearfix">
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000671&amp;pid=702">T恤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162104&amp;pid=702">衬衫</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=针织衫&amp;pid=702">针织衫</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008898&amp;pid=702">卫衣</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=背带裙&amp;pid=702">背带裙</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162205&amp;pid=702">牛仔裤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010850&amp;pid=702">连衣裙</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=长裙&amp;pid=702">长裙</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1629&amp;pid=702">大码女装</a></li>
+            </ul>
+        </div>
+        
+            <span class="splitline"></span>
+            
+        
+        <div class="list j-list" data-id="j-childclo">
+        
+            <h2><a href="http://so.571xz.com/jxgoods.htm?pid=703" target="_blank"><i class="iconfont">&#xe6df;</i>童装</a></h2>
+            <ul class="clearfix">
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010540&amp;pid=703">套装</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013618&amp;pid=703">裤子</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50016450&amp;pid=703">校服/校服定制</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010524&amp;pid=703">马甲</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50012424&amp;pid=703">亲子装/亲子时装</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010518&amp;pid=703">卫衣/绒衫</a></li>
+            </ul>
+        </div>
+        
+            
+        
+    </div>
+    <!-- 快速导航详情-->
+    <div class="fastnav-detail"  id="j-fastnav-detail">
+        <div class="detail-box j-manclo">
+        
+            <ul class="box-cols3 clearfix"> <!-- 根据类目数量控制容器宽度 -->
+<li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011123&amp;pid=701">衬衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010158&amp;pid=701">夹克</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000557&amp;pid=701">针织衫/毛衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010159&amp;pid=701">卫衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011127&amp;pid=701">皮裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50001748&amp;pid=701">民族服装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011129&amp;pid=701">西裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50005867&amp;pid=701">工装制服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011130&amp;pid=701">西服套装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=124730001&amp;pid=701">套装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011153&amp;pid=701">背心/马甲</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=3035&amp;pid=701">休闲裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50025884&amp;pid=701">羽绒裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50025885&amp;pid=701">棉裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000436&amp;pid=701">T恤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50025883&amp;pid=701">毛呢大衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011159&amp;pid=701">风衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011161&amp;pid=701">皮衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010402&amp;pid=701">Polo衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010160&amp;pid=701">西服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011165&amp;pid=701">棉衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010167&amp;pid=701">牛仔裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011167&amp;pid=701">羽绒服</a></li>            </ul>
+        
+        
+<a class="channel" href="http://so.571xz.com/jxgoods.htm?pid=701">进入男装频道<i class="iconfont">&#xe676;</i></a>        </div>
+        <div class="detail-box j-womanclo">
+        
+            <ul class="box-cols4 clearfix"> <!-- 根据类目数量控制容器宽度 -->
+<li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50022566&amp;pid=702">西装裤/正装裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010850&amp;pid=702">连衣裙</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011277&amp;pid=702">短外套</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162116&amp;pid=702">蕾丝衫/雪纺衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000697&amp;pid=702">毛针织衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162205&amp;pid=702">牛仔裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121434004&amp;pid=702">抹胸</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162201&amp;pid=702">休闲裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011404&amp;pid=702">婚纱/旗袍/礼服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50026651&amp;pid=702">棉裤/羽绒裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008906&amp;pid=702">唐装/民族服装/舞台服装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008904&amp;pid=702">皮衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008905&amp;pid=702">皮草</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008898&amp;pid=702">卫衣/绒衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008899&amp;pid=702">羽绒服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000852&amp;pid=702">中老年女装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121412004&amp;pid=702">背心吊带</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008897&amp;pid=702">西装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008900&amp;pid=702">棉衣/棉服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000671&amp;pid=702">T恤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008901&amp;pid=702">风衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1624&amp;pid=702">职业套装/学生校服/工作制服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162103&amp;pid=702">毛衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1629&amp;pid=702">大码女装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013194&amp;pid=702">毛呢外套</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50007068&amp;pid=702">打底裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162104&amp;pid=702">衬衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162105&amp;pid=702">小背心/小吊带</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1623&amp;pid=702">半身裙</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013196&amp;pid=702">马夹</a></li>            </ul>
+        
+        
+<a class="channel" href="http://so.571xz.com/jxgoods.htm?cid=16">进入女装频道<i class="iconfont">&#xe676;</i></a>        </div>
+        <div class="detail-box j-childclo">
+        
+            <ul class="box-cols5 clearfix"> <!-- 根据类目数量控制容器宽度 -->
+<li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121506001&amp;pid=703">儿童礼服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121392004&amp;pid=703">儿童配饰</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50023868&amp;pid=703">儿童泳衣/裤/帽</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010518&amp;pid=703">卫衣/绒衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50156002&amp;pid=703">背心/吊带衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50012340&amp;pid=703">童鞋/婴儿鞋</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121476002&amp;pid=703">肚兜/肚围/护脐带</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121476003&amp;pid=703">抹胸</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50014512&amp;pid=703">婴儿礼盒</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010526&amp;pid=703">羽绒服/羽绒内胆</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010527&amp;pid=703">衬衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010524&amp;pid=703">马甲</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013693&amp;pid=703">裙子</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50016450&amp;pid=703">校服/校服定制</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50016012&amp;pid=703">儿童舞蹈服/演出服/礼服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013618&amp;pid=703">裤子</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121388045&amp;pid=703">裙子(新)</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50012424&amp;pid=703">亲子装/亲子时装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121476002&amp;pid=703">肚围/护脐带/肚兜</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50012308&amp;pid=703">外套/夹克/大衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121364003&amp;pid=703">儿童家居服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50006217&amp;pid=703">其它</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121364004&amp;pid=703">背心吊带</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50146004&amp;pid=703">反穿衣/罩衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50024824&amp;pid=703">儿童配饰/发饰</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010531&amp;pid=703">棉袄/棉服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010530&amp;pid=703">披风/斗篷</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013189&amp;pid=703">T恤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50006584&amp;pid=703">儿童袜子(0-16岁)</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010537衣&amp;pid=703">连身衣/爬服/哈衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50012433&amp;pid=703">儿童内衣裤/睡衣(0-16岁)</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121464004&amp;pid=703">儿童泳装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50006583&amp;pid=703">帽子/围巾/口罩/手套/耳套/脚套</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50152002&amp;pid=703">儿童旗袍/唐装/民族服装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121462057&amp;pid=703">儿童演出服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010539&amp;pid=703">毛衣/针织衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010540&amp;pid=703">套装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121380002&amp;pid=703">儿童内衣裤</a></li>            </ul>
+        
+        
+        </div>
+    </div>
+    <div class="rightbox">
+        <div class="slides" id="slides"> 
+         <div class="ulDiv"> 
+          <ul id="myLunb" style="position: relative;"> 
+          <#list topBanner as item>
+           <li><a rel="nofollow" target="_blank" href="${item.href!}"><img width="700" height="320" alt="" src="${item.imgsrc!}"></a></li>
+           </#list>
+          </ul> 
+         </div>
+         
+            <div class="small"><div class="small-lab"></div></div> 
+         
+            <div class="j_next c_next iconfont">&#xe603;</div>
+            <div class="j_prev c_prev iconfont">&#xe602;</div>
+        </div>
+        
+        <div class="rightbar">
+            <div class="notice">
+                <h3>星座公告</h3>
+                <ul> 
+                    <#list notices as item>
+                    <li><a title="${item.text!}" target="_blank" href="${item.href!}">${item.text!}</a></li> 
+                    </#list>
+                </ul>
+            </div>
+            <div class="rzbox"> 
+                <a target="_blank" href="http://www.571xz.com/ruzhu.htm">商家入驻</a> 
+                <p>已入驻档口<span>${hasStore!}</span>家 </p> 
+            </div>
+            <div class="goodscount"> 
+              <h3>商品总数</h3> 
+              <span>${hasGoods!}</span> 
+            </div>
+        </div>
+        
+        <ul class="storewindow"> 
+        <#list topStoread as item>
+            <li><a rel="nofollow" target="_blank" href="${item.href!}"><img width="175" height="195" alt="" src="${item.imgsrc!}"></a></li>
+        </#list>
+        </ul>
+    </div>
+</div>
+<div class="main-content">
+    <div id="navbar" class="navbar"> 
+        <ul class="nav">
+                <li><a href="#0F"><i class="iconfont">&#xe62d;</i><span>新品</span></a></li> 
+                <li><a href="#1F"><i class="iconfont">&#xe60e;</i><span>男装</span></a></li> 
+                <li><a href="#2F"><i class="iconfont">&#xe606</i><span>女装</span></a></li> 
+        </ul> 
+        <a class="linkqq" target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116"><i class="iconfont">&#xe60d;</i><span>客服</span></a>
+    </div>
+<#assign text>{        "type":'今日新品',        "nF":'0F',        "goods":${list_newGoods!}}</#assign>
+<#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
+    <div class="goods-list layout goodslist-cols5">
+        <h2 id="0F">今日新品</h2> 
+        <ul class="clearfix">
+            <#list $it.goods as item>
+            <li>
+                <div> 
+                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
+                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
+                    </a> 
+                    <p class="introduce">
+                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
+                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
+                    </p> 
+                </div> 
+            </li>
+            </#list>
+        </ul>
+    </div>
+    </#if>
+    
+<#assign text>{        "type":'男装',        "nF":'1F',        "goods":${nzgoods!}}</#assign>
+<#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
+    <div class="goods-list layout goodslist-cols5">
+        <h2 id="1F">男装</h2> 
+        <ul class="clearfix">
+            <#list $it.goods as item>
+            <li>
+                <div> 
+                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
+                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
+                    </a> 
+                    <p class="introduce">
+                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
+                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
+                    </p> 
+                </div> 
+            </li>
+            </#list>
+        </ul>
+    </div>
+    </#if>
+<#assign text>{        "type":'女装',        "nF":'2F',        "goods":${nvzgoods!}}</#assign>
+<#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
+    <div class="goods-list layout goodslist-cols5">
+        <h2 id="2F">女装</h2> 
+        <ul class="clearfix">
+            <#list $it.goods as item>
+            <li>
+                <div> 
+                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
+                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
+                    </a> 
+                    <p class="introduce">
+                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
+                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
+                    </p> 
+                </div> 
+            </li>
+            </#list>
+        </ul>
+    </div>
+    </#if>
+<#assign text>{        "type":'童装',        "nF":'3F',        "goods":${list_childGoods!}}</#assign>
+<#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
+    <div class="goods-list layout goodslist-cols5">
+        <h2 id="3F">童装</h2> 
+        <ul class="clearfix">
+            <#list $it.goods as item>
+            <li>
+                <div> 
+                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
+                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
+                    </a> 
+                    <p class="introduce">
+                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
+                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
+                    </p> 
+                </div> 
+            </li>
+            </#list>
+        </ul>
+    </div>
+    </#if>
+<#assign text>{        "type":'男鞋',        "nF":'4F',        "goods":${xiebaogoods!}}</#assign>
+<#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
+    <div class="goods-list layout goodslist-cols5">
+        <h2 id="4F">男鞋</h2> 
+        <ul class="clearfix">
+            <#list $it.goods as item>
+            <li>
+                <div> 
+                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
+                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
+                    </a> 
+                    <p class="introduce">
+                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
+                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
+                    </p> 
+                </div> 
+            </li>
+            </#list>
+        </ul>
+    </div>
+    </#if>
+    
+    
+</div>
+<div class="footerinfo layout">
+    <div class="four-bz">
+        <ul class="clearfix"> 
+            <li>
+                <i class="iconfont">&#xe608;</i>
+                <p>
+                    <span>15,000家档口</span>
+                    <em>一手货源</em>
+                </p>
+            </li> 
+            <li>
+                <i class="iconfont">&#xe600;</i>
+                <p>
+                    <span>1键上传</span>
+                    <em>轻松开淘宝</em>
+                </p>
+            </li>
+            <li>
+                <i class="iconfont">&#xe60a;</i>
+                <p>
+                    <span>1件代发</span>
+                    <em>0库存0成本</em>
+                </p>
+            </li>
+            <li>
+                <i class="iconfont">&#xe609;</i>
+                <p>
+                    <span>7天无理由</span>
+                    <em>包退换0风险</em>
+                </p>
+            </li>
+        </ul>
+    </div>
+    <div class="siteinfo">
+        <div class="maps">
+            <ul>
+                <li><h4>四季星座网</h4></li>
+                <li><a target="_blank" href="http://zixun.571xz.com/detail?id=67">关于我们</a></li>
+                <li><a target="_blank" href="http://zixun.571xz.com/detail?id=87">联系我们</a></li>
+            </ul>
+            <ul>
+                <li><h4>代理商</h4></li>
+                <li><a target="_blank" href="http://zixun.571xz.com/detail?id=45">一键上传</a></li>
+                <li><a target="_blank" href="http://zixun.571xz.com/detail?id=82">一件代发</a></li>
+            </ul>
+            <ul>
+                <li><h4>供货商</h4></li>
+                <li><a target="_blank" href="http://www.571xz.com/ruzhu.htm">商家入驻</a></li>
+                <li><a target="_blank" href="http://www.571xz.com//member/memberghs.htm">档口后台</a></li>
+                <li><a target="_blank" href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1">淘宝授权</a></li>
+            </ul>
+            <ul>
+                <li><h4>帮助中心</h4></li>
+                <li><a target="_blank" href="http://zixun.571xz.com/detail?id=14">新手入门</a></li>
+                <li><a target="_blank" href="http://zixun.571xz.com/detail?id=71">如何成为代理商</a></li>
+                <li><a target="_blank" href="http://zixun.571xz.com/detail?id=72">如何成为供货商</a></li>
+            </ul>
+        </div>
+        <div class="ewm"> 
+            <div class="wx_ewm"> 
+              <h4>微信公众号</h4> 
+              <img width="76" height="76" title="四季星座网微信微信公众号二维码" alt="四季星座网微信微信公众号二维码" src="http://www.571xz.com/images/foot_wx_2016.png"> 
+            </div> 
+            <div class="app_ewm">
+                <h4>手机APP</h4>
+                <img width="76" height="76" title="四季星座网手机app下载二维码" alt="四季星座网手机app下载二维码" src="http://style.571xz.com/otherIndex/css/img/appQrCode.png"> 
+            </div> 
+        </div>
+        <div class="tel"> 
+            <img width="200" height="120" title="四季星座网服务热线" alt="四季星座网服务热线" src="http://style.571xz.com/otherIndex/css/img/pyTel.png"> 
+        </div>
+    </div>
+</div>
+<!--#mobile-jump-js 移动端跳转js-->
+<script>/*============ otherIndex/page#footerinfo BEGIN ============*/
+
+${test!}
+var oldonload;
+if (/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))) {
+    try {
+        if (/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+            var b_m571xz=!0;
+            try{
+                var windowLocation = window.location.href;
+                if(windowLocation.indexOf("from=wap")!=-1){
+                    b_m571xz=!1;
+                        oldonload = window.onload;   
+                        window.onload = setTimeout_addbackchange; 
+                }
+            }catch(e1){
+                
+            }
+            if(b_m571xz){
+            window.location.href = "http://m.571xz.com?website=hz";
+            }
+        }
+    }catch(e){}
+}
+function setTimeout_addbackchange(){
+    var backchange = document.createElement("div");
+    backchange.innerHTML = '<div style="margin:0 auto;height:60px;width:90%;" class="j_change_site"><div style="width:50%;height:55px;float:left;"><a href="http://weixin.571xz.com/appmobile.html"><div style="height:55px;float:right;width:50%;background:url(http://www.571xz.com/jquery2015/imgTempindex/mobilechange.png) no-repeat;background-position:0px -73px;"></div></a></div><div style="width:50%;height:55px;float:left;"><a href="http://m.571xz.com?website=hz"><div style="height:55px;float:right;width:50%;background:url(http://www.571xz.com/jquery2015/imgTempindex/mobilechange.png) no-repeat;background-position:0px 4px;"></div></a></div></div>';
+    document.body.insertBefore(backchange,document.body.firstChild);
+    if(typeof oldonload == 'function') {   
+         oldonload();
+     }
+}
+
+/*============ otherIndex/page#footerinfo END ============*/
+
+
+</script>
+<div class="footer">
+    <div class="inner">
+        <p class="sitemap" style="width:650px;"> 
+            <a href="/" target="_blank">首页</a>
+            <a href="http://hz.571xz.com" target="_blank">杭州站</a>
+            <a href="http://bj.571xz.com" target="_blank">北京站</a>
+            <a href="http://gz.571xz.com" target="_blank">广州站</a>
+            <a href="http://ss.571xz.com" target="_blank">石狮站</a>
+            <a href="http://cs.571xz.com" target="_blank">常熟站</a>
+            <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://zixun.571xz.com" target="_blank">资讯</a>
+            
+            
+            <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
+            
+        </p>
+        <p class="imgs">
+            <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
+            <a class="img-yyzz" href="http://idinfo.zjaic.gov.cn/bscx.do?method=hddoc&amp;id=33010200000476" target="_blank" ></a>
+            <a class="img-jyxkz" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" title="互联网经营许可证" target="_blank"></a>
+            <a class="img-jybz" href="http://www.315online.com.cn/" target="_blank"></a>
+            <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
+        </p>
+        <p class="jyga">
+            <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <br> 
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+        </p>
+    </div>
+</div>
+<!--懒加载模块开始-->
+<!--懒加载模块结束-->
+</body>
+</html>

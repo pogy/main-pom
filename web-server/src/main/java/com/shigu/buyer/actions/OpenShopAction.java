@@ -58,13 +58,14 @@ public class OpenShopAction {
      * @return
      */
     @RequestMapping("ruzhu")
-    public String ruzhu(HttpSession session) throws Main4Exception {
+    public String ruzhu(HttpSession session, HttpServletRequest request) throws Main4Exception {
         //如果已经有店,不能重复申请
         Subject currentUser = SecurityUtils.getSubject();
         if(currentUser.hasRole(RoleEnum.STORE.getValue())){
 //            throw new Main4Exception("本账号下已经有");
             return "redirect:/seller/index.htm";
         }
+        request.setAttribute("mainbusList",xzSdkClient.getXzMainBus().split(","));
         return "ruzhu/ruzhu";
     }
 

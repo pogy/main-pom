@@ -1,5 +1,6 @@
 package com.shigu.main4.cdn.actions;
 
+import com.alibaba.fastjson.JSON;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.bo.ShopCdnBO;
@@ -8,13 +9,10 @@ import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.services.OldStoreNumShowService;
-import com.shigu.main4.cdn.vo.IndexPageVO;
-import com.shigu.main4.cdn.vo.ItemShowVO;
-import com.shigu.main4.cdn.vo.LoveGoodsList;
-import com.shigu.main4.cdn.vo.ShopCommentVO;
-import com.shigu.main4.cdn.vo.ShopShowVO;
+import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.item.enums.SearchCategory;
@@ -33,6 +31,9 @@ import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.ShopBaseForCdn;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.search.bo.NewGoodsBO;
+import com.shigu.search.services.TodayNewGoodsService;
+import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.ContainerVO;
 import com.shigu.session.main4.PersonalSession;
@@ -41,6 +42,7 @@ import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
+import com.shigu.spread.vo.ItemSpreadVO;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
@@ -53,6 +55,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
@@ -63,10 +66,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 商品页面显示
@@ -117,11 +117,14 @@ public class CdnAction {
     @Autowired
     XzSdkClient xzSdkClient;
 
+    @Autowired
+    TodayNewGoodsService todayNewGoodsService;
+
     /**
      * 杭州首页动态页面
      * @return
      */
-//    @RequestMapping("hzindex4show")
+    //@RequestMapping("hzindex4show")
     public String hzindex4show(HttpServletRequest request,Model model){
         Cookie[] cookies=request.getCookies();
         String manOrWoman="Man";
@@ -158,7 +161,7 @@ public class CdnAction {
         //热卖
         model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_RM:SpreadEnum.MAN_RM)));
-        //风格商品
+        // 风格商品
         model.addAttribute("styleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_FG:SpreadEnum.MAN_FG)));
         //元素商品
@@ -186,13 +189,122 @@ public class CdnAction {
             loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
                     SpreadEnum.MAN_XHNZ)));
         }
-
         loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
         model.addAttribute("loveGoodslist",loves);
         model.addAttribute("webSite",webSite);
         return "index/hz"+manOrWoman;
     }
+
+    /**
+     * 濮院站首页
+     * @return
+     */
+    @RequestMapping(value = "jxindex4show" , method = RequestMethod.GET)
+    public String jxindex4show(HttpServletRequest request,Model model){
+        String website = "jx";
+
+        // 商户总数
+        int shopsNum = indexShowService.getShopAllCount(website);
+        // 商品总数
+        ObjFromCache<List<Integer>> goodsNum = indexShowService.selNumList();
+        if(goodsNum != null){
+            List<Integer> goodsNumList = (List<Integer>)goodsNum.selObj();
+            StringBuffer stringBuffer = new StringBuffer();
+            if(goodsNumList!=null){
+                for(Integer integer : goodsNumList){
+                    stringBuffer.append(integer);
+                }
+                model.addAttribute("hasGoods",stringBuffer.toString());
+            }
+        }
+
+        // 今日新品
+        NewGoodsBO newGoodsBO = new NewGoodsBO();
+        newGoodsBO.setWebSite("jx");
+        newGoodsBO.setRows(15);
+        ShiguPager<GoodsInSearch> newGoodsPager = todayNewGoodsService.selGoodsNew(newGoodsBO);
+
+        List<IndexGoodsVo> indexNewGoodsVoList = new ArrayList<IndexGoodsVo>();
+        if(newGoodsPager != null && newGoodsPager.getContent() != null){
+            for(GoodsInSearch goodsInSearch : newGoodsPager.getContent()){
+                IndexGoodsVo indexGoodsVo = BeanMapper.map(goodsInSearch, IndexGoodsVo.class);
+                indexGoodsVo.setStoreId(goodsInSearch.getStoreid().toString());
+                if(!StringUtils.isEmpty(goodsInSearch.getFullStoreName())){
+                    int kgIndex = goodsInSearch.getFullStoreName().indexOf(" ");
+                    if(kgIndex != -1){
+                        String marketName = goodsInSearch.getFullStoreName().substring(0,kgIndex);
+                        String storeNum = goodsInSearch.getFullStoreName().substring(kgIndex + 1,goodsInSearch.getFullStoreName().length());
+                        indexGoodsVo.setParentMarketName(marketName);
+                        indexGoodsVo.setStoreNum(storeNum);
+                    }
+                }
+                indexNewGoodsVoList.add(indexGoodsVo);
+            }
+        }
+
+        // 男装数据
+        Object menSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_MENS));
+        // 男鞋数据
+        Object menShoesSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_MENSHOES));
+        // 童装数据
+        Object chilrenSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_CHILDRENCOLTHING));
+        // 女装数据
+        Object womanSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_WOMAN));
+
+        List<IndexGoodsVo> menSpreadList = changeGoods((List<ItemSpreadVO>)menSpread);
+        List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>)menShoesSpread);
+        List<IndexGoodsVo> chilrenSpreadList = changeGoods((List<ItemSpreadVO>)chilrenSpread);
+        List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>)womanSpread);
+        if(menShoesSpreadList == null){
+            menShoesSpreadList = Collections.emptyList();
+        }
+        if(chilrenSpreadList == null){
+            chilrenSpreadList = Collections.emptyList();
+        }
+        if(womanSpreadList == null){
+            womanSpreadList = Collections.emptyList();
+        }
+        if(menSpreadList == null){
+            menSpreadList = Collections.emptyList();
+        }
+
+        //全站公告
+        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.JX_QZGG)));
+        //大图
+        model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
+                SpreadEnum.JX_SPREAD_INDEX_DT)));
+        //轮播下方小图
+        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
+                SpreadEnum.JX_SPREAD_INDEX_XT)));
+
+        model.addAttribute("hasStore", shopsNum);
+        model.addAttribute("webSite", website);
+        model.addAttribute("list_newGoods", JSON.toJSONString(indexNewGoodsVoList));
+        model.addAttribute("nzgoods", JSON.toJSONString(menSpreadList));
+        model.addAttribute("xiebaogoods", JSON.toJSONString(menShoesSpreadList));
+        model.addAttribute("list_childGoods", JSON.toJSONString(chilrenSpreadList));
+        model.addAttribute("nvzgoods", JSON.toJSONString(womanSpreadList));
+        return "index/py";
+    }
+
+    /**
+     * 数据转化
+     * @return
+     */
+    public List<IndexGoodsVo> changeGoods(List<ItemSpreadVO> spreadVOList){
+        if(spreadVOList == null || spreadVOList.size() == 0){
+            return null;
+        }
+        List<IndexGoodsVo> indexGoodsVoList = new ArrayList<IndexGoodsVo>();
+        for(ItemSpreadVO itemSpreadVO : spreadVOList){
+            IndexGoodsVo indexGoodsVo = BeanMapper.map(itemSpreadVO, IndexGoodsVo.class);
+            indexGoodsVo.setParentMarketName(itemSpreadVO.getMarketText());
+            indexGoodsVoList.add(indexGoodsVo);
+        }
+        return indexGoodsVoList;
+    }
+
 
     /**
      * 创建缓存
@@ -453,15 +565,15 @@ public class CdnAction {
         //如果是仓库
         if(bo.getTimeflag()!=null&&bo.getTimeflag()==4){
             Calendar cal=Calendar.getInstance();
-            if(bo.getOption()!=null&&bo.getOption().equals("month")){//一个月内
-                cal.add(Calendar.MONTH,-1);
-            }else if(bo.getOption()!=null&&bo.getOption().equals("week")){//一周内
-                cal.add(Calendar.WEEK_OF_MONTH,-1);
-            }else if(bo.getOption()!=null&&bo.getOption().equals("day")){//一天内
-                cal.add(Calendar.DATE,-1);
-            }else{//默认1年内的下架
-                cal.add(Calendar.YEAR,-1);
-            }
+                if(bo.getOption()!=null&&bo.getOption().equals("month")){//一个月内
+                    cal.add(Calendar.MONTH,-1);
+                }else if(bo.getOption()!=null&&bo.getOption().equals("week")){//一周内
+                    cal.add(Calendar.WEEK_OF_MONTH,-1);
+                }else if(bo.getOption()!=null&&bo.getOption().equals("day")){//一天内
+                    cal.add(Calendar.DATE,-1);
+                }else{//默认1年内的下架
+                    cal.add(Calendar.YEAR,-1);
+                }
             Date  dateFrom=cal.getTime();
             ShiguPager<ItemShowBlock> pager=shopForCdnService.searchItemInstock(dateFrom,new Date(),bo.getId(),
                     bo.getPageNo(),bo.getPageSize());

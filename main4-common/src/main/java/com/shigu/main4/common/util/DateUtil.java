@@ -726,4 +726,26 @@ public static ArrayList getWeekListByMonth(int year, int month) {
        Timestamp timeStamp=new Timestamp(date.getTime());
        return String.valueOf(timeStamp.getTime());
    }
+
+    /**
+     * 两个时间相比比较相差的天数
+     * @param fDate
+     * @param oDate
+     * @return
+     */
+    public static int daysOfTwo(Date fDate, Date oDate) {
+
+        Calendar aCalendar = Calendar.getInstance();
+
+        aCalendar.setTime(fDate);
+
+        int day1 = aCalendar.get(Calendar.DAY_OF_YEAR);
+
+        aCalendar.setTime(oDate);
+
+        int day2 = aCalendar.get(Calendar.DAY_OF_YEAR);
+
+        return day2 - day1;
+
+    }
 }

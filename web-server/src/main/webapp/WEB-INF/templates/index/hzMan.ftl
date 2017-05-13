@@ -7,7 +7,7 @@
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1493779628434" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1494223207763" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
 <script>/*============ indexV4/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1493779628434"></script>
+    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1494223207763"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -44,7 +44,7 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
                         <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>

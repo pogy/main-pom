@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ActiveDrawRecordMapper" >
+
+	<select	id="selDrawRecordList" resultType="com.opentae.data.mall.beans.ActiveDrawRecord">
+		SELECT
+			r.*, u.user_nick,u.login_phone
+		FROM
+			active_draw_record r,
+			member_user u
+		WHERE
+			r.user_id = u.user_id
+		<if test="pemId!=null">
+			AND r.pem_id = #{pemId}
+		</if>
+		<if test="userId!=null">
+			AND r.user_id = #{userId}
+		</if>
+		<if test="ward!=null">
+			AND r.ward = #{ward}
+		</if>
+		<if test="type!=null and type == 'ben'">
+			AND r.ward != 'A1' AND r.ward != 'B1'
+			AND r.draw_status = 3
+			ORDER BY r.create_time ASC
+			LIMIT 80
+		</if>
+	</select>
+
+
+</mapper>
