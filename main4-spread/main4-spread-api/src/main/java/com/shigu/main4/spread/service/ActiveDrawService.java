@@ -36,6 +36,16 @@ public interface ActiveDrawService {
     public List<ActiveDrawPemVo> selDrawPemList();
 
     /**
+     * 活动抽奖商品数据
+     * @param pemId
+     * @param type
+     * @param size
+     * @param enabled
+     * @return
+     */
+    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled);
+
+    /**
      * 排序交换
      * @param type 1 上 2 下
      * @param drawGoodsId 主键ID
@@ -70,7 +80,7 @@ public interface ActiveDrawService {
      * 修改店铺
      * @param drawShopVo
      */
-    public void changteShop(ActiveDrawShopVo drawShopVo);
+    public void changeShop(ActiveDrawShopVo drawShopVo);
 
     /**
      * 好店修改位置
