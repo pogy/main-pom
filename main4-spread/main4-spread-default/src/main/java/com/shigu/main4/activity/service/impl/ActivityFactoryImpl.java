@@ -52,6 +52,10 @@ public class ActivityFactoryImpl implements ActivityFactory {
 
     @Override
     public ActivityTerm addAndGetTerm(ActivityTermVO vo) throws ActivityException {
+        if(vo.getStartTime().getTime()<System.currentTimeMillis()||
+                vo.getEndTime().getTime()<System.currentTimeMillis()){
+            throw new ActivityException("新建排期时间不能小于当前时间");
+        }
         //如果是未来期,数据中已经存在未来期的情况下,异常
         if(vo.getStartTime().getTime()>System.currentTimeMillis()){
             SpreadTermExample example=new SpreadTermExample();
@@ -194,8 +198,15 @@ public class ActivityFactoryImpl implements ActivityFactory {
             public <T extends ActivityVO> List<T> selActivitys() {
                 SpreadActivityExample example=new SpreadActivityExample();
                 example.createCriteria().andTermIdEqualTo(this.getTermId());
+                example.setOrderByClause("sort asc");
                 List<SpreadActivity> activities=spreadActivityMapper.selectByExample(example);
-                return (List<T>) BeanMapper.mapList(activities,this.getActivityType().getActivityVoClass());
+                List<T> result=new ArrayList<>();
+                for(SpreadActivity activity:activities){
+                    T vo= (T) JSON.parseObject(activity.getContext(),this.getActivityType().getActivityVoClass());
+                    BeanMapper.map(activity,vo);
+                    result.add(vo);
+                }
+                return result;
             }
 
             @Override

@@ -59,6 +59,12 @@ public class ActivityFactoryTest {
     @Autowired
     ActivityDubboService activityDubboService;
 
+    @Test
+    public void selActivitysTest(){
+        List<GoatActivityVO> goats=activityFactory.selTermById(62L).selActivitys();
+        System.out.println(goats);
+    }
+
 //    @Test
 //    public void testId(){
 //        ActivityTermVO atv=activityDubboService.selByTermId(50L);
