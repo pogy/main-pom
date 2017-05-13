@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网拥有丰富的线下服装批发进货渠道，四季星座、置地国际、电商基地、钱塘大厦、保太和、星座女装、新杭派、九天女装、意法服饰等杭州四季青实体批发市场都已入驻，实体批发档口高达15000多家，为全国淘宝网店代理商提供一手货源。同时支持一件代发，一键上传到淘宝、到阿里、到微信，数据包下载，无理由退换货服务。">
     
-    <link href="http://style.571xz.com/searchV5/css/newStyleHd.css?t=1494574230282" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/newStyleHd.css?t=1494653976608" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/newStyleHd.js?t=1494574230282"></script>
+    <script src="http://style.571xz.com/searchV5/js/newStyleHd.js?t=1494653976608"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -189,7 +189,7 @@ var webSite = '${webSite!}';
 <div class="headerV1">
     <div class="layout">
         <div class="logoLeft">
-            <a href="${main_host!}">
+            <a href="<#if webSite == 'jx'>http://jx.571xz.com<#else>${main_host!}</#if>">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
             </a>
             <em></em>
@@ -235,7 +235,11 @@ var webSite = '${webSite!}';
     <div class="layout navCon">
         <div class="navList">
             <ul>
+                <#if webSite == 'jx'>
+                <li class="first"><a href="http://jx.571xz.com" target="_blank">首页</a></li>
+                <#else>
                 <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
+                </#if>
                 <#if webSite != 'jx'>
                 <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 <#else>
@@ -268,11 +272,21 @@ var webSite = '${webSite!}';
         <h3>获奖名单<span class="abortDate">（截止xx月xx日）</span>:</h3>
         <div class="userName">
             <ul>
-                <#list awardUsers as user>
+                <#list awardList as user>
                 <li>
                     <img src='http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=${user.userNick!}&width=80&height=80&type=sns' alt />
-                    <span>${user.userNick!}</span>
-                    <span>（${user.prizeText!}）</span>
+                    <span>${user.hideUserNick!}</span>
+                    <#if user.pemId == 2 && user.ward == 'A2'>
+                    <span>（小米充电宝一个）</span>
+                    <#elseif user.pemId == 2 && user.ward == 'A3'>
+                    <span>（小牛电动车一台）</span>
+                    <#elseif user.pemId == 3 && user.ward == 'A2'>
+                    <span>（机械键盘或鼠标一个）</span>
+                    <#elseif user.pemId == 3 && user.ward == 'A3'>
+                    <span>（二合一笔记本一台）</span>
+                    <#elseif user.pemId == 3 && user.ward == 'A4'>
+                    <span>（外星人台式机一台）</span>
+                    </#if>
                 </li>
                 </#list>
             </ul>
@@ -286,95 +300,7 @@ var webSite = '${webSite!}';
             <div class="awardCon clearfix">
                 <div class="awardInline">
                     <ul>
-                        <#list awardList as awardCon>
-                            <#if awardCon.id == '1'>
-                                <#list awardCon.awards as award>
-                                    <#if award_index == 0>
-                                    <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                        <div class="imgBox">
-                                            <i class="water"></i>
-                                        </div>
-                                        <div class="adStatus"></div>
-                                        <div class="awardDemand">上传3件</div>
-                                        
-                                        <div class="awardStatus">
-                                            <#if award.status == '2'>
-                                            <p class="ylq"><i></i>已领取奖品</p>
-                                            <#elseif award.status == '1' && award.exCode != ''>
-                                            <p class="pickCodeHideBox">领取码：<span class="pickCode">领取码</span></p>
-                                            <#elseif award.isSatisfy == '2'>
-                                            <p><em class="noFinish">未完成</em></p>
-                                            </#if>
-                                        </div>
-                                    </li>
-                                
-                                    <#elseif award_index == 1>
-                                    <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                        <div class="imgBox">
-                                            <i class="cola"></i>
-                                        </div>
-                                        <div class="adStatus"></div>
-                                        <div class="awardDemand">上传5件</div>
-                                        <div class="awardStatus">
-                                            <#if award.status == '2'>
-                                            <p class="ylq"><i></i>已领取奖品</p>
-                                            <#elseif award.status == '1' && award.exCode != ''>
-                                            <p class="pickCodeHideBox">领取码：<span class="pickCode">领取码</span></p>
-                                            <#elseif award.isSatisfy == '1' && award.exCode == ''>
-                                            <p class="render">等待抽奖中</p>
-                                            <#elseif award.isAward == '2'>
-                                            <p class="render">未中奖</p>
-                                            <#elseif award.isSatisfy == '2'>
-                                            <p><em class="noFinish">未完成</em></p>
-                                            </#if>
-                                        </div>
-                                    </li>
-                                    <#elseif award_index == 2>
-                                    <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                        <div class="imgBox">
-                                            <i class="redBull"></i>
-                                        </div>
-                                        <div class="adStatus"></div>
-                                        <div class="awardDemand">上传8件</div>
-                                        <div class="awardStatus ">
-                                            <#if award.status == '2'>
-                                            <p class="ylq"><i></i>已领取奖品</p>
-                                            <#elseif award.status == '1' && award.exCode != ''>
-                                            <p class="pickCodeHideBox">领取码：<span class="pickCode">领取码</span></p>
-                                            <#elseif award.isSatisfy == '1' && award.exCode == ''>
-                                            <p class="render">等待抽奖中</p>
-                                            <#elseif award.isAward == '2'>
-                                            <p class="render">未中奖</p>
-                                            <#elseif award.isSatisfy == '2'>
-                                            <p><em class="noFinish">未完成</em></p>
-                                            </#if>
-                                        </div>
-                                    </li>
-                                    <#elseif award_index == 3>
-                                    <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                        <div class="imgBox">
-                                            <i class="phone"></i>
-                                        </div>
-                                        <div class="adStatus"></div>
-                                        <div class="awardDemand">上传10件</div>
-                                        <div class="awardStatus">
-                                            <#if award.status == '2'>
-                                            <p class="ylq"><i></i>已领取奖品</p>
-                                            <#elseif award.status == '1' && award.exCode != ''>
-                                            <p class="pickCodeHideBox">领取码：<span class="pickCode">领取码</span></p>
-                                            <#elseif award.isSatisfy == '1' && award.exCode == ''>
-                                            <p class="render">等待抽奖中</p>
-                                            <#elseif award.isAward == '2'>
-                                            <p class="render">未中奖</p>
-                                            <#elseif award.isSatisfy == '2'>
-                                            <p><em class="noFinish">未完成</em></p>
-                                            </#if>
-                                        </div>
-                                    </li>
-                                    </#if>
-                                </#list>
-                            </#if>
-                        </#list>
+                        
                     </ul>
                 </div>
             </div>
@@ -385,86 +311,87 @@ var webSite = '${webSite!}';
             <div class="awardCon clearfix">
                 <div class="awardInline">
                     <ul>
-                        <#list awardList as awardCon>
-                            <#if awardCon.id == '1'>
-                            <#list awardCon.lastAwards as award>
-                                <#if award_index == 0>
-                                <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                    <div class="imgBox">
-                                        <i class="water"></i>
-                                    </div>
-                                    
-                                    <div class="awardStatus">
-                                        <#if award.status == '2'>
-                                        <p class="ylq"><i></i>已领取奖品</p>
-                                        <#elseif award.status == '1' && award.exCode != ''>
-                                        <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.exCode!}</span></p>
-                                        <#elseif award.isSatisfy == '2'>
-                                        <p><em class="noFinish">未完成</em></p>
-                                        </#if>
-                                    </div>
-                                </li>
+                        <#list lastUserAward as award>
                             
-                                <#elseif award_index == 1>
-                                <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                    <div class="imgBox">
-                                        <i class="cola"></i>
-                                    </div>
-                                    <div class="awardStatus">
-                                        <#if award.status == '2'>
-                                        <p class="ylq"><i></i>已领取奖品</p>
-                                        <#elseif award.status == '1' && award.exCode != ''>
-                                        <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.exCode!}</span></p>
-                                        <#elseif award.isSatisfy == '1' && award.exCode == ''>
-                                        <p class="render">等待抽奖中</p>
-                                        <#elseif award.isAward == '2'>
-                                        <p class="render">未中奖</p>
-                                        <#elseif award.isSatisfy == '2'>
-                                        <p><em class="noFinish">未完成</em></p>
-                                        </#if>
-                                    </div>
-                                </li>
-                                <#elseif award_index == 2>
-                                <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                    <div class="imgBox">
-                                        <i class="redBull"></i>
-                                    </div>
-                                    <div class="awardStatus ">
-                                        <#if award.status == '2'>
-                                        <p class="ylq"><i></i>已领取奖品</p>
-                                        <#elseif award.status == '1' && award.exCode != ''>
-                                        <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.exCode!}</span></p>
-                                        <#elseif award.isSatisfy == '1' && award.exCode == ''>
-                                        <p class="render">等待抽奖中</p>
-                                        <#elseif award.isAward == '2'>
-                                        <p class="render">未中奖</p>
-                                        <#elseif award.isSatisfy == '2'>
-                                        <p><em class="noFinish">未完成</em></p>
-                                        </#if>
-                                    </div>
-                                </li>
-                                <#elseif award_index == 3>
-                                <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                    <div class="imgBox">
-                                        <i class="phone"></i>
-                                    </div>
-                                    <div class="awardStatus">
-                                        <#if award.status == '2'>
-                                        <p class="ylq"><i></i>已领取奖品</p>
-                                        <#elseif award.status == '1' && award.exCode != ''>
-                                        <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.exCode!}</span></p>
-                                        <#elseif award.isSatisfy == '1' && award.exCode == ''>
-                                        <p class="render">等待抽奖中</p>
-                                        <#elseif award.isAward == '2'>
-                                        <p class="render">未中奖</p>
-                                        <#elseif award.isSatisfy == '2'>
-                                        <p><em class="noFinish">未完成</em></p>
-                                        </#if>
-                                    </div>
-                                </li>
-                                </#if>
-                            </#list>
-                            </#if>
+                            <li <#if award.ward == 'A1'>class="finish"</#if>>
+                                <div class="imgBox">
+                                    <i class="water"></i>
+                                </div>
+                                <div class="adStatus"></div>
+                                <div class="awardDemand">上传3件</div>
+                                
+                                <div class="awardStatus">
+                                    <#if award.receivesYes == true>
+                                    <p class="ylq"><i></i>已领取奖品</p>
+                                    <#elseif award.drawStatus == 1>
+                                    <p class="render">等待抽奖中</p>
+                                    <#elseif award.drawStatus == 2>
+                                    <p class="render">未中奖</p>
+                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
+                                    </#if>
+                                    <p><em class="noFinish">未完成</em></p>
+                                </div>
+                            </li>
+                            
+                            <li <#if award.ward == 'A2'>class="finish"</#if>>
+                                <div class="imgBox">
+                                    <i class="cola"></i>
+                                </div>
+                                <div class="adStatus"></div>
+                                <div class="awardDemand">上传5件</div>
+                                <div class="awardStatus">
+                                    <#if award.receivesYes == true>
+                                    <p class="ylq"><i></i>已领取奖品</p>
+                                    <#elseif award.drawStatus == 1>
+                                    <p class="render">等待抽奖中</p>
+                                    <#elseif award.drawStatus == 2>
+                                    <p class="render">未中奖</p>
+                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
+                                    </#if>
+                                    <p><em class="noFinish">未完成</em></p>
+                                </div>
+                            </li>
+                            
+                            <li <#if award.ward == 'A3'>class="finish"</#if>>
+                                <div class="imgBox">
+                                    <i class="redBull"></i>
+                                </div>
+                                <div class="adStatus"></div>
+                                <div class="awardDemand">上传8件</div>
+                                <div class="awardStatus ">
+                                    <#if award.receivesYes == true>
+                                    <p class="ylq"><i></i>已领取奖品</p>
+                                    <#elseif award.drawStatus == 1>
+                                    <p class="render">等待抽奖中</p>
+                                    <#elseif award.drawStatus == 2>
+                                    <p class="render">未中奖</p>
+                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
+                                    </#if>
+                                    <p><em class="noFinish">未完成</em></p>
+                                </div>
+                            </li>
+                            <li <#if award.ward == 'A4'>class="finish"</#if>>
+                                <div class="imgBox">
+                                    <i class="phone"></i>
+                                </div>
+                                <div class="adStatus"></div>
+                                <div class="awardDemand">上传10件</div>
+                                <div class="awardStatus">
+                                    <#if award.receivesYes == true>
+                                    <p class="ylq"><i></i>已领取奖品</p>
+                                    <#elseif award.drawStatus == 1>
+                                    <p class="render">等待抽奖中</p>
+                                    <#elseif award.drawStatus == 2>
+                                    <p class="render">未中奖</p>
+                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
+                                    </#if>
+                                    <p><em class="noFinish">未完成</em></p>
+                                </div>
+                            </li>
                         </#list>
                     </ul>
                 </div>
@@ -530,53 +457,7 @@ var webSite = '${webSite!}';
             <div class="awardCon clearfix">
                 <div class="awardInline">
                     <ul>
-                        <#list awardList as awardCon>
-                            <#if awardCon.id == '2'>
-                                <#list awardCon.awards as award>
-                                    <#if award_index == 0>
-                                    <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                        <div class="imgBox">
-                                            <i class="water"></i>
-                                        </div>
-                                        <div class="adStatus"></div>
-                                        <div class="awardDemand">上传3件</div>
-                                        
-                                        <div class="awardStatus">
-                                            <#if award.status == '2'>
-                                            <p class="ylq"><i></i>已领取奖品</p>
-                                            <#elseif award.status == '1' && award.exCode != ''>
-                                            <p class="pickCodeHideBox">领取码：<span class="pickCode">领取码</span></p>
-                                            <#elseif award.isSatisfy == '2'>
-                                            <p><em class="noFinish">未完成</em></p>
-                                            </#if>
-                                        </div>
-                                    </li>
-                                
-                                    <#elseif award_index == 1>
-                                    <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                        <div class="imgBox">
-                                            <i class="cola"></i>
-                                        </div>
-                                        <div class="adStatus"></div>
-                                        <div class="awardDemand">上传5件</div>
-                                        <div class="awardStatus">
-                                            <#if award.status == '2'>
-                                            <p class="ylq"><i></i>已领取奖品</p>
-                                            <#elseif award.status == '1' && award.exCode != ''>
-                                            <p class="pickCodeHideBox">领取码：<span class="pickCode">领取码</span></p>
-                                            <#elseif award.isSatisfy == '1' && award.exCode == ''>
-                                            <p class="render">等待抽奖中</p>
-                                            <#elseif award.isAward == '2'>
-                                            <p class="render">未中奖</p>
-                                            <#elseif award.isSatisfy == '2'>
-                                            <p><em class="noFinish">未完成</em></p>
-                                            </#if>
-                                        </div>
-                                    </li>
-                                    </#if>
-                                </#list>
-                            </#if>
-                        </#list>
+                        
                     </ul>
                 </div>
             </div>
@@ -587,48 +468,47 @@ var webSite = '${webSite!}';
             <div class="awardCon clearfix">
                 <div class="awardInline">
                     <ul>
-                        <#list awardList as awardCon>
-                            <#if awardCon.id == '2'>
-                            <#list awardCon.lastAwards as award>
-                                <#if award_index == 0>
-                                <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                    <div class="imgBox">
-                                        <i class="water"></i>
-                                    </div>
-                                    
-                                    <div class="awardStatus">
-                                        <#if award.status == '2'>
-                                        <p class="ylq"><i></i>已领取奖品</p>
-                                        <#elseif award.status == '1' && award.exCode != ''>
-                                        <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.exCode!}</span></p>
-                                        <#elseif award.isSatisfy == '2'>
-                                        <p><em class="noFinish">未完成</em></p>
-                                        </#if>
-                                    </div>
-                                </li>
+                        <#list lastUserAward as award>
+                            <li <#if award.ward == 'B1'>class="finish"</#if>>
+                                <div class="imgBox">
+                                    <i class="water"></i>
+                                </div>
+                                <div class="adStatus"></div>
+                                <div class="awardDemand">上传3件</div>
+                                
+                                <div class="awardStatus">
+                                    <#if award.receivesYes == true>
+                                    <p class="ylq"><i></i>已领取奖品</p>
+                                    <#elseif award.drawStatus == 1>
+                                    <p class="render">等待抽奖中</p>
+                                    <#elseif award.drawStatus == 2>
+                                    <p class="render">未中奖</p>
+                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
+                                    </#if>
+                                    <p><em class="noFinish">未完成</em></p>
+                                </div>
+                            </li>
                             
-                                <#elseif award_index == 1>
-                                <li <#if award.isSatisfy == '1'>class="finish"</#if>>
-                                    <div class="imgBox">
-                                        <i class="cola"></i>
-                                    </div>
-                                    <div class="awardStatus">
-                                        <#if award.status == '2'>
-                                        <p class="ylq"><i></i>已领取奖品</p>
-                                        <#elseif award.status == '1' && award.exCode != ''>
-                                        <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.exCode!}</span></p>
-                                        <#elseif award.isSatisfy == '1' && award.exCode == ''>
-                                        <p class="render">等待抽奖中</p>
-                                        <#elseif award.isAward == '2'>
-                                        <p class="render">未中奖</p>
-                                        <#elseif award.isSatisfy == '2'>
-                                        <p><em class="noFinish">未完成</em></p>
-                                        </#if>
-                                    </div>
-                                </li>
-                                </#if>
-                            </#list>
-                            </#if>
+                            <li <#if award.ward == 'B2'>class="finish"</#if>>
+                                <div class="imgBox">
+                                    <i class="cola"></i>
+                                </div>
+                                <div class="adStatus"></div>
+                                <div class="awardDemand">上传5件</div>
+                                <div class="awardStatus">
+                                    <#if award.receivesYes == true>
+                                    <p class="ylq"><i></i>已领取奖品</p>
+                                    <#elseif award.drawStatus == 1>
+                                    <p class="render">等待抽奖中</p>
+                                    <#elseif award.drawStatus == 2>
+                                    <p class="render">未中奖</p>
+                                    <#elseif award.drawStatus == 3 && award.drawCode != ''>
+                                    <p class="pickCodeHideBox">领取码：<span class="pickCode">${award.drawCode!}</span></p>
+                                    </#if>
+                                    <p><em class="noFinish">未完成</em></p>
+                                </div>
+                            </li>
                         </#list>
                     </ul>
                 </div>
