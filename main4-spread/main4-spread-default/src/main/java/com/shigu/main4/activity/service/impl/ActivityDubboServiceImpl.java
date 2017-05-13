@@ -3,6 +3,7 @@ package com.shigu.main4.activity.service.impl;
 import com.shigu.main4.activity.beans.ActivityEnlist;
 import com.shigu.main4.activity.beans.ActivityTerm;
 import com.shigu.main4.activity.beans.GoatActivity;
+import com.shigu.main4.activity.beans.LedActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.service.Activity;
@@ -69,7 +70,7 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
 
     @Override
     public GoatActivityWithEnlist selActivityEnlists(Long activityId, Integer hitType) throws ActivityException {
-        GoatActivity activity=activityFactory.selActivityById(activityId);
+        Activity activity=activityFactory.selActivityById(activityId);
         GoatActivityWithEnlist gawe=BeanMapper.map(activity,GoatActivityWithEnlist.class);
         gawe.setEnlists(activity.selEnlist(hitType));
         return gawe;
@@ -89,6 +90,12 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
     public void delActivity(Long termId, Long activityId) {
         ActivityTerm term=activityFactory.selTermById(termId);
         term.delActivity(activityId);
+    }
+
+    @Override
+    public void randomTen(Long activityId, Integer number) throws ActivityException {
+        LedActivity activity=activityFactory.selActivityById(activityId);
+        activity.randomHit(number);
     }
 
 }

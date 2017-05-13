@@ -42,4 +42,13 @@ public interface Activity {
      */
     List<ActivityEnlistVO> selEnlist(int hitType);
 
+    /**
+     * 是否参与
+     * @param userId
+     * @return
+     */
+    Boolean hasJoin(Long userId);
+
+    ActivityEnlistVO joinMsg(Long userId);
+
 }

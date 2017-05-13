@@ -228,7 +228,7 @@
         <h2>营销管理</h2>
         <ul>
             <li><a class="selected dtgg"  href="${main_host!}seller/dtggapply.htm?id=1001">广告派位</a></li> 
-            <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li> 
+            <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li>
         </ul> 
     </div>
     

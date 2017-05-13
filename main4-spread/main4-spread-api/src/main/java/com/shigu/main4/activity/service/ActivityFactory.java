@@ -30,6 +30,15 @@ public interface ActivityFactory {
      */
     ActivityTerm selTermByTime(ActivityType type, Date time);
 
+    ActivityTerm selNowFinishedTerm(ActivityType type, Date time);
+
+    /**
+     * 某一期后面一期
+     * @param termId
+     * @return
+     */
+    ActivityTerm selafterTermId(ActivityType type,Long termId);
+
     /**
      * 查排期中的
      * @param type

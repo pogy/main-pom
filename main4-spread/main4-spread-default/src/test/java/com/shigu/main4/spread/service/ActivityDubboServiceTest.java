@@ -1,5 +1,6 @@
 package com.shigu.main4.spread.service;
 
+import com.opentae.data.mall.interfaces.SpreadEnlistMapper;
 import com.shigu.main4.activity.service.ActivityDubboService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,5 +21,13 @@ public class ActivityDubboServiceTest {
     @Test
     public void selActivityInTermTest(){
         activityDubboService.selActivityInTerm(32L);
+    }
+
+    @Autowired
+    SpreadEnlistMapper spreadEnlistMapper;
+
+    @Test
+    public void test2(){
+        spreadEnlistMapper.selEgg("money",null,0,10);
     }
 }

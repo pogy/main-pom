@@ -35,4 +35,6 @@ public interface ActivityDubboService {
     void hitUnhit(Long enId,Boolean ishit) throws ActivityException;
 
     void delActivity(Long termId,Long activityId);
+
+    void randomTen(Long activityId,Integer number) throws ActivityException;
 }

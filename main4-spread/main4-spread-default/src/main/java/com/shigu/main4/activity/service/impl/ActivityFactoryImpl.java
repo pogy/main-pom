@@ -117,6 +117,34 @@ public class ActivityFactoryImpl implements ActivityFactory {
     }
 
     @Override
+    public ActivityTerm selNowFinishedTerm(ActivityType type, Date time) {
+        SpreadTermExample example = new SpreadTermExample();
+        example.createCriteria().andTypeEqualTo(type.ordinal()).andEndTimeLessThan(time);
+        example.setStartIndex(0);
+        example.setEndIndex(1);
+        example.setOrderByClause("end_time desc");
+        List<SpreadTerm> terms = spreadTermMapper.selectFieldsByConditionList(example, FieldUtil.codeFields("term_id"));
+        if (terms.size() > 0) {
+            return selTermById(terms.get(0).getTermId());
+        }
+        return null;
+    }
+
+    @Override
+    public ActivityTerm selafterTermId(ActivityType type,Long termId) {
+        SpreadTermExample example = new SpreadTermExample();
+        example.createCriteria().andTypeEqualTo(type.ordinal()).andTermIdGreaterThan(termId);
+        example.setStartIndex(0);
+        example.setEndIndex(1);
+        example.setOrderByClause("term_id asc");
+        List<SpreadTerm> terms = spreadTermMapper.selectFieldsByConditionList(example, FieldUtil.codeFields("term_id"));
+        if (terms.size() > 0) {
+            return selTermById(terms.get(0).getTermId());
+        }
+        return null;
+    }
+
+    @Override
     public ActivityTerm selTermInPaiqi(ActivityType type) {
         SpreadTermExample example = new SpreadTermExample();
         example.createCriteria().andTypeEqualTo(type.ordinal()).andStartTimeGreaterThan(new Date());
@@ -160,6 +188,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 activity.setTermId(this.getTermId());
                 SpreadActivity sactivity = BeanMapper.map(activity, SpreadActivity.class);
                 sactivity.setContext(JSON.toJSONString(activity));
+                sactivity.setType(this.getActivityType().ordinal());
                 if (sactivity.getActivityId() != null) {
                     spreadActivityMapper.updateByPrimaryKeySelective(sactivity);
                 }else{
@@ -276,12 +305,15 @@ public class ActivityFactoryImpl implements ActivityFactory {
                 if (number > count) {
                     throw new ActivityException(activityId + ":数量大于报名人数");
                 }
-                ce.andDrawEqualTo(1);
-                int dcount = spreadEnlistMapper.countByExample(seex);
-
-                if (dcount>=1) {
-                    throw new ActivityException(activityId + ":该活动已存在中签数据");
-                }
+                SpreadEnlist en=new SpreadEnlist();
+                en.setDraw(0);
+                spreadEnlistMapper.updateByExampleSelective(en,seex);
+//                ce.andDrawEqualTo(1);
+//                int dcount = spreadEnlistMapper.countByExample(seex);
+//
+//                if (dcount>=1) {
+//                    throw new ActivityException(activityId + ":该活动已存在中签数据");
+//                }
                 //随机选取元素。。
                 List<SpreadEnlist> ranList=spreadEnlistMapper.romSelectData(activityId,number);
                 List<ActivityEnlistVO> volist = new ArrayList<>();
@@ -306,6 +338,16 @@ public class ActivityFactoryImpl implements ActivityFactory {
             @Override
             public List<ActivityEnlistVO> selEnlist(int hitType) {
                 return selEnlistCommon(this.getActivityId(),hitType);
+            }
+
+            @Override
+            public Boolean hasJoin(Long userId) {
+                return hasJoinCommon(this.getActivityId(),userId);
+            }
+
+            @Override
+            public ActivityEnlistVO joinMsg(Long userId) {
+                return joinMsgCommon(this.getActivityId(),userId);
             }
 
         };
@@ -338,7 +380,38 @@ public class ActivityFactoryImpl implements ActivityFactory {
             public List<ActivityEnlistVO> selEnlist(int hitType) {
                 return selEnlistCommon(this.getActivityId(),hitType);
             }
+
+            @Override
+            public Boolean hasJoin(Long userId) {
+                return hasJoinCommon(this.getActivityId(),userId);
+            }
+
+            @Override
+            public ActivityEnlistVO joinMsg(Long userId) {
+                return joinMsgCommon(this.getActivityId(),userId);
+            }
         };
+    }
+
+    private ActivityEnlistVO joinMsgCommon(Long activityId,Long userId){
+        SpreadEnlistExample example=new SpreadEnlistExample();
+        example.createCriteria().andActivityIdEqualTo(activityId).andUserIdEqualTo(userId);
+        List<SpreadEnlist> enlists=spreadEnlistMapper.selectByExample(example);
+        if(enlists.size()==0){
+            return null;
+        }
+        return BeanMapper.map(enlists.get(0),ActivityEnlistVO.class);
+    }
+    /**
+     * 是否参与
+     * @param activityId
+     * @param userId
+     * @return
+     */
+    private Boolean hasJoinCommon(Long activityId,Long userId){
+        SpreadEnlistExample example=new SpreadEnlistExample();
+        example.createCriteria().andActivityIdEqualTo(activityId).andUserIdEqualTo(userId);
+        return spreadEnlistMapper.countByExample(example)>0;
     }
 
     /**
@@ -423,7 +496,9 @@ public class ActivityFactoryImpl implements ActivityFactory {
         if(en==null){
             throw new ActivityException(enlistId+" 报名信息不存在");
         }
-        return selEnlistByVo(BeanMapper.map(en,ActivityEnlistVO.class));
+        ActivityEnlistVO enlistVO=BeanMapper.map(en,ActivityEnlistVO.class);
+        enlistVO.setEnId(enlistId);
+        return selEnlistByVo(enlistVO);
     }
 
     @Override
