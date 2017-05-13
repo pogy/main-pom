@@ -132,6 +132,8 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                 activeDrawGoodsVo.setMarketName(shiguGoodsTiny.getParentMarketName());
                 activeDrawGoodsVo.setShopNum(shiguGoodsTiny.getStoreNum());
                 activeDrawGoodsVo.setPemId(pemId);
+                ESGoods esGoods = JSON.parseObject(hit.getSourceAsString(), ESGoods.class);
+                activeDrawGoodsVo.setIsOff(esGoods.getIs_off());
 
                 DecimalFormat df2=(DecimalFormat) DecimalFormat.getInstance();
                 df2.applyPattern("0.00");
@@ -396,8 +398,8 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         for (int i = 0; i < drawPitList.size(); i++) {
             ActiveDrawPit drawPit = drawPitList.get(i);
             Boolean panss = false;
-            for (int j = 0; j < newDrawShopVoList.size(); j++) {
-                ActiveDrawShopVo drawShopVo = newDrawShopVoList.get(j);
+            for (int j = 0; j < drawShopVoList.size(); j++) {
+                ActiveDrawShopVo drawShopVo = drawShopVoList.get(j);
                 if(drawShopVo.getPitId() != null && drawPit.getId().intValue() == drawShopVo.getPitId().intValue()){
                     drawShopVo.setNum(drawPit.getNum());
                     newDrawShopVoList.add(drawShopVo);

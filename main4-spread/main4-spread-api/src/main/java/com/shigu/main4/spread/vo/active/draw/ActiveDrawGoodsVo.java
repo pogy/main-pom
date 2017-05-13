@@ -39,6 +39,9 @@ public class ActiveDrawGoodsVo implements Serializable {
     /** 档口号 */
     private String shopNum;
 
+    /** 上下架 */
+    private Long isOff;
+
     /** 批发价 */
     private String piPriceString;
 
@@ -149,5 +152,13 @@ public class ActiveDrawGoodsVo implements Serializable {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public Long getIsOff() {
+        return isOff;
+    }
+
+    public void setIsOff(Long isOff) {
+        this.isOff = isOff;
     }
 }
