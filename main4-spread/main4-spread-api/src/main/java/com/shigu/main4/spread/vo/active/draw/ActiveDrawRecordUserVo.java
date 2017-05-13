@@ -35,6 +35,11 @@ public class ActiveDrawRecordUserVo implements Serializable {
     /** 用户隐藏昵称 */
     private String hideUserNick;
 
+    /** 上传数*/
+    private int uploadNum;
+
+    private String concatPhone;
+
     public Long getId() {
         return id;
     }
@@ -118,5 +123,21 @@ public class ActiveDrawRecordUserVo implements Serializable {
 
     public void setHideUserNick(String hideUserNick) {
         this.hideUserNick = hideUserNick;
+    }
+
+    public int getUploadNum() {
+        return uploadNum;
+    }
+
+    public void setUploadNum(int uploadNum) {
+        this.uploadNum = uploadNum;
+    }
+
+    public String getConcatPhone() {
+        return concatPhone;
+    }
+
+    public void setConcatPhone(String concatPhone) {
+        this.concatPhone = concatPhone;
     }
 }
