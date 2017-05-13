@@ -9,6 +9,9 @@ import com.opentae.data.mall.examples.ActiveDrawPemExample;
 import com.opentae.data.mall.examples.ActiveDrawShopExample;
 import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
+import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
@@ -41,7 +44,7 @@ import java.util.List;
  *
  */
 @Service
-public class ActiveDrawService {
+public class ActiveDrawServiceImpl implements ActiveDrawService{
 
     @Autowired
     private ActiveDrawPemMapper activeDrawPemMapper;
@@ -145,6 +148,80 @@ public class ActiveDrawService {
     }
 
     /**
+     * 获取当前正在进行的期次
+     * @return
+     */
+    @Override
+    public ActiveDrawPemVo selNowDrawPem() {
+        return selNowDrawPem(null);
+    }
+
+    /**
+     * 查询本期级以后的期次
+     * @return
+     */
+    @Override
+    public List<ActiveDrawPemVo> selDrawPemQueList() {
+        ActiveDrawPemExample activeDrawPemExample = new ActiveDrawPemExample();
+        activeDrawPemExample.createCriteria().andStartTimeGreaterThan(new Date());
+        activeDrawPemExample.setOrderByClause("start_time ASC");
+        activeDrawPemExample.setStartIndex(0);
+        activeDrawPemExample.setEndIndex(1);
+        List<ActiveDrawPem> activeDrawPemList = activeDrawPemMapper.selectByExample(activeDrawPemExample);
+        if(activeDrawPemList == null || activeDrawPemList.size() == 0){
+            return null;
+        }
+        List<ActiveDrawPemVo> drawPemVoList = BeanMapper.mapList(activeDrawPemList, ActiveDrawPemVo.class);
+        return drawPemVoList;
+    }
+
+    /**
+     * 查询所有期次
+     * @return
+     */
+    @Override
+    public List<ActiveDrawPemVo> selDrawPemList() {
+
+        return null;
+    }
+
+    /**
+     * 排序交换
+     * @param type 1 上 2 下
+     * @param drawGoodsId 主键ID
+     */
+    @Override
+    public void changeGoodsSort(int type, Long drawGoodsId) {
+        ActiveDrawGoods drawGoods = activeDrawGoodsMapper.selectByPrimaryKey(drawGoodsId);
+        ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
+        ActiveDrawGoodsExample.Criteria ctx = drawGoodsExample.createCriteria();
+        drawGoodsExample.setStartIndex(0);
+        drawGoodsExample.setEndIndex(1);
+        if(type == 1){
+            drawGoodsExample.setOrderByClause("sort desc");
+            ctx.andSortLessThan(drawGoods.getSort());
+        }
+        List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
+
+
+    }
+
+    @Override
+    public void delDrawGoods(Long drawGoodsId) {
+
+    }
+
+    @Override
+    public void changeDrawGoods(Long id, Long goodsId) {
+
+    }
+
+    @Override
+    public void addDrawGoods(ActiveDrawGoodsVo activeDrawGoodsVo) {
+
+    }
+
+    /**
      * 查询当前期次店铺
      * @param pemId
      * @return
@@ -191,6 +268,36 @@ public class ActiveDrawService {
             }
         }
         return drawShopVoList;
+    }
+
+    @Override
+    public void changteShop(ActiveDrawShopVo drawShopVo) {
+
+    }
+
+    @Override
+    public void changeShopSort(int type, Long drawShopId) {
+
+    }
+
+    @Override
+    public void addDrawShop(ActiveDrawShopVo drawShopVo) {
+
+    }
+
+    @Override
+    public void addNewDrawPem(ActiveDrawPemVo drawPemVo) {
+
+    }
+
+    @Override
+    public List<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward) {
+        return null;
+    }
+
+    @Override
+    public int selWardDrawYes(Long pemId, String ward) {
+        return 0;
     }
 
     /**
@@ -326,4 +433,76 @@ public class ActiveDrawService {
         activeDrawRecordMapper.insertSelective(activeDrawRecord);
     }
 
+    /**
+     * 查询抽奖信息
+     * @param drawCode
+     * @return
+     */
+    public ActiveDrawRecordUserVo selUserDrawList(String drawCode) throws Main4Exception {
+        ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
+        activeDrawRecord.setDrawCode(drawCode);
+        activeDrawRecord = activeDrawRecordMapper.selectOne(activeDrawRecord);
+        if(activeDrawRecord == null){
+            throw new Main4Exception("提货码错误");
+        }
+        if(activeDrawRecord.getDrawStatus() != 3){
+            throw new Main4Exception("未中奖");
+        }
+        if(activeDrawRecord.getReceivesYes()){
+            throw new Main4Exception("已经领取，不能重复领取");
+        }
+        // 本期
+        ActiveDrawPemVo drawPemVo = selNowDrawPem(null);
+        if(drawPemVo == null){
+            throw new Main4Exception("数据有误，活动从未开始");
+        }
+
+        ActiveDrawRecordUserVo drawRecordUserVo = BeanMapper.map(activeDrawRecord, ActiveDrawRecordUserVo.class);
+
+        // 查询本期
+        if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
+            return drawRecordUserVo;
+        }
+
+        drawPemVo = selNowDrawPem(drawPemVo.getStartTime());
+        // 查询上一期
+        if(drawPemVo == null){
+            throw new Main4Exception("数据有误");
+        }
+
+        int xcday = DateUtil.daysOfTwo(drawPemVo.getStartTime(), new Date());
+        if(xcday > 7){
+            throw new Main4Exception("已过期，无法领取");
+        }
+        if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
+            return drawRecordUserVo;
+        }
+        return null;
+    }
+
+    /**
+     * 领取用户奖品
+     * @param tqcode
+     * @param userId
+     */
+    public void receUserWard(String tqcode, Long userId) throws Main4Exception {
+        if(StringUtils.isEmpty(tqcode) || userId == null){
+            throw new Main4Exception("请求数据有误");
+        }
+        ActiveDrawRecord drawRecord = new ActiveDrawRecord();
+        drawRecord.setDrawCode(tqcode);
+        drawRecord.setUserId(userId);
+        drawRecord = activeDrawRecordMapper.selectOne(drawRecord);
+        if(drawRecord == null){
+            throw new Main4Exception("请求数据有误");
+        }
+        if(drawRecord.getReceivesYes()){
+            throw new Main4Exception("已经领取，无法重复领取！");
+        }
+        drawRecord.setReceivesYes(true);
+        int result = activeDrawRecordMapper.updateByPrimaryKeySelective(drawRecord);
+        if(result == 0){
+            throw new Main4Exception("领取发生错误");
+        }
+    }
 }

@@ -1,9 +1,5 @@
 package com.shigu.main4.spread.vo.active.draw;
 
-
-import org.apache.commons.lang3.StringUtils;
-
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -102,7 +98,7 @@ public class ActiveDrawRecordUserVo implements Serializable {
     public void setUserNick(String userNick) {
         this.userNick = userNick;
 
-        if(StringUtils.isEmpty(userNick)){
+        if(userNick == null || userNick.trim().equals("")){
             return;
         }
         if(userNick.length() >= 4){
