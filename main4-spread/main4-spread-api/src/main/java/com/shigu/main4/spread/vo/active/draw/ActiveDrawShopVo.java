@@ -20,6 +20,10 @@ public class ActiveDrawShopVo implements Serializable {
     /** 期次ID */
     private Long pemId;
 
+    private Long pitId;
+
+    private Integer num;
+
     /** 店铺ID */
     private Long shopId;
 
@@ -98,5 +102,21 @@ public class ActiveDrawShopVo implements Serializable {
 
     public void setdText(String dText) {
         this.dText = dText;
+    }
+
+    public Long getPitId() {
+        return pitId;
+    }
+
+    public void setPitId(Long pitId) {
+        this.pitId = pitId;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }

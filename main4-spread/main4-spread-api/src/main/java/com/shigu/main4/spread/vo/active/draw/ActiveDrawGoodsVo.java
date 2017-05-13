@@ -17,8 +17,12 @@ public class ActiveDrawGoodsVo implements Serializable {
     /** 期次ID */
     private Long pemId;
 
+    private Long pitId;
+
     /** 商品ID */
     private Long goodsId;
+
+    private Integer num;
 
     /** 商品类别 */
     private String type;
@@ -34,6 +38,9 @@ public class ActiveDrawGoodsVo implements Serializable {
 
     /** 档口号 */
     private String shopNum;
+
+    /** 上下架 */
+    private Long isOff;
 
     /** 批发价 */
     private String piPriceString;
@@ -128,5 +135,30 @@ public class ActiveDrawGoodsVo implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    public Long getPitId() {
+        return pitId;
+    }
+
+    public void setPitId(Long pitId) {
+        this.pitId = pitId;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
+    public Long getIsOff() {
+        return isOff;
+    }
+
+    public void setIsOff(Long isOff) {
+        this.isOff = isOff;
     }
 }

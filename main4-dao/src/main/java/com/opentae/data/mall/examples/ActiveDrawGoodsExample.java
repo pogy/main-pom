@@ -572,6 +572,74 @@ public class ActiveDrawGoodsExample implements SgExample{
             return (ActiveDrawGoodsExample.Criteria)this;
         }
 
+        public ActiveDrawGoodsExample.Criteria andPitIdIsNull() {
+            this.addCriterion("pit_id is null");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdIsNotNull() {
+            this.addCriterion("pit_id is not null");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdEqualTo(Long value) {
+            this.addCriterion("pit_id =", value, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdNotEqualTo(Long value) {
+            this.addCriterion("pit_id <>", value, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdGreaterThan(Long value) {
+            this.addCriterion("pit_id >", value, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("pit_id >=", value, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdLessThan(Long value) {
+            this.addCriterion("pit_id <", value, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("pit_id <=", value, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdLike(String value) {
+            this.addCriterion("pit_id like", value, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdNotLike(String value) {
+            this.addCriterion("pit_id not like", value, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }        public ActiveDrawGoodsExample.Criteria andPitIdIn(List<Long> values) {
+            this.addCriterion("pit_id in", values, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdNotIn(List<Long> values) {
+            this.addCriterion("pit_id not in", values, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdBetween(Long value1, Long value2) {
+            this.addCriterion("pit_id between", value1, value2, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
+        public ActiveDrawGoodsExample.Criteria andPitIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("pit_id not between", value1, value2, "pitId");
+            return (ActiveDrawGoodsExample.Criteria)this;
+        }
+
         public ActiveDrawGoodsExample.Criteria andCreateTimeIsNull() {
             this.addCriterion("create_time is null");
             return (ActiveDrawGoodsExample.Criteria)this;
