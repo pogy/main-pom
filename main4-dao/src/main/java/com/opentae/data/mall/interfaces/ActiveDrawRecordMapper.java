@@ -19,6 +19,7 @@ import java.util.List;
 public interface ActiveDrawRecordMapper extends Mapper<ActiveDrawRecord> {
 
     /** 用户抽奖数据 */
-    List<ActiveDrawRecord> selDrawRecordList(@Param("pemId") Long pemId, @Param("userId") Long userId, @Param("type") String type);
+    List<ActiveDrawRecord> selDrawRecordList(@Param("pemId") Long pemId, @Param("userId") Long userId,
+                                             @Param("type") String type, @Param("ward") String ward);
 
 }

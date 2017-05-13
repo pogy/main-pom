@@ -99,7 +99,7 @@ public interface ActiveDrawService {
      * 新增新的期次
      * @param
      */
-    public void addNewDrawPem();
+    public void addNewDrawPem(Date nextDrawPemTime);
 
     /**
      * 查询满足抽奖用户数据
