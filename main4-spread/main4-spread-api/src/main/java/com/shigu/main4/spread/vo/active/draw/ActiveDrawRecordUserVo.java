@@ -1,30 +1,18 @@
-package com.opentae.data.mall.beans;
+package com.shigu.main4.spread.vo.active.draw;
 
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 中奖纪录
- *
- * @author shigu_zjb
- * @date 2017/05/12 18:34
- *
+ * 活动抽奖记录
  *
  */
-public class ActiveDrawRecord {
+public class ActiveDrawRecordUserVo implements Serializable {
 
-    public final static int DRAW_STATUS_WAIT = 1;// 等待中奖
-    public final static int DRAW_STATUS_NO = 2;// 未中奖
-    public final static int DRAW_STATUS_YES = 3;// 中奖
-
-    /** 中奖ID */
-    @Id
-    @GeneratedValue(
-            generator = "JDBC"
-    )
     private Long id;
 
     /** 用户ID */
@@ -45,17 +33,11 @@ public class ActiveDrawRecord {
     /** 中奖状态 */
     private Integer drawStatus;
 
-    /** 创建时间 */
-    private Date createTime;
-
-    /** 更新时间 */
-    private Date modifyTime;
-
-    /** 数据有效性 */
-    private Boolean enabled;
-
-    @Transient
+    /** 用户昵称 */
     private String userNick;
+
+    /** 用户隐藏昵称 */
+    private String hideUserNick;
 
     public Long getId() {
         return id;
@@ -113,35 +95,32 @@ public class ActiveDrawRecord {
         this.drawStatus = drawStatus;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public String getUserNick() {
         return userNick;
     }
 
     public void setUserNick(String userNick) {
         this.userNick = userNick;
+
+        if(StringUtils.isEmpty(userNick)){
+            return;
+        }
+        if(userNick.length() >= 4){
+            String qstr = userNick.substring(0,2);
+            String hstr = userNick.substring(userNick.length() - 2, userNick.length());
+            setHideUserNick(qstr + "***" + hstr );
+            return;
+        }
+        if(userNick.length() < 4){
+            setHideUserNick(userNick + "**");
+        }
+    }
+
+    public String getHideUserNick() {
+        return hideUserNick;
+    }
+
+    public void setHideUserNick(String hideUserNick) {
+        this.hideUserNick = hideUserNick;
     }
 }

@@ -436,6 +436,142 @@ public class ActiveDrawShopExample implements SgExample{
             return (ActiveDrawShopExample.Criteria)this;
         }
 
+        public ActiveDrawShopExample.Criteria andUTextIsNull() {
+            this.addCriterion("u_text is null");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextIsNotNull() {
+            this.addCriterion("u_text is not null");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextEqualTo(String value) {
+            this.addCriterion("u_text =", value, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextNotEqualTo(String value) {
+            this.addCriterion("u_text <>", value, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextGreaterThan(String value) {
+            this.addCriterion("u_text >", value, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextGreaterThanOrEqualTo(String value) {
+            this.addCriterion("u_text >=", value, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextLessThan(String value) {
+            this.addCriterion("u_text <", value, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextLessThanOrEqualTo(String value) {
+            this.addCriterion("u_text <=", value, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextLike(String value) {
+            this.addCriterion("u_text like", value, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextNotLike(String value) {
+            this.addCriterion("u_text not like", value, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }        public ActiveDrawShopExample.Criteria andUTextIn(List<String> values) {
+            this.addCriterion("u_text in", values, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextNotIn(List<String> values) {
+            this.addCriterion("u_text not in", values, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextBetween(String value1, String value2) {
+            this.addCriterion("u_text between", value1, value2, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andUTextNotBetween(String value1, String value2) {
+            this.addCriterion("u_text not between", value1, value2, "uText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextIsNull() {
+            this.addCriterion("d_text is null");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextIsNotNull() {
+            this.addCriterion("d_text is not null");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextEqualTo(String value) {
+            this.addCriterion("d_text =", value, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextNotEqualTo(String value) {
+            this.addCriterion("d_text <>", value, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextGreaterThan(String value) {
+            this.addCriterion("d_text >", value, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextGreaterThanOrEqualTo(String value) {
+            this.addCriterion("d_text >=", value, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextLessThan(String value) {
+            this.addCriterion("d_text <", value, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextLessThanOrEqualTo(String value) {
+            this.addCriterion("d_text <=", value, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextLike(String value) {
+            this.addCriterion("d_text like", value, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextNotLike(String value) {
+            this.addCriterion("d_text not like", value, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }        public ActiveDrawShopExample.Criteria andDTextIn(List<String> values) {
+            this.addCriterion("d_text in", values, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextNotIn(List<String> values) {
+            this.addCriterion("d_text not in", values, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextBetween(String value1, String value2) {
+            this.addCriterion("d_text between", value1, value2, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andDTextNotBetween(String value1, String value2) {
+            this.addCriterion("d_text not between", value1, value2, "dText");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
         public ActiveDrawShopExample.Criteria andPicUrlIsNull() {
             this.addCriterion("pic_url is null");
             return (ActiveDrawShopExample.Criteria)this;

@@ -27,6 +27,10 @@ public class ActiveDrawShop {
     /** 店铺ID */
     private Long shopId;
 
+    private String uText;
+
+    private String dText;
+
     /** 图片 */
     private String picUrl;
 
@@ -104,6 +108,22 @@ public class ActiveDrawShop {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getuText() {
+        return uText;
+    }
+
+    public void setuText(String uText) {
+        this.uText = uText;
+    }
+
+    public String getdText() {
+        return dText;
+    }
+
+    public void setdText(String dText) {
+        this.dText = dText;
     }
 }
 

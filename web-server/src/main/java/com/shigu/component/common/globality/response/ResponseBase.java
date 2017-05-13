@@ -23,7 +23,17 @@ public class ResponseBase {
 	 * 返回信息
 	 */
 	private String msg;
-	
+
+	private String result = SystemConStant.RESPONSE_STATUS_FAILED;
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
 	public String getStatus() {
 		return status;
 	}

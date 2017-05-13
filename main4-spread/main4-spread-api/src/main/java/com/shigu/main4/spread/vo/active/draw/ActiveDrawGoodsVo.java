@@ -1,5 +1,7 @@
-package com.shigu.activity.vo;
+package com.shigu.main4.spread.vo.active.draw;
 
+
+import java.io.Serializable;
 
 /**
  *  活动抽奖商品
@@ -8,7 +10,7 @@ package com.shigu.activity.vo;
  * @date 2017/05/12 20:11
  *
  */
-public class ActiveDrawGoodsVo {
+public class ActiveDrawGoodsVo implements Serializable {
 
     /** 期次ID */
     private Long pemId;
@@ -20,7 +22,7 @@ public class ActiveDrawGoodsVo {
     private String type;
 
     /** 图片 */
-    private String imgsrc;
+    private String imgSrc;
 
     /** 标题 */
     private String title;
@@ -32,7 +34,11 @@ public class ActiveDrawGoodsVo {
     private String shopNum;
 
     /** 批发价 */
-    private String piprice;
+    private String piPriceString;
+
+    private Long shopId;
+
+    private Long parsentMarketId;
 
     public Long getPemId() {
         return pemId;
@@ -58,12 +64,12 @@ public class ActiveDrawGoodsVo {
         this.type = type;
     }
 
-    public String getImgsrc() {
-        return imgsrc;
+    public String getImgSrc() {
+        return imgSrc;
     }
 
-    public void setImgsrc(String imgsrc) {
-        this.imgsrc = imgsrc;
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 
     public String getTitle() {
@@ -90,11 +96,27 @@ public class ActiveDrawGoodsVo {
         this.shopNum = shopNum;
     }
 
-    public String getPiprice() {
-        return piprice;
+    public String getPiPriceString() {
+        return piPriceString;
     }
 
-    public void setPiprice(String piprice) {
-        this.piprice = piprice;
+    public void setPiPriceString(String piPriceString) {
+        this.piPriceString = piPriceString;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
+    public Long getParsentMarketId() {
+        return parsentMarketId;
+    }
+
+    public void setParsentMarketId(Long parsentMarketId) {
+        this.parsentMarketId = parsentMarketId;
     }
 }

@@ -1,5 +1,7 @@
-package com.shigu.activity.vo;
+package com.shigu.main4.spread.vo.active.draw;
 
+
+import java.io.Serializable;
 
 /**
  *
@@ -10,7 +12,7 @@ package com.shigu.activity.vo;
  *
  *
  */
-public class ActiveDrawShopVo {
+public class ActiveDrawShopVo implements Serializable {
 
     /** 主键ID */
     private Long id;
@@ -28,7 +30,11 @@ public class ActiveDrawShopVo {
     private String shopNum;
 
     /** 店铺图片 */
-    private String picUrl;
+    private String imgSrc;
+
+    private String uText;
+
+    private String dText;
 
     public Long getId() {
         return id;
@@ -70,11 +76,27 @@ public class ActiveDrawShopVo {
         this.shopNum = shopNum;
     }
 
-    public String getPicUrl() {
-        return picUrl;
+    public String getImgSrc() {
+        return imgSrc;
     }
 
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
+    }
+
+    public String getuText() {
+        return uText;
+    }
+
+    public void setuText(String uText) {
+        this.uText = uText;
+    }
+
+    public String getdText() {
+        return dText;
+    }
+
+    public void setdText(String dText) {
+        this.dText = dText;
     }
 }
