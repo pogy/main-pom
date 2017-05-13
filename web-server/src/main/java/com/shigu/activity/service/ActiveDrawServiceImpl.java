@@ -4,10 +4,7 @@ package com.shigu.activity.service;
 import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
-import com.opentae.data.mall.examples.ActiveDrawPemExample;
-import com.opentae.data.mall.examples.ActiveDrawRecordExample;
-import com.opentae.data.mall.examples.ActiveDrawShopExample;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -66,6 +63,9 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     @Autowired
     private ShiguShopMapper shiguShopMapper;
 
+    @Autowired
+    private ActiveDrawPitMapper activeDrawPitMapper;
+
     /**
      * 查询当前期次
      * @return
@@ -90,6 +90,13 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @param pemId
      */
     public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled){
+        ActiveDrawPitExample drawPitExample = new ActiveDrawPitExample();
+        drawPitExample.createCriteria().andTypeEqualTo(ActiveDrawPit.TYPE_GOODS);
+        drawPitExample.setOrderByClause("num asc");
+        List<ActiveDrawPit> drawPitList = activeDrawPitMapper.selectByExample(drawPitExample);
+        if(drawPitList.size() == 0){
+            return Collections.emptyList();
+        }
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
         ActiveDrawGoodsExample.Criteria ctx = drawGoodsExample.createCriteria();
         ctx.andPemIdEqualTo(pemId).andTypeEqualTo(type);
@@ -151,11 +158,36 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                         break;
                     }
                 }
-
                 drawGoodsVoList.add(activeDrawGoodsVo);
             }
         }
-        return drawGoodsVoList;
+
+        if(ActiveDrawGoods.TYPE_DAILYFIND.equals(type)){
+            return drawGoodsVoList;
+        }
+
+        List<ActiveDrawGoodsVo> newDrawGoodsVoList = new ArrayList<ActiveDrawGoodsVo>();
+        for (int i = 0; i < drawPitList.size(); i++) {
+            ActiveDrawPit drawPit = drawPitList.get(i);
+            Boolean panss = false;
+            for (int j = 0; j < drawGoodsVoList.size(); j++) {
+                ActiveDrawGoodsVo drawGoodsVo = drawGoodsVoList.get(j);
+                if(drawPit.getId().intValue() == drawGoodsVo.getPitId().intValue()){
+                    drawGoodsVo.setNum(drawPit.getNum());
+                    newDrawGoodsVoList.add(drawGoodsVo);
+                    panss = true;
+                    break;
+                }
+            }
+            if(!panss){
+                ActiveDrawGoodsVo drawGoodsVo = new ActiveDrawGoodsVo();
+                drawGoodsVo.setPitId(drawPit.getId());
+                drawGoodsVo.setNum(drawPit.getNum());
+                newDrawGoodsVoList.add(drawGoodsVo);
+            }
+        }
+
+        return newDrawGoodsVoList;
     }
 
     /**
@@ -207,24 +239,26 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         ActiveDrawGoods drawGoods = activeDrawGoodsMapper.selectByPrimaryKey(drawGoodsId);
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
         ActiveDrawGoodsExample.Criteria ctx = drawGoodsExample.createCriteria();
+        ctx.andPemIdEqualTo(drawGoods.getPemId());
+        ctx.andTypeEqualTo(drawGoods.getType());
         drawGoodsExample.setStartIndex(0);
         drawGoodsExample.setEndIndex(1);
         if(type == 1){
-            drawGoodsExample.setOrderByClause("sort desc");
-            ctx.andSortLessThan(drawGoods.getSort());
+            drawGoodsExample.setOrderByClause("pit_id desc");
+            ctx.andPitIdLessThan(drawGoods.getPitId());
         }
         if(type == 2){
-            drawGoodsExample.setOrderByClause("sort asc");
-            ctx.andSortGreaterThan(drawGoods.getSort());
+            drawGoodsExample.setOrderByClause("pit_id asc");
+            ctx.andPitIdGreaterThan(drawGoods.getPitId());
         }
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
         if(drawGoodsList.size() == 0){
             return;
         }
         ActiveDrawGoods activeDrawGoods = drawGoodsList.get(0);
-        int otherSort = activeDrawGoods.getSort();
-        activeDrawGoods.setSort(drawGoods.getSort());
-        drawGoods.setSort(otherSort);
+        Long otherPitId = activeDrawGoods.getPitId();
+        activeDrawGoods.setPitId(drawGoods.getPitId());
+        drawGoods.setPitId(otherPitId);
         activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
         activeDrawGoodsMapper.updateByPrimaryKeySelective(drawGoods);
     }
@@ -252,11 +286,24 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @param goodsId
      */
     @Override
-    public void changeDrawGoods(Long id, Long goodsId) {
-        ActiveDrawGoods activeDrawGoods = activeDrawGoodsMapper.selectByPrimaryKey(id);
-        if(activeDrawGoods == null){
+    public void changeDrawGoods(Long id, Long goodsId, Long pemId, String type) {
+        ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
+        drawGoodsExample.createCriteria().andGoodsIdEqualTo(goodsId)
+                .andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id);
+        List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
+        if(drawGoodsList.size() == 0){
+            ActiveDrawGoods drawGoods = new ActiveDrawGoods();
+            drawGoods.setGoodsId(goodsId);
+            drawGoods.setEnabled(false);
+            drawGoods.setCreateTime(new Date());
+            drawGoods.setModifyTime(new Date());
+            drawGoods.setPemId(pemId);
+            drawGoods.setType(type);
+            drawGoods.setSort(id.intValue());
+            activeDrawGoodsMapper.insertSelective(drawGoods);
             return;
         }
+        ActiveDrawGoods activeDrawGoods = drawGoodsList.get(0);
         activeDrawGoods.setGoodsId(goodsId);
         activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
     }
@@ -283,7 +330,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         drawGoodsExample.createCriteria().andPemIdEqualTo(activeDrawGoods.getPemId())
                 .andTypeEqualTo(activeDrawGoods.getType());
         int count = activeDrawGoodsMapper.countByExample(drawGoodsExample);
-        activeDrawGoods.setSort(count + 10);
+        activeDrawGoods.setSort(count*10 + 10);
         activeDrawGoodsMapper.insertSelective(activeDrawGoods);
     }
 
@@ -293,6 +340,14 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     public List<ActiveDrawShopVo> selShopList(Long pemId){
+        ActiveDrawPitExample drawPitExample = new ActiveDrawPitExample();
+        drawPitExample.createCriteria().andTypeEqualTo(ActiveDrawPit.TYPE_SHOP);
+        drawPitExample.setOrderByClause("num asc");
+        List<ActiveDrawPit> drawPitList = activeDrawPitMapper.selectByExample(drawPitExample);
+        if(drawPitList.size() == 0){
+            return Collections.emptyList();
+        }
+
         ActiveDrawShopExample drawShopExample = new ActiveDrawShopExample();
         drawShopExample.createCriteria().andPemIdEqualTo(pemId);
         List<ActiveDrawShop> drawShopList = activeDrawShopMapper.selectByExample(drawShopExample);
@@ -333,7 +388,29 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                 }
             }
         }
-        return drawShopVoList;
+
+        List<ActiveDrawShopVo> newDrawShopVoList = new ArrayList<ActiveDrawShopVo>();
+        for (int i = 0; i < drawPitList.size(); i++) {
+            ActiveDrawPit drawPit = drawPitList.get(i);
+            Boolean panss = false;
+            for (int j = 0; j < newDrawShopVoList.size(); j++) {
+                ActiveDrawShopVo drawShopVo = newDrawShopVoList.get(j);
+                if(drawPit.getId().intValue() == drawShopVo.getPitId().intValue()){
+                    drawShopVo.setNum(drawPit.getNum());
+                    newDrawShopVoList.add(drawShopVo);
+                    panss = true;
+                    break;
+                }
+            }
+            if(!panss){
+                ActiveDrawShopVo newDrawShopVo = new ActiveDrawShopVo();
+                newDrawShopVo.setPitId(drawPit.getId());
+                newDrawShopVo.setNum(drawPit.getNum());
+                newDrawShopVoList.add(newDrawShopVo);
+            }
+        }
+
+        return newDrawShopVoList;
     }
 
     /**
@@ -344,9 +421,26 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     public void changeShop(ActiveDrawShopVo drawShopVo) {
         if(drawShopVo == null || drawShopVo.getId() == null || drawShopVo.getPemId() == null
                 || StringUtils.isEmpty(drawShopVo.getImgSrc()) || StringUtils.isEmpty(drawShopVo.getuText())
-                || StringUtils.isEmpty(drawShopVo.getdText())){
+                || StringUtils.isEmpty(drawShopVo.getdText()) || drawShopVo.getPitId() == null){
             return;
         }
+        ActiveDrawShopExample drawShopExample = new ActiveDrawShopExample();
+        drawShopExample.createCriteria().andPemIdEqualTo(drawShopVo.getPemId())
+                .andPitIdEqualTo(drawShopVo.getPitId());
+        List<ActiveDrawShop> drawShopList = activeDrawShopMapper.selectByExample(drawShopExample);
+        if(drawShopList.size() == 0){
+            ActiveDrawShop drawShop = new ActiveDrawShop();
+            drawShop.setEnabled(false);
+            drawShop.setdText(drawShopVo.getdText());
+            drawShop.setuText(drawShopVo.getuText());
+            drawShop.setCreateTime(new Date());
+            drawShop.setModifyTime(new Date());
+            drawShop.setPemId(drawShopVo.getPemId());
+            drawShop.setPicUrl(drawShopVo.getImgSrc());
+            drawShop.setSort(drawShopVo.getPitId().intValue());
+            activeDrawShopMapper.insertSelective(drawShop);
+        }
+
         ActiveDrawShop drawShop = activeDrawShopMapper.selectByPrimaryKey(drawShopVo.getId());
         if(drawShop == null){
             return;
@@ -367,24 +461,25 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         ActiveDrawShop drawShop = activeDrawShopMapper.selectByPrimaryKey(drawShopId);
         ActiveDrawShopExample drawShopExample = new ActiveDrawShopExample();
         ActiveDrawShopExample.Criteria ctx = drawShopExample.createCriteria();
+        ctx.andPemIdEqualTo(drawShop.getPemId());
         drawShopExample.setStartIndex(0);
         drawShopExample.setEndIndex(1);
         if(type == 1){
-            drawShopExample.setOrderByClause("sort desc");
-            ctx.andSortLessThan(drawShop.getSort());
+            drawShopExample.setOrderByClause("pit_id desc");
+            ctx.andPitIdLessThan(drawShop.getPitId());
         }
         if(type == 2){
-            drawShopExample.setOrderByClause("sort asc");
-            ctx.andSortGreaterThan(drawShop.getSort());
+            drawShopExample.setOrderByClause("pit_id asc");
+            ctx.andPitIdGreaterThan(drawShop.getPitId());
         }
         List<ActiveDrawShop> drawShopList = activeDrawShopMapper.selectByExample(drawShopExample);
         if(drawShopList.size() == 0){
             return;
         }
         ActiveDrawShop activeDrawShop = drawShopList.get(0);
-        int otherSort = activeDrawShop.getSort();
-        activeDrawShop.setSort(drawShop.getSort());
-        drawShop.setSort(otherSort);
+        Long otherPitId = activeDrawShop.getPitId();
+        activeDrawShop.setPitId(drawShop.getPitId());
+        drawShop.setPitId(otherPitId);
         activeDrawShopMapper.updateByPrimaryKeySelective(drawShop);
         activeDrawShopMapper.updateByPrimaryKeySelective(activeDrawShop);
     }
@@ -643,7 +738,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     }
 
     /**
-     *  新增用户抽奖
+     * 新增用户抽奖
      * @param activeDrawRecord
      */
     public void addActiveDrawRecord(ActiveDrawRecord activeDrawRecord){

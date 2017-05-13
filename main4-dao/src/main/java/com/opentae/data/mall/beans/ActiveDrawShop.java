@@ -27,6 +27,8 @@ public class ActiveDrawShop {
     /** 店铺ID */
     private Long shopId;
 
+    private Long pitId;
+
     private String uText;
 
     private String dText;
@@ -124,6 +126,14 @@ public class ActiveDrawShop {
 
     public void setdText(String dText) {
         this.dText = dText;
+    }
+
+    public Long getPitId() {
+        return pitId;
+    }
+
+    public void setPitId(Long pitId) {
+        this.pitId = pitId;
     }
 }
 

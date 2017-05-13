@@ -60,9 +60,12 @@ public interface ActiveDrawService {
 
     /**
      * 修改商品
-     * @param
+     * @param id 坑位ID
+     * @param goodsId 商品ID
+     * @param pemId 期次ID
+     * @param type 商品类型
      */
-    public void changeDrawGoods(Long id, Long goodsId);
+    public void changeDrawGoods(Long id, Long goodsId, Long pemId, String type);
 
     /**
      * 新增商品

@@ -436,6 +436,74 @@ public class ActiveDrawShopExample implements SgExample{
             return (ActiveDrawShopExample.Criteria)this;
         }
 
+        public ActiveDrawShopExample.Criteria andPitIdIsNull() {
+            this.addCriterion("pit_id is null");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdIsNotNull() {
+            this.addCriterion("pit_id is not null");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdEqualTo(Long value) {
+            this.addCriterion("pit_id =", value, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdNotEqualTo(Long value) {
+            this.addCriterion("pit_id <>", value, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdGreaterThan(Long value) {
+            this.addCriterion("pit_id >", value, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("pit_id >=", value, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdLessThan(Long value) {
+            this.addCriterion("pit_id <", value, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("pit_id <=", value, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdLike(String value) {
+            this.addCriterion("pit_id like", value, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdNotLike(String value) {
+            this.addCriterion("pit_id not like", value, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }        public ActiveDrawShopExample.Criteria andPitIdIn(List<Long> values) {
+            this.addCriterion("pit_id in", values, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdNotIn(List<Long> values) {
+            this.addCriterion("pit_id not in", values, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdBetween(Long value1, Long value2) {
+            this.addCriterion("pit_id between", value1, value2, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
+        public ActiveDrawShopExample.Criteria andPitIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("pit_id not between", value1, value2, "pitId");
+            return (ActiveDrawShopExample.Criteria)this;
+        }
+
         public ActiveDrawShopExample.Criteria andUTextIsNull() {
             this.addCriterion("u_text is null");
             return (ActiveDrawShopExample.Criteria)this;

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -66,6 +67,9 @@ public class ActivityAction {
                 60,
                 null
                 );
+
+        Collections.shuffle(daliyGoodsVoList);
+
         // 获奖数据
         List<ActiveDrawRecordUserVo> recordUserVoList = activeDrawServiceImpl.selDrawRecordList(null,null, "ben");
 
@@ -192,6 +196,19 @@ public class ActivityAction {
     @RequestMapping(value = "activity/receWards" , method = RequestMethod.GET)
     public String receWards(){
         return "activity/fdGdsLqzjb";
+    }
+
+
+    /**
+     *
+     * @return
+     */
+    @RequestMapping(value = "activity/activeTest" , method = RequestMethod.GET)
+    public String activeTest(){
+
+        System.out.println(JSON.toJSONString(activeDrawServiceImpl.selGoodsList(1L,ActiveDrawGoods.TYPE_DAILYFIND,30,null)));
+
+        return null;
     }
 
 }
