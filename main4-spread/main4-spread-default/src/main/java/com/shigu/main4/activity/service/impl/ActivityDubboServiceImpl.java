@@ -51,7 +51,7 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
     }
 
     @Override
-    public List<ActivityVO> selActivityInTerm(Long termId) {
+    public <T extends ActivityVO> List<T> selActivityInTerm(Long termId) {
         return activityFactory.selTermById(termId).selActivitys();
     }
 
@@ -83,6 +83,12 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
         }else{
             enlist.unhit();
         }
+    }
+
+    @Override
+    public void delActivity(Long termId, Long activityId) {
+        ActivityTerm term=activityFactory.selTermById(termId);
+        term.delActivity(activityId);
     }
 
 }

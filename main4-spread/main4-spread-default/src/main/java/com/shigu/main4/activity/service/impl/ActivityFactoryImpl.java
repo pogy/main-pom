@@ -152,11 +152,15 @@ public class ActivityFactoryImpl implements ActivityFactory {
             @Override
             public <T extends ActivityVO> Long throwActivity(T activity) {
                 //防止数据有变,通通用本活动的ID,不管有没有传入
+
                 activity.setTermId(this.getTermId());
                 SpreadActivity sactivity = BeanMapper.map(activity, SpreadActivity.class);
                 sactivity.setContext(JSON.toJSONString(activity));
-                sactivity.setActivityId(null);
-                spreadActivityMapper.insertSelective(sactivity);
+                if (sactivity.getActivityId() != null) {
+                    spreadActivityMapper.updateByPrimaryKeySelective(sactivity);
+                }else{
+                    spreadActivityMapper.insertSelective(sactivity);
+                }
                 return sactivity.getActivityId();
             }
 

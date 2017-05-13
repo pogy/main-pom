@@ -19,7 +19,7 @@ public interface ActivityDubboService {
 
     ActivityTermVO selByTermId(Long termId);
 
-    List<ActivityVO> selActivityInTerm(Long termId);
+    <T extends ActivityVO> List<T> selActivityInTerm(Long termId);
 
     void modifyTerm(Long termId,ActivityType type, Date start, Date end) throws ActivityException;
 
@@ -33,4 +33,6 @@ public interface ActivityDubboService {
      * @param ishit 是否中签
      */
     void hitUnhit(Long enId,Boolean ishit) throws ActivityException;
+
+    void delActivity(Long termId,Long activityId);
 }
