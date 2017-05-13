@@ -55,6 +55,12 @@
                                    <!--properties="replicateAsynchronously=true, replicatePuts=true,-->
 <!--replicateUpdates=true, replicateUpdatesViaCopy=false, replicateRemovals=true"/>-->
     </cache>
+
+    <cache name="marketNavCache" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
+
+    </cache>
+
     <cache name="floorCache" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="600" timeToLiveSeconds="1200" overflowToDisk="true" >
         <!--<cacheEventListenerFactory class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"-->
