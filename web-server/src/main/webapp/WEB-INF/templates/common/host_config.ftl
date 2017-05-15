@@ -1,5 +1,5 @@
 
-<#assign main_host="http://testwww.571xz.com/" />
+<#assign main_host="http://www.571xz.com/" />
 <#assign qiye_qq="4000761116" />
 
 <#--<#assign main_host="http://192.168.1.106:8080/" />-->
