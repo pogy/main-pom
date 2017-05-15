@@ -376,6 +376,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                 if(activeDrawShop.getShopId().intValue() == shiguShop.getShopId().intValue()){
                     ActiveDrawShopVo drawShopVo = new ActiveDrawShopVo();
                     drawShopVo.setId(activeDrawShop.getId());
+                    drawShopVo.setShopId(activeDrawShop.getShopId());
                     drawShopVo.setPemId(pemId);
                     drawShopVo.setMarketName(shiguShop.getMarketName());
                     drawShopVo.setImgSrc(activeDrawShop.getPicUrl());
