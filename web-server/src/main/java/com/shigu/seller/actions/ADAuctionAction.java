@@ -78,6 +78,7 @@ public class ADAuctionAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession logshop = ps.getLogshop();
         // 电商基地&精品男装& (!测试店铺32888)
+        if(id==null||id==1001L)
         if (logshop.getShopId() != 35992 && logshop.getMarketId() != 1087 && logshop.getMarketId() != 613) {
              return ftlDir+"/dtggapplyNull";
         }
