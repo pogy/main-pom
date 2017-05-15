@@ -4,7 +4,7 @@
 
 	<select	id="selDrawRecordList" resultType="com.opentae.data.mall.beans.ActiveDrawRecord">
 		SELECT
-			r.*, u.user_nick
+			r.*, u.user_nick,u.login_phone
 		FROM
 			active_draw_record r,
 			member_user u
@@ -15,6 +15,9 @@
 		</if>
 		<if test="userId!=null">
 			AND r.user_id = #{userId}
+		</if>
+		<if test="ward!=null">
+			AND r.ward = #{ward}
 		</if>
 		<if test="type!=null and type == 'ben'">
 			AND r.ward != 'A1' AND r.ward != 'B1'

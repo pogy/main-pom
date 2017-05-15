@@ -57,6 +57,9 @@ public class ActiveDrawRecord {
     @Transient
     private String userNick;
 
+    @Transient
+    private String loginPhone;
+
     public Long getId() {
         return id;
     }
@@ -143,5 +146,13 @@ public class ActiveDrawRecord {
 
     public void setUserNick(String userNick) {
         this.userNick = userNick;
+    }
+
+    public String getLoginPhone() {
+        return loginPhone;
+    }
+
+    public void setLoginPhone(String loginPhone) {
+        this.loginPhone = loginPhone;
     }
 }

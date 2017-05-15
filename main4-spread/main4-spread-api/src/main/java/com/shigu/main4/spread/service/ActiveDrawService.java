@@ -36,6 +36,16 @@ public interface ActiveDrawService {
     public List<ActiveDrawPemVo> selDrawPemList();
 
     /**
+     * 活动抽奖商品数据
+     * @param pemId
+     * @param type
+     * @param size
+     * @param enabled
+     * @return
+     */
+    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled);
+
+    /**
      * 排序交换
      * @param type 1 上 2 下
      * @param drawGoodsId 主键ID
@@ -50,9 +60,12 @@ public interface ActiveDrawService {
 
     /**
      * 修改商品
-     * @param activeDrawGoodsVo
+     * @param id 坑位ID
+     * @param goodsId 商品ID
+     * @param pemId 期次ID
+     * @param type 商品类型
      */
-    public void changeDrawGoods(ActiveDrawGoodsVo activeDrawGoodsVo);
+    public void changeDrawGoods(Long id, Long goodsId, Long pemId, String type);
 
     /**
      * 新增商品
@@ -70,7 +83,7 @@ public interface ActiveDrawService {
      * 修改店铺
      * @param drawShopVo
      */
-    public void changteShop(ActiveDrawShopVo drawShopVo);
+    public void changeShop(ActiveDrawShopVo drawShopVo);
 
     /**
      * 好店修改位置
@@ -87,9 +100,9 @@ public interface ActiveDrawService {
 
     /**
      * 新增新的期次
-     * @param drawPemVo
+     * @param
      */
-    public void addNewDrawPem(ActiveDrawPemVo drawPemVo);
+    public void addNewDrawPem(Date nextDrawPemTime);
 
     /**
      * 查询满足抽奖用户数据
@@ -106,4 +119,10 @@ public interface ActiveDrawService {
      * @return
      */
     public int selWardDrawYes(Long pemId, String ward);
+
+    /**
+     * 选择用户中奖
+     * @param recordId
+     */
+    public void chooseDrawWard(Long recordId);
 }

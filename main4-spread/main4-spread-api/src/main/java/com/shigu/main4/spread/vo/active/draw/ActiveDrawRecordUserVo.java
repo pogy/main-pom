@@ -1,9 +1,5 @@
 package com.shigu.main4.spread.vo.active.draw;
 
-
-import org.apache.commons.lang3.StringUtils;
-
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -38,6 +34,11 @@ public class ActiveDrawRecordUserVo implements Serializable {
 
     /** 用户隐藏昵称 */
     private String hideUserNick;
+
+    /** 上传数*/
+    private int uploadNum;
+
+    private String concatPhone;
 
     public Long getId() {
         return id;
@@ -102,7 +103,7 @@ public class ActiveDrawRecordUserVo implements Serializable {
     public void setUserNick(String userNick) {
         this.userNick = userNick;
 
-        if(StringUtils.isEmpty(userNick)){
+        if(userNick == null || userNick.trim().equals("")){
             return;
         }
         if(userNick.length() >= 4){
@@ -122,5 +123,21 @@ public class ActiveDrawRecordUserVo implements Serializable {
 
     public void setHideUserNick(String hideUserNick) {
         this.hideUserNick = hideUserNick;
+    }
+
+    public int getUploadNum() {
+        return uploadNum;
+    }
+
+    public void setUploadNum(int uploadNum) {
+        this.uploadNum = uploadNum;
+    }
+
+    public String getConcatPhone() {
+        return concatPhone;
+    }
+
+    public void setConcatPhone(String concatPhone) {
+        this.concatPhone = concatPhone;
     }
 }

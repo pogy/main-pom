@@ -35,6 +35,9 @@ public class ActiveDrawGoods {
 
     private Integer sort;
 
+    /** 坑位ID */
+    private Long pitId;
+
     private Date createTime;
 
     private Date modifyTime;
@@ -103,5 +106,13 @@ public class ActiveDrawGoods {
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Long getPitId() {
+        return pitId;
+    }
+
+    public void setPitId(Long pitId) {
+        this.pitId = pitId;
     }
 }
