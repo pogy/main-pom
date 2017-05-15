@@ -59,11 +59,11 @@ public class SpreadService {
                     Map<Long,ItemSimpleInfo> itemMap=new HashMap<>();
                     List<ItemGoatVO> goats=location.selGoats();
                     for(ItemGoatVO igv:goats){
-                        String style=igv.getStyle();
-                        String element=igv.getElement();
-                        String shopTitle=igv.getShopTitle();
+                        String tag=igv.getTag1();
+//                        String element=igv.getElement();
+//                        String shopTitle=igv.getShopTitle();
                         if (igv.getItemId() != null) {
-                            itemMap.put(igv.getItemId(),new ItemSimpleInfo(igv.getItemId(),style,element,shopTitle));
+                            itemMap.put(igv.getItemId(),new ItemSimpleInfo(igv.getItemId(),tag,tag,tag));
                             goodsIds.add(igv.getItemId());
                         }
                     }
