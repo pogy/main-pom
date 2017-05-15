@@ -542,17 +542,31 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         if(pemId == null || StringUtils.isEmpty(ward)){
             return null;
         }
-        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, null, null,ward);
+        int drawRecordCount = activeDrawRecordMapper.selDrawRecordCount(pemId, null,ward);
+        int totalPages = drawRecordCount / 1000 + ((drawRecordCount % 1000 == 0) ? 0 : 1);
         List<ActiveDrawRecordUserVo> drawRecordUserVos = new ArrayList<ActiveDrawRecordUserVo>();
         if(ward.indexOf("A") != -1){
-            // 查询发现好货活动的数据
-            drawRecordUserVos = poUserGoodsUp(pemId, ActiveDrawGoods.TYPE_FAGOODS, drawRecordList);
+            for(int i = 1;i <= totalPages;i ++){
+                int startRows = (i-1)*1000;
+                int endRows = i*1000;
+                List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, null, null, ward, startRows, endRows);
+                // 查询发现好货活动的数据
+                List<ActiveDrawRecordUserVo> drawRecordUserPageVos = poUserGoodsUp(pemId, ActiveDrawGoods.TYPE_FAGOODS, drawRecordList);
+                drawRecordUserVos.addAll(drawRecordUserPageVos);
+            }
             return drawRecordUserVos;
         }
 
         if(ward.indexOf("B") != -1){
             // 每日发现
-            drawRecordUserVos = poUserGoodsUp(pemId, ActiveDrawGoods.TYPE_FAGOODS, drawRecordList);
+            for(int i = 1;i <= totalPages;i ++){
+                int startRows = (i-1)*1000;
+                int endRows = i*1000;
+                List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, null, null, ward, startRows, endRows);
+                // 查询发现好货活动的数据
+                List<ActiveDrawRecordUserVo> drawRecordUserPageVos = poUserGoodsUp(pemId, ActiveDrawGoods.TYPE_DAILYFIND, drawRecordList);
+                drawRecordUserVos.addAll(drawRecordUserPageVos);
+            }
             return drawRecordUserVos;
         }
         return Collections.emptyList();
@@ -642,7 +656,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type){
-        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null);
+        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null);
         List<ActiveDrawRecordUserVo> recordUserVos = BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
         return recordUserVos;
     }
@@ -712,10 +726,16 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             activeDrawRecord.setWard("A2");
             addActiveDrawRecord(activeDrawRecord);
         }
-        if(total >= 10){
+        if(total >= 8){
             activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
             activeDrawRecord.setId(null);
             activeDrawRecord.setWard("A3");
+            addActiveDrawRecord(activeDrawRecord);
+        }
+        if(total >= 10){
+            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
+            activeDrawRecord.setId(null);
+            activeDrawRecord.setWard("A4");
             addActiveDrawRecord(activeDrawRecord);
         }
 
