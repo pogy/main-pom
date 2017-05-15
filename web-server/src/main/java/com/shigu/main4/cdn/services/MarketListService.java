@@ -3,6 +3,7 @@ package com.shigu.main4.cdn.services;
 import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.storeservices.MarketShopService;
 import com.shigu.main4.vo.FloorShow;
+import com.shigu.main4.vo.MarketNavShow;
 import com.shigu.main4.vo.MarketShow;
 import com.shigu.main4.vo.ShopShow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,5 +160,14 @@ public class MarketListService {
         vo.setFloorVOs(floorVos);
         vo.setMarketTags(marketTagVOs);
         return vo;
+    }
+
+    /**
+     * 网站导航市场展示数据
+     * @param website
+     * @return
+     */
+    public List<MarketNavShow> selMarketNavShow(String website){
+        return marketShopService.selMarketNavShowList(website);
     }
 }

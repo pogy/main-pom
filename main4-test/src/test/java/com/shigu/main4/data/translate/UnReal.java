@@ -85,14 +85,16 @@ public class UnReal {
 //                .setQuery(QueryBuilders.termsQuery("supperGoodsId", new long[]{20178900,20066228,20301047,9977402,9892065,9980847,9964971,20224588,20268400,20300415,20255848,20255845,20217820,20240595,20253730,20253448,20217486,20217487,9908307,9968156,20314822,20308722,20337727}))
 //                .setQuery(QueryBuilders.termsQuery("supperGoodsId", new long[]{9814548,20191246,20273390,10040577,20019629,20172685,20377030,20376095,20376394,20118473,20052364,9990027,20254772,20348516,20359362,20361269,20355420,20354894,20172859,20343288,20278791,20159222,20156126,20293662,20146478,20256764,20361606,20361585,20361583,20146478,20256764}))
 //                .setQuery(QueryBuilders.termsQuery("supperGoodsId", new long[]{20191246,20435619,20357105,20052364,20348516,20273390,20436027,20294185,9990027,20359362,20355420,20172859,20159222,20426350,20361585,20354894,20343288,20156126,20426871,20361583}))
-                .setQuery(QueryBuilders.termsQuery("supperGoodsId", goodsIds))
+//                .setQuery(QueryBuilders.termsQuery("supperGoodsId", new long[]{20191246,20435619,20357105,20052364,20348516,20273390,20436004,20294185,9990027,20359362,20355420,20422713,20159222,20426350,20361585,20354894,20172839,20156126,20426871,20361583}))
+                .setQuery(QueryBuilders.termsQuery("supperGoodsId", new long[]{20191246,20435619,20357105,20052364,20459695,20273390,20436004,20294185,9990027,20460152,20228165,20422713,20159222,20426350,20361585,20265291,20172839,20156126,20426871,20361583}))
+//                .setQuery(QueryBuilders.termsQuery("supperGoodsId", goodsIds))
                 .addAggregation(AggregationBuilders.terms("supperGoodsId_count").field("supperGoodsId").size(100)).execute().actionGet();
 
         LongTerms count = response.getAggregations().get("supperGoodsId_count");
         for (Terms.Bucket bucket : count.getBuckets()) {
             GoodsupNoreal noreal = new GoodsupNoreal();
             noreal.setRealNum((int) bucket.getDocCount());
-            noreal.setActiveNum(34);
+            noreal.setActiveNum(37);
             GoodsupNorealExample goodsupNorealExample = new GoodsupNorealExample();
             goodsupNorealExample.createCriteria().andItemIdEqualTo((long) bucket.getKeyAsNumber());
             if (goodsupNorealMapper.countByExample(goodsupNorealExample) == 0) {

@@ -66,10 +66,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 商品页面显示
@@ -247,20 +244,29 @@ public class CdnAction {
         }
 
         // 男装数据
-        Object womanSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_WOMAN));
+        Object menSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_MENS));
         // 男鞋数据
         Object menShoesSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_MENSHOES));
         // 童装数据
         Object chilrenSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_CHILDRENCOLTHING));
+        // 女装数据
+        Object womanSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_WOMAN));
 
-        List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>)womanSpread);
+        List<IndexGoodsVo> menSpreadList = changeGoods((List<ItemSpreadVO>)menSpread);
         List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>)menShoesSpread);
         List<IndexGoodsVo> chilrenSpreadList = changeGoods((List<ItemSpreadVO>)chilrenSpread);
+        List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>)womanSpread);
         if(menShoesSpreadList == null){
-            menShoesSpreadList = new ArrayList<IndexGoodsVo>();
+            menShoesSpreadList = Collections.emptyList();
         }
         if(chilrenSpreadList == null){
-            chilrenSpreadList = new ArrayList<IndexGoodsVo>();
+            chilrenSpreadList = Collections.emptyList();
+        }
+        if(womanSpreadList == null){
+            womanSpreadList = Collections.emptyList();
+        }
+        if(menSpreadList == null){
+            menSpreadList = Collections.emptyList();
         }
 
         //全站公告
@@ -275,9 +281,10 @@ public class CdnAction {
         model.addAttribute("hasStore", shopsNum);
         model.addAttribute("webSite", website);
         model.addAttribute("list_newGoods", JSON.toJSONString(indexNewGoodsVoList));
-        model.addAttribute("nzgoods", JSON.toJSONString(womanSpreadList));
+        model.addAttribute("nzgoods", JSON.toJSONString(menSpreadList));
         model.addAttribute("xiebaogoods", JSON.toJSONString(menShoesSpreadList));
         model.addAttribute("list_childGoods", JSON.toJSONString(chilrenSpreadList));
+        model.addAttribute("nvzgoods", JSON.toJSONString(womanSpreadList));
         return "index/py";
     }
 

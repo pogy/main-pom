@@ -9,6 +9,7 @@ import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.storeservices.MarketShopService;
 import com.shigu.main4.storeservices.vo.MarketShopListComparator;
 import com.shigu.main4.vo.FloorShow;
+import com.shigu.main4.vo.MarketNavShow;
 import com.shigu.main4.vo.MarketShow;
 import com.shigu.main4.vo.ShopShow;
 import org.apache.commons.lang3.ClassUtils;
@@ -241,5 +242,34 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
     @Override
     public void getShopComparator(List<ShopShow> shopShowList) {
         Collections.sort(shopShowList, new MarketShopListComparator());
+    }
+
+    /**
+     * 查询站点市场展现数据
+     * @param website
+     * @return
+     */
+    @Override
+    public List<MarketNavShow> selMarketNavShowList(String website) {
+        if(StringUtils.isEmpty(website)){website = "hz";}
+        Cache cache = cacheManager.getCache("marketNavCache");
+        List<MarketNavShow> marketNavShowCacheList = cache.get(website,List.class);
+        if(marketNavShowCacheList != null){
+            return marketNavShowCacheList;
+        }
+        ShiguOuterMarketExample outerMarketExample = new ShiguOuterMarketExample();
+        outerMarketExample.createCriteria().andWebSiteEqualTo(website);
+        List<ShiguOuterMarket> outerMarketList = shiguOuterMarketMapper.selectByExample(outerMarketExample);
+        List<MarketNavShow> marketNavShowList = new ArrayList<MarketNavShow>();
+        for (int i = 0; i < outerMarketList.size(); i++) {
+            ShiguOuterMarket outerMarket = outerMarketList.get(i);
+            MarketNavShow marketNavShow = new MarketNavShow();
+            marketNavShow.setMarketName(outerMarket.getMarketName());
+            marketNavShow.setMid(outerMarket.getRuleId());
+            marketNavShow.setWebSite(outerMarket.getWebSite());
+            marketNavShowList.add(marketNavShow);
+        }
+        cache.put(website,marketNavShowList);
+        return marketNavShowList;
     }
 }

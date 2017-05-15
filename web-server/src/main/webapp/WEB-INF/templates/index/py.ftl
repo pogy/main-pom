@@ -305,7 +305,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
         <ul class="nav">
                 <li><a href="#0F"><i class="iconfont">&#xe62d;</i><span>新品</span></a></li> 
                 <li><a href="#1F"><i class="iconfont">&#xe60e;</i><span>男装</span></a></li> 
-                <li><a href="#2F"><i class="iconfont">&#xe606;</i><span>女装</span></a></li>
+                <li><a href="#2F"><i class="iconfont">&#xe606</i><span>女装</span></a></li> 
         </ul> 
         <a class="linkqq" target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116"><i class="iconfont">&#xe60d;</i><span>客服</span></a>
     </div>

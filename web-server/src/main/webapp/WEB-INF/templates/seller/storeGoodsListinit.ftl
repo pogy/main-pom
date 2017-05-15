@@ -280,7 +280,9 @@ var webSite = '${webSite!}';
                 <li class="posttype">${item.type!}</li>
                 <li class="downshelftime"><#if item.delistTime??>${item.delistTime!}<#else>--</#if></li>
                 <li class="control">
-                    <button class="sjgoods">上架</button>
+                    <#if item.type != "淘宝同步">
+                        <button class="sjgoods">上架</button>
+                    </#if>
                     <button class="scgoods">删除</button>
                 </li>
             </ul>
