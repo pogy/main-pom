@@ -85,7 +85,15 @@ public class ActivityAction {
             }
         }
 
+        if(userVoList == null){
+            userVoList = new ArrayList<ActiveDrawRecordUserVo>();
+        }
 
+        for (int i = 0; i < userVoList.size(); i++) {
+            if(userVoList.get(i).getDrawStatus().intValue() == 1){
+                userVoList.get(i).setDrawStatus(2);
+            }
+        }
 
         model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
         model.addAttribute("styleItem", drawStyleVo);
@@ -200,5 +208,17 @@ public class ActivityAction {
         return "activity/fdGdsLqzjb";
     }
 
+
+    /**
+     *
+     * @return
+     */
+    @RequestMapping(value = "activity/activeTest" , method = RequestMethod.GET)
+    public String activeTest(){
+
+        System.out.println(JSON.toJSONString(activeDrawServiceImpl.selGoodsList(1L,ActiveDrawGoods.TYPE_DAILYFIND,30,null)));
+
+        return null;
+    }
 
 }
