@@ -383,6 +383,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                     drawShopVo.setuText(activeDrawShop.getuText());
                     drawShopVo.setdText(activeDrawShop.getdText());
                     drawShopVo.setPitId(activeDrawShop.getPitId());
+                    drawShopVo.setShopId(activeDrawShop.getShopId());
                     if(StringUtils.isEmpty(drawShopVo.getMarketName())){
                         ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguShop.getMarketId(),
                                 FieldUtil.codeFields("market_id,market_name"));
