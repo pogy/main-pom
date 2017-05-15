@@ -209,16 +209,5 @@ public class ActivityAction {
     }
 
 
-    /**
-     *
-     * @return
-     */
-    @RequestMapping(value = "activity/activeTest" , method = RequestMethod.GET)
-    public String activeTest(){
-
-        System.out.println(JSON.toJSONString(activeDrawServiceImpl.selGoodsList(1L,ActiveDrawGoods.TYPE_DAILYFIND,30,null)));
-
-        return null;
-    }
 
 }

@@ -125,4 +125,10 @@ public interface ActiveDrawService {
      * @param recordId
      */
     public void chooseDrawWard(Long recordId);
+
+    /**
+     * 查询本期店铺IDS
+     * @return
+     */
+    public List<Long> findDrawShopIds();
 }

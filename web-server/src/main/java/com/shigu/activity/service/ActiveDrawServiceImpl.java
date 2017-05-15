@@ -861,4 +861,21 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             throw new Main4Exception("领取发生错误");
         }
     }
+
+    /**
+     * 查询本期店铺IDS
+     * @return
+     */
+    @Override
+    public List<Long> findDrawShopIds() {
+        // 当前本期
+        ActiveDrawPemVo activeDrawPemVo = selNowDrawPem(null);
+        if(activeDrawPemVo == null){return null;}
+        ActiveDrawShopExample shopExample = new ActiveDrawShopExample();
+        shopExample.createCriteria().andPemIdEqualTo(activeDrawPemVo.getId());
+        shopExample.setOrderByClause("sort asc");
+        List<ActiveDrawShop> activeDrawShops = activeDrawShopMapper.selectFieldsByExample(shopExample,FieldUtil.codeFields("id,shop_id"));
+        List shopIdsList = BeanMapper.getFieldList(activeDrawShops, "shopId", List.class);
+        return shopIdsList;
+    }
 }
