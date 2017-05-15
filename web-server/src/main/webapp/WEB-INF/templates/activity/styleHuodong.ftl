@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网拥有丰富的线下服装批发进货渠道，四季星座、置地国际、电商基地、钱塘大厦、保太和、星座女装、新杭派、九天女装、意法服饰等杭州四季青实体批发市场都已入驻，实体批发档口高达15000多家，为全国淘宝网店代理商提供一手货源。同时支持一件代发，一键上传到淘宝、到阿里、到微信，数据包下载，无理由退换货服务。">
     
-    <link href="http://style.571xz.com/searchV5/css/newStyleHd.css?t=1494815880652" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/newStyleHd.css?t=1494822891757" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/newStyleHd.js?t=1494815880652"></script>
+    <script src="http://style.571xz.com/searchV5/js/newStyleHd.js?t=1494822891757"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -276,15 +276,15 @@ var webSite = '${webSite!}';
                 <li>
                     <img src='http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=${user.userNick!}&width=80&height=80&type=sns' alt />
                     <span>${user.hideUserNick!}</span>
-                    <#if user.pemId == 2 && user.ward == 'A2'>
+                    <#if user.pemId == 2 && (user.ward == 'A2' || user.ward == 'B2')>
                     <span>（小米充电宝一个）</span>
                     <#elseif user.pemId == 2 && user.ward == 'A3'>
                     <span>（小牛电动车一台）</span>
-                    <#elseif user.pemId == 3 && user.ward == 'A2'>
+                    <#elseif user.pemId == 8 && (user.ward == 'A2' || user.ward == 'B2')>
                     <span>（机械键盘或鼠标一个）</span>
-                    <#elseif user.pemId == 3 && user.ward == 'A3'>
+                    <#elseif user.pemId == 8 && user.ward == 'A3'>
                     <span>（二合一笔记本一台）</span>
-                    <#elseif user.pemId == 3 && user.ward == 'A4'>
+                    <#elseif user.pemId == 8 && user.ward == 'A4'>
                     <span>（外星人台式机一台）</span>
                     </#if>
                 </li>
@@ -378,14 +378,7 @@ var webSite = '${webSite!}';
                                     <p><em class="noFinish">未完成</em></p>
                                 </div>
                             </li>
-                            <li>
-                                <div class="imgBox">
-                                    <i class="phone"></i>
-                                </div>
-                                <div class="awardStatus">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
+                            
                     </ul>
                 </div>
             </div>
