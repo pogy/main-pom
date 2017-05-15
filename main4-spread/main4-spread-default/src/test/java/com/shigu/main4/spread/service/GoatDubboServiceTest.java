@@ -32,4 +32,10 @@ public class GoatDubboServiceTest {
         List<GoatIntermVO> givs=goatDubboService.selGoatByLocalId(1L,GoatType.ImgGoat);
         System.out.println(givs);
     }
+
+    @Test
+    public void selByLocalId() throws GoatException, ActivityException {
+        List<GoatIntermVO> list=goatDubboService.selGoatByLocalId(33L,GoatType.ItemGoat);
+        System.out.println(list);
+    }
 }

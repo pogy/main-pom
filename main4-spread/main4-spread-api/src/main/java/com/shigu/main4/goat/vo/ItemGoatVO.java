@@ -26,15 +26,15 @@ public class ItemGoatVO extends GoatVO implements Serializable{
     /**
      * 风格
      */
-    private String style;
+    private String tag1;
     /**
      * 元素
      */
-    private String element;
+    private String tag2;
     /**
      * 店铺标题
      */
-    private String shopTitle;
+    private String tag3;
 
     public Long getItemId() {
         return itemId;
@@ -60,27 +60,27 @@ public class ItemGoatVO extends GoatVO implements Serializable{
         this.picUrl = picUrl;
     }
 
-    public String getStyle() {
-        return style;
+    public String getTag1() {
+        return tag1;
     }
 
-    public void setStyle(String style) {
-        this.style = style;
+    public void setTag1(String tag1) {
+        this.tag1 = tag1;
     }
 
-    public String getElement() {
-        return element;
+    public String getTag2() {
+        return tag2;
     }
 
-    public void setElement(String element) {
-        this.element = element;
+    public void setTag2(String tag2) {
+        this.tag2 = tag2;
     }
 
-    public String getShopTitle() {
-        return shopTitle;
+    public String getTag3() {
+        return tag3;
     }
 
-    public void setShopTitle(String shopTitle) {
-        this.shopTitle = shopTitle;
+    public void setTag3(String tag3) {
+        this.tag3 = tag3;
     }
 }
