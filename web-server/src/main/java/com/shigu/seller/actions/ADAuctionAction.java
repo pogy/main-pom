@@ -97,6 +97,10 @@ public class ADAuctionAction {
             model.addAttribute("lxtel",enlistVO.getTelephone());
             model.addAttribute("marketText",logshop.getMarket());
             model.addAttribute("storeNum",logshop.getShopNum());
+            model.addAttribute("typeId",activityVO.getActivityId());
+            model.addAttribute("nowTimeValue",new Date().getTime());
+            ActivityTerm term=activityFactory.selTermById(activityVO.getTermId());
+            model.addAttribute("countdownValue",term.getEndTime().getTime());
             return ftlDir+"/dtggapplyinfo";
         }
         //没报名去,apply
