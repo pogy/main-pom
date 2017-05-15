@@ -4,7 +4,7 @@
 
 	<select	id="selDrawRecordList" resultType="com.opentae.data.mall.beans.ActiveDrawRecord">
 		SELECT
-			r.*, s.sub_user_name as user_nick,u.login_phone
+			r.*, s.sub_user_name as user_nick,u.login_phone,substring(r.ward,2,1) as s
 		FROM
 			active_draw_record r,
 			member_user u,
@@ -26,7 +26,7 @@
 			AND r.ward != 'A1' AND r.ward != 'B1'
 			AND r.draw_status = 3
 			AND draw_code is not null
-			ORDER BY r.modify_time DESC
+			ORDER BY r.pem_id DESC,s DESC
 			LIMIT 80
 		</if>
 		<if test="startRows != null">
