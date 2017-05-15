@@ -12,7 +12,7 @@
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.1.4-RELEASE</version>
+    <version>4.1.5-RELEASE</version>
     <!--versions:update-child-modules-->
     <modules>
         <module>main4-dao</module>
@@ -51,7 +51,6 @@
 
         <spring.version>4.1.6.RELEASE</spring.version>
         <syn-finder-api.version>4.0.0-SNAPSHOT</syn-finder-api.version>
-        <web-server.version>4.0.0-SNAPSHOT</web-server.version>
         <orika.version>1.4.6</orika.version>
         <ehcache.version>2.7.0</ehcache.version>
         <shiro.version>1.2.3</shiro.version>

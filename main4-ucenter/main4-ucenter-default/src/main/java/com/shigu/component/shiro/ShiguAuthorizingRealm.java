@@ -74,9 +74,5 @@ public abstract class ShiguAuthorizingRealm extends AuthorizingRealm {
             }
         }
         //判断后台的
-        SysUserSession sysUserSession= (SysUserSession) session.getAttribute(SessionEnum.SYS_USER.getValue());
-        if(sysUserSession!=null){
-            info.addRole(UserType.SYSTEM.getValue());
-        }
     }
 }
