@@ -85,6 +85,16 @@ public class ActivityAction {
             }
         }
 
+        if(userVoList == null){
+            userVoList = new ArrayList<ActiveDrawRecordUserVo>();
+        }
+
+        for (int i = 0; i < userVoList.size(); i++) {
+            if(userVoList.get(i).getDrawStatus().intValue() == 1){
+                userVoList.get(i).setDrawStatus(2);
+            }
+        }
+
         model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
         model.addAttribute("styleItem", drawStyleVo);
         model.addAttribute("likeGoodsList", daliyGoodsVoList);
