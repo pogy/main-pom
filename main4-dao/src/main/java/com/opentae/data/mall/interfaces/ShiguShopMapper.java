@@ -3,6 +3,7 @@ package com.opentae.data.mall.interfaces;
 import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.beans.ShopNumAndMarket;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
@@ -42,4 +43,6 @@ public interface ShiguShopMapper extends Mapper<ShiguShop> {
 
     /** 查询是否存在已经的域名 */
     Long selectDoaminRepeatById(@Param("domain") String domain,@Param("shopId") Long shopId, @Param("shopNum") String shopNum);
+
+    List<ShopNumAndMarket> selShopNumAndMarkets(@Param("shopIdList") List<Long> shopIdList);
 }

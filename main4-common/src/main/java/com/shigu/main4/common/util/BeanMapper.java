@@ -4,6 +4,7 @@ import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -15,7 +16,52 @@ public class BeanMapper {
     static {
         MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
         mapper = mapperFactory.getMapperFacade();
+    }
 
+    /**
+     * 转化抽象类
+     * @param source
+     * @param destination
+     * @param <S>
+     * @param <D>
+     * @return
+     */
+    public static <S,D> D mapAbstact(S source,D destination){
+        Class<S> sourceClass= (Class<S>) source.getClass();
+        Class<D> destinationClass= (Class<D>) destination.getClass();
+        Field[] fields=sourceClass.getDeclaredFields();
+        Field[] fieldsSupper=sourceClass.getSuperclass().getDeclaredFields();
+        List<Field> fieldList=new ArrayList<>();
+        fieldList.addAll(Arrays.asList(fields));
+        fieldList.addAll(Arrays.asList(fieldsSupper));
+        for(Field f:fieldList){
+            if(f.getModifiers()!=2){
+                continue;
+            }
+            String fieldName=f.getName();
+            fieldName=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+            String setFieldName="set"+fieldName;
+            String getFieldName="get"+fieldName;
+            try {
+                Method getMethod=sourceClass.getMethod(getFieldName);
+                Method method=destinationClass.getMethod(setFieldName,f.getType());
+                method.invoke(destination,getMethod.invoke(source));
+            } catch (Exception e) {
+            }
+        }
+        return destination;
+    }
+    /**
+     * 值拷贝
+     * @param source
+     * @param destination
+     * @param <S>
+     * @param <D>
+     * @return
+     */
+    public static <S,D> D map(S source,D destination){
+        mapper.map(source,destination);
+        return destination;
     }
 
     /**
