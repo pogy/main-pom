@@ -635,6 +635,8 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 //        repository.insert(seb);
         goodsAddToRedis.addToRedis(seb);
         sameItemUtilAddRemove(tiny, true);
+        //添加首图到图搜
+        addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),tiny.getPicUrl(),1);
 
         return tiny.getGoodsId();
     }
@@ -682,6 +684,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                                     .setDoc(JSON.toJSONStringWithDateFormat(esGoods, "yyyy-MM-dd HH:mm:ss"))
                     );
                 }
+                addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),tiny.getPicUrl(),1);
             }
             if (bulk.numberOfActions() > 0) {
                 BulkResponse bulkResponse = bulk.get();
