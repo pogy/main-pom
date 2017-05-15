@@ -14,6 +14,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.services.ShopsItemService;
@@ -27,14 +28,18 @@ import com.shigu.main4.storeservices.ShopDiscusService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.vo.FitmentArea;
+import com.shigu.main4.vo.FitmentModule;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.ShopBaseForCdn;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.seller.services.ShopDesignService;
+import com.shigu.seller.vo.AreaVO;
 import com.shigu.seller.vo.ContainerVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -456,14 +461,36 @@ public class CdnAction {
         }
         StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
         String webSite=storeRelation.getWebSite();
-        Long pageId=shopDesignService.selPageIdByShopId(bo.getId());
-        shopData(bo.getId(),pageId,webSite,model);
-        model.addAttribute("webSite",webSite);
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
             return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
         }
+        Long pageId=shopDesignService.selPageIdByShopId(bo.getId());
+        ContainerVO vo=shopData(bo.getId(),pageId,webSite,model);
+        //如果没有装修过
+        if(noFitment(vo)){
+            shopSearch(bo,result,model);
+        }
+        model.addAttribute("webSite",webSite);
         return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+    }
+
+    private boolean noFitment(ContainerVO vo){
+        if(vo.getFitmentAreas()==null||vo.getFitmentAreas().size()!=1
+        ||vo.getFitmentAreas().get(0).getLeftarea()==null||vo.getFitmentAreas().get(0).getLeftarea().size()!=1
+                ||vo.getFitmentAreas().get(0).getLeftarea().get(0).getModuleType()!= FitmentModuleType.Category.value
+                ||vo.getFitmentAreas().get(0).getRightarea()==null||vo.getFitmentAreas().get(0).getRightarea().size()!=1
+                ||vo.getFitmentAreas().get(0).getRightarea().get(0).getModuleType()!=FitmentModuleType.Promote.value){
+            return false;
+        }
+        ItemPromoteModule promote= (ItemPromoteModule) vo.getFitmentAreas().get(0).getRightarea().get(0);
+        if(promote.getPromoteType()==1&&promote.getSort()==1&&promote.getItemNum()==16&&promote.getShowPage()==0
+                &&promote.getShowTitle()==1&&promote.getShowGoodsNo()==0&&promote.getShowPrice()==1
+                &&promote.getTitle().equals("推荐宝贝")&&promote.getRadio()==4&&promote.getFilter()==0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -501,7 +528,7 @@ public class CdnAction {
         String webSite=storeRelation.getWebSite();
         shopData(bo.getId(),pageId,webSite,model);
         ContainerVO containerVO= (ContainerVO) model.asMap().get("container");
-        containerVO.getSearchModule().getData().put("catPolymerizations",shopForCdnService.selCatRolymerizations(bo.getId()));//类目聚合
+        containerVO.getSearchModule().getData().put("catPolymerizations",cdnService.formatCatPoly(bo.getId()));//类目聚合
         ShiguPager<ItemShowBlock> pager;
         Date startDate;
         Date endDate;
@@ -542,13 +569,14 @@ public class CdnAction {
      * @throws ShopFitmentException
      * @throws IOException
      */
-    private void shopData(Long shopId,Long pageId,String webSite,Model model) throws ShopFitmentException, IOException {
+    private ContainerVO shopData(Long shopId,Long pageId,String webSite,Model model) throws ShopFitmentException, IOException {
         ContainerVO containerVO=shopDesignService.selPagePublishedById(pageId,shopDesignService.selShopForModule(shopId,
                 webSite));
         model.addAttribute("container",containerVO);
         model.addAttribute("pages",shopDesignService.selAllPage(shopId));
         model.addAttribute("isEditer",false);
         model.addAttribute("vo",cdnService.shopSimpleVo(shopId));
+        return containerVO;
     }
 
     /**
