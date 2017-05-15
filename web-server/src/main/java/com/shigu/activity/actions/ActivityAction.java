@@ -85,6 +85,8 @@ public class ActivityAction {
             }
         }
 
+
+
         model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
         model.addAttribute("styleItem", drawStyleVo);
         model.addAttribute("likeGoodsList", daliyGoodsVoList);
@@ -198,17 +200,5 @@ public class ActivityAction {
         return "activity/fdGdsLqzjb";
     }
 
-
-    /**
-     *
-     * @return
-     */
-    @RequestMapping(value = "activity/activeTest" , method = RequestMethod.GET)
-    public String activeTest(){
-
-        System.out.println(JSON.toJSONString(activeDrawServiceImpl.selGoodsList(1L,ActiveDrawGoods.TYPE_DAILYFIND,30,null)));
-
-        return null;
-    }
 
 }
