@@ -43,7 +43,7 @@
                 <a href="javascript:;">共搜索到 ${goodsList.totalCount} 个符合条件的商品</a>
             </div>
             <div class="search-input">
-                <form id="search" action="" method="get">
+                <form id="search" action="/shop/search.htm" method="get">
                     <input type="hidden" name="id" value="${shop.shopId}">
                     <span>关键字:&nbsp;&nbsp;</span>
                     <input type="text" name="pstring" value="${bo.pstring!}" style="width: 130px;">
@@ -277,7 +277,7 @@
             <#assign pageparam=pageparam+"&endDate="+bo.endDate/>
         </#if>
     </#if>
-    <#assign href = "?${pageparam}&pageNo=">
+    <#assign href = "/shop/search.htm?${pageparam}&pageNo=">
     <#if goodsList.content?size gt 0>
         <div class="editpage clearfix" style="margin-top: 25px;">
             <div class="page-link">

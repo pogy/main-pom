@@ -78,6 +78,7 @@ public class ADAuctionAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession logshop = ps.getLogshop();
         // 电商基地&精品男装& (!测试店铺32888)
+        if(id==null||id==1001L)
         if (logshop.getShopId() != 35992 && logshop.getMarketId() != 1087 && logshop.getMarketId() != 613) {
              return ftlDir+"/dtggapplyNull";
         }
@@ -96,6 +97,10 @@ public class ADAuctionAction {
             model.addAttribute("lxtel",enlistVO.getTelephone());
             model.addAttribute("marketText",logshop.getMarket());
             model.addAttribute("storeNum",logshop.getShopNum());
+            model.addAttribute("typeId",activityVO.getActivityId());
+            model.addAttribute("nowTimeValue",new Date().getTime());
+            ActivityTerm term=activityFactory.selTermById(activityVO.getTermId());
+            model.addAttribute("countdownValue",term.getEndTime().getTime());
             return ftlDir+"/dtggapplyinfo";
         }
         //没报名去,apply

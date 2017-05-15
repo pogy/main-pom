@@ -1,10 +1,12 @@
 package com.shigu.main4.vo;
 
+import java.io.Serializable;
+
 /**
  * 店铺注册信息
  * Created by Licca on 17/2/20.
  */
-public class ShopRegister {
+public class ShopRegister implements Serializable {
     /**
      * 用户ID
      */
