@@ -182,17 +182,17 @@ $('.fixtopbar .tabbox li').on('click', function(){
         
         <div class="list j-list" data-id="j-manclo">
         
-            <h2><a href="http://so.571xz.com/jxgoods.htm?cid=30" target="_blank"><i class="iconfont">&#xe605;</i>男装</a></h2>
+            <h2><a href="http://so.571xz.com/jxgoods.htm?pid=701" target="_blank"><i class="iconfont">&#xe605;</i>男装</a></h2>
             <ul class="clearfix">
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000436">T恤</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011123">衬衫</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010159">卫衣</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010402">Polo衫</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011159">风衣</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=3035">休闲裤</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010167">牛仔裤</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=运动裤">运动裤</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=短裤">短裤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000436&amp;pid=701">T恤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011123&amp;pid=701">衬衫</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010159&amp;pid=701">卫衣</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010402&amp;pid=701">Polo衫</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011159&amp;pid=701">风衣</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=3035&amp;pid=701">休闲裤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010167&amp;pid=701">牛仔裤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=运动裤&amp;pid=701">运动裤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=短裤&amp;pid=701">短裤</a></li>
             </ul>
         </div>
         
@@ -201,17 +201,17 @@ $('.fixtopbar .tabbox li').on('click', function(){
         
         <div class="list j-list" data-id="j-womanclo">
         
-            <h2><a href="http://so.571xz.com/jxgoods.htm?cid=16" target="_blank"><i class="iconfont">&#xe606;</i>女装</a></h2>
+            <h2><a href="http://so.571xz.com/jxgoods.htm?pid=702" target="_blank"><i class="iconfont">&#xe606;</i>女装</a></h2>
             <ul class="clearfix">
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000671">T恤</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162104">衬衫</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=针织衫">针织衫</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008898">卫衣</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=背带裙">背带裙</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162205">牛仔裤</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010850">连衣裙</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=长裙">长裙</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1629">大码女装</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000671&amp;pid=702">T恤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162104&amp;pid=702">衬衫</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=针织衫&amp;pid=702">针织衫</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008898&amp;pid=702">卫衣</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=背带裙&amp;pid=702">背带裙</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162205&amp;pid=702">牛仔裤</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010850&amp;pid=702">连衣裙</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?keyword=长裙&amp;pid=702">长裙</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1629&amp;pid=702">大码女装</a></li>
             </ul>
         </div>
         
@@ -220,14 +220,14 @@ $('.fixtopbar .tabbox li').on('click', function(){
         
         <div class="list j-list" data-id="j-childclo">
         
-            <h2><a href="http://so.571xz.com/jxsearch.htm?cid=50008165" target="_blank"><i class="iconfont">&#xe6df;</i>童装</a></h2>
+            <h2><a href="http://so.571xz.com/jxgoods.htm?pid=703" target="_blank"><i class="iconfont">&#xe6df;</i>童装</a></h2>
             <ul class="clearfix">
-                <li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010540">套装</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50013618">裤子</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=校服">校服/校服定制</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010524">马甲</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50012424">亲子装/亲子时装</a></li>
-                <li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010518">卫衣/绒衫</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010540&amp;pid=703">套装</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013618&amp;pid=703">裤子</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50016450&amp;pid=703">校服/校服定制</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010524&amp;pid=703">马甲</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50012424&amp;pid=703">亲子装/亲子时装</a></li>
+                <li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010518&amp;pid=703">卫衣/绒衫</a></li>
             </ul>
         </div>
         
@@ -239,21 +239,21 @@ $('.fixtopbar .tabbox li').on('click', function(){
         <div class="detail-box j-manclo">
         
             <ul class="box-cols3 clearfix"> <!-- 根据类目数量控制容器宽度 -->
-<li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011123">衬衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010158">夹克</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000557">针织衫/毛衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010159">卫衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=皮裤">皮裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=民族服装">民族服装</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=西裤">西裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=工装制服">工装制服</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=西服套装">西服套装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=124730001">套装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011153">背心/马甲</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=3035">休闲裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=羽绒裤">羽绒裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=棉裤">棉裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000436">T恤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50025883">毛呢大衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011159">风衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011161">皮衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010402">Polo衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010160">西服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011165">棉衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010167">牛仔裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011167">羽绒服</a></li>            </ul>
+<li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011123&amp;pid=701">衬衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010158&amp;pid=701">夹克</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000557&amp;pid=701">针织衫/毛衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010159&amp;pid=701">卫衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011127&amp;pid=701">皮裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50001748&amp;pid=701">民族服装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011129&amp;pid=701">西裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50005867&amp;pid=701">工装制服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011130&amp;pid=701">西服套装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=124730001&amp;pid=701">套装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011153&amp;pid=701">背心/马甲</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=3035&amp;pid=701">休闲裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50025884&amp;pid=701">羽绒裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50025885&amp;pid=701">棉裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000436&amp;pid=701">T恤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50025883&amp;pid=701">毛呢大衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011159&amp;pid=701">风衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011161&amp;pid=701">皮衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010402&amp;pid=701">Polo衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010160&amp;pid=701">西服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011165&amp;pid=701">棉衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010167&amp;pid=701">牛仔裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011167&amp;pid=701">羽绒服</a></li>            </ul>
         
         
-<a class="channel" href="http://so.571xz.com/jxgoods.htm?cid=30">进入男装频道<i class="iconfont">&#xe676;</i></a>        </div>
+<a class="channel" href="http://so.571xz.com/jxgoods.htm?pid=701">进入男装频道<i class="iconfont">&#xe676;</i></a>        </div>
         <div class="detail-box j-womanclo">
         
             <ul class="box-cols4 clearfix"> <!-- 根据类目数量控制容器宽度 -->
-<li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50022566">西装裤/正装裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010850">连衣裙</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011277">短外套</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=蕾丝衫">蕾丝衫/雪纺衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=毛针织衫">毛针织衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162205">牛仔裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=抹胸">抹胸</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162201">休闲裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011404">婚纱/旗袍/礼服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50026651">棉裤/羽绒裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008906">唐装/民族服装/舞台服装</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=皮衣">皮衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=皮草">皮草</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008898">卫衣/绒衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=羽绒服">羽绒服</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=中老年女装">中老年女装</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=背心吊带">背心吊带</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=西装">西装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008900">棉衣/棉服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000671">T恤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008901">风衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1624">职业套装/学生校服/工作制服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162103">毛衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1629">大码女装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013194">毛呢外套</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50007068">打底裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162104">衬衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=小背心">小背心/小吊带</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1623">半身裙</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013196">马夹</a></li>            </ul>
+<li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50022566&amp;pid=702">西装裤/正装裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010850&amp;pid=702">连衣裙</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011277&amp;pid=702">短外套</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162116&amp;pid=702">蕾丝衫/雪纺衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000697&amp;pid=702">毛针织衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162205&amp;pid=702">牛仔裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121434004&amp;pid=702">抹胸</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162201&amp;pid=702">休闲裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50011404&amp;pid=702">婚纱/旗袍/礼服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50026651&amp;pid=702">棉裤/羽绒裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008906&amp;pid=702">唐装/民族服装/舞台服装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008904&amp;pid=702">皮衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008905&amp;pid=702">皮草</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008898&amp;pid=702">卫衣/绒衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008899&amp;pid=702">羽绒服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000852&amp;pid=702">中老年女装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121412004&amp;pid=702">背心吊带</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008897&amp;pid=702">西装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008900&amp;pid=702">棉衣/棉服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50000671&amp;pid=702">T恤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50008901&amp;pid=702">风衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1624&amp;pid=702">职业套装/学生校服/工作制服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162103&amp;pid=702">毛衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1629&amp;pid=702">大码女装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013194&amp;pid=702">毛呢外套</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50007068&amp;pid=702">打底裤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162104&amp;pid=702">衬衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=162105&amp;pid=702">小背心/小吊带</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=1623&amp;pid=702">半身裙</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013196&amp;pid=702">马夹</a></li>            </ul>
         
         
 <a class="channel" href="http://so.571xz.com/jxgoods.htm?cid=16">进入女装频道<i class="iconfont">&#xe676;</i></a>        </div>
         <div class="detail-box j-childclo">
         
             <ul class="box-cols5 clearfix"> <!-- 根据类目数量控制容器宽度 -->
-<li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=儿童礼服">儿童礼服</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=121392004">儿童配饰</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=儿童泳衣">儿童泳衣/裤/帽</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010518">卫衣/绒衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=背心">背心/吊带衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50012340">童鞋/婴儿鞋</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=121476002">肚兜/肚围/护脐带</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=抹胸">抹胸</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=婴儿礼盒">婴儿礼盒</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010526">羽绒服/羽绒内胆</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010527">衬衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010524">马甲</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=裙子">裙子</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=校服">校服/校服定制</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=儿童舞蹈服">儿童舞蹈服/演出服/礼服</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50013618">裤子</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=121388045">裙子(新)</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50012424">亲子装/亲子时装</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=肚围">肚围/护脐带/肚兜</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50012308">外套/夹克/大衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=121364003">儿童家居服</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50006217">其它</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=121364004">背心吊带</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50146004">反穿衣/罩衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=儿童发饰">儿童配饰/发饰</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010531">棉袄/棉服</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=披风">披风/斗篷</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50013189">T恤</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50006584">儿童袜子(0-16岁)</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=连身衣">连身衣/爬服/哈衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=儿童内衣裤">儿童内衣裤/睡衣(0-16岁)</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=121464004">儿童泳装</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50006583">帽子/围巾/口罩/手套/耳套/脚套</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50152002">儿童旗袍/唐装/民族服装</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?keyword=儿童演出服">儿童演出服</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010539">毛衣/针织衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=50010540">套装</a></li><li><a target="_blank" href="http://so.571xz.com/jxsearch.htm?cid=121380002">儿童内衣裤</a></li>            </ul>
+<li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121506001&amp;pid=703">儿童礼服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121392004&amp;pid=703">儿童配饰</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50023868&amp;pid=703">儿童泳衣/裤/帽</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010518&amp;pid=703">卫衣/绒衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50156002&amp;pid=703">背心/吊带衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50012340&amp;pid=703">童鞋/婴儿鞋</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121476002&amp;pid=703">肚兜/肚围/护脐带</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121476003&amp;pid=703">抹胸</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50014512&amp;pid=703">婴儿礼盒</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010526&amp;pid=703">羽绒服/羽绒内胆</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010527&amp;pid=703">衬衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010524&amp;pid=703">马甲</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013693&amp;pid=703">裙子</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50016450&amp;pid=703">校服/校服定制</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50016012&amp;pid=703">儿童舞蹈服/演出服/礼服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013618&amp;pid=703">裤子</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121388045&amp;pid=703">裙子(新)</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50012424&amp;pid=703">亲子装/亲子时装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121476002&amp;pid=703">肚围/护脐带/肚兜</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50012308&amp;pid=703">外套/夹克/大衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121364003&amp;pid=703">儿童家居服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50006217&amp;pid=703">其它</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121364004&amp;pid=703">背心吊带</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50146004&amp;pid=703">反穿衣/罩衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50024824&amp;pid=703">儿童配饰/发饰</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010531&amp;pid=703">棉袄/棉服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010530&amp;pid=703">披风/斗篷</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50013189&amp;pid=703">T恤</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50006584&amp;pid=703">儿童袜子(0-16岁)</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010537衣&amp;pid=703">连身衣/爬服/哈衣</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50012433&amp;pid=703">儿童内衣裤/睡衣(0-16岁)</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121464004&amp;pid=703">儿童泳装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50006583&amp;pid=703">帽子/围巾/口罩/手套/耳套/脚套</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50152002&amp;pid=703">儿童旗袍/唐装/民族服装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121462057&amp;pid=703">儿童演出服</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010539&amp;pid=703">毛衣/针织衫</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=50010540&amp;pid=703">套装</a></li><li><a target="_blank" href="http://so.571xz.com/jxgoods.htm?cid=121380002&amp;pid=703">儿童内衣裤</a></li>            </ul>
         
         
         </div>
@@ -305,8 +305,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
         <ul class="nav">
                 <li><a href="#0F"><i class="iconfont">&#xe62d;</i><span>新品</span></a></li> 
                 <li><a href="#1F"><i class="iconfont">&#xe60e;</i><span>男装</span></a></li> 
-                <li><a href="#2F"><i class="iconfont">&#xe6df;</i><span>童装</span></a></li> 
-                <li><a href="#3F"><i class="iconfont">&#xe6dd;</i><span>男鞋</span></a></li> 
+                <li><a href="#2F"><i class="iconfont">&#xe606;</i><span>女装</span></a></li>
         </ul> 
         <a class="linkqq" target="_blank" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116"><i class="iconfont">&#xe60d;</i><span>客服</span></a>
     </div>
@@ -355,11 +354,11 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </ul>
     </div>
     </#if>
-<#assign text>{        "type":'童装',        "nF":'2F',        "goods":${list_childGoods!}}</#assign>
+<#assign text>{        "type":'女装',        "nF":'2F',        "goods":${nvzgoods!}}</#assign>
 <#assign $it=text?eval />
     <#if ($it.goods?size) gt 0 >
     <div class="goods-list layout goodslist-cols5">
-        <h2 id="2F">童装</h2> 
+        <h2 id="2F">女装</h2> 
         <ul class="clearfix">
             <#list $it.goods as item>
             <li>
@@ -377,11 +376,33 @@ $('.fixtopbar .tabbox li').on('click', function(){
         </ul>
     </div>
     </#if>
-<#assign text>{        "type":'男鞋',        "nF":'3F',        "goods":${xiebaogoods!}}</#assign>
+<#assign text>{        "type":'童装',        "nF":'3F',        "goods":${list_childGoods!}}</#assign>
 <#assign $it=text?eval />
     <#if ($it.goods?size) gt 0 >
     <div class="goods-list layout goodslist-cols5">
-        <h2 id="3F">男鞋</h2> 
+        <h2 id="3F">童装</h2> 
+        <ul class="clearfix">
+            <#list $it.goods as item>
+            <li>
+                <div> 
+                    <a title="${item.title!}" target="_blank" class="picbox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}">
+                        <img alt="${item.title!}" src="${item.imgsrc!}" original="${item.imgsrc!}">
+                    </a> 
+                    <p class="introduce">
+                        <a target="_blank" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" title="批发价： ￥ ${item.piprice!}" class="fl">批发价：<i>￥</i><b>${item.piprice!}</b></a>
+                        <a target="_blank" href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" title="${item.storeNum!}" class="fr"><b>${item.storeNum!}</b><i class="iconfont"></i></a> 
+                    </p> 
+                </div> 
+            </li>
+            </#list>
+        </ul>
+    </div>
+    </#if>
+<#assign text>{        "type":'男鞋',        "nF":'4F',        "goods":${xiebaogoods!}}</#assign>
+<#assign $it=text?eval />
+    <#if ($it.goods?size) gt 0 >
+    <div class="goods-list layout goodslist-cols5">
+        <h2 id="4F">男鞋</h2> 
         <ul class="clearfix">
             <#list $it.goods as item>
             <li>
@@ -471,7 +492,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
             </div> 
         </div>
         <div class="tel"> 
-            <img width="200" height="120" title="四季星座网服务热线" alt="四季星座网服务热线" src="http://www.571xz.com/images/fr.png"> 
+            <img width="200" height="120" title="四季星座网服务热线" alt="四季星座网服务热线" src="http://style.571xz.com/otherIndex/css/img/pyTel.png"> 
         </div>
     </div>
 </div>
