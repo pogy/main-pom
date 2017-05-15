@@ -256,7 +256,7 @@ var webSite = '${webSite!}';
                     </li>
                     <li>
                         <span class="detailName">投放日期：</span>
-                        <span class="detailVaule">${item.beginTime!} 至 ${item.endTime!}</span>
+                        <span class="detailVaule">${item.beginTime!}</span>
                     </li>
                     <li>
                         <span class="price">价格：</span>

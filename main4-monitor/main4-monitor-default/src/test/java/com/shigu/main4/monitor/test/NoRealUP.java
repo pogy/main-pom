@@ -1,14 +1,8 @@
 package com.shigu.main4.monitor.test;
 
-import com.opentae.data.mall.beans.GoatField;
-import com.opentae.data.mall.beans.GoatFieldValue;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.examples.GoatFieldExample;
-import com.opentae.data.mall.examples.GoatFieldValueExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.interfaces.GoatFieldMapper;
-import com.opentae.data.mall.interfaces.GoatFieldValueMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
@@ -43,11 +37,6 @@ public class NoRealUP {
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
-    @Autowired
-    GoatFieldMapper goatFieldMapper;
-
-    @Autowired
-    GoatFieldValueMapper goatFieldValueMapper;
 
     /**
      * 撸7天内
@@ -82,13 +71,20 @@ public class NoRealUP {
 //                    }
                     set.add(sgt.getGoodsId());
                 }
-//                if(Math.random()<0.4){
-//                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
-////                    if(set.contains(sgt.getGoodsId())){
-////                        System.out.println(sgt.getGoodsId());
-////                    }
-//                    set.add(sgt.getGoodsId());
-//                }
+                if(Math.random()<0.4){
+                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+//                    if(set.contains(sgt.getGoodsId())){
+//                        System.out.println(sgt.getGoodsId());
+//                    }
+                    set.add(sgt.getGoodsId());
+                }
+                if(Math.random()<0.5){
+                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+//                    if(set.contains(sgt.getGoodsId())){
+//                        System.out.println(sgt.getGoodsId());
+//                    }
+                    set.add(sgt.getGoodsId());
+                }
             }
             page++;
             example.setStartIndex(page*size);
@@ -102,21 +98,21 @@ public class NoRealUP {
      */
     @Test
     public void adsgo(){
-        GoatFieldExample fieldExample=new GoatFieldExample();
-        fieldExample.createCriteria().andFieldNameEqualTo("goods_id");
-        List<GoatField> fields=goatFieldMapper.selectByExample(fieldExample);
-        List<Long> fids=new ArrayList<>();
-        for(GoatField field:fields){
-            fids.add(field.getFid());
-        }
-        GoatFieldValueExample fieldValueExample=new GoatFieldValueExample();
-        fieldValueExample.createCriteria().andFidIn(fids);
-        List<GoatFieldValue> fieldValues=goatFieldValueMapper.selectByExample(fieldValueExample);
-
+//        GoatFieldExample fieldExample=new GoatFieldExample();
+//        fieldExample.createCriteria().andFieldNameEqualTo("goods_id");
+//        List<GoatField> fields=goatFieldMapper.selectByExample(fieldExample);
+//        List<Long> fids=new ArrayList<>();
+//        for(GoatField field:fields){
+//            fids.add(field.getFid());
+//        }
+//        GoatFieldValueExample fieldValueExample=new GoatFieldValueExample();
+//        fieldValueExample.createCriteria().andFidIn(fids);
+//        List<GoatFieldValue> fieldValues=goatFieldValueMapper.selectByExample(fieldValueExample);
+//
         List<Long> goodsIds=new ArrayList<>();
-        for(GoatFieldValue g:fieldValues){
-            goodsIds.add(Long.valueOf(g.getValue()));
-        }
+//        for(GoatFieldValue g:fieldValues){
+//            goodsIds.add(Long.valueOf(g.getValue()));
+//        }
 
         ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
         example.setWebSite("hz");
@@ -126,7 +122,7 @@ public class NoRealUP {
 //                if(Math.random()<0.5){
 //                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
 //                }
-                for(int i=0;i<10;i++)
+                for(int i=0;i<5;i++)
                 if(Math.random()<0.3){
                     itemUpRecordService.addItemUpRecord(upGoods(sgt));
                 }

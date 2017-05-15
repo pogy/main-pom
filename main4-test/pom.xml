@@ -5,7 +5,7 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.1.5-SNAPSHOT</version>
+        <version>4.1.5-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,7 +14,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-store-default</artifactId>
-            <version>${project.version}</version>
+            <version>4.0.7-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>xinzuo-mybatis</groupId>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-monitor-api</artifactId>
-            <version>${project.version}</version>
+            <version>4.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -72,7 +72,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-item-update</artifactId>
-            <version>${project.version}</version>
+            <version>4.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>

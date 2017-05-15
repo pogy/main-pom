@@ -5,7 +5,7 @@
     <parent>
         <artifactId>main4-store</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.1.5-SNAPSHOT</version>
+        <version>4.1.5-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -83,6 +83,11 @@
             <artifactId>xinzuo-mybatis</artifactId>
             <version>1.0.2-SNAPSHOT</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>sites.main</groupId>-->
+            <!--<artifactId>main4-store-default</artifactId>-->
+            <!--<version>4.0.0-SNAPSHOT</version>-->
+        <!--</dependency>-->
     </dependencies>
 
 

@@ -21,14 +21,19 @@
     <!-- 服务系列 cluster="failfast"-->
     <dubbo:service interface="com.shigu.main4.storeservices.ShopRegistService" ref="shopRegistService"  timeout="300000"/>
 
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopBaseService" ref="shopBaseService"  timeout="300000"/>
+
     <dubbo:service interface="com.shigu.main4.item.services.ItemAddOrUpdateService" ref="itemAddOrUpdateService" timeout="300000"/>
 
     <dubbo:service interface="com.shigu.main4.monitor.services.ItemUpRecordService" ref="itemUpRecordService" timeout="300000"/>
 
     <dubbo:service interface="com.shigu.main4.ucenter.services.UserLicenseService" ref="userLicenseService" timeout="20000"/>
 
-    <dubbo:service interface="com.shigu.main4.ucenter.services.UserLicenseService" ref="userLicenseService" timeout="20000"/>
-
     <dubbo:service interface="com.shigu.main4.ucenter.services.WxUserService" ref="wxUserService" timeout="20000"/>
 
+    <dubbo:service interface="com.shigu.main4.ucenter.services.UserBaseService" ref="userBaseService" timeout="20000"/>
+
+    <dubbo:service interface="com.shigu.main4.activity.service.ActivityDubboService" ref="activityDubboService" timeout="20000"/>
+    <dubbo:service interface="com.shigu.main4.goat.service.GoatDubboService" ref="goatDubboService" timeout="20000"/>
+    <dubbo:service interface="com.shigu.main4.spread.service.ActiveDrawService" ref="activeDrawService" timeout="20000" />
 </beans>

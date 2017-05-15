@@ -246,6 +246,7 @@ var webSite = '${webSite!}';
         <div class="applyForm">
             <p class="tip">恭喜您，活动正在进行中，请填写一下资料申请</p>
             <form id="form1" action="dtggapplyinfo.htm" method="post">
+                <input type="hidden" name="id" value="${activityId!}">
             <ul class="formbox">
                 <li><label>所属市场：</label>${session_user_redis__.logshop.market!}</li>
                 <li><label>档口号：</label>${session_user_redis__.logshop.shopNum!}</li>

@@ -165,4 +165,13 @@
 			and lower(shop_num) = lower(#{shopNum})
 		</if>
 	</select>
+
+	<select id="selShopNumAndMarkets" resultType="com.opentae.data.mall.beans.ShopNumAndMarket">
+		select a.shop_num as shopNum,a.shop_id as shopId,b.market_name as market from shigu_shop a,shigu_market b
+		where a.market_id=b.market_id and a.shop_id in
+		<foreach collection="shopIdList" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
 </mapper>
