@@ -7,7 +7,7 @@
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1494223207763" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1494822387189" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
 <script>/*============ indexV4/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1494223207763"></script>
+    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1494822387189"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -195,6 +195,14 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="fixtopbar">
     <div class="innner">
         <a class="logo" href="http://www.571xz.com"><img src="http://style.571xz.com/xz/css/img/mtLogo.png" title="四季星座网-首页" height="30" width="170"></a>
@@ -243,17 +251,18 @@
                 
                 
                 
-                
                 <li type="goods" class="select">商品</li>
                 <li type="store" >档口</li>
                 
             </ul>
+            <#if webSite == 'hz'>
             <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
+            </#if>
         </div>
         <div class="searchBox">
             
+            <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" target="_blank">
             
-            <form id="formSearch" action="http://so.571xz.com/hzsearch.htm" target="_blank">
                 
                 <input type="hidden" name="pid" value="30">
                 
@@ -262,6 +271,14 @@
             </form>
         </div>
     </div>
+    <script>/*============ xz/page#search BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#search END ============*/
+
+
+</script>
 </div>
 <div class="headerV1 layout">
     
