@@ -157,7 +157,6 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                             }
                         }
 
-
                         drawGoodsVoList.add(activeDrawGoodsVo);
                         activeDrawGoodsVo.setId(drawGoods.getId());
                         activeDrawGoodsVo.setPitId(drawGoods.getPitId());
@@ -293,6 +292,9 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      */
     @Override
     public void changeDrawGoods(Long id, Long goodsId, Long pemId, String type) {
+        if(id == null || goodsId == null || pemId == null){
+            return;
+        }
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
         drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id);
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
@@ -310,6 +312,19 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             return;
         }
         ActiveDrawGoods activeDrawGoods = drawGoodsList.get(0);
+        if(goodsId != null && activeDrawGoods.getGoodsId() != null
+                && goodsId.intValue() != activeDrawGoods.getGoodsId().intValue()){
+            // 更换商品
+            activeDrawGoods.setEnabled(true);
+            activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
+
+            // 新增商品
+            activeDrawGoods.setId(null);
+            activeDrawGoods.setEnabled(false);
+            activeDrawGoods.setGoodsId(goodsId);
+            activeDrawGoodsMapper.insertSelective(activeDrawGoods);
+            return;
+        }
         activeDrawGoods.setGoodsId(goodsId);
         activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
     }
@@ -584,8 +599,8 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         List<ActiveDrawRecordUserVo> drawRecordUserVos = new ArrayList<ActiveDrawRecordUserVo>();
         // 查询发现好货活动的数据
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
-        drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type)
-                .andEnabledEqualTo(false);
+        ActiveDrawGoodsExample.Criteria ctx = drawGoodsExample.createCriteria();
+        ctx.andPemIdEqualTo(pemId).andTypeEqualTo(type);
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
         List userIdList = BeanMapper.getFieldList(drawRecordList, "userId", List.class);
         List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
@@ -659,6 +674,10 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      */
     public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type){
         List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null);
+        if(userId != null){
+            // 过滤过期
+
+        }
         List<ActiveDrawRecordUserVo> recordUserVos = BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
         return recordUserVos;
     }
@@ -673,7 +692,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
         QueryBuilder userQuery = QueryBuilders.termQuery("fenUserId", userId);
         QueryBuilder goodsIdQuery = QueryBuilders.termsQuery("supperGoodsId", goodslist);
-        QueryBuilder startQuery = QueryBuilders.rangeQuery("daiTime");//.gte(DateUtil.dateToString(startTime,DateUtil.patternD)).format("yyyy-MM-dd HH:mm:ss");
+        QueryBuilder startQuery = QueryBuilders.rangeQuery("daiTime");
 
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         boolQuery.must(userQuery);
@@ -682,6 +701,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         srb.setQuery(boolQuery);
 
         srb.addAggregation(AggregationBuilders.terms("supperGoodsIdAgg").field("supperGoodsId").size(1000));
+
         SearchResponse response = srb.execute().actionGet();
         LongTerms supperGoodsIdAgg = response.getAggregations().get("supperGoodsIdAgg");
         int total = supperGoodsIdAgg.getBuckets().size();;
