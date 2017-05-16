@@ -348,7 +348,7 @@ public class CdnAction {
         StoreRelation storeRelation=storeRelationService.selRelationById(shopId);
         String webSite=storeRelation.getWebSite();
         model.addAttribute("baseUrl","http://"+webSite+".571xz.com/");
-        return shop(bo,null,model);
+        return shop(bo,null, model);
         //拼baseUrl
     }
     /**
@@ -525,7 +525,7 @@ public class CdnAction {
      */
     @RequestMapping("shop/search")
     public String shopSearch(@Valid ShopCdnBO bo,BindingResult result,Model model) throws ShopFitmentException, IOException, CdnException {
-        if(result.hasErrors()){
+        if(result!=null&&result.hasErrors()){
             throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
         }
         Long pageId=shopDesignService.selSearchIdByShopId(bo.getId());
