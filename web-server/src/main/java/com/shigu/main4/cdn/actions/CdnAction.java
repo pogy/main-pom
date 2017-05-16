@@ -389,7 +389,8 @@ public class CdnAction {
         model.addAttribute("newGoodsList",shopForCdnService.searchItemOnsale(null,cdnItem.getShopId(),"time_down",1,5).getContent());
         model.addAttribute("vo",itemShowVO);
         model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
-        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
+//        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
+        return "cdn/item";
     }
 
     /**
@@ -463,7 +464,8 @@ public class CdnAction {
         String webSite=storeRelation.getWebSite();
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
-            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+//            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+            return "cdn/shopDown";
         }
         Long pageId=shopDesignService.selPageIdByShopId(bo.getId());
         ContainerVO vo=shopData(bo.getId(),pageId,webSite,model);
@@ -472,7 +474,8 @@ public class CdnAction {
             shopSearch(bo,result,model);
         }
         model.addAttribute("webSite",webSite);
-        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+//        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+        return "cdn/shop";
     }
 
     private boolean noFitment(ContainerVO vo){
@@ -509,9 +512,11 @@ public class CdnAction {
         model.addAttribute("webSite",webSite);
         int shopStatus = shopBaseService.getShopStatus(shopId);
         if(shopStatus == 1){
-            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+//            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+            return "cdn/shopDown";
         }
-        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+//        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+        return "cdn/shop";
     }
 
     /**
@@ -555,9 +560,11 @@ public class CdnAction {
         //处理搜索条件
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
-            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+//            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+            return "cdn/shopDown";
         }
-        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+//        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
+        return "cdn/shop";
     }
 
     /**
@@ -658,7 +665,8 @@ public class CdnAction {
         if(vo.getDiscus()!=null)
         model.addAttribute("pageOption",vo.getDiscus().selPageOption(bo.getPageSize()));
         String webSite=vo.getStoreRelation().getWebSite();
-        return !"wa".equals(webSite)?"cdn/shopcomment":"cdn/wa_shopcomment";
+//        return !"wa".equals(webSite)?"cdn/shopcomment":"cdn/wa_shopcomment";
+        return "cdn/shopcomment";
     }
 
     @RequestMapping("downloadImg")
