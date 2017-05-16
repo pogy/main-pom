@@ -443,7 +443,7 @@ var webSite = '${vo.storeRelation.webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/wa_shop_item_temp/js/item.js"></script>
+<script src="http://style.571xz.com/wa_shop_item_temp/js/item.js?t=20170516"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
