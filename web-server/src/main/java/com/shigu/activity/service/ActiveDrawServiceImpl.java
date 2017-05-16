@@ -826,14 +826,16 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             throw new Main4Exception("数据有误");
         }
 
+        if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
+            return drawRecordUserVo;
+        }
+
         int xcday = DateUtil.daysOfTwo(drawPemVo.getStartTime(), new Date());
         if(xcday > 7){
             throw new Main4Exception("已过期，无法领取");
         }
-        if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
-            return drawRecordUserVo;
-        }
-        return null;
+
+        return drawRecordUserVo;
     }
 
     /**
