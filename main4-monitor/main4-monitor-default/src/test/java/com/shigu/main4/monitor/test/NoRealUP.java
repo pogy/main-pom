@@ -1,8 +1,19 @@
 package com.shigu.main4.monitor.test;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.opentae.data.mall.beans.ActiveDrawGoods;
+import com.opentae.data.mall.beans.ActiveDrawPem;
+import com.opentae.data.mall.beans.GoatItemData;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
+import com.opentae.data.mall.examples.ActiveDrawPemExample;
+import com.opentae.data.mall.examples.GoatItemDataExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
+import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
+import com.opentae.data.mall.interfaces.GoatItemDataMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
@@ -37,6 +48,14 @@ public class NoRealUP {
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
+    @Autowired
+    GoatItemDataMapper goatItemDataMapper;
+
+    @Autowired
+    ActiveDrawPemMapper activeDrawPemMapper;
+
+    @Autowired
+    ActiveDrawGoodsMapper activeDrawGoodsMapper;
 
     /**
      * 撸7天内
@@ -108,8 +127,15 @@ public class NoRealUP {
 //        GoatFieldValueExample fieldValueExample=new GoatFieldValueExample();
 //        fieldValueExample.createCriteria().andFidIn(fids);
 //        List<GoatFieldValue> fieldValues=goatFieldValueMapper.selectByExample(fieldValueExample);
-//
+        GoatItemDataExample goatExam=new GoatItemDataExample();
+        goatExam.createCriteria().andStatusEqualTo(1).andContextLike("%\"itemId\"%");
+        List<GoatItemData> datas=goatItemDataMapper.selectByExample(goatExam);
         List<Long> goodsIds=new ArrayList<>();
+        for(GoatItemData gid:datas){
+            JSONObject json= JSON.parseObject(gid.getContext());
+            goodsIds.add(json.getLong("itemId"));
+        }
+//
 //        for(GoatFieldValue g:fieldValues){
 //            goodsIds.add(Long.valueOf(g.getValue()));
 //        }
@@ -140,12 +166,20 @@ public class NoRealUP {
 
     @Test
     public void styleActivity(){
-        String ids="20178900,20066228,20301047,9977402,9892065,9980847,9964971,20224588,20268400,20300415,20255848,20255845,20217820,20240595,20253730,20253448,20217486,20217487,9908307,9968156,20180238,10020689,20199372,20254772,20279460,20248817,20300908,20297971,20244616,20278791,20294373,20298390,20170281,20071566,20294767,20261540,20267233,20294506,20136974,20236701,20169104,20187664,20254933,20260950,20273184,20302236,20274234,20193716,20278512,20273811,20271940,20300637,20302238,20301962,20300532,20300093,20298829,20298639,20298637,20297283,20286436,20297080,20297056,20296997,20296907,20295785,20295406,20295092,20295026,20302160,20011439,20140367,20249764,20128066,20093298";
-        String[] idarr=ids.split(",");
+        ActiveDrawPemExample pemex=new ActiveDrawPemExample();
+        pemex.createCriteria().andStartTimeLessThan(new Date());
+        pemex.setStartIndex(0);
+        pemex.setEndIndex(1);
+        pemex.setOrderByClause("start_time desc");
+        List<ActiveDrawPem> pems=activeDrawPemMapper.selectByConditionList(pemex);
+        ActiveDrawPem pem=pems.get(0);
+        ActiveDrawGoodsExample dgoodsEx=new ActiveDrawGoodsExample();
+        dgoodsEx.createCriteria().andPemIdEqualTo(pem.getId());
+        List<ActiveDrawGoods> goodses=activeDrawGoodsMapper.selectByExample(dgoodsEx);
 
         List<Long> goodsIds=new ArrayList<>();
-        for(String i:idarr){
-            goodsIds.add(Long.valueOf(i));
+        for(ActiveDrawGoods dg:goodses){
+            goodsIds.add(dg.getGoodsId());
         }
         ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
         example.setWebSite("hz");
