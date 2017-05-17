@@ -21,10 +21,11 @@ public interface ActiveDrawRecordMapper extends Mapper<ActiveDrawRecord> {
     /** 用户抽奖数据 */
     List<ActiveDrawRecord> selDrawRecordList(@Param("pemId") Long pemId, @Param("userId") Long userId,
                                              @Param("type") String type, @Param("ward") String ward,
-                                             @Param("startRows")Integer startRows,@Param("endRows")Integer endRows);
+                                             @Param("startRows")Integer startRows, @Param("endRows")Integer endRows);
 
     /** 用户抽奖数据数 */
     int selDrawRecordCount(@Param("pemId") Long pemId, @Param("userId") Long userId,
                            @Param("ward") String ward);
+
 
 }

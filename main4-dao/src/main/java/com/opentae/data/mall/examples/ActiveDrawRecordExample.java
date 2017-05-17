@@ -844,6 +844,74 @@ public class ActiveDrawRecordExample implements SgExample{
             return (ActiveDrawRecordExample.Criteria)this;
         }
 
+        public ActiveDrawRecordExample.Criteria andRefeTimeIsNull() {
+            this.addCriterion("refe_time is null");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeIsNotNull() {
+            this.addCriterion("refe_time is not null");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeEqualTo(Date value) {
+            this.addCriterion("refe_time =", value, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeNotEqualTo(Date value) {
+            this.addCriterion("refe_time <>", value, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeGreaterThan(Date value) {
+            this.addCriterion("refe_time >", value, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeGreaterThanOrEqualTo(Date value) {
+            this.addCriterion("refe_time >=", value, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeLessThan(Date value) {
+            this.addCriterion("refe_time <", value, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeLessThanOrEqualTo(Date value) {
+            this.addCriterion("refe_time <=", value, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeLike(String value) {
+            this.addCriterion("refe_time like", value, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeNotLike(String value) {
+            this.addCriterion("refe_time not like", value, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }        public ActiveDrawRecordExample.Criteria andRefeTimeIn(List<Date> values) {
+            this.addCriterion("refe_time in", values, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeNotIn(List<Date> values) {
+            this.addCriterion("refe_time not in", values, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeBetween(Date value1, Date value2) {
+            this.addCriterion("refe_time between", value1, value2, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andRefeTimeNotBetween(Date value1, Date value2) {
+            this.addCriterion("refe_time not between", value1, value2, "refeTime");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
         public ActiveDrawRecordExample.Criteria andEnabledIsNull() {
             this.addCriterion("enabled is null");
             return (ActiveDrawRecordExample.Criteria)this;
@@ -909,6 +977,142 @@ public class ActiveDrawRecordExample implements SgExample{
 
         public ActiveDrawRecordExample.Criteria andEnabledNotBetween(Boolean value1, Boolean value2) {
             this.addCriterion("enabled not between", value1, value2, "enabled");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickIsNull() {
+            this.addCriterion("user_nick is null");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickIsNotNull() {
+            this.addCriterion("user_nick is not null");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickEqualTo(String value) {
+            this.addCriterion("user_nick =", value, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickNotEqualTo(String value) {
+            this.addCriterion("user_nick <>", value, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickGreaterThan(String value) {
+            this.addCriterion("user_nick >", value, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickGreaterThanOrEqualTo(String value) {
+            this.addCriterion("user_nick >=", value, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickLessThan(String value) {
+            this.addCriterion("user_nick <", value, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickLessThanOrEqualTo(String value) {
+            this.addCriterion("user_nick <=", value, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickLike(String value) {
+            this.addCriterion("user_nick like", value, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickNotLike(String value) {
+            this.addCriterion("user_nick not like", value, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }        public ActiveDrawRecordExample.Criteria andUserNickIn(List<String> values) {
+            this.addCriterion("user_nick in", values, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickNotIn(List<String> values) {
+            this.addCriterion("user_nick not in", values, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickBetween(String value1, String value2) {
+            this.addCriterion("user_nick between", value1, value2, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andUserNickNotBetween(String value1, String value2) {
+            this.addCriterion("user_nick not between", value1, value2, "userNick");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneIsNull() {
+            this.addCriterion("login_phone is null");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneIsNotNull() {
+            this.addCriterion("login_phone is not null");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneEqualTo(String value) {
+            this.addCriterion("login_phone =", value, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneNotEqualTo(String value) {
+            this.addCriterion("login_phone <>", value, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneGreaterThan(String value) {
+            this.addCriterion("login_phone >", value, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneGreaterThanOrEqualTo(String value) {
+            this.addCriterion("login_phone >=", value, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneLessThan(String value) {
+            this.addCriterion("login_phone <", value, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneLessThanOrEqualTo(String value) {
+            this.addCriterion("login_phone <=", value, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneLike(String value) {
+            this.addCriterion("login_phone like", value, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneNotLike(String value) {
+            this.addCriterion("login_phone not like", value, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }        public ActiveDrawRecordExample.Criteria andLoginPhoneIn(List<String> values) {
+            this.addCriterion("login_phone in", values, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneNotIn(List<String> values) {
+            this.addCriterion("login_phone not in", values, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneBetween(String value1, String value2) {
+            this.addCriterion("login_phone between", value1, value2, "loginPhone");
+            return (ActiveDrawRecordExample.Criteria)this;
+        }
+
+        public ActiveDrawRecordExample.Criteria andLoginPhoneNotBetween(String value1, String value2) {
+            this.addCriterion("login_phone not between", value1, value2, "loginPhone");
             return (ActiveDrawRecordExample.Criteria)this;
         }
     }

@@ -30,6 +30,7 @@
 			LIMIT 80
 		</if>
 		<if test="startRows != null">
+			ORDER BY r.draw_status DESC,r.create_time ASC
 			limit #{startRows},#{endRows}
 		</if>
 	</select>
