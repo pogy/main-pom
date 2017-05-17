@@ -64,9 +64,13 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
 
         ItemBrowerFlowVO vo = new ItemBrowerFlowVO();
         vo.setVersion(unrealVersion);
-        vo.setNumber(real * multiple + real % multiple);
+        if(real==0L){
+            vo.setNumber((long)(Math.random()*multiple));
+        }else{
+            vo.setNumber(real * multiple + real % multiple);
+        }
         vo.setMakeTime(new Date());
-        redisIO.putTemp("item_flow_" + itemId, vo, 10000);
+        redisIO.putTemp("item_flow_" + itemId, vo, 300);
         return vo;
     }
 
@@ -86,7 +90,7 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
             return unreal;
         }
         unreal.setNumber(unreal.getNumber() + number);
-        redisIO.putTemp("item_flow_" + itemId, unreal, 10000);
+        redisIO.putTemp("item_flow_" + itemId, unreal, 300);
         return unreal;
     }
 
