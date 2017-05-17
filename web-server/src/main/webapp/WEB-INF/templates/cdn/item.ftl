@@ -459,7 +459,12 @@ ${navCon}
                             <input type="text" id="Num" value="1">
                             <a href="javascript:;" id="Add">+</a>
                         </div>
-                        
+                        <#if bo.who=="dd">
+                            <span style="
+    margin-left: 10px;
+    line-height: 26px;
+">${vo.clicks}次浏览</span>
+                        </#if>
                     </td>
                   </tr>
                    <#if vo.onsale == true>
