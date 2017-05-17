@@ -40,6 +40,12 @@ public class ActiveDrawRecordUserVo implements Serializable {
 
     private String concatPhone;
 
+    /** 创建时间 */
+    private Date createTime;
+
+    /** 查阅时间 */
+    private Date refeTime;
+
     public Long getId() {
         return id;
     }
@@ -139,5 +145,21 @@ public class ActiveDrawRecordUserVo implements Serializable {
 
     public void setConcatPhone(String concatPhone) {
         this.concatPhone = concatPhone;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getRefeTime() {
+        return refeTime;
+    }
+
+    public void setRefeTime(Date refeTime) {
+        this.refeTime = refeTime;
     }
 }
