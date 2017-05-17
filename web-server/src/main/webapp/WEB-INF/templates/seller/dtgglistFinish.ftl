@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/dtgglistFinish.css?t=1494492247677" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/dtgglistFinish.css?t=1495011668702" rel="stylesheet">
     
   </head>
 <body>
@@ -243,7 +243,7 @@ var webSite = '${webSite!}';
     
     <div class="content shadow-box">
         
-        <p class="resultInfo">本次活动已结束！<#if (indexggList?size) gt 0>派位结果如下：</#if></p>
+        <p class="resultInfo">第${indexggQ!}期活动已结束！<#if (indexggList?size) gt 0>派位结果如下：</#if></p>
             <#if indexggList?? && (indexggList?size) gt 0>
                 <#list indexggList as indexgg>
                 <h3 class="syIntro">${indexgg.title!}</h3>
@@ -310,7 +310,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/dtgglistFinish.js?t=1494492247677"></script>
+<script src="http://style.571xz.com/gys4/js/dtgglistFinish.js?t=1495011668702"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

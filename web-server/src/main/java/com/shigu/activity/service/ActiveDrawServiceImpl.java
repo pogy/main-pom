@@ -8,6 +8,7 @@ import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
@@ -559,38 +560,38 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     @Override
-    public List<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward) {
+    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward, int pageNum, int pageSize) {
+        ShiguPager<ActiveDrawRecordUserVo> drawRecordUserVoShiguPager = new ShiguPager<ActiveDrawRecordUserVo>();
         if(pemId == null || StringUtils.isEmpty(ward)){
-            return null;
+            return drawRecordUserVoShiguPager;
         }
         int drawRecordCount = activeDrawRecordMapper.selDrawRecordCount(pemId, null,ward);
-        int totalPages = drawRecordCount / 1000 + ((drawRecordCount % 1000 == 0) ? 0 : 1);
+        int totalPages = drawRecordCount / pageSize + ((drawRecordCount % pageSize == 0) ? 0 : 1);
+        if(pageNum > totalPages){
+            return drawRecordUserVoShiguPager;
+        }
+        drawRecordUserVoShiguPager.setNumber(pageNum);
+        drawRecordUserVoShiguPager.calPages(drawRecordCount,pageSize);
         List<ActiveDrawRecordUserVo> drawRecordUserVos = new ArrayList<ActiveDrawRecordUserVo>();
+        String typeGoods = null;
         if(ward.indexOf("A") != -1){
-            for(int i = 1;i <= totalPages;i ++){
-                int startRows = (i-1)*1000;
-                int endRows = i*1000;
-                List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, null, null, ward, startRows, endRows);
-                // 查询发现好货活动的数据
-                List<ActiveDrawRecordUserVo> drawRecordUserPageVos = poUserGoodsUp(pemId, ActiveDrawGoods.TYPE_FAGOODS, drawRecordList);
-                drawRecordUserVos.addAll(drawRecordUserPageVos);
-            }
-            return drawRecordUserVos;
+            typeGoods = ActiveDrawGoods.TYPE_FAGOODS;
         }
-
         if(ward.indexOf("B") != -1){
-            // 每日发现
-            for(int i = 1;i <= totalPages;i ++){
-                int startRows = (i-1)*1000;
-                int endRows = i*1000;
-                List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, null, null, ward, startRows, endRows);
-                // 查询发现好货活动的数据
-                List<ActiveDrawRecordUserVo> drawRecordUserPageVos = poUserGoodsUp(pemId, ActiveDrawGoods.TYPE_DAILYFIND, drawRecordList);
-                drawRecordUserVos.addAll(drawRecordUserPageVos);
-            }
-            return drawRecordUserVos;
+            typeGoods = ActiveDrawGoods.TYPE_DAILYFIND;
         }
-        return Collections.emptyList();
+        int startRows = (pageNum-1)*pageSize;
+        int endRows = pageNum*pageSize;
+        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, null, null, ward, startRows, endRows);
+        // 查询发现好货活动的数据
+        List<ActiveDrawRecordUserVo>  drawRecordUserVoList = poUserGoodsUp(pemId, typeGoods, drawRecordList);
+        Map<Long, ActiveDrawRecordUserVo> recordUserVoMap = BeanMapper.list2Map(drawRecordUserVoList, "userId", Long.class);
+        for (int i = 0; i < drawRecordList.size(); i++) {
+            ActiveDrawRecordUserVo drawRecordUserVo = recordUserVoMap.get(drawRecordList.get(i).getUserId());
+            drawRecordUserVos.add(drawRecordUserVo);
+        }
+        drawRecordUserVoShiguPager.setContent(drawRecordUserVos);
+        return drawRecordUserVoShiguPager;
     }
 
     /**
@@ -633,6 +634,8 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                     drawRecordUserVo.setPemId(pemId);
                     drawRecordUserVo.setWard(drawRecord.getWard());
                     drawRecordUserVo.setConcatPhone(drawRecord.getLoginPhone());
+                    drawRecordUserVo.setCreateTime(drawRecord.getCreateTime());
+                    drawRecordUserVo.setRefeTime(drawRecord.getRefeTime());
                     drawRecordUserVos.add(drawRecordUserVo);
                 }
             }
@@ -798,7 +801,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      */
     public void addActiveDrawRecord(ActiveDrawRecord activeDrawRecord){
         if(activeDrawRecord == null || activeDrawRecord.getPemId() == null ||
-                activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
+             activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
             return;
         }
         ActiveDrawRecord drawRecord = new ActiveDrawRecord();
@@ -903,5 +906,22 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         List<ActiveDrawShop> activeDrawShops = activeDrawShopMapper.selectFieldsByExample(shopExample,FieldUtil.codeFields("id,shop_id"));
         List shopIdsList = BeanMapper.getFieldList(activeDrawShops, "shopId", List.class);
         return shopIdsList;
+    }
+
+    /**
+     * 修改查阅时间
+     * @param recordId
+     */
+    @Override
+    public void changeRefeTime(Long recordId) {
+        if(recordId == null){
+            return;
+        }
+        ActiveDrawRecord drawRecord = activeDrawRecordMapper.selectByPrimaryKey(recordId);
+        if(drawRecord == null){
+            return;
+        }
+        drawRecord.setRefeTime(new Date());
+        activeDrawRecordMapper.updateByPrimaryKeySelective(drawRecord);
     }
 }
