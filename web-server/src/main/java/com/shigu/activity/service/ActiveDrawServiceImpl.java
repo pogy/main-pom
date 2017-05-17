@@ -794,7 +794,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      */
     public void addActiveDrawRecord(ActiveDrawRecord activeDrawRecord){
         if(activeDrawRecord == null || activeDrawRecord.getPemId() == null ||
-             activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
+                activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
             return;
         }
         ActiveDrawRecord drawRecord = new ActiveDrawRecord();
