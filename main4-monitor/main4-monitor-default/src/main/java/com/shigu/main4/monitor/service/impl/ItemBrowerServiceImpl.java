@@ -39,7 +39,7 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
     }
 
     @Override
-    public ItemBrowerFlowVO makeUnrealBrower(Long itemId, Long tail) {
+    public ItemBrowerFlowVO makeUnrealBrower(Long itemId) {
         return null;
     }
 
