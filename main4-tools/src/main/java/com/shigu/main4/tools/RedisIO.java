@@ -91,6 +91,10 @@ public class RedisIO {
     public boolean putTemp(String key,Object value,Integer time){
         Jedis jedis = getJedis();
         try {
+            Long ttl=jedis.ttl(key);
+            if(ttl!=null&&ttl>0){
+                time=ttl.intValue();
+            }
             return value != null && "OK".equals(jedis.setex(key,time,JSON.toJSONString(value)));
         }finally {
             returnJedis(jedis);
