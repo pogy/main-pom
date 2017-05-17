@@ -9,6 +9,8 @@ import java.util.Map;
  * Created by zhaohongbo on 17/3/8.
  */
 public interface ItemBrowerService {
+
+    Long selUnrealBrower(Long itemId);
     /**
      * 查询商品浏览量
      * @param itemId

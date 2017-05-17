@@ -28,6 +28,11 @@ import java.util.Map;
 @Service("itemBrowerService")
 public class ItemBrowerServiceImpl implements ItemBrowerService{
 
+    @Override
+    public Long selUnrealBrower(Long itemId) {
+        return null;
+    }
+
     /**
      * 按商品ID统计商品浏览量
      * @param itemId
