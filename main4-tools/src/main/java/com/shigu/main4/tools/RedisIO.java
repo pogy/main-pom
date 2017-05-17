@@ -207,6 +207,24 @@ public class RedisIO {
         return JSON.parseObject(get(key), clazz);
     }
 
+    public Boolean hset(String key,String field,Object obj){
+        Jedis jedis = getJedis();
+        try {
+            return obj != null && jedis.hset(key,field, JSON.toJSONString(obj))>0L;
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+
+    public <T> T hget(String key,String field,Class<T> clazz){
+        Jedis jedis = getJedis();
+        try {
+            return JSON.parseObject(jedis.hget(key,field),clazz);
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+
 //    @Override
 //    protected void finalize() throws Throwable {
 //        pool.close();

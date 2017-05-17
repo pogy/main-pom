@@ -37,6 +37,15 @@ public class NoRealUP {
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
+    @Autowired
+    FactoryTest factoryTest;
+
+    @Test
+    public void modelTest(){
+        OodTest test=factoryTest.getBean(OodTest.class);
+        System.out.println(test);
+        test.test();
+    }
 
     /**
      * 撸7天内
