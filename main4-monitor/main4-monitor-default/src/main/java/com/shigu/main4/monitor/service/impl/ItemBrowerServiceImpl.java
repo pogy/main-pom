@@ -31,6 +31,8 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
 
     int unrealVersion=1;
 
+    int beishu=10;
+
     @Override
     public ItemBrowerFlowVO selUnrealBrower(Long itemId) {
         return null;
