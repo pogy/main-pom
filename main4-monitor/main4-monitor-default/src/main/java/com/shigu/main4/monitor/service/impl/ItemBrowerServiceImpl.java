@@ -10,9 +10,9 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.cardinality.Cardinality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,19 +58,16 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
      */
     @Override
     public ItemBrowerFlowVO makeUnrealBrower(Long itemId) {
-        int multiple = 10;//倍数
+        int multiple = 13;//倍数
 
-        Long real = selItemBrower(itemId);
+        Long real = selItemIP(itemId);
+        Long realPV = selItemBrower(itemId);
 
         ItemBrowerFlowVO vo = new ItemBrowerFlowVO();
         vo.setVersion(unrealVersion);
-        if(real==0L){
-            vo.setNumber((long)(Math.random()*multiple));
-        }else{
-            vo.setNumber(real * multiple + real % multiple);
-        }
+        vo.setNumber((real-1) * multiple + realPV);
         vo.setMakeTime(new Date());
-        redisIO.putTemp("item_flow_" + itemId, vo, 300);
+        redisIO.putTemp("item_flow_" + itemId, vo, 120);
         return vo;
     }
 
@@ -90,7 +87,7 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
             return unreal;
         }
         unreal.setNumber(unreal.getNumber() + number);
-        redisIO.putTemp("item_flow_" + itemId, unreal, 300);
+        redisIO.putTemp("item_flow_" + itemId, unreal, 120);
         return unreal;
     }
 
@@ -104,18 +101,26 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
         if(itemId == null){
             return 0L;
         }
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode");
-        srb.setTypes("item");
-        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
+        return ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
+                .setTypes("item").setSearchType(SearchType.COUNT)
+                .setQuery(QueryBuilders.termQuery("itemId", itemId))
+                .execute().actionGet().getHits().getTotalHits();
+    }
 
-        QueryBuilder itemQb = QueryBuilders.termQuery("itemId", itemId);
-        boleanQueryBuilder.must(itemQb);
+    @Override
+    public Long selItemIP(Long itemId) {
+        if (itemId == null) {
+            return 0L;
+        }
+        SearchResponse response = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
+                .setTypes("item")
+                .setSearchType(SearchType.COUNT)
+                .setQuery(QueryBuilders.termQuery("itemId", itemId))
+                .addAggregation(AggregationBuilders.cardinality("countClient").field("clientMsg.clientIp"))
+                .execute().actionGet();
 
-        srb.setQuery(boleanQueryBuilder);
-        srb.setSearchType(SearchType.COUNT);
-        SearchResponse response = srb.execute().actionGet();
-
-        return response.getHits().getTotalHits();
+        Cardinality countClient = response.getAggregations().get("countClient");
+        return countClient.getValue();
     }
 
     /**
