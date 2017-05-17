@@ -5,12 +5,16 @@ import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.cdn.vo.IndexNavVO;
 import com.shigu.main4.cdn.vo.LoveGoodsList;
+import com.shigu.main4.goat.beans.GoatLocation;
+import com.shigu.main4.goat.beans.TextGoat;
+import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.goat.service.GoatFactory;
+import com.shigu.main4.goat.vo.GoatVO;
+import com.shigu.main4.goat.vo.TextGoatVO;
 import com.shigu.main4.item.enums.SearchCategory;
-import com.shigu.main4.spread.exceptions.GoatException;
-import com.shigu.main4.spread.service.GoatGetService;
-import com.shigu.main4.spread.vo.GoatALocation;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.vo.CateNav;
 import com.shigu.spread.enums.SpreadEnum;
@@ -42,7 +46,7 @@ public class IndexShowService {
     private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
 
     @Autowired
-    GoatGetService goatGetService;
+    GoatFactory goatFactory;
     /**
      * 类目服务
      */
@@ -115,12 +119,13 @@ public class IndexShowService {
             public List<IndexNavVO> selReal() {
                 List<IndexNavVO> navVOs=new ArrayList<>();
                 try {
-                    GoatALocation location=goatGetService.getLocationData(spread.getCode());
-                    for(GoatALocation.GoatAItem gai:location.getItems()){
-                        navVOs.add(new IndexNavVO(gai.selValueByFieldName("href"),gai.selValueByFieldName("text")));
+                    GoatLocation location = goatFactory.getALocation(spread.getCode());
+                    List<TextGoatVO> goats = location.selGoats();
+                    for (TextGoatVO tgv : goats) {
+                        navVOs.add(new IndexNavVO(tgv.getHref(), tgv.getText()));
                     }
-                } catch (GoatException e) {
-                    logger.error("获取广告位数据["+spread+"]失败",e);
+                }catch (GoatException e){
+                    logger.error("查询标签类广告,miss",e);
                 }
                 return navVOs;
             }

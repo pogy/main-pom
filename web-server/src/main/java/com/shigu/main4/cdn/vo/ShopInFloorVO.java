@@ -29,6 +29,16 @@ public class ShopInFloorVO {
      */
     private List<Integer> tags;
 
+    private Integer isfdGoods=0;
+
+    public Integer getIsfdGoods() {
+        return isfdGoods;
+    }
+
+    public void setIsfdGoods(Integer isfdGoods) {
+        this.isfdGoods = isfdGoods;
+    }
+
     public String getCate() {
         return cate;
     }

@@ -1,6 +1,7 @@
 package com.shigu.main4.cdn.services;
 
 import com.shigu.main4.cdn.vo.*;
+import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.storeservices.MarketShopService;
 import com.shigu.main4.vo.FloorShow;
 import com.shigu.main4.vo.MarketNavShow;
@@ -20,6 +21,9 @@ public class MarketListService {
     private Map<Long,String> cidToCatMap;
 
     private Map<String,Long> catToCidMap;
+
+    @Autowired
+    ActiveDrawService activeDrawService;
 
     /**
      * 给个ID方便前端参数传递
@@ -123,6 +127,8 @@ public class MarketListService {
         if (vo.getMarketName() == null && !otherMarkets.isEmpty()) {
             vo.setMarketName(marketTagVOs.get(0).getName());
         }
+        //拿到发现好货的ID
+        List<Long> shopIds=activeDrawService.findDrawShopIds();
         //处理楼层店铺
         List<FloorShow> floors=marketShow.getFloors();
         long now = System.currentTimeMillis();
@@ -137,6 +143,7 @@ public class MarketListService {
                 sifv.setCate(ss.getSystemComment());
                 sifv.setNum(ss.getShopNum());
                 sifv.setTags(ss.getTags());
+                sifv.setIsfdGoods(shopIds.contains(ss.getShopId())?1:0);
                 if (ss.getCreateDate() != null && now - ss.getCreateDate().getTime() < 1000L * 3600 * 24 * 30) {
                     sifv.setIsNew(1);
                 }

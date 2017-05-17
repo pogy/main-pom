@@ -1,39 +1,111 @@
 @startuml
 
-class GoatLocation{
+class GoatLocationVO{
 -Long localId
--String model
 -String code
+-String description
 }
 
-abstract class Goat{
+abstract class GoatLocation{
++<T extends GoatVO> List<T> selGoats()
++<T extends GoatVO> List<T> selPrepareGoats()
+}
+
+interface Goat{
+
+void publish()
+void preparePublish(Long second)
+}
+
+enum GoatType{
+ImgGoat
+ItemGoat
+TextGoat
+}
+
+class GoatVO{
 -Long localId
-
-+void publish()
-+void preparePublish(Long second)
+-Long goatId
+-Long dataId
+-String code
+-String description
+-Long fromActivityId
+-Integer sort
+-Date fromTime
+-Date toTime
+-Long userId
 }
 
-class ImgGoat{
+class ImgGoatVO{
 -String picUrl
 -String linkUrl
 }
 
-class ItemGoat{
+class TextGoatVO{
+-String text
+-String href
+}
+
+class ItemUpVO{
+-Long realNum //真实上款量
+-Long unRealNum //不真实的上款量
+}
+
+class ItemGoatVO{
 -Long itemId
 -String title
 -String picUrl
 }
 
+abstract class ImgGoat{
+
+}
+
+abstract class ItemGoat{
+
+}
+
+abstract class TextGoat{
+
+}
+
+interface ItemResort{
+ItemUpVO selUp() //查询真实上款量与虚假上款量
+void modifyUp(Integer num) //修改虚假上款量
+Double selWeight() //查询权重
+void updateWeight(Double num)  //修改权重
+}
+
+GoatLocationVO <|-- GoatLocation
+
 GoatLocation *-- Goat
 
-Goat <|-- ImgGoat
+Goat <|.. ImgGoat
 
-Goat <|-- ItemGoat
+Goat <|.. ItemGoat
+
+Goat <|.. TextGoat
+
+GoatVO <|-- ImgGoatVO
+GoatVO <|-- ItemGoatVO
+GoatVO <|-- TextGoatVO
+
+ImgGoatVO <|-- ImgGoat
+
+ItemGoatVO <|-- ItemGoat
+
+TextGoatVO <|-- TextGoat
+
+ItemResort <|.. ItemGoat
+
+ItemUpVO o-- ItemResort
 
 interface GoatFactory{
+GoatLocation getAlocation(Long localId)
 GoatLocation getALocation(String code)
-GoatLocation getLocationData(String code)
+GoatLocation getALocationByVo(GoatLocationVO vo)
 Goat selGoatById(Long goatId)
+Goat selGoatByVo(GoatVO goatVO)
 }
 
 note left of GoatFactory:广告服务

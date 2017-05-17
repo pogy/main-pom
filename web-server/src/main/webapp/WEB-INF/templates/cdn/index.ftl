@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1494399874470" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1494830114195" rel="stylesheet">
     
   </head>
 <body>
@@ -172,9 +172,17 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="header layout">
     <div class="logoLeft">
-        <a href="${main_host!}">
+        <a href="<#if webSite == 'jx'>http://jx.571xz.com<#else>${main_host!}</#if>">
             <img src="http://style.571xz.com/marketV3/css/img/mtLogo.png" alt width=168 height=30 />
         </a>
         <em>逛市场</em>
@@ -221,7 +229,11 @@ var webSite = '${webSite!}';
         </div>
         <div class="navList">
             <ul>
+                <#if webSite == 'jx'>
+                <li><a href="http://jx.571xz.com" target="_blank">首页</a></li>
+                <#else>
                 <li><a href="${main_host!}" target="_blank">首页</a></li>
+                </#if>
                 <li class="select"><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 <li><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
                 <#if webSite != 'jx'>
@@ -283,6 +295,11 @@ var webSite = '${webSite!}';
                 <span>${markets.title!} 牛仔城</span>
                 <i></i>
             </h3>
+            <#elseif markets.title == '6F'>
+                <h3 data-lm='${markets.title!}'>
+                    <span>${markets.title!} 鞋城</span>
+                    <i></i>
+                </h3>
             <#else>
             <h3 data-lm='${markets.title!}'>
                 <span>${markets.title!}</span>
@@ -301,7 +318,7 @@ var webSite = '${webSite!}';
             <li>
                 <div class="bgfff"></div>
                 <a href="shop.htm?id=${store.id!}" target="_blank">
-                    <h5>${store.num!}<#if store.isNew == 1><i></i></#if></h5>
+                    <h5><#if store.isfdGoods?? && store.isfdGoods == 1><span class="isfdGoods"></span></#if>${store.num!}<#if store.isNew == 1><i></i></#if></h5>
                     <em>${store.cate!}</em>
                     <p>
                         <#list store.tags as tag>
@@ -388,7 +405,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1494399874470"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1494830114195"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

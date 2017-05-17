@@ -97,6 +97,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Autowired
     RedisIO redisIO;
 
+    @Autowired
+    private ShiguSiteMapper shiguSiteMapper;
+
     /**
      * 系统上架一款商品
      * <p>
@@ -606,11 +609,19 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         tiny.setListTime(now);
         tiny.setDelistTime(now);
         tiny.setModified(now);
+
+        ShiguSiteExample siteExample = new ShiguSiteExample();
+        siteExample.createCriteria().andCitySiteEqualTo(tiny.getWebSite());
+        List<ShiguSite> shiguSiteList = shiguSiteMapper.selectByExample(siteExample);
+        ShiguSite shiguSite = new ShiguSite();
+        if(shiguSiteList.size() > 0){
+            shiguSite = shiguSiteList.get(0);
+        }
         if (StringUtils.isEmpty(tiny.getProv())) {
-            tiny.setProv("浙江");
+            tiny.setProv(shiguSite.getProvinceName());
         }
         if (StringUtils.isEmpty(tiny.getCity())) {
-            tiny.setCity("杭州");
+            tiny.setCity(shiguSite.getCityName());
         }
         shiguGoodsTinyMapper.insertSelective(tiny);
 
@@ -635,6 +646,8 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 //        repository.insert(seb);
         goodsAddToRedis.addToRedis(seb);
         sameItemUtilAddRemove(tiny, true);
+        //添加首图到图搜
+        addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),tiny.getPicUrl(),1);
 
         return tiny.getGoodsId();
     }
@@ -682,6 +695,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                                     .setDoc(JSON.toJSONStringWithDateFormat(esGoods, "yyyy-MM-dd HH:mm:ss"))
                     );
                 }
+                addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),tiny.getPicUrl(),1);
             }
             if (bulk.numberOfActions() > 0) {
                 BulkResponse bulkResponse = bulk.get();

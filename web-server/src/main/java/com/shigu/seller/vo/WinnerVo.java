@@ -29,6 +29,18 @@ public class WinnerVo {
      * 电话
      */
     private String lxtel;
+    /**
+     * 店ID
+     */
+    private Long shopId;
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
 
     public Long getNum() {
         return num;

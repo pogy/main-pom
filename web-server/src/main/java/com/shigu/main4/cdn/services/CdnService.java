@@ -9,6 +9,7 @@ import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
+import com.shigu.main4.cdn.vo.CatPolyFormatVO;
 import com.shigu.main4.cdn.vo.ShopShowVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.services.ShowForCdnService;
@@ -21,6 +22,7 @@ import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.ShopCollect;
+import com.shigu.main4.vo.CatPolymerization;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.services.ShopDesignService;
 import freemarker.template.TemplateException;
@@ -28,8 +30,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * cdn服务
@@ -72,6 +77,45 @@ public class CdnService {
      */
     public String bannerHtml(Long shopId,String webSite) throws IOException, TemplateException {
         return shopDesignService.selHeadModuleWithData(shopId,webSite,false).getHtml();
+    }
+
+    /**
+     * 重组聚合数据
+     * @param shopId
+     * @return
+     */
+    public List<CatPolymerization> formatCatPoly(Long shopId){
+        List<CatPolymerization> cats=shopForCdnService.selCatRolymerizations(shopId);
+        List<CatPolyFormatVO> polys=new ArrayList<>();
+        for(CatPolymerization c:cats){
+            polys.add(new CatPolyFormatVO(c));
+        }
+        Collections.sort(polys);
+        List<CatPolymerization> result=new ArrayList<>();
+        CatPolymerization other=new CatPolymerization();
+        other.setCid(404L);
+        other.setName("其它");
+        other.setSubPolymerizations(new ArrayList<CatPolymerization>());
+        for(int i=0;i<polys.size();i++){
+            if(i>1){
+                List<CatPolymerization> sub=other.getSubPolymerizations();
+                if(sub.size()<10){
+                    CatPolymerization me=polys.get(i).getCatpoly();
+                    if(me.getSubPolymerizations()==null){
+                        sub.add(me);
+                    }else{
+                        List<CatPolymerization> mesub=me.getSubPolymerizations();
+                        sub.addAll(mesub);
+                    }
+                }
+            }else{
+                result.add(polys.get(i).getCatpoly());
+            }
+        }
+        if(polys.size()>2){
+            result.add(other);
+        }
+        return result;
     }
 
 

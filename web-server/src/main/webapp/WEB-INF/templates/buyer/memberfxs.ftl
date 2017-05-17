@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=20170426" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1494821871702" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/fxs2/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/fxs2/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -165,6 +165,14 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="header">
     <div class="layout">
         <a class="logo iconfont" href="http://www.571xz.com">&#xe653;</a>
@@ -289,7 +297,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=20170426"></script>
+<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1494821871702"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
