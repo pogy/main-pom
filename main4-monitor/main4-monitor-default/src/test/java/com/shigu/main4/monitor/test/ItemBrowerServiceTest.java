@@ -29,6 +29,10 @@ public class ItemBrowerServiceTest {
     private RedisIO redisIO;
 
     @Test
+    public void ttt(){
+        System.out.println(System.currentTimeMillis());
+    }
+    @Test
     public void selItemBrower(){
         Long itemId = 9901299L;
         Long total = itemBrowerService.selItemBrower(itemId);
