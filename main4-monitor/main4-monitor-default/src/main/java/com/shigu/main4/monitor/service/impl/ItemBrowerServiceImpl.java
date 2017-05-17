@@ -48,6 +48,11 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
         if (flowVO == null || flowVO.getVersion() != unrealVersion) {
             return makeUnrealBrower(itemId);
         }
+        if(System.currentTimeMillis()-flowVO.getMakeTime().getTime()>120000){
+            Long oldNumber=flowVO.getNumber();
+            flowVO=makeUnrealBrower(itemId);
+            flowVO.setNumber(oldNumber>flowVO.getNumber()?oldNumber:flowVO.getNumber());
+        }
         return flowVO;
     }
 
@@ -67,7 +72,7 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
         vo.setVersion(unrealVersion);
         vo.setNumber((real-1) * multiple + realPV);
         vo.setMakeTime(new Date());
-        redisIO.putTemp("item_flow_" + itemId, vo, 120);
+        redisIO.putTemp("item_flow_" + itemId, vo, 200);
         return vo;
     }
 
@@ -87,7 +92,7 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
             return unreal;
         }
         unreal.setNumber(unreal.getNumber() + number);
-        redisIO.putTemp("item_flow_" + itemId, unreal, 120);
+        redisIO.putTemp("item_flow_" + itemId, unreal, 200);
         return unreal;
     }
 
