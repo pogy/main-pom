@@ -67,6 +67,21 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
 
         Long real = selItemIP(itemId);
         real=real==0L?1L:real;//防止为0
+        if(real>=2&&real<4){
+            multiple=2;
+        }else if(real>=4&&real<8){
+            multiple=3;
+        }else if(real>=8&&real<16){
+            multiple=4;
+        }else if(real>=16&&real<32){
+            multiple=5;
+        }else if(real>=32&&real<64){
+            multiple=7;
+        }else if(real>=64&&real<128){
+            multiple=9;
+        }else if(real>=128){
+            multiple=12;
+        }
         Long realPV = selItemBrower(itemId);
 
         ItemBrowerFlowVO vo = new ItemBrowerFlowVO();
