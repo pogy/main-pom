@@ -36,6 +36,17 @@ public class ItemBrowerServiceTest {
     }
 
     @Test
+    public void selItemIP(){
+        Long itemId = 9901299L;
+        //独立IP数查询
+        Long total = itemBrowerService.selItemIP(itemId);
+        logger.error("独立IP数：" + total);
+
+        // 讲道理，独立IP会小于PV
+        assertTrue(total <= itemBrowerService.selItemBrower(itemId));
+    }
+
+    @Test
     public void selMoreItemBrower(){
         List<Long> itemIds=new ArrayList<>();
         itemIds.add(9901299L);
