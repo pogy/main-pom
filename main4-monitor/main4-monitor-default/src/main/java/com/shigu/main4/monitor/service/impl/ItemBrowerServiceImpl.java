@@ -58,19 +58,16 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
      */
     @Override
     public ItemBrowerFlowVO makeUnrealBrower(Long itemId) {
-        int multiple = 10;//倍数
+        int multiple = 13;//倍数
 
-        Long real = selItemBrower(itemId);
+        Long real = selItemIP(itemId);
+        Long realPV = selItemBrower(itemId);
 
         ItemBrowerFlowVO vo = new ItemBrowerFlowVO();
         vo.setVersion(unrealVersion);
-        if(real==0L){
-            vo.setNumber((long)(Math.random()*multiple));
-        }else{
-            vo.setNumber(real * multiple + real % multiple);
-        }
+        vo.setNumber((real-1) * multiple + realPV);
         vo.setMakeTime(new Date());
-        redisIO.putTemp("item_flow_" + itemId, vo, 300);
+        redisIO.putTemp("item_flow_" + itemId, vo, 120);
         return vo;
     }
 
@@ -90,7 +87,7 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
             return unreal;
         }
         unreal.setNumber(unreal.getNumber() + number);
-        redisIO.putTemp("item_flow_" + itemId, unreal, 300);
+        redisIO.putTemp("item_flow_" + itemId, unreal, 120);
         return unreal;
     }
 
