@@ -32,11 +32,16 @@ import java.util.Map;
 @Service("itemBrowerService")
 public class ItemBrowerServiceImpl implements ItemBrowerService{
 
-    int unrealVersion=1;
+    private static final int unrealVersion=1;
 
     @Autowired
     private RedisIO redisIO;
 
+    /**
+     * 查询不真实流量， 不存在则创建
+     * @param itemId 商品ID
+     * @return 流量记录
+     */
     @Override
     public ItemBrowerFlowVO selUnrealBrower(Long itemId) {
         ItemBrowerFlowVO flowVO = redisIO.get("item_flow_" + itemId, ItemBrowerFlowVO.class);
@@ -46,6 +51,11 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
         return flowVO;
     }
 
+    /**
+     * 创建流量计录， 受倍数控制的初始流量值
+     * @param itemId 商品ID
+     * @return 流量记录
+     */
     @Override
     public ItemBrowerFlowVO makeUnrealBrower(Long itemId) {
         int multiple = 10;//倍数
@@ -60,6 +70,12 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
         return vo;
     }
 
+    /**
+     * 添加不真实流量， 不存在流量记录则创建
+     * @param itemId 商品ID
+     * @param number 添加数量
+     * @return 流量记录
+     */
     @Override
     public ItemBrowerFlowVO addUnrealBrower(Long itemId, Integer number) {
         ItemBrowerFlowVO unreal = selUnrealBrower(itemId);
