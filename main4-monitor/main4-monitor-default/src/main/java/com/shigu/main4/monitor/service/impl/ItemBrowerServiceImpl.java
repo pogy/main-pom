@@ -118,6 +118,11 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
         return response.getHits().getTotalHits();
     }
 
+    @Override
+    public Long selItemIP(Long itemId) {
+        return null;
+    }
+
     /**
      * 批量聚合商品流量
      * @param itemIds
