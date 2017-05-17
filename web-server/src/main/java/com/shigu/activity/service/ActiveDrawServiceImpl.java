@@ -30,10 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 活动抽奖SERVICE
@@ -124,46 +121,52 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         SearchHit[] hits = response.getHits().getHits();
         List<ActiveDrawGoodsVo> drawGoodsVoList = new ArrayList<ActiveDrawGoodsVo>();
         if (hits != null && hits.length > 0) {
+            HashMap<Long, ESGoods> goodsTinyHashMap = new HashMap<Long, ESGoods>();
+            for (SearchHit hit : hits) {
+                ESGoods esGoods = JSON.parseObject(hit.getSourceAsString(), ESGoods.class);
+                goodsTinyHashMap.put(esGoods.getGoodsId(),esGoods);
+            }
+            List<Long> shopIds = BeanMapper.getFieldList(new ArrayList<Object>(goodsTinyHashMap.values()), "storeId", Long.class);
+            ShiguShopExample shopExample = new ShiguShopExample();
+            shopExample.createCriteria().andShopIdIn(shopIds);
+            List<ShiguShop> shiguShopList = shiguShopMapper.selectFieldsByExample(shopExample,FieldUtil.codeFields("shop_id,shop_num"));
+            Map<Long, ShiguShop> shopMap = BeanMapper.list2Map(shiguShopList, "shopId", Long.class);
+            List<Long> parentMarketIdList = BeanMapper.getFieldList(new ArrayList<Object>(goodsTinyHashMap.values()), "parentMarketId", Long.class);
+            ShiguMarketExample marketExample = new ShiguMarketExample();
+            marketExample.createCriteria().andMarketIdIn(parentMarketIdList);
+            List<ShiguMarket> marketList = shiguMarketMapper.selectFieldsByExample(marketExample, FieldUtil.codeFields("market_id,market_name"));
+            Map<Long, ShiguMarket> marketMap = BeanMapper.list2Map(marketList, "marketId", Long.class);
             for(ActiveDrawGoods drawGoods : drawGoodsList){
-                for (SearchHit hit : hits) {
-                    ShiguGoodsTiny shiguGoodsTiny = JSON.parseObject(hit.getSourceAsString(), ShiguGoodsTiny.class);
-                    if(drawGoods.getGoodsId().intValue() == shiguGoodsTiny.getGoodsId().intValue()){
-                        ActiveDrawGoodsVo activeDrawGoodsVo = new ActiveDrawGoodsVo();
-                        activeDrawGoodsVo.setGoodsId(shiguGoodsTiny.getGoodsId());
-                        activeDrawGoodsVo.setImgSrc(shiguGoodsTiny.getPicUrl());
-                        activeDrawGoodsVo.setMarketName(shiguGoodsTiny.getParentMarketName());
-                        activeDrawGoodsVo.setShopNum(shiguGoodsTiny.getStoreNum());
-                        activeDrawGoodsVo.setPemId(pemId);
-                        ESGoods esGoods = JSON.parseObject(hit.getSourceAsString(), ESGoods.class);
-                        activeDrawGoodsVo.setIsOff(esGoods.getIs_off());
+                ESGoods shiguGoodsTiny = goodsTinyHashMap.get(drawGoods.getGoodsId());
+                if(shiguGoodsTiny == null){continue;}
+                ActiveDrawGoodsVo activeDrawGoodsVo = new ActiveDrawGoodsVo();
+                activeDrawGoodsVo.setGoodsId(shiguGoodsTiny.getGoodsId());
+                activeDrawGoodsVo.setImgSrc(shiguGoodsTiny.getPicUrl());
+                activeDrawGoodsVo.setMarketName(shiguGoodsTiny.getParentMarketName());
+                activeDrawGoodsVo.setShopNum(shiguGoodsTiny.getStoreNum());
+                activeDrawGoodsVo.setPemId(pemId);
+                activeDrawGoodsVo.setIsOff(shiguGoodsTiny.getIs_off());
 
-                        DecimalFormat df2=(DecimalFormat) DecimalFormat.getInstance();
-                        df2.applyPattern("0.00");
-                        activeDrawGoodsVo.setPiPriceString(df2.format(shiguGoodsTiny.getPiPrice()/100));
-                        activeDrawGoodsVo.setTitle(shiguGoodsTiny.getTitle());
-                        activeDrawGoodsVo.setShopId(shiguGoodsTiny.getStoreId());
-                        if(StringUtils.isEmpty(shiguGoodsTiny.getParentMarketName())){
-                            ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguGoodsTiny.getParentMarketId(),
-                                    FieldUtil.codeFields("market_id,market_name"));
-                            if(shiguMarket != null){
-                                activeDrawGoodsVo.setMarketName(shiguMarket.getMarketName());
-                            }
-                        }
-                        if(StringUtils.isEmpty(activeDrawGoodsVo.getShopNum())){
-                            ShiguShop shiguShop = shiguShopMapper.selectFieldsByPrimaryKey(activeDrawGoodsVo.getShopId(),
-                                    FieldUtil.codeFields("shop_id,shop_num"));
-                            if(shiguShop != null){
-                                activeDrawGoodsVo.setShopNum(shiguShop.getShopNum());
-                            }
-                        }
-
-
-                        drawGoodsVoList.add(activeDrawGoodsVo);
-                        activeDrawGoodsVo.setId(drawGoods.getId());
-                        activeDrawGoodsVo.setPitId(drawGoods.getPitId());
-                        break;
+                DecimalFormat df2=(DecimalFormat) DecimalFormat.getInstance();
+                df2.applyPattern("0.00");
+                activeDrawGoodsVo.setPiPriceString(df2.format(shiguGoodsTiny.getPiPrice()/100));
+                activeDrawGoodsVo.setTitle(shiguGoodsTiny.getTitle());
+                activeDrawGoodsVo.setShopId(shiguGoodsTiny.getStoreId());
+                if(StringUtils.isEmpty(shiguGoodsTiny.getParentMarketName())){
+                    ShiguMarket shiguMarket = marketMap.get(shiguGoodsTiny.getParentMarketId());
+                    if(shiguMarket != null){
+                        activeDrawGoodsVo.setMarketName(shiguMarket.getMarketName());
                     }
                 }
+                if(StringUtils.isEmpty(activeDrawGoodsVo.getShopNum())){
+                    ShiguShop shiguShop = shopMap.get(activeDrawGoodsVo.getShopId());
+                    if(shiguShop != null){
+                        activeDrawGoodsVo.setShopNum(shiguShop.getShopNum());
+                    }
+                }
+                drawGoodsVoList.add(activeDrawGoodsVo);
+                activeDrawGoodsVo.setId(drawGoods.getId());
+                activeDrawGoodsVo.setPitId(drawGoods.getPitId());
             }
 
         }
@@ -293,6 +296,9 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      */
     @Override
     public void changeDrawGoods(Long id, Long goodsId, Long pemId, String type) {
+        if(id == null || goodsId == null || pemId == null){
+            return;
+        }
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
         drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id);
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
@@ -310,6 +316,19 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             return;
         }
         ActiveDrawGoods activeDrawGoods = drawGoodsList.get(0);
+        if(goodsId != null && activeDrawGoods.getGoodsId() != null
+                && goodsId.intValue() != activeDrawGoods.getGoodsId().intValue()){
+            // 更换商品
+            activeDrawGoods.setEnabled(true);
+            activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
+
+            // 新增商品
+            activeDrawGoods.setId(null);
+            activeDrawGoods.setEnabled(false);
+            activeDrawGoods.setGoodsId(goodsId);
+            activeDrawGoodsMapper.insertSelective(activeDrawGoods);
+            return;
+        }
         activeDrawGoods.setGoodsId(goodsId);
         activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
     }
@@ -584,8 +603,8 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         List<ActiveDrawRecordUserVo> drawRecordUserVos = new ArrayList<ActiveDrawRecordUserVo>();
         // 查询发现好货活动的数据
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
-        drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type)
-                .andEnabledEqualTo(false);
+        ActiveDrawGoodsExample.Criteria ctx = drawGoodsExample.createCriteria();
+        ctx.andPemIdEqualTo(pemId).andTypeEqualTo(type);
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
         List userIdList = BeanMapper.getFieldList(drawRecordList, "userId", List.class);
         List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
@@ -659,6 +678,10 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      */
     public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type){
         List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null);
+        if(userId != null){
+            // 过滤过期
+
+        }
         List<ActiveDrawRecordUserVo> recordUserVos = BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
         return recordUserVos;
     }
@@ -673,7 +696,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
         QueryBuilder userQuery = QueryBuilders.termQuery("fenUserId", userId);
         QueryBuilder goodsIdQuery = QueryBuilders.termsQuery("supperGoodsId", goodslist);
-        QueryBuilder startQuery = QueryBuilders.rangeQuery("daiTime");//.gte(DateUtil.dateToString(startTime,DateUtil.patternD)).format("yyyy-MM-dd HH:mm:ss");
+        QueryBuilder startQuery = QueryBuilders.rangeQuery("daiTime");
 
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         boolQuery.must(userQuery);
@@ -682,6 +705,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         srb.setQuery(boolQuery);
 
         srb.addAggregation(AggregationBuilders.terms("supperGoodsIdAgg").field("supperGoodsId").size(1000));
+
         SearchResponse response = srb.execute().actionGet();
         LongTerms supperGoodsIdAgg = response.getAggregations().get("supperGoodsIdAgg");
         int total = supperGoodsIdAgg.getBuckets().size();;
@@ -774,7 +798,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      */
     public void addActiveDrawRecord(ActiveDrawRecord activeDrawRecord){
         if(activeDrawRecord == null || activeDrawRecord.getPemId() == null ||
-             activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
+                activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
             return;
         }
         ActiveDrawRecord drawRecord = new ActiveDrawRecord();
@@ -826,14 +850,16 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             throw new Main4Exception("数据有误");
         }
 
+        if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
+            return drawRecordUserVo;
+        }
+
         int xcday = DateUtil.daysOfTwo(drawPemVo.getStartTime(), new Date());
         if(xcday > 7){
             throw new Main4Exception("已过期，无法领取");
         }
-        if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
-            return drawRecordUserVo;
-        }
-        return null;
+
+        return drawRecordUserVo;
     }
 
     /**

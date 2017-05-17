@@ -295,6 +295,11 @@ var webSite = '${webSite!}';
                 <span>${markets.title!} 牛仔城</span>
                 <i></i>
             </h3>
+            <#elseif markets.title == '6F'>
+                <h3 data-lm='${markets.title!}'>
+                    <span>${markets.title!} 鞋城</span>
+                    <i></i>
+                </h3>
             <#else>
             <h3 data-lm='${markets.title!}'>
                 <span>${markets.title!}</span>

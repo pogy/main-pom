@@ -2,6 +2,7 @@ package com.shigu.main4.monitor.service.impl;
 
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.monitor.services.ItemBrowerService;
+import com.shigu.main4.monitor.vo.ItemBrowerFlowVO;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -27,6 +28,25 @@ import java.util.Map;
  */
 @Service("itemBrowerService")
 public class ItemBrowerServiceImpl implements ItemBrowerService{
+
+    int unrealVersion=1;
+
+    int beishu=10;
+
+    @Override
+    public ItemBrowerFlowVO selUnrealBrower(Long itemId) {
+        return null;
+    }
+
+    @Override
+    public ItemBrowerFlowVO makeUnrealBrower(Long itemId) {
+        return null;
+    }
+
+    @Override
+    public ItemBrowerFlowVO addUnrealBrower(Long itemId, Integer number) {
+        return null;
+    }
 
     /**
      * 按商品ID统计商品浏览量
