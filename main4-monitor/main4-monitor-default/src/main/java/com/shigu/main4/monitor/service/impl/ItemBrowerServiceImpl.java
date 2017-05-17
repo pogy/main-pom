@@ -39,7 +39,11 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
 
     @Override
     public ItemBrowerFlowVO selUnrealBrower(Long itemId) {
-        return null;
+        ItemBrowerFlowVO flowVO = redisIO.get("item_flow_" + itemId, ItemBrowerFlowVO.class);
+        if (flowVO == null || flowVO.getVersion() != unrealVersion) {
+            return makeUnrealBrower(itemId);
+        }
+        return flowVO;
     }
 
     @Override
