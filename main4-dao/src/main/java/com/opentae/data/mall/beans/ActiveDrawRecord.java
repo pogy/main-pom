@@ -51,6 +51,9 @@ public class ActiveDrawRecord {
     /** 更新时间 */
     private Date modifyTime;
 
+    /** 查阅时间 */
+    private Date refeTime;
+
     /** 数据有效性 */
     private Boolean enabled;
 
@@ -154,5 +157,13 @@ public class ActiveDrawRecord {
 
     public void setLoginPhone(String loginPhone) {
         this.loginPhone = loginPhone;
+    }
+
+    public Date getRefeTime() {
+        return refeTime;
+    }
+
+    public void setRefeTime(Date refeTime) {
+        this.refeTime = refeTime;
     }
 }

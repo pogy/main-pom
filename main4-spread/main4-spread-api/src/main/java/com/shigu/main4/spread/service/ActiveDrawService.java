@@ -1,5 +1,6 @@
 package com.shigu.main4.spread.service;
 
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
@@ -110,7 +111,7 @@ public interface ActiveDrawService {
      * @param ward
      * @return
      */
-    public List<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward);
+    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward, int pageNum, int pageSize);
 
     /**
      * 查询当前中奖用户
@@ -131,4 +132,10 @@ public interface ActiveDrawService {
      * @return
      */
     public List<Long> findDrawShopIds();
+
+    /**
+     * 修改查阅时间
+     * @param recordId
+     */
+    public void changeRefeTime(Long recordId);
 }
