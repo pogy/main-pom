@@ -59,7 +59,10 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
     @Override
     public ItemBrowerFlowVO addUnrealBrower(Long itemId, Integer number) {
         ItemBrowerFlowVO unreal = selUnrealBrower(itemId);
-        if (unreal == null || number == null) {
+        if (unreal == null) {
+            unreal = makeUnrealBrower(itemId);
+        }
+        if (number == null) {
             return unreal;
         }
         unreal.setNumber(unreal.getNumber() + number);
