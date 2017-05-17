@@ -166,7 +166,6 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             }
 
         }
-
         if(ActiveDrawGoods.TYPE_DAILYFIND.equals(type)){
             return drawGoodsVoList;
         }

@@ -12,7 +12,7 @@ import javax.persistence.Transient;
  */
 @Service
 @Scope("prototype")
-public class OodTestImpl implements OodTest{
+public class OodTestImpl extends OodTest {
     @Transient
     @Autowired
     ShiguShopMapper shiguShopMapper;
