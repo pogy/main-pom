@@ -54,6 +54,18 @@ public class ESGoods implements Serializable {
     private Long storeId;
     private Long v_tradingVolume = 0L;
     private String cname;
+    /**
+     * 存放风格ID
+     */
+    private String sids;
+
+    public String getSids() {
+        return sids;
+    }
+
+    public void setSids(String sids) {
+        this.sids = sids;
+    }
 
     public Long getGoodsId() {
         return goodsId;
