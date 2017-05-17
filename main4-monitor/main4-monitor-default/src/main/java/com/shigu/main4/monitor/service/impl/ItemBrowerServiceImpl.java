@@ -3,6 +3,7 @@ package com.shigu.main4.monitor.service.impl;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.monitor.vo.ItemBrowerFlowVO;
+import com.shigu.main4.tools.RedisIO;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -12,8 +13,10 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +34,9 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
 
     int unrealVersion=1;
 
+    @Autowired
+    private RedisIO redisIO;
+
     @Override
     public ItemBrowerFlowVO selUnrealBrower(Long itemId) {
         return null;
@@ -38,12 +44,27 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
 
     @Override
     public ItemBrowerFlowVO makeUnrealBrower(Long itemId) {
-        return null;
+        int multiple = 10;//倍数
+
+        Long real = selItemBrower(itemId);
+
+        ItemBrowerFlowVO vo = new ItemBrowerFlowVO();
+        vo.setVersion(unrealVersion);
+        vo.setNumber(real * multiple + real % multiple);
+        vo.setMakeTime(new Date());
+        redisIO.putTemp("item_flow_" + itemId, vo, 10000);
+        return vo;
     }
 
     @Override
     public ItemBrowerFlowVO addUnrealBrower(Long itemId, Integer number) {
-        return null;
+        ItemBrowerFlowVO unreal = selUnrealBrower(itemId);
+        if (unreal == null || number == null) {
+            return unreal;
+        }
+        unreal.setNumber(unreal.getNumber() + number);
+        redisIO.putTemp("item_flow_" + itemId, unreal, 10000);
+        return unreal;
     }
 
     /**
@@ -66,9 +87,8 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
         srb.setQuery(boleanQueryBuilder);
         srb.setSearchType(SearchType.COUNT);
         SearchResponse response = srb.execute().actionGet();
-        Long total = response.getHits().getTotalHits();
 
-        return total;
+        return response.getHits().getTotalHits();
     }
 
     /**
