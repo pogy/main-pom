@@ -23,7 +23,7 @@ public interface ItemBrowerService {
      * @param itemId
      * @return
      */
-    ItemBrowerFlowVO makeUnrealBrower(Long itemId,Long tail);
+    ItemBrowerFlowVO makeUnrealBrower(Long itemId);
 
     /**
      * 添加不真流量
