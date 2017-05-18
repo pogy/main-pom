@@ -1,0 +1,109 @@
+@startuml
+enum PayType{
+XZ  //星座
+ALI  //阿里
+WX   //微信
+}
+interface Cart{
+void addProduct(Product pro);
+Long modifyProductNumber(Long pid,Integer number);
+}
+interface Order{
+PayApplyVO payApply(PayType type);//支付申请
+Long pay(Long applyId,Long money);//付款确认
+
+LogisticsVO selLogistics();//查询物流单号
+void sended(LogisticsVO logistics);//发货完成
+
+void refunds();//全单退订
+void refundLogistics();//退邮费
+void refundGift();//退礼品费
+void refundPackage();//退包材
+void refundService();//退服务
+}
+interface SubOrder{
+void refund();//退货
+
+}
+interface Product{
+void modifyWeight(Long meter);
+void modifyPrice(Long price);
+List<SkuVO> selSkus();
+}
+interface Sender{
+void sendOrder(Order order);//发放订单给代发
+}
+
+class OrderVO{
+-Long orderId;
+-OrderType type;
+-OrderStatus status;
+-Long totalFee;
+-List<Long> payIds;
+-Long refundFee;//已退金额
+}
+
+class SubOrderVO{
+-Long subOrderId;
+-Long orderId;
+-ProductVO product;
+-Integer number;
+-OrderStatus status;
+-Long refundFee;//已退金额
+}
+
+enum ProductType{
+XZ //星座商品
+
+}
+
+enum OrderType{
+XZ //星座商品的订单
+
+}
+
+enum OrderStatus{
+WAIT_BUYER_PAY //等待买家付款
+SELLER_CONSIGNED_PART //卖家部分发货
+WAIT_SELLER_SEND_GOODS //等待卖家发货
+TRADE_FINISHED  //交易完成
+TRADE_CLOSED  //付款以后用户退款成功，交易自动关闭
+
+}
+
+class ProductVO{
+-Long productId;
+-Long shopId;
+-String outerKey;
+-ProductType type;
+-SkuVO sku;
+}
+
+class SkuVO{
+-Long skuId;
+-Long productId;
+-String name;
+-String value;
+}
+
+class PayApplyVO{
+-Long applyId;//支付申请ID
+-String payUrl;//支付链接
+}
+
+class SenderVO{
+-Long senderId
+-String webSite
+}
+
+class LogisticsVO{
+-String logisticsNo;//快递单号
+-String company;//快递公司
+-Long companyId;//快递公司ID
+}
+
+class packageVO{
+
+}
+
+@enduml

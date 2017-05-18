@@ -31,13 +31,15 @@ public class AdMst {
 
     @Test
     public void testMsg(){
-        System.out.println(sendSms_quick("18888971970","四季星座网温馨提示：（报名时间为5月12日-5月14日20时）网站广告位报名入口已发布，本期总计首页34个位置，轮转播区2个，首焦下方3个，热卖10个，推荐档口7个，元素馆5个，商品库右侧7个（注意：所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台，“发现好货”栏目 10个位置将在13日20点开始竞拍【四季星座网】"));
+        System.out.println(sendSms_quick("18888971970","四季星座网温馨提示：（报名时间为5月18日-5月20日20时）网站广告位报名入口已发布，本期总计首页33个位置，轮转播区1个，首焦下方3个，热卖10个，推荐档口7个，元素馆5个，商品库右侧7个（注意：所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台，“发现好货”栏目 10个位置将在18日20点开始竞拍【四季星座网】"));
 //        System.out.println(sendSms_quick("18888971970","温馨提示：（报名时间为4月28日-4月30日20时）网站广告位报名入口已发布，本期总计首页29个位置，轮转播区1个，轮转播下方区1个，首页热卖10个，推荐档口7个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
     }
     @Test
     public void sendMsg(){
         ShiguShopExample example=new ShiguShopExample();
-        example.createCriteria().andMarketIdEqualTo(621L).andShopStatusEqualTo(0);
+//        example.createCriteria().andMarketIdEqualTo(621L).andShopStatusEqualTo(0);
+//        example.createCriteria().andMarketIdEqualTo(1087L).andShopStatusEqualTo(0);
+        example.createCriteria().andMarketIdEqualTo(617L).andShopStatusEqualTo(0);
         List<ShiguShop> shopList=shiguShopMapper.selectByExample(example);
 
         for(ShiguShop s:shopList){
@@ -52,7 +54,7 @@ public class AdMst {
             }
             if(telephone!=null){
                 System.out.println(telephone);
-                System.out.println(sendSms_quick(telephone,"四季星座网温馨提示：（报名时间为5月15日-5月17日20时）网站广告位报名入口已发布，本期总计首页31个位置，首页热卖10个，推荐档口8个，元素馆5个，商品库右侧8个（注意：所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
+                System.out.println(sendSms_quick(telephone,"四季星座网温馨提示：“发现好货”栏目 10个位置将在今日20点(每周星期四）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
 //                System.out.println(sendSms_quick(telephone,"温馨提示：（报名时间为5月2日-5月4日12时）网站广告位报名入口已发布，本期总计首页32个位置，轮转播区1个，轮转播下方区3个，首页热卖10个，推荐档口8个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
             }
 
