@@ -3,18 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>main-pom</artifactId>
+        <artifactId>main4-order</artifactId>
         <groupId>sites.main</groupId>
         <version>4.1.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>main4-order</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>main4-order-api</module>
-        <module>main4-order-default</module>
-    </modules>
+    <artifactId>main4-order-default</artifactId>
 
 
 </project>
