@@ -217,7 +217,8 @@ public class UserCollectServiceImpl implements UserCollectService {
         String video = "";//视频
         // 销售属性组合
         TaobaoSkuExample example_ts = new TaobaoSkuExample();
-        example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
+        example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1IsNull();
+        example_ts.or().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
         example_ts.setOrderByClause("properties asc");
         List<TaobaoSku> list_ts = taobaoSkuMapper.selectByExample(example_ts);////淘宝SKU
         String skuProps = "";//sku组合属性
