@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/indexgglist.css?t=1494492248847" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/indexgglist.css?t=1495071369289" rel="stylesheet">
     
   </head>
 <body>
@@ -243,7 +243,7 @@ var webSite = '${webSite!}';
     
     <div class="content shadow-box">
         <h3 class="title">广告区域</h3>
-        <a href="${main_host!}seller/dtgglistFinish.htm" target="_blank" class="searAllRe">查看所有结果 ＞</a>
+        <a href="${main_host!}seller/dtgglistFinish.htm" target="_blank" class="searAllRe">查看上一期结果 ＞</a>
         <div class="adsBoxs clearfix">
             <#if (adsBoxList?size) gt 0>
             <#list adsBoxList as item>
@@ -316,7 +316,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/indexgglist.js?t=1494492248847"></script>
+<script src="http://style.571xz.com/gys4/js/indexgglist.js?t=1495071369289"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
