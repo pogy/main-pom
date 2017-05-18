@@ -2,6 +2,7 @@ package com.shigu.main4.item.services;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ESGoods;
+import com.opentae.data.mall.beans.SearchCategorySub;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.SearchCategorySubExample;
 import com.opentae.data.mall.interfaces.SearchCategoryMapper;
