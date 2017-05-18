@@ -98,6 +98,23 @@ public class RedisIO {
     }
 
     /**
+     * 按固定时间
+     * @return
+     */
+    public boolean putFixedTemp(String key,Object value,Integer time){
+        Jedis jedis = getJedis();
+        try {
+            Long ttl=jedis.ttl(key);
+            if(ttl!=null&&ttl>0){
+                time=ttl.intValue();
+            }
+            return value != null && "OK".equals(jedis.setex(key,time,JSON.toJSONString(value)));
+        }finally {
+            returnJedis(jedis);
+        }
+    }
+
+    /**
      * 加队列
      * @param key
      * @param value

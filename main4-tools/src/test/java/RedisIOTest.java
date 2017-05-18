@@ -18,7 +18,7 @@ public class RedisIOTest {
     @Test
     public void putExTest(){
         System.out.println(redisIO.putTemp("hahaha",111L,100));
-        System.out.println(redisIO.put("hehe",123L));
+//        System.out.println(redisIO.put("hehe",123L));
     }
 
     @Test

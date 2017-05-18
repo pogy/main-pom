@@ -87,6 +87,10 @@ public class ADAuctionAction {
             return "redirect:dtgglist.htm?id="+(id!=null?id:"");
         }
         ActivityVO activityVO= (ActivityVO) activity;
+        ActivityTerm t=activityFactory.selTermById(activityVO.getTermId());
+        if(t.getEndTime().getTime()<System.currentTimeMillis()){//已经结束
+            return "redirect:dtgglist.htm?id="+(id!=null?id:"");
+        }
         model.addAttribute("activityId",activityVO.getActivityId());
         model.addAttribute("introductionHtml",introductionHtml);
         //是否已经报名
@@ -142,7 +146,7 @@ public class ADAuctionAction {
             model.addAttribute("ggList", adAuctionService.selLedWinner(selActivityById(id)));
         }
         if (term != null) {
-            ActivityTerm nextTerm = activityFactory.selafterTermId(ActivityType.GOAT_LED, term.getTermId());
+            ActivityTerm nextTerm = activityFactory.selafterTermId(term.getActivityType(), term.getTermId());
             if (nextTerm != null) {
                 model.addAttribute("nexttimeText", DateUtil.dateToString(nextTerm.getStartTime(), "yyyy-MM-dd HH:mm:ss"));
             } else {

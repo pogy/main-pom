@@ -24,7 +24,7 @@ public interface UserCollectService {
      * @param pageSize 每页条数
      * @return
      */
-    ShiguPager<ItemCollectVO> selItemCollections(Long userId,String webSite,int pageNo,int pageSize);
+    ShiguPager<ItemCollectVO> selItemCollections(Long userId,String keyword, String webSite,int pageNo,int pageSize);
 
     /**
      * 按主键批量删除收藏记录

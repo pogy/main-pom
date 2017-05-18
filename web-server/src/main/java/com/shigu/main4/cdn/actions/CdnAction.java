@@ -1,6 +1,7 @@
 package com.shigu.main4.cdn.actions;
 
 import com.alibaba.fastjson.JSON;
+import com.shigu.main4.cdn.bo.ItemBO;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.bo.ShopCdnBO;
@@ -124,6 +125,9 @@ public class CdnAction {
 
     @Autowired
     TodayNewGoodsService todayNewGoodsService;
+
+    @Autowired
+    ItemBrowerService itemBrowerService;
 
     /**
      * 杭州首页动态页面
@@ -348,16 +352,17 @@ public class CdnAction {
         StoreRelation storeRelation=storeRelationService.selRelationById(shopId);
         String webSite=storeRelation.getWebSite();
         model.addAttribute("baseUrl","http://"+webSite+".571xz.com/");
-        return shop(bo,null,model);
+        return shop(bo,null, model);
         //拼baseUrl
     }
     /**
      * 商品页面
-     * @param id
+     * @param bo
      * @return
      */
     @RequestMapping("item")
-    public String item(Long id,Model model) throws CdnException, IOException, TemplateException {
+    public String item(ItemBO bo, Model model) throws CdnException, IOException, TemplateException {
+        Long id=bo.getId();
         //如果东北商品,用东北的模板
         ItemShowVO itemShowVO=new ItemShowVO();
         itemShowVO.setItemId(id);
@@ -378,6 +383,8 @@ public class CdnAction {
                     .replace("</script>",""));
         itemShowVO.setCdnItem(cdnItem);
 //        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
+        if(bo.getWho()!=null&&bo.getWho().equals("dd"))
+        itemShowVO.setClicks(itemBrowerService.addUnrealBrower(id,1).getNumber());
         itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
         Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
         starNum=starNum==null?0:    starNum;
@@ -388,6 +395,7 @@ public class CdnAction {
         itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
         model.addAttribute("newGoodsList",shopForCdnService.searchItemOnsale(null,cdnItem.getShopId(),"time_down",1,5).getContent());
         model.addAttribute("vo",itemShowVO);
+        model.addAttribute("bo",bo);
         model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
 //        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
         return "cdn/item";
@@ -525,7 +533,7 @@ public class CdnAction {
      */
     @RequestMapping("shop/search")
     public String shopSearch(@Valid ShopCdnBO bo,BindingResult result,Model model) throws ShopFitmentException, IOException, CdnException {
-        if(result.hasErrors()){
+        if(result!=null&&result.hasErrors()){
             throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
         }
         Long pageId=shopDesignService.selSearchIdByShopId(bo.getId());
