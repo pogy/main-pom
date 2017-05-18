@@ -63,9 +63,6 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
     @Resource(name = "tae_mall_shiguShopMapper")
     private ShiguShopMapper shiguShopMapper;
 
-    @Resource(name = "tae_mall_shiguShopFitmentMapper")
-    private ShiguShopFitmentMapper shiguShopFitmentMapper;
-
     @Resource(name = "tae_mall_shiguGoodsTinyMapper")
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
@@ -700,51 +697,4 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         return shopBase;
     }
 
-    /**
-     * 店铺装修查询
-     *
-     * @param shopId
-     * @return
-     */
-    @Override
-    public ShopFitment selShopFitment(Long shopId) {
-        if (shopId == null) {
-            return null;
-        }
-        // 查询缓存
-        Cache cache = cacheManager.getCache("shopFitmentCache");
-        ShopFitment shopFitmentCache = cache.get(shopId, ShopFitment.class);
-        if (shopFitmentCache != null) {
-            return shopFitmentCache;
-        }
-        ShiguShopFitmentExample example = new ShiguShopFitmentExample();
-        example.createCriteria().andShopIdEqualTo(shopId);
-        List<ShiguShopFitment> shiguShopFitmentList = shiguShopFitmentMapper.selectByExample(example);
-        if(shiguShopFitmentList.size()==0){//
-            return null;
-        }
-        ShiguShopFitment shiguShopFitment = shiguShopFitmentList.get(0);
-        ShopFitment shopFitment = new ShopFitment();
-        shopFitment.setDescription(shiguShopFitment.getDescription());
-        shopFitment.setShopLogo(shiguShopFitment.getShopLogo());
-        List<String> bannersList = new ArrayList<String>();
-        if (!StringUtils.isEmpty(shiguShopFitment.getShopBanner())) {
-            bannersList.add(shiguShopFitment.getShopBanner());
-        }
-        if (!StringUtils.isEmpty(shiguShopFitment.getShopBanner2())) {
-            bannersList.add(shiguShopFitment.getShopBanner2());
-        }
-        if (!StringUtils.isEmpty(shiguShopFitment.getShopBanner3())) {
-            bannersList.add(shiguShopFitment.getShopBanner3());
-        }
-        if (!StringUtils.isEmpty(shiguShopFitment.getShopBanner4())) {
-            bannersList.add(shiguShopFitment.getShopBanner4());
-        }
-        if (!StringUtils.isEmpty(shiguShopFitment.getShopBanner5())) {
-            bannersList.add(shiguShopFitment.getShopBanner5());
-        }
-        shopFitment.setBanners(bannersList);
-        cache.put(shopId, shopFitment);
-        return shopFitment;
-    }
 }

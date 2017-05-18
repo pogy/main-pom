@@ -111,12 +111,5 @@ public interface ShopForCdnService {
      */
     ShopBaseForCdn selShopBase(Long shopId);
 
-    /**
-     * 查店内装修信息
-     * @param shopId
-     * @return
-     */
-    ShopFitment selShopFitment(Long shopId);
-
 
 }

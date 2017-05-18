@@ -14,19 +14,6 @@ import java.util.List;
  * Created by zhaohongbo on 17/2/16.
  */
 public interface ShopFitmentService {
-    /**
-     * 查询店内装修情况
-     * @param shopId
-     * @return
-     */
-    ShopFitmentForUpadte selFitmentForUpadte(Long shopId);
-
-    /**
-     * 更新店内装修
-     * @param shopId 店铺ID
-     * @param fitmentForUpadte 更新的数据
-     */
-    void updateFitment(Long shopId,ShopFitmentForUpadte fitmentForUpadte) throws ShopFitmentException;
 
     /**
      * 初始化店铺装修

@@ -1,7 +1,6 @@
 package com.shigu.main4.cdn.services;
 
-import com.opentae.data.mall.beans.ShiguStoreNumShow;
-import com.opentae.data.mall.interfaces.ShiguStoreNumShowMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class OldStoreNumShowService {
 
     @Autowired
-    ShiguStoreNumShowMapper shiguStoreNumShowMapper;
+    ShiguShopMapper shiguShopMapper;
 
     /**
      * 查出新的shopID
@@ -20,10 +19,6 @@ public class OldStoreNumShowService {
      * @return
      */
     public Long selShopId(Long numIid){
-        ShiguStoreNumShow numShow=shiguStoreNumShowMapper.selectByPrimaryKey(numIid);
-        if(numShow!=null){
-            return numShow.getStoreId();
-        }
-        return null;
+        return shiguShopMapper.selShopIdByNumId(numIid);
     }
 }
