@@ -3,6 +3,7 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -39,6 +40,12 @@ public class MemberLicenseApply implements Serializable{
 
     /** 不通过原因 */
     private String reason;
+
+    @Transient
+    private String userName;
+
+    @Transient
+    private String loginPhone;
 
     public Long getApplyId() {
         return applyId;
@@ -94,5 +101,21 @@ public class MemberLicenseApply implements Serializable{
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getLoginPhone() {
+        return loginPhone;
+    }
+
+    public void setLoginPhone(String loginPhone) {
+        this.loginPhone = loginPhone;
     }
 }
