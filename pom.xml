@@ -27,6 +27,7 @@
         <module>main4-spread</module>
         <module>main4-tools</module>
         <module>web-server</module>
+        <module>main4-order</module>
     </modules>
     <packaging>pom</packaging>
 

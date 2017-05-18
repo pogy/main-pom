@@ -594,66 +594,6 @@ public class CdnAction {
         return containerVO;
     }
 
-    /**
-     * 包装店铺数据
-     * @return
-     */
-    private void packageShopData(ShopCdnBO bo,Model model){
-        ShopShowVO shopShowVO=cdnService.shopSimpleVo(bo.getId());
-        //聚合类目信息
-        shopShowVO.setCatPolymerizations(shopForCdnService.selCatRolymerizations(bo.getId()));
-        //查店内类目
-        shopShowVO.setShopCats(shopForCdnService.selShopCatsById(bo.getId()));
-        //查商品
-        //如果是仓库
-        if(bo.getTimeflag()!=null&&bo.getTimeflag()==4){
-            Calendar cal=Calendar.getInstance();
-                if(bo.getOption()!=null&&bo.getOption().equals("month")){//一个月内
-                    cal.add(Calendar.MONTH,-1);
-                }else if(bo.getOption()!=null&&bo.getOption().equals("week")){//一周内
-                    cal.add(Calendar.WEEK_OF_MONTH,-1);
-                }else if(bo.getOption()!=null&&bo.getOption().equals("day")){//一天内
-                    cal.add(Calendar.DATE,-1);
-                }else{//默认1年内的下架
-                    cal.add(Calendar.YEAR,-1);
-                }
-            Date  dateFrom=cal.getTime();
-            ShiguPager<ItemShowBlock> pager=shopForCdnService.searchItemInstock(dateFrom,new Date(),bo.getId(),
-                    bo.getPageNo(),bo.getPageSize());
-//            shopShowVO.setPageOption("50,10,1");
-            model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-            shopShowVO.setItemList(pager);
-        }else{
-            //判断是价格类,还是类目型
-            ShiguPager<ItemShowBlock> pager;
-            if(bo.getCid()!=null||bo.getScid()!=null){//类目型
-                pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
-                        bo.getCid(),bo.getScid(),bo.getOrder(),DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd"),
-                        DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd"),bo.getPageNo(),bo.getPageSize());
-            }else{
-                pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
-                        bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd"),
-                        DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd"),bo.getPageNo(),bo.getPageSize());
-            }
-//            shopShowVO.setPageOption(pager.selPageOption(bo.getPageSize()));
-            model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-//            shopShowVO.setPageOption("50,10,1");
-            model.addAttribute("totalpage",pager.getTotalPages());
-            shopShowVO.setItemList(pager);
-        }
-        if(bo.isIndex()){//加装修与推荐
-            shopShowVO.setRecommens(shopForCdnService.selRecomments(bo.getId()));
-            shopShowVO.setShopFitment(shopForCdnService.selShopFitment(bo.getId()));
-            //把装修里面script去除一下
-            if(shopShowVO.getShopFitment()!=null&&shopShowVO.getShopFitment().getDescription()!=null){
-                shopShowVO.getShopFitment().setDescription(shopShowVO.getShopFitment().getDescription()
-                        .replace("<script ","").replace("<script>","")
-                        .replace("</script>",""));
-            }
-        }
-        model.addAttribute("vo",shopShowVO);
-        model.addAttribute("query",bo);
-    }
 
     /**
      * 店铺讨论区
