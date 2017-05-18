@@ -41,6 +41,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.*;
+import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.IllegalArgumentException;
 import static com.shigu.main4.item.exceptions.SystemSynItemException.SynItemExceptionEnum.ES_SYN_HAS_ERROR;
 
 /**
@@ -1083,7 +1084,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         ESGoods goods = esGoodsService.createEsGoods(tiny);
         SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
         seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
-        goodsAddToRedis.addToRedis(seb);
+        new ElasticRepository().insert(seb);
 
         ShiguGoodsStyle goodsStyle;
         ShiguGoodsStyle style = new ShiguGoodsStyle();
