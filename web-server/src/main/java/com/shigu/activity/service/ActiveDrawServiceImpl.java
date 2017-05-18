@@ -588,6 +588,10 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         Map<Long, ActiveDrawRecordUserVo> recordUserVoMap = BeanMapper.list2Map(drawRecordUserVoList, "userId", Long.class);
         for (int i = 0; i < drawRecordList.size(); i++) {
             ActiveDrawRecordUserVo drawRecordUserVo = recordUserVoMap.get(drawRecordList.get(i).getUserId());
+            if(drawRecordUserVo == null){
+                drawRecordUserVo = BeanMapper.map(drawRecordList.get(i), ActiveDrawRecordUserVo.class);
+                drawRecordUserVo.setConcatPhone(drawRecordList.get(i).getLoginPhone());
+            }
             drawRecordUserVos.add(drawRecordUserVo);
         }
         drawRecordUserVoShiguPager.setContent(drawRecordUserVos);
