@@ -60,7 +60,7 @@ public class UserCollectServiceTest {
      */
     @Test
     public void testSelItemCollections() {
-        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(9968L, "hz", 1, 10);
+        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(1000064147L, "2017","hz", 1, 10);
         logger.info("\n" + JSON.toJSONString(pager, SerializerFeature.PrettyFormat));
         assertTrue(pager != null && pager.getContent() != null);
     }

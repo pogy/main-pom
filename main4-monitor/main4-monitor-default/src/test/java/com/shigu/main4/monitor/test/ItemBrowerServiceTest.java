@@ -29,6 +29,10 @@ public class ItemBrowerServiceTest {
     private RedisIO redisIO;
 
     @Test
+    public void ttt(){
+        System.out.println(System.currentTimeMillis());
+    }
+    @Test
     public void selItemBrower(){
         String ids="20350398,20436928,20393881,20476643,20458247,20420378,20411779,20486173,20422561,20415264,20396297,20393820,20361266,20346502,20330455,20140367,20072650,20477521,20433766,20445645,20429635,20339641,20339288,20307785,20435314,20357051,20252168,20385949,20385071,20154487,20129544,20312845,20308182,20140351,20416489,20279460,20465236,20225840,20134170,20339319,20267233,20202220,20451309,20340628,9980847,20301022,9949012,9892065,20451118,20385063,20266818,20311868,20340629,20478082,20191733,20149389";
         String[] idsarr=ids.split(",");
@@ -44,6 +48,17 @@ public class ItemBrowerServiceTest {
         Long itemId =20208007L;
         Long total = itemBrowerService.selItemBrower(itemId);
         System.out.println("  itemTotal:" + total);
+    }
+
+    @Test
+    public void selItemIP(){
+        Long itemId = 9901299L;
+        //独立IP数查询
+        Long total = itemBrowerService.selItemIP(itemId);
+        logger.error("独立IP数：" + total);
+
+        // 讲道理，独立IP会小于PV
+        assertTrue(total <= itemBrowerService.selItemBrower(itemId));
     }
 
     @Test

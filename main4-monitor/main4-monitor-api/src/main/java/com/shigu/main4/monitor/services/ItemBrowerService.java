@@ -39,6 +39,8 @@ public interface ItemBrowerService {
      */
     Long selItemBrower(Long itemId);
 
+    Long selItemIP(Long itemId);
+
     /**
      * 批量聚合流量
      * @param itemIds
