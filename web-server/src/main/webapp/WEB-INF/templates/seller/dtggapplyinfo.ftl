@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/dtggapplyinfo.css?t=1494492254229" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/dtggapplyinfo.css?t=1494837957265" rel="stylesheet">
     
   </head>
 <body>
@@ -236,8 +236,8 @@ var webSite = '${webSite!}';
         <h2>营销管理</h2>
         <ul>
             <li><a class="selected dtgg"  href="${main_host!}seller/dtggapply.htm?id=1001">广告派位</a></li> 
-            <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li>
-            <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li>
+            <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li> 
+            <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
         </ul> 
     </div>
     
@@ -304,7 +304,7 @@ var typeId = '${typeId!}'; //广告id
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/dtggapplyinfo.js?t=1494492254229"></script>
+<script src="http://style.571xz.com/gys4/js/dtggapplyinfo.js?t=1494837957265"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
