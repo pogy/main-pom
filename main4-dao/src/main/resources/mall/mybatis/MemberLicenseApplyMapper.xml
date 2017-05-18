@@ -7,7 +7,7 @@
 	<select id="selectLicenseApplyListByBo" resultType="com.opentae.data.mall.beans.MemberLicenseApply">
 		SELECT
 			DISTINCT
-			lp.*
+			lp.*,u.user_name,u.login_phone
 		FROM
 			member_license_apply lp
 				left join member_license lc on lp.user_id = lc.user_id
