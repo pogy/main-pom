@@ -290,7 +290,7 @@ public class GoodsSearchService {
         }
         ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),bo.getWebSite(),bo.getMid(),
                 cids.size()==0?null:cids,
-                shouldShopId.size()==0?null:shouldShopId,
+                shouldShopId.size()==0?null:shouldShopId,null,
                 bo.getSp(),bo.getEp(),start,end,orderBy,bo.getPage(),bo.getRows(), needaggs
         );
         SearchVO vo=new SearchVO();
