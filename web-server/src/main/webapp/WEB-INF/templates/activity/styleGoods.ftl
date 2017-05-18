@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/styleGoods.css?t=1494580262267" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/styleGoods.css?t=1495087669430" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/styleGoods.js?t=1494580262267"></script>
+    <script src="http://style.571xz.com/searchV5/js/styleGoods.js?t=1495087669430"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -189,7 +189,7 @@ var webSite = '${webSite!}';
 <div class="headerV1">
     <div class="layout">
         <div class="logoLeft">
-            <a href="${main_host!}">
+            <a href="<#if webSite == 'jx'>http://jx.571xz.com<#else>${main_host!}</#if>">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
             </a>
             <em></em>
@@ -242,14 +242,20 @@ var webSite = '${webSite!}';
     <div class="layout navCon">
         <div class="navList">
             <ul>
-                <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
-                <#if webSite != 'jx'>
-                <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
+                <#if webSite == 'jx'>
+                <li class="first"><a href="http://jx.571xz.com" target="_blank">首页</a></li>
                 <#else>
-                <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
+                <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
+                </#if>
+                <#if webSite == 'jx'>
+                    <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
+                    <#elseif webSite == 'wa'>
+                    <li><a href="http://www.571xz.com/storelist.htm?webSite=wa">企业列表</a></li>
+                    <#else>
+                    <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 </#if>
                 <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite !="jx">
+                <#if webSite !="jx" || webSite != 'wa'>
                 <li ><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
@@ -265,13 +271,13 @@ var webSite = '${webSite!}';
     
     
     <#list picCateNav.picCates as picCate>
-    <div class="picCateItem<#if query.keyword?? && query.keyword == picCate.keyword> selected</#if>">
+    <div class="picCateItem<#if (query.sid && query.sid == picCate.id) || (!query.sid && cateIndex==0)> selected</#if>">
         <div class="cateBottom">
             <a class="" href="${picCate.href!}" target="_blank"><img src="${picCate.imgsrc!}" alt="" /></a>
         </div>
         <div class="cateMiddle">
         </div>
-        <a  class="cateTop"  href="${picCate.href!}" target="_blank">
+        <a  class="cateTop" data-sid="${picCate.id!}"   href="${picCate.href!}" target="_blank">
             <span class="cateTitle">${picCate.text!}</span>
             <span class="cateNum">共计商品${picCate.goodscount!}件</span>
         </a>
@@ -285,8 +291,11 @@ var webSite = '${webSite!}';
             
             
             <#list picCateNav.textCates as textCate>
-                <li  class="<#if query.keyword?? && query.keyword == textCate.keyword> selected</#if>"><a href="${textCate.href!}">${textCate.text!}</a></li>
+                <#if textCate_index lt 11>
+                <li  class="<#if query.sid?? && query.sid == textCate.id> selected</#if>"><a data-sid="${textCate.id!}" class="moreCateStyle" href="${textCate.href!}">${textCate.text!}</a></li>
+                </#if>
             </#list>
+                <li  class=""><a href="http://so.571xz.com/hzgoods.htm">更多</a></li>
         </ul>
     </div>
 </div>
@@ -334,7 +343,7 @@ var webSite = '${webSite!}';
         </div>
          <div class="lastestStyleItem classfiyItem">
            <#list textCateNav.styles as item>
-            <a href="${item.href!}">${item.text!}</a>
+            <a href="${item.href!}"  class="<#if query.sid?? && query.sid == item.id> selected</#if>" target="_blank">${item.text!}</a>
             </#list>
         </div>
     </div>
