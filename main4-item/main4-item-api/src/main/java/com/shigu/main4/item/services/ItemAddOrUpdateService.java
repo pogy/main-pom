@@ -1,6 +1,7 @@
 package com.shigu.main4.item.services;
 
 import com.shigu.main4.item.exceptions.ItemModifyException;
+import com.shigu.main4.item.exceptions.ItemUpdateException;
 import com.shigu.main4.item.exceptions.SystemSynItemException;
 import com.shigu.main4.item.vo.SynItem;
 
@@ -106,4 +107,12 @@ public interface ItemAddOrUpdateService {
      * @param type
      */
     void addImgToSearch(Long goodsId,String webSite,String url,int type);
+
+    /**
+     * 修改商品风格
+     * @param goodsId 商品ID
+     * @param webSite 分站
+     * @param sids 风格ID
+     */
+    void addGoodsStyle(Long goodsId, String webSite, String sids) throws ItemUpdateException;
 }
