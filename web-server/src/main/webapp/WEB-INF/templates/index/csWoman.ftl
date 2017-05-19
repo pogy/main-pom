@@ -7,7 +7,7 @@
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/indexV4/css/csWoman.css?t=1495177411334" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV4/css/csWoman.css?t=1495182682474" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
 <script>/*============ indexV4/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/csWoman.js?t=1495177411334"></script>
+    <script src="http://style.571xz.com/indexV4/js/csWoman.js?t=1495182682474"></script>
   </head>
 <body class="pageWoman">
 <#include "/common/host_config.ftl">
@@ -296,8 +296,7 @@ var webSite = '${webSite!}';
                     <h3 class="mtitle"><em>女装市场</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=2">四号桥</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=19">其他市场</a></li>
+                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=53">四号桥</a></li>
                         </ul>
                     </div>
                 </div>
@@ -355,8 +354,7 @@ var webSite = '${webSite!}';
                         <div class="itemConTop">
                             <h4 class="itemTitle">市场导航</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=2" target="_blank">四号桥</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=19" target="_blank">其他市场</a></li>
+                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=53" target="_blank">四号桥</a></li>
                             </ul>
                         </div>
                     
@@ -512,7 +510,7 @@ var webSite = '${webSite!}';
         <div class="topNav">
             <ul class="clearfix">
                 <li>
-                    <a href="http://cs.571xz.com/market.htm?mid=" target="_blank">
+                    <a href="http://cs.571xz.com/market.htm?mid=53" target="_blank">
 逛市场<i class="hot"></i>                    </a>
                 </li>
                 <li>
