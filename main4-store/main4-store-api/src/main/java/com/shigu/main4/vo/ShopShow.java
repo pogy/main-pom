@@ -46,6 +46,30 @@ public class ShopShow implements Serializable{
      * 店铺创建时间
      */
     private Date createDate;
+    /**
+     * 楼层
+     */
+    private String floor;
+    /**
+     * 楼层ID
+     */
+    private Long floorId;
+
+    public Long getFloorId() {
+        return floorId;
+    }
+
+    public void setFloorId(Long floorId) {
+        this.floorId = floorId;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
 
     public List<Integer> getTags() {
         return tags;

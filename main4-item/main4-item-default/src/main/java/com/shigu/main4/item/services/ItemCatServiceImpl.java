@@ -1,6 +1,5 @@
 package com.shigu.main4.item.services;
 
-import com.opentae.data.mall.beans.ShiguStore;
 import com.opentae.data.mall.beans.ShiguStoreUsercat;
 import com.opentae.data.mall.beans.ShiguTaobaocat;
 import com.opentae.data.mall.examples.ShiguStoreUsercatExample;

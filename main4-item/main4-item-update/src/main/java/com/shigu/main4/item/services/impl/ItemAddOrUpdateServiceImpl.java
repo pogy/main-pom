@@ -100,6 +100,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Autowired
     private ShiguSiteMapper shiguSiteMapper;
 
+    @Autowired
+    private ShiguGoodsStyleMapper shiguGoodsStyleMapper;
+
     /**
      * 系统上架一款商品
      * <p>
@@ -1060,5 +1063,39 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 strs
         );
         item.setPiPriceString(String.format("%.2f", piPrice / 100.0));
+    }
+
+    /**
+     * 修改商品风格
+     * @param goodsId 商品ID
+     * @param webSite 分站
+     * @param sids 风格ID
+     */
+    public void addGoodsStyle(Long goodsId, String webSite, String sids) throws ItemUpdateException {
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setGoodsId(goodsId);
+        tiny.setWebSite(webSite);
+        tiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
+        if (tiny == null) {
+            throw new ItemUpdateException(ItemUpdateException.ItemUpdateExceptionEnum.ITEM_DOES_NOT_EXIST, goodsId);
+        }
+
+        ESGoods goods = esGoodsService.createEsGoods(tiny);
+        SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
+        seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
+        goodsAddToRedis.addToRedis(seb);
+
+        ShiguGoodsStyle goodsStyle;
+        ShiguGoodsStyle style = new ShiguGoodsStyle();
+        style.setGoodsId(goodsId);
+        if ((goodsStyle = shiguGoodsStyleMapper.selectOne(style)) != null) {
+            if (!Objects.equals(sids, goodsStyle.getSids())) {
+                goodsStyle.setSids(sids);
+                shiguGoodsStyleMapper.updateByPrimaryKey(goodsStyle);
+            }
+        } else {
+            style.setSids(sids);
+            shiguGoodsStyleMapper.insertSelective(style);
+        }
     }
 }
