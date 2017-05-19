@@ -217,6 +217,9 @@ public class GoodsSearchAction {
             if(StringUtils.equals("jx",bo.getWebSite())){
                 bo.setPid(701L);
             }
+            if(StringUtils.equals("cs",bo.getWebSite())){
+                bo.setPid(201L);
+            }
         }
         if (bo.getKeyword() != null)
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));

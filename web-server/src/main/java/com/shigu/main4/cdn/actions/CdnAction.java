@@ -317,20 +317,20 @@ public class CdnAction {
      */
     @RequestMapping(value = "csindex4show" , method = RequestMethod.GET)
     public String index4showcs(Model model, HttpServletRequest request){
-        Cookie[] cookies=request.getCookies();
-        String manOrWoman="Man";
-        String webSite="cs";
-        IndexPageVO page=new IndexPageVO();
-        page.setType("CSM");
+        Cookie[] cookies = request.getCookies();
+        String manOrWoman = "Man";
+        String webSite = "cs";
+        IndexPageVO page = new IndexPageVO();
+        page.setType("M");
         page.setTypeText("男装");
-        Long cid=30L;
-        if(cookies!=null)
-            for(Cookie c:cookies){
-                if("pageType".equals(c.getName())&&c.getValue().equals("CSW")){
-                    manOrWoman="Woman";
-                    page.setType("CSW");
+        Long cid = 30L;
+        if (cookies != null)
+            for (Cookie c : cookies) {
+                if ("pageType".equals(c.getName()) && c.getValue().equals("W")) {
+                    manOrWoman = "Woman";
+                    page.setType("W");
                     page.setTypeText("女装");
-                    cid=16L;
+                    cid = 16L;
                     break;
                 }
             }
@@ -385,9 +385,7 @@ public class CdnAction {
         model.addAttribute("loveGoodslist",loves);
         model.addAttribute("webSite",webSite);
 
-
-
-        return null;
+        return "index/cs"+manOrWoman;
     }
 
 
