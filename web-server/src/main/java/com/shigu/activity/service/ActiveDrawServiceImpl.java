@@ -581,8 +581,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             typeGoods = ActiveDrawGoods.TYPE_DAILYFIND;
         }
         int startRows = (pageNum-1)*pageSize;
-        int endRows = pageNum*pageSize;
-        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, null, ward,userNick, startRows, endRows);
+        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, null, ward,userNick, startRows, pageSize);
         // 查询发现好货活动的数据
         List<ActiveDrawRecordUserVo>  drawRecordUserVoList = poUserGoodsUp(pemId, typeGoods, drawRecordList);
         Map<Long, ActiveDrawRecordUserVo> recordUserVoMap = BeanMapper.list2Map(drawRecordUserVoList, "userId", Long.class);
