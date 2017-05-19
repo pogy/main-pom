@@ -213,7 +213,7 @@ var webSite = '${webSite!}';
             <div class="searchBox">
                 
                 <form id="formSearch" action="http://www.571xz.com/storenum.htm?webSite=${webSite!}" >
-                    <input type=hidden name="webSite" value="${webSite!}">
+                    <input class="searchWeb" type=hidden name="webSite" value="${webSite!}">
                 
                     
                     
