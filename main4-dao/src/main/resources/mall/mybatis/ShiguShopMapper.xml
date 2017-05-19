@@ -174,4 +174,8 @@
 			#{item}
 		</foreach>
 	</select>
+
+	<select id="selShopIdByNumId" resultType="long">
+		select store_id from shigu_store_num_show where store_num_id=${storeNumId}
+	</select>
 </mapper>

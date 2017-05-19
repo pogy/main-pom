@@ -2,7 +2,6 @@ package com.shigu.main4.ucenter.services.test.wxc;
 
 import com.opentae.data.mall.beans.ShiguGoodsCollect;
 import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.beans.ShiguStore;
 import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import org.junit.Test;
@@ -25,7 +24,7 @@ public class TestCase {
     @Test
     public void testSameField() {
         Class class1 = ShiguShop.class;
-        Class class2 = ShiguStore.class;
+        Class class2 = ShiguShop.class;
 
         for (Field field1 : class1.getDeclaredFields()) {
             for (Field field2 : class2.getDeclaredFields()) {
