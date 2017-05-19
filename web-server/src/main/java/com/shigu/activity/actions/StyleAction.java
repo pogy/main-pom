@@ -35,12 +35,12 @@ public class StyleAction {
     public String styleShow(QueryBo bo, Model model){
         model.addAttribute("query", bo);
         model.addAttribute("picCateNav", styleService.selPicCateNav());
-        model.addAttribute("textCateNav", styleService.selTextCateNav(bo));
         ShiguAggsPager pager = styleService.searchGoods(bo);
+        model.addAttribute("textCateNav", styleService.selTextCateNav(pager.getCats(), pager.getMarkets()));
         model.addAttribute("goodslist", packGoods(pager.getContent()));
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
-        model.addAttribute("pageOption", pager.selPageOption(20));
+        model.addAttribute("pageOption", pager.selPageOption(50));
         return "activity/styleGoods";
     }
 

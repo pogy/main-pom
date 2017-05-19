@@ -312,7 +312,7 @@ var webSite = '${webSite!}';
         <div class="goodsCateItem classfiyItem">
             <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.sid??>&sid=${query.sid!}</#if>"  class="<#if !query.cid>selected</#if>" >全部</a>
             <#list textCateNav.cates as item>
-            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if item.id??>&cid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if><#if query.sid??>&sid=${query.sid!}</#if>"  class="<#if query.cid?? && query.cid == item.id>selected</#if>">${item.text!}</a>
+            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if item.id??>&cid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if><#if query.sid??>&sid=${query.sid!}</#if>"  class="<#if query.cid?? && query.cid == item.id>selected</#if>">${item.text!}</a>
             </#list>
         </div>
     </div>
@@ -345,7 +345,7 @@ var webSite = '${webSite!}';
         </div>
          <div class="lastestStyleItem classfiyItem">
            <#list textCateNav.styles as item>
-            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if item.id??>&sid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if><#if query.cid??>&cid=${query.cid!}</#if>"  class="<#if query.sid?? && query.sid == item.id> selected</#if>">${item.text!}</a>
+            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if item.id??>&sid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if>"  class="<#if query.sid?? && query.sid == item.id> selected</#if>">${item.text!}</a>
             </#list>
         </div>
     </div>
