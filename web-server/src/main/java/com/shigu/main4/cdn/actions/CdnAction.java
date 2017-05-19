@@ -64,10 +64,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -312,6 +309,85 @@ public class CdnAction {
             indexGoodsVoList.add(indexGoodsVo);
         }
         return indexGoodsVoList;
+    }
+
+    /**
+     * 常熟站首页
+     * @return
+     */
+    @RequestMapping(value = "csindex4show" , method = RequestMethod.GET)
+    public String index4showcs(Model model, HttpServletRequest request){
+        Cookie[] cookies=request.getCookies();
+        String manOrWoman="Man";
+        String webSite="cs";
+        IndexPageVO page=new IndexPageVO();
+        page.setType("CSM");
+        page.setTypeText("男装");
+        Long cid=30L;
+        if(cookies!=null)
+            for(Cookie c:cookies){
+                if("pageType".equals(c.getName())&&c.getValue().equals("CSW")){
+                    manOrWoman="Woman";
+                    page.setType("CSW");
+                    page.setTypeText("女装");
+                    cid=16L;
+                    break;
+                }
+            }
+        model.addAttribute("page",page);
+        //商品数量
+        model.addAttribute("userCount",selFromCache(indexShowService.selNumList()));
+        //全站公告
+        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
+        //轮播下方小图
+        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XT:SpreadEnum.CS_MAN_XT)));
+        //大图
+        model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_DT:SpreadEnum.CS_MAN_DT)));
+        //风格类目
+        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE));
+        //元素类目
+        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT));
+        //热卖
+        model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_RM:SpreadEnum.CS_MAN_RM)));
+        // 风格商品
+        model.addAttribute("styleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_FG:SpreadEnum.CS_MAN_FG)));
+        //元素商品
+        model.addAttribute("elementGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_YS:SpreadEnum.CS_MAN_YS)));
+        //推荐档口
+        model.addAttribute("recommendShoplist",selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_TJDK:SpreadEnum.CS_MAN_TJDK)));
+        //顶部
+        model.addAttribute("topPic",selFromCache(spreadService.selImgBanners(SpreadEnum.INDEX_TOP)));
+        //热卖下
+//        model.addAttribute("hotBotAdvs",selFromCache(spreadService.selImgBanners(
+//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_HOTBOT:SpreadEnum.MAN_HOTBOT)));
+        //风格下方广告
+//        model.addAttribute("styleBotAdvs",selFromCache(spreadService.selImgBanners(
+//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_STYLEBOT:SpreadEnum.MAN_STYLEBOT)));
+        //猜喜欢
+        List<LoveGoodsList> loves=new ArrayList<>();
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤",webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XHTX:SpreadEnum.CS_MAN_XHTX)));
+        if(manOrWoman.equals("Woman")){
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔",webSite,
+                    SpreadEnum.CS_WOMAN_XHNZ)));
+        }else{
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
+                    SpreadEnum.CS_MAN_XHNZ)));
+        }
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XHXZ:SpreadEnum.CS_MAN_XHXZ)));
+        model.addAttribute("loveGoodslist",loves);
+        model.addAttribute("webSite",webSite);
+
+
+
+        return null;
     }
 
 

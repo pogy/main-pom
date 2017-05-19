@@ -24,6 +24,19 @@ public enum SpreadEnum {
     JX_SPREAD_INDEX_MENSHOES("濮院站首页男鞋商品广告", "JX_SPREAD_INDEX_MENSHOES"),
     JX_SPREAD_INDEX_CHILDRENCOLTHING("濮院站首页童装商品广告", "JX_SPREAD_INDEX_CHILDRENCOLTHING"),
     JX_QZGG("濮院站首页公告管理广告", "JX_QZGG"),
+
+
+
+    CS_MAN_DT("男装大图","CS-MAN-DT"),CS_MAN_XT("男装小图","CS-MAN-XT"),
+    CS_MAN_RM("热卖广告","CS-MAN-RM"),CS_MAN_FG("风格","CS-MAN-FG"),CS_MAN_YS("元素","CS-MAN-YS"),
+    CS_MAN_TJDK("推荐档口","CS-MAN-TJDK"),CS_MAN_XHTX("喜欢T恤","CS-MAN-XHTX"),CS_MAN_XHNZ("喜欢牛仔","CS-MAN-XHNZ"),
+    CS_MAN_XHXZ("喜欢鞋子","CS-MAN-XHXZ"),CS_MAN_HOTBOT("热卖下方条形广告","CS-MAN-HOTBOT"),CS_MAN_STYLEBOT("风格下方条形广告","CS-MAN-STYLEBOT"),
+    CS_WOMAN_DT("男装大图","CS-WOMAN-DT"),CS_WOMAN_XT("男装小图","CS-WOMAN-XT"),
+    CS_WOMAN_RM("热卖广告","CS-WOMAN-RM"),CS_WOMAN_FG("风格","CS-WOMAN-FG"),CS_WOMAN_YS("元素","CS-WOMAN-YS"),
+    CS_WOMAN_TJDK("推荐档口","CS-WOMAN-TJDK"),CS_WOMAN_XHTX("喜欢T恤","CS-WOMAN-XHTX"),CS_WOMAN_XHNZ("喜欢牛仔","CS-WOMAN-XHNZ"),
+    CS_WOMAN_XHXZ("喜欢鞋子","CS-WOMAN-XHXZ")
+
+
     ;
 
     SpreadEnum(String title, String code) {
