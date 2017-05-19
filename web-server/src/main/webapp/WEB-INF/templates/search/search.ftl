@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/search.css?t=1494584749989" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/search.css?t=1495188463859" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/search.js?t=1494584749989"></script>
+    <script src="http://style.571xz.com/searchV5/js/search.js?t=1495188463859"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -240,15 +240,19 @@ var webSite = '${webSite!}';
                 <#else>
                 <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
                 </#if>
-                <#if webSite != 'jx'>
-                <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
-                <#else>
-                <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
+                <#if webSite == 'jx'>
+                    <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
+                    <#elseif webSite == 'wa'>
+                    <li><a href="http://www.571xz.com/storelist.htm?webSite=wa">企业列表</a></li>
+                    <#else>
+                    <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 </#if>
                 <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite !="jx">
+                <#if webSite !="jx" || webSite != 'wa'>
                 <li ><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
+                <#if webSite == "hz">
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
+                </#if>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>
