@@ -39,6 +39,8 @@ public class SearchCategorySub implements Serializable {
 
     private Integer sort;
 
+    private String webSite;
+
     public Long getSubId() {
         return subId;
     }
@@ -85,5 +87,13 @@ public class SearchCategorySub implements Serializable {
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
     }
 }

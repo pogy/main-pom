@@ -22,7 +22,13 @@ public class IndexNavVO implements Serializable{
     }
 
     public IndexNavVO(String text,Long cid) {
-        this.href = "http://so.571xz.com/hzgoods.htm?pid="+cid+"&keyword="+text;
+        if(cid.intValue() == 30 || cid.intValue() == 16){
+            this.href = "http://so.571xz.com/hzgoods.htm?pid="+cid+"&keyword="+text;
+        }
+        if(cid.intValue() == 201 || cid.intValue() == 202){
+            this.href = "http://so.571xz.com/csgoods.htm?pid="+cid+"&keyword="+text;
+        }
+
         this.text = text;
     }
 

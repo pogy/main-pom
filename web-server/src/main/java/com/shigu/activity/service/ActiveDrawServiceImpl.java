@@ -714,7 +714,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
         SearchResponse response = srb.execute().actionGet();
         LongTerms supperGoodsIdAgg = response.getAggregations().get("supperGoodsIdAgg");
-        int total = supperGoodsIdAgg.getBuckets().size();;
+        int total = supperGoodsIdAgg.getBuckets().size();
         return Long.valueOf(total);
     }
 

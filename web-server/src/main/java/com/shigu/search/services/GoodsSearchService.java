@@ -112,7 +112,7 @@ public class GoodsSearchService {
             beforeUrl+="&pid="+bo.getPid();
             keys.add(new SearchKey(name,beforeUrl));
             if(bo.getCid()!=null){
-                String subcname=selNavName(categoryInSearchService.selSubCates(bo.getPid().toString(),SearchCategory.CATEGORY),
+                String subcname=selNavName(categoryInSearchService.selSubCates(bo.getPid().toString(),SearchCategory.CATEGORY,bo.getWebSite()),
                         bo.getCid().toString());
                 beforeUrl+="&cid="+bo.getCid();
                 keys.add(new SearchKey(subcname,beforeUrl));
