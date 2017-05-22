@@ -61,11 +61,11 @@ public class StyleService {
 
     private static PicCateNav picCateNav;
 
-    public PicCateNav selPicCateNav() {
+    public PicCateNav selPicCateNav(String webSite) {
         if (picCateNav == null) {
             List<PicCatVo> picCate = new ArrayList<>();
 
-            List<CateNav> cateNavs = categoryInSearchService.selSubCates("30", SearchCategory.STYLE);
+            List<CateNav> cateNavs = categoryInSearchService.selSubCates("30", SearchCategory.STYLE,webSite);
             Map<String, CateNav> navMap = BeanMapper.list2Map(cateNavs, "text", String.class);
             for (Map.Entry<String, String> entry : PIC_CATE_URL.entrySet()) {
                 CateNav nav = navMap.get(entry.getKey());
@@ -91,10 +91,10 @@ public class StyleService {
                 .setQuery(QueryBuilders.matchQuery("sids", sid)).execute().actionGet().getHits().getTotalHits());
     }
 
-    public TextCateNav selTextCateNav(List<AggsCount> cats, List<AggsCount> markets) {
+    public TextCateNav selTextCateNav(List<AggsCount> cats, List<AggsCount> markets,String webSite) {
         TextCateNav textCateNav = new TextCateNav();
-        textCateNav.setCates(clearNavs(cats, categoryInSearchService.selSubCates("30", SearchCategory.CATEGORY)));
-        textCateNav.setMarkets(clearNavs(markets, categoryInSearchService.selSubCates("30", SearchCategory.MARKET)));
+        textCateNav.setCates(clearNavs(cats, categoryInSearchService.selSubCates("30", SearchCategory.CATEGORY,webSite)));
+        textCateNav.setMarkets(clearNavs(markets, categoryInSearchService.selSubCates("30", SearchCategory.MARKET,webSite)));
         textCateNav.setStyles(NEW_STYLE);
         return textCateNav;
     }

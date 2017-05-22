@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class QueryBo implements Serializable {
 
-    private String webSite;
+    private String webSite="hz";
     private String keyword;
     private Long mid;
     private Long cid;

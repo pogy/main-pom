@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +34,19 @@ public class StyleAction {
     private ShiguShopMapper shiguShopMapper;
 
     @RequestMapping("/activity/style")
-    public String styleShow(QueryBo bo, Model model){
+    public String styleShow(QueryBo bo, HttpServletRequest request, Model model){
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null)
+            for (Cookie c : cookies) {
+                if ("sid".equals(c.getName())) {
+                    bo.setSid(c.getValue());
+                    break;
+                }
+            }
         model.addAttribute("query", bo);
-        model.addAttribute("picCateNav", styleService.selPicCateNav());
+        model.addAttribute("picCateNav", styleService.selPicCateNav(bo.getWebSite()));
         ShiguAggsPager pager = styleService.searchGoods(bo);
-        model.addAttribute("textCateNav", styleService.selTextCateNav(pager.getCats(), pager.getMarkets()));
+        model.addAttribute("textCateNav", styleService.selTextCateNav(pager.getCats(), pager.getMarkets(),bo.getWebSite()));
         model.addAttribute("goodslist", packGoods(pager.getContent()));
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
