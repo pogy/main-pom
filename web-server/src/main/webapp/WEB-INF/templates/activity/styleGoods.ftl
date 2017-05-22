@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/styleGoods.css?t=1495178694904" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/styleGoods.css?t=1495450039503" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/styleGoods.js?t=1495178694904"></script>
+    <script src="http://style.571xz.com/searchV5/js/styleGoods.js?t=1495450039503"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -189,7 +189,7 @@ var webSite = '${webSite!}';
 <div class="headerV1">
     <div class="layout">
         <div class="logoLeft">
-            <a href="<#if webSite == 'jx'>http://jx.571xz.com<#else>${main_host!}</#if>">
+            <a href="http://${webSite!}.571xz.com">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
             </a>
             <em></em>
@@ -242,22 +242,22 @@ var webSite = '${webSite!}';
     <div class="layout navCon">
         <div class="navList">
             <ul>
-                <#if webSite == 'jx'>
-                <li class="first"><a href="http://jx.571xz.com" target="_blank">首页</a></li>
-                <#else>
-                <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
-                </#if>
+                <li class="first"><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
                 <#if webSite == 'jx'>
                     <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
-                    <#elseif webSite == 'wa'>
+                <#elseif webSite == 'wa'>
                     <li><a href="http://www.571xz.com/storelist.htm?webSite=wa">企业列表</a></li>
-                    <#else>
-                    <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
+                <#elseif webSite == 'cs'>
+                    <li><a href="http://jx.571xz.com/market.htm?mid=43">逛市场</a></li>
+                <#else>
+                <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 </#if>
                 <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite !="jx" || webSite != 'wa'>
-                <li ><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
+                <#if webSite !="jx" && webSite != 'wa'>
+                <li ><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
+                <#if webSite == "hz">
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
+                </#if>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>
@@ -356,6 +356,10 @@ var webSite = '${webSite!}';
 </div>
 <div class="goodsContent">
     <div class="layout before">
+        <div class="cateName clearfix">
+            <h3 class="">${styleTitle!}</h3>
+            <span>${styleGoodsCount!}件商品</span>
+        </div>
         <div class="formFilterBar clearfix" id="formFilterBar">
             <div class="sortTypeBox">
                 <b jbtn="sortByXp" <#if query.sort?? && query.sort == 'xp'>class="selected"</#if>>新品</b>
