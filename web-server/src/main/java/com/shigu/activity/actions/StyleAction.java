@@ -8,6 +8,7 @@ import com.shigu.activity.vo.StyleGoodsVo;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,14 +36,20 @@ public class StyleAction {
 
     @RequestMapping("/activity/style")
     public String styleShow(QueryBo bo, HttpServletRequest request, Model model){
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null)
-            for (Cookie c : cookies) {
-                if ("sid".equals(c.getName())) {
-                    bo.setSid(c.getValue());
-                    break;
+        if(StringUtils.isEmpty(bo.getSid())){
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null)
+                for (Cookie c : cookies) {
+                    if ("sid".equals(c.getName())) {
+                        bo.setSid(c.getValue());
+                        break;
+                    }
                 }
+            if(StringUtils.isEmpty(bo.getSid())){
+                bo.setSid("9");
             }
+        }
+
         model.addAttribute("query", bo);
         model.addAttribute("picCateNav", styleService.selPicCateNav(bo.getWebSite()));
         ShiguAggsPager pager = styleService.searchGoods(bo);

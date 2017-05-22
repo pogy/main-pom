@@ -128,56 +128,53 @@ public class CdnAction {
 
     /**
      * 杭州首页动态页面
+     *
      * @return
      */
     //@RequestMapping("hzindex4show")
-    public String hzindex4show(HttpServletRequest request,Model model){
-        Cookie[] cookies=request.getCookies();
-        String manOrWoman="Man";
-        String webSite="hz";
-        IndexPageVO page=new IndexPageVO();
+    public String hzindex4show(HttpServletRequest request, Model model) {
+        Cookie[] cookies = request.getCookies();
+        String manOrWoman = "Man";
+        String webSite = "hz";
+        IndexPageVO page = new IndexPageVO();
         page.setType("M");
         page.setTypeText("男装");
-        Long cid=30L;
-        if(cookies!=null)
-        for(Cookie c:cookies){
-            if("pageType".equals(c.getName())&&c.getValue().equals("W")){
-                manOrWoman="Woman";
-                page.setType("W");
-                page.setTypeText("女装");
-                cid=16L;
-                break;
-            }
+        Long cid = 30L;
+        if (pageTypeFromCookie(cookies).equals("W")) {
+            page.setType("W");
+            page.setTypeText("女装");
+            manOrWoman = "Woman";
+            cid = 16L;
         }
-        model.addAttribute("page",page);
+        model.addAttribute("page", page);
         //商品数量
-        model.addAttribute("userCount",selFromCache(indexShowService.selNumList()));
+        model.addAttribute("userCount", selFromCache(indexShowService.selNumList()));
         //全站公告
-        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
+        model.addAttribute("notices", selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
         //轮播下方小图
-        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_XT)));
+        model.addAttribute("topStoread", selFromCache(spreadService.selImgBanners(
+                manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_XT : SpreadEnum.MAN_XT)));
         //大图
-        model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_DT:SpreadEnum.MAN_DT)));
+        model.addAttribute("topBanner", selFromCache(spreadService.selImgBanners(
+                manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_DT : SpreadEnum.MAN_DT)));
         //风格类目
-        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, "hz"));
+        model.addAttribute("styleCateList", indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, "hz"));
         //元素类目
-        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT, "hz"));
+        model.addAttribute("elementCateList", indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.ELEMENT, "hz"));
         //热卖
-        model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_RM:SpreadEnum.MAN_RM)));
+        model.addAttribute("hotsaleGoodslist", selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_RM : SpreadEnum.MAN_RM)));
         // 风格商品
-        model.addAttribute("styleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_FG:SpreadEnum.MAN_FG)));
+        model.addAttribute("styleGoodslist", selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_FG : SpreadEnum.MAN_FG)));
         //元素商品
-        model.addAttribute("elementGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_YS:SpreadEnum.MAN_YS)));
+        model.addAttribute("elementGoodslist", selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_YS : SpreadEnum.MAN_YS)));
         //推荐档口
-        model.addAttribute("recommendShoplist",selFromCache(spreadService.selItemSpreads(webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_TJDK:SpreadEnum.MAN_TJDK)));
+        model.addAttribute("recommendShoplist", selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_TJDK : SpreadEnum.MAN_TJDK)));
         //顶部
-        model.addAttribute("topPic",selFromCache(spreadService.selImgBanners(SpreadEnum.INDEX_TOP)));
+        model.addAttribute("topPic", selFromCache(spreadService.selImgBanners(SpreadEnum.INDEX_TOP)));
         //热卖下
 //        model.addAttribute("hotBotAdvs",selFromCache(spreadService.selImgBanners(
 //                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_HOTBOT:SpreadEnum.MAN_HOTBOT)));
@@ -185,43 +182,44 @@ public class CdnAction {
 //        model.addAttribute("styleBotAdvs",selFromCache(spreadService.selImgBanners(
 //                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_STYLEBOT:SpreadEnum.MAN_STYLEBOT)));
         //猜喜欢
-        List<LoveGoodsList> loves=new ArrayList<>();
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHTX:SpreadEnum.MAN_XHTX)));
-        if(manOrWoman.equals("Woman")){
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔",webSite,
+        List<LoveGoodsList> loves = new ArrayList<>();
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤", webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_XHTX : SpreadEnum.MAN_XHTX)));
+        if (manOrWoman.equals("Woman")) {
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔", webSite,
                     SpreadEnum.WOMAN_XHNZ)));
-        }else{
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
+        } else {
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤", webSite,
                     SpreadEnum.MAN_XHNZ)));
         }
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
-        model.addAttribute("loveGoodslist",loves);
-        model.addAttribute("webSite",webSite);
-        return "index/hz"+manOrWoman;
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子", webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.WOMAN_XHXZ : SpreadEnum.MAN_XHXZ)));
+        model.addAttribute("loveGoodslist", loves);
+        model.addAttribute("webSite", webSite);
+        return "index/hz" + manOrWoman;
     }
 
     /**
      * 濮院站首页
+     *
      * @return
      */
-    @RequestMapping(value = "jxindex4show" , method = RequestMethod.GET)
-    public String jxindex4show(HttpServletRequest request,Model model){
+    @RequestMapping(value = "jxindex4show", method = RequestMethod.GET)
+    public String jxindex4show(HttpServletRequest request, Model model) {
         String website = "jx";
 
         // 商户总数
         int shopsNum = indexShowService.getShopAllCount(website);
         // 商品总数
         ObjFromCache<List<Integer>> goodsNum = indexShowService.selNumList();
-        if(goodsNum != null){
-            List<Integer> goodsNumList = (List<Integer>)goodsNum.selObj();
+        if (goodsNum != null) {
+            List<Integer> goodsNumList = (List<Integer>) goodsNum.selObj();
             StringBuffer stringBuffer = new StringBuffer();
-            if(goodsNumList!=null){
-                for(Integer integer : goodsNumList){
+            if (goodsNumList != null) {
+                for (Integer integer : goodsNumList) {
                     stringBuffer.append(integer);
                 }
-                model.addAttribute("hasGoods",stringBuffer.toString());
+                model.addAttribute("hasGoods", stringBuffer.toString());
             }
         }
 
@@ -232,15 +230,15 @@ public class CdnAction {
         ShiguPager<GoodsInSearch> newGoodsPager = todayNewGoodsService.selGoodsNew(newGoodsBO);
 
         List<IndexGoodsVo> indexNewGoodsVoList = new ArrayList<IndexGoodsVo>();
-        if(newGoodsPager != null && newGoodsPager.getContent() != null){
-            for(GoodsInSearch goodsInSearch : newGoodsPager.getContent()){
+        if (newGoodsPager != null && newGoodsPager.getContent() != null) {
+            for (GoodsInSearch goodsInSearch : newGoodsPager.getContent()) {
                 IndexGoodsVo indexGoodsVo = BeanMapper.map(goodsInSearch, IndexGoodsVo.class);
                 indexGoodsVo.setStoreId(goodsInSearch.getStoreid().toString());
-                if(!StringUtils.isEmpty(goodsInSearch.getFullStoreName())){
+                if (!StringUtils.isEmpty(goodsInSearch.getFullStoreName())) {
                     int kgIndex = goodsInSearch.getFullStoreName().indexOf(" ");
-                    if(kgIndex != -1){
-                        String marketName = goodsInSearch.getFullStoreName().substring(0,kgIndex);
-                        String storeNum = goodsInSearch.getFullStoreName().substring(kgIndex + 1,goodsInSearch.getFullStoreName().length());
+                    if (kgIndex != -1) {
+                        String marketName = goodsInSearch.getFullStoreName().substring(0, kgIndex);
+                        String storeNum = goodsInSearch.getFullStoreName().substring(kgIndex + 1, goodsInSearch.getFullStoreName().length());
                         indexGoodsVo.setParentMarketName(marketName);
                         indexGoodsVo.setStoreNum(storeNum);
                     }
@@ -262,32 +260,32 @@ public class CdnAction {
         // 裤子数据
         Object kuziSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_KUZI));
 
-        List<IndexGoodsVo> menSpreadList = changeGoods((List<ItemSpreadVO>)menSpread);
-        List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>)menShoesSpread);
-        List<IndexGoodsVo> chilrenSpreadList = changeGoods((List<ItemSpreadVO>)chilrenSpread);
-        List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>)womanSpread);
-        List<IndexGoodsVo> sellhotSpreadList = changeGoods((List<ItemSpreadVO>)sellhotSpread);
-        List<IndexGoodsVo> kuziSpreadList = changeGoods((List<ItemSpreadVO>)kuziSpread);
-        if(menShoesSpreadList == null)
+        List<IndexGoodsVo> menSpreadList = changeGoods((List<ItemSpreadVO>) menSpread);
+        List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>) menShoesSpread);
+        List<IndexGoodsVo> chilrenSpreadList = changeGoods((List<ItemSpreadVO>) chilrenSpread);
+        List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>) womanSpread);
+        List<IndexGoodsVo> sellhotSpreadList = changeGoods((List<ItemSpreadVO>) sellhotSpread);
+        List<IndexGoodsVo> kuziSpreadList = changeGoods((List<ItemSpreadVO>) kuziSpread);
+        if (menShoesSpreadList == null)
             menShoesSpreadList = Collections.emptyList();
-        if(chilrenSpreadList == null)
+        if (chilrenSpreadList == null)
             chilrenSpreadList = Collections.emptyList();
-        if(womanSpreadList == null)
+        if (womanSpreadList == null)
             womanSpreadList = Collections.emptyList();
-        if(menSpreadList == null)
+        if (menSpreadList == null)
             menSpreadList = Collections.emptyList();
-        if(sellhotSpreadList == null)
+        if (sellhotSpreadList == null)
             sellhotSpreadList = Collections.emptyList();
-        if(kuziSpreadList == null)
+        if (kuziSpreadList == null)
             kuziSpreadList = Collections.emptyList();
 
         //全站公告
-        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.JX_QZGG)));
+        model.addAttribute("notices", selFromCache(indexShowService.selNavVOs(SpreadEnum.JX_QZGG)));
         //大图
-        model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
+        model.addAttribute("topBanner", selFromCache(spreadService.selImgBanners(
                 SpreadEnum.JX_SPREAD_INDEX_DT)));
         //轮播下方小图
-        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
+        model.addAttribute("topStoread", selFromCache(spreadService.selImgBanners(
                 SpreadEnum.JX_SPREAD_INDEX_XT)));
 
         model.addAttribute("hasStore", shopsNum);
@@ -304,14 +302,15 @@ public class CdnAction {
 
     /**
      * 数据转化
+     *
      * @return
      */
-    public List<IndexGoodsVo> changeGoods(List<ItemSpreadVO> spreadVOList){
-        if(spreadVOList == null || spreadVOList.size() == 0){
+    public List<IndexGoodsVo> changeGoods(List<ItemSpreadVO> spreadVOList) {
+        if (spreadVOList == null || spreadVOList.size() == 0) {
             return null;
         }
         List<IndexGoodsVo> indexGoodsVoList = new ArrayList<IndexGoodsVo>();
-        for(ItemSpreadVO itemSpreadVO : spreadVOList){
+        for (ItemSpreadVO itemSpreadVO : spreadVOList) {
             IndexGoodsVo indexGoodsVo = BeanMapper.map(itemSpreadVO, IndexGoodsVo.class);
             indexGoodsVo.setParentMarketName(itemSpreadVO.getMarketText());
             indexGoodsVoList.add(indexGoodsVo);
@@ -319,12 +318,23 @@ public class CdnAction {
         return indexGoodsVoList;
     }
 
+    private String pageTypeFromCookie(Cookie[] cookies) {
+        if (cookies != null)
+            for (Cookie c : cookies) {
+                if ("pageType".equals(c.getName())) {
+                    return c.getValue();
+                }
+            }
+        return "M";
+    }
+
     /**
      * 常熟站首页
+     *
      * @return
      */
-    @RequestMapping(value = "csindex4show" , method = RequestMethod.GET)
-    public String index4showcs(Model model, HttpServletRequest request){
+    @RequestMapping(value = "csindex4show", method = RequestMethod.GET)
+    public String index4showcs(Model model, HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         String manOrWoman = "Man";
         String webSite = "cs";
@@ -332,43 +342,39 @@ public class CdnAction {
         page.setType("M");
         page.setTypeText("男装");
         Long cid = 30L;
-        if (cookies != null)
-            for (Cookie c : cookies) {
-                if ("pageType".equals(c.getName()) && c.getValue().equals("W")) {
-                    manOrWoman = "Woman";
-                    page.setType("W");
-                    page.setTypeText("女装");
-                    cid = 16L;
-                    break;
-                }
-            }
-        model.addAttribute("page",page);
+        if (pageTypeFromCookie(cookies).equals("W")) {
+            manOrWoman = "Woman";
+            page.setType("W");
+            cid = 16L;
+            page.setTypeText("女装");
+        }
+        model.addAttribute("page", page);
         //商品数量
-        model.addAttribute("userCount",selFromCache(indexShowService.selNumList()));
+        model.addAttribute("userCount", selFromCache(indexShowService.selNumList()));
         //全站公告
-        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
+        model.addAttribute("notices", selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
         //轮播下方小图
-        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XT:SpreadEnum.CS_MAN_XT)));
+        model.addAttribute("topStoread", selFromCache(spreadService.selImgBanners(
+                manOrWoman.equals("Woman") ? SpreadEnum.CS_WOMAN_XT : SpreadEnum.CS_MAN_XT)));
         //大图
-        model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_DT:SpreadEnum.CS_MAN_DT)));
+        model.addAttribute("topBanner", selFromCache(spreadService.selImgBanners(
+                manOrWoman.equals("Woman") ? SpreadEnum.CS_WOMAN_DT : SpreadEnum.CS_MAN_DT)));
         //风格类目
-        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, webSite));
+        model.addAttribute("styleCateList", indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, webSite));
         //元素类目
-        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT, webSite));
+        model.addAttribute("elementCateList", indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.ELEMENT, webSite));
         //热卖
-        model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_RM:SpreadEnum.CS_MAN_RM)));
+        model.addAttribute("hotsaleGoodslist", selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.CS_WOMAN_RM : SpreadEnum.CS_MAN_RM)));
         // 风格商品
-        model.addAttribute("styleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_FG:SpreadEnum.CS_MAN_FG)));
+        model.addAttribute("styleGoodslist", selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.CS_WOMAN_FG : SpreadEnum.CS_MAN_FG)));
         //元素商品
-        model.addAttribute("elementGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_YS:SpreadEnum.CS_MAN_YS)));
+        model.addAttribute("elementGoodslist", selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.CS_WOMAN_YS : SpreadEnum.CS_MAN_YS)));
         //推荐档口
-        model.addAttribute("recommendShoplist",selFromCache(spreadService.selItemSpreads(webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_TJDK:SpreadEnum.CS_MAN_TJDK)));
+        model.addAttribute("recommendShoplist", selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.CS_WOMAN_TJDK : SpreadEnum.CS_MAN_TJDK)));
         //顶部
         //model.addAttribute("topPic",selFromCache(spreadService.selImgBanners(SpreadEnum.INDEX_TOP)));
         //热卖下
@@ -378,135 +384,142 @@ public class CdnAction {
 //        model.addAttribute("styleBotAdvs",selFromCache(spreadService.selImgBanners(
 //                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_STYLEBOT:SpreadEnum.MAN_STYLEBOT)));
         //猜喜欢
-        List<LoveGoodsList> loves=new ArrayList<>();
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XHTX:SpreadEnum.CS_MAN_XHTX)));
-        if(manOrWoman.equals("Woman")){
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔",webSite,
+        List<LoveGoodsList> loves = new ArrayList<>();
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤", webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.CS_WOMAN_XHTX : SpreadEnum.CS_MAN_XHTX)));
+        if (manOrWoman.equals("Woman")) {
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔", webSite,
                     SpreadEnum.CS_WOMAN_XHNZ)));
-        }else{
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
+        } else {
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤", webSite,
                     SpreadEnum.CS_MAN_XHNZ)));
         }
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XHXZ:SpreadEnum.CS_MAN_XHXZ)));
-        model.addAttribute("loveGoodslist",loves);
-        model.addAttribute("webSite",webSite);
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子", webSite,
+                manOrWoman.equals("Woman") ? SpreadEnum.CS_WOMAN_XHXZ : SpreadEnum.CS_MAN_XHXZ)));
+        model.addAttribute("loveGoodslist", loves);
+        model.addAttribute("webSite", webSite);
 
-        return "index/cs"+manOrWoman;
+        return "index/cs" + manOrWoman;
     }
 
 
     /**
      * 创建缓存
+     *
      * @param fromCache
      */
-    private Object selFromCache(ObjFromCache fromCache){
-        Object obj=fromCache.selObj();
-        if(fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
+    private Object selFromCache(ObjFromCache fromCache) {
+        Object obj = fromCache.selObj();
+        if (fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
             spreadService.createBySync(fromCache);
         return obj;
     }
+
     /**
      * 二级域名首页
+     *
      * @return
      */
     @RequestMapping("/index.html")
-    public String domainindex(HttpServletRequest request,Model model) throws ShopFitmentException, CdnException, IOException {
-        String url=request.getRequestURL().toString();
-        if(!url.contains(".571xz.com")){
+    public String domainindex(HttpServletRequest request, Model model) throws ShopFitmentException, CdnException, IOException {
+        String url = request.getRequestURL().toString();
+        if (!url.contains(".571xz.com")) {
 //            return "redirect:"+xzSdkClient.getMainHost();
-            if(url.contains("127.0.0.1")){
-                return hzindex4show(request,model);
+            if (url.contains("127.0.0.1")) {
+                return hzindex4show(request, model);
             }
             return "index_test";
         }
-        url=url.substring(7,url.indexOf(".571xz.com"));
-        Long shopId=shopBaseService.selShopIdByDomain(url);
-        if("www".equals(url)||"hz".equals(url)){
-            return hzindex4show(request,model);
+        url = url.substring(7, url.indexOf(".571xz.com"));
+        Long shopId = shopBaseService.selShopIdByDomain(url);
+        if ("www".equals(url) || "hz".equals(url)) {
+            return hzindex4show(request, model);
         }
-        if(shopId==null){
-            return "redirect:"+xzSdkClient.getMainHost();
+        if (shopId == null) {
+            return "redirect:" + xzSdkClient.getMainHost();
         }
-        ShopCdnBO bo=new ShopCdnBO();
+        ShopCdnBO bo = new ShopCdnBO();
         bo.setId(shopId);
-        StoreRelation storeRelation=storeRelationService.selRelationById(shopId);
-        String webSite=storeRelation.getWebSite();
-        model.addAttribute("baseUrl","http://"+webSite+".571xz.com/");
-        return shop(bo,null, model);
+        StoreRelation storeRelation = storeRelationService.selRelationById(shopId);
+        String webSite = storeRelation.getWebSite();
+        model.addAttribute("baseUrl", "http://" + webSite + ".571xz.com/");
+        return shop(bo, null, model);
         //拼baseUrl
     }
+
     /**
      * 商品页面
+     *
      * @param bo
      * @return
      */
     @RequestMapping("item")
     public String item(ItemBO bo, Model model) throws CdnException, IOException, TemplateException {
-        Long id=bo.getId();
+        Long id = bo.getId();
         //如果东北商品,用东北的模板
-        ItemShowVO itemShowVO=new ItemShowVO();
+        ItemShowVO itemShowVO = new ItemShowVO();
         itemShowVO.setItemId(id);
-        CdnItem cdnItem=showForCdnService.selItemById(id);
-        itemShowVO.setOnsale(cdnItem!=null&&cdnItem.getOnsale());
-        if(cdnItem==null){//已经下架
-            cdnItem=showForCdnService.selItemInstockById(id);
+        CdnItem cdnItem = showForCdnService.selItemById(id);
+        itemShowVO.setOnsale(cdnItem != null && cdnItem.getOnsale());
+        if (cdnItem == null) {//已经下架
+            cdnItem = showForCdnService.selItemInstockById(id);
         }
-        if(cdnItem==null){//商品不存在
+        if (cdnItem == null) {//商品不存在
             throw new CdnException("商品不存在");
         }
         //店招
-        model.addAttribute("navCon",cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite()));
+        model.addAttribute("navCon", cdnService.bannerHtml(cdnItem.getShopId(), cdnItem.getWebSite()));
         // 商品详情懒加载
-        if(cdnItem.getDescription()!=null)
-            cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
-                    .replace("<script>","")
-                    .replace("</script>",""));
+        if (cdnItem.getDescription() != null)
+            cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ", "")
+                    .replace("<script>", "")
+                    .replace("</script>", ""));
         itemShowVO.setCdnItem(cdnItem);
 //        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
-        if(bo.getWho()!=null&&bo.getWho().equals("dd"))
-        itemShowVO.setClicks(itemBrowerService.addUnrealBrower(id,1).getNumber());
+        if (bo.getWho() != null && bo.getWho().equals("dd"))
+            itemShowVO.setClicks(itemBrowerService.addUnrealBrower(id, 1).getNumber());
         itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
-        Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
-        starNum=starNum==null?0:    starNum;
+        Long starNum = shopForCdnService.selShopStarById(cdnItem.getShopId());
+        starNum = starNum == null ? 0 : starNum;
         itemShowVO.setStarNum(starNum);
         itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
         itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
         itemShowVO.setDomain(shopBaseService.selDomain(cdnItem.getShopId()));
         itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
-        model.addAttribute("newGoodsList",shopForCdnService.searchItemOnsale(null,cdnItem.getShopId(),"time_down",1,5).getContent());
-        model.addAttribute("vo",itemShowVO);
-        model.addAttribute("bo",bo);
-        model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
+        model.addAttribute("newGoodsList", shopForCdnService.searchItemOnsale(null, cdnItem.getShopId(), "time_down", 1, 5).getContent());
+        model.addAttribute("vo", itemShowVO);
+        model.addAttribute("bo", bo);
+        model.addAttribute("webSite", itemShowVO.getCdnItem().getWebSite());
 //        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
         return "cdn/item";
     }
 
     /**
      * 收藏商品
+     *
      * @param bo
      */
-    @RequestMapping({"jsonScAddGoods","jsonScAdd"})
+    @RequestMapping({"jsonScAddGoods", "jsonScAdd"})
     @ResponseBody
-    public void jsonScAddGoods(@Valid ScGoodsBO bo,BindingResult result,HttpServletResponse response, HttpSession session) throws JsonErrException, IOException {
+    public void jsonScAddGoods(@Valid ScGoodsBO bo, BindingResult result, HttpServletResponse response, HttpSession session) throws JsonErrException, IOException {
         response.addHeader("Access-Control-Allow-Origin", "*");
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
 //            throw new JsonErrException("2");//对前台说已经添加过了
-            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
+            ResultRetUtil.returnJsonp(bo.getCallback(), "{'result':'error','msg':'2'}", response);
             return;
         }
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(cdnService.addItemCollect(ps.getUserId(),bo)){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (cdnService.addItemCollect(ps.getUserId(), bo)) {
 //            return JsonResponseUtil.success();
-            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'success'}",response);
-        }else{
-            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
+            ResultRetUtil.returnJsonp(bo.getCallback(), "{'result':'success'}", response);
+        } else {
+            ResultRetUtil.returnJsonp(bo.getCallback(), "{'result':'error','msg':'2'}", response);
         }
     }
 
     /**
      * 收藏店铺
+     *
      * @param bo
      * @param result
      * @param session
@@ -515,93 +528,95 @@ public class CdnAction {
      */
     @RequestMapping("jsonStoreCollectAdd")
     @ResponseBody
-    public void jsonStoreCollectAdd(@Valid ScStoreBO bo, BindingResult result,HttpServletResponse response,HttpSession session) throws JsonErrException, IOException {
+    public void jsonStoreCollectAdd(@Valid ScStoreBO bo, BindingResult result, HttpServletResponse response, HttpSession session) throws JsonErrException, IOException {
         response.addHeader("Access-Control-Allow-Origin", "*");
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
 //            throw new JsonErrException("2");
-            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
+            ResultRetUtil.returnJsonp(bo.getCallback(), "{'result':'error','msg':'2'}", response);
             return;
         }
-        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(cdnService.addShopCollect(ps.getUserId(),bo)){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (cdnService.addShopCollect(ps.getUserId(), bo)) {
 //            return JsonResponseUtil.success();
-            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'success'}",response);
-        }else{
+            ResultRetUtil.returnJsonp(bo.getCallback(), "{'result':'success'}", response);
+        } else {
 //            throw new JsonErrException("2");
-            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
+            ResultRetUtil.returnJsonp(bo.getCallback(), "{'result':'error','msg':'2'}", response);
         }
     }
 
     /**
      * 收藏店铺
+     *
      * @param bo
      * @return
      */
     @RequestMapping("shop")
-    public String shop(@Valid ShopCdnBO bo, BindingResult result,Model model) throws CdnException, ShopFitmentException, IOException {
+    public String shop(@Valid ShopCdnBO bo, BindingResult result, Model model) throws CdnException, ShopFitmentException, IOException {
         // TODO: 17/3/20 如果分站过来的,跳现在的shopID
 
-        if(bo.getId()>1000000){
-            Long shopId=oldStoreNumShowService.selShopId(bo.getId());
-            if(shopId!=null){
-                return "redirect:/shop.htm?id="+shopId;
+        if (bo.getId() > 1000000) {
+            Long shopId = oldStoreNumShowService.selShopId(bo.getId());
+            if (shopId != null) {
+                return "redirect:/shop.htm?id=" + shopId;
             }
         }
-        if(result!=null&&result.hasErrors()){
+        if (result != null && result.hasErrors()) {
             throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
         }
-        StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
-        String webSite=storeRelation.getWebSite();
+        StoreRelation storeRelation = storeRelationService.selRelationById(bo.getId());
+        String webSite = storeRelation.getWebSite();
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
-        if(shopStatus == 1){
+        if (shopStatus == 1) {
 //            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
             return "cdn/shopDown";
         }
-        Long pageId=shopDesignService.selPageIdByShopId(bo.getId());
-        ContainerVO vo=shopData(bo.getId(),pageId,webSite,model);
+        Long pageId = shopDesignService.selPageIdByShopId(bo.getId());
+        ContainerVO vo = shopData(bo.getId(), pageId, webSite, model);
         //如果没有装修过
-        if(noFitment(vo)){
-            shopSearch(bo,result,model);
+        if (noFitment(vo)) {
+            shopSearch(bo, result, model);
         }
-        model.addAttribute("webSite",webSite);
+        model.addAttribute("webSite", webSite);
 //        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
         return "cdn/shop";
     }
 
-    private boolean noFitment(ContainerVO vo){
-        if(vo.getFitmentAreas()==null||vo.getFitmentAreas().size()!=1
-        ||vo.getFitmentAreas().get(0).getLeftarea()==null||vo.getFitmentAreas().get(0).getLeftarea().size()!=1
-                ||vo.getFitmentAreas().get(0).getLeftarea().get(0).getModuleType()!= FitmentModuleType.Category.value
-                ||vo.getFitmentAreas().get(0).getRightarea()==null||vo.getFitmentAreas().get(0).getRightarea().size()!=1
-                ||vo.getFitmentAreas().get(0).getRightarea().get(0).getModuleType()!=FitmentModuleType.Promote.value){
+    private boolean noFitment(ContainerVO vo) {
+        if (vo.getFitmentAreas() == null || vo.getFitmentAreas().size() != 1
+                || vo.getFitmentAreas().get(0).getLeftarea() == null || vo.getFitmentAreas().get(0).getLeftarea().size() != 1
+                || vo.getFitmentAreas().get(0).getLeftarea().get(0).getModuleType() != FitmentModuleType.Category.value
+                || vo.getFitmentAreas().get(0).getRightarea() == null || vo.getFitmentAreas().get(0).getRightarea().size() != 1
+                || vo.getFitmentAreas().get(0).getRightarea().get(0).getModuleType() != FitmentModuleType.Promote.value) {
             return false;
         }
-        ItemPromoteModule promote= (ItemPromoteModule) vo.getFitmentAreas().get(0).getRightarea().get(0);
-        if(promote.getPromoteType()==1&&promote.getSort()==1&&promote.getItemNum()==16&&promote.getShowPage()==0
-                &&promote.getShowTitle()==1&&promote.getShowGoodsNo()==0&&promote.getShowPrice()==1
-                &&promote.getTitle().equals("推荐宝贝")&&promote.getRadio()==4&&promote.getFilter()==0){
+        ItemPromoteModule promote = (ItemPromoteModule) vo.getFitmentAreas().get(0).getRightarea().get(0);
+        if (promote.getPromoteType() == 1 && promote.getSort() == 1 && promote.getItemNum() == 16 && promote.getShowPage() == 0
+                && promote.getShowTitle() == 1 && promote.getShowGoodsNo() == 0 && promote.getShowPrice() == 1
+                && promote.getTitle().equals("推荐宝贝") && promote.getRadio() == 4 && promote.getFilter() == 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     /**
      * 用户自定义页面
+     *
      * @return
      */
     @RequestMapping("shop/{shopId}/{pageKey}")
-    public String shopDefine(@PathVariable("shopId")Long shopId,@PathVariable("pageKey") Long pageKey,Model model) throws ShopFitmentException, IOException {
-        if(shopId==null||pageKey==null){
-            return "redirect:"+xzSdkClient.getMainHost();
+    public String shopDefine(@PathVariable("shopId") Long shopId, @PathVariable("pageKey") Long pageKey, Model model) throws ShopFitmentException, IOException {
+        if (shopId == null || pageKey == null) {
+            return "redirect:" + xzSdkClient.getMainHost();
         }
-        StoreRelation storeRelation=storeRelationService.selRelationById(shopId);
-        String webSite=storeRelation.getWebSite();
-        Long pageId=shopDesignService.selNormalIdByKey(shopId,pageKey);
-        shopData(shopId,pageId,webSite,model);
-        model.addAttribute("webSite",webSite);
+        StoreRelation storeRelation = storeRelationService.selRelationById(shopId);
+        String webSite = storeRelation.getWebSite();
+        Long pageId = shopDesignService.selNormalIdByKey(shopId, pageKey);
+        shopData(shopId, pageId, webSite, model);
+        model.addAttribute("webSite", webSite);
         int shopStatus = shopBaseService.getShopStatus(shopId);
-        if(shopStatus == 1){
+        if (shopStatus == 1) {
 //            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
             return "cdn/shopDown";
         }
@@ -611,45 +626,46 @@ public class CdnAction {
 
     /**
      * 搜索页面
+     *
      * @return
      */
     @RequestMapping("shop/search")
-    public String shopSearch(@Valid ShopCdnBO bo,BindingResult result,Model model) throws ShopFitmentException, IOException, CdnException {
-        if(result!=null&&result.hasErrors()){
+    public String shopSearch(@Valid ShopCdnBO bo, BindingResult result, Model model) throws ShopFitmentException, IOException, CdnException {
+        if (result != null && result.hasErrors()) {
             throw new CdnException(result.getAllErrors().get(0).getDefaultMessage());
         }
-        Long pageId=shopDesignService.selSearchIdByShopId(bo.getId());
-        StoreRelation storeRelation=storeRelationService.selRelationById(bo.getId());
-        String webSite=storeRelation.getWebSite();
-        shopData(bo.getId(),pageId,webSite,model);
-        ContainerVO containerVO= (ContainerVO) model.asMap().get("container");
-        containerVO.getSearchModule().getData().put("catPolymerizations",cdnService.formatCatPoly(bo.getId()));//类目聚合
+        Long pageId = shopDesignService.selSearchIdByShopId(bo.getId());
+        StoreRelation storeRelation = storeRelationService.selRelationById(bo.getId());
+        String webSite = storeRelation.getWebSite();
+        shopData(bo.getId(), pageId, webSite, model);
+        ContainerVO containerVO = (ContainerVO) model.asMap().get("container");
+        containerVO.getSearchModule().getData().put("catPolymerizations", cdnService.formatCatPoly(bo.getId()));//类目聚合
         ShiguPager<ItemShowBlock> pager;
         Date startDate;
         Date endDate;
-        if(bo.getDd()!=null&&bo.getDd()>0){
-            Calendar cal=Calendar.getInstance();
-            endDate=cal.getTime();
-            cal.add(Calendar.DATE,-bo.getDd());
-            startDate=cal.getTime();
-        }else{
-            startDate=DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd");
-            endDate=DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd");
+        if (bo.getDd() != null && bo.getDd() > 0) {
+            Calendar cal = Calendar.getInstance();
+            endDate = cal.getTime();
+            cal.add(Calendar.DATE, -bo.getDd());
+            startDate = cal.getTime();
+        } else {
+            startDate = DateUtil.stringToDate(bo.getStartDate(), "yyyy-MM-dd");
+            endDate = DateUtil.stringToDate(bo.getEndDate(), "yyyy-MM-dd");
         }
-        if(bo.getCid()!=null||bo.getScid()!=null){//类目型
-            pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
-                    bo.getCid(),bo.getScid(),bo.getOrder(),startDate,endDate,bo.getPageNo(),bo.getPageSize());
-        }else{
-            pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
-                    bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),startDate,endDate,bo.getPageNo(),bo.getPageSize());
+        if (bo.getCid() != null || bo.getScid() != null) {//类目型
+            pager = shopForCdnService.searchItemOnsale(bo.getPstring(), bo.getId(),
+                    bo.getCid(), bo.getScid(), bo.getOrder(), startDate, endDate, bo.getPageNo(), bo.getPageSize());
+        } else {
+            pager = shopForCdnService.searchItemOnsale(bo.getPstring(), bo.getId(),
+                    bo.getBeginPrice(), bo.getEndPrice(), bo.getOrder(), startDate, endDate, bo.getPageNo(), bo.getPageSize());
         }
-        containerVO.getSearchModule().getData().put("goodsList",pager);
-        containerVO.getSearchModule().getData().put("bo",bo);
-        model.addAttribute("container",containerVO);
-        model.addAttribute("webSite",webSite);
+        containerVO.getSearchModule().getData().put("goodsList", pager);
+        containerVO.getSearchModule().getData().put("bo", bo);
+        model.addAttribute("container", containerVO);
+        model.addAttribute("webSite", webSite);
         //处理搜索条件
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
-        if(shopStatus == 1){
+        if (shopStatus == 1) {
 //            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
             return "cdn/shopDown";
         }
@@ -659,6 +675,7 @@ public class CdnAction {
 
     /**
      * 包装店铺数据
+     *
      * @param shopId
      * @param pageId
      * @param webSite
@@ -666,35 +683,36 @@ public class CdnAction {
      * @throws ShopFitmentException
      * @throws IOException
      */
-    private ContainerVO shopData(Long shopId,Long pageId,String webSite,Model model) throws ShopFitmentException, IOException {
-        ContainerVO containerVO=shopDesignService.selPagePublishedById(pageId,shopDesignService.selShopForModule(shopId,
+    private ContainerVO shopData(Long shopId, Long pageId, String webSite, Model model) throws ShopFitmentException, IOException {
+        ContainerVO containerVO = shopDesignService.selPagePublishedById(pageId, shopDesignService.selShopForModule(shopId,
                 webSite));
-        model.addAttribute("container",containerVO);
-        model.addAttribute("pages",shopDesignService.selAllPage(shopId));
-        model.addAttribute("isEditer",false);
-        model.addAttribute("vo",cdnService.shopSimpleVo(shopId));
+        model.addAttribute("container", containerVO);
+        model.addAttribute("pages", shopDesignService.selAllPage(shopId));
+        model.addAttribute("isEditer", false);
+        model.addAttribute("vo", cdnService.shopSimpleVo(shopId));
         return containerVO;
     }
 
 
     /**
      * 店铺讨论区
+     *
      * @return
      */
     @RequestMapping("shopcomment")
-    public String shopcomment(ShopCommentBO bo,Model model){
-        ShopCommentVO vo=new ShopCommentVO();
+    public String shopcomment(ShopCommentBO bo, Model model) {
+        ShopCommentVO vo = new ShopCommentVO();
         vo.setHasAuth(shopBaseService.shopAuthState(bo.getId()));
         vo.setShopLicenses(shopLicenseService.selShopLicenses(bo.getId()));
         vo.setOther(shopForCdnService.selShopBase(bo.getId()));
         vo.setScoreAvg(shopDiscusService.selScoreAvg(bo.getId()).toString());
         vo.setStoreRelation(storeRelationService.selRelationById(bo.getId()));
-        vo.setDiscus(shopDiscusService.selDiscusByShopId(bo.getId(),bo.getPageNo(),bo.getPageSize()));
+        vo.setDiscus(shopDiscusService.selDiscusByShopId(bo.getId(), bo.getPageNo(), bo.getPageSize()));
         vo.setTotalCount(shopDiscusService.countAllDiscusByShopId(bo.getId()));
-        model.addAttribute("vo",vo);
-        if(vo.getDiscus()!=null)
-        model.addAttribute("pageOption",vo.getDiscus().selPageOption(bo.getPageSize()));
-        String webSite=vo.getStoreRelation().getWebSite();
+        model.addAttribute("vo", vo);
+        if (vo.getDiscus() != null)
+            model.addAttribute("pageOption", vo.getDiscus().selPageOption(bo.getPageSize()));
+        String webSite = vo.getStoreRelation().getWebSite();
 //        return !"wa".equals(webSite)?"cdn/shopcomment":"cdn/wa_shopcomment";
         return "cdn/shopcomment";
     }
@@ -730,7 +748,7 @@ public class CdnAction {
             record.setFlag("imgzip");
             record.setSupperGoodsName(cdnItem.getTitle());
             record.setWebSite(cdnItem.getWebSite());
-            record.setDaiTime(DateUtil.dateToString(new Date(),DateUtil.patternD));
+            record.setDaiTime(DateUtil.dateToString(new Date(), DateUtil.patternD));
             record.setFenNumiid(cdnItem.getTbNumIid());
             if (storeRelation != null) {
                 record.setSupperServers("退现金,包换款");
@@ -745,6 +763,6 @@ public class CdnAction {
             itemUpRecordService.addItemUpRecord(record);
             content = "{'result':'success','msg':'成功','sourceHref':'" + url + "'}";
         }
-        ResultRetUtil.returnJsonp(callback,content,response);
+        ResultRetUtil.returnJsonp(callback, content, response);
     }
 }
