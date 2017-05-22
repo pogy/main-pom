@@ -164,9 +164,9 @@ public class CdnAction {
         model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_DT:SpreadEnum.MAN_DT)));
         //风格类目
-        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE));
+        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, "hz"));
         //元素类目
-        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT));
+        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT, "hz"));
         //热卖
         model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_RM:SpreadEnum.MAN_RM)));

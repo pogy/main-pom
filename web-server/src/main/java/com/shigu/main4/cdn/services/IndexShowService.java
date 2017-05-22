@@ -97,8 +97,8 @@ public class IndexShowService {
      * @param category
      * @return
      */
-    public List<IndexNavVO> selStyleOrElementNav(String parentValue,SearchCategory category){
-        List<CateNav> navs=categoryInSearchService.selSubCates(parentValue,category);
+    public List<IndexNavVO> selStyleOrElementNav(String parentValue,SearchCategory category, String webSite){
+        List<CateNav> navs=categoryInSearchService.selSubCates(parentValue,category,webSite);
         List<IndexNavVO> vos=new ArrayList<>();
         if (navs != null) {
             for(CateNav cn:navs){
