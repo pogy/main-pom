@@ -14,6 +14,7 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
+import com.shigu.main4.item.vo.AggsCount;
 import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.vo.CateNav;
@@ -42,12 +43,12 @@ public class StyleService {
     private static final List<StyleNavVo> NEW_STYLE;
 
     static {
-        PIC_CATE_URL = new HashMap<>();
-        PIC_CATE_URL.put("店主", "https://img.alicdn.com/bao/uploaded/i2/154127602/TB2JtouoNXkpuFjy0FiXXbUfFXa-154127602.jpg_300x300.jpg");
-        PIC_CATE_URL.put("休闲", "https://img.alicdn.com/bao/uploaded/i2/154127602/TB2JtouoNXkpuFjy0FiXXbUfFXa-154127602.jpg_300x300.jpg");
-        PIC_CATE_URL.put("运动", "https://img.alicdn.com/bao/uploaded/i2/154127602/TB2JtouoNXkpuFjy0FiXXbUfFXa-154127602.jpg_300x300.jpg");
-        PIC_CATE_URL.put("情侣", "https://img.alicdn.com/bao/uploaded/i2/154127602/TB2JtouoNXkpuFjy0FiXXbUfFXa-154127602.jpg_300x300.jpg");
-        PIC_CATE_URL.put("大码", "https://img.alicdn.com/bao/uploaded/i2/154127602/TB2JtouoNXkpuFjy0FiXXbUfFXa-154127602.jpg_300x300.jpg");
+        PIC_CATE_URL = new LinkedHashMap<>();
+        PIC_CATE_URL.put("港风", "http://style.571xz.com/searchV5/css/img/styleGoods/gf.jpg");
+        PIC_CATE_URL.put("日系", "http://style.571xz.com/searchV5/css/img/styleGoods/rx.jpg");
+        PIC_CATE_URL.put("硬汉", "http://style.571xz.com/searchV5/css/img/styleGoods/yh.jpg");
+        PIC_CATE_URL.put("情侣", "http://style.571xz.com/searchV5/css/img/styleGoods/lover.jpg");
+        PIC_CATE_URL.put("中国风", "http://style.571xz.com/searchV5/css/img/styleGoods/chineseStyle.jpg");
 
         NEW_STYLE = new ArrayList<>();
         NEW_STYLE.add(new StyleNavVo("11", "欧美"));
@@ -59,22 +60,25 @@ public class StyleService {
     }
 
     private static PicCateNav picCateNav;
-    private static TextCateNav textCateNav;
 
     public PicCateNav selPicCateNav() {
         if (picCateNav == null) {
             List<PicCatVo> picCate = new ArrayList<>();
 
             List<CateNav> cateNavs = categoryInSearchService.selSubCates("30", SearchCategory.STYLE);
-            List<CateNav> picNavs = cateNavs.subList(0, 5);
-            for (CateNav picNav : picNavs) {
-                PicCatVo picCatVo = new PicCatVo(picNav.getId(), picNav.getText());
-                picCatVo.setImgsrc(PIC_CATE_URL.get(picCatVo.getText()));
-                picCate.add(picCatVo);
+            Map<String, CateNav> navMap = BeanMapper.list2Map(cateNavs, "text", String.class);
+            for (Map.Entry<String, String> entry : PIC_CATE_URL.entrySet()) {
+                CateNav nav = navMap.get(entry.getKey());
+                if (nav != null) {
+                    PicCatVo picCatVo = new PicCatVo(nav.getId(), nav.getText());
+                    picCatVo.setImgsrc(entry.getValue());
+                    picCate.add(picCatVo);
+                    cateNavs.remove(nav);
+                }
             }
             picCateNav = new PicCateNav();
             picCateNav.setPicCates(picCate);
-            picCateNav.setTextCates(BeanMapper.mapList(cateNavs.subList(5, cateNavs.size()), StyleNavVo.class));
+            picCateNav.setTextCates(BeanMapper.mapList(cateNavs, StyleNavVo.class));
         }
         for (PicCatVo picCatVo : picCateNav.getPicCates()) {
             picCatVo.setGoodscount(calStyle(picCatVo.getId()));
@@ -87,14 +91,26 @@ public class StyleService {
                 .setQuery(QueryBuilders.matchQuery("sids", sid)).execute().actionGet().getHits().getTotalHits());
     }
 
-    public TextCateNav selTextCateNav(QueryBo bo) {
-        if (textCateNav == null) {
-            textCateNav = new TextCateNav();
-            textCateNav.setCates(BeanMapper.mapList(categoryInSearchService.selSubCates("30", SearchCategory.CATEGORY), StyleNavVo.class));
-            textCateNav.setMarkets(BeanMapper.mapList(categoryInSearchService.selSubCates("30", SearchCategory.MARKET), StyleNavVo.class));
-            textCateNav.setStyles(NEW_STYLE);
-        }
+    public TextCateNav selTextCateNav(List<AggsCount> cats, List<AggsCount> markets) {
+        TextCateNav textCateNav = new TextCateNav();
+        textCateNav.setCates(clearNavs(cats, categoryInSearchService.selSubCates("30", SearchCategory.CATEGORY)));
+        textCateNav.setMarkets(clearNavs(markets, categoryInSearchService.selSubCates("30", SearchCategory.MARKET)));
+        textCateNav.setStyles(NEW_STYLE);
         return textCateNav;
+    }
+
+    private List<StyleNavVo> clearNavs(List<AggsCount> aggs, List<CateNav> navs) {
+        List<Long> values = BeanMapper.getFieldList(aggs, "value", Long.class);
+        navs = new ArrayList<>(navs);
+        for (Iterator<CateNav> iterator = navs.iterator(); iterator.hasNext(); ) {
+            CateNav nav = iterator.next();
+            try {
+                if (!values.contains(Long.valueOf(nav.getId()))) {
+                    iterator.remove();
+                }
+            } catch (Exception ignored){}
+        }
+        return BeanMapper.mapList(navs, StyleNavVo.class);
     }
 
     public ShiguAggsPager searchGoods(QueryBo bo) {
@@ -143,8 +159,8 @@ public class StyleService {
                 to,
                 orderCase,
                 bo.getPage(),
-                20,
-                false
+                50,
+                true
         );
     }
 }
