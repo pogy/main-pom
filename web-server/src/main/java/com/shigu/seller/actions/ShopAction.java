@@ -446,10 +446,14 @@ public class ShopAction {
             }
             model.addAttribute("goodslist",goodsList);
             if (!goodsList.isEmpty()) {
-                Map<Long, String> styleByGoodsMap
+                Map<Long, StyleVo> styleByGoodsMap
                         = shopItemModService.findStyleByGoodsIds(BeanMapper.getFieldList(goodsList, "id", Long.class));
                 for (OnsaleItemVO itemVO : goodsList) {
-                    itemVO.setStyleName(styleByGoodsMap.get(itemVO.getId()));
+                    StyleVo styleVo = styleByGoodsMap.get(itemVO.getId());
+                    if (styleVo != null) {
+                        itemVO.setSid(styleVo.getSid());
+                        itemVO.setStyleName(styleVo.getName());
+                    }
                 }
             }
         } catch (ItemException e) {

@@ -199,38 +199,43 @@ public class ShopItemModService {
         return vos;
     }
 
-    public Map<Long, String> findStyleByGoodsIds(List<Long> goodsIds) {
+    public Map<Long, StyleVo> findStyleByGoodsIds(List<Long> goodsIds) {
+        Map<Long, StyleVo> goodsStyle = new HashMap<>();
+
         ShiguGoodsStyleExample styleExample = new ShiguGoodsStyleExample();
         styleExample.createCriteria().andGoodsIdIn(goodsIds);
         List<ShiguGoodsStyle> shiguGoodsStyles = shiguGoodsStyleMappe.selectByExample(styleExample);
-        Map<Long, ShiguGoodsStyle> goodsStyleMap = BeanMapper.list2Map(shiguGoodsStyles, "goodsId", Long.class);
-        List<String> sids = BeanMapper.getFieldList(shiguGoodsStyles, "sids", String.class);
-        Set<Long> sidSet = new HashSet<>();
-        for (String sid : sids) {
-            if (sid != null) {
-                for (String s : sid.split(",")) {
-                    try {
-                        sidSet.add(Long.valueOf(s));
-                    } catch (Exception ignored) {}
+        if (!shiguGoodsStyles.isEmpty()) {
+            Map<Long, ShiguGoodsStyle> goodsStyleMap = BeanMapper.list2Map(shiguGoodsStyles, "goodsId", Long.class);
+            List<String> sids = BeanMapper.getFieldList(shiguGoodsStyles, "sids", String.class);
+            Set<Long> sidSet = new HashSet<>();
+            for (String sid : sids) {
+                if (sid != null) {
+                    for (String s : sid.split(",")) {
+                        try {
+                            sidSet.add(Long.valueOf(s));
+                        } catch (Exception ignored) {}
+                    }
                 }
             }
-        }
 
-        SearchCategorySubExample subExample = new SearchCategorySubExample();
-        subExample.createCriteria().andSubIdIn(new ArrayList<>(sidSet));
-        Map<Long, SearchCategorySub> subMap = BeanMapper.list2Map(searchCategorySubMapper.selectByExample(subExample), "subId", Long.class);
+            if (!sidSet.isEmpty()) {
+                SearchCategorySubExample subExample = new SearchCategorySubExample();
+                subExample.createCriteria().andSubIdIn(new ArrayList<>(sidSet));
+                Map<Long, SearchCategorySub> subMap = BeanMapper.list2Map(searchCategorySubMapper.selectByExample(subExample), "subId", Long.class);
 
-        Map<Long, String> goodsStyle = new HashMap<>();
-        for (Map.Entry<Long, ShiguGoodsStyle> entry : goodsStyleMap.entrySet()) {
-            String sidstr = entry.getValue().getSids();
-            if (StringUtils.isNotEmpty(sidstr)) {
-                try {
-                    Long sid = Long.valueOf(sidstr.split(",")[0]);
-                    SearchCategorySub categorySub = subMap.get(sid);
-                    if (categorySub != null && StringUtils.isNotEmpty(categorySub.getCateName())) {
-                        goodsStyle.put(entry.getKey(), categorySub.getCateName());
+                for (Map.Entry<Long, ShiguGoodsStyle> entry : goodsStyleMap.entrySet()) {
+                    String sidstr = entry.getValue().getSids();
+                    if (StringUtils.isNotEmpty(sidstr)) {
+                        try {
+                            Long sid = Long.valueOf(sidstr.split(",")[0]);
+                            SearchCategorySub categorySub = subMap.get(sid);
+                            if (categorySub != null && StringUtils.isNotEmpty(categorySub.getCateName())) {
+                                goodsStyle.put(entry.getKey(), new StyleVo(categorySub.getSubId().toString(), categorySub.getCateName()));
+                            }
+                        } catch (Exception ignored){}
                     }
-                } catch (Exception ignored){}
+                }
             }
         }
         return goodsStyle;
