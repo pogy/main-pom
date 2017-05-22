@@ -114,7 +114,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
 
 </script>
 <div class="header layout">
-    <a  class="logo" href="http://www.571xz.com/" title="四季星座网-首页">四季星座网</a>
+    <a  class="logo" href="http://${webSite!}.571xz.com/" title="四季星座网-首页">四季星座网</a>
     <div class="changecity">
         <strong>濮院</strong>
         <div class="citylist">
@@ -149,7 +149,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
     </div>
     <ul class="pagenav">
         
-        <li><a href="http://www.571xz.com/" target="_blank">首页</a></li> 
+        <li><a href="http://${webSite!}.571xz.com/" target="_blank">首页</a></li> 
         <li><a href="http://jx.571xz.com/market.htm?mid=33" target="_blank">逛市场</a><i class="img-tjdk"></i></li> 
         <li><a href="http://so.571xz.com/jxgoods.htm" target="_blank">商品库</a></li> 
         
