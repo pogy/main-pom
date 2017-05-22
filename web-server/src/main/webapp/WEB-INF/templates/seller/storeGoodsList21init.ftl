@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/storeGoodsList21init.css?t=1495101187962" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/storeGoodsList21init.css?t=1495422231300" rel="stylesheet">
     
   </head>
 <body>
@@ -300,16 +300,7 @@ var webSite = '${webSite!}';
                             <em class="goodsNo">${item.goodsNo!}</em> 
                             <b class="penIcon" jbtn="xgGoodsNo"></b>
                         </span>
-                        <span class="goodsStyleParent">
-                            <em>风格：</em>
-                            <#if item.styleName?? && item.styleName != "">
-                            <em class="goodsStyle" sid="${item.sid!}">${item.styleName!}</em> 
-                            <b class="penIcon" jbtn="xgGoodsStyle"></b>
-                            <#else>
-                            <em class="goodsStyle noStyle" sid="">暂无</em> 
-                            <b class="toChoose" jbtn="xgGoodsStyle">立即选择</b>
-                            </#if>
-                        </span>
+                        
                     </p>
                     
                     
@@ -406,7 +397,7 @@ var allStyleCate = ${allStyleCate!};
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/storeGoodsList21init.js?t=1495101187962"></script>
+<script src="http://style.571xz.com/gys4/js/storeGoodsList21init.js?t=1495422231300"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
