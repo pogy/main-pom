@@ -331,14 +331,14 @@ public class CdnAction {
         IndexPageVO page = new IndexPageVO();
         page.setType("M");
         page.setTypeText("男装");
-        Long cid = 201L;
+        Long cid = 30L;
         if (cookies != null)
             for (Cookie c : cookies) {
                 if ("pageType".equals(c.getName()) && c.getValue().equals("W")) {
                     manOrWoman = "Woman";
                     page.setType("W");
                     page.setTypeText("女装");
-                    cid = 202L;
+                    cid = 16L;
                     break;
                 }
             }
@@ -354,9 +354,9 @@ public class CdnAction {
         model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
                 manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_DT:SpreadEnum.CS_MAN_DT)));
         //风格类目
-        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE));
+        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, webSite));
         //元素类目
-        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT));
+        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT, webSite));
         //热卖
         model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_RM:SpreadEnum.CS_MAN_RM)));
@@ -370,7 +370,7 @@ public class CdnAction {
         model.addAttribute("recommendShoplist",selFromCache(spreadService.selItemSpreads(webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_TJDK:SpreadEnum.CS_MAN_TJDK)));
         //顶部
-        model.addAttribute("topPic",selFromCache(spreadService.selImgBanners(SpreadEnum.INDEX_TOP)));
+        //model.addAttribute("topPic",selFromCache(spreadService.selImgBanners(SpreadEnum.INDEX_TOP)));
         //热卖下
 //        model.addAttribute("hotBotAdvs",selFromCache(spreadService.selImgBanners(
 //                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_HOTBOT:SpreadEnum.MAN_HOTBOT)));
