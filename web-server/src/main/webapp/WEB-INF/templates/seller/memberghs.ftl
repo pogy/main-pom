@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/memberghs.css?t=1494837948685" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/memberghs.css?t=1495083317865" rel="stylesheet">
     
   </head>
 <body>
@@ -314,20 +314,7 @@ var webSite = '${webSite!}';
             </div>
             
         </div>
-        <div class="c_flow">
-        <h2>流量统计</h2>
-            <div class="select_left">
-                <select onchange="tongjiByDay(this.value)">
-                    <option value="1">今日</option>
-                    <option value="2">最近7日</option>
-                    <option value="3">最近30日</option>
-                </select>
-            </div>
-    
-         <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-        <div id="j_echart_1" class="c_echart_1"></div>
-    
-        </div>
+        
         <div class="c_agent">
         <h2>代理数据分析</h2>
         <div id="j_echart_2" class="c_echart_2"><p class='c_no_data'>暂无数据~</p></div>
@@ -371,7 +358,7 @@ var webSite = '${webSite!}';
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys4/temp/echarts.js"></script>
         <script src="http://style.571xz.com/gys4/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/gys4/js/memberghs.js?t=1494837948685"></script>
+<script src="http://style.571xz.com/gys4/js/memberghs.js?t=1495083317865"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

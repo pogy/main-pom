@@ -111,7 +111,7 @@ public interface ActiveDrawService {
      * @param ward
      * @return
      */
-    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward, int pageNum, int pageSize);
+    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward,Long userId, String userNick,int pageNum, int pageSize);
 
     /**
      * 查询当前中奖用户

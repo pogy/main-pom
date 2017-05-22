@@ -365,8 +365,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @return
      */
     @Override
-    public ShiguPager<ItemShowBlock> selItemByPromote(ItemPromoteModule promoteModule) {
-        Long shopId = selShopIdByAreaId(promoteModule.getAreaId());
+    public ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,ItemPromoteModule promoteModule) {
         if (promoteModule.getPromoteType() == 2) {
             return shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(), 1, promoteModule.getItemNum());
         }

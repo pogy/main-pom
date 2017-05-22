@@ -161,9 +161,9 @@ public class CdnAction {
         model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_DT:SpreadEnum.MAN_DT)));
         //风格类目
-        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE));
+        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, "hz"));
         //元素类目
-        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT));
+        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT, "hz"));
         //热卖
         model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_RM:SpreadEnum.MAN_RM)));
@@ -257,23 +257,29 @@ public class CdnAction {
         Object chilrenSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_CHILDRENCOLTHING));
         // 女装数据
         Object womanSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_WOMAN));
+        // 热销数据
+        Object sellhotSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_SELLHOT));
+        // 裤子数据
+        Object kuziSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_KUZI));
 
         List<IndexGoodsVo> menSpreadList = changeGoods((List<ItemSpreadVO>)menSpread);
         List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>)menShoesSpread);
         List<IndexGoodsVo> chilrenSpreadList = changeGoods((List<ItemSpreadVO>)chilrenSpread);
         List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>)womanSpread);
-        if(menShoesSpreadList == null){
+        List<IndexGoodsVo> sellhotSpreadList = changeGoods((List<ItemSpreadVO>)sellhotSpread);
+        List<IndexGoodsVo> kuziSpreadList = changeGoods((List<ItemSpreadVO>)kuziSpread);
+        if(menShoesSpreadList == null)
             menShoesSpreadList = Collections.emptyList();
-        }
-        if(chilrenSpreadList == null){
+        if(chilrenSpreadList == null)
             chilrenSpreadList = Collections.emptyList();
-        }
-        if(womanSpreadList == null){
+        if(womanSpreadList == null)
             womanSpreadList = Collections.emptyList();
-        }
-        if(menSpreadList == null){
+        if(menSpreadList == null)
             menSpreadList = Collections.emptyList();
-        }
+        if(sellhotSpreadList == null)
+            sellhotSpreadList = Collections.emptyList();
+        if(kuziSpreadList == null)
+            kuziSpreadList = Collections.emptyList();
 
         //全站公告
         model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.JX_QZGG)));
@@ -291,6 +297,8 @@ public class CdnAction {
         model.addAttribute("xiebaogoods", JSON.toJSONString(menShoesSpreadList));
         model.addAttribute("list_childGoods", JSON.toJSONString(chilrenSpreadList));
         model.addAttribute("nvzgoods", JSON.toJSONString(womanSpreadList));
+        model.addAttribute("hotgoods", JSON.toJSONString(sellhotSpreadList));
+        model.addAttribute("pantgoods", JSON.toJSONString(kuziSpreadList));
         return "index/py";
     }
 

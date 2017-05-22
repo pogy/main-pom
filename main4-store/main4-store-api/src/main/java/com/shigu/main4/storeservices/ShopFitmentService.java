@@ -154,9 +154,10 @@ public interface ShopFitmentService {
     /**
      * 查询推荐位的商品
      * @param promoteModule
+     * @param shopId
      * @return
      */
-    ShiguPager<ItemShowBlock> selItemByPromote(ItemPromoteModule promoteModule);
+    ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,ItemPromoteModule promoteModule);
 
     /**
      * 取首页pageId

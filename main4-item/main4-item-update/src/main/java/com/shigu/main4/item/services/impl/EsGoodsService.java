@@ -3,6 +3,7 @@ package com.shigu.main4.item.services.impl;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguGoodsUnlicenseExample;
 import com.opentae.data.mall.examples.ShiguShopLicenseExample;
+import com.opentae.data.mall.interfaces.ShiguGoodsStyleMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsUnlicenseMapper;
 import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
 import com.opentae.data.mall.interfaces.ShiguTaobaocatMapper;
@@ -31,6 +32,9 @@ public class EsGoodsService {
 
     @Autowired
     private ShiguGoodsUnlicenseMapper shiguGoodsUnlicenseMapper;
+
+    @Autowired
+    private ShiguGoodsStyleMapper shiguGoodsStyleMapper;
 
     private static final Map<String, String> licenseMap = new HashMap<>();
 
@@ -63,6 +67,14 @@ public class EsGoodsService {
         }
         Long shopId = esGoods.getStoreId();
         Long goodsId = esGoods.getGoodsId();
+        if (goodsId != null) {
+            ShiguGoodsStyle style = new ShiguGoodsStyle();
+            style.setGoodsId(goodsId);
+            ShiguGoodsStyle shiguGoodsStyle = shiguGoodsStyleMapper.selectOne(style);
+            if (shiguGoodsStyle != null) {
+                esGoods.setSids(shiguGoodsStyle.getSids());
+            }
+        }
         if (shopId != null && goodsId != null) {
             //查询店铺权益
             ShiguShopLicenseExample licenseExample = new ShiguShopLicenseExample();
