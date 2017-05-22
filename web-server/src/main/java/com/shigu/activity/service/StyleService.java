@@ -1,14 +1,11 @@
 package com.shigu.activity.service;
 
-import com.alibaba.fastjson.JSON;
-import com.opentae.data.mall.beans.ESGoods;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.activity.bo.QueryBo;
 import com.shigu.activity.vo.PicCatVo;
 import com.shigu.activity.vo.PicCateNav;
 import com.shigu.activity.vo.StyleNavVo;
 import com.shigu.activity.vo.TextCateNav;
-import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchCategory;
@@ -20,6 +17,7 @@ import com.shigu.search.services.CategoryInSearchService;
 import com.shigu.search.vo.CateNav;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,14 +79,20 @@ public class StyleService {
             picCateNav.setTextCates(BeanMapper.mapList(cateNavs, StyleNavVo.class));
         }
         for (PicCatVo picCatVo : picCateNav.getPicCates()) {
-            picCatVo.setGoodscount(calStyle(picCatVo.getId()));
+            picCatVo.setGoodscount(calStyle(picCatVo.getId(), webSite));
         }
         return picCateNav;
     }
 
-    private int calStyle(String sid) {
-        return ((int) ElasticConfiguration.searchClient.prepareSearch("goods").setSearchType(SearchType.COUNT)
-                .setQuery(QueryBuilders.matchQuery("sids", sid)).execute().actionGet().getHits().getTotalHits());
+    private int calStyle(String sid, String webSite) {
+        return ((int) ElasticConfiguration.searchClient
+                .prepareSearch("goods")
+                .setSearchType(SearchType.COUNT)
+                .setTypes(webSite)
+                .setQuery(QueryBuilders.boolQuery()
+                        .must(QueryBuilders.matchQuery("sids", sid))
+                        .must(QueryBuilders.termQuery("is_off", 0)))
+                .execute().actionGet().getHits().getTotalHits());
     }
 
     public TextCateNav selTextCateNav(List<AggsCount> cats, List<AggsCount> markets,String webSite) {
@@ -160,7 +164,7 @@ public class StyleService {
                 orderCase,
                 bo.getPage(),
                 50,
-                true
+                false
         );
     }
 }

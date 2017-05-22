@@ -4,7 +4,9 @@ import com.opentae.data.mall.beans.ShopNumAndMarket;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.activity.bo.QueryBo;
 import com.shigu.activity.service.StyleService;
+import com.shigu.activity.vo.PicCateNav;
 import com.shigu.activity.vo.StyleGoodsVo;
+import com.shigu.activity.vo.StyleNavVo;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
@@ -51,14 +53,29 @@ public class StyleAction {
         }
 
         model.addAttribute("query", bo);
-        model.addAttribute("picCateNav", styleService.selPicCateNav(bo.getWebSite()));
+        List<StyleNavVo> styleNavVos = new ArrayList<>();
+        PicCateNav picCateNav = styleService.selPicCateNav(bo.getWebSite());
+        styleNavVos.addAll(picCateNav.getPicCates());
+        styleNavVos.addAll(picCateNav.getTextCates());
+        model.addAttribute("picCateNav", picCateNav);
         ShiguAggsPager pager = styleService.searchGoods(bo);
         model.addAttribute("textCateNav", styleService.selTextCateNav(pager.getCats(), pager.getMarkets(),bo.getWebSite()));
         model.addAttribute("goodslist", packGoods(pager.getContent()));
         model.addAttribute("totalPage", pager.getTotalPages());
+        model.addAttribute("styleGoodsCount", pager.getTotalCount());
+        model.addAttribute("styleTitle", selTextBySid(bo.getSid(), styleNavVos));
         model.addAttribute("webSite", bo.getWebSite());
         model.addAttribute("pageOption", pager.selPageOption(50));
         return "activity/styleGoods";
+    }
+
+    public String selTextBySid(String sid, List<StyleNavVo> styleNavVos) {
+        for (StyleNavVo styleNavVo : styleNavVos) {
+            if (sid.equals(styleNavVo.getId())) {
+                return styleNavVo.getText();
+            }
+        }
+        return null;
     }
 
     private List<StyleGoodsVo> packGoods(List<SearchItem> content) {
