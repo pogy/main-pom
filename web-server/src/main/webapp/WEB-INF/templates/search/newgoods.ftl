@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/newgoods.css?t=1495188454406" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/newgoods.css?t=1495437626249" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/newgoods.js?t=1495188454406"></script>
+    <script src="http://style.571xz.com/searchV5/js/newgoods.js?t=1495437626249"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -249,7 +249,7 @@ var webSite = '${webSite!}';
                 </#if>
                 <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
                 <#if webSite !="jx" || webSite != 'wa'>
-                <li class="select"><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
+                <li class="select"><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
                 <#if webSite == "hz">
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 </#if>
