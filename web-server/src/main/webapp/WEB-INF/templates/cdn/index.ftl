@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1495447121752" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1495447808964" rel="stylesheet">
     
   </head>
 <body>
@@ -182,7 +182,7 @@ var webSite = '${webSite!}';
 </script>
 <div class="header layout">
     <div class="logoLeft">
-        <a href="<#if webSite == 'jx'>http://jx.571xz.com<#else>${main_host!}</#if>">
+        <a href="http://${webSite!}.571xz.com">
             <img src="http://style.571xz.com/marketV3/css/img/mtLogo.png" alt width=168 height=30 />
         </a>
         <em>逛市场</em>
@@ -229,11 +229,7 @@ var webSite = '${webSite!}';
         </div>
         <div class="navList">
             <ul>
-                <#if webSite == 'jx'>
-                <li><a href="http://jx.571xz.com" target="_blank">首页</a></li>
-                <#else>
-                <li><a href="${main_host!}" target="_blank">首页</a></li>
-                </#if>
+                <li><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
                 <#if webSite == 'jx'>
                 <li class="select"><a href="http://${webSite!}.571xz.com/market.htm?mid=33">逛市场</a></li>
                 <#elseif webSite == 'cs'>
@@ -414,7 +410,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1495447121752"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1495447808964"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
