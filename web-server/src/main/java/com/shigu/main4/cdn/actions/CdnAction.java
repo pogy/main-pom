@@ -323,14 +323,14 @@ public class CdnAction {
         IndexPageVO page = new IndexPageVO();
         page.setType("M");
         page.setTypeText("男装");
-        Long cid = 30L;
+        Long cid = 201L;
         if (cookies != null)
             for (Cookie c : cookies) {
                 if ("pageType".equals(c.getName()) && c.getValue().equals("W")) {
                     manOrWoman = "Woman";
                     page.setType("W");
                     page.setTypeText("女装");
-                    cid = 16L;
+                    cid = 202L;
                     break;
                 }
             }
