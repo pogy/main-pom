@@ -5,7 +5,6 @@ import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.monitor.bo.PageInfoBO;
-import com.shigu.main4.monitor.service.ShiguPageRecodeService;
 import com.shigu.main4.monitor.services.BrowerMonitorService;
 import com.shigu.main4.monitor.services.StarCaculateService;
 import com.shigu.main4.monitor.vo.BrowerRecord;
@@ -36,9 +35,6 @@ import java.util.UUID;
 public class BrowerMonitorServiceImpl implements BrowerMonitorService{
 
     private static final Logger logger = LoggerFactory.getLogger(BrowerMonitorServiceImpl.class);
-
-    @Resource(name = "shiguPageRecodeService")
-    private ShiguPageRecodeService shiguPageRecodeService;
 
     @Resource(name="starCaculateService")
     private StarCaculateService starCaculateService;

@@ -64,10 +64,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -164,9 +161,9 @@ public class CdnAction {
         model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_DT:SpreadEnum.MAN_DT)));
         //风格类目
-        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE));
+        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, "hz"));
         //元素类目
-        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT));
+        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT, "hz"));
         //热卖
         model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_RM:SpreadEnum.MAN_RM)));
@@ -260,23 +257,29 @@ public class CdnAction {
         Object chilrenSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_CHILDRENCOLTHING));
         // 女装数据
         Object womanSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_WOMAN));
+        // 热销数据
+        Object sellhotSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_SELLHOT));
+        // 裤子数据
+        Object kuziSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_KUZI));
 
         List<IndexGoodsVo> menSpreadList = changeGoods((List<ItemSpreadVO>)menSpread);
         List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>)menShoesSpread);
         List<IndexGoodsVo> chilrenSpreadList = changeGoods((List<ItemSpreadVO>)chilrenSpread);
         List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>)womanSpread);
-        if(menShoesSpreadList == null){
+        List<IndexGoodsVo> sellhotSpreadList = changeGoods((List<ItemSpreadVO>)sellhotSpread);
+        List<IndexGoodsVo> kuziSpreadList = changeGoods((List<ItemSpreadVO>)kuziSpread);
+        if(menShoesSpreadList == null)
             menShoesSpreadList = Collections.emptyList();
-        }
-        if(chilrenSpreadList == null){
+        if(chilrenSpreadList == null)
             chilrenSpreadList = Collections.emptyList();
-        }
-        if(womanSpreadList == null){
+        if(womanSpreadList == null)
             womanSpreadList = Collections.emptyList();
-        }
-        if(menSpreadList == null){
+        if(menSpreadList == null)
             menSpreadList = Collections.emptyList();
-        }
+        if(sellhotSpreadList == null)
+            sellhotSpreadList = Collections.emptyList();
+        if(kuziSpreadList == null)
+            kuziSpreadList = Collections.emptyList();
 
         //全站公告
         model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.JX_QZGG)));
@@ -294,6 +297,8 @@ public class CdnAction {
         model.addAttribute("xiebaogoods", JSON.toJSONString(menShoesSpreadList));
         model.addAttribute("list_childGoods", JSON.toJSONString(chilrenSpreadList));
         model.addAttribute("nvzgoods", JSON.toJSONString(womanSpreadList));
+        model.addAttribute("hotgoods", JSON.toJSONString(sellhotSpreadList));
+        model.addAttribute("pantgoods", JSON.toJSONString(kuziSpreadList));
         return "index/py";
     }
 
@@ -312,6 +317,83 @@ public class CdnAction {
             indexGoodsVoList.add(indexGoodsVo);
         }
         return indexGoodsVoList;
+    }
+
+    /**
+     * 常熟站首页
+     * @return
+     */
+    @RequestMapping(value = "csindex4show" , method = RequestMethod.GET)
+    public String index4showcs(Model model, HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        String manOrWoman = "Man";
+        String webSite = "cs";
+        IndexPageVO page = new IndexPageVO();
+        page.setType("M");
+        page.setTypeText("男装");
+        Long cid = 30L;
+        if (cookies != null)
+            for (Cookie c : cookies) {
+                if ("pageType".equals(c.getName()) && c.getValue().equals("W")) {
+                    manOrWoman = "Woman";
+                    page.setType("W");
+                    page.setTypeText("女装");
+                    cid = 16L;
+                    break;
+                }
+            }
+        model.addAttribute("page",page);
+        //商品数量
+        model.addAttribute("userCount",selFromCache(indexShowService.selNumList()));
+        //全站公告
+        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
+        //轮播下方小图
+        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XT:SpreadEnum.CS_MAN_XT)));
+        //大图
+        model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_DT:SpreadEnum.CS_MAN_DT)));
+        //风格类目
+        model.addAttribute("styleCateList",indexShowService.selStyleOrElementNav(cid.toString(), SearchCategory.STYLE, webSite));
+        //元素类目
+        model.addAttribute("elementCateList",indexShowService.selStyleOrElementNav(cid.toString(),SearchCategory.ELEMENT, webSite));
+        //热卖
+        model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_RM:SpreadEnum.CS_MAN_RM)));
+        // 风格商品
+        model.addAttribute("styleGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_FG:SpreadEnum.CS_MAN_FG)));
+        //元素商品
+        model.addAttribute("elementGoodslist",selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_YS:SpreadEnum.CS_MAN_YS)));
+        //推荐档口
+        model.addAttribute("recommendShoplist",selFromCache(spreadService.selItemSpreads(webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_TJDK:SpreadEnum.CS_MAN_TJDK)));
+        //顶部
+        //model.addAttribute("topPic",selFromCache(spreadService.selImgBanners(SpreadEnum.INDEX_TOP)));
+        //热卖下
+//        model.addAttribute("hotBotAdvs",selFromCache(spreadService.selImgBanners(
+//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_HOTBOT:SpreadEnum.MAN_HOTBOT)));
+        //风格下方广告
+//        model.addAttribute("styleBotAdvs",selFromCache(spreadService.selImgBanners(
+//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_STYLEBOT:SpreadEnum.MAN_STYLEBOT)));
+        //猜喜欢
+        List<LoveGoodsList> loves=new ArrayList<>();
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤",webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XHTX:SpreadEnum.CS_MAN_XHTX)));
+        if(manOrWoman.equals("Woman")){
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔",webSite,
+                    SpreadEnum.CS_WOMAN_XHNZ)));
+        }else{
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
+                    SpreadEnum.CS_MAN_XHNZ)));
+        }
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
+                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XHXZ:SpreadEnum.CS_MAN_XHXZ)));
+        model.addAttribute("loveGoodslist",loves);
+        model.addAttribute("webSite",webSite);
+
+        return "index/cs"+manOrWoman;
     }
 
 
@@ -594,66 +676,6 @@ public class CdnAction {
         return containerVO;
     }
 
-    /**
-     * 包装店铺数据
-     * @return
-     */
-    private void packageShopData(ShopCdnBO bo,Model model){
-        ShopShowVO shopShowVO=cdnService.shopSimpleVo(bo.getId());
-        //聚合类目信息
-        shopShowVO.setCatPolymerizations(shopForCdnService.selCatRolymerizations(bo.getId()));
-        //查店内类目
-        shopShowVO.setShopCats(shopForCdnService.selShopCatsById(bo.getId()));
-        //查商品
-        //如果是仓库
-        if(bo.getTimeflag()!=null&&bo.getTimeflag()==4){
-            Calendar cal=Calendar.getInstance();
-                if(bo.getOption()!=null&&bo.getOption().equals("month")){//一个月内
-                    cal.add(Calendar.MONTH,-1);
-                }else if(bo.getOption()!=null&&bo.getOption().equals("week")){//一周内
-                    cal.add(Calendar.WEEK_OF_MONTH,-1);
-                }else if(bo.getOption()!=null&&bo.getOption().equals("day")){//一天内
-                    cal.add(Calendar.DATE,-1);
-                }else{//默认1年内的下架
-                    cal.add(Calendar.YEAR,-1);
-                }
-            Date  dateFrom=cal.getTime();
-            ShiguPager<ItemShowBlock> pager=shopForCdnService.searchItemInstock(dateFrom,new Date(),bo.getId(),
-                    bo.getPageNo(),bo.getPageSize());
-//            shopShowVO.setPageOption("50,10,1");
-            model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-            shopShowVO.setItemList(pager);
-        }else{
-            //判断是价格类,还是类目型
-            ShiguPager<ItemShowBlock> pager;
-            if(bo.getCid()!=null||bo.getScid()!=null){//类目型
-                pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
-                        bo.getCid(),bo.getScid(),bo.getOrder(),DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd"),
-                        DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd"),bo.getPageNo(),bo.getPageSize());
-            }else{
-                pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
-                        bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),DateUtil.stringToDate(bo.getStartDate(),"yyyy-MM-dd"),
-                        DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd"),bo.getPageNo(),bo.getPageSize());
-            }
-//            shopShowVO.setPageOption(pager.selPageOption(bo.getPageSize()));
-            model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
-//            shopShowVO.setPageOption("50,10,1");
-            model.addAttribute("totalpage",pager.getTotalPages());
-            shopShowVO.setItemList(pager);
-        }
-        if(bo.isIndex()){//加装修与推荐
-            shopShowVO.setRecommens(shopForCdnService.selRecomments(bo.getId()));
-            shopShowVO.setShopFitment(shopForCdnService.selShopFitment(bo.getId()));
-            //把装修里面script去除一下
-            if(shopShowVO.getShopFitment()!=null&&shopShowVO.getShopFitment().getDescription()!=null){
-                shopShowVO.getShopFitment().setDescription(shopShowVO.getShopFitment().getDescription()
-                        .replace("<script ","").replace("<script>","")
-                        .replace("</script>",""));
-            }
-        }
-        model.addAttribute("vo",shopShowVO);
-        model.addAttribute("query",bo);
-    }
 
     /**
      * 店铺讨论区

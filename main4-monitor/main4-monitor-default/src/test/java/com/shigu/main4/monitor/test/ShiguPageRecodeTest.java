@@ -3,7 +3,6 @@ package com.shigu.main4.monitor.test;
 import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguPageRecode;
 import com.opentae.data.mall.beans.ShiguPropImgs;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
@@ -13,7 +12,6 @@ import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.monitor.bo.PageInfoBO;
 import com.shigu.main4.monitor.bo.ShiguPageRecodeBo;
-import com.shigu.main4.monitor.service.ShiguPageRecodeService;
 import com.shigu.main4.monitor.service.impl.BrowerMonitorServiceImpl;
 import com.shigu.main4.monitor.services.BrowerMonitorService;
 import com.shigu.main4.monitor.vo.BrowerRecord;
@@ -42,9 +40,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ShiguPageRecodeTest {
 
     @Autowired
-    private ShiguPageRecodeService shiguPageRecodeService;
-
-    @Autowired
     private BrowerMonitorServiceImpl browerMonitorService;
 
     @Autowired
@@ -52,29 +47,6 @@ public class ShiguPageRecodeTest {
 
     public final String ELASTIC_PAGE_INDEX = "shigupagerecode";
     public final String TYPE = "page";
-
-    @Test
-    public void addEs(){
-        System.out.println("读取商品链接------------------------------------");
-        ShiguPageRecodeBo shiguPageRecodeBo = new ShiguPageRecodeBo();
-        shiguPageRecodeBo.setId(51702342L);
-        ShiguPageRecode shiguPageRecode = shiguPageRecodeService.findShiguPageRecode(shiguPageRecodeBo);
-        BrowerRecordVo browerRecord = shiguPageRecodeService.getBrowerRecord(shiguPageRecode);
-        if(browerRecord == null){
-            System.out.println("browerRecord:"+ JSON.toJSONString(browerRecord));
-            return;
-        }
-
-        PageInfoBO pageInfoBO = new PageInfoBO();
-        pageInfoBO.setWebSite(browerRecord.getWebSite());
-        pageInfoBO.setItemId(browerRecord.getItemId());
-        pageInfoBO.setUrl(browerRecord.getUrl());
-        pageInfoBO.setShopId(browerRecord.getShop());
-        pageInfoBO.setReferer(browerRecord.getReferer());
-
-        String idkeys = browerMonitorService.inPage(browerRecord.getType(), browerRecord.getUserId(), pageInfoBO, browerRecord.getClientMsg());
-        System.out.println("idkeys:" + idkeys);
-    }
 
     @Test
     public void addShiguPage(){
@@ -110,74 +82,6 @@ public class ShiguPageRecodeTest {
 
     private LinkedBlockingQueue<ShiguPageRecodeBo> queue = new LinkedBlockingQueue<>();
 
-    /**
-     * 将shigu_page_recode 到入ES
-     *  上次导入至
-     * 2017.3.14 00:00:00
-     */
-    @Test
-    public void dataTrans() throws Exception {
-
-        for (int i = 0; i < 25; i++) {// 20个任务一起干。
-            Thread thread = new Thread(new RecodeWriter(), "worker-" + i);
-            thread.setPriority(Thread.MAX_PRIORITY);
-            thread.start();
-        }
-
-        ShiguPageRecodeBo bo = new ShiguPageRecodeBo();
-        bo.setEndInTime(DateUtils.truncate(new Date(), Calendar.DAY_OF_MONTH));
-        bo.setPageable(true);
-        Integer step = 5000;
-        bo.setPageSize(step);
-        bo.setPageNo(1);
-        int count = shiguPageRecodeService.countByBo(bo);
-        int pages = (count - 1) / step + 1;
-        System.out.println("page:" + pages);
-        for (int i = 1; i <= pages; i++) {
-            bo.setPageNo(i);
-            queue.put(bo);
-            bo = BeanMapper.map(bo, ShiguPageRecodeBo.class);//copy 出另一个对象
-        }
-        while (true) {
-            int size = queue.size();
-            System.out.println("队列剩余任务：" + size + ", 剩余" + (size * 100.0 / pages) + "%");
-            Thread.sleep(5000);
-        }
-    }
-
-    @Test
-    public void testCache() {
-        Long hz = shiguPageRecodeService.getShopIdByItemId(165791L, "hz");
-        Long cache = shiguPageRecodeService.getShopIdByItemId(165791L, "hz");
-        assert hz == cache;
-
-    }
-
-    private class RecodeWriter implements Runnable {
-        @Override
-        public void run() {
-            ElasticRepository repository = new ElasticRepository();
-            List<SimpleElaBean> sebs = new ArrayList<>();
-            Client client = ElasticConfiguration.searchClient;
-            while (true) {
-                try {
-                    for (ShiguPageRecode pageRecode : shiguPageRecodeService.findShiguPageRecodeListByBo(queue.take())) {
-                        if (!client.prepareGet().setIndex("shigupagerecode").setFetchSource(false).setId(pageRecode.getId().toString()).execute().actionGet().isExists()) {
-                            BrowerRecordVo record = shiguPageRecodeService.getBrowerRecord(pageRecode);
-                            sebs.add(new SimpleElaBean("shigupagerecode", record.getType(), record.getKeyId(), JSON.toJSONStringWithDateFormat(record, "yyyy-MM-dd HH:mm:ss")));
-                        } else break;
-                    }
-                    if (!sebs.isEmpty()) {
-                        repository.insertList(sebs, 100);
-                        sebs.clear();
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-    }
 
     @Test
     public void deleteIndex() {

@@ -46,7 +46,6 @@ import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.ShopFitmentForUpadte;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.seller.bo.DeleteItemBO;
-import com.shigu.seller.bo.FitmentBO;
 import com.shigu.seller.bo.GoodsInfoBO;
 import com.shigu.seller.bo.GoodsOfferBO;
 import com.shigu.seller.bo.GoodsSendBO;
@@ -860,24 +859,6 @@ public class ShopAction {
     }
 
     /**
-     * 保存装修
-     * @return
-     */
-    @RequestMapping("seller/jsonupdateFitment")
-    @ResponseBody
-    public JSONObject jsonupdateFitment(@Valid FitmentBO bo,BindingResult result,HttpSession session) throws JsonErrException {
-        if(result.hasErrors()){
-            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
-        }
-        ShopSession shopSession = getShopSession(session);
-        try {
-            shopFitmentService.updateFitment(shopSession.getShopId(),bo.toParseUpdate());
-        } catch (ShopFitmentException e) {
-            throw new JsonErrException(e.getMessage());
-        }
-        return JsonResponseUtil.success().element("error","OK");
-    }
-    /**
      * 切换档口号
      * @return
      */
@@ -885,21 +866,6 @@ public class ShopAction {
     public String changeStoreNum(Long storeNumId) throws ChangeStoreException {
         memberRealm.changeShop(storeNumId);
         return "redirect:"+memberFilter.getSuccessUrl();
-    }
-
-    /**
-     * 得到装修原始数据
-     * @return
-     */
-    @RequestMapping("seller/jsonlistFitment")
-    @ResponseBody
-    public JSONObject jsonlistFitment(HttpSession session) throws JsonErrException {
-        ShopSession shopSession = getShopSession(session);
-        ShopFitmentForUpadte shopFitmentForUpadte=shopFitmentService.selFitmentForUpadte(shopSession.getShopId());
-        if(shopFitmentForUpadte==null){
-            return JsonResponseUtil.success();
-        }
-        return JSONObject.fromObject(new FitmentVO(shopFitmentForUpadte)).element("result","success");
     }
 
     /**

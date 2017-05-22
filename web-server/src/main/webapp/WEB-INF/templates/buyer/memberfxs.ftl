@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1494821871702" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1495422130945" rel="stylesheet">
     
   </head>
 <body>
@@ -297,7 +297,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1494821871702"></script>
+<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1495422130945"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

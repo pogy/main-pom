@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/storeGoodsList21init.css?t=1494492246788" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/storeGoodsList21init.css?t=1495422231300" rel="stylesheet">
     
   </head>
 <body>
@@ -295,10 +295,14 @@ var webSite = '${webSite!}';
                     </a>
                     <p>
                         <a class="title" href="${item.href!}" title="${item.title!}" target="_blank">${item.title!}</a>
-                        <span class="goodsNoParent">货号：<em class="goodsNo">${item.goodsNo!}</em> <b class="penIcon" jbtn="xgGoodsNo"></b></span>
-                         
+                        <span class="goodsNoParent">
+                            <em>货号：</em>
+                            <em class="goodsNo">${item.goodsNo!}</em> 
+                            <b class="penIcon" jbtn="xgGoodsNo"></b>
+                        </span>
                         
                     </p>
+                    
                     
                 </li>
                 <li class="price">
@@ -348,8 +352,14 @@ var webSite = '${webSite!}';
         
         
         
-        
-        
+<script>/*============ gys4/action#goods-bj BEGIN ============*/
+
+var allStyleCate = ${allStyleCate!};
+
+/*============ gys4/action#goods-bj END ============*/
+
+
+</script>        
         
         
         
@@ -387,7 +397,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/storeGoodsList21init.js?t=1494492246788"></script>
+<script src="http://style.571xz.com/gys4/js/storeGoodsList21init.js?t=1495422231300"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

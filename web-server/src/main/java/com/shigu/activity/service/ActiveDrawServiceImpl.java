@@ -301,7 +301,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             return;
         }
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
-        drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id);
+        drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id).andEnabledEqualTo(false);
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
         if(drawGoodsList.size() == 0){
             ActiveDrawGoods drawGoods = new ActiveDrawGoods();
@@ -560,12 +560,12 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     @Override
-    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward, int pageNum, int pageSize) {
+    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward,Long userId,String userNick, int pageNum, int pageSize) {
         ShiguPager<ActiveDrawRecordUserVo> drawRecordUserVoShiguPager = new ShiguPager<ActiveDrawRecordUserVo>();
         if(pemId == null || StringUtils.isEmpty(ward)){
             return drawRecordUserVoShiguPager;
         }
-        int drawRecordCount = activeDrawRecordMapper.selDrawRecordCount(pemId, null,ward);
+        int drawRecordCount = activeDrawRecordMapper.selDrawRecordCount(pemId, userId,ward,userNick);
         int totalPages = drawRecordCount / pageSize + ((drawRecordCount % pageSize == 0) ? 0 : 1);
         if(pageNum > totalPages){
             return drawRecordUserVoShiguPager;
@@ -581,13 +581,16 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             typeGoods = ActiveDrawGoods.TYPE_DAILYFIND;
         }
         int startRows = (pageNum-1)*pageSize;
-        int endRows = pageNum*pageSize;
-        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, null, null, ward, startRows, endRows);
+        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, null, ward,userNick, startRows, pageSize);
         // 查询发现好货活动的数据
         List<ActiveDrawRecordUserVo>  drawRecordUserVoList = poUserGoodsUp(pemId, typeGoods, drawRecordList);
         Map<Long, ActiveDrawRecordUserVo> recordUserVoMap = BeanMapper.list2Map(drawRecordUserVoList, "userId", Long.class);
         for (int i = 0; i < drawRecordList.size(); i++) {
             ActiveDrawRecordUserVo drawRecordUserVo = recordUserVoMap.get(drawRecordList.get(i).getUserId());
+            if(drawRecordUserVo == null){
+                drawRecordUserVo = BeanMapper.map(drawRecordList.get(i), ActiveDrawRecordUserVo.class);
+                drawRecordUserVo.setConcatPhone(drawRecordList.get(i).getLoginPhone());
+            }
             drawRecordUserVos.add(drawRecordUserVo);
         }
         drawRecordUserVoShiguPager.setContent(drawRecordUserVos);
@@ -680,7 +683,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type){
-        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null);
+        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null,null);
         if(userId != null){
             // 过滤过期
 
@@ -711,7 +714,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
         SearchResponse response = srb.execute().actionGet();
         LongTerms supperGoodsIdAgg = response.getAggregations().get("supperGoodsIdAgg");
-        int total = supperGoodsIdAgg.getBuckets().size();;
+        int total = supperGoodsIdAgg.getBuckets().size();
         return Long.valueOf(total);
     }
 

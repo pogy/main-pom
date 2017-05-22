@@ -337,11 +337,14 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      * @return
      */
     @Override
-    public List<CategoryValue> selSubCategory(String parentCateValue, SearchCategory category) {
+    public List<CategoryValue> selSubCategory(String parentCateValue, SearchCategory category, String website) {
         if (StringUtils.isEmpty(parentCateValue))
             return Collections.emptyList();
+        if(StringUtils.isEmpty(website)){
+            website = "hz";
+        }
         SearchCategorySubExample subExample = new SearchCategorySubExample();
-        subExample.createCriteria().andParentCateValueEqualTo(parentCateValue).andTypeEqualTo(category.getCategoryType());
+        subExample.createCriteria().andParentCateValueEqualTo(parentCateValue).andTypeEqualTo(category.getCategoryType()).andWebSiteEqualTo(website);
         List<CategoryValue> categoryValues;
         Collections.sort(categoryValues = BeanMapper.mapList(searchCategorySubMapper.selectByExample(subExample), CategoryValue.class));
         return categoryValues;

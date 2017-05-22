@@ -99,20 +99,6 @@ public class ShopForCdnServiceTest {
         }
     }
 
-    /**
-     * 查询两次店铺装修查询
-     */
-    @Test
-    public void shopFiltment(){
-        ShopFitment shopFitment = shopForCdnService.selShopFitment(32888L);
-        System.out.println(JSON.toJSONString(shopFitment));
-        System.out.println("show_logo：" + shopFitment.getShopLogo());
-        System.out.println("show_slide：" + JSON.toJSONString(shopFitment.getBanners()));
-        System.out.println("show_description:" + JSON.toJSONString(shopFitment.getDescription()));
-        shopFitment = shopForCdnService.selShopFitment(32888L);
-        System.out.println(JSON.toJSONString(shopFitment));
-    }
-
 
     /**
      * 查询店铺推荐数据

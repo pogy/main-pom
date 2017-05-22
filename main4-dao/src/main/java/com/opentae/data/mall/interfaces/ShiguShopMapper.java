@@ -45,4 +45,7 @@ public interface ShiguShopMapper extends Mapper<ShiguShop> {
     Long selectDoaminRepeatById(@Param("domain") String domain,@Param("shopId") Long shopId, @Param("shopNum") String shopNum);
 
     List<ShopNumAndMarket> selShopNumAndMarkets(@Param("shopIdList") List<Long> shopIdList);
+
+    @Deprecated
+    Long selShopIdByNumId(@Param("storeNumId") Long shopNumId);
 }

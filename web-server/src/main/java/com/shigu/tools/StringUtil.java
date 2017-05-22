@@ -1488,13 +1488,13 @@ public class StringUtil {
 		String[] str37 = new String[] { "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
 				"m", "n", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
 		Random random = new Random();
-		int a = random.nextInt(36);
-		int b = random.nextInt(36);
-		int c = random.nextInt(36);
-		int d = random.nextInt(36);
-		int e = random.nextInt(36);
-		int f = random.nextInt(36);
-		int g = random.nextInt(36);
+		int a = random.nextInt(str37.length);
+		int b = random.nextInt(str37.length);
+		int c = random.nextInt(str37.length);
+		int d = random.nextInt(str37.length);
+		int e = random.nextInt(str37.length);
+		int f = random.nextInt(str37.length);
+		int g = random.nextInt(str37.length);
 		String createStr = str37[a] + str37[b] + str37[c] + str37[d] + str37[e] + str37[f] + str37[g];
 		return createStr;
 	}

@@ -60,6 +60,6 @@ public interface ItemSearchService {
      * @param parentCateValue
      * @return
      */
-    List<CategoryValue> selSubCategory(String parentCateValue, SearchCategory category);
+    List<CategoryValue> selSubCategory(String parentCateValue, SearchCategory category, String website);
 
 }

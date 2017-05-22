@@ -1,10 +1,13 @@
 package com.shigu.main4.storeservices.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguOuterMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.storeservices.MarketShopService;
 import com.shigu.main4.storeservices.vo.MarketShopListComparator;
@@ -26,7 +29,6 @@ import java.util.*;
  *
  * @author shigu_zjb
  * @date 2017/02/27 18:35
- *
  */
 @Service("marketShopService")
 public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShopService {
@@ -49,28 +51,29 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
 
     /**
      * 按市场ID,查本市场信息
+     *
      * @param outerMarketId
      * @return
      */
     @Override
     public MarketShow selMarketShow(Long outerMarketId) {
-        if(outerMarketId == null){
+        if (outerMarketId == null) {
             return null;
         }
         // 市场信息
         ShiguOuterMarket shiguOuterMarket = new ShiguOuterMarket();
         shiguOuterMarket.setRuleId(outerMarketId);
         shiguOuterMarket = shiguOuterMarketMapper.selectOne(shiguOuterMarket);
-        if(shiguOuterMarket == null){
+        if (shiguOuterMarket == null) {
             return null;
         }
 
         MarketShow marketShowTop = new MarketShow();
         marketShowTop.setMarketId(shiguOuterMarket.getMarketId());
         marketShowTop.setMarketOuterId(shiguOuterMarket.getRuleId());
-        if(shiguOuterMarket.getMarketId()!=null){
+        if (shiguOuterMarket.getMarketId() != null) {
             ShiguMarket shiguMarketNow = shiguMarketMapper.selectByPrimaryKey(shiguOuterMarket.getMarketId());
-            if(shiguMarketNow != null){
+            if (shiguMarketNow != null) {
                 marketShowTop.setPingying(shiguMarketNow.getMarketPingyin());
                 marketShowTop.setWebSite(shiguMarketNow.getWebSite());
                 marketShowTop.setMarketName(shiguMarketNow.getMarketName());
@@ -85,9 +88,9 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
         for (int i = 0; i < outerMarketList.size(); i++) {
             ShiguOuterMarket outerMarket = outerMarketList.get(i);
             MarketShow marketShow = new MarketShow();
-            if(outerMarket.getMarketId()!=null){
+            if (outerMarket.getMarketId() != null) {
                 ShiguMarket shiguMarket = shiguMarketMapper.selectByPrimaryKey(outerMarket.getMarketId());
-                if(shiguMarket != null){
+                if (shiguMarket != null) {
                     marketShow.setPingying(shiguMarket.getMarketPingyin());
                 }
             }
@@ -101,10 +104,10 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
 
         // 楼层IDS
         String outerFloorIds = shiguOuterMarket.getOuterFloorIds();
-        if(StringUtils.isEmpty(outerFloorIds)){
+        if (StringUtils.isEmpty(outerFloorIds)) {
             return null;
         }
-        String [] outerFloorStrIds = outerFloorIds.split(",");
+        String[] outerFloorStrIds = outerFloorIds.split(",");
         // 楼层数据
         List<FloorShow> floorShowList = new ArrayList<FloorShow>();
         List<ShiguOuterFloor> shiguOuterFloorList = shiguOuterFloorMapper.selFloorListByIds(outerFloorStrIds);
@@ -119,6 +122,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
 
     /**
      * 按外部楼层ID查一层的数据
+     *
      * @param outerFloor
      * @return
      */
@@ -131,14 +135,14 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
             return floorShowCache;
         }
         ShiguOuterFloor shiguOuterFloor = shiguOuterFloorMapper.selectByPrimaryKey(outerFloor);
-        if(shiguOuterFloor == null){
+        if (shiguOuterFloor == null) {
             return null;
         }
         List<ShopShow> shopShowList = new ArrayList<ShopShow>();
-        if(StringUtils.isEmpty(shiguOuterFloor.getFloorIds())){
+        if (StringUtils.isEmpty(shiguOuterFloor.getFloorIds())) {
             return null;
         }
-        String [] floorIds = shiguOuterFloor.getFloorIds().split(",");
+        String[] floorIds = shiguOuterFloor.getFloorIds().split(",");
         FloorShow floorShow = new FloorShow();
         floorShow.setFloorIds(shiguOuterFloor.getFloorIds());
         floorShow.setOuterFloorId(outerFloor);
@@ -146,21 +150,15 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
         for (int k = 0; k < floorIds.length; k++) {
             Long floorId = Long.valueOf(floorIds[k]);
             List<ShiguShop> shiguShopList = new ArrayList<ShiguShop>();
-            if(floorId != -1){
+            if (floorId != -1) {
                 shiguShopList = findOpenShopListByFloorIds(floorId);
             }
             for (int i = 0; i < shiguShopList.size(); i++) {
                 ShiguShop shiguShop = shiguShopList.get(i);
                 ShopShow shopShow = new ShopShow();
+                shopShow.setFloorId(shiguShop.getFloorId());
                 String context = shiguShop.getShopTagsContexts();
-                if (!StringUtils.isEmpty(context)) {
-                    String[] ids = context.split(",");
-                    List<Integer> integerList = new ArrayList<Integer>();
-                    for (int m = 0; m < ids.length; m++) {
-                        integerList.add(Integer.parseInt(ids[m]));
-                    }
-                    shopShow.setTags(integerList);
-                }
+                shopShow.setTags(selTags(context));
                 shopShow.setShopName(shiguShop.getShopName());
                 shopShow.setShopNum(shiguShop.getShopNum());
                 shopShow.setMainBus(shiguShop.getMainBus());
@@ -171,70 +169,94 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
                 shopShowList.add(shopShow);
             }
             String addedShops = shiguOuterFloor.getAddedShop();
-            if(!StringUtils.isEmpty(addedShops)){
+            if (!StringUtils.isEmpty(addedShops)) {
                 List<Long> shopIdList = new ArrayList<Long>();
-                String [] shops = addedShops.split(";");
+                String[] shops = addedShops.split(";");
+                Map<Long, ShopShow> map = new HashMap<>();
                 for (int i = 0; i < shops.length; i++) {
-                    String [] shopInfos = shops[i].split(",");
+                    String[] shopInfos = shops[i].split(",");
                     ShopShow shopShow = new ShopShow();
-                    if(!StringUtils.isEmpty(shopInfos[0])){
+                    if (!StringUtils.isEmpty(shopInfos[0])) {
                         shopShow.setShopId(Long.valueOf(shopInfos[0]));
                         shopIdList.add(shopShow.getShopId());
                     }
-                    if(shopInfos.length >= 4) {
+                    if (shopInfos.length >= 4) {
                         shopShow.setSystemComment(shopInfos[3]);
                     }
-                    if(shopInfos.length >= 2){
+                    if (shopInfos.length >= 2) {
                         shopShow.setShopNum(shopInfos[1]);
                         shopShow.setSortOrderKey(shopInfos[1]);
                     }
-                    if(shopInfos.length >= 3) {
+                    if (shopInfos.length >= 3) {
                         shopShow.setShopName(shopInfos[2]);
                     }
                     shopShowList.add(shopShow);
+                    map.put(shopShow.getShopId(), shopShow);
                 }
+
                 List<ShiguShop> shopList = shiguShopMapper.selectShopListByShopIdsForMarketList(shopIdList);
                 for (int m = 0; m < shopIdList.size(); m++) {
                     ShiguShop shiguShop = shopList.get(m);
-                    for (int n = 0; n < shopShowList.size(); n++) {
-                        if (shiguShop.getShopId().intValue() == shopShowList.get(n).getShopId().intValue()) {
-                            if (shiguShop.getShopStatus() != 0 || shiguShop.getDisplayInMarket() != 1) {
-                                continue;
-                            }
-                            String context = shiguShop.getShopTagsContexts();
-                            if (!StringUtils.isEmpty(context)) {
-                                String[] ids = context.split(",");
-                                List<Integer> integerList = new ArrayList<Integer>();
-                                for (int a = 0; a < ids.length; a++) {
-                                    integerList.add(Integer.parseInt(ids[a]));
-                                }
-                                shopShowList.get(n).setTags(integerList);
-                            }
-                            shopShowList.get(n).setSortOrderKey(shiguShop.getSortOrderKey());
-                            if (!StringUtils.isEmpty(shiguShop.getSystemRecommon())) {
-                                shopShowList.get(n).setSystemComment(shiguShop.getSystemRecommon());
-                            }
-                            shopShowList.get(n).setCreateDate(shiguShop.getCreateDate());
-                            shopShowList.get(n).setMainBus(shiguShop.getMainBus());
-                            break;
-                        }
+                    ShopShow s = map.get(shiguShop.getShopId());
+                    if (s == null||shiguShop.getShopStatus() != 0 || shiguShop.getDisplayInMarket() != 1) {
+                        continue;
                     }
+                    String context = shiguShop.getShopTagsContexts();
+                    s.setTags(selTags(context));
+                    s.setSortOrderKey(shiguShop.getSortOrderKey());
+                    if (!StringUtils.isEmpty(shiguShop.getSystemRecommon())) {
+                        s.setSystemComment(shiguShop.getSystemRecommon());
+                    }
+                    s.setCreateDate(shiguShop.getCreateDate());
+                    s.setMainBus(shiguShop.getMainBus());
+                    s.setFloorId(shiguShop.getFloorId());
                 }
             }
+        }
+        //查出真实楼层排序用
+        if(shopShowList.size()>0){
+            Set<Long> floorIdSet=new HashSet<>(BeanMapper.getFieldList(shopShowList,"floorId",Long.TYPE));
+            List<Long> floorIdlist=new ArrayList<>(floorIdSet);
+            ShiguMarketExample example=new ShiguMarketExample();
+            example.createCriteria().andMarketIdIn(floorIdlist);
+            List<ShiguMarket> markets=shiguMarketMapper.selectFieldsByExample(example, FieldUtil.codeFields("market_id,market_name"));
+            Map<Long,ShiguMarket> map=BeanMapper.list2Map(markets,"marketId",Long.TYPE);
+            List<ShopShow> results=new ArrayList<>();
+            for(ShopShow s:shopShowList){
+                if (s.getFloorId() == null) {
+                    continue;
+                }
+                s.setFloor(map.get(s.getFloorId()).getMarketName());
+                results.add(s);
+            }
+            shopShowList=results;
         }
         // shop 排序
         getShopComparator(shopShowList);
         floorShow.setShops(shopShowList);
-        cache.put(outerFloor,floorShow);
+        cache.put(outerFloor, floorShow);
         return floorShow;
+    }
+
+    private List<Integer> selTags(String context) {
+        if (!StringUtils.isEmpty(context)) {
+            String[] ids = context.split(",");
+            List<Integer> integerList = new ArrayList<Integer>();
+            for (int a = 0; a < ids.length; a++) {
+                integerList.add(Integer.parseInt(ids[a]));
+            }
+            return integerList;
+        }
+        return null;
     }
 
     /**
      * 查找市场内开的的店铺档口
+     *
      * @param floorId 楼层ID
      * @return
      */
-    public List<ShiguShop> findOpenShopListByFloorIds(Long floorId){
+    public List<ShiguShop> findOpenShopListByFloorIds(Long floorId) {
         List<ShiguShop> shiguShopList = shiguShopMapper.selectShopForMarketList(floorId);
         return shiguShopList;
     }
@@ -246,15 +268,18 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
 
     /**
      * 查询站点市场展现数据
+     *
      * @param website
      * @return
      */
     @Override
     public List<MarketNavShow> selMarketNavShowList(String website) {
-        if(StringUtils.isEmpty(website)){website = "hz";}
+        if (StringUtils.isEmpty(website)) {
+            website = "hz";
+        }
         Cache cache = cacheManager.getCache("marketNavCache");
-        List<MarketNavShow> marketNavShowCacheList = cache.get(website,List.class);
-        if(marketNavShowCacheList != null){
+        List<MarketNavShow> marketNavShowCacheList = cache.get(website, List.class);
+        if (marketNavShowCacheList != null) {
             return marketNavShowCacheList;
         }
         ShiguOuterMarketExample outerMarketExample = new ShiguOuterMarketExample();
@@ -269,7 +294,7 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
             marketNavShow.setWebSite(outerMarket.getWebSite());
             marketNavShowList.add(marketNavShow);
         }
-        cache.put(website,marketNavShowList);
+        cache.put(website, marketNavShowList);
         return marketNavShowList;
     }
 }

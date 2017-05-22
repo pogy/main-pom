@@ -26,42 +26,4 @@ public class ShopFitmentServiceTest {
     @Resource(name = "shopFitmentService")
     private ShopFitmentService shopFitmentService;
 
-    /**
-     * 店铺修改查询
-     */
-    @Test
-    public void selFitmentForUpadte(){
-        Long shopId = 32888L;
-        ShopFitmentForUpadte shopFitmentForUpadte = shopFitmentService.selFitmentForUpadte(shopId);
-        System.out.println("店铺修改查询：" + JSON.toJSONString(shopFitmentForUpadte));
-        Assert.assertTrue(shopFitmentForUpadte!=null);
-
-        shopId = 32999L;
-        shopFitmentForUpadte = shopFitmentService.selFitmentForUpadte(shopId);
-        System.out.println("店铺修改查询：" + JSON.toJSONString(shopFitmentForUpadte));
-        Assert.assertTrue(shopFitmentForUpadte==null);
-    }
-
-    /**
-     * 店铺装修更新
-     */
-    @Test
-    public void updateFitment() throws ShopFitmentException {
-        Long shopId = 32888L;
-        Long fltId = 1L;
-        ShopFitmentForUpadte shopFitmentForUpadte = new ShopFitmentForUpadte();
-        shopFitmentForUpadte.setFitmentId(fltId);
-        shopFitmentForUpadte.setShopName("我是小球球2");
-
-        shopFitmentService.updateFitment(shopId ,shopFitmentForUpadte);
-
-        shopId = 32999L;
-
-        try{
-            shopFitmentService.updateFitment(shopId ,shopFitmentForUpadte);
-        }catch(Exception e){
-            Assert.assertTrue(e instanceof ShopFitmentException);
-            System.out.println("抛出异常，信息不对应");
-        }
-    }
 }
