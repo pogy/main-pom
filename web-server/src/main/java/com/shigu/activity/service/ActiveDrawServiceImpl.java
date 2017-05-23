@@ -64,6 +64,9 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     @Autowired
     private ActiveDrawPitMapper activeDrawPitMapper;
 
+    @Autowired
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+
     /**
      * 查询当前期次
      * @return
@@ -104,28 +107,20 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         }
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
         List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("goods");
-        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
-        QueryBuilder goodIdsQuery = QueryBuilders.termsQuery("goodsId", goodsList);
-
+        ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
+        ShiguGoodsTinyExample.Criteria criteria = goodsTinyExample.createCriteria();
+        criteria.andGoodsIdIn(goodsList);
+        goodsTinyExample.setWebSite("hz");
         // 特殊要求：发现好货不用区分是否下架，该处为广告位
         if (!StringUtils.equals(ActiveDrawGoods.TYPE_FAGOODS, type)) {
-            QueryBuilder goodStatusQuery = QueryBuilders.termQuery("is_off", 0);
-            boleanQueryBuilder.must(goodStatusQuery);
+            criteria.andIsClosedEqualTo(0L);
         }
-
-        boleanQueryBuilder.must(goodIdsQuery);
-        srb.setSize(size);
-        srb.setFrom(0);
-        srb.setQuery(boleanQueryBuilder);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
+        List<ShiguGoodsTiny> goodsTinyList = shiguGoodsTinyMapper.selectByExample(goodsTinyExample);
         List<ActiveDrawGoodsVo> drawGoodsVoList = new ArrayList<ActiveDrawGoodsVo>();
-        if (hits != null && hits.length > 0) {
-            HashMap<Long, ESGoods> goodsTinyHashMap = new HashMap<Long, ESGoods>();
-            for (SearchHit hit : hits) {
-                ESGoods esGoods = JSON.parseObject(hit.getSourceAsString(), ESGoods.class);
-                goodsTinyHashMap.put(esGoods.getGoodsId(),esGoods);
+        if (goodsTinyList != null && goodsTinyList.size() > 0) {
+            HashMap<Long, ShiguGoodsTiny> goodsTinyHashMap = new HashMap<Long, ShiguGoodsTiny>();
+            for (ShiguGoodsTiny hit : goodsTinyList) {
+                goodsTinyHashMap.put(hit.getGoodsId(),hit);
             }
             List<Long> shopIds = BeanMapper.getFieldList(new ArrayList<Object>(goodsTinyHashMap.values()), "storeId", Long.class);
             ShiguShopExample shopExample = new ShiguShopExample();
@@ -138,7 +133,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             List<ShiguMarket> marketList = shiguMarketMapper.selectFieldsByExample(marketExample, FieldUtil.codeFields("market_id,market_name"));
             Map<Long, ShiguMarket> marketMap = BeanMapper.list2Map(marketList, "marketId", Long.class);
             for(ActiveDrawGoods drawGoods : drawGoodsList){
-                ESGoods shiguGoodsTiny = goodsTinyHashMap.get(drawGoods.getGoodsId());
+                ShiguGoodsTiny shiguGoodsTiny = goodsTinyHashMap.get(drawGoods.getGoodsId());
                 if(shiguGoodsTiny == null){continue;}
                 ActiveDrawGoodsVo activeDrawGoodsVo = new ActiveDrawGoodsVo();
                 activeDrawGoodsVo.setGoodsId(shiguGoodsTiny.getGoodsId());
@@ -146,7 +141,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                 activeDrawGoodsVo.setMarketName(shiguGoodsTiny.getParentMarketName());
                 activeDrawGoodsVo.setShopNum(shiguGoodsTiny.getStoreNum());
                 activeDrawGoodsVo.setPemId(pemId);
-                activeDrawGoodsVo.setIsOff(shiguGoodsTiny.getIs_off());
+                activeDrawGoodsVo.setIsOff(shiguGoodsTiny.getIsClosed());
 
                 DecimalFormat df2=(DecimalFormat) DecimalFormat.getInstance();
                 df2.applyPattern("0.00");
