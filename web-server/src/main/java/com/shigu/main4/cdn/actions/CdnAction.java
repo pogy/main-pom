@@ -313,6 +313,9 @@ public class CdnAction {
         List<IndexGoodsVo> indexGoodsVoList = new ArrayList<IndexGoodsVo>();
         for(ItemSpreadVO itemSpreadVO : spreadVOList){
             IndexGoodsVo indexGoodsVo = BeanMapper.map(itemSpreadVO, IndexGoodsVo.class);
+            if(indexGoodsVo == null){
+                continue;
+            }
             indexGoodsVo.setParentMarketName(itemSpreadVO.getMarketText());
             indexGoodsVoList.add(indexGoodsVo);
         }
