@@ -304,7 +304,7 @@ public class GoodsSearchService {
 
         RetrieveImageResponse response= ImgClientEnum.valueOf(webSite).execute(request);
         //添加搜索记录
-        String dateKey="img_search_"+ DateUtil.dateToString(new Date(),"yyyy_MM");
+        String dateKey=webSite+"img_search_"+ DateUtil.dateToString(new Date(),"yyyy_MM");
         Long searched=redisIO.get(dateKey,Long.class);
         if(searched==null){
             searched=0L;
@@ -321,8 +321,8 @@ public class GoodsSearchService {
             }
             List<GoodsInSearch> imgGoods=new ArrayList<>();
             if(goodsId.size()>0){
-                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,"hz",1,20);
-                ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager,"hz");
+                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,webSite,1,20);
+                ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager,webSite);
                 if (goodsPager != null) {
 //                    return pager.getContent();
                     List<GoodsInSearch> imgs = goodsPager.getContent();
