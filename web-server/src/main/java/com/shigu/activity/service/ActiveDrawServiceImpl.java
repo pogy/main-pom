@@ -729,68 +729,78 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             // 当前没有正在进行的活动
             return Collections.EMPTY_LIST;
         }
-        // 查询发现好货活动的数据
-        ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
-        drawGoodsExample.createCriteria().andPemIdEqualTo(activeDrawPem.getId()).andTypeEqualTo(ActiveDrawGoods.TYPE_FAGOODS);
-        List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
-        List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
-        Long total = selGoodsupTotal(goodsList, userId, activeDrawPem.getStartTime());
 
+        ActiveDrawRecordExample recordExample = new ActiveDrawRecordExample();
+        recordExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardNotEqualTo("A4");
+        int recordCount = activeDrawRecordMapper.countByExample(recordExample);
         ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
-        activeDrawRecord.setUserId(userId);
-        activeDrawRecord.setPemId(activeDrawPem.getId());
-        activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-        activeDrawRecord.setEnabled(false);
-        activeDrawRecord.setReceivesYes(false);
-        activeDrawRecord.setCreateTime(new Date());
-        activeDrawRecord.setModifyTime(new Date());
-        if(total >= 3){
-            activeDrawRecord.setWard("A1");
-            String drawCode = StringUtil.str10To37Str();
-            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_YES);
-            activeDrawRecord.setDrawCode(drawCode);
-            addActiveDrawRecord(activeDrawRecord);
-        }
-        activeDrawRecord.setDrawCode(null);
-        if(total >= 5){
+        if(recordCount == 0){
+            // 查询发现好货活动的数据
+            ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
+            drawGoodsExample.createCriteria().andPemIdEqualTo(activeDrawPem.getId()).andTypeEqualTo(ActiveDrawGoods.TYPE_FAGOODS);
+            List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
+            List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
+            Long total = selGoodsupTotal(goodsList, userId, activeDrawPem.getStartTime());
+            activeDrawRecord.setUserId(userId);
+            activeDrawRecord.setPemId(activeDrawPem.getId());
             activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-            activeDrawRecord.setId(null);
-            activeDrawRecord.setWard("A2");
-            addActiveDrawRecord(activeDrawRecord);
-        }
-        if(total >= 8){
-            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-            activeDrawRecord.setId(null);
-            activeDrawRecord.setWard("A3");
-            addActiveDrawRecord(activeDrawRecord);
-        }
-        if(total >= 10){
-            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-            activeDrawRecord.setId(null);
-            activeDrawRecord.setWard("A4");
-            addActiveDrawRecord(activeDrawRecord);
+            activeDrawRecord.setEnabled(false);
+            activeDrawRecord.setReceivesYes(false);
+            activeDrawRecord.setCreateTime(new Date());
+            activeDrawRecord.setModifyTime(new Date());
+            if(total >= 3){
+                activeDrawRecord.setWard("A1");
+                String drawCode = StringUtil.str10To37Str();
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_YES);
+                activeDrawRecord.setDrawCode(drawCode);
+                addActiveDrawRecord(activeDrawRecord);
+            }
+            activeDrawRecord.setDrawCode(null);
+            if(total >= 5){
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
+                activeDrawRecord.setId(null);
+                activeDrawRecord.setWard("A2");
+                addActiveDrawRecord(activeDrawRecord);
+            }
+            if(total >= 8){
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
+                activeDrawRecord.setId(null);
+                activeDrawRecord.setWard("A3");
+                addActiveDrawRecord(activeDrawRecord);
+            }
+            if(total >= 10){
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
+                activeDrawRecord.setId(null);
+                activeDrawRecord.setWard("A4");
+                addActiveDrawRecord(activeDrawRecord);
+            }
         }
 
-        // 查询每日发现
-        ActiveDrawGoodsExample drawDaliyGoodsExample = new ActiveDrawGoodsExample();
-        drawDaliyGoodsExample.createCriteria().andPemIdEqualTo(activeDrawPem.getId()).andTypeEqualTo(ActiveDrawGoods.TYPE_DAILYFIND);
-        List<ActiveDrawGoods> drawDaliyGoodsList = activeDrawGoodsMapper.selectByExample(drawDaliyGoodsExample);
-        List daliyGoodsList = BeanMapper.getFieldList(drawDaliyGoodsList, "goodsId", List.class);
-        total = selGoodsupTotal(daliyGoodsList, userId, activeDrawPem.getStartTime());
-        if(total >= 3){
-            activeDrawRecord.setWard("B1");
-            activeDrawRecord.setId(null);
-            String drawCode = StringUtil.str10To37Str();
-            activeDrawRecord.setDrawCode(drawCode);
-            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_YES);
-            addActiveDrawRecord(activeDrawRecord);
-        }
-        activeDrawRecord.setDrawCode(null);
-        if(total >= 5){
-            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-            activeDrawRecord.setId(null);
-            activeDrawRecord.setWard("B2");
-            addActiveDrawRecord(activeDrawRecord);
+        ActiveDrawRecordExample recordBExample = new ActiveDrawRecordExample();
+        recordBExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardNotEqualTo("B2");
+        int recordBCount = activeDrawRecordMapper.countByExample(recordBExample);
+        if(recordBCount == 0){
+            // 查询每日发现
+            ActiveDrawGoodsExample drawDaliyGoodsExample = new ActiveDrawGoodsExample();
+            drawDaliyGoodsExample.createCriteria().andPemIdEqualTo(activeDrawPem.getId()).andTypeEqualTo(ActiveDrawGoods.TYPE_DAILYFIND);
+            List<ActiveDrawGoods> drawDaliyGoodsList = activeDrawGoodsMapper.selectByExample(drawDaliyGoodsExample);
+            List daliyGoodsList = BeanMapper.getFieldList(drawDaliyGoodsList, "goodsId", List.class);
+            Long total = selGoodsupTotal(daliyGoodsList, userId, activeDrawPem.getStartTime());
+            if(total >= 3){
+                activeDrawRecord.setWard("B1");
+                activeDrawRecord.setId(null);
+                String drawCode = StringUtil.str10To37Str();
+                activeDrawRecord.setDrawCode(drawCode);
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_YES);
+                addActiveDrawRecord(activeDrawRecord);
+            }
+            activeDrawRecord.setDrawCode(null);
+            if(total >= 5){
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
+                activeDrawRecord.setId(null);
+                activeDrawRecord.setWard("B2");
+                addActiveDrawRecord(activeDrawRecord);
+            }
         }
 
         List<ActiveDrawRecordUserVo> selDrawRecordList = selDrawRecordList(activeDrawPem.getId(), userId, null);
