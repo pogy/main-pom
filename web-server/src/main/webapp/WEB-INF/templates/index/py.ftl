@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/otherIndex/css/py.css?t=" rel="stylesheet">
+    <link href="http://style.571xz.com/otherIndex/css/py.css?t=1495518904810" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/otherIndex/js/py.js?t="></script>
+    <script src="http://style.571xz.com/otherIndex/js/py.js?t=1495518904810"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -134,6 +134,10 @@ $('.fixtopbar .tabbox li').on('click', function(){
         <ul class="tabs clearfix"> 
             <li class="so-goods selected">商品</li>
         </ul>
+        
+        <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
+        <a href="${main_host!}picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
+        </#if>
         <form class="so-form" action="http://so.571xz.com/jxsearch.htm" target="_blank">
             <input class="so-input" type="text" name="keyword" placeholder="输入产品名称"> <button class="so-go">搜索</button>
         </form>
