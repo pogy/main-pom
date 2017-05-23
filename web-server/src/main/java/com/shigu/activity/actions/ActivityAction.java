@@ -114,15 +114,14 @@ public class ActivityAction {
 
         ResponseBase rsp = new ResponseBase();
 
-        Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 
-        if(object == null){
+        if(ps == null){
             // 未登录
             rsp.setMsg("用户未登陆");
             return JSONObject.fromObject(rsp);
         }
 
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         // 当前期次
         ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem(null);
         // 中奖记录
