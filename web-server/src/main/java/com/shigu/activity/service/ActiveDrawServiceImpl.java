@@ -373,19 +373,14 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         drawShopExample.createCriteria().andPemIdEqualTo(pemId);
         List<ActiveDrawShop> drawShopList = activeDrawShopMapper.selectByExample(drawShopExample);
         List shopIdsList = BeanMapper.getFieldList(drawShopList,"shopId", List.class);
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shop");
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        QueryBuilder shopQuery = QueryBuilders.termsQuery("shop_id",shopIdsList);
-        boolQueryBuilder.must(shopQuery);
-        srb.setQuery(boolQueryBuilder);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
-        if(hits == null){
+        ShiguShopExample shopExample = new ShiguShopExample();
+        shopExample.createCriteria().andShopIdIn(shopIdsList);
+        List<ShiguShop> shiguShopList = shiguShopMapper.selectByExample(shopExample);
+        if(shiguShopList.size() == 0){
             return Collections.EMPTY_LIST;
         }
         List<ActiveDrawShopVo> drawShopVoList = new ArrayList<ActiveDrawShopVo>();
-        for(SearchHit hit : hits){
-            ShiguShop shiguShop = JSON.parseObject(hit.getSourceAsString(),ShiguShop.class);
+        for(ShiguShop shiguShop : shiguShopList){
             for(int i = 0;i<drawShopList.size();i++){
                 ActiveDrawShop activeDrawShop = drawShopList.get(i);
                 if(activeDrawShop.getShopId().intValue() == shiguShop.getShopId().intValue()){
