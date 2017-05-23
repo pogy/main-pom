@@ -270,31 +270,6 @@ public class GoodsSearchAction {
     }
 
     /**
-     * 查红牛活动的商品数据
-     *
-     * @param ids
-     * @return
-     */
-    @RequestMapping("redBull")
-    @ResponseBody
-    public JSONObject redBull(String ids) {
-        JSONArray arr = JSONArray.fromObject(goodsSearchService.selRedBull(ids));
-        return JsonResponseUtil.success().element("goodsList", arr);
-    }
-
-    /**
-     * 清除红牛广告
-     *
-     * @return
-     */
-    @RequestMapping("clearBull")
-    @ResponseBody
-    public JSONObject clearBull() {
-        goodsSearchService.clearReedBull();
-        return JsonResponseUtil.success();
-    }
-
-    /**
      * 拿到翻页信息
      *
      * @return
