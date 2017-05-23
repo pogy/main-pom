@@ -252,7 +252,7 @@ public class CdnAction {
         // 男装数据
         Object menSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_MENS));
         // 男鞋数据
-        Object menShoesSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_MENSHOES));
+        //Object menShoesSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_MENSHOES));
         // 童装数据
         Object chilrenSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_CHILDRENCOLTHING));
         // 女装数据
@@ -263,13 +263,13 @@ public class CdnAction {
         Object kuziSpread = selFromCache(spreadService.selItemSpreads(website, SpreadEnum.JX_SPREAD_INDEX_KUZI));
 
         List<IndexGoodsVo> menSpreadList = changeGoods((List<ItemSpreadVO>)menSpread);
-        List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>)menShoesSpread);
+        //List<IndexGoodsVo> menShoesSpreadList = changeGoods((List<ItemSpreadVO>)menShoesSpread);
         List<IndexGoodsVo> chilrenSpreadList = changeGoods((List<ItemSpreadVO>)chilrenSpread);
         List<IndexGoodsVo> womanSpreadList = changeGoods((List<ItemSpreadVO>)womanSpread);
         List<IndexGoodsVo> sellhotSpreadList = changeGoods((List<ItemSpreadVO>)sellhotSpread);
         List<IndexGoodsVo> kuziSpreadList = changeGoods((List<ItemSpreadVO>)kuziSpread);
-        if(menShoesSpreadList == null)
-            menShoesSpreadList = Collections.emptyList();
+        /*if(menShoesSpreadList == null)
+            menShoesSpreadList = Collections.emptyList();*/
         if(chilrenSpreadList == null)
             chilrenSpreadList = Collections.emptyList();
         if(womanSpreadList == null)
@@ -294,7 +294,6 @@ public class CdnAction {
         model.addAttribute("webSite", website);
         model.addAttribute("list_newGoods", JSON.toJSONString(indexNewGoodsVoList));
         model.addAttribute("nzgoods", JSON.toJSONString(menSpreadList));
-        model.addAttribute("xiebaogoods", JSON.toJSONString(menShoesSpreadList));
         model.addAttribute("list_childGoods", JSON.toJSONString(chilrenSpreadList));
         model.addAttribute("nvzgoods", JSON.toJSONString(womanSpreadList));
         model.addAttribute("hotgoods", JSON.toJSONString(sellhotSpreadList));
