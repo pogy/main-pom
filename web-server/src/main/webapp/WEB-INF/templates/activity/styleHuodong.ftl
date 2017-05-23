@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网拥有丰富的线下服装批发进货渠道，四季星座、置地国际、电商基地、钱塘大厦、保太和、星座女装、新杭派、九天女装、意法服饰等杭州四季青实体批发市场都已入驻，实体批发档口高达15000多家，为全国淘宝网店代理商提供一手货源。同时支持一件代发，一键上传到淘宝、到阿里、到微信，数据包下载，无理由退换货服务。">
     
-    <link href="http://style.571xz.com/searchV5/css/newStyleHd.css?t=1494902100755" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/newStyleHd.css?t=1495420443427" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/newStyleHd.js?t=1494902100755"></script>
+    <script src="http://style.571xz.com/searchV5/js/newStyleHd.js?t=1495420443427"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -240,15 +240,19 @@ var webSite = '${webSite!}';
                 <#else>
                 <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
                 </#if>
-                <#if webSite != 'jx'>
-                <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
-                <#else>
-                <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
+                <#if webSite == 'jx'>
+                    <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
+                    <#elseif webSite == 'wa'>
+                    <li><a href="http://www.571xz.com/storelist.htm?webSite=wa">企业列表</a></li>
+                    <#else>
+                    <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 </#if>
                 <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite !="jx">
+                <#if webSite !="jx" || webSite != 'wa'>
                 <li ><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
+                <#if webSite == "hz">
                 <li class="select"><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
+                </#if>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>
@@ -261,7 +265,7 @@ var webSite = '${webSite!}';
         <div class="flexslider">
           <ul class="slides">
             <li>
-              <img src="http://style.571xz.com/searchV5/css/img/styleHd/banner.jpg" />
+              <img src="http://style.571xz.com/searchV5/css/img/styleHd/banner1.jpg" />
               </li>
               
           </ul>
@@ -276,16 +280,18 @@ var webSite = '${webSite!}';
                 <li>
                     <img src='http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=${user.userNick!}&width=80&height=80&type=sns' alt />
                     <span>${user.hideUserNick!}</span>
-                    <#if user.pemId == 2 && (user.ward == 'A2' || user.ward == 'B2')>
-                    <span>（小米充电宝一个）</span>
-                    <#elseif user.pemId == 2 && user.ward == 'A3'>
-                    <span>（小牛电动车一台）</span>
-                    <#elseif user.pemId == 8 && (user.ward == 'A2' || user.ward == 'B2')>
+                    <#if user.pemId == 8 && (user.ward == 'A2' || user.ward == 'B2')>
                     <span>（机械键盘或鼠标一个）</span>
                     <#elseif user.pemId == 8 && user.ward == 'A3'>
                     <span>（二合一笔记本一台）</span>
                     <#elseif user.pemId == 8 && user.ward == 'A4'>
                     <span>（外星人台式机一台）</span>
+                    <#elseif user.pemId == 9 && (user.ward == 'A2' || user.ward == 'B2')>
+                    <span>（音响/台灯二合一）</span>
+                    <#elseif user.pemId == 9 && user.ward == 'A3'>
+                    <span>（华为P10一台）</span>
+                    <#elseif user.pemId == 9 && user.ward == 'A4'>
+                    <span>（iMac一台）</span>
                     </#if>
                 </li>
                 </#list>

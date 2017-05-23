@@ -98,9 +98,9 @@ public class CategoryInSearchService {
      * @param cateValue
      * @return
      */
-    public List<CateNav> selSubCates(String cateValue,SearchCategory category){
+    public List<CateNav> selSubCates(String cateValue,SearchCategory category, String webSite){
         Cache cache=cacheManager.getCache("searchSubCatesCache");
-        String key=cateValue+" is "+category.getValue();
+        String key=webSite + cateValue+" is "+category.getValue();
         List<CateNav> cateNavs=cache.get(key,List.class);
         if(cateNavs!=null){
             if(cateNavs.size()==0){
@@ -109,7 +109,7 @@ public class CategoryInSearchService {
                 return cateNavs;
             }
         }
-        List<CategoryValue> cates=itemSearchService.selSubCategory(cateValue,category);
+        List<CategoryValue> cates=itemSearchService.selSubCategory(cateValue,category, webSite);
         List<CateNav> navs=new ArrayList<>();
         for(CategoryValue gv:cates){
             navs.add(new CateNav(gv.getCateValue(),gv.getCateName(),gv.getCateValue()));
