@@ -64,6 +64,9 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     @Autowired
     private ActiveDrawPitMapper activeDrawPitMapper;
 
+    @Autowired
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+
     /**
      * 查询当前期次
      * @return
@@ -104,28 +107,20 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         }
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
         List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("goods");
-        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
-        QueryBuilder goodIdsQuery = QueryBuilders.termsQuery("goodsId", goodsList);
-
+        ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
+        ShiguGoodsTinyExample.Criteria criteria = goodsTinyExample.createCriteria();
+        criteria.andGoodsIdIn(goodsList);
+        goodsTinyExample.setWebSite("hz");
         // 特殊要求：发现好货不用区分是否下架，该处为广告位
         if (!StringUtils.equals(ActiveDrawGoods.TYPE_FAGOODS, type)) {
-            QueryBuilder goodStatusQuery = QueryBuilders.termQuery("is_off", 0);
-            boleanQueryBuilder.must(goodStatusQuery);
+            criteria.andIsClosedEqualTo(0L);
         }
-
-        boleanQueryBuilder.must(goodIdsQuery);
-        srb.setSize(size);
-        srb.setFrom(0);
-        srb.setQuery(boleanQueryBuilder);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
+        List<ShiguGoodsTiny> goodsTinyList = shiguGoodsTinyMapper.selectByExample(goodsTinyExample);
         List<ActiveDrawGoodsVo> drawGoodsVoList = new ArrayList<ActiveDrawGoodsVo>();
-        if (hits != null && hits.length > 0) {
-            HashMap<Long, ESGoods> goodsTinyHashMap = new HashMap<Long, ESGoods>();
-            for (SearchHit hit : hits) {
-                ESGoods esGoods = JSON.parseObject(hit.getSourceAsString(), ESGoods.class);
-                goodsTinyHashMap.put(esGoods.getGoodsId(),esGoods);
+        if (goodsTinyList != null && goodsTinyList.size() > 0) {
+            HashMap<Long, ShiguGoodsTiny> goodsTinyHashMap = new HashMap<Long, ShiguGoodsTiny>();
+            for (ShiguGoodsTiny hit : goodsTinyList) {
+                goodsTinyHashMap.put(hit.getGoodsId(),hit);
             }
             List<Long> shopIds = BeanMapper.getFieldList(new ArrayList<Object>(goodsTinyHashMap.values()), "storeId", Long.class);
             ShiguShopExample shopExample = new ShiguShopExample();
@@ -138,7 +133,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             List<ShiguMarket> marketList = shiguMarketMapper.selectFieldsByExample(marketExample, FieldUtil.codeFields("market_id,market_name"));
             Map<Long, ShiguMarket> marketMap = BeanMapper.list2Map(marketList, "marketId", Long.class);
             for(ActiveDrawGoods drawGoods : drawGoodsList){
-                ESGoods shiguGoodsTiny = goodsTinyHashMap.get(drawGoods.getGoodsId());
+                ShiguGoodsTiny shiguGoodsTiny = goodsTinyHashMap.get(drawGoods.getGoodsId());
                 if(shiguGoodsTiny == null){continue;}
                 ActiveDrawGoodsVo activeDrawGoodsVo = new ActiveDrawGoodsVo();
                 activeDrawGoodsVo.setGoodsId(shiguGoodsTiny.getGoodsId());
@@ -146,7 +141,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                 activeDrawGoodsVo.setMarketName(shiguGoodsTiny.getParentMarketName());
                 activeDrawGoodsVo.setShopNum(shiguGoodsTiny.getStoreNum());
                 activeDrawGoodsVo.setPemId(pemId);
-                activeDrawGoodsVo.setIsOff(shiguGoodsTiny.getIs_off());
+                activeDrawGoodsVo.setIsOff(shiguGoodsTiny.getIsClosed());
 
                 DecimalFormat df2=(DecimalFormat) DecimalFormat.getInstance();
                 df2.applyPattern("0.00");
@@ -301,7 +296,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             return;
         }
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
-        drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id);
+        drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id).andEnabledEqualTo(false);
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
         if(drawGoodsList.size() == 0){
             ActiveDrawGoods drawGoods = new ActiveDrawGoods();
@@ -378,19 +373,14 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         drawShopExample.createCriteria().andPemIdEqualTo(pemId);
         List<ActiveDrawShop> drawShopList = activeDrawShopMapper.selectByExample(drawShopExample);
         List shopIdsList = BeanMapper.getFieldList(drawShopList,"shopId", List.class);
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shop");
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        QueryBuilder shopQuery = QueryBuilders.termsQuery("shop_id",shopIdsList);
-        boolQueryBuilder.must(shopQuery);
-        srb.setQuery(boolQueryBuilder);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
-        if(hits == null){
+        ShiguShopExample shopExample = new ShiguShopExample();
+        shopExample.createCriteria().andShopIdIn(shopIdsList);
+        List<ShiguShop> shiguShopList = shiguShopMapper.selectByExample(shopExample);
+        if(shiguShopList.size() == 0){
             return Collections.EMPTY_LIST;
         }
         List<ActiveDrawShopVo> drawShopVoList = new ArrayList<ActiveDrawShopVo>();
-        for(SearchHit hit : hits){
-            ShiguShop shiguShop = JSON.parseObject(hit.getSourceAsString(),ShiguShop.class);
+        for(ShiguShop shiguShop : shiguShopList){
             for(int i = 0;i<drawShopList.size();i++){
                 ActiveDrawShop activeDrawShop = drawShopList.get(i);
                 if(activeDrawShop.getShopId().intValue() == shiguShop.getShopId().intValue()){
@@ -560,12 +550,12 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     @Override
-    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward, int pageNum, int pageSize) {
+    public ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward,Long userId,String userNick, int pageNum, int pageSize) {
         ShiguPager<ActiveDrawRecordUserVo> drawRecordUserVoShiguPager = new ShiguPager<ActiveDrawRecordUserVo>();
         if(pemId == null || StringUtils.isEmpty(ward)){
             return drawRecordUserVoShiguPager;
         }
-        int drawRecordCount = activeDrawRecordMapper.selDrawRecordCount(pemId, null,ward);
+        int drawRecordCount = activeDrawRecordMapper.selDrawRecordCount(pemId, userId,ward,userNick);
         int totalPages = drawRecordCount / pageSize + ((drawRecordCount % pageSize == 0) ? 0 : 1);
         if(pageNum > totalPages){
             return drawRecordUserVoShiguPager;
@@ -581,13 +571,16 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             typeGoods = ActiveDrawGoods.TYPE_DAILYFIND;
         }
         int startRows = (pageNum-1)*pageSize;
-        int endRows = pageNum*pageSize;
-        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, null, null, ward, startRows, endRows);
+        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, null, ward,userNick, startRows, pageSize);
         // 查询发现好货活动的数据
         List<ActiveDrawRecordUserVo>  drawRecordUserVoList = poUserGoodsUp(pemId, typeGoods, drawRecordList);
         Map<Long, ActiveDrawRecordUserVo> recordUserVoMap = BeanMapper.list2Map(drawRecordUserVoList, "userId", Long.class);
         for (int i = 0; i < drawRecordList.size(); i++) {
             ActiveDrawRecordUserVo drawRecordUserVo = recordUserVoMap.get(drawRecordList.get(i).getUserId());
+            if(drawRecordUserVo == null){
+                drawRecordUserVo = BeanMapper.map(drawRecordList.get(i), ActiveDrawRecordUserVo.class);
+                drawRecordUserVo.setConcatPhone(drawRecordList.get(i).getLoginPhone());
+            }
             drawRecordUserVos.add(drawRecordUserVo);
         }
         drawRecordUserVoShiguPager.setContent(drawRecordUserVos);
@@ -680,7 +673,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type){
-        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null);
+        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null,null);
         if(userId != null){
             // 过滤过期
 
@@ -711,7 +704,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
         SearchResponse response = srb.execute().actionGet();
         LongTerms supperGoodsIdAgg = response.getAggregations().get("supperGoodsIdAgg");
-        int total = supperGoodsIdAgg.getBuckets().size();;
+        int total = supperGoodsIdAgg.getBuckets().size();
         return Long.valueOf(total);
     }
 
@@ -726,68 +719,78 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             // 当前没有正在进行的活动
             return Collections.EMPTY_LIST;
         }
-        // 查询发现好货活动的数据
-        ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
-        drawGoodsExample.createCriteria().andPemIdEqualTo(activeDrawPem.getId()).andTypeEqualTo(ActiveDrawGoods.TYPE_FAGOODS);
-        List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
-        List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
-        Long total = selGoodsupTotal(goodsList, userId, activeDrawPem.getStartTime());
 
+        ActiveDrawRecordExample recordExample = new ActiveDrawRecordExample();
+        recordExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardNotEqualTo("A4");
+        int recordCount = activeDrawRecordMapper.countByExample(recordExample);
         ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
-        activeDrawRecord.setUserId(userId);
-        activeDrawRecord.setPemId(activeDrawPem.getId());
-        activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-        activeDrawRecord.setEnabled(false);
-        activeDrawRecord.setReceivesYes(false);
-        activeDrawRecord.setCreateTime(new Date());
-        activeDrawRecord.setModifyTime(new Date());
-        if(total >= 3){
-            activeDrawRecord.setWard("A1");
-            String drawCode = StringUtil.str10To37Str();
-            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_YES);
-            activeDrawRecord.setDrawCode(drawCode);
-            addActiveDrawRecord(activeDrawRecord);
-        }
-        activeDrawRecord.setDrawCode(null);
-        if(total >= 5){
+        if(recordCount == 0){
+            // 查询发现好货活动的数据
+            ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
+            drawGoodsExample.createCriteria().andPemIdEqualTo(activeDrawPem.getId()).andTypeEqualTo(ActiveDrawGoods.TYPE_FAGOODS);
+            List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
+            List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
+            Long total = selGoodsupTotal(goodsList, userId, activeDrawPem.getStartTime());
+            activeDrawRecord.setUserId(userId);
+            activeDrawRecord.setPemId(activeDrawPem.getId());
             activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-            activeDrawRecord.setId(null);
-            activeDrawRecord.setWard("A2");
-            addActiveDrawRecord(activeDrawRecord);
-        }
-        if(total >= 8){
-            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-            activeDrawRecord.setId(null);
-            activeDrawRecord.setWard("A3");
-            addActiveDrawRecord(activeDrawRecord);
-        }
-        if(total >= 10){
-            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-            activeDrawRecord.setId(null);
-            activeDrawRecord.setWard("A4");
-            addActiveDrawRecord(activeDrawRecord);
+            activeDrawRecord.setEnabled(false);
+            activeDrawRecord.setReceivesYes(false);
+            activeDrawRecord.setCreateTime(new Date());
+            activeDrawRecord.setModifyTime(new Date());
+            if(total >= 3){
+                activeDrawRecord.setWard("A1");
+                String drawCode = StringUtil.str10To37Str();
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_YES);
+                activeDrawRecord.setDrawCode(drawCode);
+                addActiveDrawRecord(activeDrawRecord);
+            }
+            activeDrawRecord.setDrawCode(null);
+            if(total >= 5){
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
+                activeDrawRecord.setId(null);
+                activeDrawRecord.setWard("A2");
+                addActiveDrawRecord(activeDrawRecord);
+            }
+            if(total >= 8){
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
+                activeDrawRecord.setId(null);
+                activeDrawRecord.setWard("A3");
+                addActiveDrawRecord(activeDrawRecord);
+            }
+            if(total >= 10){
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
+                activeDrawRecord.setId(null);
+                activeDrawRecord.setWard("A4");
+                addActiveDrawRecord(activeDrawRecord);
+            }
         }
 
-        // 查询每日发现
-        ActiveDrawGoodsExample drawDaliyGoodsExample = new ActiveDrawGoodsExample();
-        drawDaliyGoodsExample.createCriteria().andPemIdEqualTo(activeDrawPem.getId()).andTypeEqualTo(ActiveDrawGoods.TYPE_DAILYFIND);
-        List<ActiveDrawGoods> drawDaliyGoodsList = activeDrawGoodsMapper.selectByExample(drawDaliyGoodsExample);
-        List daliyGoodsList = BeanMapper.getFieldList(drawDaliyGoodsList, "goodsId", List.class);
-        total = selGoodsupTotal(daliyGoodsList, userId, activeDrawPem.getStartTime());
-        if(total >= 3){
-            activeDrawRecord.setWard("B1");
-            activeDrawRecord.setId(null);
-            String drawCode = StringUtil.str10To37Str();
-            activeDrawRecord.setDrawCode(drawCode);
-            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_YES);
-            addActiveDrawRecord(activeDrawRecord);
-        }
-        activeDrawRecord.setDrawCode(null);
-        if(total >= 5){
-            activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-            activeDrawRecord.setId(null);
-            activeDrawRecord.setWard("B2");
-            addActiveDrawRecord(activeDrawRecord);
+        ActiveDrawRecordExample recordBExample = new ActiveDrawRecordExample();
+        recordBExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardNotEqualTo("B2");
+        int recordBCount = activeDrawRecordMapper.countByExample(recordBExample);
+        if(recordBCount == 0){
+            // 查询每日发现
+            ActiveDrawGoodsExample drawDaliyGoodsExample = new ActiveDrawGoodsExample();
+            drawDaliyGoodsExample.createCriteria().andPemIdEqualTo(activeDrawPem.getId()).andTypeEqualTo(ActiveDrawGoods.TYPE_DAILYFIND);
+            List<ActiveDrawGoods> drawDaliyGoodsList = activeDrawGoodsMapper.selectByExample(drawDaliyGoodsExample);
+            List daliyGoodsList = BeanMapper.getFieldList(drawDaliyGoodsList, "goodsId", List.class);
+            Long total = selGoodsupTotal(daliyGoodsList, userId, activeDrawPem.getStartTime());
+            if(total >= 3){
+                activeDrawRecord.setWard("B1");
+                activeDrawRecord.setId(null);
+                String drawCode = StringUtil.str10To37Str();
+                activeDrawRecord.setDrawCode(drawCode);
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_YES);
+                addActiveDrawRecord(activeDrawRecord);
+            }
+            activeDrawRecord.setDrawCode(null);
+            if(total >= 5){
+                activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
+                activeDrawRecord.setId(null);
+                activeDrawRecord.setWard("B2");
+                addActiveDrawRecord(activeDrawRecord);
+            }
         }
 
         List<ActiveDrawRecordUserVo> selDrawRecordList = selDrawRecordList(activeDrawPem.getId(), userId, null);

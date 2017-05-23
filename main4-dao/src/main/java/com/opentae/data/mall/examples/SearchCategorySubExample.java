@@ -639,5 +639,73 @@ public class SearchCategorySubExample implements SgExample{
             this.addCriterion("sort not between", value1, value2, "sort");
             return (SearchCategorySubExample.Criteria)this;
         }
+
+        public SearchCategorySubExample.Criteria andWebSiteIsNull() {
+            this.addCriterion("web_site is null");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteIsNotNull() {
+            this.addCriterion("web_site is not null");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteEqualTo(String value) {
+            this.addCriterion("web_site =", value, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteNotEqualTo(String value) {
+            this.addCriterion("web_site <>", value, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteGreaterThan(String value) {
+            this.addCriterion("web_site >", value, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+            this.addCriterion("web_site >=", value, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteLessThan(String value) {
+            this.addCriterion("web_site <", value, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+            this.addCriterion("web_site <=", value, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteLike(String value) {
+            this.addCriterion("web_site like", value, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteNotLike(String value) {
+            this.addCriterion("web_site not like", value, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }        public SearchCategorySubExample.Criteria andWebSiteIn(List<String> values) {
+            this.addCriterion("web_site in", values, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteNotIn(List<String> values) {
+            this.addCriterion("web_site not in", values, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteBetween(String value1, String value2) {
+            this.addCriterion("web_site between", value1, value2, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
+
+        public SearchCategorySubExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+            this.addCriterion("web_site not between", value1, value2, "webSite");
+            return (SearchCategorySubExample.Criteria)this;
+        }
     }
 }

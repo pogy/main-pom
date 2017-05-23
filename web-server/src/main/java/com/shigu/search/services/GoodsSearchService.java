@@ -112,7 +112,7 @@ public class GoodsSearchService {
             beforeUrl+="&pid="+bo.getPid();
             keys.add(new SearchKey(name,beforeUrl));
             if(bo.getCid()!=null){
-                String subcname=selNavName(categoryInSearchService.selSubCates(bo.getPid().toString(),SearchCategory.CATEGORY),
+                String subcname=selNavName(categoryInSearchService.selSubCates(bo.getPid().toString(),SearchCategory.CATEGORY,bo.getWebSite()),
                         bo.getCid().toString());
                 beforeUrl+="&cid="+bo.getCid();
                 keys.add(new SearchKey(subcname,beforeUrl));
@@ -162,72 +162,6 @@ public class GoodsSearchService {
             spreadService.createBySync(objFromCache);
         Collections.shuffle(list);
         return BeanMapper.mapList(list,TjGoods.class);
-    }
-
-    /**
-     * 清除红牛数据
-     */
-    public void clearReedBull(){
-        Cache cache=cacheManager.getCache("searchCatesCache");
-        cache.evict("3");
-    }
-
-    /**
-     * 查红牛活动的商品
-     * @param ids
-     * @return
-     */
-    public List<GoodsInSearch> selRedBull(String ids){
-
-        Cache cache=cacheManager.getCache("searchCatesCache");
-        List<GoodsInSearch> goodsSearch=cache.get("3",List.class);
-        if(goodsSearch!=null){
-            return rangeRedBull(goodsSearch,ids);
-        }
-        String[] idsarr=ids.split(",");
-        List<Long> allIds=new ArrayList<>();
-        for(String s:idsarr){
-            allIds.add(Long.valueOf(s));
-        }
-        ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
-        example.createCriteria().andGoodsIdIn(allIds);
-        example.setWebSite("hz");
-        List<ShiguGoodsTiny> tinys=shiguGoodsTinyMapper.selectByExample(example);
-        List<SearchItem> searches=new ArrayList<>();
-        for(ShiguGoodsTiny sgt:tinys){
-            SearchItem searchItem=new SearchItem();
-            searchItem.setItemId(sgt.getGoodsId());
-            searchItem.setPicUrl(sgt.getPicUrl());
-            searchItem.setPrice(sgt.getPiPriceString());
-            searchItem.setTitle(sgt.getTitle());
-            searchItem.setStoreId(sgt.getStoreId());
-            searchItem.setCreated(sgt.getCreated());
-            searches.add(searchItem);
-        }
-        ShiguPager<SearchItem> pager=new ShiguPager<>();
-        pager.setContent(searches);
-        List<GoodsInSearch> goods=goodsSelFromEsService.addShopInfoToGoods(pager,"hz").getContent();
-        cache.put("3",goods);
-        return rangeRedBull(goods,ids);
-    }
-
-    /**
-     * 红牛排序
-     * @param goods
-     * @param ids
-     * @return
-     */
-    public List<GoodsInSearch> rangeRedBull(List<GoodsInSearch> goods,String ids){
-        Map<String,GoodsInSearch> map=new HashMap<>();
-        for(GoodsInSearch g:goods){
-            map.put(g.getId(),g);
-        }
-        String[] idsarr=ids.split(",");
-        List<GoodsInSearch> results=new ArrayList<>();
-        for(String s:idsarr){
-            results.add(map.get(s));
-        }
-        return results;
     }
 
     /**

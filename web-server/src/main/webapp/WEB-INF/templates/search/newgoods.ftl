@@ -189,7 +189,7 @@ var webSite = '${webSite!}';
 <div class="headerV1">
     <div class="layout">
         <div class="logoLeft">
-            <a href="<#if webSite == 'jx'>http://jx.571xz.com<#else>${main_host!}</#if>">
+            <a href="http://${webSite!}.571xz.com">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
             </a>
             <em></em>
@@ -235,20 +235,22 @@ var webSite = '${webSite!}';
     <div class="layout navCon">
         <div class="navList">
             <ul>
+                <li class="first"><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
                 <#if webSite == 'jx'>
-                <li class="first"><a href="http://jx.571xz.com" target="_blank">首页</a></li>
+                    <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
+                <#elseif webSite == 'wa'>
+                    <li><a href="http://www.571xz.com/storelist.htm?webSite=wa">企业列表</a></li>
+                <#elseif webSite == 'cs'>
+                    <li><a href="http://jx.571xz.com/market.htm?mid=43">逛市场</a></li>
                 <#else>
-                <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
-                </#if>
-                <#if webSite != 'jx'>
                 <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
-                <#else>
-                <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
                 </#if>
                 <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite !="jx">
-                <li class="select"><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
+                <#if webSite !="jx" && webSite != 'wa'>
+                <li class="select"><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
+                <#if webSite == "hz">
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
+                </#if>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>
@@ -269,7 +271,7 @@ var webSite = '${webSite!}';
         <ul>
             <#list iconCateNav as cate>
             <li <#if cate.id?? && cate.id == query.cid>class="selected"</#if>>
-                <a href="?cid=${cate.id!}">
+                <a href="?cid=${cate.id!}&webSite=${webSite!}">
                     <i class="iconfont ${cate.name!}">&#xe${cate.icon!};</i>
                     <span>${cate.text!}</span>
                 </a>
@@ -283,7 +285,7 @@ var webSite = '${webSite!}';
         <ul>
             
             <#list styleCateNavs as cate>
-            <li><a href="?keyword=${cate.keyword!}<#if query.cid??>&cid=${query.cid!}</#if>" <#if query.keyword == cate.keyword>class="selected"</#if>>${cate.text!}</a></li>
+            <li><a href="?webSite=${webSite!}&keyword=${cate.keyword!}<#if query.cid??>&cid=${query.cid!}</#if>" <#if query.keyword == cate.keyword>class="selected"</#if>>${cate.text!}</a></li>
             </#list>
         </ul>
         <b class="show" jbtn="showHide">点击展开<i class="downRow"></i></b>

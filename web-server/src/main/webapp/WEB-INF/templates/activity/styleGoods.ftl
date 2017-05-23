@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/styleGoods.css?t=1495087669430" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/styleGoods.css?t=1495099805565" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/styleGoods.js?t=1495087669430"></script>
+    <script src="http://style.571xz.com/searchV5/js/styleGoods.js?t=1495099805565"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -231,7 +231,7 @@ var webSite = '${webSite!}';
 </script>
     </div>
 </div>
-<#assign text>{    "fields":[        {"name":'webSite', "value":"${query.webSite!}"},        {"name":'pid', "value":"${query.pid!}"},        {"name":'cid', "value":"${query.cid!}"},        {"name":'mid', "value":"${query.mid!}"},        {"name":'keyword', "value":"${query.keyword!}"},        {"name":'sort', "value":"${query.sort!}"},        {"name":'d', "value":"${query.d!}"},        {"name":'page', "value":${query.page!}},        {"name":'sp', "value":"${query.sp!}"},        {"name":'ep', "value":"${query.ep!}"}    ]}</#assign>
+<#assign text>{    "fields":[        {"name":'webSite', "value":"${query.webSite!}"},        {"name":'sid', "value":"${query.sid!}"},        {"name":'pid', "value":"${query.pid!}"},        {"name":'cid', "value":"${query.cid!}"},        {"name":'mid', "value":"${query.mid!}"},        {"name":'keyword', "value":"${query.keyword!}"},        {"name":'sort', "value":"${query.sort!}"},        {"name":'d', "value":"${query.d!}"},        {"name":'page', "value":${query.page!}},        {"name":'sp', "value":"${query.sp!}"},        {"name":'ep', "value":"${query.ep!}"}    ]}</#assign>
 <#assign $it=text?eval />
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -273,11 +273,11 @@ var webSite = '${webSite!}';
     <#list picCateNav.picCates as picCate>
     <div class="picCateItem<#if (query.sid && query.sid == picCate.id) || (!query.sid && cateIndex==0)> selected</#if>">
         <div class="cateBottom">
-            <a class="" href="${picCate.href!}" target="_blank"><img src="${picCate.imgsrc!}" alt="" /></a>
+            <a class="" target="_blank"><img src="${picCate.imgsrc!}" alt="" /></a>
         </div>
         <div class="cateMiddle">
         </div>
-        <a  class="cateTop" data-sid="${picCate.id!}"   href="${picCate.href!}" target="_blank">
+        <a  class="cateTop" data-sid="${picCate.id!}"   href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if picCate.id??>&sid=${picCate.id!}</#if><#if picCate.keyword??>&keyword=${picCate.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if>">
             <span class="cateTitle">${picCate.text!}</span>
             <span class="cateNum">共计商品${picCate.goodscount!}件</span>
         </a>
@@ -291,11 +291,11 @@ var webSite = '${webSite!}';
             
             
             <#list picCateNav.textCates as textCate>
-                <#if textCate_index lt 11>
-                <li  class="<#if query.sid?? && query.sid == textCate.id> selected</#if>"><a data-sid="${textCate.id!}" class="moreCateStyle" href="${textCate.href!}">${textCate.text!}</a></li>
+                <#if textCate_index lt 20>
+                <li  class="<#if query.sid?? && query.sid == textCate.id> selected</#if>"><a data-sid="${textCate.id!}" class="moreCateStyle" href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if textCate.id??>&sid=${textCate.id!}</#if><#if textCate.keyword??>&keyword=${textCate.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if>">${textCate.text!}</a></li>
                 </#if>
             </#list>
-                <li  class=""><a href="http://so.571xz.com/hzgoods.htm">更多</a></li>
+                
         </ul>
     </div>
 </div>
@@ -311,7 +311,7 @@ var webSite = '${webSite!}';
         </div>
         <div class="goodsCateItem classfiyItem">
             <#list textCateNav.cates as item>
-            <a href="${item.href!}"  class="<#if query.cid?? && query.cid == item.id>selected</#if>"target="_blank">${item.text!}</a>
+            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if item.id??>&cid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if><#if query.sid??>&sid=${query.sid!}</#if>"  class="<#if query.cid?? && query.cid == item.id>selected</#if>">${item.text!}</a>
             </#list>
         </div>
     </div>
@@ -327,7 +327,7 @@ var webSite = '${webSite!}';
         </div>
          <div class="shopCateItem classfiyItem">
             <#list textCateNav.markets as item>
-            <a href="${item.href!}" class="<#if query.mid?? && query.mid == item.id>selected</#if>" target="_blank">${item.text!}</a>
+            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.sid??>&sid=${query.sid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if item.id??>&mid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if>"  class="<#if query.mid?? && query.mid == item.id>selected</#if>" class="<#if query.mid?? && query.mid == item.id>selected</#if>">${item.text!}</a>
             </#list>
         </div>
     </div>
@@ -343,7 +343,7 @@ var webSite = '${webSite!}';
         </div>
          <div class="lastestStyleItem classfiyItem">
            <#list textCateNav.styles as item>
-            <a href="${item.href!}"  class="<#if query.sid?? && query.sid == item.id> selected</#if>" target="_blank">${item.text!}</a>
+            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if item.id??>&sid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if><#if query.cid??>&cid=${query.cid!}</#if>"  class="<#if query.sid?? && query.sid == item.id> selected</#if>">${item.text!}</a>
             </#list>
         </div>
     </div>
