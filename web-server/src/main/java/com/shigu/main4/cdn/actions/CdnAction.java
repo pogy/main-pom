@@ -477,7 +477,6 @@ public class CdnAction {
         itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
         itemShowVO.setDomain(shopBaseService.selDomain(cdnItem.getShopId()));
         itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
-        model.addAttribute("newGoodsList",shopForCdnService.searchItemOnsale(null,cdnItem.getShopId(),"time_down",1,5).getContent());
         model.addAttribute("vo",itemShowVO);
         model.addAttribute("bo",bo);
         model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
@@ -485,6 +484,11 @@ public class CdnAction {
         return "cdn/item";
     }
 
+    @RequestMapping("shopnew")
+    public String shopnew(Long id,Model model){
+        model.addAttribute("newGoodsList",shopForCdnService.searchItemOnsale(null,id,"time_down",1,5).getContent());
+        return "cdn/item_shopnew";
+    }
     /**
      * 收藏商品
      * @param bo
