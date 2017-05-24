@@ -37,6 +37,7 @@ import com.shigu.main4.vo.ShopBaseForCdn;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.search.bo.NewGoodsBO;
+import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.seller.services.ShopDesignService;
@@ -125,6 +126,9 @@ public class CdnAction {
 
     @Autowired
     ItemBrowerService itemBrowerService;
+
+    @Autowired
+    GoodsSelFromEsService goodsSelFromEsService;
 
     /**
      * 杭州首页动态页面
@@ -229,7 +233,7 @@ public class CdnAction {
         NewGoodsBO newGoodsBO = new NewGoodsBO();
         newGoodsBO.setWebSite("jx");
         newGoodsBO.setRows(15);
-        ShiguPager<GoodsInSearch> newGoodsPager = todayNewGoodsService.selGoodsNew(newGoodsBO);
+        ShiguPager<GoodsInSearch> newGoodsPager = todayNewGoodsService.selGoodsNewForCid(newGoodsBO);
 
         List<IndexGoodsVo> indexNewGoodsVoList = new ArrayList<IndexGoodsVo>();
         if(newGoodsPager != null && newGoodsPager.getContent() != null){
