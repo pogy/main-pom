@@ -724,6 +724,12 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         recordExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardEqualTo("A4");
         int recordCount = activeDrawRecordMapper.countByExample(recordExample);
         ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
+        activeDrawRecord.setUserId(userId);
+        activeDrawRecord.setPemId(activeDrawPem.getId());
+        activeDrawRecord.setEnabled(false);
+        activeDrawRecord.setReceivesYes(false);
+        activeDrawRecord.setCreateTime(new Date());
+        activeDrawRecord.setModifyTime(new Date());
         if(recordCount == 0){
             // 查询发现好货活动的数据
             ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
@@ -731,13 +737,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
             List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
             Long total = selGoodsupTotal(goodsList, userId, activeDrawPem.getStartTime());
-            activeDrawRecord.setUserId(userId);
-            activeDrawRecord.setPemId(activeDrawPem.getId());
             activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-            activeDrawRecord.setEnabled(false);
-            activeDrawRecord.setReceivesYes(false);
-            activeDrawRecord.setCreateTime(new Date());
-            activeDrawRecord.setModifyTime(new Date());
             if(total >= 3){
                 activeDrawRecord.setWard("A1");
                 String drawCode = StringUtil.str10To37Str();
