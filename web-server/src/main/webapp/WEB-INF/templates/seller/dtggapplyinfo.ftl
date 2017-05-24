@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/dtggapplyinfo.css?t=1494837957265" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/dtggapplyinfo.css?t=1495620272867" rel="stylesheet">
     
   </head>
 <body>
@@ -128,7 +128,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -235,7 +238,7 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a class="selected dtgg"  href="${main_host!}seller/dtggapply.htm?id=1001">广告派位</a></li> 
+            <li><a class="selected dtgg"  href="${main_host!}seller/dtggapply.htm?id=1001">免费广告派位</a></li> 
             <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li> 
             <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
         </ul> 
@@ -304,7 +307,7 @@ var typeId = '${typeId!}'; //广告id
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/dtggapplyinfo.js?t=1494837957265"></script>
+<script src="http://style.571xz.com/gys4/js/dtggapplyinfo.js?t=1495620272867"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

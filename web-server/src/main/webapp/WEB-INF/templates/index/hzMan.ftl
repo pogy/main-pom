@@ -7,7 +7,7 @@
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1495518295473" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1495619263234" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
 <script>/*============ indexV4/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1495518295473"></script>
+    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1495619263234"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -160,7 +160,7 @@
                 </#if>
                 <li class="noDown">
                     <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
-                    
+
                 </li>
                 <li>
                     <div class="cnBox">
@@ -312,7 +312,6 @@ var webSite = '${webSite!}';
                             <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=12">新杭派</a></li>
                             <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=8">置地国际</a></li>
                             <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=10">之江服饰</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=17">大码男装</a></li>
                         </ul>
                     </div>
                 </div>
@@ -378,7 +377,6 @@ var webSite = '${webSite!}';
                                 <li><a href="http://${webSite!}.571xz.com/market.htm?mid=12" target="_blank">新杭派</a></li>
                                 <li><a href="http://${webSite!}.571xz.com/market.htm?mid=8" target="_blank">置地国际</a></li>
                                 <li><a href="http://${webSite!}.571xz.com/market.htm?mid=10" target="_blank">之江服饰</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=17" target="_blank">大码男装</a></li>
                                 <li><a href="http://${webSite!}.571xz.com/market.htm?mid=18" target="_blank">男鞋基地</a></li>
                                 <li><a href="http://${webSite!}.571xz.com/market.htm?mid=20" target="_blank">石狮工厂店</a></li>
                                 <li><a href="http://${webSite!}.571xz.com/market.htm?mid=16" target="_blank">原创男装</a></li>
