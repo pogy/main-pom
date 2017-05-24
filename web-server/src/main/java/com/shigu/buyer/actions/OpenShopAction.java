@@ -12,11 +12,14 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.storeservices.ShopRegistService;
+import com.shigu.main4.ucenter.services.UserBaseService;
+import com.shigu.main4.ucenter.vo.OuterUser;
 import com.shigu.main4.vo.FloorForRegist;
 import com.shigu.main4.vo.MarketForRegist;
 import com.shigu.main4.vo.ShopRegister;
 import com.shigu.main4.vo.SiteForRegist;
 import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
@@ -53,6 +56,9 @@ public class OpenShopAction {
 
     @Autowired
     XzSdkClient xzSdkClient;
+
+    @Autowired
+    UserBaseService userBaseService;
     /**
      * 入驻页面
      * @return
@@ -64,6 +70,13 @@ public class OpenShopAction {
         if(currentUser.hasRole(RoleEnum.STORE.getValue())){
 //            throw new Main4Exception("本账号下已经有");
             return "redirect:/seller/index.htm";
+        }
+        PersonalSession auth = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        List<OuterUser> outerUsers = userBaseService.selOuterUsers(auth.getUserId());
+        for (OuterUser user : outerUsers) {
+            if (user.getLoginFromType() == LoginFromType.TAOBAO) {
+                request.setAttribute("tbNick", user.getOuterNick());
+            }
         }
         request.setAttribute("mainbusList",xzSdkClient.getXzMainBus().split(","));
         return "ruzhu/ruzhu";
@@ -146,7 +159,8 @@ public class OpenShopAction {
         shopRegister.setTelephone(bo.getTel());
         shopRegister.setWebSite(bo.getCityId());
         shopRegister.setImAliww(bo.getAliWw());
-        shopRegister.setCanExamine(bo.getHasTaobaoStore()==0);
+        shopRegister.setCanExamine(true);
+        shopRegister.setTbNick(bo.getTbNick());
         Long shopId;
         try {
             shopId=shopRegistService.registShop(shopRegister);

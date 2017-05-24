@@ -271,7 +271,7 @@ var webSite = '${webSite!}';
           </ul>
         </div>
     </div>
-     
+
     <div class="awardUser layout">
         <h3>获奖名单<span class="abortDate">（截止xx月xx日）</span>:</h3>
         <div class="userName">

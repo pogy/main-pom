@@ -27,8 +27,14 @@ public class SubmitRuzhuBO implements Serializable{
     /**
      * 是否有淘宝店,0没有   1有
      */
-    @NotNull(message = "请选择是否有淘宝店")
-    private Integer hasTaobaoStore;
+//    @NotNull(message = "请选择是否有淘宝店")
+//    private Integer hasTaobaoStore;
+    /**
+     * 淘宝昵称
+     */
+    @NotEmpty(message = "请先绑定开店的淘宝账号")
+    @SafeHtml(message = "请求非法")
+    private String tbNick;
     /**
      * 手机号
      */
@@ -98,12 +104,12 @@ public class SubmitRuzhuBO implements Serializable{
         this.storeNum = storeNum;
     }
 
-    public Integer getHasTaobaoStore() {
-        return hasTaobaoStore;
+    public String getTbNick() {
+        return tbNick;
     }
 
-    public void setHasTaobaoStore(Integer hasTaobaoStore) {
-        this.hasTaobaoStore = hasTaobaoStore;
+    public void setTbNick(String tbNick) {
+        this.tbNick = tbNick;
     }
 
     public String getTel() {
