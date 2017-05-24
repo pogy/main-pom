@@ -130,6 +130,7 @@ ProductVO --o SkuVO
 
 Order *-- SubOrder
 OrderVO *-- SubOrderVO
+OrderVO --o ServiceVO
 
 OrderVO --o SenderVO
 OrderVO --o PackageVO
