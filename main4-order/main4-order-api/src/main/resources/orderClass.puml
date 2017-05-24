@@ -44,7 +44,8 @@ class OrderVO{
 -List<Long> payIds;
 -Long refundFee;//已退金额
 -List<packageVO> packages;//包材
--List<LogisticsVO> logistics;//
+-List<LogisticsVO> logistics;//物流
+-List<SenderVO> sender;//发件单位
 }
 
 class SubOrderVO{
@@ -112,12 +113,24 @@ class LogisticsVO{
 -Long companyId;//快递公司ID
 }
 
-class packageVO{
+class PackageVO{
 MetarialType metarial;
 Integer size;//尺寸
 Long price;//价格
 }
 
+Cart *-- Product
+Product <|-- ProductVO
+ProductVO --o SkuVO
+
+Order *-- SubOrder
+OrderVO *-- SubOrderVO
+
+OrderVO --o SenderVO
+OrderVO --o PackageVO
+OrderVO --o LogisticsVO
+
+Order --o PayApplyVO
 
 
 @enduml
