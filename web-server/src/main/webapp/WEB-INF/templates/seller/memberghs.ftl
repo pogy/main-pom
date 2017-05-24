@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/memberghs.css?t=1495602320918" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/memberghs.css?t=1495620274989" rel="stylesheet">
     
   </head>
 <body>
@@ -238,7 +238,7 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >广告派位</a></li> 
+            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费广告派位</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
             <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
         </ul> 
@@ -361,7 +361,7 @@ var webSite = '${webSite!}';
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys4/temp/echarts.js"></script>
         <script src="http://style.571xz.com/gys4/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/gys4/js/memberghs.js?t=1495602320918"></script>
+<script src="http://style.571xz.com/gys4/js/memberghs.js?t=1495620274989"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
