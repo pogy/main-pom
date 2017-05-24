@@ -164,10 +164,10 @@ public class OpenShopAction {
         Long applyId;
         try {
             applyId=shopRegistService.registShop(shopRegister);
+            shopExamineTypeService.examineInfoComplement(applyId);
         } catch (ShopRegistException e) {
             throw new JsonErrException(e.getMessage());
         }
-        shopExamineTypeService.examineInfoComplement(applyId);
         return JsonResponseUtil.success().element("userCode",applyId);
     }
 

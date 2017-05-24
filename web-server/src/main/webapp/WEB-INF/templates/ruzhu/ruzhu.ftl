@@ -221,7 +221,7 @@
             <div class="accountItem">
                 <div class="label"><span class="red">*</span> 淘宝绑定：</div>
                 <div class="inner">
-                    <label><#if tbNick ??>${tbNick}<#else><a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1&backUrl=http%3A%2F%2Fwww.571xz.com%2Fruzhu.htm" target="_blank" class="red">立即绑定</a></#if></label>
+                    <label><#if tbNick ??>${tbNick}<#else>您还未绑定淘宝,<a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1&backUrl=http%3A%2F%2Fwww.571xz.com%2Fruzhu.htm" target="_blank" class="red">立即绑定</a></#if></label>
                     <input name="tbNick" type="hidden" value="${tbNick!}">
                 </div>
             </div>

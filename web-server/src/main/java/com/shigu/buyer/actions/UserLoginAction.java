@@ -3,6 +3,7 @@ package com.shigu.buyer.actions;
 import com.openJar.commons.MD5Attestation;
 import com.opentae.auth.utils.LoginLinkUtil;
 import com.shigu.buyer.bo.*;
+import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.vo.LoginMsgVO;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
@@ -31,6 +32,7 @@ import com.shigu.tools.RedomUtil;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -81,6 +83,9 @@ public class UserLoginAction {
 
     @Autowired
     SpreadService spreadService;
+
+    @Autowired
+    MemberSimpleService memberSimpleService;
 
     String ftlDir="buyer";
     /**
@@ -260,7 +265,12 @@ public class UserLoginAction {
             token.setSubKey(bo.getKey());
             try {
                 currentUser.login(token);
-                currentUser.hasRole(RoleEnum.STORE.getValue());
+                if(currentUser.hasRole(RoleEnum.STORE.getValue())&&loginFromType==LoginFromType.TAOBAO){//有店铺
+                    PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+                    if(StringUtils.isEmpty(ps.getLogshop().getTbNick())){//需要绑定一下淘宝到店
+                        memberSimpleService.updateShopNick(ps.getLogshop().getShopId(),usernamezhong);
+                    }
+                }
                 //得到回调用地址
                 String backUrl= (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
                 session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
