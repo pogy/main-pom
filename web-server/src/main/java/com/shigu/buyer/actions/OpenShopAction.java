@@ -161,13 +161,14 @@ public class OpenShopAction {
         shopRegister.setImAliww(bo.getAliWw());
         shopRegister.setCanExamine(true);
         shopRegister.setTbNick(bo.getTbNick());
-        Long shopId;
+        Long applyId;
         try {
-            shopId=shopRegistService.registShop(shopRegister);
+            applyId=shopRegistService.registShop(shopRegister);
         } catch (ShopRegistException e) {
             throw new JsonErrException(e.getMessage());
         }
-        return JsonResponseUtil.success().element("userCode",shopId);
+        shopExamineTypeService.examineInfoComplement(applyId);
+        return JsonResponseUtil.success().element("userCode",applyId);
     }
 
     /**
