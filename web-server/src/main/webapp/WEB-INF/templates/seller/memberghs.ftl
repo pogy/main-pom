@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/memberghs.css?t=1495083317865" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/memberghs.css?t=1495602320918" rel="stylesheet">
     
   </head>
 <body>
@@ -128,7 +128,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -358,7 +361,7 @@ var webSite = '${webSite!}';
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys4/temp/echarts.js"></script>
         <script src="http://style.571xz.com/gys4/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/gys4/js/memberghs.js?t=1495083317865"></script>
+<script src="http://style.571xz.com/gys4/js/memberghs.js?t=1495602320918"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
