@@ -293,6 +293,14 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                 }
                 break;
             }
+            //查出用户名下的店铺非淘宝店铺
+            shopExample.clear();
+            shopExample.createCriteria().andTbNickIsNull().andShopStatusEqualTo(0).andUserIdEqualTo(userId);
+            List<ShiguShop> untbShops=shiguShopMapper.selectByExample(shopExample);
+            for(ShiguShop shop:untbShops){
+                shop.setTbNick(tempUser.getSubUserName());
+                shiguShopMapper.updateByPrimaryKeySelective(shop);
+            }
         }
         return true;
     }
