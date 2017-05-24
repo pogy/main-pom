@@ -45,7 +45,8 @@ class OrderVO{
 -Long refundFee;//已退金额
 -List<packageVO> packages;//包材
 -List<LogisticsVO> logistics;//物流
--List<SenderVO> sender;//发件单位
+-SenderVO sender;//发件单位
+-List<ServiceVO> services;//服务信息
 }
 
 class SubOrderVO{
@@ -119,6 +120,10 @@ Integer size;//尺寸
 Long price;//价格
 }
 
+class ServiceVO{
+
+}
+
 Cart *-- Product
 Product <|-- ProductVO
 ProductVO --o SkuVO
@@ -131,6 +136,8 @@ OrderVO --o PackageVO
 OrderVO --o LogisticsVO
 
 Order --o PayApplyVO
+
+SenderVO --> Sender
 
 
 @enduml
