@@ -115,13 +115,15 @@ class LogisticsVO{
 }
 
 class PackageVO{
-MetarialType metarial;
-Integer size;//尺寸
-Long price;//价格
+-MetarialType metarial;
+-Integer size;//尺寸
+-Long price;//价格
 }
 
 class ServiceVO{
-
+-Long fee;//费用
+-String text;//服务描述
+-Integer flag;//服务标识
 }
 
 Cart *-- Product
