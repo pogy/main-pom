@@ -721,7 +721,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         }
 
         ActiveDrawRecordExample recordExample = new ActiveDrawRecordExample();
-        recordExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardNotEqualTo("A4");
+        recordExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardEqualTo("A4");
         int recordCount = activeDrawRecordMapper.countByExample(recordExample);
         ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
         if(recordCount == 0){
@@ -767,7 +767,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         }
 
         ActiveDrawRecordExample recordBExample = new ActiveDrawRecordExample();
-        recordBExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardNotEqualTo("B2");
+        recordBExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardEqualTo("B2");
         int recordBCount = activeDrawRecordMapper.countByExample(recordBExample);
         if(recordBCount == 0){
             // 查询每日发现
