@@ -32,8 +32,6 @@ public class SubmitRuzhuBO implements Serializable{
     /**
      * 淘宝昵称
      */
-    @NotEmpty(message = "请先绑定开店的淘宝账号")
-    @SafeHtml(message = "请求非法")
     private String tbNick;
     /**
      * 手机号
