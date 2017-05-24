@@ -12,6 +12,8 @@ interface Order{
 PayApplyVO payApply(PayType type);//支付申请
 Long pay(Long applyId,Long money);//付款确认
 
+PayApplyVO repayAppy(PayType type,List<SubOrderVO> orders);
+
 LogisticsVO selLogistics();//查询物流单号
 void sended(LogisticsVO logistics);//发货完成
 
@@ -41,6 +43,8 @@ class OrderVO{
 -Long totalFee;
 -List<Long> payIds;
 -Long refundFee;//已退金额
+-List<packageVO> packages;//包材
+-List<LogisticsVO> logistics;//
 }
 
 class SubOrderVO{
@@ -53,7 +57,7 @@ class SubOrderVO{
 }
 
 enum ProductType{
-XZ //星座商品
+XZ_ITEM //星座商品
 
 }
 
@@ -69,6 +73,11 @@ WAIT_SELLER_SEND_GOODS //等待卖家发货
 TRADE_FINISHED  //交易完成
 TRADE_CLOSED  //付款以后用户退款成功，交易自动关闭
 
+}
+
+enum MetarialType{
+PLASTIC  //塑料
+CARTON  //纸盒
 }
 
 class ProductVO{
@@ -92,8 +101,9 @@ class PayApplyVO{
 }
 
 class SenderVO{
--Long senderId
--String webSite
+-Long senderId;//发件单位ID
+-String webSite;//分站
+-String topic;//主题
 }
 
 class LogisticsVO{
@@ -103,7 +113,11 @@ class LogisticsVO{
 }
 
 class packageVO{
-
+MetarialType metarial;
+Integer size;//尺寸
+Long price;//价格
 }
+
+
 
 @enduml
