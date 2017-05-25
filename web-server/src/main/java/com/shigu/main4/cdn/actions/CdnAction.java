@@ -51,9 +51,11 @@ import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
 import com.shigu.tools.HtmlImgsLazyLoad;
+import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
 import freemarker.template.TemplateException;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -443,6 +445,20 @@ public class CdnAction {
         return shop(bo,null, model);
         //拼baseUrl
     }
+
+    /**
+     * 商品点击量
+     * @param id
+     * @return
+     */
+    @RequestMapping("itemclicks")
+    @ResponseBody
+    public JSONObject itemclicks(Long id){
+        if(id==null){
+            return JsonResponseUtil.success().element("number",-1);
+        }
+        return JsonResponseUtil.success().element("number",itemBrowerService.addUnrealBrower(id,1).getNumber());
+    }
     /**
      * 商品页面
      * @param bo
@@ -471,7 +487,6 @@ public class CdnAction {
                     .replace("</script>",""));
         itemShowVO.setCdnItem(cdnItem);
 //        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
-        itemShowVO.setClicks(itemBrowerService.addUnrealBrower(id,1).getNumber());
         itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
         Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
         starNum=starNum==null?0:    starNum;
