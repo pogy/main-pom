@@ -462,7 +462,7 @@ ${navCon}
                             <span style="
     margin-left: 10px;
     line-height: 26px;
-" id="imclicks"></span>
+" id="imclicks"> - 次浏览</span>
                     </td>
                   </tr>
                    <#if vo.onsale == true>
