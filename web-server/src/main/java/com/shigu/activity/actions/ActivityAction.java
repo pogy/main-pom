@@ -1,6 +1,7 @@
 package com.shigu.activity.actions;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.shigu.activity.service.ActiveDrawServiceImpl;
 import com.shigu.activity.vo.*;
@@ -11,6 +12,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.storeservices.ShopForCdnService;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -39,6 +41,9 @@ public class ActivityAction {
 
     @Autowired
     private ShopForCdnService shopForCdnService;
+
+    @Autowired
+    private RedisIO redisIO;
 
     /**
      * 发现好货
@@ -174,18 +179,39 @@ public class ActivityAction {
         ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem();
         // 发现好店
         List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId());
+        packShopItems(faShopVoList, drawPem.getId());
         ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
         drawStyleVo.setShopList(faShopVoList);
-        for (ActiveDrawShopVo activeDrawShopVo : faShopVoList) {
-            activeDrawShopVo.setItems(new ArrayList<ShopItemVo>());
-            for (ItemShowBlock itemShowBlock :
-                    shopForCdnService.searchItemInstock(null, null, activeDrawShopVo.getShopId(), 1, 3).getContent()) {
-                activeDrawShopVo.getItems().add(new ShopItemVo(itemShowBlock.getItemId(), itemShowBlock.getImgUrl(), itemShowBlock.getTitle()));
-            }
-        }
         model.addAttribute("styleItem", drawStyleVo);
         model.addAttribute("webSite","hz");
         return "activity/findStore";
+    }
+
+    private void packShopItems(List<ActiveDrawShopVo> faShopVoList, Long pemId) {
+        String key = "find_store_" + pemId;
+        Map<Integer, List<ShopItemVo>> itemVoMap = redisIO.get(key, Map.class);
+        if (itemVoMap == null) {
+            itemVoMap = new HashMap<>();
+            for (ActiveDrawShopVo shopVo : faShopVoList) {
+                List<ShopItemVo> itemVos = new ArrayList<>();
+                itemVoMap.put(shopVo.getShopId().intValue(), itemVos);
+                for (ItemShowBlock itemShowBlock :
+                        shopForCdnService.searchItemOnsale(
+                                null,
+                                shopVo.getShopId(),
+                                "time_down",
+                                1,
+                                3
+                        ).getContent()) {
+                    itemVos.add(new ShopItemVo(itemShowBlock.getItemId(), itemShowBlock.getImgUrl(), itemShowBlock.getTitle()));
+                }
+            }
+            redisIO.putTemp(key, itemVoMap, 24 * 3600);
+        }
+
+        for (ActiveDrawShopVo activeDrawShopVo : faShopVoList) {
+            activeDrawShopVo.setItems(itemVoMap.get(activeDrawShopVo.getShopId().intValue()));
+        }
     }
 
 
