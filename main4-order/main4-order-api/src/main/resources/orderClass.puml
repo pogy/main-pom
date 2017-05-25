@@ -82,6 +82,10 @@ PLASTIC  //塑料
 CARTON  //纸盒
 }
 
+abstract class OrderAble{
+
+}
+
 class ProductVO{
 -Long productId;
 -Long shopId;
@@ -139,6 +143,7 @@ OrderVO --o PackageVO
 OrderVO --o LogisticsVO
 
 Order --o PayApplyVO
+Order <|-- OrderAble
 
 SenderVO --> Sender
 
