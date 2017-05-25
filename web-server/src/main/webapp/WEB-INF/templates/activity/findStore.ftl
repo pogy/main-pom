@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findStore.css?t=1495702821068" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findStore.css?t=1495707442841" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findStore.js?t=1495702821068"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findStore.js?t=1495707442841"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -269,7 +269,7 @@ var webSite = '${webSite!}';
             <#list styleItem.shopList as shopItem>
             <div class="storeItem">
                 <div class="storeInfo">
-                    <h3 class="text-size16 text-center" title="${shopItem.marketName!} ${shopItem.shopNum!}">${shopItem.marketName!}<span class="text-size20 pr">${shopItem.shopNum!}</span></h3>
+                    <h3 class="text-size16 text-center" title="${shopItem.marketName!} ${shopItem.shopNum!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${shopItem.shopId!}" target="_blank">${shopItem.marketName!}<span class="text-size20 pr">${shopItem.shopNum!}</span></a></h3>
                     <p class="text-center text-999">${shopItem.uText!}</p>
                     <div class="linkBox">
                         <a href="javascript:;" xzclick='collectShop' data-shopid='${shopItem.shopId!}'>关注</a>
