@@ -13,19 +13,30 @@ interface Order{
 PayApplyVO payApply(PayType type);//支付申请
 Long pay(Long applyId,Long money);//付款确认
 
-PayApplyVO repayAppy(PayType type,List<SubOrderVO> orders);
+void refunds(Long money);//全单退订
 
+}
+
+interface ItemOrder{
 LogisticsVO selLogistics();//查询物流单号
 void sended(LogisticsVO logistics);//发货完成
 
-void refunds();//全单退订
-void refundLogistics();//退邮费
-void refundGift();//退礼品费
-void refundPackage();//退包材
-void refundService();//退服务
+PayApplyVO repayAppy(PayType type,List<SubOrderVO> orders);
+void refundLogistics(Long money);//退邮费
+void refundGift(Long money);//退礼品费
+void refundPackage(Long money);//退包材
+void refundService(Long money);//退服务
 }
+
+interface PayOrder{
+
+}
+
 interface SubOrder{
-void refund();//退货
+void refund(Long money);//退货
+}
+
+interface SubItemOrder{
 
 }
 interface Product{
@@ -40,10 +51,13 @@ void sendOrder(Order order);//发放订单给代发
 class OrderVO{
 -Long orderId;
 -OrderType type;
--OrderStatus status;
 -Long totalFee;
 -List<Long> payIds;
 -Long refundFee;//已退金额
+}
+
+class ItemOrderVO{
+-OrderStatus status;
 -List<packageVO> packages;//包材
 -List<LogisticsVO> logistics;//物流
 -SenderVO sender;//发件单位
@@ -53,10 +67,13 @@ class OrderVO{
 class SubOrderVO{
 -Long subOrderId;
 -Long orderId;
+-Long refundFee;//已退金额
+}
+
+class SubItemOrderVO{
 -ProductVO product;
 -Integer number;
 -OrderStatus status;
--Long refundFee;//已退金额
 }
 
 enum ProductType{
@@ -132,13 +149,20 @@ Cart *-- Product
 Product <|-- ProductVO
 ProductVO --o SkuVO
 
-Order *-- SubOrder
-OrderVO *-- SubOrderVO
-OrderVO --o ServiceVO
+SubOrder <|-- SubItemOrder
+Order <|-- ItemOrder
+Order <|-- PayOrder
+ItemOrder *-- SubItemOrder
 
-OrderVO --o SenderVO
-OrderVO --o PackageVO
-OrderVO --o LogisticsVO
+OrderVO <|-- ItemOrderVO
+SubOrderVO <|-- SubItemOrderVO
+
+ItemOrderVO *-- SubItemOrderVO
+ItemOrderVO --o ServiceVO
+
+ItemOrderVO --o SenderVO
+ItemOrderVO --o PackageVO
+ItemOrderVO --o LogisticsVO
 
 Order --o PayApplyVO
 
