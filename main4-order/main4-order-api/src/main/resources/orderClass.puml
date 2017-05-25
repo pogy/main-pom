@@ -28,7 +28,7 @@ void refundPackage(Long money);//退包材
 void refundService(Long money);//退服务
 }
 
-interface PayOrder{
+interface RechangeOrder{
 
 }
 
@@ -151,7 +151,7 @@ ProductVO --o SkuVO
 
 SubOrder <|-- SubItemOrder
 Order <|-- ItemOrder
-Order <|-- PayOrder
+Order <|-- RechangeOrder
 ItemOrder *-- SubItemOrder
 
 OrderVO <|-- ItemOrderVO
