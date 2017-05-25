@@ -471,7 +471,6 @@ public class CdnAction {
                     .replace("</script>",""));
         itemShowVO.setCdnItem(cdnItem);
 //        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
-        if(bo.getWho()!=null&&bo.getWho().equals("dd"))
         itemShowVO.setClicks(itemBrowerService.addUnrealBrower(id,1).getNumber());
         itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
         Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
