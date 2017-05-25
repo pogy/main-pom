@@ -2,6 +2,7 @@ package com.shigu.main4.spread.vo.active.draw;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -39,6 +40,8 @@ public class ActiveDrawShopVo implements Serializable {
     private String uText;
 
     private String dText;
+
+    private List<ShopItemVo> items;
 
     public Long getId() {
         return id;
@@ -118,5 +121,13 @@ public class ActiveDrawShopVo implements Serializable {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public List<ShopItemVo> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ShopItemVo> items) {
+        this.items = items;
     }
 }

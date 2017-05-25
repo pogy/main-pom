@@ -7,11 +7,11 @@ import com.shigu.activity.vo.*;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
+import com.shigu.main4.spread.vo.active.draw.*;
+import com.shigu.main4.storeservices.ShopForCdnService;
+import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.StringUtil;
@@ -36,6 +36,9 @@ public class ActivityAction {
 
     @Autowired
     private ActiveDrawServiceImpl activeDrawServiceImpl;
+
+    @Autowired
+    private ShopForCdnService shopForCdnService;
 
     /**
      * 发现好货
@@ -163,6 +166,26 @@ public class ActivityAction {
         model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
         model.addAttribute("webSite", "hz");
         return "activity/findGoods";
+    }
+
+    @RequestMapping("activity/findStore")
+    public String findShop(Model model) {
+        // 当前期次
+        ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem();
+        // 发现好店
+        List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId());
+        ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
+        drawStyleVo.setShopList(faShopVoList);
+        for (ActiveDrawShopVo activeDrawShopVo : faShopVoList) {
+            activeDrawShopVo.setItems(new ArrayList<ShopItemVo>());
+            for (ItemShowBlock itemShowBlock :
+                    shopForCdnService.searchItemInstock(null, null, activeDrawShopVo.getShopId(), 1, 3).getContent()) {
+                activeDrawShopVo.getItems().add(new ShopItemVo(itemShowBlock.getItemId(), itemShowBlock.getImgUrl(), itemShowBlock.getTitle()));
+            }
+        }
+        model.addAttribute("styleItem", drawStyleVo);
+        model.addAttribute("webSite","hz");
+        return "activity/findStore";
     }
 
 
