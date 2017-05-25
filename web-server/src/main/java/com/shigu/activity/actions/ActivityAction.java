@@ -7,6 +7,7 @@ import com.shigu.activity.vo.*;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
@@ -24,10 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 活动
@@ -44,7 +42,8 @@ public class ActivityAction {
      * @param model
      * @return
      */
-    @RequestMapping(value = "activity/redbull" , method = RequestMethod.GET)
+    //@RequestMapping(value = "activity/redbull" , method = RequestMethod.GET)
+    @Deprecated
     public String findGodos(HttpSession session, Model model){
         // 当前期次
         ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem(null);
@@ -102,6 +101,70 @@ public class ActivityAction {
         model.addAttribute("webSite","hz");
         return "activity/styleHuodong";
     }
+
+    @RequestMapping("activity/redbull")
+    public String findGoods(HttpSession session, Model model) {
+
+        // 当前期次
+        List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
+        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
+        model.addAttribute("allInfo", drawPem.getInfo());
+        // 发现好货商品
+        List<ActiveDrawGoodsVo> faGoodsVoList = activeDrawServiceImpl.selGoodsList(
+                drawPem.getId(),
+                ActiveDrawGoods.TYPE_FAGOODS,
+                20,
+                false
+        );
+        ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
+        drawStyleVo.setGoodsList(faGoodsVoList);
+        model.addAttribute("styleItem", drawStyleVo);
+
+        // 每日发现商品
+        List<ActiveDrawGoodsVo> daliyGoodsVoList = activeDrawServiceImpl.selGoodsList(
+                drawPem.getId(),
+                ActiveDrawGoods.TYPE_DAILYFIND,
+                60,
+                false
+        );
+
+        Collections.shuffle(daliyGoodsVoList);
+        model.addAttribute("likeGoodsList", daliyGoodsVoList);
+        // 时间处理
+        model.addAttribute("nowTimeValue", System.currentTimeMillis());
+        // 本期的结束时间，如果没有下一期，取当前期开始时间加7天，有则取下期开始时间
+        long endTime;
+        if (activeDrawPemVos.size() == 2) {
+            endTime = activeDrawPemVos.get(1).getStartTime().getTime();
+        } else {
+            endTime = DateUtil.addDay(drawPem.getStartTime(), 7).getTime();
+        }
+        model.addAttribute("countdownValue", endTime);
+
+        // 中奖用户列表
+        model.addAttribute("awardList", JSON.toJSONString(activeDrawServiceImpl.selDrawRecordList(null, null, "ben")));
+        // 用户上一期获奖数据
+        List<ActiveDrawRecordUserVo> userVoList =  Collections.emptyList();
+        Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(object != null){
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
+            if(drawLastPem != null){
+                // 用户上一期获奖数据
+                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(),ps.getUserId(), null);
+                for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
+                    ActiveDrawRecordUserVo anUserVoList = iterator.next();
+                    if (anUserVoList.getDrawStatus() != 3) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+        model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
+        model.addAttribute("webSite", "hz");
+        return "activity/findGoods";
+    }
+
 
     /**
      * 用户中奖记录
