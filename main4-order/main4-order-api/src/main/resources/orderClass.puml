@@ -6,6 +6,7 @@ WX   //微信
 }
 interface Cart{
 void addProduct(Product pro);
+void rmProduct(Product pro);
 Long modifyProductNumber(Long pid,Integer number);
 }
 interface Order{
