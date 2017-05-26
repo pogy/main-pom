@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/storeGoodsListinit.css?t=1494492266381" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/storeGoodsListinit.css?t=1495620274334" rel="stylesheet">
     
   </head>
 <body>
@@ -128,7 +128,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -235,7 +238,7 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >广告派位</a></li> 
+            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费广告派位</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
             <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
         </ul> 
@@ -280,8 +283,8 @@ var webSite = '${webSite!}';
                 <li class="posttype">${item.type!}</li>
                 <li class="downshelftime"><#if item.delistTime??>${item.delistTime!}<#else>--</#if></li>
                 <li class="control">
-                    <#if item.type != "淘宝同步">
-                        <button class="sjgoods">上架</button>
+                    <#if item.type != '淘宝同步'>
+                    <button class="sjgoods">上架</button>
                     </#if>
                     <button class="scgoods">删除</button>
                 </li>
@@ -330,7 +333,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/storeGoodsListinit.js?t=1494492266381"></script>
+<script src="http://style.571xz.com/gys4/js/storeGoodsListinit.js?t=1495620274334"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

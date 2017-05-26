@@ -459,12 +459,10 @@ ${navCon}
                             <input type="text" id="Num" value="1">
                             <a href="javascript:;" id="Add">+</a>
                         </div>
-                        <#if bo.who=="dd">
                             <span style="
     margin-left: 10px;
     line-height: 26px;
-">${vo.clicks}次浏览</span>
-                        </#if>
+" id="imclicks"> - 次浏览</span>
                     </td>
                   </tr>
                    <#if vo.onsale == true>
@@ -529,7 +527,11 @@ if(gysShopId && gysShopId != ""){
 }else{
     var isGys = false;
 }
-
+$.post(
+        "itemclicks.json",{"id":item_id},function (data) {
+            $('#imclicks').html(data.number+"次浏览");
+        }
+);
 /*============ shopItemCopy/item#goodsinfo END ============*/
 
 
@@ -794,22 +796,11 @@ var goodsId = '${vo.itemId!}';
         </div>
     </div>
 </div>
-<#if newGoodsList??>
-<div class="newGoods layout">
-    <h3>店铺新品</h3>
-    <#list newGoodsList as goods>
-    <div class="goodsitem">
-        <a class="imgbox" href="item.htm?id=${goods.itemId!}" target="_blank">
-            <img class="lazyload img" src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${goods.imgUrl!}_240x240.jpg">
-        </a> 
-        <p class="p1">
-            <span class="pricebox">&yen; ${goods.price!}</span>
-        </p>
-        <p class="title"><a href="item.htm?id=${goods.itemId!}" target="_blank">${goods.title!}</a></p>
-    </div>
-    </#list>
+<div id="item_shopnew">
 </div>
-</#if>
+<script>
+    $.post("shopnew.htm",{"id":storeId},function(data){$("#item_shopnew").html(data);});
+</script>
 <div class="footer">
     <div class="inner">
         <p class="sitemap" style="width:650px;"> 

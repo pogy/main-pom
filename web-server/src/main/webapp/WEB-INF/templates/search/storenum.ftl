@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/storenum.css?t=1494584749303" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/storenum.css?t=1495516588814" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/storenum.js?t=1494584749303"></script>
+    <script src="http://style.571xz.com/searchV5/js/storenum.js?t=1495516588814"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -141,7 +141,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -189,7 +192,7 @@ var webSite = '${webSite!}';
 <div class="headerV1">
     <div class="layout">
         <div class="logoLeft">
-            <a href="<#if webSite == 'jx'>http://jx.571xz.com<#else>${main_host!}</#if>">
+            <a href="http://${webSite!}.571xz.com">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
             </a>
             <em></em>
@@ -206,14 +209,14 @@ var webSite = '${webSite!}';
                     <li type="store" class="select">档口</li>
                     
                 </ul>
-                <#if webSite == 'hz'>
-                <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
+                <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
+                <a href="${main_host!}picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
                 </#if>
             </div>
             <div class="searchBox">
                 
                 <form id="formSearch" action="http://www.571xz.com/storenum.htm?webSite=${webSite!}" >
-                    <input type=hidden name="webSite" value="${webSite!}">
+                    <input class="searchWeb" type=hidden name="webSite" value="${webSite!}">
                 
                     
                     
@@ -236,20 +239,22 @@ var webSite = '${webSite!}';
     <div class="layout navCon">
         <div class="navList">
             <ul>
+                <li class="first"><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
                 <#if webSite == 'jx'>
-                <li class="first"><a href="http://jx.571xz.com" target="_blank">首页</a></li>
+                    <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
+                <#elseif webSite == 'wa'>
+                    <li><a href="http://www.571xz.com/storelist.htm?webSite=wa">企业列表</a></li>
+                <#elseif webSite == 'cs'>
+                    <li><a href="http://jx.571xz.com/market.htm?mid=43">逛市场</a></li>
                 <#else>
-                <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
-                </#if>
-                <#if webSite != 'jx'>
                 <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
-                <#else>
-                <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
                 </#if>
                 <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite !="jx">
-                <li ><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
+                <#if webSite !="jx" && webSite != 'wa'>
+                <li ><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
+                <#if webSite == "hz">
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
+                </#if>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>

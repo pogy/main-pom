@@ -59,8 +59,11 @@ public class GoodsSearchAction {
      * @return
      */
     @RequestMapping("picSearch")
-    public String picSearch(Model model){
-        model.addAttribute("webSite","hz");
+    public String picSearch(String webSite,Model model){
+        if (webSite == null) {
+            webSite="hz";
+        }
+        model.addAttribute("webSite",webSite);
         return "search/picSearch";
     }
 
@@ -91,7 +94,10 @@ public class GoodsSearchAction {
      */
     @RequestMapping("goodsUrlSearch")
     @ResponseBody
-    public JSONObject goodsUrlSearch(String imgAdress,String baseCode) throws JsonErrException {
+    public JSONObject goodsUrlSearch(String imgAdress,String webSite,String baseCode) throws JsonErrException {
+        if (webSite == null) {
+            webSite="hz";
+        }
         JSONObject result=JsonResponseUtil.success();
         try {
             if(baseCode!=null&&imgAdress==null){
@@ -101,7 +107,7 @@ public class GoodsSearchAction {
                 imgAdress=ossIO.uploadFile(data,"picsearch/"+System.currentTimeMillis() + ".jpg");
             }
             result.element("imgurl",imgAdress);
-            result.element("goodslist",JSONArray.fromObject(goodsSearchService.searchByPic(imgAdress,"hz")));
+            result.element("goodslist",JSONArray.fromObject(goodsSearchService.searchByPic(imgAdress,webSite)));
         } catch (IOException e) {
             throw new JsonErrException("搜索接口调用异常");
         }
@@ -125,7 +131,7 @@ public class GoodsSearchAction {
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
         model.addAttribute("iconCateNav", todayNewGoodsService.selIconCateNav());
         if (bo.getCid() != null) {
-            model.addAttribute("styleCateNavs", categoryInSearchService.selSubCates(todayNewGoodsService.selRealCid(bo.getCid()), SearchCategory.STYLE));
+            model.addAttribute("styleCateNavs", categoryInSearchService.selSubCates(todayNewGoodsService.selRealCid(bo.getCid()), SearchCategory.STYLE,bo.getWebSite()));
         }
         ShiguPager<GoodsInSearch> pager = todayNewGoodsService.selGoodsNew(bo);
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
@@ -211,12 +217,7 @@ public class GoodsSearchAction {
         }
         bo.setRows(56);
         if (bo.getPid() == null) {
-            if(StringUtils.equals("hz",bo.getWebSite())){
-                bo.setPid(30L);
-            }
-            if(StringUtils.equals("jx",bo.getWebSite())){
-                bo.setPid(701L);
-            }
+            bo.setPid(30L);
         }
         if (bo.getKeyword() != null)
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
@@ -241,15 +242,15 @@ public class GoodsSearchAction {
         //带聚合的结果
         ShiguPager<GoodsInSearch> pager = goodsSearchService.search(bo, orderBy, false).getSearchData();
         //处理市场
-        model.addAttribute("markets", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.MARKET));
+        model.addAttribute("markets", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.MARKET, website));
         //查顶级类目
         model.addAttribute("navCate", categoryInSearchService.selCatesForGoods(bo.getWebSite()));
         if (bo.getPid() != null) {
             model.addAttribute("cates", categoryInSearchService.selSubCates(bo.getPid().toString(),
-                    SearchCategory.CATEGORY)
+                    SearchCategory.CATEGORY, website)
             );
-            model.addAttribute("styles", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.STYLE));
-            model.addAttribute("elements", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.ELEMENT));
+            model.addAttribute("styles", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.STYLE, website));
+            model.addAttribute("elements", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.ELEMENT, website));
         }
         //查匹配店铺
         model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(),bo.getWebSite()));
@@ -267,31 +268,6 @@ public class GoodsSearchAction {
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
         return "search/goods";
-    }
-
-    /**
-     * 查红牛活动的商品数据
-     *
-     * @param ids
-     * @return
-     */
-    @RequestMapping("redBull")
-    @ResponseBody
-    public JSONObject redBull(String ids) {
-        JSONArray arr = JSONArray.fromObject(goodsSearchService.selRedBull(ids));
-        return JsonResponseUtil.success().element("goodsList", arr);
-    }
-
-    /**
-     * 清除红牛广告
-     *
-     * @return
-     */
-    @RequestMapping("clearBull")
-    @ResponseBody
-    public JSONObject clearBull() {
-        goodsSearchService.clearReedBull();
-        return JsonResponseUtil.success();
     }
 
     /**

@@ -285,7 +285,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
                     throw new ActivityException("shopId不能为空");
                 }
                 ShiguShop ss = shiguShopMapper.selectByPrimaryKey(shopId);
-                if (limit(ss.getMarketId())) {
+                if (!limit(ss.getMarketId())) {
                     throw new ActivityException("不符合活动条件");
                 }
                 return joinActivityCommon(userId,shopId,name,phone,this.getActivityId());

@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>[四季星座网]杭州站-四季星座网-四季星座论坛-四季青服装货源，四季青市场，网店代理货源，网上服装进货，男装淘宝货源，女装淘宝货源，网络货源,网店货源导航,淘宝店货源,实体网络进货,杭州网店之家,杭州专业网店货源,杭州网店货源</title>
+    <title>[四季星座网]常熟站-四季星座网-四季星座论坛-四季青服装货源，四季青市场，网店代理货源，网上服装进货，男装淘宝货源，女装淘宝货源，网络货源,网店货源导航,淘宝店货源,实体网络进货,杭州网店之家,杭州专业网店货源,杭州网店货源</title>
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1495619263234" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV4/css/csMan.css?t=1495518293242" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
 <script>/*============ indexV4/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1495619263234"></script>
+    <script src="http://style.571xz.com/indexV4/js/csMan.js?t=1495518293242"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -160,7 +160,7 @@
                 </#if>
                 <li class="noDown">
                     <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
-
+                    
                 </li>
                 <li>
                     <div class="cnBox">
@@ -210,14 +210,8 @@ var webSite = '${webSite!}';
     <div class="innner">
         <a class="logo" href="http://www.571xz.com"><img src="http://style.571xz.com/xz/css/img/mtLogo.png" title="四季星座网-首页" height="30" width="170"></a>
          <div class="searchbar">
-            <div class="tabbox">
-                <ul> 
-                    <li>商品</li>
-                    <li>档口</li>
-                </ul>
-               <i class="img-jiantou"></i>
-            </div>
-            <form action="http://so.571xz.com/hzsearch.htm" target="_blank" id="searchgo3">
+            <div class="btnbox"><span>商品</span></div>
+            <form action="http://so.571xz.com/cssearch.htm" target="_blank" id="searchgo3">
                 <#if page?? && page.type == 'W'>
                 <input type="hidden" name="cid" value="16">
                 <#elseif page?? && page.type == 'M'>
@@ -305,13 +299,7 @@ var webSite = '${webSite!}';
                     <h3 class="mtitle"><em>男装市场</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=1">电商基地</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=2">精品男装</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=3">四季星座</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=12">新杭派</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=8">置地国际</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=10">之江服饰</a></li>
+                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=43">国际服装城</a></li>
                         </ul>
                     </div>
                 </div>
@@ -370,19 +358,7 @@ var webSite = '${webSite!}';
                         <div class="itemConTop">
                             <h4 class="itemTitle">市场导航</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=1" target="_blank">电商基地</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=2" target="_blank">精品男装</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=3" target="_blank">四季星座</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=5" target="_blank">钱塘大厦</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=12" target="_blank">新杭派</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=8" target="_blank">置地国际</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=10" target="_blank">之江服饰</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=18" target="_blank">男鞋基地</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=20" target="_blank">石狮工厂店</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=16" target="_blank">原创男装</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=11" target="_blank">九天国际</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=9" target="_blank">九星服饰</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=19" target="_blank">周边市场</a></li>
+                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=43" target="_blank">国际服装城</a></li>
                             </ul>
                         </div>
                     
@@ -531,20 +507,16 @@ var webSite = '${webSite!}';
         <div class="topNav">
             <ul class="clearfix">
                 <li>
-                    <a href="http://hz.571xz.com/market.htm" target="_blank">
+                    <a href="http://cs.571xz.com/market.htm?mid=43" target="_blank">
 逛市场<i class="hot"></i>                    </a>
                 </li>
                 <li>
-                    <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
+                    <a href="http://so.571xz.com/csgoods.htm" target="_blank">
 商品库                    </a>
                 </li>
                 <li>
-                    <a href="http://so.571xz.com/newgoods.htm" target="_blank">
+                    <a href="http://so.571xz.com/newgoods.htm?webSite=cs" target="_blank">
 今日新品                    </a>
-                </li>
-                <li>
-                    <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
-发现好货<i class="hot"></i>                    </a>
                 </li>
                 <li>
                     <a href="http://daifa.571xz.com/" target="_blank">
@@ -703,16 +675,6 @@ if(session_shopId != ""){
                     <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
-                
-                    <#if item_index % 2 == 0>
-                    <div class="sendPhone">
-                        
-                    </div>
-                    <#else>
-                    <div class="sendComputer">
-                        
-                    </div>
-                    </#if>
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
@@ -910,7 +872,7 @@ if(session_shopId != ""){
 <div class="sideNavbar" id="sideNavbar">
     
 </div>
-<script>/*============ indexV4/hzMan#main BEGIN ============*/
+<script>/*============ indexV4/csMan#main BEGIN ============*/
 
 '${hacker!}';
 $(".imgBox img").lazyload({
@@ -918,7 +880,7 @@ $(".imgBox img").lazyload({
     threshold: 400 // 提前开始加载
 });
 
-/*============ indexV4/hzMan#main END ============*/
+/*============ indexV4/csMan#main END ============*/
 
 
 </script>

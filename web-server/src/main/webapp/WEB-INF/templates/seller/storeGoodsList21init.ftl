@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/storeGoodsList21init.css?t=1495101187962" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/storeGoodsList21init.css?t=1495620273413" rel="stylesheet">
     
   </head>
 <body>
@@ -128,7 +128,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -235,7 +238,7 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >广告派位</a></li> 
+            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费广告派位</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
             <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
         </ul> 
@@ -299,16 +302,6 @@ var webSite = '${webSite!}';
                             <em>货号：</em>
                             <em class="goodsNo">${item.goodsNo!}</em> 
                             <b class="penIcon" jbtn="xgGoodsNo"></b>
-                        </span>
-                        <span class="goodsStyleParent">
-                            <em>风格：</em>
-                            <#if item.styleName?? && item.styleName != "">
-                            <em class="goodsStyle" sid="${item.sid!}">${item.styleName!}</em> 
-                            <b class="penIcon" jbtn="xgGoodsStyle"></b>
-                            <#else>
-                            <em class="goodsStyle noStyle" sid="">暂无</em> 
-                            <b class="toChoose" jbtn="xgGoodsStyle">立即选择</b>
-                            </#if>
                         </span>
                     </p>
                     
@@ -406,7 +399,7 @@ var allStyleCate = ${allStyleCate!};
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/storeGoodsList21init.js?t=1495101187962"></script>
+<script src="http://style.571xz.com/gys4/js/storeGoodsList21init.js?t=1495620273413"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

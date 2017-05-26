@@ -1,13 +1,10 @@
 package com.shigu.search.services;
 
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguMarket;
-import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.imgsearch.ImgSearchClient;
 import com.shigu.imgsearch.beans.Record;
 import com.shigu.imgsearch.requests.RetrieveImageRequest;
 import com.shigu.imgsearch.responses.RetrieveImageResponse;
@@ -17,25 +14,16 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
-import com.shigu.main4.item.vo.AggMarketAndCats;
 import com.shigu.main4.item.vo.AggsCount;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
-import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopSearchService;
+import com.shigu.main4.tools.ImgClientEnum;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.SearchShopSimple;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.utils.ShopWeightComparator;
-import com.shigu.search.vo.CateNav;
-import com.shigu.search.vo.CateNavsInSearch;
-import com.shigu.search.vo.GoodsInSearch;
-import com.shigu.search.vo.SearchDateFormat;
-import com.shigu.search.vo.SearchKey;
-import com.shigu.search.vo.SearchNav;
-import com.shigu.search.vo.SearchVO;
-import com.shigu.search.vo.TjGoods;
+import com.shigu.search.vo.*;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
@@ -48,13 +36,7 @@ import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 商品搜索服务
@@ -112,7 +94,7 @@ public class GoodsSearchService {
             beforeUrl+="&pid="+bo.getPid();
             keys.add(new SearchKey(name,beforeUrl));
             if(bo.getCid()!=null){
-                String subcname=selNavName(categoryInSearchService.selSubCates(bo.getPid().toString(),SearchCategory.CATEGORY),
+                String subcname=selNavName(categoryInSearchService.selSubCates(bo.getPid().toString(),SearchCategory.CATEGORY,bo.getWebSite()),
                         bo.getCid().toString());
                 beforeUrl+="&cid="+bo.getCid();
                 keys.add(new SearchKey(subcname,beforeUrl));
@@ -162,72 +144,6 @@ public class GoodsSearchService {
             spreadService.createBySync(objFromCache);
         Collections.shuffle(list);
         return BeanMapper.mapList(list,TjGoods.class);
-    }
-
-    /**
-     * 清除红牛数据
-     */
-    public void clearReedBull(){
-        Cache cache=cacheManager.getCache("searchCatesCache");
-        cache.evict("3");
-    }
-
-    /**
-     * 查红牛活动的商品
-     * @param ids
-     * @return
-     */
-    public List<GoodsInSearch> selRedBull(String ids){
-
-        Cache cache=cacheManager.getCache("searchCatesCache");
-        List<GoodsInSearch> goodsSearch=cache.get("3",List.class);
-        if(goodsSearch!=null){
-            return rangeRedBull(goodsSearch,ids);
-        }
-        String[] idsarr=ids.split(",");
-        List<Long> allIds=new ArrayList<>();
-        for(String s:idsarr){
-            allIds.add(Long.valueOf(s));
-        }
-        ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
-        example.createCriteria().andGoodsIdIn(allIds);
-        example.setWebSite("hz");
-        List<ShiguGoodsTiny> tinys=shiguGoodsTinyMapper.selectByExample(example);
-        List<SearchItem> searches=new ArrayList<>();
-        for(ShiguGoodsTiny sgt:tinys){
-            SearchItem searchItem=new SearchItem();
-            searchItem.setItemId(sgt.getGoodsId());
-            searchItem.setPicUrl(sgt.getPicUrl());
-            searchItem.setPrice(sgt.getPiPriceString());
-            searchItem.setTitle(sgt.getTitle());
-            searchItem.setStoreId(sgt.getStoreId());
-            searchItem.setCreated(sgt.getCreated());
-            searches.add(searchItem);
-        }
-        ShiguPager<SearchItem> pager=new ShiguPager<>();
-        pager.setContent(searches);
-        List<GoodsInSearch> goods=goodsSelFromEsService.addShopInfoToGoods(pager,"hz").getContent();
-        cache.put("3",goods);
-        return rangeRedBull(goods,ids);
-    }
-
-    /**
-     * 红牛排序
-     * @param goods
-     * @param ids
-     * @return
-     */
-    public List<GoodsInSearch> rangeRedBull(List<GoodsInSearch> goods,String ids){
-        Map<String,GoodsInSearch> map=new HashMap<>();
-        for(GoodsInSearch g:goods){
-            map.put(g.getId(),g);
-        }
-        String[] idsarr=ids.split(",");
-        List<GoodsInSearch> results=new ArrayList<>();
-        for(String s:idsarr){
-            results.add(map.get(s));
-        }
-        return results;
     }
 
     /**
@@ -320,9 +236,9 @@ public class GoodsSearchService {
         request.setWs("textfield1 = '"+webSite+"'");
         request.setSel2(20);
 
-        RetrieveImageResponse response=new ImgSearchClient(dbUid,dbSeckey).execute(request);
+        RetrieveImageResponse response= ImgClientEnum.valueOf(webSite).execute(request);
         //添加搜索记录
-        String dateKey="img_search_"+ DateUtil.dateToString(new Date(),"yyyy_MM");
+        String dateKey=webSite+"img_search_"+ DateUtil.dateToString(new Date(),"yyyy_MM");
         Long searched=redisIO.get(dateKey,Long.class);
         if(searched==null){
             searched=0L;
@@ -339,8 +255,8 @@ public class GoodsSearchService {
             }
             List<GoodsInSearch> imgGoods=new ArrayList<>();
             if(goodsId.size()>0){
-                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,"hz",1,20);
-                ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager,"hz");
+                ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,webSite,1,20);
+                ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager,webSite);
                 if (goodsPager != null) {
 //                    return pager.getContent();
                     List<GoodsInSearch> imgs = goodsPager.getContent();
