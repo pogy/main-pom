@@ -370,76 +370,60 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         drawPitExample.createCriteria().andTypeEqualTo(ActiveDrawPit.TYPE_SHOP);
         drawPitExample.setOrderByClause("num asc");
         List<ActiveDrawPit> drawPitList = activeDrawPitMapper.selectByExample(drawPitExample);
-        if(drawPitList.size() == 0){
-            return Collections.emptyList();
-        }
+        if(!drawPitList.isEmpty()) {
+            ActiveDrawShopExample drawShopExample = new ActiveDrawShopExample();
+            drawShopExample.createCriteria().andPemIdEqualTo(pemId);
+            List<ActiveDrawShop> drawShopList = activeDrawShopMapper.selectByExample(drawShopExample);
 
-        ActiveDrawShopExample drawShopExample = new ActiveDrawShopExample();
-        drawShopExample.createCriteria().andPemIdEqualTo(pemId);
-        List<ActiveDrawShop> drawShopList = activeDrawShopMapper.selectByExample(drawShopExample);
-        List shopIdsList = BeanMapper.getFieldList(drawShopList,"shopId", List.class);
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shop");
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        QueryBuilder shopQuery = QueryBuilders.termsQuery("shop_id",shopIdsList);
-        boolQueryBuilder.must(shopQuery);
-        srb.setQuery(boolQueryBuilder);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
-        if(hits == null){
-            return Collections.EMPTY_LIST;
-        }
-        List<ActiveDrawShopVo> drawShopVoList = new ArrayList<ActiveDrawShopVo>();
-        for(SearchHit hit : hits){
-            ShiguShop shiguShop = JSON.parseObject(hit.getSourceAsString(),ShiguShop.class);
-            for(int i = 0;i<drawShopList.size();i++){
-                ActiveDrawShop activeDrawShop = drawShopList.get(i);
-                if(activeDrawShop.getShopId().intValue() == shiguShop.getShopId().intValue()){
-                    ActiveDrawShopVo drawShopVo = new ActiveDrawShopVo();
-                    drawShopVo.setId(activeDrawShop.getId());
-                    drawShopVo.setShopId(activeDrawShop.getShopId());
-                    drawShopVo.setPemId(pemId);
-                    drawShopVo.setMarketName(shiguShop.getMarketName());
-                    drawShopVo.setImgSrc(activeDrawShop.getPicUrl());
-                    drawShopVo.setShopNum(shiguShop.getShopNum());
-                    drawShopVo.setuText(activeDrawShop.getuText());
-                    drawShopVo.setdText(activeDrawShop.getdText());
-                    drawShopVo.setPitId(activeDrawShop.getPitId());
-                    drawShopVo.setShopId(activeDrawShop.getShopId());
-                    if(StringUtils.isEmpty(drawShopVo.getMarketName())){
-                        ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguShop.getMarketId(),
-                                FieldUtil.codeFields("market_id,market_name"));
-                        if(shiguMarket != null){
-                            drawShopVo.setMarketName(shiguMarket.getMarketName());
+            List<ActiveDrawShopVo> drawShopVoList = new ArrayList<>();
+            if (!drawPitList.isEmpty()) {
+                List<Long> shopIdsList = BeanMapper.getFieldList(drawShopList, "shopId", Long.class);
+                SearchHit[] hits = ElasticConfiguration.searchClient
+                        .prepareSearch("shop")
+                        .setQuery(QueryBuilders.termsQuery("shop_id", shopIdsList))
+                        .execute().actionGet().getHits().getHits();
+                if (hits != null && hits.length > 0) {
+                    Map<Long, ActiveDrawShop> drawShopMap = BeanMapper.list2Map(drawShopList, "shopId", Long.class);
+                    for (SearchHit hit : hits) {
+                        ShiguShop shiguShop = JSON.parseObject(hit.getSourceAsString(), ShiguShop.class);
+                        ActiveDrawShop activeDrawShop = drawShopMap.get(shiguShop.getShopId());
+                        if (activeDrawShop != null) {
+                            ActiveDrawShopVo drawShopVo = new ActiveDrawShopVo();
+                            drawShopVo.setId(activeDrawShop.getId());
+                            drawShopVo.setShopId(activeDrawShop.getShopId());
+                            drawShopVo.setPemId(pemId);
+                            drawShopVo.setMarketName(shiguShop.getMarketName());
+                            drawShopVo.setImgSrc(activeDrawShop.getPicUrl());
+                            drawShopVo.setShopNum(shiguShop.getShopNum());
+                            drawShopVo.setuText(activeDrawShop.getuText());
+                            drawShopVo.setdText(activeDrawShop.getdText());
+                            drawShopVo.setPitId(activeDrawShop.getPitId());
+                            drawShopVo.setShopId(activeDrawShop.getShopId());
+                            if (StringUtils.isEmpty(drawShopVo.getMarketName())) {
+                                ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguShop.getMarketId(),
+                                        FieldUtil.codeFields("market_id,market_name"));
+                                if (shiguMarket != null) {
+                                    drawShopVo.setMarketName(shiguMarket.getMarketName());
+                                }
+                            }
+                            drawShopVoList.add(drawShopVo);
                         }
                     }
-                    drawShopVoList.add(drawShopVo);
-                    break;
+
+                    Map<Long, ActiveDrawShopVo> drawShopVoMap = BeanMapper.list2Map(drawShopVoList, "pitId", Long.class);
+                    List<ActiveDrawShopVo> newDrawShopVoList = new ArrayList<ActiveDrawShopVo>();
+                    for (ActiveDrawPit drawPit : drawPitList) {
+                        ActiveDrawShopVo activeDrawShopVo = drawShopVoMap.get(drawPit.getId());
+                        if (activeDrawShopVo != null) {
+                            activeDrawShopVo.setNum(drawPit.getNum());
+                            newDrawShopVoList.add(activeDrawShopVo);
+                        }
+                    }
+                    return newDrawShopVoList;
                 }
             }
         }
-
-        List<ActiveDrawShopVo> newDrawShopVoList = new ArrayList<ActiveDrawShopVo>();
-        for (int i = 0; i < drawPitList.size(); i++) {
-            ActiveDrawPit drawPit = drawPitList.get(i);
-            Boolean panss = false;
-            for (int j = 0; j < drawShopVoList.size(); j++) {
-                ActiveDrawShopVo drawShopVo = drawShopVoList.get(j);
-                if(drawShopVo.getPitId() != null && drawPit.getId().intValue() == drawShopVo.getPitId().intValue()){
-                    drawShopVo.setNum(drawPit.getNum());
-                    newDrawShopVoList.add(drawShopVo);
-                    panss = true;
-                    break;
-                }
-            }
-            if(!panss){
-                ActiveDrawShopVo newDrawShopVo = new ActiveDrawShopVo();
-                newDrawShopVo.setPitId(drawPit.getId());
-                newDrawShopVo.setNum(drawPit.getNum());
-                newDrawShopVoList.add(newDrawShopVo);
-            }
-        }
-
-        return newDrawShopVoList;
+        return Collections.emptyList();
     }
 
     /**
