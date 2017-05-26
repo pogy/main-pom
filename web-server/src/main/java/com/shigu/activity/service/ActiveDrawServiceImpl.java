@@ -174,13 +174,11 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         List<ActiveDrawGoodsVo> newDrawGoodsVoList = new ArrayList<ActiveDrawGoodsVo>();
         for (int i = 0; i < drawPitList.size(); i++) {
             ActiveDrawPit drawPit = drawPitList.get(i);
-            Boolean panss = false;
             for (int j = 0; j < drawGoodsVoList.size(); j++) {
                 ActiveDrawGoodsVo drawGoodsVo = drawGoodsVoList.get(j);
                 if(drawGoodsVo.getPitId()!=null && drawPit.getId().intValue() == drawGoodsVo.getPitId().intValue()){
                     drawGoodsVo.setNum(drawPit.getNum());
                     newDrawGoodsVoList.add(drawGoodsVo);
-                    panss = true;
                     break;
                 }
             }
