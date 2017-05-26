@@ -411,7 +411,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                     }
 
                     Map<Long, ActiveDrawShopVo> drawShopVoMap = BeanMapper.list2Map(drawShopVoList, "pitId", Long.class);
-                    List<ActiveDrawShopVo> newDrawShopVoList = new ArrayList<ActiveDrawShopVo>();
+                    List<ActiveDrawShopVo> newDrawShopVoList = new ArrayList<>();
                     for (ActiveDrawPit drawPit : drawPitList) {
                         ActiveDrawShopVo activeDrawShopVo = drawShopVoMap.get(drawPit.getId());
                         if (activeDrawShopVo != null) {
