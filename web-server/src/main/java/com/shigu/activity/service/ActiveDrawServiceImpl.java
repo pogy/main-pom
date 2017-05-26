@@ -106,7 +106,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             ctx.andEnabledEqualTo(enabled);
         }
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
-        List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
+        List<Long> goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", Long.class);
         ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
         ShiguGoodsTinyExample.Criteria criteria = goodsTinyExample.createCriteria();
         criteria.andGoodsIdIn(goodsList);
@@ -118,7 +118,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         List<ShiguGoodsTiny> goodsTinyList = shiguGoodsTinyMapper.selectByExample(goodsTinyExample);
         List<ActiveDrawGoodsVo> drawGoodsVoList = new ArrayList<ActiveDrawGoodsVo>();
         if (goodsTinyList != null && goodsTinyList.size() > 0) {
-            HashMap<Long, ShiguGoodsTiny> goodsTinyHashMap = new HashMap<Long, ShiguGoodsTiny>();
+            HashMap<Long, ShiguGoodsTiny> goodsTinyHashMap = new HashMap<>();
             for (ShiguGoodsTiny hit : goodsTinyList) {
                 goodsTinyHashMap.put(hit.getGoodsId(),hit);
             }
