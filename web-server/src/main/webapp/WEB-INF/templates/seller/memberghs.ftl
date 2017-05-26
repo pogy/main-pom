@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/memberghs.css?t=1495620274989" rel="stylesheet">
+    <link href="http://style.571xz.com/gys4/css/memberghs.css?t=1495767944833" rel="stylesheet">
     
   </head>
 <body>
@@ -361,7 +361,7 @@ var webSite = '${webSite!}';
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys4/temp/echarts.js"></script>
         <script src="http://style.571xz.com/gys4/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/gys4/js/memberghs.js?t=1495620274989"></script>
+<script src="http://style.571xz.com/gys4/js/memberghs.js?t=1495767944833"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
