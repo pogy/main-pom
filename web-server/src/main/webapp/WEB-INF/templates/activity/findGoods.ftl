@@ -358,7 +358,7 @@ var lastUserAward = ${lastUserAward!};
                 </ul>
             </div>
         
-        <b class="changGoodsBtn pa" data-text="change">换一批</b>
+        <#--<b class="changGoodsBtn pa" data-text="change">换一批</b>-->
     </div>
     <div class="dailyFoundTitle layout styleTitle"  name="每日发现"></div>
     <div class="perchBoxAward">
