@@ -5,17 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
     
-        <title>发现好货 - 四季星座网</title>
+        <title>四季星座网</title>
     
-    <meta name="keywords" content="四季星座网,四季星座论坛,四季星座,服装批发市场,男装批发,女装批发,一件代发,一键上传,网店货源,淘宝货源,男装货源,女装货源,服装货源,服装进货渠道。">
+        <#if $it.keywords??>
+        <meta name="keywords" content="${$it.keywords!}">
+        </#if>
     
-    <meta name="description" content="四季星座网拥有丰富的线下服装批发进货渠道，四季星座、置地国际、电商基地、钱塘大厦、保太和、星座女装、新杭派、九天女装、意法服饰等杭州四季青实体批发市场都已入驻，实体批发档口高达15000多家，为全国淘宝网店代理商提供一手货源。同时支持一件代发，一键上传到淘宝、到阿里、到微信，数据包下载，无理由退换货服务。">
+        <#if $it.description??>
+        <meta name="description" content="${$it.description!}">
+        </#if>
     
-    <link href="http://style.571xz.com/searchV5/css/newStyleHd.css?t=1495420443427" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods.css?t=1495702820210" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/newStyleHd.js?t=1495420443427"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods.js?t=1495702820210"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -141,7 +145,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -189,7 +196,7 @@ var webSite = '${webSite!}';
 <div class="headerV1">
     <div class="layout">
         <div class="logoLeft">
-            <a href="<#if webSite == 'jx'>http://jx.571xz.com<#else>${main_host!}</#if>">
+            <a href="http://${webSite!}.571xz.com">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
             </a>
             <em></em>
@@ -206,8 +213,8 @@ var webSite = '${webSite!}';
                     <li type="store" >档口</li>
                     
                 </ul>
-                <#if webSite == 'hz'>
-                <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
+                <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
+                <a href="${main_host!}picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
                 </#if>
             </div>
             <div class="searchBox">
@@ -231,304 +238,173 @@ var webSite = '${webSite!}';
 </script>
     </div>
 </div>
-<div class="nav">
-    <div class="layout navCon">
-        <div class="navList">
-            <ul>
-                <#if webSite == 'jx'>
-                <li class="first"><a href="http://jx.571xz.com" target="_blank">首页</a></li>
-                <#else>
-                <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
-                </#if>
-                <#if webSite == 'jx'>
-                    <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
-                    <#elseif webSite == 'wa'>
-                    <li><a href="http://www.571xz.com/storelist.htm?webSite=wa">企业列表</a></li>
-                    <#else>
+<div class="perchBox">
+    <div class="nav1">
+        <div class="layout">
+            <div class="leftNav">
+                <ul>
+                    <li><a href="http://www.571xz.com/activity/redbull.htm" class="select">发现好货</a><span></span></li>
+                    <li><a href="http://www.571xz.com/activity/findStore.htm" >发现好店</a><span></span></li>
+                </ul>
+            </div>
+            <div class="rightNav">
+                <ul>
                     <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
-                </#if>
-                <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite !="jx" || webSite != 'wa'>
-                <li ><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
-                <#if webSite == "hz">
-                <li class="select"><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
-                </#if>
-                <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
-                <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
-                </#if>
-            </ul>
+                    <li><a href="http://so.571xz.com/${webSite!}goods.htm">商品库</a></li>
+                    <li><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}">今日新品</a></li>
+                    <li><a href="http://daifa.571xz.com/">一件代发</a></li>
+                    <li><a href="http://zixun.571xz.com/index">资讯</a></li>
+                </ul>
+            </div>
+            <div class="awardUser">
+                <h3>获奖名单<span class="abortDate">（截止xx月xx日）</span>:</h3>
+                <div class="userName">
+                    <ul>
+                        
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="fdCon">
-    <div class="slider">
-        <div class="flexslider">
-          <ul class="slides">
-            <li>
-              <img src="http://style.571xz.com/searchV5/css/img/styleHd/banner1.jpg" />
-              </li>
-              
-          </ul>
+<div class="detailInfo">
+    <div class="pageTitle layout styleTitle" name="发现好货">
+        <h2>发现好货</h2>
+        <div class="actRule">
+          <b class="ruleBtn">活动规则</b>  
         </div>
-    </div>
-
-    <div class="awardUser layout">
-        <h3>获奖名单<span class="abortDate">（截止xx月xx日）</span>:</h3>
-        <div class="userName">
-            <ul>
-                <#list awardList as user>
-                <li>
-                    <img src='http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=${user.userNick!}&width=80&height=80&type=sns' alt />
-                    <span>${user.hideUserNick!}</span>
-                    <#if user.pemId == 8 && (user.ward == 'A2' || user.ward == 'B2')>
-                    <span>（机械键盘或鼠标一个）</span>
-                    <#elseif user.pemId == 8 && user.ward == 'A3'>
-                    <span>（二合一笔记本一台）</span>
-                    <#elseif user.pemId == 8 && user.ward == 'A4'>
-                    <span>（外星人台式机一台）</span>
-                    <#elseif user.pemId == 9 && (user.ward == 'A2' || user.ward == 'B2')>
-                    <span>（音响/台灯二合一）</span>
-                    <#elseif user.pemId == 9 && user.ward == 'A3'>
-                    <span>（华为P10一台）</span>
-                    <#elseif user.pemId == 9 && user.ward == 'A4'>
-                    <span>（iMac一台）</span>
-                    </#if>
-                </li>
-                </#list>
-            </ul>
-        </div>
-    </div>
-    
-    <div class="styleGoods layout">
-        <div class="styleName styleTitle" name="发现好货"><div class="bgy"><h3>发现好货</h3></div></div>
-        <div class="award">
-            <h4>上传商品免费领取奖品</h4>
-            <div class="awardCon clearfix">
-                <div class="awardInline">
-                    <ul>
-                            <li>
-                                <div class="imgBox">
-                                    <i class="water"></i>
-                                </div>
-                                <div class="adStatus"></div>
-                                <div class="awardDemand">上传3件</div>
-                                
-                                <div class="awardStatus">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
-                        
-                            <li>
-                                <div class="imgBox">
-                                    <i class="cola"></i>
-                                </div>
-                                <div class="adStatus"></div>
-                                <div class="awardDemand">上传5件</div>
-                                <div class="awardStatus">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="imgBox">
-                                    <i class="redBull"></i>
-                                </div>
-                                <div class="adStatus"></div>
-                                <div class="awardDemand">上传8件</div>
-                                <div class="awardStatus ">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="imgBox">
-                                    <i class="phone"></i>
-                                </div>
-                                <div class="adStatus"></div>
-                                <div class="awardDemand">上传10件</div>
-                                <div class="awardStatus">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
-                    </ul>
-                </div>
-            </div>
-            <b class="hdRule"><i class="wenIcon"></i>活动规则</b>
-        </div>
-        <div class="award1 layout">
-            <h4>您的上一期中奖信息:</h4>
-            <div class="awardCon clearfix">
-                <div class="awardInline">
-                    <ul>
-                            <li>
-                                <div class="imgBox">
-                                    <i class="water"></i>
-                                </div>
-                                <div class="awardStatus">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
-                            
-                            <li>
-                                <div class="imgBox">
-                                    <i class="cola"></i>
-                                </div>
-                                <div class="awardStatus">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
-                            
-                            <li>
-                                <div class="imgBox">
-                                    <i class="redBull"></i>
-                                </div>
-                                <div class="awardStatus ">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
-                            
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="goodsList">
-            <ul>
-            <#list styleItem.goodsList as goodsItem>
-                <li class="goodsItem">
-                    <div class="imgBox">
-                        <a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">
-                            <img src="${goodsItem.imgSrc!}_300x300.jpg" alt />
-                        </a>
-                    </div>
-                    <div class="title" title="${goodsItem.title!}">${goodsItem.title!}</div>
-                    <div class="otherInfo">
-                        <span>¥：<em>${goodsItem.piPriceString!}</em></span>
-                        <a href="http://hz.571xz.com/shop.htm?id=${goodsItem.shopId!}" title="${goodsItem.marketName!} ${goodsItem.shopNum!}" target="_blank">${goodsItem.marketName!} ${goodsItem.shopNum!}</a>
-                    </div>
-                </li>
-            </#list>
-            </ul>
-        </div>
-    </div>
-    <div class="styleShop layout">
-        <div class="styleName styleTitle" name="发现好店"><div class="bgy"><h3>发现好店</h3></div></div>
         
-        <div class='shopList'>
-            <ul>
-              
-                <#list styleItem.shopList as shopItem>
-                    <li class="shopListNum">
-                        <div class="imgBox">
-                            <a href="http://hz.571xz.com/shop.htm?id=${shopItem.shopId!}" target="_blank" title="${shopItem.marketName!} ${shopItem.shopNum!}">
-                                <img src="${shopItem.imgSrc!}" alt  />
-                            </a>
-                        </div>
-                        
-                        <div class="shopNum">
-                            <a href="http://hz.571xz.com/shop.htm?id=${shopItem.shopId!}" target="_blank" title="${shopItem.marketName!} ${shopItem.shopNum!}">
-                                <p>${shopItem.marketName!}</p>
-                                <p class="storeNum">${shopItem.shopNum!}</p>
-                            </a>
-                        </div>
-                        <div class="shopTitle">
-                            <p class="shopName" title="">${shopItem.uText!}</p>
-                            <p class="userTitle" title="">${shopItem.dText!}</p>
-                        </div>
-                        <div class="otherGn">
-                            <b xzclick='collectShop' data-shopid='${shopItem.shopId!}'><i></i>关注</b>
-                            <a href="http://hz.571xz.com/shop.htm?id=${shopItem.shopId!}" target="_blank">进店逛逛 ></a>
-                        </div>
-                    </li>
-                        
-                </#list>
-            </ul>
-        </div>
+        
     </div>
-    <div class="fdGoods layout">
-        <div class="styleName styleTitle" name="每日发现"><div class="bgy"><h3>每日发现</h3></div></div>
-        <div class="award">
-            <h4>上传商品免费领取奖品</h4>
-            <div class="awardCon clearfix">
-                <div class="awardInline">
-                    <ul>
-                            <li>
-                                <div class="imgBox">
-                                    <i class="water"></i>
-                                </div>
-                                <div class="adStatus"></div>
-                                <div class="awardDemand">上传3件</div>
-                                
-                                <div class="awardStatus">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
-                        
-                            <li>
-                                <div class="imgBox">
-                                    <i class="cola"></i>
-                                </div>
-                                <div class="adStatus"></div>
-                                <div class="awardDemand">上传5件</div>
-                                <div class="awardStatus">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
-                    </ul>
-                </div>
-            </div>
-            <b class="hdRule"><i class="wenIcon"></i>活动规则</b>
-        </div>
-        <div class="award1 layout">
-            <h4>您的上一期中奖信息:</h4>
-            <div class="awardCon clearfix">
-                <div class="awardInline">
-                    <ul>
-                            <li>
-                                <div class="imgBox">
-                                    <i class="water"></i>
-                                </div>
-                                <div class="awardStatus">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
+    <div class="perchBoxAward">
+        <div class="awardShow">
+            <div class="layout awardBox">
+                <div class="leftBox">
+                    <div class="timer">
+                        <div id="countdown" class="countdown">
                             
-                            <li>
-                                <div class="imgBox">
-                                    <i class="cola"></i>
-                                </div>
-                                <div class="awardStatus">
-                                    <p><em class="noFinish">未完成</em></p>
-                                </div>
-                            </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="goodsList">
-            <ul>
-            <#list likeGoodsList as goodsItem>
-                <li class="goodsItem">
-                    <div class="imgBox">
-                        <a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">
-                            <img src="${goodsItem.imgSrc!}_300x300.jpg" alt />
-                        </a>
-                    </div>
-                    <div class="title" title="${goodsItem.title!}">${goodsItem.title!}</div>
-                    <div class="otherInfo">
-                        <span>¥：<em>${goodsItem.piPriceString!}</em></span>
-                        <a href="http://hz.571xz.com/shop.htm?id=${goodsItem.shopId!}" title="${goodsItem.marketName!} ${goodsItem.shopNum!}" target="_blank">${goodsItem.marketName!} ${goodsItem.shopNum!}</a>
-                    </div>
-                </li>
-            </#list>
-            </ul>
-        </div>
-    </div>
-    <script>/*============ searchV5/newStyleHd#awardJson BEGIN ============*/
+                        </div>
+                        
+                        
+                        <script>/*============ fdGoodsV5/page#countDown BEGIN ============*/
 
-var lastUserAward = ${lastUserAward!};
+var countdownValue = ${countdownValue!}; //倒计时时间戳
+var nowTimeValue = ${nowTimeValue!}; //服务器当前时间戳
 
-/*============ searchV5/newStyleHd#awardJson END ============*/
+/*============ fdGoodsV5/page#countDown END ============*/
 
 
 </script>
+                    </div>
+                    <div class="tcBtn">
+                        <b jbtn="lastWining">上期中奖情况</b>
+                        <b jbtn="nextAward">下期奖品预告</b>
+                    </div>
+                </div>
+                <div class="topAw thisTermAward">
+                    <ul>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script>/*============ fdGoodsV5/page#awardShow BEGIN ============*/
+
+var lastUserAward = ${lastUserAward!};
+
+/*============ fdGoodsV5/page#awardShow END ============*/
+
+
+</script>
+    <div  class="goodsList layout pr" >
+            
+            <div class="firstGoods">
+                <ul>
+                <#list styleItem.goodsList as goodsItem>
+                    <#if goodsItem_index lt 20>
+                    <li>
+                        <a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">
+                            <img src="${goodsItem.imgSrc!}_300x300.jpg" alt="${goodsItem.title!}" >
+                        </a>
+                        <h4 class="text-333"><a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">${goodsItem.title!}</a></h4>
+                        <div class="goodsInfo clearfix pr text-f40">
+                            <span class="goodsPrice"><i>&yen;</i>${goodsItem.piPriceString!}</span>
+                            <a class="goodAddr text-999 pr" href="http://hz.571xz.com/shop.htm?id=${goodsItem.shopId!}" target="_blank" title="${goodsItem.marketName!} ${goodsItem.shopNum!}"><i></i>${goodsItem.marketName!} ${goodsItem.shopNum!}</a>
+                        </div>
+                    </li>
+                    </#if>
+                </#list>
+                </ul>
+            </div>
+            <div class="secondGoods" style="display:none">
+                <ul>
+                <#list styleItem.goodsList as goodsItem>
+                    <#if goodsItem_index gt 20>
+                    <li>
+                        <a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">
+                            <img src="${goodsItem.imgSrc!}_300x300.jpg" alt="${goodsItem.title!}" >
+                        </a>
+                        <h4 class="text-333"><a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">${goodsItem.title!}</a></h4>
+                        <div class="goodsInfo clearfix pr text-f40">
+                            <span class="goodsPrice"><i>&yen;</i>${goodsItem.piPriceString!}</span>
+                            <a class="goodAddr text-999 pr" href="http://hz.571xz.com/shop.htm?id=${goodsItem.shopId!}" target="_blank" title="${goodsItem.marketName!} ${goodsItem.shopNum!}"><i></i>${goodsItem.marketName!} ${goodsItem.shopNum!}</a>
+                        </div>
+                    </li>
+                    </#if>
+                </#list>
+                </ul>
+            </div>
+        
+        <#--<b class="changGoodsBtn pa" data-text="change">换一批</b>-->
+    </div>
+    <div class="dailyFoundTitle layout styleTitle"  name="每日发现"></div>
+    <div class="perchBoxAward">
+        <div class="awardShow">
+            <div class="layout awardBox">
+                <div class="leftBox">
+                    <div class="timer">
+                        <div id="countdown" class="countdown">
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="tcBtn">
+                        <b jbtn="lastBtWining">上期中奖情况</b>
+                        <b jbtn="nextAward">下期奖品预告</b>
+                    </div>
+                </div>
+                <div class="bottomAw thisTermAward">
+                    <ul>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div  class="goodsList layout pr mt" >
+            
+                <ul>
+                    <#list likeGoodsList as goodsItem>
+                    <li>
+                        <a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">
+                            <img src="${goodsItem.imgSrc!}_300x300.jpg" alt="${goodsItem.title!}" >
+                        </a>
+                        <h4 class="text-333"><a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">${goodsItem.title!}</a></h4>
+                        <div class="goodsInfo clearfix pr text-f40">
+                            <span class="goodsPrice"><i>&yen;</i>${goodsItem.piPriceString!}</span>
+                            <a class="goodAddr text-999 pr" href="http://hz.571xz.com/shop.htm?id=${goodsItem.shopId!}" target="_blank" title="${goodsItem.marketName!} ${goodsItem.shopNum!}"><i></i>${goodsItem.marketName!} ${goodsItem.shopNum!}</a>
+                        </div>
+                    </li>
+                    </#list>
+                </ul>
+        
+    </div>
 </div>
 <div class="leftSidebar">
     <h3>发现好货</h3>
@@ -540,14 +416,71 @@ var lastUserAward = ${lastUserAward!};
     </div>
     <div class="toTop"><i class="topRow"></i>顶部</div>
 </div>
-<div class="imgLoading">
+<!--
+//上期未中奖
+<div class="awardInfoLayer">
+    <b class="closeLayerBtn" jbtn='jq_window_close'></b>
+    <div class="awardInfo text-center">
+        <h2 class="awardTitle">上期未中奖~</h2>
+        <p class="awardTip">不要灰心 下次再接再励~</p>
+        <div class="awardFace"></div>
+    </div>
+    <div class="awardBotBox text-center">
+        <b class="knowBtn text-size16" jbtn='jq_window_close'>知道啦！</b>
+    </div>
+</div>
+//上期已中奖,未领取奖品
+<div class="awardInfoLayer">
+    <b class="closeLayerBtn" jbtn='jq_window_close'></b>
+    <div class="awardInfo text-center">
+        <h2 class="awardTitle">上期已中奖~</h2>
+        <p class="awardTip">兑换码1：8697867 (一等奖) <br>兑换码2：8697867 (参与奖)</p>
+        <div class="awardFace awardExciting"></div>
+    </div>
+    <div class="awardBotBox text-center">
+        <p>请尽快前往电商基地大门口领取奖品</p>
+        <b class="knowBtn text-size16" jbtn='jq_window_close'>知道啦！</b>
+    </div>
+</div>
+//上期已中奖,已领取奖品
+<div class="awardInfoLayer">
+    <b class="closeLayerBtn" jbtn='jq_window_close'></b>
+    <div class="awardInfo text-center">
+        <h2 class="awardTitle">上期已中奖~</h2>
+        <p class="awardTip text-size24">您已经领取奖品啦~</p>
+        <div class="awardFace awardExciting"></div>
+    </div>
+    <div class="awardBotBox text-center">
+        <b class="knowBtn text-size16" jbtn='jq_window_close'>知道啦！</b>
+    </div>
+</div>
+//下期奖品预告
+<div class="awardInfoLayer">
+    <b class="closeLayerBtn" jbtn='jq_window_close'></b>
+    <div class="awardInfo text-center nextIssue">
+        <h2 class="awardTitle">下期奖品预告~</h2>
+        <p class="awardTip text-size24">您可以提议自己想要的奖品哦~</p>
+        <div class="awardFace qrcode"></div>
+    </div>
+    <div class="awardBotBox text-center">
+        <p class="nextIssueTip">关注公众号 — 活动进行中 — 奖品我来定</p>
+        <b class="knowBtn text-size16" jbtn='jq_window_close'>知道啦！</b>
+    </div>
+</div>
+-->
+<script>/*============ fdGoodsV5/findGoods#main BEGIN ============*/
+
+var allInfo = ${allInfo!}; //JSON字符串用于奖品模块、获奖名单、与上一期模块
+var awardList = ${awardList!}; //JSON字符串用于获奖名单
+
+/*============ fdGoodsV5/findGoods#main END ============*/
+
+
+</script><div class="imgLoading">
     <div class="layout">
         <p>数据加载中……</p>
-        <div class="loading">
-    </div>
-    
-    
-</div> 
+        <div class="loading"></div>
+    </div> 
 </div>
 <div class="footer">
     <div class="inner">

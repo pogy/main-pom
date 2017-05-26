@@ -678,8 +678,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             // 过滤过期
 
         }
-        List<ActiveDrawRecordUserVo> recordUserVos = BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
-        return recordUserVos;
+        return BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
     }
 
     /**

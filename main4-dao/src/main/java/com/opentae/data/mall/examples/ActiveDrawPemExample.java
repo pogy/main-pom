@@ -300,6 +300,74 @@ public class ActiveDrawPemExample implements SgExample{
             return (ActiveDrawPemExample.Criteria)this;
         }
 
+        public ActiveDrawPemExample.Criteria andInfoIsNull() {
+            this.addCriterion("info is null");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoIsNotNull() {
+            this.addCriterion("info is not null");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoEqualTo(String value) {
+            this.addCriterion("info =", value, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoNotEqualTo(String value) {
+            this.addCriterion("info <>", value, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoGreaterThan(String value) {
+            this.addCriterion("info >", value, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoGreaterThanOrEqualTo(String value) {
+            this.addCriterion("info >=", value, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoLessThan(String value) {
+            this.addCriterion("info <", value, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoLessThanOrEqualTo(String value) {
+            this.addCriterion("info <=", value, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoLike(String value) {
+            this.addCriterion("info like", value, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoNotLike(String value) {
+            this.addCriterion("info not like", value, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }        public ActiveDrawPemExample.Criteria andInfoIn(List<String> values) {
+            this.addCriterion("info in", values, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoNotIn(List<String> values) {
+            this.addCriterion("info not in", values, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoBetween(String value1, String value2) {
+            this.addCriterion("info between", value1, value2, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoNotBetween(String value1, String value2) {
+            this.addCriterion("info not between", value1, value2, "info");
+            return (ActiveDrawPemExample.Criteria)this;
+        }
+
         public ActiveDrawPemExample.Criteria andStartTimeIsNull() {
             this.addCriterion("start_time is null");
             return (ActiveDrawPemExample.Criteria)this;
