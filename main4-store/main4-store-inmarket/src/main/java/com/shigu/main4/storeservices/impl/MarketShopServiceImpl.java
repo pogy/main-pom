@@ -216,20 +216,24 @@ public class MarketShopServiceImpl extends ShopServiceImpl implements MarketShop
         //查出真实楼层排序用
         if(shopShowList.size()>0){
             Set<Long> floorIdSet=new HashSet<>(BeanMapper.getFieldList(shopShowList,"floorId",Long.TYPE));
-            List<Long> floorIdlist=new ArrayList<>(floorIdSet);
-            ShiguMarketExample example=new ShiguMarketExample();
-            example.createCriteria().andMarketIdIn(floorIdlist);
-            List<ShiguMarket> markets=shiguMarketMapper.selectFieldsByExample(example, FieldUtil.codeFields("market_id,market_name"));
-            Map<Long,ShiguMarket> map=BeanMapper.list2Map(markets,"marketId",Long.TYPE);
-            List<ShopShow> results=new ArrayList<>();
-            for(ShopShow s:shopShowList){
-                if (s.getFloorId() == null) {
-                    continue;
+            if(floorIdSet.size()>0){
+                List<Long> floorIdlist=new ArrayList<>(floorIdSet);
+                ShiguMarketExample example=new ShiguMarketExample();
+                example.createCriteria().andMarketIdIn(floorIdlist);
+                List<ShiguMarket> markets=shiguMarketMapper.selectFieldsByExample(example, FieldUtil.codeFields("market_id,market_name"));
+                Map<Long,ShiguMarket> map=BeanMapper.list2Map(markets,"marketId",Long.TYPE);
+                List<ShopShow> results=new ArrayList<>();
+                for(ShopShow s:shopShowList){
+                    if (s.getFloorId() == null) {
+                        continue;
+                    }
+                    s.setFloor(map.get(s.getFloorId()).getMarketName());
+                    results.add(s);
                 }
-                s.setFloor(map.get(s.getFloorId()).getMarketName());
-                results.add(s);
+                shopShowList=results;
+            }else{
+                shopShowList=new ArrayList<>();
             }
-            shopShowList=results;
         }
         // shop 排序
         getShopComparator(shopShowList);
