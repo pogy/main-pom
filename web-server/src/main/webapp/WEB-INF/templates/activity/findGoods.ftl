@@ -342,7 +342,7 @@ var lastUserAward = ${lastUserAward!};
             <div class="secondGoods" style="display:none">
                 <ul>
                 <#list styleItem.goodsList as goodsItem>
-                    <#if goodsItem_index gt 20>
+                    <#if goodsItem_index gt 19>
                     <li>
                         <a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">
                             <img src="${goodsItem.imgSrc!}_300x300.jpg" alt="${goodsItem.title!}" >
@@ -358,7 +358,7 @@ var lastUserAward = ${lastUserAward!};
                 </ul>
             </div>
         
-        <#--<b class="changGoodsBtn pa" data-text="change">换一批</b>-->
+        <b class="changGoodsBtn pa" data-text="change">换一批</b>
     </div>
     <div class="dailyFoundTitle layout styleTitle"  name="每日发现"></div>
     <div class="perchBoxAward">

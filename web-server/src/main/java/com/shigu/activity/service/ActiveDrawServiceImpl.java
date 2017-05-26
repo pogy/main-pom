@@ -184,12 +184,12 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                     break;
                 }
             }
-            if(!panss){
-                ActiveDrawGoodsVo drawGoodsVo = new ActiveDrawGoodsVo();
-                drawGoodsVo.setPitId(drawPit.getId());
-                drawGoodsVo.setNum(drawPit.getNum());
-                newDrawGoodsVoList.add(drawGoodsVo);
-            }
+//            if(!panss){
+//                ActiveDrawGoodsVo drawGoodsVo = new ActiveDrawGoodsVo();
+//                drawGoodsVo.setPitId(drawPit.getId());
+//                drawGoodsVo.setNum(drawPit.getNum());
+//                newDrawGoodsVoList.add(drawGoodsVo);
+//            }
         }
 
         return newDrawGoodsVoList;

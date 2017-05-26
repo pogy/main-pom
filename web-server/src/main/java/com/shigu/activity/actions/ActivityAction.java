@@ -59,7 +59,7 @@ public class ActivityAction {
         List<ActiveDrawGoodsVo> faGoodsVoList = activeDrawServiceImpl.selGoodsList(
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_FAGOODS,
-                20,
+                40,
                 false);
         // 发现好店
         List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId());
