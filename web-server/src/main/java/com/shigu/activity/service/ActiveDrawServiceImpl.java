@@ -240,8 +240,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         ActiveDrawPemExample activeDrawPemExample = new ActiveDrawPemExample();
         activeDrawPemExample.setOrderByClause("start_time DESC");
         List<ActiveDrawPem> activeDrawPemList = activeDrawPemMapper.selectByExample(activeDrawPemExample);
-        List<ActiveDrawPemVo> drawPemVoList = BeanMapper.mapList(activeDrawPemList, ActiveDrawPemVo.class);
-        return drawPemVoList;
+        return BeanMapper.mapList(activeDrawPemList, ActiveDrawPemVo.class);
     }
 
     /**
@@ -386,6 +385,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         drawPitExample.createCriteria().andTypeEqualTo(ActiveDrawPit.TYPE_SHOP);
         drawPitExample.setOrderByClause("num asc");
         List<ActiveDrawPit> drawPitList = activeDrawPitMapper.selectByExample(drawPitExample);
+        Map<Long, ActiveDrawShopVo> drawShopVoMap = Collections.emptyMap();
         if(!drawPitList.isEmpty()) {
             ActiveDrawShopExample drawShopExample = new ActiveDrawShopExample();
             drawShopExample.createCriteria().andPemIdEqualTo(pemId);
@@ -425,27 +425,25 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                             drawShopVoList.add(drawShopVo);
                         }
                     }
-
-                    Map<Long, ActiveDrawShopVo> drawShopVoMap = BeanMapper.list2Map(drawShopVoList, "pitId", Long.class);
-                    List<ActiveDrawShopVo> newDrawShopVoList = new ArrayList<>();
-                    for (ActiveDrawPit drawPit : drawPitList) {
-                        ActiveDrawShopVo activeDrawShopVo = drawShopVoMap.get(drawPit.getId());
-                        if (activeDrawShopVo != null) {
-                            activeDrawShopVo.setNum(drawPit.getNum());
-                            newDrawShopVoList.add(activeDrawShopVo);
-                        } else if (back) { // 如果是后台，坑位没数据也要显示在页面上
-                            ActiveDrawShopVo vo = new ActiveDrawShopVo();
-                            vo.setPemId(pemId);
-                            vo.setPitId(drawPit.getId());
-                            vo.setNum(drawPit.getNum());
-                            newDrawShopVoList.add(vo);
-                        }
-                    }
-                    return newDrawShopVoList;
+                    drawShopVoMap = BeanMapper.list2Map(drawShopVoList, "pitId", Long.class);
                 }
             }
         }
-        return Collections.emptyList();
+        List<ActiveDrawShopVo> newDrawShopVoList = new ArrayList<>();
+        for (ActiveDrawPit drawPit : drawPitList) {
+            ActiveDrawShopVo activeDrawShopVo = drawShopVoMap.get(drawPit.getId());
+            if (activeDrawShopVo != null) {
+                activeDrawShopVo.setNum(drawPit.getNum());
+                newDrawShopVoList.add(activeDrawShopVo);
+            } else if (back) { // 如果是后台，坑位没数据也要显示在页面上
+                ActiveDrawShopVo vo = new ActiveDrawShopVo();
+                vo.setPemId(pemId);
+                vo.setPitId(drawPit.getId());
+                vo.setNum(drawPit.getNum());
+                newDrawShopVoList.add(vo);
+            }
+        }
+        return newDrawShopVoList;
     }
 
     /**
