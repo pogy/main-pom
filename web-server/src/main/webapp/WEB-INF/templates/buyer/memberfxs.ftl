@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1495877464217" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1495878687025" rel="stylesheet">
     
   </head>
 <body>
@@ -270,6 +270,7 @@ var webSite = '${webSite!}';
 
 var pemNum = '${pemNum!}';
 var imgsrc = '${imgsrc!}';
+var tHref = '${tHref!}';
 
 /*============ xz/huodong#imgtips1 END ============*/
 
@@ -308,7 +309,7 @@ var imgsrc = '${imgsrc!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1495877464217"></script>
+<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1495878687025"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

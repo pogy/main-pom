@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/memberghs.css?t=1495877519285" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/memberghs.css?t=1495878471386" rel="stylesheet">
     
   </head>
 <body>
@@ -331,6 +331,7 @@ var webSite = '${webSite!}';
 
 var pemNum = '${pemNum!}';
 var imgsrc = '${imgsrc!}';
+var tHref = '${tHref!}';
 
 /*============ xz/huodong#imgtips1 END ============*/
 
@@ -370,7 +371,7 @@ var imgsrc = '${imgsrc!}';
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys5/temp/echarts.js"></script>
         <script src="http://style.571xz.com/gys5/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/gys5/js/memberghs.js?t=1495877519285"></script>
+<script src="http://style.571xz.com/gys5/js/memberghs.js?t=1495878471386"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
