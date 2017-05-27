@@ -15,6 +15,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.exceptions.ShopDomainException;
 import com.shigu.main4.storeservices.ShopBaseService;
+import com.shigu.main4.storeservices.ShopToEsService;
 import com.shigu.main4.vo.DmlReason;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.ShopInES;
@@ -49,6 +50,9 @@ public class ShopBaseServiceTest {
     @Autowired
     ShiguMarketMapper shiguMarketMapper;
 
+    @Autowired
+    ShopToEsService shopToEsService;
+
     @Test
     public void addToEsTest() throws ExecutionException, InterruptedException {
         ShiguShopExample example=new ShiguShopExample();
@@ -78,7 +82,7 @@ public class ShopBaseServiceTest {
         example.createCriteria().andMarketIdEqualTo(1087L);
         List<ShiguShop> shops=shiguShopMapper.selectFieldsByExample(example, FieldUtil.codeFields("shop_id"));
         for(ShiguShop s:shops){
-            shopBaseService.addToEs(s.getShopId());
+            shopToEsService.addToEs(s.getShopId());
         }
 
     }
