@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/findGoodsChange.css?t=1495885707677" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/findGoodsChange.css?t=1495888938131" rel="stylesheet">
     
   </head>
 <body>
@@ -251,7 +251,7 @@ var webSite = '${webSite!}';
             <#list myFindTerms as myFindTerm>
             <div class="posWrap">
                 <div class="posIssue">
-                    <span class="issueNum">第${myFindTerm.termId!}期</span>
+                    <span class="issueNum">第${myFindTerm.term!}期</span>
                     <span class="issueTime">（${myFindTerm.startOnline!} — ${myFindTerm.endOnline!}）</span>
                 </div>
                 <div class="posList">
@@ -324,7 +324,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/findGoodsChange.js?t=1495885707677"></script>
+<script src="http://style.571xz.com/gys5/js/findGoodsChange.js?t=1495888938131"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
