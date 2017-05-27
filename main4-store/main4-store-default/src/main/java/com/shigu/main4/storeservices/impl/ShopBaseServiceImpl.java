@@ -19,6 +19,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.exceptions.ShopDomainException;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopRegistService;
+import com.shigu.main4.storeservices.ShopToEsService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.DmlReason;
 import com.shigu.main4.vo.ShopBase;
@@ -72,6 +73,9 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
 
 //    @Resource(name = "userBaseService")
 //    private UserBaseService userBaseService;
+
+    @Autowired
+    ShopToEsService shopToEsService;
 
     @Autowired
     RedisIO redisIO;
@@ -129,7 +133,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         shiguShopUpdate.setShopId(shopId);
         shiguShopUpdate.setDomain(domain);
         result = shiguShopMapper.updateByPrimaryKeySelective(shiguShopUpdate);
-        addToEs(shiguShop.getShopId());
+        shopToEsService.addToEs(shiguShop.getShopId());
         if(result == 0){
             throw new ShopDomainException(ShopDomainException.ShopDomainExceptionErrorCode.DATA_IS_ERROR.getCode(),
                     ShopDomainException.ShopDomainExceptionErrorCode.DATA_IS_ERROR.getMessage());
@@ -220,7 +224,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
             shiguShop.setCloseReason(reason.toString());
         }
         shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
-        addToEs(shiguShop.getShopId());
+        shopToEsService.addToEs(shiguShop.getShopId());
 
         shiguGoodsTinyMapper.updateGoodsTinyByClose(shiguShop.getWebSite(), 0, 1, shopId);
 
@@ -308,7 +312,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         shiguShop.setDomain("");
         shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
 
-        addToEs(shiguShop.getShopId());
+        shopToEsService.addToEs(shiguShop.getShopId());
         shiguGoodsTinyMapper.updateGoodsTinyByClose(shiguShop.getWebSite(), 1, 0, shopId);
 
         // 修改二级域名
@@ -388,7 +392,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         shiguShop.setDataPacketUrl(shopBase.getDataPackageUrl());
         shiguShop.setShopId(shopId);
         shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
-        addToEs(shiguShop.getShopId());
+        shopToEsService.addToEs(shiguShop.getShopId());
         // 去除缓存
         cacheManager.getCache("shopBaseCache").evict(shopId);
     }
@@ -437,7 +441,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         shiguShop.setFloorId(toFloorId);
         shiguShop.setShopNum(shopNum);
         shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
-        addToEs(shiguShop.getShopId());
+        shopToEsService.addToEs(shiguShop.getShopId());
 
         try{
             updateDomain(shopId, shiguShop.getDomain());
@@ -446,7 +450,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
             logger.error("档口迁移，迁移二级域名发生错误>>error:" + e.getMsg());
             shiguShop.setDomain(null);
             shiguShopMapper.updateByPrimaryKey(shiguShop);
-            addToEs(shiguShop.getShopId());
+            shopToEsService.addToEs(shiguShop.getShopId());
         }
 
 
@@ -573,39 +577,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
         shiguShop.setUserId(userId);
         shiguShopMapper.updateByPrimaryKey(shiguShop);
 
-        addToEs(shiguShop.getShopId());
-    }
-
-    /**
-     * 添加到ES
-     * @param shopId
-     */
-    @Override
-    public void addToEs(Long shopId) {
-        ShiguShop shop=shiguShopMapper.selectByPrimaryKey(shopId);
-        if(shop!=null){
-            ShopInES sies=BeanMapper.map(shop,ShopInES.class);
-            ShiguMarket floor=shiguMarketMapper.selectByPrimaryKey(shop.getFloorId());
-            if(floor!=null){
-                sies.setMarket(floor.getParentMarketName());
-                sies.setFloor(floor.getMarketName());
-            }
-//            new ElasticRepository().insert(
-//                    new SimpleElaBean(
-//                            "shop",
-//                            shop.getWebSite(),
-//                            shopId.toString(),
-//                            JSON.toJSONStringWithDateFormat(sies, "yyyy-MM-dd HH:mm:ss")
-//                    )
-//            );
-            redisIO.rpush("bulk_shop_to_es",new SimpleElaBean(
-                            "shop",
-                            shop.getWebSite(),
-                            shopId.toString(),
-                            JSON.toJSONStringWithDateFormat(sies, "yyyy-MM-dd HH:mm:ss")
-                    ));
-
-        }
+        shopToEsService.addToEs(shiguShop.getShopId());
     }
 
     /**
