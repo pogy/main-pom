@@ -25,7 +25,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/findGoodsChange.css?t=1495875873888" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/findGoodsChange.css?t=1495881301636" rel="stylesheet">
     
   </head>
 <body>
@@ -278,7 +278,7 @@ var webSite = '${webSite!}';
                         <ul data-id="${good.id!}">
                             <li class="num">${good.code!}</li>
                             <li class="pic"><img src="${good.picUrl!}_240x240.jpg" ></li>
-                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.id!}" data-web="${good.webSite!}">上款</b></li>
+                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.id!}" data-termId="${good.termId!}" data-web="${good.webSite!}">上款</b></li>
                         </ul>
                         </#list>
                     </div>
@@ -303,14 +303,6 @@ var webSite = '${webSite!}';
         </div>
     </div>
     </#if>
-    <div class="allGoodsTc">
-        
-    </div>
-    
-    
-    
-    
-    
 </div>
 <div class="footer">
     <div class="inner">
@@ -343,7 +335,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/findGoodsChange.js?t=1495875873888"></script>
+<script src="http://style.571xz.com/gys5/js/findGoodsChange.js?t=1495881301636"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
