@@ -89,7 +89,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * 查询当前期次商品数据
      * @param pemId
      */
-    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled){
+    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled,boolean back){
 
         // 取当前坑位
         ActiveDrawPitExample drawPitExample = new ActiveDrawPitExample();
@@ -194,6 +194,11 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             if (activeDrawGoodsVo != null) {
                 activeDrawGoodsVo.setNum(drawPit.getNum());
                 newDrawGoodsVoList.add(activeDrawGoodsVo);
+            }else if(back){
+                    ActiveDrawGoodsVo drawGoodsVo = new ActiveDrawGoodsVo();
+                    drawGoodsVo.setPitId(drawPit.getId());
+                    drawGoodsVo.setNum(drawPit.getNum());
+                    newDrawGoodsVoList.add(drawGoodsVo);
             }
         }
 

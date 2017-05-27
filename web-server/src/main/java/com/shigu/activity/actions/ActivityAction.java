@@ -57,7 +57,7 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_FAGOODS,
                 40,
-                false);
+                false,false);
         // 发现好店
         List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId(), false);
         ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
@@ -69,8 +69,7 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_DAILYFIND,
                 60,
-                false
-                );
+                false,false);
 
         Collections.shuffle(daliyGoodsVoList);
 
@@ -119,7 +118,7 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_FAGOODS,
                 20,
-                false
+                false,false
         );
         ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
         drawStyleVo.setGoodsList(faGoodsVoList);
@@ -130,7 +129,7 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_DAILYFIND,
                 60,
-                false
+                false,false
         );
 
         Collections.shuffle(daliyGoodsVoList);

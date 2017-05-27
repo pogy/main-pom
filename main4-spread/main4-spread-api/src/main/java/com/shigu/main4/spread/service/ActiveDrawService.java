@@ -44,7 +44,7 @@ public interface ActiveDrawService {
      * @param enabled
      * @return
      */
-    List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled);
+    List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled,boolean back);
 
     /**
      * 排序交换
