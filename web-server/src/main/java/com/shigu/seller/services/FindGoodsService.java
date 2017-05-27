@@ -120,7 +120,7 @@ public class FindGoodsService {
         }
         shoplimit++;
         long oneDay=3600*24*1000;
-        long now=System.currentTimeMillis();
+        long now=System.currentTimeMillis()+8*3600*1000;
         int delay= (int) ((oneDay-now%oneDay)/1000);
         redisIO.putTemp(limitKey,shoplimit,delay);
     }
