@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/saferz.css?t=1495620285176" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/saferz.css?t=1495875886056" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.66/gys4/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/gys5/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -238,9 +238,9 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费广告派位</a></li> 
+            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-            <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
+            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货竞拍</a></li> 
         </ul> 
     </div>
     
@@ -260,7 +260,7 @@ var webSite = '${webSite!}';
                     <#if identity.imgurl1??>
                     <img src="${identity.imgurl1!}">
                     <#else>
-                    <img src="http://style.571xz.com/gys4/css/img/addpic.png">
+                    <img src="http://style.571xz.com/gys5/css/img/addpic.png">
                     </#if>
                     <p>点击添加正反面</p>
                     <input type=file name=file accept=".jpg,.jpeg,.bmp,.gif,.png">
@@ -315,7 +315,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/saferz.js?t=1495620285176"></script>
+<script src="http://style.571xz.com/gys5/js/saferz.js?t=1495875886056"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
