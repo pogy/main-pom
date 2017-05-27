@@ -39,25 +39,29 @@ public class MarketShopListComparator implements Comparator<ShopShow> {
                 if (shopNumd1>shopNumd2) {
                     return 1;
                 }else if(shopNumd1 == shopNumd2){
-                    return 0;
+                    return compareByChar(shopNumo1,shopNumo2);
                 }else{
                     return -1;
                 }
             } catch (Exception e) {//没有数字可比
-                int sortInt = shopNumo1.compareTo(shopNumo2);
-                if (sortInt == 2) {
-                    return 1;
-                }
-                if (sortInt == -2) {
-                    return -1;
-                }
-                return sortInt;
+                return compareByChar(shopNumo1,shopNumo2);
             }
         } else {
             int floor1 = floorNumber(o1.getFloor());
             int floor2 = floorNumber(o2.getFloor());
             return floor1-floor2;
         }
+    }
+
+    public int compareByChar(String s1,String s2){
+        int sortInt = s1.compareTo(s2);
+        if (sortInt == 2) {
+            return 1;
+        }
+        if (sortInt == -2) {
+            return -1;
+        }
+        return sortInt;
     }
 
     /**
