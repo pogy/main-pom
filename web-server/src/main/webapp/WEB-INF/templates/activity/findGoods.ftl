@@ -19,7 +19,7 @@
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods.js?t=1495702820210"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods.js?t=1495702820211"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">

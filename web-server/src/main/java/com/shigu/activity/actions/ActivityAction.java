@@ -1,14 +1,12 @@
 package com.shigu.activity.actions;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.shigu.activity.service.ActiveDrawServiceImpl;
 import com.shigu.activity.vo.*;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -16,7 +14,6 @@ import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.tools.StringUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +59,7 @@ public class ActivityAction {
                 40,
                 false);
         // 发现好店
-        List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId());
+        List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId(), false);
         ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
         drawStyleVo.setGoodsList(faGoodsVoList);
         drawStyleVo.setShopList(faShopVoList);
@@ -178,7 +175,7 @@ public class ActivityAction {
         // 当前期次
         ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem();
         // 发现好店
-        List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId());
+        List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId(), false);
         packShopItems(faShopVoList, drawPem.getId());
         ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
         drawStyleVo.setShopList(faShopVoList);
