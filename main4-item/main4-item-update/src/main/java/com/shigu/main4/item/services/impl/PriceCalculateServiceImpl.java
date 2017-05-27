@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
  * @version domwiki 4.0.0
  * @since domwiki 4.0.0
  */
-//@Service
+@Service
 public class PriceCalculateServiceImpl implements PriceCalculateService {
 
     private static final Logger logger = LoggerFactory.getLogger(PriceCalculateServiceImpl.class);
