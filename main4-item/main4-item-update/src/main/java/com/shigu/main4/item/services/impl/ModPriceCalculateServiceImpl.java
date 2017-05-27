@@ -51,7 +51,7 @@ public class ModPriceCalculateServiceImpl implements PriceCalculateService {
         ShiguShop shiguShop = shiguShopMapper.selectByPrimaryKey(shopId);
         if (shiguShop != null) {
             String c = null;
-            int mod = 1;
+            int mod = 2;
             if (shiguShop.getPriceRule() != null && shiguShop.getPriceRule().length() > 2) {
                 String role = shiguShop.getPriceRule();
                 String[] split = role.split(";");
@@ -61,7 +61,7 @@ public class ModPriceCalculateServiceImpl implements PriceCalculateService {
                 }
             }
             if (c == null) {
-                c = "a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z";
+                c = "p";
             }
 
             return ModHandle.modOf(mod).handle(matchPrice(c, strs), price);
