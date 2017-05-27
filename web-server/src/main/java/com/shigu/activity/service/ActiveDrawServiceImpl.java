@@ -363,9 +363,10 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     /**
      * 查询当前期次店铺
      * @param pemId
+     * @param back
      * @return
      */
-    public List<ActiveDrawShopVo> selShopList(Long pemId){
+    public List<ActiveDrawShopVo> selShopList(Long pemId, boolean back){
         ActiveDrawPitExample drawPitExample = new ActiveDrawPitExample();
         drawPitExample.createCriteria().andTypeEqualTo(ActiveDrawPit.TYPE_SHOP);
         drawPitExample.setOrderByClause("num asc");
@@ -417,6 +418,12 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                         if (activeDrawShopVo != null) {
                             activeDrawShopVo.setNum(drawPit.getNum());
                             newDrawShopVoList.add(activeDrawShopVo);
+                        } else if (back) { // 如果是后台，坑位没数据也要显示在页面上
+                            ActiveDrawShopVo vo = new ActiveDrawShopVo();
+                            vo.setPemId(pemId);
+                            vo.setPitId(drawPit.getId());
+                            vo.setNum(drawPit.getNum());
+                            newDrawShopVoList.add(vo);
                         }
                     }
                     return newDrawShopVoList;
