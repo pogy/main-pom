@@ -1,23 +1,9 @@
 package com.shigu.buyer.actions;
 
-import com.shigu.buyer.bo.DataPackageBO;
-import com.shigu.buyer.bo.GoodsCollectBO;
-import com.shigu.buyer.bo.OnekeyRecordBO;
-import com.shigu.buyer.bo.RechangeBO;
-import com.shigu.buyer.bo.SaveEmailBO;
-import com.shigu.buyer.bo.SaveUserInfoBO;
-import com.shigu.buyer.bo.StoreCollectBO;
-import com.shigu.buyer.bo.StoreInBO;
-import com.shigu.buyer.bo.TixianBO;
+import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
-import com.shigu.buyer.vo.ApplyInfoVO;
-import com.shigu.buyer.vo.GoodsCollectVO;
-import com.shigu.buyer.vo.MailBindVO;
-import com.shigu.buyer.vo.OuterUserVO;
-import com.shigu.buyer.vo.PackageVO;
-import com.shigu.buyer.vo.StoreInVO;
-import com.shigu.buyer.vo.UserInfoVO;
+import com.shigu.buyer.vo.*;
 import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -33,18 +19,9 @@ import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
-import com.shigu.main4.ucenter.vo.DataPackage;
-import com.shigu.main4.ucenter.vo.OuterUser;
-import com.shigu.main4.ucenter.vo.RealNameApplyInfo;
-import com.shigu.main4.ucenter.vo.SafeAbout;
-import com.shigu.main4.ucenter.vo.UserInfo;
-import com.shigu.main4.ucenter.vo.UserInfoUpdate;
-import com.shigu.main4.ucenter.vo.UserLicense;
+import com.shigu.main4.ucenter.vo.*;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
-import com.shigu.buyer.bo.SafeRzBO;
-import com.shigu.buyer.bo.SavePasswordBO;
-import com.shigu.buyer.vo.SafeRzVO;
 import com.shigu.main4.vo.ShopApply;
 import com.shigu.main4.vo.ShopApplyDetail;
 import com.shigu.session.main4.PersonalSession;
@@ -52,6 +29,9 @@ import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.session.main4.tool.BeanMapper;
+import com.shigu.spread.enums.SpreadEnum;
+import com.shigu.spread.services.SpreadService;
+import com.shigu.spread.vo.ImgBannerVO;
 import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.EmailUtil;
 import com.shigu.tools.JsonResponseUtil;
@@ -63,7 +43,6 @@ import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -118,10 +97,11 @@ public class MemberAction {
     @Autowired
     MemberSimpleService memberSimpleService;
 
-    String ftlDir="buyer";
-
     @Autowired
     OssIO ossIO;
+
+    @Autowired
+    SpreadService spreadService;
     /**
      * 分销商首页
      * @return
@@ -136,7 +116,14 @@ public class MemberAction {
         String tempCode=paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempCode);
         model.addAttribute("jifenCount",userLicenseService.selUserScore(ps.getUserId()));
-        return ftlDir+"/memberfxs";
+        // 分销商广告
+        List<ImgBannerVO> imageGoat = spreadService.selImgBanners(SpreadEnum.BACK_MEMBER).selReal();
+        if (!imageGoat.isEmpty()) {
+            ImgBannerVO imgBannerVO = imageGoat.get(0);
+            model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
+            model.addAttribute("tHref", imgBannerVO.getHref());
+        }
+        return "buyer/memberfxs";
     }
 
     /**
@@ -152,7 +139,7 @@ public class MemberAction {
             outerUserVOs.add(new OuterUserVO(ou));
         }
         model.addAttribute("outer",outerUserVOs);
-        return ftlDir+"/fenxiaoZhanghao";
+        return "buyer/fenxiaoZhanghao";
     }
 
     /**
@@ -192,7 +179,7 @@ public class MemberAction {
         model.addAttribute("get",bo);
         model.addAttribute("website",bo.getWebsite());
         model.addAttribute("keyword", bo.getKeyword());
-        return ftlDir+"/goodsCollectinit";
+        return "buyer/goodsCollectinit";
     }
 
     /**
@@ -238,7 +225,7 @@ public class MemberAction {
                 goodslist.add(new PackageVO(dp));
         }
         model.addAttribute("goodslist",goodslist);
-        return ftlDir+"/goodsDataPackageinit";
+        return "buyer/goodsDataPackageinit";
     }
 
     /**
@@ -301,7 +288,7 @@ public class MemberAction {
         model.addAttribute("page",bo.getPage());
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
         model.addAttribute("goodslist",pager.getContent());
-        return ftlDir+"/shiguOnekeyRecordinit";
+        return "buyer/shiguOnekeyRecordinit";
     }
 
     /**
@@ -348,7 +335,7 @@ public class MemberAction {
         model.addAttribute("get",bo);
         model.addAttribute("website",bo.getWebsite());
         model.addAttribute("goodslist",pager.getContent());
-        return ftlDir+"/storeCollectinit";
+        return "buyer/storeCollectinit";
     }
 
     /**
@@ -391,7 +378,7 @@ public class MemberAction {
         }else{
             model.addAttribute("safe_level",0);
         }
-        return ftlDir+"/safeindex";
+        return "buyer/safeindex";
     }
 
     /**
@@ -434,7 +421,7 @@ public class MemberAction {
             safeRzVO.setMsg(msg);
         }
         model.addAttribute("identity",safeRzVO);
-        return ftlDir+"/saferz";
+        return "buyer/saferz";
     }
 
     /**
@@ -488,7 +475,7 @@ public class MemberAction {
         UserInfoVO userInfoVO=BeanMapper.map(userInfo, UserInfoVO.class);
         userInfoVO.setUserId(ps.getUserId());
         model.addAttribute("userInfo", userInfoVO);
-        return ftlDir+"/sysSetsindex";
+        return "buyer/sysSetsindex";
     }
 
     /**
@@ -551,7 +538,7 @@ public class MemberAction {
         if(checkFromForget(ps.getUserId(),code,phoneCode)){
             model.addAttribute("fromForget",phoneCode);
         }
-        return ftlDir+"/safexgmm";
+        return "buyer/safexgmm";
     }
 
     /**
@@ -621,7 +608,7 @@ public class MemberAction {
                 }
             }
         }
-        return ftlDir+"/safeszyx";
+        return "buyer/safeszyx";
     }
 
     /**
@@ -690,7 +677,7 @@ public class MemberAction {
             mail.setMsg("当前登陆账号与认证发起账号不符合,请切换账号,重新激活");
         }
         model.addAttribute("mail",mail);
-        return ftlDir+"/safeszyx";
+        return "buyer/safeszyx";
     }
     /**
      * 充值
@@ -701,7 +688,7 @@ public class MemberAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode=paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempcode);
-        return ftlDir+"/iwantToRechargein5";
+        return "buyer/iwantToRechargein5";
     }
 
     /**
@@ -728,7 +715,7 @@ public class MemberAction {
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode=paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode",tempcode);
-        return ftlDir+"/withdraw5Apply";
+        return "buyer/withdraw5Apply";
     }
 
     /**
@@ -761,7 +748,7 @@ public class MemberAction {
             }
         }
         model.addAttribute("storelist",storelist);
-        return ftlDir+"/storeIn";
+        return "buyer/storeIn";
     }
 
     /**
@@ -776,7 +763,7 @@ public class MemberAction {
         }
         ShopApplyDetail detail=shopRegistService.selDetailById(ps.getUserId(),userCode);
         model.addAttribute("applyInfo",new ApplyInfoVO(detail));
-        return ftlDir+"/storeInRead";
+        return "buyer/storeInRead";
     }
 
     /**
@@ -791,7 +778,7 @@ public class MemberAction {
         }
         ShopApplyDetail detail=shopRegistService.selDetailById(ps.getUserId(),userCode);
         model.addAttribute("applyInfo",new ApplyInfoVO(detail));
-        return ftlDir+"/storeInAlter";
+        return "buyer/storeInAlter";
     }
 
     /**
