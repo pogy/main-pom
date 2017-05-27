@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 /**
  * Created by zhaohongbo on 17/5/27.
  */
-@Service
+@Service("shopToEsService")
 public class ShopToEsServiceImpl implements ShopToEsService {
 
     @Autowired

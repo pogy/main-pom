@@ -306,7 +306,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             return;
         }
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
-        drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id).andEnabledEqualTo(false);
+        drawGoodsExample.createCriteria().andGoodsIdEqualTo(goodsId).andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id).andEnabledEqualTo(false);
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
         if(drawGoodsList.size() == 0){
             ActiveDrawGoods drawGoods = new ActiveDrawGoods();
@@ -318,6 +318,11 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             drawGoods.setType(type);
             drawGoods.setSort(id.intValue());
             drawGoods.setPitId(id);
+            //把本商品在本期的删除
+            drawGoodsExample.clear();
+            drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(type);
+            activeDrawGoodsMapper.deleteByExample(drawGoodsExample);
+
             activeDrawGoodsMapper.insertSelective(drawGoods);
             return;
         }
@@ -327,6 +332,11 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             // 更换商品
             activeDrawGoods.setEnabled(true);
             activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
+
+            //把本商品在本期的删除
+            drawGoodsExample.clear();
+            drawGoodsExample.createCriteria().andGoodsIdEqualTo(goodsId).andPemIdEqualTo(pemId).andTypeEqualTo(type);
+            activeDrawGoodsMapper.deleteByExample(drawGoodsExample);
 
             // 新增商品
             activeDrawGoods.setId(null);

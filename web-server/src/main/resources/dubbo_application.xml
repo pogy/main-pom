@@ -36,4 +36,5 @@
     <dubbo:service interface="com.shigu.main4.activity.service.ActivityDubboService" ref="activityDubboService" timeout="20000"/>
     <dubbo:service interface="com.shigu.main4.goat.service.GoatDubboService" ref="goatDubboService" timeout="20000"/>
     <dubbo:service interface="com.shigu.main4.spread.service.ActiveDrawService" ref="activeDrawService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopToEsService" ref="shopToEsService" timeout="20000" />
 </beans>
