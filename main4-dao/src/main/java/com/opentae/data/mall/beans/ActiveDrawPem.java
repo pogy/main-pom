@@ -31,6 +31,18 @@ public class ActiveDrawPem {
 
     /** 创建时间 */
     private Date createTime;
+    /**
+     * 期次
+     */
+    private Integer term;
+
+    public Integer getTerm() {
+        return term;
+    }
+
+    public void setTerm(Integer term) {
+        this.term = term;
+    }
 
     public Long getId() {
         return id;

@@ -1,6 +1,8 @@
 package com.opentae.data.mall.beans;
 
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,6 +19,10 @@ public class ActiveDrawPit implements Serializable{
     public final static String GOODS_TYPE_DAILY = "daily";
 
     /** 主键ID */
+    @Id
+    @GeneratedValue(
+            generator = "JDBC"
+    )
     private Long id;
 
     /** 几位坑 */
