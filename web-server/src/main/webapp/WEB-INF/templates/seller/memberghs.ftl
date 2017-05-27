@@ -18,7 +18,7 @@
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.66/gys4/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/gys5/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -238,9 +238,9 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费广告派位</a></li> 
+            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li>
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-            <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
+            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货竞拍</a></li>
         </ul> 
     </div>
     
@@ -327,6 +327,16 @@ var webSite = '${webSite!}';
     </div>
     
     
+    <script>/*============ xz/huodong#imgtips1 BEGIN ============*/
+
+var pemNum = '${pemNum!}';
+var imgsrc = '${imgsrc!}';
+var tHref = '${tHref!}';
+
+/*============ xz/huodong#imgtips1 END ============*/
+
+
+</script>
 </div>
 <div class="footer">
     <div class="inner">
@@ -359,9 +369,9 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-        <script src="http://style.571xz.com/gys4/temp/echarts.js"></script>
-        <script src="http://style.571xz.com/gys4/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/gys4/js/memberghs.js?t=1495767944833"></script>
+        <script src="http://style.571xz.com/gys5/temp/echarts.js"></script>
+        <script src="http://style.571xz.com/gys5/temp/html5sup.js"></script>
+<script src="http://style.571xz.com/gys5/js/memberghs.js?t=1495878471386"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
