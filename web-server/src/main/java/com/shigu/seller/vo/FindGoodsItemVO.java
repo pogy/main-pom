@@ -1,9 +1,22 @@
 package com.shigu.seller.vo;
 
+import com.shigu.main4.vo.ItemShowBlock;
+
 /**
  * Created by zhaohongbo on 17/5/27.
  */
 public class FindGoodsItemVO {
+
+    public FindGoodsItemVO() {
+    }
+
+    public FindGoodsItemVO(ItemShowBlock isb) {
+        this.setGoodsId(isb.getItemId());
+        this.setGoodsNo(isb.getGoodsNo());
+        this.setPicUrl(isb.getImgUrl());
+        this.setTitle(isb.getTitle());
+        this.setPrice(isb.getPrice());
+    }
 
     private String picUrl;
 
