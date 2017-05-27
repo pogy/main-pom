@@ -1,5 +1,7 @@
 package com.shigu.seller.actions;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.vo.ItemShowBlock;
@@ -13,6 +15,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,6 +33,17 @@ public class FindGoodsAction {
 
     @Autowired
     FindGoodsService findGoodsService;
+
+    /**
+     * 发现好货活动广告设置
+     * @return
+     */
+    @RequestMapping("findGoodsChange")
+    public String findGoodsChange(HttpSession session, Model model) throws Main4Exception {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        model.addAttribute("myFindTerms",findGoodsService.termVOs(ps.getLogshop().getShopId()));
+        return "seller/findGoodsChange";
+    }
     /**
      * 查询所有商品
      * @return
@@ -37,7 +51,7 @@ public class FindGoodsAction {
     @RequestMapping("allGoodsJson")
     @ResponseBody
     public JSONObject allGoodsJson(FindGoodsSelBO bo, HttpSession session){
-        int size=20;
+        int size=5;
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShiguPager<FindGoodsItemVO> pager=findGoodsService.selItemsForFindGoods(bo,ps.getLogshop().getShopId(),size);
         JSONObject obj= JsonResponseUtil.success();
@@ -52,8 +66,13 @@ public class FindGoodsAction {
      */
     @RequestMapping("setNewFdGoodsData")
     @ResponseBody
-    public JSONObject setNewFdGoodsData(Long id,Long goodsId,HttpSession session){
-
-        return null;
+    public JSONObject setNewFdGoodsData(Long termId,Long id,Long goodsId,HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        try {
+            findGoodsService.setGoods(termId,id,goodsId,ps.getLogshop().getShopId());
+        } catch (Main4Exception e) {
+            throw new JsonErrException(e.getMessage());
+        }
+        return JsonResponseUtil.success();
     }
 }

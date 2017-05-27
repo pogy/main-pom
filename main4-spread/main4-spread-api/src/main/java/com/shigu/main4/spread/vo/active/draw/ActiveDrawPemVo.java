@@ -14,11 +14,21 @@ public class ActiveDrawPemVo implements Serializable{
 
     private String info;
 
+    private Integer term;
+
     /** 开始时间 */
     private Date startTime;
 
     /** 创建时间 */
     private Date createTime;
+
+    public Integer getTerm() {
+        return term;
+    }
+
+    public void setTerm(Integer term) {
+        this.term = term;
+    }
 
     public Long getId() {
         return id;
