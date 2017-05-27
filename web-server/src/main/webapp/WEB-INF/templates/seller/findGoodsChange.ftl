@@ -4,18 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-        <#if $it.title?? && ($it.title?size) gt 0>
-        <title>
-            <#list $it.title as item>
-                ${item!}
-            </#list>
-        </title>
-        </#if>
-    
-    
-    
-        
-        
+    <title>四季星座网-供应商中心-广告更换</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -25,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/findGoodsChange.css?t=1495885426502" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/findGoodsChange.css?t=1495885707677" rel="stylesheet">
     
   </head>
 <body>
@@ -278,7 +267,7 @@ var webSite = '${webSite!}';
                         <ul data-id="${good.id!}">
                             <li class="num">${good.code!}</li>
                             <li class="pic"><a href="http://${webSite!}.571xz.com/item.htm?id=${good.goodsId!}" target="_blank"><img src="${good.picUrl!}_240x240.jpg" ></a></li>
-                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.id!}" data-termId="${good.termId!}" data-web="${good.webSite!}">上款</b></li>
+                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.id!}" data-termId="${myFindTerm.termId!}" data-web="${good.webSite!}">上款</b></li>
                         </ul>
                         </#list>
                     </div>
@@ -335,7 +324,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/findGoodsChange.js?t=1495885426502"></script>
+<script src="http://style.571xz.com/gys5/js/findGoodsChange.js?t=1495885707677"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
