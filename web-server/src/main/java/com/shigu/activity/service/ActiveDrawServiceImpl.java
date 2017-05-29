@@ -128,28 +128,36 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
             // 制作店铺数据
             List<Long> shopIds = BeanMapper.getFieldList(goodsTinyList, "storeId", Long.class);
-            ShiguShopExample shopExample = new ShiguShopExample();
-            shopExample.createCriteria().andShopIdIn(shopIds);
-            Map<Long, ShiguShop> shopMap =
-                    BeanMapper.list2Map(
-                            shiguShopMapper.selectFieldsByExample(
-                                    shopExample,FieldUtil.codeFields("shop_id,shop_num")),
-                            "shopId",
-                            Long.class
-                    );
-
+            Map<Long, ShiguShop> shopMap;
+            if(shopIds.size()>0) {
+                ShiguShopExample shopExample = new ShiguShopExample();
+                shopExample.createCriteria().andShopIdIn(shopIds);
+                shopMap =
+                        BeanMapper.list2Map(
+                                shiguShopMapper.selectFieldsByExample(
+                                        shopExample, FieldUtil.codeFields("shop_id,shop_num")),
+                                "shopId",
+                                Long.class
+                        );
+            }else {
+                shopMap=new HashMap<>();
+            }
             // 制作市场数据
             List<Long> parentMarketIdList = BeanMapper.getFieldList(goodsTinyList, "parentMarketId", Long.class);
-            ShiguMarketExample marketExample = new ShiguMarketExample();
-            marketExample.createCriteria().andMarketIdIn(parentMarketIdList);
-            Map<Long, ShiguMarket> marketMap =
-                    BeanMapper.list2Map(
-                        shiguMarketMapper.selectFieldsByExample(
-                                marketExample, FieldUtil.codeFields("market_id,market_name")),
-                        "marketId",
-                        Long.class
-                );
-
+            Map<Long, ShiguMarket> marketMap;
+            if(parentMarketIdList.size()>0) {
+                ShiguMarketExample marketExample = new ShiguMarketExample();
+                marketExample.createCriteria().andMarketIdIn(parentMarketIdList);
+                marketMap =
+                        BeanMapper.list2Map(
+                                shiguMarketMapper.selectFieldsByExample(
+                                        marketExample, FieldUtil.codeFields("market_id,market_name")),
+                                "marketId",
+                                Long.class
+                        );
+            }else {
+                marketMap=new HashMap<>();
+            }
             // 组装页面VO
             for(ActiveDrawGoods drawGoods : drawGoodsList){
                 ShiguGoodsTiny shiguGoodsTiny = goodsTinyMap.get(drawGoods.getGoodsId());
