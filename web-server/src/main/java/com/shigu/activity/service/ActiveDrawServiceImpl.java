@@ -402,14 +402,12 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             List<ActiveDrawShopVo> drawShopVoList = new ArrayList<>();
             if (!drawShopList.isEmpty()) {
                 List<Long> shopIdsList = BeanMapper.getFieldList(drawShopList, "shopId", Long.class);
-                SearchHit[] hits = ElasticConfiguration.searchClient
-                        .prepareSearch("shop")
-                        .setQuery(QueryBuilders.termsQuery("shop_id", shopIdsList))
-                        .execute().actionGet().getHits().getHits();
-                if (hits != null && hits.length > 0) {
+                ShiguShopExample shopExample=new ShiguShopExample();
+                shopExample.createCriteria().andShopIdIn(shopIdsList);
+                List<ShiguShop> shops=shiguShopMapper.selectByExample(shopExample);
+                if (shopIdsList.size() > 0) {
                     Map<Long, ActiveDrawShop> drawShopMap = BeanMapper.list2Map(drawShopList, "shopId", Long.class);
-                    for (SearchHit hit : hits) {
-                        ShiguShop shiguShop = JSON.parseObject(hit.getSourceAsString(), ShiguShop.class);
+                    for (ShiguShop shiguShop : shops) {
                         ActiveDrawShop activeDrawShop = drawShopMap.get(shiguShop.getShopId());
                         if (activeDrawShop != null) {
                             ActiveDrawShopVo drawShopVo = new ActiveDrawShopVo();
