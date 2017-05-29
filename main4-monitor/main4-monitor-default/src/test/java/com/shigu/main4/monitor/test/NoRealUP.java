@@ -63,11 +63,13 @@ public class NoRealUP {
     @Test
     public void gogogo(){
         Calendar cal=Calendar.getInstance();
+        cal.add(Calendar.HOUR,-1);
+        Date fo=cal.getTime();
         cal.add(Calendar.DATE,-7);
         Date to=cal.getTime();
         ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
         example.setWebSite("hz");
-        example.createCriteria().andCreatedGreaterThan(to);
+        example.createCriteria().andCreatedGreaterThan(to).andCreatedLessThan(fo);
         int page=0;
         int size=100;
         example.setStartIndex(page);
