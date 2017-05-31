@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
  * @version main_site4.0 4.0.0
  * @since main_site4.0 4.0.0
  */
-@Service
+//@Service
 public class ShopSearchServiceImpl implements ShopSearchService {
 
     public static final Pattern CHS_PATTERN = Pattern.compile("[\\u4E00-\\u9FA5]+");
