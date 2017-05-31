@@ -82,10 +82,10 @@ public class ShopSearchServiceImpl implements ShopSearchService {
 
         SearchHits response = ElasticConfiguration.searchClient.prepareSearch("shop").setSize(pageSize).setFrom((page - 1) * pageSize)
                 .setQuery(qb)
-                .addHighlightedField("shop_num")
-                .addHighlightedField("market")
-                .setHighlighterPreTags("<font style='color:red;'>")
-                .setHighlighterPostTags("</font>")
+//                .addHighlightedField("shop_num")
+//                .addHighlightedField("market")
+//                .setHighlighterPreTags("<font style='color:red;'>")
+//                .setHighlighterPostTags("</font>")
                 .setSearchType(SearchType.DEFAULT)
                 .setTypes(webSite)
                 .execute().actionGet().getHits();
