@@ -40,10 +40,14 @@ interface SubItemOrder{
 
 }
 interface Product{
-void modifyWeight(Long meter);
-void modifyPrice(Long price);
 List<SkuVO> selSkus();
 }
+
+interface ItemProduct{
+void modifyWeight(Long meter);
+void modifyPrice(Long price);
+}
+
 interface Sender{
 void sendOrder(Order order);//发放订单给代发
 }
@@ -95,15 +99,21 @@ TRADE_CLOSED  //付款以后用户退款成功，交易自动关闭
 
 }
 
-class ProductVO{
--Long productId;
--Long shopId;
--String outerKey;
--ProductType type;
--SkuVO sku;
+class ItemProductVO{
+-Long pid;
+-Long goodsId;
+-String webSite;
+-String picUrl;
+-String title;
+-Long price;
+-String marketName;
+-String floor;
+-String shopNum;
+-Long market
+-ItemSkuVO sku;
 }
 
-class SkuVO{
+class ItemSkuVO{
 -Long skuId;
 -Long productId;
 -String name;
@@ -142,8 +152,9 @@ class ServiceVO{
 }
 
 Cart *-- Product
-Product <|-- ProductVO
-ProductVO --o SkuVO
+Product <|-- ItemProduct
+ItemProduct <|-- ItemProductVO
+ItemProductVO --o ItemSkuVO
 
 SubOrder <|-- SubItemOrder
 Order <|-- ItemOrder
