@@ -1,9 +1,12 @@
 package com.shigu.main4.storeservices.impl;
 
+import com.aliyun.opensearch.OpenSearchClient;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.vo.SearchShop;
 import com.shigu.main4.vo.SearchShopSimple;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -11,7 +14,12 @@ import java.util.List;
  * 阿里开放搜索 实现店铺搜索
  * Created by bugzy on 2017/5/31 0031.
  */
+@Service
 public class ShopSearchServiceOpenImpl implements ShopSearchService {
+
+    @Autowired
+    private OpenSearchClient openSearchClient;
+
     /**
      * 查单店商品
      *
