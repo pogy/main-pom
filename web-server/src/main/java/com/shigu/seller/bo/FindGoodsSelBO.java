@@ -6,6 +6,8 @@ package com.shigu.seller.bo;
  */
 public class FindGoodsSelBO {
 
+    private Integer page=1;
+
     private String q;
 
     private Double startPrice;
@@ -34,5 +36,13 @@ public class FindGoodsSelBO {
 
     public void setEndPrice(Double endPrice) {
         this.endPrice = endPrice;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
 }

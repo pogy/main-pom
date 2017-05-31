@@ -31,6 +31,7 @@ public class ModPriceCalculateServiceImplTest {
         tinyExample.setWebSite("hz");
         tinyExample.setStartIndex(4000);
         tinyExample.setEndIndex(50);
+        tinyExample.setOrderByClause("created desc");
         for (ShiguGoodsTiny tiny : shiguGoodsTinyMapper.selectByConditionList(tinyExample)) {
             System.out.println(tiny.getGoodsId() + ", " + tiny.getTitle() + ", " + tiny.getGoodsNo() + ", " + tiny.getOuterId());
             System.out.println("原价："+tiny.getPrice()+", 计算批发价:" + priceCalculateService.pickPipriceFromTitle(tiny.getStoreId(), tiny.getPrice(), tiny.getTitle(), tiny.getGoodsNo(), tiny.getOuterId()));

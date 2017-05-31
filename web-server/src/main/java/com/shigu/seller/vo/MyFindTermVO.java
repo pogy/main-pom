@@ -8,9 +8,13 @@ import java.util.List;
  */
 public class MyFindTermVO {
     /**
-     * 期号
+     * 期ID
      */
-    private Integer termId;
+    private Long termId;
+    /**
+     * 期次
+     */
+    private Integer term;
     /**
      * 开始上线时间
      */
@@ -24,11 +28,19 @@ public class MyFindTermVO {
      */
     private List<FindGoodsVO> goods;
 
-    public Integer getTermId() {
+    public Integer getTerm() {
+        return term;
+    }
+
+    public void setTerm(Integer term) {
+        this.term = term;
+    }
+
+    public Long getTermId() {
         return termId;
     }
 
-    public void setTermId(Integer termId) {
+    public void setTermId(Long termId) {
         this.termId = termId;
     }
 

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>个人中心</title>
+    <title>四季星座网-供应商中心-广告更换</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/iwantToRechargein5.css?t=1495875889472" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/findGoodsChange.css?t=1495888938131" rel="stylesheet">
     
   </head>
 <body>
@@ -228,7 +228,7 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>财务信息</h2>
         <ul>
-            <li><a class="selected"  href="${main_host!}seller/iwantToRechargein5.htm">充值</a></li> 
+            <li><a href="${main_host!}seller/iwantToRechargein5.htm"  >充值</a></li> 
             <li><a href="${main_host!}seller/withdraw5Apply.htm"  >提现</a></li> 
         </ul> 
         <h2>账号管理</h2>
@@ -240,66 +240,58 @@ var webSite = '${webSite!}';
         <ul>
             <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货竞拍</a></li> 
+            <li><a class="selected"  href="${main_host!}seller/findGoodsChange.htm">发现好货竞拍</a></li> 
         </ul> 
     </div>
     
     <div class="content shadow-box">
-        <div class="info-head clearfix">
-            <div class="lf">
-                <img width="100" height="100" src="${session_user_redis__.headUrl!}">
-                <div class="myinfo">
-                    <p class="welcome"><em>${session_user_redis__.userNick!}</em></p>
-                    <p>星座宝账户</p>
+        <div class="adrPosition">
+            <#if (myFindTerms?size) gt 0>
+            
+            <#list myFindTerms as myFindTerm>
+            <div class="posWrap">
+                <div class="posIssue">
+                    <span class="issueNum">第${myFindTerm.term!}期</span>
+                    <span class="issueTime">（${myFindTerm.startOnline!} — ${myFindTerm.endOnline!}）</span>
+                </div>
+                <div class="posList">
+                    <div class="posTitle">
+                        <ul>
+                            <li class="num">广告位编号</li>
+                            <li class="pic">商品图片</li>
+                            <li class="operate">操作</li>
+                        </ul>
+                    </div>
+                    <div class="posItem">
+                        <#list myFindTerm.goods as good>
+                        <ul data-id="${good.id!}">
+                            <li class="num">${good.code!}</li>
+                            <li class="pic"><a href="http://${webSite!}.571xz.com/item.htm?id=${good.goodsId!}" target="_blank"><img src="${good.picUrl!}_240x240.jpg" ></a></li>
+                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.id!}" data-termId="${myFindTerm.termId!}" data-web="${good.webSite!}">上款</b></li>
+                        </ul>
+                        </#list>
+                    </div>
                 </div>
             </div>
-            <div class="rt">
-                <input type=hidden id="tempCode" value="${tempCode!}">
-                <p>
-                    <em>账户余额（元）</em>
-                    <span id="yuer_balance">加载中...</span>
-                </p>
-                <p>
-                    <em>账户冻结余额（元）</em>
-                    <span id="yuer_blockMoney">加载中...</span>
-                </p>
+            </#list>
+            <#else>
+            <div class="noAdr">
+                <h3>本期您暂时还没有广告位</h3>
+                <p>如果广告刚拍下，管理员还没有派位，请耐心等待！</p>
+                <a class="partInBtn" href="https://shop121675953.taobao.com" target="_blank">参与竞拍</a>
             </div>
+            </#if>
         </div>
-        <div class="info-body">
-            <h3>收款信息（支付宝）</h3>
-            <div class="clearfix">
-                <div class="lf">
-                    <p>收款账户：<em>杭州石谷网络科技有限公司</em></p>
-                    <p>付款方式：<em>支付宝选择付款</em></p>
-                    <p>收款账号：<em>web@571xz.com</em></p>
-                </div>
-                <div class="rt">
-                    
-                </div>
-            </div>
-        </div>
-        <div class="formbox">
-            <ul>
-                <li class="clearfix">
-                    <label>充值类型：</label><input class="textinput" readonly value="支付宝">
-                </li>
-                <li class="clearfix">
-                    <label>支付宝交易号：</label><input id="paynum" class="textinput" placeholder="请输入支付宝交易号">
-                </li>
-                <li class="clearfix">
-                    <label>支付宝账号：</label><input id="alipay" class="textinput" placeholder="请输入支付宝账号">
-                </li>
-                <li class="clearfix">
-<#assign text>{"text":'提交充值信息',"id":'dosubmit'}</#assign>
-<#assign $it=text?eval />
-                                        <button class="gyButton" jbtn="" id="dosubmit">提交充值信息</button>
-                    
-                </li>
-            </ul>
-        </div>
-        
-        
     </div>
+    <#if (myFindTerms?size) gt 0>
+    <div class="partInWrap partInFixed">
+        <div class="layout">
+            <div class="partInBox">
+                <a class="partInBtn" href="https://shop121675953.taobao.com" target="_blank">参与竞拍</a>
+            </div>
+        </div>
+    </div>
+    </#if>
 </div>
 <div class="footer">
     <div class="inner">
@@ -332,7 +324,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/iwantToRechargein5.js?t=1495875889472"></script>
+<script src="http://style.571xz.com/gys5/js/findGoodsChange.js?t=1495888938131"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

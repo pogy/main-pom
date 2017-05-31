@@ -128,28 +128,36 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
             // 制作店铺数据
             List<Long> shopIds = BeanMapper.getFieldList(goodsTinyList, "storeId", Long.class);
-            ShiguShopExample shopExample = new ShiguShopExample();
-            shopExample.createCriteria().andShopIdIn(shopIds);
-            Map<Long, ShiguShop> shopMap =
-                    BeanMapper.list2Map(
-                            shiguShopMapper.selectFieldsByExample(
-                                    shopExample,FieldUtil.codeFields("shop_id,shop_num")),
-                            "shopId",
-                            Long.class
-                    );
-
+            Map<Long, ShiguShop> shopMap;
+            if(shopIds.size()>0) {
+                ShiguShopExample shopExample = new ShiguShopExample();
+                shopExample.createCriteria().andShopIdIn(shopIds);
+                shopMap =
+                        BeanMapper.list2Map(
+                                shiguShopMapper.selectFieldsByExample(
+                                        shopExample, FieldUtil.codeFields("shop_id,shop_num")),
+                                "shopId",
+                                Long.class
+                        );
+            }else {
+                shopMap=new HashMap<>();
+            }
             // 制作市场数据
             List<Long> parentMarketIdList = BeanMapper.getFieldList(goodsTinyList, "parentMarketId", Long.class);
-            ShiguMarketExample marketExample = new ShiguMarketExample();
-            marketExample.createCriteria().andMarketIdIn(parentMarketIdList);
-            Map<Long, ShiguMarket> marketMap =
-                    BeanMapper.list2Map(
-                        shiguMarketMapper.selectFieldsByExample(
-                                marketExample, FieldUtil.codeFields("market_id,market_name")),
-                        "marketId",
-                        Long.class
-                );
-
+            Map<Long, ShiguMarket> marketMap;
+            if(parentMarketIdList.size()>0) {
+                ShiguMarketExample marketExample = new ShiguMarketExample();
+                marketExample.createCriteria().andMarketIdIn(parentMarketIdList);
+                marketMap =
+                        BeanMapper.list2Map(
+                                shiguMarketMapper.selectFieldsByExample(
+                                        marketExample, FieldUtil.codeFields("market_id,market_name")),
+                                "marketId",
+                                Long.class
+                        );
+            }else {
+                marketMap=new HashMap<>();
+            }
             // 组装页面VO
             for(ActiveDrawGoods drawGoods : drawGoodsList){
                 ShiguGoodsTiny shiguGoodsTiny = goodsTinyMap.get(drawGoods.getGoodsId());
@@ -305,7 +313,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             return;
         }
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
-        drawGoodsExample.createCriteria().andGoodsIdEqualTo(goodsId).andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id).andEnabledEqualTo(false);
+        drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andTypeEqualTo(type).andPitIdEqualTo(id).andEnabledEqualTo(false);
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
         if(drawGoodsList.size() == 0){
             ActiveDrawGoods drawGoods = new ActiveDrawGoods();
@@ -319,7 +327,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             drawGoods.setPitId(id);
             //把本商品在本期的删除
             drawGoodsExample.clear();
-            drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(type);
+            drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(type).andEnabledEqualTo(true);
             activeDrawGoodsMapper.deleteByExample(drawGoodsExample);
 
             activeDrawGoodsMapper.insertSelective(drawGoods);
@@ -334,7 +342,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
             //把本商品在本期的删除
             drawGoodsExample.clear();
-            drawGoodsExample.createCriteria().andGoodsIdEqualTo(goodsId).andPemIdEqualTo(pemId).andTypeEqualTo(type);
+            drawGoodsExample.createCriteria().andGoodsIdEqualTo(goodsId).andPemIdEqualTo(pemId).andTypeEqualTo(type).andEnabledEqualTo(true);
             activeDrawGoodsMapper.deleteByExample(drawGoodsExample);
 
             // 新增商品
@@ -342,10 +350,10 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             activeDrawGoods.setEnabled(false);
             activeDrawGoods.setGoodsId(goodsId);
             activeDrawGoodsMapper.insertSelective(activeDrawGoods);
-            return;
+//            return;
         }
-        activeDrawGoods.setGoodsId(goodsId);
-        activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
+//        activeDrawGoods.setGoodsId(goodsId);
+//        activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
     }
 
     /**
@@ -394,14 +402,12 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             List<ActiveDrawShopVo> drawShopVoList = new ArrayList<>();
             if (!drawShopList.isEmpty()) {
                 List<Long> shopIdsList = BeanMapper.getFieldList(drawShopList, "shopId", Long.class);
-                SearchHit[] hits = ElasticConfiguration.searchClient
-                        .prepareSearch("shop")
-                        .setQuery(QueryBuilders.termsQuery("shop_id", shopIdsList))
-                        .execute().actionGet().getHits().getHits();
-                if (hits != null && hits.length > 0) {
+                ShiguShopExample shopExample=new ShiguShopExample();
+                shopExample.createCriteria().andShopIdIn(shopIdsList);
+                List<ShiguShop> shops=shiguShopMapper.selectByExample(shopExample);
+                if (shopIdsList.size() > 0) {
                     Map<Long, ActiveDrawShop> drawShopMap = BeanMapper.list2Map(drawShopList, "shopId", Long.class);
-                    for (SearchHit hit : hits) {
-                        ShiguShop shiguShop = JSON.parseObject(hit.getSourceAsString(), ShiguShop.class);
+                    for (ShiguShop shiguShop : shops) {
                         ActiveDrawShop activeDrawShop = drawShopMap.get(shiguShop.getShopId());
                         if (activeDrawShop != null) {
                             ActiveDrawShopVo drawShopVo = new ActiveDrawShopVo();
@@ -554,6 +560,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         ActiveDrawPem drawPem = new ActiveDrawPem();
         drawPem.setStartTime(nextDrawPemTime);
         drawPem.setCreateTime(new Date());
+        drawPem.setTerm(activeDrawPemMapper.countByExample(new ActiveDrawPemExample())+1);
         activeDrawPemMapper.insertSelective(drawPem);
     }
 

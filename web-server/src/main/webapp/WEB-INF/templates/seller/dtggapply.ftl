@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/dtggapply.css?t=1495620442237" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/dtggapply.css?t=1495875875931" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.66/gys4/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/gys5/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -238,9 +238,9 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a class="selected dtgg"  href="${main_host!}seller/dtggapply.htm?id=1001">免费广告派位</a></li> 
+            <li><a class="selected dtgg"  href="${main_host!}seller/dtggapply.htm?id=1001">免费LED广告</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-            <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
+            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货竞拍</a></li> 
         </ul> 
     </div>
     
@@ -273,11 +273,11 @@ var webSite = '${webSite!}';
         </div>
         
     </div>
-    <script>/*============ gys4/dtggapply#main BEGIN ============*/
+    <script>/*============ gys5/dtggapply#main BEGIN ============*/
 
 var msg = '${msg!}';
 
-/*============ gys4/dtggapply#main END ============*/
+/*============ gys5/dtggapply#main END ============*/
 
 
 </script>
@@ -313,7 +313,7 @@ var msg = '${msg!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/dtggapply.js?t=1495620442237"></script>
+<script src="http://style.571xz.com/gys5/js/dtggapply.js?t=1495875875931"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
