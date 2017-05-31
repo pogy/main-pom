@@ -95,12 +95,6 @@ TRADE_CLOSED  //付款以后用户退款成功，交易自动关闭
 
 }
 
-enum MetarialType{
-PLASTIC  //塑料
-CARTON  //纸盒
-}
-
-
 class ProductVO{
 -Long productId;
 -Long shopId;
@@ -133,14 +127,16 @@ class LogisticsVO{
 -Long companyId;//快递公司ID
 }
 
-class PackageVO{
--MetarialType metarial;
+class MetarialVO{
+-Long id;
+-String name;
 -Integer size;//尺寸
 -Long price;//价格
 }
 
 class ServiceVO{
--Long fee;//费用
+-Long id;//主键
+-Long price;//费用
 -String text;//服务描述
 -Integer flag;//服务标识
 }
@@ -161,7 +157,7 @@ ItemOrderVO *-- SubItemOrderVO
 ItemOrderVO --o ServiceVO
 
 ItemOrderVO --o SenderVO
-ItemOrderVO --o PackageVO
+ItemOrderVO --o MetarialVO
 ItemOrderVO --o LogisticsVO
 
 Order --o PayApplyVO
