@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,13 +32,17 @@ public class AdMst {
 
     @Test
     public void testMsg(){
-        System.out.println(sendSms_quick("18888971970","四季星座网温馨提示：（报名时间为5月12日-5月14日20时）网站广告位报名入口已发布，本期总计首页34个位置，轮转播区2个，首焦下方3个，热卖10个，推荐档口7个，元素馆5个，商品库右侧7个（注意：所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台，“发现好货”栏目 10个位置将在13日20点开始竞拍【四季星座网】"));
+        System.out.println(sendSms_quick("18888971970","四季星座网温馨提示：（报名时间为5月31日-6月2日20时）网站广告位报名入口已发布，本期总计首页38个位置，轮转播区1个，首焦下方3个，热卖10个，推荐档口7个，元素馆5个，商品库右侧7个，搜索右侧5个（注意：所有广告位不同一区域同一时段内，可重复报名）报名入口为四季星座供应商后台。退订回复T【四季星座网】"));
 //        System.out.println(sendSms_quick("18888971970","温馨提示：（报名时间为4月28日-4月30日20时）网站广告位报名入口已发布，本期总计首页29个位置，轮转播区1个，轮转播下方区1个，首页热卖10个，推荐档口7个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
     }
     @Test
     public void sendMsg(){
         ShiguShopExample example=new ShiguShopExample();
-        example.createCriteria().andMarketIdEqualTo(621L).andShopStatusEqualTo(0);
+        List<Long> marketIds=new ArrayList<>();
+        marketIds.add(621L);
+        marketIds.add(617L);
+        marketIds.add(1087L);
+        example.createCriteria().andMarketIdIn(marketIds).andShopStatusEqualTo(0);
         List<ShiguShop> shopList=shiguShopMapper.selectByExample(example);
 
         for(ShiguShop s:shopList){
