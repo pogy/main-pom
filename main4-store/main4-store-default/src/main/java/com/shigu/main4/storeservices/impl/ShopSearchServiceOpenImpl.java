@@ -1,6 +1,7 @@
 package com.shigu.main4.storeservices.impl;
 
 import com.aliyun.opensearch.OpenSearchClient;
+import com.aliyun.opensearch.SearcherClient;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.vo.SearchShop;
@@ -18,7 +19,7 @@ import java.util.List;
 public class ShopSearchServiceOpenImpl implements ShopSearchService {
 
     @Autowired
-    private OpenSearchClient openSearchClient;
+    private SearcherClient searcherClient;
 
     /**
      * 查单店商品
