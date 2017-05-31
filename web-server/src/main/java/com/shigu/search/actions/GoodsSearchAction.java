@@ -59,8 +59,11 @@ public class GoodsSearchAction {
      * @return
      */
     @RequestMapping("picSearch")
-    public String picSearch(Model model){
-        model.addAttribute("webSite","hz");
+    public String picSearch(String webSite,Model model){
+        if (webSite == null) {
+            webSite="hz";
+        }
+        model.addAttribute("webSite",webSite);
         return "search/picSearch";
     }
 
@@ -91,7 +94,10 @@ public class GoodsSearchAction {
      */
     @RequestMapping("goodsUrlSearch")
     @ResponseBody
-    public JSONObject goodsUrlSearch(String imgAdress,String baseCode) throws JsonErrException {
+    public JSONObject goodsUrlSearch(String imgAdress,String webSite,String baseCode) throws JsonErrException {
+        if (webSite == null) {
+            webSite="hz";
+        }
         JSONObject result=JsonResponseUtil.success();
         try {
             if(baseCode!=null&&imgAdress==null){
@@ -101,7 +107,7 @@ public class GoodsSearchAction {
                 imgAdress=ossIO.uploadFile(data,"picsearch/"+System.currentTimeMillis() + ".jpg");
             }
             result.element("imgurl",imgAdress);
-            result.element("goodslist",JSONArray.fromObject(goodsSearchService.searchByPic(imgAdress,"hz")));
+            result.element("goodslist",JSONArray.fromObject(goodsSearchService.searchByPic(imgAdress,webSite)));
         } catch (IOException e) {
             throw new JsonErrException("搜索接口调用异常");
         }

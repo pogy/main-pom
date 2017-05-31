@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1495447895700" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1495516590530" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1495447895700"></script>
+    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1495516590530"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -141,7 +141,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -206,8 +209,8 @@ var webSite = '${webSite!}';
                     <li type="store" >档口</li>
                     
                 </ul>
-                <#if webSite == 'hz'>
-                <a href="${main_host!}picSearch.htm" class="picSearchBox" target="_blank">图搜</a>
+                <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
+                <a href="${main_host!}picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
                 </#if>
             </div>
             <div class="searchBox">

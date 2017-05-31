@@ -459,12 +459,10 @@ ${navCon}
                             <input type="text" id="Num" value="1">
                             <a href="javascript:;" id="Add">+</a>
                         </div>
-                        <#if bo.who=="dd">
                             <span style="
     margin-left: 10px;
     line-height: 26px;
-">${vo.clicks}次浏览</span>
-                        </#if>
+" id="imclicks"> - 次浏览</span>
                     </td>
                   </tr>
                    <#if vo.onsale == true>
@@ -529,7 +527,11 @@ if(gysShopId && gysShopId != ""){
 }else{
     var isGys = false;
 }
-
+$.post(
+        "itemclicks.json",{"id":item_id},function (data) {
+            $('#imclicks').html(data.number+"次浏览");
+        }
+);
 /*============ shopItemCopy/item#goodsinfo END ============*/
 
 

@@ -37,6 +37,7 @@ import com.shigu.main4.vo.ShopBaseForCdn;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.search.bo.NewGoodsBO;
+import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.seller.services.ShopDesignService;
@@ -50,9 +51,11 @@ import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
 import com.shigu.tools.HtmlImgsLazyLoad;
+import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
 import freemarker.template.TemplateException;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,6 +128,9 @@ public class CdnAction {
 
     @Autowired
     ItemBrowerService itemBrowerService;
+
+    @Autowired
+    GoodsSelFromEsService goodsSelFromEsService;
 
     /**
      * 杭州首页动态页面
@@ -229,7 +235,7 @@ public class CdnAction {
         NewGoodsBO newGoodsBO = new NewGoodsBO();
         newGoodsBO.setWebSite("jx");
         newGoodsBO.setRows(15);
-        ShiguPager<GoodsInSearch> newGoodsPager = todayNewGoodsService.selGoodsNew(newGoodsBO);
+        ShiguPager<GoodsInSearch> newGoodsPager = todayNewGoodsService.selGoodsNewForCid(newGoodsBO);
 
         List<IndexGoodsVo> indexNewGoodsVoList = new ArrayList<IndexGoodsVo>();
         if(newGoodsPager != null && newGoodsPager.getContent() != null){
@@ -439,6 +445,20 @@ public class CdnAction {
         return shop(bo,null, model);
         //拼baseUrl
     }
+
+    /**
+     * 商品点击量
+     * @param id
+     * @return
+     */
+    @RequestMapping("itemclicks")
+    @ResponseBody
+    public JSONObject itemclicks(Long id){
+        if(id==null){
+            return JsonResponseUtil.success().element("number",-1);
+        }
+        return JsonResponseUtil.success().element("number",itemBrowerService.addUnrealBrower(id,1).getNumber());
+    }
     /**
      * 商品页面
      * @param bo
@@ -467,8 +487,6 @@ public class CdnAction {
                     .replace("</script>",""));
         itemShowVO.setCdnItem(cdnItem);
 //        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
-        if(bo.getWho()!=null&&bo.getWho().equals("dd"))
-        itemShowVO.setClicks(itemBrowerService.addUnrealBrower(id,1).getNumber());
         itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
         Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
         starNum=starNum==null?0:    starNum;

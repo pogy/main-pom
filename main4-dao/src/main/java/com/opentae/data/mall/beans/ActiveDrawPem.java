@@ -21,11 +21,28 @@ public class ActiveDrawPem {
     )
     private Long id;
 
+    /**
+     * 期次额外信息，比如奖品信息等，前端自定义
+     */
+    private String info;
+
     /** 开始时间 */
     private Date startTime;
 
     /** 创建时间 */
     private Date createTime;
+    /**
+     * 期次
+     */
+    private Integer term;
+
+    public Integer getTerm() {
+        return term;
+    }
+
+    public void setTerm(Integer term) {
+        this.term = term;
+    }
 
     public Long getId() {
         return id;
@@ -33,6 +50,14 @@ public class ActiveDrawPem {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public Date getStartTime() {

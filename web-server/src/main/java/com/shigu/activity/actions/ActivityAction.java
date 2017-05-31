@@ -7,13 +7,13 @@ import com.shigu.activity.vo.*;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.spread.vo.active.draw.*;
+import com.shigu.main4.storeservices.ShopForCdnService;
+import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.tools.StringUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * 活动
@@ -39,12 +36,19 @@ public class ActivityAction {
     @Autowired
     private ActiveDrawServiceImpl activeDrawServiceImpl;
 
+    @Autowired
+    private ShopForCdnService shopForCdnService;
+
+    @Autowired
+    private RedisIO redisIO;
+
     /**
      * 发现好货
      * @param model
      * @return
      */
-    @RequestMapping(value = "activity/redbull" , method = RequestMethod.GET)
+    //@RequestMapping(value = "activity/redbull" , method = RequestMethod.GET)
+    @Deprecated
     public String findGodos(HttpSession session, Model model){
         // 当前期次
         ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem(null);
@@ -52,10 +56,10 @@ public class ActivityAction {
         List<ActiveDrawGoodsVo> faGoodsVoList = activeDrawServiceImpl.selGoodsList(
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_FAGOODS,
-                20,
-                false);
+                40,
+                false,false);
         // 发现好店
-        List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId());
+        List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId(), false);
         ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
         drawStyleVo.setGoodsList(faGoodsVoList);
         drawStyleVo.setShopList(faShopVoList);
@@ -65,8 +69,7 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_DAILYFIND,
                 60,
-                false
-                );
+                false,false);
 
         Collections.shuffle(daliyGoodsVoList);
 
@@ -102,6 +105,111 @@ public class ActivityAction {
         model.addAttribute("webSite","hz");
         return "activity/styleHuodong";
     }
+
+    @RequestMapping("activity/redbull")
+    public String findGoods(HttpSession session, Model model) {
+
+        // 当前期次
+        List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
+        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
+        model.addAttribute("allInfo", drawPem.getInfo());
+        // 发现好货商品
+        List<ActiveDrawGoodsVo> faGoodsVoList = activeDrawServiceImpl.selGoodsList(
+                drawPem.getId(),
+                ActiveDrawGoods.TYPE_FAGOODS,
+                20,
+                false,false
+        );
+        ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
+        drawStyleVo.setGoodsList(faGoodsVoList);
+        model.addAttribute("styleItem", drawStyleVo);
+
+        // 每日发现商品
+        List<ActiveDrawGoodsVo> daliyGoodsVoList = activeDrawServiceImpl.selGoodsList(
+                drawPem.getId(),
+                ActiveDrawGoods.TYPE_DAILYFIND,
+                60,
+                false,false
+        );
+
+        Collections.shuffle(daliyGoodsVoList);
+        model.addAttribute("likeGoodsList", daliyGoodsVoList);
+        // 时间处理
+        model.addAttribute("nowTimeValue", System.currentTimeMillis());
+        // 本期的结束时间，如果没有下一期，取当前期开始时间加7天，有则取下期开始时间
+        long endTime;
+        if (activeDrawPemVos.size() == 2) {
+            endTime = activeDrawPemVos.get(1).getStartTime().getTime();
+        } else {
+            endTime = DateUtil.addDay(drawPem.getStartTime(), 7).getTime();
+        }
+        model.addAttribute("countdownValue", endTime);
+
+        // 中奖用户列表
+        model.addAttribute("awardList", JSON.toJSONString(activeDrawServiceImpl.selDrawRecordList(null, null, "ben")));
+        // 用户上一期获奖数据
+        List<ActiveDrawRecordUserVo> userVoList =  Collections.emptyList();
+        Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(object != null){
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
+            if(drawLastPem != null){
+                // 用户上一期获奖数据
+                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(),ps.getUserId(), null);
+                for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
+                    ActiveDrawRecordUserVo anUserVoList = iterator.next();
+                    if (anUserVoList.getDrawStatus() != 3) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+        model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
+        model.addAttribute("webSite", "hz");
+        return "activity/findGoods";
+    }
+
+    @RequestMapping("activity/findStore")
+    public String findShop(Model model) {
+        // 当前期次
+        ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem();
+        // 发现好店
+        List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId(), false);
+        packShopItems(faShopVoList, drawPem.getId());
+        ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
+        drawStyleVo.setShopList(faShopVoList);
+        model.addAttribute("styleItem", drawStyleVo);
+        model.addAttribute("webSite","hz");
+        return "activity/findStore";
+    }
+
+    private void packShopItems(List<ActiveDrawShopVo> faShopVoList, Long pemId) {
+        String key = "find_store_" + pemId;
+        Map<Integer, List<ShopItemVo>> itemVoMap = redisIO.get(key, Map.class);
+        if (itemVoMap == null) {
+            itemVoMap = new HashMap<>();
+            for (ActiveDrawShopVo shopVo : faShopVoList) {
+                List<ShopItemVo> itemVos = new ArrayList<>();
+                itemVoMap.put(shopVo.getShopId().intValue(), itemVos);
+                for (ItemShowBlock itemShowBlock :
+                        shopForCdnService.searchItemOnsale(
+                                null,
+                                shopVo.getShopId(),
+                                "time_down",
+                                1,
+                                3
+                        ).getContent()) {
+                    itemVos.add(new ShopItemVo(itemShowBlock.getItemId(), itemShowBlock.getImgUrl(), itemShowBlock.getTitle()));
+                }
+            }
+            redisIO.putTemp(key, itemVoMap, 24 * 3600);
+        }
+
+        for (ActiveDrawShopVo activeDrawShopVo : faShopVoList) {
+            activeDrawShopVo.setItems(itemVoMap.get(activeDrawShopVo.getShopId().intValue()));
+        }
+    }
+
 
     /**
      * 用户中奖记录

@@ -219,12 +219,10 @@
                 </div>
             </div>
             <div class="accountItem">
-                <div class="label"><span class="red">*</span> 是否有淘宝店：</div>
+                <div class="label"><span class="red">*</span> 淘宝绑定：</div>
                 <div class="inner">
-                    <ul class="clearfix screenList">
-                        <li class="fl"><label><input type="radio" value="1" name="hasTaobaoStore">有</label></li>
-                        <li class="fl"><label><input type="radio" value="0" name="hasTaobaoStore">没有</label></li>
-                    </ul>
+                    <label><#if tbNick ??>${tbNick}<#else>您还未绑定淘宝,<a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1&backUrl=http%3A%2F%2Fwww.571xz.com%2Fruzhu.htm" target="_blank" class="red">立即绑定</a></#if></label>
+                    <input name="tbNick" type="hidden" value="${tbNick!}">
                 </div>
             </div>
             <div class="accountItem">

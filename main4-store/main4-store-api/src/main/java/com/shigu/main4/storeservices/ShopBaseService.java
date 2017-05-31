@@ -101,9 +101,4 @@ public interface ShopBaseService {
      */
     void changeTbLink(Long userId,Long shopId, String tbNick, Long tbShopId) throws Main4Exception;
 
-    /**
-     * 添加数据到Es
-     * @param shopId
-     */
-    void addToEs(Long shopId);
 }

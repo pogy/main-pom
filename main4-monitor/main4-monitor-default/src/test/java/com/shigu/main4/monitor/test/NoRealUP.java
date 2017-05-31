@@ -66,14 +66,42 @@ public class NoRealUP {
         Set<Long> set=new HashSet<>();
         while(list.size()>0){
             for(ShiguGoodsTiny sgt:list){
-                if(Math.random()<0.2){
+                if(Math.random()<0.3){
                     itemUpRecordService.addItemUpRecord(upGoods(sgt));
 //                    if(set.contains(sgt.getGoodsId())){
 //                        System.out.println(sgt.getGoodsId());
 //                    }
                     set.add(sgt.getGoodsId());
                 }
-                if(Math.random()<0.3){
+                if(Math.random()<0.4){
+                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+//                    if(set.contains(sgt.getGoodsId())){
+//                        System.out.println(sgt.getGoodsId());
+//                    }
+                    set.add(sgt.getGoodsId());
+                }
+                if(Math.random()<0.5){
+                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+//                    if(set.contains(sgt.getGoodsId())){
+//                        System.out.println(sgt.getGoodsId());
+//                    }
+                    set.add(sgt.getGoodsId());
+                }
+                if(Math.random()<0.6){
+                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+//                    if(set.contains(sgt.getGoodsId())){
+//                        System.out.println(sgt.getGoodsId());
+//                    }
+                    set.add(sgt.getGoodsId());
+                }
+                if(Math.random()<0.7){
+                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+//                    if(set.contains(sgt.getGoodsId())){
+//                        System.out.println(sgt.getGoodsId());
+//                    }
+                    set.add(sgt.getGoodsId());
+                }
+                if(Math.random()<0.8){
                     itemUpRecordService.addItemUpRecord(upGoods(sgt));
 //                    if(set.contains(sgt.getGoodsId())){
 //                        System.out.println(sgt.getGoodsId());

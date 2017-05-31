@@ -9,13 +9,13 @@ import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.tools.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -30,7 +30,6 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -90,7 +89,9 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * 查询当前期次商品数据
      * @param pemId
      */
-    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled){
+    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled,boolean back){
+
+        // 取当前坑位
         ActiveDrawPitExample drawPitExample = new ActiveDrawPitExample();
         drawPitExample.createCriteria().andTypeEqualTo(ActiveDrawPit.TYPE_GOODS);
         drawPitExample.setOrderByClause("num asc");
@@ -98,6 +99,8 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         if(drawPitList.size() == 0 && StringUtils.equals(ActiveDrawGoods.TYPE_FAGOODS,type)){
             return Collections.emptyList();
         }
+
+        // 当前期坑位数据
         ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
         ActiveDrawGoodsExample.Criteria ctx = drawGoodsExample.createCriteria();
         ctx.andPemIdEqualTo(pemId).andTypeEqualTo(type);
@@ -106,35 +109,62 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             ctx.andEnabledEqualTo(enabled);
         }
         List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
-        List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
-        ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
-        ShiguGoodsTinyExample.Criteria criteria = goodsTinyExample.createCriteria();
-        criteria.andGoodsIdIn(goodsList);
-        goodsTinyExample.setWebSite("hz");
-        // 特殊要求：发现好货不用区分是否下架，该处为广告位
-        if (!StringUtils.equals(ActiveDrawGoods.TYPE_FAGOODS, type)) {
-            criteria.andIsClosedEqualTo(0L);
-        }
-        List<ShiguGoodsTiny> goodsTinyList = shiguGoodsTinyMapper.selectByExample(goodsTinyExample);
-        List<ActiveDrawGoodsVo> drawGoodsVoList = new ArrayList<ActiveDrawGoodsVo>();
-        if (goodsTinyList != null && goodsTinyList.size() > 0) {
-            HashMap<Long, ShiguGoodsTiny> goodsTinyHashMap = new HashMap<Long, ShiguGoodsTiny>();
-            for (ShiguGoodsTiny hit : goodsTinyList) {
-                goodsTinyHashMap.put(hit.getGoodsId(),hit);
+
+        List<ActiveDrawGoodsVo> drawGoodsVoList = new ArrayList<>();// 页面VO容器
+        if (!drawGoodsList.isEmpty()) {
+            List<Long> goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", Long.class);
+            ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
+            ShiguGoodsTinyExample.Criteria criteria = goodsTinyExample.createCriteria();
+            criteria.andGoodsIdIn(goodsList);
+            goodsTinyExample.setWebSite("hz");
+
+            // 特殊要求：发现好货不用区分是否下架，该处为广告位
+            if (!StringUtils.equals(ActiveDrawGoods.TYPE_FAGOODS, type)) {
+                criteria.andIsClosedEqualTo(0L);
             }
-            List<Long> shopIds = BeanMapper.getFieldList(new ArrayList<Object>(goodsTinyHashMap.values()), "storeId", Long.class);
-            ShiguShopExample shopExample = new ShiguShopExample();
-            shopExample.createCriteria().andShopIdIn(shopIds);
-            List<ShiguShop> shiguShopList = shiguShopMapper.selectFieldsByExample(shopExample,FieldUtil.codeFields("shop_id,shop_num"));
-            Map<Long, ShiguShop> shopMap = BeanMapper.list2Map(shiguShopList, "shopId", Long.class);
-            List<Long> parentMarketIdList = BeanMapper.getFieldList(new ArrayList<Object>(goodsTinyHashMap.values()), "parentMarketId", Long.class);
-            ShiguMarketExample marketExample = new ShiguMarketExample();
-            marketExample.createCriteria().andMarketIdIn(parentMarketIdList);
-            List<ShiguMarket> marketList = shiguMarketMapper.selectFieldsByExample(marketExample, FieldUtil.codeFields("market_id,market_name"));
-            Map<Long, ShiguMarket> marketMap = BeanMapper.list2Map(marketList, "marketId", Long.class);
+            // 制作商品数据
+            List<ShiguGoodsTiny> goodsTinyList = shiguGoodsTinyMapper.selectByExample(goodsTinyExample);
+            Map<Long, ShiguGoodsTiny> goodsTinyMap = BeanMapper.list2Map(goodsTinyList, "goodsId", Long.class);
+
+            // 制作店铺数据
+            List<Long> shopIds = BeanMapper.getFieldList(goodsTinyList, "storeId", Long.class);
+            Map<Long, ShiguShop> shopMap;
+            if(shopIds.size()>0) {
+                ShiguShopExample shopExample = new ShiguShopExample();
+                shopExample.createCriteria().andShopIdIn(shopIds);
+                shopMap =
+                        BeanMapper.list2Map(
+                                shiguShopMapper.selectFieldsByExample(
+                                        shopExample, FieldUtil.codeFields("shop_id,shop_num")),
+                                "shopId",
+                                Long.class
+                        );
+            }else {
+                shopMap=new HashMap<>();
+            }
+            // 制作市场数据
+            List<Long> parentMarketIdList = BeanMapper.getFieldList(goodsTinyList, "parentMarketId", Long.class);
+            Map<Long, ShiguMarket> marketMap;
+            if(parentMarketIdList.size()>0) {
+                ShiguMarketExample marketExample = new ShiguMarketExample();
+                marketExample.createCriteria().andMarketIdIn(parentMarketIdList);
+                marketMap =
+                        BeanMapper.list2Map(
+                                shiguMarketMapper.selectFieldsByExample(
+                                        marketExample, FieldUtil.codeFields("market_id,market_name")),
+                                "marketId",
+                                Long.class
+                        );
+            }else {
+                marketMap=new HashMap<>();
+            }
+            // 组装页面VO
             for(ActiveDrawGoods drawGoods : drawGoodsList){
-                ShiguGoodsTiny shiguGoodsTiny = goodsTinyHashMap.get(drawGoods.getGoodsId());
-                if(shiguGoodsTiny == null){continue;}
+                ShiguGoodsTiny shiguGoodsTiny = goodsTinyMap.get(drawGoods.getGoodsId());
+                if(shiguGoodsTiny == null) {
+                    continue;
+                }
+
                 ActiveDrawGoodsVo activeDrawGoodsVo = new ActiveDrawGoodsVo();
                 activeDrawGoodsVo.setGoodsId(shiguGoodsTiny.getGoodsId());
                 activeDrawGoodsVo.setImgSrc(shiguGoodsTiny.getPicUrl());
@@ -143,52 +173,40 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                 activeDrawGoodsVo.setPemId(pemId);
                 activeDrawGoodsVo.setIsOff(shiguGoodsTiny.getIsClosed());
 
-                DecimalFormat df2=(DecimalFormat) DecimalFormat.getInstance();
-                df2.applyPattern("0.00");
-                activeDrawGoodsVo.setPiPriceString(df2.format(shiguGoodsTiny.getPiPrice()/100));
+                activeDrawGoodsVo.setPiPriceString(String.format("%.2f",shiguGoodsTiny.getPiPrice() * .01));
                 activeDrawGoodsVo.setTitle(shiguGoodsTiny.getTitle());
                 activeDrawGoodsVo.setShopId(shiguGoodsTiny.getStoreId());
-                if(StringUtils.isEmpty(shiguGoodsTiny.getParentMarketName())){
-                    ShiguMarket shiguMarket = marketMap.get(shiguGoodsTiny.getParentMarketId());
-                    if(shiguMarket != null){
-                        activeDrawGoodsVo.setMarketName(shiguMarket.getMarketName());
-                    }
+                ShiguMarket shiguMarket = marketMap.get(shiguGoodsTiny.getParentMarketId());
+                if(shiguMarket != null){
+                    activeDrawGoodsVo.setMarketName(shiguMarket.getMarketName());
                 }
-                if(StringUtils.isEmpty(activeDrawGoodsVo.getShopNum())){
-                    ShiguShop shiguShop = shopMap.get(activeDrawGoodsVo.getShopId());
-                    if(shiguShop != null){
-                        activeDrawGoodsVo.setShopNum(shiguShop.getShopNum());
-                    }
+                ShiguShop shiguShop = shopMap.get(activeDrawGoodsVo.getShopId());
+                if(shiguShop != null){
+                    activeDrawGoodsVo.setShopNum(shiguShop.getShopNum());
                 }
-                drawGoodsVoList.add(activeDrawGoodsVo);
                 activeDrawGoodsVo.setId(drawGoods.getId());
                 activeDrawGoodsVo.setPitId(drawGoods.getPitId());
+                drawGoodsVoList.add(activeDrawGoodsVo);
             }
-
         }
 
+        // 每日发现不需要额外的期次 NUM信息
         if(ActiveDrawGoods.TYPE_DAILYFIND.equals(type)){
             return drawGoodsVoList;
         }
 
-        List<ActiveDrawGoodsVo> newDrawGoodsVoList = new ArrayList<ActiveDrawGoodsVo>();
-        for (int i = 0; i < drawPitList.size(); i++) {
-            ActiveDrawPit drawPit = drawPitList.get(i);
-            Boolean panss = false;
-            for (int j = 0; j < drawGoodsVoList.size(); j++) {
-                ActiveDrawGoodsVo drawGoodsVo = drawGoodsVoList.get(j);
-                if(drawGoodsVo.getPitId()!=null && drawPit.getId().intValue() == drawGoodsVo.getPitId().intValue()){
+        List<ActiveDrawGoodsVo> newDrawGoodsVoList = new ArrayList<>();
+        Map<Long, ActiveDrawGoodsVo> drawGoodsVoMap = BeanMapper.list2Map(drawGoodsVoList, "pitId", Long.class);
+        for (ActiveDrawPit drawPit : drawPitList) {
+            ActiveDrawGoodsVo activeDrawGoodsVo = drawGoodsVoMap.get(drawPit.getId());
+            if (activeDrawGoodsVo != null) {
+                activeDrawGoodsVo.setNum(drawPit.getNum());
+                newDrawGoodsVoList.add(activeDrawGoodsVo);
+            }else if(back){
+                    ActiveDrawGoodsVo drawGoodsVo = new ActiveDrawGoodsVo();
+                    drawGoodsVo.setPitId(drawPit.getId());
                     drawGoodsVo.setNum(drawPit.getNum());
                     newDrawGoodsVoList.add(drawGoodsVo);
-                    panss = true;
-                    break;
-                }
-            }
-            if(!panss){
-                ActiveDrawGoodsVo drawGoodsVo = new ActiveDrawGoodsVo();
-                drawGoodsVo.setPitId(drawPit.getId());
-                drawGoodsVo.setNum(drawPit.getNum());
-                newDrawGoodsVoList.add(drawGoodsVo);
             }
         }
 
@@ -230,8 +248,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         ActiveDrawPemExample activeDrawPemExample = new ActiveDrawPemExample();
         activeDrawPemExample.setOrderByClause("start_time DESC");
         List<ActiveDrawPem> activeDrawPemList = activeDrawPemMapper.selectByExample(activeDrawPemExample);
-        List<ActiveDrawPemVo> drawPemVoList = BeanMapper.mapList(activeDrawPemList, ActiveDrawPemVo.class);
-        return drawPemVoList;
+        return BeanMapper.mapList(activeDrawPemList, ActiveDrawPemVo.class);
     }
 
     /**
@@ -308,25 +325,35 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             drawGoods.setType(type);
             drawGoods.setSort(id.intValue());
             drawGoods.setPitId(id);
+            //把本商品在本期的删除
+            drawGoodsExample.clear();
+            drawGoodsExample.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(type).andEnabledEqualTo(true);
+            activeDrawGoodsMapper.deleteByExample(drawGoodsExample);
+
             activeDrawGoodsMapper.insertSelective(drawGoods);
             return;
         }
         ActiveDrawGoods activeDrawGoods = drawGoodsList.get(0);
-        if(goodsId != null && activeDrawGoods.getGoodsId() != null
+        if(activeDrawGoods.getGoodsId() != null
                 && goodsId.intValue() != activeDrawGoods.getGoodsId().intValue()){
             // 更换商品
             activeDrawGoods.setEnabled(true);
             activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
+
+            //把本商品在本期的删除
+            drawGoodsExample.clear();
+            drawGoodsExample.createCriteria().andGoodsIdEqualTo(goodsId).andPemIdEqualTo(pemId).andTypeEqualTo(type).andEnabledEqualTo(true);
+            activeDrawGoodsMapper.deleteByExample(drawGoodsExample);
 
             // 新增商品
             activeDrawGoods.setId(null);
             activeDrawGoods.setEnabled(false);
             activeDrawGoods.setGoodsId(goodsId);
             activeDrawGoodsMapper.insertSelective(activeDrawGoods);
-            return;
+//            return;
         }
-        activeDrawGoods.setGoodsId(goodsId);
-        activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
+//        activeDrawGoods.setGoodsId(goodsId);
+//        activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
     }
 
     /**
@@ -358,77 +385,70 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     /**
      * 查询当前期次店铺
      * @param pemId
+     * @param back
      * @return
      */
-    public List<ActiveDrawShopVo> selShopList(Long pemId){
+    public List<ActiveDrawShopVo> selShopList(Long pemId, boolean back){
         ActiveDrawPitExample drawPitExample = new ActiveDrawPitExample();
         drawPitExample.createCriteria().andTypeEqualTo(ActiveDrawPit.TYPE_SHOP);
         drawPitExample.setOrderByClause("num asc");
         List<ActiveDrawPit> drawPitList = activeDrawPitMapper.selectByExample(drawPitExample);
-        if(drawPitList.size() == 0){
-            return Collections.emptyList();
-        }
+        Map<Long, ActiveDrawShopVo> drawShopVoMap = Collections.emptyMap();
+        if(!drawPitList.isEmpty()) {
+            ActiveDrawShopExample drawShopExample = new ActiveDrawShopExample();
+            drawShopExample.createCriteria().andPemIdEqualTo(pemId);
+            List<ActiveDrawShop> drawShopList = activeDrawShopMapper.selectByExample(drawShopExample);
 
-        ActiveDrawShopExample drawShopExample = new ActiveDrawShopExample();
-        drawShopExample.createCriteria().andPemIdEqualTo(pemId);
-        List<ActiveDrawShop> drawShopList = activeDrawShopMapper.selectByExample(drawShopExample);
-        List shopIdsList = BeanMapper.getFieldList(drawShopList,"shopId", List.class);
-        ShiguShopExample shopExample = new ShiguShopExample();
-        shopExample.createCriteria().andShopIdIn(shopIdsList);
-        List<ShiguShop> shiguShopList = shiguShopMapper.selectByExample(shopExample);
-        if(shiguShopList.size() == 0){
-            return Collections.EMPTY_LIST;
-        }
-        List<ActiveDrawShopVo> drawShopVoList = new ArrayList<ActiveDrawShopVo>();
-        for(ShiguShop shiguShop : shiguShopList){
-            for(int i = 0;i<drawShopList.size();i++){
-                ActiveDrawShop activeDrawShop = drawShopList.get(i);
-                if(activeDrawShop.getShopId().intValue() == shiguShop.getShopId().intValue()){
-                    ActiveDrawShopVo drawShopVo = new ActiveDrawShopVo();
-                    drawShopVo.setId(activeDrawShop.getId());
-                    drawShopVo.setShopId(activeDrawShop.getShopId());
-                    drawShopVo.setPemId(pemId);
-                    drawShopVo.setMarketName(shiguShop.getMarketName());
-                    drawShopVo.setImgSrc(activeDrawShop.getPicUrl());
-                    drawShopVo.setShopNum(shiguShop.getShopNum());
-                    drawShopVo.setuText(activeDrawShop.getuText());
-                    drawShopVo.setdText(activeDrawShop.getdText());
-                    drawShopVo.setPitId(activeDrawShop.getPitId());
-                    drawShopVo.setShopId(activeDrawShop.getShopId());
-                    if(StringUtils.isEmpty(drawShopVo.getMarketName())){
-                        ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguShop.getMarketId(),
-                                FieldUtil.codeFields("market_id,market_name"));
-                        if(shiguMarket != null){
-                            drawShopVo.setMarketName(shiguMarket.getMarketName());
+            List<ActiveDrawShopVo> drawShopVoList = new ArrayList<>();
+            if (!drawShopList.isEmpty()) {
+                List<Long> shopIdsList = BeanMapper.getFieldList(drawShopList, "shopId", Long.class);
+                ShiguShopExample shopExample=new ShiguShopExample();
+                shopExample.createCriteria().andShopIdIn(shopIdsList);
+                List<ShiguShop> shops=shiguShopMapper.selectByExample(shopExample);
+                if (shopIdsList.size() > 0) {
+                    Map<Long, ActiveDrawShop> drawShopMap = BeanMapper.list2Map(drawShopList, "shopId", Long.class);
+                    for (ShiguShop shiguShop : shops) {
+                        ActiveDrawShop activeDrawShop = drawShopMap.get(shiguShop.getShopId());
+                        if (activeDrawShop != null) {
+                            ActiveDrawShopVo drawShopVo = new ActiveDrawShopVo();
+                            drawShopVo.setId(activeDrawShop.getId());
+                            drawShopVo.setShopId(activeDrawShop.getShopId());
+                            drawShopVo.setPemId(pemId);
+                            drawShopVo.setMarketName(shiguShop.getMarketName());
+                            drawShopVo.setImgSrc(activeDrawShop.getPicUrl());
+                            drawShopVo.setShopNum(shiguShop.getShopNum());
+                            drawShopVo.setuText(activeDrawShop.getuText());
+                            drawShopVo.setdText(activeDrawShop.getdText());
+                            drawShopVo.setPitId(activeDrawShop.getPitId());
+                            drawShopVo.setShopId(activeDrawShop.getShopId());
+                            if (StringUtils.isEmpty(drawShopVo.getMarketName())) {
+                                ShiguMarket shiguMarket = shiguMarketMapper.selectFieldsByPrimaryKey(shiguShop.getMarketId(),
+                                        FieldUtil.codeFields("market_id,market_name"));
+                                if (shiguMarket != null) {
+                                    drawShopVo.setMarketName(shiguMarket.getMarketName());
+                                }
+                            }
+                            drawShopVoList.add(drawShopVo);
                         }
                     }
-                    drawShopVoList.add(drawShopVo);
-                    break;
+                    drawShopVoMap = BeanMapper.list2Map(drawShopVoList, "pitId", Long.class);
                 }
             }
         }
-
-        List<ActiveDrawShopVo> newDrawShopVoList = new ArrayList<ActiveDrawShopVo>();
-        for (int i = 0; i < drawPitList.size(); i++) {
-            ActiveDrawPit drawPit = drawPitList.get(i);
-            Boolean panss = false;
-            for (int j = 0; j < drawShopVoList.size(); j++) {
-                ActiveDrawShopVo drawShopVo = drawShopVoList.get(j);
-                if(drawShopVo.getPitId() != null && drawPit.getId().intValue() == drawShopVo.getPitId().intValue()){
-                    drawShopVo.setNum(drawPit.getNum());
-                    newDrawShopVoList.add(drawShopVo);
-                    panss = true;
-                    break;
-                }
-            }
-            if(!panss){
-                ActiveDrawShopVo newDrawShopVo = new ActiveDrawShopVo();
-                newDrawShopVo.setPitId(drawPit.getId());
-                newDrawShopVo.setNum(drawPit.getNum());
-                newDrawShopVoList.add(newDrawShopVo);
+        List<ActiveDrawShopVo> newDrawShopVoList = new ArrayList<>();
+        for (ActiveDrawPit drawPit : drawPitList) {
+            ActiveDrawShopVo activeDrawShopVo = drawShopVoMap.get(drawPit.getId());
+            if (activeDrawShopVo != null) {
+                activeDrawShopVo.setNum(drawPit.getNum());
+                newDrawShopVoList.add(activeDrawShopVo);
+            } else if (back) { // 如果是后台，坑位没数据也要显示在页面上
+                ActiveDrawShopVo vo = new ActiveDrawShopVo();
+                vo.setPemId(pemId);
+                vo.setPitId(drawPit.getId());
+                vo.setNum(drawPit.getNum());
+                newDrawShopVoList.add(vo);
             }
         }
-
         return newDrawShopVoList;
     }
 
@@ -540,6 +560,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         ActiveDrawPem drawPem = new ActiveDrawPem();
         drawPem.setStartTime(nextDrawPemTime);
         drawPem.setCreateTime(new Date());
+        drawPem.setTerm(activeDrawPemMapper.countByExample(new ActiveDrawPemExample())+1);
         activeDrawPemMapper.insertSelective(drawPem);
     }
 
@@ -678,8 +699,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             // 过滤过期
 
         }
-        List<ActiveDrawRecordUserVo> recordUserVos = BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
-        return recordUserVos;
+        return BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
     }
 
     /**
@@ -721,9 +741,15 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         }
 
         ActiveDrawRecordExample recordExample = new ActiveDrawRecordExample();
-        recordExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardNotEqualTo("A4");
+        recordExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardEqualTo("A4");
         int recordCount = activeDrawRecordMapper.countByExample(recordExample);
         ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
+        activeDrawRecord.setUserId(userId);
+        activeDrawRecord.setPemId(activeDrawPem.getId());
+        activeDrawRecord.setEnabled(false);
+        activeDrawRecord.setReceivesYes(false);
+        activeDrawRecord.setCreateTime(new Date());
+        activeDrawRecord.setModifyTime(new Date());
         if(recordCount == 0){
             // 查询发现好货活动的数据
             ActiveDrawGoodsExample drawGoodsExample = new ActiveDrawGoodsExample();
@@ -731,13 +757,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             List<ActiveDrawGoods> drawGoodsList = activeDrawGoodsMapper.selectByExample(drawGoodsExample);
             List goodsList = BeanMapper.getFieldList(drawGoodsList, "goodsId", List.class);
             Long total = selGoodsupTotal(goodsList, userId, activeDrawPem.getStartTime());
-            activeDrawRecord.setUserId(userId);
-            activeDrawRecord.setPemId(activeDrawPem.getId());
             activeDrawRecord.setDrawStatus(ActiveDrawRecord.DRAW_STATUS_WAIT);
-            activeDrawRecord.setEnabled(false);
-            activeDrawRecord.setReceivesYes(false);
-            activeDrawRecord.setCreateTime(new Date());
-            activeDrawRecord.setModifyTime(new Date());
             if(total >= 3){
                 activeDrawRecord.setWard("A1");
                 String drawCode = StringUtil.str10To37Str();
@@ -767,7 +787,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         }
 
         ActiveDrawRecordExample recordBExample = new ActiveDrawRecordExample();
-        recordBExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardNotEqualTo("B2");
+        recordBExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(activeDrawPem.getId()).andWardEqualTo("B2");
         int recordBCount = activeDrawRecordMapper.countByExample(recordBExample);
         if(recordBCount == 0){
             // 查询每日发现
