@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title></title>
+    <title>注册-四季星座网</title>
   
     
     <link href="http://style.571xz.com/loginV2/css/regedit.css" rel="stylesheet">
@@ -36,7 +36,7 @@
             </div>
             <div class="regeditItem">
                 <div class="formGroup">
-                    <label><i>*</i>图形验证码：</label>
+                    <label><i>*</i>数字验证码：</label>
                     <input type="text" name="imgValidate"  class="imgValidate form-input" maxlength="4" placeholder="右侧验证码"  >
                     <img id="checkCode" src="http://www.571xz.com/IMG.htm" />
                 </div>

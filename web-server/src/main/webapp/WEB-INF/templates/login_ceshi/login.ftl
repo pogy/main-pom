@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title></title>
+    <title>登录-四季星座网</title>
   
     
     <link href="http://style.571xz.com/loginV2/css/login.css" rel="stylesheet">
