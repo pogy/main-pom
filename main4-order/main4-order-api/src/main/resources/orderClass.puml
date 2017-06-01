@@ -16,6 +16,7 @@ void refunds(Long money);//全单退订
 
 void payed();//支付完成
 void finished();//交易完成
+void sended();//全单发货
 void closed();//交易关闭
 void sendPart();//部分发货
 

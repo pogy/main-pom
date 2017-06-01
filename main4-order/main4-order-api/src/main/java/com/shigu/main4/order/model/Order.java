@@ -40,10 +40,19 @@ public interface Order {
     Long pay(Long applyId,Long money);
 
     /**
+     * 全单发货
+     */
+    void sended();
+
+    /**
      * 全单退订
      * @param money
      */
     void refunds(Long money);
 
+    /**
+     * 添加备注
+     * @param msg
+     */
     void addMark(String msg);
 }
