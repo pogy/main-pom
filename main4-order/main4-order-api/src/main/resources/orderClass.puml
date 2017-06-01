@@ -109,7 +109,10 @@ class ItemProductVO{
 -String marketName;
 -String floor;
 -String shopNum;
--Long market
+-Long marketId;
+-Long floorId;
+-Long shopId;
+-Long weight;
 -ItemSkuVO sku;
 }
 
