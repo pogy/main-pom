@@ -462,10 +462,8 @@ ${navCon}
                             <input type="text" id="Num" value="1">
                             <a href="javascript:;" id="Add">+</a>
                         </div>
-                        <#if bo.who=="dd">
-                            <span style="margin-left: 10px; line-height: 26px;" id="imclicks">${vo.clicks!}次浏览</span>
-                        </#if>
-                        
+                            <span style="margin-left: 10px; line-height: 26px;" id="imclicks">- 次浏览</span>
+
                     </td>
                   </tr>
                    <#if vo.onsale == true>
@@ -803,12 +801,11 @@ var goodsId = '${vo.itemId!}';
 </div>
 <script>/*============ shopItemCopy/item#newGoods BEGIN ============*/
 
-'${test!}'
 $(function(){
     $.post('shopnew.htm',{"id": storeId},function(data){
         $('#item_shopnew').html(data);
     });
-})
+});
 
 /*============ shopItemCopy/item#newGoods END ============*/
 
