@@ -10,7 +10,7 @@ import java.util.List;
  * 订单
  * Created by zhaohongbo on 17/6/1.
  */
-public interface Order {
+public interface Order{
     /**
      * 支付申请
      * @param payType 支付类别

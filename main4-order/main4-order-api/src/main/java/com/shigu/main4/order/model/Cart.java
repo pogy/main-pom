@@ -2,9 +2,10 @@ package com.shigu.main4.order.model;
 
 /**
  * 购物车
+ *
  * Created by zhaohongbo on 17/6/1.
  */
-public interface Cart {
+public interface Cart{
     /**
      * 添加产品
      * @param pro 带sku的产品

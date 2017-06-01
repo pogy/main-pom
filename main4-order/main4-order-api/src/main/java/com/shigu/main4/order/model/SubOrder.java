@@ -4,7 +4,7 @@ package com.shigu.main4.order.model;
  * 子订单
  * Created by zhaohongbo on 17/6/1.
  */
-public interface SubOrder {
+public interface SubOrder{
     /**
      * 标记为已发
      */
