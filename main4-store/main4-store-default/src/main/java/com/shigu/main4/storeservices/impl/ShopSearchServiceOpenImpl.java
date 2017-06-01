@@ -11,9 +11,13 @@ import com.aliyun.opensearch.sdk.generated.search.Config;
 import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
 import com.aliyun.opensearch.sdk.generated.search.SearchParams;
 import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
+import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.HighLightKit;
 import com.shigu.main4.vo.OpenShopVo;
 import com.shigu.main4.vo.SearchShop;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 阿里开放搜索 实现店铺搜索
@@ -36,6 +41,9 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
 
     @Autowired
     private SearcherClient searcherClient;
+
+    @Autowired
+    private ShiguShopMapper shiguShopMapper;
 
     /**
      * 查单店商品
@@ -55,6 +63,7 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         Config config = new Config(Lists.newArrayList("search_shop"));
         config.setStart((page - 1) * page);
         config.setHits(pageSize);
+        config.setFetchFields(Lists.newArrayList("shop_id", "market_id", "floor_id", "user_id", "shop_name", "web_site", "tb_nick", "shop_num", "shop_status", "market_name"));
         config.setSearchFormat(SearchFormat.JSON);
         SearchParams searchParams = new SearchParams(config);
         if (StringUtils.isNotEmpty(keyword)) {
@@ -62,7 +71,7 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         }
         String filter = "";
         if (StringUtils.isNotEmpty(webSite)) {
-            filter = "web_site='" + webSite + "'";
+            filter = "web_site=\"" + webSite + "\"";
         }
         if (mid != null) {
             if (StringUtils.isNotEmpty(filter)) {
@@ -80,14 +89,36 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
                 JSONObject data = jsonObject.getJSONObject("result");
                 int total = data.getIntValue("total");
                 pager.calPages(total, pageSize);
-                JSONArray items = data.getJSONArray("items");
-                List<OpenShopVo> openShopVos = items.toJavaList(OpenShopVo.class);
                 ArrayList<SearchShop> shop = Lists.newArrayList();
                 pager.setContent(shop);
-                for (OpenShopVo vo : openShopVos) {
-                    SearchShop searchShop = BeanMapper.map(vo, SearchShop.class);
-                    searchShop.setMarket(vo.getMarketName());
-                    shop.add(searchShop);
+
+                JSONArray items = data.getJSONArray("items");
+                List<OpenShopVo> openShopVos = items.toJavaList(OpenShopVo.class);
+                if (!openShopVos.isEmpty()) {
+                    HighLightKit defaultInstance = HighLightKit.getDefaultInstance();
+
+                    List<Long> shopIds = BeanMapper.getFieldList(openShopVos, "shopId", Long.class);
+                    ShiguShopExample shopExample = new ShiguShopExample();
+                    shopExample.createCriteria().andShopIdIn(shopIds);
+                    Map<Long, ShiguShop> shopMap
+                            = BeanMapper.list2Map(shiguShopMapper.selectByExample(shopExample), "shopId", Long.class);
+                    for (OpenShopVo vo : openShopVos) {
+                        SearchShop searchShop = BeanMapper.map(vo, SearchShop.class);
+                        searchShop.setMarket(vo.getMarketName());
+                        searchShop.setHighLightMarket(defaultInstance.bright(keyword, vo.getMarketName()));
+                        searchShop.setHighLightShopNum(defaultInstance.bright(keyword, vo.getShopNum()));
+                        ShiguShop shiguShop = shopMap.get(vo.getShopId());
+                        if (shiguShop != null) {
+                            searchShop.setAddress(shiguShop.getAddress());
+                            searchShop.setImAliww(shiguShop.getImAliww());
+                            searchShop.setImQq(shiguShop.getImQq());
+                            searchShop.setMainCase(shiguShop.getMainBus());
+                            searchShop.setTelephone(shiguShop.getTelephone());
+
+                        }
+                        shop.add(searchShop);
+                    }
+
                 }
             } else throw new Main4Exception(jsonObject.getString("errors"));
         } catch (OpenSearchException | OpenSearchClientException ignored) {
