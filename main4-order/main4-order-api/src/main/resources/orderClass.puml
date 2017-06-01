@@ -118,14 +118,18 @@ class ItemProductVO{
 
 class ItemSkuVO{
 -Long skuId;
--Long productId;
--String name;
--String value;
+-Long pid;
+-String color;
+-String size;
 }
 
 class PayApplyVO{
 -Long applyId;//支付申请ID
--String payUrl;//支付链接
+-Long money;
+-String payLink;//支付链接
+-PayType payType;//支付类型
+-Date createTime;//创建时间
+-Integer payFor;//付款理由
 }
 
 class SenderVO{
@@ -135,9 +139,12 @@ class SenderVO{
 }
 
 class LogisticsVO{
--String logisticsNo;//快递单号
--String company;//快递公司
+-Long id;
 -Long companyId;//快递公司ID
+-Long addressId;//地址
+-String courierNumber;//快递单号
+-Long oid;//订单ID
+-Long money;//支付金额,钱为单位
 }
 
 class MetarialVO{
