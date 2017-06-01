@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>登录-四季星座网</title>
+    <title>登录 - 四季星座网</title>
   
     
     <link href="http://style.571xz.com/loginV2/css/login.css" rel="stylesheet">
@@ -25,9 +25,13 @@
             <p class="guideInfo">还没有四季星座网账号？<a href="${main_host!}regedit.htm">立即注册</a></p>
     </div>
 </div>
-<div class="loginMain">
+<div class="loginMain" style="background-color:#${index_goat.text!}" >
     <div class="layout">
-        <div class="loginBanner">${loginGost1}</div>
+        <div class="loginBanner">
+            <a href="${index_goat.href!}" target="_blank">
+                <img src="${index_goat.imgsrc!}" width="572px" height="440px" class="fl c_img">
+            </a>
+        </div>
         <div class="loginMode">
             <div class="loginContainer">
                 <div class="loginHeader">
