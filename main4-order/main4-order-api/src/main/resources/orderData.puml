@@ -4,7 +4,7 @@ class OrderVO{
 -Long orderId;
 -OrderType type;
 -Long totalFee;
--List<Long> payIds;
+-Long payedFee;
 -Long refundFee;//已退金额
 }
 
@@ -36,11 +36,9 @@ class SenderVO{
 
 class LogisticsVO{
 -Long id;
--Long companyId;//快递公司ID
 -Long addressId;//地址
 -String courierNumber;//快递单号
--Long oid;//订单ID
--Long money;//支付金额,钱为单位
+-Long templateId;//物流模板ID
 }
 
 class MetarialVO{

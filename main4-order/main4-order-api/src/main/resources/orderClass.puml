@@ -6,21 +6,31 @@ WX   //微信
 }
 
 interface Order{
+void addMark(String msg);//添加备注
 PayApplyVO payApply(PayType type);//支付申请
-Long pay(Long applyId,Long money);//付款确认
+void addSubOrder(List<SubOrderVO> subOrders);//追加子订单
+PayApplyVO repayApply(PayType type);//二次支付申请
 
+Long pay(Long applyId,Long money);//付款确认
 void refunds(Long money);//全单退订
+
+void payed();//支付完成
+void finished();//交易完成
+void closed();//交易关闭
+void sendPart();//部分发货
 
 }
 
 interface ItemOrder{
-LogisticsVO selLogistics();//查询物流单号
-void sended(LogisticsVO logistics);//发货完成
+List<LogisticsVO> selLogistics();//查询物流信息
+void addLogistics(LogisticsVO logistics);//添加物流
+void modifyLogistics(Long id,LogisticsVO logistics);//修改物流
+void refundLogistics(Long id,Long money);//退邮费
 
-void refundLogistics(Long money);//退邮费
-void refundGift(Long money);//退礼品费
-void refundPackage(Long money);//退包材
-void refundService(Long money);//退服务
+void addPackage(MetarialVO metarial);//添加包材
+void refundPackage(Long id,Long money);//退包材
+void addService(ServiceVO service);//添加服务
+void refundService(Long id,Long money);//退服务
 }
 
 interface RechangeOrder{
@@ -28,11 +38,18 @@ interface RechangeOrder{
 }
 
 interface SubOrder{
+void closed();//关闭子订单
+void sended();//标为已发
 void refund(Long money);//退货
+void addMark(String msg);//添加备注
 }
 
 interface SubItemOrder{
 
+}
+
+interface Logistics{
+Long calculateFee();//计算
 }
 
 interface Sender{
@@ -71,6 +88,7 @@ class PayApplyVO{
 
 SubOrder <|-- SubItemOrder
 Order <|-- ItemOrder
+ItemOrder --o Logistics
 Order <|-- RechangeOrder
 ItemOrder *-- SubItemOrder
 Sender *-- Order
