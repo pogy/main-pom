@@ -1,8 +1,9 @@
 package com.shigu.main4.order.model;
 
 /**
- * 购物车
+ * 产品
  * Created by zhaohongbo on 17/6/1.
  */
-public interface Cart {
+public interface Product {
+
 }

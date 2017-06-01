@@ -2,15 +2,18 @@
 
 interface Cart{
 void addProduct(Product pro);
-void rmProduct(Product pro);
-Long modifyProductNumber(Long pid,Integer number);
+void rmProduct(Long cartId);
+Long modifyProductNumber(Long cartId,Integer number);
+Long modifyProductSku(Long cartId,Long skuId);
 }
 
 interface Product{
-List<SkuVO> selSkus();
+
 }
 
 interface ItemProduct{
+List<SkuVO> selSkus();
+Long addSku(ItemSkuVO sku);
 void modifyWeight(Long meter);
 void modifyPrice(Long price);
 }

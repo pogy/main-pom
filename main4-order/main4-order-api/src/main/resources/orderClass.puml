@@ -17,7 +17,6 @@ interface ItemOrder{
 LogisticsVO selLogistics();//查询物流单号
 void sended(LogisticsVO logistics);//发货完成
 
-PayApplyVO repayAppy(PayType type,List<SubOrderVO> orders);
 void refundLogistics(Long money);//退邮费
 void refundGift(Long money);//退礼品费
 void refundPackage(Long money);//退包材
