@@ -1,6 +1,6 @@
 package com.shigu.main4.order.services;
 
-import com.shigu.main4.order.vo.OrderVO;
+import com.shigu.main4.order.bo.ItemOrderBO;
 
 /**
  * 商品交易订单服务
@@ -9,8 +9,8 @@ import com.shigu.main4.order.vo.OrderVO;
 public interface ItemOrderService {
     /**
      * 创建一个订单
-     * @param orderVO
+     * @param orderBO 订单数据
      * @return
      */
-    Long createOrder(OrderVO orderVO);
+    Long createOrder(ItemOrderBO orderBO);
 }

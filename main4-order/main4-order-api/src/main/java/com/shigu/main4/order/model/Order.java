@@ -40,11 +40,6 @@ public interface Order{
     Long pay(Long applyId,Long money);
 
     /**
-     * 全单发货
-     */
-    void sended();
-
-    /**
      * 全单退订
      * @param money
      */
@@ -55,4 +50,19 @@ public interface Order{
      * @param msg
      */
     void addMark(String msg);
+
+    /**
+     * 支付完成
+     */
+    void payed();//支付完成
+
+    /**
+     * 交易完成
+     */
+    void finished();//交易完成
+
+    /**
+     * 交易关闭
+     */
+    void closed();//交易关闭
 }

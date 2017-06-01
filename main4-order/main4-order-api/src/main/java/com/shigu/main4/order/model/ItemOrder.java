@@ -1,8 +1,11 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.order.vo.MetarialVO;
+import com.shigu.main4.order.vo.OrderVO;
 import com.shigu.main4.order.vo.ServiceVO;
+import com.shigu.main4.order.vo.SubItemOrderVO;
 
 import java.util.List;
 
@@ -15,7 +18,19 @@ public interface ItemOrder extends Order{
      * 查询订单物流信息
      * @return 物流信息
      */
-    List<LogisticsVO> selLogistics();
+    List<LogisticsVO> selLogisticses();
+
+    /**
+     * 查订单信息
+     * @return
+     */
+    ItemOrderVO orderInfo();
+
+    /**
+     * 查子订单信息
+     * @return
+     */
+    List<SubItemOrderVO> subOrdersInfo();
 
     /**
      * 添加物流信息
@@ -29,13 +44,6 @@ public interface ItemOrder extends Order{
      * @param logistics 改后的物流信息
      */
     void modifyLogistics(Long id,LogisticsVO logistics);
-
-    /**
-     * 退物流费
-     * @param id 物流信息ID
-     * @param money 退的费用
-     */
-    void refundLogistics(Long id,Long money);
 
     /**
      * 添加包材
@@ -61,5 +69,17 @@ public interface ItemOrder extends Order{
      * @param money 退的费用
      */
     void refundService(Long id,Long money);//退服务
+
+    /**
+     * 全单发货
+     */
+    void sended(String courierNumber);
+
+    /**
+     * 部分发货
+     * @param logisticsId
+     * @param courierNumber
+     */
+    void sendPart(Long logisticsId,List<Long> soids,String courierNumber);//部分发货
 
 }

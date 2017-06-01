@@ -16,22 +16,23 @@ void refunds(Long money);//全单退订
 
 void payed();//支付完成
 void finished();//交易完成
-void sended();//全单发货
 void closed();//交易关闭
-void sendPart();//部分发货
-
 }
 
 interface ItemOrder{
-List<LogisticsVO> selLogistics();//查询物流信息
+List<LogisticsVO> selLogisticses();//查询物流信息
 void addLogistics(LogisticsVO logistics);//添加物流
 void modifyLogistics(Long id,LogisticsVO logistics);//修改物流
-void refundLogistics(Long id,Long money);//退邮费
-
+ItemOrderVO orderInfo();
+List<SubItemOrderVO> subOrdersInfo();
 void addPackage(MetarialVO metarial);//添加包材
 void refundPackage(Long id,Long money);//退包材
 void addService(ServiceVO service);//添加服务
 void refundService(Long id,Long money);//退服务
+
+void sendPart(Long logisticsId,List<Long> soids,String courierNumber);//部分发货
+
+void sended(String courierNumber);//全单发货
 }
 
 interface RechangeOrder{
@@ -40,7 +41,7 @@ interface RechangeOrder{
 
 interface SubOrder{
 void closed();//关闭子订单
-void sended();//标为已发
+void sended(String courierNumber);//标为已发
 void refund(Long money);//退货
 void distribution(Long number);//到货
 void addMark(String msg);//添加备注
@@ -48,6 +49,7 @@ void addMark(String msg);//添加备注
 
 interface SubItemOrder{
 void modifySku(ItemSkuVO sku);
+LogisticsVO selLogistics();//查询物流信息
 }
 
 interface Sender{

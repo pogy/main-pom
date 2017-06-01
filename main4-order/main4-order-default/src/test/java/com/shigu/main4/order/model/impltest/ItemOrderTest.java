@@ -17,10 +17,8 @@ public class ItemOrderTest {
 
     @Test
     public void test(){
-        ItemOrderVO iov=new ItemOrderVO();
-        iov.setOrderId(111L);
-        ItemOrder order=SpringBeanFactory.getBean(ItemOrder.class,iov);
-        ItemOrderVO iv= (ItemOrderVO) order;
+        ItemOrder order=SpringBeanFactory.getBean(ItemOrder.class,111L);
+        ItemOrderVO iv= order.orderInfo();
         System.out.println(iv.getOrderId());
     }
 }

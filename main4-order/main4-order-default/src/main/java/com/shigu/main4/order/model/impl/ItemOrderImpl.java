@@ -1,6 +1,5 @@
 package com.shigu.main4.order.model.impl;
 
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.vo.ItemOrderVO;
@@ -8,6 +7,7 @@ import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.order.vo.MetarialVO;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.order.vo.ServiceVO;
+import com.shigu.main4.order.vo.SubItemOrderVO;
 import com.shigu.main4.order.vo.SubOrderVO;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -20,14 +20,28 @@ import java.util.List;
  */
 @Repository
 @Scope("prototype")
-public class ItemOrderImpl extends ItemOrderVO implements ItemOrder{
+public class ItemOrderImpl implements ItemOrder{
+    /**
+     * 订单ID
+     */
+    private Long oid;
 
-    public ItemOrderImpl(ItemOrderVO iov) {
-        BeanMapper.map(iov,this);
+    public ItemOrderImpl(Long oid) {
+        this.oid=oid;
     }
 
     @Override
-    public List<LogisticsVO> selLogistics() {
+    public List<LogisticsVO> selLogisticses() {
+        return null;
+    }
+
+    @Override
+    public ItemOrderVO orderInfo() {
+        return null;
+    }
+
+    @Override
+    public List<SubItemOrderVO> subOrdersInfo() {
         return null;
     }
 
@@ -38,11 +52,6 @@ public class ItemOrderImpl extends ItemOrderVO implements ItemOrder{
 
     @Override
     public void modifyLogistics(Long id, LogisticsVO logistics) {
-
-    }
-
-    @Override
-    public void refundLogistics(Long id, Long money) {
 
     }
 
@@ -67,6 +76,16 @@ public class ItemOrderImpl extends ItemOrderVO implements ItemOrder{
     }
 
     @Override
+    public void sended(String courierNumber) {
+
+    }
+
+    @Override
+    public void sendPart(Long logisticsId, List<Long> soids, String courierNumber) {
+
+    }
+
+    @Override
     public PayApplyVO payApply(PayType payType) {
         return null;
     }
@@ -87,11 +106,6 @@ public class ItemOrderImpl extends ItemOrderVO implements ItemOrder{
     }
 
     @Override
-    public void sended() {
-
-    }
-
-    @Override
     public void refunds(Long money) {
 
     }
@@ -99,5 +113,28 @@ public class ItemOrderImpl extends ItemOrderVO implements ItemOrder{
     @Override
     public void addMark(String msg) {
 
+    }
+
+    @Override
+    public void payed() {
+
+    }
+
+    @Override
+    public void finished() {
+
+    }
+
+    @Override
+    public void closed() {
+
+    }
+
+    public Long getOid() {
+        return oid;
+    }
+
+    public void setOid(Long oid) {
+        this.oid = oid;
     }
 }
