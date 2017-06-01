@@ -1,4 +1,4 @@
-<!doctype html>
+<#assign text>{}</#assign><#assign $it=text?eval /><!doctype html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -6,6 +6,7 @@
     <title></title>
     <link href="http://style.571xz.com/login/css/regedit.css" rel="stylesheet">
           <#include "/common/host_config.ftl">
+
   </head>
 <body class="c_regedit c_2016">
 <div class="c_w100 c_m0auto c_head_2016">
@@ -13,7 +14,7 @@
         <div class="c_w990 c_m0auto rect-wrap clearfix">
             <a class="logo iconfont c_logo2016" href="http://www.571xz.com"></a>
             <h2>欢迎注册</h2>
-            <a class="fr c_c_ff4400" href="http://www.571xz.com/login.htm">请登录</a>
+            <a class="fr c_c_ff4400" href="${main_host!}login.htm">请登录</a>
             <span class="fr c_c_777777">已有账号</span>
         </div>
     </div>
@@ -33,9 +34,11 @@
                         <div class="mobilephonehide clearfix">
                             <span class="mobileuser"><font>*</font>图形验证码:</span>
                             <input type="text" class="mobileipt" id="authCode" name="authCode"  placeholder="请输入右侧图案中的验证码">
-                            <div class="yanzheng"><img id="checkCode" src="IMG.htm" width="113px;" height="36px;"></div>
+                            <div class="yanzheng"><img id="checkCode" src="http://www.571xz.com/IMG.htm" width="113px;" height="36px;"></div>
                             <span class="fl c_none error-mess">验证码不能为空</span>
                         </div>
+                        
+                        
                         <div class="mobilephonehide clearfix">
                             <span class="mobileuser"><font>*</font>短信验证码:</span>
                             <input type="text" class="mobileipt phoneCode" id="phoneCode" name="phoneCode" placeholder="请输入上手机接收到的验证码">
@@ -77,14 +80,14 @@
     <div class="c_w1190 c_m0auto">
         <div class="c_w990 c_m0auto">
             <p class="c_c_777777">
-                <a href="/index.html" target="_blank">首页</a> <a href="http://hz.571xz.com" target="_blank">杭州站</a> <a href="http://bj.571xz.com" target="_blank">北京站</a> <a href="http://gz.571xz.com" target="_blank">广州站</a> <a href="http://ss.571xz.com" target="_blank">石狮站</a> <a href="http://cs.571xz.com" target="_blank">常熟站</a> <a href="http://bbs.571xz.com/" target="_blank">星座论坛</a> <a href="http://market.571xz.com/" target="_blank">服装批发市场</a> <a href="http://hz.571xz.com:8070/zixun/article?id=87" target="_blank">联系我们</a> <a href="http://www.571xz.com/shigu/contact/zpyc/" target="_blank">招聘英才</a>
+                <a href="/index.html" target="_blank">首页</a> <a href="http://hz.571xz.com" target="_blank">杭州站</a> <a href="http://bj.571xz.com" target="_blank">北京站</a> <a href="http://gz.571xz.com" target="_blank">广州站</a> <a href="http://ss.571xz.com" target="_blank">石狮站</a> <a href="http://cs.571xz.com" target="_blank">常熟站</a> <a href="http://bbs.571xz.com/" target="_blank">星座论坛</a> <a href="http://market.571xz.com/" target="_blank">服装批发市场</a> <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a> <a href="http://www.571xz.com/shigu/contact/zpyc/" target="_blank">招聘英才</a>
             </p>
             <p class="c_c_acacac">&copy; 2009-2017 571xz.com 版权所有 <a rel="nofollow" href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank">网上交易市场登记证</a> <a rel="nofollow" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank">增值电信业务经营许可证： 浙B2-20120165</a> | <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" style="display:inline;text-decoration:none;height:20px;line-height:20px;"> <img src="http://www.571xz.com/images/beian.png" style="vertical-align: middle; display: inline;" width="20" height="20" original="http://www.571xz.com/images/beian.png"> 浙公网安备 33010202000302号 </a> </p>
         </div>
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/login/js/regedit.js"></script>
+<script src="http://style.571xz.com/login/js/regedit.js?t=20170531"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

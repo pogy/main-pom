@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <#if query.timeflag == 2>
+    <#if query.timeflag == 2>
         <title>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-全部商品-四季星座网</title>
         <#elseif query.timeflag == 3>
         <title>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-今日新品-四季星座网</title>
@@ -24,11 +24,11 @@
             <base href="${baseUrl!}">
         </#if>
     
-    <link href="http://style.571xz.com/shopItemCopy/css/shop.css?t=1494584800143" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/shop.css?t=1496224720984" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/shop.js?t=1494584800143"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shop.js?t=1496224720984"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -154,7 +154,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -202,7 +205,7 @@ var webSite = '${webSite!}';
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
-            <a href="http://www.571xz.com/">
+            <a href="http://${webSite!}.571xz.com/">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
