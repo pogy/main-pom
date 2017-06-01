@@ -4,11 +4,7 @@ XZ  //星座
 ALI  //阿里
 WX   //微信
 }
-interface Cart{
-void addProduct(Product pro);
-void rmProduct(Product pro);
-Long modifyProductNumber(Long pid,Integer number);
-}
+
 interface Order{
 PayApplyVO payApply(PayType type);//支付申请
 Long pay(Long applyId,Long money);//付款确认
@@ -39,45 +35,9 @@ void refund(Long money);//退货
 interface SubItemOrder{
 
 }
-interface Product{
-List<SkuVO> selSkus();
-}
-
-interface ItemProduct{
-void modifyWeight(Long meter);
-void modifyPrice(Long price);
-}
 
 interface Sender{
 void sendOrder(Order order);//发放订单给代发
-}
-
-class OrderVO{
--Long orderId;
--OrderType type;
--Long totalFee;
--List<Long> payIds;
--Long refundFee;//已退金额
-}
-
-class ItemOrderVO{
--OrderStatus status;
--List<packageVO> packages;//包材
--List<LogisticsVO> logistics;//物流
--SenderVO sender;//发件单位
--List<ServiceVO> services;//服务信息
-}
-
-class SubOrderVO{
--Long subOrderId;
--Long orderId;
--Long refundFee;//已退金额
-}
-
-class SubItemOrderVO{
--ProductVO product;
--Integer number;
--OrderStatus status;
 }
 
 enum ProductType{
@@ -99,29 +59,7 @@ TRADE_CLOSED  //付款以后用户退款成功，交易自动关闭
 
 }
 
-class ItemProductVO{
--Long pid;
--Long goodsId;
--String webSite;
--String picUrl;
--String title;
--Long price;
--String marketName;
--String floor;
--String shopNum;
--Long marketId;
--Long floorId;
--Long shopId;
--Long weight;
--ItemSkuVO sku;
-}
 
-class ItemSkuVO{
--Long skuId;
--Long pid;
--String color;
--String size;
-}
 
 class PayApplyVO{
 -Long applyId;//支付申请ID
@@ -132,58 +70,13 @@ class PayApplyVO{
 -Integer payFor;//付款理由
 }
 
-class SenderVO{
--Long senderId;//发件单位ID
--String webSite;//分站
--String topic;//主题
-}
-
-class LogisticsVO{
--Long id;
--Long companyId;//快递公司ID
--Long addressId;//地址
--String courierNumber;//快递单号
--Long oid;//订单ID
--Long money;//支付金额,钱为单位
-}
-
-class MetarialVO{
--Long id;
--String name;
--Integer size;//尺寸
--Long price;//价格
-}
-
-class ServiceVO{
--Long id;//主键
--Long price;//费用
--String text;//服务描述
--Integer flag;//服务标识
-}
-
-Cart *-- Product
-Product <|-- ItemProduct
-ItemProduct <|-- ItemProductVO
-ItemProductVO --o ItemSkuVO
-
 SubOrder <|-- SubItemOrder
 Order <|-- ItemOrder
 Order <|-- RechangeOrder
 ItemOrder *-- SubItemOrder
-
-OrderVO <|-- ItemOrderVO
-SubOrderVO <|-- SubItemOrderVO
-
-ItemOrderVO *-- SubItemOrderVO
-ItemOrderVO --o ServiceVO
-
-ItemOrderVO --o SenderVO
-ItemOrderVO --o MetarialVO
-ItemOrderVO --o LogisticsVO
+Sender *-- Order
 
 Order --o PayApplyVO
-
-SenderVO --> Sender
 
 
 @enduml

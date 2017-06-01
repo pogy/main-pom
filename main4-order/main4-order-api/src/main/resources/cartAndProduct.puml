@@ -1,0 +1,47 @@
+@startuml
+
+interface Cart{
+void addProduct(Product pro);
+void rmProduct(Product pro);
+Long modifyProductNumber(Long pid,Integer number);
+}
+
+interface Product{
+List<SkuVO> selSkus();
+}
+
+interface ItemProduct{
+void modifyWeight(Long meter);
+void modifyPrice(Long price);
+}
+
+class ItemProductVO{
+-Long pid;
+-Long goodsId;
+-String webSite;
+-String picUrl;
+-String title;
+-Long price;
+-String marketName;
+-String floor;
+-String shopNum;
+-Long marketId;
+-Long floorId;
+-Long shopId;
+-Long weight;
+-ItemSkuVO sku;
+}
+
+class ItemSkuVO{
+-Long skuId;
+-Long pid;
+-String color;
+-String size;
+}
+
+Cart *-- Product
+Product <|-- ItemProduct
+ItemProduct <|-- ItemProductVO
+ItemProductVO --o ItemSkuVO
+
+@enduml
