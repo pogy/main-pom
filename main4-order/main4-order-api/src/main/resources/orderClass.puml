@@ -42,15 +42,12 @@ interface SubOrder{
 void closed();//关闭子订单
 void sended();//标为已发
 void refund(Long money);//退货
+void distribution(Long number);//到货
 void addMark(String msg);//添加备注
 }
 
 interface SubItemOrder{
-
-}
-
-interface Logistics{
-Long calculateFee();//计算
+void modifySku(ItemSkuVO sku);
 }
 
 interface Sender{
@@ -89,7 +86,6 @@ class PayApplyVO{
 
 SubOrder <|-- SubItemOrder
 Order <|-- ItemOrder
-ItemOrder --o Logistics
 Order <|-- RechangeOrder
 ItemOrder *-- SubItemOrder
 Sender *-- Order
