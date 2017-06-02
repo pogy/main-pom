@@ -86,14 +86,14 @@ public class RegistAction {
         }
         //如果手机已经被注册,直接返回
         if(!registerAndLoginService.userCanRegist(bo.getTelephone(),LoginFromType.PHONE)){
-            throw new JsonErrException("手机号已经被注册").addErrMap("ele", "telephone");
+            throw new JsonErrException("手机号已经注册，请尝试直接使用手机登录").addErrMap("ele", "telephone");
         }
         String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
         if(imgcode==null||!imgcode.equals(bo.getImgValidate())){//图片验证通不过
             throw new JsonErrException("图片验证码不正确").addErrMap("ele", "msgValidate");
         }
         String code=RedomUtil.redomNumber(6);
-        sendMsgService.sendRegist(bo.getTelephone(),code);
+        sendMsgService.sendVerificationCode(bo.getTelephone(),code);
 //        System.out.println(code);
         session.setAttribute(SessionEnum.PHONE_REGISTER_MSG.getValue(),new PhoneVerify(bo.getTelephone(),code));
         return JsonResponseUtil.success();

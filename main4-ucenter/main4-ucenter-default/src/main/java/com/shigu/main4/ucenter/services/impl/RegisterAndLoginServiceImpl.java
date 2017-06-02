@@ -82,7 +82,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             return null;
         }
         MemberUser memberUser = new MemberUser();
-        memberUser.setUserNick(user.getUserNick());
+        memberUser.setUserNick(user.getTelephone());
         memberUser.setUserName(user.getTelephone());
         memberUser.setLoginPhone(user.getTelephone());
         memberUser.setRegTime(new Date());

@@ -332,7 +332,7 @@ public class UserLoginAction {
     public JSONObject loginPhoneVerification(String phone,HttpSession session){
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue(), new PhoneVerify(phone, code));
-        sendMsgService.sendForgetPwd(phone, code);
+        sendMsgService.sendVerificationCode(phone, code);
 //        System.out.println(code);
         return JsonResponseUtil.success();
     }
@@ -404,7 +404,7 @@ public class UserLoginAction {
     public JSONObject forgetPhoneVerification(String phone,HttpSession session){
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(phone, code));
-        sendMsgService.sendForgetPwd(phone, code);
+        sendMsgService.sendVerificationCode(phone, code);
 //        System.out.println(code);
         return JSONObject.fromObject("{'result':'success'}");
     }
@@ -534,89 +534,93 @@ public class UserLoginAction {
         return "redirect:"+loginUrl;
     }
 
-//    /**
-//     * 测试绑定第三方账号
-//     * @return
-//     */
-//    @RequestMapping("testTbBind")
-//    @ResponseBody
-//    public String testTbBind(HttpSession session){
-//        PhoneVerify phoneVerify=new PhoneVerify();
-//        phoneVerify.setPhone("18888888888");
-//        phoneVerify.setVerify("111111");
-//        session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(),phoneVerify);
-//
-//        Rds3TempUser rds3TempUser=new Rds3TempUser();
-//        rds3TempUser.setLoginFromType(LoginFromType.TAOBAO);
-//        rds3TempUser.setSubUserName("谁把谁真的当33");
-//        session.setAttribute(SessionEnum.RDS3_TEMPUSER.getValue(),rds3TempUser);
-//        return "OK";
-//    }
     /**
      * 手机号绑定
      * @return
      */
     @RequestMapping("userPhoneBind")
-    public String userPhoneBind(BindPhoneBO bo,HttpServletRequest request,HttpSession session,Model model) throws Main4Exception {
-        if(bo.getTelephone()!=null&&bo.getPhoneVerify()!=null){
-            PhoneVerify phoneVerify= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_BIND_MSG.getValue());
-            if(phoneVerify==null||!bo.getTelephone().equals(phoneVerify.getPhone())
-                    ||!bo.getPhoneVerify().equals(phoneVerify.getVerify())){
-                model.addAttribute("msg","短信验证码错误");
-            }else{
-                //把第三方账号绑给现在这个手机号
-                Rds3TempUser rds3TempUser= (Rds3TempUser) session.getAttribute(SessionEnum.RDS3_TEMPUSER.getValue());
-                if(rds3TempUser==null){
-                    throw new Main4Exception("第三方未登陆或登陆异常");
-                }
-                /**
-                 * 如果是手机来的,就是星座号绑定手机
-                 */
-                if(rds3TempUser.getLoginFromType().equals(LoginFromType.PHONE)){
-                    if (registerAndLoginService.userCanRegist(bo.getTelephone(), LoginFromType.PHONE)) {
-                        userLicenseService.bindPhone(Long.valueOf(rds3TempUser.getSubUserKey()),bo.getTelephone());
-                    } else {
-                        throw new Main4Exception("该手机号已被使用");
-                    }
-                    rds3TempUser.setSubUserName(bo.getTelephone());
-                }else{
-                    registerAndLoginService.bind3RdUser(bo.getTelephone(),rds3TempUser);
-                }
-                Subject currentUser = SecurityUtils.getSubject();
-                CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
-                        rds3TempUser.getSubUserName(), null, false, request.getRemoteAddr(), "", UserType.MEMBER);
-                token.setLoginFromType(rds3TempUser.getLoginFromType());
-                //星座用户登陆
-                token.setRememberMe(true);
-                try {
-                    currentUser.login(token);
-                    currentUser.hasRole(RoleEnum.STORE.getValue());
-                }catch (LoginAuthException e){
-                    throw  new Main4Exception(e.getMessage());
-                }
-                //跳登陆中心
-//                return "redirect:"+memberFilter.getSuccessUrl();
-                String backUrl= (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
-                session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
-                return "redirect:"+loginSuccessUrl(backUrl);
-            }
-        }
+    public String userPhoneBind(String backUrl,Model model) throws Main4Exception {
+        model.addAttribute("backUrl", backUrl);
         return "buyer/userPhoneBind";
     }
 
     /**
+     * 手机号绑定
+     * @param bo bind message send.
+     * @param session session
+     * @return data
+     */
+    @RequestMapping("bindTelephone")
+    @ResponseBody
+    public JSONObject doBindPhoneVerification(@Valid BindPhoneBO bo, BindingResult result, HttpServletRequest request, HttpSession session) throws Main4Exception {
+        if (result.hasErrors()) {
+            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+        }
+        PhoneVerify phoneVerify= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_BIND_MSG.getValue());
+        if(phoneVerify==null||!bo.getTelephone().equals(phoneVerify.getPhone())
+                ||!bo.getMsgValidate().equals(phoneVerify.getVerify())){
+            throw new JsonErrException("短信验证码错误").addErrMap("ele", "msgValidate");
+        }else {
+            String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+            if(imgcode==null||!imgcode.equals(bo.getImgValidate())){//图片验证通不过
+                throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
+            }
+            //把第三方账号绑给现在这个手机号
+            Rds3TempUser rds3TempUser = (Rds3TempUser) session.getAttribute(SessionEnum.RDS3_TEMPUSER.getValue());
+            if (rds3TempUser == null) {
+                throw new Main4Exception("第三方未登陆或登陆异常");
+            }
+            /*
+             * 如果是手机来的,就是星座号绑定手机
+             */
+            if (rds3TempUser.getLoginFromType().equals(LoginFromType.PHONE)) {
+                if (registerAndLoginService.userCanRegist(bo.getTelephone(), LoginFromType.PHONE)) {
+                    userLicenseService.bindPhone(Long.valueOf(rds3TempUser.getSubUserKey()),bo.getTelephone());
+                } else {
+                    throw new Main4Exception("该手机号已被使用");
+                }
+                rds3TempUser.setSubUserName(bo.getTelephone());
+            } else {
+                registerAndLoginService.bind3RdUser(bo.getTelephone(), rds3TempUser);
+            }
+            Subject currentUser = SecurityUtils.getSubject();
+            CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
+                    rds3TempUser.getSubUserName(), null, false, request.getRemoteAddr(), "", UserType.MEMBER);
+            token.setLoginFromType(rds3TempUser.getLoginFromType());
+            //星座用户登陆
+            token.setRememberMe(true);
+            try {
+                currentUser.login(token);
+                currentUser.hasRole(RoleEnum.STORE.getValue());
+            } catch (LoginAuthException e) {
+                throw new Main4Exception(e.getMessage());
+            }
+            //跳登陆中心
+//                return "redirect:"+memberFilter.getSuccessUrl();
+            String backUrl = (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
+            session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
+            return JsonResponseUtil.success().element("backUrl", backUrl);
+        }
+    }
+    /**
      * 发送手机号绑定的短信
-     * @param phone
-     * @param session
-     * @return
+     * @param bo bind message send.
+     * @param session session
+     * @return data
      */
     @RequestMapping("bindPhoneVerification")
     @ResponseBody
-    public JSONObject bindPhoneVerification(String phone,HttpSession session){
+    public JSONObject bindPhoneVerification(@Valid RegistVerifyBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+        if(result.hasErrors()){
+            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage()).addErrMap("ele", "msgValidate");
+        }
+        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if(imgcode==null||!imgcode.equals(bo.getImgValidate())){//图片验证通不过
+            throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
+        }
         String code= RedomUtil.redomNumber(6);
-        session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(phone, code));
-        sendMsgService.sendForgetPwd(phone, code);
-//        System.out.println(code);
+        session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(bo.getTelephone(), code));
+        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
         return JsonResponseUtil.success();
     }
     /**
@@ -632,7 +636,6 @@ public class UserLoginAction {
             //如果个人,跳到这个,如果商户跳到seller
             toUrl=memberFilter.getSuccessUrl();
         }
-        //System.out.println(toUrl);
         return toUrl;
     }
 
