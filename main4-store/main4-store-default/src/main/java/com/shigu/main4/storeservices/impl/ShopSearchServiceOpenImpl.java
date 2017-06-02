@@ -21,6 +21,7 @@ import com.shigu.main4.common.util.HighLightKit;
 import com.shigu.main4.vo.OpenShopVo;
 import com.shigu.main4.vo.SearchShop;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * 阿里开放搜索 实现店铺搜索
@@ -66,8 +68,17 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         config.setFetchFields(Lists.newArrayList("shop_id", "market_id", "floor_id", "user_id", "shop_name", "web_site", "tb_nick", "shop_num", "shop_status", "market_name"));
         config.setSearchFormat(SearchFormat.JSON);
         SearchParams searchParams = new SearchParams(config);
+        String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
+        String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
         if (StringUtils.isNotEmpty(keyword)) {
-            searchParams.setQuery("shop_info:'" + keyword + '\'');
+            String query="shop_info:'" + keyword +"'";
+            if(StringUtils.isNotEmpty(keywordChina)){
+                query+=" OR (shop_market_info:'"+keywordChina+"'^5 AND shop_info:'" + keyword +"')";
+            }
+            if(StringUtils.isNotEmpty(keywordNum)){
+                query+=" OR (shop_num_info:'"+keywordNum+"'^10 AND shop_info:'" + keyword +"')";
+            }
+            searchParams.setQuery(query);
         }
         String filter = "";
         if (StringUtils.isNotEmpty(webSite)) {
