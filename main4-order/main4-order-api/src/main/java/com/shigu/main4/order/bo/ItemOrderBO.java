@@ -1,6 +1,5 @@
 package com.shigu.main4.order.bo;
 
-import com.shigu.main4.order.enums.OrderStatus;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,8 +10,6 @@ import java.util.List;
  */
 public class ItemOrderBO implements Serializable{
 
-    private Long oid;
-
     private Long userId;
 
     private Long senderId;
@@ -21,19 +18,11 @@ public class ItemOrderBO implements Serializable{
 
     private String webSite;
 
-    private OrderStatus status;
-
     private String mark;
 
+    private LogisticsBO logistics;
+
     private List<SubItemOrderBO> subOrders;
-
-    public Long getOid() {
-        return oid;
-    }
-
-    public void setOid(Long oid) {
-        this.oid = oid;
-    }
 
     public Long getUserId() {
         return userId;
@@ -67,19 +56,27 @@ public class ItemOrderBO implements Serializable{
         this.webSite = webSite;
     }
 
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
-
     public String getMark() {
         return mark;
     }
 
     public void setMark(String mark) {
         this.mark = mark;
+    }
+
+    public LogisticsBO getLogistics() {
+        return logistics;
+    }
+
+    public void setLogistics(LogisticsBO logistics) {
+        this.logistics = logistics;
+    }
+
+    public List<SubItemOrderBO> getSubOrders() {
+        return subOrders;
+    }
+
+    public void setSubOrders(List<SubItemOrderBO> subOrders) {
+        this.subOrders = subOrders;
     }
 }

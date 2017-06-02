@@ -15,9 +15,13 @@ public class SubItemOrderBO implements Serializable{
      * skuId
      */
     private Long skuId;
-
+    /**
+     * 产品数量
+     */
     private Integer num;
-
+    /**
+     * 备注
+     */
     private String mark;
 
     public Long getPid() {

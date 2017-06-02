@@ -7,9 +7,10 @@ import com.shigu.main4.order.bo.ItemOrderBO;
  * Created by zhaohongbo on 17/6/1.
  */
 public interface ItemOrderService {
+
     /**
-     * 创建一个订单
-     * @param orderBO 订单数据
+     * 创建订单
+     * @param orderBO
      * @return
      */
     Long createOrder(ItemOrderBO orderBO);

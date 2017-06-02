@@ -1,5 +1,7 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.bo.ItemOrderBO;
+
 /**
  * 购物车
  *

@@ -21,13 +21,13 @@ void closed();//交易关闭
 
 interface ItemOrder{
 List<LogisticsVO> selLogisticses();//查询物流信息
-void addLogistics(LogisticsVO logistics);//添加物流
+void addLogistics(LogisticsBO logistics);//添加物流
 void modifyLogistics(Long id,LogisticsVO logistics);//修改物流
 ItemOrderVO orderInfo();
 List<SubItemOrderVO> subOrdersInfo();
-void addPackage(MetarialVO metarial);//添加包材
+void addPackage(Long metarialId);//添加包材
 void refundPackage(Long id,Long money);//退包材
-void addService(ServiceVO service);//添加服务
+void addService(Long serviceId);//添加服务
 void refundService(Long id,Long money);//退服务
 
 void sendPart(Long logisticsId,List<Long> soids,String courierNumber);//部分发货

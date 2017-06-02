@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.order.vo.MetarialVO;
@@ -36,7 +37,7 @@ public interface ItemOrder extends Order{
      * 添加物流信息
      * @param logistics
      */
-    void addLogistics(LogisticsVO logistics);
+    void addLogistics(LogisticsBO logistics);
 
     /**
      * 修改物流信息
@@ -47,9 +48,9 @@ public interface ItemOrder extends Order{
 
     /**
      * 添加包材
-     * @param metarial 材料
+     * @param metarialId 材料ID
      */
-    void addPackage(MetarialVO metarial);
+    void addPackage(Long metarialId);
 
     /**
      * 退包材
@@ -59,9 +60,9 @@ public interface ItemOrder extends Order{
 
     /**
      * 添加服务数据
-     * @param service 服务内容
+     * @param serviceId 服务Id
      */
-    void addService(ServiceVO service);//添加服务
+    void addService(Long serviceId);//添加服务
 
     /**
      * 退服务款
