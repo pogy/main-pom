@@ -120,10 +120,10 @@ public class RegistAction {
         registerUser.setTelephone(bo.getTelephone());
         try {
             if(registerAndLoginService.registerByPhone(registerUser)==null){
-                throw new JsonErrException("用户已经存在").addErrMap("ele","telephone");
+                throw new JsonErrException("用户已经存在");
             }
         } catch (Main4Exception e) {
-            throw new JsonErrException(e.getMessage());
+            throw new JsonErrException(e.getMessage()).addErrMap("ele","telephone");
         }
         //成功以后,需要登陆一下
         Subject currentUser = SecurityUtils.getSubject();
