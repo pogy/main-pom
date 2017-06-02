@@ -46,7 +46,7 @@ public interface ItemOrder extends Order{
      * 添加包材
      * @param metarialId 材料ID
      */
-    void addPackage(Long metarialId);
+    void addPackage(Long metarialId,Integer num);
 
     /**
      * 退包材

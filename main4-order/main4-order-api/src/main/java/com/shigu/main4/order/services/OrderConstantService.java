@@ -20,38 +20,38 @@ public interface OrderConstantService {
      * 查询服务
      * @return
      */
-    List<ServiceVO> selServices();
+    List<ServiceVO> selServices(Long senderId);
 
     /**
      * 按服务ID查服务
      * @param id
      * @return
      */
-    ServiceVO selServiceById(Long id);
+    ServiceVO selServiceById(Long senderId,Long id);
 
     /**
      * 查询所有包材
      * @return
      */
-    List<MetarialVO> selMetarials();
+    List<MetarialVO> selMetarials(Long senderId);
 
     /**
      * 按包材ID查包材
      * @param id
      * @return
      */
-    MetarialVO selMetarialById(Long id);
+    MetarialVO selMetarialById(Long senderId,Long id);
 
     /**
      * 查询所有物流信息
      * @return
      */
-    List<LogisticsCompanyVO> selLogistics();
+    List<LogisticsCompanyVO> selLogistics(Long senderId);
 
     /**
      * 按物流信息ID查物流
      * @param id
      * @return
      */
-    LogisticsCompanyVO selLogisticsById(Long id);
+    LogisticsCompanyVO selLogisticsById(Long senderId,Long id);
 }

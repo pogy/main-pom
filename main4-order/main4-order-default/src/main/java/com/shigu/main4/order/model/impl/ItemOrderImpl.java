@@ -54,7 +54,7 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
-    public void addPackage(Long metarialId) {
+    public void addPackage(Long metarialId,Integer num) {
 
     }
 
