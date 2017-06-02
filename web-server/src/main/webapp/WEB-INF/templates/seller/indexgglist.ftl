@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/indexgglist.css?t=1496217547155" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/indexgglist.css?t=1496393679046" rel="stylesheet">
     
   </head>
 <body>
@@ -247,12 +247,12 @@ var webSite = '${webSite!}';
     <div class="content shadow-box">
         <h3 class="title">广告区域</h3>
         <a href="${main_host!}seller/dtgglistFinish.htm" target="_blank" class="searAllRe">查看上一期结果 ＞</a>
-        <div class="adsBoxs clearfix">
+        <div class="goatBoxs clearfix">
             <#if (adsBoxList?size) gt 0>
             <#list adsBoxList as item>
-            <div class="adsBox">
-                <h3 class="adsTitle">${item.title!}</h3>
-                <ul class="adsDetails">
+            <div class="goatBox">
+                <h3 class="goatTitle">${item.title!}</h3>
+                <ul class="goatDetails">
                     <li>
                         <span class="detailName">数量：</span>
                         <span class="detailVaule">${item.count!}</span>
@@ -319,7 +319,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/indexgglist.js?t=1496217547155"></script>
+<script src="http://style.571xz.com/gys5/js/indexgglist.js?t=1496393679046"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
