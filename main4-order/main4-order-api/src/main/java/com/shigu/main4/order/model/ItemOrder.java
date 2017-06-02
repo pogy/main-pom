@@ -1,11 +1,7 @@
 package com.shigu.main4.order.model;
 
-import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
-import com.shigu.main4.order.vo.MetarialVO;
-import com.shigu.main4.order.vo.OrderVO;
-import com.shigu.main4.order.vo.ServiceVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 
 import java.util.List;
