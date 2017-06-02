@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model.impl;
 
+import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.vo.ItemOrderVO;
@@ -46,7 +47,7 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
-    public void addLogistics(LogisticsVO logistics) {
+    public void addLogistics(LogisticsBO logistics) {
 
     }
 
@@ -56,7 +57,7 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
-    public void addPackage(MetarialVO metarial) {
+    public void addPackage(Long metarialId) {
 
     }
 
@@ -66,7 +67,7 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
-    public void addService(ServiceVO service) {
+    public void addService(Long serviceId) {
 
     }
 
@@ -128,13 +129,5 @@ public class ItemOrderImpl implements ItemOrder{
     @Override
     public void closed() {
 
-    }
-
-    public Long getOid() {
-        return oid;
-    }
-
-    public void setOid(Long oid) {
-        this.oid = oid;
     }
 }
