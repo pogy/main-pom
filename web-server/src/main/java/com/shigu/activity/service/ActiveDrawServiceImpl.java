@@ -338,6 +338,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                 && goodsId.intValue() != activeDrawGoods.getGoodsId().intValue()){
             // 更换商品
             activeDrawGoods.setEnabled(true);
+            activeDrawGoods.setModifyTime(new Date());
             activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
 
             //把本商品在本期的删除
@@ -347,6 +348,8 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
             // 新增商品
             activeDrawGoods.setId(null);
+            activeDrawGoods.setCreateTime(new Date());
+            activeDrawGoods.setModifyTime(new Date());
             activeDrawGoods.setEnabled(false);
             activeDrawGoods.setGoodsId(goodsId);
             activeDrawGoodsMapper.insertSelective(activeDrawGoods);
