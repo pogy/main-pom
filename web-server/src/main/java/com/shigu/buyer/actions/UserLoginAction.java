@@ -42,6 +42,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -87,7 +88,6 @@ public class UserLoginAction {
     @Autowired
     MemberSimpleService memberSimpleService;
 
-    String ftlDir="buyer";
     /**
      * 登陆
      * @param bo 登陆参数
@@ -295,7 +295,7 @@ public class UserLoginAction {
         if(backUrl!=null){
             session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(),backUrl);
         }
-        return ftlDir+"/phoneAuthCodeLogininit";
+        return "buyer/phoneAuthCodeLogininit";
     }
 
     /**
@@ -320,7 +320,7 @@ public class UserLoginAction {
                 }
             }
         }
-        return ftlDir+"/phoneAuthCodeLogininit";
+        return "buyer/phoneAuthCodeLogininit";
     }
 
     /**
@@ -340,12 +340,19 @@ public class UserLoginAction {
      * 忘记密码
      * @return
      */
-    @RequestMapping("forgetPassword")
-    public String forgetPassword(String telephone,String phoneVerify,HttpServletRequest request,HttpSession session,Model model) throws Main4Exception {
-        if(phoneVerify!=null){
+    @RequestMapping(value = "forgetPassword", method = RequestMethod.GET)
+    public String forgetPassword() throws Main4Exception {
+        return "buyer/forgetPassword";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "forgetPassword", method = RequestMethod.POST)
+    public JSONObject doForgetPassword(String telephone, String imgValidate, HttpServletRequest request, HttpSession session, Model model) throws Main4Exception {
+        if(imgValidate !=null){
+            session.setAttribute("gotPassStep", 1);
             //是提交
             PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
-            if(phoneCode==null||!phoneCode.getVerify().equals(phoneVerify)
+            if(phoneCode==null||!phoneCode.getVerify().equals(imgValidate)
                     ||!phoneCode.getPhone().equals(telephone)){//验证不通过
                 model.addAttribute("errorString","您输入的验证码不正确");
             }else{//跳修改密码页面
@@ -353,15 +360,12 @@ public class UserLoginAction {
                     phoneLogin(request.getRemoteAddr(),telephone);
                     PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
                     phoneCode.setUserId(ps.getUserId());
-                    return "redirect:/member/safexgmm.htm?code="+phoneCode.getVerify();
                 } catch (Main4LoginException e) {
                     model.addAttribute("errorString",e.getMessage());
                 }
             }
         }
-        model.addAttribute("telephone",telephone);
-        model.addAttribute("phoneVerify",phoneVerify);
-        return ftlDir+"/phoneForgetPasswordinit";
+        return JsonResponseUtil.success();
     }
 
     /**
@@ -597,7 +601,7 @@ public class UserLoginAction {
                 return "redirect:"+loginSuccessUrl(backUrl);
             }
         }
-        return ftlDir+"/userPhoneBind";
+        return "buyer/userPhoneBind";
     }
 
     /**
