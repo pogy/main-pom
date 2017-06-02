@@ -72,12 +72,13 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
         if (StringUtils.isNotEmpty(keyword)) {
             String query="shop_info:'" + keyword +"'";
-            if(StringUtils.isNotEmpty(keywordChina)){
-                query+=" OR (shop_market_info:'"+keywordChina+"'^5 AND shop_info:'" + keyword +"')";
-            }
-            if(StringUtils.isNotEmpty(keywordNum)){
-                query+=" OR (shop_num_info:'"+keywordNum+"'^10 AND shop_info:'" + keyword +"')";
-            }
+            query+=" OR (shop_num_market_info:'"+keyword+"'^5 AND shop_info:'" + keyword +"')";
+//            if(StringUtils.isNotEmpty(keywordChina)){
+//                query+=" OR (shop_market_info:'"+keywordChina+"'^5 AND shop_info:'" + keyword +"')";
+//            }
+//            if(StringUtils.isNotEmpty(keywordNum)){
+//                query+=" OR (shop_num_info:'"+keywordNum+"'^10 AND shop_info:'" + keyword +"')";
+//            }
             searchParams.setQuery(query);
         }
         String filter = "";
