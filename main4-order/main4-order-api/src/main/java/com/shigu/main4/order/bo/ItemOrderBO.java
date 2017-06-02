@@ -23,6 +23,14 @@ public class ItemOrderBO implements Serializable{
     private LogisticsBO logistics;
 
     private List<SubItemOrderBO> subOrders;
+    /**
+     * 服务
+     */
+    private List<Long> serviceIds;
+    /**
+     * 包材
+     */
+    private List<PackageBO> packages;
 
     public Long getUserId() {
         return userId;
@@ -78,5 +86,21 @@ public class ItemOrderBO implements Serializable{
 
     public void setSubOrders(List<SubItemOrderBO> subOrders) {
         this.subOrders = subOrders;
+    }
+
+    public List<Long> getServiceIds() {
+        return serviceIds;
+    }
+
+    public void setServiceIds(List<Long> serviceIds) {
+        this.serviceIds = serviceIds;
+    }
+
+    public List<PackageBO> getPackages() {
+        return packages;
+    }
+
+    public void setPackages(List<PackageBO> packages) {
+        this.packages = packages;
     }
 }

@@ -21,7 +21,7 @@ void closed();//交易关闭
 
 interface ItemOrder{
 List<LogisticsVO> selLogisticses();//查询物流信息
-void addLogistics(LogisticsBO logistics);//添加物流
+void addLogistics(List<Long> soids,LogisticsVO logistics);//添加物流
 void modifyLogistics(Long id,LogisticsVO logistics);//修改物流
 ItemOrderVO orderInfo();
 List<SubItemOrderVO> subOrdersInfo();

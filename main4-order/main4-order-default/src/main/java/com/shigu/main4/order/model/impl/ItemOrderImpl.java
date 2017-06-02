@@ -1,13 +1,10 @@
 package com.shigu.main4.order.model.impl;
 
-import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
-import com.shigu.main4.order.vo.MetarialVO;
 import com.shigu.main4.order.vo.PayApplyVO;
-import com.shigu.main4.order.vo.ServiceVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 import com.shigu.main4.order.vo.SubOrderVO;
 import org.springframework.context.annotation.Scope;
@@ -47,8 +44,8 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
-    public void addLogistics(LogisticsBO logistics) {
-
+    public Long addLogistics(List<Long> soids,LogisticsVO logistics) {
+        return null;
     }
 
     @Override

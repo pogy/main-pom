@@ -37,7 +37,7 @@ public interface ItemOrder extends Order{
      * 添加物流信息
      * @param logistics
      */
-    void addLogistics(LogisticsBO logistics);
+    Long addLogistics(List<Long> soids,LogisticsVO logistics);
 
     /**
      * 修改物流信息
