@@ -568,7 +568,7 @@ public class UserLoginAction {
             //把第三方账号绑给现在这个手机号
             Rds3TempUser rds3TempUser = (Rds3TempUser) session.getAttribute(SessionEnum.RDS3_TEMPUSER.getValue());
             if (rds3TempUser == null) {
-                throw new Main4Exception("第三方未登陆或登陆异常");
+                throw new JsonErrException("第三方未登陆或登陆异常").addErrMap("ele", "telephone");
             }
             /*
              * 如果是手机来的,就是星座号绑定手机
@@ -577,7 +577,7 @@ public class UserLoginAction {
                 if (registerAndLoginService.userCanRegist(bo.getTelephone(), LoginFromType.PHONE)) {
                     userLicenseService.bindPhone(Long.valueOf(rds3TempUser.getSubUserKey()),bo.getTelephone());
                 } else {
-                    throw new Main4Exception("该手机号已被使用");
+                    throw new JsonErrException("该手机号已被使用").addErrMap("ele", "telephone");
                 }
                 rds3TempUser.setSubUserName(bo.getTelephone());
             } else {
@@ -620,7 +620,8 @@ public class UserLoginAction {
         }
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(bo.getTelephone(), code));
-        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
+//        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
+        System.out.println(code);
         return JsonResponseUtil.success();
     }
     /**
