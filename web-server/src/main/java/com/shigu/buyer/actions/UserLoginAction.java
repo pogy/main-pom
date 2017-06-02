@@ -54,10 +54,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用户登陆
@@ -336,6 +333,8 @@ public class UserLoginAction {
 //        System.out.println(code);
         return JsonResponseUtil.success();
     }
+
+
     /**
      * 忘记密码
      * @return
@@ -343,6 +342,78 @@ public class UserLoginAction {
     @RequestMapping(value = "forgetPassword", method = RequestMethod.GET)
     public String forgetPassword() throws Main4Exception {
         return "buyer/forgetPassword";
+    }
+
+    @ResponseBody
+    @RequestMapping("forgetPasswordStepOne")
+    public JSONObject forgetPasswordStepOne(String telephone, String imgValidate, HttpSession session) throws JsonErrException {
+//        varForgotStep(session, null);
+        if (registerAndLoginService.selUserIdByName(telephone, LoginFromType.PHONE) == null) {
+            throw new JsonErrException("该手机号还没有注册").addErrMap("ele", "telephone");
+        }
+        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if(imgcode==null||!imgcode.equals(imgValidate)){//图片验证通不过
+            throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
+        }
+        session.setAttribute("forgotStep", 1);
+        session.setAttribute("telephone", telephone);
+        return JsonResponseUtil.success();
+    }
+
+    @ResponseBody
+    @RequestMapping("forgetPasswordStepTwo")
+    public JSONObject forgetPasswordStepTwo(String msgValidate, HttpServletRequest request, HttpSession session) throws Main4Exception {
+        varForgotStep(session, 2);
+        PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
+        if (phoneCode == null || !phoneCode.getVerify().equals(msgValidate)) {//验证不通过
+            throw new JsonErrException("您输入的验证码不正确").addErrMap("ele", "msgValidate");
+        }
+        session.setAttribute("forgotStep", 3);
+        return JsonResponseUtil.success();
+    }
+
+
+    @ResponseBody
+    @RequestMapping("forgetPasswordStepThree")
+    public JSONObject forgetPasswordStepThree(String newPassword, HttpServletRequest request, HttpSession session) throws Main4Exception {
+        varForgotStep(session, 3);
+        String telephone = (String) session.getAttribute("telephone");
+        Long userId;
+        if (telephone == null || (userId = registerAndLoginService.selUserIdByName(telephone, LoginFromType.PHONE)) == null)
+            throw new JsonErrException("内部错误");
+        try {
+            userLicenseService.changePassword(userId, newPassword);
+        } catch (Main4Exception e) {
+            throw new JsonErrException(e.getMessage());
+        }
+        session.removeAttribute("telephone");
+        session.removeAttribute("forgotStep");
+        phoneLogin(request.getRemoteAddr(),telephone);
+        return JsonResponseUtil.success();
+    }
+
+    private void varForgotStep(HttpSession session, Integer step) throws JsonErrException {
+        Integer forgotStep = (Integer) session.getAttribute("forgotStep");
+        if (!Objects.equals(forgotStep, step))
+            throw new JsonErrException("内部错误").addErrMap("redirect", "/forgetPassword.htm");
+    }
+
+    @ResponseBody
+    @RequestMapping("forgetPasswordgetMsgCode")
+    public JSONObject forgetPasswordgetMsgCode(String telephone, String imgValidate, HttpSession session) throws JsonErrException {
+        if (registerAndLoginService.selUserIdByName(telephone, LoginFromType.PHONE) == null) {
+            throw new JsonErrException("该手机号还没有注册").addErrMap("ele", "telephone");
+        }
+        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if(imgcode==null||!imgcode.equals(imgValidate)){//图片验证通不过
+            throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
+        }
+        session.setAttribute("forgotStep", 2);
+        String code= RedomUtil.redomNumber(6);
+        session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(telephone, code));
+        sendMsgService.sendVerificationCode(telephone, code);
+//        System.out.println(code);
+        return JsonResponseUtil.success();
     }
 
     @ResponseBody
@@ -620,8 +691,8 @@ public class UserLoginAction {
         }
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(bo.getTelephone(), code));
-//        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
-        System.out.println(code);
+        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
+//        System.out.println(code);
         return JsonResponseUtil.success();
     }
     /**
