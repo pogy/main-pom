@@ -25,7 +25,7 @@ public class ShopSearchServiceImplTest extends BaseSpringTest {
 
     @Test
     public void searchShop() throws Exception {
-        show(shopSearchService.searchShop("电商 379","hz", null, 1, 15));
+        show(shopSearchService.searchShop("电商 379", "hz", null, 1, 15));
     }
 
     @Test
