@@ -29,7 +29,7 @@
     <div class="layout">
         <div class="loginBanner">
             <a href="${index_goat.href!}" target="_blank">
-                <img src="${index_goat.imgsrc!}" width="572px" height="440px" class="fl c_img">
+                <img src="${index_goat.imgsrc!}" width="572px" height="442px" class="fl c_img">
             </a>
         </div>
         <div class="loginMode">
@@ -52,7 +52,7 @@
                         </div>
                         <div class="error-tip"></div>
                         <div class="loginItem fogertPassword">
-                            <a href="${main_host!}forgetpassword.htm">忘记密码?</a>
+                            <a href="${main_host!}forgetPassword.htm">忘记密码?</a>
                             <a href="${main_host!}regedit.htm" class="regegitEntery">立即注册</a>
                         </div>
                         <div class="loginItem">
