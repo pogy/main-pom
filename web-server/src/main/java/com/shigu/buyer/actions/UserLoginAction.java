@@ -101,11 +101,7 @@ public class UserLoginAction {
         }
         //把回调放到参数去
         if(bo.getBackUrl()!=null&&!"".equals(bo.getBackUrl())){
-            try {
-                model.addAttribute("backUrl",URLEncoder.encode(bo.getBackUrl(),"utf-8"));
-            } catch (UnsupportedEncodingException e) {
-                logger.error("url 回调地址出错",e);
-            }
+            model.addAttribute("backUrl", bo.getBackUrl());
         }
         //加广告
 

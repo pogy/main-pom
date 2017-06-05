@@ -22,6 +22,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -139,4 +140,23 @@ public class RegistAction {
         }
         return JsonResponseUtil.success().element("OK","OK");
     }
+
+    /**
+     * 隐私政策
+     */
+    @RequestMapping("privacy")
+    public String privacy(Model model){
+        model.addAttribute("webSite", "hz");
+        return "buyer/privacy";
+    }
+
+    /**
+     * 服务条款
+     */
+    @RequestMapping("contract")
+    public String contract(Model model){
+        model.addAttribute("webSite", "hz");
+        return "buyer/contract";
+    }
+
 }
