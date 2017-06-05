@@ -65,7 +65,7 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         Config config = new Config(Lists.newArrayList("shop_search_ol"));
         config.setStart((page - 1) * page);
         config.setHits(pageSize);
-        config.setFetchFields(Lists.newArrayList("shop_id", "market_id", "floor_id", "user_id", "shop_name", "web_site", "tb_nick", "shop_num", "shop_status", "market_name"));
+        config.setFetchFields(Lists.newArrayList("shop_id", "market_id_1", "shop_name", "web_site_1", "tb_nick", "shop_num", "shop_status", "market_name"));
         config.setSearchFormat(SearchFormat.JSON);
         SearchParams searchParams = new SearchParams(config);
         String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
@@ -82,7 +82,7 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         }
         String filter = "";
         if (StringUtils.isNotEmpty(webSite)) {
-            filter = "web_site=\"" + webSite + "\"";
+            filter = "web_site_1=\"" + webSite + "\"";
         }
         if (mid != null) {
             if (StringUtils.isNotEmpty(filter)) {
