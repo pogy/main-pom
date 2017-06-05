@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>注册-四季星座网</title>
+    <title>注册 - 四季星座网</title>
   
     
     <link href="http://style.571xz.com/loginV2/css/regedit.css" rel="stylesheet">
@@ -66,7 +66,7 @@
                     <button class="regeditButton btn btn-orange" name="regeditButton" id="regeditButton">立即注册</button>
                 </div>
             </div>
-            <div class="checkContract">点击“立即注册”，即表示您同意并愿意遵守四季星座网<a href="${main_host!}privacy.html" target="_blank">隐私政策</a>和<a href="${main_host!}contract.html" target="_blank">服务条款</a></div>
+            <div class="checkContract">点击“立即注册”，即表示您同意并愿意遵守四季星座网<a href="${main_host!}privacy.htm" target="_blank">隐私政策</a>和<a href="${main_host!}contract.htm" target="_blank">服务条款</a></div>
         </div>
         <div class="regeditFastLoginIn">
             <div class="fastLoginIn">
