@@ -88,7 +88,7 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
             if (StringUtils.isNotEmpty(filter)) {
                 filter += " AND ";
             }
-            filter += "market_id=" + mid;
+            filter += "market_id_1=" + mid;
         }
         if (StringUtils.isNotEmpty(filter)) {
             searchParams.setFilter(filter);
