@@ -7,15 +7,12 @@
     
     <meta name="keywords" content="欢迎前来四季星座网 ${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!} 优质档口，众多商品任你选择  ">
         <meta name="description" content="四季星座，四季星座网，一键代发，一键上传，${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}">
-        
     
-    
-    
-    <link href="http://style.571xz.com/shopItemCopy/css/shopcomment.css?t=1494584801485" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/shopcomment.css?t=1496224722310" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/shopcomment.js?t=1494584801485"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shopcomment.js?t=1496224722310"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -141,7 +138,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -189,7 +189,7 @@ var webSite = '${webSite!}';
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
-            <a href="http://www.571xz.com/">
+            <a href="http://${webSite!}.571xz.com/">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>

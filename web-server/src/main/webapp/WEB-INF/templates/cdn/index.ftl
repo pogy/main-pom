@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>逛市场-四季星座网</title>
+    <title>逛市场 - 四季星座网</title>
     <meta name="keywords" content="四季星座网,四季星座论坛,杭州网店之家,网店代理货源,淘宝货源,男装货源,女装货源,一件代发,一键上传。">
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1495447808964" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1496283089063" rel="stylesheet">
     
   </head>
 <body>
@@ -135,7 +135,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -243,7 +246,7 @@ var webSite = '${webSite!}';
                 <#if webSite == 'hz'>
                 <li><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 </#if>
-                <li><a href="http://xb.571xz.com/" target="_blank">一件代发</a></li>
+                <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>
             </ul>
@@ -405,7 +408,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1495447808964"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1496283089063"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
