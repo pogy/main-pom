@@ -134,11 +134,10 @@ public class MemberAction {
     public String fenxiaoZhanghao(HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         List<OuterUser> outerUsers = userBaseService.selOuterUsers(ps.getUserId());
-        List<OuterUserVO> outerUserVOs=new ArrayList<>();
         for(OuterUser ou:outerUsers){
-            outerUserVOs.add(new OuterUserVO(ou));
+            OuterUserVO vo = new OuterUserVO(ou);
+            model.addAttribute("outer_" + vo.getFrom(), vo);
         }
-        model.addAttribute("outer",outerUserVOs);
         return "buyer/fenxiaoZhanghao";
     }
 

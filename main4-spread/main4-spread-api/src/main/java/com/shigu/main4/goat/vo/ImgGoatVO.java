@@ -17,6 +17,16 @@ public class ImgGoatVO extends GoatVO implements Serializable{
      */
     private String linkUrl;
 
+    private String text;
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public String getPicUrl() {
         return picUrl;
     }

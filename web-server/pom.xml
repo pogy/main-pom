@@ -414,7 +414,7 @@
         <dependency>
             <groupId>com.aliyun.opensearch</groupId>
             <artifactId>aliyun-sdk-opensearch</artifactId>
-            <version>2.1.3</version>
+            <version>3.1.3</version>
         </dependency>
 <!--微信包-->
         <dependency>
@@ -427,7 +427,7 @@
     <repositories>
         <repository>
             <id>nexus</id>
-            <url>http://xzof.f3322.net:8882/nexus/content/groups/public/</url>
+            <url>http://xzof.f3322.net:8881/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -439,7 +439,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>nexus</id>
-            <url>http://xzof.f3322.net:8882/nexus/content/groups/public/</url>
+            <url>http://xzof.f3322.net:8881/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -454,12 +454,12 @@
         <repository>
             <id>releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://xzof.f3322.net:8882/nexus/content/repositories/releases/</url>
+            <url>http://xzof.f3322.net:8881/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://xzof.f3322.net:8882/nexus/content/repositories/snapshots/</url>
+            <url>http://xzof.f3322.net:8881/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

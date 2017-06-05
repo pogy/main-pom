@@ -24,6 +24,7 @@ import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
+import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ImgBannerVO;
@@ -106,8 +107,10 @@ public class UserLoginAction {
         //加广告
 
         ObjFromCache<List<ImgBannerVO>> listObjFromCache = spreadService.selImgBanners(SpreadEnum.LOGIN_GT);
-        List<ImgBannerVO> vos = listObjFromCache.selReal();
+        List<ImgBannerVO> vos = listObjFromCache.selObj();
         if (!vos.isEmpty()) {
+            if(listObjFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
+                spreadService.createBySync(listObjFromCache);
             model.addAttribute("index_goat", vos.get(0));
         }
         return "buyer/login";

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
     
-        <title>四季星座网</title>
+        <title>发现好货 - 四季星座网</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods.css?t=1495702820210" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods.css?t=1496285148953" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods.js?t=1495702820211"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods.js?t=1496285148953"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">

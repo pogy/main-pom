@@ -119,7 +119,7 @@ public class SpreadService {
                     GoatLocation location = goatFactory.getALocation(spread.getCode());
                     List<ImgGoatVO> goats = location.selGoats();
                     for (ImgGoatVO gv : goats) {
-                        vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), null));
+                        vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), gv.getText()));
                     }
                 }catch (GoatException e){
                     logger.error("查图片类广告Miss",e);
