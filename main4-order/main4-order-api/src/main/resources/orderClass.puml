@@ -4,28 +4,35 @@ XZ  //星座
 ALI  //阿里
 WX   //微信
 }
-interface Cart{
-void addProduct(Product pro);
-void rmProduct(Product pro);
-Long modifyProductNumber(Long pid,Integer number);
-}
-interface Order{
-PayApplyVO payApply(PayType type);//支付申请
-Long pay(Long applyId,Long money);//付款确认
 
+interface Order{
+void addMark(String msg);//添加备注
+PayApplyVO payApply(PayType type);//支付申请
+void addSubOrder(List<SubOrderVO> subOrders);//追加子订单
+PayApplyVO repayApply(PayType type);//二次支付申请
+
+Long pay(Long applyId,Long money);//付款确认
 void refunds(Long money);//全单退订
 
+void payed();//支付完成
+void finished();//交易完成
+void closed();//交易关闭
 }
 
 interface ItemOrder{
-LogisticsVO selLogistics();//查询物流单号
-void sended(LogisticsVO logistics);//发货完成
+List<LogisticsVO> selLogisticses();//查询物流信息
+void addLogistics(List<Long> soids,LogisticsVO logistics);//添加物流
+void modifyLogistics(Long id,LogisticsVO logistics);//修改物流
+ItemOrderVO orderInfo();
+List<SubItemOrderVO> subOrdersInfo();
+void addPackage(Long metarialId);//添加包材
+void refundPackage(Long id,Long money);//退包材
+void addService(Long serviceId);//添加服务
+void refundService(Long id,Long money);//退服务
 
-PayApplyVO repayAppy(PayType type,List<SubOrderVO> orders);
-void refundLogistics(Long money);//退邮费
-void refundGift(Long money);//退礼品费
-void refundPackage(Long money);//退包材
-void refundService(Long money);//退服务
+void sendPart(Long logisticsId,List<Long> soids,String courierNumber);//部分发货
+
+void sended(String courierNumber);//全单发货
 }
 
 interface RechangeOrder{
@@ -33,51 +40,20 @@ interface RechangeOrder{
 }
 
 interface SubOrder{
+void closed();//关闭子订单
+void sended(String courierNumber);//标为已发
 void refund(Long money);//退货
+void distribution(Long number);//到货
+void addMark(String msg);//添加备注
 }
 
 interface SubItemOrder{
-
-}
-interface Product{
-List<SkuVO> selSkus();
-}
-
-interface ItemProduct{
-void modifyWeight(Long meter);
-void modifyPrice(Long price);
+void modifySku(ItemSkuVO sku);
+LogisticsVO selLogistics();//查询物流信息
 }
 
 interface Sender{
 void sendOrder(Order order);//发放订单给代发
-}
-
-class OrderVO{
--Long orderId;
--OrderType type;
--Long totalFee;
--List<Long> payIds;
--Long refundFee;//已退金额
-}
-
-class ItemOrderVO{
--OrderStatus status;
--List<packageVO> packages;//包材
--List<LogisticsVO> logistics;//物流
--SenderVO sender;//发件单位
--List<ServiceVO> services;//服务信息
-}
-
-class SubOrderVO{
--Long subOrderId;
--Long orderId;
--Long refundFee;//已退金额
-}
-
-class SubItemOrderVO{
--ProductVO product;
--Integer number;
--OrderStatus status;
 }
 
 enum ProductType{
@@ -99,84 +75,24 @@ TRADE_CLOSED  //付款以后用户退款成功，交易自动关闭
 
 }
 
-class ItemProductVO{
--Long pid;
--Long goodsId;
--String webSite;
--String picUrl;
--String title;
--Long price;
--String marketName;
--String floor;
--String shopNum;
--Long marketId;
--Long floorId;
--Long shopId;
--Long weight;
--ItemSkuVO sku;
-}
 
-class ItemSkuVO{
--Long skuId;
--Long productId;
--String name;
--String value;
-}
 
 class PayApplyVO{
 -Long applyId;//支付申请ID
--String payUrl;//支付链接
+-Long money;
+-String payLink;//支付链接
+-PayType payType;//支付类型
+-Date createTime;//创建时间
+-Integer payFor;//付款理由
 }
-
-class SenderVO{
--Long senderId;//发件单位ID
--String webSite;//分站
--String topic;//主题
-}
-
-class LogisticsVO{
--String logisticsNo;//快递单号
--String company;//快递公司
--Long companyId;//快递公司ID
-}
-
-class MetarialVO{
--Long id;
--String name;
--Integer size;//尺寸
--Long price;//价格
-}
-
-class ServiceVO{
--Long id;//主键
--Long price;//费用
--String text;//服务描述
--Integer flag;//服务标识
-}
-
-Cart *-- Product
-Product <|-- ItemProduct
-ItemProduct <|-- ItemProductVO
-ItemProductVO --o ItemSkuVO
 
 SubOrder <|-- SubItemOrder
 Order <|-- ItemOrder
 Order <|-- RechangeOrder
 ItemOrder *-- SubItemOrder
-
-OrderVO <|-- ItemOrderVO
-SubOrderVO <|-- SubItemOrderVO
-
-ItemOrderVO *-- SubItemOrderVO
-ItemOrderVO --o ServiceVO
-
-ItemOrderVO --o SenderVO
-ItemOrderVO --o MetarialVO
-ItemOrderVO --o LogisticsVO
+Sender *-- Order
 
 Order --o PayApplyVO
-
-SenderVO --> Sender
 
 
 @enduml
