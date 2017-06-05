@@ -670,8 +670,8 @@ public class UserLoginAction {
         }
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(bo.getTelephone(), code));
-//        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
-        System.out.println(code);
+        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
+//        System.out.println(code);
         return JsonResponseUtil.success();
     }
     /**
