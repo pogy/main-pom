@@ -14,7 +14,6 @@
     <modules>
         <module>main4-order-api</module>
         <module>main4-order-default</module>
-        <module>main4-order-dao</module>
     </modules>
 
 
