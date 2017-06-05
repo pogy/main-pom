@@ -603,7 +603,7 @@ public class UserLoginAction {
     @ResponseBody
     public JSONObject doBindPhoneVerification(@Valid BindPhoneBO bo, BindingResult result, HttpServletRequest request, HttpSession session) throws Main4Exception {
         if (result.hasErrors()) {
-            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage()).addErrMap("ele", "telephone");
         }
         PhoneVerify phoneVerify= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_BIND_MSG.getValue());
         if(phoneVerify==null||!bo.getTelephone().equals(phoneVerify.getPhone())
@@ -622,15 +622,19 @@ public class UserLoginAction {
             /*
              * 如果是手机来的,就是星座号绑定手机
              */
-            if (rds3TempUser.getLoginFromType().equals(LoginFromType.PHONE)) {
-                if (registerAndLoginService.userCanRegist(bo.getTelephone(), LoginFromType.PHONE)) {
-                    userLicenseService.bindPhone(Long.valueOf(rds3TempUser.getSubUserKey()),bo.getTelephone());
+            try {
+                if (rds3TempUser.getLoginFromType().equals(LoginFromType.PHONE)) {
+                    if (registerAndLoginService.userCanRegist(bo.getTelephone(), LoginFromType.PHONE)) {
+                        userLicenseService.bindPhone(Long.valueOf(rds3TempUser.getSubUserKey()), bo.getTelephone());
+                    } else {
+                        throw new JsonErrException("该手机号已被使用").addErrMap("ele", "telephone");
+                    }
+                    rds3TempUser.setSubUserName(bo.getTelephone());
                 } else {
-                    throw new JsonErrException("该手机号已被使用").addErrMap("ele", "telephone");
+                    registerAndLoginService.bind3RdUser(bo.getTelephone(), rds3TempUser);
                 }
-                rds3TempUser.setSubUserName(bo.getTelephone());
-            } else {
-                registerAndLoginService.bind3RdUser(bo.getTelephone(), rds3TempUser);
+            } catch (Main4Exception e) {
+                throw new JsonErrException(e.getMessage()).addErrMap("ele", "telephone");
             }
             Subject currentUser = SecurityUtils.getSubject();
             CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
@@ -642,7 +646,7 @@ public class UserLoginAction {
                 currentUser.login(token);
                 currentUser.hasRole(RoleEnum.STORE.getValue());
             } catch (LoginAuthException e) {
-                throw new Main4Exception(e.getMessage());
+                throw new JsonErrException(e.getMessage()).addErrMap("ele", "telephone");
             }
             //跳登陆中心
 //                return "redirect:"+memberFilter.getSuccessUrl();
@@ -669,8 +673,8 @@ public class UserLoginAction {
         }
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(bo.getTelephone(), code));
-        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
-//        System.out.println(code);
+//        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
+        System.out.println(code);
         return JsonResponseUtil.success();
     }
     /**
