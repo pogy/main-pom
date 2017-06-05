@@ -286,8 +286,8 @@ public class UserLoginAction {
         }
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue(), new PhoneVerify(telephone, code));
-//        sendMsgService.sendVerificationCode(phone, code);
-        System.out.println(code);
+        sendMsgService.sendVerificationCode(telephone, code);
+//        System.out.println(code);
         return JsonResponseUtil.success();
     }
 
@@ -323,7 +323,6 @@ public class UserLoginAction {
     @ResponseBody
     @RequestMapping("forgetPasswordStepOne")
     public JSONObject forgetPasswordStepOne(String telephone, String imgValidate, HttpSession session) throws JsonErrException {
-//        varForgotStep(session, null);
         if (registerAndLoginService.selUserIdByName(telephone, LoginFromType.PHONE) == null) {
             throw new JsonErrException("该手机号还没有注册").addErrMap("ele", "telephone");
         }
