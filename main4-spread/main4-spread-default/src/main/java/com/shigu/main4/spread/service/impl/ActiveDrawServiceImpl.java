@@ -43,6 +43,8 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -53,8 +55,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 活动抽奖SERVICE
@@ -976,7 +980,30 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     }
 
     @Override
-    public List<Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime) {
-        return null;
+    public Set<Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime) {
+        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+        QueryBuilder userQuery = QueryBuilders.termQuery("fenUserNick", nick);
+        QueryBuilder goodsIdQuery = QueryBuilders.termsQuery("supperGoodsId", goodsId);
+        QueryBuilder timeQuery = QueryBuilders.rangeQuery("daiTime").gt(DateUtil.dateToString(fromTime,"yyyy-MM-dd HH:mm:ss"))
+                .lt(DateUtil.dateToString(endTime,"yyyy-MM-dd HH:mm:ss"));
+
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        boolQuery.must(userQuery);
+        boolQuery.must(goodsIdQuery);
+        boolQuery.must(timeQuery);
+        srb.setQuery(boolQuery);
+        srb.setFrom(0).setSize(100);
+
+        System.out.println(srb);
+        SearchResponse response = srb.execute().actionGet();
+        SearchHit[] hits=response.getHits().getHits();
+        Set<Long> numIids=new HashSet<>();
+        for(SearchHit hit:hits){
+            Long fenNumIid= (Long) hit.getSource().get("fenNumiid");
+            if (fenNumIid != null) {
+                numIids.add(fenNumIid);
+            }
+        }
+        return numIids;
     }
 }

@@ -8,6 +8,7 @@ import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 活动抽奖发现好货SERVICE
@@ -145,5 +146,5 @@ public interface ActiveDrawService {
      * @param goodsId
      * @return
      */
-    List<Long> newNumIids(String nick,List<Long> goodsId,Date fromTime,Date endTime);
+    Set<Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime);
 }
