@@ -202,7 +202,7 @@ public class ActivityAction {
                     itemVos.add(new ShopItemVo(itemShowBlock.getItemId(), itemShowBlock.getImgUrl(), itemShowBlock.getTitle()));
                 }
             }
-            redisIO.putTemp(key, itemVoMap, 24 * 3600);
+            redisIO.putTemp(key, itemVoMap, 600);
         }
 
         for (ActiveDrawShopVo activeDrawShopVo : faShopVoList) {
