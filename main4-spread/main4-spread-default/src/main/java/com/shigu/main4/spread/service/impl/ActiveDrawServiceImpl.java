@@ -1,14 +1,35 @@
-package com.shigu.activity.service;
+package com.shigu.main4.spread.service.impl;
 
 
-import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.*;
-import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.beans.ActiveDrawGoods;
+import com.opentae.data.mall.beans.ActiveDrawPem;
+import com.opentae.data.mall.beans.ActiveDrawPit;
+import com.opentae.data.mall.beans.ActiveDrawRecord;
+import com.opentae.data.mall.beans.ActiveDrawShop;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.ShiguMarket;
+import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
+import com.opentae.data.mall.examples.ActiveDrawPemExample;
+import com.opentae.data.mall.examples.ActiveDrawPitExample;
+import com.opentae.data.mall.examples.ActiveDrawRecordExample;
+import com.opentae.data.mall.examples.ActiveDrawShopExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguMarketExample;
+import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
+import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
+import com.opentae.data.mall.interfaces.ActiveDrawPitMapper;
+import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
+import com.opentae.data.mall.interfaces.ActiveDrawShopMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguMarketMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.ActiveDrawService;
@@ -16,21 +37,24 @@ import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
-import com.shigu.tools.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 活动抽奖SERVICE
@@ -949,5 +973,10 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         }
         drawRecord.setRefeTime(new Date());
         activeDrawRecordMapper.updateByPrimaryKeySelective(drawRecord);
+    }
+
+    @Override
+    public List<Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime) {
+        return null;
     }
 }

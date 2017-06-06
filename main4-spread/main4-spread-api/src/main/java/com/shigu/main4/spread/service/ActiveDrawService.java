@@ -138,4 +138,12 @@ public interface ActiveDrawService {
      * @param recordId
      */
     void changeRefeTime(Long recordId);
+
+    /**
+     * 上传产生的新numIid串
+     * @param nick
+     * @param goodsId
+     * @return
+     */
+    List<Long> newNumIids(String nick,List<Long> goodsId,Date fromTime,Date endTime);
 }
