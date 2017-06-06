@@ -980,7 +980,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     }
 
     @Override
-    public Set<Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime) {
+    public Map<Long,Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime) {
         SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
         QueryBuilder userQuery = QueryBuilders.termQuery("fenUserNick", nick);
         QueryBuilder goodsIdQuery = QueryBuilders.termsQuery("supperGoodsId", goodsId);
@@ -997,13 +997,14 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         System.out.println(srb);
         SearchResponse response = srb.execute().actionGet();
         SearchHit[] hits=response.getHits().getHits();
-        Set<Long> numIids=new HashSet<>();
+        Map<Long,Long> numIidMaps=new HashMap<>();
         for(SearchHit hit:hits){
-            Long fenNumIid= (Long) hit.getSource().get("fenNumiid");
+            Long fenNumIid = (Long) hit.getSource().get("fenNumiid");
+            Integer supperGoodsId = (Integer) hit.getSource().get("supperGoodsId");
             if (fenNumIid != null) {
-                numIids.add(fenNumIid);
+                numIidMaps.put(supperGoodsId.longValue(),fenNumIid);
             }
         }
-        return numIids;
+        return numIidMaps;
     }
 }

@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +40,7 @@ public class ActiveDrawServiceTest {
         goodsIds.add(2263425L);
         goodsIds.add(2219652L);
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        Set<Long> set=activeDrawService.newNumIids("赵洪波5",goodsIds,sdf.parse("2015-03-01"),sdf.parse("2015-06-01"));
+        Map<Long,Long> set=activeDrawService.newNumIids("赵洪波5",goodsIds,sdf.parse("2015-03-01"),sdf.parse("2015-06-01"));
         System.out.println(set);
     }
 
