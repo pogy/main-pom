@@ -4,6 +4,7 @@ import com.openJar.commons.MD5Attestation;
 import com.opentae.auth.utils.LoginLinkUtil;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
+import com.shigu.buyer.services.UserAccountService;
 import com.shigu.buyer.vo.LoginMsgVO;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
@@ -85,6 +86,9 @@ public class UserLoginAction {
 
     @Autowired
     MemberSimpleService memberSimpleService;
+
+    @Autowired
+    UserAccountService userAccountService;
 
     /**
      * 登陆
@@ -619,35 +623,7 @@ public class UserLoginAction {
             if (rds3TempUser == null) {
                 throw new JsonErrException("第三方未登陆或登陆异常").addErrMap("ele", "telephone");
             }
-            /*
-             * 如果是手机来的,就是星座号绑定手机
-             */
-            try {
-                if (rds3TempUser.getLoginFromType().equals(LoginFromType.PHONE)) {
-                    if (registerAndLoginService.userCanRegist(bo.getTelephone(), LoginFromType.PHONE)) {
-                        userLicenseService.bindPhone(Long.valueOf(rds3TempUser.getSubUserKey()), bo.getTelephone());
-                    } else {
-                        throw new JsonErrException("该手机号已被使用").addErrMap("ele", "telephone");
-                    }
-                    rds3TempUser.setSubUserName(bo.getTelephone());
-                } else {
-                    registerAndLoginService.bind3RdUser(bo.getTelephone(), rds3TempUser);
-                }
-            } catch (Main4Exception e) {
-                throw new JsonErrException(e.getMessage()).addErrMap("ele", "telephone");
-            }
-            Subject currentUser = SecurityUtils.getSubject();
-            CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
-                    rds3TempUser.getSubUserName(), null, false, request.getRemoteAddr(), "", UserType.MEMBER);
-            token.setLoginFromType(rds3TempUser.getLoginFromType());
-            //星座用户登陆
-            token.setRememberMe(true);
-            try {
-                currentUser.login(token);
-                currentUser.hasRole(RoleEnum.STORE.getValue());
-            } catch (LoginAuthException e) {
-                throw new JsonErrException(e.getMessage()).addErrMap("ele", "telephone");
-            }
+            userAccountService.bindAccount(rds3TempUser, bo.getTelephone(), request.getRemoteAddr());
             //跳登陆中心
 //                return "redirect:"+memberFilter.getSuccessUrl();
             String backUrl = (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
@@ -673,8 +649,8 @@ public class UserLoginAction {
         }
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(bo.getTelephone(), code));
-        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
-//        System.out.println(code);
+//        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
+        System.out.println(code);
         return JsonResponseUtil.success();
     }
     /**

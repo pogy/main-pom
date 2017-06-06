@@ -66,6 +66,6 @@
 <property name= "basePackage"
           value= "com/opentae/data/mall/interfaces" />
 <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
-<property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
+<property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
 </bean>
 </beans>
