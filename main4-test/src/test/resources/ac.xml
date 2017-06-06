@@ -10,7 +10,9 @@
 <context:component-scan base-package="com.opentae.*,com.shigu.*,com.alibaba.*,com.searchtool.configs" >
 	</context:component-scan>
 
-    <dubbo:reference interface="com.shigu.tb.finder.services.TaobaoSynService" id="taobaoSynService" cluster="failfast" timeout="100000"/>
+    <dubbo:reference interface="com.shigu.tb.finder.services.TbItemTradeService" id="tbItemTradeService" cluster="failfast" timeout="100000"/>
+    <dubbo:reference interface="com.shigu.main4.spread.service.ActiveDrawService" id="activeDrawService" cluster="failfast" timeout="100000"/>
+
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
@@ -18,11 +20,17 @@
             </list>
         </property>
     </bean>
-    <!--<bean id="myfactory" class="com.shigu.main4.test.factory.TestFactory"/>-->
-    <!--<bean id="productBean2" factory-bean="myfactory" factory-method="makeTestBean" scope="prototype">-->
-        <!--<property name="memberUserCopy2Mapper" ref="tae_mall_memberUserCopy2Mapper"/>-->
-        <!--<constructor-arg name="userId" value="1"/>-->
-    <!--</bean>-->
+    <bean id="openSearch" class="com.aliyun.opensearch.sdk.generated.OpenSearch">
+        <constructor-arg index="0" value="${accesskey}"/>
+        <constructor-arg index="1" value="${secret}"/>
+        <constructor-arg index="2" value="${host}"/>
+    </bean>
+    <bean id="openSearchClient" class="com.aliyun.opensearch.OpenSearchClient">
+        <constructor-arg ref="openSearch"/>
+    </bean>
+    <bean class="com.aliyun.opensearch.SearcherClient">
+        <constructor-arg ref="openSearchClient"/>
+    </bean>
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
             <map>
