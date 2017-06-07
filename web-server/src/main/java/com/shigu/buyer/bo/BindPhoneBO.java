@@ -12,11 +12,16 @@ public class BindPhoneBO implements Serializable{
     /**
      * 手机号
      */
+    @NotEmpty(message = "手机号不能为空")
     private String telephone;
     /**
-     * 图片验证码
+     * 短信验证码
      */
-    private String phoneVerify;
+    @NotEmpty(message = "短信验证码不能为空")
+    private String msgValidate;
+
+    @NotEmpty(message = "图片验证码不能为空")
+    private String imgValidate;
 
     public String getTelephone() {
         return telephone;
@@ -26,11 +31,19 @@ public class BindPhoneBO implements Serializable{
         this.telephone = telephone;
     }
 
-    public String getPhoneVerify() {
-        return phoneVerify;
+    public String getMsgValidate() {
+        return msgValidate;
     }
 
-    public void setPhoneVerify(String phoneVerify) {
-        this.phoneVerify = phoneVerify;
+    public void setMsgValidate(String msgValidate) {
+        this.msgValidate = msgValidate;
+    }
+
+    public String getImgValidate() {
+        return imgValidate;
+    }
+
+    public void setImgValidate(String imgValidate) {
+        this.imgValidate = imgValidate;
     }
 }

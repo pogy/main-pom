@@ -72,7 +72,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long registerByPhone(RegisterUser user) throws Main4Exception {
-        if(user == null || StringUtils.isEmpty(user.getTelephone()) || StringUtils.isEmpty(user.getUserNick()) ||
+        if(user == null || StringUtils.isEmpty(user.getTelephone()) ||
                 StringUtils.isEmpty(user.getPassword())){
             return null;
         }
@@ -82,7 +82,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             return null;
         }
         MemberUser memberUser = new MemberUser();
-        memberUser.setUserNick(user.getUserNick());
+        memberUser.setUserNick(user.getTelephone());
         memberUser.setUserName(user.getTelephone());
         memberUser.setLoginPhone(user.getTelephone());
         memberUser.setRegTime(new Date());

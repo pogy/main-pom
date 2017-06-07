@@ -13,26 +13,26 @@ public class RegistVerifyBO implements Serializable{
      * 手机号
      */
     @NotEmpty(message = "手机号不能为空")
-    private String phone;
+    private String telephone;
     /**
      * 图片验证码
      */
     @NotEmpty(message = "图片验证码不能为空")
-    private String authCode;
+    private String imgValidate;
 
-    public String getPhone() {
-        return phone;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
-    public String getAuthCode() {
-        return authCode;
+    public String getImgValidate() {
+        return imgValidate;
     }
 
-    public void setAuthCode(String authCode) {
-        this.authCode = authCode;
+    public void setImgValidate(String imgValidate) {
+        this.imgValidate = imgValidate;
     }
 }
