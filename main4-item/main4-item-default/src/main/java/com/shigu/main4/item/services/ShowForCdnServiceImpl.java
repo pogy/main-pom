@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -262,6 +263,9 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
             CdnItem cdnItem = new CdnItem();
             Class<?> clazz = e.getClass();
             for (Field field : CdnItem.class.getDeclaredFields()) {
+                if (field.getModifiers() != Modifier.PRIVATE) {
+                    continue;
+                }
                 String name = field.getName();
                 try {
 
