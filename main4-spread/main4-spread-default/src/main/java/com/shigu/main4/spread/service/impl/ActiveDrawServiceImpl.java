@@ -975,8 +975,13 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         if(drawRecord == null){
             return;
         }
-        drawRecord.setRefeTime(new Date());
-        activeDrawRecordMapper.updateByPrimaryKeySelective(drawRecord);
+        //处理此人本期,所有奖的阅
+        ActiveDrawRecordExample example=new ActiveDrawRecordExample();
+        example.createCriteria().andPemIdEqualTo(drawRecord.getPemId()).andUserIdEqualTo(drawRecord.getUserId());
+
+        ActiveDrawRecord record=new ActiveDrawRecord();
+        record.setRefeTime(new Date());
+        activeDrawRecordMapper.updateByExampleSelective(record,example);
     }
 
     @Override
