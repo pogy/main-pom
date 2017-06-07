@@ -10,11 +10,11 @@
     
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
     
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1496224719314" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1496813818839" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1496224719314"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1496813818839"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -372,7 +372,14 @@ var webSite = '${webSite!}';
     </div>
 </div>
 ${navCon}
-<div class="content_top layout">
+<script>/*============ shopItemCopy/item#main BEGIN ============*/
+
+var goodsId = '${vo.itemId!}';
+
+/*============ shopItemCopy/item#main END ============*/
+
+
+</script><div class="content_top layout">
     <div class="leftbox">
         <div class="shopContent">
             <div class="proBanner">
@@ -462,8 +469,8 @@ ${navCon}
                             <input type="text" id="Num" value="1">
                             <a href="javascript:;" id="Add">+</a>
                         </div>
-                            <span style="margin-left: 10px; line-height: 26px;" id="imclicks">- 次浏览</span>
-
+                        <span style="margin-left: 10px; line-height: 26px;" id="imclicks">-次浏览</span>
+                        
                     </td>
                   </tr>
                    <#if vo.onsale == true>
@@ -533,6 +540,7 @@ $.post(
             $('#imclicks').html(data.number+"次浏览");
         }
 );
+
 /*============ shopItemCopy/item#goodsinfo END ============*/
 
 
@@ -685,14 +693,6 @@ $.post(
         
     </div>
 </div>
-<script>/*============ shopItemCopy/item#showOnkeyUploadWindow BEGIN ============*/
-
-var goodsId = '${vo.itemId!}';
-
-/*============ shopItemCopy/item#showOnkeyUploadWindow END ============*/
-
-
-</script>
 <div class="content_main layout">
     <div class="leftbox">
         
