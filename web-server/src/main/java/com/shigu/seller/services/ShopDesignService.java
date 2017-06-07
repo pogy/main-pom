@@ -344,7 +344,7 @@ public class ShopDesignService {
         return checkeds;
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addCustomPage(AddPageBo bo, Long shopId) {
         try {
             shopFitmentService.createPage(shopId, bo.getTitle(), bo.getAlias(), bo.getType());
@@ -352,7 +352,7 @@ public class ShopDesignService {
             logger.error("店铺[" + shopId + "] 添加页面失败！", e);
         }
     }
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public DesignJsonVO removeCustomPage(Long id) {
         DesignJsonVO vo = new DesignJsonVO();
         try {
@@ -366,7 +366,7 @@ public class ShopDesignService {
         }
         return vo;
     }
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public DesignJsonVO updatePageHeadOption(PageHeadOptionBo bo, Long shopId) {
         DesignJsonVO vo = new DesignJsonVO();
         vo.setStatus(0);
@@ -382,7 +382,7 @@ public class ShopDesignService {
         }
         return vo;
     }
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public DesignJsonVO updateItemsPromote(PromoteItemBo bo, boolean sd) {
         DesignJsonVO vo = new DesignJsonVO();
         vo.setStatus(0);
@@ -418,7 +418,7 @@ public class ShopDesignService {
      * @param banner
      * @throws ShopFitmentException
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void revalueShopHead(Long shopId,ShopBanner banner) throws ShopFitmentException {
         FitmentArea bannerArea = shopFitmentService.selShopHead(shopId);
         shopFitmentService.revalueModule(bannerArea.getAllarea().get(0).getModuleId(),banner);
@@ -430,7 +430,7 @@ public class ShopDesignService {
      * @param module
      * @throws ShopFitmentException
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void revalueModule(Long moduleId,FitmentModule module) throws ShopFitmentException {
         shopFitmentService.revalueModule(moduleId,module);
     }
@@ -441,7 +441,7 @@ public class ShopDesignService {
      * @param after
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long addArea(Long side,Integer sideType,Integer after) throws ShopFitmentException {
         //先查出相邻区域所在的页面
         ShopFitmentArea sideArea=shopFitmentAreaMapper.selectByPrimaryKey(side);
@@ -461,7 +461,7 @@ public class ShopDesignService {
      * 删除区域
      * @param areaId
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void rmArea(Long areaId){
         shopFitmentService.rmArea(areaId);
     }
@@ -471,7 +471,7 @@ public class ShopDesignService {
      * @param mid
      * @param areaId
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void rmModule(Long mid,Long areaId){
         shopFitmentService.rmModule(mid);
     }
@@ -486,7 +486,7 @@ public class ShopDesignService {
      * @return
      * @throws ShopFitmentException
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ModuleVO addModule(String id,Long area,Integer sideType,Long side,Integer after,ShopForModuleVO shop) throws ShopFitmentException, IOException {
         Integer moduleType=0;
         if("goods-tui".equals(id)){
@@ -524,7 +524,7 @@ public class ShopDesignService {
      * @param moduleId
      * @param after
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void moveModule(Long moduleId,Integer after){
         shopFitmentService.changeModuleLocation(moduleId,after);
     }
@@ -535,7 +535,7 @@ public class ShopDesignService {
      * @param shopId 店铺id
      * @return json
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public DesignJsonVO pageBackOptionUpdate(PageBackBo bo, Long shopId) {
         DesignJsonVO vo = new DesignJsonVO();
         vo.setStatus(0);

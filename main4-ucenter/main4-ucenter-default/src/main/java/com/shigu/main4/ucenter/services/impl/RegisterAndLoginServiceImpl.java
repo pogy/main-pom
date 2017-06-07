@@ -69,7 +69,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
      * @return
      * @throws Exception
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Long registerByPhone(RegisterUser user) throws Main4Exception {
         if(user == null || StringUtils.isEmpty(user.getTelephone()) || StringUtils.isEmpty(user.getUserNick()) ||
@@ -182,7 +182,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
      * @param tempUser 第三方用户信息
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean bind3RdUser(String phone, Rds3TempUser tempUser) throws Main4Exception{
         if(StringUtils.isEmpty(phone) || tempUser == null || StringUtils.isEmpty(tempUser)

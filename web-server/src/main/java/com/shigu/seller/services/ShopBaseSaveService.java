@@ -34,7 +34,7 @@ public class ShopBaseSaveService {
      * 保存店铺基本信息
      * @param bo
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveShopBase(Long shopId,ShopBaseBO bo) throws StoreException {
         if(bo.getMainBus()!=null||bo.getPacketUrl()!=null
                 ||bo.getStoreNum()!=null||bo.getStoreName()!=null||bo.getSmallTitle()!=null) {

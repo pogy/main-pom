@@ -53,7 +53,7 @@ public class GoatFactoryTest {
     GoodsupNorealMapper goodsupNorealMapper;
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @SuppressWarnings("unchecked")
     public <T extends GoatVO>void getALocationByVo_selGoatsTest() throws ActivityException, GoatException {
         Calendar ca=Calendar.getInstance();
@@ -154,7 +154,7 @@ public class GoatFactoryTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void selItemGoat_selUpTest() {
         //1.Es中没数据、goodsup_noreal有数据的情况
         GoodsupNoreal gn=new GoodsupNoreal();

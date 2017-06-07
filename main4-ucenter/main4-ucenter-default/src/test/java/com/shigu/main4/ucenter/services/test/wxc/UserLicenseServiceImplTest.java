@@ -32,7 +32,7 @@ public class UserLicenseServiceImplTest {
     private MemberLicenseMapper memberLicenseMapper;
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void selUserScore() throws Exception {
         assertTrue(0 == userLicenseService.selUserScore(null));
         assertTrue(0 == userLicenseService.selUserScore(-256L));
@@ -48,7 +48,7 @@ public class UserLicenseServiceImplTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addScore() throws Exception {
         // 首次创建
         userLicenseService.addScore(9968L, 100);
