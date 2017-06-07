@@ -36,7 +36,7 @@ public class UserBaseServiceImplTest {
      * 测试解绑用户子账号，如果是淘宝子账号，解绑所在店铺userId
      */
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void unBindUser() throws Exception {
         //验证店铺存在
         ShiguShop shop = shiguShopMapper.selectByPrimaryKey(41844L);

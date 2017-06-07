@@ -96,7 +96,7 @@ public class ShopDiscusServiceImpl implements ShopDiscusService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addDiscus(Discus discus) {
         Date d=new Date();
         DiscusRecord record=new DiscusRecord();

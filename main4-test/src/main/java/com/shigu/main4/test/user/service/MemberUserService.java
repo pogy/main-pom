@@ -37,7 +37,7 @@ public class MemberUserService {
     /**
      * 清理删除无主账号的子账号
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void delNotMemberUserSub(){
         memberUserSubCopy2Mapper.delMemberSubNoMaster();
     }
@@ -118,7 +118,7 @@ public class MemberUserService {
     }
 
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void clearUserData(){
         delNotMemberUserSub();
         memberUserSubRepeatUser();

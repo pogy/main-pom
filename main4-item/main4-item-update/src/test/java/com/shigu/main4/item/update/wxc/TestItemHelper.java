@@ -224,7 +224,7 @@ public class TestItemHelper extends BaseSpringTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void testEsGoodsHasStyle(){
         ShiguGoodsTiny tiny = new ShiguGoodsTiny();
         tiny.setGoodsId(20344235L);

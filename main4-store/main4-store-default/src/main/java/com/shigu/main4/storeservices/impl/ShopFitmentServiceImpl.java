@@ -191,7 +191,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param pageId
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void rmPage(Long pageId) throws ShopFitmentException {
         if (pageId != null) {
             ShopFitmentPageExample pageExample = new ShopFitmentPageExample();
@@ -674,7 +674,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @throws ShopFitmentException 区域添加异常
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long addArea(Long pageId, Long sideId, Integer type, Integer after) throws ShopFitmentException {
         ShopFitmentPage page;
         if (pageId == null || (page = shopFitmentPageMapper.selectByPrimaryKey(pageId)) == null) {
@@ -771,7 +771,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param newArea 新区域
      * @param oldArea 原区域
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     private void insertBefore(ShopFitmentArea newArea, ShopFitmentArea oldArea) {
         newArea.setAfterAreaId(oldArea.getAfterAreaId());
         shopFitmentAreaMapper.insertSelective(newArea);
@@ -784,7 +784,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param newModule 新模块
      * @param oldModule 原模块
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     private void insertBefore(ShopFitmentModule newModule, ShopFitmentModule oldModule) {
         newModule.setAfterModuleId(oldModule.getAfterModuleId());
         shopFitmentModuleMapper.insertSelective(newModule);
@@ -793,7 +793,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long addModule(Long areaId,Long sideId,Integer type,Integer sideType,Integer after) throws ShopFitmentException {
         return addModule(areaId, sideId, type, sideType, after, null);
     }
@@ -922,7 +922,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param type     1代表上移，2代表下移
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void changeModuleLocation(Long moduleId, Integer type) {
         if (moduleId != null && type != null) {
             ShopFitmentModule thisModule = shopFitmentModuleMapper.selectByPrimaryKey(moduleId);
