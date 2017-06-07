@@ -242,7 +242,7 @@ public class UserLicenseServiceTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void testBindPhoneWithNameModified() throws Main4Exception {
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(1000038336L);
         // 验证测试数据存在并符合要求

@@ -40,7 +40,7 @@ public class SameItemUtil {
      * @param item 必须要带webSite
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public String addItem(NowItemInfo item) throws SameItemException {
         //检测
         if(!checkItem(item)){
@@ -76,7 +76,7 @@ public class SameItemUtil {
      * @param item
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public String removeItem(NowItemInfo item) throws SameItemException {
         if(item.getRelationLevelId()==null||item.getGoodsLevel()==null){//如果一开始就没有RelationLevelId与goodsLevel就不操作,返回
             return null;

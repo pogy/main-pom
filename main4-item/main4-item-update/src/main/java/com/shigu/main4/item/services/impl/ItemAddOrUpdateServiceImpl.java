@@ -111,7 +111,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @param itemId 商品主键
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void systemUpItem(Long itemId) throws ItemModifyException {
         if (itemId == null) {
             throw new ItemUpException(ItemUpException.ItemUpExceptionEnum.ITEM_DOES_NOT_EXIST, null);
@@ -132,7 +132,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      *
      * @throws ItemUpException 上架异常
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     private void upItem(Long itemId) throws ItemModifyException {
         ShiguGoodsIdGenerator generator;
         if (itemId == null || (generator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(itemId)) == null) {
@@ -232,7 +232,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @param itemId 商品ID
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void userUpItem(Long itemId) throws ItemModifyException {
         upItem(itemId);
         // 修改shigu_goods_modified中数据，如果存在把has_mod_instock=0。以上所有需要在同一个事务中进行
@@ -260,7 +260,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @param itemId
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void systemDownItem(Long itemId) throws ItemModifyException {
         downItem(itemId);
     }
@@ -269,7 +269,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * 用户下架一款商品
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void userDownItem(Long itemId) throws ItemModifyException {
         ShiguGoodsIdGenerator generator;
 
@@ -300,7 +300,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @param itemId 商品ID
      * @throws ItemDownException 下架异常
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     private void downItem(Long itemId) throws ItemModifyException {
         ShiguGoodsIdGenerator generator;
 
@@ -404,7 +404,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @param itemId 商品ID
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void systemDeleteItem(Long itemId) throws ItemModifyException {
         ShiguGoodsIdGenerator generator;
         String webSite;
@@ -534,7 +534,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @param itemId
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void userDeleteItem(Long itemId) throws ItemModifyException {
         systemDeleteItem(itemId);
     }
@@ -547,7 +547,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @return 商品ID
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long systemAddItem(SynItem item) throws ItemModifyException {
         return addItem(item, true);
     }
@@ -717,7 +717,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long userAddItem(SynItem item) throws ItemModifyException {
         return addItem(item, false);
     }
@@ -738,7 +738,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @return 是否成功 1：成功更新一个商品，0：无修改
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public int systemUpdateItem(SynItem item) throws ItemModifyException {
         if (item == null || item.getGoodsId() == null)
             throw new ItemUpdateException(IllegalArgumentException, null);
@@ -816,7 +816,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      *
      * @param synItem 通讯对象
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     private int updateItem(SynItem synItem) {
         //3、更新shigu_goods_tiny表数据、shigu_goods_extends表数据，shigu_prop_imgs表数据。
         ItemHelper.SynItemContainer container = ItemHelper.helpMe(synItem);
@@ -897,7 +897,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public int userUpdateItem(SynItem item) throws ItemModifyException {
         if (item == null || item.getGoodsId() == null || item.getWebSite() == null || item.getShopId() == null)
             throw new ItemUpdateException(ItemUpdateException.ItemUpdateExceptionEnum.IllegalArgumentException, null);
