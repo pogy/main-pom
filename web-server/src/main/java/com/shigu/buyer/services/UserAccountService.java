@@ -29,7 +29,7 @@ public class UserAccountService {
     @Autowired
     private RegisterAndLoginService registerAndLoginService;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void bindAccount(Rds3TempUser rds3TempUser, String telephone, String remoteAddr) throws JsonErrException {
         /*
              * 如果是手机来的,就是星座号绑定手机
