@@ -13,35 +13,42 @@ import java.util.*;
  */
 public class DDL2Bean {
 
-    private String ddl = "CREATE TABLE IF NOT EXISTS `shigu_mall`.`item_order_sub` (\n" +
-            "  `soid` BIGINT(11) NOT NULL AUTO_INCREMENT COMMENT '主键',\n" +
-            "  `oid` BIGINT(11) NOT NULL COMMENT '订单号',\n" +
-            "  `pid` BIGINT(11) NOT NULL COMMENT '产品ID',\n" +
-            "  `sku_id` BIGINT(11) NOT NULL COMMENT 'sku信息',\n" +
-            "  `num` INT(8) NOT NULL DEFAULT 1 COMMENT '件数',\n" +
-            "  `distribution_num` INT(8) NOT NULL DEFAULT 0 COMMENT '到货数量',\n" +
-            "  `should_pay_money` BIGINT(11) NOT NULL COMMENT '应付总额',\n" +
-            "  `pay_money` BIGINT(11) NOT NULL COMMENT '实付',\n" +
-            "  `refund_money` BIGINT(11) NOT NULL COMMENT '实退',\n" +
-            "  `send` BIT(1) NOT NULL DEFAULT 0 COMMENT '是否已发',\n" +
-            "  `refund` BIT(1) NOT NULL DEFAULT 0 COMMENT '是否退款',\n" +
-            "  `mark` VARCHAR(50) NULL COMMENT '备注',\n" +
-            "  `logistics_id` BIGINT(11) NOT NULL DEFAULT -1 COMMENT '交易信息ID',\n" +
-            "  PRIMARY KEY (`soid`),\n" +
-            "  INDEX `fk_item_order_sub_item_order1_idx` (`oid` ASC),\n" +
-            "  CONSTRAINT `fk_item_order_sub_item_order1`\n" +
-            "    FOREIGN KEY (`oid`)\n" +
-            "    REFERENCES `shigu_mall`.`item_order` (`oid`)\n" +
-            "    ON DELETE NO ACTION\n" +
-            "    ON UPDATE NO ACTION)\n" +
+    private String ddl = "CREATE TABLE IF NOT EXISTS `shigu_mall`.`item_product` (\n" +
+            "  `pid` BIGINT(11) NOT NULL AUTO_INCREMENT COMMENT '主键',\n" +
+            "  `goods_id` BIGINT(11) NOT NULL COMMENT '星座商品ID',\n" +
+            "  `web_site` VARCHAR(10) NOT NULL COMMENT '分站标识',\n" +
+            "  `pic_url` VARCHAR(255) NULL COMMENT '首图',\n" +
+            "  `title` VARCHAR(45) NOT NULL COMMENT '标题',\n" +
+            "  `price` BIGINT(11) NOT NULL DEFAULT 0 COMMENT '单价',\n" +
+            "  `market_name` VARCHAR(45) NOT NULL COMMENT '所以市场名',\n" +
+            "  `floor` VARCHAR(45) NOT NULL COMMENT '楼层',\n" +
+            "  `shop_num` VARCHAR(45) NOT NULL COMMENT '档口号',\n" +
+            "  `market_id` BIGINT(11) NOT NULL COMMENT '市场ID',\n" +
+            "  `floor_id` BIGINT(11) NOT NULL COMMENT '楼层ID',\n" +
+            "  `shop_id` BIGINT(11) NOT NULL COMMENT '档口ID',\n" +
+            "  `weight` BIGINT(11) NOT NULL DEFAULT 0 COMMENT '单位：克',\n" +
+            "  UNIQUE INDEX `goods_one_shop` (`goods_id` ASC, `shop_id` ASC),\n" +
+            "  PRIMARY KEY (`pid`))\n" +
             "ENGINE = InnoDB\n" +
-            "COMMENT = '订单子表'";
+            "COMMENT = '产品'";
 
-    @Test
-    public void getBean() throws IOException {
+    public static void main(String[] args) throws IOException {
+        DDL2Bean ddl2Bean = new DDL2Bean();
+        System.out.println("请粘贴表创建语句(英文分号结束输入)：\n");
+        Scanner scanner = new Scanner(System.in);
+        StringBuilder sb = new StringBuilder();
+        String tmp;
+        while (!(tmp = scanner.nextLine()).endsWith(";")) {
+            sb.append(tmp);
+        }
+        ddl2Bean.getBean(sb.toString());
+    }
+
+    public void getBean(String ddl) throws IOException {
         Map<String, String[]> fields = new LinkedHashMap<>();
+        Map<String, String> dataFields = new HashMap<>();
         String beanName = "unknown";
-        for (String s : ddl.split(",\n")) {
+        for (String s : ddl.split(",")) {
             if (s.contains("PRIMARY KEY"))
                 break;
             if (s.contains("CREATE TABLE")) {
@@ -74,10 +81,11 @@ public class DDL2Bean {
             else if (s.contains("bit"))
                 type = "Boolean";
             fields.put(dataToField(dataField, false), new String[]{comment, type});
+            dataFields.put(dataField, type);
         }
 
         int i=0;
-        String path = System.getProperty("user.dir") + "\\src\\main\\java\\com\\opentae\\data\\mall\\beans\\" + beanName + ".java";
+        String path = System.getProperty("user.dir") + "\\main4-dao\\src\\main\\java\\com\\opentae\\data\\mall\\beans\\" + beanName + ".java";
         PrintWriter out = new PrintWriter(path);
         out.println(String.format("package com.opentae.data.mall.beans;\n\nimport javax.persistence.GeneratedValue;\nimport javax.persistence.Id;\nimport java.io.Serializable;\n\npublic class %s implements Serializable {", beanName));
         for (Map.Entry<String, String[]> entry : fields.entrySet()) {
@@ -102,11 +110,8 @@ public class DDL2Bean {
         out.print('}');
         out.flush();
         out.close();
-
-        createExample(path);
-        Process process = Runtime.getRuntime().exec("git add -A");
-
-        process.destroy();
+        System.out.println("Bean类生成成功！！");
+        createExample(path, dataFields);
     }
 
     private String dataToField(String dataField, boolean upper) {
@@ -123,7 +128,7 @@ public class DDL2Bean {
         return dataToField(dataField, false);
     }
 
-    public void createExample(String path){
+    public void createExample(String path, Map<String, String> fields){
         String sprit = File.separator;
         String dir = path.substring(0, path.lastIndexOf(sprit));
         String parentdir = dir.substring(0, dir.lastIndexOf(sprit));
@@ -141,7 +146,7 @@ public class DDL2Bean {
             String beanName = fileName.replace(".java", "");
 
             try {
-                String code = CreateUtil.exampleString(packageName, beanClassName, beanName);
+                String code = exampleString(packageName, fields, beanName);
                 File examdir = new File(parentdir + sprit + "examples");
                 examdir.mkdir();
                 FileOutputStream fos = new FileOutputStream(parentdir + sprit + "examples" + sprit + beanName + "Example.java");
@@ -174,5 +179,38 @@ public class DDL2Bean {
             System.out.println("没有找到src/main/java目录");
         }
 
+    }
+
+    private  String mkPackage(String packageStr) {
+        return "package " + packageStr + ";\n" + "\n" + "import java.util.ArrayList;\n" + "import java.util.Date;\n" + "import java.util.List;\n" + "import com.opentae.core.mybatis.SgExample;\n" + "\n";
+    }
+
+    private  String mkOther(String beanName) {
+        String code = "public class " + beanName + "Example implements SgExample{\n" + "    protected String orderByClause;\n" + "    protected boolean distinct;\n" + "    protected List<" + beanName + "Example.Criteria> oredCriteria = new ArrayList();\n" + "\n" + "    public " + beanName + "Example() {\n" + "    }\n" + "\n" + myAddField() + "    public void setOrderByClause(String orderByClause) {\n" + "        this.orderByClause = orderByClause;\n" + "    }\n" + "\n" + "    public String getOrderByClause() {\n" + "        return this.orderByClause;\n" + "    }\n" + "\n" + "    public void setDistinct(boolean distinct) {\n" + "        this.distinct = distinct;\n" + "    }\n" + "\n" + "    public boolean isDistinct() {\n" + "        return this.distinct;\n" + "    }\n" + "\n" + "    public List<" + beanName + "Example.Criteria> getOredCriteria() {\n" + "        return this.oredCriteria;\n" + "    }\n" + "\n" + "    public void or(" + beanName + "Example.Criteria criteria) {\n" + "        this.oredCriteria.add(criteria);\n" + "    }\n" + "\n" + "    public " + beanName + "Example.Criteria or() {\n" + "        " + beanName + "Example.Criteria criteria = this.createCriteriaInternal();\n" + "        this.oredCriteria.add(criteria);\n" + "        return criteria;\n" + "    }\n" + "\n" + "    public " + beanName + "Example.Criteria createCriteria() {\n" + "        " + beanName + "Example.Criteria criteria = this.createCriteriaInternal();\n" + "        if(this.oredCriteria.size() == 0) {\n" + "            this.oredCriteria.add(criteria);\n" + "        }\n" + "\n" + "        return criteria;\n" + "    }\n" + "\n" + "    protected " + beanName + "Example.Criteria createCriteriaInternal() {\n" + "        " + beanName + "Example.Criteria criteria = new " + beanName + "Example.Criteria();\n" + "        return criteria;\n" + "    }\n" + "\n" + "    public void clear() {\n" + "        this.oredCriteria.clear();\n" + "        this.orderByClause = null;\n" + "        this.distinct = false;\n" + "    }\n" + "\n" + "    public static class Criterion {\n" + "        private String condition;\n" + "        private Object value;\n" + "        private Object secondValue;\n" + "        private boolean noValue;\n" + "        private boolean singleValue;\n" + "        private boolean betweenValue;\n" + "        private boolean listValue;\n" + "        private String typeHandler;\n" + "\n" + "        public String getCondition() {\n" + "            return this.condition;\n" + "        }\n" + "\n" + "        public Object getValue() {\n" + "            return this.value;\n" + "        }\n" + "\n" + "        public Object getSecondValue() {\n" + "            return this.secondValue;\n" + "        }\n" + "\n" + "        public boolean isNoValue() {\n" + "            return this.noValue;\n" + "        }\n" + "\n" + "        public boolean isSingleValue() {\n" + "            return this.singleValue;\n" + "        }\n" + "\n" + "        public boolean isBetweenValue() {\n" + "            return this.betweenValue;\n" + "        }\n" + "\n" + "        public boolean isListValue() {\n" + "            return this.listValue;\n" + "        }\n" + "\n" + "        public String getTypeHandler() {\n" + "            return this.typeHandler;\n" + "        }\n" + "\n" + "        protected Criterion(String condition) {\n" + "            this.condition = condition;\n" + "            this.typeHandler = null;\n" + "            this.noValue = true;\n" + "        }\n" + "\n" + "        protected Criterion(String condition, Object value, String typeHandler) {\n" + "            this.condition = condition;\n" + "            this.value = value;\n" + "            this.typeHandler = typeHandler;\n" + "            if(value instanceof List) {\n" + "                this.listValue = true;\n" + "            } else {\n" + "                this.singleValue = true;\n" + "            }\n" + "\n" + "        }\n" + "\n" + "        protected Criterion(String condition, Object value) {\n" + "            this(condition, value, (String)null);\n" + "        }\n" + "\n" + "        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {\n" + "            this.condition = condition;\n" + "            this.value = value;\n" + "            this.secondValue = secondValue;\n" + "            this.typeHandler = typeHandler;\n" + "            this.betweenValue = true;\n" + "        }\n" + "\n" + "        protected Criterion(String condition, Object value, Object secondValue) {\n" + "            this(condition, value, secondValue, (String)null);\n" + "        }\n" + "    }\n" + "\n" + "    public static class Criteria extends " + beanName + "Example.GeneratedCriteria {\n" + "        protected Criteria() {\n" + "        }\n" + "    }\n" + "\n" + "    protected abstract static class GeneratedCriteria {\n" + "        protected List<" + beanName + "Example.Criterion> criteria = new ArrayList();\n" + "\n" + "        protected GeneratedCriteria() {\n" + "        }\n" + "\n" + "        public boolean isValid() {\n" + "            return this.criteria.size() > 0;\n" + "        }\n" + "\n" + "        public List<" + beanName + "Example.Criterion> getAllCriteria() {\n" + "            return this.criteria;\n" + "        }\n" + "\n" + "        public List<" + beanName + "Example.Criterion> getCriteria() {\n" + "            return this.criteria;\n" + "        }\n" + "\n" + "        protected void addCriterion(String condition) {\n" + "            if(condition == null) {\n" + "                throw new RuntimeException(\"Value for condition cannot be null\");\n" + "            } else {\n" + "                this.criteria.add(new " + beanName + "Example.Criterion(condition));\n" + "            }\n" + "        }\n" + "\n" + "        protected void addCriterion(String condition, Object value, String property) {\n" + "            if(value == null) {\n" + "                throw new RuntimeException(\"Value for \" + property + \" cannot be null\");\n" + "            } else {\n" + "                this.criteria.add(new " + beanName + "Example.Criterion(condition, value));\n" + "            }\n" + "        }\n" + "\n" + "        protected void addCriterion(String condition, Object value1, Object value2, String property) {\n" + "            if(value1 != null && value2 != null) {\n" + "                this.criteria.add(new " + beanName + "Example.Criterion(condition, value1, value2));\n" + "            } else {\n" + "                throw new RuntimeException(\"Between values for \" + property + \" cannot be null\");\n" + "            }\n" + "        }\n";
+        return code;
+    }
+
+
+    private  String createFields(Map<String, String> fields, String beanName) throws ClassNotFoundException {
+        String code = "";
+        for (Map.Entry<String, String> entry : fields.entrySet()) {
+            String f = entry.getKey();
+            String type = entry.getValue();
+            String upname = dataToField(f, true);
+            String dname = dataToField(f, false);
+            code = code + "\n        public " + beanName + "Example.Criteria and" + upname + "IsNull() {\n" + "            this.addCriterion(\"" + dname + " is null\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "IsNotNull() {\n" + "            this.addCriterion(\"" + dname + " is not null\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "EqualTo(" + type + " value) {\n" + "            this.addCriterion(\"" + dname + " =\", value, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "NotEqualTo(" + type + " value) {\n" + "            this.addCriterion(\"" + dname + " <>\", value, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "GreaterThan(" + type + " value) {\n" + "            this.addCriterion(\"" + dname + " >\", value, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "GreaterThanOrEqualTo(" + type + " value) {\n" + "            this.addCriterion(\"" + dname + " >=\", value, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "LessThan(" + type + " value) {\n" + "            this.addCriterion(\"" + dname + " <\", value, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "LessThanOrEqualTo(" + type + " value) {\n" + "            this.addCriterion(\"" + dname + " <=\", value, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "Like(String value) {\n" + "            this.addCriterion(\"" + dname + " like\", value, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "NotLike(String value) {\n" + "            this.addCriterion(\"" + dname + " not like\", value, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }" + "        public " + beanName + "Example.Criteria and" + upname + "In(List<" + type + "> values) {\n" + "            this.addCriterion(\"" + dname + " in\", values, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "NotIn(List<" + type + "> values) {\n" + "            this.addCriterion(\"" + dname + " not in\", values, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "Between(" + type + " value1, " + type + " value2) {\n" + "            this.addCriterion(\"" + dname + " between\", value1, value2, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n" + "\n" + "        public " + beanName + "Example.Criteria and" + upname + "NotBetween(" + type + " value1, " + type + " value2) {\n" + "            this.addCriterion(\"" + dname + " not between\", value1, value2, \"" + f + "\");\n" + "            return (" + beanName + "Example.Criteria)this;\n" + "        }\n";
+        }
+        return code;
+    }
+
+    public String exampleString(String packageStr, Map<String, String> fields, String beanName) throws ClassNotFoundException {
+        String code = mkPackage(packageStr);
+        code = code + mkOther(beanName);
+        code = code + createFields(fields, beanName);
+        code = code + "    }\n}\n";
+        return code;
+    }
+    private String myAddField() {
+        return "    private Integer startIndex;\n    private Integer endIndex;\n    private String fields;\n    protected String sqlStirng;\n    private String webSite;\n\n    public String getWebSite() {\n        return this.webSite;\n    }\n\n    public void setWebSite(String webSite) {\n        this.webSite = webSite;\n    }\n\n    public String getSqlStirng() {\n        return this.sqlStirng;\n    }\n\n    public void setSqlStirng(String sqlStirng) {\n        this.sqlStirng = sqlStirng;\n    }\n\n    public Integer getStartIndex() {\n        return this.startIndex;\n    }\n\n    public void setStartIndex(Integer startIndex) {\n        this.startIndex = startIndex;\n    }\n\n    public Integer getEndIndex() {\n        return this.endIndex;\n    }\n\n    public void setEndIndex(Integer endIndex) {\n        this.endIndex = endIndex;\n    }\n\n    public String getFields() {\n        return this.fields;\n    }\n\n    public void setFields(String fields) {\n        this.fields = fields;\n    }\n";
     }
 }
