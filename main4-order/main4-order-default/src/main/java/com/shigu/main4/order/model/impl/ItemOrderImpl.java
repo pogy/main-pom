@@ -1,18 +1,17 @@
 package com.shigu.main4.order.model.impl;
 
 import com.opentae.data.mall.beans.ItemOrderLogistics;
+import com.opentae.data.mall.beans.ItemOrderService;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
+import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.model.ItemOrder;
-import com.shigu.main4.order.vo.ItemOrderVO;
-import com.shigu.main4.order.vo.LogisticsVO;
-import com.shigu.main4.order.vo.PayApplyVO;
-import com.shigu.main4.order.vo.SubItemOrderVO;
-import com.shigu.main4.order.vo.SubOrderVO;
+import com.shigu.main4.order.services.OrderConstantService;
+import com.shigu.main4.order.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -33,6 +32,12 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
+
+    @Autowired
+    private ItemOrderServiceMapper itemOrderServiceMapper;
+
+    @Autowired
+    private OrderConstantService orderConstantService;
 
     /**
      * 订单ID
@@ -94,7 +99,15 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Override
     public void addService(Long serviceId) {
+        // 记录订单服务信息
+        Long sender = 0L;// TODO: UNKNOWN sender
+        ServiceVO serviceVO = orderConstantService.selServiceById(sender, serviceId);
+        ItemOrderService itemOrderService = BeanMapper.map(serviceVO, ItemOrderService.class);
+        itemOrderService.setMoney(serviceVO.getPrice());
+        itemOrderService.setOid(oid);
+        itemOrderServiceMapper.insertSelective(itemOrderService);
 
+        // TODO:重新计算订单总额
     }
 
     @Override
@@ -130,6 +143,8 @@ public class ItemOrderImpl implements ItemOrder{
             sub.setRefund(false);
         }
         itemOrderSubMapper.insertListNoId(subs);
+
+        // TODO：重新计算订单总额
     }
 
     @Override
