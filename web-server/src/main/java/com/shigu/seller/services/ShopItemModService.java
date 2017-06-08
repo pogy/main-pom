@@ -44,7 +44,7 @@ public class ShopItemModService {
     ItemAddOrUpdateService itemAddOrUpdateService;
 
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void moreModify(List<SynItem> items) throws ItemModifyException {
         for(SynItem item:items){
             itemAddOrUpdateService.userUpdateItem(item);

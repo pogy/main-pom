@@ -19,6 +19,18 @@ public class ServiceVO implements Serializable{
      * 价格
      */
     private Long price;
+    /**
+     * 详细资料
+     */
+    private String detail;
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
 
     public Long getId() {
         return id;

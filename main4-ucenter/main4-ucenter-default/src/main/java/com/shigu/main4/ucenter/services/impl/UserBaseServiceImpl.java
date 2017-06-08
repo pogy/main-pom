@@ -213,7 +213,7 @@ public class UserBaseServiceImpl implements UserBaseService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public int updateUserInfo(UserInfoUpdate userinfo) throws UpdateUserInfoException {
         MemberUser user = BeanMapper.map(userinfo, MemberUser.class);
         if (user.getUserId() == null)

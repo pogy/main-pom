@@ -13,7 +13,7 @@ public class PhoneDensityInterceptor extends DensityInterceptor{
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //得到手机号
-        String phone=request.getParameter("phone");
+        String phone=request.getParameter("telephone");
         if (phone == null) {//没有手机号,不拦截
             return false;
         }

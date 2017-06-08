@@ -1,6 +1,5 @@
 package com.shigu.resolver;
 
-import com.openJar.commons.ResponseUtil;
 import com.opentae.common.beans.LogUtil;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -47,9 +46,8 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 			} else {
 				response.setContentType("application/json");//修复post异常信息未被解析为json
 			}
-			PrintWriter writer;
 			try {
-				writer = response.getWriter();
+				PrintWriter writer = response.getWriter();
 				writer.print(jsonString);
 				writer.flush();
 				writer.close();

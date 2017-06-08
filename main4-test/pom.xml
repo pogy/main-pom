@@ -81,6 +81,27 @@
             <version>1.9.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-spread-api</artifactId>
+            <version>4.1.7-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>sites.tb</groupId>
+            <artifactId>syn-finder-api</artifactId>
+            <version>4.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+        <!--freemarker-->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.22</version>
+        </dependency>
     </dependencies>
 
 

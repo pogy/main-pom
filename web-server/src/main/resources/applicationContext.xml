@@ -23,6 +23,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <value>classpath:oss.properties</value>
                 <value>classpath:redis.properties</value>
                 <value>classpath:rd3.properties</value>
+                <value>classpath:opensearch.properties</value>
             </list>
         </property>
     </bean>
@@ -56,7 +57,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         </property>
     </bean>
     <import resource="spring-database/mall.xml"/>
-    <import resource="spring-database/manager.xml"/>
+    <!--<import resource="spring-database/manager.xml"/>-->
     <bean id="druid-stat-interceptor"
           class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
     </bean>

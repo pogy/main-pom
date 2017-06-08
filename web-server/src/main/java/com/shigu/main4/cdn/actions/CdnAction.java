@@ -133,6 +133,14 @@ public class CdnAction {
     GoodsSelFromEsService goodsSelFromEsService;
 
     /**
+     * 联系我们
+     * @return
+     */
+    @RequestMapping("contact")
+    public String contact(){
+        return "contact/contact";
+    }
+    /**
      * 杭州首页动态页面
      * @return
      */

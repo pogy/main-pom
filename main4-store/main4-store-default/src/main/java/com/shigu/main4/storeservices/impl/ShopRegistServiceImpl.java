@@ -370,7 +370,7 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
      * @return 新店铺ID
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public long toExamine(Long registId) throws ShopExamineException {
         ShiguShopApply shiguShopApply = shiguShopApplyMapper.selectByPrimaryKey(registId);
 
