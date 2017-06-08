@@ -33,4 +33,10 @@ public interface ItemProduct {
      * @param price
      */
     void modifyPrice(Long price);
+
+    /**
+     * 重量查询
+     * @return
+     */
+    Long selWeight();
 }
