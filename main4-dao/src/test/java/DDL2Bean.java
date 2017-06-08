@@ -7,30 +7,13 @@ import java.util.*;
 /**
  * Created by wxc on 2017/2/21.
  *
+ * 把DDL语句快速生成Bean 、Example 、Mapper
+ *
  * @author wxc
  * @version domwiki 4.0.0
  * @since domwiki 4.0.0
  */
 public class DDL2Bean {
-
-    private String ddl = "CREATE TABLE IF NOT EXISTS `shigu_mall`.`item_product` (\n" +
-            "  `pid` BIGINT(11) NOT NULL AUTO_INCREMENT COMMENT '主键',\n" +
-            "  `goods_id` BIGINT(11) NOT NULL COMMENT '星座商品ID',\n" +
-            "  `web_site` VARCHAR(10) NOT NULL COMMENT '分站标识',\n" +
-            "  `pic_url` VARCHAR(255) NULL COMMENT '首图',\n" +
-            "  `title` VARCHAR(45) NOT NULL COMMENT '标题',\n" +
-            "  `price` BIGINT(11) NOT NULL DEFAULT 0 COMMENT '单价',\n" +
-            "  `market_name` VARCHAR(45) NOT NULL COMMENT '所以市场名',\n" +
-            "  `floor` VARCHAR(45) NOT NULL COMMENT '楼层',\n" +
-            "  `shop_num` VARCHAR(45) NOT NULL COMMENT '档口号',\n" +
-            "  `market_id` BIGINT(11) NOT NULL COMMENT '市场ID',\n" +
-            "  `floor_id` BIGINT(11) NOT NULL COMMENT '楼层ID',\n" +
-            "  `shop_id` BIGINT(11) NOT NULL COMMENT '档口ID',\n" +
-            "  `weight` BIGINT(11) NOT NULL DEFAULT 0 COMMENT '单位：克',\n" +
-            "  UNIQUE INDEX `goods_one_shop` (`goods_id` ASC, `shop_id` ASC),\n" +
-            "  PRIMARY KEY (`pid`))\n" +
-            "ENGINE = InnoDB\n" +
-            "COMMENT = '产品'";
 
     public static void main(String[] args) throws IOException {
         DDL2Bean ddl2Bean = new DDL2Bean();
@@ -85,7 +68,7 @@ public class DDL2Bean {
         }
 
         int i=0;
-        String path = System.getProperty("user.dir") + "\\main4-dao\\src\\main\\java\\com\\opentae\\data\\mall\\beans\\" + beanName + ".java";
+        String path = System.getProperty("user.dir") + "\\main4-dao\\src\\main\\java\\com\\opentae\\data\\mall\\beans\\".replace("\\", File.separator) + beanName + ".java";
         PrintWriter out = new PrintWriter(path);
         out.println(String.format("package com.opentae.data.mall.beans;\n\nimport javax.persistence.GeneratedValue;\nimport javax.persistence.Id;\nimport java.io.Serializable;\n\npublic class %s implements Serializable {", beanName));
         for (Map.Entry<String, String[]> entry : fields.entrySet()) {
