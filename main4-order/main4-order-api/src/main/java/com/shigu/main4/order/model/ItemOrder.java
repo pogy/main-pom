@@ -2,6 +2,7 @@ package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
+import com.shigu.main4.order.vo.SenderVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 
 import java.util.List;
@@ -78,5 +79,11 @@ public interface ItemOrder extends Order{
      * @param courierNumber
      */
     void sendPart(Long logisticsId,List<Long> soids,String courierNumber);//部分发货
+
+    /**
+     * 查询发件单位
+     * @return
+     */
+    SenderVO selSender();
 
 }
