@@ -137,7 +137,8 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("contact")
-    public String contact(){
+    public String contact(Model model){
+        model.addAttribute("webSite","hz");
         return "contact/contact";
     }
     /**
