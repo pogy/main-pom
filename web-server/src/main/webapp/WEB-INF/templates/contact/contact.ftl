@@ -14,7 +14,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/contactV1/css/contact.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/contactV1/css/contact.css?v=1496896129841" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/contactV1/js/contact.js"></script>
+    <script src="http://style.571xz.com/v2/contactV1/js/contact.js?v=1496896129841"></script>
 </head>
 <body>
 
@@ -34,22 +34,22 @@
     <div class="layout">
         <div class="fl">
             
-            <div class="cityChooseBox">
-                <span class="lable">
+            <div class="cityChooseBox fl pr">
+                <span class="lable pr">
                     <em>
-                        <#if webSite == "hz">
+                        <#if webSite == 'hz'>
                             杭州
-                        <#elseif webSite == "cs">
+                        <#elseif webSite == 'cs'>
                             常熟
-                        <#elseif webSite == "ss">
+                        <#elseif webSite == 'ss'>
                             石狮
-                        <#elseif webSite == "bj">
+                        <#elseif webSite == 'bj'>
                             北京
-                        <#elseif webSite == "gz">
+                        <#elseif webSite == 'gz'>
                             广州
-                        <#elseif webSite == "wa">
+                        <#elseif webSite == 'wa'>
                             辽源
-                        <#elseif webSite == "jx">
+                        <#elseif webSite == 'jx'>
                             濮院
                         <#else>
                             杭州
@@ -58,22 +58,18 @@
                     <i class="downArrow"></i>
                 </span>
                 <ul>
-                    <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
-                    <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                    <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                    <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
-                    <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                    <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
-                    <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
+                    <li><a href="http://hz.571xz.com" <#if webSite == 'hz'>class="select"</#if>>杭州</a></li>
+                    <li><a href="http://cs.571xz.com" <#if webSite == 'cs'>class="select"</#if>>常熟</a></li>
+                    <li><a href="http://ss.571xz.com" <#if webSite == 'ss'>class="select"</#if>>石狮</a></li>
+                    <li><a href="http://bj.571xz.com" <#if webSite == 'bj'>class="select"</#if>>北京</a></li>
+                    <li><a href="http://gz.571xz.com" <#if webSite == 'gz'>class="select"</#if>>广州</a></li>
+                    <li><a href="http://wa.571xz.com" <#if webSite == 'wa'>class="select"</#if>>辽源</a></li>
+                    <li><a href="http://jx.571xz.com" <#if webSite == 'jx'>class="select"</#if>>濮院</a></li>
                 </ul>
             </div>
             
-            <div class="loginBox">
-                <span>你好，</span>
-                <em>请</em>
-                <a class="simpleLogin" xzclick="toLogin">登录</a>
-                <a href="http://www.571xz.com/regedit.htm"  target="_blank">注册</a>
-                <a class="tbLogin" href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1">淘宝登录</a>
+            <div class="loginBox fl">
+                
             </div>
         </div>
         <div class="fr">
@@ -96,9 +92,9 @@
                 </li>
                 <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
                 <li>
-                    <div class="cnBox">
-                        <a class="cgcom" href="${main_host!}member/index.htm">我的星座<i class="downArrow"></i></a>
-                        <div class="myxz cnBoxCon">
+                    <div class="cnBox pr">
+                        <a class="cgcom pr" href="${main_host!}member/index.htm">我的星座<i class="downArrow"></i></a>
+                        <div class="myxz cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li>
                                 <li><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
@@ -107,9 +103,9 @@
                     </div>
                 </li>
                 <li>
-                    <div class="cnBox">
-                        <a class="cgcom" href="${main_host!}member/storeCollectinit.htm">我的收藏<i class="downArrow"></i></a>
-                        <div class="myColle cnBoxCon">
+                    <div class="cnBox pr">
+                        <a class="cgcom pr" href="${main_host!}member/storeCollectinit.htm">我的收藏<i class="downArrow"></i></a>
+                        <div class="myColle cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
                                 <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
@@ -121,9 +117,9 @@
                 
                 <#if !session_user_redis__ || session_user_redis__.logshop?? > 
                 <li>
-                    <div class="cnBox">
-                        <a class="cgcom" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
-                        <div class="myStore cnBoxCon">
+                    <div class="cnBox pr">
+                        <a class="cgcom pr" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
+                        <div class="myStore cnBoxCon pa">
                             <ul>
                                 <li><a href="${main_host!}seller/createGoods21init.htm">发布新商品</a></li>
                                 <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
@@ -136,10 +132,10 @@
                     <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=${qiye_qq!}" target="_blank">联系客服</a>
                 </li>
                 <li>
-                    <div class="cnBox">
-                        <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
-                        <div class="webNav cnBoxCon">
-                            <h4>市场大全</h4>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
+                        <div class="webNav cnBoxCon pa">
+                            <h4 class="fs14 fcF40">市场大全</h4>
                             
                             <ul>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
@@ -193,15 +189,16 @@ var webSite = '${webSite!}';
 
 
 
-<div class="header">
-    <div class="layout">
-        <div class="logoLeft">
-            <a href="http://${webSite!}.571xz.com">
-                <img src="http://style.571xz.com/v2/xz/css/img/mtLogo.png" alt width=168 height=30 />
-            </a>
-            <em></em>
-        </div>
-        <div class="searchBar">
+
+
+<div class="header layout">
+    <div class="logoLeft fl">
+        <a href="http://${webSite!}.571xz.com">
+            <img src="http://style.571xz.com/v2/xz/css/img/mtLogo.png" width="168" height="30" />
+        </a>
+        <em class="fs18 yahei"></em>
+    </div>
+    <div class="searchBar fr">
     <div class="tabList clearfix">
         <ul>
             
@@ -227,8 +224,8 @@ var webSite = '${webSite!}';
             
             
             
-            <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" >
-            <button type="submit" class="searchBtn">搜索</button>
+            <input type="text" class="searchCon fl" name="keyword" placeholder="输入商品名称" >
+            <button type="submit" class="searchBtn fs14">搜索</button>
         </form>
     </div>
 </div>
@@ -242,7 +239,6 @@ var webSite = '${webSite!}';
 
 
 
-    </div>
 </div>
 
 
@@ -265,7 +261,7 @@ var webSite = '${webSite!}';
             <div class="linkBox linkQQ">
                 <h3 class="title">官方QQ</h3>
                 <p class="desc">${qiye_qq!}</p>
-                <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=${qiye_qq!}&amp;site=qq&amp;menu=yes" class="linkBtn">
+                <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=${qiye_qq!}" class="linkBtn">
                     <i class="icon-s-qq"></i>
                     在线咨询
                 </a>
@@ -321,6 +317,7 @@ var webSite = '${webSite!}';
        <div class="addressBox showBox">
            <p>浙江省杭州市上城区清江路136号</p>
            <div id="dituContent"></div>
+           
        </div>
        <div class="wechatBox showBox">
            <p>关注公众号</p>
@@ -330,6 +327,7 @@ var webSite = '${webSite!}';
 </div>
 
 <script src="http://api.map.baidu.com/api?key=&amp;v=1.1&amp;services=true"></script>
+
 
 
 
