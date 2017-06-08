@@ -57,9 +57,11 @@ COMMENT = '物流'
         Map<String, String[]> fields = new LinkedHashMap<>();
         Map<String, String> dataFields = new HashMap<>();
         String beanName = "unknown";
+        boolean typeHasDate = false;
         for (String s : ddl.split(",")) {
-            if (s.contains("PRIMARY KEY"))
+            if (s.contains("PRIMARY KEY")) {
                 break;
+            }
             if (s.contains("CREATE TABLE")) {
                 if (s.contains(".")){
                     s = s.substring(s.indexOf(".") + 1);
@@ -85,9 +87,10 @@ COMMENT = '物流'
                 type = "Integer";
             else if (s.contains("varchar") || s.contains("VARCHAR"))
                 type = "String";
-            else if (s.contains("timestamp") || s.contains("date") || s.contains("TIMESTAMP") || s.contains("DATE"))
+            else if (s.contains("timestamp") || s.contains("date") || s.contains("TIMESTAMP") || s.contains("DATE")) {
                 type = "Date";
-            else if (s.contains("bit") || s.contains("BIT"))
+                typeHasDate = true;
+            } else if (s.contains("bit") || s.contains("BIT"))
                 type = "Boolean";
             fields.put(dataToField(dataField, false), new String[]{comment, type});
             dataFields.put(dataField, type);
@@ -96,7 +99,7 @@ COMMENT = '物流'
         int i=0;
         String path = System.getProperty("user.dir") + "\\main4-dao\\src\\main\\java\\com\\opentae\\data\\mall\\beans\\".replace("\\", File.separator) + beanName + ".java";
         PrintWriter out = new PrintWriter(path);
-        out.println(String.format("package com.opentae.data.mall.beans;\n\nimport javax.persistence.GeneratedValue;\nimport javax.persistence.Id;\nimport java.io.Serializable;\n\npublic class %s implements Serializable {", beanName));
+        out.println(String.format("package com.opentae.data.mall.beans;\n\nimport javax.persistence.GeneratedValue;\nimport javax.persistence.Id;\n" + (typeHasDate ? "import java.util.Date;\n" : "") + "import java.io.Serializable;\n\npublic class %s implements Serializable {", beanName));
         for (Map.Entry<String, String[]> entry : fields.entrySet()) {
             String[] value = entry.getValue();
             out.println("    /**\n" +
