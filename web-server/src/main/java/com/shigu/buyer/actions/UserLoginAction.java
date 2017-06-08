@@ -440,7 +440,7 @@ public class UserLoginAction {
         } catch (LoginAuthException e) {
             //如果手机账号不存在
             if(e.getMsgback().equals(LoginErrorEnum.NO_USER)){//用户不存在
-                throw new Main4LoginException("账号["+phone+"]不存在");
+                throw new Main4LoginException("账号["+phone+"]暂未注册!");
             }else{
                 logger.error(phone+"用户数据有问题",e);
                 throw new Main4Exception(phone+"用户数据有问题");
