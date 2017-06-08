@@ -1,7 +1,10 @@
 package com.shigu.main4.order.model.impl;
 
 import com.opentae.data.mall.beans.ItemOrderLogistics;
+import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.model.ItemOrder;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +30,9 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Autowired
     private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
+
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
 
     /**
      * 订单ID
@@ -54,7 +61,20 @@ public class ItemOrderImpl implements ItemOrder{
     @Override
     public Long addLogistics(List<Long> soids,LogisticsVO logistics) {
         ItemOrderLogistics orderLogistics = BeanMapper.map(logistics, ItemOrderLogistics.class);
-        return null;
+        itemOrderLogisticsMapper.insertSelective(orderLogistics);
+
+        // TODO：重新计算订单总额
+        // do something...
+
+        // 子订单设置物流关联
+        if (soids != null && !soids.isEmpty()) {
+            ItemOrderSubExample subExample = new ItemOrderSubExample();
+            subExample.createCriteria().andSoidIn(soids).andOidEqualTo(oid);
+            ItemOrderSub sub = new ItemOrderSub();
+            sub.setLogisticsId(orderLogistics.getId());
+            itemOrderSubMapper.updateByExampleSelective(sub, subExample);
+        }
+        return orderLogistics.getId();
     }
 
     @Override
