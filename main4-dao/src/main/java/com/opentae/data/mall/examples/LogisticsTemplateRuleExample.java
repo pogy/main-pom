@@ -242,32 +242,32 @@ public class LogisticsTemplateRuleExample implements SgExample{
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andRuleIdEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andRuleIdEqualTo(Long value) {
             this.addCriterion("ruleId =", value, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andRuleIdNotEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andRuleIdNotEqualTo(Long value) {
             this.addCriterion("ruleId <>", value, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andRuleIdGreaterThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andRuleIdGreaterThan(Long value) {
             this.addCriterion("ruleId >", value, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andRuleIdGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andRuleIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("ruleId >=", value, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andRuleIdLessThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andRuleIdLessThan(Long value) {
             this.addCriterion("ruleId <", value, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andRuleIdLessThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andRuleIdLessThanOrEqualTo(Long value) {
             this.addCriterion("ruleId <=", value, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -280,22 +280,22 @@ public class LogisticsTemplateRuleExample implements SgExample{
         public LogisticsTemplateRuleExample.Criteria andRuleIdNotLike(String value) {
             this.addCriterion("ruleId not like", value, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
-        }        public LogisticsTemplateRuleExample.Criteria andRuleIdIn(List<String> values) {
+        }        public LogisticsTemplateRuleExample.Criteria andRuleIdIn(List<Long> values) {
             this.addCriterion("ruleId in", values, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andRuleIdNotIn(List<String> values) {
+        public LogisticsTemplateRuleExample.Criteria andRuleIdNotIn(List<Long> values) {
             this.addCriterion("ruleId not in", values, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andRuleIdBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andRuleIdBetween(Long value1, Long value2) {
             this.addCriterion("ruleId between", value1, value2, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andRuleIdNotBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andRuleIdNotBetween(Long value1, Long value2) {
             this.addCriterion("ruleId not between", value1, value2, "rule_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -310,32 +310,32 @@ public class LogisticsTemplateRuleExample implements SgExample{
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andImDefaultEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andImDefaultEqualTo(Boolean value) {
             this.addCriterion("imDefault =", value, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andImDefaultNotEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andImDefaultNotEqualTo(Boolean value) {
             this.addCriterion("imDefault <>", value, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andImDefaultGreaterThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andImDefaultGreaterThan(Boolean value) {
             this.addCriterion("imDefault >", value, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andImDefaultGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andImDefaultGreaterThanOrEqualTo(Boolean value) {
             this.addCriterion("imDefault >=", value, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andImDefaultLessThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andImDefaultLessThan(Boolean value) {
             this.addCriterion("imDefault <", value, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andImDefaultLessThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andImDefaultLessThanOrEqualTo(Boolean value) {
             this.addCriterion("imDefault <=", value, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -348,22 +348,22 @@ public class LogisticsTemplateRuleExample implements SgExample{
         public LogisticsTemplateRuleExample.Criteria andImDefaultNotLike(String value) {
             this.addCriterion("imDefault not like", value, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
-        }        public LogisticsTemplateRuleExample.Criteria andImDefaultIn(List<String> values) {
+        }        public LogisticsTemplateRuleExample.Criteria andImDefaultIn(List<Boolean> values) {
             this.addCriterion("imDefault in", values, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andImDefaultNotIn(List<String> values) {
+        public LogisticsTemplateRuleExample.Criteria andImDefaultNotIn(List<Boolean> values) {
             this.addCriterion("imDefault not in", values, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andImDefaultBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andImDefaultBetween(Boolean value1, Boolean value2) {
             this.addCriterion("imDefault between", value1, value2, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andImDefaultNotBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andImDefaultNotBetween(Boolean value1, Boolean value2) {
             this.addCriterion("imDefault not between", value1, value2, "im_default");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -378,32 +378,32 @@ public class LogisticsTemplateRuleExample implements SgExample{
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerFeeEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerFeeEqualTo(Long value) {
             this.addCriterion("perFee =", value, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerFeeNotEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerFeeNotEqualTo(Long value) {
             this.addCriterion("perFee <>", value, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerFeeGreaterThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerFeeGreaterThan(Long value) {
             this.addCriterion("perFee >", value, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerFeeGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerFeeGreaterThanOrEqualTo(Long value) {
             this.addCriterion("perFee >=", value, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerFeeLessThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerFeeLessThan(Long value) {
             this.addCriterion("perFee <", value, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerFeeLessThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerFeeLessThanOrEqualTo(Long value) {
             this.addCriterion("perFee <=", value, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -416,22 +416,22 @@ public class LogisticsTemplateRuleExample implements SgExample{
         public LogisticsTemplateRuleExample.Criteria andPerFeeNotLike(String value) {
             this.addCriterion("perFee not like", value, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
-        }        public LogisticsTemplateRuleExample.Criteria andPerFeeIn(List<String> values) {
+        }        public LogisticsTemplateRuleExample.Criteria andPerFeeIn(List<Long> values) {
             this.addCriterion("perFee in", values, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerFeeNotIn(List<String> values) {
+        public LogisticsTemplateRuleExample.Criteria andPerFeeNotIn(List<Long> values) {
             this.addCriterion("perFee not in", values, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerFeeBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andPerFeeBetween(Long value1, Long value2) {
             this.addCriterion("perFee between", value1, value2, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerFeeNotBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andPerFeeNotBetween(Long value1, Long value2) {
             this.addCriterion("perFee not between", value1, value2, "per_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -446,32 +446,32 @@ public class LogisticsTemplateRuleExample implements SgExample{
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstFeeEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstFeeEqualTo(Long value) {
             this.addCriterion("firstFee =", value, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstFeeNotEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstFeeNotEqualTo(Long value) {
             this.addCriterion("firstFee <>", value, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstFeeGreaterThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstFeeGreaterThan(Long value) {
             this.addCriterion("firstFee >", value, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstFeeGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstFeeGreaterThanOrEqualTo(Long value) {
             this.addCriterion("firstFee >=", value, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstFeeLessThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstFeeLessThan(Long value) {
             this.addCriterion("firstFee <", value, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstFeeLessThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstFeeLessThanOrEqualTo(Long value) {
             this.addCriterion("firstFee <=", value, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -484,22 +484,22 @@ public class LogisticsTemplateRuleExample implements SgExample{
         public LogisticsTemplateRuleExample.Criteria andFirstFeeNotLike(String value) {
             this.addCriterion("firstFee not like", value, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
-        }        public LogisticsTemplateRuleExample.Criteria andFirstFeeIn(List<String> values) {
+        }        public LogisticsTemplateRuleExample.Criteria andFirstFeeIn(List<Long> values) {
             this.addCriterion("firstFee in", values, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstFeeNotIn(List<String> values) {
+        public LogisticsTemplateRuleExample.Criteria andFirstFeeNotIn(List<Long> values) {
             this.addCriterion("firstFee not in", values, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstFeeBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andFirstFeeBetween(Long value1, Long value2) {
             this.addCriterion("firstFee between", value1, value2, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstFeeNotBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andFirstFeeNotBetween(Long value1, Long value2) {
             this.addCriterion("firstFee not between", value1, value2, "first_fee");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -514,32 +514,32 @@ public class LogisticsTemplateRuleExample implements SgExample{
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerUnitEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerUnitEqualTo(Integer value) {
             this.addCriterion("perUnit =", value, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerUnitNotEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerUnitNotEqualTo(Integer value) {
             this.addCriterion("perUnit <>", value, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerUnitGreaterThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerUnitGreaterThan(Integer value) {
             this.addCriterion("perUnit >", value, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerUnitGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerUnitGreaterThanOrEqualTo(Integer value) {
             this.addCriterion("perUnit >=", value, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerUnitLessThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerUnitLessThan(Integer value) {
             this.addCriterion("perUnit <", value, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerUnitLessThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andPerUnitLessThanOrEqualTo(Integer value) {
             this.addCriterion("perUnit <=", value, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -552,22 +552,22 @@ public class LogisticsTemplateRuleExample implements SgExample{
         public LogisticsTemplateRuleExample.Criteria andPerUnitNotLike(String value) {
             this.addCriterion("perUnit not like", value, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
-        }        public LogisticsTemplateRuleExample.Criteria andPerUnitIn(List<String> values) {
+        }        public LogisticsTemplateRuleExample.Criteria andPerUnitIn(List<Integer> values) {
             this.addCriterion("perUnit in", values, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerUnitNotIn(List<String> values) {
+        public LogisticsTemplateRuleExample.Criteria andPerUnitNotIn(List<Integer> values) {
             this.addCriterion("perUnit not in", values, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerUnitBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andPerUnitBetween(Integer value1, Integer value2) {
             this.addCriterion("perUnit between", value1, value2, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andPerUnitNotBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andPerUnitNotBetween(Integer value1, Integer value2) {
             this.addCriterion("perUnit not between", value1, value2, "per_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -582,32 +582,32 @@ public class LogisticsTemplateRuleExample implements SgExample{
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstUnitEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstUnitEqualTo(Integer value) {
             this.addCriterion("firstUnit =", value, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstUnitNotEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstUnitNotEqualTo(Integer value) {
             this.addCriterion("firstUnit <>", value, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstUnitGreaterThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstUnitGreaterThan(Integer value) {
             this.addCriterion("firstUnit >", value, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstUnitGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstUnitGreaterThanOrEqualTo(Integer value) {
             this.addCriterion("firstUnit >=", value, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstUnitLessThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstUnitLessThan(Integer value) {
             this.addCriterion("firstUnit <", value, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstUnitLessThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andFirstUnitLessThanOrEqualTo(Integer value) {
             this.addCriterion("firstUnit <=", value, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -620,22 +620,22 @@ public class LogisticsTemplateRuleExample implements SgExample{
         public LogisticsTemplateRuleExample.Criteria andFirstUnitNotLike(String value) {
             this.addCriterion("firstUnit not like", value, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
-        }        public LogisticsTemplateRuleExample.Criteria andFirstUnitIn(List<String> values) {
+        }        public LogisticsTemplateRuleExample.Criteria andFirstUnitIn(List<Integer> values) {
             this.addCriterion("firstUnit in", values, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstUnitNotIn(List<String> values) {
+        public LogisticsTemplateRuleExample.Criteria andFirstUnitNotIn(List<Integer> values) {
             this.addCriterion("firstUnit not in", values, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstUnitBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andFirstUnitBetween(Integer value1, Integer value2) {
             this.addCriterion("firstUnit between", value1, value2, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andFirstUnitNotBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andFirstUnitNotBetween(Integer value1, Integer value2) {
             this.addCriterion("firstUnit not between", value1, value2, "first_unit");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -650,32 +650,32 @@ public class LogisticsTemplateRuleExample implements SgExample{
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTemplateIdEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTemplateIdEqualTo(Long value) {
             this.addCriterion("templateId =", value, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTemplateIdNotEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTemplateIdNotEqualTo(Long value) {
             this.addCriterion("templateId <>", value, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTemplateIdGreaterThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTemplateIdGreaterThan(Long value) {
             this.addCriterion("templateId >", value, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTemplateIdGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTemplateIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("templateId >=", value, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTemplateIdLessThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTemplateIdLessThan(Long value) {
             this.addCriterion("templateId <", value, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTemplateIdLessThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTemplateIdLessThanOrEqualTo(Long value) {
             this.addCriterion("templateId <=", value, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -688,22 +688,22 @@ public class LogisticsTemplateRuleExample implements SgExample{
         public LogisticsTemplateRuleExample.Criteria andTemplateIdNotLike(String value) {
             this.addCriterion("templateId not like", value, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
-        }        public LogisticsTemplateRuleExample.Criteria andTemplateIdIn(List<String> values) {
+        }        public LogisticsTemplateRuleExample.Criteria andTemplateIdIn(List<Long> values) {
             this.addCriterion("templateId in", values, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTemplateIdNotIn(List<String> values) {
+        public LogisticsTemplateRuleExample.Criteria andTemplateIdNotIn(List<Long> values) {
             this.addCriterion("templateId not in", values, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTemplateIdBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andTemplateIdBetween(Long value1, Long value2) {
             this.addCriterion("templateId between", value1, value2, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTemplateIdNotBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andTemplateIdNotBetween(Long value1, Long value2) {
             this.addCriterion("templateId not between", value1, value2, "template_id");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -718,32 +718,32 @@ public class LogisticsTemplateRuleExample implements SgExample{
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTypeEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTypeEqualTo(Integer value) {
             this.addCriterion("type =", value, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTypeNotEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTypeNotEqualTo(Integer value) {
             this.addCriterion("type <>", value, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTypeGreaterThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTypeGreaterThan(Integer value) {
             this.addCriterion("type >", value, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTypeGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
             this.addCriterion("type >=", value, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTypeLessThan(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTypeLessThan(Integer value) {
             this.addCriterion("type <", value, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTypeLessThanOrEqualTo(String value) {
+        public LogisticsTemplateRuleExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
             this.addCriterion("type <=", value, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
@@ -756,22 +756,22 @@ public class LogisticsTemplateRuleExample implements SgExample{
         public LogisticsTemplateRuleExample.Criteria andTypeNotLike(String value) {
             this.addCriterion("type not like", value, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
-        }        public LogisticsTemplateRuleExample.Criteria andTypeIn(List<String> values) {
+        }        public LogisticsTemplateRuleExample.Criteria andTypeIn(List<Integer> values) {
             this.addCriterion("type in", values, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTypeNotIn(List<String> values) {
+        public LogisticsTemplateRuleExample.Criteria andTypeNotIn(List<Integer> values) {
             this.addCriterion("type not in", values, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTypeBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andTypeBetween(Integer value1, Integer value2) {
             this.addCriterion("type between", value1, value2, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }
 
-        public LogisticsTemplateRuleExample.Criteria andTypeNotBetween(String value1, String value2) {
+        public LogisticsTemplateRuleExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
             this.addCriterion("type not between", value1, value2, "type");
             return (LogisticsTemplateRuleExample.Criteria)this;
         }

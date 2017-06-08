@@ -10,52 +10,52 @@ public class OrderStatusRecord implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String statusId;
+	private Long statusId;
 
     /**
      * 订单ID
      */
-	private String oid;
+	private Long oid;
 
     /**
      * 创建时间
      */
-	private String createTime;
+	private Date createTime;
 
     /**
      * 1、等待买家付款，2、卖家部分发货，3、等待卖家发货，4、交易完成，5、交易关闭
      */
-	private String status;
+	private Integer status;
 
-	public void setStatusId(String statusId) {
+	public void setStatusId(Long statusId) {
 		this.statusId = statusId;
 	}
 
-	public String getStatusId() {
+	public Long getStatusId() {
 		return this.statusId;
 	}
 
-	public void setOid(String oid) {
+	public void setOid(Long oid) {
 		this.oid = oid;
 	}
 
-	public String getOid() {
+	public Long getOid() {
 		return this.oid;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return this.createTime;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
-	public String getStatus() {
+	public Integer getStatus() {
 		return this.status;
 	}
 

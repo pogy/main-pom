@@ -242,32 +242,32 @@ public class OrderPayRelationshipExample implements SgExample{
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andOidEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andOidEqualTo(Long value) {
             this.addCriterion("oid =", value, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andOidNotEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andOidNotEqualTo(Long value) {
             this.addCriterion("oid <>", value, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andOidGreaterThan(String value) {
+        public OrderPayRelationshipExample.Criteria andOidGreaterThan(Long value) {
             this.addCriterion("oid >", value, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andOidGreaterThanOrEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andOidGreaterThanOrEqualTo(Long value) {
             this.addCriterion("oid >=", value, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andOidLessThan(String value) {
+        public OrderPayRelationshipExample.Criteria andOidLessThan(Long value) {
             this.addCriterion("oid <", value, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andOidLessThanOrEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andOidLessThanOrEqualTo(Long value) {
             this.addCriterion("oid <=", value, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
@@ -280,22 +280,22 @@ public class OrderPayRelationshipExample implements SgExample{
         public OrderPayRelationshipExample.Criteria andOidNotLike(String value) {
             this.addCriterion("oid not like", value, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
-        }        public OrderPayRelationshipExample.Criteria andOidIn(List<String> values) {
+        }        public OrderPayRelationshipExample.Criteria andOidIn(List<Long> values) {
             this.addCriterion("oid in", values, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andOidNotIn(List<String> values) {
+        public OrderPayRelationshipExample.Criteria andOidNotIn(List<Long> values) {
             this.addCriterion("oid not in", values, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andOidBetween(String value1, String value2) {
+        public OrderPayRelationshipExample.Criteria andOidBetween(Long value1, Long value2) {
             this.addCriterion("oid between", value1, value2, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andOidNotBetween(String value1, String value2) {
+        public OrderPayRelationshipExample.Criteria andOidNotBetween(Long value1, Long value2) {
             this.addCriterion("oid not between", value1, value2, "oid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
@@ -310,32 +310,32 @@ public class OrderPayRelationshipExample implements SgExample{
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andRidEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andRidEqualTo(Long value) {
             this.addCriterion("rid =", value, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andRidNotEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andRidNotEqualTo(Long value) {
             this.addCriterion("rid <>", value, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andRidGreaterThan(String value) {
+        public OrderPayRelationshipExample.Criteria andRidGreaterThan(Long value) {
             this.addCriterion("rid >", value, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andRidGreaterThanOrEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andRidGreaterThanOrEqualTo(Long value) {
             this.addCriterion("rid >=", value, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andRidLessThan(String value) {
+        public OrderPayRelationshipExample.Criteria andRidLessThan(Long value) {
             this.addCriterion("rid <", value, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andRidLessThanOrEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andRidLessThanOrEqualTo(Long value) {
             this.addCriterion("rid <=", value, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
@@ -348,22 +348,22 @@ public class OrderPayRelationshipExample implements SgExample{
         public OrderPayRelationshipExample.Criteria andRidNotLike(String value) {
             this.addCriterion("rid not like", value, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
-        }        public OrderPayRelationshipExample.Criteria andRidIn(List<String> values) {
+        }        public OrderPayRelationshipExample.Criteria andRidIn(List<Long> values) {
             this.addCriterion("rid in", values, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andRidNotIn(List<String> values) {
+        public OrderPayRelationshipExample.Criteria andRidNotIn(List<Long> values) {
             this.addCriterion("rid not in", values, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andRidBetween(String value1, String value2) {
+        public OrderPayRelationshipExample.Criteria andRidBetween(Long value1, Long value2) {
             this.addCriterion("rid between", value1, value2, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andRidNotBetween(String value1, String value2) {
+        public OrderPayRelationshipExample.Criteria andRidNotBetween(Long value1, Long value2) {
             this.addCriterion("rid not between", value1, value2, "rid");
             return (OrderPayRelationshipExample.Criteria)this;
         }
@@ -378,32 +378,32 @@ public class OrderPayRelationshipExample implements SgExample{
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andPayIdEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andPayIdEqualTo(Long value) {
             this.addCriterion("payId =", value, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andPayIdNotEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andPayIdNotEqualTo(Long value) {
             this.addCriterion("payId <>", value, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andPayIdGreaterThan(String value) {
+        public OrderPayRelationshipExample.Criteria andPayIdGreaterThan(Long value) {
             this.addCriterion("payId >", value, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andPayIdGreaterThanOrEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andPayIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("payId >=", value, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andPayIdLessThan(String value) {
+        public OrderPayRelationshipExample.Criteria andPayIdLessThan(Long value) {
             this.addCriterion("payId <", value, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andPayIdLessThanOrEqualTo(String value) {
+        public OrderPayRelationshipExample.Criteria andPayIdLessThanOrEqualTo(Long value) {
             this.addCriterion("payId <=", value, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
         }
@@ -416,22 +416,22 @@ public class OrderPayRelationshipExample implements SgExample{
         public OrderPayRelationshipExample.Criteria andPayIdNotLike(String value) {
             this.addCriterion("payId not like", value, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
-        }        public OrderPayRelationshipExample.Criteria andPayIdIn(List<String> values) {
+        }        public OrderPayRelationshipExample.Criteria andPayIdIn(List<Long> values) {
             this.addCriterion("payId in", values, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andPayIdNotIn(List<String> values) {
+        public OrderPayRelationshipExample.Criteria andPayIdNotIn(List<Long> values) {
             this.addCriterion("payId not in", values, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andPayIdBetween(String value1, String value2) {
+        public OrderPayRelationshipExample.Criteria andPayIdBetween(Long value1, Long value2) {
             this.addCriterion("payId between", value1, value2, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
-        public OrderPayRelationshipExample.Criteria andPayIdNotBetween(String value1, String value2) {
+        public OrderPayRelationshipExample.Criteria andPayIdNotBetween(Long value1, Long value2) {
             this.addCriterion("payId not between", value1, value2, "pay_id");
             return (OrderPayRelationshipExample.Criteria)this;
         }

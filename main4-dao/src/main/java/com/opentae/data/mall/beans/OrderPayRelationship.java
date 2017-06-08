@@ -10,39 +10,39 @@ public class OrderPayRelationship implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String rid;
+	private Long rid;
 
     /**
      * 订单ID
      */
-	private String oid;
+	private Long oid;
 
     /**
      * 支付ID
      */
-	private String payId;
+	private Long payId;
 
-	public void setRid(String rid) {
+	public void setRid(Long rid) {
 		this.rid = rid;
 	}
 
-	public String getRid() {
+	public Long getRid() {
 		return this.rid;
 	}
 
-	public void setOid(String oid) {
+	public void setOid(Long oid) {
 		this.oid = oid;
 	}
 
-	public String getOid() {
+	public Long getOid() {
 		return this.oid;
 	}
 
-	public void setPayId(String payId) {
+	public void setPayId(Long payId) {
 		this.payId = payId;
 	}
 
-	public String getPayId() {
+	public Long getPayId() {
 		return this.payId;
 	}
 

@@ -10,22 +10,22 @@ public class OrderPay implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String payId;
+	private Long payId;
 
     /**
      * 钱数，分为单位
      */
-	private String money;
+	private Long money;
 
     /**
      * 
      */
-	private String refundMoney;
+	private Long refundMoney;
 
     /**
      * 支付时间
      */
-	private String createTime;
+	private Date createTime;
 
     /**
      * 外部支付单号
@@ -40,47 +40,47 @@ public class OrderPay implements Serializable {
     /**
      * 支付理由，1星座进货
      */
-	private String payFor;
+	private Integer payFor;
 
     /**
      * 1微信、2支付宝、3星座宝
      */
-	private String type;
+	private Integer type;
 
     /**
      * 发起支付请求ID
      */
-	private String applyId;
+	private Long applyId;
 
-	public void setPayId(String payId) {
+	public void setPayId(Long payId) {
 		this.payId = payId;
 	}
 
-	public String getPayId() {
+	public Long getPayId() {
 		return this.payId;
 	}
 
-	public void setMoney(String money) {
+	public void setMoney(Long money) {
 		this.money = money;
 	}
 
-	public String getMoney() {
+	public Long getMoney() {
 		return this.money;
 	}
 
-	public void setRefundMoney(String refundMoney) {
+	public void setRefundMoney(Long refundMoney) {
 		this.refundMoney = refundMoney;
 	}
 
-	public String getRefundMoney() {
+	public Long getRefundMoney() {
 		return this.refundMoney;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return this.createTime;
 	}
 
@@ -100,27 +100,27 @@ public class OrderPay implements Serializable {
 		return this.outerPuser;
 	}
 
-	public void setPayFor(String payFor) {
+	public void setPayFor(Integer payFor) {
 		this.payFor = payFor;
 	}
 
-	public String getPayFor() {
+	public Integer getPayFor() {
 		return this.payFor;
 	}
 
-	public void setType(String type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
-	public String getType() {
+	public Integer getType() {
 		return this.type;
 	}
 
-	public void setApplyId(String applyId) {
+	public void setApplyId(Long applyId) {
 		this.applyId = applyId;
 	}
 
-	public String getApplyId() {
+	public Long getApplyId() {
 		return this.applyId;
 	}
 

@@ -10,57 +10,57 @@ public class ItemOrderService implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String id;
+	private Long id;
 
     /**
      * 服务种类
      */
-	private String serviceId;
+	private Long serviceId;
 
     /**
      * 总费用
      */
-	private String money;
+	private Long money;
 
     /**
      * 订单号
      */
-	private String oid;
+	private Long oid;
 
     /**
      * 服务名
      */
 	private String name;
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setServiceId(String serviceId) {
+	public void setServiceId(Long serviceId) {
 		this.serviceId = serviceId;
 	}
 
-	public String getServiceId() {
+	public Long getServiceId() {
 		return this.serviceId;
 	}
 
-	public void setMoney(String money) {
+	public void setMoney(Long money) {
 		this.money = money;
 	}
 
-	public String getMoney() {
+	public Long getMoney() {
 		return this.money;
 	}
 
-	public void setOid(String oid) {
+	public void setOid(Long oid) {
 		this.oid = oid;
 	}
 
-	public String getOid() {
+	public Long getOid() {
 		return this.oid;
 	}
 

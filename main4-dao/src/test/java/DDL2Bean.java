@@ -14,17 +14,43 @@ import java.util.*;
  * @since domwiki 4.0.0
  */
 public class DDL2Bean {
+    /*
+    CREATE TABLE IF NOT EXISTS `shigu_mall`.`item_order_logistics` (
+  `id` BIGINT(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `company_id` BIGINT(11) NOT NULL COMMENT '物流公司ID',
+  `courier_number` VARCHAR(45) NOT NULL COMMENT '快递单号',
+  `money` BIGINT(11) NOT NULL COMMENT '费用',
+  `prov_id` BIGINT(11) NOT NULL,
+  `city_id` BIGINT(11) NOT NULL,
+  `town_id` BIGINT(11) NULL,
+  `address` VARCHAR(400) NOT NULL COMMENT '详细地址',
+  `telephone` VARCHAR(20) NOT NULL COMMENT '手机号',
+  `zip_code` VARCHAR(10) NULL COMMENT '邮编',
+  `oid` BIGINT(11) NOT NULL COMMENT '订单ID',
+  PRIMARY KEY (`id`),
+  INDEX `fk_item_order_logistics_item_order1_idx` (`oid` ASC),
+  CONSTRAINT `fk_item_order_logistics_item_order1`
+    FOREIGN KEY (`oid`)
+    REFERENCES `shigu_mall`.`item_order` (`oid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+COMMENT = '物流'
+     */
 
     public static void main(String[] args) throws IOException {
         DDL2Bean ddl2Bean = new DDL2Bean();
-        System.out.println("请粘贴表创建语句(英文分号结束输入)：\n");
         Scanner scanner = new Scanner(System.in);
-        StringBuilder sb = new StringBuilder();
-        String tmp;
-        while (!(tmp = scanner.nextLine()).endsWith(";")) {
-            sb.append(tmp);
-        }
-        ddl2Bean.getBean(sb.toString());
+        do {
+            System.out.println("请粘贴表创建语句(英文分号结束输入)：\n");
+            StringBuilder sb = new StringBuilder();
+            String tmp;
+            while (!(tmp = scanner.nextLine()).endsWith(";")) {
+                sb.append(tmp);
+            }
+            ddl2Bean.getBean(sb.toString());
+            System.out.println("是否退出？（Y/N）");
+        } while (!"y".equalsIgnoreCase(scanner.nextLine()));
     }
 
     public void getBean(String ddl) throws IOException {
@@ -53,15 +79,15 @@ public class DDL2Bean {
             if (commentStart > 0 && commentEnd > commentStart)
                 comment = s.substring(commentStart + 1, commentEnd);
             String type = "String";
-            if (s.contains("bigint"))
+            if (s.contains("bigint") || s.contains("BIGINT"))
                 type = "Long";
-            else if (s.contains("int"))
+            else if (s.contains("int") || s.contains("INT"))
                 type = "Integer";
-            else if (s.contains("varchar"))
+            else if (s.contains("varchar") || s.contains("VARCHAR"))
                 type = "String";
-            else if (s.contains("timestamp") || s.contains("date"))
+            else if (s.contains("timestamp") || s.contains("date") || s.contains("TIMESTAMP") || s.contains("DATE"))
                 type = "Date";
-            else if (s.contains("bit"))
+            else if (s.contains("bit") || s.contains("BIT"))
                 type = "Boolean";
             fields.put(dataToField(dataField, false), new String[]{comment, type});
             dataFields.put(dataField, type);

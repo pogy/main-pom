@@ -10,52 +10,52 @@ public class LogisticsTemplateCompany implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String tcId;
+	private Long tcId;
 
     /**
      * 
      */
-	private String ruleId;
+	private Long ruleId;
 
     /**
      * 物流公司ID
      */
-	private String companyId;
+	private Long companyId;
 
     /**
      * 模板ID
      */
-	private String templateId;
+	private Long templateId;
 
-	public void setTcId(String tcId) {
+	public void setTcId(Long tcId) {
 		this.tcId = tcId;
 	}
 
-	public String getTcId() {
+	public Long getTcId() {
 		return this.tcId;
 	}
 
-	public void setRuleId(String ruleId) {
+	public void setRuleId(Long ruleId) {
 		this.ruleId = ruleId;
 	}
 
-	public String getRuleId() {
+	public Long getRuleId() {
 		return this.ruleId;
 	}
 
-	public void setCompanyId(String companyId) {
+	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
 
-	public String getCompanyId() {
+	public Long getCompanyId() {
 		return this.companyId;
 	}
 
-	public void setTemplateId(String templateId) {
+	public void setTemplateId(Long templateId) {
 		this.templateId = templateId;
 	}
 
-	public String getTemplateId() {
+	public Long getTemplateId() {
 		return this.templateId;
 	}
 

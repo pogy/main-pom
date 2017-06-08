@@ -242,32 +242,32 @@ public class ItemOrderServiceExample implements SgExample{
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andMoneyEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andMoneyEqualTo(Long value) {
             this.addCriterion("money =", value, "money");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andMoneyNotEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andMoneyNotEqualTo(Long value) {
             this.addCriterion("money <>", value, "money");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andMoneyGreaterThan(String value) {
+        public ItemOrderServiceExample.Criteria andMoneyGreaterThan(Long value) {
             this.addCriterion("money >", value, "money");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andMoneyGreaterThanOrEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andMoneyGreaterThanOrEqualTo(Long value) {
             this.addCriterion("money >=", value, "money");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andMoneyLessThan(String value) {
+        public ItemOrderServiceExample.Criteria andMoneyLessThan(Long value) {
             this.addCriterion("money <", value, "money");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andMoneyLessThanOrEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andMoneyLessThanOrEqualTo(Long value) {
             this.addCriterion("money <=", value, "money");
             return (ItemOrderServiceExample.Criteria)this;
         }
@@ -280,22 +280,22 @@ public class ItemOrderServiceExample implements SgExample{
         public ItemOrderServiceExample.Criteria andMoneyNotLike(String value) {
             this.addCriterion("money not like", value, "money");
             return (ItemOrderServiceExample.Criteria)this;
-        }        public ItemOrderServiceExample.Criteria andMoneyIn(List<String> values) {
+        }        public ItemOrderServiceExample.Criteria andMoneyIn(List<Long> values) {
             this.addCriterion("money in", values, "money");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andMoneyNotIn(List<String> values) {
+        public ItemOrderServiceExample.Criteria andMoneyNotIn(List<Long> values) {
             this.addCriterion("money not in", values, "money");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andMoneyBetween(String value1, String value2) {
+        public ItemOrderServiceExample.Criteria andMoneyBetween(Long value1, Long value2) {
             this.addCriterion("money between", value1, value2, "money");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andMoneyNotBetween(String value1, String value2) {
+        public ItemOrderServiceExample.Criteria andMoneyNotBetween(Long value1, Long value2) {
             this.addCriterion("money not between", value1, value2, "money");
             return (ItemOrderServiceExample.Criteria)this;
         }
@@ -310,32 +310,32 @@ public class ItemOrderServiceExample implements SgExample{
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andServiceIdEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andServiceIdEqualTo(Long value) {
             this.addCriterion("serviceId =", value, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andServiceIdNotEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andServiceIdNotEqualTo(Long value) {
             this.addCriterion("serviceId <>", value, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andServiceIdGreaterThan(String value) {
+        public ItemOrderServiceExample.Criteria andServiceIdGreaterThan(Long value) {
             this.addCriterion("serviceId >", value, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andServiceIdGreaterThanOrEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andServiceIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("serviceId >=", value, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andServiceIdLessThan(String value) {
+        public ItemOrderServiceExample.Criteria andServiceIdLessThan(Long value) {
             this.addCriterion("serviceId <", value, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andServiceIdLessThanOrEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andServiceIdLessThanOrEqualTo(Long value) {
             this.addCriterion("serviceId <=", value, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
         }
@@ -348,22 +348,22 @@ public class ItemOrderServiceExample implements SgExample{
         public ItemOrderServiceExample.Criteria andServiceIdNotLike(String value) {
             this.addCriterion("serviceId not like", value, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
-        }        public ItemOrderServiceExample.Criteria andServiceIdIn(List<String> values) {
+        }        public ItemOrderServiceExample.Criteria andServiceIdIn(List<Long> values) {
             this.addCriterion("serviceId in", values, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andServiceIdNotIn(List<String> values) {
+        public ItemOrderServiceExample.Criteria andServiceIdNotIn(List<Long> values) {
             this.addCriterion("serviceId not in", values, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andServiceIdBetween(String value1, String value2) {
+        public ItemOrderServiceExample.Criteria andServiceIdBetween(Long value1, Long value2) {
             this.addCriterion("serviceId between", value1, value2, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andServiceIdNotBetween(String value1, String value2) {
+        public ItemOrderServiceExample.Criteria andServiceIdNotBetween(Long value1, Long value2) {
             this.addCriterion("serviceId not between", value1, value2, "service_id");
             return (ItemOrderServiceExample.Criteria)this;
         }
@@ -446,32 +446,32 @@ public class ItemOrderServiceExample implements SgExample{
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andIdEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andIdEqualTo(Long value) {
             this.addCriterion("id =", value, "id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andIdNotEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andIdNotEqualTo(Long value) {
             this.addCriterion("id <>", value, "id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andIdGreaterThan(String value) {
+        public ItemOrderServiceExample.Criteria andIdGreaterThan(Long value) {
             this.addCriterion("id >", value, "id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andIdGreaterThanOrEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("id >=", value, "id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andIdLessThan(String value) {
+        public ItemOrderServiceExample.Criteria andIdLessThan(Long value) {
             this.addCriterion("id <", value, "id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andIdLessThanOrEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andIdLessThanOrEqualTo(Long value) {
             this.addCriterion("id <=", value, "id");
             return (ItemOrderServiceExample.Criteria)this;
         }
@@ -484,22 +484,22 @@ public class ItemOrderServiceExample implements SgExample{
         public ItemOrderServiceExample.Criteria andIdNotLike(String value) {
             this.addCriterion("id not like", value, "id");
             return (ItemOrderServiceExample.Criteria)this;
-        }        public ItemOrderServiceExample.Criteria andIdIn(List<String> values) {
+        }        public ItemOrderServiceExample.Criteria andIdIn(List<Long> values) {
             this.addCriterion("id in", values, "id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andIdNotIn(List<String> values) {
+        public ItemOrderServiceExample.Criteria andIdNotIn(List<Long> values) {
             this.addCriterion("id not in", values, "id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andIdBetween(String value1, String value2) {
+        public ItemOrderServiceExample.Criteria andIdBetween(Long value1, Long value2) {
             this.addCriterion("id between", value1, value2, "id");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andIdNotBetween(String value1, String value2) {
+        public ItemOrderServiceExample.Criteria andIdNotBetween(Long value1, Long value2) {
             this.addCriterion("id not between", value1, value2, "id");
             return (ItemOrderServiceExample.Criteria)this;
         }
@@ -514,32 +514,32 @@ public class ItemOrderServiceExample implements SgExample{
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andOidEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andOidEqualTo(Long value) {
             this.addCriterion("oid =", value, "oid");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andOidNotEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andOidNotEqualTo(Long value) {
             this.addCriterion("oid <>", value, "oid");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andOidGreaterThan(String value) {
+        public ItemOrderServiceExample.Criteria andOidGreaterThan(Long value) {
             this.addCriterion("oid >", value, "oid");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andOidGreaterThanOrEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andOidGreaterThanOrEqualTo(Long value) {
             this.addCriterion("oid >=", value, "oid");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andOidLessThan(String value) {
+        public ItemOrderServiceExample.Criteria andOidLessThan(Long value) {
             this.addCriterion("oid <", value, "oid");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andOidLessThanOrEqualTo(String value) {
+        public ItemOrderServiceExample.Criteria andOidLessThanOrEqualTo(Long value) {
             this.addCriterion("oid <=", value, "oid");
             return (ItemOrderServiceExample.Criteria)this;
         }
@@ -552,22 +552,22 @@ public class ItemOrderServiceExample implements SgExample{
         public ItemOrderServiceExample.Criteria andOidNotLike(String value) {
             this.addCriterion("oid not like", value, "oid");
             return (ItemOrderServiceExample.Criteria)this;
-        }        public ItemOrderServiceExample.Criteria andOidIn(List<String> values) {
+        }        public ItemOrderServiceExample.Criteria andOidIn(List<Long> values) {
             this.addCriterion("oid in", values, "oid");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andOidNotIn(List<String> values) {
+        public ItemOrderServiceExample.Criteria andOidNotIn(List<Long> values) {
             this.addCriterion("oid not in", values, "oid");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andOidBetween(String value1, String value2) {
+        public ItemOrderServiceExample.Criteria andOidBetween(Long value1, Long value2) {
             this.addCriterion("oid between", value1, value2, "oid");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
-        public ItemOrderServiceExample.Criteria andOidNotBetween(String value1, String value2) {
+        public ItemOrderServiceExample.Criteria andOidNotBetween(Long value1, Long value2) {
             this.addCriterion("oid not between", value1, value2, "oid");
             return (ItemOrderServiceExample.Criteria)this;
         }

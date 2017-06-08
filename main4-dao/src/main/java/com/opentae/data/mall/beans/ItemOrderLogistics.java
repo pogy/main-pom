@@ -10,12 +10,12 @@ public class ItemOrderLogistics implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String id;
+	private Long id;
 
     /**
      * 物流公司ID
      */
-	private String companyId;
+	private Long companyId;
 
     /**
      * 快递单号
@@ -25,22 +25,22 @@ public class ItemOrderLogistics implements Serializable {
     /**
      * 费用
      */
-	private String money;
+	private Long money;
 
     /**
      * 
      */
-	private String provId;
+	private Long provId;
 
     /**
      * 
      */
-	private String cityId;
+	private Long cityId;
 
     /**
      * 
      */
-	private String townId;
+	private Long townId;
 
     /**
      * 详细地址
@@ -60,21 +60,21 @@ public class ItemOrderLogistics implements Serializable {
     /**
      * 订单ID
      */
-	private String oid;
+	private Long oid;
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setCompanyId(String companyId) {
+	public void setCompanyId(Long companyId) {
 		this.companyId = companyId;
 	}
 
-	public String getCompanyId() {
+	public Long getCompanyId() {
 		return this.companyId;
 	}
 
@@ -86,35 +86,35 @@ public class ItemOrderLogistics implements Serializable {
 		return this.courierNumber;
 	}
 
-	public void setMoney(String money) {
+	public void setMoney(Long money) {
 		this.money = money;
 	}
 
-	public String getMoney() {
+	public Long getMoney() {
 		return this.money;
 	}
 
-	public void setProvId(String provId) {
+	public void setProvId(Long provId) {
 		this.provId = provId;
 	}
 
-	public String getProvId() {
+	public Long getProvId() {
 		return this.provId;
 	}
 
-	public void setCityId(String cityId) {
+	public void setCityId(Long cityId) {
 		this.cityId = cityId;
 	}
 
-	public String getCityId() {
+	public Long getCityId() {
 		return this.cityId;
 	}
 
-	public void setTownId(String townId) {
+	public void setTownId(Long townId) {
 		this.townId = townId;
 	}
 
-	public String getTownId() {
+	public Long getTownId() {
 		return this.townId;
 	}
 
@@ -142,11 +142,11 @@ public class ItemOrderLogistics implements Serializable {
 		return this.zipCode;
 	}
 
-	public void setOid(String oid) {
+	public void setOid(Long oid) {
 		this.oid = oid;
 	}
 
-	public String getOid() {
+	public Long getOid() {
 		return this.oid;
 	}
 

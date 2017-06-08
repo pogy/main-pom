@@ -10,18 +10,18 @@ public class OrderProv implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String provId;
+	private Long provId;
 
     /**
      * 省份名
      */
 	private String provName;
 
-	public void setProvId(String provId) {
+	public void setProvId(Long provId) {
 		this.provId = provId;
 	}
 
-	public String getProvId() {
+	public Long getProvId() {
 		return this.provId;
 	}
 

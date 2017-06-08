@@ -10,70 +10,70 @@ public class ItemOrderPackage implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String id;
+	private Long id;
 
     /**
      * 包材ID
      */
-	private String metarialId;
+	private Long metarialId;
 
     /**
      * 总价格
      */
-	private String money;
+	private Long money;
 
     /**
      * 数量
      */
-	private String num;
+	private Integer num;
 
     /**
      * 订单号
      */
-	private String oid;
+	private Long oid;
 
     /**
      * 包材名
      */
 	private String name;
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setMetarialId(String metarialId) {
+	public void setMetarialId(Long metarialId) {
 		this.metarialId = metarialId;
 	}
 
-	public String getMetarialId() {
+	public Long getMetarialId() {
 		return this.metarialId;
 	}
 
-	public void setMoney(String money) {
+	public void setMoney(Long money) {
 		this.money = money;
 	}
 
-	public String getMoney() {
+	public Long getMoney() {
 		return this.money;
 	}
 
-	public void setNum(String num) {
+	public void setNum(Integer num) {
 		this.num = num;
 	}
 
-	public String getNum() {
+	public Integer getNum() {
 		return this.num;
 	}
 
-	public void setOid(String oid) {
+	public void setOid(Long oid) {
 		this.oid = oid;
 	}
 
-	public String getOid() {
+	public Long getOid() {
 		return this.oid;
 	}
 

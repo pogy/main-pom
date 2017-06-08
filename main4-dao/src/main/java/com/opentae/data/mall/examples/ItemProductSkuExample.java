@@ -378,32 +378,32 @@ public class ItemProductSkuExample implements SgExample{
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andSkuIdEqualTo(String value) {
+        public ItemProductSkuExample.Criteria andSkuIdEqualTo(Long value) {
             this.addCriterion("skuId =", value, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andSkuIdNotEqualTo(String value) {
+        public ItemProductSkuExample.Criteria andSkuIdNotEqualTo(Long value) {
             this.addCriterion("skuId <>", value, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andSkuIdGreaterThan(String value) {
+        public ItemProductSkuExample.Criteria andSkuIdGreaterThan(Long value) {
             this.addCriterion("skuId >", value, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andSkuIdGreaterThanOrEqualTo(String value) {
+        public ItemProductSkuExample.Criteria andSkuIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("skuId >=", value, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andSkuIdLessThan(String value) {
+        public ItemProductSkuExample.Criteria andSkuIdLessThan(Long value) {
             this.addCriterion("skuId <", value, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andSkuIdLessThanOrEqualTo(String value) {
+        public ItemProductSkuExample.Criteria andSkuIdLessThanOrEqualTo(Long value) {
             this.addCriterion("skuId <=", value, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
         }
@@ -416,22 +416,22 @@ public class ItemProductSkuExample implements SgExample{
         public ItemProductSkuExample.Criteria andSkuIdNotLike(String value) {
             this.addCriterion("skuId not like", value, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
-        }        public ItemProductSkuExample.Criteria andSkuIdIn(List<String> values) {
+        }        public ItemProductSkuExample.Criteria andSkuIdIn(List<Long> values) {
             this.addCriterion("skuId in", values, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andSkuIdNotIn(List<String> values) {
+        public ItemProductSkuExample.Criteria andSkuIdNotIn(List<Long> values) {
             this.addCriterion("skuId not in", values, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andSkuIdBetween(String value1, String value2) {
+        public ItemProductSkuExample.Criteria andSkuIdBetween(Long value1, Long value2) {
             this.addCriterion("skuId between", value1, value2, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andSkuIdNotBetween(String value1, String value2) {
+        public ItemProductSkuExample.Criteria andSkuIdNotBetween(Long value1, Long value2) {
             this.addCriterion("skuId not between", value1, value2, "sku_id");
             return (ItemProductSkuExample.Criteria)this;
         }
@@ -446,32 +446,32 @@ public class ItemProductSkuExample implements SgExample{
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andPidEqualTo(String value) {
+        public ItemProductSkuExample.Criteria andPidEqualTo(Long value) {
             this.addCriterion("pid =", value, "pid");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andPidNotEqualTo(String value) {
+        public ItemProductSkuExample.Criteria andPidNotEqualTo(Long value) {
             this.addCriterion("pid <>", value, "pid");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andPidGreaterThan(String value) {
+        public ItemProductSkuExample.Criteria andPidGreaterThan(Long value) {
             this.addCriterion("pid >", value, "pid");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andPidGreaterThanOrEqualTo(String value) {
+        public ItemProductSkuExample.Criteria andPidGreaterThanOrEqualTo(Long value) {
             this.addCriterion("pid >=", value, "pid");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andPidLessThan(String value) {
+        public ItemProductSkuExample.Criteria andPidLessThan(Long value) {
             this.addCriterion("pid <", value, "pid");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andPidLessThanOrEqualTo(String value) {
+        public ItemProductSkuExample.Criteria andPidLessThanOrEqualTo(Long value) {
             this.addCriterion("pid <=", value, "pid");
             return (ItemProductSkuExample.Criteria)this;
         }
@@ -484,22 +484,22 @@ public class ItemProductSkuExample implements SgExample{
         public ItemProductSkuExample.Criteria andPidNotLike(String value) {
             this.addCriterion("pid not like", value, "pid");
             return (ItemProductSkuExample.Criteria)this;
-        }        public ItemProductSkuExample.Criteria andPidIn(List<String> values) {
+        }        public ItemProductSkuExample.Criteria andPidIn(List<Long> values) {
             this.addCriterion("pid in", values, "pid");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andPidNotIn(List<String> values) {
+        public ItemProductSkuExample.Criteria andPidNotIn(List<Long> values) {
             this.addCriterion("pid not in", values, "pid");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andPidBetween(String value1, String value2) {
+        public ItemProductSkuExample.Criteria andPidBetween(Long value1, Long value2) {
             this.addCriterion("pid between", value1, value2, "pid");
             return (ItemProductSkuExample.Criteria)this;
         }
 
-        public ItemProductSkuExample.Criteria andPidNotBetween(String value1, String value2) {
+        public ItemProductSkuExample.Criteria andPidNotBetween(Long value1, Long value2) {
             this.addCriterion("pid not between", value1, value2, "pid");
             return (ItemProductSkuExample.Criteria)this;
         }

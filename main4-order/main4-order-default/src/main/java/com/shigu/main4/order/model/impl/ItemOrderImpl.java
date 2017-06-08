@@ -1,5 +1,8 @@
 package com.shigu.main4.order.model.impl;
 
+import com.opentae.data.mall.beans.ItemOrderLogistics;
+import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.vo.ItemOrderVO;
@@ -7,6 +10,7 @@ import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 import com.shigu.main4.order.vo.SubOrderVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +23,10 @@ import java.util.List;
 @Repository
 @Scope("prototype")
 public class ItemOrderImpl implements ItemOrder{
+
+    @Autowired
+    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
+
     /**
      * 订单ID
      */
@@ -45,6 +53,7 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Override
     public Long addLogistics(List<Long> soids,LogisticsVO logistics) {
+        ItemOrderLogistics orderLogistics = BeanMapper.map(logistics, ItemOrderLogistics.class);
         return null;
     }
 

@@ -10,22 +10,22 @@ public class BuyerAddress implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String addressId;
+	private Long addressId;
 
     /**
      * 省份
      */
-	private String provId;
+	private Long provId;
 
     /**
      * 市
      */
-	private String cityId;
+	private Long cityId;
 
     /**
      * 区
      */
-	private String townId;
+	private Long townId;
 
     /**
      * 详细地址
@@ -35,7 +35,7 @@ public class BuyerAddress implements Serializable {
     /**
      * 用户ID
      */
-	private String userId;
+	private Long userId;
 
     /**
      * 手机号
@@ -47,35 +47,35 @@ public class BuyerAddress implements Serializable {
      */
 	private String zipCode;
 
-	public void setAddressId(String addressId) {
+	public void setAddressId(Long addressId) {
 		this.addressId = addressId;
 	}
 
-	public String getAddressId() {
+	public Long getAddressId() {
 		return this.addressId;
 	}
 
-	public void setProvId(String provId) {
+	public void setProvId(Long provId) {
 		this.provId = provId;
 	}
 
-	public String getProvId() {
+	public Long getProvId() {
 		return this.provId;
 	}
 
-	public void setCityId(String cityId) {
+	public void setCityId(Long cityId) {
 		this.cityId = cityId;
 	}
 
-	public String getCityId() {
+	public Long getCityId() {
 		return this.cityId;
 	}
 
-	public void setTownId(String townId) {
+	public void setTownId(Long townId) {
 		this.townId = townId;
 	}
 
-	public String getTownId() {
+	public Long getTownId() {
 		return this.townId;
 	}
 
@@ -87,11 +87,11 @@ public class BuyerAddress implements Serializable {
 		return this.address;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
-	public String getUserId() {
+	public Long getUserId() {
 		return this.userId;
 	}
 

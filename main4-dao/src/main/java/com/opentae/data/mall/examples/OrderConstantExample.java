@@ -378,32 +378,32 @@ public class OrderConstantExample implements SgExample{
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andIdEqualTo(String value) {
+        public OrderConstantExample.Criteria andIdEqualTo(Long value) {
             this.addCriterion("id =", value, "id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andIdNotEqualTo(String value) {
+        public OrderConstantExample.Criteria andIdNotEqualTo(Long value) {
             this.addCriterion("id <>", value, "id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andIdGreaterThan(String value) {
+        public OrderConstantExample.Criteria andIdGreaterThan(Long value) {
             this.addCriterion("id >", value, "id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andIdGreaterThanOrEqualTo(String value) {
+        public OrderConstantExample.Criteria andIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("id >=", value, "id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andIdLessThan(String value) {
+        public OrderConstantExample.Criteria andIdLessThan(Long value) {
             this.addCriterion("id <", value, "id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andIdLessThanOrEqualTo(String value) {
+        public OrderConstantExample.Criteria andIdLessThanOrEqualTo(Long value) {
             this.addCriterion("id <=", value, "id");
             return (OrderConstantExample.Criteria)this;
         }
@@ -416,22 +416,22 @@ public class OrderConstantExample implements SgExample{
         public OrderConstantExample.Criteria andIdNotLike(String value) {
             this.addCriterion("id not like", value, "id");
             return (OrderConstantExample.Criteria)this;
-        }        public OrderConstantExample.Criteria andIdIn(List<String> values) {
+        }        public OrderConstantExample.Criteria andIdIn(List<Long> values) {
             this.addCriterion("id in", values, "id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andIdNotIn(List<String> values) {
+        public OrderConstantExample.Criteria andIdNotIn(List<Long> values) {
             this.addCriterion("id not in", values, "id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andIdBetween(String value1, String value2) {
+        public OrderConstantExample.Criteria andIdBetween(Long value1, Long value2) {
             this.addCriterion("id between", value1, value2, "id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andIdNotBetween(String value1, String value2) {
+        public OrderConstantExample.Criteria andIdNotBetween(Long value1, Long value2) {
             this.addCriterion("id not between", value1, value2, "id");
             return (OrderConstantExample.Criteria)this;
         }
@@ -446,32 +446,32 @@ public class OrderConstantExample implements SgExample{
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andTypeEqualTo(String value) {
+        public OrderConstantExample.Criteria andTypeEqualTo(Integer value) {
             this.addCriterion("type =", value, "type");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andTypeNotEqualTo(String value) {
+        public OrderConstantExample.Criteria andTypeNotEqualTo(Integer value) {
             this.addCriterion("type <>", value, "type");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andTypeGreaterThan(String value) {
+        public OrderConstantExample.Criteria andTypeGreaterThan(Integer value) {
             this.addCriterion("type >", value, "type");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andTypeGreaterThanOrEqualTo(String value) {
+        public OrderConstantExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
             this.addCriterion("type >=", value, "type");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andTypeLessThan(String value) {
+        public OrderConstantExample.Criteria andTypeLessThan(Integer value) {
             this.addCriterion("type <", value, "type");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andTypeLessThanOrEqualTo(String value) {
+        public OrderConstantExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
             this.addCriterion("type <=", value, "type");
             return (OrderConstantExample.Criteria)this;
         }
@@ -484,22 +484,22 @@ public class OrderConstantExample implements SgExample{
         public OrderConstantExample.Criteria andTypeNotLike(String value) {
             this.addCriterion("type not like", value, "type");
             return (OrderConstantExample.Criteria)this;
-        }        public OrderConstantExample.Criteria andTypeIn(List<String> values) {
+        }        public OrderConstantExample.Criteria andTypeIn(List<Integer> values) {
             this.addCriterion("type in", values, "type");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andTypeNotIn(List<String> values) {
+        public OrderConstantExample.Criteria andTypeNotIn(List<Integer> values) {
             this.addCriterion("type not in", values, "type");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andTypeBetween(String value1, String value2) {
+        public OrderConstantExample.Criteria andTypeBetween(Integer value1, Integer value2) {
             this.addCriterion("type between", value1, value2, "type");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andTypeNotBetween(String value1, String value2) {
+        public OrderConstantExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
             this.addCriterion("type not between", value1, value2, "type");
             return (OrderConstantExample.Criteria)this;
         }
@@ -514,32 +514,32 @@ public class OrderConstantExample implements SgExample{
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andSenderIdEqualTo(String value) {
+        public OrderConstantExample.Criteria andSenderIdEqualTo(Long value) {
             this.addCriterion("senderId =", value, "sender_id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andSenderIdNotEqualTo(String value) {
+        public OrderConstantExample.Criteria andSenderIdNotEqualTo(Long value) {
             this.addCriterion("senderId <>", value, "sender_id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andSenderIdGreaterThan(String value) {
+        public OrderConstantExample.Criteria andSenderIdGreaterThan(Long value) {
             this.addCriterion("senderId >", value, "sender_id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andSenderIdGreaterThanOrEqualTo(String value) {
+        public OrderConstantExample.Criteria andSenderIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("senderId >=", value, "sender_id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andSenderIdLessThan(String value) {
+        public OrderConstantExample.Criteria andSenderIdLessThan(Long value) {
             this.addCriterion("senderId <", value, "sender_id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andSenderIdLessThanOrEqualTo(String value) {
+        public OrderConstantExample.Criteria andSenderIdLessThanOrEqualTo(Long value) {
             this.addCriterion("senderId <=", value, "sender_id");
             return (OrderConstantExample.Criteria)this;
         }
@@ -552,22 +552,22 @@ public class OrderConstantExample implements SgExample{
         public OrderConstantExample.Criteria andSenderIdNotLike(String value) {
             this.addCriterion("senderId not like", value, "sender_id");
             return (OrderConstantExample.Criteria)this;
-        }        public OrderConstantExample.Criteria andSenderIdIn(List<String> values) {
+        }        public OrderConstantExample.Criteria andSenderIdIn(List<Long> values) {
             this.addCriterion("senderId in", values, "sender_id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andSenderIdNotIn(List<String> values) {
+        public OrderConstantExample.Criteria andSenderIdNotIn(List<Long> values) {
             this.addCriterion("senderId not in", values, "sender_id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andSenderIdBetween(String value1, String value2) {
+        public OrderConstantExample.Criteria andSenderIdBetween(Long value1, Long value2) {
             this.addCriterion("senderId between", value1, value2, "sender_id");
             return (OrderConstantExample.Criteria)this;
         }
 
-        public OrderConstantExample.Criteria andSenderIdNotBetween(String value1, String value2) {
+        public OrderConstantExample.Criteria andSenderIdNotBetween(Long value1, Long value2) {
             this.addCriterion("senderId not between", value1, value2, "sender_id");
             return (OrderConstantExample.Criteria)this;
         }

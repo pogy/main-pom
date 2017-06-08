@@ -10,12 +10,12 @@ public class LogisticsTemplate implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String templateId;
+	private Long templateId;
 
     /**
      * 发送单位属主ID
      */
-	private String senderId;
+	private Long senderId;
 
     /**
      * 标题
@@ -25,41 +25,41 @@ public class LogisticsTemplate implements Serializable {
     /**
      * 1有用，0无用
      */
-	private String enabled;
+	private Boolean enabled;
 
     /**
      * 发货省份ID
      */
-	private String fromProvId;
+	private Long fromProvId;
 
     /**
      * 发货城市 ID
      */
-	private String fromCityId;
+	private Long fromCityId;
 
     /**
      * 发货地区ID
      */
-	private String fromTownId;
+	private Long fromTownId;
 
     /**
      * 1包邮，0不包
      */
-	private String free;
+	private Boolean free;
 
-	public void setTemplateId(String templateId) {
+	public void setTemplateId(Long templateId) {
 		this.templateId = templateId;
 	}
 
-	public String getTemplateId() {
+	public Long getTemplateId() {
 		return this.templateId;
 	}
 
-	public void setSenderId(String senderId) {
+	public void setSenderId(Long senderId) {
 		this.senderId = senderId;
 	}
 
-	public String getSenderId() {
+	public Long getSenderId() {
 		return this.senderId;
 	}
 
@@ -71,43 +71,43 @@ public class LogisticsTemplate implements Serializable {
 		return this.title;
 	}
 
-	public void setEnabled(String enabled) {
+	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
 
-	public String getEnabled() {
+	public Boolean getEnabled() {
 		return this.enabled;
 	}
 
-	public void setFromProvId(String fromProvId) {
+	public void setFromProvId(Long fromProvId) {
 		this.fromProvId = fromProvId;
 	}
 
-	public String getFromProvId() {
+	public Long getFromProvId() {
 		return this.fromProvId;
 	}
 
-	public void setFromCityId(String fromCityId) {
+	public void setFromCityId(Long fromCityId) {
 		this.fromCityId = fromCityId;
 	}
 
-	public String getFromCityId() {
+	public Long getFromCityId() {
 		return this.fromCityId;
 	}
 
-	public void setFromTownId(String fromTownId) {
+	public void setFromTownId(Long fromTownId) {
 		this.fromTownId = fromTownId;
 	}
 
-	public String getFromTownId() {
+	public Long getFromTownId() {
 		return this.fromTownId;
 	}
 
-	public void setFree(String free) {
+	public void setFree(Boolean free) {
 		this.free = free;
 	}
 
-	public String getFree() {
+	public Boolean getFree() {
 		return this.free;
 	}
 

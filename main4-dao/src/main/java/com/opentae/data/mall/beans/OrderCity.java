@@ -10,7 +10,7 @@ public class OrderCity implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String cityId;
+	private Long cityId;
 
     /**
      * 城市名
@@ -20,13 +20,13 @@ public class OrderCity implements Serializable {
     /**
      * 省份ID
      */
-	private String provId;
+	private Long provId;
 
-	public void setCityId(String cityId) {
+	public void setCityId(Long cityId) {
 		this.cityId = cityId;
 	}
 
-	public String getCityId() {
+	public Long getCityId() {
 		return this.cityId;
 	}
 
@@ -38,11 +38,11 @@ public class OrderCity implements Serializable {
 		return this.cityName;
 	}
 
-	public void setProvId(String provId) {
+	public void setProvId(Long provId) {
 		this.provId = provId;
 	}
 
-	public String getProvId() {
+	public Long getProvId() {
 		return this.provId;
 	}
 

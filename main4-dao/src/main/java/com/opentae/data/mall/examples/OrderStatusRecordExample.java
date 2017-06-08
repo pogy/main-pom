@@ -242,32 +242,32 @@ public class OrderStatusRecordExample implements SgExample{
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusIdEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andStatusIdEqualTo(Long value) {
             this.addCriterion("statusId =", value, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusIdNotEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andStatusIdNotEqualTo(Long value) {
             this.addCriterion("statusId <>", value, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusIdGreaterThan(String value) {
+        public OrderStatusRecordExample.Criteria andStatusIdGreaterThan(Long value) {
             this.addCriterion("statusId >", value, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusIdGreaterThanOrEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andStatusIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("statusId >=", value, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusIdLessThan(String value) {
+        public OrderStatusRecordExample.Criteria andStatusIdLessThan(Long value) {
             this.addCriterion("statusId <", value, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusIdLessThanOrEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andStatusIdLessThanOrEqualTo(Long value) {
             this.addCriterion("statusId <=", value, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
         }
@@ -280,22 +280,22 @@ public class OrderStatusRecordExample implements SgExample{
         public OrderStatusRecordExample.Criteria andStatusIdNotLike(String value) {
             this.addCriterion("statusId not like", value, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
-        }        public OrderStatusRecordExample.Criteria andStatusIdIn(List<String> values) {
+        }        public OrderStatusRecordExample.Criteria andStatusIdIn(List<Long> values) {
             this.addCriterion("statusId in", values, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusIdNotIn(List<String> values) {
+        public OrderStatusRecordExample.Criteria andStatusIdNotIn(List<Long> values) {
             this.addCriterion("statusId not in", values, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusIdBetween(String value1, String value2) {
+        public OrderStatusRecordExample.Criteria andStatusIdBetween(Long value1, Long value2) {
             this.addCriterion("statusId between", value1, value2, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusIdNotBetween(String value1, String value2) {
+        public OrderStatusRecordExample.Criteria andStatusIdNotBetween(Long value1, Long value2) {
             this.addCriterion("statusId not between", value1, value2, "status_id");
             return (OrderStatusRecordExample.Criteria)this;
         }
@@ -310,32 +310,32 @@ public class OrderStatusRecordExample implements SgExample{
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andCreateTimeEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andCreateTimeEqualTo(Date value) {
             this.addCriterion("createTime =", value, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andCreateTimeNotEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andCreateTimeNotEqualTo(Date value) {
             this.addCriterion("createTime <>", value, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andCreateTimeGreaterThan(String value) {
+        public OrderStatusRecordExample.Criteria andCreateTimeGreaterThan(Date value) {
             this.addCriterion("createTime >", value, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andCreateTimeGreaterThanOrEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
             this.addCriterion("createTime >=", value, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andCreateTimeLessThan(String value) {
+        public OrderStatusRecordExample.Criteria andCreateTimeLessThan(Date value) {
             this.addCriterion("createTime <", value, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andCreateTimeLessThanOrEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
             this.addCriterion("createTime <=", value, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
         }
@@ -348,22 +348,22 @@ public class OrderStatusRecordExample implements SgExample{
         public OrderStatusRecordExample.Criteria andCreateTimeNotLike(String value) {
             this.addCriterion("createTime not like", value, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
-        }        public OrderStatusRecordExample.Criteria andCreateTimeIn(List<String> values) {
+        }        public OrderStatusRecordExample.Criteria andCreateTimeIn(List<Date> values) {
             this.addCriterion("createTime in", values, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andCreateTimeNotIn(List<String> values) {
+        public OrderStatusRecordExample.Criteria andCreateTimeNotIn(List<Date> values) {
             this.addCriterion("createTime not in", values, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andCreateTimeBetween(String value1, String value2) {
+        public OrderStatusRecordExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
             this.addCriterion("createTime between", value1, value2, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andCreateTimeNotBetween(String value1, String value2) {
+        public OrderStatusRecordExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
             this.addCriterion("createTime not between", value1, value2, "create_time");
             return (OrderStatusRecordExample.Criteria)this;
         }
@@ -378,32 +378,32 @@ public class OrderStatusRecordExample implements SgExample{
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andOidEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andOidEqualTo(Long value) {
             this.addCriterion("oid =", value, "oid");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andOidNotEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andOidNotEqualTo(Long value) {
             this.addCriterion("oid <>", value, "oid");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andOidGreaterThan(String value) {
+        public OrderStatusRecordExample.Criteria andOidGreaterThan(Long value) {
             this.addCriterion("oid >", value, "oid");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andOidGreaterThanOrEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andOidGreaterThanOrEqualTo(Long value) {
             this.addCriterion("oid >=", value, "oid");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andOidLessThan(String value) {
+        public OrderStatusRecordExample.Criteria andOidLessThan(Long value) {
             this.addCriterion("oid <", value, "oid");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andOidLessThanOrEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andOidLessThanOrEqualTo(Long value) {
             this.addCriterion("oid <=", value, "oid");
             return (OrderStatusRecordExample.Criteria)this;
         }
@@ -416,22 +416,22 @@ public class OrderStatusRecordExample implements SgExample{
         public OrderStatusRecordExample.Criteria andOidNotLike(String value) {
             this.addCriterion("oid not like", value, "oid");
             return (OrderStatusRecordExample.Criteria)this;
-        }        public OrderStatusRecordExample.Criteria andOidIn(List<String> values) {
+        }        public OrderStatusRecordExample.Criteria andOidIn(List<Long> values) {
             this.addCriterion("oid in", values, "oid");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andOidNotIn(List<String> values) {
+        public OrderStatusRecordExample.Criteria andOidNotIn(List<Long> values) {
             this.addCriterion("oid not in", values, "oid");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andOidBetween(String value1, String value2) {
+        public OrderStatusRecordExample.Criteria andOidBetween(Long value1, Long value2) {
             this.addCriterion("oid between", value1, value2, "oid");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andOidNotBetween(String value1, String value2) {
+        public OrderStatusRecordExample.Criteria andOidNotBetween(Long value1, Long value2) {
             this.addCriterion("oid not between", value1, value2, "oid");
             return (OrderStatusRecordExample.Criteria)this;
         }
@@ -446,32 +446,32 @@ public class OrderStatusRecordExample implements SgExample{
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andStatusEqualTo(Integer value) {
             this.addCriterion("status =", value, "status");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusNotEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andStatusNotEqualTo(Integer value) {
             this.addCriterion("status <>", value, "status");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusGreaterThan(String value) {
+        public OrderStatusRecordExample.Criteria andStatusGreaterThan(Integer value) {
             this.addCriterion("status >", value, "status");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusGreaterThanOrEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andStatusGreaterThanOrEqualTo(Integer value) {
             this.addCriterion("status >=", value, "status");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusLessThan(String value) {
+        public OrderStatusRecordExample.Criteria andStatusLessThan(Integer value) {
             this.addCriterion("status <", value, "status");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusLessThanOrEqualTo(String value) {
+        public OrderStatusRecordExample.Criteria andStatusLessThanOrEqualTo(Integer value) {
             this.addCriterion("status <=", value, "status");
             return (OrderStatusRecordExample.Criteria)this;
         }
@@ -484,22 +484,22 @@ public class OrderStatusRecordExample implements SgExample{
         public OrderStatusRecordExample.Criteria andStatusNotLike(String value) {
             this.addCriterion("status not like", value, "status");
             return (OrderStatusRecordExample.Criteria)this;
-        }        public OrderStatusRecordExample.Criteria andStatusIn(List<String> values) {
+        }        public OrderStatusRecordExample.Criteria andStatusIn(List<Integer> values) {
             this.addCriterion("status in", values, "status");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusNotIn(List<String> values) {
+        public OrderStatusRecordExample.Criteria andStatusNotIn(List<Integer> values) {
             this.addCriterion("status not in", values, "status");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusBetween(String value1, String value2) {
+        public OrderStatusRecordExample.Criteria andStatusBetween(Integer value1, Integer value2) {
             this.addCriterion("status between", value1, value2, "status");
             return (OrderStatusRecordExample.Criteria)this;
         }
 
-        public OrderStatusRecordExample.Criteria andStatusNotBetween(String value1, String value2) {
+        public OrderStatusRecordExample.Criteria andStatusNotBetween(Integer value1, Integer value2) {
             this.addCriterion("status not between", value1, value2, "status");
             return (OrderStatusRecordExample.Criteria)this;
         }

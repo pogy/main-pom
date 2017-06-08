@@ -242,32 +242,32 @@ public class ItemProductExample implements SgExample{
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andGoodsIdEqualTo(String value) {
+        public ItemProductExample.Criteria andGoodsIdEqualTo(Long value) {
             this.addCriterion("goodsId =", value, "goods_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andGoodsIdNotEqualTo(String value) {
+        public ItemProductExample.Criteria andGoodsIdNotEqualTo(Long value) {
             this.addCriterion("goodsId <>", value, "goods_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andGoodsIdGreaterThan(String value) {
+        public ItemProductExample.Criteria andGoodsIdGreaterThan(Long value) {
             this.addCriterion("goodsId >", value, "goods_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andGoodsIdGreaterThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("goodsId >=", value, "goods_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andGoodsIdLessThan(String value) {
+        public ItemProductExample.Criteria andGoodsIdLessThan(Long value) {
             this.addCriterion("goodsId <", value, "goods_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andGoodsIdLessThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andGoodsIdLessThanOrEqualTo(Long value) {
             this.addCriterion("goodsId <=", value, "goods_id");
             return (ItemProductExample.Criteria)this;
         }
@@ -280,22 +280,22 @@ public class ItemProductExample implements SgExample{
         public ItemProductExample.Criteria andGoodsIdNotLike(String value) {
             this.addCriterion("goodsId not like", value, "goods_id");
             return (ItemProductExample.Criteria)this;
-        }        public ItemProductExample.Criteria andGoodsIdIn(List<String> values) {
+        }        public ItemProductExample.Criteria andGoodsIdIn(List<Long> values) {
             this.addCriterion("goodsId in", values, "goods_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andGoodsIdNotIn(List<String> values) {
+        public ItemProductExample.Criteria andGoodsIdNotIn(List<Long> values) {
             this.addCriterion("goodsId not in", values, "goods_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andGoodsIdBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andGoodsIdBetween(Long value1, Long value2) {
             this.addCriterion("goodsId between", value1, value2, "goods_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andGoodsIdNotBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
             this.addCriterion("goodsId not between", value1, value2, "goods_id");
             return (ItemProductExample.Criteria)this;
         }
@@ -310,32 +310,32 @@ public class ItemProductExample implements SgExample{
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andMarketIdEqualTo(String value) {
+        public ItemProductExample.Criteria andMarketIdEqualTo(Long value) {
             this.addCriterion("marketId =", value, "market_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andMarketIdNotEqualTo(String value) {
+        public ItemProductExample.Criteria andMarketIdNotEqualTo(Long value) {
             this.addCriterion("marketId <>", value, "market_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andMarketIdGreaterThan(String value) {
+        public ItemProductExample.Criteria andMarketIdGreaterThan(Long value) {
             this.addCriterion("marketId >", value, "market_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andMarketIdGreaterThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("marketId >=", value, "market_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andMarketIdLessThan(String value) {
+        public ItemProductExample.Criteria andMarketIdLessThan(Long value) {
             this.addCriterion("marketId <", value, "market_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andMarketIdLessThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andMarketIdLessThanOrEqualTo(Long value) {
             this.addCriterion("marketId <=", value, "market_id");
             return (ItemProductExample.Criteria)this;
         }
@@ -348,22 +348,22 @@ public class ItemProductExample implements SgExample{
         public ItemProductExample.Criteria andMarketIdNotLike(String value) {
             this.addCriterion("marketId not like", value, "market_id");
             return (ItemProductExample.Criteria)this;
-        }        public ItemProductExample.Criteria andMarketIdIn(List<String> values) {
+        }        public ItemProductExample.Criteria andMarketIdIn(List<Long> values) {
             this.addCriterion("marketId in", values, "market_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andMarketIdNotIn(List<String> values) {
+        public ItemProductExample.Criteria andMarketIdNotIn(List<Long> values) {
             this.addCriterion("marketId not in", values, "market_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andMarketIdBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andMarketIdBetween(Long value1, Long value2) {
             this.addCriterion("marketId between", value1, value2, "market_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andMarketIdNotBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andMarketIdNotBetween(Long value1, Long value2) {
             this.addCriterion("marketId not between", value1, value2, "market_id");
             return (ItemProductExample.Criteria)this;
         }
@@ -378,32 +378,32 @@ public class ItemProductExample implements SgExample{
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andWeightEqualTo(String value) {
+        public ItemProductExample.Criteria andWeightEqualTo(Long value) {
             this.addCriterion("weight =", value, "weight");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andWeightNotEqualTo(String value) {
+        public ItemProductExample.Criteria andWeightNotEqualTo(Long value) {
             this.addCriterion("weight <>", value, "weight");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andWeightGreaterThan(String value) {
+        public ItemProductExample.Criteria andWeightGreaterThan(Long value) {
             this.addCriterion("weight >", value, "weight");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andWeightGreaterThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andWeightGreaterThanOrEqualTo(Long value) {
             this.addCriterion("weight >=", value, "weight");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andWeightLessThan(String value) {
+        public ItemProductExample.Criteria andWeightLessThan(Long value) {
             this.addCriterion("weight <", value, "weight");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andWeightLessThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andWeightLessThanOrEqualTo(Long value) {
             this.addCriterion("weight <=", value, "weight");
             return (ItemProductExample.Criteria)this;
         }
@@ -416,22 +416,22 @@ public class ItemProductExample implements SgExample{
         public ItemProductExample.Criteria andWeightNotLike(String value) {
             this.addCriterion("weight not like", value, "weight");
             return (ItemProductExample.Criteria)this;
-        }        public ItemProductExample.Criteria andWeightIn(List<String> values) {
+        }        public ItemProductExample.Criteria andWeightIn(List<Long> values) {
             this.addCriterion("weight in", values, "weight");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andWeightNotIn(List<String> values) {
+        public ItemProductExample.Criteria andWeightNotIn(List<Long> values) {
             this.addCriterion("weight not in", values, "weight");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andWeightBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andWeightBetween(Long value1, Long value2) {
             this.addCriterion("weight between", value1, value2, "weight");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andWeightNotBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andWeightNotBetween(Long value1, Long value2) {
             this.addCriterion("weight not between", value1, value2, "weight");
             return (ItemProductExample.Criteria)this;
         }
@@ -446,32 +446,32 @@ public class ItemProductExample implements SgExample{
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPidEqualTo(String value) {
+        public ItemProductExample.Criteria andPidEqualTo(Long value) {
             this.addCriterion("pid =", value, "pid");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPidNotEqualTo(String value) {
+        public ItemProductExample.Criteria andPidNotEqualTo(Long value) {
             this.addCriterion("pid <>", value, "pid");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPidGreaterThan(String value) {
+        public ItemProductExample.Criteria andPidGreaterThan(Long value) {
             this.addCriterion("pid >", value, "pid");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPidGreaterThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andPidGreaterThanOrEqualTo(Long value) {
             this.addCriterion("pid >=", value, "pid");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPidLessThan(String value) {
+        public ItemProductExample.Criteria andPidLessThan(Long value) {
             this.addCriterion("pid <", value, "pid");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPidLessThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andPidLessThanOrEqualTo(Long value) {
             this.addCriterion("pid <=", value, "pid");
             return (ItemProductExample.Criteria)this;
         }
@@ -484,22 +484,22 @@ public class ItemProductExample implements SgExample{
         public ItemProductExample.Criteria andPidNotLike(String value) {
             this.addCriterion("pid not like", value, "pid");
             return (ItemProductExample.Criteria)this;
-        }        public ItemProductExample.Criteria andPidIn(List<String> values) {
+        }        public ItemProductExample.Criteria andPidIn(List<Long> values) {
             this.addCriterion("pid in", values, "pid");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPidNotIn(List<String> values) {
+        public ItemProductExample.Criteria andPidNotIn(List<Long> values) {
             this.addCriterion("pid not in", values, "pid");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPidBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andPidBetween(Long value1, Long value2) {
             this.addCriterion("pid between", value1, value2, "pid");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPidNotBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andPidNotBetween(Long value1, Long value2) {
             this.addCriterion("pid not between", value1, value2, "pid");
             return (ItemProductExample.Criteria)this;
         }
@@ -786,32 +786,32 @@ public class ItemProductExample implements SgExample{
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPriceEqualTo(String value) {
+        public ItemProductExample.Criteria andPriceEqualTo(Long value) {
             this.addCriterion("price =", value, "price");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPriceNotEqualTo(String value) {
+        public ItemProductExample.Criteria andPriceNotEqualTo(Long value) {
             this.addCriterion("price <>", value, "price");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPriceGreaterThan(String value) {
+        public ItemProductExample.Criteria andPriceGreaterThan(Long value) {
             this.addCriterion("price >", value, "price");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPriceGreaterThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andPriceGreaterThanOrEqualTo(Long value) {
             this.addCriterion("price >=", value, "price");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPriceLessThan(String value) {
+        public ItemProductExample.Criteria andPriceLessThan(Long value) {
             this.addCriterion("price <", value, "price");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPriceLessThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andPriceLessThanOrEqualTo(Long value) {
             this.addCriterion("price <=", value, "price");
             return (ItemProductExample.Criteria)this;
         }
@@ -824,22 +824,22 @@ public class ItemProductExample implements SgExample{
         public ItemProductExample.Criteria andPriceNotLike(String value) {
             this.addCriterion("price not like", value, "price");
             return (ItemProductExample.Criteria)this;
-        }        public ItemProductExample.Criteria andPriceIn(List<String> values) {
+        }        public ItemProductExample.Criteria andPriceIn(List<Long> values) {
             this.addCriterion("price in", values, "price");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPriceNotIn(List<String> values) {
+        public ItemProductExample.Criteria andPriceNotIn(List<Long> values) {
             this.addCriterion("price not in", values, "price");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPriceBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andPriceBetween(Long value1, Long value2) {
             this.addCriterion("price between", value1, value2, "price");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andPriceNotBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andPriceNotBetween(Long value1, Long value2) {
             this.addCriterion("price not between", value1, value2, "price");
             return (ItemProductExample.Criteria)this;
         }
@@ -854,32 +854,32 @@ public class ItemProductExample implements SgExample{
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andFloorIdEqualTo(String value) {
+        public ItemProductExample.Criteria andFloorIdEqualTo(Long value) {
             this.addCriterion("floorId =", value, "floor_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andFloorIdNotEqualTo(String value) {
+        public ItemProductExample.Criteria andFloorIdNotEqualTo(Long value) {
             this.addCriterion("floorId <>", value, "floor_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andFloorIdGreaterThan(String value) {
+        public ItemProductExample.Criteria andFloorIdGreaterThan(Long value) {
             this.addCriterion("floorId >", value, "floor_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andFloorIdGreaterThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andFloorIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("floorId >=", value, "floor_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andFloorIdLessThan(String value) {
+        public ItemProductExample.Criteria andFloorIdLessThan(Long value) {
             this.addCriterion("floorId <", value, "floor_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andFloorIdLessThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andFloorIdLessThanOrEqualTo(Long value) {
             this.addCriterion("floorId <=", value, "floor_id");
             return (ItemProductExample.Criteria)this;
         }
@@ -892,22 +892,22 @@ public class ItemProductExample implements SgExample{
         public ItemProductExample.Criteria andFloorIdNotLike(String value) {
             this.addCriterion("floorId not like", value, "floor_id");
             return (ItemProductExample.Criteria)this;
-        }        public ItemProductExample.Criteria andFloorIdIn(List<String> values) {
+        }        public ItemProductExample.Criteria andFloorIdIn(List<Long> values) {
             this.addCriterion("floorId in", values, "floor_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andFloorIdNotIn(List<String> values) {
+        public ItemProductExample.Criteria andFloorIdNotIn(List<Long> values) {
             this.addCriterion("floorId not in", values, "floor_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andFloorIdBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andFloorIdBetween(Long value1, Long value2) {
             this.addCriterion("floorId between", value1, value2, "floor_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andFloorIdNotBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andFloorIdNotBetween(Long value1, Long value2) {
             this.addCriterion("floorId not between", value1, value2, "floor_id");
             return (ItemProductExample.Criteria)this;
         }

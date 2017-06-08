@@ -10,57 +10,57 @@ public class ItemOrderSub implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String soid;
+	private Long soid;
 
     /**
      * 订单号
      */
-	private String oid;
+	private Long oid;
 
     /**
      * 产品ID
      */
-	private String pid;
+	private Long pid;
 
     /**
      * sku信息
      */
-	private String skuId;
+	private Long skuId;
 
     /**
      * 件数
      */
-	private String num;
+	private Integer num;
 
     /**
      * 到货数量
      */
-	private String distributionNum;
+	private Integer distributionNum;
 
     /**
      * 应付总额
      */
-	private String shouldPayMoney;
+	private Long shouldPayMoney;
 
     /**
      * 实付
      */
-	private String payMoney;
+	private Long payMoney;
 
     /**
      * 实退
      */
-	private String refundMoney;
+	private Long refundMoney;
 
     /**
      * 是否已发
      */
-	private String send;
+	private Boolean send;
 
     /**
      * 是否退款
      */
-	private String refund;
+	private Boolean refund;
 
     /**
      * 备注
@@ -70,93 +70,93 @@ public class ItemOrderSub implements Serializable {
     /**
      * 交易信息ID
      */
-	private String logisticsId;
+	private Long logisticsId;
 
-	public void setSoid(String soid) {
+	public void setSoid(Long soid) {
 		this.soid = soid;
 	}
 
-	public String getSoid() {
+	public Long getSoid() {
 		return this.soid;
 	}
 
-	public void setOid(String oid) {
+	public void setOid(Long oid) {
 		this.oid = oid;
 	}
 
-	public String getOid() {
+	public Long getOid() {
 		return this.oid;
 	}
 
-	public void setPid(String pid) {
+	public void setPid(Long pid) {
 		this.pid = pid;
 	}
 
-	public String getPid() {
+	public Long getPid() {
 		return this.pid;
 	}
 
-	public void setSkuId(String skuId) {
+	public void setSkuId(Long skuId) {
 		this.skuId = skuId;
 	}
 
-	public String getSkuId() {
+	public Long getSkuId() {
 		return this.skuId;
 	}
 
-	public void setNum(String num) {
+	public void setNum(Integer num) {
 		this.num = num;
 	}
 
-	public String getNum() {
+	public Integer getNum() {
 		return this.num;
 	}
 
-	public void setDistributionNum(String distributionNum) {
+	public void setDistributionNum(Integer distributionNum) {
 		this.distributionNum = distributionNum;
 	}
 
-	public String getDistributionNum() {
+	public Integer getDistributionNum() {
 		return this.distributionNum;
 	}
 
-	public void setShouldPayMoney(String shouldPayMoney) {
+	public void setShouldPayMoney(Long shouldPayMoney) {
 		this.shouldPayMoney = shouldPayMoney;
 	}
 
-	public String getShouldPayMoney() {
+	public Long getShouldPayMoney() {
 		return this.shouldPayMoney;
 	}
 
-	public void setPayMoney(String payMoney) {
+	public void setPayMoney(Long payMoney) {
 		this.payMoney = payMoney;
 	}
 
-	public String getPayMoney() {
+	public Long getPayMoney() {
 		return this.payMoney;
 	}
 
-	public void setRefundMoney(String refundMoney) {
+	public void setRefundMoney(Long refundMoney) {
 		this.refundMoney = refundMoney;
 	}
 
-	public String getRefundMoney() {
+	public Long getRefundMoney() {
 		return this.refundMoney;
 	}
 
-	public void setSend(String send) {
+	public void setSend(Boolean send) {
 		this.send = send;
 	}
 
-	public String getSend() {
+	public Boolean getSend() {
 		return this.send;
 	}
 
-	public void setRefund(String refund) {
+	public void setRefund(Boolean refund) {
 		this.refund = refund;
 	}
 
-	public String getRefund() {
+	public Boolean getRefund() {
 		return this.refund;
 	}
 
@@ -168,11 +168,11 @@ public class ItemOrderSub implements Serializable {
 		return this.mark;
 	}
 
-	public void setLogisticsId(String logisticsId) {
+	public void setLogisticsId(Long logisticsId) {
 		this.logisticsId = logisticsId;
 	}
 
-	public String getLogisticsId() {
+	public Long getLogisticsId() {
 		return this.logisticsId;
 	}
 

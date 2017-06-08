@@ -10,7 +10,7 @@ public class ItemOrderSender implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String senderId;
+	private Long senderId;
 
     /**
      * 显示名称
@@ -25,13 +25,13 @@ public class ItemOrderSender implements Serializable {
     /**
      * 类别，1代发
      */
-	private String type;
+	private Integer type;
 
-	public void setSenderId(String senderId) {
+	public void setSenderId(Long senderId) {
 		this.senderId = senderId;
 	}
 
-	public String getSenderId() {
+	public Long getSenderId() {
 		return this.senderId;
 	}
 
@@ -51,11 +51,11 @@ public class ItemOrderSender implements Serializable {
 		return this.topic;
 	}
 
-	public void setType(String type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
-	public String getType() {
+	public Integer getType() {
 		return this.type;
 	}
 

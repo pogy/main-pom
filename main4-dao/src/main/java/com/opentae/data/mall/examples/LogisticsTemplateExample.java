@@ -242,32 +242,32 @@ public class LogisticsTemplateExample implements SgExample{
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromCityIdEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromCityIdEqualTo(Long value) {
             this.addCriterion("fromCityId =", value, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromCityIdNotEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromCityIdNotEqualTo(Long value) {
             this.addCriterion("fromCityId <>", value, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromCityIdGreaterThan(String value) {
+        public LogisticsTemplateExample.Criteria andFromCityIdGreaterThan(Long value) {
             this.addCriterion("fromCityId >", value, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromCityIdGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromCityIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("fromCityId >=", value, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromCityIdLessThan(String value) {
+        public LogisticsTemplateExample.Criteria andFromCityIdLessThan(Long value) {
             this.addCriterion("fromCityId <", value, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromCityIdLessThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromCityIdLessThanOrEqualTo(Long value) {
             this.addCriterion("fromCityId <=", value, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -280,22 +280,22 @@ public class LogisticsTemplateExample implements SgExample{
         public LogisticsTemplateExample.Criteria andFromCityIdNotLike(String value) {
             this.addCriterion("fromCityId not like", value, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
-        }        public LogisticsTemplateExample.Criteria andFromCityIdIn(List<String> values) {
+        }        public LogisticsTemplateExample.Criteria andFromCityIdIn(List<Long> values) {
             this.addCriterion("fromCityId in", values, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromCityIdNotIn(List<String> values) {
+        public LogisticsTemplateExample.Criteria andFromCityIdNotIn(List<Long> values) {
             this.addCriterion("fromCityId not in", values, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromCityIdBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andFromCityIdBetween(Long value1, Long value2) {
             this.addCriterion("fromCityId between", value1, value2, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromCityIdNotBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andFromCityIdNotBetween(Long value1, Long value2) {
             this.addCriterion("fromCityId not between", value1, value2, "from_city_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -310,32 +310,32 @@ public class LogisticsTemplateExample implements SgExample{
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromTownIdEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromTownIdEqualTo(Long value) {
             this.addCriterion("fromTownId =", value, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromTownIdNotEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromTownIdNotEqualTo(Long value) {
             this.addCriterion("fromTownId <>", value, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromTownIdGreaterThan(String value) {
+        public LogisticsTemplateExample.Criteria andFromTownIdGreaterThan(Long value) {
             this.addCriterion("fromTownId >", value, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromTownIdGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromTownIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("fromTownId >=", value, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromTownIdLessThan(String value) {
+        public LogisticsTemplateExample.Criteria andFromTownIdLessThan(Long value) {
             this.addCriterion("fromTownId <", value, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromTownIdLessThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromTownIdLessThanOrEqualTo(Long value) {
             this.addCriterion("fromTownId <=", value, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -348,22 +348,22 @@ public class LogisticsTemplateExample implements SgExample{
         public LogisticsTemplateExample.Criteria andFromTownIdNotLike(String value) {
             this.addCriterion("fromTownId not like", value, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
-        }        public LogisticsTemplateExample.Criteria andFromTownIdIn(List<String> values) {
+        }        public LogisticsTemplateExample.Criteria andFromTownIdIn(List<Long> values) {
             this.addCriterion("fromTownId in", values, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromTownIdNotIn(List<String> values) {
+        public LogisticsTemplateExample.Criteria andFromTownIdNotIn(List<Long> values) {
             this.addCriterion("fromTownId not in", values, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromTownIdBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andFromTownIdBetween(Long value1, Long value2) {
             this.addCriterion("fromTownId between", value1, value2, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromTownIdNotBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andFromTownIdNotBetween(Long value1, Long value2) {
             this.addCriterion("fromTownId not between", value1, value2, "from_town_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -378,32 +378,32 @@ public class LogisticsTemplateExample implements SgExample{
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andTemplateIdEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andTemplateIdEqualTo(Long value) {
             this.addCriterion("templateId =", value, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andTemplateIdNotEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andTemplateIdNotEqualTo(Long value) {
             this.addCriterion("templateId <>", value, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andTemplateIdGreaterThan(String value) {
+        public LogisticsTemplateExample.Criteria andTemplateIdGreaterThan(Long value) {
             this.addCriterion("templateId >", value, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andTemplateIdGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andTemplateIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("templateId >=", value, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andTemplateIdLessThan(String value) {
+        public LogisticsTemplateExample.Criteria andTemplateIdLessThan(Long value) {
             this.addCriterion("templateId <", value, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andTemplateIdLessThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andTemplateIdLessThanOrEqualTo(Long value) {
             this.addCriterion("templateId <=", value, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -416,22 +416,22 @@ public class LogisticsTemplateExample implements SgExample{
         public LogisticsTemplateExample.Criteria andTemplateIdNotLike(String value) {
             this.addCriterion("templateId not like", value, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
-        }        public LogisticsTemplateExample.Criteria andTemplateIdIn(List<String> values) {
+        }        public LogisticsTemplateExample.Criteria andTemplateIdIn(List<Long> values) {
             this.addCriterion("templateId in", values, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andTemplateIdNotIn(List<String> values) {
+        public LogisticsTemplateExample.Criteria andTemplateIdNotIn(List<Long> values) {
             this.addCriterion("templateId not in", values, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andTemplateIdBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andTemplateIdBetween(Long value1, Long value2) {
             this.addCriterion("templateId between", value1, value2, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andTemplateIdNotBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andTemplateIdNotBetween(Long value1, Long value2) {
             this.addCriterion("templateId not between", value1, value2, "template_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -514,32 +514,32 @@ public class LogisticsTemplateExample implements SgExample{
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromProvIdEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromProvIdEqualTo(Long value) {
             this.addCriterion("fromProvId =", value, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromProvIdNotEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromProvIdNotEqualTo(Long value) {
             this.addCriterion("fromProvId <>", value, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromProvIdGreaterThan(String value) {
+        public LogisticsTemplateExample.Criteria andFromProvIdGreaterThan(Long value) {
             this.addCriterion("fromProvId >", value, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromProvIdGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromProvIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("fromProvId >=", value, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromProvIdLessThan(String value) {
+        public LogisticsTemplateExample.Criteria andFromProvIdLessThan(Long value) {
             this.addCriterion("fromProvId <", value, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromProvIdLessThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFromProvIdLessThanOrEqualTo(Long value) {
             this.addCriterion("fromProvId <=", value, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -552,22 +552,22 @@ public class LogisticsTemplateExample implements SgExample{
         public LogisticsTemplateExample.Criteria andFromProvIdNotLike(String value) {
             this.addCriterion("fromProvId not like", value, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
-        }        public LogisticsTemplateExample.Criteria andFromProvIdIn(List<String> values) {
+        }        public LogisticsTemplateExample.Criteria andFromProvIdIn(List<Long> values) {
             this.addCriterion("fromProvId in", values, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromProvIdNotIn(List<String> values) {
+        public LogisticsTemplateExample.Criteria andFromProvIdNotIn(List<Long> values) {
             this.addCriterion("fromProvId not in", values, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromProvIdBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andFromProvIdBetween(Long value1, Long value2) {
             this.addCriterion("fromProvId between", value1, value2, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFromProvIdNotBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andFromProvIdNotBetween(Long value1, Long value2) {
             this.addCriterion("fromProvId not between", value1, value2, "from_prov_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -582,32 +582,32 @@ public class LogisticsTemplateExample implements SgExample{
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFreeEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFreeEqualTo(Boolean value) {
             this.addCriterion("free =", value, "free");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFreeNotEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFreeNotEqualTo(Boolean value) {
             this.addCriterion("free <>", value, "free");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFreeGreaterThan(String value) {
+        public LogisticsTemplateExample.Criteria andFreeGreaterThan(Boolean value) {
             this.addCriterion("free >", value, "free");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFreeGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFreeGreaterThanOrEqualTo(Boolean value) {
             this.addCriterion("free >=", value, "free");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFreeLessThan(String value) {
+        public LogisticsTemplateExample.Criteria andFreeLessThan(Boolean value) {
             this.addCriterion("free <", value, "free");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFreeLessThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andFreeLessThanOrEqualTo(Boolean value) {
             this.addCriterion("free <=", value, "free");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -620,22 +620,22 @@ public class LogisticsTemplateExample implements SgExample{
         public LogisticsTemplateExample.Criteria andFreeNotLike(String value) {
             this.addCriterion("free not like", value, "free");
             return (LogisticsTemplateExample.Criteria)this;
-        }        public LogisticsTemplateExample.Criteria andFreeIn(List<String> values) {
+        }        public LogisticsTemplateExample.Criteria andFreeIn(List<Boolean> values) {
             this.addCriterion("free in", values, "free");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFreeNotIn(List<String> values) {
+        public LogisticsTemplateExample.Criteria andFreeNotIn(List<Boolean> values) {
             this.addCriterion("free not in", values, "free");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFreeBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andFreeBetween(Boolean value1, Boolean value2) {
             this.addCriterion("free between", value1, value2, "free");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andFreeNotBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andFreeNotBetween(Boolean value1, Boolean value2) {
             this.addCriterion("free not between", value1, value2, "free");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -650,32 +650,32 @@ public class LogisticsTemplateExample implements SgExample{
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andSenderIdEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andSenderIdEqualTo(Long value) {
             this.addCriterion("senderId =", value, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andSenderIdNotEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andSenderIdNotEqualTo(Long value) {
             this.addCriterion("senderId <>", value, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andSenderIdGreaterThan(String value) {
+        public LogisticsTemplateExample.Criteria andSenderIdGreaterThan(Long value) {
             this.addCriterion("senderId >", value, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andSenderIdGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andSenderIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("senderId >=", value, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andSenderIdLessThan(String value) {
+        public LogisticsTemplateExample.Criteria andSenderIdLessThan(Long value) {
             this.addCriterion("senderId <", value, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andSenderIdLessThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andSenderIdLessThanOrEqualTo(Long value) {
             this.addCriterion("senderId <=", value, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -688,22 +688,22 @@ public class LogisticsTemplateExample implements SgExample{
         public LogisticsTemplateExample.Criteria andSenderIdNotLike(String value) {
             this.addCriterion("senderId not like", value, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
-        }        public LogisticsTemplateExample.Criteria andSenderIdIn(List<String> values) {
+        }        public LogisticsTemplateExample.Criteria andSenderIdIn(List<Long> values) {
             this.addCriterion("senderId in", values, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andSenderIdNotIn(List<String> values) {
+        public LogisticsTemplateExample.Criteria andSenderIdNotIn(List<Long> values) {
             this.addCriterion("senderId not in", values, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andSenderIdBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andSenderIdBetween(Long value1, Long value2) {
             this.addCriterion("senderId between", value1, value2, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andSenderIdNotBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andSenderIdNotBetween(Long value1, Long value2) {
             this.addCriterion("senderId not between", value1, value2, "sender_id");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -718,32 +718,32 @@ public class LogisticsTemplateExample implements SgExample{
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andEnabledEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andEnabledEqualTo(Boolean value) {
             this.addCriterion("enabled =", value, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andEnabledNotEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andEnabledNotEqualTo(Boolean value) {
             this.addCriterion("enabled <>", value, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andEnabledGreaterThan(String value) {
+        public LogisticsTemplateExample.Criteria andEnabledGreaterThan(Boolean value) {
             this.addCriterion("enabled >", value, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andEnabledGreaterThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andEnabledGreaterThanOrEqualTo(Boolean value) {
             this.addCriterion("enabled >=", value, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andEnabledLessThan(String value) {
+        public LogisticsTemplateExample.Criteria andEnabledLessThan(Boolean value) {
             this.addCriterion("enabled <", value, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andEnabledLessThanOrEqualTo(String value) {
+        public LogisticsTemplateExample.Criteria andEnabledLessThanOrEqualTo(Boolean value) {
             this.addCriterion("enabled <=", value, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
         }
@@ -756,22 +756,22 @@ public class LogisticsTemplateExample implements SgExample{
         public LogisticsTemplateExample.Criteria andEnabledNotLike(String value) {
             this.addCriterion("enabled not like", value, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
-        }        public LogisticsTemplateExample.Criteria andEnabledIn(List<String> values) {
+        }        public LogisticsTemplateExample.Criteria andEnabledIn(List<Boolean> values) {
             this.addCriterion("enabled in", values, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andEnabledNotIn(List<String> values) {
+        public LogisticsTemplateExample.Criteria andEnabledNotIn(List<Boolean> values) {
             this.addCriterion("enabled not in", values, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andEnabledBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andEnabledBetween(Boolean value1, Boolean value2) {
             this.addCriterion("enabled between", value1, value2, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
         }
 
-        public LogisticsTemplateExample.Criteria andEnabledNotBetween(String value1, String value2) {
+        public LogisticsTemplateExample.Criteria andEnabledNotBetween(Boolean value1, Boolean value2) {
             this.addCriterion("enabled not between", value1, value2, "enabled");
             return (LogisticsTemplateExample.Criteria)this;
         }

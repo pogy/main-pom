@@ -10,17 +10,17 @@ public class ItemCart implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String cartId;
+	private Long cartId;
 
     /**
      * 用户ID
      */
-	private String userId;
+	private Long userId;
 
     /**
      * 产品ID
      */
-	private String pid;
+	private Long pid;
 
     /**
      * 
@@ -30,39 +30,39 @@ public class ItemCart implements Serializable {
     /**
      * 产品skuID
      */
-	private String skuId;
+	private Long skuId;
 
     /**
      * 店铺ID
      */
-	private String shopId;
+	private Long shopId;
 
     /**
      * 数量
      */
-	private String num;
+	private Integer num;
 
-	public void setCartId(String cartId) {
+	public void setCartId(Long cartId) {
 		this.cartId = cartId;
 	}
 
-	public String getCartId() {
+	public Long getCartId() {
 		return this.cartId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
-	public String getUserId() {
+	public Long getUserId() {
 		return this.userId;
 	}
 
-	public void setPid(String pid) {
+	public void setPid(Long pid) {
 		this.pid = pid;
 	}
 
-	public String getPid() {
+	public Long getPid() {
 		return this.pid;
 	}
 
@@ -74,27 +74,27 @@ public class ItemCart implements Serializable {
 		return this.webSite;
 	}
 
-	public void setSkuId(String skuId) {
+	public void setSkuId(Long skuId) {
 		this.skuId = skuId;
 	}
 
-	public String getSkuId() {
+	public Long getSkuId() {
 		return this.skuId;
 	}
 
-	public void setShopId(String shopId) {
+	public void setShopId(Long shopId) {
 		this.shopId = shopId;
 	}
 
-	public String getShopId() {
+	public Long getShopId() {
 		return this.shopId;
 	}
 
-	public void setNum(String num) {
+	public void setNum(Integer num) {
 		this.num = num;
 	}
 
-	public String getNum() {
+	public Integer getNum() {
 		return this.num;
 	}
 

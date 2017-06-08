@@ -10,52 +10,52 @@ public class LogisticsTemplateProv implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String tpId;
+	private Long tpId;
 
     /**
      * 规则ID
      */
-	private String ruleId;
+	private Long ruleId;
 
     /**
      * 省份ID
      */
-	private String provId;
+	private Long provId;
 
     /**
      * 模板ID
      */
-	private String templateId;
+	private Long templateId;
 
-	public void setTpId(String tpId) {
+	public void setTpId(Long tpId) {
 		this.tpId = tpId;
 	}
 
-	public String getTpId() {
+	public Long getTpId() {
 		return this.tpId;
 	}
 
-	public void setRuleId(String ruleId) {
+	public void setRuleId(Long ruleId) {
 		this.ruleId = ruleId;
 	}
 
-	public String getRuleId() {
+	public Long getRuleId() {
 		return this.ruleId;
 	}
 
-	public void setProvId(String provId) {
+	public void setProvId(Long provId) {
 		this.provId = provId;
 	}
 
-	public String getProvId() {
+	public Long getProvId() {
 		return this.provId;
 	}
 
-	public void setTemplateId(String templateId) {
+	public void setTemplateId(Long templateId) {
 		this.templateId = templateId;
 	}
 
-	public String getTemplateId() {
+	public Long getTemplateId() {
 		return this.templateId;
 	}
 

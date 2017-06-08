@@ -10,7 +10,7 @@ public class ItemProductSku implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String skuId;
+	private Long skuId;
 
     /**
      * 颜色
@@ -25,13 +25,13 @@ public class ItemProductSku implements Serializable {
     /**
      * 产品ID
      */
-	private String pid;
+	private Long pid;
 
-	public void setSkuId(String skuId) {
+	public void setSkuId(Long skuId) {
 		this.skuId = skuId;
 	}
 
-	public String getSkuId() {
+	public Long getSkuId() {
 		return this.skuId;
 	}
 
@@ -51,11 +51,11 @@ public class ItemProductSku implements Serializable {
 		return this.size;
 	}
 
-	public void setPid(String pid) {
+	public void setPid(Long pid) {
 		this.pid = pid;
 	}
 
-	public String getPid() {
+	public Long getPid() {
 		return this.pid;
 	}
 

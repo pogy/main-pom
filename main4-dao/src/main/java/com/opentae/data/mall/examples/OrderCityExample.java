@@ -310,32 +310,32 @@ public class OrderCityExample implements SgExample{
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andProvIdEqualTo(String value) {
+        public OrderCityExample.Criteria andProvIdEqualTo(Long value) {
             this.addCriterion("provId =", value, "prov_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andProvIdNotEqualTo(String value) {
+        public OrderCityExample.Criteria andProvIdNotEqualTo(Long value) {
             this.addCriterion("provId <>", value, "prov_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andProvIdGreaterThan(String value) {
+        public OrderCityExample.Criteria andProvIdGreaterThan(Long value) {
             this.addCriterion("provId >", value, "prov_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andProvIdGreaterThanOrEqualTo(String value) {
+        public OrderCityExample.Criteria andProvIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("provId >=", value, "prov_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andProvIdLessThan(String value) {
+        public OrderCityExample.Criteria andProvIdLessThan(Long value) {
             this.addCriterion("provId <", value, "prov_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andProvIdLessThanOrEqualTo(String value) {
+        public OrderCityExample.Criteria andProvIdLessThanOrEqualTo(Long value) {
             this.addCriterion("provId <=", value, "prov_id");
             return (OrderCityExample.Criteria)this;
         }
@@ -348,22 +348,22 @@ public class OrderCityExample implements SgExample{
         public OrderCityExample.Criteria andProvIdNotLike(String value) {
             this.addCriterion("provId not like", value, "prov_id");
             return (OrderCityExample.Criteria)this;
-        }        public OrderCityExample.Criteria andProvIdIn(List<String> values) {
+        }        public OrderCityExample.Criteria andProvIdIn(List<Long> values) {
             this.addCriterion("provId in", values, "prov_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andProvIdNotIn(List<String> values) {
+        public OrderCityExample.Criteria andProvIdNotIn(List<Long> values) {
             this.addCriterion("provId not in", values, "prov_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andProvIdBetween(String value1, String value2) {
+        public OrderCityExample.Criteria andProvIdBetween(Long value1, Long value2) {
             this.addCriterion("provId between", value1, value2, "prov_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andProvIdNotBetween(String value1, String value2) {
+        public OrderCityExample.Criteria andProvIdNotBetween(Long value1, Long value2) {
             this.addCriterion("provId not between", value1, value2, "prov_id");
             return (OrderCityExample.Criteria)this;
         }
@@ -378,32 +378,32 @@ public class OrderCityExample implements SgExample{
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andCityIdEqualTo(String value) {
+        public OrderCityExample.Criteria andCityIdEqualTo(Long value) {
             this.addCriterion("cityId =", value, "city_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andCityIdNotEqualTo(String value) {
+        public OrderCityExample.Criteria andCityIdNotEqualTo(Long value) {
             this.addCriterion("cityId <>", value, "city_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andCityIdGreaterThan(String value) {
+        public OrderCityExample.Criteria andCityIdGreaterThan(Long value) {
             this.addCriterion("cityId >", value, "city_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andCityIdGreaterThanOrEqualTo(String value) {
+        public OrderCityExample.Criteria andCityIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("cityId >=", value, "city_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andCityIdLessThan(String value) {
+        public OrderCityExample.Criteria andCityIdLessThan(Long value) {
             this.addCriterion("cityId <", value, "city_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andCityIdLessThanOrEqualTo(String value) {
+        public OrderCityExample.Criteria andCityIdLessThanOrEqualTo(Long value) {
             this.addCriterion("cityId <=", value, "city_id");
             return (OrderCityExample.Criteria)this;
         }
@@ -416,22 +416,22 @@ public class OrderCityExample implements SgExample{
         public OrderCityExample.Criteria andCityIdNotLike(String value) {
             this.addCriterion("cityId not like", value, "city_id");
             return (OrderCityExample.Criteria)this;
-        }        public OrderCityExample.Criteria andCityIdIn(List<String> values) {
+        }        public OrderCityExample.Criteria andCityIdIn(List<Long> values) {
             this.addCriterion("cityId in", values, "city_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andCityIdNotIn(List<String> values) {
+        public OrderCityExample.Criteria andCityIdNotIn(List<Long> values) {
             this.addCriterion("cityId not in", values, "city_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andCityIdBetween(String value1, String value2) {
+        public OrderCityExample.Criteria andCityIdBetween(Long value1, Long value2) {
             this.addCriterion("cityId between", value1, value2, "city_id");
             return (OrderCityExample.Criteria)this;
         }
 
-        public OrderCityExample.Criteria andCityIdNotBetween(String value1, String value2) {
+        public OrderCityExample.Criteria andCityIdNotBetween(Long value1, Long value2) {
             this.addCriterion("cityId not between", value1, value2, "city_id");
             return (OrderCityExample.Criteria)this;
         }

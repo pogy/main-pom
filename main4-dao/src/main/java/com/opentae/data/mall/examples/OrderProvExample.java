@@ -242,32 +242,32 @@ public class OrderProvExample implements SgExample{
             return (OrderProvExample.Criteria)this;
         }
 
-        public OrderProvExample.Criteria andProvIdEqualTo(String value) {
+        public OrderProvExample.Criteria andProvIdEqualTo(Long value) {
             this.addCriterion("provId =", value, "prov_id");
             return (OrderProvExample.Criteria)this;
         }
 
-        public OrderProvExample.Criteria andProvIdNotEqualTo(String value) {
+        public OrderProvExample.Criteria andProvIdNotEqualTo(Long value) {
             this.addCriterion("provId <>", value, "prov_id");
             return (OrderProvExample.Criteria)this;
         }
 
-        public OrderProvExample.Criteria andProvIdGreaterThan(String value) {
+        public OrderProvExample.Criteria andProvIdGreaterThan(Long value) {
             this.addCriterion("provId >", value, "prov_id");
             return (OrderProvExample.Criteria)this;
         }
 
-        public OrderProvExample.Criteria andProvIdGreaterThanOrEqualTo(String value) {
+        public OrderProvExample.Criteria andProvIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("provId >=", value, "prov_id");
             return (OrderProvExample.Criteria)this;
         }
 
-        public OrderProvExample.Criteria andProvIdLessThan(String value) {
+        public OrderProvExample.Criteria andProvIdLessThan(Long value) {
             this.addCriterion("provId <", value, "prov_id");
             return (OrderProvExample.Criteria)this;
         }
 
-        public OrderProvExample.Criteria andProvIdLessThanOrEqualTo(String value) {
+        public OrderProvExample.Criteria andProvIdLessThanOrEqualTo(Long value) {
             this.addCriterion("provId <=", value, "prov_id");
             return (OrderProvExample.Criteria)this;
         }
@@ -280,22 +280,22 @@ public class OrderProvExample implements SgExample{
         public OrderProvExample.Criteria andProvIdNotLike(String value) {
             this.addCriterion("provId not like", value, "prov_id");
             return (OrderProvExample.Criteria)this;
-        }        public OrderProvExample.Criteria andProvIdIn(List<String> values) {
+        }        public OrderProvExample.Criteria andProvIdIn(List<Long> values) {
             this.addCriterion("provId in", values, "prov_id");
             return (OrderProvExample.Criteria)this;
         }
 
-        public OrderProvExample.Criteria andProvIdNotIn(List<String> values) {
+        public OrderProvExample.Criteria andProvIdNotIn(List<Long> values) {
             this.addCriterion("provId not in", values, "prov_id");
             return (OrderProvExample.Criteria)this;
         }
 
-        public OrderProvExample.Criteria andProvIdBetween(String value1, String value2) {
+        public OrderProvExample.Criteria andProvIdBetween(Long value1, Long value2) {
             this.addCriterion("provId between", value1, value2, "prov_id");
             return (OrderProvExample.Criteria)this;
         }
 
-        public OrderProvExample.Criteria andProvIdNotBetween(String value1, String value2) {
+        public OrderProvExample.Criteria andProvIdNotBetween(Long value1, Long value2) {
             this.addCriterion("provId not between", value1, value2, "prov_id");
             return (OrderProvExample.Criteria)this;
         }

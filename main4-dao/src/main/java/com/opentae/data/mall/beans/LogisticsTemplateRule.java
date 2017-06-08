@@ -10,104 +10,104 @@ public class LogisticsTemplateRule implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String ruleId;
+	private Long ruleId;
 
     /**
      * 首重/首件，费用
      */
-	private String firstFee;
+	private Long firstFee;
 
     /**
      * 首重/首件起步单位
      */
-	private String firstUnit;
+	private Integer firstUnit;
 
     /**
      * 每增加单位费用变化
      */
-	private String perFee;
+	private Long perFee;
 
     /**
      * 每增加的单位值
      */
-	private String perUnit;
+	private Integer perUnit;
 
     /**
      * 1按件，2按重量
      */
-	private String type;
+	private Integer type;
 
     /**
      * 运费模板ID
      */
-	private String templateId;
+	private Long templateId;
 
     /**
      * 1表示默认模板
      */
-	private String imDefault;
+	private Boolean imDefault;
 
-	public void setRuleId(String ruleId) {
+	public void setRuleId(Long ruleId) {
 		this.ruleId = ruleId;
 	}
 
-	public String getRuleId() {
+	public Long getRuleId() {
 		return this.ruleId;
 	}
 
-	public void setFirstFee(String firstFee) {
+	public void setFirstFee(Long firstFee) {
 		this.firstFee = firstFee;
 	}
 
-	public String getFirstFee() {
+	public Long getFirstFee() {
 		return this.firstFee;
 	}
 
-	public void setFirstUnit(String firstUnit) {
+	public void setFirstUnit(Integer firstUnit) {
 		this.firstUnit = firstUnit;
 	}
 
-	public String getFirstUnit() {
+	public Integer getFirstUnit() {
 		return this.firstUnit;
 	}
 
-	public void setPerFee(String perFee) {
+	public void setPerFee(Long perFee) {
 		this.perFee = perFee;
 	}
 
-	public String getPerFee() {
+	public Long getPerFee() {
 		return this.perFee;
 	}
 
-	public void setPerUnit(String perUnit) {
+	public void setPerUnit(Integer perUnit) {
 		this.perUnit = perUnit;
 	}
 
-	public String getPerUnit() {
+	public Integer getPerUnit() {
 		return this.perUnit;
 	}
 
-	public void setType(String type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
-	public String getType() {
+	public Integer getType() {
 		return this.type;
 	}
 
-	public void setTemplateId(String templateId) {
+	public void setTemplateId(Long templateId) {
 		this.templateId = templateId;
 	}
 
-	public String getTemplateId() {
+	public Long getTemplateId() {
 		return this.templateId;
 	}
 
-	public void setImDefault(String imDefault) {
+	public void setImDefault(Boolean imDefault) {
 		this.imDefault = imDefault;
 	}
 
-	public String getImDefault() {
+	public Boolean getImDefault() {
 		return this.imDefault;
 	}
 

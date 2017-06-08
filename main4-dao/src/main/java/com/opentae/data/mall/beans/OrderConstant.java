@@ -10,7 +10,7 @@ public class OrderConstant implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String id;
+	private Long id;
 
     /**
      * 名称
@@ -25,18 +25,18 @@ public class OrderConstant implements Serializable {
     /**
      * 1快递公司，2服务种类，3包材种类
      */
-	private String type;
+	private Integer type;
 
     /**
      * 发件者ID
      */
-	private String senderId;
+	private Long senderId;
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 
@@ -56,19 +56,19 @@ public class OrderConstant implements Serializable {
 		return this.context;
 	}
 
-	public void setType(String type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
-	public String getType() {
+	public Integer getType() {
 		return this.type;
 	}
 
-	public void setSenderId(String senderId) {
+	public void setSenderId(Long senderId) {
 		this.senderId = senderId;
 	}
 
-	public String getSenderId() {
+	public Long getSenderId() {
 		return this.senderId;
 	}
 

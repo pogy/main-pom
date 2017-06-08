@@ -10,12 +10,12 @@ public class ItemProduct implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private String pid;
+	private Long pid;
 
     /**
      * 星座商品ID
      */
-	private String goodsId;
+	private Long goodsId;
 
     /**
      * 分站标识
@@ -35,7 +35,7 @@ public class ItemProduct implements Serializable {
     /**
      * 单价
      */
-	private String price;
+	private Long price;
 
     /**
      * 所以市场名
@@ -55,41 +55,41 @@ public class ItemProduct implements Serializable {
     /**
      * 市场ID
      */
-	private String marketId;
+	private Long marketId;
 
     /**
      * 楼层ID
      */
-	private String floorId;
+	private Long floorId;
 
     /**
-     * 档口ID
+     * 
      */
 	private String shopId;
 
     /**
      * 单位：克
      */
-	private String weight;
+	private Long weight;
 
     /**
      * 
      */
 	private String goodsOneShop;
 
-	public void setPid(String pid) {
+	public void setPid(Long pid) {
 		this.pid = pid;
 	}
 
-	public String getPid() {
+	public Long getPid() {
 		return this.pid;
 	}
 
-	public void setGoodsId(String goodsId) {
+	public void setGoodsId(Long goodsId) {
 		this.goodsId = goodsId;
 	}
 
-	public String getGoodsId() {
+	public Long getGoodsId() {
 		return this.goodsId;
 	}
 
@@ -117,11 +117,11 @@ public class ItemProduct implements Serializable {
 		return this.title;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(Long price) {
 		this.price = price;
 	}
 
-	public String getPrice() {
+	public Long getPrice() {
 		return this.price;
 	}
 
@@ -149,19 +149,19 @@ public class ItemProduct implements Serializable {
 		return this.shopNum;
 	}
 
-	public void setMarketId(String marketId) {
+	public void setMarketId(Long marketId) {
 		this.marketId = marketId;
 	}
 
-	public String getMarketId() {
+	public Long getMarketId() {
 		return this.marketId;
 	}
 
-	public void setFloorId(String floorId) {
+	public void setFloorId(Long floorId) {
 		this.floorId = floorId;
 	}
 
-	public String getFloorId() {
+	public Long getFloorId() {
 		return this.floorId;
 	}
 
@@ -173,11 +173,11 @@ public class ItemProduct implements Serializable {
 		return this.shopId;
 	}
 
-	public void setWeight(String weight) {
+	public void setWeight(Long weight) {
 		this.weight = weight;
 	}
 
-	public String getWeight() {
+	public Long getWeight() {
 		return this.weight;
 	}
 
