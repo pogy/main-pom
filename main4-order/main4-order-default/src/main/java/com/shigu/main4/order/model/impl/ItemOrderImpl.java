@@ -1,10 +1,12 @@
 package com.shigu.main4.order.model.impl;
 
 import com.opentae.data.mall.beans.ItemOrderLogistics;
+import com.opentae.data.mall.beans.ItemOrderPackage;
 import com.opentae.data.mall.beans.ItemOrderService;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
+import com.opentae.data.mall.interfaces.ItemOrderPackageMapper;
 import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.util.BeanMapper;
@@ -35,6 +37,9 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Autowired
     private ItemOrderServiceMapper itemOrderServiceMapper;
+
+    @Autowired
+    private ItemOrderPackageMapper itemOrderPackageMapper;
 
     @Autowired
     private OrderConstantService orderConstantService;
@@ -89,7 +94,17 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Override
     public void addPackage(Long metarialId,Integer num) {
+        Long sender = 0L;// TODO: UNKNOWN sender
+        MetarialVO metarialVO = orderConstantService.selMetarialById(sender, metarialId);
+        ItemOrderPackage orderPackage = BeanMapper.map(metarialVO, ItemOrderPackage.class);
+        orderPackage.setNum(num);
+        orderPackage.setMoney(metarialVO.getPrice());
+        orderPackage.setOid(oid);
+        //orderPackage.setSize...  VO 中多一个size属性，bean中没有对应
 
+        itemOrderPackageMapper.insertSelective(orderPackage);
+
+        // TODO: 重新计算订单总额 ？
     }
 
     @Override
