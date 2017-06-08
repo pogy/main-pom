@@ -12,50 +12,50 @@ import java.util.List;
  */
 public interface ItemOrder extends Order{
     /**
-     * 查询订单物流信息
+     * 查询订单物流信息.
      * @return 物流信息
      */
     List<LogisticsVO> selLogisticses();
 
     /**
-     * 查订单信息
+     * 查订单信息.
      * @return
      */
     ItemOrderVO orderInfo();
 
     /**
-     * 查子订单信息
+     * 查子订单信息.
      * @return
      */
     List<SubItemOrderVO> subOrdersInfo();
 
     /**
-     * 添加物流信息
+     * 添加物流信息.
      * @param logistics
      */
     Long addLogistics(List<Long> soids,LogisticsVO logistics);
 
     /**
-     * 修改物流信息
+     * 修改物流信息.
      * @param id 物流信息ID
      * @param logistics 改后的物流信息
      */
     void modifyLogistics(Long id,LogisticsVO logistics);
 
     /**
-     * 添加包材
+     * 添加包材.
      * @param metarialId 材料ID
      */
     void addPackage(Long metarialId,Integer num);
 
     /**
-     * 退包材
+     * 退包材.
      * @param money 退的费用
      */
     void refundPackage(Long id,Long money);
 
     /**
-     * 添加服务数据
+     * 添加服务数据.
      * @param serviceId 服务Id
      */
     void addService(Long serviceId);//添加服务

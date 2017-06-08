@@ -16,6 +16,7 @@ List<SkuVO> selSkus();
 Long addSku(ItemSkuVO sku);
 void modifyWeight(Long meter);
 void modifyPrice(Long price);
+Long selWeight();
 }
 
 class ItemProductVO{
