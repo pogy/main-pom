@@ -119,7 +119,17 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Override
     public void addSubOrder(List<SubOrderVO> subOrders) {
-
+        List<ItemOrderSub> subs = BeanMapper.mapList(subOrders, ItemOrderSub.class);
+        for (ItemOrderSub sub : subs) {
+            sub.setDistributionNum(0);
+            // 应付总价 产品单价 X 数量
+//            sub.setShouldPayMoney(sub.getPayMoney() * sub.getNum());
+            sub.setPayMoney(0L);
+            sub.setRefundMoney(0L);
+            sub.setSend(false);
+            sub.setRefund(false);
+        }
+        itemOrderSubMapper.insertListNoId(subs);
     }
 
     @Override
