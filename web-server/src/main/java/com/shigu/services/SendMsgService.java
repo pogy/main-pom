@@ -21,22 +21,12 @@ public class SendMsgService {
     private static String pwd_ordinary = "D47C126518CE8632397A155F11BDF6C2";
 
     /**
-     * 发送忘记密码短信
-     * @param phone
-     * @param code
-     */
-    public void sendForgetPwd(String phone,String code){
-        String content="验证码["+code+"]。温馨提示：验证码有效时间为10分钟，请及时输入。【四季星座网】";
-        sendSms_quick(phone,content);//发送短信
-    }
-
-    /**
      * 发送注册短信
-     * @param phone
-     * @param code
+     * @param phone 手机号
+     * @param code 验证码
      */
-    public void sendRegist(String phone,String code){
-        String content = "效验码：" + code + "。温馨提示：效验码有效时间为10分钟，请及时输入 【四季星座网】";
+    public void sendVerificationCode(String phone, String code){
+        String content = "【四季星座网】您正在进行手机验证，验证码" + code + "，请在10分钟内按页面提示提交验证码，切勿将验证码泄露于他人。";
         sendSms_quick(phone,content);
     }
 

@@ -1,4 +1,6 @@
-package com.shigu.tools;
+package com.shigu.main4.common.tools;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,10 +23,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * 字符操作工具类
@@ -1233,25 +1231,25 @@ public class StringUtil {
 		return newList;
 	}
 
-	/**
-	 * 获取用户访问Ip
-	 * 
-	 * @param  request
-	 * @return
-	 */
-	public static String getIpAddr(HttpServletRequest request) {
-		String ip = request.getHeader("x-forwarded-for");
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("Proxy-Client-IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader("WL-Proxy-Client-IP");
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getRemoteAddr();
-		}
-		return ip;
-	}
+//	/**
+//	 * 获取用户访问Ip
+//	 *
+//	 * @param  request
+//	 * @return
+//	 */
+//	public static String getIpAddr(HttpServletRequest request) {
+//		String ip = request.getHeader("x-forwarded-for");
+//		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+//			ip = request.getHeader("Proxy-Client-IP");
+//		}
+//		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+//			ip = request.getHeader("WL-Proxy-Client-IP");
+//		}
+//		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+//			ip = request.getRemoteAddr();
+//		}
+//		return ip;
+//	}
 
 	/**
 	 * 将数组集合用param参数连接

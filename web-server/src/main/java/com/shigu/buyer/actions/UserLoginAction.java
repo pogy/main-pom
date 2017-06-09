@@ -4,6 +4,7 @@ import com.openJar.commons.MD5Attestation;
 import com.opentae.auth.utils.LoginLinkUtil;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
+import com.shigu.buyer.services.UserAccountService;
 import com.shigu.buyer.vo.LoginMsgVO;
 import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
@@ -43,6 +44,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,10 +56,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用户登陆
@@ -88,7 +87,9 @@ public class UserLoginAction {
     @Autowired
     MemberSimpleService memberSimpleService;
 
-    String ftlDir="buyer";
+    @Autowired
+    UserAccountService userAccountService;
+
     /**
      * 登陆
      * @param bo 登陆参数
@@ -96,47 +97,16 @@ public class UserLoginAction {
      * @return
      */
     @RequestMapping("login")
-    public String login(LoginBO bo, HttpServletRequest request,HttpSession session, Model model){
+    public String login(LoginBO bo, HttpSession session, Model model){
         //验证一下,是否已经登陆
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated()&&currentUser.hasRole(UserType.MEMBER.getValue())
                 &&session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())!=null) {//如果已经登陆，去登陆页面
             return "redirect:"+loginSuccessUrl(bo.getBackUrl());
         }
-        //如果是登陆请求
-        if(!bo.isEmpty()){//登陆请求
-            CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
-                    bo.getUserName(), bo.getPassword(), false, request.getRemoteAddr(), "", UserType.MEMBER);
-            //星座用户登陆
-            token.setLoginFromType(LoginFromType.XZ);
-            token.setRememberMe(true);
-            try {
-                currentUser.login(token);
-                currentUser.hasRole(RoleEnum.STORE.getValue());
-                //登陆成功
-                return "redirect:"+loginSuccessUrl(bo.getBackUrl());
-            } catch (AuthenticationException e) {
-                //登陆失败
-                if(e instanceof LoginAuthException){
-                    LoginAuthException ex= (LoginAuthException) e;
-                    if(ex.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)){//需要绑定手机号
-                        return "redirect:userPhoneBind.htm";
-                    }
-                }
-                token.clear();
-                String msg="账号或密码错误";
-                model.addAttribute("msg",msg);
-                model.addAttribute("userName",bo.getUserName());
-                model.addAttribute("password",bo.getPassword());
-            }
-        }
         //把回调放到参数去
         if(bo.getBackUrl()!=null&&!"".equals(bo.getBackUrl())){
-            try {
-                model.addAttribute("backUrl",URLEncoder.encode(bo.getBackUrl(),"utf-8"));
-            } catch (UnsupportedEncodingException e) {
-                logger.error("url 回调地址出错",e);
-            }
+            model.addAttribute("backUrl", bo.getBackUrl());
         }
         //加广告
 
@@ -149,6 +119,27 @@ public class UserLoginAction {
         }
         return "buyer/login";
     }
+
+    @ResponseBody
+    @RequestMapping("passwordLogin")
+    public JSONObject passwordLogin(LoginBO bo, HttpServletRequest request) throws JsonErrException {
+        Subject currentUser = SecurityUtils.getSubject();
+        CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
+                bo.getUsername(), bo.getPassword(), false, request.getRemoteAddr(), "", UserType.MEMBER);
+        //星座用户登陆
+        token.setLoginFromType(LoginFromType.XZ);
+        token.setRememberMe(true);
+        try {
+            currentUser.login(token);
+            currentUser.hasRole(RoleEnum.STORE.getValue());
+            return JsonResponseUtil.success();
+        } catch (AuthenticationException e) {
+            //登陆失败
+            token.clear();
+            throw new JsonErrException("账号或密码错误");
+        }
+    }
+
 
     /**
      * jsonp登陆
@@ -290,65 +281,131 @@ public class UserLoginAction {
     }
 
     /**
-     * 手机号直接登陆
-     * @return
-     */
-    @RequestMapping("phoneAuthCodeLogininit")
-    public String phoneAuthCodeLogininit(String backUrl,HttpSession session){
-        if(backUrl!=null){
-            session.setAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue(),backUrl);
-        }
-        return ftlDir+"/phoneAuthCodeLogininit";
-    }
-
-    /**
-     * 手机登陆提交
-     * @return
-     */
-    @RequestMapping("loginByPhone")
-    public String loginByPhone(LoginByPhoneBO bo, HttpServletRequest request, HttpSession session, Model model) throws Main4Exception {
-        if(bo!=null&&bo.getTelephone()!=null&&bo.getPhoneVerify()!=null){
-            PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue());
-            if(phoneCode==null||!phoneCode.getVerify().equals(bo.getPhoneVerify())
-                    ||!phoneCode.getPhone().equals(bo.getTelephone())){//验证不通过
-                model.addAttribute("errorString","您输入的验证码不正确");
-                model.addAttribute("telephone",bo.getTelephone());
-            }else {//跳修改密码页面
-                try {
-                    phoneLogin(request.getRemoteAddr(),bo.getTelephone());
-                    return "redirect:"+loginSuccessUrl((String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue()));
-                } catch (Main4LoginException e) {
-                    model.addAttribute("errorString",e.getMessage());
-                    model.addAttribute("telephone",bo.getTelephone());
-                }
-            }
-        }
-        return ftlDir+"/phoneAuthCodeLogininit";
-    }
-
-    /**
      * 手机号码登陆,验证码
      * @return
      */
-    @RequestMapping("loginPhoneVerification")
+    @RequestMapping("loginGetMsgCode")
     @ResponseBody
-    public JSONObject loginPhoneVerification(String phone,HttpSession session){
+    public JSONObject loginPhoneVerification(String telephone, String imgValidate, HttpSession session) throws JsonErrException {
+        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if(imgcode==null||!imgcode.equals(imgValidate)){//图片验证通不过
+            throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
+        }
         String code= RedomUtil.redomNumber(6);
-        session.setAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue(), new PhoneVerify(phone, code));
-        sendMsgService.sendForgetPwd(phone, code);
+        session.setAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue(), new PhoneVerify(telephone, code));
+        sendMsgService.sendVerificationCode(telephone, code);
 //        System.out.println(code);
         return JsonResponseUtil.success();
     }
+
+    @ResponseBody
+    @RequestMapping("telephoneLogin")
+    public JSONObject telephoneLogin(String telephone, String msgValidate, HttpSession session, HttpServletRequest request) throws JsonErrException {
+        PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_LOGIN_MSG.getValue());
+        if(phoneCode==null||!phoneCode.getVerify().equals(msgValidate)
+                ||!phoneCode.getPhone().equals(telephone)){//验证不通过
+            throw new JsonErrException("验证码错误");
+        }else {
+            try {
+                phoneLogin(request.getRemoteAddr(),telephone);
+            } catch (Main4LoginException e) {
+                throw new JsonErrException(e.getMessage());
+            } catch (Main4Exception e) {
+                logger.error("验证码登录错误", e);
+            }
+        }
+        return JsonResponseUtil.success();
+    }
+
+
     /**
      * 忘记密码
      * @return
      */
-    @RequestMapping("forgetPassword")
-    public String forgetPassword(String telephone,String phoneVerify,HttpServletRequest request,HttpSession session,Model model) throws Main4Exception {
-        if(phoneVerify!=null){
+    @RequestMapping(value = "forgetPassword", method = RequestMethod.GET)
+    public String forgetPassword() throws Main4Exception {
+        return "buyer/forgetPassword";
+    }
+
+    @ResponseBody
+    @RequestMapping("forgetPasswordStepOne")
+    public JSONObject forgetPasswordStepOne(String telephone, String imgValidate, HttpSession session) throws JsonErrException {
+        if (registerAndLoginService.selUserIdByName(telephone, LoginFromType.PHONE) == null) {
+            throw new JsonErrException("该手机号还没有注册").addErrMap("ele", "telephone");
+        }
+        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if(imgcode==null||!imgcode.equals(imgValidate)){//图片验证通不过
+            throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
+        }
+        session.setAttribute("forgotStep", 1);
+        session.setAttribute("telephone", telephone);
+        return JsonResponseUtil.success();
+    }
+
+    @ResponseBody
+    @RequestMapping("forgetPasswordStepTwo")
+    public JSONObject forgetPasswordStepTwo(String msgValidate, HttpServletRequest request, HttpSession session) throws Main4Exception {
+        varForgotStep(session, 2);
+        PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
+        if (phoneCode == null || !phoneCode.getVerify().equals(msgValidate)) {//验证不通过
+            throw new JsonErrException("您输入的验证码不正确").addErrMap("ele", "msgValidate");
+        }
+        session.setAttribute("forgotStep", 3);
+        return JsonResponseUtil.success();
+    }
+
+
+    @ResponseBody
+    @RequestMapping("forgetPasswordStepThree")
+    public JSONObject forgetPasswordStepThree(String newPassword, HttpServletRequest request, HttpSession session) throws Main4Exception {
+        varForgotStep(session, 3);
+        String telephone = (String) session.getAttribute("telephone");
+        Long userId;
+        if (telephone == null || (userId = registerAndLoginService.selUserIdByName(telephone, LoginFromType.PHONE)) == null)
+            throw new JsonErrException("内部错误");
+        try {
+            userLicenseService.changePassword(userId, newPassword);
+        } catch (Main4Exception e) {
+            throw new JsonErrException(e.getMessage());
+        }
+        session.removeAttribute("telephone");
+        session.removeAttribute("forgotStep");
+        phoneLogin(request.getRemoteAddr(),telephone);
+        return JsonResponseUtil.success();
+    }
+
+    private void varForgotStep(HttpSession session, Integer step) throws JsonErrException {
+        Integer forgotStep = (Integer) session.getAttribute("forgotStep");
+        if (!Objects.equals(forgotStep, step))
+            throw new JsonErrException("内部错误").addErrMap("redirect", "/forgetPassword.htm");
+    }
+
+    @ResponseBody
+    @RequestMapping("forgetPasswordgetMsgCode")
+    public JSONObject forgetPasswordgetMsgCode(String telephone, String imgValidate, HttpSession session) throws JsonErrException {
+        if (registerAndLoginService.selUserIdByName(telephone, LoginFromType.PHONE) == null) {
+            throw new JsonErrException("该手机号还没有注册").addErrMap("ele", "telephone");
+        }
+        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if(imgcode==null||!imgcode.equals(imgValidate)){//图片验证通不过
+            throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
+        }
+        session.setAttribute("forgotStep", 2);
+        String code= RedomUtil.redomNumber(6);
+        session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(telephone, code));
+        sendMsgService.sendVerificationCode(telephone, code);
+//        System.out.println(code);
+        return JsonResponseUtil.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "forgetPassword", method = RequestMethod.POST)
+    public JSONObject doForgetPassword(String telephone, String imgValidate, HttpServletRequest request, HttpSession session, Model model) throws Main4Exception {
+        if(imgValidate !=null){
+            session.setAttribute("gotPassStep", 1);
             //是提交
             PhoneVerify phoneCode= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_FORGET_MSG.getValue());
-            if(phoneCode==null||!phoneCode.getVerify().equals(phoneVerify)
+            if(phoneCode==null||!phoneCode.getVerify().equals(imgValidate)
                     ||!phoneCode.getPhone().equals(telephone)){//验证不通过
                 model.addAttribute("errorString","您输入的验证码不正确");
             }else{//跳修改密码页面
@@ -356,15 +413,12 @@ public class UserLoginAction {
                     phoneLogin(request.getRemoteAddr(),telephone);
                     PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
                     phoneCode.setUserId(ps.getUserId());
-                    return "redirect:/member/safexgmm.htm?code="+phoneCode.getVerify();
                 } catch (Main4LoginException e) {
                     model.addAttribute("errorString",e.getMessage());
                 }
             }
         }
-        model.addAttribute("telephone",telephone);
-        model.addAttribute("phoneVerify",phoneVerify);
-        return ftlDir+"/phoneForgetPasswordinit";
+        return JsonResponseUtil.success();
     }
 
     /**
@@ -386,7 +440,7 @@ public class UserLoginAction {
         } catch (LoginAuthException e) {
             //如果手机账号不存在
             if(e.getMsgback().equals(LoginErrorEnum.NO_USER)){//用户不存在
-                throw new Main4LoginException("账号["+phone+"]不存在");
+                throw new Main4LoginException("账号["+phone+"]暂未注册!");
             }else{
                 logger.error(phone+"用户数据有问题",e);
                 throw new Main4Exception(phone+"用户数据有问题");
@@ -403,7 +457,7 @@ public class UserLoginAction {
     public JSONObject forgetPhoneVerification(String phone,HttpSession session){
         String code= RedomUtil.redomNumber(6);
         session.setAttribute(SessionEnum.PHONE_FORGET_MSG.getValue(), new PhoneVerify(phone, code));
-        sendMsgService.sendForgetPwd(phone, code);
+        sendMsgService.sendVerificationCode(phone, code);
 //        System.out.println(code);
         return JSONObject.fromObject("{'result':'success'}");
     }
@@ -533,88 +587,69 @@ public class UserLoginAction {
         return "redirect:"+loginUrl;
     }
 
-//    /**
-//     * 测试绑定第三方账号
-//     * @return
-//     */
-//    @RequestMapping("testTbBind")
-//    @ResponseBody
-//    public String testTbBind(HttpSession session){
-//        PhoneVerify phoneVerify=new PhoneVerify();
-//        phoneVerify.setPhone("18888888888");
-//        phoneVerify.setVerify("111111");
-//        session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(),phoneVerify);
-//
-//        Rds3TempUser rds3TempUser=new Rds3TempUser();
-//        rds3TempUser.setLoginFromType(LoginFromType.TAOBAO);
-//        rds3TempUser.setSubUserName("谁把谁真的当33");
-//        session.setAttribute(SessionEnum.RDS3_TEMPUSER.getValue(),rds3TempUser);
-//        return "OK";
-//    }
     /**
      * 手机号绑定
      * @return
      */
     @RequestMapping("userPhoneBind")
-    public String userPhoneBind(BindPhoneBO bo,HttpServletRequest request,HttpSession session,Model model) throws Main4Exception {
-        if(bo.getTelephone()!=null&&bo.getPhoneVerify()!=null){
-            PhoneVerify phoneVerify= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_BIND_MSG.getValue());
-            if(phoneVerify==null||!bo.getTelephone().equals(phoneVerify.getPhone())
-                    ||!bo.getPhoneVerify().equals(phoneVerify.getVerify())){
-                model.addAttribute("msg","短信验证码错误");
-            }else{
-                //把第三方账号绑给现在这个手机号
-                Rds3TempUser rds3TempUser= (Rds3TempUser) session.getAttribute(SessionEnum.RDS3_TEMPUSER.getValue());
-                if(rds3TempUser==null){
-                    throw new Main4Exception("第三方未登陆或登陆异常");
-                }
-                /**
-                 * 如果是手机来的,就是星座号绑定手机
-                 */
-                if(rds3TempUser.getLoginFromType().equals(LoginFromType.PHONE)){
-                    if (registerAndLoginService.userCanRegist(bo.getTelephone(), LoginFromType.PHONE)) {
-                        userLicenseService.bindPhone(Long.valueOf(rds3TempUser.getSubUserKey()),bo.getTelephone());
-                    } else {
-                        throw new Main4Exception("该手机号已被使用");
-                    }
-                    rds3TempUser.setSubUserName(bo.getTelephone());
-                }else{
-                    registerAndLoginService.bind3RdUser(bo.getTelephone(),rds3TempUser);
-                }
-                Subject currentUser = SecurityUtils.getSubject();
-                CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
-                        rds3TempUser.getSubUserName(), null, false, request.getRemoteAddr(), "", UserType.MEMBER);
-                token.setLoginFromType(rds3TempUser.getLoginFromType());
-                //星座用户登陆
-                token.setRememberMe(true);
-                try {
-                    currentUser.login(token);
-                    currentUser.hasRole(RoleEnum.STORE.getValue());
-                }catch (LoginAuthException e){
-                    throw  new Main4Exception(e.getMessage());
-                }
-                //跳登陆中心
-//                return "redirect:"+memberFilter.getSuccessUrl();
-                String backUrl= (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
-                session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
-                return "redirect:"+loginSuccessUrl(backUrl);
-            }
-        }
-        return ftlDir+"/userPhoneBind";
+    public String userPhoneBind(String backUrl,Model model) throws Main4Exception {
+        model.addAttribute("backUrl", backUrl);
+        return "buyer/userPhoneBind";
     }
 
     /**
+     * 手机号绑定
+     * @param bo bind message send.
+     * @param session session
+     * @return data
+     */
+    @RequestMapping("bindTelephone")
+    @ResponseBody
+    public JSONObject doBindPhoneVerification(@Valid BindPhoneBO bo, BindingResult result, HttpServletRequest request, HttpSession session) throws Main4Exception {
+        if (result.hasErrors()) {
+            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage()).addErrMap("ele", "telephone");
+        }
+        PhoneVerify phoneVerify= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_BIND_MSG.getValue());
+        if(phoneVerify==null||!bo.getTelephone().equals(phoneVerify.getPhone())
+                ||!bo.getMsgValidate().equals(phoneVerify.getVerify())){
+            throw new JsonErrException("短信验证码错误").addErrMap("ele", "msgValidate");
+        }else {
+            String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+            if(imgcode==null||!imgcode.equals(bo.getImgValidate())){//图片验证通不过
+                throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
+            }
+            //把第三方账号绑给现在这个手机号
+            Rds3TempUser rds3TempUser = (Rds3TempUser) session.getAttribute(SessionEnum.RDS3_TEMPUSER.getValue());
+            if (rds3TempUser == null) {
+                throw new JsonErrException("第三方未登陆或登陆异常").addErrMap("ele", "telephone");
+            }
+            userAccountService.bindAccount(rds3TempUser, bo.getTelephone(), request.getRemoteAddr());
+            //跳登陆中心
+//                return "redirect:"+memberFilter.getSuccessUrl();
+            String backUrl = (String) session.getAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
+            session.removeAttribute(SessionEnum.OTHEER_LOGIN_CALLBACK.getValue());
+            return JsonResponseUtil.success().element("backUrl", backUrl);
+        }
+    }
+    /**
      * 发送手机号绑定的短信
-     * @param phone
-     * @param session
-     * @return
+     * @param bo bind message send.
+     * @param session session
+     * @return data
      */
     @RequestMapping("bindPhoneVerification")
     @ResponseBody
-    public JSONObject bindPhoneVerification(String phone,HttpSession session){
+    public JSONObject bindPhoneVerification(@Valid RegistVerifyBO bo, BindingResult result, HttpSession session) throws JsonErrException {
+        if(result.hasErrors()){
+            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage()).addErrMap("ele", "msgValidate");
+        }
+        String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
+        if(imgcode==null||!imgcode.equals(bo.getImgValidate())){//图片验证通不过
+            throw new JsonErrException("图片验证码不正确").addErrMap("ele", "imgValidate");
+        }
         String code= RedomUtil.redomNumber(6);
-        session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(phone, code));
-        sendMsgService.sendForgetPwd(phone, code);
+        session.setAttribute(SessionEnum.PHONE_BIND_MSG.getValue(), new PhoneVerify(bo.getTelephone(), code));
+        sendMsgService.sendVerificationCode(bo.getTelephone(), code);
 //        System.out.println(code);
         return JsonResponseUtil.success();
     }
@@ -631,7 +666,6 @@ public class UserLoginAction {
             //如果个人,跳到这个,如果商户跳到seller
             toUrl=memberFilter.getSuccessUrl();
         }
-        //System.out.println(toUrl);
         return toUrl;
     }
 

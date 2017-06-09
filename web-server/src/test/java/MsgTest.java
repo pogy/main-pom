@@ -31,7 +31,7 @@ public class MsgTest {
     SendMsgService sendMsgService;
     @Test
     public void forgetTest(){
-        sendMsgService.sendForgetPwd("18888971970","654321");
+        sendMsgService.sendVerificationCode("18888971970","654321");
     }
 
     @Test

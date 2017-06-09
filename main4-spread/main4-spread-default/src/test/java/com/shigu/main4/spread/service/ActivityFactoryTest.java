@@ -73,7 +73,7 @@ public class ActivityFactoryTest {
 
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void selLedActivityWithFunc_joinActivityTest() throws ActivityException {
         //4个参数不能为空
         //参数//Long userId, Long shopId, String name, String phone
@@ -157,7 +157,7 @@ public class ActivityFactoryTest {
 
     }
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void selEnlistById_hitTest() throws ActivityException {
         SpreadEnlist se=new SpreadEnlist ();
         se.setDraw (0);
@@ -186,7 +186,7 @@ public class ActivityFactoryTest {
         assertEquals (se1.getDraw ().longValue (),1L);
     }
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void selEnlistById_unhitTest() throws ActivityException {
         SpreadEnlist se=new SpreadEnlist ();
         se.setDraw (1);
@@ -217,7 +217,7 @@ public class ActivityFactoryTest {
 
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addAndGetTermTest() throws ActivityException, ParseException {
         spreadTermMapper.deleteByExample(new SpreadTermExample());
         Calendar cal=Calendar.getInstance();
@@ -275,7 +275,7 @@ public class ActivityFactoryTest {
         assertNotEquals(spreadActivityMapper.selectByPrimaryKey(activityId),null);
     }
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void selGoatActivityWithFunc_selEnlistTest() throws ActivityException {
         SpreadActivity activity=new SpreadActivity();
         activity.setActivityId(20170508L);
@@ -372,7 +372,7 @@ public class ActivityFactoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void selLedActivityWithFunc_randomHitTest() throws ActivityException {
 
         //4个参数不能为空
@@ -459,7 +459,7 @@ public class ActivityFactoryTest {
      * 修改其次测试
      */
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void selTermWithFunc_modify() throws ParseException {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         SpreadTerm term=new SpreadTerm();

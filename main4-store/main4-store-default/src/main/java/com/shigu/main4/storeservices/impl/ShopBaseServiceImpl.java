@@ -206,7 +206,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
      * @param shopId
      * @param reason
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void closeShop(Long shopId, DmlReason reason) {
         if(shopId == null){
@@ -278,7 +278,7 @@ public class ShopBaseServiceImpl extends ShopServiceImpl implements ShopBaseServ
      * @param shopId
      * @param reason
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void openShop(Long shopId, DmlReason reason) throws Main4Exception {
         if(shopId == null){

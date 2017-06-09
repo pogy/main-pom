@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/xiufuGoods21init.css?t=1495875885416" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/xiufuGoods21init.css?t=1496217553785" rel="stylesheet">
     
   </head>
 <body>
@@ -240,7 +240,7 @@ var webSite = '${webSite!}';
         <ul>
             <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货竞拍</a></li> 
+            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货广告</a></li> 
         </ul> 
     </div>
     
@@ -300,7 +300,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/xiufuGoods21init.js?t=1495875885416"></script>
+<script src="http://style.571xz.com/gys5/js/xiufuGoods21init.js?t=1496217553785"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

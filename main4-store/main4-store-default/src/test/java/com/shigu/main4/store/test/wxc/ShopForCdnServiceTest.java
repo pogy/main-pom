@@ -44,7 +44,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @TransactionConfiguration(transactionManager = "txManager", defaultRollback = true)
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @ContextConfiguration( value="/main4/spring/store_test.xml" )
 public class ShopForCdnServiceTest extends AbstractJUnit4SpringContextTests{
 

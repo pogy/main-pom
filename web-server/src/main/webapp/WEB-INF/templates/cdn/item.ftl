@@ -3,18 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
     <title>${vo.cdnItem.title!}-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
     
     <meta name="keywords" content="欢迎前来四季星座网实力档口，选择 ${vo.cdnItem.title!}">
     
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
-
     
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1494832080485" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1496813818839" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1494832080485"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1496813818839"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -140,7 +140,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -188,7 +191,7 @@ var webSite = '${webSite!}';
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
-            <a href="http://www.571xz.com/">
+            <a href="http://${webSite!}.571xz.com/">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
@@ -369,7 +372,14 @@ var webSite = '${webSite!}';
     </div>
 </div>
 ${navCon}
-<div class="content_top layout">
+<script>/*============ shopItemCopy/item#main BEGIN ============*/
+
+var goodsId = '${vo.itemId!}';
+
+/*============ shopItemCopy/item#main END ============*/
+
+
+</script><div class="content_top layout">
     <div class="leftbox">
         <div class="shopContent">
             <div class="proBanner">
@@ -459,10 +469,8 @@ ${navCon}
                             <input type="text" id="Num" value="1">
                             <a href="javascript:;" id="Add">+</a>
                         </div>
-                            <span style="
-    margin-left: 10px;
-    line-height: 26px;
-" id="imclicks"> - 次浏览</span>
+                        <span style="margin-left: 10px; line-height: 26px;" id="imclicks">-次浏览</span>
+                        
                     </td>
                   </tr>
                    <#if vo.onsale == true>
@@ -532,6 +540,7 @@ $.post(
             $('#imclicks').html(data.number+"次浏览");
         }
 );
+
 /*============ shopItemCopy/item#goodsinfo END ============*/
 
 
@@ -684,14 +693,6 @@ $.post(
         
     </div>
 </div>
-<script>/*============ shopItemCopy/item#showOnkeyUploadWindow BEGIN ============*/
-
-var goodsId = '${vo.itemId!}';
-
-/*============ shopItemCopy/item#showOnkeyUploadWindow END ============*/
-
-
-</script>
 <div class="content_main layout">
     <div class="leftbox">
         
@@ -798,8 +799,17 @@ var goodsId = '${vo.itemId!}';
 </div>
 <div id="item_shopnew">
 </div>
-<script>
-    $.post("shopnew.htm",{"id":storeId},function(data){$("#item_shopnew").html(data);});
+<script>/*============ shopItemCopy/item#newGoods BEGIN ============*/
+
+$(function(){
+    $.post('shopnew.htm',{"id": storeId},function(data){
+        $('#item_shopnew').html(data);
+    });
+});
+
+/*============ shopItemCopy/item#newGoods END ============*/
+
+
 </script>
 <div class="footer">
     <div class="inner">

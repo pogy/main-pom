@@ -2,12 +2,12 @@ package com.shigu.activity.actions;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
-import com.shigu.activity.service.ActiveDrawServiceImpl;
 import com.shigu.activity.vo.*;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
 import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.RedisIO;
@@ -202,7 +202,7 @@ public class ActivityAction {
                     itemVos.add(new ShopItemVo(itemShowBlock.getItemId(), itemShowBlock.getImgUrl(), itemShowBlock.getTitle()));
                 }
             }
-            redisIO.putTemp(key, itemVoMap, 24 * 3600);
+            redisIO.putTemp(key, itemVoMap, 600);
         }
 
         for (ActiveDrawShopVo activeDrawShopVo : faShopVoList) {
