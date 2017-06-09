@@ -26,11 +26,6 @@ public class ItemProductImpl implements ItemProduct{
     }
 
     @Override
-    public Long addSku(ItemSkuVO sku) {
-        return null;
-    }
-
-    @Override
     public void modifyWeight(Long meter) {
 
     }
