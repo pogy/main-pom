@@ -3,7 +3,12 @@
 interface PayerService{
 PayApplyVO payApply(Long oid,Long money,String title);
 void refund(Long payId,Long money);
-void paySure(Long appayId);
+void paySure(Long appayId,String outerPid,String outerPuser,Long payMoney);
+
+}
+
+abstract class PayerServiceAble{
+Long payedLeft(Long payId);
 }
 
 class WxPayerServiceImpl{
@@ -17,9 +22,9 @@ class AliPayerServiceImpl{
 class XzPayerServiceImpl{
 
 }
-
-PayerService <|-- WxPayerServiceImpl
-PayerService <|-- AliPayerServiceImpl
-PayerService <|-- XzPayerServiceImpl
+PayerService <|-- PayerServiceAble
+PayerServiceAble <|-- WxPayerServiceImpl
+PayerServiceAble <|-- AliPayerServiceImpl
+PayerServiceAble <|-- XzPayerServiceImpl
 
 @enduml

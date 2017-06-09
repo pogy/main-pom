@@ -9,5 +9,6 @@ import com.shigu.main4.order.vo.PayApplyVO;
 public interface PayerService {
     PayApplyVO payApply(Long oid, Long money, String title);
     void refund(Long payId,Long money);
-    void paySure(Long appayId);
+    void paySure(Long applyId,String outerPid,String outerPuser,Long payMoney);
+    Long payedLeft(Long payId);
 }
