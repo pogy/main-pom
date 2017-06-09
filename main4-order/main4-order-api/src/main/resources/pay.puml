@@ -1,0 +1,9 @@
+@startuml
+
+interface PayerService{
+PayApplyVO payApply();
+void refund(Long payId,Long money);
+void paySure();
+}
+
+@enduml
