@@ -19,6 +19,6 @@ public class BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(BaseTest.class);
 
     protected void show(Object o) {
-        logger.info(JSON.toJSONStringWithDateFormat(o, "yyyy-MM-dd HH:mm:ss", SerializerFeature.PrettyFormat));
+        logger.info("\n" + JSON.toJSONStringWithDateFormat(o, "yyyy-MM-dd HH:mm:ss", SerializerFeature.PrettyFormat));
     }
 }

@@ -27,10 +27,10 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     /**
      * 订单常量
      */
-    private enum OrderConstantType {
-        LOGISTICS(1, LogisticsCompanyVO.class),
-        SERVICE(2, ServiceVO.class),
-        PACKAGE(3, MetarialVO.class);
+    public enum OrderConstantType {
+        LOGISTICS(LOGISTICS_TYPE, LogisticsCompanyVO.class),
+        SERVICE(SERVICE_TYPE, ServiceVO.class),
+        PACKAGE(PACKAGE_TYPE, MetarialVO.class);
         private int type;
         private Class<? extends OrderConstantVo> voClazz;
         private Map<Long, List<OrderConstantVo>> orderConstantsMap;
