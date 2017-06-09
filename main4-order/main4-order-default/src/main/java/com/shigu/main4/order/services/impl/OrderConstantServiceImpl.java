@@ -58,7 +58,7 @@ public class OrderConstantServiceImpl implements OrderConstantService {
 
         @SuppressWarnings("unchecked")
         <T> T get(Long senderId, Long id) {
-            List<OrderConstantVo> orderConstants = orderConstantsMap.get(senderId);
+            List<OrderConstantVo> orderConstants = orderConstantsMap.get(senderId == null ? -1L : senderId);
             if (orderConstants != null) {
                 for (OrderConstantVo orderConstant : orderConstants)
                     if (Objects.equals(orderConstant.getId(), id))
