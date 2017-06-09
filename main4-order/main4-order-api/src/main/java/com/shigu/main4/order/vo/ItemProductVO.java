@@ -7,4 +7,14 @@ import java.io.Serializable;
  * Created by zhaohongbo on 17/6/1.
  */
 public class ItemProductVO implements Serializable{
+
+    private Long price;
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
 }

@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -160,7 +159,7 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     /**
-     * TODO:重新计算订单总额
+     * 重新计算订单总额
      * @param senderId 发货机构ID
      */
     private void recountTotalOrderAmount(Long senderId) {
@@ -169,7 +168,7 @@ public class ItemOrderImpl implements ItemOrder{
 
         // 子单总额
         for (SubItemOrderVO subItemOrderVO : subOrdersInfo()) {
-//            total += subItemOrderVO.getProduct().getPrice();
+            total += subItemOrderVO.getProduct().getPrice();
         }
         // 物流总额
         for (LogisticsVO logisticsVO : selLogisticses()) {
@@ -177,12 +176,17 @@ public class ItemOrderImpl implements ItemOrder{
         }
 
         // 发货服务总额
-        for (ServiceVO serviceVO : orderConstantService.selServices(senderId)) {
-            total += serviceVO.getPrice();
+        ItemOrderService service = new ItemOrderService();
+        service.setOid(oid);
+        for (ItemOrderService orderService : itemOrderServiceMapper.select(service)) {
+            total += orderService.getMoney();
         }
 
-        for (MetarialVO metarialVO : orderConstantService.selMetarials(senderId)) {
-            total += metarialVO.getPrice();
+        // 包材总额
+        ItemOrderPackage orderPackage = new ItemOrderPackage();
+        orderPackage.setOid(oid);
+        for (ItemOrderPackage itemOrderPackage : itemOrderPackageMapper.select(orderPackage)) {
+            total += itemOrderPackage.getMoney();
         }
 
         com.opentae.data.mall.beans.ItemOrder order = new com.opentae.data.mall.beans.ItemOrder();
@@ -223,7 +227,7 @@ public class ItemOrderImpl implements ItemOrder{
         for (ItemOrderSub sub : subs) {
             sub.setDistributionNum(0);
             // 应付总价 产品单价 X 数量
-//            sub.setShouldPayMoney(sub.getPayMoney() * sub.getNum());
+            sub.setShouldPayMoney(sub.getSinglePrice() * sub.getNum());
             sub.setPayMoney(0L);
             sub.setRefundMoney(0L);
             sub.setSend(false);
