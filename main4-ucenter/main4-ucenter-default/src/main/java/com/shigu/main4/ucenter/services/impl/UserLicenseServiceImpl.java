@@ -131,7 +131,7 @@ public class UserLicenseServiceImpl implements UserLicenseService {
      * @param toExamine true表示通过,false表示不通过
      * @param reason 不通过原因
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void realName(Long userId, boolean toExamine, String reason) throws Main4Exception {
         MemberLicenseApply memberLicenseApply = new MemberLicenseApply();
@@ -387,7 +387,7 @@ public class UserLicenseServiceImpl implements UserLicenseService {
      * @param userId
      * @param password
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void changePassword(Long userId, String password) throws Main4Exception {
         if(userId == null || StringUtils.isEmpty(password)){

@@ -1,14 +1,35 @@
-package com.shigu.activity.service;
+package com.shigu.main4.spread.service.impl;
 
 
-import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.*;
-import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.beans.ActiveDrawGoods;
+import com.opentae.data.mall.beans.ActiveDrawPem;
+import com.opentae.data.mall.beans.ActiveDrawPit;
+import com.opentae.data.mall.beans.ActiveDrawRecord;
+import com.opentae.data.mall.beans.ActiveDrawShop;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.ShiguMarket;
+import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
+import com.opentae.data.mall.examples.ActiveDrawPemExample;
+import com.opentae.data.mall.examples.ActiveDrawPitExample;
+import com.opentae.data.mall.examples.ActiveDrawRecordExample;
+import com.opentae.data.mall.examples.ActiveDrawShopExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguMarketExample;
+import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
+import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
+import com.opentae.data.mall.interfaces.ActiveDrawPitMapper;
+import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
+import com.opentae.data.mall.interfaces.ActiveDrawShopMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguMarketMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.ActiveDrawService;
@@ -16,7 +37,6 @@ import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
-import com.shigu.tools.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -24,13 +44,21 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 活动抽奖SERVICE
@@ -338,6 +366,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
                 && goodsId.intValue() != activeDrawGoods.getGoodsId().intValue()){
             // 更换商品
             activeDrawGoods.setEnabled(true);
+            activeDrawGoods.setModifyTime(new Date());
             activeDrawGoodsMapper.updateByPrimaryKeySelective(activeDrawGoods);
 
             //把本商品在本期的删除
@@ -347,6 +376,8 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
             // 新增商品
             activeDrawGoods.setId(null);
+            activeDrawGoods.setCreateTime(new Date());
+            activeDrawGoods.setModifyTime(new Date());
             activeDrawGoods.setEnabled(false);
             activeDrawGoods.setGoodsId(goodsId);
             activeDrawGoodsMapper.insertSelective(activeDrawGoods);
@@ -944,7 +975,41 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         if(drawRecord == null){
             return;
         }
-        drawRecord.setRefeTime(new Date());
-        activeDrawRecordMapper.updateByPrimaryKeySelective(drawRecord);
+        //处理此人本期,所有奖的阅
+        ActiveDrawRecordExample example=new ActiveDrawRecordExample();
+        example.createCriteria().andPemIdEqualTo(drawRecord.getPemId()).andUserIdEqualTo(drawRecord.getUserId());
+
+        ActiveDrawRecord record=new ActiveDrawRecord();
+        record.setRefeTime(new Date());
+        activeDrawRecordMapper.updateByExampleSelective(record,example);
+    }
+
+    @Override
+    public Map<Long,Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime) {
+        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+        QueryBuilder userQuery = QueryBuilders.termQuery("fenUserNick", nick);
+        QueryBuilder goodsIdQuery = QueryBuilders.termsQuery("supperGoodsId", goodsId);
+        QueryBuilder timeQuery = QueryBuilders.rangeQuery("daiTime").gt(DateUtil.dateToString(fromTime,"yyyy-MM-dd HH:mm:ss"))
+                .lt(DateUtil.dateToString(endTime,"yyyy-MM-dd HH:mm:ss"));
+
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        boolQuery.must(userQuery);
+        boolQuery.must(goodsIdQuery);
+        boolQuery.must(timeQuery);
+        srb.setQuery(boolQuery);
+        srb.setFrom(0).setSize(100);
+
+        System.out.println(srb);
+        SearchResponse response = srb.execute().actionGet();
+        SearchHit[] hits=response.getHits().getHits();
+        Map<Long,Long> numIidMaps=new HashMap<>();
+        for(SearchHit hit:hits){
+            Long fenNumIid = (Long) hit.getSource().get("fenNumiid");
+            Integer supperGoodsId = (Integer) hit.getSource().get("supperGoodsId");
+            if (fenNumIid != null) {
+                numIidMaps.put(supperGoodsId.longValue(),fenNumIid);
+            }
+        }
+        return numIidMaps;
     }
 }

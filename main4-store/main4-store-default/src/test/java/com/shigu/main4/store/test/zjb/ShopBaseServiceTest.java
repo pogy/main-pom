@@ -87,6 +87,11 @@ public class ShopBaseServiceTest {
 
     }
 
+    @Test
+    public void addToEsOne(){
+        shopToEsService.addToEs(42996L);
+    }
+
     /**
      * 删除shop误添加进goods的
      */

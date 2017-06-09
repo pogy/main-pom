@@ -109,7 +109,7 @@ public class H5ForWxLoginAction {
             } catch (LoginAuthException e) {
                 //如果手机账号不存在
                 if(e.getMsgback().equals(LoginErrorEnum.NO_USER)){//用户不存在
-                    model.addAttribute("errorTip","账号["+bo.getPhone()+"]不存在");
+                    model.addAttribute("errorTip","账号["+bo.getPhone()+"]暂未注册!");
                 }else if(e.getMsgback().equals(LoginErrorEnum.TO_BIND_XZUSER)){//手机H5登陆的不需要绑定
                     model.addAttribute("errorTip","星座账号没有绑定手机");
                 }

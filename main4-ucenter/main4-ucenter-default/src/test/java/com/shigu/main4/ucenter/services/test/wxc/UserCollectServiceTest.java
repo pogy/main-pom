@@ -42,7 +42,7 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration( value="/main4/spring/apache-shiro.xml" )
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class UserCollectServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(UserCollectServiceTest.class);
 

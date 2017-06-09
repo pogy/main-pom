@@ -7,7 +7,7 @@
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1495878836099" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1496654711710" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
 <script>/*============ indexV4/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1495878836099"></script>
+    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1496654711710"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -159,7 +159,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="${main_host!}contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>
@@ -556,6 +556,7 @@ var webSite = '${webSite!}';
                 </li>
             </ul>
         </div>
+        
         <div class="topBanner">
             
             <div class="slides" id="slides"> 
@@ -674,7 +675,6 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
-                
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -718,7 +718,6 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
-                
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -752,7 +751,6 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
-                
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -814,7 +812,6 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
-                
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>

@@ -1,6 +1,6 @@
 package com.shigu.main4.order.model;
 
-import com.shigu.main4.order.bo.ItemOrderBO;
+import com.shigu.main4.order.vo.ProductVO;
 
 /**
  * 购物车
@@ -12,7 +12,7 @@ public interface Cart{
      * 添加产品
      * @param pro 带sku的产品
      */
-    void addProduct(Product pro);
+    <T extends ProductVO> void addProduct(T pro);
 
     /**
      * 删除购物车中的一个产品

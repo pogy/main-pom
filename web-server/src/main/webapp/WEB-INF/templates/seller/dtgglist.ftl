@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/dtgglist.css?t=1495875883731" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/dtgglist.css?t=1496217551975" rel="stylesheet">
     
   </head>
 <body>
@@ -240,7 +240,7 @@ var webSite = '${webSite!}';
         <ul>
             <li><a class="selected dtgg"  href="${main_host!}seller/dtggapply.htm?id=1001">免费LED广告</a></li> 
             <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li> 
-            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货竞拍</a></li> 
+            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货广告</a></li> 
         </ul> 
     </div>
     
@@ -310,7 +310,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/dtgglist.js?t=1495875883731"></script>
+<script src="http://style.571xz.com/gys5/js/dtgglist.js?t=1496217551975"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

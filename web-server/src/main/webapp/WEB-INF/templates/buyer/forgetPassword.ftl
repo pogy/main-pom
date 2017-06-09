@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title></title>
+    <title>忘记密码-四季星座网</title>
   
     
     <link href="http://style.571xz.com/loginV2/css/forgetPassword.css" rel="stylesheet">
@@ -20,7 +20,6 @@
     <div class="headerContainer  layout950  clearfix">
         <a href="index.html" class="logo"></a>
         <span class="pageTag">
-            欢迎注册
         </span>
             <p class="guideInfo">已有四季星座网账号了？<a href="${main_host!}login.htm">立即登录</a></p>
     </div>
@@ -46,7 +45,7 @@
                 </div>
                 <div class="pwdValItems">
                     <div class="pwdGroup">
-                        <label>验证码：</label>
+                        <label>数字验证码：</label>
                         <input type="text" class="form-input imgValidate" maxlength="4" name="imgValidate" placeholder="右侧验证码" >
                         <img id="checkCode" src="http://www.571xz.com/IMG.htm" />
                     </div>
