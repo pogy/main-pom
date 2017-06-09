@@ -29,9 +29,6 @@ import java.util.Map;
 public class ItemOrderImpl implements ItemOrder{
 
     @Autowired
-    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
-
-    @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
 
     @Autowired
@@ -131,7 +128,7 @@ public class ItemOrderImpl implements ItemOrder{
         orderPackage.setNum(num);
         orderPackage.setMoney(metarialVO.getPrice());
         orderPackage.setOid(oid);
-        //orderPackage.setSize...  VO 中多一个size属性，bean中没有对应
+        //TODO: orderPackage.setSize...  VO 中多一个size属性，bean中没有对应
 
         itemOrderPackageMapper.insertSelective(orderPackage);
 
@@ -147,8 +144,7 @@ public class ItemOrderImpl implements ItemOrder{
     @Transactional(rollbackFor = Exception.class)
     public void addService(Long serviceId) {
         // 记录订单服务信息
-        Long senderId = selSender().getSenderId();
-        ServiceVO serviceVO = orderConstantService.selServiceById(senderId, serviceId);
+        ServiceVO serviceVO = orderConstantService.selServiceById(selSender().getSenderId(), serviceId);
         ItemOrderService itemOrderService = BeanMapper.map(serviceVO, ItemOrderService.class);
         itemOrderService.setMoney(serviceVO.getPrice());
         itemOrderService.setOid(oid);
@@ -231,6 +227,7 @@ public class ItemOrderImpl implements ItemOrder{
             sub.setRefundMoney(0L);
             sub.setSend(false);
             sub.setRefund(false);
+            sub.setOid(oid);
         }
         itemOrderSubMapper.insertListNoId(subs);
 
