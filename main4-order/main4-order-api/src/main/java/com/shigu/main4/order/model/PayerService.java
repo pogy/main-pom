@@ -11,4 +11,5 @@ public interface PayerService {
     void refund(Long payId,Long money);
     void paySure(Long applyId,String outerPid,String outerPuser,Long payMoney);
     Long payedLeft(Long payId);
+    PayApplyVO selApply(Long applyId);
 }

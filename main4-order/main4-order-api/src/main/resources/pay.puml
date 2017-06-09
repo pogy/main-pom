@@ -3,8 +3,8 @@
 interface PayerService{
 PayApplyVO payApply(Long oid,Long money,String title);
 void refund(Long payId,Long money);
-void paySure(Long appayId,String outerPid,String outerPuser,Long payMoney);
-
+void paySure(Long applyId,String outerPid,String outerPuser,Long payMoney);
+PayApplyVO selApply(Long applyId);
 }
 
 abstract class PayerServiceAble{
