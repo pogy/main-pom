@@ -37,16 +37,6 @@ public class ItemOrderPackage implements Serializable {
      */
 	private String name;
 
-    /**
-     * 
-     */
-	private String size;
-
-    /**
-     * 
-     */
-	private String color;
-
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -93,22 +83,6 @@ public class ItemOrderPackage implements Serializable {
 
 	public String getName() {
 		return this.name;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	}
-
-	public String getSize() {
-		return this.size;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-
-	public String getColor() {
-		return this.color;
 	}
 
 }

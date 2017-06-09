@@ -18,6 +18,16 @@ public class ItemOrderSub implements Serializable {
 	private Long oid;
 
     /**
+     * 产品ID
+     */
+	private Long pid;
+
+    /**
+     * sku信息
+     */
+	private Long skuId;
+
+    /**
      * 件数
      */
 	private Integer num;
@@ -63,9 +73,14 @@ public class ItemOrderSub implements Serializable {
 	private Long logisticsId;
 
     /**
-     * 星座商品ID
+     * 商品ID
      */
 	private Long goodsId;
+
+    /**
+     * 商品链接
+     */
+	private String picUrl;
 
     /**
      * 分站
@@ -73,24 +88,19 @@ public class ItemOrderSub implements Serializable {
 	private String webSite;
 
     /**
-     * 商品图片
-     */
-	private String picUrl;
-
-    /**
-     * 标题
+     * 
      */
 	private String title;
 
     /**
      * 单价
      */
-	private Long singlePrice;
+	private Long price;
 
     /**
-     * 颜色
+     * 重量
      */
-	private String color;
+	private Long weight;
 
     /**
      * 尺码
@@ -98,9 +108,9 @@ public class ItemOrderSub implements Serializable {
 	private String size;
 
     /**
-     * 单品重量，克
+     * 颜色
      */
-	private Long singleWeight;
+	private String color;
 
 	public void setSoid(Long soid) {
 		this.soid = soid;
@@ -116,6 +126,22 @@ public class ItemOrderSub implements Serializable {
 
 	public Long getOid() {
 		return this.oid;
+	}
+
+	public void setPid(Long pid) {
+		this.pid = pid;
+	}
+
+	public Long getPid() {
+		return this.pid;
+	}
+
+	public void setSkuId(Long skuId) {
+		this.skuId = skuId;
+	}
+
+	public Long getSkuId() {
+		return this.skuId;
 	}
 
 	public void setNum(Integer num) {
@@ -198,20 +224,20 @@ public class ItemOrderSub implements Serializable {
 		return this.goodsId;
 	}
 
-	public void setWebSite(String webSite) {
-		this.webSite = webSite;
-	}
-
-	public String getWebSite() {
-		return this.webSite;
-	}
-
 	public void setPicUrl(String picUrl) {
 		this.picUrl = picUrl;
 	}
 
 	public String getPicUrl() {
 		return this.picUrl;
+	}
+
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
+	}
+
+	public String getWebSite() {
+		return this.webSite;
 	}
 
 	public void setTitle(String title) {
@@ -222,20 +248,20 @@ public class ItemOrderSub implements Serializable {
 		return this.title;
 	}
 
-	public void setSinglePrice(Long singlePrice) {
-		this.singlePrice = singlePrice;
+	public void setPrice(Long price) {
+		this.price = price;
 	}
 
-	public Long getSinglePrice() {
-		return this.singlePrice;
+	public Long getPrice() {
+		return this.price;
 	}
 
-	public void setColor(String color) {
-		this.color = color;
+	public void setWeight(Long weight) {
+		this.weight = weight;
 	}
 
-	public String getColor() {
-		return this.color;
+	public Long getWeight() {
+		return this.weight;
 	}
 
 	public void setSize(String size) {
@@ -246,12 +272,12 @@ public class ItemOrderSub implements Serializable {
 		return this.size;
 	}
 
-	public void setSingleWeight(Long singleWeight) {
-		this.singleWeight = singleWeight;
+	public void setColor(String color) {
+		this.color = color;
 	}
 
-	public Long getSingleWeight() {
-		return this.singleWeight;
+	public String getColor() {
+		return this.color;
 	}
 
 }

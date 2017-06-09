@@ -69,7 +69,7 @@ public interface ItemOrder extends Order{
     void refundService(Long id,Long money);//退服务
 
     /**
-     * 全单发货
+     * 全单发货.
      */
     void sended(String courierNumber);
 
