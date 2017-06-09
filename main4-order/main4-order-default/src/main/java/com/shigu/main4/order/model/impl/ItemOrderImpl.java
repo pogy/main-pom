@@ -102,7 +102,7 @@ public class ItemOrderImpl implements ItemOrder{
         itemOrderLogisticsMapper.insertSelective(orderLogistics);
 
         // 重新计算订单总额
-        recountTotalOrderAmount(selSender().getSenderId());
+        recountTotalOrderAmount();
 
         // 子订单设置物流关联
         if (soids != null && !soids.isEmpty()) {
@@ -135,7 +135,7 @@ public class ItemOrderImpl implements ItemOrder{
 
         itemOrderPackageMapper.insertSelective(orderPackage);
 
-        recountTotalOrderAmount(senderId);
+        recountTotalOrderAmount();
     }
 
     @Override
@@ -155,14 +155,13 @@ public class ItemOrderImpl implements ItemOrder{
         itemOrderServiceMapper.insertSelective(itemOrderService);
 
         // 重新计算订单总额
-        recountTotalOrderAmount(senderId);
+        recountTotalOrderAmount();
     }
 
     /**
      * 重新计算订单总额
-     * @param senderId 发货机构ID
      */
-    private void recountTotalOrderAmount(Long senderId) {
+    private void recountTotalOrderAmount() {
         // 计算订单总额 = 子单总额 + 物流总额 + 发货服务总额 + 包材总额
         Long total = 0L;
 
@@ -235,7 +234,7 @@ public class ItemOrderImpl implements ItemOrder{
         }
         itemOrderSubMapper.insertListNoId(subs);
 
-        recountTotalOrderAmount(selSender().getSenderId());
+        recountTotalOrderAmount();
     }
 
     @Override
