@@ -17,13 +17,6 @@ public interface ItemProduct extends Product{
     List<ItemSkuVO> selSkus();
 
     /**
-     * 添加SKU
-     * @param sku
-     * @return
-     */
-    Long addSku(ItemSkuVO sku);
-
-    /**
      * 修改重量
      * @param meter
      */
