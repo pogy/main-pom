@@ -62,7 +62,7 @@ public interface ItemOrder extends Order{
     void addService(Long serviceId);//添加服务
 
     /**
-     * 退服务款
+     * 退服务款.
      * @param id 服务ID
      * @param money 退的费用
      */
@@ -81,7 +81,7 @@ public interface ItemOrder extends Order{
     void sendPart(Long logisticsId,List<Long> soids,String courierNumber);//部分发货
 
     /**
-     * 查询发件单位
+     * 查询发件单位.
      * @return
      */
     SenderVO selSender();
