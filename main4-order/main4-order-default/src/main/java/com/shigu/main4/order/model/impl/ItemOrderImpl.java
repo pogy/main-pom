@@ -1,9 +1,6 @@
 package com.shigu.main4.order.model.impl;
 
-import com.opentae.data.mall.beans.ItemOrderLogistics;
-import com.opentae.data.mall.beans.ItemOrderPackage;
-import com.opentae.data.mall.beans.ItemOrderService;
-import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
@@ -44,12 +41,20 @@ public class ItemOrderImpl implements ItemOrder{
     private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
 
     @Autowired
+    private ItemOrderSenderMapper itemOrderSenderMapper;
+
+    @Autowired
     private OrderConstantService orderConstantService;
 
     /**
      * 订单ID
      */
     private Long oid;
+
+    /**
+     * 发送单位信息
+     */
+    private SenderVO senderVO;
 
     public ItemOrderImpl(Long oid) {
         this.oid=oid;
@@ -73,7 +78,11 @@ public class ItemOrderImpl implements ItemOrder{
     @Override
     public ItemOrderVO orderInfo() {
         com.opentae.data.mall.beans.ItemOrder order = itemOrderMapper.selectByPrimaryKey(oid);
-        ItemOrderVO orderVO = BeanMapper.map(order, ItemOrderVO.class);
+        ItemOrderVO orderVO = new ItemOrderVO();
+        orderVO.setSenderId(order.getSenderId());
+        orderVO.setTotalFee(order.getTotalFee());
+        orderVO.setRefundFee(order.getRefundFee());
+        orderVO.setPayedFee(order.getPayedFee());
         orderVO.setType(OrderType.typeOf(order.getType()));
         orderVO.setOrderId(order.getOid());
         return orderVO;
@@ -128,7 +137,6 @@ public class ItemOrderImpl implements ItemOrder{
         orderPackage.setNum(num);
         orderPackage.setMoney(metarialVO.getPrice());
         orderPackage.setOid(oid);
-        //TODO: orderPackage.setSize...  VO 中多一个size属性，bean中没有对应
 
         itemOrderPackageMapper.insertSelective(orderPackage);
 
@@ -207,7 +215,11 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Override
     public SenderVO selSender() {
-        return null;
+        if (senderVO == null) {
+            ItemOrderSender itemOrderSender = itemOrderSenderMapper.selectByPrimaryKey(orderInfo().getSenderId());
+            senderVO = BeanMapper.map(itemOrderSender, SenderVO.class);
+        }
+        return senderVO;
     }
 
     @Override

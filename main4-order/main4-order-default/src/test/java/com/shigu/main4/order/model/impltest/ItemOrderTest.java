@@ -6,10 +6,7 @@ import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * ItemOrder Test
@@ -20,8 +17,13 @@ public class ItemOrderTest extends BaseTest {
     @Autowired
     private ItemOrderService itemOrderService;
 
+    private ItemOrder order() {
+        return SpringBeanFactory.getBean(ItemOrder.class, 1L);
+    }
+
     @Test
     public void selLogisticses() throws Exception {
+
     }
 
     @Test
@@ -42,6 +44,7 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void addPackage() throws Exception {
+        order().addPackage(1L, 5);
     }
 
     @Test
