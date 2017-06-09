@@ -6,19 +6,9 @@ import java.io.Serializable;
  * 物流公司
  * Created by zhaohongbo on 17/6/1.
  */
-public class LogisticsCompanyVO implements Serializable{
-    private Long id;
+public class LogisticsCompanyVO extends OrderConstantVo implements Serializable{
 
     private String name;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
