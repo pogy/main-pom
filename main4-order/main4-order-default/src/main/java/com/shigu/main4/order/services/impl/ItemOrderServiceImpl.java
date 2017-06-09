@@ -43,25 +43,31 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
         // a, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();
-//        itemOrder.addLogistics(Arrays.asList(order.getOid()), );
+//        itemOrder.addLogistics(logistics.getArrays.asList(order.getOid()), );
 
         // b, 添加服务
-        for (Long sid : orderBO.getServiceIds()) {
-            itemOrder.addService(sid);
+        if (orderBO.getServiceIds() != null) {
+            for (Long sid : orderBO.getServiceIds()) {
+                itemOrder.addService(sid);
+            }
         }
 
         // c, 添加包材
-        for (PackageBO packageBO : orderBO.getPackages()) {
-            itemOrder.addPackage(packageBO.getMetarialId(), packageBO.getNum());
+        if (orderBO.getPackages() != null) {
+            for (PackageBO packageBO : orderBO.getPackages()) {
+                itemOrder.addPackage(packageBO.getMetarialId(), packageBO.getNum());
+            }
         }
 
         // d, 添加子订单
-        List<SubOrderVO> subOrders = new ArrayList<>();
-        for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
+        if (orderBO.getSubOrders() != null) {
+            List<SubOrderVO> subOrders = new ArrayList<>();
+            for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
 //            subOrders.add(someThing)
+            }
+            itemOrder.addSubOrder(subOrders);
         }
-        itemOrder.addSubOrder(subOrders);
-        return null;
+        return order.getOid();
     }
 
     @Override
