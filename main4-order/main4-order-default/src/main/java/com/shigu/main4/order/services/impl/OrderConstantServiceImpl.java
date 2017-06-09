@@ -24,6 +24,9 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     @Autowired
     private OrderConstantMapper orderConstantMapper;
 
+    /**
+     * 订单常量
+     */
     private enum OrderConstantType {
         LOGISTICS(1, LogisticsCompanyVO.class),
         SERVICE(2, ServiceVO.class),
@@ -41,10 +44,10 @@ public class OrderConstantServiceImpl implements OrderConstantService {
                 if (constantType.type == type)
                     return constantType;
             }
-            throw new IllegalArgumentException(String.format("OrderConstant type[%d] doesn't exist.", type));
+            throw new IllegalArgumentException(String.format("OrderConstant type[%d] does not exist.", type));
         }
 
-         void put(Long senderId, OrderConstant constant) {
+        void put(Long senderId, OrderConstant constant) {
             List<OrderConstantVo> orderConstants = orderConstantsMap.get(senderId);
             if (orderConstants == null) {
                 orderConstants = new ArrayList<>();
@@ -87,20 +90,20 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     /**
      * 查询服务
      *
-     * @param senderId
-     * @return
+     * @param senderId 发送单位ID
+     * @return 发送单位所有服务
      */
     @Override
     public List<ServiceVO> selServices(Long senderId) {
-        return null;
+        return OrderConstantType.SERVICE.all(senderId);
     }
 
     /**
      * 按服务ID查服务
      *
-     * @param senderId
-     * @param id
-     * @return
+     * @param senderId 发送单位ID
+     * @param id 服务ID
+     * @return 某发送单位的某服务
      */
     @Override
     public ServiceVO selServiceById(Long senderId, Long id) {
@@ -110,46 +113,46 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     /**
      * 查询所有包材
      *
-     * @param senderId
-     * @return
+     * @param senderId 发送单位ID
+     * @return 发送单位全部包材
      */
     @Override
     public List<MetarialVO> selMetarials(Long senderId) {
-        return null;
+        return OrderConstantType.PACKAGE.all(senderId);
     }
 
     /**
      * 按包材ID查包材
      *
-     * @param senderId
-     * @param id
-     * @return
+     * @param senderId 发送单位ID
+     * @param id 包材ID
+     * @return 某发送单位的某包材
      */
     @Override
     public MetarialVO selMetarialById(Long senderId, Long id) {
-        return null;
+        return OrderConstantType.PACKAGE.get(senderId, id);
     }
 
     /**
      * 查询所有物流信息
      *
-     * @param senderId
-     * @return
+     * @param senderId 发送单位ID
+     * @return 发送单位支持的全部物流
      */
     @Override
     public List<LogisticsCompanyVO> selLogistics(Long senderId) {
-        return null;
+        return OrderConstantType.LOGISTICS.all(senderId);
     }
 
     /**
      * 按物流信息ID查物流
      *
-     * @param senderId
-     * @param id
-     * @return
+     * @param senderId 发送单位ID
+     * @param id 物流ID
+     * @return 某发送单位的某物流
      */
     @Override
     public LogisticsCompanyVO selLogisticsById(Long senderId, Long id) {
-        return null;
+        return OrderConstantType.LOGISTICS.get(senderId, id);
     }
 }
