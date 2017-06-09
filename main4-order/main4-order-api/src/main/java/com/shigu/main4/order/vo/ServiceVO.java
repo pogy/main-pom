@@ -6,11 +6,7 @@ import java.io.Serializable;
  * 服务种类
  * Created by zhaohongbo on 17/5/31.
  */
-public class ServiceVO implements Serializable{
-    /**
-     * id
-     */
-    private Long id;
+public class ServiceVO extends OrderConstantVo implements Serializable{
     /**
      * 姓名
      */
@@ -30,14 +26,6 @@ public class ServiceVO implements Serializable{
 
     public void setDetail(String detail) {
         this.detail = detail;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

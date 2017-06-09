@@ -11,6 +11,20 @@ import java.util.List;
  * Created by zhaohongbo on 17/6/2.
  */
 public interface OrderConstantService {
+
+    /**
+     * 物流类型
+     */
+    int LOGISTICS_TYPE = 1;
+    /**
+     * 服务类型
+     */
+    int SERVICE_TYPE = 2;
+
+    /**
+     * 包材类型
+     */
+    int PACKAGE_TYPE = 3;
     /**
      * 初始化
      */
