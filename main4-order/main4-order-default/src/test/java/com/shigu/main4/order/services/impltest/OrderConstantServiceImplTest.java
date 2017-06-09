@@ -1,4 +1,4 @@
-package com.shigu.main4.order.model.impltest;
+package com.shigu.main4.order.services.impltest;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.OrderConstant;

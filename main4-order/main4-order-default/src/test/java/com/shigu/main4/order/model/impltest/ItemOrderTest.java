@@ -7,6 +7,7 @@ import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * ItemOrder Test
@@ -18,7 +19,7 @@ public class ItemOrderTest extends BaseTest {
     private ItemOrderService itemOrderService;
 
     private ItemOrder order() {
-        return SpringBeanFactory.getBean(ItemOrder.class, 1L);
+        return SpringBeanFactory.getBean(ItemOrder.class, 5L);
     }
 
     @Test
@@ -43,8 +44,10 @@ public class ItemOrderTest extends BaseTest {
     }
 
     @Test
+    @Transactional
     public void addPackage() throws Exception {
-        order().addPackage(1L, 5);
+
+        order().addPackage(29L, 5);
     }
 
     @Test

@@ -137,7 +137,7 @@ public class ItemOrderImpl implements ItemOrder{
         orderPackage.setNum(num);
         orderPackage.setMoney(metarialVO.getPrice());
         orderPackage.setOid(oid);
-
+        orderPackage.setMetarialId(metarialId);
         itemOrderPackageMapper.insertSelective(orderPackage);
 
         recountTotalOrderAmount();
@@ -234,7 +234,7 @@ public class ItemOrderImpl implements ItemOrder{
         for (ItemOrderSub sub : subs) {
             sub.setDistributionNum(0);
             // 应付总价 产品单价 X 数量
-            sub.setShouldPayMoney(sub.getSinglePrice() * sub.getNum());
+            sub.setShouldPayMoney(sub.getPrice() * sub.getNum());
             sub.setPayMoney(0L);
             sub.setRefundMoney(0L);
             sub.setSend(false);

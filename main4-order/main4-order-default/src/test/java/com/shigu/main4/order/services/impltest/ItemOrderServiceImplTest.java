@@ -33,6 +33,7 @@ public class ItemOrderServiceImplTest extends BaseTest {
     }
 
     @Test
+    @Transactional
     public void createOrder() throws Exception {
         Long sender = createSender("星帮代发");
 
