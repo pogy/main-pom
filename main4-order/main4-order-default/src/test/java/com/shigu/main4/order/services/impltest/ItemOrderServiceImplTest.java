@@ -23,23 +23,14 @@ public class ItemOrderServiceImplTest extends BaseTest {
     @Autowired
     private ItemOrderSenderMapper itemOrderSenderMapper;
 
-    private Long createSender(String name) {
-        ItemOrderSender sender = new ItemOrderSender();
-        sender.setSenderName(name);
-        sender.setTopic("XB");
-        sender.setType(1);
-        itemOrderSenderMapper.insertSelective(sender);
-        return sender.getSenderId();
-    }
 
     @Test
-    @Transactional
+//    @Transactional
     public void createOrder() throws Exception {
-        Long sender = createSender("星帮代发");
 
         ItemOrderBO orbo = new ItemOrderBO();
         orbo.setWebSite("hz");
-        orbo.setSenderId(sender);
+        orbo.setSenderId(1L);
         Long order = itemOrderService.createOrder(orbo);
 
         ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, order);

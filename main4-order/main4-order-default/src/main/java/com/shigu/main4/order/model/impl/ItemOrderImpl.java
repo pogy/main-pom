@@ -131,9 +131,9 @@ public class ItemOrderImpl implements ItemOrder{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addPackage(Long metarialId,Integer num) {
-        Long senderId = selSender().getSenderId();
-        MetarialVO metarialVO = orderConstantService.selMetarialById(senderId, metarialId);
+        MetarialVO metarialVO = orderConstantService.selMetarialById(selSender().getSenderId(), metarialId);
         ItemOrderPackage orderPackage = BeanMapper.map(metarialVO, ItemOrderPackage.class);
+        orderPackage.setId(null);
         orderPackage.setNum(num);
         orderPackage.setMoney(metarialVO.getPrice());
         orderPackage.setOid(oid);

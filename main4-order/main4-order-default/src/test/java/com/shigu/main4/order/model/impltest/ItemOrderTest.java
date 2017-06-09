@@ -19,7 +19,7 @@ public class ItemOrderTest extends BaseTest {
     private ItemOrderService itemOrderService;
 
     private ItemOrder order() {
-        return SpringBeanFactory.getBean(ItemOrder.class, 5L);
+        return SpringBeanFactory.getBean(ItemOrder.class, 2L);
     }
 
     @Test
@@ -44,10 +44,11 @@ public class ItemOrderTest extends BaseTest {
     }
 
     @Test
-    @Transactional
+//    @Transactional
     public void addPackage() throws Exception {
 
-        order().addPackage(29L, 5);
+        order().addPackage(1L, 5);
+        show(order().orderInfo());
     }
 
     @Test
