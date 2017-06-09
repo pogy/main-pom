@@ -8,7 +8,8 @@ import java.util.List;
  * 商品类别的产品
  * Created by zhaohongbo on 17/6/1.
  */
-public interface ItemProduct {
+public interface ItemProduct extends Product{
+
     /**
      * 查询SKU
      * @return

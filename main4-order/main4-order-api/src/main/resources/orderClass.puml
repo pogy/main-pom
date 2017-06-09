@@ -34,7 +34,7 @@ void sendPart(Long logisticsId,List<Long> soids,String courierNumber);//部分�
 
 void sended(String courierNumber);//全单发货
 
--SenderVO selSender();//发件单位
+SenderVO selSender();//发件单位
 }
 
 interface RechangeOrder{

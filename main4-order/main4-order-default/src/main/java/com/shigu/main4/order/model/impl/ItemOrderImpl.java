@@ -141,6 +141,11 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
+    public SenderVO selSender() {
+        return null;
+    }
+
+    @Override
     public PayApplyVO payApply(PayType payType) {
         return null;
     }
