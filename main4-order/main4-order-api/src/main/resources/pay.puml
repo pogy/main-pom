@@ -1,9 +1,25 @@
 @startuml
 
 interface PayerService{
-PayApplyVO payApply();
+PayApplyVO payApply(Long oid,Long money,String title);
 void refund(Long payId,Long money);
-void paySure();
+void paySure(Long appayId);
 }
+
+class WxPayerServiceImpl{
+
+}
+
+class AliPayerServiceImpl{
+
+}
+
+class XzPayerServiceImpl{
+
+}
+
+PayerService <|-- WxPayerServiceImpl
+PayerService <|-- AliPayerServiceImpl
+PayerService <|-- XzPayerServiceImpl
 
 @enduml
