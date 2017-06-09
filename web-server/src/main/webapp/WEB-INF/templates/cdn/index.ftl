@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1496283089063" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1496989675264" rel="stylesheet">
     
   </head>
 <body>
@@ -136,7 +136,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>
@@ -408,7 +408,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1496283089063"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1496989675264"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/goodsDataPackageinit.css?t=1494298231290" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/goodsDataPackageinit.css?t=1496989631444" rel="stylesheet">
     
   </head>
 <body>
@@ -128,7 +128,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -165,6 +168,14 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="header">
     <div class="layout">
         <a class="logo iconfont" href="http://www.571xz.com">&#xe653;</a>
@@ -213,6 +224,8 @@
             <div class="splitline"></div>
             <div class="tabbutton selected"><a href="goodsDataPackageinit.htm">已生成的数据包</a></div>
         </div>
+    
+        
         
         
         
@@ -346,7 +359,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/goodsDataPackageinit.js?t=1494298231290"></script>
+<script src="http://style.571xz.com/fxs2/js/goodsDataPackageinit.js?t=1496989631444"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
