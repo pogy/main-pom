@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/storenum.css?t=1497329630297" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/storenum.css?t=1497346957185" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/storenum.js?t=1497329630297"></script>
+    <script src="http://style.571xz.com/searchV5/js/storenum.js?t=1497346957185"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -245,9 +245,9 @@ var webSite = '${webSite!}';
                 <#elseif webSite == 'wa'>
                     <li><a href="http://www.571xz.com/storelist.htm?webSite=wa">企业列表</a></li>
                 <#elseif webSite == 'cs'>
-                    <li><a href="http://cs.571xz.com/market.htm?mid=43">逛市场</a></li>
+                    <li><a href="http://${webSite!}.571xz.com/market.htm?mid=43">逛市场</a></li>
                 <#elseif webSite == 'ss'>
-                    <li><a href="http://ss.571xz.com/huoyuan/index.html">逛市场</a></li>
+                    <li><a href="http://${webSite!}.571xz.com/market.htm?mid=62">逛市场</a></li>
                 <#elseif webSite == 'bj'>
                     <li><a href="http://bj.571xz.com/huoyuan/index.html">逛市场</a></li>
                 <#elseif webSite == 'gz'>
