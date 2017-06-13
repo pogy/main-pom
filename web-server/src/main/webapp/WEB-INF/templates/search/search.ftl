@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/search.css?t=1496988795438" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/search.css?t=1497329630983" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/search.js?t=1496988795438"></script>
+    <script src="http://style.571xz.com/searchV5/js/search.js?t=1497329630983"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -244,12 +244,18 @@ var webSite = '${webSite!}';
                 <#elseif webSite == 'wa'>
                     <li><a href="http://www.571xz.com/storelist.htm?webSite=wa">企业列表</a></li>
                 <#elseif webSite == 'cs'>
-                    <li><a href="http://jx.571xz.com/market.htm?mid=43">逛市场</a></li>
+                    <li><a href="http://cs.571xz.com/market.htm?mid=43">逛市场</a></li>
+                <#elseif webSite == 'ss'>
+                    <li><a href="http://ss.571xz.com/huoyuan/index.html">逛市场</a></li>
+                <#elseif webSite == 'bj'>
+                    <li><a href="http://bj.571xz.com/huoyuan/index.html">逛市场</a></li>
+                <#elseif webSite == 'gz'>
+                    <li><a href="http://gz.571xz.com/huoyuan/index.html">逛市场</a></li>
                 <#else>
-                <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
+                    <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 </#if>
                 <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite !="jx" && webSite != 'wa'>
+                <#if webSite =="hz" || webSite == 'cs'>
                 <li ><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
                 <#if webSite == "hz">
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
