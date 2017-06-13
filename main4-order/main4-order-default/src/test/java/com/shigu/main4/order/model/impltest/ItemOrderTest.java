@@ -57,6 +57,8 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void addService() throws Exception {
+        order().addService(1L);
+        show(order().orderInfo());
     }
 
     @Test

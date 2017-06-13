@@ -156,6 +156,7 @@ public class ItemOrderImpl implements ItemOrder{
         ItemOrderService itemOrderService = BeanMapper.map(serviceVO, ItemOrderService.class);
         itemOrderService.setMoney(serviceVO.getPrice());
         itemOrderService.setOid(oid);
+        itemOrderService.setServiceId(serviceId);
         itemOrderServiceMapper.insertSelective(itemOrderService);
 
         // 重新计算订单总额
