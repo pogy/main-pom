@@ -14,7 +14,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/contactV1/css/contact.css?v=1496896129841" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/contactV1/css/contact.css?v=2017060901" rel="stylesheet">
     
 
     
@@ -26,9 +26,11 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/contactV1/js/contact.js?v=1496896129841"></script>
+    <script src="http://style.571xz.com/v2/contactV1/js/contact.js?v=2017060901"></script>
 </head>
 <body>
+
+
 
 <div class="topbar">
     <div class="layout">
@@ -129,7 +131,7 @@
                 </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                 </li>
                 <li>
                     <div class="cnBox pr">
@@ -269,7 +271,7 @@ var webSite = '${webSite!}';
             <div class="linkBox linkAlWW1">
                 <h3 class="title">官方旺旺1</h3>
                 <p class="desc">${qiye_wwFir!}</p>
-                <a class="linkBtn" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${qiye_wwFir!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8">
+                <a class="linkBtn" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${qiye_wwFir!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank">
                     <i class="icon-s-aliww"></i>
                     在线咨询
                 </a>
@@ -277,7 +279,7 @@ var webSite = '${webSite!}';
             <div class="linkBox linkAlWW2">
                 <h3 class="title">官方旺旺2</h3>
                 <p class="desc">${qiye_wwSec!}</p>
-                <a class="linkBtn" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${qiye_wwSec!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8">
+                <a class="linkBtn" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${qiye_wwSec!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank">
                     <i class="icon-s-aliww"></i>
                     在线咨询
                 </a>
@@ -372,4 +374,3 @@ var webSite = '${webSite!}';
 
 
 <!--省略end，让浏览器自动添加-->
-
