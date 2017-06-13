@@ -2,6 +2,7 @@ package com.shigu.main4.item.services;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ESGoods;
+import com.opentae.data.mall.beans.SearchCategorySub;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.SearchCategorySubExample;
 import com.opentae.data.mall.interfaces.SearchCategoryMapper;
@@ -69,7 +70,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
     @Override
     public ShiguAggsPager searchItem(
             // 基础查询
-            String keyword,String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds,
+            String keyword,String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid,
             // 价格区间
             Double priceFrom, Double priceTo,
             // 时间区间
@@ -116,6 +117,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         }
         if (cids != null && !cids.isEmpty()) {
             filterQuery.must(QueryBuilders.termsQuery("cid", cids));
+        }
+        if (StringUtils.isNotBlank(sid)) {
+            filterQuery.must(QueryBuilders.matchQuery("sids", sid));
         }
         if(filterQuery.hasClauses()){
             sb.setPostFilter(filterQuery);
