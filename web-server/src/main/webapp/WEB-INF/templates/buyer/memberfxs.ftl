@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1494821871702" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1496989630913" rel="stylesheet">
     
   </head>
 <body>
@@ -128,7 +128,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -263,7 +266,15 @@ var webSite = '${webSite!}';
         <p class="button-box"><button id="showmore" class="button">点击加载更多</button></p>
     </div>
     <input type=hidden id="userId" value="${session_user_redis__.userId!}">
-    
+    <script>/*============ xz/huodong#imgtips1 BEGIN ============*/
+
+var imgsrc = '${imgsrc!}';
+var tHref = '${tHref!}';
+
+/*============ xz/huodong#imgtips1 END ============*/
+
+
+</script>
     </div>
 </div>
 <div class="footer">
@@ -297,7 +308,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1494821871702"></script>
+<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1496989630913"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

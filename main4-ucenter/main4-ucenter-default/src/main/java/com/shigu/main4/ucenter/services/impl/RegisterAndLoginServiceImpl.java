@@ -69,10 +69,10 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
      * @return
      * @throws Exception
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Long registerByPhone(RegisterUser user) throws Main4Exception {
-        if(user == null || StringUtils.isEmpty(user.getTelephone()) || StringUtils.isEmpty(user.getUserNick()) ||
+        if(user == null || StringUtils.isEmpty(user.getTelephone()) ||
                 StringUtils.isEmpty(user.getPassword())){
             return null;
         }
@@ -82,7 +82,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             return null;
         }
         MemberUser memberUser = new MemberUser();
-        memberUser.setUserNick(user.getUserNick());
+        memberUser.setUserNick(user.getTelephone());
         memberUser.setUserName(user.getTelephone());
         memberUser.setLoginPhone(user.getTelephone());
         memberUser.setRegTime(new Date());
@@ -182,7 +182,7 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
      * @param tempUser 第三方用户信息
      * @return
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean bind3RdUser(String phone, Rds3TempUser tempUser) throws Main4Exception{
         if(StringUtils.isEmpty(phone) || tempUser == null || StringUtils.isEmpty(tempUser)
@@ -292,6 +292,14 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
                     throw new Bind3RdsException("本淘宝账号[" + tempUser.getSubUserName() + "]对应店铺已经绑给其它用户，请先登陆其它用户解绑或联系客服处理");
                 }
                 break;
+            }
+            //查出用户名下的店铺非淘宝店铺
+            shopExample.clear();
+            shopExample.createCriteria().andTbNickIsNull().andShopStatusEqualTo(0).andUserIdEqualTo(userId);
+            List<ShiguShop> untbShops=shiguShopMapper.selectByExample(shopExample);
+            for(ShiguShop shop:untbShops){
+                shop.setTbNick(tempUser.getSubUserName());
+                shiguShopMapper.updateByPrimaryKeySelective(shop);
             }
         }
         return true;

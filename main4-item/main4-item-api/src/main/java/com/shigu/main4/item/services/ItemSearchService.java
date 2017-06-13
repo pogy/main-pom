@@ -35,7 +35,7 @@ public interface ItemSearchService {
      * @param pageSize 每页条数
      * @return
      */
-    ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds,
+    ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid,
                               Double priceFrom, Double priceTo,
                               Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs);
 
@@ -60,6 +60,6 @@ public interface ItemSearchService {
      * @param parentCateValue
      * @return
      */
-    List<CategoryValue> selSubCategory(String parentCateValue, SearchCategory category);
+    List<CategoryValue> selSubCategory(String parentCateValue, SearchCategory category, String website);
 
 }

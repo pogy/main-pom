@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/indexgglist.css?t=1494492248847" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/indexgglist.css?t=1496989470046" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.66/gys4/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/gys5/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -128,7 +128,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -235,21 +238,21 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >广告派位</a></li> 
+            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
             <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li> 
-            <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
+            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货广告</a></li> 
         </ul> 
     </div>
     
     <div class="content shadow-box">
         <h3 class="title">广告区域</h3>
-        <a href="${main_host!}seller/dtgglistFinish.htm" target="_blank" class="searAllRe">查看所有结果 ＞</a>
-        <div class="adsBoxs clearfix">
+        <a href="${main_host!}seller/dtgglistFinish.htm" target="_blank" class="searAllRe">查看上一期结果 ＞</a>
+        <div class="goatBoxs clearfix">
             <#if (adsBoxList?size) gt 0>
             <#list adsBoxList as item>
-            <div class="adsBox">
-                <h3 class="adsTitle">${item.title!}</h3>
-                <ul class="adsDetails">
+            <div class="goatBox">
+                <h3 class="goatTitle">${item.title!}</h3>
+                <ul class="goatDetails">
                     <li>
                         <span class="detailName">数量：</span>
                         <span class="detailVaule">${item.count!}</span>
@@ -316,7 +319,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/indexgglist.js?t=1494492248847"></script>
+<script src="http://style.571xz.com/gys5/js/indexgglist.js?t=1496989470046"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

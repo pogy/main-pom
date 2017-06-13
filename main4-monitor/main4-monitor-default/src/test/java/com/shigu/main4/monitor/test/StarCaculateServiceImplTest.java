@@ -33,7 +33,7 @@ public class StarCaculateServiceImplTest {
     RedisIO redisIO;
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void testAddBrowser() {
 
         // 默认100次，第101次触发加星操作
@@ -60,7 +60,7 @@ public class StarCaculateServiceImplTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void testAddStar() {
 
         ShiguShopLicense shopLicense = new ShiguShopLicense();

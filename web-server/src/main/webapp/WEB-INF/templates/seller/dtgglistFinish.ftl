@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys4/css/dtgglistFinish.css?t=1494492247677" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/dtgglistFinish.css?t=1496989476224" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.66/gys4/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/gys5/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -128,7 +128,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -235,15 +238,15 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>营销管理</h2>
         <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >广告派位</a></li> 
+            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-            <li><a href="https://shop121675953.taobao.com" target="_blank">发现好货竞拍</a></li> 
+            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货广告</a></li> 
         </ul> 
     </div>
     
     <div class="content shadow-box">
         
-        <p class="resultInfo">本次活动已结束！<#if (indexggList?size) gt 0>派位结果如下：</#if></p>
+        <p class="resultInfo">第${indexggQ!}期活动已结束！<#if (indexggList?size) gt 0>派位结果如下：</#if></p>
             <#if indexggList?? && (indexggList?size) gt 0>
                 <#list indexggList as indexgg>
                 <h3 class="syIntro">${indexgg.title!}</h3>
@@ -310,7 +313,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys4/js/dtgglistFinish.js?t=1494492247677"></script>
+<script src="http://style.571xz.com/gys5/js/dtgglistFinish.js?t=1496989476224"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

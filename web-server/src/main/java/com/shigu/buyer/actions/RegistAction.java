@@ -21,10 +21,11 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
@@ -49,15 +50,14 @@ public class RegistAction {
     @Autowired
     RegisterAndLoginService registerAndLoginService;
 
-    String ftlDir="buyer";
     /**
      * 用户注册
+     *
      * @return
      */
-    @RequestMapping("regedit")
-    public String regedit(){
-
-        return ftlDir+"/regedit";
+    @RequestMapping(value = "regedit", method = RequestMethod.GET)
+    public String regedit() {
+        return "buyer/regedit";
     }
 
     /**
@@ -79,24 +79,24 @@ public class RegistAction {
      * 注册手机验证
      * @return
      */
-    @RequestMapping("registPhoneVerification")
+    @RequestMapping("getMsgCode")
     @ResponseBody
     public JSONObject registPhoneVerification(@Valid RegistVerifyBO bo, BindingResult result, HttpSession session) throws JsonErrException {
         if(result.hasErrors()){
-            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
+            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage()).addErrMap("ele", "msgValidate");
         }
         //如果手机已经被注册,直接返回
-        if(!registerAndLoginService.userCanRegist(bo.getPhone(),LoginFromType.PHONE)){
-            throw new JsonErrException("手机号已经被注册");
+        if(!registerAndLoginService.userCanRegist(bo.getTelephone(),LoginFromType.PHONE)){
+            throw new JsonErrException("手机号已经注册，请尝试直接使用手机登录").addErrMap("ele", "telephone");
         }
         String imgcode= (String) session.getAttribute(SessionEnum.SEND_REGISTER_MSG.getValue());
-        if(imgcode==null||!imgcode.equals(bo.getAuthCode())){//图片验证通不过
-            throw new JsonErrException("图片验证码不正确");
+        if(imgcode==null||!imgcode.equals(bo.getImgValidate())){//图片验证通不过
+            throw new JsonErrException("图片验证码不正确").addErrMap("ele", "msgValidate");
         }
         String code=RedomUtil.redomNumber(6);
-        sendMsgService.sendRegist(bo.getPhone(),code);
+        sendMsgService.sendVerificationCode(bo.getTelephone(),code);
 //        System.out.println(code);
-        session.setAttribute(SessionEnum.PHONE_REGISTER_MSG.getValue(),new PhoneVerify(bo.getPhone(),code));
+        session.setAttribute(SessionEnum.PHONE_REGISTER_MSG.getValue(),new PhoneVerify(bo.getTelephone(),code));
         return JsonResponseUtil.success();
     }
 
@@ -104,8 +104,8 @@ public class RegistAction {
      * 用户注册信息提交
      * @return
      */
-    @RequestMapping("jsonregeditSubmit")
     @ResponseBody
+    @RequestMapping(value = "regedit", method = RequestMethod.POST)
     public JSONObject jsonregeditSubmit(@Valid RegistBO bo, BindingResult result, HttpSession session,
                                         HttpServletRequest request) throws JsonErrException {
         if(result.hasErrors()){
@@ -113,24 +113,23 @@ public class RegistAction {
         }
         //认证手机
         PhoneVerify pv= (PhoneVerify) session.getAttribute(SessionEnum.PHONE_REGISTER_MSG.getValue());
-        if(!bo.getPhone().equals(pv.getPhone())||!bo.getPhoneCode().equals(pv.getVerify())){
-            throw new JsonErrException("手机验证码错误").addErrMap("OK","手机验证码错误");
+        if(!bo.getTelephone().equals(pv.getPhone())||!bo.getMsgValidate().equals(pv.getVerify())){
+            throw new JsonErrException("手机验证码错误").addErrMap("ele", "msgValidate");
         }
         RegisterUser registerUser=new RegisterUser();
-        registerUser.setUserNick(bo.getUserNick());
         registerUser.setPassword(bo.getPassword());
-        registerUser.setTelephone(bo.getPhone());
+        registerUser.setTelephone(bo.getTelephone());
         try {
             if(registerAndLoginService.registerByPhone(registerUser)==null){
-                throw new JsonErrException("用户已经存在").addErrMap("OK","用户已经存在");
+                throw new JsonErrException("用户已经存在");
             }
         } catch (Main4Exception e) {
-            throw new JsonErrException(e.getMessage());
+            throw new JsonErrException(e.getMessage()).addErrMap("ele","telephone");
         }
         //成功以后,需要登陆一下
         Subject currentUser = SecurityUtils.getSubject();
         CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
-                bo.getPhone(), bo.getPassword(), false, request.getRemoteAddr(), "", UserType.MEMBER);
+                bo.getTelephone(), bo.getPassword(), false, request.getRemoteAddr(), "", UserType.MEMBER);
         //星座用户登陆
         token.setLoginFromType(LoginFromType.PHONE);
         token.setRememberMe(true);
@@ -141,4 +140,23 @@ public class RegistAction {
         }
         return JsonResponseUtil.success().element("OK","OK");
     }
+
+    /**
+     * 隐私政策
+     */
+    @RequestMapping("privacy")
+    public String privacy(Model model){
+        model.addAttribute("webSite", "hz");
+        return "buyer/privacy";
+    }
+
+    /**
+     * 服务条款
+     */
+    @RequestMapping("contract")
+    public String contract(Model model){
+        model.addAttribute("webSite", "hz");
+        return "buyer/contract";
+    }
+
 }

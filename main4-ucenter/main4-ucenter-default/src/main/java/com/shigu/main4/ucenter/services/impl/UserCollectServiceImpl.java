@@ -87,7 +87,7 @@ public class UserCollectServiceImpl implements UserCollectService {
      * @return
      */
     @Override
-    public ShiguPager<ItemCollectVO> selItemCollections(Long userId, String webSite, int pageNo, int pageSize) {
+    public ShiguPager<ItemCollectVO> selItemCollections(Long userId,String keyword, String webSite, int pageNo, int pageSize) {
         ShiguPager<ItemCollectVO> pager = new ShiguPager<>();
         if (pageNo < 1)
             pageNo = 1;
@@ -100,12 +100,12 @@ public class UserCollectServiceImpl implements UserCollectService {
         if (userId == null)
             return pager;
 
-        int count = shiguGoodsCollectMapper.countTinyGoodsCollect(userId, webSite);
+        int count = shiguGoodsCollectMapper.countTinyGoodsCollect(userId,keyword, webSite);
         pager.calPages(count, pageSize);
         if (count > 0) {
             List<TinyItemCollect> shiguGoodsCollects
                     = shiguGoodsCollectMapper.tinyGoodsCollect(
-                            userId, webSite, (pageNo - 1) * pageSize, pageSize);
+                            userId,keyword , webSite, (pageNo - 1) * pageSize, pageSize);
             pager.setContent(BeanMapper.mapList(shiguGoodsCollects, ItemCollectVO.class));
         }
         return pager;
@@ -217,7 +217,8 @@ public class UserCollectServiceImpl implements UserCollectService {
         String video = "";//视频
         // 销售属性组合
         TaobaoSkuExample example_ts = new TaobaoSkuExample();
-        example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
+        example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1IsNull();
+        example_ts.or().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
         example_ts.setOrderByClause("properties asc");
         List<TaobaoSku> list_ts = taobaoSkuMapper.selectByExample(example_ts);////淘宝SKU
         String skuProps = "";//sku组合属性

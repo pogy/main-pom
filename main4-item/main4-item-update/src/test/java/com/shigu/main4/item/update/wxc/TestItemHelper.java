@@ -18,9 +18,12 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.*;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by wxc on 2017/3/1.
@@ -218,5 +221,14 @@ public class TestItemHelper extends BaseSpringTest {
         extendss.setGoodsId(654551L);
         extendss.setWebSite("wqsda");
         System.out.println(new ItemAddOrUpdateServiceImpl().objectIsNotBlank(extendss));
+    }
+
+    @Test
+    @Transactional(rollbackFor = Exception.class)
+    public void testEsGoodsHasStyle(){
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setGoodsId(20344235L);
+        tiny.setWebSite("hz");
+        assertNotNull(esGoodsService.createEsGoods(shiguGoodsTinyMapper.selectByPrimaryKey(tiny)).getSids());
     }
 }

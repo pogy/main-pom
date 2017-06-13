@@ -93,13 +93,13 @@ public class TodayNewGoodsService {
      * @return
      */
     public ShiguPager<GoodsInSearch> selGoodsNew(NewGoodsBO bo){
-        String realCid=selRealCid(bo.getCid());
+        String realCid = selRealCid(bo.getCid());
         Long realCidnum=null;
-            if(realCid.equals("大码")||realCid.equals("情侣")){
-                bo.setKeyword(realCid);
-            }else{
-                realCidnum=Long.valueOf(realCid);
-            }
+        if(realCid.equals("大码")||realCid.equals("情侣")){
+            bo.setKeyword(realCid);
+        }else{
+            realCidnum=Long.valueOf(realCid);
+        }
         Calendar cal=Calendar.getInstance();
         Date to=cal.getTime();
         cal.set(Calendar.HOUR_OF_DAY,0);
@@ -108,6 +108,22 @@ public class TodayNewGoodsService {
         Date from=cal.getTime();
         return goodsSelFromEsService.selGoodsInSearch(bo.getKeyword(),bo.getWebSite(),realCidnum,null,from,to,bo);
     }
+
+    /**
+     * 查今日新品
+     * @param bo
+     * @return
+     */
+    public ShiguPager<GoodsInSearch> selGoodsNewForCid(NewGoodsBO bo){
+        Calendar cal=Calendar.getInstance();
+        Date to=cal.getTime();
+        cal.set(Calendar.HOUR_OF_DAY,0);
+        cal.set(Calendar.MINUTE,0);
+        cal.set(Calendar.SECOND,0);
+        Date from=cal.getTime();
+        return goodsSelFromEsService.selGoodsInSearch(bo.getKeyword(),bo.getWebSite(),null,null,from,to,bo);
+    }
+
 
     /**
      * 查搜索顶类目选择

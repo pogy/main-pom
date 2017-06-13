@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/fenxiaoZhanghao.css" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/fenxiaoZhanghao.css?t=1496989629868" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/fxs2/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/fxs2/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -87,10 +87,10 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="#">
+                        <a href="${main_host!}carts.htm">
                             <i class="cgcatIcon"></i>
                             <span>购物车</span>
-                            <em class="cgNum">0</em>
+                            <em class="cgNum"></em>
                         </a>
                     </li>
                     <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
@@ -128,7 +128,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -165,6 +168,14 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="header">
     <div class="layout">
         <a class="logo iconfont" href="http://www.571xz.com">&#xe653;</a>
@@ -213,48 +224,80 @@
             </div>
             
             <div class="tip">绑定手机号或者第三方账号即可通过该账号登录四季星座网</div>
-            <#if (outer?size) gt 0>
             
             <ul class="show-box clearfix">
-                <#list outer as ot>
-                <#if ot.nick?? && ot.nick != "">
+                
+                <#if outer_taobao??>
                 <li class="bd">
                     <div class="iconApplication">
-                        <i class="icon${ot.from!} iconApp"></i>
+                        <i class="icon${outer_taobao.from!} iconApp"></i>
                         <i class="iconBd"></i>
-                        <p>${ot.name!}</p>
+                        <p>${outer_taobao.name!}</p>
                     </div>
                     <div class="status">
-                        <#if ot.from == "taobao">
-                        <b class="unBind" jbtn="taobao" data-id="${ot.id!}">解绑</b>
-                        <#elseif ot.from == "ali">
-                        <b class="unBind" jbtn="ali" data-id="${ot.id!}">解绑</b>
-                        <#elseif ot.from == "weixin">
-                        <b class="unBind" jbtn="weixin" data-id="${ot.id!}">解绑</b>
-                        </#if>
+                        <b class="unBind" jbtn="${outer_taobao.from!}" data-id="${outer_taobao.id!}">解绑</b>
                     </div>
                 </li>
                 <#else>
                 <li class="noBd">
                     <div class="iconApplication">
-                        <i class="icon${ot.from!} iconApp"></i>
+                        <i class="icontaobao iconApp"></i>
                         <i class="iconBd"></i>
-                        <p>${ot.name!}</p>
+                        <p>淘宝</p>
                     </div>
                     <div class="status">
-                        <#if ot.from == "taobao">
                         <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
-                        <#elseif ot.from == "ali">
-                        <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=2&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
-                        <#elseif ot.from == "weixin">
-                        <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=4&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
-                        </#if>
                     </div>
                 </li>
                 </#if>
-                </#list>
+                <#if outer_ali??>
+                <li class="bd">
+                    <div class="iconApplication">
+                        <i class="icon${outer_ali.from!} iconApp"></i>
+                        <i class="iconBd"></i>
+                        <p>${outer_ali.name!}</p>
+                    </div>
+                    <div class="status">
+                        <b class="unBind" jbtn="${outer_ali.from!}" data-id="${outer_ali.id!}">解绑</b>
+                    </div>
+                </li>
+                <#else>
+                <li class="noBd">
+                    <div class="iconApplication">
+                        <i class="iconali iconApp"></i>
+                        <i class="iconBd"></i>
+                        <p>阿里巴巴</p>
+                    </div>
+                    <div class="status">
+                        <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=2&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
+                    </div>
+                </li>
+                </#if>
+                <#if outer_weixin??>
+                <li class="bd">
+                    <div class="iconApplication">
+                        <i class="icon${outer_weixin.from!} iconApp"></i>
+                        <i class="iconBd"></i>
+                        <p>${outer_weixin.name!}</p>
+                    </div>
+                    <div class="status">
+                        <b class="unBind" jbtn="${outer_weixin.from!}" data-id="${outer_weixin.id!}">解绑</b>
+                    </div>
+                </li>
+                <#else>
+                <li class="noBd">
+                    <div class="iconApplication">
+                        <i class="iconweixin iconApp"></i>
+                        <i class="iconBd"></i>
+                        <p>微信</p>
+                    </div>
+                    <div class="status">
+                        <a href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=4&backUrl=http://www.571xz.com/member/fenxiaoZhanghao.htm" class="goBind">立即绑定</a>
+                    </div>
+                </li>
+                </#if>
             </ul>
-            </#if>
+            
             
                 
             
@@ -296,7 +339,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/fenxiaoZhanghao.js"></script>
+<script src="http://style.571xz.com/fxs2/js/fenxiaoZhanghao.js?t=1496989629868"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

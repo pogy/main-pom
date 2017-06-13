@@ -7,15 +7,12 @@
     
     <meta name="keywords" content="欢迎前来四季星座网 ${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!} 优质档口，众多商品任你选择  ">
         <meta name="description" content="四季星座，四季星座网，一键代发，一键上传，${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}">
-        
     
-    
-    
-    <link href="http://style.571xz.com/shopItemCopy/css/shopcomment.css?t=1493779575332" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/shopcomment.css?t=1496988600266" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/shopcomment.js?t=1493779575332"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shopcomment.js?t=1496988600266"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -24,7 +21,7 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
                         <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
@@ -141,7 +138,10 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
@@ -178,10 +178,18 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
-            <a href="http://www.571xz.com/">
+            <a href="http://${webSite!}.571xz.com/">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
@@ -294,7 +302,7 @@
             <div class="storeDetailInfobox">
                 <div class="p1 clearfix">
                     <ul class="r1">
-                        <li><label>地址：</label><#if vo.storeRelation.webSite == "hz">杭州<#elseif vo.storeRelation.webSite == "cs">常熟<#elseif vo.storeRelation.webSite == "gz">广州<#elseif vo.storeRelation.webSite == "ss">石狮<#elseif vo.storeRelation.webSite == "wa">辽源</#if>—${vo.storeRelation.marketName!}${vo.storeRelation.floor!}</li>
+                        <li><label>地址：</label><#if vo.storeRelation.webSite == "hz">杭州<#elseif vo.storeRelation.webSite == "cs">常熟<#elseif vo.storeRelation.webSite == "gz">广州<#elseif vo.storeRelation.webSite == "ss">石狮<#elseif vo.storeRelation.webSite == "wa">辽源<#elseif vo.storeRelation.webSite == 'jx'>濮院</#if>—${vo.storeRelation.marketName!}${vo.storeRelation.floor!}</li>
                         <li><label>电话：</label>${vo.storeRelation.telephone!}</li>
                         <li><label>主营：</label>${vo.other.mainBus!}</li>
                         <li><label>开店时间：</label>${vo.other.openTime!}</li>
@@ -519,13 +527,13 @@ ${navCon}
             <ul>
                 <li>
                     <#if session_user_redis__.logshop.shopId??>
-                    <a href="javascript:;" xzclick="collectShopCannot" title="收藏本店">收藏本店</a>
+                    <a href="javascript:;" id="scStore" xzclick="collectShopCannot" title="收藏本店">收藏本店</a>
                     <#else>
-                    <a href="javascript:;" xzclick="collectShop" data-id="${vo.storeRelation.storeId!}" title="收藏本店">收藏本店</a>
+                    <a href="javascript:;" id="scStore" xzclick="collectShop" data-id="${vo.storeRelation.storeId!}" title="收藏本店">收藏本店</a>
                     </#if>
                 </li>
                 <#if vo.other.taobaoUrl != "">
-                <li><a href="${vo.other.taobaoUrl!}" rel="nofollow" target="_blank" title="进入批发商淘宝店铺">进入淘宝店</a></li>
+                <li><a href="${vo.other.taobaoUrl!}"  rel="nofollow" target="_blank" title="进入批发商淘宝店铺">进入淘宝店</a></li>
                 <#else>
                 <li><a class="disabled" rel="nofollow" target="_blank" title="进入批发商淘宝店铺">进入淘宝店</a></li>
                 </#if>

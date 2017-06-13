@@ -37,9 +37,6 @@ public class SynOneShopDataFix {
     private ShiguShopMapper shiguShopMapper;
 
     @Autowired
-    private ShiguStoreMapper shiguStoreMapper;
-
-    @Autowired
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
     @Autowired

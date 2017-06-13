@@ -12,7 +12,7 @@
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.1.5-SNAPSHOT</version>
+    <version>4.1.7-SNAPSHOT</version>
     <!--versions:update-child-modules-->
     <modules>
         <module>main4-dao</module>
@@ -27,6 +27,7 @@
         <module>main4-spread</module>
         <module>main4-tools</module>
         <module>web-server</module>
+        <module>main4-order</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -119,7 +120,7 @@
     <repositories>
         <repository>
             <id>nexus</id>
-            <url>http://xzof.f3322.net:8882/nexus/content/groups/public/</url>
+            <url>http://xzof.f3322.net:8881/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -131,7 +132,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>nexus</id>
-            <url>http://xzof.f3322.net:8882/nexus/content/groups/public/</url>
+            <url>http://xzof.f3322.net:8881/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -146,12 +147,12 @@
         <repository>
             <id>releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://xzof.f3322.net:8882/nexus/content/repositories/releases/</url>
+            <url>http://xzof.f3322.net:8881/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://xzof.f3322.net:8882/nexus/content/repositories/snapshots/</url>
+            <url>http://xzof.f3322.net:8881/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

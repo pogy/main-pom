@@ -61,6 +61,7 @@
 		<if test="shopNum!=null and shopNum!=''">
 			AND s.shop_num = #{shopNum}
 		</if>
+		AND mp.appKey = '21720662'
 		ORDER BY s.create_date DESC
 		limit #{startRow},#{pageSize}
 	</select>
@@ -173,5 +174,9 @@
 				 separator="," close=")">
 			#{item}
 		</foreach>
+	</select>
+
+	<select id="selShopIdByNumId" resultType="long">
+		select store_id from shigu_store_num_show where store_num_id=${storeNumId}
 	</select>
 </mapper>

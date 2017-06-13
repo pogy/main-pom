@@ -1,4 +1,5 @@
 .idea/
 *.iml
+mall_config.properties
 pom.xml.versionsBackup
 target/

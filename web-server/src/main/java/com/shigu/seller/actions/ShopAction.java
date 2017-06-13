@@ -1,22 +1,19 @@
 package com.shigu.seller.actions;
 
-import com.shigu.buyer.bo.*;
+import com.alibaba.fastjson.JSON;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
 import com.shigu.buyer.vo.SafeRzVO;
 import com.shigu.buyer.vo.UserInfoVO;
-import com.shigu.component.common.globality.response.ResponseBase;
-import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.component.shiro.MemberRealm;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
 import com.shigu.component.shiro.filters.MemberFilter;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.exceptions.ShopDomainException;
-import com.shigu.main4.exceptions.ShopFitmentException;
-import com.shigu.main4.exceptions.StoreException;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ItemModifyException;
@@ -25,67 +22,33 @@ import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ItemShowCaseService;
 import com.shigu.main4.item.services.ShopsItemService;
-import com.shigu.main4.item.vo.EverUsedCatForAdd;
-import com.shigu.main4.item.vo.InstockItem;
-import com.shigu.main4.item.vo.ItemCount;
-import com.shigu.main4.item.vo.OnsaleItem;
-import com.shigu.main4.item.vo.ShowCaseItem;
-import com.shigu.main4.item.vo.SynItem;
-import com.shigu.main4.item.vo.TbCat;
-import com.shigu.main4.item.vo.XiufuItem;
+import com.shigu.main4.item.vo.*;
+import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
-import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
-import com.shigu.main4.ucenter.vo.*;
+import com.shigu.main4.ucenter.vo.RealNameApplyInfo;
+import com.shigu.main4.ucenter.vo.SafeAbout;
+import com.shigu.main4.ucenter.vo.UserInfo;
+import com.shigu.main4.ucenter.vo.UserLicense;
 import com.shigu.main4.vo.ShopBase;
-import com.shigu.main4.vo.ShopFitmentForUpadte;
 import com.shigu.main4.vo.StoreRelation;
-import com.shigu.seller.bo.DeleteItemBO;
-import com.shigu.seller.bo.FitmentBO;
-import com.shigu.seller.bo.GoodsInfoBO;
-import com.shigu.seller.bo.GoodsOfferBO;
-import com.shigu.seller.bo.GoodsSendBO;
-import com.shigu.seller.bo.GoodsUpBO;
-import com.shigu.seller.bo.InstockItemBO;
-import com.shigu.seller.bo.ModifyGoodsinfoBO;
-import com.shigu.seller.bo.ModifyPriceBO;
-import com.shigu.seller.bo.MoreModifyBO;
-import com.shigu.seller.bo.MoreModifyUpdateBO;
-import com.shigu.seller.bo.OnsaleItemBO;
-import com.shigu.seller.bo.RecommendsBO;
-import com.shigu.seller.bo.SendTbItemBO;
-import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.storeservices.ShopBaseService;
-import com.shigu.seller.bo.ShopBaseBO;
-import com.shigu.seller.bo.XiufuGoodsBO;
+import com.shigu.seller.bo.*;
 import com.shigu.seller.exceptions.SendGoodsException;
 import com.shigu.seller.services.GoodsSendService;
 import com.shigu.seller.services.ShopBaseSaveService;
 import com.shigu.seller.services.ShopIndexDataService;
 import com.shigu.seller.services.ShopItemModService;
-import com.shigu.seller.vo.FitmentVO;
-import com.shigu.seller.vo.FormAttrVO;
-import com.shigu.seller.vo.InstockItemVO;
-import com.shigu.seller.vo.ItemSendVO2;
-import com.shigu.seller.vo.MoreModifyItemVO;
-import com.shigu.seller.vo.OnsaleCountsVO;
-import com.shigu.seller.vo.OnsaleItemVO;
-import com.shigu.seller.vo.SKUVO;
-import com.shigu.seller.vo.ShopBaseVO;
-import com.shigu.seller.vo.ShopTagVO;
-import com.shigu.seller.vo.ShopTypeSetVO;
-import com.shigu.seller.vo.XiufuItemVO;
+import com.shigu.seller.vo.*;
 import com.shigu.services.DubboAllService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.tb.common.exceptions.TbException;
 import com.shigu.tb.finder.exceptions.TbItemSynException;
 import com.shigu.tb.finder.exceptions.TbOnsaleException;
 import com.shigu.tb.finder.services.MainTbOnsaleService;
@@ -94,17 +57,14 @@ import com.shigu.tb.finder.vo.PropertyValueVO;
 import com.shigu.tb.finder.vo.PropsVO;
 import com.shigu.tb.finder.vo.TbOnsale;
 import com.shigu.tools.DateParseUtil;
-import com.shigu.tools.EmailUtil;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -120,9 +80,9 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 店铺的控制中心
@@ -485,11 +445,36 @@ public class ShopAction {
                 goodsList.add(new OnsaleItemVO(oi));
             }
             model.addAttribute("goodslist",goodsList);
+            if (!goodsList.isEmpty()) {
+                Map<Long, StyleVo> styleByGoodsMap
+                        = shopItemModService.findStyleByGoodsIds(BeanMapper.getFieldList(goodsList, "id", Long.class));
+                for (OnsaleItemVO itemVO : goodsList) {
+                    StyleVo styleVo = styleByGoodsMap.get(itemVO.getId());
+                    if (styleVo != null) {
+                        itemVO.setSid(styleVo.getSid());
+                        itemVO.setStyleName(styleVo.getName());
+                    }
+                }
+            }
         } catch (ItemException e) {
             logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
         }
         model.addAttribute("get",bo);
+        model.addAttribute("allStyleCate", JSON.toJSONString(shopItemModService.findAllStyle()));
         return ftlDir+"/storeGoodsList21init";
+    }
+
+    @RequestMapping("seller/jsonupdategoodsStyleinfo")
+    @ResponseBody
+    public JSONObject jsonupdategoodsStyleinfo(Long goodsId, String sid, HttpSession session) throws JsonErrException {
+        ShopSession shopSession = getShopSession(session);
+        try {
+            itemAddOrUpdateService.addGoodsStyle(goodsId, shopSession.getWebSite(), sid);
+        } catch (Exception e) {
+            logger.error(e);
+            throw new JsonErrException("商品风格更新失败");
+        }
+        return JsonResponseUtil.success();
     }
 
     /**
@@ -860,24 +845,6 @@ public class ShopAction {
     }
 
     /**
-     * 保存装修
-     * @return
-     */
-    @RequestMapping("seller/jsonupdateFitment")
-    @ResponseBody
-    public JSONObject jsonupdateFitment(@Valid FitmentBO bo,BindingResult result,HttpSession session) throws JsonErrException {
-        if(result.hasErrors()){
-            throw new JsonErrException(result.getAllErrors().get(0).getDefaultMessage());
-        }
-        ShopSession shopSession = getShopSession(session);
-        try {
-            shopFitmentService.updateFitment(shopSession.getShopId(),bo.toParseUpdate());
-        } catch (ShopFitmentException e) {
-            throw new JsonErrException(e.getMessage());
-        }
-        return JsonResponseUtil.success().element("error","OK");
-    }
-    /**
      * 切换档口号
      * @return
      */
@@ -885,21 +852,6 @@ public class ShopAction {
     public String changeStoreNum(Long storeNumId) throws ChangeStoreException {
         memberRealm.changeShop(storeNumId);
         return "redirect:"+memberFilter.getSuccessUrl();
-    }
-
-    /**
-     * 得到装修原始数据
-     * @return
-     */
-    @RequestMapping("seller/jsonlistFitment")
-    @ResponseBody
-    public JSONObject jsonlistFitment(HttpSession session) throws JsonErrException {
-        ShopSession shopSession = getShopSession(session);
-        ShopFitmentForUpadte shopFitmentForUpadte=shopFitmentService.selFitmentForUpadte(shopSession.getShopId());
-        if(shopFitmentForUpadte==null){
-            return JsonResponseUtil.success();
-        }
-        return JSONObject.fromObject(new FitmentVO(shopFitmentForUpadte)).element("result","success");
     }
 
     /**

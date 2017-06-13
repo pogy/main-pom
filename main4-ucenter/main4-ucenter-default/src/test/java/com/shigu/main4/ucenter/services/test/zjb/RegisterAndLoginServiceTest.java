@@ -70,7 +70,7 @@ public class RegisterAndLoginServiceTest {
      * @throws Exception
      */
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void banding3User() throws Exception{
         String phone = "18888971970";
         Rds3TempUser rds3TempUser = new Rds3TempUser();
@@ -101,7 +101,7 @@ public class RegisterAndLoginServiceTest {
      * @throws Exception
      */
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void banding3UserNoTBNoPhone() throws Exception{
 
     }

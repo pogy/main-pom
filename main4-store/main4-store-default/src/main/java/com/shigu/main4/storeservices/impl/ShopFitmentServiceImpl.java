@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguShopFitment;
 import com.opentae.data.mall.beans.ShopFitmentArea;
 import com.opentae.data.mall.beans.ShopFitmentFtl;
 import com.opentae.data.mall.beans.ShopFitmentModule;
@@ -49,9 +48,6 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
     @Resource(name = "shopForCdnService")
     private ShopForCdnService shopForCdnService;
 
-    @Resource(name = "tae_mall_shiguShopFitmentMapper")
-    private ShiguShopFitmentMapper shiguShopFitmentMapper;
-
     @Autowired
     private ShopFitmentAreaMapper shopFitmentAreaMapper;
 
@@ -63,52 +59,6 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
 
     @Autowired
     private ShopFitmentPageMapper shopFitmentPageMapper;
-
-    /**
-     * 查询店内装修情况
-     *
-     * @param shopId .
-     * @return .
-     */
-    @Override
-    public ShopFitmentForUpadte selFitmentForUpadte(Long shopId) {
-        if (shopId == null) {
-            return null;
-        }
-        ShiguShopFitmentExample example = new ShiguShopFitmentExample();
-        example.createCriteria().andShopIdEqualTo(shopId);
-        List<ShiguShopFitment> shiguShopFitmentList = shiguShopFitmentMapper.selectByExample(example);
-        if (shiguShopFitmentList.size() == 0) {
-            return null;
-        }
-        ShiguShopFitment shiguShopFitment = shiguShopFitmentList.get(0);
-        return BeanMapper.map(shiguShopFitment, ShopFitmentForUpadte.class);
-    }
-
-    /**
-     * 更新店内装修
-     *
-     * @param shopId           店铺ID
-     * @param fitmentForUpadte 更新的数据
-     * @throws ShopFitmentException .
-     */
-    @Override
-    public void updateFitment(Long shopId, ShopFitmentForUpadte fitmentForUpadte) throws ShopFitmentException {
-        if (shopId == null || fitmentForUpadte == null) {
-            throw new ShopFitmentException("更新店内装修失败,店铺ID不能为空");
-        }
-        ShiguShopFitmentExample example = new ShiguShopFitmentExample();
-        example.createCriteria().andShopIdEqualTo(shopId);
-        ShiguShopFitment shiguShopFitment = BeanMapper.map(fitmentForUpadte, ShiguShopFitment.class);
-        shiguShopFitment.setShopId(shopId);
-        if (shiguShopFitmentMapper.countByExample(example) == 0) {
-            shiguShopFitmentMapper.insertSelective(shiguShopFitment);
-        } else {
-            shiguShopFitmentMapper.updateByExampleSelective(shiguShopFitment, example);
-        }
-        Cache cache = cacheManager.getCache("shopFitmentCache");
-        cache.evict(shopId);
-    }
 
     /**
      * 初始化店铺装修
@@ -241,7 +191,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param pageId
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void rmPage(Long pageId) throws ShopFitmentException {
         if (pageId != null) {
             ShopFitmentPageExample pageExample = new ShopFitmentPageExample();
@@ -415,8 +365,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @return
      */
     @Override
-    public ShiguPager<ItemShowBlock> selItemByPromote(ItemPromoteModule promoteModule) {
-        Long shopId = selShopIdByAreaId(promoteModule.getAreaId());
+    public ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,ItemPromoteModule promoteModule) {
         if (promoteModule.getPromoteType() == 2) {
             return shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(), 1, promoteModule.getItemNum());
         }
@@ -725,7 +674,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @throws ShopFitmentException 区域添加异常
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long addArea(Long pageId, Long sideId, Integer type, Integer after) throws ShopFitmentException {
         ShopFitmentPage page;
         if (pageId == null || (page = shopFitmentPageMapper.selectByPrimaryKey(pageId)) == null) {
@@ -822,7 +771,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param newArea 新区域
      * @param oldArea 原区域
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     private void insertBefore(ShopFitmentArea newArea, ShopFitmentArea oldArea) {
         newArea.setAfterAreaId(oldArea.getAfterAreaId());
         shopFitmentAreaMapper.insertSelective(newArea);
@@ -835,7 +784,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param newModule 新模块
      * @param oldModule 原模块
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     private void insertBefore(ShopFitmentModule newModule, ShopFitmentModule oldModule) {
         newModule.setAfterModuleId(oldModule.getAfterModuleId());
         shopFitmentModuleMapper.insertSelective(newModule);
@@ -844,7 +793,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Long addModule(Long areaId,Long sideId,Integer type,Integer sideType,Integer after) throws ShopFitmentException {
         return addModule(areaId, sideId, type, sideType, after, null);
     }
@@ -973,7 +922,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param type     1代表上移，2代表下移
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void changeModuleLocation(Long moduleId, Integer type) {
         if (moduleId != null && type != null) {
             ShopFitmentModule thisModule = shopFitmentModuleMapper.selectByPrimaryKey(moduleId);

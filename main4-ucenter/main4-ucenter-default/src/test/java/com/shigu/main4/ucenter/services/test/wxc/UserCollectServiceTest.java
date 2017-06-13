@@ -42,7 +42,7 @@ import java.util.List;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration( value="/main4/spring/apache-shiro.xml" )
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class UserCollectServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(UserCollectServiceTest.class);
 
@@ -60,7 +60,7 @@ public class UserCollectServiceTest {
      */
     @Test
     public void testSelItemCollections() {
-        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(9968L, "hz", 1, 10);
+        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollections(1000064147L, "2017","hz", 1, 10);
         logger.info("\n" + JSON.toJSONString(pager, SerializerFeature.PrettyFormat));
         assertTrue(pager != null && pager.getContent() != null);
     }

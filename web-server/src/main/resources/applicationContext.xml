@@ -18,11 +18,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="locations">
             <list>
                 <value>classpath:mall_config.properties</value>
-                <value>classpath:manager_config.properties</value>
                 <value>classpath:xz_sdk.properties</value>
                 <value>classpath:oss.properties</value>
                 <value>classpath:redis.properties</value>
                 <value>classpath:rd3.properties</value>
+                <value>classpath:opensearch.properties</value>
             </list>
         </property>
     </bean>
@@ -56,69 +56,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         </property>
     </bean>
     <import resource="spring-database/mall.xml"/>
-    <import resource="spring-database/manager.xml"/>
+    <!--<import resource="spring-database/manager.xml"/>-->
     <bean id="druid-stat-interceptor"
           class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
     </bean>
-
-    <mvc:interceptors>
-        <!-- IP密度拦截器 - 发送短信-->
-        <mvc:interceptor>
-            <mvc:mapping path="/goodsUrlSearch.*"/>
-            <mvc:mapping path="/uploadGoodsImg.*"/>
-
-            <!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
-            <bean class="com.shigu.interceptors.IpDensityInterceptor">
-                <property name="minMillionSecond" value="5000"/>
-                <property name="startNum" value="2"/>
-                <property name="redisIO" ref="redisIO"/>
-                <!--记录存活时间-->
-                <property name="refuseSecond" value="20"/>
-            </bean>
-        </mvc:interceptor>
-
-        <!-- 手机密度拦截器 - 发送短信-->
-        <mvc:interceptor>
-            <mvc:mapping path="/loginPhoneVerification.*"/>
-            <mvc:mapping path="/forgetPhoneVerification.*"/>
-            <mvc:mapping path="/bindPhoneVerification.*"/>
-            <mvc:mapping path="/registPhoneVerification.*"/>
-
-            <!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
-            <bean class="com.shigu.interceptors.PhoneDensityInterceptor">
-                <property name="minMillionSecond" value="10000"/>
-                <property name="startNum" value="1"/>
-                <property name="redisIO" ref="redisIO"/>
-                <!--记录存活时间-->
-                <property name="refuseSecond" value="20"/>
-            </bean>
-        </mvc:interceptor>
-
-        <!-- 用户密度拦截器 - 创建数据包-->
-        <mvc:interceptor>
-            <mvc:mapping path="/member/mk_mydp.*"/>
-            <!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
-            <bean class="com.shigu.interceptors.UserDensityInterceptor">
-                <property name="minMillionSecond" value="10000"/>
-                <property name="startNum" value="1"/>
-                <property name="redisIO" ref="redisIO"/>
-                <!--记录存活时间-->
-                <property name="refuseSecond" value="20"/>
-            </bean>
-        </mvc:interceptor>
-        <!-- 用户密度拦截器 - 下载图片包-->
-        <mvc:interceptor>
-            <mvc:mapping path="/downloadImg.*"/>
-            <!-- 定义在mvc:interceptor下面的表示是对特定的请求才进行拦截的 -->
-            <bean class="com.shigu.interceptors.UserDensityInterceptor">
-                <property name="minMillionSecond" value="5000"/>
-                <property name="startNum" value="1"/>
-                <property name="redisIO" ref="redisIO"/>
-                <!--记录存活时间-->
-                <property name="refuseSecond" value="10"/>
-            </bean>
-        </mvc:interceptor>
-    </mvc:interceptors>
 
     <!-- shiro 配置文件 -->
     <import resource="classpath*:main4/spring/*.xml"/>
@@ -126,4 +67,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <!--<import resource="dubbo_application_test.xml"/>-->
     <bean id="exceptionResolver" class="com.shigu.resolver.ExceptionResolver">
     </bean>
+    <import resource="mvc.xml"/>
 </beans>

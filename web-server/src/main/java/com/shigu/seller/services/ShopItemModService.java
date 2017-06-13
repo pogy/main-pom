@@ -1,27 +1,28 @@
 package com.shigu.seller.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
+import com.opentae.data.mall.beans.SearchCategorySub;
 import com.opentae.data.mall.beans.ShiguGoodsSoldout;
+import com.opentae.data.mall.beans.ShiguGoodsStyle;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.examples.SearchCategorySubExample;
 import com.opentae.data.mall.examples.ShiguGoodsSoldoutExample;
+import com.opentae.data.mall.examples.ShiguGoodsStyleExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsSoldoutMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.shigu.main4.item.enums.ItemFrom;
+import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.exceptions.ItemModifyException;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.vo.OnsaleItem;
 import com.shigu.main4.item.vo.SynItem;
-import com.shigu.seller.actions.ShopAction;
+import com.shigu.seller.vo.StyleVo;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 店内商品修改服务
@@ -43,8 +44,14 @@ public class ShopItemModService {
     @Autowired
     ItemAddOrUpdateService itemAddOrUpdateService;
 
+    @Autowired
+    SearchCategorySubMapper searchCategorySubMapper;
 
-    @Transactional
+    @Autowired
+    ShiguGoodsStyleMapper shiguGoodsStyleMappe;
+
+
+    @Transactional(rollbackFor = Exception.class)
     public void moreModify(List<SynItem> items) throws ItemModifyException {
         for(SynItem item:items){
             itemAddOrUpdateService.userUpdateItem(item);
@@ -180,5 +187,57 @@ public class ShopItemModService {
         }
 
         return targetIds;
+    }
+
+    public List<StyleVo> findAllStyle() {
+        List<StyleVo> vos = new ArrayList<>();
+        SearchCategorySubExample categorySubExample = new SearchCategorySubExample();
+        categorySubExample.createCriteria().andParentCateValueEqualTo("30").andTypeEqualTo(3);
+        for (SearchCategorySub categorySub : searchCategorySubMapper.selectByExample(categorySubExample)) {
+            vos.add(new StyleVo(categorySub.getSubId().toString(), categorySub.getCateName()));
+        }
+        return vos;
+    }
+
+    public Map<Long, StyleVo> findStyleByGoodsIds(List<Long> goodsIds) {
+        Map<Long, StyleVo> goodsStyle = new HashMap<>();
+
+        ShiguGoodsStyleExample styleExample = new ShiguGoodsStyleExample();
+        styleExample.createCriteria().andGoodsIdIn(goodsIds);
+        List<ShiguGoodsStyle> shiguGoodsStyles = shiguGoodsStyleMappe.selectByExample(styleExample);
+        if (!shiguGoodsStyles.isEmpty()) {
+            Map<Long, ShiguGoodsStyle> goodsStyleMap = BeanMapper.list2Map(shiguGoodsStyles, "goodsId", Long.class);
+            List<String> sids = BeanMapper.getFieldList(shiguGoodsStyles, "sids", String.class);
+            Set<Long> sidSet = new HashSet<>();
+            for (String sid : sids) {
+                if (sid != null) {
+                    for (String s : sid.split(",")) {
+                        try {
+                            sidSet.add(Long.valueOf(s));
+                        } catch (Exception ignored) {}
+                    }
+                }
+            }
+
+            if (!sidSet.isEmpty()) {
+                SearchCategorySubExample subExample = new SearchCategorySubExample();
+                subExample.createCriteria().andSubIdIn(new ArrayList<>(sidSet));
+                Map<Long, SearchCategorySub> subMap = BeanMapper.list2Map(searchCategorySubMapper.selectByExample(subExample), "subId", Long.class);
+
+                for (Map.Entry<Long, ShiguGoodsStyle> entry : goodsStyleMap.entrySet()) {
+                    String sidstr = entry.getValue().getSids();
+                    if (StringUtils.isNotEmpty(sidstr)) {
+                        try {
+                            Long sid = Long.valueOf(sidstr.split(",")[0]);
+                            SearchCategorySub categorySub = subMap.get(sid);
+                            if (categorySub != null && StringUtils.isNotEmpty(categorySub.getCateName())) {
+                                goodsStyle.put(entry.getKey(), new StyleVo(categorySub.getSubId().toString(), categorySub.getCateName()));
+                            }
+                        } catch (Exception ignored){}
+                    }
+                }
+            }
+        }
+        return goodsStyle;
     }
 }

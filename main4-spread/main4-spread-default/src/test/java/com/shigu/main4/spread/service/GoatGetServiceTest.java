@@ -29,7 +29,7 @@ public class GoatGetServiceTest {
     GoodsupNorealMapper goodsupNorealMapper;
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void selItemGoat_modifyUpTest(){
         Long itemId=1l;
         Integer num=10;

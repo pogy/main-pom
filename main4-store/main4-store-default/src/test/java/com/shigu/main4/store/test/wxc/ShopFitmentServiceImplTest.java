@@ -46,7 +46,7 @@ public class ShopFitmentServiceImplTest extends BaseSpringTest {
     @Test
     public void initShopFitment() throws Exception {
 //        shopFitmentService.initShopFitment(32888L);
-        shopFitmentService.initShopFitment(42694L);
+        shopFitmentService.initShopFitment(40470L);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class ShopFitmentServiceImplTest extends BaseSpringTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void rmArea() throws Exception {
         Long page = shopFitmentService.createPage(32888L, "测试啦啦啦", 10010L, 1);
         Long first = shopFitmentService.selAreaByPageId(page).get(0).getAreaId();
@@ -170,7 +170,7 @@ public class ShopFitmentServiceImplTest extends BaseSpringTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addArea() throws Exception {
 
         //1.0 页面ID必传
@@ -241,7 +241,7 @@ public class ShopFitmentServiceImplTest extends BaseSpringTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addModule() throws Exception {
 
         Long firstAreaId = 5L;
@@ -283,7 +283,7 @@ public class ShopFitmentServiceImplTest extends BaseSpringTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void changeModuleLocation() throws Exception {
         Long firstAreaId = shopFitmentService.addArea(3L, 5L, FitmentAreaType.CENTER.value(),2);
         Long moduleId = shopFitmentService.addModule(firstAreaId, null, FitmentModuleType.Viwepager.value, 3, null);

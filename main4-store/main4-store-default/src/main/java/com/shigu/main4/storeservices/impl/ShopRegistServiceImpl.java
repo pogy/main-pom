@@ -21,6 +21,7 @@ import com.shigu.main4.exceptions.TaobaoNickBindException;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopRegistService;
+import com.shigu.main4.storeservices.ShopToEsService;
 import com.shigu.main4.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -65,6 +66,9 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
 
     @Autowired
     private ShopFitmentService shopFitmentService;
+
+    @Autowired
+    private ShopToEsService shopToEsService;
 
     /**
      * 注册用户
@@ -366,7 +370,7 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
      * @return 新店铺ID
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public long toExamine(Long registId) throws ShopExamineException {
         ShiguShopApply shiguShopApply = shiguShopApplyMapper.selectByPrimaryKey(registId);
 
@@ -431,6 +435,8 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
         shiguShopMapper.insertSelective(shiguShop);
         Long shopId = shiguShop.getShopId();
 
+        //加入ES
+        shopToEsService.addToEs(shopId);
         //初始化装修
         try {
             shopFitmentService.initShopFitment(shopId);

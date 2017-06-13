@@ -8,6 +8,7 @@ import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.exceptions.StoreException;
 import com.shigu.main4.storeservices.ShopBaseService;
+import com.shigu.main4.storeservices.ShopToEsService;
 import com.shigu.main4.storeservices.StoreRelationService;
 import com.shigu.main4.vo.StoreRelation;
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +38,9 @@ public class StoreRelationService4Impl extends ShopServiceImpl implements StoreR
 
     @Autowired
     private ShopBaseService shopBaseService;
+
+    @Autowired
+    private ShopToEsService shopToEsService;
 
     /**
      * 店铺联系方式查询
@@ -121,7 +125,7 @@ public class StoreRelationService4Impl extends ShopServiceImpl implements StoreR
         ShiguMarket shiguMarketFloor = shiguMarketMapper.selectFieldsByPrimaryKey(shiguShop.getFloorId(),
                 FieldUtil.codeFields("market_id,market_name"));
         if(shiguMarketFloor != null){
-            storeRelation.setFloor(shiguMarket.getMarketName());
+            storeRelation.setFloor(shiguMarketFloor.getMarketName());
         }
 
         storeRelation.setTelephone(shiguShop.getTelephone());
@@ -151,7 +155,7 @@ public class StoreRelationService4Impl extends ShopServiceImpl implements StoreR
         shiguShop.setLastModifyTime(new Date());
         int result = shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
         //添加到ES
-        shopBaseService.addToEs(shiguShop.getShopId());
+        shopToEsService.addToEs(shiguShop.getShopId());
         if(result == 0){
             throw new StoreException();
         }
@@ -180,7 +184,7 @@ public class StoreRelationService4Impl extends ShopServiceImpl implements StoreR
         shiguShop.setLastModifyTime(new Date());
         int result = shiguShopMapper.updateByPrimaryKeySelective(shiguShop);
         //添加到ES
-        shopBaseService.addToEs(shiguShop.getShopId());
+        shopToEsService.addToEs(shiguShop.getShopId());
         if(result == 0){
             throw new StoreException();
         }

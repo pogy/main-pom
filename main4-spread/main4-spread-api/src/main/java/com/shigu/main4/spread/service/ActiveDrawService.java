@@ -1,5 +1,6 @@
 package com.shigu.main4.spread.service;
 
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
@@ -7,6 +8,8 @@ import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 活动抽奖发现好货SERVICE
@@ -21,19 +24,19 @@ public interface ActiveDrawService {
      * 获取当前正在进行的期次
      * @return
      */
-    public ActiveDrawPemVo selNowDrawPem();
+    ActiveDrawPemVo selNowDrawPem();
 
     /**
      * 查询本期级以后的期次
      * @return
      */
-    public List<ActiveDrawPemVo> selDrawPemQueList();
+    List<ActiveDrawPemVo> selDrawPemQueList();
 
     /**
      * 查询全部期次
      * @return
      */
-    public List<ActiveDrawPemVo> selDrawPemList();
+    List<ActiveDrawPemVo> selDrawPemList();
 
     /**
      * 活动抽奖商品数据
@@ -43,20 +46,20 @@ public interface ActiveDrawService {
      * @param enabled
      * @return
      */
-    public List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled);
+    List<ActiveDrawGoodsVo> selGoodsList(Long pemId, String type, int size, Boolean enabled,boolean back);
 
     /**
      * 排序交换
      * @param type 1 上 2 下
      * @param drawGoodsId 主键ID
      */
-    public void changeGoodsSort(int type, Long drawGoodsId);
+    void changeGoodsSort(int type, Long drawGoodsId);
 
     /**
      * 删除
      * @param drawGoodsId
      */
-    public void delDrawGoods(Long drawGoodsId);
+    void delDrawGoods(Long drawGoodsId);
 
     /**
      * 修改商品
@@ -65,44 +68,44 @@ public interface ActiveDrawService {
      * @param pemId 期次ID
      * @param type 商品类型
      */
-    public void changeDrawGoods(Long id, Long goodsId, Long pemId, String type);
+    void changeDrawGoods(Long id, Long goodsId, Long pemId, String type);
 
     /**
      * 新增商品
      * @param activeDrawGoodsVo
      */
-    public void addDrawGoods(ActiveDrawGoodsVo activeDrawGoodsVo);
+    void addDrawGoods(ActiveDrawGoodsVo activeDrawGoodsVo);
 
     /**
      * 查询
      * @return
      */
-    public List<ActiveDrawShopVo> selShopList(Long pemId);
+    List<ActiveDrawShopVo> selShopList(Long pemId, boolean back);
 
     /**
      * 修改店铺
      * @param drawShopVo
      */
-    public void changeShop(ActiveDrawShopVo drawShopVo);
+    void changeShop(ActiveDrawShopVo drawShopVo);
 
     /**
      * 好店修改位置
      * @param type
      * @param drawShopId
      */
-    public void changeShopSort(int type,Long drawShopId);
+    void changeShopSort(int type,Long drawShopId);
 
     /**
      * 新增好店
      * @param drawShopVo
      */
-    public void addDrawShop(ActiveDrawShopVo drawShopVo);
+    void addDrawShop(ActiveDrawShopVo drawShopVo);
 
     /**
      * 新增新的期次
      * @param
      */
-    public void addNewDrawPem(Date nextDrawPemTime);
+    void addNewDrawPem(Date nextDrawPemTime);
 
     /**
      * 查询满足抽奖用户数据
@@ -110,7 +113,7 @@ public interface ActiveDrawService {
      * @param ward
      * @return
      */
-    public List<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward);
+    ShiguPager<ActiveDrawRecordUserVo> selComDrawUserRecord(Long pemId, String ward,Long userId, String userNick,int pageNum, int pageSize);
 
     /**
      * 查询当前中奖用户
@@ -118,17 +121,31 @@ public interface ActiveDrawService {
      * @param ward
      * @return
      */
-    public int selWardDrawYes(Long pemId, String ward);
+    int selWardDrawYes(Long pemId, String ward);
 
     /**
      * 选择用户中奖
      * @param recordId
      */
-    public void chooseDrawWard(Long recordId);
+    void chooseDrawWard(Long recordId);
 
     /**
      * 查询本期店铺IDS
      * @return
      */
-    public List<Long> findDrawShopIds();
+    List<Long> findDrawShopIds();
+
+    /**
+     * 修改查阅时间
+     * @param recordId
+     */
+    void changeRefeTime(Long recordId);
+
+    /**
+     * 上传产生的新numIid串
+     * @param nick
+     * @param goodsId
+     * @return
+     */
+    Map<Long,Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime);
 }
