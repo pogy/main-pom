@@ -33,4 +33,10 @@ public interface ItemProduct extends Product{
      * @return
      */
     Long selWeight();
+
+    /**
+     *  获取 pid
+     * @return 记录主键
+     */
+    Long getPid();
 }

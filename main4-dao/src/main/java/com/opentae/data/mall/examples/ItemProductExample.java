@@ -718,32 +718,32 @@ public class ItemProductExample implements SgExample{
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andShopIdEqualTo(String value) {
+        public ItemProductExample.Criteria andShopIdEqualTo(Long value) {
             this.addCriterion("shopId =", value, "shop_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andShopIdNotEqualTo(String value) {
+        public ItemProductExample.Criteria andShopIdNotEqualTo(Long value) {
             this.addCriterion("shopId <>", value, "shop_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andShopIdGreaterThan(String value) {
+        public ItemProductExample.Criteria andShopIdGreaterThan(Long value) {
             this.addCriterion("shopId >", value, "shop_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andShopIdGreaterThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andShopIdGreaterThanOrEqualTo(Long value) {
             this.addCriterion("shopId >=", value, "shop_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andShopIdLessThan(String value) {
+        public ItemProductExample.Criteria andShopIdLessThan(Long value) {
             this.addCriterion("shopId <", value, "shop_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andShopIdLessThanOrEqualTo(String value) {
+        public ItemProductExample.Criteria andShopIdLessThanOrEqualTo(Long value) {
             this.addCriterion("shopId <=", value, "shop_id");
             return (ItemProductExample.Criteria)this;
         }
@@ -756,22 +756,22 @@ public class ItemProductExample implements SgExample{
         public ItemProductExample.Criteria andShopIdNotLike(String value) {
             this.addCriterion("shopId not like", value, "shop_id");
             return (ItemProductExample.Criteria)this;
-        }        public ItemProductExample.Criteria andShopIdIn(List<String> values) {
+        }        public ItemProductExample.Criteria andShopIdIn(List<Long> values) {
             this.addCriterion("shopId in", values, "shop_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andShopIdNotIn(List<String> values) {
+        public ItemProductExample.Criteria andShopIdNotIn(List<Long> values) {
             this.addCriterion("shopId not in", values, "shop_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andShopIdBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andShopIdBetween(Long value1, Long value2) {
             this.addCriterion("shopId between", value1, value2, "shop_id");
             return (ItemProductExample.Criteria)this;
         }
 
-        public ItemProductExample.Criteria andShopIdNotBetween(String value1, String value2) {
+        public ItemProductExample.Criteria andShopIdNotBetween(Long value1, Long value2) {
             this.addCriterion("shopId not between", value1, value2, "shop_id");
             return (ItemProductExample.Criteria)this;
         }
@@ -1045,74 +1045,6 @@ public class ItemProductExample implements SgExample{
 
         public ItemProductExample.Criteria andFloorNotBetween(String value1, String value2) {
             this.addCriterion("floor not between", value1, value2, "floor");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopIsNull() {
-            this.addCriterion("goodsOneShop is null");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopIsNotNull() {
-            this.addCriterion("goodsOneShop is not null");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopEqualTo(String value) {
-            this.addCriterion("goodsOneShop =", value, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopNotEqualTo(String value) {
-            this.addCriterion("goodsOneShop <>", value, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopGreaterThan(String value) {
-            this.addCriterion("goodsOneShop >", value, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopGreaterThanOrEqualTo(String value) {
-            this.addCriterion("goodsOneShop >=", value, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopLessThan(String value) {
-            this.addCriterion("goodsOneShop <", value, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopLessThanOrEqualTo(String value) {
-            this.addCriterion("goodsOneShop <=", value, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopLike(String value) {
-            this.addCriterion("goodsOneShop like", value, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopNotLike(String value) {
-            this.addCriterion("goodsOneShop not like", value, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }        public ItemProductExample.Criteria andGoodsOneShopIn(List<String> values) {
-            this.addCriterion("goodsOneShop in", values, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopNotIn(List<String> values) {
-            this.addCriterion("goodsOneShop not in", values, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopBetween(String value1, String value2) {
-            this.addCriterion("goodsOneShop between", value1, value2, "goods_one_shop");
-            return (ItemProductExample.Criteria)this;
-        }
-
-        public ItemProductExample.Criteria andGoodsOneShopNotBetween(String value1, String value2) {
-            this.addCriterion("goodsOneShop not between", value1, value2, "goods_one_shop");
             return (ItemProductExample.Criteria)this;
         }
 

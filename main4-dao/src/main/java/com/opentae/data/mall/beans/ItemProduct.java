@@ -63,19 +63,14 @@ public class ItemProduct implements Serializable {
 	private Long floorId;
 
     /**
-     * 
+     * 档口ID
      */
-	private String shopId;
+	private Long shopId;
 
     /**
      * 单位：克
      */
 	private Long weight;
-
-    /**
-     * 
-     */
-	private String goodsOneShop;
 
 	public void setPid(Long pid) {
 		this.pid = pid;
@@ -165,11 +160,11 @@ public class ItemProduct implements Serializable {
 		return this.floorId;
 	}
 
-	public void setShopId(String shopId) {
+	public void setShopId(Long shopId) {
 		this.shopId = shopId;
 	}
 
-	public String getShopId() {
+	public Long getShopId() {
 		return this.shopId;
 	}
 
@@ -179,14 +174,6 @@ public class ItemProduct implements Serializable {
 
 	public Long getWeight() {
 		return this.weight;
-	}
-
-	public void setGoodsOneShop(String goodsOneShop) {
-		this.goodsOneShop = goodsOneShop;
-	}
-
-	public String getGoodsOneShop() {
-		return this.goodsOneShop;
 	}
 
 }
