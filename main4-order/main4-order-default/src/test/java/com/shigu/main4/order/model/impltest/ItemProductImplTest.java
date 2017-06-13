@@ -23,6 +23,10 @@ public class ItemProductImplTest extends BaseTest {
         SpringBeanFactory.getBean(ItemProduct.class, 20475519L, "酒红色", "3XL");
     }
 
+    private ItemProduct getProduct() {
+        return SpringBeanFactory.getBean(ItemProduct.class, 20475519L, "酒红色", "3XL");
+    }
+
     @Test
     public void selSkus() throws Exception {
         show(SpringBeanFactory.getBean(ItemProduct.class, 20475519L, "酒红色", "3XL").selSkus());
@@ -45,6 +49,7 @@ public class ItemProductImplTest extends BaseTest {
 
     @Test
     public void selWeight() throws Exception {
+        show(getProduct().selWeight());
     }
 
 }

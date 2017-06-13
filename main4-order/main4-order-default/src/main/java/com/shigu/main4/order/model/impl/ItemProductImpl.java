@@ -131,7 +131,7 @@ public class ItemProductImpl implements ItemProduct{
 
     @Override
     public Long selWeight() {
-        return null;
+        return itemProductMapper.selectByPrimaryKey(pid).getWeight();
     }
 
     public Long getPid() {
