@@ -118,7 +118,10 @@ public class ItemProductImpl implements ItemProduct{
 
     @Override
     public void modifyWeight(Long meter) {
-
+        com.opentae.data.mall.beans.ItemProduct product = new com.opentae.data.mall.beans.ItemProduct();
+        product.setPid(pid);
+        product.setWeight(meter);
+        itemProductMapper.updateByPrimaryKeySelective(product);
     }
 
     @Override

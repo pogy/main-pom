@@ -34,6 +34,8 @@ public class ItemProductImplTest extends BaseTest {
 
     @Test
     public void modifyWeight() throws Exception {
+        getProduct().modifyWeight(5L);
+        assertEquals(getProduct().selWeight(), ((Long) 5L));
     }
 
     @Test
