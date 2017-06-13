@@ -6,6 +6,7 @@ import com.opentae.data.mall.examples.ItemProductSkuExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.ItemProduct;
+import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -43,6 +44,7 @@ public class ItemProductImpl implements ItemProduct{
     private Long goodsId;
     private String color;
     private String size;
+
     private Long skuId;
     private Long pid;
 
@@ -107,6 +109,11 @@ public class ItemProductImpl implements ItemProduct{
         info.setPid(product.getPid());
         info.setSkuId(sku.getSkuId());
         return info;
+    }
+
+    @Override
+    public ItemProductVO info() {
+        return BeanMapper.map(itemProductMapper.selectByPrimaryKey(pid), ItemProductVO.class);
     }
 
     @Override

@@ -37,6 +37,7 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void subOrdersInfo() throws Exception {
+        show(order().subOrdersInfo());
     }
 
     @Test
@@ -91,17 +92,9 @@ public class ItemOrderTest extends BaseTest {
 
         SubOrderVO vo1 = new SubOrderVO();
         vo1.setGoodsId(20724865L);
-        vo1.setTitle("2017首发 52%棉透气舒适面料 港风时尚 抽绳小脚休闲长裤K26 P55");
         vo1.setColor("深灰色");
         vo1.setSize("M 28-29");
         vo1.setNum(1);
-        vo1.setPrice(5500L);
-        vo1.setPicUrl("https://img.alicdn.com/bao/uploaded/i1/TB1P8iDPVXXXXcHXpXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg");
-        vo1.setWebSite("hz");
-        vo1.setWeight(1L);
-        vo1.setLogisticsId(1L);
-        vo1.setSkuId(1L);
-        vo1.setPid(1L);
         subs.add(vo1);
         order().addSubOrder(subs);
 

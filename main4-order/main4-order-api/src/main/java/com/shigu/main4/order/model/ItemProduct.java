@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
  * Created by zhaohongbo on 17/6/1.
  */
 public interface ItemProduct extends Product{
+
+    ItemProductVO info();
 
     /**
      * 查询SKU

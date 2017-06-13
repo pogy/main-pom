@@ -4,11 +4,14 @@ import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.model.ItemOrder;
+import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -96,7 +99,9 @@ public class ItemOrderImpl implements ItemOrder{
         Map<Long, ItemOrderSub> subOrderMap = BeanMapper.list2Map(select, "soid", Long.class);
         List<SubItemOrderVO> vos = BeanMapper.mapList(select, SubItemOrderVO.class);
         for (SubItemOrderVO vo : vos) {
-
+//            vo.setStatus(OrderStatus.SELLER_CONSIGNED_PART);
+            vo.setNumber(vo.getNum());
+            vo.setProduct(BeanMapper.map(subOrderMap.get(vo.getSoid()), ItemProductVO.class));
         }
         return vos;
     }
@@ -233,6 +238,16 @@ public class ItemOrderImpl implements ItemOrder{
     public void addSubOrder(List<SubOrderVO> subOrders) {
         List<ItemOrderSub> subs = BeanMapper.mapList(subOrders, ItemOrderSub.class);
         for (ItemOrderSub sub : subs) {
+            ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, sub.getGoodsId(), sub.getColor(), sub.getSize());
+            sub.setPid(product.getPid());
+            sub.setSkuId(product.getSkuId());
+            ItemProductVO info = product.info();
+            sub.setWebSite(info.getWebSite());
+            sub.setPicUrl(info.getPicUrl());
+            sub.setTitle(info.getTitle());
+            sub.setPrice(info.getPrice());
+            sub.setWeight(info.getWeight());
+
             sub.setDistributionNum(0);
             // 应付总价 产品单价 X 数量
             sub.setShouldPayMoney(sub.getPrice() * sub.getNum());
@@ -241,8 +256,8 @@ public class ItemOrderImpl implements ItemOrder{
             sub.setSend(false);
             sub.setRefund(false);
             sub.setOid(oid);
+            itemOrderSubMapper.insertSelective(sub);
         }
-        itemOrderSubMapper.insertListNoId(subs);
 
         recountTotalOrderAmount();
     }

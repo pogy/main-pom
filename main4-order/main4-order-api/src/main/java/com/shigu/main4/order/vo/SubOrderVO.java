@@ -9,14 +9,9 @@ import java.io.Serializable;
 public class SubOrderVO implements Serializable{
 
     /**
-     * 产品ID
+     * 子订单ID
      */
-    private Long pid;
-
-    /**
-     * sku信息
-     */
-    private Long skuId;
+    private Long soid;
 
     /**
      * 件数
@@ -29,39 +24,9 @@ public class SubOrderVO implements Serializable{
     private String mark;
 
     /**
-     * 交易信息ID
-     */
-    private Long logisticsId;
-
-    /**
      * 商品ID
      */
     private Long goodsId;
-
-    /**
-     * 商品链接
-     */
-    private String picUrl;
-
-    /**
-     * 分站
-     */
-    private String webSite;
-
-    /**
-     *
-     */
-    private String title;
-
-    /**
-     * 单价
-     */
-    private Long price;
-
-    /**
-     * 重量
-     */
-    private Long weight;
 
     /**
      * 尺码
@@ -73,20 +38,12 @@ public class SubOrderVO implements Serializable{
      */
     private String color;
 
-    public Long getPid() {
-        return pid;
+    public Long getSoid() {
+        return soid;
     }
 
-    public void setPid(Long pid) {
-        this.pid = pid;
-    }
-
-    public Long getSkuId() {
-        return skuId;
-    }
-
-    public void setSkuId(Long skuId) {
-        this.skuId = skuId;
+    public void setSoid(Long soid) {
+        this.soid = soid;
     }
 
     public Integer getNum() {
@@ -105,60 +62,12 @@ public class SubOrderVO implements Serializable{
         this.mark = mark;
     }
 
-    public Long getLogisticsId() {
-        return logisticsId;
-    }
-
-    public void setLogisticsId(Long logisticsId) {
-        this.logisticsId = logisticsId;
-    }
-
     public Long getGoodsId() {
         return goodsId;
     }
 
     public void setGoodsId(Long goodsId) {
         this.goodsId = goodsId;
-    }
-
-    public String getPicUrl() {
-        return picUrl;
-    }
-
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
-    }
-
-    public String getWebSite() {
-        return webSite;
-    }
-
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
-
-    public Long getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Long weight) {
-        this.weight = weight;
     }
 
     public String getSize() {
