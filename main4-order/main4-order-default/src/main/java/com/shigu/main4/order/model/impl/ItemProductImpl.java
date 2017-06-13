@@ -2,6 +2,7 @@ package com.shigu.main4.order.model.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ItemProductSkuExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.ItemProduct;
@@ -110,7 +111,9 @@ public class ItemProductImpl implements ItemProduct{
 
     @Override
     public List<ItemSkuVO> selSkus() {
-        return null;
+        ItemProductSkuExample skuExample = new ItemProductSkuExample();
+        skuExample.createCriteria().andPidEqualTo(pid);
+        return BeanMapper.mapList(itemProductSkuMapper.selectByExample(skuExample), ItemSkuVO.class);
     }
 
     @Override

@@ -19,7 +19,13 @@ public class ItemProductImplTest extends BaseTest {
     private ItemProductMapper itemProductMapper;
 
     @Test
+    public void createProduct() {
+        SpringBeanFactory.getBean(ItemProduct.class, 20475519L, "酒红色", "3XL");
+    }
+
+    @Test
     public void selSkus() throws Exception {
+        show(SpringBeanFactory.getBean(ItemProduct.class, 20475519L, "酒红色", "3XL").selSkus());
     }
 
     @Test
