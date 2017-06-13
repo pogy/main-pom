@@ -48,7 +48,7 @@
                         </div>
                         <div class="loginItem">
                             <label class="iconfont icon-password"></label>
-                            <input type="password" class="form-input" name="password" maxlength="20" placeholder="请输入密码" >
+                            <input type="password" class="form-input" name="password" placeholder="请输入密码" >
                         </div>
                         <div class="error-tip"></div>
                         <div class="loginItem fogertPassword">
