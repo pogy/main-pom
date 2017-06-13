@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/otherIndex/css/py.css?t=1495518904810" rel="stylesheet">
+    <link href="http://style.571xz.com/otherIndex/css/py.css?t=1496991197858" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/otherIndex/js/py.js?t=1495518904810"></script>
+    <script src="http://style.571xz.com/otherIndex/js/py.js?t=1496991197858"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -59,7 +59,7 @@
             <li class="last">
                 <div class="nav-name"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116"  target="_blank" >客服中心<i class="img-jiantou"></i></a></div>
                 <div class="nav-list">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;uin=4000761116" rel="nofollow">在线客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank" rel="nofollow">在线客服</a>
                     <a href="http://zixun.571xz.com/detail?id=87" target="_blank" rel="nofollow">联系我们</a>
                     <a href="http://zixun.571xz.com/detail?id=14" target="_blank" rel="nofollow">新手入门</a>
                 </div>
@@ -130,7 +130,7 @@ $('.fixtopbar .tabbox li').on('click', function(){
             </ul>
         </div>
     </div>
-    <div class="sobar">
+    <div class="sobar clearfix">
         <ul class="tabs clearfix"> 
             <li class="so-goods selected">商品</li>
         </ul>

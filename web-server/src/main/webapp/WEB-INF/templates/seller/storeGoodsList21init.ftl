@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1496217544924" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1496990920084" rel="stylesheet">
     
   </head>
 <body>
@@ -129,7 +129,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>
@@ -303,6 +303,7 @@ var webSite = '${webSite!}';
                             <em class="goodsNo">${item.goodsNo!}</em> 
                             <b class="penIcon" jbtn="xgGoodsNo"></b>
                         </span>
+                        
                     </p>
                     
                     
@@ -356,7 +357,7 @@ var webSite = '${webSite!}';
         
 <script>/*============ gys5/action#goods-bj BEGIN ============*/
 
-var allStyleCate = ${allStyleCate!};
+var allStyleCate = '${allStyleCate!}';
 
 /*============ gys5/action#goods-bj END ============*/
 
@@ -399,7 +400,7 @@ var allStyleCate = ${allStyleCate!};
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1496217544924"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1496990920084"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
