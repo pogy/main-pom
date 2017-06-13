@@ -29,7 +29,7 @@ public class ItemProductImplTest extends BaseTest {
     @Test
     public void modifyPrice() throws Exception {
         Long modPrice = 500L;
-        ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, 20342548L, "酒红色", "4XL");
+        ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, 20475519L, "酒红色", "4XL");
         product.modifyPrice(modPrice);
 
         com.opentae.data.mall.beans.ItemProduct primaryKey = itemProductMapper.selectByPrimaryKey(product.getPid());

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ItemProductMapper" >
+
+	<select	id="selProduct" resultType="com.opentae.data.mall.beans.ItemProductInfo">
+		SELECT
+			a.pid,
+			b.sku_id
+		FROM
+			item_product a,
+			item_product_sku b
+		WHERE
+			a.pid = b.pid
+		AND a.goods_id = #{goodsId}
+		AND b.color = #{color}
+		AND b.size = #{size}
+	</select>
+
+
+</mapper>

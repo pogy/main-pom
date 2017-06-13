@@ -21,8 +21,6 @@ import java.util.List;
 @Scope("prototype")
 public class ItemProductImpl implements ItemProduct{
 
-    private Long pid;
-
     @Autowired
     private ItemProductMapper itemProductMapper;
 
@@ -44,6 +42,8 @@ public class ItemProductImpl implements ItemProduct{
     private Long goodsId;
     private String color;
     private String size;
+    private Long skuId;
+    private Long pid;
 
     public ItemProductImpl(Long goodsId,String color,String size) {
         this.goodsId = goodsId;
@@ -53,55 +53,59 @@ public class ItemProductImpl implements ItemProduct{
 
     @PostConstruct
     private void initProduct() {
-        com.opentae.data.mall.beans.ItemProduct itemProduct = selByGoodsId(goodsId);
-        if (itemProduct == null) {
-            itemProduct = createProduct(goodsId, color, size);
+        ItemProductInfo productInfo = itemProductMapper.selProduct(goodsId, color, size);
+        if (productInfo == null) {
+            productInfo = createProduct(goodsId, color, size);
         }
-        pid = itemProduct.getPid();
+        pid = productInfo.getPid();
+        skuId = productInfo.getSkuId();
     }
 
-    private com.opentae.data.mall.beans.ItemProduct selByGoodsId(Long goodsId) {
-        com.opentae.data.mall.beans.ItemProduct itemProduct = new com.opentae.data.mall.beans.ItemProduct();
-        itemProduct.setGoodsId(goodsId);
-        return itemProductMapper.selectOne(itemProduct);
-    }
+    private ItemProductInfo createProduct(Long goodsId, String color, String size) {
+        com.opentae.data.mall.beans.ItemProduct product = new com.opentae.data.mall.beans.ItemProduct();
+        product.setGoodsId(goodsId);
+        product = itemProductMapper.selectOne(product);
+        if (product == null) {
+            ShiguGoodsIdGenerator idGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
+            if (idGenerator == null) {
+                throw new IllegalArgumentException(String.format("goodId[%d] 不存在.", goodsId));
+            }
+            ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+            tiny.setWebSite(idGenerator.getWebSite());
+            tiny.setGoodsId(idGenerator.getGoodId());
+            ShiguGoodsTiny goodsTiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
+            if (goodsTiny == null) {
+                throw new IllegalStateException("商品不存在.id=" + goodsId);
+            }
+            product = BeanMapper.map(goodsTiny, com.opentae.data.mall.beans.ItemProduct.class);
+            product.setShopId(goodsTiny.getStoreId());
+            product.setPrice(goodsTiny.getPiPrice());
+            product.setMarketId(goodsTiny.getParentMarketId());
+            product.setFloorId(goodsTiny.getMarketId());
 
-    private com.opentae.data.mall.beans.ItemProduct createProduct(Long goodsId, String color, String size) {
-        ShiguGoodsIdGenerator idGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
-        if (idGenerator == null) {
-            throw new IllegalArgumentException(String.format("goodId[%d] 不存在.", goodsId));
-        }
-        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
-        tiny.setWebSite(idGenerator.getWebSite());
-        tiny.setGoodsId(idGenerator.getGoodId());
-        ShiguGoodsTiny goodsTiny = shiguGoodsTinyMapper.selectByPrimaryKey(tiny);
-        if (goodsTiny == null) {
-            throw new IllegalStateException("商品不存在.id=" + goodsId);
-        }
-        com.opentae.data.mall.beans.ItemProduct product = BeanMapper.map(goodsTiny, com.opentae.data.mall.beans.ItemProduct.class);
-        product.setShopId(goodsTiny.getStoreId());
-        product.setPrice(goodsTiny.getPiPrice());
-        product.setMarketId(goodsTiny.getParentMarketId());
-        product.setFloorId(goodsTiny.getMarketId());
+            ShiguShop shiguShop = shiguShopMapper.selectFieldsByPrimaryKey(goodsTiny.getStoreId(), FieldUtil.codeFields("shop_id, shop_num"));
+            if (shiguShop != null) {
+                product.setShopNum(shiguShop.getShopNum());
+            }
 
-        ShiguShop shiguShop = shiguShopMapper.selectFieldsByPrimaryKey(goodsTiny.getStoreId(), FieldUtil.codeFields("shop_id, shop_num"));
-        if (shiguShop != null) {
-            product.setShopNum(shiguShop.getShopNum());
+            ShiguMarket shiguMarket = shiguMarketMapper.selectByPrimaryKey(goodsTiny.getMarketId());
+            if (shiguMarket != null) {
+                product.setFloor(shiguMarket.getMarketName());
+                product.setMarketName(shiguMarket.getParentMarketName());
+            }
+            itemProductMapper.insertSelective(product);
         }
-
-        ShiguMarket shiguMarket = shiguMarketMapper.selectByPrimaryKey(goodsTiny.getMarketId());
-        if (shiguMarket != null) {
-            product.setFloor(shiguMarket.getMarketName());
-            product.setMarketName(shiguMarket.getParentMarketName());
-        }
-        itemProductMapper.insertSelective(product);
 
         ItemProductSku sku = new ItemProductSku();
         sku.setPid(product.getPid());
         sku.setColor(color);
         sku.setSize(size);
         itemProductSkuMapper.insertSelective(sku);
-        return product;
+
+        ItemProductInfo info = new ItemProductInfo();
+        info.setPid(product.getPid());
+        info.setSkuId(sku.getSkuId());
+        return info;
     }
 
     @Override
@@ -129,5 +133,9 @@ public class ItemProductImpl implements ItemProduct{
 
     public Long getPid() {
         return pid;
+    }
+
+    public Long getSkuId() {
+        return skuId;
     }
 }

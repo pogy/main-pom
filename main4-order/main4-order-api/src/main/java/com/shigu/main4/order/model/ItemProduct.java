@@ -39,4 +39,9 @@ public interface ItemProduct extends Product{
      * @return 记录主键
      */
     Long getPid();
+
+    /**
+     * 获取sku_id
+     */
+    Long getSkuId();
 }
