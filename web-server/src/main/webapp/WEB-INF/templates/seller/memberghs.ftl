@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/memberghs.css?t=1496217546515" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/memberghs.css?t=1496989475615" rel="stylesheet">
     
   </head>
 <body>
@@ -129,7 +129,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>
@@ -370,7 +370,7 @@ var tHref = '${tHref!}';
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys5/temp/echarts.js"></script>
         <script src="http://style.571xz.com/gys5/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/gys5/js/memberghs.js?t=1496217546515"></script>
+<script src="http://style.571xz.com/gys5/js/memberghs.js?t=1496989475615"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

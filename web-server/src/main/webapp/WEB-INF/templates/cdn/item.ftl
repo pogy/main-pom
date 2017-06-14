@@ -10,11 +10,11 @@
     
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
     
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1496813818839" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1496988597256" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1496813818839"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1496988597256"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -141,7 +141,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>
