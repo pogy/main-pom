@@ -28,4 +28,14 @@ public class WxPayerServiceImplTest extends BaseTest {
         show(payerService.selApply(2L));
     }
 
+    @Test
+    public void paySure() throws Exception {
+        payerService.paySure(2L, "81231434123123", "Q_Q", 1L);
+    }
+
+    @Test
+    public void payedLeft(){
+        show(payerService.payedLeft(1L));
+    }
+
 }
