@@ -11,8 +11,13 @@ import com.aliyun.opensearch.sdk.generated.search.Config;
 import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
 import com.aliyun.opensearch.sdk.generated.search.SearchParams;
 import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
+import com.opentae.data.mall.beans.ShiguMarket;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.beans.ShiguShopLicense;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.examples.ShiguShopLicenseExample;
+import com.opentae.data.mall.interfaces.ShiguMarketMapper;
+import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -20,17 +25,19 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.HighLightKit;
 import com.shigu.main4.vo.OpenShopVo;
 import com.shigu.main4.vo.SearchShop;
+import com.shigu.main4.vo.SearchShopSimple;
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 /**
  * 阿里开放搜索 实现店铺搜索
@@ -59,6 +66,7 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
      */
     @Override
     public ShiguPager<SearchShop> searchShop(String keyword, String webSite, Long mid, Integer page, Integer pageSize) {
+
         ShiguPager<SearchShop> pager = new ShiguPager<>();
         pager.setNumber(page);
 
@@ -138,4 +146,89 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         }
         return pager;
     }
+    @Resource
+    private ShiguMarketMapper shiguMarketMapper;
+    @Resource
+    private ShiguShopLicenseMapper shiguShopLicenseMapper;
+    /**
+     * 按shopId查店信息
+     *
+     * @param shopIds
+     * @return
+     */
+    public List<SearchShopSimple> selShopByIds(List<Long> shopIds, String website) {
+        if (shopIds == null || shopIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        List<SearchShopSimple> searchShops = new ArrayList<SearchShopSimple>();
+        for (long id : shopIds){
+            SearchShopSimple searchShopSimple = new SearchShopSimple();
+            ShiguShop shiguShop = shiguShopMapper.selectByPrimaryKey(id);
+            /**
+             * id
+             */
+            searchShopSimple.setShopId(id);
+            /**
+             * 地址P表
+             */
+            searchShopSimple.setAddress(shiguShop.getAddress());
+            /**
+             * 档口号
+             */
+            searchShopSimple.setShopNum(shiguShop.getShopNum());
+            /**
+             * 市场ID
+             */
+            searchShopSimple.setMarketId(shiguShop.getMarketId());
+            /**
+             * 联系电话
+             */
+            searchShopSimple.setTelephone(shiguShop.getTelephone());
+            /**
+             * 主营类目
+             */
+            searchShopSimple.setMainCase(shiguShop.getMainBus());
+            /**
+             * qq号
+             */
+            searchShopSimple.setImQq(shiguShop.getImQq());
+            /**
+             * 旺旺
+             */
+            searchShopSimple.setImAliww(shiguShop.getImAliww());
+
+            ShiguMarket shiguMarket = new ShiguMarket();
+            shiguMarket.setMarketId(shiguShop.getMarketId());
+            ShiguMarket selmarket = shiguMarketMapper.selectByPrimaryKey(shiguMarket);
+            /**
+             * 市场名称
+             */
+            if (selmarket!=null){
+                searchShopSimple.setMarket(selmarket.getMarketFullName());
+            }
+            ShiguShopLicenseExample shiguShopLicenseExample = new ShiguShopLicenseExample();
+            ShiguShopLicenseExample.Criteria criteria = shiguShopLicenseExample.createCriteria();
+            criteria.andShopIdEqualTo(id);
+            /**
+             * 设置查询类别为星星数
+             */
+            criteria.andLicenseTypeEqualTo(6);
+            /**
+             * licenseype设置有效
+             */
+            criteria.andLicenseFailureEqualTo(0);
+            List<ShiguShopLicense> shiguShopLicenses = shiguShopLicenseMapper.selectByExample(shiguShopLicenseExample);
+            if (shiguShopLicenses.size()>0){
+                ShiguShopLicense shiguShopLicense = shiguShopLicenses.get(0);
+                /**
+                 * 星星数
+                 */
+                searchShopSimple.setStarNum(shiguShopLicense.getContext());
+            }
+            searchShops.add(searchShopSimple);
+        }
+        return searchShops;
+    }
+
 }
