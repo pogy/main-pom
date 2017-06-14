@@ -25,9 +25,6 @@ import java.util.Calendar;
 @Service
 public class WxPayerServiceImpl extends PayerServiceAble {
 
-    @Autowired
-    private OrderPayApplyMapper orderPayApplyMapper;
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PayApplyVO payApply(Long oid, Long money, String title) throws PayApplyException {

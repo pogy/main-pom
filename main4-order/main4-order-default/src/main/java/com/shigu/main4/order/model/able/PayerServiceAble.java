@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class PayerServiceAble implements PayerService{
 
     @Autowired
-    private OrderPayApplyMapper orderPayApplyMapper;
+    protected OrderPayApplyMapper orderPayApplyMapper;
 
     @Override
     public Long payedLeft(Long payId) {
