@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods.css?t=1496285148953" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods.css?t=1496989702970" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods.js?t=1496285148953"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods.js?t=1496989702970"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -146,7 +146,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>

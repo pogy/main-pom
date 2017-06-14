@@ -26,6 +26,7 @@ import com.shigu.main4.common.util.HighLightKit;
 import com.shigu.main4.vo.OpenShopVo;
 import com.shigu.main4.vo.SearchShop;
 import com.shigu.main4.vo.SearchShopSimple;
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,7 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
      */
     @Override
     public ShiguPager<SearchShop> searchShop(String keyword, String webSite, Long mid, Integer page, Integer pageSize) {
+
         ShiguPager<SearchShop> pager = new ShiguPager<>();
         pager.setNumber(page);
 
@@ -158,6 +160,7 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         if (shopIds == null || shopIds.isEmpty()) {
             return Collections.emptyList();
         }
+        
         List<SearchShopSimple> searchShops = new ArrayList<SearchShopSimple>();
         for (long id : shopIds){
             SearchShopSimple searchShopSimple = new SearchShopSimple();
@@ -214,17 +217,18 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
             /**
              * licenseype设置有效
              */
-            criteria.andLicenseFailureEqualTo(1);
+            criteria.andLicenseFailureEqualTo(0);
             List<ShiguShopLicense> shiguShopLicenses = shiguShopLicenseMapper.selectByExample(shiguShopLicenseExample);
             if (shiguShopLicenses.size()>0){
                 ShiguShopLicense shiguShopLicense = shiguShopLicenses.get(0);
+                /**
+                 * 星星数
+                 */
                 searchShopSimple.setStarNum(shiguShopLicense.getContext());
             }
-            /**
-             * 星星数
-             */
             searchShops.add(searchShopSimple);
         }
         return searchShops;
     }
+
 }

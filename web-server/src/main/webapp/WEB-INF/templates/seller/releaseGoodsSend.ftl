@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/releaseGoodsSend.css?t=1496217555205" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/releaseGoodsSend.css?t=1496989483821" rel="stylesheet">
             <link href="http://style.571xz.com/gys5/temp/webuploader/webuploader.css" rel="stylesheet">
     
   </head>
@@ -130,7 +130,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>
@@ -496,7 +496,7 @@ var webSite = '${webSite!}';
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys5/temp/webuploader/webuploader.js"></script>
-<script src="http://style.571xz.com/gys5/js/releaseGoodsSend.js?t=1496217555205"></script>
+<script src="http://style.571xz.com/gys5/js/releaseGoodsSend.js?t=1496989483821"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
