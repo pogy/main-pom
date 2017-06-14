@@ -110,6 +110,7 @@ public class ItemOrderImpl implements ItemOrder{
     @Transactional(rollbackFor = Exception.class)
     public Long addLogistics(List<Long> soids,LogisticsVO logistics) {
         ItemOrderLogistics orderLogistics = BeanMapper.map(logistics, ItemOrderLogistics.class);
+        orderLogistics.setOid(oid);
         itemOrderLogisticsMapper.insertSelective(orderLogistics);
 
         // 重新计算订单总额

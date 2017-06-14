@@ -4,6 +4,7 @@ import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.vo.ItemOrderVO;
+import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.order.vo.SubOrderVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
@@ -28,11 +29,12 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void selLogisticses() throws Exception {
-
+        show(order().selLogisticses());
     }
 
     @Test
     public void orderInfo() throws Exception {
+        show(order().orderInfo());
     }
 
     @Test
@@ -42,6 +44,22 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void addLogistics() throws Exception {
+        List<Long> soids = new ArrayList<>();
+
+        show(order().orderInfo());
+        LogisticsVO vo = new LogisticsVO();
+        vo.setAddress("环北西北");
+        vo.setCityId(1L);
+        vo.setCompanyId(2L);
+        vo.setMoney(400L);
+        vo.setProvId(1L);
+        vo.setTelephone("15151515151");
+        vo.setTownId(2L);
+        vo.setZipCode("UUID");
+        vo.setCourierNumber("1231");
+        order().addLogistics(soids, vo);
+        show(order().orderInfo());
+        selLogisticses();
     }
 
     @Test
