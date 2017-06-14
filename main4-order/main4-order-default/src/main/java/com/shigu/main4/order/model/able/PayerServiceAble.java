@@ -1,6 +1,8 @@
 package com.shigu.main4.order.model.able;
 
+import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
+import com.opentae.data.mall.interfaces.OrderPayMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.vo.PayApplyVO;
@@ -15,9 +17,16 @@ public abstract class PayerServiceAble implements PayerService{
     @Autowired
     protected OrderPayApplyMapper orderPayApplyMapper;
 
+    @Autowired
+    protected OrderPayMapper orderPayMapper;
+
     @Override
     public Long payedLeft(Long payId) {
-        return null;
+        OrderPay orderPay = orderPayMapper.selectByPrimaryKey(payId);
+        if (orderPay == null) {
+            return 0L;
+        }
+        return orderPay.getMoney() - orderPay.getRefundMoney();
     }
 
     @Override
