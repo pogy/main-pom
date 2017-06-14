@@ -5,7 +5,8 @@ import com.alibaba.fastjson.annotation.JSONField;
 import java.util.Date;
 
 /**
- * Created by Administrator on 2017/6/13 0013.
+ * 开放搜索商品数据
+ * Created by whx on 2017/6/13 0013.
  */
 public class OpenItemVo {
     private Long searchId;
