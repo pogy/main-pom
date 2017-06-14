@@ -2,8 +2,8 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.io.Serializable;
 import java.util.Date;
+import java.io.Serializable;
 
 public class OrderPayApply implements Serializable {
     /**
@@ -12,6 +12,11 @@ public class OrderPayApply implements Serializable {
     @Id
     @GeneratedValue(generator = "JDBC")
 	private Long applyId;
+
+    /**
+     * item_order_id
+     */
+	private Long oid;
 
     /**
      * 钱数
@@ -44,6 +49,14 @@ public class OrderPayApply implements Serializable {
 
 	public Long getApplyId() {
 		return this.applyId;
+	}
+
+	public void setOid(Long oid) {
+		this.oid = oid;
+	}
+
+	public Long getOid() {
+		return this.oid;
 	}
 
 	public void setMoney(Long money) {

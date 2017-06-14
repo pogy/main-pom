@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
 
 /**
@@ -7,7 +8,7 @@ import com.shigu.main4.order.vo.PayApplyVO;
  * Created by zhaohongbo on 17/6/9.
  */
 public interface PayerService {
-    PayApplyVO payApply(Long oid, Long money, String title);
+    PayApplyVO payApply(Long oid, Long money, String title) throws PayApplyException;
     void refund(Long payId,Long money);
     void paySure(Long applyId,String outerPid,String outerPuser,Long payMoney);
     Long payedLeft(Long payId);

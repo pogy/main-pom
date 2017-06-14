@@ -572,6 +572,74 @@ public class OrderPayApplyExample implements SgExample{
             return (OrderPayApplyExample.Criteria)this;
         }
 
+        public OrderPayApplyExample.Criteria andOidIsNull() {
+            this.addCriterion("oid is null");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidIsNotNull() {
+            this.addCriterion("oid is not null");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidEqualTo(Long value) {
+            this.addCriterion("oid =", value, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidNotEqualTo(Long value) {
+            this.addCriterion("oid <>", value, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidGreaterThan(Long value) {
+            this.addCriterion("oid >", value, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("oid >=", value, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidLessThan(Long value) {
+            this.addCriterion("oid <", value, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidLessThanOrEqualTo(Long value) {
+            this.addCriterion("oid <=", value, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidLike(String value) {
+            this.addCriterion("oid like", value, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidNotLike(String value) {
+            this.addCriterion("oid not like", value, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }        public OrderPayApplyExample.Criteria andOidIn(List<Long> values) {
+            this.addCriterion("oid in", values, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidNotIn(List<Long> values) {
+            this.addCriterion("oid not in", values, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidBetween(Long value1, Long value2) {
+            this.addCriterion("oid between", value1, value2, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
+        public OrderPayApplyExample.Criteria andOidNotBetween(Long value1, Long value2) {
+            this.addCriterion("oid not between", value1, value2, "oid");
+            return (OrderPayApplyExample.Criteria)this;
+        }
+
         public OrderPayApplyExample.Criteria andTypeIsNull() {
             this.addCriterion("type is null");
             return (OrderPayApplyExample.Criteria)this;
