@@ -1,12 +1,26 @@
 package com.shigu.main4.item.services;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.aliyun.opensearch.SearcherClient;
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
+import com.aliyun.opensearch.sdk.generated.commons.OpenSearchClientException;
+import com.aliyun.opensearch.sdk.generated.commons.OpenSearchException;
+import com.aliyun.opensearch.sdk.generated.search.Config;
+import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
+import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
+import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.opentae.data.mall.beans.ESGoods;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.SearchCategorySubExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.SearchCategoryMapper;
 import com.opentae.data.mall.interfaces.SearchCategorySubMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.searchtool.configs.ElasticConfiguration;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
@@ -29,11 +43,12 @@ import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
 /**
  * Created by wxc on 2017/4/4.
  *
@@ -43,6 +58,13 @@ import java.util.*;
  */
 @Service
 public class ItemSearchServiceImpl implements ItemSearchService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ItemSearchServiceImpl.class);
+
+    private static final String SEARCH_APP = "goods_search_";
+
+    @Autowired
+    private SearcherClient searcherClient;
 
     @Autowired
     private SearchCategoryMapper searchCategoryMapper;
@@ -357,21 +379,48 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      */
     @Override
     public ShiguPager<SearchItem> searchItemByIds(List<Long> ids, String webSite, Integer page, Integer pageSize) {
+        final String[] FIELDS = {"goods_id","title","created","price","pic_url","store_id","goods_no"};
+        final  String initialFilter = "goods_id = -1";
         ShiguPager<SearchItem> pager = new ShiguPager<>();
         pager.setNumber(page);
-        SearchResponse searchResponse = ElasticConfiguration.searchClient
-                .prepareSearch("goods")
-                .setTypes(webSite)
-                .setSize(pageSize)
-                .setFrom((page - 1) * pageSize)
-                .setQuery(QueryBuilders.termsQuery("goodsId", ids)).execute().actionGet();
-        int totalHits = (int) searchResponse.getHits().getTotalHits();
-        pager.calPages(totalHits, pageSize);
-        pager.setTotalCount(totalHits);
-        pager.setContent(new ArrayList<SearchItem>());
-        for (SearchHit hit : searchResponse.getHits().getHits()) {
-            SearchItem searchItem = packSearchItem(hit);
-            pager.getContent().add(searchItem);
+        ArrayList<SearchItem> item = Lists.newArrayList();
+        pager.setContent(item);
+        Config config = new Config(Lists.<String>newArrayList(SEARCH_APP + webSite));
+        config.setStart((page - 1) * pageSize);
+        config.setHits(pageSize);
+        config.setFetchFields(Lists.<String>newArrayList(FIELDS));
+        config.setSearchFormat(SearchFormat.JSON);
+        SearchParamsBuilder searchParams = SearchParamsBuilder.create(config);
+
+        searchParams.addFilter(initialFilter);
+        if(ids != null && ids.size() > 0) {
+            for (Long id: ids) {
+                searchParams.addFilter("goods_id = " + id, "OR");
+            }
+        }
+        try {
+            SearchResult result = searcherClient.execute(searchParams);
+            JSONObject jsonObject = JSON.parseObject(result.getResult());
+            if ("OK".equals(jsonObject.getString("status"))) {
+                String idField = "goodsId";
+                JSONObject data = jsonObject.getJSONObject("result");
+                int total = data.getIntValue("total");
+                pager.calPages(total,pageSize);
+                JSONArray items = data.getJSONArray("items");
+                List<OpenItemVo> openItemVos = items.toJavaList(OpenItemVo.class);
+                if (!openItemVos.isEmpty()){
+                    for (OpenItemVo openItemVo : openItemVos) {
+                        SearchItem searchItem = BeanMapper.map(openItemVo, SearchItem.class);
+                        searchItem.setItemId(openItemVo.getGoodsId());
+                        item.add(searchItem);
+                    }
+                }
+            }else {
+                throw new Main4Exception(jsonObject.getString("error"));
+            }
+        }catch (OpenSearchException | OpenSearchClientException ignored) {
+        } catch (Main4Exception e){
+            logger.error("搜索失败", e);
         }
         return pager;
     }
