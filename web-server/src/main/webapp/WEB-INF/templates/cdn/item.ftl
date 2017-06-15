@@ -10,11 +10,11 @@
     
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
     
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1496988597256" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1497503671065" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1496988597256"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1497503671065"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -200,7 +200,7 @@ var webSite = '${webSite!}';
             <div class="storeLogo iconfont"></div>
             
             <div class="storeNamebox">
-                <h3>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}</h3>
+                <h3 onclick="openShop()">${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}</h3>
 <#assign text>{"id":"${vo.storeRelation.imWw!}"}</#assign>
 <#assign $it=text?eval />
                 <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
@@ -212,6 +212,18 @@ var webSite = '${webSite!}';
                 <i class="ti iconfont">&#xe60b;</i>
             </div>
             
+<script>/*============ shopItemCopy/page#headeV1 BEGIN ============*/
+
+function openShop(){
+                var shopId = '${vo.storeRelation.storeId!}';
+                var webSite = '${webSite!}';
+                window.open('http://'+ webSite +'.571xz.com/shop.htm?id=' + shopId);
+            }
+
+/*============ shopItemCopy/page#headeV1 END ============*/
+
+
+</script>            
             <div class="storeXybox">
 <#assign text>{"num":${vo.starNum!}}</#assign>
 <#assign $it=text?eval />
@@ -421,7 +433,7 @@ var goodsId = '${vo.itemId!}';
                     <a class="tb-main-title"  rel="nofollow" href="javascript:;" target="_blankt">${vo.cdnItem.title!}</a>
                     </#if>
                     <#elseif vo.cdnItem.itemFrom.value == "package">
-                    <span class="iconfont" title="此商品为数据包上传">&#xe6a6;</span><h2>${vo.cdnItem.title!}</h2>
+                    <span class="iconfont" title="此商品为数据包上传">&#xe6a6;</span><h2 class="packageTitle">${vo.cdnItem.title!}</h2>
                     <#else>
                     <h2>${vo.cdnItem.title!}</h2>
                     </#if>

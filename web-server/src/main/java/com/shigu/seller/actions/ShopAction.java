@@ -1,6 +1,5 @@
 package com.shigu.seller.actions;
 
-import com.alibaba.fastjson.JSON;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
 import com.shigu.buyer.vo.SafeRzVO;
@@ -49,6 +48,9 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.spread.enums.SpreadEnum;
+import com.shigu.spread.services.SpreadService;
+import com.shigu.spread.vo.ImgBannerVO;
 import com.shigu.tb.finder.exceptions.TbItemSynException;
 import com.shigu.tb.finder.exceptions.TbOnsaleException;
 import com.shigu.tb.finder.services.MainTbOnsaleService;
@@ -82,7 +84,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 店铺的控制中心
@@ -149,10 +150,11 @@ public class ShopAction {
     @Autowired
     UserBaseService userBaseService;
 
-    String ftlDir="seller";
-
     @Autowired
     OssIO ossIO;
+
+    @Autowired
+    SpreadService spreadService;
 
     /**
      * 当前登陆的session
@@ -171,8 +173,15 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/index")
-    public String index() {
-        return ftlDir+"/memberghs";
+    public String index(Model model) {
+        // 分销商广告
+        List<ImgBannerVO> imageGoat = spreadService.selImgBanners(SpreadEnum.BACK_SHOP).selReal();
+        if (!imageGoat.isEmpty()) {
+            ImgBannerVO imgBannerVO = imageGoat.get(0);
+            model.addAttribute("imgsrc", imgBannerVO.getImgsrc());
+            model.addAttribute("tHref", imgBannerVO.getHref());
+        }
+        return "seller/memberghs";
     }
 
     /**
@@ -244,7 +253,7 @@ public class ShopAction {
             get.setFeedback(2);
         }
         model.addAttribute("get",get);
-        return ftlDir+"/createGoods21init";
+        return "seller/createGoods21init";
     }
 
     /**
@@ -272,7 +281,7 @@ public class ShopAction {
      */
     @RequestMapping("seller/releaseGoodsinit")
     public String releaseGoodsinit(){
-        return ftlDir+"/releaseGoodsinit";
+        return "seller/releaseGoodsinit";
     }
 
     /**
@@ -322,7 +331,7 @@ public class ShopAction {
         model.addAttribute("formAttribute",formAttribute);
         model.addAttribute("skuAttribute",skuAttribute);
         model.addAttribute("get",bo);
-        return ftlDir+"/releaseGoodsSend";
+        return "seller/releaseGoodsSend";
     }
 
     /**
@@ -445,36 +454,11 @@ public class ShopAction {
                 goodsList.add(new OnsaleItemVO(oi));
             }
             model.addAttribute("goodslist",goodsList);
-            if (!goodsList.isEmpty()) {
-                Map<Long, StyleVo> styleByGoodsMap
-                        = shopItemModService.findStyleByGoodsIds(BeanMapper.getFieldList(goodsList, "id", Long.class));
-                for (OnsaleItemVO itemVO : goodsList) {
-                    StyleVo styleVo = styleByGoodsMap.get(itemVO.getId());
-                    if (styleVo != null) {
-                        itemVO.setSid(styleVo.getSid());
-                        itemVO.setStyleName(styleVo.getName());
-                    }
-                }
-            }
         } catch (ItemException e) {
             logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
         }
         model.addAttribute("get",bo);
-        model.addAttribute("allStyleCate", JSON.toJSONString(shopItemModService.findAllStyle()));
-        return ftlDir+"/storeGoodsList21init";
-    }
-
-    @RequestMapping("seller/jsonupdategoodsStyleinfo")
-    @ResponseBody
-    public JSONObject jsonupdategoodsStyleinfo(Long goodsId, String sid, HttpSession session) throws JsonErrException {
-        ShopSession shopSession = getShopSession(session);
-        try {
-            itemAddOrUpdateService.addGoodsStyle(goodsId, shopSession.getWebSite(), sid);
-        } catch (Exception e) {
-            logger.error(e);
-            throw new JsonErrException("商品风格更新失败");
-        }
-        return JsonResponseUtil.success();
+        return "seller/storeGoodsList21init";
     }
 
     /**
@@ -616,7 +600,7 @@ public class ShopAction {
             logger.error("拉取店铺出售中失败,shopId="+shopSession.getShopId(),e);
         }
         model.addAttribute("get",bo);
-        return ftlDir+"/storeRecommendListinit";
+        return "seller/storeRecommendListinit";
     }
     /**
      * 仓库中的宝贝
@@ -638,7 +622,7 @@ public class ShopAction {
         model.addAttribute("goodslist",goodslist);
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         model.addAttribute("get",bo);
-        return ftlDir+"/storeGoodsListinit";
+        return "seller/storeGoodsListinit";
     }
 
     /**
@@ -693,7 +677,7 @@ public class ShopAction {
         model.addAttribute("goodslist",goodsList);
         model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
         model.addAttribute("get",bo);
-        return ftlDir+"/xiufuGoods21init";
+        return "seller/xiufuGoods21init";
     }
 
     /**
@@ -728,7 +712,7 @@ public class ShopAction {
      */
     @RequestMapping("seller/xiufuStorecat21init")
     public String xiufuStorecat21init() {
-        return ftlDir+"/xiufuStorecat21init";
+        return "seller/xiufuStorecat21init";
     }
 
     /**
@@ -753,7 +737,7 @@ public class ShopAction {
      */
     @RequestMapping("seller/xiufuGoodscat21init")
     public String xiufuGoodscat21init(){
-        return ftlDir+"/xiufuGoodscat21init";
+        return "seller/xiufuGoodscat21init";
     }
 
     /**
@@ -812,7 +796,7 @@ public class ShopAction {
         }
         model.addAttribute("dataList", volist);
         model.addAttribute("webSite",shopSession.getWebSite());
-        return ftlDir+"/storeGoodsNoListinit";
+        return "seller/storeGoodsNoListinit";
     }
 
     /**
@@ -841,7 +825,7 @@ public class ShopAction {
      */
     @RequestMapping("seller/fitmentStorefitmentStore")
     public String fitmentStorefitmentStore() {
-        return ftlDir+"/fitmentStorefitmentStore";
+        return "seller/fitmentStorefitmentStore";
     }
 
     /**
@@ -872,7 +856,7 @@ public class ShopAction {
             }
             model.addAttribute("domain",domain);
         }
-        return ftlDir+"/shiguStoreerjiyuming";
+        return "seller/shiguStoreerjiyuming";
     }
 
     /**
@@ -882,7 +866,7 @@ public class ShopAction {
      */
     @RequestMapping("seller/ghTongbu")
     public String ghTongbu() {
-        return ftlDir+"/ghTongbu";
+        return "seller/ghTongbu";
     }
 
     /**
@@ -928,7 +912,7 @@ public class ShopAction {
         shopTypeSetVO.setServers(servers);
         shopTypeSetVO.setBusiness_type(xzSdkClient.getXzMainBus().split(","));
         model.addAttribute("typeset",shopTypeSetVO);
-        return ftlDir+"/shiguStorebasicStore";
+        return "seller/shiguStorebasicStore";
     }
 
     /**
@@ -959,7 +943,7 @@ public class ShopAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode = paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode", tempcode);
-        return ftlDir+"/iwantToRechargein5";
+        return "seller/iwantToRechargein5";
     }
 
     /**
@@ -971,7 +955,7 @@ public class ShopAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         String tempcode = paySdkClientService.tempcode(ps.getUserId());
         model.addAttribute("tempCode", tempcode);
-        return ftlDir+"/withdraw5Apply";
+        return "seller/withdraw5Apply";
     }
 
     /**
@@ -1003,7 +987,7 @@ public class ShopAction {
         } else {
             model.addAttribute("safe_level", 0);
         }
-        return ftlDir+"/safeindex";
+        return "seller/safeindex";
     }
 
     /**
@@ -1017,7 +1001,7 @@ public class ShopAction {
         UserInfoVO userInfoVO= com.shigu.session.main4.tool.BeanMapper.map(userInfo, UserInfoVO.class);
         userInfoVO.setUserId(ps.getUserId());
         model.addAttribute("userInfo", userInfoVO);
-        return ftlDir+"/sysSetsindex";
+        return "seller/sysSetsindex";
     }
 
     /**
@@ -1060,7 +1044,7 @@ public class ShopAction {
             safeRzVO.setMsg(msg);
         }
         model.addAttribute("identity",safeRzVO);
-        return ftlDir+"/saferz";
+        return "seller/saferz";
     }
 
 
@@ -1076,7 +1060,7 @@ public class ShopAction {
         if(checkFromForget(ps.getUserId(),code,phoneCode)){
             model.addAttribute("fromForget",phoneCode);
         }
-        return ftlDir+"/safexgmm";
+        return "seller/safexgmm";
     }
     /**
      * 验证是否忘记密码来的
@@ -1117,7 +1101,7 @@ public class ShopAction {
                 }
             }
         }
-        return ftlDir+"/safeszyx";
+        return "seller/safeszyx";
     }
 
     /**
@@ -1145,6 +1129,6 @@ public class ShopAction {
             mail.setMsg("当前登陆账号与认证发起账号不符合,请切换账号,重新激活");
         }
         model.addAttribute("mail",mail);
-        return ftlDir+"/safeszyx";
+        return "seller/safeszyx";
     }
 }
