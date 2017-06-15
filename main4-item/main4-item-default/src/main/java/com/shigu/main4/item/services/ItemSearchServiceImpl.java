@@ -56,7 +56,7 @@ import java.util.*;
  * @version main_site4.0 4.0.0
  * @since main_site4.0 4.0.0
  */
-//@Service("itemSearchService")
+@Service
 public class ItemSearchServiceImpl implements ItemSearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(ItemSearchServiceImpl.class);
@@ -209,7 +209,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                     .subAggregation(AggregationBuilders.count("market_num").field("goodsId"));
             if (cids != null && !cids.isEmpty()) {
                 marketAggregation = AggregationBuilders.filter(marketCountName).filter(QueryBuilders.termsQuery("cid", cids))
-                .subAggregation(marketAggregation);
+                        .subAggregation(marketAggregation);
             }
             sb.addAggregation(parentCatAggregation).addAggregation(marketAggregation);
         }
@@ -217,7 +217,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         SearchHits hits = response.getHits();
 
         if (aggs) {
-              pager.setMarkets(getAggCount(marketCountName, response));
+            pager.setMarkets(getAggCount(marketCountName, response));
             pager.setParentCats(getAggCount(parentCatName, response));
         }
 
