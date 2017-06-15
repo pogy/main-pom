@@ -41,7 +41,7 @@ import java.util.*;
  * 阿里开放搜索 实现店铺搜索
  * Created by bugzy on 2017/5/31 0031.
  */
-@Service
+@Service("shopSearchOpenService")
 public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
 
     private static final Logger logger = LoggerFactory.getLogger(ShopSearchServiceOpenImpl.class);
@@ -135,7 +135,6 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
                         }
                         shop.add(searchShop);
                     }
-
                 }
             } else throw new Main4Exception(jsonObject.getString("errors"));
         } catch (OpenSearchException | OpenSearchClientException ignored) {
