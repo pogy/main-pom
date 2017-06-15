@@ -78,8 +78,8 @@ public class ItemUpRecordServiceTest {
     @Test
     public void selLastUpByIds(){
 //        1612829    1000063657
-        Long userId = 123321L;
-        Long supperGoodsId = 20024488L;
+        Long userId = 1000071161L;
+        Long supperGoodsId = 20500978L;
         LastUploadedVO last = itemUpRecordService.selLastUpByIds(userId,supperGoodsId);
         String datestr = null;
         if(last != null){

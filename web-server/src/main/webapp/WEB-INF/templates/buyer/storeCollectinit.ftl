@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/storeCollectinit.css" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/storeCollectinit.css?t=1496990680202" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.188:55/fxs2/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/fxs2/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -87,10 +87,10 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="#">
+                        <a href="${main_host!}carts.htm">
                             <i class="cgcatIcon"></i>
                             <span>购物车</span>
-                            <em class="cgNum">0</em>
+                            <em class="cgNum"></em>
                         </a>
                     </li>
                     <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
@@ -128,13 +128,17 @@
                         </div>    
                     </li>
                 </#if>
-                <li class="noDown"><a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}">联系客服</a></li>
+                <li class="noDown">
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    
+                </li>
                 <li>
                     <div class="cnBox">
                         <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
                         <div class="webNav cnBoxCon">
                             <h4>市场大全</h4>
                             <ul>
+                                
                                 <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
@@ -164,6 +168,14 @@
         </div>
     </div>
 </div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
 <div class="header">
     <div class="layout">
         <a class="logo iconfont" href="http://www.571xz.com">&#xe653;</a>
@@ -181,8 +193,8 @@
     <div class="sidebar">
         <h2>商品管理</h2>
         <ul>
-            <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
-            <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
+                <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
+                <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
             <li><a class="selected" href="${main_host!}member/storeCollectinit.htm">我的收藏</a></li> 
         </ul> 
         <h2>代发管理</h2>
@@ -255,6 +267,7 @@
             
             <#list goodslist as goods>
             <ul class="body clearfix">
+               
                <li class="sid">${goods.shopId!}</li>
                <li class="name">${goods.shopName!}</li>
                <li class="cate">${goods.mainBus!}</li>
@@ -270,7 +283,9 @@
         </div>
     
         <div class="jq_pagination" data-option="${pageOption!}"></div>
-
+            
+    
+    
         <#else>
         <p class=emptylist>暂无数据</p>
         </#if>
@@ -288,7 +303,8 @@
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
-
+            
+            
             <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
             
         </p>
@@ -307,7 +323,7 @@
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/storeCollectinit.js"></script>
+<script src="http://style.571xz.com/fxs2/js/storeCollectinit.js?t=1496990680202"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

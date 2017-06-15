@@ -8,6 +8,8 @@ import java.io.Serializable;
  */
 public class CategoryValue implements Serializable, Comparable<CategoryValue>{
     private static final long serialVersionUID = -5153641291281375194L;
+
+    private Long subId;
     /**
      * 分类名称
      */
@@ -18,6 +20,14 @@ public class CategoryValue implements Serializable, Comparable<CategoryValue>{
     private String cateValue;
 
     private Integer sort;
+
+    public Long getSubId() {
+        return subId;
+    }
+
+    public void setSubId(Long subId) {
+        this.subId = subId;
+    }
 
     public String getCateName() {
         return cateName;

@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/safeindex.css?t=1496395032099" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/safeindex.css?t=1496989630430" rel="stylesheet">
     
   </head>
 <body>
@@ -129,7 +129,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>
@@ -348,7 +348,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/safeindex.js?t=1496395032099"></script>
+<script src="http://style.571xz.com/fxs2/js/safeindex.js?t=1496989630430"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

@@ -62,4 +62,8 @@ public class RedisIOTest {
         System.out.println(redisIO.rpop("hehehehe"));
     }
 
+    @Test
+    public void test(){
+        System.out.println(redisIO.getJedis().configGet("_density_pv_item_*"));
+    }
 }

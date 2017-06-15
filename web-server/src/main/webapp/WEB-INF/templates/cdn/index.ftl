@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1496283089063" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1497346940633" rel="stylesheet">
     
   </head>
 <body>
@@ -136,7 +136,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>
@@ -234,14 +234,16 @@ var webSite = '${webSite!}';
             <ul>
                 <li><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
                 <#if webSite == 'jx'>
-                <li class="select"><a href="http://${webSite!}.571xz.com/market.htm?mid=33">逛市场</a></li>
+                <li class="select"><a href="http://${webSite!}.571xz.com/market.htm?mid=33">逛市场</a></li> 
                 <#elseif webSite == 'cs'>
                 <li class="select"><a href="http://${webSite!}.571xz.com/market.htm?mid=43">逛市场</a></li>
+                <#elseif webSite == 'ss'>
+                <li class="select"><a href="http://${webSite!}.571xz.com/market.htm?mid=62">逛市场</a></li>
                 <#else>
                 <li class="select"><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 </#if>
                 <li><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite != 'jx' && webSite != 'wa'>
+                <#if webSite =="hz" || webSite == 'cs'>
                 <li><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
                 <#if webSite == 'hz'>
                 <li><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
@@ -408,7 +410,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1496283089063"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1497346940633"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

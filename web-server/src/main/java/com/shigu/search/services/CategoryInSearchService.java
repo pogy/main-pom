@@ -112,7 +112,11 @@ public class CategoryInSearchService {
         List<CategoryValue> cates=itemSearchService.selSubCategory(cateValue,category, webSite);
         List<CateNav> navs=new ArrayList<>();
         for(CategoryValue gv:cates){
-            navs.add(new CateNav(gv.getCateValue(),gv.getCateName(),gv.getCateValue()));
+            if(category.equals(SearchCategory.STYLE)){
+                navs.add(new CateNav(gv.getSubId()+"",gv.getCateName(),gv.getCateValue()));
+            }else{
+                navs.add(new CateNav(gv.getCateValue(),gv.getCateName(),gv.getCateValue()));
+            }
         }
         if (navs != null) {
             cache.put(key,navs);
