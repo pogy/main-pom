@@ -53,7 +53,8 @@ public class WxPayerServiceImpl extends PayerServiceAble {
                     "oa",
                     wxOutTradeNo(apply.getApplyId()),
                     money.intValue(),
-                    "http://1487uc2861.51mypc.cn/api/wxnotify.json"
+//                    "http://1487uc2861.51mypc.cn/api/wxnotify.json"
+                    "http://www.571xz.com/api/wxnotify.json"
             );
         } catch (Exception e) {
             throw PayApplyException.wxApplyException(e);
