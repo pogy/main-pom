@@ -338,7 +338,7 @@ public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdn
 //                    instance.setMaximumFractionDigits(2);//这种方法可以得到保留两位的值,但不能得到保留两位的格式
                     cdnItem.setMarketId(tiny.getParentMarketId());
                     cdnItem.setListTime(DateFormatUtils.format(tiny.getCreated(), "yyyy-MM-dd"));
-                    cdnItem.setOnsale(true);
+                    cdnItem.setOnsale(tiny.getIsClosed()!=null&&tiny.getIsClosed()==0L);
                 } else if (e instanceof ShiguGoodsSoldout) {
                     ShiguGoodsSoldout soldout = (ShiguGoodsSoldout) e;
                     Integer from = soldout.getIsExcelImp();
