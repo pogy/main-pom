@@ -24,7 +24,7 @@ public class ItemSearchOpenServiceImplTest  extends BaseSpringTest {
     private static final Logger logger = LoggerFactory.getLogger(ItemSearchServiceImplTest.class);
 
     @Autowired
-    @Qualifier(value = "itemSearchOpenService")
+    @Qualifier(value = "itemSearchService")
     private ItemSearchService itemSearchService;
 
     @Test
