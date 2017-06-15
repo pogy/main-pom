@@ -19,7 +19,8 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="com.opentae.*,com.shigu.*,com.openJar.*,com.alibaba.*,com.searchtool.configs" >
+    <context:property-placeholder location="classpath:opensearch.properties" ignore-unresolvable="true"/>
+    <context:component-scan base-package="com.opentae.*,com.shigu.*,com.alibaba.*,com.searchtool.configs" >
     </context:component-scan>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -103,5 +104,17 @@
     <bean id="itemcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
         <property name="cacheManager" ref="ehcacheManager"/>
         <property name="transactionAware" value="true"/>
+    </bean>
+
+    <bean id="openSearch" class="com.aliyun.opensearch.sdk.generated.OpenSearch">
+        <constructor-arg index="0" value="${accesskey}"/>
+        <constructor-arg index="1" value="${secret}"/>
+        <constructor-arg index="2" value="${host}"/>
+    </bean>
+    <bean id="openSearchClient" class="com.aliyun.opensearch.OpenSearchClient">
+        <constructor-arg ref="openSearch"/>
+    </bean>
+    <bean class="com.aliyun.opensearch.SearcherClient">
+        <constructor-arg ref="openSearchClient"/>
     </bean>
 </beans>
