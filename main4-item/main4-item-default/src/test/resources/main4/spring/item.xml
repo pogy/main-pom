@@ -16,10 +16,16 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-    <context:property-placeholder location="classpath:opensearch.properties" ignore-unresolvable="true"/>
+    <bean id="itemehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:/main4/cache/item-cache.xml"/>
+    </bean>
+
+    <bean id="itemcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="itemehcacheManager"/>
+        <property name="transactionAware" value="true"/>
+    </bean>
 
     <bean id="openSearch" class="com.aliyun.opensearch.sdk.generated.OpenSearch">
         <constructor-arg index="0" value="${accesskey}"/>
@@ -29,7 +35,7 @@
     <bean id="openSearchClient" class="com.aliyun.opensearch.OpenSearchClient">
         <constructor-arg ref="openSearch"/>
     </bean>
-    <bean class="com.aliyun.opensearch.SearcherClient">
+    <bean id="searcherItemClient" class="com.aliyun.opensearch.SearcherClient">
         <constructor-arg ref="openSearchClient"/>
     </bean>
 </beans>

@@ -57,6 +57,14 @@ public class ItemSearchServiceImplTest extends BaseSpringTest {
     public void searchItemByIdsWithNullIdsList() {
         show(itemSearchService.searchItemByIds(new ArrayList<Long>(),"hz",2,50));
     }
+
+    @Test
+    public void searchItemByIdsWithRepeatIds() {
+        ids.add(new Long(20632658L));
+        ids.add(new Long(3158464L));
+        show(itemSearchService.searchItemByIds(ids, "hz", 1,10));
+    }
+
     @Test
     public void searchItemByIdsWithNullWebSite() {
         show(itemSearchService.searchItemByIds(ids, null, 1,50));
