@@ -229,4 +229,32 @@ public class OpenItemVo {
     public void setIsExcelImp(Long isExcelImp) {
         this.isExcelImp = isExcelImp;
     }
+
+    @Override
+    public String toString() {
+        return "OpenItemVo{" +
+                "searchId=" + searchId +
+                ", goodsId=" + goodsId +
+                ", click=" + click +
+                ", trade=" + trade +
+                ", up=" + up +
+                ", webSite='" + webSite + '\'' +
+                ", title='" + title + '\'' +
+                ", created=" + created +
+                ", cid=" + cid +
+                ", cidAll='" + cidAll + '\'' +
+                ", picUrl='" + picUrl + '\'' +
+                ", price=" + price +
+                ", piPrice=" + piPrice +
+                ", parentMarketId=" + parentMarketId +
+                ", storeId=" + storeId +
+                ", isClosed=" + isClosed +
+                ", goodsNo='" + goodsNo + '\'' +
+                ", isShowcase=" + isShowcase +
+                ", isExcelImp=" + isExcelImp +
+                ", goodsLevel='" + goodsLevel + '\'' +
+                ", relationLevelId=" + relationLevelId +
+                ", sortOrder=" + sortOrder +
+                '}';
+    }
 }

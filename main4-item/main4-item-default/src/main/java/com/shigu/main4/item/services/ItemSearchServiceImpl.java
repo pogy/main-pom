@@ -402,7 +402,6 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             SearchResult result = searcherClient.execute(searchParams);
             JSONObject jsonObject = JSON.parseObject(result.getResult());
             if ("OK".equals(jsonObject.getString("status"))) {
-                String idField = "goodsId";
                 JSONObject data = jsonObject.getJSONObject("result");
                 int total = data.getIntValue("total");
                 pager.calPages(total,pageSize);
@@ -412,6 +411,8 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                     for (OpenItemVo openItemVo : openItemVos) {
                         SearchItem searchItem = BeanMapper.map(openItemVo, SearchItem.class);
                         searchItem.setItemId(openItemVo.getGoodsId());
+                        searchItem.setHighLightGoodsNo(openItemVo.getGoodsNo());
+                        searchItem.setHighLightTitle(openItemVo.getTitle());
                         item.add(searchItem);
                     }
                 }
