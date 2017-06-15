@@ -41,7 +41,7 @@ import java.util.*;
  * @version main_site4.0 4.0.0
  * @since main_site4.0 4.0.0
  */
-@Service
+//@Service("itemSearchService")
 public class ItemSearchServiceImpl implements ItemSearchService {
 
     @Autowired
