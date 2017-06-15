@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.FormatFeature;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.vo.SearchShop;
+import com.shigu.main4.vo.SearchShopSimple;
 import com.shigu.main4.vo.ShopCat;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +33,7 @@ public class ShopSearchServiceTest {
     @Resource(name="shopSearchOpenService")
     private ShopSearchService shopSearchOpenService;
 
-    @Test
+//    @Test
     public void testSearchOpenService() {
 /*        List<ShopCat> shopCats = shopForCdnService.selShopCatsById(39347L);
         List<ShopCat> shopCatsHit = shopForCdnService.selShopCatsById(39347L);
@@ -42,6 +43,14 @@ public class ShopSearchServiceTest {
         List<SearchShop> list = pager.getContent();
         for (SearchShop item : list) {
             System.out.println(item.getMarket() + " : " + item.getShopNum());
+        }
+    }
+
+    @Test
+    public void testSelShopByShopNum() {
+        List<SearchShopSimple> list =  shopSearchOpenService.selShopByShopNum("8401","hz");
+        for(SearchShopSimple item : list) {
+            System.out.println(item.getMarket()+"====="+ item.getStarNum()+ "=====" +item.getShopId() + "===" + item.getShopNum());
         }
     }
 }
