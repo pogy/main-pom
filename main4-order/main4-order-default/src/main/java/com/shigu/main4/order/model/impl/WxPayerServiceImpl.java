@@ -33,7 +33,7 @@ public class WxPayerServiceImpl extends PayerServiceAble {
 
     @PostConstruct
     public void initWXPay() {
-        Configure.setCertLocalPath(this.getClass().getClassLoader().getResource("/").toString() + "\\key\\apiclient_cert.p12".replace("\\",  File.pathSeparator));
+        Configure.setCertLocalPath((this.getClass().getResource("/").getPath() + "key\\apiclient_cert.p12").replace("\\",  File.separator));
     }
 
     @Override
