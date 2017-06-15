@@ -16,20 +16,6 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:property-placeholder location="classpath:opensearch.properties" ignore-unresolvable="true"/>
-
-    <bean id="openSearch" class="com.aliyun.opensearch.sdk.generated.OpenSearch">
-        <constructor-arg index="0" value="${accesskey}"/>
-        <constructor-arg index="1" value="${secret}"/>
-        <constructor-arg index="2" value="http://intranet.opensearch-cn-hangzhou.aliyuncs.com"/>
-    </bean>
-    <bean id="openSearchClient" class="com.aliyun.opensearch.OpenSearchClient">
-        <constructor-arg ref="openSearch"/>
-    </bean>
-    <bean id="searcherItemClient" class="com.aliyun.opensearch.SearcherClient">
-        <constructor-arg ref="openSearchClient"/>
-    </bean>
 </beans>

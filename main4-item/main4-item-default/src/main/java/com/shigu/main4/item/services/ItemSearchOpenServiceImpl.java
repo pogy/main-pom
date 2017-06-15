@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * @since main_site4.0 4.0.0
  */
 //@Service("itemSearchOpenService")
-@Service("itemSearchService")
+//@Service("itemSearchService")
 public class ItemSearchOpenServiceImpl implements ItemSearchService  {
 
     public static final Pattern CHS_PATTERN = Pattern.compile("[\\u4E00-\\u9FA5]+");
