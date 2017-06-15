@@ -123,6 +123,12 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
         BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
         QueryBuilder query = QueryBuilders.termQuery("fenUserId", userId);
         boleanQueryBuilder.must(query);
+        BoolQueryBuilder flagbool=QueryBuilders.boolQuery();
+        QueryBuilder flagQuery=QueryBuilders.termQuery("flag","web-tb");
+        flagbool.should(flagQuery);
+        flagbool.should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery("flag")));
+        flagbool.minimumNumberShouldMatch(1);
+        boleanQueryBuilder.must(flagbool);
         QueryBuilder queryGoods = QueryBuilders.termQuery("supperGoodsId", supperGoodsId);
         boleanQueryBuilder.must(queryGoods);
         QueryBuilder stautsQuery = QueryBuilders.termQuery("status", 0);
