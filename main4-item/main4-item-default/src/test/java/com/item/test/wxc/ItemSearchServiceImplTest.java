@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,5 +52,6 @@ public class ItemSearchServiceImplTest extends BaseSpringTest {
     public void selSubCategoryBy() throws Exception {
         show(itemSearchService.selSubCategory("man", SearchCategory.CATEGORY,"hz"));
     }
+
 
 }

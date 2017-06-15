@@ -18,7 +18,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="locations">
             <list>
                 <value>classpath:mall_config.properties</value>
-                <value>classpath:manager_config.properties</value>
                 <value>classpath:xz_sdk.properties</value>
                 <value>classpath:oss.properties</value>
                 <value>classpath:redis.properties</value>

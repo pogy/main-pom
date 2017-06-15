@@ -11,8 +11,15 @@ import com.aliyun.opensearch.sdk.generated.search.Config;
 import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
 import com.aliyun.opensearch.sdk.generated.search.SearchParams;
 import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.ShiguMarket;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.beans.ShiguShopLicense;
+import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.examples.ShiguShopLicenseExample;
+import com.opentae.data.mall.interfaces.ShiguMarketMapper;
+import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -20,17 +27,15 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.HighLightKit;
 import com.shigu.main4.vo.OpenShopVo;
 import com.shigu.main4.vo.SearchShop;
+import com.shigu.main4.vo.SearchShopSimple;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
+import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * 阿里开放搜索 实现店铺搜索
@@ -59,6 +64,7 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
      */
     @Override
     public ShiguPager<SearchShop> searchShop(String keyword, String webSite, Long mid, Integer page, Integer pageSize) {
+
         ShiguPager<SearchShop> pager = new ShiguPager<>();
         pager.setNumber(page);
 
@@ -138,4 +144,106 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         }
         return pager;
     }
+    @Resource
+    private ShiguMarketMapper shiguMarketMapper;
+    @Resource
+    private ShiguShopLicenseMapper shiguShopLicenseMapper;
+    /**
+     * 按shopId查店信息
+     *
+     * @param shopIds
+     * @return
+     */
+    public List<SearchShopSimple> selShopByIds(List<Long> shopIds, String website) {
+        if (shopIds == null || shopIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<SearchShopSimple> searchShops = new ArrayList<SearchShopSimple>();
+        /**
+         * 创建shiguShop组合条件查询对象
+         */
+        ShiguShopExample shiguShopExample = new ShiguShopExample();
+        /**
+         * 创建shiguShopExample离线查询对象
+         */
+        ShiguShopExample.Criteria criteria = shiguShopExample.createCriteria();
+        criteria.andShopIdIn(shopIds);
+        criteria.andWebSiteEqualTo(website);
+        /**
+         * 根据shopId集合和网站名称查询
+         * 返回一个shiguShop集合shiguShops
+         */
+        List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shiguShopExample);
+        List<Long> marketIds=new ArrayList<>();
+        /**
+         *遍历shigushops封装到集合searchShopSimple
+         * 添加marketID数据到集合marketIds
+         */
+        for (int j = 0;j<shiguShops.size();j++){
+            searchShops.add(BeanMapper.map(shiguShops.get(j),SearchShopSimple.class));
+            if (!marketIds.contains(shiguShops.get(j).getMarketId())){
+
+                marketIds.add(shiguShops.get(j).getMarketId());
+            }
+        }
+        /**
+         * 创建shiguMarketExample组合条件查询对象
+         */
+        ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
+        /**
+         * 创建shiguMarketExample离线查询对象
+         */
+        ShiguMarketExample.Criteria shiguMarketExampleCriteria = shiguMarketExample.createCriteria();
+        shiguMarketExampleCriteria.andMarketIdIn(marketIds);
+        /**
+         * 设置查询条件为根据marketIds集合查询
+         * 返回一个shiguMarket集合shiguMarkets
+         */
+        List<ShiguMarket> shiguMarkets = shiguMarketMapper.selectFieldsByExample(shiguMarketExample, FieldUtil.codeFields("market_name,market_id"));
+        /**
+         * 创建一个map存放market的id和name
+         */
+        HashMap<Long,String> shiguMarketIdAndName = new HashMap<>();
+        for (ShiguMarket shiguMarket : shiguMarkets){
+            shiguMarketIdAndName.put(shiguMarket.getMarketId(),shiguMarket.getMarketName());
+        }
+        /**
+         * 创建shiguShopLicenseExample组合条件查询对象
+         */
+        ShiguShopLicenseExample shiguShopLicenseExample = new ShiguShopLicenseExample();
+        /**
+         * 创建shiguShopLicenseExample离线查询对象
+         */
+        ShiguShopLicenseExample.Criteria shiguShopLicenseExampleCriteria = shiguShopLicenseExample.createCriteria();
+        /**
+         * 设置查询条件为根据shopid集合查询
+         */
+        shiguShopLicenseExampleCriteria.andShopIdIn(shopIds);
+        /**
+         * 设置查询条件为LicenseFailure值为0（即有效的）
+         */
+        shiguShopLicenseExampleCriteria.andLicenseFailureEqualTo(0);
+        /**
+         * 设置查询条件为LicenseType值为0（即店铺的星星数）
+         */
+        shiguShopLicenseExampleCriteria.andLicenseTypeEqualTo(6);
+        /**
+         * 查询返回一个shiguShoplicense的集合shiguShopLicenses
+         */
+        List<ShiguShopLicense> shiguShopLicenses = shiguShopLicenseMapper.selectFieldsByExample(shiguShopLicenseExample, "context");
+        /**
+         * 遍历添加个别字段
+         */
+        for (int i = 0; i < searchShops.size(); i++){
+            searchShops.get(i).setMainCase(shiguShops.get(i).getMainBus());
+            if (shiguShops.get(i).getMarketId() != null){
+
+                searchShops.get(i).setMarket(shiguMarketIdAndName.get(shiguShops.get(i).getMarketId()));
+            }
+            searchShops.get(i).setStarNum(shiguShopLicenses.get(i).getContext());
+        }
+
+        return searchShops;
+    }
+
 }

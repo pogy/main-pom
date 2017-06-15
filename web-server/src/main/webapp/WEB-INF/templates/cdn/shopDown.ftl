@@ -15,12 +15,12 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/shopItemCopy/css/shopDown.css?t=1496224721670" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/shopDown.css?t=1496988599611" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
             <script src="http://style.571xz.com/shopItemCopy/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/shopDown.js?t=1496224721670"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/shopDown.js?t=1496988599611"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -147,7 +147,7 @@
                     </li>
                 </#if>
                 <li class="noDown">
-                    <a href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blank">联系客服</a>
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
                     
                 </li>
                 <li>

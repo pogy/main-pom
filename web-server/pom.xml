@@ -364,7 +364,7 @@
         <dependency>
             <groupId>webs.pay_site</groupId>
             <artifactId>pay_sdk</artifactId>
-            <version>5.0.8-SNAPSHOT</version>
+            <version>5.2.2-RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>data-mall</groupId>
@@ -376,6 +376,7 @@
                 <!--</exclusion>-->
             </exclusions>
         </dependency>
+
 
         <dependency>
             <groupId>shigu_utils</groupId>
