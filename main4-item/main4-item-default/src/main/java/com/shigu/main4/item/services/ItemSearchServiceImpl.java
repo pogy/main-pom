@@ -7,8 +7,7 @@ import com.aliyun.opensearch.SearcherClient;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchClientException;
 import com.aliyun.opensearch.sdk.generated.commons.OpenSearchException;
-import com.aliyun.opensearch.sdk.generated.search.Config;
-import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
+import com.aliyun.opensearch.sdk.generated.search.*;
 import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
 import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.opentae.data.mall.beans.ESGoods;
@@ -23,6 +22,7 @@ import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.HighLightKit;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.vo.*;
@@ -49,6 +49,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Pattern;
+
 /**
  * Created by wxc on 2017/4/4.
  *
@@ -62,6 +64,12 @@ public class ItemSearchServiceImpl implements ItemSearchService {
     private static final Logger logger = LoggerFactory.getLogger(ItemSearchServiceImpl.class);
 
     private static final String SEARCH_APP = "goods_search_";
+
+
+    public static final Pattern CHS_PATTERN = Pattern.compile("[\\u4E00-\\u9FA5]+");
+    public static final Pattern LETTER_PATTERN = Pattern.compile("[a-zA-Z]");
+    public static final Pattern NUMBER_PATTERN = Pattern.compile("[0-9]+");
+
 
     @Autowired
     private SearcherClient searcherClient;
@@ -89,169 +97,171 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      * @return
      */
     @Override
-    public ShiguAggsPager searchItem(
-            // 基础查询
-            String keyword,String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds,
-            // 价格区间
-            Double priceFrom, Double priceTo,
-            // 时间区间
-            Date timeForm, Date timeTo,
-            // 排序
-            SearchOrderBy orderCase,
-            // 分页
-            Integer page, Integer pageSize, boolean aggs) {
-
-        // 1. 处理最大页码
+    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
         ShiguAggsPager pager = new ShiguAggsPager();
-        pager.setNumber(page = page == null ? 1 : page > MAX_PAGE ? MAX_PAGE : page);
-        pageSize = pageSize == null ? DEFAULT_PAGE_SIZE : pageSize;
+        pager.setNumber(page);
 
-        // 2. 处理分页参数
-        SearchRequestBuilder sb = ElasticConfiguration.searchClient.prepareSearch("goods").setSize(pageSize).setFrom((page - 1) * pageSize);
-        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("is_off", 0));//商品状态出售中
-        sb.setQuery(boolQuery);
-
-        // 2.1 处理分站参数
-        if (StringUtils.isNotEmpty(webSite)) {
-            sb.setTypes(webSite);
+        Config config = new Config(Lists.newArrayList("goods_search_hz"));
+        config.setStart((page - 1) * page);
+        config.setHits(pageSize);
+        config.setFetchFields(Lists.newArrayList("goods_id", "title", "goods_no", "pic_url", "cid", "created", "price", "goods_level", "parent_market_id"));
+        config.setSearchFormat(SearchFormat.JSON);
+        SearchParams searchParams = new SearchParams(config);
+        String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
+        String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
+        if (StringUtils.isNotEmpty(keyword)) {
+            String query = "";
+            if(StringUtils.isNotEmpty(keywordChina)){
+                query += "title:'"+keywordChina+"'";
+            }
+            if(StringUtils.isNotEmpty(keywordNum)){
+                if (StringUtils.isEmpty(query)) {
+                    query +="goods_no:'"+keywordNum+"'";
+                } else {
+                    query += " OR goods_no:'"+keywordNum+"'";
+                }
+            }
+            searchParams.setQuery(query);
         }
-        // 3. 基础查询
-        if (StringUtils.isNotBlank(keyword)) {
-            String s=keyword;
-            keyword = keyword.replaceAll("\\s+", " and ");
-            BoolQueryBuilder keyBool=QueryBuilders.boolQuery();
-            boolQuery.must(keyBool);
-            keyBool.should(QueryBuilders.matchQuery("title", keyword).minimumShouldMatch("100%"));
-            BoolQueryBuilder goodsNoQuery = QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("goodsNo", keyword).minimumShouldMatch("100%"));
-//            if (keyword.length() > 3) {
-//                goodsNoQuery.should(QueryBuilders.wildcardQuery("goodsNo", "*" + s + "*"));
-//                goodsNoQuery.minimumNumberShouldMatch(1);
-//            }
-            keyBool.should(goodsNoQuery);
-//            keyBool.should(QueryBuilders.wildcardQuery("goodsNo","*"+s+"*"));
-            keyBool.minimumNumberShouldMatch(1);
-        }
-        // 3.1 处理需要聚合后过滤的参数
-        BoolQueryBuilder filterQuery=QueryBuilders.boolQuery();
-        if (mid != null) {
-            filterQuery.must(QueryBuilders.termQuery("parentMarketId", mid));
-        }
+        String filter = "is_closed = 0";
+        String cidsStr = "";
         if (cids != null && !cids.isEmpty()) {
-            filterQuery.must(QueryBuilders.termsQuery("cid", cids));
+            StringBuffer cidSb = new StringBuffer();
+            for (Long item : cids) {
+                cidSb.append(item.toString()).append("|");
+            }
+            filter += " AND ";
+            cidsStr = cidSb.toString().substring(0, cidSb.toString().length()-2);
+            filter += "in(cid, \"" + cidsStr + "\")";
         }
-        if(filterQuery.hasClauses()){
-            sb.setPostFilter(filterQuery);
-        }
+
         if (shouldStoreIds != null && !shouldStoreIds.isEmpty()) {
-            boolQuery.should(QueryBuilders.termsQuery("storeId", shouldStoreIds));
+            StringBuffer sidSb = new StringBuffer();
+            for (Long item : shouldStoreIds) {
+                sidSb.append(item.toString()).append("|");
+            }
+            filter += " AND ";
+            filter += "in(store_id, \"" + sidSb.toString().substring(0, sidSb.toString().length()-2) + "\")";
+        }
+
+        if (mid != null) {
+            filter += " AND ";
+            filter += "parent_market_id=" + mid;
         }
 
         // 4. 价格区间
         if (priceFrom != null) {
+            filter += " AND ";
             Double price = priceFrom * 100;
-            boolQuery.must(QueryBuilders.rangeQuery("piPrice").gte(price.longValue()));
+            filter += "pi_price>=" + price.longValue();
         }
         if (priceTo != null) {
+            filter += " AND ";
             Double price = priceTo * 100;
-            boolQuery.must(QueryBuilders.rangeQuery("piPrice").lte(price.longValue()));
+            filter += "pi_price<=" + price.longValue();
         }
 
         // 5. 时间区间
         if (timeForm != null) {
-            boolQuery.must(QueryBuilders.rangeQuery("created").gte(DateFormatUtils.format(timeForm, DATE_FMT)).format(DATE_FMT));
+            filter += " AND ";
+            filter += "created>=" + timeForm.getTime();
         }
         if (timeTo != null) {
-            boolQuery.must(QueryBuilders.rangeQuery("created").lte(DateFormatUtils.format(timeTo, DATE_FMT)).format(DATE_FMT));
+            filter += " AND ";
+            filter += "created<=" + timeTo.getTime();
         }
+        if (StringUtils.isNotEmpty(filter)) {
+            searchParams.setFilter(filter);
+        }
+
         // 6. 排序规则
+        Sort sorter = new Sort();
         switch (orderCase) {
             case NEW:
-                sb.addSort("created", SortOrder.DESC);
+                sorter.addToSortFields(new SortField("created", Order.DECREASE));
+                searchParams.setSort(sorter);
                 break;
             case COMMON:
                 break;
             case GOODS_COMMON:
-                sb.addSort("sortOrder", SortOrder.DESC);
-                sb.addSort("created", SortOrder.DESC);
+                sorter.addToSortFields(new SortField("sort_order", Order.DECREASE));
+                sorter.addToSortFields(new SortField("created", Order.DECREASE));
                 break;
             case SALE:
                 break;
             case CLICK:
                 break;
             case PRICEUP:
-                sb.addSort("piPrice", SortOrder.ASC);
+                sorter.addToSortFields(new SortField("pi_price", Order.INCREASE));
                 break;
             case PRICEDOWN:
-                sb.addSort("piPrice", SortOrder.DESC);
+                sorter.addToSortFields(new SortField("pi_price", Order.DECREASE));
                 break;
             case GOODSUP:
                 break;
         }
-        // 7. 查询权重处理
-        buildBoostingQuery(keyword, sb, boolQuery);
+        searchParams.setSort(sorter);
 
-        // 8. 关键词高亮
-        sb.addHighlightedField("title").addHighlightedField("goodsNo")
-                .setHighlighterPreTags("<font style='color:red;'>").setHighlighterPostTags("</font>");
-
-        // 9. 处理聚合
-        String marketCountName = "market_count";
-        String parentCatName = "parent_cat_count";
-        if (aggs) {
-            AggregationBuilder parentCatAggregation = AggregationBuilders.terms(parentCatName).field("parent_cid").size(100)
-                    .subAggregation(
-                            AggregationBuilders.count("cid_num").field("goodsId"));
-            if (mid != null) {
-                parentCatAggregation = AggregationBuilders.filter(parentCatName)
-                        .filter(QueryBuilders.termQuery("parentMarketId", mid)).subAggregation(parentCatAggregation);
-            }
-            AggregationBuilder marketAggregation = AggregationBuilders.terms(marketCountName).field("parentMarketId").size(100)
-                    .subAggregation(AggregationBuilders.count("market_num").field("goodsId"));
-            if (cids != null && !cids.isEmpty()) {
-                marketAggregation = AggregationBuilders.filter(marketCountName).filter(QueryBuilders.termsQuery("cid", cids))
-                        .subAggregation(marketAggregation);
-            }
-            sb.addAggregation(parentCatAggregation).addAggregation(marketAggregation);
+        Aggregate agg = new Aggregate();
+        agg.setGroupKey("cid"); //设置group_key
+        agg.setAggFun("count()"); //设置agg_fun
+        if (mid != null) {
+            agg.setAggFilter("parent_market_id=" + mid); //设置agg_filter
         }
-        SearchResponse response = sb.execute().actionGet();
-        SearchHits hits = response.getHits();
+        agg.setMaxGroup("100"); //设置最大返回组数
+        searchParams.addToAggregates(agg);
 
-        if (aggs) {
-            pager.setMarkets(getAggCount(marketCountName, response));
-            pager.setParentCats(getAggCount(parentCatName, response));
+        agg = new Aggregate();
+        agg.setGroupKey("parent_market_id"); //设置group_key
+        agg.setAggFun("count()"); //设置agg_fun
+        if (StringUtils.isNotEmpty(cidsStr)) {
+            agg.setAggFilter("in(cid, \"" + cidsStr + "\")"); //设置agg_filter
         }
+        agg.setMaxGroup("100"); //设置最大返回组数
+        searchParams.addToAggregates(agg);
 
-        // 10. 处理返回数据
-        int totalHits = (int) hits.getTotalHits();
-        if (totalHits > 0) {
-            pager.setContent(new ArrayList<SearchItem>(pageSize));
+        try {
+            SearchResult result = searcherClient.execute(searchParams);
+            JSONObject jsonObject = JSON.parseObject(result.getResult());
+            if ("OK".equals(jsonObject.getString("status"))) {
+                JSONObject data = jsonObject.getJSONObject("result");
+                int total = data.getIntValue("total");
+                pager.calPages(total, pageSize);
+                List<SearchItem> itemList = Lists.newArrayList();
+                pager.setContent(itemList);
 
-            for (SearchHit hit : hits.getHits()) {
-                SearchItem searchItem = packSearchItem(hit);
-                // 高亮字段
-                Map<String, HighlightField> highlightFields = hit.getHighlightFields();
-                HighlightField title = highlightFields.get("title");
-                if (title != null) {
-                    searchItem.setHighLightTitle(StringUtils.join(title.fragments()));
-                } else {
-                    searchItem.setHighLightTitle(searchItem.getTitle());
+                JSONArray items = data.getJSONArray("items");
+                List<OpenItemVo> openItemVos = items.toJavaList(OpenItemVo.class);
+                if (!openItemVos.isEmpty()) {
+                    HighLightKit defaultInstance = HighLightKit.getDefaultInstance();
+                    for (OpenItemVo vo : openItemVos) {
+                        SearchItem searchItem = BeanMapper.map(vo, SearchItem.class);
+                        searchItem.setItemId(vo.getGoodsId());
+                        searchItem.setHighLightTitle(defaultInstance.bright(keyword, vo.getTitle()));
+                        searchItem.setHighLightGoodsNo(defaultInstance.bright(keyword, vo.getGoodsNo()));
+                        itemList.add(searchItem);
+                    }
                 }
-                HighlightField goodsNo = highlightFields.get("goodsNo");
-                if (goodsNo != null) {
-                    searchItem.setHighLightGoodsNo(StringUtils.join(goodsNo.fragments()));
-                } else {
-                    searchItem.setGoodsNo(null);
+                JSONArray facetItems = data.getJSONArray("facet");
+                int len = facetItems.size();
+                if (0< len) {
+                    for (int i=0; i< len ;i++) {
+                        JSONObject facetItem = facetItems.getJSONObject(i);
+                        JSONArray jsonArray =  facetItem.getJSONArray("items");
+                        if ("cid".equalsIgnoreCase(facetItem.getString("key"))) {
+                            pager.setParentCats(jsonArray.toJavaList(AggsCount.class));
+                        } else if ("parent_market_id".equalsIgnoreCase(facetItem.getString("key"))) {
+                            pager.setMarkets(jsonArray.toJavaList(AggsCount.class));
+                        }
+                    }
                 }
-                pager.getContent().add(searchItem);
-            }
 
-            int maxHits = MAX_PAGE * pageSize;
-            pager.setTotalCount(totalHits);
-            if (totalHits > maxHits) {
-                pager.setTotalPages(MAX_PAGE);
-            } else {
-                pager.setTotalPages((totalHits - 1) / pageSize + 1);
-            }
+
+            } else throw new Main4Exception(jsonObject.getString("errors"));
+        } catch (OpenSearchException | OpenSearchClientException ignored) {
+
+        } catch (Main4Exception e) {
+            logger.error("搜索失败", e);
         }
         return pager;
     }
