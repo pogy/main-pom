@@ -53,7 +53,11 @@
             <artifactId>main4-item-update</artifactId>
             <version>${main4-item-update.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-order-default</artifactId>
+            <version>4.1.7-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-monitor-default</artifactId>

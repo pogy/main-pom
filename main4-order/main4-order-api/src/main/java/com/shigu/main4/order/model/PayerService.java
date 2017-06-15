@@ -10,7 +10,7 @@ import com.shigu.main4.order.vo.PayApplyVO;
  */
 public interface PayerService {
     PayApplyVO payApply(Long oid, Long money, String title) throws PayApplyException;
-    void refund(Long payId,Long money);
+    void refund(Long payId,Long money) throws PayerException;
     void paySure(Long applyId,String outerPid,String outerPuser,Long payMoney) throws PayerException;
     Long payedLeft(Long payId);
     PayApplyVO selApply(Long applyId);

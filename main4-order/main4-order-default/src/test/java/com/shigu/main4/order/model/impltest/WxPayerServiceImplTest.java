@@ -21,6 +21,7 @@ public class WxPayerServiceImplTest extends BaseTest {
 
     @Test
     public void refund() throws Exception {
+        payerService.refund(2L, 1L);
     }
 
     @Test
