@@ -29,7 +29,7 @@
     <bean id="openSearchClient" class="com.aliyun.opensearch.OpenSearchClient">
         <constructor-arg ref="openSearch"/>
     </bean>
-    <bean id="searcherClient" class="com.aliyun.opensearch.SearcherClient">
+    <bean class="com.aliyun.opensearch.SearcherClient">
         <constructor-arg ref="openSearchClient"/>
     </bean>
 </beans>
