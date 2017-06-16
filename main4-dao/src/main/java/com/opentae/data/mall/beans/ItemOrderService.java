@@ -32,6 +32,11 @@ public class ItemOrderService implements Serializable {
      */
 	private String name;
 
+    /**
+     * 已退金额
+     */
+	private Long refundMoney;
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -70,6 +75,14 @@ public class ItemOrderService implements Serializable {
 
 	public String getName() {
 		return this.name;
+	}
+
+	public void setRefundMoney(Long refundMoney) {
+		this.refundMoney = refundMoney;
+	}
+
+	public Long getRefundMoney() {
+		return this.refundMoney;
 	}
 
 }

@@ -8,6 +8,7 @@ import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.enums.SubOrderStatus;
+import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.services.OrderConstantService;
@@ -217,8 +218,22 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void refundService(Long id, Long money) {
-        refunds(money);
+    public void refundService(Long id, Long money) throws RefundException {
+        ItemOrderService orderService;
+        if (id == null || (orderService = itemOrderServiceMapper.selectByPrimaryKey(id)) == null || money == null) {
+            throw new RefundException(String.format("退服务接口参数有误 id[%d], money[%d]", id, money));
+        }
+        Long refundMoney = orderService.getRefundMoney();
+        Long serviceMoney = orderService.getMoney();
+        if (serviceMoney - refundMoney > money) {
+            refunds(money);
+            ItemOrderService os = new ItemOrderService();
+            os.setId(id);
+            os.setRefundMoney(refundMoney + money);
+            itemOrderServiceMapper.updateByPrimaryKeySelective(os);
+        } else {
+            throw new RefundException(String.format("服务费不足。服务费总额[%d], 已退[%d]", serviceMoney, refundMoney));
+        }
     }
 
     @Override
