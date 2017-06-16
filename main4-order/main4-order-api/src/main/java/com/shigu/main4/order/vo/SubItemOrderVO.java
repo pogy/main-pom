@@ -1,6 +1,6 @@
 package com.shigu.main4.order.vo;
 
-import com.shigu.main4.order.enums.OrderStatus;
+import com.shigu.main4.order.enums.SubOrderStatus;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ public class SubItemOrderVO extends SubOrderVO implements Serializable{
 
     private ItemProductVO product;
     private Integer number;
-    private OrderStatus status;
+    private SubOrderStatus subOrderStatus;
 
     public ItemProductVO getProduct() {
         return product;
@@ -30,11 +30,11 @@ public class SubItemOrderVO extends SubOrderVO implements Serializable{
         this.number = number;
     }
 
-    public OrderStatus getStatus() {
-        return status;
+    public SubOrderStatus getSubOrderStatus() {
+        return subOrderStatus;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
+    public void setSubOrderStatus(SubOrderStatus subOrderStatus) {
+        this.subOrderStatus = subOrderStatus;
     }
 }

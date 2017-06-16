@@ -53,14 +53,9 @@ public class ItemOrderSub implements Serializable {
 	private Long refundMoney;
 
     /**
-     * 是否已发
+     * 0初始状态，1已退，2已发
      */
-	private Boolean send;
-
-    /**
-     * 是否退款
-     */
-	private Boolean refund;
+	private Integer status;
 
     /**
      * 备注
@@ -184,20 +179,12 @@ public class ItemOrderSub implements Serializable {
 		return this.refundMoney;
 	}
 
-	public void setSend(Boolean send) {
-		this.send = send;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
-	public Boolean getSend() {
-		return this.send;
-	}
-
-	public void setRefund(Boolean refund) {
-		this.refund = refund;
-	}
-
-	public Boolean getRefund() {
-		return this.refund;
+	public Integer getStatus() {
+		return this.status;
 	}
 
 	public void setMark(String mark) {

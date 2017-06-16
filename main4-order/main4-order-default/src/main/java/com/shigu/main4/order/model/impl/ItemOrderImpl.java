@@ -7,6 +7,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
+import com.shigu.main4.order.enums.SubOrderStatus;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.services.OrderConstantService;
@@ -100,9 +101,10 @@ public class ItemOrderImpl implements ItemOrder{
         Map<Long, ItemOrderSub> subOrderMap = BeanMapper.list2Map(select, "soid", Long.class);
         List<SubItemOrderVO> vos = BeanMapper.mapList(select, SubItemOrderVO.class);
         for (SubItemOrderVO vo : vos) {
-//            vo.setStatus(OrderStatus.SELLER_CONSIGNED_PART);
+            ItemOrderSub orderSub = subOrderMap.get(vo.getSoid());
+            vo.setSubOrderStatus(SubOrderStatus.statusOf(orderSub.getStatus()));
             vo.setNumber(vo.getNum());
-            vo.setProduct(BeanMapper.map(subOrderMap.get(vo.getSoid()), ItemProductVO.class));
+            vo.setProduct(BeanMapper.map(orderSub, ItemProductVO.class));
         }
         return vos;
     }
@@ -255,8 +257,7 @@ public class ItemOrderImpl implements ItemOrder{
             sub.setShouldPayMoney(sub.getPrice() * sub.getNum());
             sub.setPayMoney(0L);
             sub.setRefundMoney(0L);
-            sub.setSend(false);
-            sub.setRefund(false);
+            sub.setStatus(SubOrderStatus.ORIGINAL.status);
             sub.setOid(oid);
             itemOrderSubMapper.insertSelective(sub);
         }
