@@ -6,6 +6,7 @@ import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
+import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.vo.SubOrderVO;
@@ -56,7 +57,7 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         order.setTotalFee(0L);
         order.setPayedFee(0L);
         order.setRefundFee(0L);
-        order.setOrderStatus(1);
+        order.setOrderStatus(OrderStatus.WAIT_BUYER_PAY.status);
         order.setOid(idGenerator(OrderType.XZ));
         itemOrderMapper.insertSelective(order);
 
