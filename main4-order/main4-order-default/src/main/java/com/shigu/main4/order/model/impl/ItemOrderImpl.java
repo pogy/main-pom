@@ -88,6 +88,7 @@ public class ItemOrderImpl implements ItemOrder{
         orderVO.setPayedFee(order.getPayedFee());
         orderVO.setType(OrderType.typeOf(order.getType()));
         orderVO.setOrderId(order.getOid());
+        orderVO.setOrderStatus(OrderStatus.statusOf(order.getOrderStatus()));
         return orderVO;
     }
 
