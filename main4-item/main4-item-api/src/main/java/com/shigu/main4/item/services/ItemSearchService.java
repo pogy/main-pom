@@ -26,6 +26,7 @@ public interface ItemSearchService {
      * @param mid 市场ID
      * @param cids 叶子类目ID
      * @param shouldStoreIds 应该关联的店铺
+     * @param sid 风格ID
      * @param priceFrom 批价开始
      * @param priceTo 批价结束
      * @param timeForm created时间开始
