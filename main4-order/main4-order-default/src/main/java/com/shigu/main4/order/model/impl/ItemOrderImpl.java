@@ -158,8 +158,10 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void refundPackage(Long id, Long money) {
 
+        refunds(money);
     }
 
     @Override
@@ -214,8 +216,9 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void refundService(Long id, Long money) {
-
+        refunds(money);
     }
 
     @Override
