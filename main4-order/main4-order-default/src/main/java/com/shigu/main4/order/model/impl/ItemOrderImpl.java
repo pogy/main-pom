@@ -69,12 +69,13 @@ public class ItemOrderImpl implements ItemOrder{
         ItemOrderLogistics logistics = new ItemOrderLogistics();
         logistics.setOid(oid);
         List<ItemOrderLogistics> select = itemOrderLogisticsMapper.select(logistics);
-        Map<Long, ItemOrderLogistics> logisticsMap = BeanMapper.list2Map(select, "id", Long.class);
 
+        ItemOrderSub orderSub = new ItemOrderSub();
+        orderSub.setOid(oid);
+        Map<Long, List<ItemOrderSub>> logisticsGroup = BeanMapper.groupBy(itemOrderSubMapper.select(orderSub), "logisticsId", Long.class);
         List<LogisticsVO> logisticsVOS = BeanMapper.mapList(select, LogisticsVO.class);
         for (LogisticsVO logisticsVO : logisticsVOS) {
-            ItemOrderLogistics orderLogistics = logisticsMap.get(logisticsVO.getId());
-
+            logisticsVO.setSoids(BeanMapper.getFieldList(logisticsGroup.get(logisticsVO.getId()), "soid", Long.class));
         }
         return logisticsVOS;
     }
