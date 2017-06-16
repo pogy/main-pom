@@ -160,9 +160,22 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void refundPackage(Long id, Long money) {
-
-        refunds(money);
+    public void refundPackage(Long id, Long money) throws RefundException {
+        ItemOrderPackage itemOrderPackage;
+        if (id == null || (itemOrderPackage = itemOrderPackageMapper.selectByPrimaryKey(id)) == null || money == null) {
+            throw new RefundException(String.format("退包材接口参数有误 id[%d], money[%d]", id, money));
+        }
+        Long packageMoney = itemOrderPackage.getMoney();
+        Long refundMoney = itemOrderPackage.getRefundMoney();
+        if (packageMoney - refundMoney > money) {
+            refunds(money);
+            ItemOrderPackage orderPackage = new ItemOrderPackage();
+            orderPackage.setId(id);
+            orderPackage.setRefundMoney(refundMoney + money);
+            itemOrderPackageMapper.updateByPrimaryKeySelective(orderPackage);
+        } else {
+            throw new RefundException(String.format("包材费不足。包材费总额[%d], 已退[%d]", packageMoney, refundMoney));
+        }
     }
 
     @Override

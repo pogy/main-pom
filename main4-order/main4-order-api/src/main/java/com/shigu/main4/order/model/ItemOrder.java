@@ -54,7 +54,7 @@ public interface ItemOrder extends Order{
      * 退包材.
      * @param money 退的费用
      */
-    void refundPackage(Long id,Long money);
+    void refundPackage(Long id,Long money) throws RefundException;
 
     /**
      * 添加服务数据.

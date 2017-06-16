@@ -232,71 +232,71 @@ public class ItemOrderPackageExample implements SgExample{
             }
         }
 
-        public ItemOrderPackageExample.Criteria andIdIsNull() {
-            this.addCriterion("id is null");
+        public ItemOrderPackageExample.Criteria andMoneyIsNull() {
+            this.addCriterion("money is null");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdIsNotNull() {
-            this.addCriterion("id is not null");
+        public ItemOrderPackageExample.Criteria andMoneyIsNotNull() {
+            this.addCriterion("money is not null");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdEqualTo(Long value) {
-            this.addCriterion("id =", value, "id");
+        public ItemOrderPackageExample.Criteria andMoneyEqualTo(Long value) {
+            this.addCriterion("money =", value, "money");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdNotEqualTo(Long value) {
-            this.addCriterion("id <>", value, "id");
+        public ItemOrderPackageExample.Criteria andMoneyNotEqualTo(Long value) {
+            this.addCriterion("money <>", value, "money");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdGreaterThan(Long value) {
-            this.addCriterion("id >", value, "id");
+        public ItemOrderPackageExample.Criteria andMoneyGreaterThan(Long value) {
+            this.addCriterion("money >", value, "money");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("id >=", value, "id");
+        public ItemOrderPackageExample.Criteria andMoneyGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("money >=", value, "money");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdLessThan(Long value) {
-            this.addCriterion("id <", value, "id");
+        public ItemOrderPackageExample.Criteria andMoneyLessThan(Long value) {
+            this.addCriterion("money <", value, "money");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("id <=", value, "id");
+        public ItemOrderPackageExample.Criteria andMoneyLessThanOrEqualTo(Long value) {
+            this.addCriterion("money <=", value, "money");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdLike(String value) {
-            this.addCriterion("id like", value, "id");
+        public ItemOrderPackageExample.Criteria andMoneyLike(String value) {
+            this.addCriterion("money like", value, "money");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdNotLike(String value) {
-            this.addCriterion("id not like", value, "id");
+        public ItemOrderPackageExample.Criteria andMoneyNotLike(String value) {
+            this.addCriterion("money not like", value, "money");
             return (ItemOrderPackageExample.Criteria)this;
-        }        public ItemOrderPackageExample.Criteria andIdIn(List<Long> values) {
-            this.addCriterion("id in", values, "id");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andIdNotIn(List<Long> values) {
-            this.addCriterion("id not in", values, "id");
+        }        public ItemOrderPackageExample.Criteria andMoneyIn(List<Long> values) {
+            this.addCriterion("money in", values, "money");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdBetween(Long value1, Long value2) {
-            this.addCriterion("id between", value1, value2, "id");
+        public ItemOrderPackageExample.Criteria andMoneyNotIn(List<Long> values) {
+            this.addCriterion("money not in", values, "money");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("id not between", value1, value2, "id");
+        public ItemOrderPackageExample.Criteria andMoneyBetween(Long value1, Long value2) {
+            this.addCriterion("money between", value1, value2, "money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andMoneyNotBetween(Long value1, Long value2) {
+            this.addCriterion("money not between", value1, value2, "money");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
@@ -368,74 +368,6 @@ public class ItemOrderPackageExample implements SgExample{
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andOidIsNull() {
-            this.addCriterion("oid is null");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidIsNotNull() {
-            this.addCriterion("oid is not null");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidEqualTo(Long value) {
-            this.addCriterion("oid =", value, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidNotEqualTo(Long value) {
-            this.addCriterion("oid <>", value, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidGreaterThan(Long value) {
-            this.addCriterion("oid >", value, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("oid >=", value, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidLessThan(Long value) {
-            this.addCriterion("oid <", value, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidLessThanOrEqualTo(Long value) {
-            this.addCriterion("oid <=", value, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidLike(String value) {
-            this.addCriterion("oid like", value, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidNotLike(String value) {
-            this.addCriterion("oid not like", value, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }        public ItemOrderPackageExample.Criteria andOidIn(List<Long> values) {
-            this.addCriterion("oid in", values, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidNotIn(List<Long> values) {
-            this.addCriterion("oid not in", values, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidBetween(Long value1, Long value2) {
-            this.addCriterion("oid between", value1, value2, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andOidNotBetween(Long value1, Long value2) {
-            this.addCriterion("oid not between", value1, value2, "oid");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
         public ItemOrderPackageExample.Criteria andNameIsNull() {
             this.addCriterion("name is null");
             return (ItemOrderPackageExample.Criteria)this;
@@ -504,74 +436,6 @@ public class ItemOrderPackageExample implements SgExample{
             return (ItemOrderPackageExample.Criteria)this;
         }
 
-        public ItemOrderPackageExample.Criteria andMoneyIsNull() {
-            this.addCriterion("money is null");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyIsNotNull() {
-            this.addCriterion("money is not null");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyEqualTo(Long value) {
-            this.addCriterion("money =", value, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyNotEqualTo(Long value) {
-            this.addCriterion("money <>", value, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyGreaterThan(Long value) {
-            this.addCriterion("money >", value, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("money >=", value, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyLessThan(Long value) {
-            this.addCriterion("money <", value, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyLessThanOrEqualTo(Long value) {
-            this.addCriterion("money <=", value, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyLike(String value) {
-            this.addCriterion("money like", value, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyNotLike(String value) {
-            this.addCriterion("money not like", value, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }        public ItemOrderPackageExample.Criteria andMoneyIn(List<Long> values) {
-            this.addCriterion("money in", values, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyNotIn(List<Long> values) {
-            this.addCriterion("money not in", values, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyBetween(Long value1, Long value2) {
-            this.addCriterion("money between", value1, value2, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
-        public ItemOrderPackageExample.Criteria andMoneyNotBetween(Long value1, Long value2) {
-            this.addCriterion("money not between", value1, value2, "money");
-            return (ItemOrderPackageExample.Criteria)this;
-        }
-
         public ItemOrderPackageExample.Criteria andMetarialIdIsNull() {
             this.addCriterion("metarialId is null");
             return (ItemOrderPackageExample.Criteria)this;
@@ -637,6 +501,210 @@ public class ItemOrderPackageExample implements SgExample{
 
         public ItemOrderPackageExample.Criteria andMetarialIdNotBetween(Long value1, Long value2) {
             this.addCriterion("metarialId not between", value1, value2, "metarial_id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyIsNull() {
+            this.addCriterion("refundMoney is null");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyIsNotNull() {
+            this.addCriterion("refundMoney is not null");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyEqualTo(Long value) {
+            this.addCriterion("refundMoney =", value, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyNotEqualTo(Long value) {
+            this.addCriterion("refundMoney <>", value, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyGreaterThan(Long value) {
+            this.addCriterion("refundMoney >", value, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("refundMoney >=", value, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyLessThan(Long value) {
+            this.addCriterion("refundMoney <", value, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
+            this.addCriterion("refundMoney <=", value, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyLike(String value) {
+            this.addCriterion("refundMoney like", value, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyNotLike(String value) {
+            this.addCriterion("refundMoney not like", value, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }        public ItemOrderPackageExample.Criteria andRefundMoneyIn(List<Long> values) {
+            this.addCriterion("refundMoney in", values, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyNotIn(List<Long> values) {
+            this.addCriterion("refundMoney not in", values, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyBetween(Long value1, Long value2) {
+            this.addCriterion("refundMoney between", value1, value2, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
+            this.addCriterion("refundMoney not between", value1, value2, "refund_money");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdIsNull() {
+            this.addCriterion("id is null");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdIsNotNull() {
+            this.addCriterion("id is not null");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdEqualTo(Long value) {
+            this.addCriterion("id =", value, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdNotEqualTo(Long value) {
+            this.addCriterion("id <>", value, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdGreaterThan(Long value) {
+            this.addCriterion("id >", value, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("id >=", value, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdLessThan(Long value) {
+            this.addCriterion("id <", value, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("id <=", value, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdLike(String value) {
+            this.addCriterion("id like", value, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdNotLike(String value) {
+            this.addCriterion("id not like", value, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }        public ItemOrderPackageExample.Criteria andIdIn(List<Long> values) {
+            this.addCriterion("id in", values, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdNotIn(List<Long> values) {
+            this.addCriterion("id not in", values, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdBetween(Long value1, Long value2) {
+            this.addCriterion("id between", value1, value2, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("id not between", value1, value2, "id");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidIsNull() {
+            this.addCriterion("oid is null");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidIsNotNull() {
+            this.addCriterion("oid is not null");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidEqualTo(Long value) {
+            this.addCriterion("oid =", value, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidNotEqualTo(Long value) {
+            this.addCriterion("oid <>", value, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidGreaterThan(Long value) {
+            this.addCriterion("oid >", value, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("oid >=", value, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidLessThan(Long value) {
+            this.addCriterion("oid <", value, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidLessThanOrEqualTo(Long value) {
+            this.addCriterion("oid <=", value, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidLike(String value) {
+            this.addCriterion("oid like", value, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidNotLike(String value) {
+            this.addCriterion("oid not like", value, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }        public ItemOrderPackageExample.Criteria andOidIn(List<Long> values) {
+            this.addCriterion("oid in", values, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidNotIn(List<Long> values) {
+            this.addCriterion("oid not in", values, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidBetween(Long value1, Long value2) {
+            this.addCriterion("oid between", value1, value2, "oid");
+            return (ItemOrderPackageExample.Criteria)this;
+        }
+
+        public ItemOrderPackageExample.Criteria andOidNotBetween(Long value1, Long value2) {
+            this.addCriterion("oid not between", value1, value2, "oid");
             return (ItemOrderPackageExample.Criteria)this;
         }
     }
