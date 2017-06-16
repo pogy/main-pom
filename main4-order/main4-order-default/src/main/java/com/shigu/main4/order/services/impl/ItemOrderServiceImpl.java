@@ -8,7 +8,10 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
+import com.shigu.main4.order.model.SubOrder;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.vo.ItemProductVO;
+import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.order.vo.SubOrderVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,8 +90,15 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         if (orderBO.getSubOrders() != null) {
             List<SubOrderVO> subOrders = new ArrayList<>();
             for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
-
-//                subOrders.add(someThing) // pid 获取SubOrderVo
+                SubOrderVO vo = new SubOrderVO();
+                vo.setNum(subItemOrderBO.getNum());
+                vo.setMark(subItemOrderBO.getMark());
+                ItemProductVO productVO = subItemOrderBO.getProductVO();
+                vo.setGoodsId(productVO.getGoodsId());
+                ItemSkuVO selectiveSku = productVO.getSelectiveSku();
+                vo.setSize(selectiveSku.getSize());
+                vo.setColor(selectiveSku.getColor());
+                subOrders.add(vo);
             }
             itemOrder.addSubOrder(subOrders);
         }
