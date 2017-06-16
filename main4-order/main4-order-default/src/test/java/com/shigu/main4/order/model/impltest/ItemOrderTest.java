@@ -64,6 +64,11 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void modifyLogistics() throws Exception {
+        LogisticsVO vo = new LogisticsVO();
+        vo.setMoney(400L);
+        show(order().orderInfo());
+        order().modifyLogistics(1L, vo);
+        show(order().orderInfo());
     }
 
     @Test

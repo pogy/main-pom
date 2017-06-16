@@ -132,10 +132,14 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void modifyLogistics(Long id, LogisticsVO logistics) {
         logistics.setId(id);
         ItemOrderLogistics orderLogistics = BeanMapper.map(logistics, ItemOrderLogistics.class);
         itemOrderLogisticsMapper.updateByPrimaryKeySelective(orderLogistics);
+        if (logistics.getMoney() != null) {
+            recountTotalOrderAmount();
+        }
     }
 
     @Override
