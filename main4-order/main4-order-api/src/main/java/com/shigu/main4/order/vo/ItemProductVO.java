@@ -71,6 +71,18 @@ public class ItemProductVO extends ProductVO implements Serializable{
      * 单位：克
      */
     private Long weight;
+    /**
+     * 当前被选sku
+     */
+    private ItemSkuVO selectiveSku;
+
+    public ItemSkuVO getSelectiveSku() {
+        return selectiveSku;
+    }
+
+    public void setSelectiveSku(ItemSkuVO selectiveSku) {
+        this.selectiveSku = selectiveSku;
+    }
 
     public Long getPid() {
         return pid;

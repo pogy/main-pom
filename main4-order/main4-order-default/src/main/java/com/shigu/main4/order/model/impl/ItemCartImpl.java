@@ -19,7 +19,7 @@ public class ItemCartImpl implements Cart{
     private ItemCartMapper itemCartMapper;
 
     @Override
-    public <T extends ProductVO> void addProduct(T pro) {
+    public <T extends ProductVO> void addProduct(T pro,Integer number) {
         ItemCart cart = BeanMapper.map(pro, ItemCart.class);
 //        cart.setSkuId();
 //        cart.setUserId();
