@@ -113,7 +113,14 @@ public class ItemProductImpl implements ItemProduct{
 
     @Override
     public ItemProductVO info() {
-        return BeanMapper.map(itemProductMapper.selectByPrimaryKey(pid), ItemProductVO.class);
+        ItemProductVO productVO = BeanMapper.map(itemProductMapper.selectByPrimaryKey(pid), ItemProductVO.class);
+        productVO.setSelectiveSku(selSelectiveSku());
+        return productVO;
+    }
+
+    @Override
+    public ItemSkuVO selSelectiveSku() {
+        return BeanMapper.map(itemProductSkuMapper.selectByPrimaryKey(skuId), ItemSkuVO.class);
     }
 
     @Override
