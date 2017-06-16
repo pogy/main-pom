@@ -12,7 +12,7 @@ public interface Cart{
      * 添加产品
      * @param pro 带sku的产品
      */
-    <T extends ProductVO> void addProduct(T pro);
+    <T extends ProductVO> void addProduct(T pro,Integer num);
 
     /**
      * 删除购物车中的一个产品
