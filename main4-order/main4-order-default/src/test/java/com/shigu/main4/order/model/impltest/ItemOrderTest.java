@@ -91,6 +91,7 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void refundService() throws Exception {
+        order().refundService(1L, 20L);
     }
 
     @Test

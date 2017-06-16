@@ -436,6 +436,74 @@ public class ItemOrderServiceExample implements SgExample{
             return (ItemOrderServiceExample.Criteria)this;
         }
 
+        public ItemOrderServiceExample.Criteria andRefundMoneyIsNull() {
+            this.addCriterion("refundMoney is null");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyIsNotNull() {
+            this.addCriterion("refundMoney is not null");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyEqualTo(Long value) {
+            this.addCriterion("refundMoney =", value, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyNotEqualTo(Long value) {
+            this.addCriterion("refundMoney <>", value, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyGreaterThan(Long value) {
+            this.addCriterion("refundMoney >", value, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("refundMoney >=", value, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyLessThan(Long value) {
+            this.addCriterion("refundMoney <", value, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
+            this.addCriterion("refundMoney <=", value, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyLike(String value) {
+            this.addCriterion("refundMoney like", value, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyNotLike(String value) {
+            this.addCriterion("refundMoney not like", value, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }        public ItemOrderServiceExample.Criteria andRefundMoneyIn(List<Long> values) {
+            this.addCriterion("refundMoney in", values, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyNotIn(List<Long> values) {
+            this.addCriterion("refundMoney not in", values, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyBetween(Long value1, Long value2) {
+            this.addCriterion("refundMoney between", value1, value2, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
+        public ItemOrderServiceExample.Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
+            this.addCriterion("refundMoney not between", value1, value2, "refund_money");
+            return (ItemOrderServiceExample.Criteria)this;
+        }
+
         public ItemOrderServiceExample.Criteria andIdIsNull() {
             this.addCriterion("id is null");
             return (ItemOrderServiceExample.Criteria)this;

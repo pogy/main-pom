@@ -8,6 +8,7 @@ import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.enums.SubOrderStatus;
+import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.services.OrderConstantService;
@@ -158,8 +159,23 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
-    public void refundPackage(Long id, Long money) {
-
+    @Transactional(rollbackFor = Exception.class)
+    public void refundPackage(Long id, Long money) throws RefundException {
+        ItemOrderPackage itemOrderPackage;
+        if (id == null || (itemOrderPackage = itemOrderPackageMapper.selectByPrimaryKey(id)) == null || money == null) {
+            throw new RefundException(String.format("退包材接口参数有误 id[%d], money[%d]", id, money));
+        }
+        Long packageMoney = itemOrderPackage.getMoney();
+        Long refundMoney = itemOrderPackage.getRefundMoney();
+        if (packageMoney - refundMoney > money) {
+            refunds(money);
+            ItemOrderPackage orderPackage = new ItemOrderPackage();
+            orderPackage.setId(id);
+            orderPackage.setRefundMoney(refundMoney + money);
+            itemOrderPackageMapper.updateByPrimaryKeySelective(orderPackage);
+        } else {
+            throw new RefundException(String.format("包材费不足。包材费总额[%d], 已退[%d]", packageMoney, refundMoney));
+        }
     }
 
     @Override
@@ -214,8 +230,23 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
-    public void refundService(Long id, Long money) {
-
+    @Transactional(rollbackFor = Exception.class)
+    public void refundService(Long id, Long money) throws RefundException {
+        ItemOrderService orderService;
+        if (id == null || (orderService = itemOrderServiceMapper.selectByPrimaryKey(id)) == null || money == null) {
+            throw new RefundException(String.format("退服务接口参数有误 id[%d], money[%d]", id, money));
+        }
+        Long refundMoney = orderService.getRefundMoney();
+        Long serviceMoney = orderService.getMoney();
+        if (serviceMoney - refundMoney > money) {
+            refunds(money);
+            ItemOrderService os = new ItemOrderService();
+            os.setId(id);
+            os.setRefundMoney(refundMoney + money);
+            itemOrderServiceMapper.updateByPrimaryKeySelective(os);
+        } else {
+            throw new RefundException(String.format("服务费不足。服务费总额[%d], 已退[%d]", serviceMoney, refundMoney));
+        }
     }
 
     @Override

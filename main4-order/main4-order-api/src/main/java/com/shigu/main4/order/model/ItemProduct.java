@@ -13,6 +13,7 @@ public interface ItemProduct extends Product{
 
     ItemProductVO info();
 
+    ItemSkuVO selSelectiveSku();
     /**
      * 查询SKU
      * @return
