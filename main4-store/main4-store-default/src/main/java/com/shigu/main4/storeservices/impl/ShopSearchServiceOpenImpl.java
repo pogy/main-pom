@@ -69,7 +69,7 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         pager.setNumber(page);
 
         Config config = new Config(Lists.newArrayList("shop_search_ol"));
-        config.setStart((page - 1) * page);
+        config.setStart((page - 1) * pageSize);
         config.setHits(pageSize);
         config.setFetchFields(Lists.newArrayList("shop_id", "market_id_1", "shop_name", "web_site_1", "tb_nick", "shop_num", "shop_status", "market_name"));
         config.setSearchFormat(SearchFormat.JSON);

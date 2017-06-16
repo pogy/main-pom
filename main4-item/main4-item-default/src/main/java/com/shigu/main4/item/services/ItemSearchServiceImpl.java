@@ -102,7 +102,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         pager.setNumber(page);
 
         Config config = new Config(Lists.newArrayList("goods_search_hz"));
-        config.setStart((page - 1) * page);
+        config.setStart((page - 1) * pageSize);
         config.setHits(pageSize);
         config.setFetchFields(Lists.newArrayList("goods_id", "title", "goods_no", "pic_url", "cid", "created", "price", "goods_level", "parent_market_id"));
         config.setSearchFormat(SearchFormat.JSON);
