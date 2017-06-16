@@ -231,7 +231,6 @@ public class ItemOrderImpl implements ItemOrder{
     @Override
     public SenderVO selSender() {
         if (senderVO == null) {
-//            com.opentae.data.mall.beans.ItemOrder itemOrder TODO: 按实现类中的oid，查询item_order.outer_id ?
             ItemOrderSender itemOrderSender = itemOrderSenderMapper.selectByPrimaryKey(orderInfo().getSenderId());
             senderVO = BeanMapper.map(itemOrderSender, SenderVO.class);
         }

@@ -103,6 +103,7 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void selSender() throws Exception {
+        show(order().selSender());
     }
 
     @Test
