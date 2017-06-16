@@ -107,9 +107,10 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         config.setFetchFields(Lists.newArrayList("goods_id", "title", "goods_no", "pic_url", "cid", "created", "price", "goods_level", "parent_market_id"));
         config.setSearchFormat(SearchFormat.JSON);
         SearchParams searchParams = new SearchParams(config);
-        String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
-        String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
+
         if (StringUtils.isNotEmpty(keyword)) {
+            String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
+            String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
             String query = "";
             if(StringUtils.isNotEmpty(keywordChina)){
                 query += "title:'"+keywordChina+"'";
@@ -255,8 +256,6 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                         }
                     }
                 }
-
-
             } else throw new Main4Exception(jsonObject.getString("errors"));
         } catch (OpenSearchException | OpenSearchClientException ignored) {
 
