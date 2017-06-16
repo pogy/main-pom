@@ -95,7 +95,7 @@ public class BeanMapper {
         try {
             for (T t : list) {
                 if (classField == null) {
-                    classField = t.getClass().getField(field);
+                    classField = t.getClass().getDeclaredField(field);
                     classField.setAccessible(true);
                 }
                 Object ko = classField.get(t);
@@ -143,7 +143,7 @@ public class BeanMapper {
         try {
             for (T t : list) {
                 if (classField == null) {
-                    classField = t.getClass().getField(field);
+                    classField = t.getClass().getDeclaredField(field);
                     classField.setAccessible(true);
                 }
                 Object o = classField.get(t);
@@ -184,7 +184,7 @@ public class BeanMapper {
         for (T t : list) {
             try {
                 if (classField == null) {
-                    classField = t.getClass().getField(field);
+                    classField = t.getClass().getDeclaredField(field);
                     classField.setAccessible(true);
                 }
                 group.get((classField.get(t))).add(t);
