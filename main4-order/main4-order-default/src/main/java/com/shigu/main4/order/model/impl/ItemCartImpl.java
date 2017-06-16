@@ -1,16 +1,31 @@
 package com.shigu.main4.order.model.impl;
 
+import com.opentae.data.mall.beans.ItemCart;
+import com.opentae.data.mall.interfaces.ItemCartMapper;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.vo.ProductVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * 商品购物车实现
  * Created by zhaohongbo on 17/6/9.
  */
+@Service("itemCart")
 public class ItemCartImpl implements Cart{
+
+    @Autowired
+    private ItemCartMapper itemCartMapper;
 
     @Override
     public <T extends ProductVO> void addProduct(T pro) {
+        ItemCart cart = BeanMapper.map(pro, ItemCart.class);
+//        cart.setSkuId();
+//        cart.setUserId();
+//        cart.setNum();
+        //TODO: 缺失3个信息
+        itemCartMapper.insertSelective(cart);
     }
 
     @Override
