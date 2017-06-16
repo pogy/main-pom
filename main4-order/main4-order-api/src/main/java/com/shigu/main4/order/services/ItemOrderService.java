@@ -2,6 +2,7 @@ package com.shigu.main4.order.services;
 
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.PidNumBO;
+import com.shigu.main4.order.enums.OrderType;
 
 import java.util.List;
 
@@ -10,7 +11,11 @@ import java.util.List;
  * Created by zhaohongbo on 17/6/1.
  */
 public interface ItemOrderService {
-
+    /**
+     * oid获取器
+     * @return
+     */
+    Long idGenerator(OrderType type);
     /**
      * 创建订单
      * @param orderBO
