@@ -152,7 +152,7 @@ public class ShopAction {
 
     @Autowired
     OssIO ossIO;
-    
+
     @Autowired
     SpreadService spreadService;
 

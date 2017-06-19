@@ -1081,11 +1081,6 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             throw new ItemUpdateException(ItemUpdateException.ItemUpdateExceptionEnum.ITEM_DOES_NOT_EXIST, goodsId);
         }
 
-        ESGoods goods = esGoodsService.createEsGoods(tiny);
-        SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
-        seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
-        new ElasticRepository().insert(seb);
-
         ShiguGoodsStyle goodsStyle;
         ShiguGoodsStyle style = new ShiguGoodsStyle();
         style.setGoodsId(goodsId);
@@ -1098,5 +1093,10 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             style.setSids(sids);
             shiguGoodsStyleMapper.insertSelective(style);
         }
+
+        ESGoods goods = esGoodsService.createEsGoods(tiny);
+        SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
+        seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
+        new ElasticRepository().insert(seb);
     }
 }
