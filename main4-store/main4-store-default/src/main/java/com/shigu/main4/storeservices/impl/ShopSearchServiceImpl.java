@@ -174,15 +174,26 @@ public class ShopSearchServiceImpl implements ShopSearchService {
         List<Long> shopIdList = new ArrayList<Long>(BeanMapper.getFieldSet(shiguShopList, "shopId", Long.class));
 
         //获取相关联market实体类集合
-        ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
-        shiguMarketExample.createCriteria().andMarketIdIn(new ArrayList<Long>(marketIdList));
-        List<ShiguMarket> shiguMarketList = shiguMarketMapper.selectByExample(shiguMarketExample);
+        List<ShiguMarket> shiguMarketList = null;
+        if (marketIdList != null && 0 < marketIdList.size()) {
+            ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
+            shiguMarketExample.createCriteria().andMarketIdIn(new ArrayList<Long>(marketIdList));
+            shiguMarketList =  shiguMarketMapper.selectByExample(shiguMarketExample);
+        } else {
+            shiguMarketList = new ArrayList<ShiguMarket>();
+        }
         Map<Long, ShiguMarket> shiguMarketMap =  BeanMapper.list2Map(shiguMarketList, "marketId", Long.class);
 
         //获取相关联shoplicense实体类集合
-        ShiguShopLicenseExample licenseExample = new ShiguShopLicenseExample();
-        licenseExample.createCriteria().andShopIdIn(shopIdList).andLicenseTypeEqualTo(6);
-        List<ShiguShopLicense> shiguShopLicenseList = shiguShopLicenseMapper.selectByExample(licenseExample);
+        List<ShiguShopLicense> shiguShopLicenseList = null;
+        if (shopIdList !=null && 0 < shopIdList.size()) {
+            ShiguShopLicenseExample licenseExample = new ShiguShopLicenseExample();
+            licenseExample.createCriteria().andShopIdIn(shopIdList).andLicenseTypeEqualTo(6);
+            shiguShopLicenseList = shiguShopLicenseMapper.selectByExample(licenseExample);
+        } else {
+            shiguShopLicenseList = new ArrayList<ShiguShopLicense>();
+        }
+
         Map<Long, ShiguShopLicense> shiguShopLicenseMap =  BeanMapper.list2Map(shiguShopLicenseList, "shopId", Long.class);
 
         List<SearchShopSimple> shiguShopSimpleList = new ArrayList<SearchShopSimple>();
