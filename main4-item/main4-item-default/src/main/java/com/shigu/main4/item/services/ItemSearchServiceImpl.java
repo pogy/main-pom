@@ -257,12 +257,12 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                         SearchItem searchItem = BeanMapper.map(vo, SearchItem.class);
                         searchItem.setItemId(vo.getGoodsId());
 
-                        if (0 > vo.getTitle().indexOf("<em>")) {
+                        if (!vo.getTitle().contains("<em>")) {
                             searchItem.setHighLightTitle(null);
                         } else {
                             searchItem.setHighLightTitle(vo.getTitle());
                         }
-                        if (0 > vo.getGoodsNo().indexOf("<em>")) {
+                        if (!vo.getGoodsNo().contains("<em>")) {
                             searchItem.setHighLightGoodsNo(null);
                         } else {
                             searchItem.setHighLightGoodsNo(vo.getGoodsNo());
