@@ -117,7 +117,6 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 Summary  summary =  new Summary();
                 summary.setFieldValue(Summary._Fields.SUMMARY_FIELD, "title");
                 summary.setFieldValue(Summary._Fields.SUMMARY_LEN, "120");
-
                 searchParams.addToSummaries(summary);
             }
             if (StringUtils.isNotEmpty(keywordNum)) {
@@ -129,7 +128,6 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 Summary  summary =  new Summary();
                 summary.setFieldValue(Summary._Fields.SUMMARY_FIELD, "goods_no");
                 summary.setFieldValue(Summary._Fields.SUMMARY_LEN, "50");
-
                 searchParams.addToSummaries(summary);
             }
             if (StringUtils.isNotEmpty(sid)) {
@@ -258,8 +256,19 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                     for (OpenItemVo vo : openItemVos) {
                         SearchItem searchItem = BeanMapper.map(vo, SearchItem.class);
                         searchItem.setItemId(vo.getGoodsId());
-                        searchItem.setHighLightTitle(vo.getTitle());
-                        searchItem.setHighLightGoodsNo(vo.getGoodsNo());
+
+                        if (0 > vo.getTitle().indexOf("<em>")) {
+                            searchItem.setHighLightTitle(null);
+                        } else {
+                            searchItem.setHighLightTitle(vo.getTitle());
+                        }
+                        if (0 > vo.getGoodsNo().indexOf("<em>")) {
+                            searchItem.setHighLightGoodsNo(null);
+                        } else {
+                            searchItem.setHighLightGoodsNo(vo.getGoodsNo());
+                        }
+                        searchItem.setGoodsNo(vo.getGoodsNo().replace("<em>","").replace("</em>", ""));
+                        searchItem.setTitle(vo.getTitle().replace("<em>","").replace("</em>", ""));
                         itemList.add(searchItem);
                     }
                 }
