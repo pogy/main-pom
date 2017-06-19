@@ -716,7 +716,7 @@ var postRulers = ${postRulers!};
 
         
         <div class="orderGoods">
-    <h3 class="fs14 yahei orderBoxTitle">商品清单 <a href="#">返回进货车</a></h3>
+    <h3 class="fs14 yahei orderBoxTitle">商品清单 </h3>
     <div class="orderDetail clearfix">
     <div class="listHeader clearfix">
         <ul>
@@ -1027,7 +1027,7 @@ var postRulers = ${postRulers!};
 
 </#list>
 
-        <a href="#" class="backCart">返回进货车</a>
+        
     </div>
 </div>
 
