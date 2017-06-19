@@ -104,6 +104,8 @@ public class ShopForCdnServiceImplTest extends AbstractJUnit4SpringContextTests 
         show(shopForCdnService.searchItemOnsale(null,null,null,"1284219914036422","price_down",dateFrom,dateTo,1,20));
     }
 
+
+
     public ShopForCdnBo getShopForCdnBo(int pageNo, int pageSize, String keyword, String orderBy, List<Long> goodsIds,
                                                       Long shopId, Long cid, Double priceFrom, Double priceTo, Date dateFrom, Date dateTo, String scid) {
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
