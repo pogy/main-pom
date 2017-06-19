@@ -264,6 +264,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                         }
                         if (!vo.getGoodsNo().contains("<em>")) {
                             searchItem.setHighLightGoodsNo(null);
+                            searchItem.setGoodsNo(null);
                         } else {
                             searchItem.setHighLightGoodsNo(vo.getGoodsNo());
                         }
