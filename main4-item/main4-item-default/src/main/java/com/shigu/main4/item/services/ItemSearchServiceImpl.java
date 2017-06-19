@@ -114,6 +114,11 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             String query = "";
             if (StringUtils.isNotEmpty(keywordChina)) {
                 query += "title:'" + keywordChina + "'";
+                Summary  summary =  new Summary();
+                summary.setFieldValue(Summary._Fields.SUMMARY_FIELD, "title");
+                summary.setFieldValue(Summary._Fields.SUMMARY_LEN, "120");
+
+                searchParams.addToSummaries(summary);
             }
             if (StringUtils.isNotEmpty(keywordNum)) {
                 if (StringUtils.isEmpty(query)) {
@@ -121,6 +126,11 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 } else {
                     query += " OR goods_no:'" + keywordNum + "'";
                 }
+                Summary  summary =  new Summary();
+                summary.setFieldValue(Summary._Fields.SUMMARY_FIELD, "goods_no");
+                summary.setFieldValue(Summary._Fields.SUMMARY_LEN, "50");
+
+                searchParams.addToSummaries(summary);
             }
             if (StringUtils.isNotEmpty(sid)) {
                 if (StringUtils.isEmpty(query)) {
@@ -245,12 +255,11 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 JSONArray items = data.getJSONArray("items");
                 List<OpenItemVo> openItemVos = items.toJavaList(OpenItemVo.class);
                 if (!openItemVos.isEmpty()) {
-                    HighLightKit defaultInstance = HighLightKit.getDefaultInstance();
                     for (OpenItemVo vo : openItemVos) {
                         SearchItem searchItem = BeanMapper.map(vo, SearchItem.class);
                         searchItem.setItemId(vo.getGoodsId());
-                        searchItem.setHighLightTitle(defaultInstance.bright(keyword, vo.getTitle()));
-                        searchItem.setHighLightGoodsNo(defaultInstance.bright(keyword, vo.getGoodsNo()));
+                        searchItem.setHighLightTitle(vo.getTitle());
+                        searchItem.setHighLightGoodsNo(vo.getGoodsNo());
                         itemList.add(searchItem);
                     }
                 }
