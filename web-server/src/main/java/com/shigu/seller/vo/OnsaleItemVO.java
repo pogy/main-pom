@@ -50,6 +50,10 @@ public class OnsaleItemVO {
 
     private Date startTime;
 
+    private String styleName;
+
+    private String sid;
+
     public OnsaleItemVO(OnsaleItem onsaleItem) {
         this.setGoodsNo(onsaleItem.getGoodsNo());
         this.setId(onsaleItem.getItemId());
@@ -259,5 +263,21 @@ public class OnsaleItemVO {
 
     public void setPrice3(String price3) {
         this.price3 = price3;
+    }
+
+    public String getStyleName() {
+        return styleName;
+    }
+
+    public void setStyleName(String styleName) {
+        this.styleName = styleName;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
     }
 }

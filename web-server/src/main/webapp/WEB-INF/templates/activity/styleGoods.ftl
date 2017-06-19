@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/styleGoods.css?t=1495099805565" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/styleGoods.css?t=1495450039503" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/styleGoods.js?t=1495099805565"></script>
+    <script src="http://style.571xz.com/searchV5/js/styleGoods.js?t=1495450039503"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -189,7 +189,7 @@ var webSite = '${webSite!}';
 <div class="headerV1">
     <div class="layout">
         <div class="logoLeft">
-            <a href="<#if webSite == 'jx'>http://jx.571xz.com<#else>${main_host!}</#if>">
+            <a href="http://${webSite!}.571xz.com">
                 <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
             </a>
             <em></em>
@@ -242,22 +242,22 @@ var webSite = '${webSite!}';
     <div class="layout navCon">
         <div class="navList">
             <ul>
-                <#if webSite == 'jx'>
-                <li class="first"><a href="http://jx.571xz.com" target="_blank">首页</a></li>
-                <#else>
-                <li class="first"><a href="${main_host!}" target="_blank">首页</a></li>
-                </#if>
+                <li class="first"><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
                 <#if webSite == 'jx'>
                     <li><a href="http://jx.571xz.com/market.htm?mid=33">逛市场</a></li>
-                    <#elseif webSite == 'wa'>
+                <#elseif webSite == 'wa'>
                     <li><a href="http://www.571xz.com/storelist.htm?webSite=wa">企业列表</a></li>
-                    <#else>
-                    <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
+                <#elseif webSite == 'cs'>
+                    <li><a href="http://jx.571xz.com/market.htm?mid=43">逛市场</a></li>
+                <#else>
+                <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
                 </#if>
                 <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite !="jx" || webSite != 'wa'>
-                <li ><a href="http://so.571xz.com/newgoods.htm" target="_blank">今日新品</a></li>
+                <#if webSite !="jx" && webSite != 'wa'>
+                <li ><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
+                <#if webSite == "hz">
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
+                </#if>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>
@@ -310,8 +310,9 @@ var webSite = '${webSite!}';
             <i></i>
         </div>
         <div class="goodsCateItem classfiyItem">
+            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.pid??>&pid=${query.pid!}</#if><#if query.sid??>&sid=${query.sid!}</#if>"  class="<#if !query.cid>selected</#if>" >全部</a>
             <#list textCateNav.cates as item>
-            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if item.id??>&cid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if><#if query.sid??>&sid=${query.sid!}</#if>"  class="<#if query.cid?? && query.cid == item.id>selected</#if>">${item.text!}</a>
+            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if item.id??>&cid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if><#if query.sid??>&sid=${query.sid!}</#if>"  class="<#if query.cid?? && query.cid == item.id>selected</#if>">${item.text!}</a>
             </#list>
         </div>
     </div>
@@ -326,6 +327,7 @@ var webSite = '${webSite!}';
             <i></i>
         </div>
          <div class="shopCateItem classfiyItem">
+             <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.sid??>&sid=${query.sid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if query.pid??>&pid=${query.pid!}</#if>"  class="<#if !query.mid>selected</#if>" >全部</a>
             <#list textCateNav.markets as item>
             <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.sid??>&sid=${query.sid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if item.id??>&mid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if>"  class="<#if query.mid?? && query.mid == item.id>selected</#if>" class="<#if query.mid?? && query.mid == item.id>selected</#if>">${item.text!}</a>
             </#list>
@@ -343,7 +345,7 @@ var webSite = '${webSite!}';
         </div>
          <div class="lastestStyleItem classfiyItem">
            <#list textCateNav.styles as item>
-            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if item.id??>&sid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if><#if query.cid??>&cid=${query.cid!}</#if>"  class="<#if query.sid?? && query.sid == item.id> selected</#if>">${item.text!}</a>
+            <a href="?webSite=${query.webSite!}<#if query.sort??>&sort=${query.sort!}</#if><#if query.sp??>&sp=${query.sp!}</#if><#if query.ep??>&ep=${query.ep!}</#if><#if query.d??>&d=${query.d!}</#if><#if query.mid??>&mid=${query.mid!}</#if><#if query.cid??>&cid=${query.cid!}</#if><#if item.id??>&sid=${item.id!}</#if><#if item.keyword??>&keyword=${item.keyword!}<#if query.pid??>&pid=${query.pid!}</#if></#if>"  class="<#if query.sid?? && query.sid == item.id> selected</#if>">${item.text!}</a>
             </#list>
         </div>
     </div>
@@ -354,6 +356,10 @@ var webSite = '${webSite!}';
 </div>
 <div class="goodsContent">
     <div class="layout before">
+        <div class="cateName clearfix">
+            <h3 class="">${styleTitle!}</h3>
+            <span>${styleGoodsCount!}件商品</span>
+        </div>
         <div class="formFilterBar clearfix" id="formFilterBar">
             <div class="sortTypeBox">
                 <b jbtn="sortByXp" <#if query.sort?? && query.sort == 'xp'>class="selected"</#if>>新品</b>
@@ -454,43 +460,51 @@ var webSite = '${webSite!}';
         
         
         <div class="goodsList clearfix">
-            <#list goodslist as goods>
-            <div class="goodsItem">
-                <div class="goodsImg">
-                    <a class="imgbox" href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}">
-                        <img class="img" src="${goods.imgsrc!}_300x300.jpg" data-original="${goods.imgsrc!}" alt="" target="_blank"/>
+            <#if (goodslist?size) gt 0>
+                <#list goodslist as goods>
+                <div class="goodsItem">
+                    <div class="goodsImg">
+                        <a class="imgbox" href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}">
+                            <img class="img" src="${goods.imgsrc!}_300x300.jpg" data-original="${goods.imgsrc!}" alt="" target="_blank"/>
+                            </a>
+                        <span>&yen;${goods.piprice!}</span>
+                    
+                    </div>
+                    <div class="goodsDesc before">
+                        <a href="http://${webSite!}.571xz.com/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}" class="shopName">
+                            <span>${goods.fullStoreName!}</span>
                         </a>
-                    <span>&yen;${goods.piprice!}</span>
+                        <button class="uploadBtn">一键上传</button>
+                        <div class="noHide">
+                            <div class="hoverBox">
+                           <ul class="keybox">
+                                <li><a href="http://upload.571xz.com/publish.htm?id=${goods.id!}" target="_blank" title="淘宝一键上传"><i class="ii"></i><span>上传到淘宝</span></a></li>
+                                <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goods.id!}" target="_blank" title="阿里一键上传"><i class="ii"></i><span>上传到阿里</span></a></li>
+                                <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${goods.id!}"><i class="ii"></i><span>分享朋友圈</span></b></li>
+                                <li class="addData"><b  xzclick="addGoodsData" data-goodsid="${goods.id!}"><i class="ii"></i><span>加入数据包</span></b></li>
                 
-                </div>
-                <div class="goodsDesc before">
-                    <a href="http://${webSite!}.571xz.com/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}" class="shopName">
-                        <span>${goods.fullStoreName!}</span>
-                    </a>
-                    <button class="uploadBtn">一键上传</button>
-                    <div class="noHide">
-                        <div class="hoverBox">
-                       <ul class="keybox">
-                            <li><a href="http://upload.571xz.com/publish.htm?id=${goods.id!}" target="_blank" title="淘宝一键上传"><i class="ii"></i><span>上传到淘宝</span></a></li>
-                            <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goods.id!}" target="_blank" title="阿里一键上传"><i class="ii"></i><span>上传到阿里</span></a></li>
-                            <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${goods.id!}"><i class="ii"></i><span>分享朋友圈</span></b></li>
-                            <li class="addData"><b  xzclick="addGoodsData" data-goodsid="${goods.id!}"><i class="ii"></i><span>加入数据包</span></b></li>
-            
-                        </ul>
-                        <span class="angle"><em></em></span>
+                            </ul>
+                            <span class="angle"><em></em></span>
+                        </div>
+                        </div>
+                       
                     </div>
-                    </div>
-                   
+                    <div class="wxEwmbox"></div>
+                     
                 </div>
-                <div class="wxEwmbox"></div>
-                 
+                
+                
+                
+                
+                
+                </#list> 
+            <#else>
+            <div class="goodslistEmptyCon">
+                <p>Sorry, 未查询到相应商品~</p>
             </div>
             
+            </#if>
             
-            
-            
-            
-            </#list> 
         </div>
                 <div class="jq_pagination" data-option="${pageOption!}"></div>
     </div>

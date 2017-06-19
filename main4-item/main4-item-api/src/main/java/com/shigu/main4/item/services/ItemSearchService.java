@@ -26,6 +26,7 @@ public interface ItemSearchService {
      * @param mid 市场ID
      * @param cids 叶子类目ID
      * @param shouldStoreIds 应该关联的店铺
+     * @param sid 风格ID
      * @param priceFrom 批价开始
      * @param priceTo 批价结束
      * @param timeForm created时间开始
@@ -35,7 +36,7 @@ public interface ItemSearchService {
      * @param pageSize 每页条数
      * @return
      */
-    ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds,
+    ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid,
                               Double priceFrom, Double priceTo,
                               Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs);
 
