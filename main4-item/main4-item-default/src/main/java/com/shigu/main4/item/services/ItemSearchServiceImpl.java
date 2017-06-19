@@ -256,7 +256,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                     for (OpenItemVo vo : openItemVos) {
                         SearchItem searchItem = BeanMapper.map(vo, SearchItem.class);
                         searchItem.setItemId(vo.getGoodsId());
-
+                        searchItem.setGoodsNo(null);
                         if (!vo.getTitle().contains("<em>")) {
                             searchItem.setHighLightTitle(null);
                         } else {
@@ -264,11 +264,10 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                         }
                         if (!vo.getGoodsNo().contains("<em>")) {
                             searchItem.setHighLightGoodsNo(null);
-                            searchItem.setGoodsNo(null);
                         } else {
                             searchItem.setHighLightGoodsNo(vo.getGoodsNo());
+                            searchItem.setGoodsNo(vo.getGoodsNo().replace("<em>","").replace("</em>", ""));
                         }
-                        searchItem.setGoodsNo(vo.getGoodsNo().replace("<em>","").replace("</em>", ""));
                         searchItem.setTitle(vo.getTitle().replace("<em>","").replace("</em>", ""));
                         itemList.add(searchItem);
                     }
