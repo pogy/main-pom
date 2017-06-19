@@ -97,7 +97,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      * @return
      */
     @Override
-    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
+    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
         ShiguAggsPager pager = new ShiguAggsPager();
         pager.setNumber(page);
 
@@ -122,6 +122,14 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                     query += " OR goods_no:'" + keywordNum + "'";
                 }
             }
+            if (StringUtils.isNotEmpty(sid)) {
+                if (StringUtils.isEmpty(query)) {
+                    query += "sids:'" + sid + "'";
+                } else {
+                    query ="(" + query + ")";
+                    query += " AND sids:'" + sid + "'";
+                }
+            }
             searchParams.setQuery(query);
         }
         String filter = "is_closed = 0";
@@ -136,18 +144,18 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             filter += "in(cid, \"" + cidsStr + "\")";
         }
 
-        if (shouldStoreIds != null && !shouldStoreIds.isEmpty()) {
-            StringBuffer sidSb = new StringBuffer();
-            for (Long item : shouldStoreIds) {
-                sidSb.append(item.toString()).append(":");
-            }
-            filter += " AND ";
-
-            String user_option =  sidSb.substring(0, sidSb.length()-2) ;
-//            filter += "tag_match(\"" + user_option +"\",  \"store_id\", 10, \"sum\", \"false\",\"false\")";
-            filter += "tag_match(\"35749:32861:16573:41603:35782:41836:29858:39959:40721:15908:40097:42538:3905\",  store_id, 10, \"sum\", \"false\",\"false\")";
-
-        }
+//        if (shouldStoreIds != null && !shouldStoreIds.isEmpty()) {
+//            StringBuffer sidSb = new StringBuffer();
+//            for (Long item : shouldStoreIds) {
+//                sidSb.append(item.toString()).append(":");
+//            }
+//            filter += " AND ";
+//
+//            String user_option =  sidSb.substring(0, sidSb.length()-2) ;
+////            filter += "tag_match(\"" + user_option +"\",  \"store_id\", 10, \"sum\", \"false\",\"false\")";
+//            filter += "tag_match(\"35749:32861:16573:41603:35782:41836:29858:39959:40721:15908:40097:42538:3905\",  store_id, 10, \"sum\", \"false\",\"false\")";
+//
+//        }
 
         if (mid != null) {
             filter += " AND ";
@@ -379,6 +387,8 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         Collections.sort(categoryValues = BeanMapper.mapList(searchCategorySubMapper.selectByExample(subExample), CategoryValue.class));
         return categoryValues;
     }
+
+
 
     /**
      * 按ID查询
