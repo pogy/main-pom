@@ -824,9 +824,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         if(keyword != null && !keyword.trim().isEmpty()) {
             query.append("title:\"");
             query.append(keyword);
-            query.append("\" OR goods_no:\"");
+            query.append("\" ^10 OR goods_no:\"");
             query.append(keyword);
-            query.append("\"");
+            query.append("\" ^ 5");
         }
         Long shopId = shopForCdnBo.getShopId();
         if (shopId != null && shopForCdnBo.getScid() != null) {
@@ -856,11 +856,11 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                 scidStr=scid.toString();
             }
             if (StringUtils.isNotEmpty(query)){
-                query.append("AND (default:\"");
+                query.append("AND (cid_all:\"");
                 query.append(scidStr);
                 query.append("\")");
             } else {
-                query.append("default:\"");
+                query.append("cid_all:\"");
                 query.append(scidStr);
                 query.append("\"");
             }
@@ -869,6 +869,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             searchParams.setQuery(query.toString());
         }
         searchParamsBuilder = SearchParamsBuilder.create(searchParams);
+        shopId = shopForCdnBo.getShopId();
         if (shopId != null) {
             searchParamsBuilder.addFilter("store_id = " + shopId, "AND");
 
