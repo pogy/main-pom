@@ -9,12 +9,7 @@ import java.util.Date;
  * Created by whx on 2017/6/13 0013.
  */
 public class OpenItemVo {
-    private Long searchId;
     private Long goodsId;
-    private Long click;
-    private Long trade;
-    private Long up;
-    private String webSite;
     private String title;
     private Date created;
     private Long cid;
@@ -31,6 +26,12 @@ public class OpenItemVo {
     private String goodsLevel;
     private Long relationLevelId;
     private Long sortOrder;
+    private String webSite;
+
+    private Long searchId;
+    private Long click;
+    private Long trade;
+    private Long up;
 
     @JSONField(name = "search_id")
     public Long getSearchId() {
@@ -230,15 +231,11 @@ public class OpenItemVo {
         this.isExcelImp = isExcelImp;
     }
 
+
     @Override
     public String toString() {
         return "OpenItemVo{" +
-                "searchId=" + searchId +
-                ", goodsId=" + goodsId +
-                ", click=" + click +
-                ", trade=" + trade +
-                ", up=" + up +
-                ", webSite='" + webSite + '\'' +
+                "goodsId=" + goodsId +
                 ", title='" + title + '\'' +
                 ", created=" + created +
                 ", cid=" + cid +
@@ -255,6 +252,11 @@ public class OpenItemVo {
                 ", goodsLevel='" + goodsLevel + '\'' +
                 ", relationLevelId=" + relationLevelId +
                 ", sortOrder=" + sortOrder +
+                ", webSite='" + webSite + '\'' +
+                ", searchId=" + searchId +
+                ", click=" + click +
+                ", trade=" + trade +
+                ", up=" + up +
                 '}';
     }
 }
