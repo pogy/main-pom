@@ -1,12 +1,14 @@
 package com.shigu.main4.order.model.impl;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ItemCart;
+import com.opentae.data.mall.examples.ItemCartExample;
 import com.opentae.data.mall.interfaces.ItemCartMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ProductVO;
-import com.shigu.main4.order.vo.ProvinceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ import java.util.List;
  */
 @Service
 @Scope("prototype")
-public class ItemCartImpl implements Cart{
+public class ItemCartImpl implements Cart {
 
     @Autowired
     private ItemCartMapper itemCartMapper;
@@ -31,7 +33,7 @@ public class ItemCartImpl implements Cart{
     }
 
     @Override
-    public <T extends ProductVO> void addProduct(T pro,Integer number) {
+    public <T extends ProductVO> void addProduct(T pro, Integer number) {
         ItemProductVO productVO = (ItemProductVO) pro;
         ItemCart cart = BeanMapper.map(productVO, ItemCart.class);
         cart.setSkuId(productVO.getSelectiveSku().getSkuId());
@@ -53,9 +55,37 @@ public class ItemCartImpl implements Cart{
      * @param num
      */
     @Override
-    public void rmProductByNum(Long pid, Long skuId, Integer num) {
+    public void rmProductByNum(Long pid, Long skuId, Integer num) throws ItemCartNumOutOfBoundsException {
+        if (pid == null || skuId == null || num == null) {
+            return;
+        }
+
+        ItemCartExample itemCartExample = new ItemCartExample();
+
+        itemCartExample.setWebSite("hz");
+
+        ItemCartExample.Criteria criteria = itemCartExample.createCriteria();
+
+        criteria.andPidEqualTo(pid);
+
+        criteria.andSkuIdEqualTo(skuId);
+
+        List<ItemCart> number = itemCartMapper.selectFieldsByExample(itemCartExample, FieldUtil.codeFields("num"));
+
+        ItemCart selItemCart = number.get(0);
+
+        if (num > selItemCart.getNum()) {
+
+            throw new ItemCartNumOutOfBoundsException("传入的num值大于存储值");
+
+        }
+
+        selItemCart.setNum(selItemCart.getNum() - num);
+
+        itemCartMapper.updateByExampleSelective(selItemCart, itemCartExample);
 
     }
+
 
     @Override
     public Long modifyProductNumber(Long cartId, Integer number) {
