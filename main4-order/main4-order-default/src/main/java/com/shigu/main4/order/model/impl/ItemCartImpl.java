@@ -3,16 +3,21 @@ package com.shigu.main4.order.model.impl;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ItemCart;
 import com.opentae.data.mall.examples.ItemCartExample;
+import com.opentae.data.mall.examples.ItemProductExample;
 import com.opentae.data.mall.interfaces.ItemCartMapper;
+import com.opentae.data.mall.interfaces.ItemProductMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ProductVO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,6 +30,9 @@ public class ItemCartImpl implements Cart {
 
     @Autowired
     private ItemCartMapper itemCartMapper;
+
+    @Autowired
+    private ItemProductMapper itemProductMapper;
 
     private Long userId;
 
@@ -108,6 +116,12 @@ public class ItemCartImpl implements Cart {
     }
 
     public List<ItemProductVO> listProduct() {
-        return null;
+        List<ItemProductVO> vos = new ArrayList<>();
+        ItemCart cart = new ItemCart();
+        cart.setUserId(userId);
+        for (ItemCart itemCart : itemCartMapper.select(cart)) {
+            vos.add(SpringBeanFactory.getBean(ItemProductImpl.class, itemCart.getPid(), itemCart.getSkuId()).info());
+        }
+        return vos;
     }
 }

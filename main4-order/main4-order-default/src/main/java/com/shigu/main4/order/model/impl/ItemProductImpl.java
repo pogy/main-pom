@@ -48,6 +48,11 @@ public class ItemProductImpl implements ItemProduct{
     private Long skuId;
     private Long pid;
 
+    public ItemProductImpl(Long pid, Long skuId) {
+        this.pid = pid;
+        this.skuId = skuId;
+    }
+
     public ItemProductImpl(Long goodsId,String color,String size) {
         this.goodsId = goodsId;
         this.color = color;
