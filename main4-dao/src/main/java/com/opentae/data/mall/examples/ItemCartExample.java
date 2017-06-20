@@ -1,9 +1,9 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemCartExample implements SgExample{
     protected String orderByClause;
@@ -369,70 +369,70 @@ public class ItemCartExample implements SgExample{
         }
 
         public ItemCartExample.Criteria andUserIdIsNull() {
-            this.addCriterion("userId is null");
+            this.addCriterion("user_id is null");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdIsNotNull() {
-            this.addCriterion("userId is not null");
+            this.addCriterion("user_id is not null");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdEqualTo(Long value) {
-            this.addCriterion("userId =", value, "user_id");
+            this.addCriterion("user_id =", value, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdNotEqualTo(Long value) {
-            this.addCriterion("userId <>", value, "user_id");
+            this.addCriterion("user_id <>", value, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdGreaterThan(Long value) {
-            this.addCriterion("userId >", value, "user_id");
+            this.addCriterion("user_id >", value, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("userId >=", value, "user_id");
+            this.addCriterion("user_id >=", value, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdLessThan(Long value) {
-            this.addCriterion("userId <", value, "user_id");
+            this.addCriterion("user_id <", value, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("userId <=", value, "user_id");
+            this.addCriterion("user_id <=", value, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdLike(String value) {
-            this.addCriterion("userId like", value, "user_id");
+            this.addCriterion("user_id like", value, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdNotLike(String value) {
-            this.addCriterion("userId not like", value, "user_id");
+            this.addCriterion("user_id not like", value, "user_id");
             return (ItemCartExample.Criteria)this;
-        }        public ItemCartExample.Criteria andUserIdIn(List<Long> values) {
-            this.addCriterion("userId in", values, "user_id");
+        }        public ItemCartExample.Criteria anduser_idIn(List<Long> values) {
+            this.addCriterion("user_id in", values, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdNotIn(List<Long> values) {
-            this.addCriterion("userId not in", values, "user_id");
+            this.addCriterion("user_id not in", values, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdBetween(Long value1, Long value2) {
-            this.addCriterion("userId between", value1, value2, "user_id");
+            this.addCriterion("user_id between", value1, value2, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("userId not between", value1, value2, "user_id");
+            this.addCriterion("user_id not between", value1, value2, "user_id");
             return (ItemCartExample.Criteria)this;
         }
 
@@ -573,70 +573,70 @@ public class ItemCartExample implements SgExample{
         }
 
         public ItemCartExample.Criteria andSkuIdIsNull() {
-            this.addCriterion("skuId is null");
+            this.addCriterion("sku_id is null");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdIsNotNull() {
-            this.addCriterion("skuId is not null");
+            this.addCriterion("sku_id is not null");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdEqualTo(Long value) {
-            this.addCriterion("skuId =", value, "sku_id");
+            this.addCriterion("sku_id =", value, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdNotEqualTo(Long value) {
-            this.addCriterion("skuId <>", value, "sku_id");
+            this.addCriterion("sku_id <>", value, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdGreaterThan(Long value) {
-            this.addCriterion("skuId >", value, "sku_id");
+            this.addCriterion("sku_id >", value, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("skuId >=", value, "sku_id");
+            this.addCriterion("sku_id >=", value, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdLessThan(Long value) {
-            this.addCriterion("skuId <", value, "sku_id");
+            this.addCriterion("sku_id <", value, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("skuId <=", value, "sku_id");
+            this.addCriterion("sku_id <=", value, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdLike(String value) {
-            this.addCriterion("skuId like", value, "sku_id");
+            this.addCriterion("sku_id like", value, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdNotLike(String value) {
-            this.addCriterion("skuId not like", value, "sku_id");
+            this.addCriterion("sku_id not like", value, "sku_id");
             return (ItemCartExample.Criteria)this;
         }        public ItemCartExample.Criteria andSkuIdIn(List<Long> values) {
-            this.addCriterion("skuId in", values, "sku_id");
+            this.addCriterion("sku_id in", values, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdNotIn(List<Long> values) {
-            this.addCriterion("skuId not in", values, "sku_id");
+            this.addCriterion("sku_id not in", values, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdBetween(Long value1, Long value2) {
-            this.addCriterion("skuId between", value1, value2, "sku_id");
+            this.addCriterion("sku_id between", value1, value2, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 
         public ItemCartExample.Criteria andSkuIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("skuId not between", value1, value2, "sku_id");
+            this.addCriterion("sku_id not between", value1, value2, "sku_id");
             return (ItemCartExample.Criteria)this;
         }
 

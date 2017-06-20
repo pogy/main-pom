@@ -31,6 +31,11 @@
     <script src="http://style.571xz.com/v2/order/js/confirmOrder.js"></script>
 </head>
 <body>
+
+
+<#assign text>{"isFxs":true}</#assign>
+<#assign moduledata0=text?eval />
+<#list [moduledata0] as $it>
 <div class="topbar">
     <div class="layout">
         <div class="fl">
@@ -47,8 +52,7 @@
                     <a href="${main_host!}" class="fcF40">四季星座网首页</a>
                 </li>
                 
-                
-                <#if !session_user_redis__ ||  !session_user_redis__.logshop > 
+                <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
@@ -82,7 +86,7 @@
                 </li>
                 </#if>
                 
-                <#if !session_user_redis__ || session_user_redis__.logshop?? > 
+                <#if !session_user_redis__ || $it.isGys?? || session_user_redis__.logshop?? > 
                 <li>
                     <div class="cnBox pr">
                         <a class="cgcom pr" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
@@ -145,12 +149,12 @@
 
 
 
+</#list>
+
 
 <script>
 var webSite = '${webSite!}';
 </script>
-
-
 
 
 
@@ -209,8 +213,8 @@ var webSite = '${webSite!}';
         
 
 <#assign text>{"choiceCon":[{"text":"星帮代发","value":"xbdf","checked":true},{"text":"星帮代拿","value":"xbdn"}]}</#assign>
-<#assign moduledata0=text?eval />
-<#list [moduledata0] as $it>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
 <div class="portCommonBox marBottom deliMethod">
     <h3 class="fs14 yahei">
         发货方式
@@ -226,8 +230,8 @@ var webSite = '${webSite!}';
             
 
 <#assign text>{"value":option.value,"text":option.text,"checked":option.checked}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
 <label class="fmRadio clearfix
     
         <#if $it.checked??>
@@ -302,8 +306,8 @@ var webSite = '${webSite!}';
                             
 
 <#assign text>{}</#assign>
-<#assign moduledata2=text?eval />
-<#list [moduledata2] as $it>
+<#assign moduledata3=text?eval />
+<#list [moduledata3] as $it>
 <div data-id="myArea" 
     class="fmCitypick" data-value="${$it.value!}">
 </div>
@@ -346,8 +350,8 @@ var webSite = '${webSite!}';
                 
 
 <#assign text>{}</#assign>
-<#assign moduledata3=text?eval />
-<#list [moduledata3] as $it>
+<#assign moduledata4=text?eval />
+<#list [moduledata4] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -395,8 +399,8 @@ var webSite = '${webSite!}';
                 
 
 <#assign text>{}</#assign>
-<#assign moduledata4=text?eval />
-<#list [moduledata4] as $it>
+<#assign moduledata5=text?eval />
+<#list [moduledata5] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -452,8 +456,8 @@ var webSite = '${webSite!}';
                     
 
 <#assign text>{"text":"${coll.name!},${coll.phone!},${coll.address!}"}</#assign>
-<#assign moduledata5=text?eval />
-<#list [moduledata5] as $it>
+<#assign moduledata6=text?eval />
+<#list [moduledata6] as $it>
 <label class="fmRadio clearfix
     
         <#if $it.checked??>
@@ -566,8 +570,8 @@ var postRulers = ${postRulers!};
         
 
 <#assign text>{"choiceCon":postInfo}</#assign>
-<#assign moduledata6=text?eval />
-<#list [moduledata6] as $it>
+<#assign moduledata7=text?eval />
+<#list [moduledata7] as $it>
 <div class="portCommonBox marBottom courierName">
     <h3 class="fs14 yahei">
         快递名称
@@ -581,8 +585,8 @@ var postRulers = ${postRulers!};
             
 
 <#assign text>{"value":option.value,"text":option.text,"checked":option.checked}</#assign>
-<#assign moduledata7=text?eval />
-<#list [moduledata7] as $it>
+<#assign moduledata8=text?eval />
+<#list [moduledata8] as $it>
 <label class="fmRadio clearfix
     
         <#if $it.checked??>
@@ -640,9 +644,9 @@ var postRulers = ${postRulers!};
         
         
 
-<#assign text>{"choiceCon":[{"text":"有货先发","value":"yhxf","checked":true},{"text":"缺货不发","value":"qhbf"}]}</#assign>
-<#assign moduledata8=text?eval />
-<#list [moduledata8] as $it>
+<#assign text>{"choiceCon":[{"text":"有货先发","value":"yhxf","checked":true}]}</#assign>
+<#assign moduledata9=text?eval />
+<#list [moduledata9] as $it>
 <div class="portCommonBox marBottom shipOption">
     <h3 class="fs14 yahei">
         发货选择
@@ -658,8 +662,8 @@ var postRulers = ${postRulers!};
             
 
 <#assign text>{"value":option.value,"text":option.text,"checked":option.checked}</#assign>
-<#assign moduledata9=text?eval />
-<#list [moduledata9] as $it>
+<#assign moduledata10=text?eval />
+<#list [moduledata10] as $it>
 <label class="fmRadio clearfix
     
         <#if $it.checked??>
@@ -736,8 +740,8 @@ var postRulers = ${postRulers!};
                 
 
 <#assign text>{"id":order.imQq}</#assign>
-<#assign moduledata10=text?eval />
-<#list [moduledata10] as $it>
+<#assign moduledata11=text?eval />
+<#list [moduledata11] as $it>
 <#if $it.id != "">
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
@@ -747,8 +751,8 @@ var postRulers = ${postRulers!};
                 
 
 <#assign text>{"id":order.imWw}</#assign>
-<#assign moduledata11=text?eval />
-<#list [moduledata11] as $it>
+<#assign moduledata12=text?eval />
+<#list [moduledata12] as $it>
 <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
 
 </#list>
@@ -778,8 +782,8 @@ var postRulers = ${postRulers!};
         
 
 <#assign text>{"name":childOrder.id,"value":childOrder.num}</#assign>
-<#assign moduledata12=text?eval />
-<#list [moduledata12] as $it>
+<#assign moduledata13=text?eval />
+<#list [moduledata13] as $it>
 
 <span class="fmNumberInput">
     <i jbtn="reduce">-</i>
@@ -887,13 +891,11 @@ var postRulers = ${postRulers!};
             
 
 <#assign text>{}</#assign>
-<#assign moduledata13=text?eval />
-<#list [moduledata13] as $it>
+<#assign moduledata14=text?eval />
+<#list [moduledata14] as $it>
 <label class="fmCheckbox
     
-        <#if $it.checked??>
-            checked
-        </#if>
+        checked
     
 ">
     <input 
@@ -924,9 +926,7 @@ var postRulers = ${postRulers!};
         
         
         
-            <#if $it.checked??>
-                checked
-            </#if>
+            checked
         
     >
     <i class="before"></i> 
@@ -981,8 +981,8 @@ var postRulers = ${postRulers!};
         
 
 <#assign text>{}</#assign>
-<#assign moduledata14=text?eval />
-<#list [moduledata14] as $it>
+<#assign moduledata15=text?eval />
+<#list [moduledata15] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -1093,5 +1093,5 @@ var serviceRulers = ${serviceRulers!};
     </div>
 </div>
 
-<!--省略end，让浏览器自动添加-->
+
 
