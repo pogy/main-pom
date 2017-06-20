@@ -5,21 +5,46 @@ import com.opentae.data.mall.beans.OrderConstant;
 import com.opentae.data.mall.interfaces.OrderConstantMapper;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.services.OrderConstantService;
-import com.shigu.main4.order.vo.LogisticsCompanyVO;
-import com.shigu.main4.order.vo.MetarialVO;
-import com.shigu.main4.order.vo.OrderConstantVo;
-import com.shigu.main4.order.vo.ServiceVO;
+import com.shigu.main4.order.vo.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 /**
  * 订单常量服务测试
  * Created by bugzy on 2017/6/9 0009.
  */
 public class OrderConstantServiceImplTest extends BaseTest {
+    @Test
+    public void selProvinces() throws Exception {
+        List<ProvinceVO> vos = orderConstantService.selProvinces();
+        assertFalse(vos.isEmpty());
+        show(vos);
+    }
+
+    @Test
+    public void selCitysByPid() throws Exception {
+        List<ProvinceVO> provinces = orderConstantService.selProvinces();
+        Long provinceId = provinces.get(0).getProvinceId();
+        List<CityVO> cityVOS = orderConstantService.selCitysByPid(provinceId);
+        assertFalse(cityVOS.isEmpty());
+        show(cityVOS);
+    }
+
+    @Test
+    public void selTownByCid() throws Exception {
+        List<ProvinceVO> provinces = orderConstantService.selProvinces();
+        Long provinceId = provinces.get(0).getProvinceId();
+        List<CityVO> cityVOS = orderConstantService.selCitysByPid(provinceId);
+        Long cityId = cityVOS.get(0).getCityId();
+        List<TownVO> townVOS = orderConstantService.selTownByCid(cityId);
+        assertFalse(townVOS.isEmpty());
+        show(townVOS);
+    }
 
     @Autowired
     private OrderConstantService orderConstantService;
