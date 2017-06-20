@@ -1,14 +1,12 @@
 package com.shigu.main4.order.model.impl;
 
-import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ItemCart;
-import com.opentae.data.mall.examples.ItemCartExample;
 import com.opentae.data.mall.interfaces.ItemCartMapper;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ProductVO;
+import com.shigu.main4.order.vo.ProvinceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,7 @@ import java.util.List;
  */
 @Service
 @Scope("prototype")
-public class ItemCartImpl implements Cart {
+public class ItemCartImpl implements Cart{
 
     @Autowired
     private ItemCartMapper itemCartMapper;
@@ -33,7 +31,7 @@ public class ItemCartImpl implements Cart {
     }
 
     @Override
-    public <T extends ProductVO> void addProduct(T pro, Integer number) {
+    public <T extends ProductVO> void addProduct(T pro,Integer number) {
         ItemProductVO productVO = (ItemProductVO) pro;
         ItemCart cart = BeanMapper.map(productVO, ItemCart.class);
         cart.setSkuId(productVO.getSelectiveSku().getSkuId());
@@ -44,6 +42,18 @@ public class ItemCartImpl implements Cart {
 
     @Override
     public void rmProduct(Long cartId) {
+
+    }
+
+    /**
+     * 按商品信息移除相应数量的商品
+     *
+     * @param pid
+     * @param skuId
+     * @param num
+     */
+    @Override
+    public void rmProductByNum(Long pid, Long skuId, Integer num) {
 
     }
 
@@ -58,27 +68,16 @@ public class ItemCartImpl implements Cart {
     }
 
     /**
-     * TODO
-     * @param pid pid
-     * @param skuId skuId
-     * @param number number
+     * 某用户购物车订单数量
+     *
+     * @return
      */
     @Override
-    public void rmProductByNum(Long pid, Long skuId, Integer number) throws ItemCartNumOutOfBoundsException{
-        if (pid==null||skuId==null||number==null){
-            return;
-        }
-        ItemCartExample itemCartExample = new ItemCartExample();
-        itemCartExample.setWebSite("hz");
-        ItemCartExample.Criteria criteria = itemCartExample.createCriteria();
-        criteria.andPidEqualTo(pid);
-        criteria.andSkuIdEqualTo(skuId);
-        List<ItemCart> num = itemCartMapper.selectFieldsByExample(itemCartExample, FieldUtil.codeFields("num"));
-        ItemCart selItemCart = num.get(0);
-        if (number > selItemCart.getNum()) {
-            throw new ItemCartNumOutOfBoundsException("传入的num值大于存储值");
-        }
-        selItemCart.setNum(selItemCart.getNum() - number);
-        itemCartMapper.updateByExampleSelective(selItemCart, itemCartExample);
+    public int productNumbers() {
+        return 0;
+    }
+
+    public List<ItemProductVO> listProduct() {
+        return null;
     }
 }

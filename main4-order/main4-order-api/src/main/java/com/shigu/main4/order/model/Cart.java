@@ -1,7 +1,9 @@
 package com.shigu.main4.order.model;
 
-import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.vo.ProductVO;
+import com.shigu.main4.order.vo.ProvinceVO;
+
+import java.util.List;
 
 /**
  * 购物车
@@ -27,7 +29,7 @@ public interface Cart{
      * @param skuId
      * @param num
      */
-    void rmProductByNum(Long pid,Long skuId,Integer num) throws ItemCartNumOutOfBoundsException;
+    void rmProductByNum(Long pid,Long skuId,Integer num);
 
     /**
      * 修改购物车中产品数量
@@ -46,9 +48,15 @@ public interface Cart{
     Long modifyProductSku(Long cartId,Long skuId);
 
     /**
-     * 修改购物车中产品数量
-     * @param pid pid
-     * @param skuId skuId
-     * @param number number
+     * 某用户购物车商品数量
+     * @return
      */
+    int productNumbers();
+
+    /**
+     * 获取购物车内所有产品
+     * @param <T> 具体产品类型
+     * @return 产品列表
+     */
+    <T extends ProvinceVO> List<T> listProduct();
 }
