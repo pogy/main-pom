@@ -21,6 +21,14 @@ public interface Cart{
     void rmProduct(Long cartId);
 
     /**
+     * 按商品信息移除相应数量的商品
+     * @param pid
+     * @param skuId
+     * @param num
+     */
+    void rmProductByNum(Long pid,Long skuId,Integer num);
+
+    /**
      * 修改购物车中产品数量
      * @param cartId
      * @param number
