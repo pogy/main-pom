@@ -1,10 +1,17 @@
 package com.shigu.main4.order.services.impl;
 
 import com.opentae.data.mall.beans.ItemOrder;
+import com.opentae.data.mall.beans.OrderIdGenerator;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
+import com.shigu.main4.order.enums.OrderStatus;
+import com.shigu.main4.order.enums.OrderType;
+import com.shigu.main4.order.model.SubOrder;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.vo.ItemProductVO;
+import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.order.vo.SubOrderVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +32,36 @@ public class ItemOrderServiceImpl implements ItemOrderService{
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
+    @Autowired
+    private OrderIdGeneratorMapper orderIdGeneratorMapper;
+
+
+
+    /**
+     * oid获取器
+     *
+     * @param type
+     * @return
+     */
+    @Override
+    public Long idGenerator(OrderType type) {
+        OrderIdGenerator idGenerator = new OrderIdGenerator();
+        idGenerator.setType(type.type);
+        orderIdGeneratorMapper.insertSelective(idGenerator);
+        return idGenerator.getOid();
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createOrder(ItemOrderBO orderBO) {
         // 初始化一个订单
         ItemOrder order = BeanMapper.map(orderBO, ItemOrder.class);
-        order.setType(1);
+        order.setType(OrderType.XZ.type);
         order.setTotalFee(0L);
         order.setPayedFee(0L);
         order.setRefundFee(0L);
-        order.setOrderStatus(1);
+        order.setOrderStatus(OrderStatus.WAIT_BUYER_PAY.status);
+        order.setOid(idGenerator(OrderType.XZ));
         itemOrderMapper.insertSelective(order);
 
         // 获取订单操作接口
@@ -63,7 +90,15 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         if (orderBO.getSubOrders() != null) {
             List<SubOrderVO> subOrders = new ArrayList<>();
             for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
-//            subOrders.add(someThing)
+                SubOrderVO vo = new SubOrderVO();
+                vo.setNum(subItemOrderBO.getNum());
+                vo.setMark(subItemOrderBO.getMark());
+                ItemProductVO productVO = subItemOrderBO.getProductVO();
+                vo.setGoodsId(productVO.getGoodsId());
+                ItemSkuVO selectiveSku = productVO.getSelectiveSku();
+                vo.setSize(selectiveSku.getSize());
+                vo.setColor(selectiveSku.getColor());
+                subOrders.add(vo);
             }
             itemOrder.addSubOrder(subOrders);
         }
