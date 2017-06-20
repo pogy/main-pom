@@ -6,7 +6,7 @@ import com.openJar.tools.PcOpenClient;
  * 星座sdk
  * Created by zhaohongbo on 17/3/1.
  */
-public class XzSdkClient{
+public class XzSdkClient {
     private String appkey;
     private String secret;
     private String type;
