@@ -31,6 +31,11 @@
     <script src="http://style.571xz.com/v2/order/js/cart.js"></script>
 </head>
 <body>
+
+
+<#assign text>{"isFxs":true}</#assign>
+<#assign moduledata0=text?eval />
+<#list [moduledata0] as $it>
 <div class="topbar">
     <div class="layout">
         <div class="fl">
@@ -47,8 +52,7 @@
                     <a href="${main_host!}" class="fcF40">四季星座网首页</a>
                 </li>
                 
-                
-                <#if !session_user_redis__ ||  !session_user_redis__.logshop > 
+                <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
@@ -82,7 +86,7 @@
                 </li>
                 </#if>
                 
-                <#if !session_user_redis__ || session_user_redis__.logshop?? > 
+                <#if !session_user_redis__ || $it.isGys?? || session_user_redis__.logshop?? > 
                 <li>
                     <div class="cnBox pr">
                         <a class="cgcom pr" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
@@ -145,12 +149,12 @@
 
 
 
+</#list>
+
 
 <script>
 var webSite = '${webSite!}';
 </script>
-
-
 
 
 
@@ -211,8 +215,8 @@ var webSite = '${webSite!}';
             
 
 <#assign text>{}</#assign>
-<#assign moduledata0=text?eval />
-<#list [moduledata0] as $it>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -275,8 +279,8 @@ var webSite = '${webSite!}';
                 
 
 <#assign text>{}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
 <label class="fmCheckbox
     
         <#if $it.checked??>
@@ -352,8 +356,8 @@ var webSite = '${webSite!}';
                 
 
 <#assign text>{"name":order.id,"text":"${(order.marketName!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}${(order.storeNum!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
-<#assign moduledata2=text?eval />
-<#list [moduledata2] as $it>
+<#assign moduledata3=text?eval />
+<#list [moduledata3] as $it>
 <label class="fmCheckbox
     
         <#if $it.checked??>
@@ -419,8 +423,8 @@ var webSite = '${webSite!}';
                 
 
 <#assign text>{"id":order.imQq}</#assign>
-<#assign moduledata3=text?eval />
-<#list [moduledata3] as $it>
+<#assign moduledata4=text?eval />
+<#list [moduledata4] as $it>
 <#if $it.id != "">
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
@@ -430,8 +434,8 @@ var webSite = '${webSite!}';
                 
 
 <#assign text>{"id":order.imWw}</#assign>
-<#assign moduledata4=text?eval />
-<#list [moduledata4] as $it>
+<#assign moduledata5=text?eval />
+<#list [moduledata5] as $it>
 <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
 
 </#list>
@@ -456,8 +460,8 @@ var webSite = '${webSite!}';
         
 
 <#assign text>{"name":childOrder.id,"selectParent":order.id}</#assign>
-<#assign moduledata5=text?eval />
-<#list [moduledata5] as $it>
+<#assign moduledata6=text?eval />
+<#list [moduledata6] as $it>
 <label class="fmCheckbox
     
         <#if $it.checked??>
@@ -538,13 +542,13 @@ var webSite = '${webSite!}';
                 <a href="${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsid!}" target="_blank">${childOrder.title!}</a>
                 </#if>
             </h4>
-            <p class="fwb">商家编码：${childOrder.goodsCode!}</p>
+            <p class="fwb">商品货号：${childOrder.goodsNo!}</p>
         </div>
     </li>
     <li class="goodsPrice tac fc3 yahei"><span>&yen;</span><span class="fwb">${childOrder.price!}</span></li>
     <li class="goodsAttr fc9 pr">
         <div class="skuBox" data-colorId="${childOrder.colorId!}" data-sizeId="${childOrder.sizeId!}">
-            颜色：${childOrder.colorText!}<br>尺码：${childOrder.sizeText!}
+            颜色：${childOrder.color!}<br>尺码：${childOrder.size!}
         </div>
         <#if childOrder.disabled == false>
         <i class="edit">修改</i>
@@ -554,7 +558,7 @@ var webSite = '${webSite!}';
                 <label class="fl">颜色：</label>
                 <ul class="fl">
                     <#list childOrder.colors as color>
-                    <li <#if childOrder.colorId == color.id>class="selected"</#if> data-id="${color.id!}">${color.text!}</li>
+                    <li <#if childOrder.color == color>class="selected"</#if> >${color!}</li>
                     </#list>
                 </ul>
             </div>
@@ -562,7 +566,7 @@ var webSite = '${webSite!}';
                 <label class="fl">尺码：</label>
                 <ul class="fl">
                     <#list childOrder.sizes as size>
-                    <li <#if childOrder.sizeId == size.id>class="selected"</#if> data-id="${size.id!}">${size.text!}</li>
+                    <li <#if childOrder.size == size>class="selected"</#if> >${size!}</li>
                     </#list>
                 </ul>
             </div>
@@ -570,8 +574,8 @@ var webSite = '${webSite!}';
                 
 
 <#assign text>{}</#assign>
-<#assign moduledata6=text?eval />
-<#list [moduledata6] as $it>
+<#assign moduledata7=text?eval />
+<#list [moduledata7] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -623,8 +627,8 @@ var webSite = '${webSite!}';
                 
 
 <#assign text>{}</#assign>
-<#assign moduledata7=text?eval />
-<#list [moduledata7] as $it>
+<#assign moduledata8=text?eval />
+<#list [moduledata8] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -684,8 +688,8 @@ var webSite = '${webSite!}';
             
 
 <#assign text>{"name":childOrder.id,"value":childOrder.num}</#assign>
-<#assign moduledata8=text?eval />
-<#list [moduledata8] as $it>
+<#assign moduledata9=text?eval />
+<#list [moduledata9] as $it>
 
 <span class="fmNumberInput">
     <i jbtn="reduce">-</i>
@@ -816,8 +820,8 @@ var webSite = '${webSite!}';
             
 
 <#assign text>{}</#assign>
-<#assign moduledata9=text?eval />
-<#list [moduledata9] as $it>
+<#assign moduledata10=text?eval />
+<#list [moduledata10] as $it>
 <label class="fmCheckbox
     
         <#if $it.checked??>
@@ -882,8 +886,8 @@ var webSite = '${webSite!}';
             
 
 <#assign text>{}</#assign>
-<#assign moduledata10=text?eval />
-<#list [moduledata10] as $it>
+<#assign moduledata11=text?eval />
+<#list [moduledata11] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -997,5 +1001,5 @@ var webSite = '${webSite!}';
     </div>
 </div>
 
-<!--省略end，让浏览器自动添加-->
+
 

@@ -31,6 +31,11 @@
     <script src="http://style.571xz.com/v2/order/js/paySuccess.js"></script>
 </head>
 <body>
+
+
+<#assign text>{"isFxs":true}</#assign>
+<#assign moduledata0=text?eval />
+<#list [moduledata0] as $it>
 <div class="topbar">
     <div class="layout">
         <div class="fl">
@@ -47,8 +52,7 @@
                     <a href="${main_host!}" class="fcF40">四季星座网首页</a>
                 </li>
                 
-                
-                <#if !session_user_redis__ ||  !session_user_redis__.logshop > 
+                <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
@@ -82,7 +86,7 @@
                 </li>
                 </#if>
                 
-                <#if !session_user_redis__ || session_user_redis__.logshop?? > 
+                <#if !session_user_redis__ || $it.isGys?? || session_user_redis__.logshop?? > 
                 <li>
                     <div class="cnBox pr">
                         <a class="cgcom pr" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
@@ -145,12 +149,12 @@
 
 
 
+</#list>
+
 
 <script>
 var webSite = '${webSite!}';
 </script>
-
-
 
 
 
@@ -216,8 +220,8 @@ var webSite = '${webSite!}';
         
 
 <#assign text>{}</#assign>
-<#assign moduledata0=text?eval />
-<#list [moduledata0] as $it>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
 
     <a href="#"
 
@@ -309,5 +313,5 @@ var webSite = '${webSite!}';
     </div>
 </div>
 
-<!--省略end，让浏览器自动添加-->
+
 
