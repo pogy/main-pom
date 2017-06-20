@@ -484,6 +484,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
 
                 List<Facet.Bucket> items = searchResponse.getResult().getFacet().get(0).getItems();
                 List<Long> cids = new ArrayList<>();
+                cids.add(-10086L);// In empty 会尴尬的
                 for (Facet.Bucket item : items) {
                     cids.add(((Facet.LongBucket) item).getValue());
                 }
