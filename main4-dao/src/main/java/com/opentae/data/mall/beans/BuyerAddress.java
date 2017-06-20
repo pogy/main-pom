@@ -47,6 +47,26 @@ public class BuyerAddress implements Serializable {
      */
 	private String zipCode;
 
+    /**
+     * 用户名
+     */
+	private String name;
+
+    /**
+     * 省名称冗余
+     */
+	private String provName;
+
+    /**
+     * 市名称冗余
+     */
+	private String cityName;
+
+    /**
+     * 区域名称冗余
+     */
+	private String townName;
+
 	public void setAddressId(Long addressId) {
 		this.addressId = addressId;
 	}
@@ -109,6 +129,38 @@ public class BuyerAddress implements Serializable {
 
 	public String getZipCode() {
 		return this.zipCode;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setProvName(String provName) {
+		this.provName = provName;
+	}
+
+	public String getProvName() {
+		return this.provName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	public String getCityName() {
+		return this.cityName;
+	}
+
+	public void setTownName(String townName) {
+		this.townName = townName;
+	}
+
+	public String getTownName() {
+		return this.townName;
 	}
 
 }
