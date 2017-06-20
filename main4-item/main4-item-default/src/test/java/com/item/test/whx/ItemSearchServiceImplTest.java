@@ -1,22 +1,7 @@
 package com.item.test.whx;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.aliyun.opensearch.OpenSearchClient;
-import com.aliyun.opensearch.SearcherClient;
-import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
-import com.aliyun.opensearch.sdk.generated.OpenSearch;
-import com.aliyun.opensearch.sdk.generated.commons.OpenSearchClientException;
-import com.aliyun.opensearch.sdk.generated.commons.OpenSearchException;
-import com.aliyun.opensearch.sdk.generated.search.Config;
-import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
-import com.aliyun.opensearch.sdk.generated.search.SearchParams;
-import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
-import com.aliyun.opensearch.search.SearchParamsBuilder;
 import com.item.test.BaseSpringTest;
 import com.shigu.main4.item.services.ItemSearchService;
-import com.shigu.main4.item.services.Search;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
