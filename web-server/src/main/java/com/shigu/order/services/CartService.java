@@ -157,7 +157,7 @@ public class CartService {
         submitVo.setUserId(userId);
         submitVo.setSubmitType(OrderSubmitType.CART);
         submitVo.setProducts(cartVOS);
-        redisIO.putTemp(uuid, submitVo, 10 * 3600);
+        redisIO.putTemp(uuid, submitVo, 600);
         return uuid;
     }
 }
