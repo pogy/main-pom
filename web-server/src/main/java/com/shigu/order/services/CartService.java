@@ -1,15 +1,19 @@
 package com.shigu.order.services;
 
+import com.opentae.data.mall.beans.ItemCart;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ItemCartExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.ItemCartMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
+import com.shigu.main4.order.services.impl.ItemOrderServiceImpl;
 import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.tools.RedisIO;
@@ -19,6 +23,8 @@ import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
 import com.shigu.order.vo.OrderSubmitVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +40,13 @@ import java.util.Map;
 @Service
 public class CartService {
 
+    private static final Logger logger = LoggerFactory.getLogger(CartService.class);
+
     @Autowired
     private ShiguShopMapper shiguShopMapper;
+
+    @Autowired
+    private ItemCartMapper itemCartMapper;
 
     @Autowired
     private ShowForCdnService showForCdnService;
@@ -106,7 +117,22 @@ public class CartService {
      * @param num 商品数量
      */
     public void modCartOrderNum(Long cid, Integer num) {
-
+        try {
+            if (num==null || num.intValue()<=0) {
+                throw new Main4Exception("数量异常");
+            }
+            if(cid==null) {
+                throw new Main4Exception("进货车编号缺失");
+            }
+        } catch (Main4Exception e) {
+            logger.error("更改进货车商品数量失败",e);
+            return;
+        }
+        ItemCartExample itemCartExample = new ItemCartExample();
+        itemCartExample.createCriteria().andCartIdEqualTo(cid);
+        ItemCart itemCart = new ItemCart();
+        itemCart.setNum(num);
+        itemCartMapper.updateByExampleSelective(itemCart,itemCartExample);
     }
 
     /**
