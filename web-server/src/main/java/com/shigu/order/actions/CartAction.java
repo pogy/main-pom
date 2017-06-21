@@ -54,4 +54,13 @@ public class CartAction {
         rsp.setData(cartService.submitOrders(cids, ps.getUserId()));
         return JSONObject.fromObject(rsp);
     }
+
+    @RequestMapping("modCartOrderNum")
+    @ResponseBody
+    public JSONObject modCartOrderNum(Long cid, Integer num, HttpSession session) throws JsonErrException {
+        ResponseBase rsp = new ResponseBase();
+        rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
+        cartService.modCartOrderNum(cid, num);
+        return JSONObject.fromObject(rsp);
+    }
 }
