@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class CartChildOrderVO {
 
+    private Long id;
+
     private Long goodsid;
 
     private String imgsrc;
@@ -29,6 +31,14 @@ public class CartChildOrderVO {
     private int num;
 
     private boolean disabled;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getGoodsid() {
         return goodsid;

@@ -73,11 +73,6 @@ public class ItemProductVO extends ProductVO implements Serializable{
     private Long weight;
 
     /**
-     * 数量
-     */
-    private Integer num;
-
-    /**
      * 当前被选sku
      */
     private ItemSkuVO selectiveSku;
@@ -186,14 +181,6 @@ public class ItemProductVO extends ProductVO implements Serializable{
 
     public void setShopId(Long shopId) {
         this.shopId = shopId;
-    }
-
-    public Integer getNum() {
-        return num;
-    }
-
-    public void setNum(Integer num) {
-        this.num = num;
     }
 
     public Long getWeight() {

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
  * Created by bugzy on 2017/6/20 0020.
  */
 @Controller
+@RequestMapping("order/")
 public class CartAction {
 
     @Autowired

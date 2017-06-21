@@ -10,6 +10,7 @@ import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.model.SubOrder;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.order.vo.SubOrderVO;
@@ -108,5 +109,36 @@ public class ItemOrderServiceImpl implements ItemOrderService{
     @Override
     public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId,List<PidNumBO> pids) {
         return null;
+    }
+
+    /**
+     * 查询买家有的地址
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<BuyerAddressVO> selBuyerAddress(Long userId) {
+        return null;
+    }
+
+    /**
+     * 保存地址
+     *
+     * @param buyerAddressVO
+     */
+    @Override
+    public void saveBuyerAddress(BuyerAddressVO buyerAddressVO) {
+
+    }
+
+    /**
+     * 删除地址
+     *
+     * @param addressId
+     */
+    @Override
+    public void rmBuyerAddress(Long addressId) {
+
     }
 }

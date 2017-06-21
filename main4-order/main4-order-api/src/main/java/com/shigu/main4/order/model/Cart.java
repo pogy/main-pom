@@ -2,7 +2,6 @@ package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.vo.ProductVO;
-import com.shigu.main4.order.vo.ProvinceVO;
 
 import java.util.List;
 
@@ -59,5 +58,5 @@ public interface Cart{
      * @param <T> 具体产品类型
      * @return 产品列表
      */
-    <T extends ProvinceVO> List<T> listProduct();
+    <T extends ProductVO> List<T> listProduct();
 }

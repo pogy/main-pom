@@ -7,7 +7,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
-import com.shigu.main4.order.vo.ItemProductVO;
+import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.vo.CartChildOrderVO;
@@ -42,7 +42,7 @@ public class CartService {
         CartPageVO vo = new CartPageVO();
         vo.setGoodsCount(itemCart.productNumbers());
 
-        Map<Long, List<ItemProductVO>> groupByShop = BeanMapper.groupBy(itemCart.listProduct(), "shopId", Long.class);
+        Map<Long, List<CartVO>> groupByShop = BeanMapper.groupBy(itemCart.listProduct(), "shopId", Long.class);
         if (!groupByShop.isEmpty()) {
             vo.setOrders(new ArrayList<CartOrderVO>(groupByShop.size()));
 
@@ -51,7 +51,7 @@ public class CartService {
             Map<Long, ShiguShop> shopMap =
                     BeanMapper.list2Map(shiguShopMapper.selectByExample(shiguShopExample), "shopId", Long.class);
 
-            for (Map.Entry<Long, List<ItemProductVO>> entry : groupByShop.entrySet()) {
+            for (Map.Entry<Long, List<CartVO>> entry : groupByShop.entrySet()) {
                 CartOrderVO orderVO = new CartOrderVO();
                 vo.getOrders().add(orderVO);
 
@@ -62,11 +62,12 @@ public class CartService {
                 orderVO.setWebSite(shiguShop.getWebSite());
                 orderVO.setStoreNum(shiguShop.getShopNum());
                 orderVO.setMarketName(shiguShop.getParentMarketName());
-                List<ItemProductVO> productVOS = entry.getValue();
+                List<CartVO> productVOS = entry.getValue();
                 orderVO.setChildOrders(new ArrayList<CartChildOrderVO>(productVOS.size()));
-                for (ItemProductVO productVO : productVOS) {
+                for (CartVO productVO : productVOS) {
                     CartChildOrderVO childOrderVO = new CartChildOrderVO();
                     orderVO.getChildOrders().add(childOrderVO);
+                    childOrderVO.setId(productVO.getCartId());
                     childOrderVO.setGoodsid(productVO.getGoodsId());
                     childOrderVO.setImgsrc(productVO.getPicUrl());
                     childOrderVO.setTitle(productVO.getTitle());
@@ -87,5 +88,48 @@ public class CartService {
             }
         }
         return vo;
+    }
+
+    /**
+     * 修改进货车内产品数量
+     * @param cid 进货车产品ID cartId
+     * @param num 商品数量
+     */
+    public void modCartOrderNum(Long cid, Integer num) {
+
+    }
+
+    /**
+     * 修改进货车产品sku
+     * @param cid 产品ID cartId
+     * @param color 颜色
+     * @param size 尺码
+     */
+    public void editChildOrderSKu(Long cid, String color, String size) {
+
+    }
+
+    /**
+     * 删除进货车一件产品
+     * @param cid cartId
+     */
+    public void removeChildOrder(Long cid) {
+
+    }
+
+    /**
+     * 批量删除购物车产品
+     * @param cids 产品ID列表
+     */
+    public void removeAllOrders(List<Long> cids) {
+
+    }
+
+    /**
+     * 多选提交订单
+     * @param cids 产品ID列表
+     */
+    public void submitOrders(List<Long> cids){
+
     }
 }
