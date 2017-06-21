@@ -61,6 +61,9 @@ public class ItemProductImpl implements ItemProduct{
 
     @PostConstruct
     private void initProduct() {
+        if (pid != null && skuId != null) {
+            return;
+        }
         ItemProductInfo productInfo = itemProductMapper.selProduct(goodsId, color, size);
         if (productInfo == null) {
             productInfo = createProduct(goodsId, color, size);

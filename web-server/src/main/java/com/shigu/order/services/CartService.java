@@ -1,22 +1,29 @@
 package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.ItemCartExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
-import com.shigu.main4.order.vo.ItemProductVO;
+import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.order.OrderSubmitType;
 import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
+import com.shigu.order.vo.OrderSubmitVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +39,9 @@ public class CartService {
 
     @Autowired
     private ShowForCdnService showForCdnService;
+
+    @Autowired
+    private RedisIO redisIO;
     /**
      * 进货车页面
      * @param userId 用户ID
@@ -42,7 +52,7 @@ public class CartService {
         CartPageVO vo = new CartPageVO();
         vo.setGoodsCount(itemCart.productNumbers());
 
-        Map<Long, List<ItemProductVO>> groupByShop = BeanMapper.groupBy(itemCart.listProduct(), "shopId", Long.class);
+        Map<Long, List<CartVO>> groupByShop = BeanMapper.groupBy(itemCart.listProduct(), "shopId", Long.class);
         if (!groupByShop.isEmpty()) {
             vo.setOrders(new ArrayList<CartOrderVO>(groupByShop.size()));
 
@@ -51,7 +61,7 @@ public class CartService {
             Map<Long, ShiguShop> shopMap =
                     BeanMapper.list2Map(shiguShopMapper.selectByExample(shiguShopExample), "shopId", Long.class);
 
-            for (Map.Entry<Long, List<ItemProductVO>> entry : groupByShop.entrySet()) {
+            for (Map.Entry<Long, List<CartVO>> entry : groupByShop.entrySet()) {
                 CartOrderVO orderVO = new CartOrderVO();
                 vo.getOrders().add(orderVO);
 
@@ -62,11 +72,12 @@ public class CartService {
                 orderVO.setWebSite(shiguShop.getWebSite());
                 orderVO.setStoreNum(shiguShop.getShopNum());
                 orderVO.setMarketName(shiguShop.getParentMarketName());
-                List<ItemProductVO> productVOS = entry.getValue();
+                List<CartVO> productVOS = entry.getValue();
                 orderVO.setChildOrders(new ArrayList<CartChildOrderVO>(productVOS.size()));
-                for (ItemProductVO productVO : productVOS) {
+                for (CartVO productVO : productVOS) {
                     CartChildOrderVO childOrderVO = new CartChildOrderVO();
                     orderVO.getChildOrders().add(childOrderVO);
+                    childOrderVO.setId(productVO.getCartId());
                     childOrderVO.setGoodsid(productVO.getGoodsId());
                     childOrderVO.setImgsrc(productVO.getPicUrl());
                     childOrderVO.setTitle(productVO.getTitle());
@@ -87,5 +98,66 @@ public class CartService {
             }
         }
         return vo;
+    }
+
+    /**
+     * 修改进货车内产品数量
+     * @param cid 进货车产品ID cartId
+     * @param num 商品数量
+     */
+    public void modCartOrderNum(Long cid, Integer num) {
+
+    }
+
+    /**
+     * 修改进货车产品sku
+     * @param cid 产品ID cartId
+     * @param color 颜色
+     * @param size 尺码
+     */
+    public void editChildOrderSKu(Long cid, String color, String size) {
+
+    }
+
+    /**
+     * 删除进货车一件产品
+     * @param cid cartId
+     */
+    public void removeChildOrder(Long cid) {
+
+    }
+
+    /**
+     * 批量删除购物车产品
+     * @param cids 产品ID列表
+     */
+    public void removeAllOrders(List<Long> cids) {
+
+    }
+
+    /**
+     * 多选提交订单
+     * @param cids 产品ID列表
+     */
+    public String submitOrders(List<Long> cids, Long userId) throws JsonErrException {
+        if (cids.isEmpty()) {
+            throw new JsonErrException("请选择商品");
+        }
+        List<CartVO> cartVOS = SpringBeanFactory.getBean(ItemCartImpl.class, userId).listProduct();
+        for (Iterator<CartVO> iterator = cartVOS.iterator(); iterator.hasNext(); ) {
+            CartVO cartVO = iterator.next();
+            if (!cids.contains(cartVO.getCartId())) {
+                iterator.remove();
+            }
+        }
+
+        String uuid = UUIDGenerator.getUUID();
+
+        OrderSubmitVo submitVo = new OrderSubmitVo();
+        submitVo.setUserId(userId);
+        submitVo.setSubmitType(OrderSubmitType.CART);
+        submitVo.setProducts(cartVOS);
+        redisIO.putTemp(uuid, submitVo, 600);
+        return uuid;
     }
 }
