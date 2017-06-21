@@ -23,6 +23,7 @@
 		<property name="filterChainDefinitions">
 			<value>
 				/member/** = member
+				/order/** = member
 				/ruzhu.htm = member
 				/jsonScAddGoods.* = member
 				/jsonScAdd.* = member
