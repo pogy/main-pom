@@ -116,17 +116,12 @@ public class CartService {
      * @param cid 进货车产品ID cartId
      * @param num 商品数量
      */
-    public void modCartOrderNum(Long cid, Integer num) {
-        try {
-            if (num==null || num.intValue()<=0) {
-                throw new Main4Exception("数量异常");
-            }
-            if(cid==null) {
-                throw new Main4Exception("进货车编号缺失");
-            }
-        } catch (Main4Exception e) {
-            logger.error("更改进货车商品数量失败",e);
-            return;
+    public void modCartOrderNum(Long cid, Integer num) throws JsonErrException {
+        if (num==null || num<=0) {
+            throw new JsonErrException("数量异常");
+        }
+        if(cid==null) {
+            throw new JsonErrException("进货车商品编号缺失");
         }
         ItemCartExample itemCartExample = new ItemCartExample();
         itemCartExample.createCriteria().andCartIdEqualTo(cid);

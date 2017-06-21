@@ -57,7 +57,7 @@ public class CartAction {
 
     @RequestMapping("modCartOrderNum")
     @ResponseBody
-    public JSONObject modCartOrderNum(Long cid, Integer num, HttpSession session) {
+    public JSONObject modCartOrderNum(Long cid, Integer num, HttpSession session) throws JsonErrException {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
         cartService.modCartOrderNum(cid, num);
