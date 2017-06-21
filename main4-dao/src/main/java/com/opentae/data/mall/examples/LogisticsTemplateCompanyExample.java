@@ -233,274 +233,274 @@ public class LogisticsTemplateCompanyExample implements SgExample{
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdIsNull() {
-            this.addCriterion("ruleId is null");
+            this.addCriterion("rule_id is null");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdIsNotNull() {
-            this.addCriterion("ruleId is not null");
+            this.addCriterion("rule_id is not null");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdEqualTo(Long value) {
-            this.addCriterion("ruleId =", value, "rule_id");
+            this.addCriterion("rule_id =", value, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdNotEqualTo(Long value) {
-            this.addCriterion("ruleId <>", value, "rule_id");
+            this.addCriterion("rule_id <>", value, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdGreaterThan(Long value) {
-            this.addCriterion("ruleId >", value, "rule_id");
+            this.addCriterion("rule_id >", value, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("ruleId >=", value, "rule_id");
+            this.addCriterion("rule_id >=", value, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdLessThan(Long value) {
-            this.addCriterion("ruleId <", value, "rule_id");
+            this.addCriterion("rule_id <", value, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("ruleId <=", value, "rule_id");
+            this.addCriterion("rule_id <=", value, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdLike(String value) {
-            this.addCriterion("ruleId like", value, "rule_id");
+            this.addCriterion("rule_id like", value, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdNotLike(String value) {
-            this.addCriterion("ruleId not like", value, "rule_id");
+            this.addCriterion("rule_id not like", value, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }        public LogisticsTemplateCompanyExample.Criteria andRuleIdIn(List<Long> values) {
-            this.addCriterion("ruleId in", values, "rule_id");
+            this.addCriterion("rule_id in", values, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdNotIn(List<Long> values) {
-            this.addCriterion("ruleId not in", values, "rule_id");
+            this.addCriterion("rule_id not in", values, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdBetween(Long value1, Long value2) {
-            this.addCriterion("ruleId between", value1, value2, "rule_id");
+            this.addCriterion("rule_id between", value1, value2, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andRuleIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("ruleId not between", value1, value2, "rule_id");
+            this.addCriterion("rule_id not between", value1, value2, "ruleId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdIsNull() {
-            this.addCriterion("companyId is null");
+            this.addCriterion("company_id is null");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdIsNotNull() {
-            this.addCriterion("companyId is not null");
+            this.addCriterion("company_id is not null");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdEqualTo(Long value) {
-            this.addCriterion("companyId =", value, "company_id");
+            this.addCriterion("company_id =", value, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdNotEqualTo(Long value) {
-            this.addCriterion("companyId <>", value, "company_id");
+            this.addCriterion("company_id <>", value, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdGreaterThan(Long value) {
-            this.addCriterion("companyId >", value, "company_id");
+            this.addCriterion("company_id >", value, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("companyId >=", value, "company_id");
+            this.addCriterion("company_id >=", value, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdLessThan(Long value) {
-            this.addCriterion("companyId <", value, "company_id");
+            this.addCriterion("company_id <", value, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("companyId <=", value, "company_id");
+            this.addCriterion("company_id <=", value, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdLike(String value) {
-            this.addCriterion("companyId like", value, "company_id");
+            this.addCriterion("company_id like", value, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdNotLike(String value) {
-            this.addCriterion("companyId not like", value, "company_id");
+            this.addCriterion("company_id not like", value, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }        public LogisticsTemplateCompanyExample.Criteria andCompanyIdIn(List<Long> values) {
-            this.addCriterion("companyId in", values, "company_id");
+            this.addCriterion("company_id in", values, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdNotIn(List<Long> values) {
-            this.addCriterion("companyId not in", values, "company_id");
+            this.addCriterion("company_id not in", values, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdBetween(Long value1, Long value2) {
-            this.addCriterion("companyId between", value1, value2, "company_id");
+            this.addCriterion("company_id between", value1, value2, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andCompanyIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("companyId not between", value1, value2, "company_id");
+            this.addCriterion("company_id not between", value1, value2, "companyId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdIsNull() {
-            this.addCriterion("tcId is null");
+            this.addCriterion("tc_id is null");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdIsNotNull() {
-            this.addCriterion("tcId is not null");
+            this.addCriterion("tc_id is not null");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdEqualTo(Long value) {
-            this.addCriterion("tcId =", value, "tc_id");
+            this.addCriterion("tc_id =", value, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdNotEqualTo(Long value) {
-            this.addCriterion("tcId <>", value, "tc_id");
+            this.addCriterion("tc_id <>", value, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdGreaterThan(Long value) {
-            this.addCriterion("tcId >", value, "tc_id");
+            this.addCriterion("tc_id >", value, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("tcId >=", value, "tc_id");
+            this.addCriterion("tc_id >=", value, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdLessThan(Long value) {
-            this.addCriterion("tcId <", value, "tc_id");
+            this.addCriterion("tc_id <", value, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("tcId <=", value, "tc_id");
+            this.addCriterion("tc_id <=", value, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdLike(String value) {
-            this.addCriterion("tcId like", value, "tc_id");
+            this.addCriterion("tc_id like", value, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdNotLike(String value) {
-            this.addCriterion("tcId not like", value, "tc_id");
+            this.addCriterion("tc_id not like", value, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }        public LogisticsTemplateCompanyExample.Criteria andTcIdIn(List<Long> values) {
-            this.addCriterion("tcId in", values, "tc_id");
+            this.addCriterion("tc_id in", values, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdNotIn(List<Long> values) {
-            this.addCriterion("tcId not in", values, "tc_id");
+            this.addCriterion("tc_id not in", values, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdBetween(Long value1, Long value2) {
-            this.addCriterion("tcId between", value1, value2, "tc_id");
+            this.addCriterion("tc_id between", value1, value2, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTcIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("tcId not between", value1, value2, "tc_id");
+            this.addCriterion("tc_id not between", value1, value2, "tcId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdIsNull() {
-            this.addCriterion("templateId is null");
+            this.addCriterion("template_id is null");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdIsNotNull() {
-            this.addCriterion("templateId is not null");
+            this.addCriterion("template_id is not null");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdEqualTo(Long value) {
-            this.addCriterion("templateId =", value, "template_id");
+            this.addCriterion("template_id =", value, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdNotEqualTo(Long value) {
-            this.addCriterion("templateId <>", value, "template_id");
+            this.addCriterion("template_id <>", value, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdGreaterThan(Long value) {
-            this.addCriterion("templateId >", value, "template_id");
+            this.addCriterion("template_id >", value, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("templateId >=", value, "template_id");
+            this.addCriterion("template_id >=", value, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdLessThan(Long value) {
-            this.addCriterion("templateId <", value, "template_id");
+            this.addCriterion("template_id <", value, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("templateId <=", value, "template_id");
+            this.addCriterion("template_id <=", value, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdLike(String value) {
-            this.addCriterion("templateId like", value, "template_id");
+            this.addCriterion("template_id like", value, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdNotLike(String value) {
-            this.addCriterion("templateId not like", value, "template_id");
+            this.addCriterion("template_id not like", value, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }        public LogisticsTemplateCompanyExample.Criteria andTemplateIdIn(List<Long> values) {
-            this.addCriterion("templateId in", values, "template_id");
+            this.addCriterion("template_id in", values, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdNotIn(List<Long> values) {
-            this.addCriterion("templateId not in", values, "template_id");
+            this.addCriterion("template_id not in", values, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdBetween(Long value1, Long value2) {
-            this.addCriterion("templateId between", value1, value2, "template_id");
+            this.addCriterion("template_id between", value1, value2, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
 
         public LogisticsTemplateCompanyExample.Criteria andTemplateIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("templateId not between", value1, value2, "template_id");
+            this.addCriterion("template_id not between", value1, value2, "templateId");
             return (LogisticsTemplateCompanyExample.Criteria)this;
         }
     }

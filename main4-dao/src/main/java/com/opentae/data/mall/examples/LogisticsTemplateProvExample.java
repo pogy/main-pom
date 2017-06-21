@@ -233,274 +233,274 @@ public class LogisticsTemplateProvExample implements SgExample{
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdIsNull() {
-            this.addCriterion("ruleId is null");
+            this.addCriterion("rule_id is null");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdIsNotNull() {
-            this.addCriterion("ruleId is not null");
+            this.addCriterion("rule_id is not null");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdEqualTo(Long value) {
-            this.addCriterion("ruleId =", value, "rule_id");
+            this.addCriterion("rule_id =", value, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdNotEqualTo(Long value) {
-            this.addCriterion("ruleId <>", value, "rule_id");
+            this.addCriterion("rule_id <>", value, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdGreaterThan(Long value) {
-            this.addCriterion("ruleId >", value, "rule_id");
+            this.addCriterion("rule_id >", value, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("ruleId >=", value, "rule_id");
+            this.addCriterion("rule_id >=", value, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdLessThan(Long value) {
-            this.addCriterion("ruleId <", value, "rule_id");
+            this.addCriterion("rule_id <", value, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("ruleId <=", value, "rule_id");
+            this.addCriterion("rule_id <=", value, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdLike(String value) {
-            this.addCriterion("ruleId like", value, "rule_id");
+            this.addCriterion("rule_id like", value, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdNotLike(String value) {
-            this.addCriterion("ruleId not like", value, "rule_id");
+            this.addCriterion("rule_id not like", value, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }        public LogisticsTemplateProvExample.Criteria andRuleIdIn(List<Long> values) {
-            this.addCriterion("ruleId in", values, "rule_id");
+            this.addCriterion("rule_id in", values, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdNotIn(List<Long> values) {
-            this.addCriterion("ruleId not in", values, "rule_id");
+            this.addCriterion("rule_id not in", values, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdBetween(Long value1, Long value2) {
-            this.addCriterion("ruleId between", value1, value2, "rule_id");
+            this.addCriterion("rule_id between", value1, value2, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andRuleIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("ruleId not between", value1, value2, "rule_id");
+            this.addCriterion("rule_id not between", value1, value2, "ruleId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdIsNull() {
-            this.addCriterion("provId is null");
+            this.addCriterion("prov_id is null");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdIsNotNull() {
-            this.addCriterion("provId is not null");
+            this.addCriterion("prov_id is not null");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdEqualTo(Long value) {
-            this.addCriterion("provId =", value, "prov_id");
+            this.addCriterion("prov_id =", value, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdNotEqualTo(Long value) {
-            this.addCriterion("provId <>", value, "prov_id");
+            this.addCriterion("prov_id <>", value, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdGreaterThan(Long value) {
-            this.addCriterion("provId >", value, "prov_id");
+            this.addCriterion("prov_id >", value, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("provId >=", value, "prov_id");
+            this.addCriterion("prov_id >=", value, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdLessThan(Long value) {
-            this.addCriterion("provId <", value, "prov_id");
+            this.addCriterion("prov_id <", value, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("provId <=", value, "prov_id");
+            this.addCriterion("prov_id <=", value, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdLike(String value) {
-            this.addCriterion("provId like", value, "prov_id");
+            this.addCriterion("prov_id like", value, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdNotLike(String value) {
-            this.addCriterion("provId not like", value, "prov_id");
+            this.addCriterion("prov_id not like", value, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }        public LogisticsTemplateProvExample.Criteria andProvIdIn(List<Long> values) {
-            this.addCriterion("provId in", values, "prov_id");
+            this.addCriterion("prov_id in", values, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdNotIn(List<Long> values) {
-            this.addCriterion("provId not in", values, "prov_id");
+            this.addCriterion("prov_id not in", values, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdBetween(Long value1, Long value2) {
-            this.addCriterion("provId between", value1, value2, "prov_id");
+            this.addCriterion("prov_id between", value1, value2, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andProvIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("provId not between", value1, value2, "prov_id");
+            this.addCriterion("prov_id not between", value1, value2, "provId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdIsNull() {
-            this.addCriterion("tpId is null");
+            this.addCriterion("tp_id is null");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdIsNotNull() {
-            this.addCriterion("tpId is not null");
+            this.addCriterion("tp_id is not null");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdEqualTo(Long value) {
-            this.addCriterion("tpId =", value, "tp_id");
+            this.addCriterion("tp_id =", value, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdNotEqualTo(Long value) {
-            this.addCriterion("tpId <>", value, "tp_id");
+            this.addCriterion("tp_id <>", value, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdGreaterThan(Long value) {
-            this.addCriterion("tpId >", value, "tp_id");
+            this.addCriterion("tp_id >", value, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("tpId >=", value, "tp_id");
+            this.addCriterion("tp_id >=", value, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdLessThan(Long value) {
-            this.addCriterion("tpId <", value, "tp_id");
+            this.addCriterion("tp_id <", value, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("tpId <=", value, "tp_id");
+            this.addCriterion("tp_id <=", value, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdLike(String value) {
-            this.addCriterion("tpId like", value, "tp_id");
+            this.addCriterion("tp_id like", value, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdNotLike(String value) {
-            this.addCriterion("tpId not like", value, "tp_id");
+            this.addCriterion("tp_id not like", value, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }        public LogisticsTemplateProvExample.Criteria andTpIdIn(List<Long> values) {
-            this.addCriterion("tpId in", values, "tp_id");
+            this.addCriterion("tp_id in", values, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdNotIn(List<Long> values) {
-            this.addCriterion("tpId not in", values, "tp_id");
+            this.addCriterion("tp_id not in", values, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdBetween(Long value1, Long value2) {
-            this.addCriterion("tpId between", value1, value2, "tp_id");
+            this.addCriterion("tp_id between", value1, value2, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTpIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("tpId not between", value1, value2, "tp_id");
+            this.addCriterion("tp_id not between", value1, value2, "tpId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdIsNull() {
-            this.addCriterion("templateId is null");
+            this.addCriterion("template_id is null");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdIsNotNull() {
-            this.addCriterion("templateId is not null");
+            this.addCriterion("template_id is not null");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdEqualTo(Long value) {
-            this.addCriterion("templateId =", value, "template_id");
+            this.addCriterion("template_id =", value, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdNotEqualTo(Long value) {
-            this.addCriterion("templateId <>", value, "template_id");
+            this.addCriterion("template_id <>", value, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdGreaterThan(Long value) {
-            this.addCriterion("templateId >", value, "template_id");
+            this.addCriterion("template_id >", value, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("templateId >=", value, "template_id");
+            this.addCriterion("template_id >=", value, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdLessThan(Long value) {
-            this.addCriterion("templateId <", value, "template_id");
+            this.addCriterion("template_id <", value, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("templateId <=", value, "template_id");
+            this.addCriterion("template_id <=", value, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdLike(String value) {
-            this.addCriterion("templateId like", value, "template_id");
+            this.addCriterion("template_id like", value, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdNotLike(String value) {
-            this.addCriterion("templateId not like", value, "template_id");
+            this.addCriterion("template_id not like", value, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }        public LogisticsTemplateProvExample.Criteria andTemplateIdIn(List<Long> values) {
-            this.addCriterion("templateId in", values, "template_id");
+            this.addCriterion("template_id in", values, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdNotIn(List<Long> values) {
-            this.addCriterion("templateId not in", values, "template_id");
+            this.addCriterion("template_id not in", values, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdBetween(Long value1, Long value2) {
-            this.addCriterion("templateId between", value1, value2, "template_id");
+            this.addCriterion("template_id between", value1, value2, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
 
         public LogisticsTemplateProvExample.Criteria andTemplateIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("templateId not between", value1, value2, "template_id");
+            this.addCriterion("template_id not between", value1, value2, "templateId");
             return (LogisticsTemplateProvExample.Criteria)this;
         }
     }

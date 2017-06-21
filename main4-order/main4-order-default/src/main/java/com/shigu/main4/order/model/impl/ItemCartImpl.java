@@ -112,7 +112,7 @@ public class ItemCartImpl implements Cart {
     public int productNumbers() {
         ItemCartExample itemCartExample = new ItemCartExample();
         itemCartExample.createCriteria().andUserIdEqualTo(userId);
-        List<Integer> nums = BeanMapper.getFieldList(itemCartMapper.selectFieldsByExample(itemCartExample,"user_id,num"),"num",Integer.class);
+        List<Integer> nums = BeanMapper.getFieldList(itemCartMapper.selectFieldsByExample(itemCartExample,"num"),"num",Integer.class);
         int sum = 0;
         for (Integer num: nums) {
             sum += num;

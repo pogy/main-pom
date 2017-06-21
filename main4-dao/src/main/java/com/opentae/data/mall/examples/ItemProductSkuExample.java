@@ -369,70 +369,70 @@ public class ItemProductSkuExample implements SgExample{
         }
 
         public ItemProductSkuExample.Criteria andSkuIdIsNull() {
-            this.addCriterion("skuId is null");
+            this.addCriterion("sku_id is null");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdIsNotNull() {
-            this.addCriterion("skuId is not null");
+            this.addCriterion("sku_id is not null");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdEqualTo(Long value) {
-            this.addCriterion("skuId =", value, "sku_id");
+            this.addCriterion("sku_id =", value, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdNotEqualTo(Long value) {
-            this.addCriterion("skuId <>", value, "sku_id");
+            this.addCriterion("sku_id <>", value, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdGreaterThan(Long value) {
-            this.addCriterion("skuId >", value, "sku_id");
+            this.addCriterion("sku_id >", value, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("skuId >=", value, "sku_id");
+            this.addCriterion("sku_id >=", value, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdLessThan(Long value) {
-            this.addCriterion("skuId <", value, "sku_id");
+            this.addCriterion("sku_id <", value, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("skuId <=", value, "sku_id");
+            this.addCriterion("sku_id <=", value, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdLike(String value) {
-            this.addCriterion("skuId like", value, "sku_id");
+            this.addCriterion("sku_id like", value, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdNotLike(String value) {
-            this.addCriterion("skuId not like", value, "sku_id");
+            this.addCriterion("sku_id not like", value, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }        public ItemProductSkuExample.Criteria andSkuIdIn(List<Long> values) {
-            this.addCriterion("skuId in", values, "sku_id");
+            this.addCriterion("sku_id in", values, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdNotIn(List<Long> values) {
-            this.addCriterion("skuId not in", values, "sku_id");
+            this.addCriterion("sku_id not in", values, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdBetween(Long value1, Long value2) {
-            this.addCriterion("skuId between", value1, value2, "sku_id");
+            this.addCriterion("sku_id between", value1, value2, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
         public ItemProductSkuExample.Criteria andSkuIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("skuId not between", value1, value2, "sku_id");
+            this.addCriterion("sku_id not between", value1, value2, "skuId");
             return (ItemProductSkuExample.Criteria)this;
         }
 
