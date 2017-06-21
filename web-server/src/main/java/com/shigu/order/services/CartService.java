@@ -1,22 +1,29 @@
 package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.ItemCartExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.order.OrderSubmitType;
 import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
+import com.shigu.order.vo.OrderSubmitVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +39,9 @@ public class CartService {
 
     @Autowired
     private ShowForCdnService showForCdnService;
+
+    @Autowired
+    private RedisIO redisIO;
     /**
      * 进货车页面
      * @param userId 用户ID
@@ -129,7 +139,25 @@ public class CartService {
      * 多选提交订单
      * @param cids 产品ID列表
      */
-    public void submitOrders(List<Long> cids){
+    public String submitOrders(List<Long> cids, Long userId) throws JsonErrException {
+        if (cids.isEmpty()) {
+            throw new JsonErrException("请选择商品");
+        }
+        List<CartVO> cartVOS = SpringBeanFactory.getBean(ItemCartImpl.class, userId).listProduct();
+        for (Iterator<CartVO> iterator = cartVOS.iterator(); iterator.hasNext(); ) {
+            CartVO cartVO = iterator.next();
+            if (!cids.contains(cartVO.getCartId())) {
+                iterator.remove();
+            }
+        }
 
+        String uuid = UUIDGenerator.getUUID();
+
+        OrderSubmitVo submitVo = new OrderSubmitVo();
+        submitVo.setUserId(userId);
+        submitVo.setSubmitType(OrderSubmitType.CART);
+        submitVo.setProducts(cartVOS);
+        redisIO.putTemp(uuid, submitVo, 10 * 3600);
+        return uuid;
     }
 }
