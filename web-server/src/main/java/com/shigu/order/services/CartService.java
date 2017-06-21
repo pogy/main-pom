@@ -4,9 +4,13 @@ import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.item.services.ShowForCdnService;
+import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.vo.ItemProductVO;
+import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,8 @@ public class CartService {
     @Autowired
     private ShiguShopMapper shiguShopMapper;
 
+    @Autowired
+    private ShowForCdnService showForCdnService;
     /**
      * 进货车页面
      * @param userId 用户ID
@@ -44,19 +50,40 @@ public class CartService {
             shiguShopExample.createCriteria().andShopIdIn(new ArrayList<>(groupByShop.keySet()));
             Map<Long, ShiguShop> shopMap =
                     BeanMapper.list2Map(shiguShopMapper.selectByExample(shiguShopExample), "shopId", Long.class);
-            for (Map.Entry<Long, List<ItemProductVO>> entry : groupByShop.entrySet()) {
-                ShiguShop shiguShop = shopMap.get(entry.getKey());
 
-                List<ItemProductVO> value = entry.getValue();
-                ItemProductVO itemProductVO = value.get(0);
+            for (Map.Entry<Long, List<ItemProductVO>> entry : groupByShop.entrySet()) {
                 CartOrderVO orderVO = new CartOrderVO();
                 vo.getOrders().add(orderVO);
-                orderVO.setId(itemProductVO.getPid());
+
+                ShiguShop shiguShop = shopMap.get(entry.getKey());
+                orderVO.setId(entry.getKey());
                 orderVO.setImQq(shiguShop.getImQq());
                 orderVO.setImWw(shiguShop.getImAliww());
                 orderVO.setWebSite(shiguShop.getWebSite());
                 orderVO.setStoreNum(shiguShop.getShopNum());
                 orderVO.setMarketName(shiguShop.getParentMarketName());
+                List<ItemProductVO> productVOS = entry.getValue();
+                orderVO.setChildOrders(new ArrayList<CartChildOrderVO>(productVOS.size()));
+                for (ItemProductVO productVO : productVOS) {
+                    CartChildOrderVO childOrderVO = new CartChildOrderVO();
+                    orderVO.getChildOrders().add(childOrderVO);
+                    childOrderVO.setGoodsid(productVO.getGoodsId());
+                    childOrderVO.setImgsrc(productVO.getPicUrl());
+                    childOrderVO.setTitle(productVO.getTitle());
+                    childOrderVO.setPrice(productVO.getPrice().doubleValue() / 100);
+                    childOrderVO.setNum(productVO.getNum());
+                    ItemSkuVO selectiveSku = productVO.getSelectiveSku();
+                    childOrderVO.setColor(selectiveSku.getColor());
+                    childOrderVO.setSize(selectiveSku.getSize());
+                    CdnItem cdnItem = showForCdnService.selItemById(productVO.getGoodsId(), productVO.getWebSite());
+                    if (cdnItem == null) {
+                        childOrderVO.setDisabled(true);
+                    } else {
+                        childOrderVO.setGoodsNo(cdnItem.getHuohao());
+                        childOrderVO.setColors(BeanMapper.getFieldList(cdnItem.getColors(), "value", String.class));
+                        childOrderVO.setSizes(BeanMapper.getFieldList(cdnItem.getSizes(), "value", String.class));
+                    }
+                }
             }
         }
         return vo;

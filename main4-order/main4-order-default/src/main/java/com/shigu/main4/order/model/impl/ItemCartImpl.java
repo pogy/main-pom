@@ -120,7 +120,9 @@ public class ItemCartImpl implements Cart {
         ItemCart cart = new ItemCart();
         cart.setUserId(userId);
         for (ItemCart itemCart : itemCartMapper.select(cart)) {
-            vos.add(SpringBeanFactory.getBean(ItemProductImpl.class, itemCart.getPid(), itemCart.getSkuId()).info());
+            ItemProductVO info = SpringBeanFactory.getBean(ItemProductImpl.class, itemCart.getPid(), itemCart.getSkuId()).info();
+            info.setNum(itemCart.getNum());
+            vos.add(info);
         }
         return vos;
     }
