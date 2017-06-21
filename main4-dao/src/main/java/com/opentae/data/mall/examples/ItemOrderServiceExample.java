@@ -301,70 +301,70 @@ public class ItemOrderServiceExample implements SgExample{
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdIsNull() {
-            this.addCriterion("serviceId is null");
+            this.addCriterion("service_id is null");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdIsNotNull() {
-            this.addCriterion("serviceId is not null");
+            this.addCriterion("service_id is not null");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdEqualTo(Long value) {
-            this.addCriterion("serviceId =", value, "service_id");
+            this.addCriterion("service_id =", value, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdNotEqualTo(Long value) {
-            this.addCriterion("serviceId <>", value, "service_id");
+            this.addCriterion("service_id <>", value, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdGreaterThan(Long value) {
-            this.addCriterion("serviceId >", value, "service_id");
+            this.addCriterion("service_id >", value, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("serviceId >=", value, "service_id");
+            this.addCriterion("service_id >=", value, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdLessThan(Long value) {
-            this.addCriterion("serviceId <", value, "service_id");
+            this.addCriterion("service_id <", value, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("serviceId <=", value, "service_id");
+            this.addCriterion("service_id <=", value, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdLike(String value) {
-            this.addCriterion("serviceId like", value, "service_id");
+            this.addCriterion("service_id like", value, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdNotLike(String value) {
-            this.addCriterion("serviceId not like", value, "service_id");
+            this.addCriterion("service_id not like", value, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }        public ItemOrderServiceExample.Criteria andServiceIdIn(List<Long> values) {
-            this.addCriterion("serviceId in", values, "service_id");
+            this.addCriterion("service_id in", values, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdNotIn(List<Long> values) {
-            this.addCriterion("serviceId not in", values, "service_id");
+            this.addCriterion("service_id not in", values, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdBetween(Long value1, Long value2) {
-            this.addCriterion("serviceId between", value1, value2, "service_id");
+            this.addCriterion("service_id between", value1, value2, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andServiceIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("serviceId not between", value1, value2, "service_id");
+            this.addCriterion("service_id not between", value1, value2, "serviceId");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
@@ -437,70 +437,70 @@ public class ItemOrderServiceExample implements SgExample{
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyIsNull() {
-            this.addCriterion("refundMoney is null");
+            this.addCriterion("refund_money is null");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyIsNotNull() {
-            this.addCriterion("refundMoney is not null");
+            this.addCriterion("refund_money is not null");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyEqualTo(Long value) {
-            this.addCriterion("refundMoney =", value, "refund_money");
+            this.addCriterion("refund_money =", value, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyNotEqualTo(Long value) {
-            this.addCriterion("refundMoney <>", value, "refund_money");
+            this.addCriterion("refund_money <>", value, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyGreaterThan(Long value) {
-            this.addCriterion("refundMoney >", value, "refund_money");
+            this.addCriterion("refund_money >", value, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("refundMoney >=", value, "refund_money");
+            this.addCriterion("refund_money >=", value, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyLessThan(Long value) {
-            this.addCriterion("refundMoney <", value, "refund_money");
+            this.addCriterion("refund_money <", value, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
-            this.addCriterion("refundMoney <=", value, "refund_money");
+            this.addCriterion("refund_money <=", value, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyLike(String value) {
-            this.addCriterion("refundMoney like", value, "refund_money");
+            this.addCriterion("refund_money like", value, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyNotLike(String value) {
-            this.addCriterion("refundMoney not like", value, "refund_money");
+            this.addCriterion("refund_money not like", value, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }        public ItemOrderServiceExample.Criteria andRefundMoneyIn(List<Long> values) {
-            this.addCriterion("refundMoney in", values, "refund_money");
+            this.addCriterion("refund_money in", values, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyNotIn(List<Long> values) {
-            this.addCriterion("refundMoney not in", values, "refund_money");
+            this.addCriterion("refund_money not in", values, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyBetween(Long value1, Long value2) {
-            this.addCriterion("refundMoney between", value1, value2, "refund_money");
+            this.addCriterion("refund_money between", value1, value2, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 
         public ItemOrderServiceExample.Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
-            this.addCriterion("refundMoney not between", value1, value2, "refund_money");
+            this.addCriterion("refund_money not between", value1, value2, "refundMoney");
             return (ItemOrderServiceExample.Criteria)this;
         }
 

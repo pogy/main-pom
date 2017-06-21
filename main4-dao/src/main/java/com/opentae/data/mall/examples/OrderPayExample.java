@@ -233,138 +233,138 @@ public class OrderPayExample implements SgExample{
         }
 
         public OrderPayExample.Criteria andOuterPuserIsNull() {
-            this.addCriterion("outerPuser is null");
+            this.addCriterion("outer_puser is null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserIsNotNull() {
-            this.addCriterion("outerPuser is not null");
+            this.addCriterion("outer_puser is not null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserEqualTo(String value) {
-            this.addCriterion("outerPuser =", value, "outer_puser");
+            this.addCriterion("outer_puser =", value, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserNotEqualTo(String value) {
-            this.addCriterion("outerPuser <>", value, "outer_puser");
+            this.addCriterion("outer_puser <>", value, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserGreaterThan(String value) {
-            this.addCriterion("outerPuser >", value, "outer_puser");
+            this.addCriterion("outer_puser >", value, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserGreaterThanOrEqualTo(String value) {
-            this.addCriterion("outerPuser >=", value, "outer_puser");
+            this.addCriterion("outer_puser >=", value, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserLessThan(String value) {
-            this.addCriterion("outerPuser <", value, "outer_puser");
+            this.addCriterion("outer_puser <", value, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserLessThanOrEqualTo(String value) {
-            this.addCriterion("outerPuser <=", value, "outer_puser");
+            this.addCriterion("outer_puser <=", value, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserLike(String value) {
-            this.addCriterion("outerPuser like", value, "outer_puser");
+            this.addCriterion("outer_puser like", value, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserNotLike(String value) {
-            this.addCriterion("outerPuser not like", value, "outer_puser");
+            this.addCriterion("outer_puser not like", value, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }        public OrderPayExample.Criteria andOuterPuserIn(List<String> values) {
-            this.addCriterion("outerPuser in", values, "outer_puser");
+            this.addCriterion("outer_puser in", values, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserNotIn(List<String> values) {
-            this.addCriterion("outerPuser not in", values, "outer_puser");
+            this.addCriterion("outer_puser not in", values, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserBetween(String value1, String value2) {
-            this.addCriterion("outerPuser between", value1, value2, "outer_puser");
+            this.addCriterion("outer_puser between", value1, value2, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPuserNotBetween(String value1, String value2) {
-            this.addCriterion("outerPuser not between", value1, value2, "outer_puser");
+            this.addCriterion("outer_puser not between", value1, value2, "outerPuser");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidIsNull() {
-            this.addCriterion("outerPid is null");
+            this.addCriterion("outer_pid is null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidIsNotNull() {
-            this.addCriterion("outerPid is not null");
+            this.addCriterion("outer_pid is not null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidEqualTo(String value) {
-            this.addCriterion("outerPid =", value, "outer_pid");
+            this.addCriterion("outer_pid =", value, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidNotEqualTo(String value) {
-            this.addCriterion("outerPid <>", value, "outer_pid");
+            this.addCriterion("outer_pid <>", value, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidGreaterThan(String value) {
-            this.addCriterion("outerPid >", value, "outer_pid");
+            this.addCriterion("outer_pid >", value, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidGreaterThanOrEqualTo(String value) {
-            this.addCriterion("outerPid >=", value, "outer_pid");
+            this.addCriterion("outer_pid >=", value, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidLessThan(String value) {
-            this.addCriterion("outerPid <", value, "outer_pid");
+            this.addCriterion("outer_pid <", value, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidLessThanOrEqualTo(String value) {
-            this.addCriterion("outerPid <=", value, "outer_pid");
+            this.addCriterion("outer_pid <=", value, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidLike(String value) {
-            this.addCriterion("outerPid like", value, "outer_pid");
+            this.addCriterion("outer_pid like", value, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidNotLike(String value) {
-            this.addCriterion("outerPid not like", value, "outer_pid");
+            this.addCriterion("outer_pid not like", value, "outerPid");
             return (OrderPayExample.Criteria)this;
         }        public OrderPayExample.Criteria andOuterPidIn(List<String> values) {
-            this.addCriterion("outerPid in", values, "outer_pid");
+            this.addCriterion("outer_pid in", values, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidNotIn(List<String> values) {
-            this.addCriterion("outerPid not in", values, "outer_pid");
+            this.addCriterion("outer_pid not in", values, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidBetween(String value1, String value2) {
-            this.addCriterion("outerPid between", value1, value2, "outer_pid");
+            this.addCriterion("outer_pid between", value1, value2, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andOuterPidNotBetween(String value1, String value2) {
-            this.addCriterion("outerPid not between", value1, value2, "outer_pid");
+            this.addCriterion("outer_pid not between", value1, value2, "outerPid");
             return (OrderPayExample.Criteria)this;
         }
 
@@ -437,342 +437,342 @@ public class OrderPayExample implements SgExample{
         }
 
         public OrderPayExample.Criteria andCreateTimeIsNull() {
-            this.addCriterion("createTime is null");
+            this.addCriterion("create_time is null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeIsNotNull() {
-            this.addCriterion("createTime is not null");
+            this.addCriterion("create_time is not null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeEqualTo(Date value) {
-            this.addCriterion("createTime =", value, "create_time");
+            this.addCriterion("create_time =", value, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeNotEqualTo(Date value) {
-            this.addCriterion("createTime <>", value, "create_time");
+            this.addCriterion("create_time <>", value, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeGreaterThan(Date value) {
-            this.addCriterion("createTime >", value, "create_time");
+            this.addCriterion("create_time >", value, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("createTime >=", value, "create_time");
+            this.addCriterion("create_time >=", value, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeLessThan(Date value) {
-            this.addCriterion("createTime <", value, "create_time");
+            this.addCriterion("create_time <", value, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("createTime <=", value, "create_time");
+            this.addCriterion("create_time <=", value, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeLike(String value) {
-            this.addCriterion("createTime like", value, "create_time");
+            this.addCriterion("create_time like", value, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeNotLike(String value) {
-            this.addCriterion("createTime not like", value, "create_time");
+            this.addCriterion("create_time not like", value, "createTime");
             return (OrderPayExample.Criteria)this;
         }        public OrderPayExample.Criteria andCreateTimeIn(List<Date> values) {
-            this.addCriterion("createTime in", values, "create_time");
+            this.addCriterion("create_time in", values, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeNotIn(List<Date> values) {
-            this.addCriterion("createTime not in", values, "create_time");
+            this.addCriterion("create_time not in", values, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
-            this.addCriterion("createTime between", value1, value2, "create_time");
+            this.addCriterion("create_time between", value1, value2, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("createTime not between", value1, value2, "create_time");
+            this.addCriterion("create_time not between", value1, value2, "createTime");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForIsNull() {
-            this.addCriterion("payFor is null");
+            this.addCriterion("pay_for is null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForIsNotNull() {
-            this.addCriterion("payFor is not null");
+            this.addCriterion("pay_for is not null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForEqualTo(Integer value) {
-            this.addCriterion("payFor =", value, "pay_for");
+            this.addCriterion("pay_for =", value, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForNotEqualTo(Integer value) {
-            this.addCriterion("payFor <>", value, "pay_for");
+            this.addCriterion("pay_for <>", value, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForGreaterThan(Integer value) {
-            this.addCriterion("payFor >", value, "pay_for");
+            this.addCriterion("pay_for >", value, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("payFor >=", value, "pay_for");
+            this.addCriterion("pay_for >=", value, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForLessThan(Integer value) {
-            this.addCriterion("payFor <", value, "pay_for");
+            this.addCriterion("pay_for <", value, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForLessThanOrEqualTo(Integer value) {
-            this.addCriterion("payFor <=", value, "pay_for");
+            this.addCriterion("pay_for <=", value, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForLike(String value) {
-            this.addCriterion("payFor like", value, "pay_for");
+            this.addCriterion("pay_for like", value, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForNotLike(String value) {
-            this.addCriterion("payFor not like", value, "pay_for");
+            this.addCriterion("pay_for not like", value, "payFor");
             return (OrderPayExample.Criteria)this;
         }        public OrderPayExample.Criteria andPayForIn(List<Integer> values) {
-            this.addCriterion("payFor in", values, "pay_for");
+            this.addCriterion("pay_for in", values, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForNotIn(List<Integer> values) {
-            this.addCriterion("payFor not in", values, "pay_for");
+            this.addCriterion("pay_for not in", values, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForBetween(Integer value1, Integer value2) {
-            this.addCriterion("payFor between", value1, value2, "pay_for");
+            this.addCriterion("pay_for between", value1, value2, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayForNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("payFor not between", value1, value2, "pay_for");
+            this.addCriterion("pay_for not between", value1, value2, "payFor");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyIsNull() {
-            this.addCriterion("refundMoney is null");
+            this.addCriterion("refund_money is null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyIsNotNull() {
-            this.addCriterion("refundMoney is not null");
+            this.addCriterion("refund_money is not null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyEqualTo(Long value) {
-            this.addCriterion("refundMoney =", value, "refund_money");
+            this.addCriterion("refund_money =", value, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyNotEqualTo(Long value) {
-            this.addCriterion("refundMoney <>", value, "refund_money");
+            this.addCriterion("refund_money <>", value, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyGreaterThan(Long value) {
-            this.addCriterion("refundMoney >", value, "refund_money");
+            this.addCriterion("refund_money >", value, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("refundMoney >=", value, "refund_money");
+            this.addCriterion("refund_money >=", value, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyLessThan(Long value) {
-            this.addCriterion("refundMoney <", value, "refund_money");
+            this.addCriterion("refund_money <", value, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
-            this.addCriterion("refundMoney <=", value, "refund_money");
+            this.addCriterion("refund_money <=", value, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyLike(String value) {
-            this.addCriterion("refundMoney like", value, "refund_money");
+            this.addCriterion("refund_money like", value, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyNotLike(String value) {
-            this.addCriterion("refundMoney not like", value, "refund_money");
+            this.addCriterion("refund_money not like", value, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }        public OrderPayExample.Criteria andRefundMoneyIn(List<Long> values) {
-            this.addCriterion("refundMoney in", values, "refund_money");
+            this.addCriterion("refund_money in", values, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyNotIn(List<Long> values) {
-            this.addCriterion("refundMoney not in", values, "refund_money");
+            this.addCriterion("refund_money not in", values, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyBetween(Long value1, Long value2) {
-            this.addCriterion("refundMoney between", value1, value2, "refund_money");
+            this.addCriterion("refund_money between", value1, value2, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
-            this.addCriterion("refundMoney not between", value1, value2, "refund_money");
+            this.addCriterion("refund_money not between", value1, value2, "refundMoney");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdIsNull() {
-            this.addCriterion("applyId is null");
+            this.addCriterion("apply_id is null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdIsNotNull() {
-            this.addCriterion("applyId is not null");
+            this.addCriterion("apply_id is not null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdEqualTo(Long value) {
-            this.addCriterion("applyId =", value, "apply_id");
+            this.addCriterion("apply_id =", value, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdNotEqualTo(Long value) {
-            this.addCriterion("applyId <>", value, "apply_id");
+            this.addCriterion("apply_id <>", value, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdGreaterThan(Long value) {
-            this.addCriterion("applyId >", value, "apply_id");
+            this.addCriterion("apply_id >", value, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("applyId >=", value, "apply_id");
+            this.addCriterion("apply_id >=", value, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdLessThan(Long value) {
-            this.addCriterion("applyId <", value, "apply_id");
+            this.addCriterion("apply_id <", value, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("applyId <=", value, "apply_id");
+            this.addCriterion("apply_id <=", value, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdLike(String value) {
-            this.addCriterion("applyId like", value, "apply_id");
+            this.addCriterion("apply_id like", value, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdNotLike(String value) {
-            this.addCriterion("applyId not like", value, "apply_id");
+            this.addCriterion("apply_id not like", value, "applyId");
             return (OrderPayExample.Criteria)this;
         }        public OrderPayExample.Criteria andApplyIdIn(List<Long> values) {
-            this.addCriterion("applyId in", values, "apply_id");
+            this.addCriterion("apply_id in", values, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdNotIn(List<Long> values) {
-            this.addCriterion("applyId not in", values, "apply_id");
+            this.addCriterion("apply_id not in", values, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdBetween(Long value1, Long value2) {
-            this.addCriterion("applyId between", value1, value2, "apply_id");
+            this.addCriterion("apply_id between", value1, value2, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andApplyIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("applyId not between", value1, value2, "apply_id");
+            this.addCriterion("apply_id not between", value1, value2, "applyId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdIsNull() {
-            this.addCriterion("payId is null");
+            this.addCriterion("pay_id is null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdIsNotNull() {
-            this.addCriterion("payId is not null");
+            this.addCriterion("pay_id is not null");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdEqualTo(Long value) {
-            this.addCriterion("payId =", value, "pay_id");
+            this.addCriterion("pay_id =", value, "payId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdNotEqualTo(Long value) {
-            this.addCriterion("payId <>", value, "pay_id");
+            this.addCriterion("pay_id <>", value, "payId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdGreaterThan(Long value) {
-            this.addCriterion("payId >", value, "pay_id");
+            this.addCriterion("pay_id >", value, "payId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("payId >=", value, "pay_id");
+            this.addCriterion("pay_id >=", value, "payId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdLessThan(Long value) {
-            this.addCriterion("payId <", value, "pay_id");
+            this.addCriterion("pay_id <", value, "payId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("payId <=", value, "pay_id");
+            this.addCriterion("pay_id <=", value, "payId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdLike(String value) {
-            this.addCriterion("payId like", value, "pay_id");
+            this.addCriterion("pay_id like", value, "payId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdNotLike(String value) {
-            this.addCriterion("payId not like", value, "pay_id");
+            this.addCriterion("pay_id not like", value, "payId");
             return (OrderPayExample.Criteria)this;
         }        public OrderPayExample.Criteria andPayIdIn(List<Long> values) {
-            this.addCriterion("payId in", values, "pay_id");
+            this.addCriterion("pay_id in", values, "payId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdNotIn(List<Long> values) {
-            this.addCriterion("payId not in", values, "pay_id");
+            this.addCriterion("pay_id not in", values, "payId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdBetween(Long value1, Long value2) {
-            this.addCriterion("payId between", value1, value2, "pay_id");
+            this.addCriterion("pay_id between", value1, value2, "payId");
             return (OrderPayExample.Criteria)this;
         }
 
         public OrderPayExample.Criteria andPayIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("payId not between", value1, value2, "pay_id");
+            this.addCriterion("pay_id not between", value1, value2, "payId");
             return (OrderPayExample.Criteria)this;
         }
 

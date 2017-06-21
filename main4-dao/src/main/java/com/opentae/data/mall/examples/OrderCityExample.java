@@ -233,206 +233,206 @@ public class OrderCityExample implements SgExample{
         }
 
         public OrderCityExample.Criteria andCityNameIsNull() {
-            this.addCriterion("cityName is null");
+            this.addCriterion("city_name is null");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameIsNotNull() {
-            this.addCriterion("cityName is not null");
+            this.addCriterion("city_name is not null");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameEqualTo(String value) {
-            this.addCriterion("cityName =", value, "city_name");
+            this.addCriterion("city_name =", value, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameNotEqualTo(String value) {
-            this.addCriterion("cityName <>", value, "city_name");
+            this.addCriterion("city_name <>", value, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameGreaterThan(String value) {
-            this.addCriterion("cityName >", value, "city_name");
+            this.addCriterion("city_name >", value, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("cityName >=", value, "city_name");
+            this.addCriterion("city_name >=", value, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameLessThan(String value) {
-            this.addCriterion("cityName <", value, "city_name");
+            this.addCriterion("city_name <", value, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameLessThanOrEqualTo(String value) {
-            this.addCriterion("cityName <=", value, "city_name");
+            this.addCriterion("city_name <=", value, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameLike(String value) {
-            this.addCriterion("cityName like", value, "city_name");
+            this.addCriterion("city_name like", value, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameNotLike(String value) {
-            this.addCriterion("cityName not like", value, "city_name");
+            this.addCriterion("city_name not like", value, "cityName");
             return (OrderCityExample.Criteria)this;
         }        public OrderCityExample.Criteria andCityNameIn(List<String> values) {
-            this.addCriterion("cityName in", values, "city_name");
+            this.addCriterion("city_name in", values, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameNotIn(List<String> values) {
-            this.addCriterion("cityName not in", values, "city_name");
+            this.addCriterion("city_name not in", values, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameBetween(String value1, String value2) {
-            this.addCriterion("cityName between", value1, value2, "city_name");
+            this.addCriterion("city_name between", value1, value2, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityNameNotBetween(String value1, String value2) {
-            this.addCriterion("cityName not between", value1, value2, "city_name");
+            this.addCriterion("city_name not between", value1, value2, "cityName");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdIsNull() {
-            this.addCriterion("provId is null");
+            this.addCriterion("prov_id is null");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdIsNotNull() {
-            this.addCriterion("provId is not null");
+            this.addCriterion("prov_id is not null");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdEqualTo(Long value) {
-            this.addCriterion("provId =", value, "prov_id");
+            this.addCriterion("prov_id =", value, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdNotEqualTo(Long value) {
-            this.addCriterion("provId <>", value, "prov_id");
+            this.addCriterion("prov_id <>", value, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdGreaterThan(Long value) {
-            this.addCriterion("provId >", value, "prov_id");
+            this.addCriterion("prov_id >", value, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("provId >=", value, "prov_id");
+            this.addCriterion("prov_id >=", value, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdLessThan(Long value) {
-            this.addCriterion("provId <", value, "prov_id");
+            this.addCriterion("prov_id <", value, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("provId <=", value, "prov_id");
+            this.addCriterion("prov_id <=", value, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdLike(String value) {
-            this.addCriterion("provId like", value, "prov_id");
+            this.addCriterion("prov_id like", value, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdNotLike(String value) {
-            this.addCriterion("provId not like", value, "prov_id");
+            this.addCriterion("prov_id not like", value, "provId");
             return (OrderCityExample.Criteria)this;
         }        public OrderCityExample.Criteria andProvIdIn(List<Long> values) {
-            this.addCriterion("provId in", values, "prov_id");
+            this.addCriterion("prov_id in", values, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdNotIn(List<Long> values) {
-            this.addCriterion("provId not in", values, "prov_id");
+            this.addCriterion("prov_id not in", values, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdBetween(Long value1, Long value2) {
-            this.addCriterion("provId between", value1, value2, "prov_id");
+            this.addCriterion("prov_id between", value1, value2, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andProvIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("provId not between", value1, value2, "prov_id");
+            this.addCriterion("prov_id not between", value1, value2, "provId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdIsNull() {
-            this.addCriterion("cityId is null");
+            this.addCriterion("city_id is null");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdIsNotNull() {
-            this.addCriterion("cityId is not null");
+            this.addCriterion("city_id is not null");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdEqualTo(Long value) {
-            this.addCriterion("cityId =", value, "city_id");
+            this.addCriterion("city_id =", value, "cityId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdNotEqualTo(Long value) {
-            this.addCriterion("cityId <>", value, "city_id");
+            this.addCriterion("city_id <>", value, "cityId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdGreaterThan(Long value) {
-            this.addCriterion("cityId >", value, "city_id");
+            this.addCriterion("city_id >", value, "cityId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("cityId >=", value, "city_id");
+            this.addCriterion("city_id >=", value, "cityId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdLessThan(Long value) {
-            this.addCriterion("cityId <", value, "city_id");
+            this.addCriterion("city_id <", value, "cityId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("cityId <=", value, "city_id");
+            this.addCriterion("city_id <=", value, "cityId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdLike(String value) {
-            this.addCriterion("cityId like", value, "city_id");
+            this.addCriterion("city_id like", value, "cityId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdNotLike(String value) {
-            this.addCriterion("cityId not like", value, "city_id");
+            this.addCriterion("city_id not like", value, "cityId");
             return (OrderCityExample.Criteria)this;
         }        public OrderCityExample.Criteria andCityIdIn(List<Long> values) {
-            this.addCriterion("cityId in", values, "city_id");
+            this.addCriterion("city_id in", values, "cityId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdNotIn(List<Long> values) {
-            this.addCriterion("cityId not in", values, "city_id");
+            this.addCriterion("city_id not in", values, "cityId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdBetween(Long value1, Long value2) {
-            this.addCriterion("cityId between", value1, value2, "city_id");
+            this.addCriterion("city_id between", value1, value2, "cityId");
             return (OrderCityExample.Criteria)this;
         }
 
         public OrderCityExample.Criteria andCityIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("cityId not between", value1, value2, "city_id");
+            this.addCriterion("city_id not between", value1, value2, "cityId");
             return (OrderCityExample.Criteria)this;
         }
     }

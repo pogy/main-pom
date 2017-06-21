@@ -369,70 +369,70 @@ public class OrderPayRelationshipExample implements SgExample{
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdIsNull() {
-            this.addCriterion("payId is null");
+            this.addCriterion("pay_id is null");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdIsNotNull() {
-            this.addCriterion("payId is not null");
+            this.addCriterion("pay_id is not null");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdEqualTo(Long value) {
-            this.addCriterion("payId =", value, "pay_id");
+            this.addCriterion("pay_id =", value, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdNotEqualTo(Long value) {
-            this.addCriterion("payId <>", value, "pay_id");
+            this.addCriterion("pay_id <>", value, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdGreaterThan(Long value) {
-            this.addCriterion("payId >", value, "pay_id");
+            this.addCriterion("pay_id >", value, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("payId >=", value, "pay_id");
+            this.addCriterion("pay_id >=", value, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdLessThan(Long value) {
-            this.addCriterion("payId <", value, "pay_id");
+            this.addCriterion("pay_id <", value, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("payId <=", value, "pay_id");
+            this.addCriterion("pay_id <=", value, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdLike(String value) {
-            this.addCriterion("payId like", value, "pay_id");
+            this.addCriterion("pay_id like", value, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdNotLike(String value) {
-            this.addCriterion("payId not like", value, "pay_id");
+            this.addCriterion("pay_id not like", value, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }        public OrderPayRelationshipExample.Criteria andPayIdIn(List<Long> values) {
-            this.addCriterion("payId in", values, "pay_id");
+            this.addCriterion("pay_id in", values, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdNotIn(List<Long> values) {
-            this.addCriterion("payId not in", values, "pay_id");
+            this.addCriterion("pay_id not in", values, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdBetween(Long value1, Long value2) {
-            this.addCriterion("payId between", value1, value2, "pay_id");
+            this.addCriterion("pay_id between", value1, value2, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
 
         public OrderPayRelationshipExample.Criteria andPayIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("payId not between", value1, value2, "pay_id");
+            this.addCriterion("pay_id not between", value1, value2, "payId");
             return (OrderPayRelationshipExample.Criteria)this;
         }
     }

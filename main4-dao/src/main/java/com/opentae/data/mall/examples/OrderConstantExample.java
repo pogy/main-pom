@@ -505,70 +505,70 @@ public class OrderConstantExample implements SgExample{
         }
 
         public OrderConstantExample.Criteria andSenderIdIsNull() {
-            this.addCriterion("senderId is null");
+            this.addCriterion("sender_id is null");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdIsNotNull() {
-            this.addCriterion("senderId is not null");
+            this.addCriterion("sender_id is not null");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdEqualTo(Long value) {
-            this.addCriterion("senderId =", value, "sender_id");
+            this.addCriterion("sender_id =", value, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdNotEqualTo(Long value) {
-            this.addCriterion("senderId <>", value, "sender_id");
+            this.addCriterion("sender_id <>", value, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdGreaterThan(Long value) {
-            this.addCriterion("senderId >", value, "sender_id");
+            this.addCriterion("sender_id >", value, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("senderId >=", value, "sender_id");
+            this.addCriterion("sender_id >=", value, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdLessThan(Long value) {
-            this.addCriterion("senderId <", value, "sender_id");
+            this.addCriterion("sender_id <", value, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("senderId <=", value, "sender_id");
+            this.addCriterion("sender_id <=", value, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdLike(String value) {
-            this.addCriterion("senderId like", value, "sender_id");
+            this.addCriterion("sender_id like", value, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdNotLike(String value) {
-            this.addCriterion("senderId not like", value, "sender_id");
+            this.addCriterion("sender_id not like", value, "senderId");
             return (OrderConstantExample.Criteria)this;
         }        public OrderConstantExample.Criteria andSenderIdIn(List<Long> values) {
-            this.addCriterion("senderId in", values, "sender_id");
+            this.addCriterion("sender_id in", values, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdNotIn(List<Long> values) {
-            this.addCriterion("senderId not in", values, "sender_id");
+            this.addCriterion("sender_id not in", values, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdBetween(Long value1, Long value2) {
-            this.addCriterion("senderId between", value1, value2, "sender_id");
+            this.addCriterion("sender_id between", value1, value2, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
 
         public OrderConstantExample.Criteria andSenderIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("senderId not between", value1, value2, "sender_id");
+            this.addCriterion("sender_id not between", value1, value2, "senderId");
             return (OrderConstantExample.Criteria)this;
         }
     }

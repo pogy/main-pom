@@ -437,138 +437,138 @@ public class ItemOrderPackageExample implements SgExample{
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdIsNull() {
-            this.addCriterion("metarialId is null");
+            this.addCriterion("metarial_id is null");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdIsNotNull() {
-            this.addCriterion("metarialId is not null");
+            this.addCriterion("metarial_id is not null");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdEqualTo(Long value) {
-            this.addCriterion("metarialId =", value, "metarial_id");
+            this.addCriterion("metarial_id =", value, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdNotEqualTo(Long value) {
-            this.addCriterion("metarialId <>", value, "metarial_id");
+            this.addCriterion("metarial_id <>", value, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdGreaterThan(Long value) {
-            this.addCriterion("metarialId >", value, "metarial_id");
+            this.addCriterion("metarial_id >", value, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("metarialId >=", value, "metarial_id");
+            this.addCriterion("metarial_id >=", value, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdLessThan(Long value) {
-            this.addCriterion("metarialId <", value, "metarial_id");
+            this.addCriterion("metarial_id <", value, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("metarialId <=", value, "metarial_id");
+            this.addCriterion("metarial_id <=", value, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdLike(String value) {
-            this.addCriterion("metarialId like", value, "metarial_id");
+            this.addCriterion("metarial_id like", value, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdNotLike(String value) {
-            this.addCriterion("metarialId not like", value, "metarial_id");
+            this.addCriterion("metarial_id not like", value, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }        public ItemOrderPackageExample.Criteria andMetarialIdIn(List<Long> values) {
-            this.addCriterion("metarialId in", values, "metarial_id");
+            this.addCriterion("metarial_id in", values, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdNotIn(List<Long> values) {
-            this.addCriterion("metarialId not in", values, "metarial_id");
+            this.addCriterion("metarial_id not in", values, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdBetween(Long value1, Long value2) {
-            this.addCriterion("metarialId between", value1, value2, "metarial_id");
+            this.addCriterion("metarial_id between", value1, value2, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andMetarialIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("metarialId not between", value1, value2, "metarial_id");
+            this.addCriterion("metarial_id not between", value1, value2, "metarialId");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyIsNull() {
-            this.addCriterion("refundMoney is null");
+            this.addCriterion("refund_money is null");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyIsNotNull() {
-            this.addCriterion("refundMoney is not null");
+            this.addCriterion("refund_money is not null");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyEqualTo(Long value) {
-            this.addCriterion("refundMoney =", value, "refund_money");
+            this.addCriterion("refund_money =", value, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyNotEqualTo(Long value) {
-            this.addCriterion("refundMoney <>", value, "refund_money");
+            this.addCriterion("refund_money <>", value, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyGreaterThan(Long value) {
-            this.addCriterion("refundMoney >", value, "refund_money");
+            this.addCriterion("refund_money >", value, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("refundMoney >=", value, "refund_money");
+            this.addCriterion("refund_money >=", value, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyLessThan(Long value) {
-            this.addCriterion("refundMoney <", value, "refund_money");
+            this.addCriterion("refund_money <", value, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
-            this.addCriterion("refundMoney <=", value, "refund_money");
+            this.addCriterion("refund_money <=", value, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyLike(String value) {
-            this.addCriterion("refundMoney like", value, "refund_money");
+            this.addCriterion("refund_money like", value, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyNotLike(String value) {
-            this.addCriterion("refundMoney not like", value, "refund_money");
+            this.addCriterion("refund_money not like", value, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }        public ItemOrderPackageExample.Criteria andRefundMoneyIn(List<Long> values) {
-            this.addCriterion("refundMoney in", values, "refund_money");
+            this.addCriterion("refund_money in", values, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyNotIn(List<Long> values) {
-            this.addCriterion("refundMoney not in", values, "refund_money");
+            this.addCriterion("refund_money not in", values, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyBetween(Long value1, Long value2) {
-            this.addCriterion("refundMoney between", value1, value2, "refund_money");
+            this.addCriterion("refund_money between", value1, value2, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 
         public ItemOrderPackageExample.Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
-            this.addCriterion("refundMoney not between", value1, value2, "refund_money");
+            this.addCriterion("refund_money not between", value1, value2, "refundMoney");
             return (ItemOrderPackageExample.Criteria)this;
         }
 

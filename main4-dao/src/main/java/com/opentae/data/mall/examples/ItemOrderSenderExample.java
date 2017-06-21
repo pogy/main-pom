@@ -301,70 +301,70 @@ public class ItemOrderSenderExample implements SgExample{
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameIsNull() {
-            this.addCriterion("senderName is null");
+            this.addCriterion("sender_name is null");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameIsNotNull() {
-            this.addCriterion("senderName is not null");
+            this.addCriterion("sender_name is not null");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameEqualTo(String value) {
-            this.addCriterion("senderName =", value, "sender_name");
+            this.addCriterion("sender_name =", value, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameNotEqualTo(String value) {
-            this.addCriterion("senderName <>", value, "sender_name");
+            this.addCriterion("sender_name <>", value, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameGreaterThan(String value) {
-            this.addCriterion("senderName >", value, "sender_name");
+            this.addCriterion("sender_name >", value, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("senderName >=", value, "sender_name");
+            this.addCriterion("sender_name >=", value, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameLessThan(String value) {
-            this.addCriterion("senderName <", value, "sender_name");
+            this.addCriterion("sender_name <", value, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameLessThanOrEqualTo(String value) {
-            this.addCriterion("senderName <=", value, "sender_name");
+            this.addCriterion("sender_name <=", value, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameLike(String value) {
-            this.addCriterion("senderName like", value, "sender_name");
+            this.addCriterion("sender_name like", value, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameNotLike(String value) {
-            this.addCriterion("senderName not like", value, "sender_name");
+            this.addCriterion("sender_name not like", value, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }        public ItemOrderSenderExample.Criteria andSenderNameIn(List<String> values) {
-            this.addCriterion("senderName in", values, "sender_name");
+            this.addCriterion("sender_name in", values, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameNotIn(List<String> values) {
-            this.addCriterion("senderName not in", values, "sender_name");
+            this.addCriterion("sender_name not in", values, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameBetween(String value1, String value2) {
-            this.addCriterion("senderName between", value1, value2, "sender_name");
+            this.addCriterion("sender_name between", value1, value2, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderNameNotBetween(String value1, String value2) {
-            this.addCriterion("senderName not between", value1, value2, "sender_name");
+            this.addCriterion("sender_name not between", value1, value2, "senderName");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
@@ -437,70 +437,70 @@ public class ItemOrderSenderExample implements SgExample{
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdIsNull() {
-            this.addCriterion("senderId is null");
+            this.addCriterion("sender_id is null");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdIsNotNull() {
-            this.addCriterion("senderId is not null");
+            this.addCriterion("sender_id is not null");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdEqualTo(Long value) {
-            this.addCriterion("senderId =", value, "sender_id");
+            this.addCriterion("sender_id =", value, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdNotEqualTo(Long value) {
-            this.addCriterion("senderId <>", value, "sender_id");
+            this.addCriterion("sender_id <>", value, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdGreaterThan(Long value) {
-            this.addCriterion("senderId >", value, "sender_id");
+            this.addCriterion("sender_id >", value, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("senderId >=", value, "sender_id");
+            this.addCriterion("sender_id >=", value, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdLessThan(Long value) {
-            this.addCriterion("senderId <", value, "sender_id");
+            this.addCriterion("sender_id <", value, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("senderId <=", value, "sender_id");
+            this.addCriterion("sender_id <=", value, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdLike(String value) {
-            this.addCriterion("senderId like", value, "sender_id");
+            this.addCriterion("sender_id like", value, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdNotLike(String value) {
-            this.addCriterion("senderId not like", value, "sender_id");
+            this.addCriterion("sender_id not like", value, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }        public ItemOrderSenderExample.Criteria andSenderIdIn(List<Long> values) {
-            this.addCriterion("senderId in", values, "sender_id");
+            this.addCriterion("sender_id in", values, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdNotIn(List<Long> values) {
-            this.addCriterion("senderId not in", values, "sender_id");
+            this.addCriterion("sender_id not in", values, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdBetween(Long value1, Long value2) {
-            this.addCriterion("senderId between", value1, value2, "sender_id");
+            this.addCriterion("sender_id between", value1, value2, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
 
         public ItemOrderSenderExample.Criteria andSenderIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("senderId not between", value1, value2, "sender_id");
+            this.addCriterion("sender_id not between", value1, value2, "senderId");
             return (ItemOrderSenderExample.Criteria)this;
         }
     }
