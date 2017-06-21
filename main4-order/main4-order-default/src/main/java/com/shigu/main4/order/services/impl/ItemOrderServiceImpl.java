@@ -1,6 +1,5 @@
 package com.shigu.main4.order.services.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.BuyerAddress;
 import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.beans.OrderIdGenerator;
@@ -8,14 +7,12 @@ import com.opentae.data.mall.examples.BuyerAddressExample;
 import com.opentae.data.mall.interfaces.BuyerAddressMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.BuyerAddressException;
-import com.shigu.main4.order.model.SubOrder;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.ItemProductVO;
@@ -28,11 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.xml.ws.soap.Addressing;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 商品订单服务
