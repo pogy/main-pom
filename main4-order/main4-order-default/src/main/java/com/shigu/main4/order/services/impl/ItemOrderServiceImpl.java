@@ -1,13 +1,20 @@
 package com.shigu.main4.order.services.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.opentae.data.mall.beans.BuyerAddress;
 import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.beans.OrderIdGenerator;
+import com.opentae.data.mall.examples.BuyerAddressExample;
+import com.opentae.data.mall.interfaces.BuyerAddressMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
+import com.shigu.main4.order.exceptions.BuyerAddressException;
 import com.shigu.main4.order.model.SubOrder;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.vo.BuyerAddressVO;
@@ -15,13 +22,17 @@ import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.order.vo.SubOrderVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.xml.ws.soap.Addressing;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品订单服务
@@ -30,13 +41,16 @@ import java.util.List;
 @Service("itemOrderService")
 public class ItemOrderServiceImpl implements ItemOrderService{
 
+    private static final Logger logger = LoggerFactory.getLogger(ItemOrderServiceImpl.class);
+
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
     @Autowired
     private OrderIdGeneratorMapper orderIdGeneratorMapper;
 
-
+    @Autowired
+    private BuyerAddressMapper buyerAddressMapper;
 
     /**
      * oid获取器
@@ -113,32 +127,71 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     /**
      * 查询买家有的地址
-     *
      * @param userId
-     * @return
+     * @return 买家现有地址列表
      */
     @Override
     public List<BuyerAddressVO> selBuyerAddress(Long userId) {
-        return null;
+        List<BuyerAddressVO> buyerAddressVOS = new ArrayList<BuyerAddressVO>(5);
+        BuyerAddressExample buyerAddressExample = new BuyerAddressExample();
+        buyerAddressExample.createCriteria().andUserIdEqualTo(userId);
+        List<BuyerAddress> buyerAddresses = buyerAddressMapper.selectByExample(buyerAddressExample);
+        BuyerAddressVO buyerAddressVO = null;
+        for (BuyerAddress buyerAddress:buyerAddresses) {
+            buyerAddressVO = BeanMapper.map(buyerAddress, BuyerAddressVO.class);
+            buyerAddressVO.setProvince(buyerAddress.getProvName());
+            buyerAddressVO.setCity(buyerAddress.getCityName());
+            buyerAddressVO.setTown(buyerAddress.getTownName());
+            buyerAddressVOS.add(buyerAddressVO);
+        }
+        return buyerAddressVOS;
     }
 
     /**
-     * 保存地址
-     *
+     * 保存地址，BuyerAddressVO中信息不足则会失败，用户已有超过5条地址则会覆盖最老地址
      * @param buyerAddressVO
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveBuyerAddress(BuyerAddressVO buyerAddressVO) {
-
+        //信息不足
+        boolean isInformationInsufficient = buyerAddressVO.getProvId()==null || buyerAddressVO.getCityId()==null || buyerAddressVO.getTownId()==null ||
+                StringUtil.isNull(buyerAddressVO.getAddress()) || buyerAddressVO.getUserId()==null || StringUtil.isNull(buyerAddressVO.getTelephone()) ||
+                StringUtil.isNull(buyerAddressVO.getName()) || StringUtil.isNull(buyerAddressVO.getProvince()) || StringUtil.isNull(buyerAddressVO.getCity()) ||
+                StringUtil.isNull(buyerAddressVO.getTown());
+        if (isInformationInsufficient) {
+            try {
+                throw new BuyerAddressException("信息不足");
+            } catch (BuyerAddressException e) {
+                logger.error("买家地址存储失败",e);
+            } finally {
+                return;
+            }
+        }
+        BuyerAddressExample buyerAddressExample = new BuyerAddressExample();
+        buyerAddressExample.createCriteria().andUserIdEqualTo(buyerAddressVO.getUserId());
+        buyerAddressExample.setOrderByClause("address_id asc");
+        List<Long> userAddressIds = BeanMapper.getFieldList(buyerAddressMapper.selectFieldsByExample(buyerAddressExample,"address_id"),
+                "addressId", Long.class);
+        while (userAddressIds.size() >= 5) {
+            rmBuyerAddress(userAddressIds.get(0));
+            userAddressIds.remove(0);
+        }
+        BuyerAddress buyerAddress = BeanMapper.map(buyerAddressVO,BuyerAddress.class);
+        buyerAddress.setAddressId(null);
+        buyerAddress.setProvName(buyerAddressVO.getProvince());
+        buyerAddress.setCityName(buyerAddressVO.getCity());
+        buyerAddress.setTownName(buyerAddressVO.getTown());
+        buyerAddressMapper.insert(buyerAddress);
     }
 
     /**
      * 删除地址
-     *
      * @param addressId
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void rmBuyerAddress(Long addressId) {
-
+        buyerAddressMapper.deleteByPrimaryKey(addressId);
     }
 }

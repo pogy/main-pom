@@ -6,6 +6,7 @@ import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,41 @@ public class ItemOrderServiceImplTest extends BaseTest {
         // 如果订单创建异常，调用订单信息会发生错误
     }
 
+    @Test
+    public void selBuyerAddress() {
+        itemOrderService.selBuyerAddress(1L);
+    }
+
+    @Test
+    public void saveBuyerAddress() {
+        BuyerAddressVO buyerAddressVO = getBuyerAddressVOInstance(1L,1L,"浙江",1L,"杭州",1L,"拱墅",
+                "湖州街",1L,"151xxxxxxxx","zip_code","王浩翔");
+        itemOrderService.saveBuyerAddress(buyerAddressVO);
+        BuyerAddressVO buyerAddressVO1 = getBuyerAddressVOInstance(1L,null,"浙江",1L,"杭州",1L,"拱墅",
+                "湖州街",1L,"151xxxxxxxx","zip_code","王浩翔");
+        itemOrderService.saveBuyerAddress(buyerAddressVO1);
+    }
+
+    @Test
+    public void rmBuyerAddress() {
+        itemOrderService.rmBuyerAddress(8L);
+    }
+
+    private BuyerAddressVO getBuyerAddressVOInstance(Long addressId, Long provId, String province, Long cityId, String city, Long townId, String town,
+                                                     String address, Long userId, String telephone, String zipCode, String name) {
+        BuyerAddressVO buyerAddressVO = new BuyerAddressVO();
+        buyerAddressVO.setAddressId(addressId);
+        buyerAddressVO.setProvId(provId);
+        buyerAddressVO.setProvince(province);
+        buyerAddressVO.setCityId(cityId);
+        buyerAddressVO.setCity(city);
+        buyerAddressVO.setTownId(townId);
+        buyerAddressVO.setTown(town);
+        buyerAddressVO.setAddress(address);
+        buyerAddressVO.setUserId(userId);
+        buyerAddressVO.setTelephone(telephone);
+        buyerAddressVO.setZipCode(zipCode);
+        buyerAddressVO.setName(name);
+        return buyerAddressVO;
+    }
 }
