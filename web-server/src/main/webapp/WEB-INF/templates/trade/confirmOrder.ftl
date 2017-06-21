@@ -21,8 +21,6 @@
 
     
 
-
-
     
 
     
@@ -212,7 +210,7 @@ var webSite = '${webSite!}';
     <div class="orderInfoWrite">
         
 
-<#assign text>{"choiceCon":[{"text":"星帮代发","value":"xbdf","checked":true},{"text":"星帮代拿","value":"xbdn"}]}</#assign>
+<#assign text>{"choiceCon":sender}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <div class="portCommonBox marBottom deliMethod">
@@ -227,9 +225,8 @@ var webSite = '${webSite!}';
         <ul>
             <#list $it.choiceCon as option>
             
-            
 
-<#assign text>{"value":option.value,"text":option.text,"checked":option.checked}</#assign>
+<#assign text>{"value":option.id,"text":option.text,"checked":option.checked}</#assign>
 <#assign moduledata2=text?eval />
 <#list [moduledata2] as $it>
 <label class="fmRadio clearfix
@@ -452,7 +449,7 @@ var webSite = '${webSite!}';
             <h5>收藏地址列表 <span class="fcF40 surAmount">(${(collList?size)!}/5)</span> <em class="fc9">您可使用收藏的地址</em></h5>
             <ul>
                 <#list collList as coll>
-                <li class="pr" data-json="${coll.name!},${coll.phone!},${coll.address!}">
+                <li class="pr" data-json="${coll.name!},${coll.phone!},${coll.address!}" data-id="${coll.id!}">
                     
 
 <#assign text>{"text":"${coll.name!},${coll.phone!},${coll.address!}"}</#assign>
@@ -508,6 +505,7 @@ var webSite = '${webSite!}';
     </div>
     
     <input id="postProv" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.prov!}"</#if> type="hidden"> 
+    <input id="addressId" type="hidden">
     <div class="sureConsignee clearfix" <#if !tbOrderAddressInfo>style="display:none"</#if>>
     <div class="simuCheckBox select"><#if tbOrderAddressInfo??>${tbOrderAddressInfo.name!}</#if></div>
     <div id="fullAreaText" class="fl congineeText">
@@ -582,9 +580,8 @@ var postRulers = ${postRulers!};
         <ul>
             <#list $it.choiceCon as option>
             
-            
 
-<#assign text>{"value":option.value,"text":option.text,"checked":option.checked}</#assign>
+<#assign text>{"value":option.id,"text":option.text,"checked":option.checked}</#assign>
 <#assign moduledata8=text?eval />
 <#list [moduledata8] as $it>
 <label class="fmRadio clearfix
@@ -644,7 +641,7 @@ var postRulers = ${postRulers!};
         
         
 
-<#assign text>{"choiceCon":[{"text":"有货先发","value":"yhxf","checked":true}]}</#assign>
+<#assign text>{"choiceCon":[{"text":"有货先发","id":"yhxf","checked":true}]}</#assign>
 <#assign moduledata9=text?eval />
 <#list [moduledata9] as $it>
 <div class="portCommonBox marBottom shipOption">
@@ -659,9 +656,8 @@ var postRulers = ${postRulers!};
         <ul>
             <#list $it.choiceCon as option>
             
-            
 
-<#assign text>{"value":option.value,"text":option.text,"checked":option.checked}</#assign>
+<#assign text>{"value":option.id,"text":option.text,"checked":option.checked}</#assign>
 <#assign moduledata10=text?eval />
 <#list [moduledata10] as $it>
 <label class="fmRadio clearfix
@@ -805,12 +801,8 @@ var postRulers = ${postRulers!};
             </#if>
         
         
-        
-            <#if $it.minValue??>
-                minValue="${$it.minValue!}"
-            <#else>
-                minValue="1"
-            </#if>
+          
+            minValue="0" 
         
         
         
@@ -1033,7 +1025,6 @@ var postRulers = ${postRulers!};
 
 
 
-
 <input type="hidden" id="updateServicePrice">
 
 <script>
@@ -1048,6 +1039,8 @@ var serviceRulers = ${serviceRulers!};
 
 
 </div>
+
+
 
 
 
@@ -1092,6 +1085,8 @@ var serviceRulers = ${serviceRulers!};
         </p>
     </div>
 </div>
+
+
 
 
 
