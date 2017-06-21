@@ -5,6 +5,7 @@ import com.openJar.responses.sgpay.RefundResponse;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayerException;
 
@@ -80,7 +81,7 @@ public class XzPayerServiceImpl extends PayerServiceAble {
         req.setOutTradeId(String.valueOf(orderPayApply.getOid()));
 
         List<String> subTradeIdList = new ArrayList<String>();
-        subTradeIdList.add(UUID.randomUUID().toString());
+        subTradeIdList.add(UUIDGenerator.getUUID());
         req.setSubOutTradeId(subTradeIdList);
         req.setDfGroupId(itemOrder.selSender().getSenderId());
 
