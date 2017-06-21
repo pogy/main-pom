@@ -61,6 +61,7 @@ public class CartAction {
     @RequestMapping("/order/removeChildOrders.json")
     @ResponseBody
     public JSONObject removeChildOrders(List<Long> cids, HttpSession session) {
+        //TODO: PersonalSession 是当前登录用户， 此处没有用到，应该删除无用代码，查找类似位置修改
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
@@ -77,6 +78,7 @@ public class CartAction {
      * @return
      */
     @RequestMapping("/order/editChildOrderSKu.json")
+    //TODO: 这里缺一个@ResponseBody, 我可以给你加上，但是还是想提醒你一下，仔细点
     public JSONObject editChildOrderSKu(Long cid, String color, String size, HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
