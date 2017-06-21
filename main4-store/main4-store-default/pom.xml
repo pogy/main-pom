@@ -114,6 +114,11 @@
             <version>3.1.3</version>
         </dependency>
         <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>opensearch</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-item-api</artifactId>
             <version>4.1.7-SNAPSHOT</version>

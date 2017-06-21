@@ -22,7 +22,12 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.vo.OpenItemVo;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.bo.ShopForCdnBo;
+import com.shigu.main4.storeservices.vo.SearchGoodsVo;
 import com.shigu.main4.vo.*;
+import com.shigu.opensearchsdk.OpenSearch;
+import com.shigu.opensearchsdk.builder.AggsBuilder;
+import com.shigu.opensearchsdk.builder.FilterBuilder;
+import com.shigu.opensearchsdk.response.Facet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -81,6 +86,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
 
     @Autowired
     private SearcherClient searcherClient;
+
+    @Resource(name = "shiguOpenSearch")
+    private OpenSearch openSearch;
 
     @Resource
     private ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
@@ -469,24 +477,16 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             ShiguShop shiguShop = shiguShopMapper.selectFieldsByPrimaryKey(shopId, FieldUtil.codeFields("shop_id,web_site"));
             if (shiguShop != null) {
                 // 1. ES 查询店铺商品数量（按类目分）
-                SearchResponse response = ElasticConfiguration.searchClient
-                        .prepareSearch("goods")
-                        .setTypes(shiguShop.getWebSite())   // 设置分站
-                        .setQuery(QueryBuilders.boolQuery()
-                                .must(QueryBuilders.termQuery("storeId", shopId))
-                                .filter(QueryBuilders.termQuery("is_off", 0))
-                        )
-                        .addAggregation(AggregationBuilders.terms("cname_count").field("cid").size(1000)
-                                .subAggregation(AggregationBuilders.count("result").field("goodsId")))
-                        .execute().actionGet();
+                com.shigu.opensearchsdk.response.SearchResponse<SearchGoodsVo> searchResponse = openSearch.searchFrom(SearchGoodsVo.class)
+                        .addFilter(FilterBuilder.number("store_id", shopId))
+                        .addAggs(AggsBuilder.count("cid").size(1000))
+                        .execute();
 
-                Aggregation cname_count = response.getAggregations().get("cname_count");
-                // 2. 取得店铺存在商品的类目ID
+                List<Facet.Bucket> items = searchResponse.getResult().getFacet().get(0).getItems();
                 List<Long> cids = new ArrayList<>();
                 cids.add(-10086L);// In empty 会尴尬的
-                LongTerms buckets = (LongTerms) cname_count;
-                for (Terms.Bucket bucket : buckets.getBuckets()) {
-                    cids.add((Long) bucket.getKeyAsNumber());
+                for (Facet.Bucket item : items) {
+                    cids.add(((Facet.LongBucket) item).getValue());
                 }
 
                 // 3. 商品所属类目
@@ -507,13 +507,13 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                 // 5. 父级类目Map<父类目ID，父类目信息>
                 Map<Long, CatPolymerization> polymerizationMap = new HashMap<>();
                 for (ShiguTaobaocat parentTaobaoCat : parentTaobaoCats) {
-                    CatPolymerization catPolymerization = newCatPolymerization(parentTaobaoCat, buckets);
+                    CatPolymerization catPolymerization = newCatPolymerization(parentTaobaoCat, items);
                     catPolymerization.setSubPolymerizations(new ArrayList<CatPolymerization>());
                     polymerizationMap.put(parentTaobaoCat.getCid(), catPolymerization);
                 }
                 // 6. 处理商品类目
                 for (ShiguTaobaocat shiguTaobaocat : shiguTaobaocats) {
-                    CatPolymerization polymerization = newCatPolymerization(shiguTaobaocat, buckets);
+                    CatPolymerization polymerization = newCatPolymerization(shiguTaobaocat, items);
                     CatPolymerization parentPolymerization = polymerizationMap.get(shiguTaobaocat.getParentCid());
 
                     // 有父类目的，加入其父类目的子类目列表%……%￥￥……&*……&
@@ -531,13 +531,16 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         return polymerizationList;
     }
 
-    private CatPolymerization newCatPolymerization(ShiguTaobaocat shiguTaobaocat, LongTerms buckets) {
+    private CatPolymerization newCatPolymerization(ShiguTaobaocat shiguTaobaocat, List<Facet.Bucket> buckets) {
         CatPolymerization polymerization = new CatPolymerization();
         polymerization.setName(shiguTaobaocat.getCname());
         polymerization.setCid(shiguTaobaocat.getCid());
-        Terms.Bucket bucket = buckets.getBucketByKey(shiguTaobaocat.getCid().toString());
-        if (bucket != null)
-            polymerization.setNumber(bucket.getDocCount());
+        for (Facet.Bucket bucket : buckets) {
+            if (((Facet.LongBucket) bucket).getValue().equals(shiguTaobaocat.getCid())) {
+                polymerization.setNumber(((long) bucket.getCount()));
+                break;
+            }
+        }
         return polymerization;
     }
 
