@@ -202,17 +202,19 @@ public class CartService {
     public void editChildOrderSKu(Long cid, String color, String size) {
         ItemCartExample itemCartExample = new ItemCartExample();
         itemCartExample.createCriteria().andCartIdEqualTo(cid);
-        //数据库中的cart
         List<ItemCart> carts = itemCartMapper.selectByExample(itemCartExample);
-        ItemCart cart = carts.get(0);
         ItemProductSkuExample itemProductSkuExample = new ItemProductSkuExample();
         ItemProductSkuExample.Criteria criteria = itemProductSkuExample.createCriteria();
+        if (carts.size() == 0 || carts.get(0) == null) {
+            return;
+        }
+        ItemCart cart = carts.get(0);
         criteria.andPidEqualTo(cart.getPid());
         criteria.andColorEqualTo(color);
         criteria.andSizeEqualTo(size);
         List<ItemProductSku> itemProductSkus = itemProductSkuMapper.selectByExample(itemProductSkuExample);
         ItemProductSku sku = null;
-        if (itemProductSkus.size()==0||sku == null) {
+        if (itemProductSkus.size() == 0 || sku == null) {
             sku = new ItemProductSku();
             sku.setPid(cart.getPid());
             sku.setColor(color);
