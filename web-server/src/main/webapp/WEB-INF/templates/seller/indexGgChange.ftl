@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>四季星座网-供应商中心-设置邮箱</title>
+    <title>四季星座网-供应商中心-首页广告更换</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/safeszyx.css?t=1498117786194" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/indexGgChange.css?t=1498117771780" rel="stylesheet">
     
   </head>
 <body>
@@ -241,32 +241,47 @@ var webSite = '${webSite!}';
             <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
             <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货广告</a></li> 
-            <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li> 
+            <li><a class="selected"  href="${main_host!}seller/indexGgChange.htm">首页广告管理</a></li> 
         </ul> 
     </div>
     
     <div class="content shadow-box">
-        <div class="headtop clearfix">
-            <em>绑定邮箱</em>
+        <div class="adrPosition">
+            <div class="posWrap">
+                <div class="posList">
+                    <div class="posTitle">
+                        <ul>
+                            <li class="num">广告位编号</li>
+                            <li class="time">有效期</li>
+                            <li class="pic">商品图片</li>
+                            <li class="operate">操作</li>
+                        </ul>
+                    </div>
+                    <#if (myIndexTerms?size) gt 0>
+                    <div class="posItem">
+                        <#list myIndexTerms as good>
+                        <ul data-id="${good.codeId!}">
+                            <li class="num">${good.type!}（${good.code!}）</li>
+                            <li class="time">${good.startOnline!} 至 ${good.endOnline!}</li>
+                            <#if good.goodsId?? && good.goodsId != "">
+                            <li class="pic"><a href="http://${good.webSite!}.571xz.com/item.htm?id=${good.goodsId!}" target="_blank"><img src="${good.picUrl!}_72x72.jpg" ></a></li>
+                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.codeId!}" data-termId="${good.typeId!}" data-web="${good.webSite!}">更换商品</b></li>
+                            <#else>
+                            <li class="pic noPic">暂无商品</li>
+                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.codeId!}" data-termId="${good.typeId!}" data-web="${good.webSite!}">上款</b></li>
+                            </#if>
+                        </ul>
+                        </#list>
+                    </div>
+                    <#else>
+                    <div class="noAdr">
+                        <h3>暂无广告位！</h3>
+                    </div>
+                    </#if>
+                </div>
+            </div>
         </div>
-        
-        <ul class="formbox">
-            <li class="clearfix">
-                <label>邮箱地址：</label>
-                <input class="textinput" id="email" placeholder="请输入您的电子邮箱" value="${mail.email!}">
-                <#if mail.msg??><span class="tip"><em class="iconfont">&#xe67e;</em>${mail.msg!}</span></#if>
-            </li>
-            <li class="clearfix">
-<#assign text>{"text":'保存',"id":'dosubmit'}</#assign>
-<#assign $it=text?eval />
-                                    <button class="gyButton" jbtn="" id="dosubmit">保存</button>
-                
-            </li>
-        </ul>
     </div>
-    
-    
-    
 </div>
 <div class="footer">
     <div class="inner">
@@ -300,7 +315,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/safeszyx.js?t=1498117786194"></script>
+<script src="http://style.571xz.com/gys5/js/indexGgChange.js?t=1498117771780"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
