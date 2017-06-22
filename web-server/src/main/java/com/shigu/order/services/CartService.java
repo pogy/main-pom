@@ -4,7 +4,6 @@ import com.opentae.data.mall.beans.ItemCart;
 import com.opentae.data.mall.beans.ItemProductSku;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ItemCartExample;
-import com.opentae.data.mall.examples.ItemProductSkuExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.ItemCartMapper;
 import com.opentae.data.mall.interfaces.ItemProductSkuMapper;
@@ -200,28 +199,23 @@ public class CartService {
      * @param size  尺码
      */
     public void editChildOrderSKu(Long cid, String color, String size) {
-        ItemCartExample itemCartExample = new ItemCartExample();
-        itemCartExample.createCriteria().andCartIdEqualTo(cid);
-        List<ItemCart> carts = itemCartMapper.selectByExample(itemCartExample);
-        ItemProductSkuExample itemProductSkuExample = new ItemProductSkuExample();
-        ItemProductSkuExample.Criteria criteria = itemProductSkuExample.createCriteria();
-        if (carts.size() == 0 || carts.get(0) == null) {
+        ItemCart cart = itemCartMapper.selectByPrimaryKey(cid);
+        if (cart==null){
             return;
         }
-        ItemCart cart = carts.get(0);
-        criteria.andPidEqualTo(cart.getPid());
-        criteria.andColorEqualTo(color);
-        criteria.andSizeEqualTo(size);
-        List<ItemProductSku> itemProductSkus = itemProductSkuMapper.selectByExample(itemProductSkuExample);
-        ItemProductSku sku = null;
-        if (itemProductSkus.size() == 0 || sku == null) {
+        ItemProductSku itemProductSku=new ItemProductSku();
+        itemProductSku.setPid(cart.getPid());
+        itemProductSku.setColor(color);
+        itemProductSku.setSize(size);
+        ItemProductSku sku = itemProductSkuMapper.selectOne(itemProductSku);
+        if (sku == null) {
             sku = new ItemProductSku();
             sku.setPid(cart.getPid());
             sku.setColor(color);
             sku.setSize(size);
             itemProductSkuMapper.insertSelective(sku);
-            cart.setSkuId(sku.getSkuId());
-            itemCartMapper.updateByPrimaryKeySelective(cart);
         }
+        cart.setSkuId(sku.getSkuId());
+        itemCartMapper.updateByPrimaryKeySelective(cart);
     }
 }
