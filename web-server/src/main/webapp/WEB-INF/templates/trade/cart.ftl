@@ -21,8 +21,6 @@
 
     
 
-
-
     
 
     
@@ -228,7 +226,7 @@ var webSite = '${webSite!}';
     class="fmButton
         
          fmButton-out
-        
+         submitOrders
     "
     
         jbtn="click"
@@ -532,14 +530,14 @@ var webSite = '${webSite!}';
         <#if childOrder.disabled == true>
         <a href="javascript:;" class="out"><img src="${childOrder.imgsrc!}_240x240.jpg" class="fl"></a>
         <#else>
-        <a href="${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsid!}" target="_blank"><img src="${childOrder.imgsrc!}_240x240.jpg" class="fl"></a>
+        <a href="http://${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsid!}" target="_blank"><img src="${childOrder.imgsrc!}_240x240.jpg" class="fl"></a>
         </#if>
         <div class="fl goodsTitle fc3">
             <h4>
                 <#if childOrder.disabled == true>
                 <a href="javascript:;" class="out">${childOrder.title!}</a>
                 <#else>
-                <a href="${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsid!}" target="_blank">${childOrder.title!}</a>
+                <a href="http://${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsid!}" target="_blank">${childOrder.title!}</a>
                 </#if>
             </h4>
             <p class="fwb">商品货号：${childOrder.goodsNo!}</p>
@@ -801,7 +799,6 @@ var webSite = '${webSite!}';
 
 
 
-
             </#list>
         </div>
     </div>
@@ -899,7 +896,7 @@ var webSite = '${webSite!}';
     class="fmButton
         
          fmButton-out
-        
+         submitOrders
     "
     
     
@@ -909,8 +906,10 @@ var webSite = '${webSite!}';
         </#if>
     
     
-    
-        id="submitOrders"
+        
+        <#if $it.id??>
+            id=""
+        </#if>
     
 >
 
@@ -1000,6 +999,8 @@ var webSite = '${webSite!}';
         </p>
     </div>
 </div>
+
+
 
 
 

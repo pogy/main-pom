@@ -4,7 +4,6 @@ import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.order.services.CartService;
-import com.shigu.order.vo.CartPageVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;
@@ -37,21 +36,78 @@ public class CartAction {
         return "trade/cart";
     }
 
-    @RequestMapping("submitOrders")
+
+    /**
+     * 单个删除进货车产品
+     *
+     * @param cid
+     * @return
+     */
+    @RequestMapping("/order/removeChildOrder.json")
     @ResponseBody
-    public JSONObject submit(String childOrderIds, HttpSession session) throws JsonErrException {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    public JSONObject removeChildOrder(Long cid) {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
-        String[] split = childOrderIds.split(",");
-        List<Long> cids = new ArrayList<>(split.length);
-        for (String s : split) {
-            try {
-                cids.add(Long.valueOf(s));
-            } catch (NumberFormatException ignored) {
-            }
-        }
-        rsp.setData(cartService.submitOrders(cids, ps.getUserId()));
+        cartService.removeChildOrder(cid);
         return JSONObject.fromObject(rsp);
     }
+
+    /**
+     * 批量删除进货车产品
+     *
+     * @param cids
+     * @return
+     */
+    @RequestMapping("/order/removeChildOrders.json")
+    @ResponseBody
+    public JSONObject removeChildOrders(String cids) throws JsonErrException {
+        ResponseBase rsp = new ResponseBase();
+        rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
+        cartService.removeAllOrders(parseIds(cids));
+        return JSONObject.fromObject(rsp);
+    }
+
+    /**
+     * 修改进货车产品sku
+     *
+     * @param cid
+     * @param color
+     * @param size
+     * @return
+     */
+    @RequestMapping("/order/editChildOrderSKu.json")
+    @ResponseBody
+    public JSONObject editChildOrderSKu(Long cid, String color, String size) {
+        ResponseBase rsp = new ResponseBase();
+        rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
+        cartService.editChildOrderSKu(cid, color, size);
+        return JSONObject.fromObject(rsp);
+    }
+
+    @RequestMapping("modCartOrderNum")
+    @ResponseBody
+    public JSONObject modCartOrderNum(Long cid, Integer num) throws JsonErrException {
+        ResponseBase rsp = new ResponseBase();
+        rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
+        cartService.modCartOrderNum(cid, num);
+        return JSONObject.fromObject(rsp);
+    }
+    /**
+     * ID串转货
+     * @param ids
+     * @return
+     * @throws JsonErrException
+     */
+    private List<Long> parseIds(String ids) throws JsonErrException {
+        if(ids==null){
+            throw new JsonErrException("ids参数异常");
+        }
+        List<Long> idslist=new ArrayList<>();
+        String[] idsarr=ids.split(",");
+        for(String id:idsarr){
+            idslist.add(Long.valueOf(id));
+        }
+        return idslist;
+    }
+
 }

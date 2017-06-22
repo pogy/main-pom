@@ -1,8 +1,12 @@
 package com.shigu.order.services;
 
+import com.opentae.data.mall.beans.ItemCart;
+import com.opentae.data.mall.beans.ItemProductSku;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ItemCartExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.ItemCartMapper;
+import com.opentae.data.mall.interfaces.ItemProductSkuMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
@@ -19,6 +23,8 @@ import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
 import com.shigu.order.vo.OrderSubmitVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,16 +40,23 @@ import java.util.Map;
 @Service
 public class CartService {
 
+    private static final Logger logger = LoggerFactory.getLogger(CartService.class);
+
     @Autowired
     private ShiguShopMapper shiguShopMapper;
+
+    @Autowired
+    private ItemCartMapper itemCartMapper;
 
     @Autowired
     private ShowForCdnService showForCdnService;
 
     @Autowired
     private RedisIO redisIO;
+
     /**
      * 进货车页面
+     *
      * @param userId 用户ID
      * @return 页面数据
      */
@@ -102,41 +115,28 @@ public class CartService {
 
     /**
      * 修改进货车内产品数量
+     *
      * @param cid 进货车产品ID cartId
      * @param num 商品数量
      */
-    public void modCartOrderNum(Long cid, Integer num) {
-
+    public void modCartOrderNum(Long cid, Integer num) throws JsonErrException {
+        if (num == null || num <= 0) {
+            throw new JsonErrException("数量异常");
+        }
+        if (cid == null) {
+            throw new JsonErrException("进货车商品编号缺失");
+        }
+        ItemCartExample itemCartExample = new ItemCartExample();
+        itemCartExample.createCriteria().andCartIdEqualTo(cid);
+        ItemCart itemCart = new ItemCart();
+        itemCart.setNum(num);
+        itemCartMapper.updateByExampleSelective(itemCart, itemCartExample);
     }
 
-    /**
-     * 修改进货车产品sku
-     * @param cid 产品ID cartId
-     * @param color 颜色
-     * @param size 尺码
-     */
-    public void editChildOrderSKu(Long cid, String color, String size) {
-
-    }
-
-    /**
-     * 删除进货车一件产品
-     * @param cid cartId
-     */
-    public void removeChildOrder(Long cid) {
-
-    }
-
-    /**
-     * 批量删除购物车产品
-     * @param cids 产品ID列表
-     */
-    public void removeAllOrders(List<Long> cids) {
-
-    }
 
     /**
      * 多选提交订单
+     *
      * @param cids 产品ID列表
      */
     public String submitOrders(List<Long> cids, Long userId) throws JsonErrException {
@@ -159,5 +159,63 @@ public class CartService {
         submitVo.setProducts(cartVOS);
         redisIO.putTemp(uuid, submitVo, 600);
         return uuid;
+    }
+
+    /**
+     * 删除进货车一件产品
+     *
+     * @param cid cartId
+     */
+    public void removeChildOrder(Long cid) {
+        if (null == cid) {
+            return;
+        }
+        ItemCartExample itemCartExample = new ItemCartExample();
+        ItemCartExample.Criteria criteria = itemCartExample.createCriteria();
+        criteria.andCartIdEqualTo(cid);
+        itemCartMapper.deleteByExample(itemCartExample);
+    }
+
+    /**
+     * 批量删除购物车产品
+     *
+     * @param cids 产品ID列表
+     */
+    public void removeAllOrders(List<Long> cids) {
+        ItemCartExample itemCartExample = new ItemCartExample();
+        ItemCartExample.Criteria criteria = itemCartExample.createCriteria();
+        criteria.andCartIdIn(cids);
+        itemCartMapper.deleteByExample(itemCartExample);
+    }
+
+    @Autowired
+    private ItemProductSkuMapper itemProductSkuMapper;
+
+    /**
+     * 修改进货车产品sku
+     *
+     * @param cid   产品ID cartId
+     * @param color 颜色
+     * @param size  尺码
+     */
+    public void editChildOrderSKu(Long cid, String color, String size) {
+        ItemCart cart = itemCartMapper.selectByPrimaryKey(cid);
+        if (cart==null){
+            return;
+        }
+        ItemProductSku itemProductSku=new ItemProductSku();
+        itemProductSku.setPid(cart.getPid());
+        itemProductSku.setColor(color);
+        itemProductSku.setSize(size);
+        ItemProductSku sku = itemProductSkuMapper.selectOne(itemProductSku);
+        if (sku == null) {
+            sku = new ItemProductSku();
+            sku.setPid(cart.getPid());
+            sku.setColor(color);
+            sku.setSize(size);
+            itemProductSkuMapper.insertSelective(sku);
+        }
+        cart.setSkuId(sku.getSkuId());
+        itemCartMapper.updateByPrimaryKeySelective(cart);
     }
 }
