@@ -162,11 +162,11 @@
                             <#if bo.scid??>
                                 <#assign timeparam=timeparam+"&scid="+bo.scid/>
                             </#if>
-                            <#if bo.priceFrom??>
-                                <#assign timeparam=timeparam+"&priceFrom="+bo.priceFrom/>
+                            <#if bo.beginPrice??>
+                                <#assign timeparam=timeparam+"&beginPrice="+bo.beginPrice/>
                             </#if>
-                            <#if bo.priceTo??>
-                                <#assign timeparam=timeparam+"&priceTo="+bo.priceTo/>
+                            <#if bo.endPrice??>
+                                <#assign timeparam=timeparam+"&endPrice="+bo.endPrice/>
                             </#if>
                             <#if bo.order??>
                                 <#assign timeparam=timeparam+"&order="+bo.order/>
@@ -258,11 +258,11 @@
         <#if bo.scid??>
             <#assign pageparam=pageparam+"&scid="+bo.scid/>
         </#if>
-        <#if bo.priceFrom??>
-            <#assign pageparam=pageparam+"&priceFrom="+bo.priceFrom/>
+        <#if bo.beginPrice??>
+            <#assign pageparam=pageparam+"&beginPrice="+bo.beginPrice/>
         </#if>
-        <#if bo.priceTo??>
-            <#assign pageparam=pageparam+"&priceTo="+bo.priceTo/>
+        <#if bo.endPrice??>
+            <#assign pageparam=pageparam+"&endPrice="+bo.endPrice/>
         </#if>
         <#if bo.order??>
             <#assign pageparam=pageparam+"&order="+bo.order/>
