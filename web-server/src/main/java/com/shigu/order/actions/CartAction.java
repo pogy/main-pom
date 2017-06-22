@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,8 +45,7 @@ public class CartAction {
      */
     @RequestMapping("/order/removeChildOrder.json")
     @ResponseBody
-    public JSONObject removeChildOrder(Long cid, HttpSession session) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    public JSONObject removeChildOrder(Long cid) {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
         cartService.removeChildOrder(cid);
@@ -60,11 +60,10 @@ public class CartAction {
      */
     @RequestMapping("/order/removeChildOrders.json")
     @ResponseBody
-    public JSONObject removeChildOrders(List<Long> cids, HttpSession session) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    public JSONObject removeChildOrders(String cids) throws JsonErrException {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
-        cartService.removeAllOrders(cids);
+        cartService.removeAllOrders(parseIds(cids));
         return JSONObject.fromObject(rsp);
     }
 
@@ -77,8 +76,8 @@ public class CartAction {
      * @return
      */
     @RequestMapping("/order/editChildOrderSKu.json")
-    public JSONObject editChildOrderSKu(Long cid, String color, String size, HttpSession session) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+    @ResponseBody
+    public JSONObject editChildOrderSKu(Long cid, String color, String size) {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
         cartService.editChildOrderSKu(cid, color, size);
@@ -87,10 +86,28 @@ public class CartAction {
 
     @RequestMapping("modCartOrderNum")
     @ResponseBody
-    public JSONObject modCartOrderNum(Long cid, Integer num, HttpSession session) throws JsonErrException {
+    public JSONObject modCartOrderNum(Long cid, Integer num) throws JsonErrException {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
         cartService.modCartOrderNum(cid, num);
         return JSONObject.fromObject(rsp);
     }
+    /**
+     * ID串转货
+     * @param ids
+     * @return
+     * @throws JsonErrException
+     */
+    private List<Long> parseIds(String ids) throws JsonErrException {
+        if(ids==null){
+            throw new JsonErrException("ids参数异常");
+        }
+        List<Long> idslist=new ArrayList<>();
+        String[] idsarr=ids.split(",");
+        for(String id:idsarr){
+            idslist.add(Long.valueOf(id));
+        }
+        return idslist;
+    }
+
 }
