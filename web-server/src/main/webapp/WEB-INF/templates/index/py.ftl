@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/otherIndex/css/py.css?t=1496991197858" rel="stylesheet">
+    <link href="http://style.571xz.com/otherIndex/css/py.css?t=1498111382758" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/otherIndex/js/py.js?t=1496991197858"></script>
+    <script src="http://style.571xz.com/otherIndex/js/py.js?t=1498111382758"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -508,43 +508,6 @@ $('.fixtopbar .tabbox li').on('click', function(){
     </div>
 </div>
 <!--#mobile-jump-js 移动端跳转js-->
-<script>/*============ otherIndex/page#footerinfo BEGIN ============*/
-
-${test!}
-var oldonload;
-if (/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))) {
-    try {
-        if (/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
-            var b_m571xz=!0;
-            try{
-                var windowLocation = window.location.href;
-                if(windowLocation.indexOf("from=wap")!=-1){
-                    b_m571xz=!1;
-                        oldonload = window.onload;   
-                        window.onload = setTimeout_addbackchange; 
-                }
-            }catch(e1){
-                
-            }
-            if(b_m571xz){
-            window.location.href = "http://m.571xz.com?website=hz";
-            }
-        }
-    }catch(e){}
-}
-function setTimeout_addbackchange(){
-    var backchange = document.createElement("div");
-    backchange.innerHTML = '<div style="margin:0 auto;height:60px;width:90%;" class="j_change_site"><div style="width:50%;height:55px;float:left;"><a href="http://weixin.571xz.com/appmobile.html"><div style="height:55px;float:right;width:50%;background:url(http://www.571xz.com/jquery2015/imgTempindex/mobilechange.png) no-repeat;background-position:0px -73px;"></div></a></div><div style="width:50%;height:55px;float:left;"><a href="http://m.571xz.com?website=hz"><div style="height:55px;float:right;width:50%;background:url(http://www.571xz.com/jquery2015/imgTempindex/mobilechange.png) no-repeat;background-position:0px 4px;"></div></a></div></div>';
-    document.body.insertBefore(backchange,document.body.firstChild);
-    if(typeof oldonload == 'function') {   
-         oldonload();
-     }
-}
-
-/*============ otherIndex/page#footerinfo END ============*/
-
-
-</script>
 <div class="footer">
     <div class="inner">
         <p class="sitemap" style="width:650px;"> 
