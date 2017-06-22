@@ -126,4 +126,12 @@ public class MackProvcityTest extends BaseTest {
         System.out.println(JSON.toJSONString(pvs));
     }
 
+    @Test
+    public void ttt(){
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("step");
+        stringBuilder.append(":");
+        System.out.println(stringBuilder.toString());
+    }
+
 }
