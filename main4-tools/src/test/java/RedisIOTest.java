@@ -66,4 +66,11 @@ public class RedisIOTest {
     public void test(){
         System.out.println(redisIO.getJedis().configGet("_density_pv_item_*"));
     }
+
+    @Test
+    public void hsetTest(){
+        redisIO.hset("imkey","123",11);
+        redisIO.hset("imkey","456",11);
+//        System.out.println(redisIO.getJedis().hgetAll());
+    }
 }
