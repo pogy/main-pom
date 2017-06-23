@@ -74,7 +74,6 @@ public class BrowerMonitorServiceImpl implements BrowerMonitorService{
             }
 
             if ("item".equalsIgnoreCase(type)) {
-                Random ra =new Random();
                 StringBuilder redisKeySb = new StringBuilder();
                 redisKeySb.append(browerRecord.getItemId()).append("_").append(DateUtil.dateToString(browerRecord.getInTime(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
                 String redisKey = redisKeySb.toString();

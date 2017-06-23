@@ -37,11 +37,6 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
     @Autowired
     private RedisIO redisIO;
 
-    @Override
-    public ItemBrowerFlowVO selRealBrower(Long itemId) {
-        return null;
-    }
-
     /**
      * 真实浏览
      *

@@ -5,9 +5,11 @@ import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.shigu.main4.monitor.services.ItemBrowerFixService;
 import com.shigu.main4.tools.RedisIO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service("itemBrowerFixService")
 public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
     @Autowired
     private RedisIO redisIO;
@@ -21,20 +23,15 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
      */
     @Override
     public void fixNow(String key) {
-        Date beginFlowFixedTime  = new Date();
-        Map<String, String> itemFlowMap = redisIO.getJedis().hgetAll("item_flow");
+        Map<String, String> itemFlowMap = redisIO.getJedis().hgetAll(key);//key:item_flow
 //        redisIO.getJedis().hmset("item_flow_temp", itemFlowMap);
-        redisIO.getJedis().del("item_flow");
+        redisIO.getJedis().del(key);
         Map<String, List<String>> itemIpsMap = new HashMap<String, List<String>>();
 
         for (Map.Entry<String, String> entryItem : itemFlowMap.entrySet()) {
             String[] goodsIdExStr = entryItem.getKey().split("_");
-            String currentGoodsIdStr = null;
-            if (goodsIdExStr != null && 1 < goodsIdExStr.length) {
-                currentGoodsIdStr = goodsIdExStr[0];
-            }
+            String currentGoodsIdStr = goodsIdExStr[0];
             String currentIpStr = entryItem.getValue();
-
             List<String> ipList = itemIpsMap.get(currentGoodsIdStr);
             if (ipList == null) {
                 ipList = new ArrayList<String>();
@@ -54,7 +51,6 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
             goodsCountForsearch.setUpMan(0L);
             goodsCountForsearch.setHadGoat(0);
             goodsCountForsearch.setWebSite("hz");
-            goodsCountForsearch.setFlowFixedTime(beginFlowFixedTime);
             goodsCountForsearchList.add(goodsCountForsearch);
         }
         goodsCountForsearchMapper.insertOrUpdate(goodsCountForsearchList);

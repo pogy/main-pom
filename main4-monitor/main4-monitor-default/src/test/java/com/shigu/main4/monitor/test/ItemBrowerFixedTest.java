@@ -13,6 +13,9 @@ import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.Jobs;
+import com.shigu.main4.monitor.services.ItemBrowerFixService;
+import com.shigu.main4.tools.RedisIO;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.elasticsearch.action.search.SearchResponse;
@@ -43,7 +46,7 @@ import java.util.*;
  * Created by zhaohongbo on 17/6/21.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations="classpath*:/spring/store_test.xml" )
+@ContextConfiguration(locations="classpath:/spring/store_test.xml" )
 public class ItemBrowerFixedTest {
 
     @Autowired
@@ -52,6 +55,36 @@ public class ItemBrowerFixedTest {
     @Autowired
     private GoodsCountForsearchMapper goodsCountForsearchMapper;
 
+    @Autowired
+    private ItemBrowerFixService itemBrowerFixService;
+
+    @Autowired
+    private RedisIO redisIO;
+
+    @Test
+    public void testInPage() {
+        StringBuilder redisKeySb = new StringBuilder();
+        redisKeySb.append("20770888").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
+        String redisKey = redisKeySb.toString();
+        redisIO.hset("item_flow", redisKey, "192.168.1.1");
+        redisKeySb = new StringBuilder();
+        redisKeySb.append("20770888").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
+        redisKey = redisKeySb.toString();
+        redisIO.hset("item_flow", redisKey, "192.168.1.2");
+        redisKeySb = new StringBuilder();
+        redisKeySb.append("20770888").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
+        redisKey = redisKeySb.toString();
+        redisIO.hset("item_flow", redisKey, "192.168.1.1");
+        redisKeySb = new StringBuilder();
+        redisKeySb.append("20770889").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
+        redisKey = redisKeySb.toString();
+        redisIO.hset("item_flow", redisKey, "192.168.1.1");
+    }
+
+    @Test
+    public void testFixNow() {
+        itemBrowerFixService.fixNow("item_flow");
+    }
 
     @Test
     public void transPVIP() {
