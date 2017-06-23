@@ -1196,6 +1196,10 @@ public class ShopAction {
         return indexGoatVO;
     }
 
+    /**
+     * 首页广告管理，更换广告接口
+     * @return
+     */
     @RequestMapping("seller/setNewIndexGoodsData")
     @ResponseBody
     public JSONObject setNewIndexGoodsData(Long id, Long goodsId, HttpSession session) throws JsonErrException {
@@ -1239,4 +1243,6 @@ public class ShopAction {
         }
         return null;
     }
+
+
 }
