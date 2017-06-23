@@ -24,6 +24,7 @@ import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.exceptions.ShopDomainException;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.goat.service.Goat;
 import com.shigu.main4.goat.service.GoatDubboService;
 import com.shigu.main4.goat.vo.GoatVO;
 import com.shigu.main4.goat.vo.ItemGoatVO;
@@ -1167,12 +1168,12 @@ public class ShopAction {
         String webSite = shopSession.getWebSite();
         GoatLicenseExample goatLicenseExample = new GoatLicenseExample();
         goatLicenseExample.createCriteria().andShopIdEqualTo(shopId);
-        List<Long> goatIds = BeanMapper.getFieldList(goatLicenseMapper.selectFieldsByExample(goatLicenseExample,"goat_id"),"goatId",Long.class);
+        List<GoatLicense> goatLicenses = goatLicenseMapper.selectFieldsByExample(goatLicenseExample,"goat_id,spread_from_time,spread_to_time");
         List<IndexGoatVO> myIndexTerms = Lists.newArrayList();
-        for (Long goatId:goatIds) {
+        for (GoatLicense goatLicense:goatLicenses) {
             try {
-                ItemGoatVO goatVO = goatDubboService.selGoatById(goatId, GoatType.ItemGoat);
-                IndexGoatVO indexGoatVO = mapItemGoatVOToIndexGoatVO(webSite, goatVO);
+                ItemGoatVO goatVO = goatDubboService.selGoatById(goatLicense.getGoatId(), GoatType.ItemGoat);
+                IndexGoatVO indexGoatVO = mapItemGoatVOToIndexGoatVO(webSite, goatVO, goatLicense);
                 myIndexTerms.add(indexGoatVO);
             } catch (GoatException e) {
             //    排除不匹配的广告（非商品广告）
@@ -1186,13 +1187,14 @@ public class ShopAction {
      * 将ItemGoatVO对象数据转化为IndexGoatVO对象数据
      * @return
      */
-    private IndexGoatVO mapItemGoatVOToIndexGoatVO(String webSite, ItemGoatVO itemGoatVO) {
+    private IndexGoatVO mapItemGoatVOToIndexGoatVO(String webSite, ItemGoatVO itemGoatVO, GoatLicense goatLicense) {
         IndexGoatVO indexGoatVO = BeanMapper.map(itemGoatVO, IndexGoatVO.class);
         indexGoatVO.setCodeId(itemGoatVO.getGoatId());
-        indexGoatVO.setStartOnline(itemGoatVO.getFromTime());
-        indexGoatVO.setEndOnline(itemGoatVO.getToTime());
         indexGoatVO.setWebSite(webSite);
+        indexGoatVO.setCode(itemGoatVO.getDescription());
         indexGoatVO.setType(itemGoatVO.getTitle());
+        indexGoatVO.setStartOnline(goatLicense.getSpreadFromTime());
+        indexGoatVO.setEndOnline(goatLicense.getSpreadToTime());
         return indexGoatVO;
     }
 
@@ -1207,6 +1209,17 @@ public class ShopAction {
         ShopSession shopSession = personalSession.getLogshop();
         String webSite = shopSession.getWebSite();
         try {
+            GoatLicenseExample goatLicenseExample = new GoatLicenseExample();
+            goatLicenseExample.createCriteria().andGoatIdEqualTo(id);
+            List<GoatLicense> goatLicenses = goatLicenseMapper.selectByExample(goatLicenseExample);
+            if(goatLicenses.size()<=0){
+                throw new JsonErrException("没有找到对应的广告授权记录");
+            }
+            GoatLicense goatLicense = goatLicenses.get(0);
+            Date now = new Date();
+            if (now.before(goatLicense.getLicenseFromTime())||now.after(goatLicense.getLicenseToTime())) {
+                throw new JsonErrException("不在广告授权时间内");
+            }
             ItemGoatVO itemGoatVO = goatDubboService.selGoatById(id, GoatType.ItemGoat);
             ShiguGoodsTiny good = getShiguGoodsTinyById(webSite, goodsId);
             if (good == null) {
@@ -1214,16 +1227,14 @@ public class ShopAction {
             }
             itemGoatVO.setPicUrl(good.getPicUrl());
             itemGoatVO.setItemId(goodsId);
-            Date now = new Date();
-            if (now.before(itemGoatVO.getToTime())) {
-                if (now.after(itemGoatVO.getFromTime())) {
-                    goatDubboService.publish(itemGoatVO);
-                } else {
-                    goatDubboService.preparePublish(itemGoatVO,(itemGoatVO.getFromTime().getTime() - now.getTime())/1000);
-                }
-                return JsonResponseUtil.success().element("good", good);
+            if (now.before(goatLicense.getSpreadFromTime())) {
+                goatDubboService.preparePublish(itemGoatVO, (goatLicense.getSpreadFromTime().getTime()-now.getTime())/1000);
+            } else if (now.before(goatLicense.getSpreadToTime())) {
+                goatDubboService.publish(itemGoatVO);
+            } else {
+                throw new JsonErrException("广告已过期");
             }
-            throw new JsonErrException("广告已过期");
+            return JsonResponseUtil.success().element("good", good);
         } catch (GoatException e) {
             throw new JsonErrException(e.getMessage());
         }

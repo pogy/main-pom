@@ -27,11 +27,11 @@ public class IndexGoatVO {
      */
     private String picUrl;
     /**
-     * 上线开始时间
+     * 广告开始时间
      */
     private Date startOnline;
     /**
-     * 上线结束时间
+     * 广告结束时间
      */
     private Date endOnline;
 
