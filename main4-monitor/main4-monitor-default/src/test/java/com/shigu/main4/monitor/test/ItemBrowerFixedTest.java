@@ -81,7 +81,7 @@ public class ItemBrowerFixedTest {
             tinyExample.setStartIndex(start = 0);
             tinyExample.setEndIndex(bucketSize);
             // today is 2017/06/22
-            tinyExample.createCriteria()
+            tinyExample.createCriteria().andIsClosedEqualTo(0L)
                     .andCreatedLessThanOrEqualTo(DateUtil.stringToDate("2017-06-22 00:00:00"))
 //            .andGoodsIdIn(Arrays.asList(20597888L, 20579000L, 20565125L, 20469608L, 20440630L, 20445645L, 20350398L, 20301772L, 20297240L, 20289270L, 20289301L, 20346502L, 20191246L, 20183296L, 20155018L, 10020161L, 10020139L, 10020171L))
             ;
