@@ -1,17 +1,19 @@
 package com.shigu.main4.monitor.service.impl;
 
+import com.opentae.data.mall.beans.GoodsCountForsearch;
+import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.shigu.main4.monitor.services.ItemBrowerFixService;
 import com.shigu.main4.tools.RedisIO;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     /**
      * 固化当前的浏览量数据
@@ -19,6 +21,7 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
      */
     @Override
     public void fixNow(String key) {
+        Date beginFlowFixedTime  = new Date();
         Map<String, String> itemFlowMap = redisIO.getJedis().hgetAll("item_flow");
 //        redisIO.getJedis().hmset("item_flow_temp", itemFlowMap);
         redisIO.getJedis().del("item_flow");
@@ -40,8 +43,20 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
             ipList.add(currentIpStr);
         }
 
+        List<GoodsCountForsearch> goodsCountForsearchList = new ArrayList<GoodsCountForsearch>();
         for (Map.Entry<String,  List<String>> entryItem : itemIpsMap.entrySet()) {
-
+            GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+            goodsCountForsearch.setClick(new Long(entryItem.getValue().size()));
+            goodsCountForsearch.setClickIp(new Long(new HashSet(entryItem.getValue()).size()));
+            goodsCountForsearch.setGoodsId(Long.valueOf(entryItem.getKey()));
+            goodsCountForsearch.setTrade(0L);
+            goodsCountForsearch.setUp(0L);
+            goodsCountForsearch.setUpMan(0L);
+            goodsCountForsearch.setHadGoat(0);
+            goodsCountForsearch.setWebSite("hz");
+            goodsCountForsearch.setFlowFixedTime(beginFlowFixedTime);
+            goodsCountForsearchList.add(goodsCountForsearch);
         }
+        goodsCountForsearchMapper.insertOrUpdate(goodsCountForsearchList);
     }
 }
