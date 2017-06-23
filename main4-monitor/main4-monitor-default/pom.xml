@@ -91,6 +91,11 @@
             <version>1.7.19</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.opentae.lib</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
 
 
