@@ -1,9 +1,18 @@
 package com.shigu.seller.actions;
 
+import com.google.common.collect.Lists;
+import com.opentae.data.mall.beans.GoatLicense;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.examples.GoatLicenseExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.interfaces.GoatLicenseMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
 import com.shigu.buyer.vo.SafeRzVO;
 import com.shigu.buyer.vo.UserInfoVO;
+import com.shigu.component.common.globality.constant.SystemConStant;
+import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.component.shiro.MemberRealm;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
 import com.shigu.component.shiro.filters.MemberFilter;
@@ -13,6 +22,11 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.exceptions.ShopDomainException;
+import com.shigu.main4.goat.enums.GoatType;
+import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.goat.service.GoatDubboService;
+import com.shigu.main4.goat.vo.GoatVO;
+import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ItemModifyException;
@@ -37,6 +51,7 @@ import com.shigu.main4.ucenter.vo.UserLicense;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.seller.bo.*;
+import com.shigu.seller.exceptions.IndexGoatException;
 import com.shigu.seller.exceptions.SendGoodsException;
 import com.shigu.seller.services.GoodsSendService;
 import com.shigu.seller.services.ShopBaseSaveService;
@@ -83,6 +98,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -156,6 +172,12 @@ public class ShopAction {
     @Autowired
     SpreadService spreadService;
 
+    @Autowired
+    GoatLicenseMapper goatLicenseMapper;
+
+    //TODO:没整合到DubboAllService,先放在这里
+    @Autowired
+    GoatDubboService goatDubboService;
     /**
      * 当前登陆的session
      *
@@ -1130,5 +1152,92 @@ public class ShopAction {
         }
         model.addAttribute("mail",mail);
         return "seller/safeszyx";
+    }
+
+    /**
+     * 首页广告管理
+     * @return
+     */
+    @RequestMapping("seller/indexGgChange")
+    public String indexGgChange(HttpSession session, Model model) throws IndexGoatException {
+        final String dataList = "myIndexTerms";
+        PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShopSession shopSession = personalSession.getLogshop();
+        Long shopId = shopSession.getShopId();
+        String webSite = shopSession.getWebSite();
+        GoatLicenseExample goatLicenseExample = new GoatLicenseExample();
+        goatLicenseExample.createCriteria().andShopIdEqualTo(shopId);
+        List<Long> goatIds = BeanMapper.getFieldList(goatLicenseMapper.selectFieldsByExample(goatLicenseExample,"goat_id"),"goatId",Long.class);
+        List<IndexGoatVO> myIndexTerms = Lists.newArrayList();
+        for (Long goatId:goatIds) {
+            try {
+                ItemGoatVO goatVO = goatDubboService.selGoatById(goatId, GoatType.ItemGoat);
+                IndexGoatVO indexGoatVO = mapItemGoatVOToIndexGoatVO(webSite, goatVO);
+                myIndexTerms.add(indexGoatVO);
+            } catch (GoatException e) {
+            //    排除不匹配的广告（非商品广告）
+            }
+        }
+        model.addAttribute(dataList, myIndexTerms);
+        return "seller/indexGgChange";
+    }
+
+    /**
+     * 将ItemGoatVO对象数据转化为IndexGoatVO对象数据
+     * @return
+     */
+    private IndexGoatVO mapItemGoatVOToIndexGoatVO(String webSite, ItemGoatVO itemGoatVO) {
+        IndexGoatVO indexGoatVO = BeanMapper.map(itemGoatVO, IndexGoatVO.class);
+        indexGoatVO.setCodeId(itemGoatVO.getGoatId());
+        indexGoatVO.setStartOnline(itemGoatVO.getFromTime());
+        indexGoatVO.setEndOnline(itemGoatVO.getToTime());
+        indexGoatVO.setWebSite(webSite);
+        //    TODO:type对应值插入  需要确定具体情况
+        indexGoatVO.setType("推荐档口");
+        return indexGoatVO;
+    }
+
+    @RequestMapping("seller/setNewIndexGoodsData")
+    @ResponseBody
+    public JSONObject setNewIndexGoodsData(Long id, Long goodsId, HttpSession session) throws JsonErrException {
+        PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShopSession shopSession = personalSession.getLogshop();
+        String webSite = shopSession.getWebSite();
+        try {
+            ItemGoatVO itemGoatVO = goatDubboService.selGoatById(id, GoatType.ItemGoat);
+            ShiguGoodsTiny good = getShiguGoodsTinyById(webSite, goodsId);
+            if (good == null) {
+                throw new JsonErrException("没找到对应商品");
+            }
+            itemGoatVO.setPicUrl(good.getPicUrl());
+            itemGoatVO.setItemId(goodsId);
+            Date now = new Date();
+            if (now.before(itemGoatVO.getToTime())) {
+                if (now.after(itemGoatVO.getFromTime())) {
+                    goatDubboService.publish(itemGoatVO);
+                } else {
+                    goatDubboService.preparePublish(itemGoatVO,(itemGoatVO.getFromTime().getTime() - now.getTime())/1000);
+                }
+                return JsonResponseUtil.success().element("good", good);
+            }
+            throw new JsonErrException("广告已过期");
+        } catch (GoatException e) {
+            throw new JsonErrException(e.getMessage());
+        }
+    }
+
+    //TODO:没有给出对应确定的service接口，先放在这里，完成更改广告接口时的商品信息获取
+    @Autowired
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+
+    private ShiguGoodsTiny getShiguGoodsTinyById(String webSite, Long goodsId) {
+        ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
+        shiguGoodsTinyExample.setWebSite(webSite);
+        shiguGoodsTinyExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        List<ShiguGoodsTiny> result = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, "goods_id,pic_url,web_site");
+        if (result.size() > 0) {
+            return result.get(0);
+        }
+        return null;
     }
 }
