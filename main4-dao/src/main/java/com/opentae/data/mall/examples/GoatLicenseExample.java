@@ -300,6 +300,74 @@ public class GoatLicenseExample implements SgExample{
             return (GoatLicenseExample.Criteria)this;
         }
 
+        public GoatLicenseExample.Criteria andSpreadFromTimeIsNull() {
+            this.addCriterion("spread_from_time is null");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeIsNotNull() {
+            this.addCriterion("spread_from_time is not null");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeEqualTo(Date value) {
+            this.addCriterion("spread_from_time =", value, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeNotEqualTo(Date value) {
+            this.addCriterion("spread_from_time <>", value, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeGreaterThan(Date value) {
+            this.addCriterion("spread_from_time >", value, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeGreaterThanOrEqualTo(Date value) {
+            this.addCriterion("spread_from_time >=", value, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeLessThan(Date value) {
+            this.addCriterion("spread_from_time <", value, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeLessThanOrEqualTo(Date value) {
+            this.addCriterion("spread_from_time <=", value, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeLike(String value) {
+            this.addCriterion("spread_from_time like", value, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeNotLike(String value) {
+            this.addCriterion("spread_from_time not like", value, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }        public GoatLicenseExample.Criteria andSpreadFromTimeIn(List<Date> values) {
+            this.addCriterion("spread_from_time in", values, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeNotIn(List<Date> values) {
+            this.addCriterion("spread_from_time not in", values, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeBetween(Date value1, Date value2) {
+            this.addCriterion("spread_from_time between", value1, value2, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadFromTimeNotBetween(Date value1, Date value2) {
+            this.addCriterion("spread_from_time not between", value1, value2, "spreadFromTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
         public GoatLicenseExample.Criteria andLicenseFromTimeIsNull() {
             this.addCriterion("license_from_time is null");
             return (GoatLicenseExample.Criteria)this;
@@ -365,74 +433,6 @@ public class GoatLicenseExample implements SgExample{
 
         public GoatLicenseExample.Criteria andLicenseFromTimeNotBetween(Date value1, Date value2) {
             this.addCriterion("license_from_time not between", value1, value2, "licenseFromTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeIsNull() {
-            this.addCriterion("spread_time is null");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeIsNotNull() {
-            this.addCriterion("spread_time is not null");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeEqualTo(String value) {
-            this.addCriterion("spread_time =", value, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeNotEqualTo(String value) {
-            this.addCriterion("spread_time <>", value, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeGreaterThan(String value) {
-            this.addCriterion("spread_time >", value, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("spread_time >=", value, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeLessThan(String value) {
-            this.addCriterion("spread_time <", value, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeLessThanOrEqualTo(String value) {
-            this.addCriterion("spread_time <=", value, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeLike(String value) {
-            this.addCriterion("spread_time like", value, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeNotLike(String value) {
-            this.addCriterion("spread_time not like", value, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }        public GoatLicenseExample.Criteria andSpreadTimeIn(List<String> values) {
-            this.addCriterion("spread_time in", values, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeNotIn(List<String> values) {
-            this.addCriterion("spread_time not in", values, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeBetween(String value1, String value2) {
-            this.addCriterion("spread_time between", value1, value2, "spreadTime");
-            return (GoatLicenseExample.Criteria)this;
-        }
-
-        public GoatLicenseExample.Criteria andSpreadTimeNotBetween(String value1, String value2) {
-            this.addCriterion("spread_time not between", value1, value2, "spreadTime");
             return (GoatLicenseExample.Criteria)this;
         }
 
@@ -637,6 +637,74 @@ public class GoatLicenseExample implements SgExample{
 
         public GoatLicenseExample.Criteria andLicenseIdNotBetween(Long value1, Long value2) {
             this.addCriterion("license_id not between", value1, value2, "licenseId");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeIsNull() {
+            this.addCriterion("spread_to_time is null");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeIsNotNull() {
+            this.addCriterion("spread_to_time is not null");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeEqualTo(Date value) {
+            this.addCriterion("spread_to_time =", value, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeNotEqualTo(Date value) {
+            this.addCriterion("spread_to_time <>", value, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeGreaterThan(Date value) {
+            this.addCriterion("spread_to_time >", value, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeGreaterThanOrEqualTo(Date value) {
+            this.addCriterion("spread_to_time >=", value, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeLessThan(Date value) {
+            this.addCriterion("spread_to_time <", value, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeLessThanOrEqualTo(Date value) {
+            this.addCriterion("spread_to_time <=", value, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeLike(String value) {
+            this.addCriterion("spread_to_time like", value, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeNotLike(String value) {
+            this.addCriterion("spread_to_time not like", value, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }        public GoatLicenseExample.Criteria andSpreadToTimeIn(List<Date> values) {
+            this.addCriterion("spread_to_time in", values, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeNotIn(List<Date> values) {
+            this.addCriterion("spread_to_time not in", values, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeBetween(Date value1, Date value2) {
+            this.addCriterion("spread_to_time between", value1, value2, "spreadToTime");
+            return (GoatLicenseExample.Criteria)this;
+        }
+
+        public GoatLicenseExample.Criteria andSpreadToTimeNotBetween(Date value1, Date value2) {
+            this.addCriterion("spread_to_time not between", value1, value2, "spreadToTime");
             return (GoatLicenseExample.Criteria)this;
         }
     }

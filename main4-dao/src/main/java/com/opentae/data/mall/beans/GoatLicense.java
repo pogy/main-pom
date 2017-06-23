@@ -34,9 +34,14 @@ public class GoatLicense implements Serializable {
 	private Date licenseToTime;
 
     /**
-     * 广告生效时段
+     * 广告开始时间
      */
-	private String spreadTime;
+	private Date spreadFromTime;
+
+    /**
+     * 广告结束时间
+     */
+	private Date spreadToTime;
 
 	public void setLicenseId(Long licenseId) {
 		this.licenseId = licenseId;
@@ -78,12 +83,20 @@ public class GoatLicense implements Serializable {
 		return this.licenseToTime;
 	}
 
-	public void setSpreadTime(String spreadTime) {
-		this.spreadTime = spreadTime;
+	public void setSpreadFromTime(Date spreadFromTime) {
+		this.spreadFromTime = spreadFromTime;
 	}
 
-	public String getSpreadTime() {
-		return this.spreadTime;
+	public Date getSpreadFromTime() {
+		return this.spreadFromTime;
+	}
+
+	public void setSpreadToTime(Date spreadToTime) {
+		this.spreadToTime = spreadToTime;
+	}
+
+	public Date getSpreadToTime() {
+		return this.spreadToTime;
 	}
 
 }
