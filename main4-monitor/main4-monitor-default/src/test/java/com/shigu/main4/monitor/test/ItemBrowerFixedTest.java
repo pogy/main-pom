@@ -103,7 +103,7 @@ public class ItemBrowerFixedTest {
 
         int bucketSize = 1000;
 
-        AddSearchRecord jobs = new AddSearchRecord(bucketSize);
+        AddSearchRecord jobs = new AddSearchRecord();
 
         for (String site : sites) {
 
@@ -132,11 +132,9 @@ public class ItemBrowerFixedTest {
     }
 
     private class AddSearchRecord extends Jobs<List<ShiguGoodsTiny>> {
-        private int bucketSize;
 
-        public AddSearchRecord(int bucketSize) {
+        public AddSearchRecord() {
             super(3);
-            this.bucketSize = bucketSize;
         }
 
         @Override
@@ -148,7 +146,7 @@ public class ItemBrowerFixedTest {
                     .setTypes("item").setSearchType(SearchType.COUNT)
                     .setQuery(QueryBuilders.termsQuery("itemId", goodsIds))
                     .addAggregation(
-                            AggregationBuilders.terms("goods_pv").field("itemId").size(bucketSize)
+                            AggregationBuilders.terms("goods_pv").field("itemId").size(goodsIds.size())
                                     .subAggregation(AggregationBuilders.cardinality("goods_ip").field("clientMsg.clientIp"))
                     ).execute().actionGet();
             List<Terms.Bucket> goods_pv = ((LongTerms) searchResponse.getAggregations().get("goods_pv")).getBuckets();
