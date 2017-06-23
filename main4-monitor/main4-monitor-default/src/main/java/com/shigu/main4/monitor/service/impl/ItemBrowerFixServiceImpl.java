@@ -26,8 +26,13 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
     @Transactional(rollbackFor = Exception.class)
     public void fixNow(String key) {
         Map<String, String> itemFlowMap = redisIO.getJedis().hgetAll(key);//key:item_flow
+        if (0 == itemFlowMap.size()) {
+            return;
+        }
+
         redisIO.getJedis().hmset(key + "_temp", itemFlowMap);
         redisIO.getJedis().del(key);
+
         Map<String, List<String>> itemIpsMap = new HashMap<String, List<String>>();
 
         for (Map.Entry<String, String> entryItem : itemFlowMap.entrySet()) {

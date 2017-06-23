@@ -66,24 +66,24 @@ public class ItemBrowerFixedTest {
         StringBuilder redisKeySb = new StringBuilder();
         redisKeySb.append("20770888").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
         String redisKey = redisKeySb.toString();
-        redisIO.hset("item_flow", redisKey, "192.168.1.1");
+        redisIO.hset("item_flow_test", redisKey, "192.168.1.1");
         redisKeySb = new StringBuilder();
         redisKeySb.append("20770888").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
         redisKey = redisKeySb.toString();
-        redisIO.hset("item_flow", redisKey, "192.168.1.2");
+        redisIO.hset("item_flow_test", redisKey, "192.168.1.2");
         redisKeySb = new StringBuilder();
         redisKeySb.append("20770888").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
         redisKey = redisKeySb.toString();
-        redisIO.hset("item_flow", redisKey, "192.168.1.1");
+        redisIO.hset("item_flow_test", redisKey, "192.168.1.1");
         redisKeySb = new StringBuilder();
         redisKeySb.append("20770889").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
         redisKey = redisKeySb.toString();
-        redisIO.hset("item_flow", redisKey, "192.168.1.1");
+        redisIO.hset("item_flow_test", redisKey, "192.168.1.1");
     }
 
     @Test
     public void testFixNow() {
-        itemBrowerFixService.fixNow("item_flow");
+        itemBrowerFixService.fixNow("item_flow_test");
     }
 
     @Test
