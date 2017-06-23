@@ -1192,8 +1192,7 @@ public class ShopAction {
         indexGoatVO.setStartOnline(itemGoatVO.getFromTime());
         indexGoatVO.setEndOnline(itemGoatVO.getToTime());
         indexGoatVO.setWebSite(webSite);
-        //    TODO:type对应值插入  需要确定具体情况
-        indexGoatVO.setType("推荐档口");
+        indexGoatVO.setType(itemGoatVO.getTitle());
         return indexGoatVO;
     }
 
