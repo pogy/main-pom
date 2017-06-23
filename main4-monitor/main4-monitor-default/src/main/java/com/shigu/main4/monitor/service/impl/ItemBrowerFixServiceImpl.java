@@ -6,6 +6,7 @@ import com.shigu.main4.monitor.services.ItemBrowerFixService;
 import com.shigu.main4.tools.RedisIO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -22,6 +23,7 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
      * @param key
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void fixNow(String key) {
         Map<String, String> itemFlowMap = redisIO.getJedis().hgetAll(key);//key:item_flow
 //        redisIO.getJedis().hmset("item_flow_temp", itemFlowMap);
