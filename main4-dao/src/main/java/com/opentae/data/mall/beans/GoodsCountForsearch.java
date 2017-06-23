@@ -3,6 +3,7 @@ package com.opentae.data.mall.beans;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 
 public class GoodsCountForsearch implements Serializable {
     /**
@@ -51,6 +52,11 @@ public class GoodsCountForsearch implements Serializable {
      * 
      */
 	private String webSite;
+
+	/**
+	 * 上次更新时间
+	 */
+	private Date flowFixedTime;
 
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
@@ -124,4 +130,11 @@ public class GoodsCountForsearch implements Serializable {
 		return this.webSite;
 	}
 
+	public Date getFlowFixedTime() {
+		return flowFixedTime;
+	}
+
+	public void setFlowFixedTime(Date flowFixedTime) {
+		this.flowFixedTime = flowFixedTime;
+	}
 }

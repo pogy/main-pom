@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.GoodsCountForsearchMapper" >
+
+	<insert id="insertOrUpdate" parameterType="com.opentae.data.mall.beans.GoodsCountForsearch">
+		INSERT INTO goods_count_forsearch (goods_id, web_site, click, click_ip)
+		VALUES
+		<foreach collection="list" separator="," item="search">
+			(#{search.goodsId}, #{search.webSite}, #{search.click}, #{search.clickIp})
+		</foreach>
+		ON DUPLICATE KEY UPDATE click=values(click),click_ip=values(click_ip);
+	</insert>
+</mapper>

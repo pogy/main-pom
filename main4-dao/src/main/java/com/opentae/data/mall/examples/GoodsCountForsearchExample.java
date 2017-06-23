@@ -232,139 +232,71 @@ public class GoodsCountForsearchExample implements SgExample{
             }
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeIsNull() {
-            this.addCriterion("trade is null");
+        public GoodsCountForsearchExample.Criteria andSearchIdIsNull() {
+            this.addCriterion("search_id is null");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeIsNotNull() {
-            this.addCriterion("trade is not null");
+        public GoodsCountForsearchExample.Criteria andSearchIdIsNotNull() {
+            this.addCriterion("search_id is not null");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeEqualTo(Long value) {
-            this.addCriterion("trade =", value, "trade");
+        public GoodsCountForsearchExample.Criteria andSearchIdEqualTo(Long value) {
+            this.addCriterion("search_id =", value, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeNotEqualTo(Long value) {
-            this.addCriterion("trade <>", value, "trade");
+        public GoodsCountForsearchExample.Criteria andSearchIdNotEqualTo(Long value) {
+            this.addCriterion("search_id <>", value, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeGreaterThan(Long value) {
-            this.addCriterion("trade >", value, "trade");
+        public GoodsCountForsearchExample.Criteria andSearchIdGreaterThan(Long value) {
+            this.addCriterion("search_id >", value, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("trade >=", value, "trade");
+        public GoodsCountForsearchExample.Criteria andSearchIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("search_id >=", value, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeLessThan(Long value) {
-            this.addCriterion("trade <", value, "trade");
+        public GoodsCountForsearchExample.Criteria andSearchIdLessThan(Long value) {
+            this.addCriterion("search_id <", value, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeLessThanOrEqualTo(Long value) {
-            this.addCriterion("trade <=", value, "trade");
+        public GoodsCountForsearchExample.Criteria andSearchIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("search_id <=", value, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeLike(String value) {
-            this.addCriterion("trade like", value, "trade");
+        public GoodsCountForsearchExample.Criteria andSearchIdLike(String value) {
+            this.addCriterion("search_id like", value, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeNotLike(String value) {
-            this.addCriterion("trade not like", value, "trade");
+        public GoodsCountForsearchExample.Criteria andSearchIdNotLike(String value) {
+            this.addCriterion("search_id not like", value, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
-        }        public GoodsCountForsearchExample.Criteria andTradeIn(List<Long> values) {
-            this.addCriterion("trade in", values, "trade");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andTradeNotIn(List<Long> values) {
-            this.addCriterion("trade not in", values, "trade");
+        }        public GoodsCountForsearchExample.Criteria andSearchIdIn(List<Long> values) {
+            this.addCriterion("search_id in", values, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeBetween(Long value1, Long value2) {
-            this.addCriterion("trade between", value1, value2, "trade");
+        public GoodsCountForsearchExample.Criteria andSearchIdNotIn(List<Long> values) {
+            this.addCriterion("search_id not in", values, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andTradeNotBetween(Long value1, Long value2) {
-            this.addCriterion("trade not between", value1, value2, "trade");
+        public GoodsCountForsearchExample.Criteria andSearchIdBetween(Long value1, Long value2) {
+            this.addCriterion("search_id between", value1, value2, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andUpManIsNull() {
-            this.addCriterion("up_man is null");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManIsNotNull() {
-            this.addCriterion("up_man is not null");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManEqualTo(Long value) {
-            this.addCriterion("up_man =", value, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManNotEqualTo(Long value) {
-            this.addCriterion("up_man <>", value, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManGreaterThan(Long value) {
-            this.addCriterion("up_man >", value, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("up_man >=", value, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManLessThan(Long value) {
-            this.addCriterion("up_man <", value, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManLessThanOrEqualTo(Long value) {
-            this.addCriterion("up_man <=", value, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManLike(String value) {
-            this.addCriterion("up_man like", value, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManNotLike(String value) {
-            this.addCriterion("up_man not like", value, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }        public GoodsCountForsearchExample.Criteria andUpManIn(List<Long> values) {
-            this.addCriterion("up_man in", values, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManNotIn(List<Long> values) {
-            this.addCriterion("up_man not in", values, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManBetween(Long value1, Long value2) {
-            this.addCriterion("up_man between", value1, value2, "upMan");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andUpManNotBetween(Long value1, Long value2) {
-            this.addCriterion("up_man not between", value1, value2, "upMan");
+        public GoodsCountForsearchExample.Criteria andSearchIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("search_id not between", value1, value2, "searchId");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
@@ -436,6 +368,74 @@ public class GoodsCountForsearchExample implements SgExample{
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
+        public GoodsCountForsearchExample.Criteria andClickIsNull() {
+            this.addCriterion("click is null");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickIsNotNull() {
+            this.addCriterion("click is not null");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickEqualTo(Long value) {
+            this.addCriterion("click =", value, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickNotEqualTo(Long value) {
+            this.addCriterion("click <>", value, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickGreaterThan(Long value) {
+            this.addCriterion("click >", value, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("click >=", value, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickLessThan(Long value) {
+            this.addCriterion("click <", value, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickLessThanOrEqualTo(Long value) {
+            this.addCriterion("click <=", value, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickLike(String value) {
+            this.addCriterion("click like", value, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickNotLike(String value) {
+            this.addCriterion("click not like", value, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }        public GoodsCountForsearchExample.Criteria andClickIn(List<Long> values) {
+            this.addCriterion("click in", values, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickNotIn(List<Long> values) {
+            this.addCriterion("click not in", values, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickBetween(Long value1, Long value2) {
+            this.addCriterion("click between", value1, value2, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andClickNotBetween(Long value1, Long value2) {
+            this.addCriterion("click not between", value1, value2, "click");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
         public GoodsCountForsearchExample.Criteria andClickIpIsNull() {
             this.addCriterion("click_ip is null");
             return (GoodsCountForsearchExample.Criteria)this;
@@ -504,71 +504,71 @@ public class GoodsCountForsearchExample implements SgExample{
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatIsNull() {
-            this.addCriterion("had_goat is null");
+        public GoodsCountForsearchExample.Criteria andTradeIsNull() {
+            this.addCriterion("trade is null");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatIsNotNull() {
-            this.addCriterion("had_goat is not null");
+        public GoodsCountForsearchExample.Criteria andTradeIsNotNull() {
+            this.addCriterion("trade is not null");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatEqualTo(Integer value) {
-            this.addCriterion("had_goat =", value, "hadGoat");
+        public GoodsCountForsearchExample.Criteria andTradeEqualTo(Long value) {
+            this.addCriterion("trade =", value, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatNotEqualTo(Integer value) {
-            this.addCriterion("had_goat <>", value, "hadGoat");
+        public GoodsCountForsearchExample.Criteria andTradeNotEqualTo(Long value) {
+            this.addCriterion("trade <>", value, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatGreaterThan(Integer value) {
-            this.addCriterion("had_goat >", value, "hadGoat");
+        public GoodsCountForsearchExample.Criteria andTradeGreaterThan(Long value) {
+            this.addCriterion("trade >", value, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("had_goat >=", value, "hadGoat");
+        public GoodsCountForsearchExample.Criteria andTradeGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("trade >=", value, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatLessThan(Integer value) {
-            this.addCriterion("had_goat <", value, "hadGoat");
+        public GoodsCountForsearchExample.Criteria andTradeLessThan(Long value) {
+            this.addCriterion("trade <", value, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatLessThanOrEqualTo(Integer value) {
-            this.addCriterion("had_goat <=", value, "hadGoat");
+        public GoodsCountForsearchExample.Criteria andTradeLessThanOrEqualTo(Long value) {
+            this.addCriterion("trade <=", value, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatLike(String value) {
-            this.addCriterion("had_goat like", value, "hadGoat");
+        public GoodsCountForsearchExample.Criteria andTradeLike(String value) {
+            this.addCriterion("trade like", value, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatNotLike(String value) {
-            this.addCriterion("had_goat not like", value, "hadGoat");
+        public GoodsCountForsearchExample.Criteria andTradeNotLike(String value) {
+            this.addCriterion("trade not like", value, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
-        }        public GoodsCountForsearchExample.Criteria andHadGoatIn(List<Integer> values) {
-            this.addCriterion("had_goat in", values, "hadGoat");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andHadGoatNotIn(List<Integer> values) {
-            this.addCriterion("had_goat not in", values, "hadGoat");
+        }        public GoodsCountForsearchExample.Criteria andTradeIn(List<Long> values) {
+            this.addCriterion("trade in", values, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatBetween(Integer value1, Integer value2) {
-            this.addCriterion("had_goat between", value1, value2, "hadGoat");
+        public GoodsCountForsearchExample.Criteria andTradeNotIn(List<Long> values) {
+            this.addCriterion("trade not in", values, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andHadGoatNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("had_goat not between", value1, value2, "hadGoat");
+        public GoodsCountForsearchExample.Criteria andTradeBetween(Long value1, Long value2) {
+            this.addCriterion("trade between", value1, value2, "trade");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andTradeNotBetween(Long value1, Long value2) {
+            this.addCriterion("trade not between", value1, value2, "trade");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
@@ -640,71 +640,139 @@ public class GoodsCountForsearchExample implements SgExample{
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIsNull() {
-            this.addCriterion("click is null");
+        public GoodsCountForsearchExample.Criteria andUpManIsNull() {
+            this.addCriterion("up_man is null");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickIsNotNull() {
-            this.addCriterion("click is not null");
+        public GoodsCountForsearchExample.Criteria andUpManIsNotNull() {
+            this.addCriterion("up_man is not null");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickEqualTo(Long value) {
-            this.addCriterion("click =", value, "click");
+        public GoodsCountForsearchExample.Criteria andUpManEqualTo(Long value) {
+            this.addCriterion("up_man =", value, "upMan");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickNotEqualTo(Long value) {
-            this.addCriterion("click <>", value, "click");
+        public GoodsCountForsearchExample.Criteria andUpManNotEqualTo(Long value) {
+            this.addCriterion("up_man <>", value, "upMan");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickGreaterThan(Long value) {
-            this.addCriterion("click >", value, "click");
+        public GoodsCountForsearchExample.Criteria andUpManGreaterThan(Long value) {
+            this.addCriterion("up_man >", value, "upMan");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("click >=", value, "click");
+        public GoodsCountForsearchExample.Criteria andUpManGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("up_man >=", value, "upMan");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickLessThan(Long value) {
-            this.addCriterion("click <", value, "click");
+        public GoodsCountForsearchExample.Criteria andUpManLessThan(Long value) {
+            this.addCriterion("up_man <", value, "upMan");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickLessThanOrEqualTo(Long value) {
-            this.addCriterion("click <=", value, "click");
+        public GoodsCountForsearchExample.Criteria andUpManLessThanOrEqualTo(Long value) {
+            this.addCriterion("up_man <=", value, "upMan");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickLike(String value) {
-            this.addCriterion("click like", value, "click");
+        public GoodsCountForsearchExample.Criteria andUpManLike(String value) {
+            this.addCriterion("up_man like", value, "upMan");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickNotLike(String value) {
-            this.addCriterion("click not like", value, "click");
+        public GoodsCountForsearchExample.Criteria andUpManNotLike(String value) {
+            this.addCriterion("up_man not like", value, "upMan");
             return (GoodsCountForsearchExample.Criteria)this;
-        }        public GoodsCountForsearchExample.Criteria andClickIn(List<Long> values) {
-            this.addCriterion("click in", values, "click");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andClickNotIn(List<Long> values) {
-            this.addCriterion("click not in", values, "click");
+        }        public GoodsCountForsearchExample.Criteria andUpManIn(List<Long> values) {
+            this.addCriterion("up_man in", values, "upMan");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickBetween(Long value1, Long value2) {
-            this.addCriterion("click between", value1, value2, "click");
+        public GoodsCountForsearchExample.Criteria andUpManNotIn(List<Long> values) {
+            this.addCriterion("up_man not in", values, "upMan");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andClickNotBetween(Long value1, Long value2) {
-            this.addCriterion("click not between", value1, value2, "click");
+        public GoodsCountForsearchExample.Criteria andUpManBetween(Long value1, Long value2) {
+            this.addCriterion("up_man between", value1, value2, "upMan");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpManNotBetween(Long value1, Long value2) {
+            this.addCriterion("up_man not between", value1, value2, "upMan");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatIsNull() {
+            this.addCriterion("had_goat is null");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatIsNotNull() {
+            this.addCriterion("had_goat is not null");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatEqualTo(Integer value) {
+            this.addCriterion("had_goat =", value, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatNotEqualTo(Integer value) {
+            this.addCriterion("had_goat <>", value, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatGreaterThan(Integer value) {
+            this.addCriterion("had_goat >", value, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatGreaterThanOrEqualTo(Integer value) {
+            this.addCriterion("had_goat >=", value, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatLessThan(Integer value) {
+            this.addCriterion("had_goat <", value, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatLessThanOrEqualTo(Integer value) {
+            this.addCriterion("had_goat <=", value, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatLike(String value) {
+            this.addCriterion("had_goat like", value, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatNotLike(String value) {
+            this.addCriterion("had_goat not like", value, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }        public GoodsCountForsearchExample.Criteria andHadGoatIn(List<Integer> values) {
+            this.addCriterion("had_goat in", values, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatNotIn(List<Integer> values) {
+            this.addCriterion("had_goat not in", values, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatBetween(Integer value1, Integer value2) {
+            this.addCriterion("had_goat between", value1, value2, "hadGoat");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadGoatNotBetween(Integer value1, Integer value2) {
+            this.addCriterion("had_goat not between", value1, value2, "hadGoat");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
@@ -776,71 +844,71 @@ public class GoodsCountForsearchExample implements SgExample{
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdIsNull() {
-            this.addCriterion("search_id is null");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeIsNull() {
+            this.addCriterion("flow_fixed_time is null");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdIsNotNull() {
-            this.addCriterion("search_id is not null");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeIsNotNull() {
+            this.addCriterion("flow_fixed_time is not null");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdEqualTo(Long value) {
-            this.addCriterion("search_id =", value, "searchId");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeEqualTo(Date value) {
+            this.addCriterion("flow_fixed_time =", value, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdNotEqualTo(Long value) {
-            this.addCriterion("search_id <>", value, "searchId");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotEqualTo(Date value) {
+            this.addCriterion("flow_fixed_time <>", value, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdGreaterThan(Long value) {
-            this.addCriterion("search_id >", value, "searchId");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeGreaterThan(Date value) {
+            this.addCriterion("flow_fixed_time >", value, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("search_id >=", value, "searchId");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeGreaterThanOrEqualTo(Date value) {
+            this.addCriterion("flow_fixed_time >=", value, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdLessThan(Long value) {
-            this.addCriterion("search_id <", value, "searchId");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeLessThan(Date value) {
+            this.addCriterion("flow_fixed_time <", value, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("search_id <=", value, "searchId");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeLessThanOrEqualTo(Date value) {
+            this.addCriterion("flow_fixed_time <=", value, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdLike(String value) {
-            this.addCriterion("search_id like", value, "searchId");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeLike(String value) {
+            this.addCriterion("flow_fixed_time like", value, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdNotLike(String value) {
-            this.addCriterion("search_id not like", value, "searchId");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotLike(String value) {
+            this.addCriterion("flow_fixed_time not like", value, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
-        }        public GoodsCountForsearchExample.Criteria andSearchIdIn(List<Long> values) {
-            this.addCriterion("search_id in", values, "searchId");
-            return (GoodsCountForsearchExample.Criteria)this;
-        }
-
-        public GoodsCountForsearchExample.Criteria andSearchIdNotIn(List<Long> values) {
-            this.addCriterion("search_id not in", values, "searchId");
+        }        public GoodsCountForsearchExample.Criteria andFlowFixedTimeIn(List<Date> values) {
+            this.addCriterion("flow_fixed_time in", values, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdBetween(Long value1, Long value2) {
-            this.addCriterion("search_id between", value1, value2, "searchId");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotIn(List<Date> values) {
+            this.addCriterion("flow_fixed_time not in", values, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
 
-        public GoodsCountForsearchExample.Criteria andSearchIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("search_id not between", value1, value2, "searchId");
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeBetween(Date value1, Date value2) {
+            this.addCriterion("flow_fixed_time between", value1, value2, "flowFixedTime");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotBetween(Date value1, Date value2) {
+            this.addCriterion("flow_fixed_time not between", value1, value2, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
     }
