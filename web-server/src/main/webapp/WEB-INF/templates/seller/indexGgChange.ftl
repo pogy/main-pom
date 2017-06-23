@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/indexGgChange.css?t=1498117771780" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/indexGgChange.css?t=1498184384630" rel="stylesheet">
     
   </head>
 <body>
@@ -265,10 +265,10 @@ var webSite = '${webSite!}';
                             <li class="time">${good.startOnline!} 至 ${good.endOnline!}</li>
                             <#if good.goodsId?? && good.goodsId != "">
                             <li class="pic"><a href="http://${good.webSite!}.571xz.com/item.htm?id=${good.goodsId!}" target="_blank"><img src="${good.picUrl!}_72x72.jpg" ></a></li>
-                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.codeId!}" data-termId="${good.typeId!}" data-web="${good.webSite!}">更换商品</b></li>
+                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.codeId!}" data-web="${good.webSite!}">更换商品</b></li>
                             <#else>
                             <li class="pic noPic">暂无商品</li>
-                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.codeId!}" data-termId="${good.typeId!}" data-web="${good.webSite!}">上款</b></li>
+                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.codeId!}" data-web="${good.webSite!}">上款</b></li>
                             </#if>
                         </ul>
                         </#list>
@@ -315,7 +315,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/indexGgChange.js?t=1498117771780"></script>
+<script src="http://style.571xz.com/gys5/js/indexGgChange.js?t=1498184384630"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
