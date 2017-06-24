@@ -53,10 +53,10 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
             goodsCountForsearch.setClick(new Long(entryItem.getValue().size()));
             goodsCountForsearch.setClickIp(new Long(new HashSet(entryItem.getValue()).size()));
             goodsCountForsearch.setGoodsId(Long.valueOf(entryItem.getKey()));
-            goodsCountForsearch.setTrade(0L);
-            goodsCountForsearch.setUp(0L);
-            goodsCountForsearch.setUpMan(0L);
-            goodsCountForsearch.setHadGoat(0);
+//            goodsCountForsearch.setTrade(0L);
+//            goodsCountForsearch.setUp(0L);
+//            goodsCountForsearch.setUpMan(0L);
+//            goodsCountForsearch.setHadGoat(0);
             goodsCountForsearch.setWebSite("hz");
             goodsCountForsearchList.add(goodsCountForsearch);
         }
