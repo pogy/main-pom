@@ -1,6 +1,7 @@
 package com.shigu.main4.item.vo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.shigu.opensearchsdk.anno.FetchApp;
 
 import java.util.Date;
 
@@ -8,32 +9,47 @@ import java.util.Date;
  * 开放搜索商品数据
  * Created by whx on 2017/6/13 0013.
  */
+@FetchApp("goods_search_hz")
 public class OpenItemVo {
+    @JSONField(name = "goods_id")
     private Long goodsId;
     private String title;
     private Date created;
     private Long cid;
+    @JSONField(name = "cid_all")
     private String cidAll;
+    @JSONField(name = "pic_url")
     private String picUrl;
     private Long price;
+    @JSONField(name = "pi_price")
     private Long piPrice;
+    @JSONField(name = "parent_market_id")
     private Long parentMarketId;
+    @JSONField(name = "store_id")
     private Long storeId;
+    @JSONField(name = "is_closed")
     private Long isClosed;
+    @JSONField(name = "goods_no")
     private String goodsNo;
+    @JSONField(name = "is_showcase")
     private Long isShowcase;
+    @JSONField(name = "is_showcase")
     private Long isExcelImp;
+    @JSONField(name = "goods_level")
     private String goodsLevel;
+    @JSONField(name = "relation_level_id")
     private Long relationLevelId;
+    @JSONField(name = "sort_order")
     private Long sortOrder;
+    @JSONField(name = "web_site")
     private String webSite;
 
+    @JSONField(name = "search_id")
     private Long searchId;
     private Long click;
     private Long trade;
     private Long up;
 
-    @JSONField(name = "search_id")
     public Long getSearchId() {
         return searchId;
     }
@@ -42,7 +58,6 @@ public class OpenItemVo {
         this.searchId = searchId;
     }
 
-    @JSONField(name = "goods_id")
     public Long getGoodsId() {
         return goodsId;
     }
@@ -51,7 +66,6 @@ public class OpenItemVo {
         this.goodsId = goodsId;
     }
 
-    @JSONField(name = "click")
     public Long getClick() {
         return click;
     }
@@ -60,7 +74,6 @@ public class OpenItemVo {
         this.click = click;
     }
 
-    @JSONField(name = "trade")
     public Long getTrade() {
         return trade;
     }
@@ -69,7 +82,6 @@ public class OpenItemVo {
         this.trade = trade;
     }
 
-    @JSONField(name = "up")
     public Long getUp() {
         return up;
     }
@@ -78,7 +90,6 @@ public class OpenItemVo {
         this.up = up;
     }
 
-    @JSONField(name = "web_site")
     public String getWebSite() {
         return webSite;
     }
@@ -87,7 +98,6 @@ public class OpenItemVo {
         this.webSite = website;
     }
 
-    @JSONField(name = "title")
     public String getTitle() {
         return title;
     }
@@ -96,7 +106,6 @@ public class OpenItemVo {
         this.title = title;
     }
 
-    @JSONField(name = "created")
     public Date getCreated() {
         return created;
     }
@@ -105,7 +114,6 @@ public class OpenItemVo {
         this.created = created;
     }
 
-    @JSONField(name = "cid")
     public Long getCid() {
         return cid;
     }
@@ -114,7 +122,6 @@ public class OpenItemVo {
         this.cid = cid;
     }
 
-    @JSONField(name = "cid_all")
     public String getCidAll() {
         return cidAll;
     }
@@ -123,7 +130,6 @@ public class OpenItemVo {
         this.cidAll = cidAll;
     }
 
-    @JSONField(name = "pic_url")
     public String getPicUrl() {
         return picUrl;
     }
@@ -132,7 +138,6 @@ public class OpenItemVo {
         this.picUrl = picUrl;
     }
 
-    @JSONField(name = "price")
     public Long getPrice() {
         return price;
     }
@@ -141,7 +146,6 @@ public class OpenItemVo {
         this.price = price;
     }
 
-    @JSONField(name = "pi_price")
     public Long getPiPrice() {
         return piPrice;
     }
@@ -150,7 +154,6 @@ public class OpenItemVo {
         this.piPrice = piPrice;
     }
 
-    @JSONField(name = "parent_market_id")
     public Long getParentMarketId() {
         return parentMarketId;
     }
@@ -159,7 +162,6 @@ public class OpenItemVo {
         this.parentMarketId = parentMarketId;
     }
 
-    @JSONField(name = "store_id")
     public Long getStoreId() {
         return storeId;
     }
@@ -168,7 +170,6 @@ public class OpenItemVo {
         this.storeId = storeId;
     }
 
-    @JSONField(name = "goods_no")
     public String getGoodsNo() {
         return goodsNo;
     }
@@ -177,7 +178,6 @@ public class OpenItemVo {
         this.goodsNo = goodsNo;
     }
 
-    @JSONField(name = "goods_level")
     public String getGoodsLevel() {
         return goodsLevel;
     }
@@ -186,7 +186,6 @@ public class OpenItemVo {
         this.goodsLevel = goodsLevel;
     }
 
-    @JSONField(name = "relation_level_id")
     public Long getRelationLevelId() {
         return relationLevelId;
     }
@@ -195,7 +194,6 @@ public class OpenItemVo {
         this.relationLevelId = relationLevelId;
     }
 
-    @JSONField(name = "sort_order")
     public Long getSortOrder() {
         return sortOrder;
     }
@@ -204,7 +202,6 @@ public class OpenItemVo {
         this.sortOrder = sortOrder;
     }
 
-    @JSONField(name = "is_closed")
     public Long getIsClosed() {
         return isClosed;
     }
@@ -213,7 +210,6 @@ public class OpenItemVo {
         this.isClosed = isClosed;
     }
 
-    @JSONField(name = "is_showcase")
     public Long getIsShowcase() {
         return isShowcase;
     }
@@ -222,41 +218,11 @@ public class OpenItemVo {
         this.isShowcase = isShowCase;
     }
 
-    @JSONField(name = "is_excel_imp")
     public Long getIsExcelImp() {
         return isExcelImp;
     }
 
     public void setIsExcelImp(Long isExcelImp) {
         this.isExcelImp = isExcelImp;
-    }
-
-
-    @Override
-    public String toString() {
-        return "OpenItemVo{" +
-                "goodsId=" + goodsId +
-                ", title='" + title + '\'' +
-                ", created=" + created +
-                ", cid=" + cid +
-                ", cidAll='" + cidAll + '\'' +
-                ", picUrl='" + picUrl + '\'' +
-                ", price=" + price +
-                ", piPrice=" + piPrice +
-                ", parentMarketId=" + parentMarketId +
-                ", storeId=" + storeId +
-                ", isClosed=" + isClosed +
-                ", goodsNo='" + goodsNo + '\'' +
-                ", isShowcase=" + isShowcase +
-                ", isExcelImp=" + isExcelImp +
-                ", goodsLevel='" + goodsLevel + '\'' +
-                ", relationLevelId=" + relationLevelId +
-                ", sortOrder=" + sortOrder +
-                ", webSite='" + webSite + '\'' +
-                ", searchId=" + searchId +
-                ", click=" + click +
-                ", trade=" + trade +
-                ", up=" + up +
-                '}';
     }
 }

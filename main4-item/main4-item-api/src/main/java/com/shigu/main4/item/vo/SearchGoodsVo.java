@@ -1,4 +1,4 @@
-package com.shigu.main4.storeservices.vo;
+package com.shigu.main4.item.vo;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.shigu.opensearchsdk.anno.FetchApp;

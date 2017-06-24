@@ -104,7 +104,7 @@ public class ItemBrowerFixedTest {
 
         int bucketSize = 1000;
 
-        AddSearchRecord jobs = new AddSearchRecord(bucketSize);
+        AddSearchRecord jobs = new AddSearchRecord();
 
         for (String site : sites) {
 
@@ -115,7 +115,7 @@ public class ItemBrowerFixedTest {
             tinyExample.setStartIndex(start = 0);
             tinyExample.setEndIndex(bucketSize);
             // today is 2017/06/22
-            tinyExample.createCriteria()
+            tinyExample.createCriteria().andIsClosedEqualTo(0L)
                     .andCreatedLessThanOrEqualTo(DateUtil.stringToDate("2017-06-22 00:00:00"))
 //            .andGoodsIdIn(Arrays.asList(20597888L, 20579000L, 20565125L, 20469608L, 20440630L, 20445645L, 20350398L, 20301772L, 20297240L, 20289270L, 20289301L, 20346502L, 20191246L, 20183296L, 20155018L, 10020161L, 10020139L, 10020171L))
             ;
@@ -133,11 +133,9 @@ public class ItemBrowerFixedTest {
     }
 
     private class AddSearchRecord extends Jobs<List<ShiguGoodsTiny>> {
-        private int bucketSize;
 
-        public AddSearchRecord(int bucketSize) {
+        public AddSearchRecord() {
             super(3);
-            this.bucketSize = bucketSize;
         }
 
         @Override
@@ -149,7 +147,7 @@ public class ItemBrowerFixedTest {
                     .setTypes("item").setSearchType(SearchType.COUNT)
                     .setQuery(QueryBuilders.termsQuery("itemId", goodsIds))
                     .addAggregation(
-                            AggregationBuilders.terms("goods_pv").field("itemId").size(bucketSize)
+                            AggregationBuilders.terms("goods_pv").field("itemId").size(goodsIds.size())
                                     .subAggregation(AggregationBuilders.cardinality("goods_ip").field("clientMsg.clientIp"))
                     ).execute().actionGet();
             List<Terms.Bucket> goods_pv = ((LongTerms) searchResponse.getAggregations().get("goods_pv")).getBuckets();

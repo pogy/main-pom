@@ -21,4 +21,9 @@
 
     <context:property-placeholder location="classpath:opensearch.properties" ignore-unresolvable="true"/>
 
+    <bean id="openSearch" class="com.shigu.opensearchsdk.OpenSearch">
+        <constructor-arg index="0" value="${accesskey}"/>
+        <constructor-arg index="1" value="${secret}"/>
+        <constructor-arg index="2" value="${host}"/>
+    </bean>
 </beans>

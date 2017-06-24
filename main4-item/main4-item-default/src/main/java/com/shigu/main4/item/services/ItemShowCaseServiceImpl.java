@@ -19,8 +19,6 @@ import com.shigu.main4.item.services.utils.OnsaleInstockReader;
 import com.shigu.main4.item.services.utils.SelIOItemsUtil;
 import com.shigu.main4.item.vo.ShowCaseItem;
 import org.apache.commons.lang3.StringUtils;
-import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,7 +134,6 @@ public class ItemShowCaseServiceImpl implements ItemShowCaseService{
                     item.setWebSite(tiny.getWebSite());
                     item.setItemId(tiny.getGoodsId());
                     item.setIsShowCase(tiny.getIsShowcase());
-                    Terms.Bucket bucket;
                     if (countAgg != null && countAgg.get(tiny.getGoodsId().toString()) != null) {
                         item.setGoodsUpNum(countAgg.get(tiny.getGoodsId().toString()));
                     }

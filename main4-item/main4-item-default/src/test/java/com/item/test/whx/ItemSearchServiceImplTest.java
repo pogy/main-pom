@@ -22,8 +22,8 @@ public class ItemSearchServiceImplTest extends BaseSpringTest {
     private List<Long> ids;
     {
         ids = new ArrayList<Long>();
-        ids.add(new Long(20632658L));
-        ids.add(new Long(3158464L));
+        ids.add(20632658L);
+        ids.add(3158464L);
     }
     @Autowired
     private ItemSearchService itemSearchService;
