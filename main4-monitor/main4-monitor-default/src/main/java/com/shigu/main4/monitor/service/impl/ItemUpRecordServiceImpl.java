@@ -2,6 +2,8 @@ package com.shigu.main4.monitor.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.aliyun.openservices.ons.api.Message;
+import com.aliyun.openservices.ons.api.bean.ProducerBean;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguShop;
@@ -73,6 +75,9 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
     RedisIO redisIO;
     private String goodslistName="bulk_up_to_es";
 
+    @Autowired
+    ProducerBean producer;
+
 
     /**
      * 添加上传记录到es中
@@ -98,6 +103,7 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
 //        ElasticRepository elasticRepository = new ElasticRepository();
 //        elasticRepository.insert(bean);
         redisIO.rpush(goodslistName,bean);
+//        producer.sendAsync(new Message());
         //添加星星数计算
         if(itemUpRecordVO.getSupperStoreId()!=null){
             try {
