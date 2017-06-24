@@ -40,6 +40,19 @@
         </property>
     </bean>
 
+    <bean id="consumer" class="com.aliyun.openservices.ons.api.bean.ConsumerBean" init-method="start" destroy-method="shutdown">
+        <property name="properties" > <!--消费者配置信息-->
+            <props>
+                <prop key="ConsumerId">CID_ONEKEY</prop> <!--请替换XXX-->
+                <prop key="AccessKey">YsqgyCrBUiYFIdRE</prop>
+                <prop key="SecretKey">KdV0QWhwUbftdfLpOoED1cIq1bHPyA</prop>
+                <!--将消费者线程数固定为50个
+                <prop key="ConsumeThreadNums">50</prop>
+                -->
+            </props>
+        </property>
+    </bean>
+
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
             <map>

@@ -3,6 +3,9 @@ package com.shigu.main4.monitor.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.ons.api.Message;
+import com.aliyun.openservices.ons.api.OnExceptionContext;
+import com.aliyun.openservices.ons.api.SendCallback;
+import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
@@ -103,6 +106,8 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
 //        ElasticRepository elasticRepository = new ElasticRepository();
 //        elasticRepository.insert(bean);
         redisIO.rpush(goodslistName,bean);
+        //推送消息
+        pushAddMessage(itemUpRecordVO);
 //        producer.sendAsync(new Message());
         //添加星星数计算
         if(itemUpRecordVO.getSupperStoreId()!=null){
@@ -112,6 +117,15 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 logger.error("上传后重算星星数失败",e);
             }
         }
+    }
+
+    /**
+     * 添加消息
+     * @param itemUpRecordVO
+     */
+    public void pushAddMessage(ItemUpRecordVO itemUpRecordVO){
+        producer.sendOneway(new Message("ONEKEY_UPLOAD", itemUpRecordVO.getFlag()
+                , itemUpRecordVO.getSupperGoodsId().toString(), JSONObject.toJSON(itemUpRecordVO).toString().getBytes()));
     }
 
     /**
