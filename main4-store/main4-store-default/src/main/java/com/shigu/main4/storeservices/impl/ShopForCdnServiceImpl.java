@@ -526,7 +526,6 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块信息
      */
     public List<ItemShowBlock> selectItemSearchBlockByOpenSearchBo(ShopForCdnBo shopForCdnBo, ShiguPager<ItemShowBlock> shiguPager, String webSite) {
-        final String[] FIELDS = {"goods_id", "title", "price", "goods_no", "web_site"};
         List<ItemShowBlock> itemShowBlocks = Lists.newArrayList();
         shiguPager.setNumber(shopForCdnBo.getPageNo());
         shiguPager.setContent(itemShowBlocks);
