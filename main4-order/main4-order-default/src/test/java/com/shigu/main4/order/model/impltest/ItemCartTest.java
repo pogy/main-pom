@@ -14,7 +14,7 @@ public class ItemCartTest extends BaseTest{
     }
     @Test
     public void rmProductByNum() throws Exception{
-        cart().rmProductByNum(1L,1L,1);
+        cart().rmProductByNum(1L,3L,1);
 //        cart().rmProductByNum(1L,1L,6);
     }
 

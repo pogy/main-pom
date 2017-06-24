@@ -76,8 +76,12 @@ public class ItemCartImpl implements Cart {
 
         criteria.andSkuIdEqualTo(skuId);
 
-        List<ItemCart> number = itemCartMapper.selectFieldsByExample(itemCartExample, FieldUtil.codeFields("num"));
+        criteria.andUserIdEqualTo(userId);
 
+        List<ItemCart> number = itemCartMapper.selectFieldsByExample(itemCartExample, FieldUtil.codeFields("num"));
+        if (number.size()<=0||number.get(0)==null){
+            return;
+        }
         ItemCart selItemCart = number.get(0);
 
         if (num > selItemCart.getNum()) {
