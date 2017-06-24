@@ -16,9 +16,39 @@ public class ServiceVO extends OrderConstantVo implements Serializable{
      */
     private Long price;
     /**
+     * 类别
+     *  1、正常代发的代发费,2、代拿的服务费
+     */
+    private Integer type;
+    /**
+     * 付费方式
+     * 1、按单付费,2、按sku付费,3、按件付费
+     */
+    private Integer feeType;
+    /**
+     * 分站
+     */
+    private String webSite;
+    /**
      * 详细资料
      */
     private String detail;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
+    }
 
     public String getDetail() {
         return detail;
@@ -42,5 +72,13 @@ public class ServiceVO extends OrderConstantVo implements Serializable{
 
     public void setPrice(Long price) {
         this.price = price;
+    }
+
+    public Integer getFeeType() {
+        return feeType;
+    }
+
+    public void setFeeType(Integer feeType) {
+        this.feeType = feeType;
     }
 }
