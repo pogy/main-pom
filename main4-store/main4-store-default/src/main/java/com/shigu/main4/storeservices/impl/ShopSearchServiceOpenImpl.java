@@ -25,6 +25,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.HighLightKit;
+import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.vo.OpenShopVo;
 import com.shigu.main4.vo.SearchShop;
 import com.shigu.main4.vo.SearchShopSimple;
@@ -36,15 +37,18 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 阿里开放搜索 实现店铺搜索
  * Created by bugzy on 2017/5/31 0031.
  */
 @Service("shopSearchOpenService")
-public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
+public class ShopSearchServiceOpenImpl implements ShopSearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShopSearchServiceOpenImpl.class);
+    public static final Pattern CHS_PATTERN = Pattern.compile("[\\u4E00-\\u9FA5]+");
+    public static final Pattern NUMBER_PATTERN = Pattern.compile("[0-9]+");
 
     @Autowired
     private SearcherClient searcherClient;
@@ -245,6 +249,66 @@ public class ShopSearchServiceOpenImpl extends ShopSearchServiceImpl {
         }
 
         return searchShops;
+    }
+
+    /**
+     * 按shopNum精确匹配一个店
+     *
+     * @param shopNum
+     * @param webSite
+     * @return
+     */
+    @Override
+    public List<SearchShopSimple> selShopByShopNum(String shopNum,String webSite) {
+        if (StringUtils.isEmpty(shopNum)) {
+            return Collections.emptyList();
+        }
+
+        ShiguShopExample shiguShopExample = new ShiguShopExample();
+        shiguShopExample.createCriteria().andShopNumEqualTo(shopNum).andWebSiteEqualTo(webSite);
+        List<ShiguShop> shiguShopList = shiguShopMapper.selectByExample(shiguShopExample);
+        List<Long> marketIdList = new ArrayList<Long>(BeanMapper.getFieldSet(shiguShopList, "marketId", Long.class));
+        List<Long> shopIdList = new ArrayList<Long>(BeanMapper.getFieldSet(shiguShopList, "shopId", Long.class));
+
+        //获取相关联market实体类集合
+        List<ShiguMarket> shiguMarketList = null;
+        if (marketIdList != null && 0 < marketIdList.size()) {
+            ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
+            shiguMarketExample.createCriteria().andMarketIdIn(new ArrayList<Long>(marketIdList));
+            shiguMarketList =  shiguMarketMapper.selectByExample(shiguMarketExample);
+        } else {
+            shiguMarketList = new ArrayList<ShiguMarket>();
+        }
+        Map<Long, ShiguMarket> shiguMarketMap =  BeanMapper.list2Map(shiguMarketList, "marketId", Long.class);
+
+        //获取相关联shoplicense实体类集合
+        List<ShiguShopLicense> shiguShopLicenseList = null;
+        if (shopIdList !=null && 0 < shopIdList.size()) {
+            ShiguShopLicenseExample licenseExample = new ShiguShopLicenseExample();
+            licenseExample.createCriteria().andShopIdIn(shopIdList).andLicenseTypeEqualTo(6);
+            shiguShopLicenseList = shiguShopLicenseMapper.selectByExample(licenseExample);
+        } else {
+            shiguShopLicenseList = new ArrayList<ShiguShopLicense>();
+        }
+
+        Map<Long, ShiguShopLicense> shiguShopLicenseMap =  BeanMapper.list2Map(shiguShopLicenseList, "shopId", Long.class);
+
+        List<SearchShopSimple> shiguShopSimpleList = new ArrayList<SearchShopSimple>();
+        for(ShiguShop item : shiguShopList) {
+            SearchShopSimple searchShopSimple = BeanMapper.map(item, SearchShopSimple.class);
+            ShiguMarket market = shiguMarketMap.get(searchShopSimple.getMarketId());
+            if (market != null) {
+                searchShopSimple.setMarket(market.getMarketName());
+            }
+            ShiguShopLicense shopLicense = shiguShopLicenseMap.get(searchShopSimple.getShopId());
+            if (shopLicense != null) {
+                searchShopSimple.setStarNum(shopLicense.getContext());
+            }
+
+            shiguShopSimpleList.add(searchShopSimple);
+        }
+
+        return shiguShopSimpleList;
     }
 
 }

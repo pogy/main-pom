@@ -83,9 +83,14 @@ public class ItemSearchServiceImpl implements ItemSearchService {
     @Override
     public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
         ShiguAggsPager pager = new ShiguAggsPager();
+        pager.setCats(Collections.<AggsCount>emptyList());
+        pager.setMarkets(Collections.<AggsCount>emptyList());
+        pager.setParentCats(Collections.<AggsCount>emptyList());
         pager.setNumber(page);
 
-        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder = openSearch.searchFrom(OpenItemVo.class).from((page - 1) * pageSize).size(pageSize);
+        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder
+                = openSearch.searchFrom(OpenItemVo.class).from((page - 1) * pageSize).size(pageSize)
+                .setRank(null, "goods_search", 1000);
 
         SearchQuery searchQuery = null;
         if (StringUtils.isNotEmpty(keyword)) {
@@ -114,9 +119,11 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 searchQuery = sidsQuery;
             }
         }
-        requestBuilder.setQuery(searchQuery);
+        if (searchQuery != null) {
+            requestBuilder.setQuery(searchQuery);
+        }
 
-        NumberFilter filters = FilterBuilder.number("is_closed", 0);
+        NumberFilter filters = FilterBuilder.number("is_closed", 0).and(FilterBuilder.number("pi_price").gt(0));
         if (cids != null && !cids.isEmpty()) {
             filters.and(FilterBuilder.termsIn("cid", cids.toArray(new Long[cids.size()])));
         }
@@ -145,23 +152,23 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         // 6. 排序规则
         switch (orderCase) {
             case NEW:
-                requestBuilder.addSort(new SortField("created", Order.DECREASE));
+                requestBuilder.addSort("created", Order.DECREASE);
                 break;
             case COMMON:
                 break;
             case GOODS_COMMON:
-                requestBuilder.addSort(new SortField("sort_order", Order.DECREASE));
-                requestBuilder.addSort(new SortField("created", Order.DECREASE));
+//                requestBuilder.addSort(new SortField("sort_order", Order.DECREASE));
+//                requestBuilder.addSort(new SortField("created", Order.DECREASE));
                 break;
             case SALE:
                 break;
             case CLICK:
                 break;
             case PRICEUP:
-                requestBuilder.addSort(new SortField("pi_price", Order.INCREASE));
+                requestBuilder.addSort("pi_price", Order.INCREASE);
                 break;
             case PRICEDOWN:
-                requestBuilder.addSort(new SortField("pi_price", Order.DECREASE));
+                requestBuilder.addSort("pi_price", Order.DECREASE);
                 break;
             case GOODSUP:
                 break;
@@ -180,20 +187,16 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
             for (OpenItemVo vo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
                 SearchItem searchItem = BeanMapper.map(vo, SearchItem.class);
+                searchItem.setPrice(String.format("%.2f", vo.getPiPrice() * .01));
                 searchItem.setItemId(vo.getGoodsId());
-                searchItem.setGoodsNo(null);
-                if (!vo.getTitle().contains("<em>")) {
-                    searchItem.setHighLightTitle(null);
-                } else {
-                    searchItem.setHighLightTitle(vo.getTitle());
-                }
-                if (!vo.getGoodsNo().contains("<em>")) {
-                    searchItem.setHighLightGoodsNo(null);
-                } else {
+                if (vo.getGoodsNo().contains("<em>")) {
                     searchItem.setHighLightGoodsNo(vo.getGoodsNo());
                     searchItem.setGoodsNo(vo.getGoodsNo().replace("<em>","").replace("</em>", ""));
+                } else {
+                    searchItem.setGoodsNo(null);
+                    searchItem.setHighLightTitle(vo.getTitle());
+                    searchItem.setTitle(vo.getTitle().replace("<em>","").replace("</em>", ""));
                 }
-                searchItem.setTitle(vo.getTitle().replace("<em>","").replace("</em>", ""));
                 pager.getContent().add(searchItem);
             }
 
