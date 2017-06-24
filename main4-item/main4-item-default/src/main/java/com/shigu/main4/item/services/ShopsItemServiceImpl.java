@@ -1,6 +1,5 @@
 package com.shigu.main4.item.services;
 
-import com.aliyun.oss.model.OSSObject;
 import com.opentae.core.mybatis.SgExample;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguGoodsSoldout;
@@ -20,7 +19,10 @@ import com.shigu.main4.item.beans.GoodsupLongTerms;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ShopsItemException;
-import com.shigu.main4.item.services.utils.*;
+import com.shigu.main4.item.services.utils.ElasticCountUtil;
+import com.shigu.main4.item.services.utils.FileImgsUtil;
+import com.shigu.main4.item.services.utils.OnsaleInstockReader;
+import com.shigu.main4.item.services.utils.SelIOItemsUtil;
 import com.shigu.main4.item.vo.*;
 import com.shigu.main4.tools.OssIO;
 import org.apache.commons.lang3.StringUtils;
@@ -30,8 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
