@@ -91,8 +91,13 @@ public class ItemBrowerFixedTest {
         itemBrowerFixService.fixNow("item_flow_test");
     }
 
+
+    /**
+     * 同步es商品统计，上款、浏览量等数据存储到数据库
+     */
     @Test
-    public void transPVIP() {
+    public void doTranslateUpAndClickCount() {
+
         String[] sites = {
                 "hz",
                 "cs",
@@ -106,9 +111,10 @@ public class ItemBrowerFixedTest {
 //                "xh",
         };
 
-        int bucketSize = 1000;
+        int bucketSize = 1000;//一批商品大小，任务以批次传输给线程
 
-        AddSearchRecord jobs = new AddSearchRecord();
+        // 默认3个工作线程，工作内容是两次ES聚合一次数据库批量插入/更新，线程等待时间较久，可以适量增大线程数
+        AddSearchRecord jobs = new AddSearchRecord(3);
 
         for (String site : sites) {
 
@@ -120,14 +126,14 @@ public class ItemBrowerFixedTest {
             tinyExample.setEndIndex(bucketSize);
             // today is 2017/06/22
             tinyExample.createCriteria().andIsClosedEqualTo(0L)
-                    .andCreatedLessThanOrEqualTo(DateUtil.stringToDate("2017-06-22 00:00:00"))
+//                    .andCreatedLessThanOrEqualTo(DateUtil.stringToDate("2017-06-22 00:00:00"))
 //            .andGoodsIdIn(Arrays.asList(20597888L, 20579000L, 20565125L, 20469608L, 20440630L, 20445645L, 20350398L, 20301772L, 20297240L, 20289270L, 20289301L, 20346502L, 20191246L, 20183296L, 20155018L, 10020161L, 10020139L, 10020171L))
             ;
 
             List<ShiguGoodsTiny> shiguGoodsTinies;
             while (!(shiguGoodsTinies = shiguGoodsTinyMapper.selectFieldsByConditionList(tinyExample, FieldUtil.codeFields("goods_id"))).isEmpty()) {
                 tinyExample.setStartIndex(start += bucketSize);
-                shiguGoodsTinies.get(0).setWebSite(site);
+                shiguGoodsTinies.get(0).setWebSite(site);//放置分站参数
                 jobs.addJob(shiguGoodsTinies);
             }
 
@@ -138,8 +144,8 @@ public class ItemBrowerFixedTest {
 
     private class AddSearchRecord extends Jobs<List<ShiguGoodsTiny>> {
 
-        public AddSearchRecord() {
-            super(3);
+        public AddSearchRecord(int totalThread) {
+            super(totalThread);
         }
 
         @Override
@@ -150,10 +156,11 @@ public class ItemBrowerFixedTest {
             SearchResponse searchResponse = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
                     .setTypes("item").setSearchType(SearchType.COUNT)
                     .setQuery(QueryBuilders.termsQuery("itemId", goodsIds))
-                    .addAggregation(
-                            AggregationBuilders.terms("goods_pv").field("itemId").size(goodsIds.size())
-                                    .subAggregation(AggregationBuilders.cardinality("goods_ip").field("clientMsg.clientIp"))
-                    ).execute().actionGet();
+                    .addAggregation(AggregationBuilders.terms("goods_pv").field("itemId").size(goodsIds.size())
+                                    .subAggregation(AggregationBuilders.cardinality("goods_ip").field("clientMsg.clientIp")))
+                    .addAggregation(AggregationBuilders.terms("up_count").field("supperGoodsId").size(goodsIds.size())
+                                    .subAggregation(AggregationBuilders.cardinality("up_man_count").field("user_id")))
+                    .execute().actionGet();
             List<Terms.Bucket> goods_pv = ((LongTerms) searchResponse.getAggregations().get("goods_pv")).getBuckets();
             if (goods_pv.isEmpty()) {
                 return;
@@ -165,32 +172,58 @@ public class ItemBrowerFixedTest {
                 forsearch.setGoodsId(bucket.getKeyAsNumber().longValue());
                 forsearch.setClick(bucket.getDocCount());
                 forsearch.setClickIp(((InternalCardinality) bucket.getAggregations().get("goods_ip")).getValue());
+                forsearch.setUp(0L);
+                forsearch.setUpMan(0L);
                 forsearch.setWebSite(webSite);
             }
+            Map<Long, GoodsCountForsearch> forsearchMap = BeanMapper.list2Map(forsearches, "goodsId", Long.class);
+
+            searchResponse = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup")
+                    .setSearchType(SearchType.COUNT)
+                    .setQuery(QueryBuilders.termsQuery("supperGoodsId", goodsIds))
+                    .addAggregation(AggregationBuilders.terms("up_count").field("supperGoodsId").size(goodsIds.size())
+                            .subAggregation(AggregationBuilders.cardinality("up_man_count").field("fenUserId")))
+                    .execute().actionGet();
+            List<Terms.Bucket> up_count = ((LongTerms) searchResponse.getAggregations().get("up_count")).getBuckets();
+            for (Terms.Bucket bucket : up_count) {
+                GoodsCountForsearch forsearch = forsearchMap.get(bucket.getKeyAsNumber().longValue());
+                if (forsearch == null) {
+                    forsearch = new GoodsCountForsearch();
+                    forsearch.setClick(0L);
+                    forsearch.setClickIp(0L);
+                    forsearch.setWebSite(webSite);
+                    forsearches.add(forsearch);
+                    forsearch.setGoodsId(bucket.getKeyAsNumber().longValue());
+                }
+                forsearch.setUp(bucket.getDocCount());
+                forsearch.setUpMan(((InternalCardinality) bucket.getAggregations().get("up_man_count")).getValue());
+            }
+
             goodsCountForsearchMapper.insertOrUpdate(forsearches);
         }
     }
 
     @Test
+    public void testV(){
+        SearchResponse searchResponse = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup")
+//                .setSearchType(SearchType.COUNT)
+                .setQuery(QueryBuilders.termsQuery("supperGoodsId", Arrays.asList(20361517L)))
+                .addAggregation(AggregationBuilders.terms("up_count").field("supperGoodsId").size(1000))
+//                        .subAggregation(AggregationBuilders.cardinality("up_man_count").field("fenUserId")))
+                .execute().actionGet();
+        System.out.println(searchResponse);
+    }
+
+    @Test
     public void testEsAggsPV(){
 
-        ShiguGoodsTinyExample tinyExample = new ShiguGoodsTinyExample();
-        tinyExample.setWebSite("hz");
-        tinyExample.setOrderByClause("created DESC");
-        tinyExample.setStartIndex(0);
-        tinyExample.setEndIndex(1000);
-        // today is 2017/06/22
-        tinyExample.createCriteria()
-                .andCreatedLessThanOrEqualTo(DateUtil.stringToDate("2017-06-22 00:00:00"));
-        SearchResponse searchResponse = ElasticConfiguration.searchClient.prepareSearch("shigupagerecode")
-                .setTypes("item").setSearchType(SearchType.COUNT)
-                .setQuery(QueryBuilders.termsQuery("itemId",
-                        BeanMapper.getFieldSet(shiguGoodsTinyMapper.selectByConditionList(tinyExample), "goodsId", Long.class)))
-                .addAggregation(AggregationBuilders.terms("goods_pv").field("itemId").size(1000)
-                        .subAggregation(AggregationBuilders.cardinality("goods_ip").field("clientMsg.clientIp")))
-                .execute().actionGet();
+        AddSearchRecord jobs = new AddSearchRecord(3);
 
-        System.out.println(searchResponse);
+        ShiguGoodsTiny tiny = new ShiguGoodsTiny();
+        tiny.setWebSite("hz");
+        tiny.setGoodsId(20361517L);
+        jobs.addJob(Arrays.asList(tiny));
+        jobs.join();
     }
 
     @Test
@@ -202,7 +235,11 @@ public class ItemBrowerFixedTest {
         forsearch1.setWebSite("hz");
         forsearch1.setClick(2144L);
         forsearch1.setClickIp(1471L);
+        forsearch1.setUp(0L);
+        forsearch1.setUpMan(1L);
         GoodsCountForsearch forsearch2 = new GoodsCountForsearch();
+        forsearch2.setUp(0L);
+        forsearch2.setUpMan(2L);
         forsearch2.setGoodsId(20579000L);
         forsearch2.setWebSite("hz");
         forsearch2.setClick(2162L);
