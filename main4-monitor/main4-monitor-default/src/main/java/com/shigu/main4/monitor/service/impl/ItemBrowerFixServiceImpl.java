@@ -60,7 +60,7 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
             goodsCountForsearch.setWebSite("hz");
             goodsCountForsearchList.add(goodsCountForsearch);
         }
-        goodsCountForsearchMapper.insertOrUpdate(goodsCountForsearchList);
+        goodsCountForsearchMapper.insertOrUpdateForAdd(goodsCountForsearchList);
         redisIO.getJedis().del(key + "_temp");
     }
 }

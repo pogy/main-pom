@@ -63,6 +63,7 @@ public class ItemBrowerFixedTest {
 
     @Test
     public void testInPage() {
+        redisIO.getJedis().del("item_flow_test");
         StringBuilder redisKeySb = new StringBuilder();
         redisKeySb.append("20770888").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
         String redisKey = redisKeySb.toString();
