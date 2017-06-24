@@ -559,23 +559,23 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
 
         String orderBy = shopForCdnBo.getOrderBy();
         if (StringUtils.isEmpty(orderBy)) {
-            requestBuilder.addSort("created", Order.DECREASE);
+            requestBuilder.addSort(new SortField("created", Order.DECREASE));
         } else {
             switch (orderBy) {
                 case "price_up":
-                    requestBuilder.addSort("pi_price", Order.INCREASE);
+                    requestBuilder.addSort(new SortField("pi_price", Order.INCREASE));
                     break;
                 case "price_down":
-                    requestBuilder.addSort("pi_price", Order.DECREASE);
+                    requestBuilder.addSort(new SortField("pi_price", Order.DECREASE));
                     break;
                 case "time_up":
-                    requestBuilder.addSort("created", Order.INCREASE);
+                    requestBuilder.addSort(new SortField("created", Order.INCREASE));
                     break;
                 case "time_down":
-                    requestBuilder.addSort("created", Order.DECREASE);
+                    requestBuilder.addSort(new SortField("created", Order.DECREASE));
                     break;
                 default:
-                    requestBuilder.addSort("created", Order.DECREASE);
+                    requestBuilder.addSort(new SortField("created", Order.DECREASE));
                     break;
             }
         }

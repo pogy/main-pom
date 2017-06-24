@@ -152,7 +152,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         // 6. 排序规则
         switch (orderCase) {
             case NEW:
-                requestBuilder.addSort("created", Order.DECREASE);
+                requestBuilder.addSort(new SortField("created", Order.DECREASE));
                 break;
             case COMMON:
                 break;
@@ -165,10 +165,10 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             case CLICK:
                 break;
             case PRICEUP:
-                requestBuilder.addSort("pi_price", Order.INCREASE);
+                requestBuilder.addSort(new SortField("pi_price", Order.INCREASE));
                 break;
             case PRICEDOWN:
-                requestBuilder.addSort("pi_price", Order.DECREASE);
+                requestBuilder.addSort(new SortField("pi_price", Order.DECREASE));
                 break;
             case GOODSUP:
                 break;
