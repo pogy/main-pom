@@ -88,7 +88,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         pager.setParentCats(Collections.<AggsCount>emptyList());
         pager.setNumber(page);
 
-        OpenSearch openSearch = new OpenSearch("LTAINlvsCqKlSP4I", "XbfaARrK5PkUtqRfqWLfy5L9OQ9nQJ", "http://intranet.opensearch-cn-hangzhou.aliyuncs.com");
+        OpenSearch openSearch = new OpenSearch("LTAINlvsCqKlSP4I", "XbfaARrK5PkUtqRfqWLfy5L9OQ9nQJ", "http://opensearch-cn-hangzhou.aliyuncs.com");
 
         OpenSearch.RequestBuilder<OpenItemVo> requestBuilder
                 = openSearch.searchFrom(OpenItemVo.class).from((page - 1) * pageSize).size(pageSize)

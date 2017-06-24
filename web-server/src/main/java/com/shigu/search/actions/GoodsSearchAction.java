@@ -197,7 +197,7 @@ public class GoodsSearchAction {
         model.addAttribute("goodsCount", pager.getTotalCount());
         //搜索路径
 //        model.addAttribute("cateNav",searchNav);
-        model.addAttribute("totalPage", pager.getTotalPages());
+        model.addAttribute("totalPage",  pager.getTotalPages()>100?100:pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
         return "search/search";
     }
@@ -265,7 +265,7 @@ public class GoodsSearchAction {
         model.addAttribute("goodsCount", pager.getTotalCount());
         model.addAttribute("cateNav", searchNav);
         //搜索路径
-        model.addAttribute("totalPage", pager.getTotalPages());
+        model.addAttribute("totalPage", pager.getTotalPages()>100?100:pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
         return "search/goods";
     }
