@@ -80,6 +80,10 @@ public class ItemBrowerFixedTest {
         redisKeySb.append("20770889").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
         redisKey = redisKeySb.toString();
         redisIO.hset("item_flow_test", redisKey, "192.168.1.1");
+        redisKeySb = new StringBuilder();
+        redisKeySb.append("20770887").append("_").append(DateUtil.dateToString(new Date(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
+        redisKey = redisKeySb.toString();
+        redisIO.hset("item_flow_test", redisKey, "192.168.1.3");
     }
 
     @Test
