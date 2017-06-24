@@ -34,6 +34,18 @@ public class IndexGoatVO {
      * 广告结束时间
      */
     private Date endOnline;
+    /**
+     * 广告发布时段
+     */
+    private String goatTime;
+
+    public String getGoatTime() {
+        return goatTime;
+    }
+
+    public void setGoatTime(String goatTime) {
+        this.goatTime = goatTime;
+    }
 
     public String getType() {
         return type;

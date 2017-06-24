@@ -145,6 +145,23 @@ public class GoatFactoryImpl implements GoatFactory {
 
     @Override
     public <T extends Goat> T selGoatById(Long goatId) throws GoatException {
+        return selGoatByIdAndStatus(goatId,1);
+    }
+
+    @Override
+    public <T extends Goat> T selGoatPrepareById(Long goatId) throws GoatException {
+        return selGoatByIdAndStatus(goatId,2);
+    }
+
+    /**
+     * 按广告ID和数据状态来查广告位信息
+     * @param goatId
+     * @param status
+     * @param <T>
+     * @return
+     * @throws GoatException
+     */
+    private <T extends Goat> T selGoatByIdAndStatus(Long goatId,Integer status) throws GoatException {
         //查广告
         GoatOneItem goi = goatOneItemMapper.selectByPrimaryKey(goatId);
         if (goi == null) {
@@ -152,7 +169,7 @@ public class GoatFactoryImpl implements GoatFactory {
         }
         //查出在线广告数据
         GoatItemDataExample goatItemDataExample = new GoatItemDataExample();
-        goatItemDataExample.createCriteria().andGoatIdEqualTo(goatId).andStatusEqualTo(1);
+        goatItemDataExample.createCriteria().andGoatIdEqualTo(goatId).andStatusEqualTo(status);
         goatItemDataExample.setStartIndex(0);
         goatItemDataExample.setEndIndex(1);
         List<GoatItemData> datas = goatItemDataMapper.selectByConditionList(goatItemDataExample);
