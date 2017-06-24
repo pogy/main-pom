@@ -13,7 +13,7 @@ public class IndexGoatVO {
     /**
      * 广告ID
      */
-    private Long codeId;
+    private String codeId;
     /**
      * 广告编号
      */
@@ -35,16 +35,16 @@ public class IndexGoatVO {
      */
     private String endOnline;
     /**
-     * 广告发布时段
+     * 商品ID
      */
-    private String goatTime;
+    private Long goodsId;
 
-    public String getGoatTime() {
-        return goatTime;
+    public Long getGoodsId() {
+        return goodsId;
     }
 
-    public void setGoatTime(String goatTime) {
-        this.goatTime = goatTime;
+    public void setGoodsId(Long goodsId) {
+        this.goodsId = goodsId;
     }
 
     public String getType() {
@@ -55,11 +55,11 @@ public class IndexGoatVO {
         this.type = type;
     }
 
-    public Long getCodeId() {
+    public String getCodeId() {
         return codeId;
     }
 
-    public void setCodeId(Long codeId) {
+    public void setCodeId(String codeId) {
         this.codeId = codeId;
     }
 

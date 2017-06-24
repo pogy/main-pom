@@ -1154,7 +1154,7 @@ public class ShopAction {
      * @return
      */
     @RequestMapping("seller/indexGgChange")
-    public String indexGgChange(HttpSession session, Model model) throws IndexGoatException {
+    public String indexGgChange(HttpSession session, Model model) throws IndexGoatException, GoatException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession shopSession = personalSession.getLogshop();
         Long shopId = shopSession.getShopId();
@@ -1170,20 +1170,21 @@ public class ShopAction {
      */
     @RequestMapping("seller/setNewIndexGoodsData")
     @ResponseBody
-    public JSONObject setNewIndexGoodsData(Long id, Long goodsId, HttpSession session) throws JsonErrException {
+    public JSONObject setNewIndexGoodsData(String id, Long goodsId, HttpSession session) throws JsonErrException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession shopSession = personalSession.getLogshop();
         String webSite = shopSession.getWebSite();
         Long shopId = shopSession.getShopId();
-        GoatShopService.GoatLicenseStatu licenseStatu = goatShopService.getGoatLicenseStatu(id, shopId);
+        GoatLicense license=goatShopService.getGoatLicenseByCodeId(id,shopId);
+        GoatShopService.GoatLicenseStatu statu = goatShopService.getGoatLicenseStatu(license);
         ShiguGoodsTiny good = goatShopService.getShopGoodsInfo(webSite, goodsId, shopId);
-        switch (licenseStatu) {
+        switch (statu) {
             case PUBLISH: {
-                goatShopService.publishGoatUpdate(id, good);
+                goatShopService.publishGoatUpdate(license,personalSession.getUserId(), good);
                 break;
             }
             case PREPUBLISH: {
-                goatShopService.prepublishGoatUpdate(id, good);
+                goatShopService.prepublishGoatUpdate(license,personalSession.getUserId(), good);
                 break;
             }
         }
