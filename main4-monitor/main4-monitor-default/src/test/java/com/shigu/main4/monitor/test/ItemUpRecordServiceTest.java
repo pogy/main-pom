@@ -36,7 +36,7 @@ public class ItemUpRecordServiceTest {
     private ItemUpRecordService itemUpRecordService;
 
     @Test
-    public void pushMsgTest(){
+    public void pushMsgTest() throws InterruptedException {
         ItemUpRecordServiceImpl impl= (ItemUpRecordServiceImpl) itemUpRecordService;
         ItemUpRecordVO itemUpRecordVO = new ItemUpRecordVO();
         itemUpRecordVO.setFenPrice("165");
@@ -44,7 +44,7 @@ public class ItemUpRecordServiceTest {
         itemUpRecordVO.setStatus(0L);
         itemUpRecordVO.setFenGoodsName("2017冬装新款棉衣 糖果色四色中长款修身棉衣1111");
         itemUpRecordVO.setSupperImage("http://img03.taobaocdn.com/bao/uploaded/i3/TB1dZ3eGXXXXXbzXFXXXXXXXXXX_!!0-item_pic.jpg");
-        itemUpRecordVO.setSupperGoodsId(12270481L);
+        itemUpRecordVO.setSupperGoodsId(12270480L);
         itemUpRecordVO.setSupperServers("退现金,包换款");
         itemUpRecordVO.setSupperStoreId(32888L);
         itemUpRecordVO.setSupperMarketId(644L);
@@ -66,6 +66,7 @@ public class ItemUpRecordServiceTest {
         itemUpRecordVO.setSupperQq("123415432534");
         itemUpRecordVO.setFenNumiid(524121231L);
         impl.pushAddMessage(itemUpRecordVO);
+        Thread.sleep(30000L);
     }
     /**
      * 添加上传记录
