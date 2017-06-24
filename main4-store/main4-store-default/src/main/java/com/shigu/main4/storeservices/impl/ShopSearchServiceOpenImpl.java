@@ -1,16 +1,5 @@
 package com.shigu.main4.storeservices.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.aliyun.opensearch.SearcherClient;
-import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
-import com.aliyun.opensearch.sdk.generated.commons.OpenSearchClientException;
-import com.aliyun.opensearch.sdk.generated.commons.OpenSearchException;
-import com.aliyun.opensearch.sdk.generated.search.Config;
-import com.aliyun.opensearch.sdk.generated.search.SearchFormat;
-import com.aliyun.opensearch.sdk.generated.search.SearchParams;
-import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguMarket;
 import com.opentae.data.mall.beans.ShiguShop;
@@ -21,7 +10,6 @@ import com.opentae.data.mall.examples.ShiguShopLicenseExample;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.HighLightKit;
@@ -29,6 +17,12 @@ import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.vo.OpenShopVo;
 import com.shigu.main4.vo.SearchShop;
 import com.shigu.main4.vo.SearchShopSimple;
+import com.shigu.opensearchsdk.OpenSearch;
+import com.shigu.opensearchsdk.builder.FilterBuilder;
+import com.shigu.opensearchsdk.builder.QueryBuilder;
+import com.shigu.opensearchsdk.query.SearchQuery;
+import com.shigu.opensearchsdk.response.Result;
+import com.shigu.opensearchsdk.response.SearchResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +45,10 @@ public class ShopSearchServiceOpenImpl implements ShopSearchService {
     public static final Pattern NUMBER_PATTERN = Pattern.compile("[0-9]+");
 
     @Autowired
-    private SearcherClient searcherClient;
+    private ShiguShopMapper shiguShopMapper;
 
     @Autowired
-    private ShiguShopMapper shiguShopMapper;
+    private OpenSearch openSearch;
 
     /**
      * 查单店商品
@@ -72,78 +66,59 @@ public class ShopSearchServiceOpenImpl implements ShopSearchService {
         ShiguPager<SearchShop> pager = new ShiguPager<>();
         pager.setNumber(page);
 
-        Config config = new Config(Lists.newArrayList("shop_search_ol"));
-        config.setStart((page - 1) * pageSize);
-        config.setHits(pageSize);
-        config.setFetchFields(Lists.newArrayList("shop_id", "market_id_1", "shop_name", "web_site_1", "tb_nick", "shop_num", "shop_status", "market_name"));
-        config.setSearchFormat(SearchFormat.JSON);
-        SearchParams searchParams = new SearchParams(config);
+        OpenSearch.RequestBuilder<OpenShopVo> requestBuilder
+                = openSearch.searchFrom(OpenShopVo.class).from((page - 1) * pageSize).size(pageSize);
         String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
         String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
         if (StringUtils.isNotEmpty(keyword)) {
-            String query = "shop_info:\"" + keyword + "\"";
+            SearchQuery searchQuery = QueryBuilder.search("shop_info", keyword);
             if (StringUtils.isNotEmpty(keywordChina)) {
-                query += " OR (shop_market_info:'" + keywordChina + "'^5 AND shop_info:'" + keyword + "')";
+                searchQuery.or(QueryBuilder.search("shop_market_info", keywordChina).boost(5)
+                        .and(QueryBuilder.search("shop_info", keyword)));
             }
             if (StringUtils.isNotEmpty(keywordNum)) {
-                query += " OR (shop_num_info:'" + keywordNum + "'^10 AND shop_info:'" + keyword + "')";
+                searchQuery.or(QueryBuilder.search("shop_num_info", keywordNum).boost(10)
+                        .and(QueryBuilder.search("shop_info", keyword)));
             }
-            searchParams.setQuery(query);
+            requestBuilder.setQuery(searchQuery);
         }
-        String filter = "";
         if (StringUtils.isNotEmpty(webSite)) {
-            filter = "web_site_1=\"" + webSite + "\"";
+            requestBuilder.addFilter(FilterBuilder.term("web_site_1", webSite));
         }
         if (mid != null) {
-            if (StringUtils.isNotEmpty(filter)) {
-                filter += " AND ";
-            }
-            filter += "market_id_1=" + mid;
+            requestBuilder.addFilter(FilterBuilder.number("market_id_1", mid));
         }
-        if (StringUtils.isNotEmpty(filter)) {
-            searchParams.setFilter(filter);
-        }
-        try {
-            SearchResult result = searcherClient.execute(searchParams);
-            JSONObject jsonObject = JSON.parseObject(result.getResult());
-            if ("OK".equals(jsonObject.getString("status"))) {
-                JSONObject data = jsonObject.getJSONObject("result");
-                int total = data.getIntValue("total");
-                pager.calPages(total, pageSize);
-                ArrayList<SearchShop> shop = Lists.newArrayList();
-                pager.setContent(shop);
+        SearchResponse<OpenShopVo> response = requestBuilder.execute();
+        if (response.isSuccess()) {
+            Result<OpenShopVo> result = response.getResult();
+            pager.calPages(result.getTotal(), pageSize);
+            pager.setContent(new ArrayList<SearchShop>(result.getItems().size()));
+            List<OpenShopVo> openShopVos = BeanMapper.getFieldList(result.getItems(), "fields", OpenShopVo.class);
+            if (!openShopVos.isEmpty()) {
+                HighLightKit defaultInstance = HighLightKit.getDefaultInstance();
 
-                JSONArray items = data.getJSONArray("items");
-                List<OpenShopVo> openShopVos = items.toJavaList(OpenShopVo.class);
-                if (!openShopVos.isEmpty()) {
-                    HighLightKit defaultInstance = HighLightKit.getDefaultInstance();
+                List<Long> shopIds = BeanMapper.getFieldList(openShopVos, "shopId", Long.class);
+                ShiguShopExample shopExample = new ShiguShopExample();
+                shopExample.createCriteria().andShopIdIn(shopIds);
+                Map<Long, ShiguShop> shopMap
+                        = BeanMapper.list2Map(shiguShopMapper.selectByExample(shopExample), "shopId", Long.class);
+                for (OpenShopVo vo : openShopVos) {
+                    SearchShop searchShop = BeanMapper.map(vo, SearchShop.class);
+                    searchShop.setMarket(vo.getMarketName());
+                    searchShop.setHighLightMarket(defaultInstance.bright(keyword, vo.getMarketName()));
+                    searchShop.setHighLightShopNum(defaultInstance.bright(keyword, vo.getShopNum()));
+                    ShiguShop shiguShop = shopMap.get(vo.getShopId());
+                    if (shiguShop != null) {
+                        searchShop.setAddress(shiguShop.getAddress());
+                        searchShop.setImAliww(shiguShop.getImAliww());
+                        searchShop.setImQq(shiguShop.getImQq());
+                        searchShop.setMainCase(shiguShop.getMainBus());
+                        searchShop.setTelephone(shiguShop.getTelephone());
 
-                    List<Long> shopIds = BeanMapper.getFieldList(openShopVos, "shopId", Long.class);
-                    ShiguShopExample shopExample = new ShiguShopExample();
-                    shopExample.createCriteria().andShopIdIn(shopIds);
-                    Map<Long, ShiguShop> shopMap
-                            = BeanMapper.list2Map(shiguShopMapper.selectByExample(shopExample), "shopId", Long.class);
-                    for (OpenShopVo vo : openShopVos) {
-                        SearchShop searchShop = BeanMapper.map(vo, SearchShop.class);
-                        searchShop.setMarket(vo.getMarketName());
-                        searchShop.setHighLightMarket(defaultInstance.bright(keyword, vo.getMarketName()));
-                        searchShop.setHighLightShopNum(defaultInstance.bright(keyword, vo.getShopNum()));
-                        ShiguShop shiguShop = shopMap.get(vo.getShopId());
-                        if (shiguShop != null) {
-                            searchShop.setAddress(shiguShop.getAddress());
-                            searchShop.setImAliww(shiguShop.getImAliww());
-                            searchShop.setImQq(shiguShop.getImQq());
-                            searchShop.setMainCase(shiguShop.getMainBus());
-                            searchShop.setTelephone(shiguShop.getTelephone());
-
-                        }
-                        shop.add(searchShop);
                     }
+                    pager.getContent().add(searchShop);
                 }
-            } else throw new Main4Exception(jsonObject.getString("errors"));
-        } catch (OpenSearchException | OpenSearchClientException ignored) {
-        } catch (Main4Exception e) {
-            logger.error("搜索失败", e);
+            }
         }
         return pager;
     }
@@ -163,7 +138,7 @@ public class ShopSearchServiceOpenImpl implements ShopSearchService {
         if (shopIds == null || shopIds.isEmpty()) {
             return Collections.emptyList();
         }
-        List<SearchShopSimple> searchShops = new ArrayList<SearchShopSimple>();
+        List<SearchShopSimple> searchShops = new ArrayList<>();
         /**
          * 创建shiguShop组合条件查询对象
          */
@@ -267,33 +242,33 @@ public class ShopSearchServiceOpenImpl implements ShopSearchService {
         ShiguShopExample shiguShopExample = new ShiguShopExample();
         shiguShopExample.createCriteria().andShopNumEqualTo(shopNum).andWebSiteEqualTo(webSite);
         List<ShiguShop> shiguShopList = shiguShopMapper.selectByExample(shiguShopExample);
-        List<Long> marketIdList = new ArrayList<Long>(BeanMapper.getFieldSet(shiguShopList, "marketId", Long.class));
-        List<Long> shopIdList = new ArrayList<Long>(BeanMapper.getFieldSet(shiguShopList, "shopId", Long.class));
+        List<Long> marketIdList = new ArrayList<>(BeanMapper.getFieldSet(shiguShopList, "marketId", Long.class));
+        List<Long> shopIdList = new ArrayList<>(BeanMapper.getFieldSet(shiguShopList, "shopId", Long.class));
 
         //获取相关联market实体类集合
-        List<ShiguMarket> shiguMarketList = null;
-        if (marketIdList != null && 0 < marketIdList.size()) {
+        List<ShiguMarket> shiguMarketList;
+        if (0 < marketIdList.size()) {
             ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
-            shiguMarketExample.createCriteria().andMarketIdIn(new ArrayList<Long>(marketIdList));
+            shiguMarketExample.createCriteria().andMarketIdIn(new ArrayList<>(marketIdList));
             shiguMarketList =  shiguMarketMapper.selectByExample(shiguMarketExample);
         } else {
-            shiguMarketList = new ArrayList<ShiguMarket>();
+            shiguMarketList = new ArrayList<>();
         }
         Map<Long, ShiguMarket> shiguMarketMap =  BeanMapper.list2Map(shiguMarketList, "marketId", Long.class);
 
         //获取相关联shoplicense实体类集合
-        List<ShiguShopLicense> shiguShopLicenseList = null;
-        if (shopIdList !=null && 0 < shopIdList.size()) {
+        List<ShiguShopLicense> shiguShopLicenseList;
+        if (0 < shopIdList.size()) {
             ShiguShopLicenseExample licenseExample = new ShiguShopLicenseExample();
             licenseExample.createCriteria().andShopIdIn(shopIdList).andLicenseTypeEqualTo(6);
             shiguShopLicenseList = shiguShopLicenseMapper.selectByExample(licenseExample);
         } else {
-            shiguShopLicenseList = new ArrayList<ShiguShopLicense>();
+            shiguShopLicenseList = new ArrayList<>();
         }
 
         Map<Long, ShiguShopLicense> shiguShopLicenseMap =  BeanMapper.list2Map(shiguShopLicenseList, "shopId", Long.class);
 
-        List<SearchShopSimple> shiguShopSimpleList = new ArrayList<SearchShopSimple>();
+        List<SearchShopSimple> shiguShopSimpleList = new ArrayList<>();
         for(ShiguShop item : shiguShopList) {
             SearchShopSimple searchShopSimple = BeanMapper.map(item, SearchShopSimple.class);
             ShiguMarket market = shiguMarketMap.get(searchShopSimple.getMarketId());

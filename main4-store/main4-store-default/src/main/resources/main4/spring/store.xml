@@ -21,18 +21,6 @@
 
     <context:property-placeholder location="classpath:opensearch.properties" ignore-unresolvable="true"/>
 
-    <bean id="openSearchSdk" class="com.aliyun.opensearch.sdk.generated.OpenSearch">
-        <constructor-arg index="0" value="${accesskey}"/>
-        <constructor-arg index="1" value="${secret}"/>
-        <constructor-arg index="2" value="${host}"/>
-    </bean>
-    <bean id="openSearchClient" class="com.aliyun.opensearch.OpenSearchClient">
-        <constructor-arg ref="openSearchSdk"/>
-    </bean>
-    <bean class="com.aliyun.opensearch.SearcherClient">
-        <constructor-arg ref="openSearchClient"/>
-    </bean>
-
     <bean id="openSearch" class="com.shigu.opensearchsdk.OpenSearch">
         <constructor-arg index="0" value="${accesskey}"/>
         <constructor-arg index="1" value="${secret}"/>

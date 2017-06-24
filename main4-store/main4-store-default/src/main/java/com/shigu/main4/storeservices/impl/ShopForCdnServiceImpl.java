@@ -29,6 +29,8 @@ import com.shigu.opensearchsdk.builder.QueryBuilder;
 import com.shigu.opensearchsdk.query.Query;
 import com.shigu.opensearchsdk.query.TermQuery;
 import com.shigu.opensearchsdk.response.Facet;
+import com.shigu.opensearchsdk.response.Result;
+import com.shigu.opensearchsdk.response.SearchResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
@@ -69,9 +71,6 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
 
     @Resource(name = "tae_mall_shiguGoodsTinyMapper")
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
-
-    @Autowired
-    private SearcherClient searcherClient;
 
     @Resource
     private OpenSearch openSearch;
@@ -532,31 +531,17 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shiguPager.setNumber(shopForCdnBo.getPageNo());
         shiguPager.setContent(itemShowBlocks);
         OpenSearch.RequestBuilder<OpenItemVo> searchParamsBuilder = getRequestBuilder(shopForCdnBo);
-        try {
-            SearchResult searchResult = searchParamsBuilder.execute();
-            JSONObject jsonObject = JSON.parseObject(searchResult.getResult());
-            if(StringUtils.equals("OK",jsonObject.getString("status"))) {
-                JSONObject data = jsonObject.getJSONObject("result");
-                int total = data.getIntValue("total");
-                shiguPager.calPages(total,shopForCdnBo.getPageSize());
-                JSONArray items = data.getJSONArray("items");
-
-                List<OpenItemVo> openItemVos = items.toJavaList(OpenItemVo.class);
-                if (openItemVos != null && !openItemVos.isEmpty()) {
-                    for (OpenItemVo openItemVoForStore:openItemVos) {
-                        ItemShowBlock itemShowBlock = BeanMapper.map(openItemVoForStore,ItemShowBlock.class);
-                        itemShowBlock.setImgUrl(openItemVoForStore.getPicUrl());
-                        itemShowBlock.setItemId(openItemVoForStore.getGoodsId());
-                        itemShowBlock.setWebSite(webSite);
-                        itemShowBlocks.add(itemShowBlock);
-                    }
-                }
-            } else {
-                throw new Main4Exception(jsonObject.getString("errors"));
+        SearchResponse<OpenItemVo> response = searchParamsBuilder.execute();
+        if (response.isSuccess()) {
+            Result<OpenItemVo> result = response.getResult();
+            shiguPager.calPages(result.getTotal(), shopForCdnBo.getPageSize());
+            for (OpenItemVo itemVo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
+                ItemShowBlock itemShowBlock = BeanMapper.map(itemVo,ItemShowBlock.class);
+                itemShowBlock.setImgUrl(itemVo.getPicUrl());
+                itemShowBlock.setItemId(itemVo.getGoodsId());
+                itemShowBlock.setWebSite(webSite);
+                itemShowBlocks.add(itemShowBlock);
             }
-        } catch (OpenSearchException|OpenSearchClientException ignored) {
-        } catch (Main4Exception e) {
-            logger.error("搜索失败", e);
         }
         return itemShowBlocks;
     }
@@ -565,8 +550,6 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * 按条件Bo封装OpenSearch查询条件
      *
      * @param shopForCdnBo     查询条件
-     * @param webSite       分站信息
-     * @param fields   需要字段
      * @return OpenSearch的SearchParamsBuilder条件
      */
     public OpenSearch.RequestBuilder<OpenItemVo> getRequestBuilder(ShopForCdnBo shopForCdnBo) {
@@ -638,46 +621,39 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                 searchQuery = cidAllQuery;
             }
         }
-
-        if (StringUtils.isNotEmpty(query)) {
-            searchParams.setQuery(query.toString());
+        if (searchQuery != null) {
+            requestBuilder.setQuery(searchQuery);
         }
-        searchParamsBuilder = SearchParamsBuilder.create(searchParams);
+
         shopId = shopForCdnBo.getShopId();
         if (shopId != null) {
-            searchParamsBuilder.addFilter("store_id = " + shopId, "AND");
-
+            requestBuilder.addFilter(FilterBuilder.number("store_id", shopId));
         }
         List<Long> goodsIds = shopForCdnBo.getGoodsIds();
         if (goodsIds != null ) {
-            searchParamsBuilder.addFilter("goods_id = -1");
-            if (goodsIds.size() > 0) {
-                for (Long id: goodsIds){
-                    searchParamsBuilder.addFilter("goods_id = " + id, "OR");
-                }
-            }
+            requestBuilder.addFilter(FilterBuilder.termsIn("goods_id", goodsIds.toArray(new Long[goodsIds.size()])));
         }
         Long cid = shopForCdnBo.getCid();
         if (cid != null) {
-            searchParamsBuilder.addFilter("cid = " + cid,"AND");
+            requestBuilder.addFilter(FilterBuilder.number("cid", cid));
         }
         Double priceFrom = shopForCdnBo.getPriceFrom();
         if (priceFrom != null) {
             Double fromPrice = priceFrom * 100;
-            searchParamsBuilder.addFilter("pi_price >= " + fromPrice.longValue(), "AND");
+            requestBuilder.addFilter(FilterBuilder.number("pi_price").gte(fromPrice.longValue()));
         }
         Double priceTo = shopForCdnBo.getPriceTo();
         if (priceTo != null) {
             Double toPrice = priceTo * 100;
-            searchParamsBuilder.addFilter("pi_price < " + toPrice.longValue(), "AND");
+            requestBuilder.addFilter(FilterBuilder.number("pi_price").lte(toPrice.longValue()));
         }
         Date dateFrom = shopForCdnBo.getDateFrom();
         if (dateFrom != null) {
-            searchParamsBuilder.addFilter("created >= " + dateFrom.getTime(), "AND");
+            requestBuilder.addFilter(FilterBuilder.number("created").gte(dateFrom.getTime()));
         }
         Date dateTo = shopForCdnBo.getDateTo();
         if (dateTo != null) {
-            searchParamsBuilder.addFilter("created < " + dateTo.getTime(), "AND");
+            requestBuilder.addFilter(FilterBuilder.number("created").lte(dateTo.getTime()));
         }
         return requestBuilder;
     }
