@@ -29,11 +29,11 @@ public class IndexGoatVO {
     /**
      * 广告开始时间
      */
-    private Date startOnline;
+    private String startOnline;
     /**
      * 广告结束时间
      */
-    private Date endOnline;
+    private String endOnline;
     /**
      * 广告发布时段
      */
@@ -87,19 +87,19 @@ public class IndexGoatVO {
         this.picUrl = picUrl;
     }
 
-    public Date getStartOnline() {
+    public String getStartOnline() {
         return startOnline;
     }
 
-    public void setStartOnline(Date startOnline) {
+    public void setStartOnline(String startOnline) {
         this.startOnline = startOnline;
     }
 
-    public Date getEndOnline() {
+    public String getEndOnline() {
         return endOnline;
     }
 
-    public void setEndOnline(Date endOnline) {
+    public void setEndOnline(String endOnline) {
         this.endOnline = endOnline;
     }
 }

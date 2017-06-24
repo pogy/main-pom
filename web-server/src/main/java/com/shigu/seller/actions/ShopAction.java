@@ -54,10 +54,7 @@ import com.shigu.main4.vo.StoreRelation;
 import com.shigu.seller.bo.*;
 import com.shigu.seller.exceptions.IndexGoatException;
 import com.shigu.seller.exceptions.SendGoodsException;
-import com.shigu.seller.services.GoodsSendService;
-import com.shigu.seller.services.ShopBaseSaveService;
-import com.shigu.seller.services.ShopIndexDataService;
-import com.shigu.seller.services.ShopItemModService;
+import com.shigu.seller.services.*;
 import com.shigu.seller.vo.*;
 import com.shigu.services.DubboAllService;
 import com.shigu.session.main4.PersonalSession;
@@ -174,11 +171,8 @@ public class ShopAction {
     SpreadService spreadService;
 
     @Autowired
-    GoatLicenseMapper goatLicenseMapper;
+    GoatShopService goatShopService;
 
-    //TODO:没整合到DubboAllService,先放在这里
-    @Autowired
-    GoatDubboService goatDubboService;
     /**
      * 当前登陆的session
      *
@@ -1161,41 +1155,13 @@ public class ShopAction {
      */
     @RequestMapping("seller/indexGgChange")
     public String indexGgChange(HttpSession session, Model model) throws IndexGoatException {
-        final String dataList = "myIndexTerms";
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession shopSession = personalSession.getLogshop();
         Long shopId = shopSession.getShopId();
         String webSite = shopSession.getWebSite();
-        GoatLicenseExample goatLicenseExample = new GoatLicenseExample();
-        goatLicenseExample.createCriteria().andShopIdEqualTo(shopId);
-        List<GoatLicense> goatLicenses = goatLicenseMapper.selectFieldsByExample(goatLicenseExample,"goat_id,spread_from_time,spread_to_time");
-        List<IndexGoatVO> myIndexTerms = Lists.newArrayList();
-        for (GoatLicense goatLicense:goatLicenses) {
-            try {
-                ItemGoatVO goatVO = goatDubboService.selGoatById(goatLicense.getGoatId(), GoatType.ItemGoat);
-                IndexGoatVO indexGoatVO = mapItemGoatVOToIndexGoatVO(webSite, goatVO, goatLicense);
-                myIndexTerms.add(indexGoatVO);
-            } catch (GoatException e) {
-            //    排除不匹配的广告（非商品广告）
-            }
-        }
-        model.addAttribute(dataList, myIndexTerms);
+        List<IndexGoatVO> myIndexTerms = goatShopService.selGoatByShopId(webSite, shopId, GoatType.ItemGoat);
+        model.addAttribute("myIndexTerms", myIndexTerms);
         return "seller/indexGgChange";
-    }
-
-    /**
-     * 将ItemGoatVO对象数据转化为IndexGoatVO对象数据
-     * @return
-     */
-    private IndexGoatVO mapItemGoatVOToIndexGoatVO(String webSite, ItemGoatVO itemGoatVO, GoatLicense goatLicense) {
-        IndexGoatVO indexGoatVO = BeanMapper.map(itemGoatVO, IndexGoatVO.class);
-        indexGoatVO.setCodeId(itemGoatVO.getGoatId());
-        indexGoatVO.setWebSite(webSite);
-        indexGoatVO.setCode(itemGoatVO.getDescription());
-        indexGoatVO.setType(itemGoatVO.getTitle());
-        indexGoatVO.setStartOnline(goatLicense.getSpreadFromTime());
-        indexGoatVO.setEndOnline(goatLicense.getSpreadToTime());
-        return indexGoatVO;
     }
 
     /**
@@ -1208,52 +1174,21 @@ public class ShopAction {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession shopSession = personalSession.getLogshop();
         String webSite = shopSession.getWebSite();
-        try {
-            GoatLicenseExample goatLicenseExample = new GoatLicenseExample();
-            goatLicenseExample.createCriteria().andGoatIdEqualTo(id);
-            List<GoatLicense> goatLicenses = goatLicenseMapper.selectByExample(goatLicenseExample);
-            if(goatLicenses.size()<=0){
-                throw new JsonErrException("没有找到对应的广告授权记录");
+        Long shopId = shopSession.getShopId();
+        GoatShopService.GoatLicenseStatu licenseStatu = goatShopService.getGoatLicenseStatu(id, shopId);
+        ShiguGoodsTiny good = goatShopService.getShopGoodsInfo(webSite, goodsId, shopId);
+        switch (licenseStatu) {
+            case PUBLISH: {
+                goatShopService.publishGoatUpdate(id, good);
+                break;
             }
-            GoatLicense goatLicense = goatLicenses.get(0);
-            Date now = new Date();
-            if (now.before(goatLicense.getLicenseFromTime())||now.after(goatLicense.getLicenseToTime())) {
-                throw new JsonErrException("不在广告授权时间内");
+            case PREPUBLISH: {
+                goatShopService.prepublishGoatUpdate(id, good);
+                break;
             }
-            ItemGoatVO itemGoatVO = goatDubboService.selGoatById(id, GoatType.ItemGoat);
-            ShiguGoodsTiny good = getShiguGoodsTinyById(webSite, goodsId);
-            if (good == null) {
-                throw new JsonErrException("没找到对应商品");
-            }
-            itemGoatVO.setPicUrl(good.getPicUrl());
-            itemGoatVO.setItemId(goodsId);
-            if (now.before(goatLicense.getSpreadFromTime())) {
-                goatDubboService.preparePublish(itemGoatVO, (goatLicense.getSpreadFromTime().getTime()-now.getTime())/1000);
-            } else if (now.before(goatLicense.getSpreadToTime())) {
-                goatDubboService.publish(itemGoatVO);
-            } else {
-                throw new JsonErrException("广告已过期");
-            }
-            return JsonResponseUtil.success().element("good", good);
-        } catch (GoatException e) {
-            throw new JsonErrException(e.getMessage());
         }
+        return JsonResponseUtil.success().element("good", good);
+
     }
-
-    //TODO:没有给出对应确定的service接口，先放在这里，完成更改广告接口时的商品信息获取
-    @Autowired
-    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
-
-    private ShiguGoodsTiny getShiguGoodsTinyById(String webSite, Long goodsId) {
-        ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
-        shiguGoodsTinyExample.setWebSite(webSite);
-        shiguGoodsTinyExample.createCriteria().andGoodsIdEqualTo(goodsId);
-        List<ShiguGoodsTiny> result = shiguGoodsTinyMapper.selectFieldsByExample(shiguGoodsTinyExample, "goods_id,pic_url,web_site");
-        if (result.size() > 0) {
-            return result.get(0);
-        }
-        return null;
-    }
-
 
 }
