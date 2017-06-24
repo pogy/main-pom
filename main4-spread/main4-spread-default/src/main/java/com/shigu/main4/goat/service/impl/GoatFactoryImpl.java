@@ -25,12 +25,15 @@ import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.Goat;
 import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.*;
+import com.shigu.main4.tools.RedisIO;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +48,7 @@ import java.util.*;
 @Service("goatFactory")
 public class GoatFactoryImpl implements GoatFactory {
 
+    private static final Logger logger = LoggerFactory.getLogger(GoatFactoryImpl.class);
     @Autowired
     GoatOneLocationMapper goatOneLocationMapper;
 
@@ -57,6 +61,8 @@ public class GoatFactoryImpl implements GoatFactory {
     @Resource(name="tae_mall_goodsupNorealMapper")
     GoodsupNorealMapper goodsupNorealMapper;
 
+    @Autowired
+    RedisIO redisIO;
     @Override
     public GoatLocation getAlocation(Long localId) throws GoatException {
         GoatOneLocation local = goatOneLocationMapper.selectByPrimaryKey(localId);
@@ -402,6 +408,7 @@ public class GoatFactoryImpl implements GoatFactory {
      * @param vo
      */
     private <T extends GoatVO> void publishCommon(T vo) {
+        final String INDEX_PAGE_REDIS_PRE="index_page_redis_pre_";
         GoatItemDataExample example=new GoatItemDataExample();
         example.createCriteria().andStatusEqualTo(1).andGoatIdEqualTo(vo.getGoatId());
         GoatItemData gid=new GoatItemData();
@@ -409,6 +416,13 @@ public class GoatFactoryImpl implements GoatFactory {
         goatItemDataMapper.updateByExampleSelective(gid,example);
         gid=serializeGoat(vo);
         goatItemDataMapper.insertSelective(gid);
+        //清除缓存,vo.getCode可能没值,需要通过goatId得到
+        try {
+            T gvo=selGoatById(vo.getGoatId());
+            redisIO.del( INDEX_PAGE_REDIS_PRE + gvo.getCode());
+        } catch (GoatException e) {
+            logger.error("上线清日志失败",e);
+        }
     }
 
     private <T extends GoatVO> void preparePublishCommon(T vo,Long second){

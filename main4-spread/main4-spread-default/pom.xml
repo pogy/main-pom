@@ -84,7 +84,11 @@
             <artifactId>elasticsearch</artifactId>
             <version>2.2.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-tools</artifactId>
+            <version>${main4-tools.version}</version>
+        </dependency>
     </dependencies>
 
 
