@@ -1,7 +1,9 @@
 package com.shigu.main4.monitor.service.impl;
 
 import com.opentae.data.mall.beans.GoodsCountForsearch;
+import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
 import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.shigu.main4.monitor.services.ItemBrowerFixService;
 import com.shigu.main4.tools.RedisIO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
 
     @Autowired
     private GoodsCountForsearchMapper goodsCountForsearchMapper;
+
+    @Autowired
+    private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
 
     /**
      * 固化当前的浏览量数据
@@ -53,14 +58,14 @@ public class ItemBrowerFixServiceImpl implements ItemBrowerFixService {
             goodsCountForsearch.setClick(new Long(entryItem.getValue().size()));
             goodsCountForsearch.setClickIp(new Long(new HashSet(entryItem.getValue()).size()));
             goodsCountForsearch.setGoodsId(Long.valueOf(entryItem.getKey()));
-            goodsCountForsearch.setTrade(0L);
-            goodsCountForsearch.setUp(0L);
-            goodsCountForsearch.setUpMan(0L);
-            goodsCountForsearch.setHadGoat(0);
-            goodsCountForsearch.setWebSite("hz");
+
+            ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsCountForsearch.getGoodsId());
+            if (shiguGoodsIdGenerator != null) {
+                goodsCountForsearch.setWebSite(shiguGoodsIdGenerator.getWebSite());
+            }
             goodsCountForsearchList.add(goodsCountForsearch);
         }
-        goodsCountForsearchMapper.insertOrUpdate(goodsCountForsearchList);
+        goodsCountForsearchMapper.insertOrUpdateForAdd(goodsCountForsearchList);
         redisIO.getJedis().del(key + "_temp");
     }
 }
