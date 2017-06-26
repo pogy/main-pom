@@ -6,10 +6,10 @@
 
     <context:component-scan base-package="com.shigu.main4.tools,com.shigu.order.services,com.shigu.order.services,com.shigu.main4.order.services,com.shigu.order.services"/>
 
-    <bean class="com.shigu.main4.order.model.impl.ItemCartImpl">
+    <bean class="com.shigu.main4.order.model.impl.ItemCartImpl" scope="prototype">
         <constructor-arg name="userId" value="9968" ></constructor-arg>
     </bean>
-    <bean class="com.shigu.main4.order.model.impl.ItemProductImpl">
+    <bean class="com.shigu.main4.order.model.impl.ItemProductImpl" scope="prototype">
         <constructor-arg name="pid" value="1"></constructor-arg>
         <constructor-arg name="skuId" value="3"></constructor-arg>
     </bean>

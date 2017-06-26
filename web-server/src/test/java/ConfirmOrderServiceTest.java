@@ -49,10 +49,10 @@ public class ConfirmOrderServiceTest {
         System.out.println("code:"+code);
         confirmBO.setCode(code);
         List<ConfirmOrderBO> confirmOrderBOList = Lists.newArrayList();
-        ConfirmSubOrderBO confirmSubOrderBOshop1_1 = getConfirmSubOrderBO("3",1);
+        ConfirmSubOrderBO confirmSubOrderBOshop1_1 = getConfirmSubOrderBO("3",4);
         ConfirmOrderBO confirmOrderBOShop1 = getConfirmOrderBO("1L","测试店铺1",Lists.<ConfirmSubOrderBO>newArrayList(confirmSubOrderBOshop1_1));
-        ConfirmSubOrderBO confirmSubOrderBOShop2_1 = getConfirmSubOrderBO("4",2);
-        ConfirmSubOrderBO confirmSubOrderBOShop2_2 = getConfirmSubOrderBO("5",2);
+        ConfirmSubOrderBO confirmSubOrderBOShop2_1 = getConfirmSubOrderBO("4",5);
+        ConfirmSubOrderBO confirmSubOrderBOShop2_2 = getConfirmSubOrderBO("5",3);
         ConfirmOrderBO confirmOrderBOShop2 = getConfirmOrderBO("2L","测试店铺2",Lists.<ConfirmSubOrderBO>newArrayList(confirmSubOrderBOShop2_1,confirmSubOrderBOShop2_2));
 
         confirmOrderBOList.add(confirmOrderBOShop1);
