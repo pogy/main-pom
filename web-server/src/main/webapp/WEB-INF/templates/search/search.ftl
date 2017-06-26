@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/search.css?t=1497346957871" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/search.css?t=1498474505344" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/search.js?t=1497346957871"></script>
+    <script src="http://style.571xz.com/searchV5/js/search.js?t=1498474505344"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -310,7 +310,7 @@ var webSite = '${webSite!}';
                 
                 
                 
-                <div class="goodsCount"><#if query.keyword??> <span>> ${query.keyword!}</span></#if>共<em>${goodsCount!}</em>件商品</div>
+                <div class="goodsCount"><#if query.keyword??> <span>> ${query.keyword!}</span></#if>为您提供<em>${goodsCount!}</em>件宝贝</div>
             </div>
             
             <#if cates??>
@@ -377,8 +377,9 @@ var webSite = '${webSite!}';
         
         <div class="formFilterBar clearfix" id="formFilterBar">
             <div class="sortTypeBox">
-                <b jbtn="sortByXp" <#if query.sort?? && query.sort == 'xp'>class="selected"</#if>>新品</b>
                 <b jbtn="sortByZh" <#if query.sort?? && query.sort == 'comp'>class="selected"</#if>>综合</b>
+                <b jbtn="sortByXp" <#if query.sort?? && query.sort == 'xp'>class="selected"</#if>>新品</b>
+                <b jbtn="sortByRq" <#if query.sort?? && query.sort == 'popular'>class="selected"</#if>>人气</b>
                 
                 
                 
@@ -579,6 +580,7 @@ $(function(){
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
