@@ -138,91 +138,36 @@ public class ShopSearchServiceOpenImpl implements ShopSearchService {
         if (shopIds == null || shopIds.isEmpty()) {
             return Collections.emptyList();
         }
-        List<SearchShopSimple> searchShops = new ArrayList<>();
-        /**
-         * 创建shiguShop组合条件查询对象
-         */
         ShiguShopExample shiguShopExample = new ShiguShopExample();
-        /**
-         * 创建shiguShopExample离线查询对象
-         */
-        ShiguShopExample.Criteria criteria = shiguShopExample.createCriteria();
-        criteria.andShopIdIn(shopIds);
-        criteria.andWebSiteEqualTo(website);
-        /**
-         * 根据shopId集合和网站名称查询
-         * 返回一个shiguShop集合shiguShops
-         */
+        shiguShopExample.createCriteria().andShopIdIn(shopIds).andWebSiteEqualTo(website);
         List<ShiguShop> shiguShops = shiguShopMapper.selectByExample(shiguShopExample);
-        List<Long> marketIds = new ArrayList<>();
-        /**
-         *遍历shigushops封装到集合searchShopSimple
-         * 添加marketID数据到集合marketIds
-         */
-        for (int j = 0; j < shiguShops.size(); j++) {
-            searchShops.add(BeanMapper.map(shiguShops.get(j), SearchShopSimple.class));
-            if (!marketIds.contains(shiguShops.get(j).getMarketId())) {
 
-                marketIds.add(shiguShops.get(j).getMarketId());
-            }
+        if (shiguShops.isEmpty()) {
+            return Collections.emptyList();
         }
-        /**
-         * 创建shiguMarketExample组合条件查询对象
-         */
+
+        List<SearchShopSimple> searchShops = BeanMapper.mapList(shiguShops, SearchShopSimple.class);
+
         ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
-        /**
-         * 创建shiguMarketExample离线查询对象
-         */
-        ShiguMarketExample.Criteria shiguMarketExampleCriteria = shiguMarketExample.createCriteria();
-        shiguMarketExampleCriteria.andMarketIdIn(marketIds);
-        /**
-         * 设置查询条件为根据marketIds集合查询
-         * 返回一个shiguMarket集合shiguMarkets
-         */
+        shiguMarketExample.createCriteria().andMarketIdIn(new ArrayList<>(BeanMapper.getFieldSet(shiguShops, "marketId", Long.class)));
         List<ShiguMarket> shiguMarkets = shiguMarketMapper.selectFieldsByExample(shiguMarketExample, FieldUtil.codeFields("market_name,market_id"));
-        /**
-         * 创建一个map存放market的id和name
-         */
-        HashMap<Long, String> shiguMarketIdAndName = new HashMap<>();
-        for (ShiguMarket shiguMarket : shiguMarkets) {
-            shiguMarketIdAndName.put(shiguMarket.getMarketId(), shiguMarket.getMarketName());
-        }
-        /**
-         * 创建shiguShopLicenseExample组合条件查询对象
-         */
+        Map<Long, ShiguMarket> marketMap = BeanMapper.list2Map(shiguMarkets, "marketId", Long.class);
+
         ShiguShopLicenseExample shiguShopLicenseExample = new ShiguShopLicenseExample();
-        /**
-         * 创建shiguShopLicenseExample离线查询对象
-         */
-        ShiguShopLicenseExample.Criteria shiguShopLicenseExampleCriteria = shiguShopLicenseExample.createCriteria();
-        /**
-         * 设置查询条件为根据shopid集合查询
-         */
-        shiguShopLicenseExampleCriteria.andShopIdIn(shopIds);
-        /**
-         * 设置查询条件为LicenseFailure值为0（即有效的）
-         */
-        shiguShopLicenseExampleCriteria.andLicenseFailureEqualTo(0);
-        /**
-         * 设置查询条件为LicenseType值为6（即店铺的星星数）
-         */
-        shiguShopLicenseExampleCriteria.andLicenseTypeEqualTo(6);
-        /**
-         * 查询返回一个shiguShoplicense的集合shiguShopLicenses
-         */
-        List<ShiguShopLicense> shiguShopLicenses = shiguShopLicenseMapper.selectFieldsByExample(shiguShopLicenseExample, FieldUtil.codeFields("context"));
-        /**
-         * 遍历添加个别字段
-         */
-        for (int i = 0; i < searchShops.size(); i++) {
-            searchShops.get(i).setMainCase(shiguShops.get(i).getMainBus());
-            if (shiguShops.get(i).getMarketId() != null) {
+        shiguShopLicenseExample.createCriteria().andShopIdIn(shopIds).andLicenseFailureEqualTo(0).andLicenseTypeEqualTo(6);
+        List<ShiguShopLicense> shiguShopLicenses = shiguShopLicenseMapper.selectFieldsByExample(shiguShopLicenseExample, FieldUtil.codeFields("license_id,context"));
+        Map<Long, ShiguShopLicense> licenseMap = BeanMapper.list2Map(shiguShopLicenses, "shopId", Long.class);
 
-                searchShops.get(i).setMarket(shiguMarketIdAndName.get(shiguShops.get(i).getMarketId()));
+        for (SearchShopSimple searchShop : searchShops) {
+            ShiguMarket shiguMarket = marketMap.get(searchShop.getMarketId());
+            if (shiguMarket != null) {
+                searchShop.setMarket(shiguMarket.getMarketName());
             }
-            searchShops.get(i).setStarNum(shiguShopLicenses.get(i).getContext());
+            ShiguShopLicense shiguShopLicense = licenseMap.get(searchShop.getShopId());
+            if (shiguShopLicense != null) {
+                searchShop.setStarNum(shiguShopLicense.getContext());
+            }
         }
-
         return searchShops;
     }
 

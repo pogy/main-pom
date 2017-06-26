@@ -100,12 +100,12 @@ public class ItemBrowerFixedTest {
 
         String[] sites = {
                 "hz",
-                "cs",
-                "ss",
-                "bj",
-                "gz",
-                "wa",
-                "jx",
+//                "cs",
+//                "ss",
+//                "bj",
+//                "gz",
+//                "wa",
+//                "jx",
 //                "bb",
 //                "jf",
 //                "xh",
@@ -114,7 +114,7 @@ public class ItemBrowerFixedTest {
         int bucketSize = 1000;//一批商品大小，任务以批次传输给线程
 
         // 默认3个工作线程，工作内容是两次ES聚合一次数据库批量插入/更新，线程等待时间较久，可以适量增大线程数
-        AddSearchRecord jobs = new AddSearchRecord(3);
+        AddSearchRecord jobs = new AddSearchRecord(2);
 
         for (String site : sites) {
 
@@ -158,8 +158,6 @@ public class ItemBrowerFixedTest {
                     .setQuery(QueryBuilders.termsQuery("itemId", goodsIds))
                     .addAggregation(AggregationBuilders.terms("goods_pv").field("itemId").size(goodsIds.size())
                                     .subAggregation(AggregationBuilders.cardinality("goods_ip").field("clientMsg.clientIp")))
-                    .addAggregation(AggregationBuilders.terms("up_count").field("supperGoodsId").size(goodsIds.size())
-                                    .subAggregation(AggregationBuilders.cardinality("up_man_count").field("user_id")))
                     .execute().actionGet();
             List<Terms.Bucket> goods_pv = ((LongTerms) searchResponse.getAggregations().get("goods_pv")).getBuckets();
             if (goods_pv.isEmpty()) {
