@@ -170,7 +170,7 @@ public class GoodsSearchAction {
             orderBy = SearchOrderBy.PRICEUP;
         } else if (bo.getSort().equals("price-desc")) {
             orderBy = SearchOrderBy.PRICEDOWN;
-        } else if (bo.getSort().equals("popular")) {
+        } else if (bo.getSort().equals("rq")) {
             orderBy = SearchOrderBy.POPULAR;
         } else {
             orderBy = SearchOrderBy.NEW;
@@ -239,7 +239,7 @@ public class GoodsSearchAction {
             orderBy = SearchOrderBy.PRICEUP;
         } else if (bo.getSort().equals("price-desc")) {
             orderBy = SearchOrderBy.PRICEDOWN;
-        } else if (bo.getSort().equals("popular")) {
+        } else if (bo.getSort().equals("rq")) {
             orderBy = SearchOrderBy.POPULAR;
         } else {
             orderBy = SearchOrderBy.GOODS_COMMON;
