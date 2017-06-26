@@ -179,6 +179,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             case PRICEDOWN:
                 requestBuilder.addSort(new SortField("pi_price", Order.DECREASE));
                 break;
+            case POPULAR:
+                requestBuilder.setRank("goods_search_default", "goods_search_popular", 2000);
+                break;
             case GOODSUP:
                 break;
         }
