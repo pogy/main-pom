@@ -44,4 +44,13 @@ public enum SearchOrderBy {
     public void setValue(String value) {
         this.value = value;
     }
+
+    public static SearchOrderBy valueIs(String value) {
+        for (SearchOrderBy searchOrderBy : values()) {
+            if (searchOrderBy.getValue().equals(value)) {
+                return searchOrderBy;
+            }
+        }
+        return null;
+    }
 }

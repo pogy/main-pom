@@ -158,21 +158,11 @@ public class GoodsSearchAction {
         model.addAttribute("query", bo);
 
         //排序
-        SearchOrderBy orderBy;
         if (bo.getSort() == null) {
             bo.setSort("comp");
         }
-        if (bo.getSort().equals("xp")) {
-            orderBy = SearchOrderBy.NEW;
-        } else if (bo.getSort().equals("comp")) {
-            orderBy = SearchOrderBy.GOODS_COMMON;
-        } else if (bo.getSort().equals("price-asc")) {
-            orderBy = SearchOrderBy.PRICEUP;
-        } else if (bo.getSort().equals("price-desc")) {
-            orderBy = SearchOrderBy.PRICEDOWN;
-        } else if (bo.getSort().equals("rq")) {
-            orderBy = SearchOrderBy.POPULAR;
-        } else {
+        SearchOrderBy orderBy = SearchOrderBy.valueIs(bo.getSort());
+        if (orderBy == null) {
             orderBy = SearchOrderBy.NEW;
         }
         SearchVO vo = goodsSearchService.search(bo, orderBy, true);
@@ -227,22 +217,12 @@ public class GoodsSearchAction {
 
         model.addAttribute("query", bo);
         //排序
-        SearchOrderBy orderBy;
         if (bo.getSort() == null) {
             bo.setSort("comp");
         }
-        if (bo.getSort().equals("xp")) {
+        SearchOrderBy orderBy = SearchOrderBy.valueIs(bo.getSort());
+        if (orderBy == null) {
             orderBy = SearchOrderBy.NEW;
-        } else if (bo.getSort().equals("comp")) {
-            orderBy = SearchOrderBy.GOODS_COMMON;
-        } else if (bo.getSort().equals("price-asc")) {
-            orderBy = SearchOrderBy.PRICEUP;
-        } else if (bo.getSort().equals("price-desc")) {
-            orderBy = SearchOrderBy.PRICEDOWN;
-        } else if (bo.getSort().equals("popular")) {
-            orderBy = SearchOrderBy.POPULAR;
-        } else {
-            orderBy = SearchOrderBy.GOODS_COMMON;
         }
         //带聚合的结果
         ShiguPager<GoodsInSearch> pager = goodsSearchService.search(bo, orderBy, false).getSearchData();
