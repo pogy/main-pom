@@ -22,6 +22,10 @@ public class ConfirmOrderAction {
     @Autowired
     ConfirmOrderService confirmOrderService;
 
+    /**
+     * 订单确认提交
+     * @param bo
+     */
     @RequestMapping("/order/confirmOrders")
     public String confirmOrders(ConfirmBO bo) throws JsonErrException {
         ResponseBase rsp = new ResponseBase();
