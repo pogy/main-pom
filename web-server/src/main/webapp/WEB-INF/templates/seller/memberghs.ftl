@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/memberghs.css?t=1498117777755" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/memberghs.css?t=1498441729858" rel="stylesheet">
     
   </head>
 <body>
@@ -348,7 +348,7 @@ var tHref = '${tHref!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -372,7 +372,7 @@ var tHref = '${tHref!}';
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys5/temp/echarts.js"></script>
         <script src="http://style.571xz.com/gys5/temp/html5sup.js"></script>
-<script src="http://style.571xz.com/gys5/js/memberghs.js?t=1498117777755"></script>
+<script src="http://style.571xz.com/gys5/js/memberghs.js?t=1498441729858"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

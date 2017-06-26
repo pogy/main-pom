@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/indexGgChange.css?t=1498211792209" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/indexGgChange.css?t=1498441723930" rel="stylesheet">
     
   </head>
 <body>
@@ -262,7 +262,7 @@ var webSite = '${webSite!}';
                         <#list myIndexTerms as good>
                         <ul data-id="${good.codeId!}">
                             <li class="num">${good.type!}（${good.code!}）</li>
-                            <li class="time">${good.startOnline!} 至 ${good.endOnline!}</li>
+                            <li class="time">${good.goatTime!}</li>
                             <#if good.goodsId?? && good.goodsId != "">
                             <li class="pic"><a href="http://${good.webSite!}.571xz.com/item.htm?id=${good.goodsId!}" target="_blank"><img src="${good.picUrl!}_72x72.jpg" ></a></li>
                             <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.codeId!}" data-web="${good.webSite!}">更换商品</b></li>
@@ -293,7 +293,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -315,7 +315,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/indexGgChange.js?t=1498211792209"></script>
+<script src="http://style.571xz.com/gys5/js/indexGgChange.js?t=1498441723930"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
