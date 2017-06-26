@@ -12,6 +12,12 @@ import java.util.Map;
  */
 public interface ItemBrowerService {
     /**
+     * 真实浏览
+     * @param itemId
+     * @return
+     */
+    ItemBrowerFlowVO selRealBrower(Long itemId);
+    /**
      * 查询不真流量
      * @param itemId
      * @return

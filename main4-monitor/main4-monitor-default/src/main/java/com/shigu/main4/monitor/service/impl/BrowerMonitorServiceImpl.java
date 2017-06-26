@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.monitor.bo.PageInfoBO;
 import com.shigu.main4.monitor.services.BrowerMonitorService;
 import com.shigu.main4.monitor.services.StarCaculateService;
 import com.shigu.main4.monitor.vo.BrowerRecord;
 import com.shigu.main4.monitor.vo.ClientMsg;
 import com.shigu.main4.tools.RedisIO;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -23,7 +25,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * 浏览记录监控服务
@@ -67,6 +71,13 @@ public class BrowerMonitorServiceImpl implements BrowerMonitorService{
                 } catch (Exception e) {
                     logger.error("重算星星数失败",e);
                 }
+            }
+
+            if ("item".equalsIgnoreCase(type)) {
+                StringBuilder redisKeySb = new StringBuilder();
+                redisKeySb.append(browerRecord.getItemId()).append("_").append(DateUtil.dateToString(browerRecord.getInTime(), DateUtil.patternF)).append(RandomStringUtils.randomAlphanumeric(10));
+                String redisKey = redisKeySb.toString();
+                redisIO.hset("item_flow", redisKey, client.getClientIp());
             }
         } catch (Exception e) {
             e.printStackTrace();

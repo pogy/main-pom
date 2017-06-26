@@ -1,25 +1,36 @@
 package com.shigu.main4.vo;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.shigu.opensearchsdk.anno.FetchApp;
 
 /**
  * 开放搜索商户数据
  * Created by bugzy on 2017/5/31 0031.
  */
+@FetchApp("shop_search_ol")
 public class OpenShopVo {
 
+    @JSONField(name = "shop_id")
     private Long shopId;
+    @JSONField(name = "market_id")
     private Long marketId;
+    @JSONField(name = "floor_id")
     private Long floorId;
+    @JSONField(name = "user_id")
     private Long userId;
+    @JSONField(name = "shop_name")
     private String shopName;
+    @JSONField(name = "web_site")
     private String webSite;
+    @JSONField(name = "tb_nick")
     private String tbNick;
+    @JSONField(name = "shop_num")
     private String shopNum;
+    @JSONField(name = "shop_status")
     private Integer shopStatus;
+    @JSONField(name = "market_name")
     private String marketName;
 
-    @JSONField(name = "shop_id")
     public Long getShopId() {
         return shopId;
     }
@@ -27,7 +38,7 @@ public class OpenShopVo {
     public void setShopId(Long shopId) {
         this.shopId = shopId;
     }
-    @JSONField(name = "market_id")
+
     public Long getMarketId() {
         return marketId;
     }
@@ -35,7 +46,7 @@ public class OpenShopVo {
     public void setMarketId(Long marketId) {
         this.marketId = marketId;
     }
-    @JSONField(name = "floor_id")
+
     public Long getFloorId() {
         return floorId;
     }
@@ -43,7 +54,7 @@ public class OpenShopVo {
     public void setFloorId(Long floorId) {
         this.floorId = floorId;
     }
-    @JSONField(name = "user_id")
+
     public Long getUserId() {
         return userId;
     }
@@ -51,7 +62,7 @@ public class OpenShopVo {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    @JSONField(name = "shop_name")
+
     public String getShopName() {
         return shopName;
     }
@@ -59,7 +70,7 @@ public class OpenShopVo {
     public void setShopName(String shopName) {
         this.shopName = shopName;
     }
-    @JSONField(name = "web_site")
+
     public String getWebSite() {
         return webSite;
     }
@@ -67,7 +78,7 @@ public class OpenShopVo {
     public void setWebSite(String webSite) {
         this.webSite = webSite;
     }
-    @JSONField(name = "tb_nick")
+
     public String getTbNick() {
         return tbNick;
     }
@@ -75,7 +86,7 @@ public class OpenShopVo {
     public void setTbNick(String tbNick) {
         this.tbNick = tbNick;
     }
-    @JSONField(name = "shop_num")
+
     public String getShopNum() {
         return shopNum;
     }
@@ -83,7 +94,7 @@ public class OpenShopVo {
     public void setShopNum(String shopNum) {
         this.shopNum = shopNum;
     }
-    @JSONField(name = "shop_status")
+
     public Integer getShopStatus() {
         return shopStatus;
     }
@@ -91,7 +102,7 @@ public class OpenShopVo {
     public void setShopStatus(Integer shopStatus) {
         this.shopStatus = shopStatus;
     }
-    @JSONField(name = "market_name")
+
     public String getMarketName() {
         return marketName;
     }

@@ -38,6 +38,17 @@ public class ItemBrowerServiceImpl implements ItemBrowerService{
     private RedisIO redisIO;
 
     /**
+     * 真实浏览
+     *
+     * @param itemId
+     * @return
+     */
+    @Override
+    public ItemBrowerFlowVO selRealBrower(Long itemId) {
+        return null;
+    }
+
+    /**
      * 查询不真实流量， 不存在则创建
      * @param itemId 商品ID
      * @return 流量记录

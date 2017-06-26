@@ -1,7 +1,6 @@
 package com.shigu.search.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.vo.ItemShowBlock;
@@ -60,7 +59,7 @@ public class StoreSelFromEsService {
             Collections.sort(simples,new ShopWeightComparator());
             SearchShopSimple s=simples.get(0);
             TopShop t=new TopShop();
-            t.setMainCate(s.getMainCase());
+            t.setMainCate(s.getMainBus());
             t.setMarketName(s.getMarket());
             t.setStoreId(s.getShopId());
             t.setOtherStoreUrl("/storenum.htm?keyword="+shopNum);

@@ -18,14 +18,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-    <bean id="shopehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation" value="classpath:/main4/cache/shop-cache.xml"/>
+    <bean id="itemehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:/main4/cache/item-cache.xml"/>
     </bean>
 
-    <bean id="shopcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager" ref="shopehcacheManager"/>
+    <bean id="itemcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="itemehcacheManager"/>
         <property name="transactionAware" value="true"/>
     </bean>
+
     <bean id="openSearch" class="com.shigu.opensearchsdk.OpenSearch">
         <constructor-arg index="0" value="${accesskey}"/>
         <constructor-arg index="1" value="${secret}"/>

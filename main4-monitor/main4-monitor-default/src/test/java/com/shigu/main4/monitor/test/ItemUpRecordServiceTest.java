@@ -4,6 +4,7 @@ package com.shigu.main4.monitor.test;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.monitor.service.impl.ItemUpRecordServiceImpl;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.DataLineVO;
 import com.shigu.main4.monitor.vo.HotUpItem;
@@ -34,6 +35,39 @@ public class ItemUpRecordServiceTest {
     @Autowired
     private ItemUpRecordService itemUpRecordService;
 
+    @Test
+    public void pushMsgTest() throws InterruptedException {
+        ItemUpRecordServiceImpl impl= (ItemUpRecordServiceImpl) itemUpRecordService;
+        ItemUpRecordVO itemUpRecordVO = new ItemUpRecordVO();
+        itemUpRecordVO.setFenPrice("165");
+        itemUpRecordVO.setSupperPrice("165");
+        itemUpRecordVO.setStatus(0L);
+        itemUpRecordVO.setFenGoodsName("2017冬装新款棉衣 糖果色四色中长款修身棉衣1111");
+        itemUpRecordVO.setSupperImage("http://img03.taobaocdn.com/bao/uploaded/i3/TB1dZ3eGXXXXXbzXFXXXXXXXXXX_!!0-item_pic.jpg");
+        itemUpRecordVO.setSupperGoodsId(12270480L);
+        itemUpRecordVO.setSupperServers("退现金,包换款");
+        itemUpRecordVO.setSupperStoreId(32888L);
+        itemUpRecordVO.setSupperMarketId(644L);
+        itemUpRecordVO.setSupperNumiid(41268119989L);
+        itemUpRecordVO.setFenImage("http://img03.taobaocdn.com/bao/uploaded/i3/TB1dZ3eGXXXXXbzXFXXXXXXXXXX_!!0-item_pic.jpg");
+        itemUpRecordVO.setFlag("web-tb");
+        itemUpRecordVO.setSupperGoodsName("2017冬装新款棉衣 糖果色四色中长款修身棉衣11111");
+        itemUpRecordVO.setWebSite("hz");
+        itemUpRecordVO.setFenUserNick("lyszhen4");
+        itemUpRecordVO.setFenUserId(1000006627L);
+        itemUpRecordVO.setDaiTime(DateUtil.dateToString(new Date(),DateUtil.patternD));
+        itemUpRecordVO.setSupperStorenum("2058");
+        itemUpRecordVO.setSupperPiPrice("30.05");
+        itemUpRecordVO.setSupperImww("imwww");
+        itemUpRecordVO.setSupperTelephone("1515115155");
+        itemUpRecordVO.setSupperTaobaoUrl("httpppppp");
+        itemUpRecordVO.setSupperMarket("asdasdasd");
+        itemUpRecordVO.setSupperStoreName("ksskks");
+        itemUpRecordVO.setSupperQq("123415432534");
+        itemUpRecordVO.setFenNumiid(524121231L);
+        impl.pushAddMessage(itemUpRecordVO);
+        Thread.sleep(30000L);
+    }
     /**
      * 添加上传记录
      */
