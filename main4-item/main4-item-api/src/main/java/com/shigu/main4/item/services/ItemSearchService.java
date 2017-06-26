@@ -16,10 +16,6 @@ import java.util.List;
  */
 public interface ItemSearchService {
 
-    int MAX_PAGE = 100;
-    int DEFAULT_PAGE_SIZE = 40;
-    String DATE_FMT = "yyyy-MM-dd HH:mm:ss";
-
     /**
      * 搜索主方法
      * @param keyword 关键词

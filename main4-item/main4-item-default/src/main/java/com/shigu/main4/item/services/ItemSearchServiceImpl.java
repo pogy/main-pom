@@ -88,9 +88,18 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         pager.setParentCats(Collections.<AggsCount>emptyList());
         pager.setNumber(page);
 
+        // 最大5000
+        int start = (page - 1) * pageSize;
+        int realSize = pageSize;
+        if (start > 5000) {
+            return pager;
+        } else if (start + pageSize > 5000) {
+            realSize = 5000 - start;
+        }
+
         OpenSearch.RequestBuilder<OpenItemVo> requestBuilder
-                = openSearch.searchFrom(OpenItemVo.class).from((page - 1) * pageSize).size(pageSize)
-                .setRank("goods_search_default", "goods_search", 10000);
+                = openSearch.searchFrom(OpenItemVo.class).from(start).size(realSize)
+                .setRank("goods_search_default", "goods_search", 2000);
 
         SearchQuery searchQuery = null;
         if (StringUtils.isNotEmpty(keyword)) {
