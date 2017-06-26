@@ -6,8 +6,11 @@ import com.shigu.trade.bo.ScanPayBo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
 
 /**
  * 微信支付服务
@@ -18,7 +21,7 @@ public class WxPayService {
 
     private static final Logger logger = LoggerFactory.getLogger(WxPayService.class);
 
-    @Autowired
+    @Resource(name="wxPayerService")
     private PayerService payerService;
 
     @Transactional(rollbackFor = Exception.class)

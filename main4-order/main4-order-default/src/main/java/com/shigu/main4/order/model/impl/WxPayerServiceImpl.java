@@ -28,8 +28,8 @@ import java.util.Calendar;
  * 微信支付
  * Created by zhaohongbo on 17/6/9.
  */
-@Service
-public class WxPayerServiceImpl extends PayerServiceAble {
+@Service("wxPayerService")
+public class WxPayerServiceImpl extends  PayerServiceAble {
 
     @PostConstruct
     public void initWXPay() {
