@@ -7,7 +7,7 @@
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/indexV4/css/hzWoman.css?t=1496988566352" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV4/css/hzWoman.css?t=1498440838114" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
 <script>/*============ indexV4/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/hzWoman.js?t=1496988566352"></script>
+    <script src="http://style.571xz.com/indexV4/js/hzWoman.js?t=1498440838114"></script>
   </head>
 <body class="pageWoman">
 <#include "/common/host_config.ftl">
@@ -921,6 +921,7 @@ $(".imgBox img").lazyload({
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://py.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
