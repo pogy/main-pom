@@ -50,7 +50,7 @@
         <main4-item-update.version>${project.version}</main4-item-update.version>
         <main4-monitor-default.version>${project.version}</main4-monitor-default.version>
 
-        <spring.version>4.1.6.RELEASE</spring.version>
+        <spring.version>4.3.9.RELEASE</spring.version>
         <syn-finder-api.version>4.0.0-SNAPSHOT</syn-finder-api.version>
         <orika.version>1.4.6</orika.version>
         <ehcache.version>2.7.0</ehcache.version>
