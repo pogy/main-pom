@@ -13,6 +13,7 @@ import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.HighLightKit;
+import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.vo.OpenShopVo;
 import com.shigu.main4.vo.SearchShop;
@@ -154,7 +155,7 @@ public class ShopSearchServiceOpenImpl implements ShopSearchService {
         Map<Long, ShiguMarket> marketMap = BeanMapper.list2Map(shiguMarkets, "marketId", Long.class);
 
         ShiguShopLicenseExample shiguShopLicenseExample = new ShiguShopLicenseExample();
-        shiguShopLicenseExample.createCriteria().andShopIdIn(shopIds).andLicenseFailureEqualTo(0).andLicenseTypeEqualTo(6);
+        shiguShopLicenseExample.createCriteria().andShopIdIn(shopIds).andLicenseFailureEqualTo(0).andLicenseTypeEqualTo(ShopLicenseTypeEnum.STAR.getValue());
         List<ShiguShopLicense> shiguShopLicenses = shiguShopLicenseMapper.selectFieldsByExample(shiguShopLicenseExample, FieldUtil.codeFields("license_id,context"));
         Map<Long, ShiguShopLicense> licenseMap = BeanMapper.list2Map(shiguShopLicenses, "shopId", Long.class);
 
