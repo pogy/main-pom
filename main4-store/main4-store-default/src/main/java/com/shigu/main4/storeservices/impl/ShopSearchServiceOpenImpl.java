@@ -156,7 +156,7 @@ public class ShopSearchServiceOpenImpl implements ShopSearchService {
 
         ShiguShopLicenseExample shiguShopLicenseExample = new ShiguShopLicenseExample();
         shiguShopLicenseExample.createCriteria().andShopIdIn(shopIds).andLicenseFailureEqualTo(0).andLicenseTypeEqualTo(ShopLicenseTypeEnum.STAR.getValue());
-        List<ShiguShopLicense> shiguShopLicenses = shiguShopLicenseMapper.selectFieldsByExample(shiguShopLicenseExample, FieldUtil.codeFields("license_id,context"));
+        List<ShiguShopLicense> shiguShopLicenses = shiguShopLicenseMapper.selectFieldsByExample(shiguShopLicenseExample, FieldUtil.codeFields("license_id,shop_id,context"));
         Map<Long, ShiguShopLicense> licenseMap = BeanMapper.list2Map(shiguShopLicenses, "shopId", Long.class);
 
         for (SearchShopSimple searchShop : searchShops) {
