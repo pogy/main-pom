@@ -39,11 +39,14 @@ public class AliPayerServiceImpl extends PayerServiceAble {
     @Value("${returnUrl}")
     private String  returnUrl;
 
+    @Value("${notifyUrl}")
+    private String notifyUrl;
+
     @Override
     public PayApplyVO payApply(Long oid, Long money, String title)  {
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl(returnUrl);
-        alipayRequest.setNotifyUrl("http://domain.com/CallBack/notify_url.jsp");//在公共参数中设置回跳和通知地址
+        alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回跳和通知地址
 
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + oid + "\"," +
