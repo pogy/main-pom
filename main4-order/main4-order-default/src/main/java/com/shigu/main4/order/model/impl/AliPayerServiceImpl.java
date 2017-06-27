@@ -46,7 +46,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
     public PayApplyVO payApply(Long oid, Long money, String title)  {
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl(returnUrl);
-        alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回跳和通知地址
+        alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回调和通知地址
 
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + oid + "\"," +
@@ -54,7 +54,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
                 "    \"total_amount\":" + AmountUtils.changeF2Y(money) + "," +
                 "    \"subject\":\"" + title + "\"" +
                 "  }");//填充业务参数
-        String form="";
+        String form = "";
         try {
             form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
         } catch (AlipayApiException e) {
