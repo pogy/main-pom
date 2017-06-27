@@ -44,7 +44,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayApplyVO payApply(Long oid, Long money, String title)  {
+    public PayApplyVO payApply(Long oid, Long money, String title) throws PayApplyException {
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl(returnUrl);
         alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回调和通知地址
@@ -59,7 +59,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         try {
             form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
         } catch (AlipayApiException e) {
-            e.printStackTrace();
+            throw new PayApplyException(e.getMessage());
         }
 
         OrderPayApply apply = new OrderPayApply();
