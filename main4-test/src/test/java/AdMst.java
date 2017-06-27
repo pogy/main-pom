@@ -60,6 +60,9 @@ public class AdMst {
                     telephone=licenses.get(0).getContext();
                 }
             }
+            if(s.getShopId()==40413L){
+                telephone = "18757597186";
+            }
             if(telephone!=null){
                 System.out.println(telephone);
                 System.out.println(sendSms_quick(telephone,"四季星座网温馨提示：\"发现好货\"+\"首页热销\"栏目 共20个位置将在今日20点(星期二）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
