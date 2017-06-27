@@ -43,6 +43,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
     private String notifyUrl;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public PayApplyVO payApply(Long oid, Long money, String title)  {
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl(returnUrl);
