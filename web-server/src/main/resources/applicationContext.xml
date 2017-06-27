@@ -23,6 +23,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <value>classpath:redis.properties</value>
                 <value>classpath:rd3.properties</value>
                 <value>classpath:opensearch.properties</value>
+                <value>classpath:alipay.properties</value>
             </list>
         </property>
     </bean>
@@ -46,6 +47,18 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="smtpauth" value="${xz_smtpauth}"/>
         <property name="smtptimeout" value="${xz_smtptimeout}"/>
 
+    </bean>
+
+
+    <bean id="alipayClient"
+          class="com.alipay.api.DefaultAlipayClient">
+        <constructor-arg index="0" value="${serverUrl}"/>
+        <constructor-arg index="1" value="${appId}"/>
+        <constructor-arg index="2" value="${privateKey}"/>
+        <constructor-arg index="3" value="${format}"/>
+        <constructor-arg index="4" value="${charset}"/>
+        <constructor-arg index="5" value="${alipayPulicKey}"/>
+        <constructor-arg index="6" value="${signType}"/>
     </bean>
 
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">

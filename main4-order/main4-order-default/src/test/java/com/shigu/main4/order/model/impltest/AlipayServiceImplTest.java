@@ -1,22 +1,33 @@
 package com.shigu.main4.order.model.impltest;
 
+
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.model.PayerService;
-import com.shigu.main4.order.model.able.PayerServiceAble;
-import com.shigu.main4.order.model.impl.AliPayerServiceImpl;
+import com.shigu.main4.order.vo.PayApplyVO;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import javax.annotation.Resource;
 
 public class AlipayServiceImplTest  extends BaseTest {
 
-    @Autowired
-    @Qualifier(value = "aliPayerService")
-    private PayerServiceAble aliPayerService;
+    @Resource(name="aliPayerService")
+    private PayerService aliPayerService;
 
     @Test
     public void payApply() throws Exception {
-        aliPayerService.refund(1L,2L);
+        PayApplyVO apply = aliPayerService.payApply(5L, 1L, "iphone 6plus 手机");
+        System.out.println(apply.getPayLink());
+        show(apply);
+
+    }
+
+    @Test
+    public void paySure() throws Exception {
+        aliPayerService.paySure(22L, "5", "Q_Q1", 1L);
+    }
+
+    @Test
+    public void refund() throws Exception {
+        aliPayerService.refund(17L,1L);
     }
 
 }
