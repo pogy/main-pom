@@ -4,6 +4,7 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
@@ -196,5 +197,34 @@ public class CdnService {
         starNum=starNum==null?0:starNum;
         shopShowVO.setStarNum(starNum);
         return shopShowVO;
+    }
+
+    /**
+     * 查询店内最新几件商品
+     * @param shopId
+     * @param number
+     * @return
+     */
+    public List<ItemShowBlock> selShopNew(Long shopId,String webSite,Integer number){
+        ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
+        example.createCriteria().andStoreIdEqualTo(shopId).andIsClosedEqualTo(0L);
+        example.setStartIndex(0);
+        example.setEndIndex(number);
+        example.setWebSite(webSite);
+        example.setOrderByClause("created desc");
+        List<ShiguGoodsTiny> tinyList=shiguGoodsTinyMapper.selectFieldsByConditionList(example,
+                FieldUtil.codeFields("pic_url,title,goods_id,pi_price,web_site,goods_no"));
+        List<ItemShowBlock> blocks=new ArrayList<>();
+        for(ShiguGoodsTiny tiny:tinyList){
+            ItemShowBlock isb=new ItemShowBlock();
+            isb.setWebSite(tiny.getWebSite());
+            isb.setGoodsNo(tiny.getGoodsNo());
+            isb.setItemId(tiny.getGoodsId());
+            isb.setImgUrl(tiny.getPicUrl());
+            isb.setPrice(tiny.getPiPrice()==null?null:tiny.getPiPrice().toString());
+            isb.setTitle(tiny.getTitle());
+            blocks.add(isb);
+        }
+        return blocks;
     }
 }
