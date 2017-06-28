@@ -34,12 +34,9 @@ public class UserCollectServiceTest {
         List<Long> itemIds = new ArrayList<Long>();
     /* *//*   itemIds.add(213445L);
         itemIds.add(165791L);
-        itemIds.add(165843L);*//*
+        itemIds.add(165843L);*/
         itemIds.add(169944L);
-        itemIds.add(171987L);
-       *//*  itemIds.add(176136L);
-        itemIds.add(177294L);*/
-//        itemIds.add(201710L);
+
         System.out.println(FilePathConstant.ITEM_COLLECT_PACKAGE_PATH_URL);
         userCollectService.createDataPackage(1000000808L, itemIds);
     }

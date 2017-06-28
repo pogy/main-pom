@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1498441450072" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1498473666780" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1498441450072"></script>
+    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1498473666780"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -267,7 +267,7 @@ var webSite = '${webSite!}';
         </div>
     </div>
 </div>
-<#assign text>{    "fields":[        {"name":'webSite', "value":"${query.webSite!}"},        {"name":'pid', "value":"${query.pid!}"},        {"name":'cid', "value":"${query.cid!}"},        {"name":'mid', "value":"${query.mid!}"},        {"name":'keyword', "value":"${query.keyword!}"},        {"name":'sort', "value":"${query.sort!}"},        {"name":'d', "value":"${query.d!}"},        {"name":'page', "value":${query.page!}},        {"name":'st', "value":"${query.st!}"},        {"name":'et', "value":"${query.et!}"}    ]}</#assign>
+<#assign text>{    "fields":[        {"name":'webSite', "value":"${query.webSite!}"},        {"name":'pid', "value":"${query.pid!}"},        {"name":'cid', "value":"${query.cid!}"},        {"name":'mid', "value":"${query.mid!}"},        {"name":'keyword', "value":"${query.keyword!}"},        {"name":'sort', "value":"${query.sort!}"},        {"name":'d', "value":"${query.d!}"},        {"name":'page', "value":${query.page!}},        {"name":'sp', "value":"${query.sp!}"},        {"name":'ep', "value":"${query.ep!}"},        {"name":'st', "value":"${query.st!}"},        {"name":'et', "value":"${query.et!}"}    ]}</#assign>
 <#assign $it=text?eval />
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -367,8 +367,9 @@ var webSite = '${webSite!}';
         
         <div class="formFilterBar clearfix" id="formFilterBar">
             <div class="sortTypeBox">
-                <b jbtn="sortByXp" <#if query.sort?? && query.sort == 'xp'>class="selected"</#if>>新品</b>
                 <b jbtn="sortByZh" <#if query.sort?? && query.sort == 'comp'>class="selected"</#if>>综合</b>
+                <b jbtn="sortByXp" <#if query.sort?? && query.sort == 'xp'>class="selected"</#if>>新品</b>
+                <b jbtn="sortByRq" <#if query.sort?? && query.sort == 'popular'>class="selected"</#if>>人气</b>
                 
                 
                 
@@ -406,7 +407,7 @@ var webSite = '${webSite!}';
             <div class="rtbox">
                 <div class="dateClassify">
                     <div class="inner">
-                        <b jbtn="searchTime" <#if !query.d && !query.et> class="selected"</#if> d="">全部</b>
+                        <b jbtn="searchTime" <#if !query.d && !query.et && !query.st> class="selected"</#if> d="">全部</b>
                         <b jbtn="searchTime" <#if query.d =="1"> class="selected"</#if> d="1">1日内</b>
                         <b jbtn="searchTime" <#if query.d =="2"> class="selected"</#if> d="2">2日内</b>
                         <b jbtn="searchTime" <#if query.d =="3"> class="selected"</#if> d="3">3日内</b>

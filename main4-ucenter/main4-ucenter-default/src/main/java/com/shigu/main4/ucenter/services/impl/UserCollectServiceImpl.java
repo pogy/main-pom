@@ -215,10 +215,9 @@ public class UserCollectServiceImpl implements UserCollectService {
 
 
         //多图
-//        String subimageString = DataPackageUtil.addpic(relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "571sjb" + UtilCharacter.UNIX_FILE_SEPARATOR, sge.getImages());
-//        DataPackageUtil.addDescpic(relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "xiangqing" + UtilCharacter.UNIX_FILE_SEPARATOR, goodsdesc);
-//        String picture = subimageString;//新图片
-        String picture="";
+        String subimageString = DataPackageUtil.addpic(relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "571sjb" + UtilCharacter.UNIX_FILE_SEPARATOR, sge.getImages());
+        DataPackageUtil.addDescpic(relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "xiangqing" + UtilCharacter.UNIX_FILE_SEPARATOR, goodsdesc);
+        String picture = subimageString;//新图片
         String video = "";//视频
         // 销售属性组合
         TaobaoSkuExample example_ts = new TaobaoSkuExample();
@@ -254,13 +253,7 @@ public class UserCollectServiceImpl implements UserCollectService {
 
             String[] sizes = sizeStr.split("20509:");
             String[] colors = colorStr.split("1627207:");
-          /*  List<String> sizeList=new ArrayList<>();
-            sizeList.add("28314");
-            sizeList.add("28315");
-            sizeList.add("28316");
-            sizeList.add("28317");
-            sizeList.add("28318");
-            sizeList.add("28319");*/
+
             int auto=-1001;
             int auto1=-1001;
             for (int i=1;i<colors.length;i++){
