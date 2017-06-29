@@ -5,7 +5,7 @@ package com.shigu.main4.item.enums;
  * Created by zhaohongbo on 17/4/4.
  */
 public enum SearchOrderBy {
-    NEW("新品","new"),
+    NEW("新品","xp"),
     COMMON("综合排序","common"),
     GOODS_COMMON("商品库综合","goods_common"),
     SALE("销量","sale"),
