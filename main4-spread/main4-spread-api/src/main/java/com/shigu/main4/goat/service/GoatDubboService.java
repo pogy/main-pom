@@ -16,6 +16,7 @@ import java.util.List;
 public interface GoatDubboService {
     <T extends GoatVO> T selGoatById(Long goatId,GoatType type) throws GoatException;
 
+    <T extends GoatVO> T selGoatPrepareById(Long goatId,GoatType type) throws GoatException;
     /**
      * 按期次分好
      * 线上

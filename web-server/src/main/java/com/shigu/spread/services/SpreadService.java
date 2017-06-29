@@ -40,7 +40,7 @@ public class SpreadService {
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
     @Autowired
-    EhCacheForIndexPage ehCacheForIndexPage;
+    RedisForIndexPage redisForIndexPage;
     
     /**
      * 查广告数据
@@ -48,7 +48,7 @@ public class SpreadService {
      * @return
      */
     public ObjFromCache<List<ItemSpreadVO>> selItemSpreads(final String webSite, final SpreadEnum spread){
-        return new ObjFromCache<List<ItemSpreadVO>>(ehCacheForIndexPage,"selItemSpreads_"+webSite+"_"+spread.getCode(),
+        return new ObjFromCache<List<ItemSpreadVO>>(redisForIndexPage,"selItemSpreads_"+webSite+"_"+spread.getCode(),
                 List.class) {
             @Override
             public List<ItemSpreadVO> selReal() {
@@ -111,7 +111,7 @@ public class SpreadService {
      * @return
      */
     public ObjFromCache<List<ImgBannerVO>> selImgBanners(final SpreadEnum spread){
-        return new ObjFromCache<List<ImgBannerVO>>(ehCacheForIndexPage,"selImgBanners_"+spread.getCode(),List.class) {
+        return new ObjFromCache<List<ImgBannerVO>>(redisForIndexPage,"selImgBanners_"+spread.getCode(),List.class) {
             @Override
             public List<ImgBannerVO> selReal() {
                 List<ImgBannerVO> vos=new ArrayList<>();
@@ -135,6 +135,6 @@ public class SpreadService {
     @Async
     public void createBySync(ObjFromCache fromCache) {
         Object obj=fromCache.selReal();
-        ehCacheForIndexPage.putCache(fromCache.key,obj);
+        redisForIndexPage.putCache(fromCache.key,obj);
     }
 }

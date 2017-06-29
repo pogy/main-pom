@@ -14,14 +14,14 @@ public abstract class ObjFromCache<T>{
      */
     private SpreadCacheException.CacheType type= SpreadCacheException.CacheType.SHORT;
 
-    EhCacheForIndexPage ehCacheForIndexPage;
+    RedisForIndexPage redisForIndexPage;
 
     String key;
 
     Class tclass;
 
-    public ObjFromCache(EhCacheForIndexPage ehCacheForIndexPage, String key, Class tclass) {
-        this.ehCacheForIndexPage = ehCacheForIndexPage;
+    public ObjFromCache(RedisForIndexPage redisForIndexPage, String key, Class tclass) {
+        this.redisForIndexPage = redisForIndexPage;
         this.key = key;
         this.tclass = tclass;
     }
@@ -39,13 +39,13 @@ public abstract class ObjFromCache<T>{
     public T selObj(){
         T obj;
         try {
-            obj= (T) ehCacheForIndexPage.getFromCache(key,tclass);
+            obj= (T) redisForIndexPage.getFromCache(key,tclass);
             return obj;
         } catch (SpreadCacheException e) {
             type=e.getType();
             if(type.equals(SpreadCacheException.CacheType.NONE)){
                 obj=selReal();
-                ehCacheForIndexPage.putCache(key,obj);
+                redisForIndexPage.putCache(key,obj);
                 return obj;
             }else if(type.equals(SpreadCacheException.CacheType.LONG)){
                 return (T) e.getObj();
