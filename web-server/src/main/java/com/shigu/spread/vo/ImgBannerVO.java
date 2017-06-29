@@ -13,6 +13,9 @@ public class ImgBannerVO implements Serializable{
 
     private String text;
 
+    public ImgBannerVO() {
+    }
+
     public ImgBannerVO(String href, String imgsrc, String text) {
         this.href = href;
         this.imgsrc = imgsrc;

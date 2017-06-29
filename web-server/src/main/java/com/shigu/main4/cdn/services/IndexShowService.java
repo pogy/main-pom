@@ -71,7 +71,7 @@ public class IndexShowService {
      * @return
      */
     public ObjFromCache<List<Integer>> selNumList(){
-        return new ObjFromCache<List<Integer>>(redisForIndexPage,"selNumList",List.class){
+        return new ObjFromCache<List<Integer>>(redisForIndexPage,"selNumList",Integer.class){
             @Override
             public List<Integer> selReal() {
                 int count=shiguGoodsIdGeneratorMapper.countByExample(new ShiguGoodsIdGeneratorExample());
@@ -114,7 +114,7 @@ public class IndexShowService {
      * @return
      */
     public ObjFromCache<List<IndexNavVO>> selNavVOs(final SpreadEnum spread){
-        return new ObjFromCache<List<IndexNavVO>>(redisForIndexPage,"selNavVOs_"+spread.getCode(),List.class) {
+        return new ObjFromCache<List<IndexNavVO>>(redisForIndexPage,"selNavVOs_"+spread.getCode(),IndexNavVO.class) {
             @Override
             public List<IndexNavVO> selReal() {
                 List<IndexNavVO> navVOs=new ArrayList<>();
