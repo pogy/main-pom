@@ -99,7 +99,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
         OpenSearch.RequestBuilder<OpenItemVo> requestBuilder
                 = openSearch.searchFrom(OpenItemVo.class).from(start).size(realSize)
-                .setRank("goods_search_default", "goods_search", 2000);
+                .setRank("rough_project_c", "project_c", 2000);
 
         SearchQuery searchQuery = null;
         if (StringUtils.isNotEmpty(keyword)) {
