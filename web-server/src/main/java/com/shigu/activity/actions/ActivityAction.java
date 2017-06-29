@@ -195,6 +195,7 @@ public class ActivityAction {
                         shopForCdnService.searchItemOnsale(
                                 null,
                                 shopVo.getShopId(),
+                                "hz",
                                 "time_down",
                                 1,
                                 3

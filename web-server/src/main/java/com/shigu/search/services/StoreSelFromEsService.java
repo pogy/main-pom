@@ -64,7 +64,7 @@ public class StoreSelFromEsService {
             t.setStoreId(s.getShopId());
             t.setOtherStoreUrl("/storenum.htm?keyword="+shopNum);
             t.setStoreNum(s.getShopNum());
-            t.setGoodsCount(shopForCdnService.selItemNumberById(s.getShopId()).intValue());
+            t.setGoodsCount(shopForCdnService.selItemNumberById(s.getShopId(),website).intValue());
             topShops.add(t);
         }
         return topShops;
@@ -97,7 +97,7 @@ public class StoreSelFromEsService {
                 sis.setHighMarketName(s.getHighLightMarket());
                 sis.setHighName(s.getHighLightShopNum());
                 sis.setXy(shopForCdnService.selShopStarById(s.getShopId()).toString());
-                ShiguPager<ItemShowBlock> itemPager=shopForCdnService.searchItemOnsale(null,s.getShopId(),"time_down",1,4);
+                ShiguPager<ItemShowBlock> itemPager=shopForCdnService.searchItemOnsale(null,s.getShopId(),bo.getWebSite(),"time_down",1,4);
                 sis.setGoodsCount(itemPager.getTotalCount());
                 List<ItemShowBlock> simples=itemPager.getContent();
                 List<GoodsInStoreSearch> goods=new ArrayList<>();

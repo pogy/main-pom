@@ -191,7 +191,7 @@ public class CdnService {
         //查商品
         shopShowVO.setShopLicenses(shopLicenseService.selShopLicenses(shopId));
         //得到商品ID
-        shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(shopId));
+        shopShowVO.setGoodsNum(shopForCdnService.selItemNumberById(shopId,shopShowVO.getStoreRelation().getWebSite()));
 
         Long starNum=shopForCdnService.selShopStarById(shopId);
         starNum=starNum==null?0:starNum;

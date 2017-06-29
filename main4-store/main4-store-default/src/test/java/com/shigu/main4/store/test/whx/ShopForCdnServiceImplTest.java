@@ -44,15 +44,15 @@ public class ShopForCdnServiceImplTest extends AbstractJUnit4SpringContextTests 
     // test public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, String orderBy, int pageNo, int pageSize)
     @Test
     public void  searchItemOnsaleTestByKeywordAndShopIdAndOrderBy() {
-        show(shopForCdnService.searchItemOnsale("夏装",41838L,"price_up",2,30));
+        show(shopForCdnService.searchItemOnsale("夏装",41838L,"hz","price_up",2,30));
         System.out.println("第1条测试");
-        show(shopForCdnService.searchItemOnsale("夏装",41838L,"price_down",1,10));
+        show(shopForCdnService.searchItemOnsale("夏装",41838L,"hz","price_down",1,10));
         System.out.println("第2条测试");
-        show(shopForCdnService.searchItemOnsale("春装",null,"time_up",2,30));
+        show(shopForCdnService.searchItemOnsale("春装",null,"hz","time_up",2,30));
         System.out.println("第3条测试");
-        show(shopForCdnService.searchItemOnsale("夏天",null,null,1,10));
+        show(shopForCdnService.searchItemOnsale("夏天",null,"hz",null,1,10));
         System.out.println("第4条测试");
-        show(shopForCdnService.searchItemOnsale(" ",41838L,"price_up",1,10));
+        show(shopForCdnService.searchItemOnsale(" ",41838L,"hz","price_up",1,10));
         System.out.println("第5条测试");
     }
 
@@ -60,11 +60,11 @@ public class ShopForCdnServiceImplTest extends AbstractJUnit4SpringContextTests 
     @Test
     public void searchItemOnsaleTestByIds() {
 
-        show(shopForCdnService.searchItemOnsale(null,1,10));
+        show(shopForCdnService.searchItemOnsale(null,"hz",1,10));
 
-        show(shopForCdnService.searchItemOnsale(Lists.<Long>newArrayList(),1,10));
+        show(shopForCdnService.searchItemOnsale(Lists.<Long>newArrayList(),"hz",1,10));
 
-        show(shopForCdnService.searchItemOnsale(Lists.<Long>newArrayList(20278880L,20120674L,20120684L,20120697L,20120679L),1,10));
+        show(shopForCdnService.searchItemOnsale(Lists.<Long>newArrayList(20278880L,20120674L,20120684L,20120697L,20120679L),"hz",1,10));
     }
 
     private Date dateFrom;
@@ -83,25 +83,25 @@ public class ShopForCdnServiceImplTest extends AbstractJUnit4SpringContextTests 
     @Test
     public void searchItemOnsaleTestPriceFromAndPriceTo() {
         System.out.println("价格 10-500");
-        show(shopForCdnService.searchItemOnsale("秋装",null,new Double(10),new Double(500),"price_down",dateFrom,dateTo,1,20));
+        show(shopForCdnService.searchItemOnsale("秋装",null,"hz",new Double(10),new Double(500),"price_down",dateFrom,dateTo,1,20));
         System.out.println("价格 100-500");
-        show(shopForCdnService.searchItemOnsale("秋装",null,new Double(100),new Double(500),"price_down",dateFrom,dateTo,1,20));
+        show(shopForCdnService.searchItemOnsale("秋装",null,"hz",new Double(100),new Double(500),"price_down",dateFrom,dateTo,1,20));
         System.out.println("价格 不限-500");
-        show(shopForCdnService.searchItemOnsale("秋装",null,null,new Double(500),"price_down",dateFrom,dateTo,1,20));
+        show(shopForCdnService.searchItemOnsale("秋装",null,"hz",null,new Double(500),"price_down",dateFrom,dateTo,1,20));
         System.out.println("价格 100-不限");
-        show(shopForCdnService.searchItemOnsale("秋装",null,new Double(100),null,"price_down",dateFrom,dateTo,1,20));
+        show(shopForCdnService.searchItemOnsale("秋装",null,"hz",new Double(100),null,"price_down",dateFrom,dateTo,1,20));
         System.out.println("时间 2016-05-10 - 不限");
-        show(shopForCdnService.searchItemOnsale("秋装",null,new Double(100),new Double(500),"price_down",dateFrom,null,1,20));
+        show(shopForCdnService.searchItemOnsale("秋装",null,"hz",new Double(100),new Double(500),"price_down",dateFrom,null,1,20));
         System.out.println("时间 不限 - 2017-01-01");
-        show(shopForCdnService.searchItemOnsale("秋装",null,new Double(100),new Double(500),"price_down",null,dateTo,1,20));
+        show(shopForCdnService.searchItemOnsale("秋装",null,"hz",new Double(100),new Double(500),"price_down",null,dateTo,1,20));
     }
 
     //test public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Long cid, String scid, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize)
     @Test
     public void searchItemOnsaleTestScidAndCidAndDateFromAndDateTo() {
-        show(shopForCdnService.searchItemOnsale(null,36422L,null,"1124284939036422","price_down",dateFrom,dateTo,1,20));
-        show(shopForCdnService.searchItemOnsale(null,36422L,null,"1284219914036422","price_down",dateFrom,dateTo,1,20));
-        show(shopForCdnService.searchItemOnsale(null,null,null,"1284219914036422","price_down",dateFrom,dateTo,1,20));
+        show(shopForCdnService.searchItemOnsale(null,36422L,"hz",null,"1124284939036422","price_down",dateFrom,dateTo,1,20));
+        show(shopForCdnService.searchItemOnsale(null,36422L,"hz",null,"1284219914036422","price_down",dateFrom,dateTo,1,20));
+        show(shopForCdnService.searchItemOnsale(null,null,"hz",null,"1284219914036422","price_down",dateFrom,dateTo,1,20));
     }
 
 
