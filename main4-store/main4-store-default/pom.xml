@@ -117,7 +117,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-item-api</artifactId>
-            <version>4.1.7-SNAPSHOT</version>
+            <version>${main4-item-api.version}</version>
         </dependency>
     </dependencies>
 </project>
