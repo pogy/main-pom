@@ -262,7 +262,7 @@ var webSite = '${webSite!}';
                         <#list myIndexTerms as good>
                         <ul data-id="${good.codeId!}">
                             <li class="num">${good.type!}（${good.code!}）</li>
-                            <li class="time">${good.goatTime!}</li>
+                            <li class="time">${good.startOnline!} 至 ${good.endOnline!}</li>
                             <#if good.goodsId?? && good.goodsId != "">
                             <li class="pic"><a href="http://${good.webSite!}.571xz.com/item.htm?id=${good.goodsId!}" target="_blank"><img src="${good.picUrl!}_72x72.jpg" ></a></li>
                             <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.codeId!}" data-web="${good.webSite!}">更换商品</b></li>

@@ -48,7 +48,7 @@ public class SpreadService {
      * @return
      */
     public ObjFromCache<List<ItemSpreadVO>> selItemSpreads(final String webSite, final SpreadEnum spread){
-        return new ObjFromCache<List<ItemSpreadVO>>(redisForIndexPage,"selItemSpreads_"+webSite+"_"+spread.getCode(),
+        return new ObjFromCache<List<ItemSpreadVO>>(redisForIndexPage,spread.getCode(),
                 ItemSpreadVO.class) {
             @Override
             public List<ItemSpreadVO> selReal() {
@@ -111,7 +111,7 @@ public class SpreadService {
      * @return
      */
     public ObjFromCache<List<ImgBannerVO>> selImgBanners(final SpreadEnum spread){
-        return new ObjFromCache<List<ImgBannerVO>>(redisForIndexPage,"selImgBanners_"+spread.getCode(),ImgBannerVO.class) {
+        return new ObjFromCache<List<ImgBannerVO>>(redisForIndexPage,spread.getCode(),ImgBannerVO.class) {
             @Override
             public List<ImgBannerVO> selReal() {
                 List<ImgBannerVO> vos=new ArrayList<>();

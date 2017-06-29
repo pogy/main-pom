@@ -114,7 +114,7 @@ public class IndexShowService {
      * @return
      */
     public ObjFromCache<List<IndexNavVO>> selNavVOs(final SpreadEnum spread){
-        return new ObjFromCache<List<IndexNavVO>>(redisForIndexPage,"selNavVOs_"+spread.getCode(),IndexNavVO.class) {
+        return new ObjFromCache<List<IndexNavVO>>(redisForIndexPage,spread.getCode(),IndexNavVO.class) {
             @Override
             public List<IndexNavVO> selReal() {
                 List<IndexNavVO> navVOs=new ArrayList<>();
@@ -140,7 +140,7 @@ public class IndexShowService {
      * @return
      */
     public ObjFromCache<LoveGoodsList> loveGoods(final String text, final String webSite, final SpreadEnum spread){
-        return new ObjFromCache<LoveGoodsList>(redisForIndexPage,"loveGoods_"+webSite+"_"+spread.getCode(),LoveGoodsList.class) {
+        return new ObjFromCache<LoveGoodsList>(redisForIndexPage,spread.getCode(),LoveGoodsList.class) {
             @Override
             public LoveGoodsList selReal() {
                 LoveGoodsList love=new LoveGoodsList();

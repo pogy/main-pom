@@ -69,7 +69,9 @@ public class GoatFactoryImpl implements GoatFactory {
         if (local == null) {
             throw new GoatException("广告位置ID:" + localId + "不存在");
         }
-        return getALocationByVo(BeanMapper.map(local, GoatLocationVO.class));
+        GoatLocation location=getALocationByVo(BeanMapper.map(local, GoatLocationVO.class));
+        location.setCode(local.getLocalCode());
+        return location;
     }
 
     /**
