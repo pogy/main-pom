@@ -163,7 +163,7 @@ public class GoodsSearchAction {
         }
         SearchOrderBy orderBy = SearchOrderBy.valueIs(bo.getSort());
         if (orderBy == null) {
-            orderBy = SearchOrderBy.NEW;
+            orderBy = SearchOrderBy.COMMON;
         }
         SearchVO vo = goodsSearchService.search(bo, orderBy, true);
 
@@ -222,7 +222,7 @@ public class GoodsSearchAction {
         }
         SearchOrderBy orderBy = SearchOrderBy.valueIs(bo.getSort());
         if (orderBy == null) {
-            orderBy = SearchOrderBy.NEW;
+            orderBy = SearchOrderBy.COMMON;
         }
         //带聚合的结果
         ShiguPager<GoodsInSearch> pager = goodsSearchService.search(bo, orderBy, false).getSearchData();
