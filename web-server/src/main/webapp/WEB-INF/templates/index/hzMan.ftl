@@ -12,6 +12,7 @@
     <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
 <script>/*============ indexV4/page#layoutHeader BEGIN ============*/
 
+
 '${test!}'
         var hreflocation=window.location.href;
           if(hreflocation.indexOf('http://www.571xz.com')==0||hreflocation.indexOf('http://571xz.com')==0){//仅首页

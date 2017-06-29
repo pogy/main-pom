@@ -12,6 +12,7 @@ public enum SearchOrderBy {
     CLICK("点击量","click"),
     PRICEUP("价格升序","price_up"),
     PRICEDOWN("价格降序","price_down"),
+    POPULAR("人气","popular"),
     GOODSUP("商品上传量","goods_up");
 
     SearchOrderBy(String title, String value) {
@@ -42,5 +43,14 @@ public enum SearchOrderBy {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public static SearchOrderBy valueIs(String value) {
+        for (SearchOrderBy searchOrderBy : values()) {
+            if (searchOrderBy.getValue().equals(value)) {
+                return searchOrderBy;
+            }
+        }
+        return null;
     }
 }

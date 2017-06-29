@@ -512,8 +512,8 @@ public class CdnAction {
     }
 
     @RequestMapping("shopnew")
-    public String shopnew(Long id,Model model){
-        model.addAttribute("newGoodsList",shopForCdnService.searchItemOnsale(null,id,"time_down",1,5).getContent());
+    public String shopnew(Long id,String webSite,Model model){
+        model.addAttribute("newGoodsList",cdnService.selShopNew(id,webSite,5));
         return "cdn/item_shopnew";
     }
     /**
