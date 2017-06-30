@@ -12,7 +12,7 @@ class ShiguActivityVO {
 - Date endTime;     // 活动结束时间
 - String service;   // 准入的服务条件
 - ActivityStatus status; // 活动状态
-- ApplyStatus status; // 活动状态
+- ApplyStatus applyStatus; // 申请状态
 }
 
 class ShiguActivityApplyVO {
@@ -30,7 +30,7 @@ enum ApplyStatus {
 - APPLY_NOT_BEGUN,   // 活动未开始报名
 - APPLYING,          // 活动正在报名
 - APPLY_CLOSED,     // 报名结束
-+ static void check(ShiguActivityVO vo); // 为活动信息设置报名状态
++ static ApplyStatus check(ShiguActivityVO vo); // 为活动信息设置报名状态
 }
 
 enum ActivityStatus {
@@ -38,7 +38,7 @@ enum ActivityStatus {
 - ACTION,           // 活动进行中
 - ACTIVITY_CLOSED,   // 活动结束
 
-+ static void check(ShiguActivityVO vo); // 为活动信息设置活动状态
++ static ActivityStatus check(ShiguActivityVO vo); // 为活动信息设置活动状态
 }
 
 note left of ActivityStatus:活动状态由check静态方法\n根据Vo中的各个时间参数\n计算得出

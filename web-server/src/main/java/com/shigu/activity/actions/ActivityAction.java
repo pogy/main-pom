@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
- * 活动
+ * 奖品活动
  * Created by zhaohongbo on 17/4/26.
  */
 @Controller
