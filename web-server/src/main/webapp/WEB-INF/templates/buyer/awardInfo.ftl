@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>四季星座网-分销商中心-充值</title>
+    <title>四季星座网-分销商中心-开奖结果</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/iwantToRechargein5.css?t=1498814570280" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/awardInfo.css?t=1498814907600" rel="stylesheet">
     
   </head>
 <body>
@@ -203,7 +203,7 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>财务信息</h2>
         <ul>
-            <li><a class="selected" href="${main_host!}member/iwantToRechargein5.htm">充值</a></li> 
+                <li><a href="${main_host!}member/iwantToRechargein5.htm" >充值</a></li>
                 <li><a href="${main_host!}member/withdraw5Apply.htm" >提现</a></li>
         </ul> 
         <h2>账号管理</h2>
@@ -218,65 +218,41 @@ var webSite = '${webSite!}';
         </ul> 
         <h2>会员俱乐部</h2>
         <ul>
-                <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
+            <li><a class="selected" href="${main_host!}member/awardInfo.htm">开奖结果</a></li> 
         </ul> 
     </div>
     <div class="content shadow-box">
-        <div class="info-head clearfix">
-            <div class="lf">
-                <img width="100" height="100" src="${session_user_redis__.headUrl!}">
-                <div class="myinfo">
-                    <p class="welcome"><em>${session_user_redis__.userNick!}</em></p>
-                    <p>星座宝账户</p>
+        <div class="awardInfo">
+            <h3>发现好货活动奖品<b class="hdRule">活动规则</b></h3>
+            <div class="awardBox">
+                <div class="awardList">
+                    <ul class="clearfix">
+                        
+                    </ul>
                 </div>
-            </div>
-            <div class="rt">
-                <input type=hidden id="tempCode" value="${tempCode!}">
-                <p>
-                    <em>账户余额（元）</em>
-                    <span id="yuer_balance">加载中...</span>
-                </p>
-                <p>
-                    <em>账户冻结余额（元）</em>
-                    <span id="yuer_blockMoney">加载中...</span>
-                </p>
-            </div>
-        </div>
-        <div class="info-body">
-            <h3>收款信息</h3>
-            <h4>支付宝</h4>
-            <div class="clearfix">
-                <div class="lf">
-                    <p>收款账户：杭州石谷网络科技有限公司</p>
-                    <p>收款账号：web@571xz.com</p>
+                <div class="findGoods">
+                    <ul class="clearfix">
+                        
+                    </ul>
                 </div>
-                <div class="rt">
-                    <p>付款账号类型：支付宝选择付款</p>
-                    
+                <div class="dailyFind">
+                    <ul class="clearfix">
+                        
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="formbox">
-            <ul>
-                <li class="clearfix">
-                    <label>充值类型：</label><input class="textinput" readonly value="支付宝">
-                </li>
-                <li class="clearfix">
-                    <label>支付宝交易号：</label><input id="paynum" class="textinput" placeholder="请输入支付宝交易号">
-                </li>
-                <li class="clearfix">
-                    <label>支付宝账号：</label><input id="alipay" class="textinput" placeholder="请输入支付宝账号">
-                </li>
-                <li class="clearfix">
-                                <button
-id="dosubmit"                        class="button1"
-                    >提交充值信息</button>
-                </li>
-            </ul>
-        </div>
-        
-        
     </div>
+    
+    <script>/*============ fxs2/awardInfo#main BEGIN ============*/
+
+var allInfo = ${allInfo!}; //JSON字符串用于奖品模块、获奖名单
+
+/*============ fxs2/awardInfo#main END ============*/
+
+
+</script>
+    
 </div>
 <div class="footer">
     <div class="inner">
@@ -310,7 +286,7 @@ id="dosubmit"                        class="button1"
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/iwantToRechargein5.js?t=1498814570280"></script>
+<script src="http://style.571xz.com/fxs2/js/awardInfo.js?t=1498814907600"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
