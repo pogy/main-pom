@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods.css?t=1496989702970" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1498815392308" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods.js?t=1496989702970"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1498815392308"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -243,8 +243,8 @@ var webSite = '${webSite!}';
         <div class="layout">
             <div class="leftNav">
                 <ul>
+                    
                     <li><a href="http://www.571xz.com/activity/redbull.htm" class="select">发现好货</a><span></span></li>
-                    <li><a href="http://www.571xz.com/activity/findStore.htm" >发现好店</a><span></span></li>
                 </ul>
             </div>
             <div class="rightNav">
@@ -256,136 +256,15 @@ var webSite = '${webSite!}';
                     <li><a href="http://zixun.571xz.com/index">资讯</a></li>
                 </ul>
             </div>
-            <div class="awardUser">
-                <h3>获奖名单<span class="abortDate">（截止xx月xx日）</span>:</h3>
-                <div class="userName">
-                    <ul>
-                        
-                    </ul>
-                </div>
-            </div>
+            
         </div>
     </div>
 </div>
 <div class="detailInfo">
-    <div class="pageTitle layout styleTitle" name="发现好货">
+    <div class="dailyFoundTitle layout styleTitle"  name="发现好货">
+        <div class="tip">通知：发现好货查询本期中奖结果请前往【分销商后台】— 【会员俱乐部】<a href="${main_host!}member/awardInfo.htm" target="_blank">立即前往</a></div>
         <h2>发现好货</h2>
-        <div class="actRule">
-          <b class="ruleBtn">活动规则</b>  
-        </div>
-        
-        
     </div>
-    <div class="perchBoxAward">
-        <div class="awardShow">
-            <div class="layout awardBox">
-                <div class="leftBox">
-                    <div class="timer">
-                        <div id="countdown" class="countdown">
-                            
-                        </div>
-                        
-                        
-                        <script>/*============ fdGoodsV5/page#countDown BEGIN ============*/
-
-var countdownValue = ${countdownValue!}; //倒计时时间戳
-var nowTimeValue = ${nowTimeValue!}; //服务器当前时间戳
-
-/*============ fdGoodsV5/page#countDown END ============*/
-
-
-</script>
-                    </div>
-                    <div class="tcBtn">
-                        <b jbtn="lastWining">上期中奖情况</b>
-                        <b jbtn="nextAward">下期奖品预告</b>
-                    </div>
-                </div>
-                <div class="topAw thisTermAward">
-                    <ul>
-                        
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    
-    <script>/*============ fdGoodsV5/page#awardShow BEGIN ============*/
-
-var lastUserAward = ${lastUserAward!};
-
-/*============ fdGoodsV5/page#awardShow END ============*/
-
-
-</script>
-    <div  class="goodsList layout pr" >
-            
-            <div class="firstGoods">
-                <ul>
-                <#list styleItem.goodsList as goodsItem>
-                    <#if goodsItem_index lt 20>
-                    <li>
-                        <a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">
-                            <img src="${goodsItem.imgSrc!}_300x300.jpg" alt="${goodsItem.title!}" >
-                        </a>
-                        <h4 class="text-333"><a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">${goodsItem.title!}</a></h4>
-                        <div class="goodsInfo clearfix pr text-f40">
-                            <span class="goodsPrice"><i>&yen;</i>${goodsItem.piPriceString!}</span>
-                            <a class="goodAddr text-999 pr" href="http://hz.571xz.com/shop.htm?id=${goodsItem.shopId!}" target="_blank" title="${goodsItem.marketName!} ${goodsItem.shopNum!}"><i></i>${goodsItem.marketName!} ${goodsItem.shopNum!}</a>
-                        </div>
-                    </li>
-                    </#if>
-                </#list>
-                </ul>
-            </div>
-            <div class="secondGoods" style="display:none">
-                <ul>
-                <#list styleItem.goodsList as goodsItem>
-                    <#if goodsItem_index gt 19>
-                    <li>
-                        <a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">
-                            <img src="${goodsItem.imgSrc!}_300x300.jpg" alt="${goodsItem.title!}" >
-                        </a>
-                        <h4 class="text-333"><a href="http://hz.571xz.com/item.htm?id=${goodsItem.goodsId!}" target="_blank">${goodsItem.title!}</a></h4>
-                        <div class="goodsInfo clearfix pr text-f40">
-                            <span class="goodsPrice"><i>&yen;</i>${goodsItem.piPriceString!}</span>
-                            <a class="goodAddr text-999 pr" href="http://hz.571xz.com/shop.htm?id=${goodsItem.shopId!}" target="_blank" title="${goodsItem.marketName!} ${goodsItem.shopNum!}"><i></i>${goodsItem.marketName!} ${goodsItem.shopNum!}</a>
-                        </div>
-                    </li>
-                    </#if>
-                </#list>
-                </ul>
-            </div>
-        
-        <b class="changGoodsBtn pa" data-text="change">换一批</b>
-    </div>
-    <div class="dailyFoundTitle layout styleTitle"  name="每日发现"></div>
-    <div class="perchBoxAward">
-        <div class="awardShow">
-            <div class="layout awardBox">
-                <div class="leftBox">
-                    <div class="timer">
-                        <div id="countdown" class="countdown">
-                            
-                        </div>
-                        
-                        
-                    </div>
-                    <div class="tcBtn">
-                        <b jbtn="lastBtWining">上期中奖情况</b>
-                        <b jbtn="nextAward">下期奖品预告</b>
-                    </div>
-                </div>
-                <div class="bottomAw thisTermAward">
-                    <ul>
-                        
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     
     <div  class="goodsList layout pr mt" >
             
@@ -406,77 +285,7 @@ var lastUserAward = ${lastUserAward!};
         
     </div>
 </div>
-<div class="leftSidebar">
-    <h3>发现好货</h3>
-    <div class="styleDot">
-        <ul id="leftSidebarbox">
-            
-            
-        </ul>
-    </div>
-    <div class="toTop"><i class="topRow"></i>顶部</div>
-</div>
-<!--
-//上期未中奖
-<div class="awardInfoLayer">
-    <b class="closeLayerBtn" jbtn='jq_window_close'></b>
-    <div class="awardInfo text-center">
-        <h2 class="awardTitle">上期未中奖~</h2>
-        <p class="awardTip">不要灰心 下次再接再励~</p>
-        <div class="awardFace"></div>
-    </div>
-    <div class="awardBotBox text-center">
-        <b class="knowBtn text-size16" jbtn='jq_window_close'>知道啦！</b>
-    </div>
-</div>
-//上期已中奖,未领取奖品
-<div class="awardInfoLayer">
-    <b class="closeLayerBtn" jbtn='jq_window_close'></b>
-    <div class="awardInfo text-center">
-        <h2 class="awardTitle">上期已中奖~</h2>
-        <p class="awardTip">兑换码1：8697867 (一等奖) <br>兑换码2：8697867 (参与奖)</p>
-        <div class="awardFace awardExciting"></div>
-    </div>
-    <div class="awardBotBox text-center">
-        <p>请尽快前往电商基地大门口领取奖品</p>
-        <b class="knowBtn text-size16" jbtn='jq_window_close'>知道啦！</b>
-    </div>
-</div>
-//上期已中奖,已领取奖品
-<div class="awardInfoLayer">
-    <b class="closeLayerBtn" jbtn='jq_window_close'></b>
-    <div class="awardInfo text-center">
-        <h2 class="awardTitle">上期已中奖~</h2>
-        <p class="awardTip text-size24">您已经领取奖品啦~</p>
-        <div class="awardFace awardExciting"></div>
-    </div>
-    <div class="awardBotBox text-center">
-        <b class="knowBtn text-size16" jbtn='jq_window_close'>知道啦！</b>
-    </div>
-</div>
-//下期奖品预告
-<div class="awardInfoLayer">
-    <b class="closeLayerBtn" jbtn='jq_window_close'></b>
-    <div class="awardInfo text-center nextIssue">
-        <h2 class="awardTitle">下期奖品预告~</h2>
-        <p class="awardTip text-size24">您可以提议自己想要的奖品哦~</p>
-        <div class="awardFace qrcode"></div>
-    </div>
-    <div class="awardBotBox text-center">
-        <p class="nextIssueTip">关注公众号 — 活动进行中 — 奖品我来定</p>
-        <b class="knowBtn text-size16" jbtn='jq_window_close'>知道啦！</b>
-    </div>
-</div>
--->
-<script>/*============ fdGoodsV5/findGoods#main BEGIN ============*/
-
-var allInfo = ${allInfo!}; //JSON字符串用于奖品模块、获奖名单、与上一期模块
-var awardList = ${awardList!}; //JSON字符串用于获奖名单
-
-/*============ fdGoodsV5/findGoods#main END ============*/
-
-
-</script><div class="imgLoading">
+<div class="imgLoading">
     <div class="layout">
         <p>数据加载中……</p>
         <div class="loading"></div>
@@ -492,6 +301,7 @@ var awardList = ${awardList!}; //JSON字符串用于获奖名单
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
