@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>四季星座网-供应商中心-广告更换</title>
+    <title>报名详情 - 四季星座网</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/findGoodsChange.css?t=1498810169294" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498810167173" rel="stylesheet">
     
   </head>
 <body>
@@ -208,90 +208,94 @@ var webSite = '${webSite!}';
 </div>
 <div class="wrapper layout">
   
-    
-<div class="sidebar shadow-box">
-    <h2>商品管理</h2>
-    <ul>
-        <li><a href="${main_host!}seller/createGoods21init.htm"  >发布商品</a></li> 
-        <li><a href="${main_host!}seller/storeGoodsList21init.htm"  >出售中的商品</a></li> 
-        <li><a href="${main_host!}seller/storeGoodsListinit.htm?pinteger=2"  >仓库中的商品</a></li> 
-        <li><a href="${main_host!}seller/storeGoodsNoListinit.htm"  >批量修改货号</a></li> 
-        <li><a href="${main_host!}seller/xiufuGoods21init.htm"  >商品类目管理</a></li> 
-    </ul> 
-    <h2>店铺管理</h2>
-    <ul>
-        <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
-        <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
-        <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
-        <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
-        <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
-    </ul> 
-    <h2>财务信息</h2>
-    <ul>
-        <li><a href="${main_host!}seller/iwantToRechargein5.htm"  >充值</a></li> 
-        <li><a href="${main_host!}seller/withdraw5Apply.htm"  >提现</a></li> 
-    </ul> 
-    <h2>账号管理</h2>
-    <ul>
-        <li><a href="${main_host!}seller/safeindex.htm"  >安全设置</a></li> 
-        <li><a href="${main_host!}seller/sysSetsindex.htm"  >个人信息</a></li> 
-    </ul> 
-    <h2>营销管理</h2>
-    <ul>
-        <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
-        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-        <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li> 
-        <li><a href="${main_host!}seller/actRegister.htm"  >活动报名</a></li> 
-    </ul> 
-</div>
-    <div class="content shadow-box">
-        <div class="adrPosition">
-            <#if (myFindTerms?size) gt 0>
+        <div class="actDetails">
+        <ol class="breadNav clearfix">
+            <li><a class="index" href="http://www.571xz.com/">首页</a><em>/</em></li>
+            <li><a href="#">营销中心</a><em>/</em></li>
+            <li><a href="http://192.168.1.66/gys5/actRegister.html">活动报名</a><em>/</em></li>
+            <li><a href="#" class="active">港风（系列）专场</a></li>
+        </ol>
+        <script>/*============ gys5/actDetails#actDetail BEGIN ============*/
+
+var actidVal = '${query.actid!}';
+
+/*============ gys5/actDetails#actDetail END ============*/
+
+
+</script><div class="actDetail clearfix">
             
-            <#list myFindTerms as myFindTerm>
-            <div class="posWrap">
-                <div class="posIssue">
-                    <span class="issueNum">第${myFindTerm.term!}期</span>
-                    <span class="issueTime">（${myFindTerm.startOnline!} — ${myFindTerm.endOnline!}）</span>
+            <div class="leftImg">
+                <img src="${actDetails.actImg!}" alt="">
+            </div>
+            <div class="actProcess content shadow-box">
+                <h3 class="title">${actDetails.actTitle!}<span><#if actDetails.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span></h3>
+                <p class="applyRange">${actDetails.applyRange!}</p>
+                <p class="actTime">
+                    <span class="actStartTime">活动开始时间：${actDetails.actStartTime!}</span>
+                    <span class="actEndTime">活动结束时间：${actDetails.actEndTime!}</span>
+                </p>
+                <div class="charge clearfix">
+                    <p>推广渠道：<span>${actDetails.actPosition!}</span></p>
+                    <p>收费标准：<span><#if actDetails.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span></p>
                 </div>
-                <div class="posList">
-                    <div class="posTitle">
-                        <ul>
-                            <li class="num">广告位编号</li>
-                            <li class="pic">商品图片</li>
-                            <li class="operate">操作</li>
-                        </ul>
-                    </div>
-                    <div class="posItem">
-                        <#list myFindTerm.goods as good>
-                        <ul data-id="${good.id!}">
-                            <li class="num">${good.code!}</li>
-                            <li class="pic"><a href="http://${webSite!}.571xz.com/item.htm?id=${good.goodsId!}" target="_blank"><img src="${good.picUrl!}_240x240.jpg" ></a></li>
-                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.id!}" data-termId="${myFindTerm.termId!}" data-web="${good.webSite!}">上款</b></li>
-                        </ul>
+                <div class="applyQualify clearfix">
+                    <h3 class="title">报名条件：</h3>
+                    <div class="qualifyContent">
+                        <#list actDetails.applyCondition as detailItem>
+                        <p>${detailItem_index + 1}、${detailItem!}</p>
                         </#list>
                     </div>
+                    
+                </div>
+                <div class="uploadImgBox clearfix">
+                    <div class=" clearfix">
+                        <div class="activityInfo">
+                            <h3 class="title">活动商品信息：</h3>
+                            <ul>
+                                <li class="clearfix">
+                                    <label>商品1：</label>
+                                    <input type="text" placeholder="请输入产品链接">
+                                </li>
+                                <li class="clearfix">
+                                    <label>商品2：</label>
+                                    <input type="text" placeholder="请输入产品链接">
+                                </li>
+                                <li class="clearfix">
+                                    <label>商品3：</label>
+                                    <input type="text" placeholder="请输入产品链接">
+                                </li>
+                                <li class="clearfix">
+                                    <label>商品4：</label>
+                                    <input type="text" placeholder="请输入产品链接">
+                                </li>
+                                <li class="clearfix">
+                                    <label>商品5：</label>
+                                    <input type="text" placeholder="请输入产品链接">
+                                </li>
+                            </ul>
+                        
+                        </div>
+                        <div class="contactPhone">
+                            <h3 class="title">联系方式：</h3>
+                            <div class="clearfix">
+                                <input type="text" name="" id="" value="" placeholder="请输入您的手机号码">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkBtns">
+<#assign text>{"text":'我要报名', "cls":"goRegister"}</#assign>
+<#assign $it=text?eval />
+                                                <button class="gyButton goRegister" jbtn="" id="">我要报名</button>
+                        
+<#assign text>{"text":'查看报名商品列表', "cls":"checkList"}</#assign>
+<#assign $it=text?eval />
+                                                <button class="gyButton checkList" jbtn="" id="">查看报名商品列表</button>
+                        
+                    </div>
                 </div>
             </div>
-            </#list>
-            <#else>
-            <div class="noAdr">
-                <h3>本期您暂时还没有广告位</h3>
-                <p>如果广告刚拍下，管理员还没有派位，请耐心等待！</p>
-                <a class="partInBtn" href="https://shop121675953.taobao.com" target="_blank">参与竞拍</a>
-            </div>
-            </#if>
         </div>
     </div>
-    <#if (myFindTerms?size) gt 0>
-    <div class="partInWrap partInFixed">
-        <div class="layout">
-            <div class="partInBox">
-                <a class="partInBtn" href="https://shop121675953.taobao.com" target="_blank">参与竞拍</a>
-            </div>
-        </div>
-    </div>
-    </#if>
 </div>
 <div class="footer">
     <div class="inner">
@@ -325,7 +329,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/findGoodsChange.js?t=1498810169294"></script>
+<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498810167173"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

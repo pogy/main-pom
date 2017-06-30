@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/releaseGoodsSend.css?t=1498441737596" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/releaseGoodsSend.css?t=1498810183443" rel="stylesheet">
             <link href="http://style.571xz.com/gys5/temp/webuploader/webuploader.css" rel="stylesheet">
     
   </head>
@@ -208,44 +208,43 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <div class="wrapper layout">
+  
     
-    
-    <div class="sidebar shadow-box">
-        <h2>商品管理</h2>
-        <ul>
-            <li><a class="selected"  href="${main_host!}seller/createGoods21init.htm">发布商品</a></li> 
-            <li><a href="${main_host!}seller/storeGoodsList21init.htm"  >出售中的商品</a></li> 
-            <li><a href="${main_host!}seller/storeGoodsListinit.htm?pinteger=2"  >仓库中的商品</a></li> 
-            <li><a href="${main_host!}seller/storeGoodsNoListinit.htm"  >批量修改货号</a></li> 
-            <li><a href="${main_host!}seller/xiufuGoods21init.htm"  >商品类目管理</a></li> 
-        </ul> 
-        <h2>店铺管理</h2>
-        <ul>
-            <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
-            <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
-            <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
-            <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
-            <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
-        </ul> 
-        <h2>财务信息</h2>
-        <ul>
-            <li><a href="${main_host!}seller/iwantToRechargein5.htm"  >充值</a></li> 
-            <li><a href="${main_host!}seller/withdraw5Apply.htm"  >提现</a></li> 
-        </ul> 
-        <h2>账号管理</h2>
-        <ul>
-            <li><a href="${main_host!}seller/safeindex.htm"  >安全设置</a></li> 
-            <li><a href="${main_host!}seller/sysSetsindex.htm"  >个人信息</a></li> 
-        </ul> 
-        <h2>营销管理</h2>
-        <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
-            <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货广告</a></li> 
-            <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li> 
-        </ul> 
-    </div>
-    
+<div class="sidebar shadow-box">
+    <h2>商品管理</h2>
+    <ul>
+        <li><a class="selected"  href="${main_host!}seller/createGoods21init.htm">发布商品</a></li> 
+        <li><a href="${main_host!}seller/storeGoodsList21init.htm"  >出售中的商品</a></li> 
+        <li><a href="${main_host!}seller/storeGoodsListinit.htm?pinteger=2"  >仓库中的商品</a></li> 
+        <li><a href="${main_host!}seller/storeGoodsNoListinit.htm"  >批量修改货号</a></li> 
+        <li><a href="${main_host!}seller/xiufuGoods21init.htm"  >商品类目管理</a></li> 
+    </ul> 
+    <h2>店铺管理</h2>
+    <ul>
+        <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
+        <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
+        <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
+        <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
+        <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
+    </ul> 
+    <h2>财务信息</h2>
+    <ul>
+        <li><a href="${main_host!}seller/iwantToRechargein5.htm"  >充值</a></li> 
+        <li><a href="${main_host!}seller/withdraw5Apply.htm"  >提现</a></li> 
+    </ul> 
+    <h2>账号管理</h2>
+    <ul>
+        <li><a href="${main_host!}seller/safeindex.htm"  >安全设置</a></li> 
+        <li><a href="${main_host!}seller/sysSetsindex.htm"  >个人信息</a></li> 
+    </ul> 
+    <h2>营销管理</h2>
+    <ul>
+        <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
+        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
+        <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li> 
+        <li><a href="${main_host!}seller/actRegister.htm"  >活动报名</a></li> 
+    </ul> 
+</div>
     <div class="content shadow-box">
         
         
@@ -498,7 +497,7 @@ var webSite = '${webSite!}';
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys5/temp/webuploader/webuploader.js"></script>
-<script src="http://style.571xz.com/gys5/js/releaseGoodsSend.js?t=1498441737596"></script>
+<script src="http://style.571xz.com/gys5/js/releaseGoodsSend.js?t=1498810183443"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
