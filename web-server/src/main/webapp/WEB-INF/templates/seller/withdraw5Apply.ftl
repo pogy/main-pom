@@ -25,7 +25,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/withdraw5Apply.css?t=1498810185503" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/withdraw5Apply.css?t=1498817379065" rel="stylesheet">
     
   </head>
 <body>
@@ -251,8 +251,8 @@ var webSite = '${webSite!}';
     <ul>
         <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
         <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-        <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li> 
-        <li><a href="${main_host!}seller/actRegister.htm"  >活动报名</a></li> 
+        <li><a href="${main_host!}seller/promotion.htm"  >广告展示管理</a></li> 
+        <li><a href="${main_host!}seller/actRegister.htm"  >立即报名活动</a></li> 
     </ul> 
 </div>
     <div class="content shadow-box">
@@ -348,7 +348,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/withdraw5Apply.js?t=1498810185503"></script>
+<script src="http://style.571xz.com/gys5/js/withdraw5Apply.js?t=1498817379065"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

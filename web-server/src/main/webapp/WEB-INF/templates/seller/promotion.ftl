@@ -4,7 +4,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>四季星座网-供应商中心-授权管理</title>
+        <#if $it.title?? && ($it.title?size) gt 0>
+        <title>
+            <#list $it.title as item>
+                ${item!}
+            </#list>
+        </title>
+        </#if>
+    
+    
+    
+        
+        
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -14,7 +25,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/ghTongbu.css?t=1498817382170" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498817360798" rel="stylesheet">
     
   </head>
 <body>
@@ -224,7 +235,7 @@ var webSite = '${webSite!}';
         <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
         <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
         <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
-        <li><a class="selected"  href="${main_host!}seller/ghTongbu.htm">授权管理</a></li> 
+        <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
     </ul> 
     <h2>财务信息</h2>
     <ul>
@@ -240,46 +251,72 @@ var webSite = '${webSite!}';
     <ul>
         <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
         <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-        <li><a href="${main_host!}seller/promotion.htm"  >广告展示管理</a></li> 
+        <li><a class="selected"  href="${main_host!}seller/promotion.htm">广告展示管理</a></li> 
         <li><a href="${main_host!}seller/actRegister.htm"  >立即报名活动</a></li> 
     </ul> 
 </div>
     <div class="content shadow-box">
-    
-        <div class="table-container">
-            <table border="0" width="100%">
-                  <tbody>
-                  <tr>
-                    <th class="border_1" width="154" height="104" align="right">&nbsp;</th>
-                    <th class="border_1" width="380" align="left">不授权同步</th>
-                    <th class="border_3" width="393" align="left">淘宝授权同步</th>
-                  </tr>
-                  <tr>
-                    <td class="border_1" align=""><p>优点</p></td>
-                    <td class="border_1" class="" align="left"><p>无</p></td>
-                    <td class="border_3" align="left"><p>1、每天自动更新店铺所有宝贝1次，实现与淘宝同步<br/>2、更新宝贝正确率100%<br/>3、赠送每天2次手动更新店铺宝贝</p></td>
-                  </tr>
-                  <tr>
-                    <td class="border_2" align=""><p>缺点</p></td>
-                    <td class="border_2" align="left"><p>1、有可能无法及时更新店铺宝贝<br/>2、可能出现店铺宝贝重复<br/>3、以上等未知的不稳定错误</p></td>
-                    <td align="left"><p>无</p></td>
-                  </tr>
-                </tbody>
-            </table>
+        <div class="promotionTitle"><span>广告推广</span><a href="javascript:;" target="_blank">点击查看使用说明</a></div>
+        
+        <div class="promotionTab">
+            <div class="tabTitle clearfix">
+                <ul>
+                    <li class="current">正在生效的广告</li>
+                    <li>即将生效的广告</li>
+                </ul>
+            </div>
+            <div class="tabContent clearfix">
+                <div class="clearfix">
+                    <#if (inForceList?size) gt 0>
+                        <#list inForceList as pos>
+                        <div class="posItem">
+                            <h3 class="posArea">${pos.posName!}</h3>
+                            <div class="posInfo" <#if pos.goodsId?? && pos.goodsId != ''> data-goodsid="${pos.goodsId!}" </#if>>
+                                <#if pos.goodImgsrc?? && pos.goodImgsrc != ''>
+                                <img src="${pos.goodImgsrc!}">
+                                <#else>
+                                <img src="http://style.571xz.com/gys5/css/img/ggDefault.jpg">
+                                </#if>
+                                <p class="validTime">有效期：${pos.startTime!} - ${pos.endTime!}</p>
+                                <#if pos.isRelated??>
+                                <b class="reRelateBtn" jbtn="glWindowBtn">重新关联</b>
+                                <#else>
+                                <b class="relateBtn" jbtn="glWindowBtn">立即关联商品</b>
+                                </#if>
+                            </div>
+                        </div>
+                        </#list>
+                    <#else>
+                        <p class="noPos">您没有用购买广告位，看不到推广信息哦！</p>
+                    </#if>
+                </div>
+                <div class="clearfix" style="display:none">
+                    <#if (willInForceList?size) gt 0>
+                        <#list willInForceList as pos>
+                        <div class="posItem">
+                            <h3 class="posArea">${pos.posName!}</h3>
+                            <div class="posInfo" <#if pos.goodsId?? && pos.goodsId != ''> data-goodsid="${pos.goodsId!}" </#if>>
+                                <#if pos.goodImgsrc?? && pos.goodImgsrc != ''>
+                                <img src="${pos.goodImgsrc!}">
+                                <#else>
+                                <img src="http://style.571xz.com/gys5/css/img/ggDefault.jpg">
+                                </#if>
+                                <p class="validTime">有效期：${pos.startTime!} - ${pos.endTime!}</p>
+                                <#if pos.isRelated??>
+                                <b class="reRelateBtn" jbtn="glWindowBtn">重新关联</b>
+                                <#else>
+                                <b class="relateBtn" jbtn="glWindowBtn">立即关联商品</b>
+                                </#if>
+                            </div>
+                        </div>
+                        </#list>
+                    <#else>
+                    <p class="noPos">您没有用购买广告位，看不到推广信息哦！</p>
+                    </#if>
+                </div>
+            </div>
         </div>
-<#assign text>{"text":'授权或重新授权', "href":"${main_host!}ortherLogin.htm?ortherLoginType=1&backUrl=${main_host!}seller/ghTongbu.htm", "freemarker":true}</#assign>
-<#assign $it=text?eval />
-            
-            <#if $it.href??>
-            <a class="button-base button-1" href="${$it.href!}" <#if $it.id??>id="${$it.id!}"</#if>>${$it.text!}</a>
-            <#else>
-            <button class="button-base button-1" <#if $it.id??>id="${$it.id!}"</#if>>${$it.text!}</button>
-            </#if>
-        
-        
-    
     </div>
-    
 </div>
 <div class="footer">
     <div class="inner">
@@ -313,7 +350,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/ghTongbu.js?t=1498817382170"></script>
+<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498817360798"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
