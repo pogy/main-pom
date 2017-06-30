@@ -157,7 +157,7 @@ public interface ShopFitmentService {
      * @param shopId
      * @return
      */
-    ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,ItemPromoteModule promoteModule);
+    ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,String webSite,ItemPromoteModule promoteModule);
 
     /**
      * 取首页pageId

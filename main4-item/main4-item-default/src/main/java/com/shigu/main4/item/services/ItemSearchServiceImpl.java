@@ -87,10 +87,18 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         pager.setMarkets(Collections.<AggsCount>emptyList());
         pager.setParentCats(Collections.<AggsCount>emptyList());
         pager.setNumber(page);
+        // 最大5000
+        int start = (page - 1) * pageSize;
+        int realSize = pageSize;
+        if (start > 5000) {
+            return pager;
+        } else if (start + pageSize > 5000) {
+            realSize = 5000 - start;
+        }
 
         OpenSearch.RequestBuilder<OpenItemVo> requestBuilder
-                = openSearch.searchFrom(OpenItemVo.class).from((page - 1) * pageSize).size(pageSize)
-                .setRank("goods_search_default", "goods_search", 10000);
+                = openSearch.searchFrom(SEARCH_APP+webSite,OpenItemVo.class).from(start).size(realSize)
+                .setRank("rough_project_c", "project_c", 2000);
 
         SearchQuery searchQuery = null;
         if (StringUtils.isNotEmpty(keyword)) {
@@ -169,6 +177,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 break;
             case PRICEDOWN:
                 requestBuilder.addSort(new SortField("pi_price", Order.DECREASE));
+                break;
+            case POPULAR:
+                requestBuilder.setRank("goods_search_default", "goods_search_popular", 2000);
                 break;
             case GOODSUP:
                 break;

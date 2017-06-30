@@ -20,7 +20,6 @@ import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.session.main4.tool.BeanMapper;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

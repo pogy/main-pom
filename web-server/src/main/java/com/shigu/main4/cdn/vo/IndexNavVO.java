@@ -16,6 +16,9 @@ public class IndexNavVO implements Serializable{
      */
     private String text;
 
+    public IndexNavVO() {
+    }
+
     public IndexNavVO(String href, String text) {
         this.href = href;
         this.text = text;

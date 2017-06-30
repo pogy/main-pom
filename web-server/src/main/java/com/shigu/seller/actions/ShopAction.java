@@ -1,9 +1,18 @@
 package com.shigu.seller.actions;
 
+import com.google.common.collect.Lists;
+import com.opentae.data.mall.beans.GoatLicense;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.examples.GoatLicenseExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.interfaces.GoatLicenseMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
 import com.shigu.buyer.vo.SafeRzVO;
 import com.shigu.buyer.vo.UserInfoVO;
+import com.shigu.component.common.globality.constant.SystemConStant;
+import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.component.shiro.MemberRealm;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
 import com.shigu.component.shiro.filters.MemberFilter;
@@ -13,6 +22,12 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.exceptions.ShopDomainException;
+import com.shigu.main4.goat.enums.GoatType;
+import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.goat.service.Goat;
+import com.shigu.main4.goat.service.GoatDubboService;
+import com.shigu.main4.goat.vo.GoatVO;
+import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.exceptions.ItemException;
 import com.shigu.main4.item.exceptions.ItemModifyException;
@@ -37,11 +52,9 @@ import com.shigu.main4.ucenter.vo.UserLicense;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.seller.bo.*;
+import com.shigu.seller.exceptions.IndexGoatException;
 import com.shigu.seller.exceptions.SendGoodsException;
-import com.shigu.seller.services.GoodsSendService;
-import com.shigu.seller.services.ShopBaseSaveService;
-import com.shigu.seller.services.ShopIndexDataService;
-import com.shigu.seller.services.ShopItemModService;
+import com.shigu.seller.services.*;
 import com.shigu.seller.vo.*;
 import com.shigu.services.DubboAllService;
 import com.shigu.session.main4.PersonalSession;
@@ -83,6 +96,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -155,6 +169,9 @@ public class ShopAction {
 
     @Autowired
     SpreadService spreadService;
+
+    @Autowired
+    GoatShopService goatShopService;
 
     /**
      * 当前登陆的session
@@ -1131,4 +1148,48 @@ public class ShopAction {
         model.addAttribute("mail",mail);
         return "seller/safeszyx";
     }
+
+    /**
+     * 首页广告管理
+     * @return
+     */
+    @RequestMapping("seller/indexGgChange")
+    public String indexGgChange(HttpSession session, Model model) throws IndexGoatException, GoatException {
+        PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShopSession shopSession = personalSession.getLogshop();
+        Long shopId = shopSession.getShopId();
+        String webSite = shopSession.getWebSite();
+        List<IndexGoatVO> myIndexTerms = goatShopService.selGoatByShopId(webSite, shopId, GoatType.ItemGoat);
+        model.addAttribute("myIndexTerms", myIndexTerms);
+        return "seller/indexGgChange";
+    }
+
+    /**
+     * 首页广告管理，更换广告接口
+     * @return
+     */
+    @RequestMapping("seller/setNewIndexGoodsData")
+    @ResponseBody
+    public JSONObject setNewIndexGoodsData(String id, Long goodsId, HttpSession session) throws JsonErrException {
+        PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShopSession shopSession = personalSession.getLogshop();
+        String webSite = shopSession.getWebSite();
+        Long shopId = shopSession.getShopId();
+        GoatLicense license=goatShopService.getGoatLicenseByCodeId(id,shopId);
+        GoatShopService.GoatLicenseStatu statu = goatShopService.getGoatLicenseStatu(license);
+        ShiguGoodsTiny good = goatShopService.getShopGoodsInfo(webSite, goodsId, shopId);
+        switch (statu) {
+            case PUBLISH: {
+                goatShopService.publishGoatUpdate(license,personalSession.getUserId(), good);
+                break;
+            }
+            case PREPUBLISH: {
+                goatShopService.prepublishGoatUpdate(license,personalSession.getUserId(), good);
+                break;
+            }
+        }
+        return JsonResponseUtil.success().element("good", good);
+
+    }
+
 }

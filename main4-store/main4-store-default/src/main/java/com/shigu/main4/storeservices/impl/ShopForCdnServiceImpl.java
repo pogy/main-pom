@@ -78,6 +78,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
     @Resource
     private ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
 
+    private static final String SEARCH_APP = "goods_search_";
     /**
      * 按店ID查店内类目
      *
@@ -195,11 +196,13 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return
      */
     @Override
-    public Long selItemNumberById(Long shopId) {
+    public Long selItemNumberById(Long shopId,String webSite) {
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setShopId(shopId);
         shopForCdnBo.setIsOff(0);
-        return ((long) getRequestBuilder(shopForCdnBo).execute().getResult().getTotal());
+        shopForCdnBo.setPageNo(1);
+        shopForCdnBo.setPageSize(0);
+        return ((long) getRequestBuilder(shopForCdnBo,webSite).execute().getResult().getTotal());
     }
 
     /**
@@ -336,8 +339,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
     }
 
     @Override
-    public ShiguPager<ItemShowBlock> searchItemOnsale(List<Long> ids, int pageNo, int pageSize) {
-        String webSite = "hz";
+    public ShiguPager<ItemShowBlock> searchItemOnsale(List<Long> ids,String webSite, int pageNo, int pageSize) {
         ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<>();
         if (ids == null || ids.isEmpty()) {
             shiguPager.setContent(Collections.<ItemShowBlock>emptyList());
@@ -364,8 +366,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块分页信息
      */
     @Override
-    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, String orderBy, int pageNo, int pageSize) {
-        String webSite = "hz";
+    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId,String webSite, String orderBy, int pageNo, int pageSize) {
         ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setKeyword(keyword);
@@ -390,11 +391,10 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块分页信息
      */
     @Override
-    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Long cid, String scid, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
+    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId,String webSite, Long cid, String scid, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
 //        if (cid == null && StringUtils.isEmpty(scid)) {
 //            return searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
 //        }
-        String webSite = "hz";
         ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setKeyword(keyword);
@@ -423,11 +423,10 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块分页信息
      */
     @Override
-    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Double priceFrom, Double priceTo, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
+    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId,String webSite, Double priceFrom, Double priceTo, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
 //        if (priceFrom == null || priceTo == null) {
 //            return searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
 //        }
-        String webSite = "hz";
         ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setKeyword(keyword);
@@ -529,7 +528,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         List<ItemShowBlock> itemShowBlocks = Lists.newArrayList();
         shiguPager.setNumber(shopForCdnBo.getPageNo());
         shiguPager.setContent(itemShowBlocks);
-        OpenSearch.RequestBuilder<OpenItemVo> searchParamsBuilder = getRequestBuilder(shopForCdnBo);
+        OpenSearch.RequestBuilder<OpenItemVo> searchParamsBuilder = getRequestBuilder(shopForCdnBo,webSite);
         SearchResponse<OpenItemVo> response = searchParamsBuilder.execute();
         if (response.isSuccess()) {
             Result<OpenItemVo> result = response.getResult();
@@ -537,6 +536,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             for (OpenItemVo itemVo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
                 ItemShowBlock itemShowBlock = BeanMapper.map(itemVo,ItemShowBlock.class);
                 itemShowBlock.setImgUrl(itemVo.getPicUrl());
+                itemShowBlock.setPrice(itemVo.getPiPrice()+"");
                 itemShowBlock.setItemId(itemVo.getGoodsId());
                 itemShowBlock.setWebSite(webSite);
                 itemShowBlocks.add(itemShowBlock);
@@ -551,8 +551,9 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @param shopForCdnBo     查询条件
      * @return OpenSearch的SearchParamsBuilder条件
      */
-    public OpenSearch.RequestBuilder<OpenItemVo> getRequestBuilder(ShopForCdnBo shopForCdnBo) {
-        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder = openSearch.searchFrom(OpenItemVo.class)
+    public OpenSearch.RequestBuilder<OpenItemVo> getRequestBuilder(ShopForCdnBo shopForCdnBo,String webSite) {
+        String appNameHead="goods_search_";
+        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder = openSearch.searchFrom(appNameHead + webSite,OpenItemVo.class)
                 .from(shopForCdnBo.getPageSize() * (shopForCdnBo.getPageNo() - 1))
                 .size(shopForCdnBo.getPageSize());
 

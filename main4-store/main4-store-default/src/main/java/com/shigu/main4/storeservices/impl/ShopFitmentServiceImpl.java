@@ -365,9 +365,9 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @return
      */
     @Override
-    public ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,ItemPromoteModule promoteModule) {
+    public ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,String webSite,ItemPromoteModule promoteModule) {
         if (promoteModule.getPromoteType() == 2) {
-            return shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(), 1, promoteModule.getItemNum());
+            return shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(),webSite, 1, promoteModule.getItemNum());
         }
         String sort = "common";
         switch (promoteModule.getSort()) {
@@ -389,6 +389,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         return shopForCdnService.searchItemOnsale(
                 promoteModule.getKeyword(),
                 shopId,
+                webSite,
                 promoteModule.getLowerLimitPrice(),
                 promoteModule.getUpperLimitPrice(),
                 sort,
