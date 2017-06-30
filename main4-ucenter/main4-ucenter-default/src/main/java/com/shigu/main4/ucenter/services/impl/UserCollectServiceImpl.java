@@ -105,7 +105,7 @@ public class UserCollectServiceImpl implements UserCollectService {
         if (count > 0) {
             List<TinyItemCollect> shiguGoodsCollects
                     = shiguGoodsCollectMapper.tinyGoodsCollect(
-                            userId,keyword , webSite, (pageNo - 1) * pageSize, pageSize);
+                    userId,keyword , webSite, (pageNo - 1) * pageSize, pageSize);
             pager.setContent(BeanMapper.mapList(shiguGoodsCollects, ItemCollectVO.class));
         }
         return pager;
@@ -168,8 +168,11 @@ public class UserCollectServiceImpl implements UserCollectService {
         }
         ShiguGoodsTiny goods = shiguGoodsTinyMapper.selectGoodsById(shiguGoodsIdGenerator.getWebSite(), itemId);
         ShiguGoodsExtends sge = shiguGoodsExtendsMapper.selectGoodsExtendsById(shiguGoodsIdGenerator.getWebSite(), itemId);
-
+        if (goods==null){
+            return null;
+        }
         Long shopId = goods.getStoreId();
+
 
         String xinpin = "1";
         if ("false".equals(goods.getIsXinpin())) {
@@ -220,10 +223,65 @@ public class UserCollectServiceImpl implements UserCollectService {
         example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1IsNull();
         example_ts.or().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
         example_ts.setOrderByClause("properties asc");
-        List<TaobaoSku> list_ts = taobaoSkuMapper.selectByExample(example_ts);////淘宝SKU
         String skuProps = "";//sku组合属性
-        for (int i = 0; i < list_ts.size(); i++) {
-            skuProps += list_ts.get(i).getPrice() + ":" + list_ts.get(i).getQuantity() + ":" + "" + ":" + list_ts.get(i).getProperties() + ";";
+        List<TaobaoSku> list_ts = taobaoSkuMapper.selectByExample(example_ts);////淘宝SKU
+        String input_custom_cpv="";//自定义属性
+
+        if (list_ts.size()>0){
+
+            for (int i = 0; i < list_ts.size(); i++) {
+                skuProps += list_ts.get(i).getPrice() + ":" + list_ts.get(i).getQuantity() + ":" + "" + ":" + list_ts.get(i).getProperties() + ";";
+            }
+        }else {
+            String props = sge.getProps();
+            if (!props.contains("20509")||!props.contains("1627207")){
+                return null;
+            }
+            String substring = props.substring(props.indexOf("1627207"));
+            String colorStr=substring.substring(0,substring.indexOf("20509:"));
+            String sizeStr=substring.substring(substring.indexOf("20509:"),substring.lastIndexOf("20509:"));
+            String s = substring.replace(colorStr, "").replace(sizeStr, "");
+            String s1=null;
+            if (s.endsWith(";")){
+
+                s1 = s.substring(s.indexOf("20509:"), s.indexOf(";")+1);
+            }else {
+                s1 = s.substring(s.indexOf("20509:"))+";";
+            }
+            sizeStr+=s1;
+
+            String[] sizes = sizeStr.split("20509:");
+            String[] colors = colorStr.split("1627207:");
+
+            int auto=-1001;
+            int auto1=-1001;
+            for (int i=1;i<colors.length;i++){
+                for (int j=1;j<sizes.length;j++){
+                    skuProps+=goods.getPriceString()+":"+"100"+":"+""+":";
+                    skuProps+="1627207:"+colors[i];
+                    if ("28383;".equals(sizes[j])){
+                        String propsName = sge.getPropsName();
+                        propsName=propsName.substring(propsName.indexOf("20509:"+sizes[j].substring(0,sizes[j].length()-2)) + sizes[j].length()+9);
+                        String sizeAuto=null;
+                        if (propsName.endsWith(";")){
+
+                            sizeAuto = propsName.substring( 0,propsName.indexOf(";"));
+                        }else {
+                            sizeAuto = propsName;
+
+                        }
+                        String input_custom_cpv1="20509:"+auto+":"+sizeAuto+";";
+                        skuProps+="20509:"+auto1+";";
+                        if (!input_custom_cpv.contains(sizeAuto)){
+                            input_custom_cpv+=input_custom_cpv1;
+                            auto1=auto;
+                            auto--;
+                        }
+                    }else {
+                        skuProps+="20509:"+sizes[j];
+                    }
+                }
+            }
         }
         String inputPids = "";//用户输入ID串@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         String inputValues = "";//用户输入名-值对@@@@@@@@@@@@@@@@@@@@@@@
@@ -239,11 +297,27 @@ public class UserCollectServiceImpl implements UserCollectService {
         String is_xinpin = "0";//新品
         String foodparame = "";//食品专项
         String features = "mysize_tp:-1";//尺码库
-        String global_stock_type = "";//库存类型
+        String buyareatype="";//采购地
+        String global_stock_type="";//库存类型
+        String global_stock_country="";//国家地区
         String sub_stock_type = "";//库存计数
-        String sell_promise = "0";//退换货承诺
+        String qualification="";//商品资质
         String item_size = "";//物流体积
         String item_weight = "";//物流重量
+        String sell_promise = "0";//退换货承诺
+        String custom_design_flag="";//定制工具
+        String wireless_desc="";//无线详情
+        String barcode="";//商品条形码
+        String sku_barcode="";//sku 条形码
+        String newprepay="";//7天退货
+        String subtitle="";//宝贝卖点
+        String cpv_memo="";//属性备注
+        String add_qualification="";//增加商品资质
+        String o2o_bind_service="";//关联线下服务
+        String tmall_extend="";//tmall扩展
+        String product_combine="";//产品组合
+        String tmall_item_prop_combine="";//tmall属性组合
+        String taoschema_extend="";//taoschema扩展字段
         //查询商品扩展
         String stuff_status="1";
         String list_time =TypeConvert.formatDate(goods.getListTime());
@@ -256,7 +330,9 @@ public class UserCollectServiceImpl implements UserCollectService {
         contentsString+=goods.getNum()+""+'\t'+valid_thru+'\t'+freight_payer+'\t'+"0"+'\t'+"0"+'\t'+"0"+'\t'+has_invoice+'\t'+has_warranty+'\t'+approve_status+'\t'+has_showcase+'\t';
         contentsString+=list_time+'\t'+"\""+goodsdesc+"\""+'\t'+sge.getProps()+'\t'+postage_id+'\t'+has_discount+'\t'+modified+'\t'+upload_fail_msg+'\t'+picture_status+'\t'+auction_point+'\t';
         contentsString+=picture+'\t'+video+'\t'+skuProps+'\t'+inputPids+'\t'+inputValues+'\t'+goods.getOuterId()+'\t'+sge.getPropertyAlias()+'\t'+auto_fill+'\t'+num_id+'\t'+local_cid+'\t'+navigation_type+'\t';
-        contentsString+=user_name+'\t'+syncStatus+'\t'+is_lighting_consigment+'\t'+is_xinpin+'\t'+foodparame+'\t'+features+'\t'+global_stock_type+'\t'+sub_stock_type+'\t'+sell_promise+'\t'+item_size+'\t'+item_weight+'\r'+'\n';
+        contentsString+=user_name+'\t'+syncStatus+'\t'+is_lighting_consigment+'\t'+is_xinpin+'\t'+foodparame+'\t'+features+'\t'+buyareatype+'\t'+global_stock_type+'\t'+global_stock_country+'\t'+sub_stock_type+'\t'+item_size+'\t';
+        contentsString+=item_weight+'\t'+sell_promise+'\t'+custom_design_flag+'\t'+wireless_desc+'\t'+barcode+'\t'+sku_barcode+'\t'+newprepay+'\t'+subtitle+'\t'+cpv_memo+'\t'+input_custom_cpv+'\t'+qualification+'\t';
+        contentsString+=add_qualification+'\t'+o2o_bind_service+'\t'+tmall_extend+'\t'+product_combine+'\t'+tmall_item_prop_combine+'\t'+taoschema_extend+'\r'+'\n';
 
         Map<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("contents", contentsString);
@@ -283,15 +359,22 @@ public class UserCollectServiceImpl implements UserCollectService {
                 +'\t'+"approve_status"+'\t'+"has_showcase"+'\t'+"list_time"+'\t'+"description"+'\t'+"cateProps"+'\t'+"postage_id"
                 +'\t'+"has_discount"+'\t'+"modified"+'\t'+"upload_fail_msg"+'\t'+"picture_status"+'\t'+"auction_point"+'\t'+"picture"+
                 '\t'+"video"+'\t'+"skuProps"+'\t'+"inputPids"+'\t'+"inputValues"+'\t'+"outer_id"+'\t'+"propAlias"+'\t'+"auto_fill"+'\t'
-                +"num_id"+'\t'+"local_cid"+'\t'+"navigation_type"+'\t'+"user_name"+'\t'+"syncStatus"+'\t'+"is_lighting_consigment"+'\t'+"is_xinpin"+'\t'+"foodparame"+'\t'+"features"+'\t'+"global_stock_type"+'\t'+"sub_stock_type"+'\t'+"sell_promise"+'\t'+"item_size"+'\t'+"item_weight";
+                +"num_id"+'\t'+"local_cid"+'\t'+"navigation_type"+'\t'+"user_name"+'\t'+"syncStatus"+'\t'+"is_lighting_consigment"+'\t'
+                +"is_xinpin"+'\t'+"foodparame"+'\t'+"features"+'\t'+"buyareatype"+'\t'+"global_stock_type"+'\t'+"global_stock_country"+'\t'
+                +"sub_stock_type"+'\t'+"item_size"+'\t'+"item_weight"+'\t'+"sell_promise"+'\t'+"custom_design_flag"+'\t'
+                +"wireless_desc"+'\t'+"barcode"+'\t'+"sku_barcode"+'\t'+"newprepay"+'\t'+"subtitle"+'\t'+"cpv_memo"+'\t'+"input_custom_cpv"+'\t'
+                +"qualification"+'\t'+"add_qualification"+'\t'+"o2o_bind_service"+'\t'+"tmall_extend"+'\t'+"product_combine"+'\t'+"tmall_item_prop_combine"+'\t'
+                +"taoschema_extend";
         // 中文标题栏         
         String title_CString="宝贝名称"+'\t'+"宝贝类目"+'\t'+"店铺类目"+'\t'+"新旧程度"+'\t'+"省"+'\t'+"城市"+'\t'+"出售方式"+'\t'+"宝贝价格"
                 +'\t'+"加价幅度"+'\t'+"宝贝数量"+'\t'+"有效期"+'\t'+"运费承担"+'\t'+"平邮"+'\t'+"EMS"+'\t'+"快递"+'\t'+"发票"+'\t'+"保修"
                 +'\t'+"放入仓库"+'\t'+"橱窗推荐"+'\t'+"开始时间"+'\t'+"宝贝描述"+'\t'+"宝贝属性"+'\t'+"邮费模版ID"+'\t'+"会员打折"+'\t'
                 +"修改时间"+'\t'+"上传状态"+'\t'+"图片状态"+'\t'+"返点比例"+'\t'+"新图片"+'\t'+"视频"+'\t'+"销售属性组合"+'\t'+"用户输入ID串"
                 +'\t'+"用户输入名-值对"+'\t'+"商家编码"+'\t'+"销售属性别名"+'\t'+"代充类型"+'\t'+"数字ID"+'\t'+"本地ID"+'\t'+"宝贝分类"
-                +'\t'+"用户名称"+'\t'+"宝贝状态"+'\t'+"闪电发货"+'\t'+"新品"+'\t'+"食品专项"+'\t'+"尺码库"+'\t'+"库存类型"+'\t'+"库存计数"
-                +'\t'+"退换货承诺"+'\t'+"物流体积"+'\t'+"物流重量";
+                +'\t'+"用户名称"+'\t'+"宝贝状态"+'\t'+"闪电发货"+'\t'+"新品"+'\t'+"食品专项"+'\t'+"尺码库"+'\t'+"采购地"+'\t'+"库存类型"+'\t'+"国家地区"
+                +'\t'+"库存计数"+'\t'+"物流体积"+'\t'+"物流重量"+'\t'+"退换货承诺"+'\t'+"定制工具"+'\t'+"无线详情"+'\t'+"商品条形码"+'\t'+"sku 条形码"
+                +'\t'+"7天退货"+'\t'+"宝贝卖点"+'\t'+"属性值备注"+'\t'+"自定义属性"+'\t'+"商品资质"+'\t'+"增加商品资质"+'\t'+"关联线下服务"+'\t'+"tmall属性组合"
+                +'\t'+"taoschema扩展字段";
 
         String DATA_PACKAGE_ADDR = FilePathConstant.ITEM_COLLECT_PACKAGE_PATH_URL;
 
@@ -315,6 +398,9 @@ public class UserCollectServiceImpl implements UserCollectService {
         Long shopId = null;
         for (int i = 0; i < itemIds.size(); i++) {
             Map<String, String> hashMap = createDataPackagestr(userId, itemIds.get(i), DATA_PACKAGE_ADDR, relativePath, relativePath1);
+            if (hashMap==null){
+                continue;
+            }
             contentBuffer.append(hashMap.get("contents"));
             shopBuffer.append(hashMap.get("shopId"));
             if (i != itemIds.size() && i!=0) {

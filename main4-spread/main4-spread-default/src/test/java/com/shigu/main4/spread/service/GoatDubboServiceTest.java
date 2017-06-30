@@ -1,5 +1,6 @@
 package com.shigu.main4.spread.service;
 
+import com.alibaba.fastjson.JSON;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.goat.beans.ImgGoat;
 import com.shigu.main4.goat.enums.GoatType;
@@ -28,9 +29,9 @@ public class GoatDubboServiceTest {
     @Test
     public void selGoatByIdTest() throws GoatException, ActivityException {
         ImgGoatVO igv=goatDubboService.selGoatById(25L, GoatType.ImgGoat);
-        System.out.println(igv);
+        System.out.println(JSON.toJSONString(igv));
         List<GoatIntermVO> givs=goatDubboService.selGoatByLocalId(1L,GoatType.ImgGoat);
-        System.out.println(givs);
+        System.out.println(JSON.toJSONString(givs));
     }
 
     @Test

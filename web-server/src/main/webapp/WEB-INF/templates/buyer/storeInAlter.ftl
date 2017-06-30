@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/storeInAlter.css?t=1496989633285" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/storeInAlter.css?t=1498441432038" rel="stylesheet">
     
   </head>
 <body>
@@ -347,6 +347,7 @@ var selectReturnValue = { //3级联动回填数据
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -368,7 +369,7 @@ var selectReturnValue = { //3级联动回填数据
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/storeInAlter.js?t=1496989633285"></script>
+<script src="http://style.571xz.com/fxs2/js/storeInAlter.js?t=1498441432038"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

@@ -22,4 +22,5 @@ public interface BrowerMonitorService {
      * @return
      */
     boolean outPage(String idKey);
+
 }

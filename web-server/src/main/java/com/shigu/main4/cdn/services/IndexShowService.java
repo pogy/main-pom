@@ -20,6 +20,7 @@ import com.shigu.search.vo.CateNav;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.EhCacheForIndexPage;
 import com.shigu.spread.services.ObjFromCache;
+import com.shigu.spread.services.RedisForIndexPage;
 import com.shigu.spread.services.SpreadService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -56,9 +57,8 @@ public class IndexShowService {
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
-
     @Autowired
-    EhCacheForIndexPage ehCacheForIndexPage;
+    RedisForIndexPage redisForIndexPage;
 
     @Autowired
     SpreadService spreadService;
@@ -71,7 +71,7 @@ public class IndexShowService {
      * @return
      */
     public ObjFromCache<List<Integer>> selNumList(){
-        return new ObjFromCache<List<Integer>>(ehCacheForIndexPage,"selNumList",List.class){
+        return new ObjFromCache<List<Integer>>(redisForIndexPage,"selNumList",Integer.class){
             @Override
             public List<Integer> selReal() {
                 int count=shiguGoodsIdGeneratorMapper.countByExample(new ShiguGoodsIdGeneratorExample());
@@ -114,7 +114,7 @@ public class IndexShowService {
      * @return
      */
     public ObjFromCache<List<IndexNavVO>> selNavVOs(final SpreadEnum spread){
-        return new ObjFromCache<List<IndexNavVO>>(ehCacheForIndexPage,"selNavVOs_"+spread.getCode(),List.class) {
+        return new ObjFromCache<List<IndexNavVO>>(redisForIndexPage,spread.getCode(),IndexNavVO.class) {
             @Override
             public List<IndexNavVO> selReal() {
                 List<IndexNavVO> navVOs=new ArrayList<>();
@@ -140,7 +140,7 @@ public class IndexShowService {
      * @return
      */
     public ObjFromCache<LoveGoodsList> loveGoods(final String text, final String webSite, final SpreadEnum spread){
-        return new ObjFromCache<LoveGoodsList>(ehCacheForIndexPage,"loveGoods_"+webSite+"_"+spread.getCode(),LoveGoodsList.class) {
+        return new ObjFromCache<LoveGoodsList>(redisForIndexPage,spread.getCode(),LoveGoodsList.class) {
             @Override
             public LoveGoodsList selReal() {
                 LoveGoodsList love=new LoveGoodsList();

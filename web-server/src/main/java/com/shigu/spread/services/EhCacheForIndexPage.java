@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
  * 每次新获得缓存,刷新备用数据
  * Created by zhaohongbo on 17/4/10.
  */
-@Service
+//@Service
 public class EhCacheForIndexPage {
-    @Autowired
+//    @Autowired
     protected EhCacheCacheManager cacheManager;
 
     private String longCache="indexLongCache";

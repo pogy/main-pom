@@ -231,7 +231,7 @@ public class ShopDesignService {
         if(module instanceof CategoryModule){//如果是店内分类模块
             mv.getData().put("shopcats",shopForCdnService.selShopCatsById(shop.getShopId()));
         }else if(module instanceof ItemPromoteModule){//推荐需要查数据
-            ShiguPager<ItemShowBlock> promotePage=shopFitmentService.selItemByPromote(shop.getShopId(),(ItemPromoteModule) module);
+            ShiguPager<ItemShowBlock> promotePage=shopFitmentService.selItemByPromote(shop.getShopId(),shop.getWebSite(),(ItemPromoteModule) module);
             mv.getData().put("promotes",promotePage);
         }else if(module instanceof SearchItemsModule){//搜索
             //栏目,+搜索条件
@@ -252,11 +252,11 @@ public class ShopDesignService {
         return Collections.emptyList();
     }
 
-    public ShiguPager<ItemShowBlock> selPromoteItems(PromotePagerBo bo, Long shopId) {
+    public ShiguPager<ItemShowBlock> selPromoteItems(PromotePagerBo bo, Long shopId,String webSite) {
         if (bo.getType() == 2) {
-            return shopForCdnService.searchItemOnsale(bo.getIds(), bo.getPage(), bo.getSize());
+            return shopForCdnService.searchItemOnsale(bo.getIds(),webSite, bo.getPage(), bo.getSize());
         }
-        return shopForCdnService.searchItemOnsale(bo.getQ(), shopId, bo.getLowPrice(), bo.getHighPrice(), null,null,null, bo.getPage(), bo.getSize());
+        return shopForCdnService.searchItemOnsale(bo.getQ(), shopId,webSite, bo.getLowPrice(), bo.getHighPrice(), null,null,null, bo.getPage(), bo.getSize());
     }
 
     public List<PageManageVo> selAllPage(Long shopId) {

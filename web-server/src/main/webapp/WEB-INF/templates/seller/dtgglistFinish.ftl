@@ -241,7 +241,8 @@ var webSite = '${webSite!}';
             <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
             <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货广告</a></li> 
-        </ul> 
+            <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li>
+        </ul>
     </div>
     
     <div class="content shadow-box">
@@ -249,7 +250,7 @@ var webSite = '${webSite!}';
         <p class="resultInfo">第${indexggQ!}期活动已结束！<#if (indexggList?size) gt 0>派位结果如下：</#if></p>
             <#if indexggList?? && (indexggList?size) gt 0>
                 <#list indexggList as indexgg>
-                <h3 class="syIntro">${indexgg.title!}</h3>
+                <h3 class="syIntro">${indexgg.title!}<span>${indexgg.ggDate!}</span></h3>
                 <div class="ggList">
                     <#if (indexgg.ggList?size) gt 0>
                     <table>
@@ -292,6 +293,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

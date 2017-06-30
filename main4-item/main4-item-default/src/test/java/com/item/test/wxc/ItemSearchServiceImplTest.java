@@ -9,7 +9,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,12 +29,13 @@ public class ItemSearchServiceImplTest extends BaseSpringTest {
     private static final Logger logger = LoggerFactory.getLogger(ItemSearchServiceImplTest.class);
 
     @Autowired
+    @Qualifier(value = "itemSearchService")
     private ItemSearchService itemSearchService;
 
     @Test
     public void search() throws Exception {
         Long[] stores = {35749L, 32861L, 16573L, 41603L, 35782L, 41836L, 29858L, 39959L, 40721L, 15908L, 40097L, 42538L, 39055L};
-        show(itemSearchService.searchItem("实拍 大货主推】2017年新款蕾丝连衣裙 Q015F65", "hz", null, null, Arrays.asList(stores), null,null, null, null, null, SearchOrderBy.NEW, 1, 40, true));
+        show(itemSearchService.searchItem("实拍 大货主推】2017年新款蕾丝连衣裙 Q015F65", "hz", null, null, Arrays.asList(stores), null,null, null, null, null, SearchOrderBy.GOODS_COMMON, 1, 40, true));
     }
 
     @Test
@@ -49,5 +52,6 @@ public class ItemSearchServiceImplTest extends BaseSpringTest {
     public void selSubCategoryBy() throws Exception {
         show(itemSearchService.selSubCategory("man", SearchCategory.CATEGORY,"hz"));
     }
+
 
 }

@@ -41,7 +41,7 @@ import java.util.List;
  * @since domwiki 4.0.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration( value="/main4/spring/apache-shiro.xml" )
+@ContextConfiguration( value="/main4/spring/spring.xml" )
 @Transactional(rollbackFor = Exception.class)
 public class UserCollectServiceTest {
     private static final Logger logger = LoggerFactory.getLogger(UserCollectServiceTest.class);

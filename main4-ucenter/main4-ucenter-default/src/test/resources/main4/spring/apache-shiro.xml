@@ -3,43 +3,35 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
 	   xmlns:p="http://www.springframework.org/schema/p"
 	   xmlns:aop="http://www.springframework.org/schema/aop"
-	   xmlns:context="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd   
-    http://www.springframework.org/schema/util 
-    http://www.springframework.org/schema/util/spring-util-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 	<description>Shiro 配置</description>
-	<context:component-scan base-package="com.opentae.*,com.shigu.*,com.openJar.*,com.searchtool.configs" >
-	</context:component-scan>
-	
+
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login.htm" />
 		<property name="successUrl" value="/mainindex.htm"/>
-    	<property name="unauthorizedUrl" value="/login.htm"/>
+		<property name="unauthorizedUrl" value="/login.htm"/>
+		<property name="filters">
+			<map>
+				<entry key="member" value-ref="memberFilter"/>
+				<entry key="shop" value-ref="shopFilter"/>
+			</map>
+		</property>
 		<property name="filterChainDefinitions">
 			<value>
-				/login.htm = anon
-				/login2.htm = anon
-				/**.htm = authc
-				/index.html = authc
-				/**.json = authc
-				/ckmarket/**=anon
+				/member/** = member
+				/ruzhu.htm = member
+				/jsonScAddGoods.* = member
+				/jsonScAdd.* = member
+				/jsonStoreCollectAdd.* = member
+				/seller/** = shop
 				/** = anon
 			</value>
 		</property>
 	</bean>
-	<!--系统管理员的登陆认证-->
-	 <bean id="systemRealm" class="com.shigu.component.shiro.SystemRealm">
-		 <property name="cacheManager" ref="cacheManagers"/>
-	   <property name="credentialsMatcher">
-	           <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-	               <property name="hashAlgorithmName" value="MD5"/>
-	               <property name="storedCredentialsHexEncoded" value="true"/>
-	               <property name="hashIterations" value="2" />
-	           </bean>
-	   	</property> 
-	 </bean>
 	<!--普通用户的登陆认证-->
 	<bean id="memberRealm" class="com.shigu.component.shiro.MemberRealm">
 		<property name="cacheManager" ref="cacheManagers"/>
@@ -50,36 +42,22 @@
 				<property name="hashIterations" value="2" />
 			</bean>
 		</property>
-	</bean>
-	<!--多认证选择器-->
-	<bean id="defineModularRealmAuthenticator"
-		  class="com.shigu.component.shiro.DefaultModularRealm">
-		<property name="definedRealms">
-			<map>
-				<entry key="systemRealm" value-ref="systemRealm" />
-				<entry key="memberRealm" value-ref="memberRealm" />
-			</map>
-		</property>
+		<!--<property name="userBaseService" ref="userBaseService" />-->
+		<!--<property name="userShopService" ref="userShopService"/>-->
 	</bean>
 
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-	 <!-- 基于ehCache来缓存用户认证信息和授权信息的实现 -->
+		<!-- 基于ehCache来缓存用户认证信息和授权信息的实现 -->
 		<property name="cacheManager" ref="cacheManagers"/>
 		<!--<property name="sessionManager" ref="sessionManager"/>-->
 		<!-- sessionMode参数设置为native时，那么shrio就将用户的基本认证信息保存到缺省名称为shiro-activeSessionCache 的Cache中 -->
-        <!--<property name="sessionMode" value="native" />-->
+		<!--<property name="sessionMode" value="native" />-->
 		<!--设置自定义realm -->
-		<property name="authenticator" ref="defineModularRealmAuthenticator" />
-		<property name="realms">
-			<list>
-				<ref bean="systemRealm" />
-				<ref bean="memberRealm" />
-			</list>
-		</property>
+		<property name="realm" ref="memberRealm"/>
 	</bean>
 
 	<!--<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">-->
-		<!--<property name="sessionDAO" ref="sessionDAO"/>-->
+	<!--<property name="sessionDAO" ref="sessionDAO"/>-->
 	<!--</bean>-->
 
 	<!--<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">-->
@@ -91,7 +69,14 @@
 	</bean>
 
 	<bean id="ehCacheManagers" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
-		  p:shared="true"	/>
+		  p:shared="true"	>
+		<property name="configLocation" value="classpath:/main4/cache/ehcache.xml"/>
+	</bean>
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="ehCacheManagers"/>
+		<property name="transactionAware" value="true"/>
+	</bean>
 
 
 	<!-- securityManager -->
@@ -99,99 +84,33 @@
 		<property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager" />
 		<property name="arguments" ref="securityManager" />
 	</bean>
-	
+
 	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-	
-	
+
+
 	<!-- AOP式方法级权限检查  -->
+	<!--<bean-->
+	<!--class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"-->
+	<!--depends-on="lifecycleBeanPostProcessor" >-->
+	<!--<property name="proxyTargetClass" value="true" /> 	-->
+	<!--</bean>-->
+
 	<bean
-		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-		depends-on="lifecycleBeanPostProcessor" >
-		<property name="proxyTargetClass" value="true" /> 	
-	</bean>
-		
-	<bean
-		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+			class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
 		<property name="securityManager" ref="securityManager" />
 	</bean>
-
-
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:mall_config.properties</value>
-			</list>
-		</property>
-	</bean>
-	<bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
-		<property name="properties">
-			<map>
-				<entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"></entry>
-			</map>
-		</property>
+	<!--用户登陆过滤器-->
+	<bean class="com.shigu.component.shiro.filters.MemberFilter" id="memberFilter">
+		<property name="loginUrl" value="/login.htm"/>
+		<property name="successUrl" value="/member/index.htm"/>
 	</bean>
 
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-		<!-- 基本属性 url、user、password -->
-		<!--<property name="url" value="jdbc:mysql://122.224.104.234/test" />-->
-		<!--<property name="username" value="admin" />-->
-		<!--<property name="password" value="killer81682024" />-->
-
-		<property name="driverClassName" value="${mysqljdbc.driverClassName}" />
-		<property name="url" value="${mysqljdbc.url}" />
-		<property name="username" value="${mysqljdbc.username}" />
-		<property name="password" value="${mysqljdbc.password}" />
-
-		<!-- 配置初始化大小、最小、最大 -->
-		<property name="initialSize" value="1" />
-		<property name="minIdle" value="1" />
-		<property name="maxActive" value="20" />
-
-		<!-- 配置获取连接等待超时的时间 -->
-		<property name="maxWait" value="60000" />
-
-		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-		<property name="timeBetweenEvictionRunsMillis" value="60000" />
-
-		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-		<property name="minEvictableIdleTimeMillis" value="300000" />
-
-		<property name="validationQuery" value="SELECT 'x'" />
-		<property name="testWhileIdle" value="true" />
-		<property name="testOnBorrow" value="false" />
-		<property name="testOnReturn" value="false" />
-
-		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-		<property name="poolPreparedStatements" value="true" />
-		<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
-
-		<!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->
-		<property name="filters" value="stat" />
+	<!--店铺登陆过滤器-->
+	<bean class="com.shigu.component.shiro.filters.ShopFilter" id="shopFilter">
+		<property name="unauthorizedUrl" value="/member/index.htm"/>
+		<property name="loginUrl" value="/login.htm"/>
+		<property name="successUrl" value="/member/index.htm"/>
 	</bean>
 
-	<bean id="tae_mall_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
-		<property name="plugins">
-			<list>
-				<ref bean="mapperInterceptor"></ref>
-			</list>
-		</property>
-		<property name="dataSource" ref="dataSource"></property>
-		<property name="configLocation" value="classpath:/mybatis-config.xml"></property>
-		<property name="mapperLocations" value="classpath*:/mall/mybatis/*.xml" />
-		<property name="typeAliasesPackage" value="com.opentae.data.mall"></property>
-	</bean>
-
-	<bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
-		<property name= "basePackage"
-				  value= "com/opentae/data/mall/interfaces" />
-		<property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
-		<property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
-	</bean>
-	<!-- 测试自动回滚 -->
-	<bean id="transactionManager"
-		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	
 </beans>
