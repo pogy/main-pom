@@ -268,7 +268,7 @@ var webSite = '${webSite!}';
                             <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
                         </p>
                         <p class="lineHei32">
-                            <span class="actTime">活动时间：${actItem.actStratTime!}-${actItem.actEndTime!}</span>
+                            <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
                             <span class="actNums">名额：${actItem.actNums!} 款商品</span>
                             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
                         </p>
