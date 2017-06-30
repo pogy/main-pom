@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498810167921" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498817361500" rel="stylesheet">
     
   </head>
 <body>
@@ -240,8 +240,8 @@ var webSite = '${webSite!}';
     <ul>
         <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
         <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-        <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li> 
-        <li><a class="selected"  href="${main_host!}seller/actRegister.htm">活动报名</a></li> 
+        <li><a href="${main_host!}seller/promotion.htm"  >广告展示管理</a></li> 
+        <li><a class="selected"  href="${main_host!}seller/actRegister.htm">立即报名活动</a></li> 
     </ul> 
 </div>
     <div class="content shadow-box">
@@ -319,7 +319,7 @@ var webSite = '${webSite!}';
                             <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
                         </p>
                         <p class="lineHei32">
-                            <span class="actTime">活动时间：${actItem.actStratTime!}-${actItem.actEndTime!}</span>
+                            <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
                             <span class="actNums">名额：${actItem.actNums!} 款商品</span>
                             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
                         </p>
@@ -371,7 +371,7 @@ var webSite = '${webSite!}';
                             <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
                         </p>
                         <p class="lineHei32">
-                            <span class="actTime">活动时间：${actItem.actStratTime!}-${actItem.actEndTime!}</span>
+                            <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
                             <span class="actNums">名额：${actItem.actNums!} 款商品</span>
                             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
                         </p>
@@ -442,7 +442,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498810167921"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498817361500"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

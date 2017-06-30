@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498810167173" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498817362186" rel="stylesheet">
     
   </head>
 <body>
@@ -329,7 +329,7 @@ var actidVal = '${query.actid!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498810167173"></script>
+<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498817362186"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

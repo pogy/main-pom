@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/releaseGoodsSend.css?t=1498810183443" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/releaseGoodsSend.css?t=1498817377022" rel="stylesheet">
             <link href="http://style.571xz.com/gys5/temp/webuploader/webuploader.css" rel="stylesheet">
     
   </head>
@@ -241,8 +241,8 @@ var webSite = '${webSite!}';
     <ul>
         <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
         <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-        <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li> 
-        <li><a href="${main_host!}seller/actRegister.htm"  >活动报名</a></li> 
+        <li><a href="${main_host!}seller/promotion.htm"  >广告展示管理</a></li> 
+        <li><a href="${main_host!}seller/actRegister.htm"  >立即报名活动</a></li> 
     </ul> 
 </div>
     <div class="content shadow-box">
@@ -497,7 +497,7 @@ var webSite = '${webSite!}';
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/gys5/temp/webuploader/webuploader.js"></script>
-<script src="http://style.571xz.com/gys5/js/releaseGoodsSend.js?t=1498810183443"></script>
+<script src="http://style.571xz.com/gys5/js/releaseGoodsSend.js?t=1498817377022"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
