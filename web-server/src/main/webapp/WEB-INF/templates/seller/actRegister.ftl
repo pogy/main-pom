@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>四季星座网-供应商中心-广告更换</title>
+    <title>活动报名 - 四季星座网</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/findGoodsChange.css?t=1498810169294" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498810167921" rel="stylesheet">
     
   </head>
 <body>
@@ -241,57 +241,174 @@ var webSite = '${webSite!}';
         <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
         <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
         <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li> 
-        <li><a href="${main_host!}seller/actRegister.htm"  >活动报名</a></li> 
+        <li><a class="selected"  href="${main_host!}seller/actRegister.htm">活动报名</a></li> 
     </ul> 
 </div>
     <div class="content shadow-box">
-        <div class="adrPosition">
-            <#if (myFindTerms?size) gt 0>
-            
-            <#list myFindTerms as myFindTerm>
-            <div class="posWrap">
-                <div class="posIssue">
-                    <span class="issueNum">第${myFindTerm.term!}期</span>
-                    <span class="issueTime">（${myFindTerm.startOnline!} — ${myFindTerm.endOnline!}）</span>
-                </div>
-                <div class="posList">
-                    <div class="posTitle">
-                        <ul>
-                            <li class="num">广告位编号</li>
-                            <li class="pic">商品图片</li>
-                            <li class="operate">操作</li>
-                        </ul>
+        <div class="goods-tabbox clearfix">
+            <ul>
+                <li class="tabbutton selected"><a href="JavaScript:;">所有活动</a></li>
+                <li class="tabbutton"><a href="JavaScript:;">已参加的活动</a></li>
+                <li class="tabbutton"><a href="JavaScript:;">未参加的活动</a></li>
+            </ul>
+        </div>
+        <div class="actContent">
+            <div class="actItems allActs">
+                <#list activities as actItem>
+                <div class="actItem clearfix">
+                    <div class="actImg">
+                        <img src=${actItem.actImg!}>
                     </div>
-                    <div class="posItem">
-                        <#list myFindTerm.goods as good>
-                        <ul data-id="${good.id!}">
-                            <li class="num">${good.code!}</li>
-                            <li class="pic"><a href="http://${webSite!}.571xz.com/item.htm?id=${good.goodsId!}" target="_blank"><img src="${good.picUrl!}_240x240.jpg" ></a></li>
-                            <li class="operate"><b class="operaBtn" jbtn="operaBtn" data-id="${good.id!}" data-termId="${myFindTerm.termId!}" data-web="${good.webSite!}">上款</b></li>
-                        </ul>
-                        </#list>
+                    <div class="actDetails">
+                        <p class="lineHei32">
+                            <span class="actTitle">${actItem.actTitle!}</span>
+                            <span class="applyTime">报名时间：${actItem.applyTime!}</span>
+                        </p>
+                        <p class="lineHei32">
+                            <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
+                        </p>
+                        <p class="lineHei32">
+                            <span class="actTime">活动时间：${actItem.actStratTime!}-${actItem.actEndTime!}</span>
+                            <span class="actNums">名额：${actItem.actNums!} 款商品</span>
+                            <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
+                        </p>
+                        <p class="lineHei32">
+                            报名资质：<#if actItem.supportReturn??><span class="applyQualify">支持退货</span></#if>
+                            <#if actItem.supportReturn??><span class="applyQualify">支持换货</span></#if>
+                        </p>
+                    </div>
+                    <div class="applyStatus">
+                        <#if actItem.statusNum == '0'>
+                        
+                        <a href='http://192.168.1.66/gys5/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                        <#elseif actItem.statusNum == '1'>
+<#assign text>{"text":'已报名', "cls":"registered"}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton registered" jbtn="" id="">已报名</button>
+                        
+                        <span class="statusTip">审核中…</span>
+                        <#elseif actItem.statusNum == '2'>
+<#assign text>{"text":'报名已通过', "cls":"registerSuccess"}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
+                        
+                        <#else>
+<#assign text>{"text":'活动已结束', "cls":"actEnd"}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
+                        
+                        </#if>
+                        
                     </div>
                 </div>
+                </#list>
             </div>
-            </#list>
-            <#else>
-            <div class="noAdr">
-                <h3>本期您暂时还没有广告位</h3>
-                <p>如果广告刚拍下，管理员还没有派位，请耐心等待！</p>
-                <a class="partInBtn" href="https://shop121675953.taobao.com" target="_blank">参与竞拍</a>
+            <div class="actItems partedActs">
+                <#list activities as actItem>
+                <#if actItem.partIn??>
+                <div class="actItem clearfix">
+                    <div class="actImg">
+                        <img src=${actItem.actImg!}>
+                    </div>
+                    <div class="actDetails">
+                        <p class="lineHei32">
+                            <span class="actTitle">${actItem.actTitle!}</span>
+                            <span class="applyTime">报名时间：${actItem.applyTime!}</span>
+                        </p>
+                        <p class="lineHei32">
+                            <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
+                        </p>
+                        <p class="lineHei32">
+                            <span class="actTime">活动时间：${actItem.actStratTime!}-${actItem.actEndTime!}</span>
+                            <span class="actNums">名额：${actItem.actNums!} 款商品</span>
+                            <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
+                        </p>
+                        <p class="lineHei32">
+                            报名资质：<#if actItem.supportReturn??><span class="applyQualify">支持退货</span></#if>
+                            <#if actItem.supportReturn??><span class="applyQualify">支持换货</span></#if>
+                        </p>
+                    </div>
+                    <div class="applyStatus">
+                        <#if actItem.statusNum == '0'>
+                        
+                        <a href='http://192.168.1.66/gys5/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                        <#elseif actItem.statusNum == '1'>
+<#assign text>{"text":'已报名', "cls":"registered"}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton registered" jbtn="" id="">已报名</button>
+                        
+                        <span class="statusTip">审核中…</span>
+                        <#elseif actItem.statusNum == '2'>
+<#assign text>{"text":'报名已通过', "cls":"registerSuccess"}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
+                        
+                        <#else>
+<#assign text>{"text":'活动已结束', "cls":"actEnd"}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
+                        
+                        </#if>
+                        
+                    </div>
+                </div>
+                </#if>
+                </#list>
             </div>
-            </#if>
+            <div class="actItems noPartedActs">
+                <#list activities as actItem>
+                <#if !actItem.partIn>
+                <div class="actItem clearfix">
+                    <div class="actImg">
+                        <img src=${actItem.actImg!}>
+                    </div>
+                    <div class="actDetails">
+                        <p class="lineHei32">
+                            <span class="actTitle">${actItem.actTitle!}</span>
+                            <span class="applyTime">报名时间：${actItem.applyTime!}</span>
+                        </p>
+                        <p class="lineHei32">
+                            <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
+                        </p>
+                        <p class="lineHei32">
+                            <span class="actTime">活动时间：${actItem.actStratTime!}-${actItem.actEndTime!}</span>
+                            <span class="actNums">名额：${actItem.actNums!} 款商品</span>
+                            <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
+                        </p>
+                        <p class="lineHei32">
+                            报名资质：<#if actItem.supportReturn??><span class="applyQualify">支持退货</span></#if>
+                            <#if actItem.supportReturn??><span class="applyQualify">支持换货</span></#if>
+                        </p>
+                    </div>
+                    <div class="applyStatus">
+                        <#if actItem.statusNum == '0'>
+                        
+                        <a href='http://192.168.1.66/gys5/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                        <#elseif actItem.statusNum == '1'>
+<#assign text>{"text":'已报名', "cls":"registered"}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton registered" jbtn="" id="">已报名</button>
+                        
+                        <span class="statusTip">审核中…</span>
+                        <#elseif actItem.statusNum == '2'>
+<#assign text>{"text":'报名已通过', "cls":"registerSuccess"}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
+                        
+                        <#else>
+<#assign text>{"text":'活动已结束', "cls":"actEnd"}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
+                        
+                        </#if>
+                        
+                    </div>
+                </div>
+                </#if>
+                </#list>
+            </div>
         </div>
     </div>
-    <#if (myFindTerms?size) gt 0>
-    <div class="partInWrap partInFixed">
-        <div class="layout">
-            <div class="partInBox">
-                <a class="partInBtn" href="https://shop121675953.taobao.com" target="_blank">参与竞拍</a>
-            </div>
-        </div>
-    </div>
-    </#if>
 </div>
 <div class="footer">
     <div class="inner">
@@ -325,7 +442,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/findGoodsChange.js?t=1498810169294"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498810167921"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
