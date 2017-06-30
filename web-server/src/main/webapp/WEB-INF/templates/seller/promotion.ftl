@@ -4,18 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-        <#if $it.title?? && ($it.title?size) gt 0>
-        <title>
-            <#list $it.title as item>
-                ${item!}
-            </#list>
-        </title>
-        </#if>
-    
-    
-    
-        
-        
+    <title>四季星座网-供应商中心-广告展示管理</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -25,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498817360798" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498817828752" rel="stylesheet">
     
   </head>
 <body>
@@ -350,7 +339,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498817360798"></script>
+<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498817828752"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
