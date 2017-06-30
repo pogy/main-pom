@@ -153,8 +153,10 @@ public class GoodsSearchAction {
             bo.setWebSite("hz");
         }
         bo.setRows(40);
-        if (bo.getKeyword() != null)
+        if (bo.getKeyword() != null) {
+            bo.setKeyword(bo.getKeyword().trim());
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
+        }
         model.addAttribute("query", bo);
 
         //排序
