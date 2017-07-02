@@ -231,8 +231,8 @@ public class ActivityAction {
             return JSONObject.fromObject(rsp);
         }
 
-        // 当前期次
-        ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem(null);
+//        // 当前期次
+//        ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem(null);
         // 中奖记录
         List<ActiveDrawRecordUserVo> drawRecordList = activeDrawServiceImpl.selDrawNowUserRecord(ps.getUserId());
 
