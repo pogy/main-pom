@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498817362186" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498971831785" rel="stylesheet">
     
   </head>
 <body>
@@ -211,9 +211,9 @@ var webSite = '${webSite!}';
         <div class="actDetails">
         <ol class="breadNav clearfix">
             <li><a class="index" href="http://www.571xz.com/">首页</a><em>/</em></li>
-            <li><a href="#">营销中心</a><em>/</em></li>
-            <li><a href="http://192.168.1.66/gys5/actRegister.html">活动报名</a><em>/</em></li>
-            <li><a href="#" class="active">港风（系列）专场</a></li>
+            <li><a href="javascript:;">营销中心</a><em>/</em></li>
+            <li><a href="${main_host!}seller/actRegister.html">活动报名</a><em>/</em></li>
+            <li><a href="javascript:;" class="active">港风（系列）专场</a></li>
         </ol>
         <script>/*============ gys5/actDetails#actDetail BEGIN ============*/
 
@@ -225,7 +225,7 @@ var actidVal = '${query.actid!}';
 </script><div class="actDetail clearfix">
             
             <div class="leftImg">
-                <img src="${actDetails.actImg!}" alt="">
+                <img src="${actDetails.actImg!}" alt="" >
             </div>
             <div class="actProcess content shadow-box">
                 <h3 class="title">${actDetails.actTitle!}<span><#if actDetails.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span></h3>
@@ -329,7 +329,7 @@ var actidVal = '${query.actid!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498817362186"></script>
+<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498971831785"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
