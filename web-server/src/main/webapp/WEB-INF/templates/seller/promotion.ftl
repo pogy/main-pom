@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498987216298" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498989044200" rel="stylesheet">
     
   </head>
 <body>
@@ -266,7 +266,7 @@ var webSite = '${webSite!}';
                                 <#else>
                                 <img src="http://style.571xz.com/gys5/css/img/ggDefault.jpg">
                                 </#if>
-                                <p class="validTime">有效期：${pos.goatTime!}</p>
+                                <p class="validTime">有效期：${pos.startOnline!} - ${pos.endOnline!}</p>
                                 <#if pos.goodsId??>
                                 <b class="reRelateBtn" jbtn="glWindowBtn" data-codeId="${pos.codeId!}">重新关联</b>
                                 <#else>
@@ -290,7 +290,7 @@ var webSite = '${webSite!}';
                                 <#else>
                                 <img src="http://style.571xz.com/gys5/css/img/ggDefault.jpg">
                                 </#if>
-                                <p class="validTime">有效期：${pos.goatTime!}</p>
+                                <p class="validTime">有效期：${pos.startOnline!} - ${pos.endOnline!}</p>
                                 <#if pos.goodsId??>
                                 <b class="reRelateBtn" jbtn="glWindowBtn" data-codeId="${pos.codeId!}">重新关联</b>
                                 <#else>
@@ -339,7 +339,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498987216298"></script>
+<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498989044200"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
