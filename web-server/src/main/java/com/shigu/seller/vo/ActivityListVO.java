@@ -28,9 +28,9 @@ public class ActivityListVO {
 
     private Boolean supportBarter;
 
-    private Boolean partIn;
+    private Boolean hdStatus;
 
-    private int statusNum;
+    private int sqStatus;
 
     public Long getActid() {
         return actid;
@@ -120,19 +120,19 @@ public class ActivityListVO {
         this.supportBarter = supportBarter;
     }
 
-    public Boolean getPartIn() {
-        return partIn;
+    public Boolean getHdStatus() {
+        return hdStatus;
     }
 
-    public void setPartIn(Boolean partIn) {
-        this.partIn = partIn;
+    public void setHdStatus(Boolean hdStatus) {
+        this.hdStatus = hdStatus;
     }
 
-    public int getStatusNum() {
-        return statusNum;
+    public int getSqStatus() {
+        return sqStatus;
     }
 
-    public void setStatusNum(int statusNum) {
-        this.statusNum = statusNum;
+    public void setSqStatus(int sqStatus) {
+        this.sqStatus = sqStatus;
     }
 }
