@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498972188823" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498972991694" rel="stylesheet">
     
   </head>
 <body>
@@ -217,7 +217,7 @@ var webSite = '${webSite!}';
         </ol>
         <script>/*============ gys5/actDetails#actDetail BEGIN ============*/
 
-var actidVal = '${query.actid!}';
+var actidVal = '${Request.actid!}';/*query.actid，ftl可通过Request直接去请求的参数*/
 
 /*============ gys5/actDetails#actDetail END ============*/
 
@@ -241,9 +241,8 @@ var actidVal = '${query.actid!}';
                 <div class="applyQualify clearfix">
                     <h3 class="title">报名条件：</h3>
                     <div class="qualifyContent">
-                        <#list actDetails.applyCondition as detailItem>
-                        <p>${detailItem_index + 1}、${detailItem!}</p>
-                        </#list>
+                        
+                        ${actDetails.applyCondition}
                     </div>
                     
                 </div>
@@ -329,7 +328,7 @@ var actidVal = '${query.actid!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498972188823"></script>
+<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498972991694"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
