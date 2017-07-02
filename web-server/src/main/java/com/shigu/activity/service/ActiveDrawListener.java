@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -149,6 +150,10 @@ public class ActiveDrawListener implements MessageListener {
         ActiveDrawRecord drawRecord = new ActiveDrawRecord();
         drawRecord.setPemId(activeDrawRecord.getPemId());
         drawRecord.setUserId(activeDrawRecord.getUserId());
+        activeDrawRecord.setEnabled(false);
+        activeDrawRecord.setReceivesYes(false);
+        activeDrawRecord.setCreateTime(new Date());
+        activeDrawRecord.setModifyTime(new Date());
         drawRecord.setWard(activeDrawRecord.getWard());
         int count = activeDrawRecordMapper.selectCount(drawRecord);
         if(count > 0){
