@@ -95,6 +95,7 @@ public class SpreadService {
                         }
                         //按顺序搞进去
                         for(Long gid:sortIds){
+                            if(spreadMap.get(gid)!=null)
                             vos.add(spreadMap.get(gid));
                         }
                     }

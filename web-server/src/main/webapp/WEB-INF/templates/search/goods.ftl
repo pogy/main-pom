@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1497346958901" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1498964169270" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1497346958901"></script>
+    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1498964169270"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -216,7 +216,6 @@ var webSite = '${webSite!}';
             <div class="searchBox">
                 
                 <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" >
-                
                     
                     
                     <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
@@ -267,7 +266,7 @@ var webSite = '${webSite!}';
         </div>
     </div>
 </div>
-<#assign text>{    "fields":[        {"name":'webSite', "value":"${query.webSite!}"},        {"name":'pid', "value":"${query.pid!}"},        {"name":'cid', "value":"${query.cid!}"},        {"name":'mid', "value":"${query.mid!}"},        {"name":'keyword', "value":"${query.keyword!}"},        {"name":'sort', "value":"${query.sort!}"},        {"name":'d', "value":"${query.d!}"},        {"name":'page', "value":${query.page!}},        {"name":'sp', "value":"${query.sp!}"},        {"name":'ep', "value":"${query.ep!}"}    ]}</#assign>
+<#assign text>{    "fields":[        {"name":'webSite', "value":"${query.webSite!}"},        {"name":'pid', "value":"${query.pid!}"},        {"name":'cid', "value":"${query.cid!}"},        {"name":'mid', "value":"${query.mid!}"},        {"name":'keyword', "value":"${query.keyword!}"},        {"name":'sort', "value":"${query.sort!}"},        {"name":'d', "value":"${query.d!}"},        {"name":'page', "value":${query.page!}},        {"name":'sp', "value":"${query.sp!}"},        {"name":'ep', "value":"${query.ep!}"},        {"name":'st', "value":"${query.st!}"},        {"name":'et', "value":"${query.et!}"}    ]}</#assign>
 <#assign $it=text?eval />
 <form id="wgt_search">
     <#list $it.fields as field>
@@ -370,7 +369,7 @@ var webSite = '${webSite!}';
                 <b jbtn="sortByZh" <#if query.sort?? && query.sort == 'comp'>class="selected"</#if>>综合</b>
                 <b jbtn="sortByXp" <#if query.sort?? && query.sort == 'xp'>class="selected"</#if>>新品</b>
                 <b jbtn="sortByRq" <#if query.sort?? && query.sort == 'popular'>class="selected"</#if>>人气</b>
-
+                
                 
                 
             </div>
