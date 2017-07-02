@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498968986964" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498969150499" rel="stylesheet">
     
   </head>
 <body>
@@ -273,8 +273,8 @@ var webSite = '${webSite!}';
                             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
                         </p>
                         <p class="lineHei32">
-                            报名资质：<#if actItem.supportReturn??><span class="applyQualify">支持退货</span></#if>
-                            <#if actItem.supportBarter??><span class="applyQualify">支持换货</span></#if>
+                            报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
+                            <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
                         </p>
                     </div>
                     <div class="applyStatus">
@@ -325,8 +325,8 @@ var webSite = '${webSite!}';
                             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
                         </p>
                         <p class="lineHei32">
-                            报名资质：<#if actItem.supportReturn??><span class="applyQualify">支持退货</span></#if>
-                            <#if actItem.supportBarter??><span class="applyQualify">支持换货</span></#if>
+                            报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
+                            <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
                         </p>
                     </div>
                     <div class="applyStatus">
@@ -378,8 +378,8 @@ var webSite = '${webSite!}';
                             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
                         </p>
                         <p class="lineHei32">
-                            报名资质：<#if actItem.supportReturn??><span class="applyQualify">支持退货</span></#if>
-                            <#if actItem.supportBarter??><span class="applyQualify">支持换货</span></#if>
+                            报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
+                            <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
                         </p>
                     </div>
                     <div class="applyStatus">
@@ -445,7 +445,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498968986964"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498969150499"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
