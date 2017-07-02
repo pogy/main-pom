@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498817361500" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498966411743" rel="stylesheet">
     
   </head>
 <body>
@@ -278,34 +278,35 @@ var webSite = '${webSite!}';
                         </p>
                     </div>
                     <div class="applyStatus">
-                        <#if actItem.statusNum == '0'>
-                        
-                        <a href='http://192.168.1.66/gys5/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
-                        <#elseif actItem.statusNum == '1'>
+                        <#if actItem.hdStatus == true>
+                            <#if actItem.sqStatus == '0'>
+                            
+                            <a href='http://192.168.1.66/gys5/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                            <#elseif actItem.sqStatus == '1'>
 <#assign text>{"text":'已报名', "cls":"registered"}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton registered" jbtn="" id="">已报名</button>
-                        
-                        <span class="statusTip">审核中…</span>
-                        <#elseif actItem.statusNum == '2'>
+                                                <button class="gyButton registered" jbtn="" id="">已报名</button>
+                            
+                            <span class="statusTip">审核中…</span>
+                            <#elseif actItem.sqStatus == '2'>
 <#assign text>{"text":'报名已通过', "cls":"registerSuccess"}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
-                        
+                                                <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
+                            
+                            </#if>
                         <#else>
 <#assign text>{"text":'活动已结束', "cls":"actEnd"}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
-                        
+                                                <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
+                            
                         </#if>
-                        
                     </div>
                 </div>
                 </#list>
             </div>
             <div class="actItems partedActs">
                 <#list activities as actItem>
-                <#if actItem.partIn??>
+                <#if actItem.sqStatus == "2">
                 <div class="actItem clearfix">
                     <div class="actImg">
                         <img src=${actItem.actImg!}>
@@ -329,27 +330,28 @@ var webSite = '${webSite!}';
                         </p>
                     </div>
                     <div class="applyStatus">
-                        <#if actItem.statusNum == '0'>
-                        
-                        <a href='http://192.168.1.66/gys5/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
-                        <#elseif actItem.statusNum == '1'>
+                        <#if actItem.hdStatus == true>
+                            <#if actItem.sqStatus == '0'>
+                            
+                            <a href='http://192.168.1.66/gys5/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                            <#elseif actItem.sqStatus == '1'>
 <#assign text>{"text":'已报名', "cls":"registered"}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton registered" jbtn="" id="">已报名</button>
-                        
-                        <span class="statusTip">审核中…</span>
-                        <#elseif actItem.statusNum == '2'>
+                                                <button class="gyButton registered" jbtn="" id="">已报名</button>
+                            
+                            <span class="statusTip">审核中…</span>
+                            <#elseif actItem.sqStatus == '2'>
 <#assign text>{"text":'报名已通过', "cls":"registerSuccess"}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
-                        
+                                                <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
+                            
+                            </#if>
                         <#else>
 <#assign text>{"text":'活动已结束', "cls":"actEnd"}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
-                        
+                                                <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
+                            
                         </#if>
-                        
                     </div>
                 </div>
                 </#if>
@@ -357,7 +359,7 @@ var webSite = '${webSite!}';
             </div>
             <div class="actItems noPartedActs">
                 <#list activities as actItem>
-                <#if !actItem.partIn>
+                <#if actItem.sqStatus == "0">
                 <div class="actItem clearfix">
                     <div class="actImg">
                         <img src=${actItem.actImg!}>
@@ -381,27 +383,28 @@ var webSite = '${webSite!}';
                         </p>
                     </div>
                     <div class="applyStatus">
-                        <#if actItem.statusNum == '0'>
-                        
-                        <a href='http://192.168.1.66/gys5/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
-                        <#elseif actItem.statusNum == '1'>
+                        <#if actItem.hdStatus == true>
+                            <#if actItem.sqStatus == '0'>
+                            
+                            <a href='http://192.168.1.66/gys5/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                            <#elseif actItem.sqStatus == '1'>
 <#assign text>{"text":'已报名', "cls":"registered"}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton registered" jbtn="" id="">已报名</button>
-                        
-                        <span class="statusTip">审核中…</span>
-                        <#elseif actItem.statusNum == '2'>
+                                                <button class="gyButton registered" jbtn="" id="">已报名</button>
+                            
+                            <span class="statusTip">审核中…</span>
+                            <#elseif actItem.sqStatus == '2'>
 <#assign text>{"text":'报名已通过', "cls":"registerSuccess"}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
-                        
+                                                <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
+                            
+                            </#if>
                         <#else>
 <#assign text>{"text":'活动已结束', "cls":"actEnd"}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
-                        
+                                                <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
+                            
                         </#if>
-                        
                     </div>
                 </div>
                 </#if>
@@ -442,7 +445,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498817361500"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498966411743"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
