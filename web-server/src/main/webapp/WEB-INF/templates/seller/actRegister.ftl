@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498971218205" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498982549847" rel="stylesheet">
     
   </head>
 <body>
@@ -359,7 +359,7 @@ var webSite = '${webSite!}';
             </div>
             <div class="actItems noPartedActs">
                 <#list activities as actItem>
-                <#if actItem.sqStatus == "0">
+                <#if actItem.sqStatus == "0" || actItem.sqStatus == "1">
                 <div class="actItem clearfix">
                     <div class="actImg">
                         <img src=${actItem.actImg!}>
@@ -445,7 +445,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498971218205"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498982549847"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
