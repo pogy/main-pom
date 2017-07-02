@@ -73,10 +73,10 @@ public class ActiveDrawListener implements MessageListener {
         ItemUpRecordVO itemUpRecordVO = JSON.parseObject(message.getBody(),ItemUpRecordVO.class);
         // 当前期次
         List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
-//        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
-        Long pemId=6L;
+        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
+        Long pemId=drawPem.getId();
         // 验证是发现好货商品
-        if(activeDrawServiceImpl.findGoods(itemUpRecordVO.getSupperGoodsId(),pemId)||"赵洪波5".equals(itemUpRecordVO.getFenUserNick())){
+        if(activeDrawServiceImpl.findGoods(itemUpRecordVO.getSupperGoodsId(),pemId)){
             doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_FAGOODS);
         }
         //验证是否每日发现
