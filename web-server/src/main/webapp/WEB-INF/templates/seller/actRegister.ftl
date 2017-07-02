@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498966411743" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498968787456" rel="stylesheet">
     
   </head>
 <body>
@@ -295,9 +295,9 @@ var webSite = '${webSite!}';
                             
                             </#if>
                         <#else>
-<#assign text>{"text":'活动已结束', "cls":"actEnd"}</#assign>
+<#assign text>{"text":'已结束', "cls":"actEnd"}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
+                                                <button class="gyButton actEnd" jbtn="" id="">已结束</button>
                             
                         </#if>
                     </div>
@@ -347,9 +347,9 @@ var webSite = '${webSite!}';
                             
                             </#if>
                         <#else>
-<#assign text>{"text":'活动已结束', "cls":"actEnd"}</#assign>
+<#assign text>{"text":'已结束', "cls":"actEnd"}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
+                                                <button class="gyButton actEnd" jbtn="" id="">已结束</button>
                             
                         </#if>
                     </div>
@@ -400,9 +400,9 @@ var webSite = '${webSite!}';
                             
                             </#if>
                         <#else>
-<#assign text>{"text":'活动已结束', "cls":"actEnd"}</#assign>
+<#assign text>{"text":'已结束', "cls":"actEnd"}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton actEnd" jbtn="" id="">活动已结束</button>
+                                                <button class="gyButton actEnd" jbtn="" id="">已结束</button>
                             
                         </#if>
                     </div>
@@ -445,7 +445,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498966411743"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498968787456"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
