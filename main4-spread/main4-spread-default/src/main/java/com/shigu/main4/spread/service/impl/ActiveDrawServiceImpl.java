@@ -775,27 +775,6 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
     }
 
     /**
-     * 新增用户抽奖
-     * @param activeDrawRecord
-     */
-    public void addActiveDrawRecord(ActiveDrawRecord activeDrawRecord){
-        if(activeDrawRecord == null || activeDrawRecord.getPemId() == null ||
-             activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
-            return;
-        }
-        ActiveDrawRecord drawRecord = new ActiveDrawRecord();
-        drawRecord.setPemId(activeDrawRecord.getPemId());
-        drawRecord.setUserId(activeDrawRecord.getUserId());
-        drawRecord.setWard(activeDrawRecord.getWard());
-        int count = activeDrawRecordMapper.selectCount(drawRecord);
-        if(count > 0){
-            // 已经新增数据
-            return;
-        }
-        activeDrawRecordMapper.insertSelective(activeDrawRecord);
-    }
-
-    /**
      * 查询抽奖信息
      * @param drawCode
      * @return

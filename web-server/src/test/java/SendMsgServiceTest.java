@@ -18,5 +18,6 @@ public class SendMsgServiceTest {
     @Test
     public void sendForgetPwdTest(){
 //        sendMsgService.sendForgetPwd("18888971970","111111");
+        System.out.println(111);
     }
 }
