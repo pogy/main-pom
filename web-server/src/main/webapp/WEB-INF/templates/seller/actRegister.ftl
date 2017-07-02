@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498969543074" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1498971166491" rel="stylesheet">
     
   </head>
 <body>
@@ -281,7 +281,7 @@ var webSite = '${webSite!}';
                         <#if actItem.hdStatus == true>
                             <#if actItem.sqStatus == '0'>
                             
-                            <a href='${main_host!}actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                            <a href='${main_host!}seller/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
                             <#elseif actItem.sqStatus == '1'>
 <#assign text>{"text":'已报名', "cls":"registered"}</#assign>
 <#assign $it=text?eval />
@@ -333,7 +333,7 @@ var webSite = '${webSite!}';
                         <#if actItem.hdStatus == true>
                             <#if actItem.sqStatus == '0'>
                             
-                            <a href='${main_host!}actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                            <a href='${main_host!}seller/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
                             <#elseif actItem.sqStatus == '1'>
 <#assign text>{"text":'已报名', "cls":"registered"}</#assign>
 <#assign $it=text?eval />
@@ -386,7 +386,7 @@ var webSite = '${webSite!}';
                         <#if actItem.hdStatus == true>
                             <#if actItem.sqStatus == '0'>
                             
-                            <a href='${main_host!}actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                            <a href='${main_host!}seller/actDetails.html?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
                             <#elseif actItem.sqStatus == '1'>
 <#assign text>{"text":'已报名', "cls":"registered"}</#assign>
 <#assign $it=text?eval />
@@ -445,7 +445,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498969543074"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1498971166491"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
