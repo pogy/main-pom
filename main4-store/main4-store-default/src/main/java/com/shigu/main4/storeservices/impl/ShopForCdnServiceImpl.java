@@ -247,6 +247,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             itemShowBlock.setPrice(String.valueOf(shiguGoodsTiny.getPiPrice()));
             itemShowBlock.setItemId(shiguGoodsTiny.getGoodsId());
             itemShowBlock.setImgUrl(shiguGoodsTiny.getPicUrl());
+            itemShowBlock.setShopId(shiguGoodsTiny.getStoreId());
             itemShowBlockList.add(itemShowBlock);
         }
         cache.put(shopId, itemShowBlockList);
@@ -538,6 +539,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                 itemShowBlock.setImgUrl(itemVo.getPicUrl());
                 itemShowBlock.setItemId(itemVo.getGoodsId());
                 itemShowBlock.setWebSite(webSite);
+                itemShowBlock.setShopId(itemVo.getStoreId());
                 itemShowBlocks.add(itemShowBlock);
             }
         }
@@ -680,6 +682,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         List<ItemShowBlock> itemShowBlocks = new ArrayList<>();
         for (ShiguGoodsSoldout shiguGoodsSoldout : shiguGoodsSoldouts){
             ItemShowBlock itemShowBlock= new ItemShowBlock();
+            itemShowBlock.setShopId(shiguGoodsSoldout.getStoreId());
             itemShowBlock.setImgUrl(shiguGoodsSoldout.getPicUrl());
             itemShowBlock.setTitle(shiguGoodsSoldout.getTitle());
             itemShowBlock.setItemId(shiguGoodsSoldout.getGoodsId());

@@ -217,7 +217,7 @@ var webSite = '${webSite!}';
         </ol>
         <script>/*============ gys5/actDetails#actDetail BEGIN ============*/
 
-var actidVal = '${Request.actid!}';/*query.actid，ftl可通过Request直接去请求的参数*/
+var actidVal = '${RequestParameters.actid!}';/*query.actid，ftl可通过Request直接去请求的参数*/
 
 /*============ gys5/actDetails#actDetail END ============*/
 

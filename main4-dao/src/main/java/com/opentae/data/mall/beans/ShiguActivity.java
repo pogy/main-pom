@@ -66,7 +66,7 @@ public class ShiguActivity implements Serializable {
     /**
      * 活动详情
      */
-	private String desc;
+	private String descInfo;
 
 	/**
 	 * 活动转入服务
@@ -161,12 +161,12 @@ public class ShiguActivity implements Serializable {
 		return this.ruleInfo;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescInfo(String descInfo) {
+		this.descInfo = descInfo;
 	}
 
-	public String getDesc() {
-		return this.desc;
+	public String getDescInfo() {
+		return this.descInfo;
 	}
 
 	public String getServices() {

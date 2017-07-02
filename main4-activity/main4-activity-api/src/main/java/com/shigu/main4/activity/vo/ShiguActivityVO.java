@@ -17,6 +17,16 @@ public class ShiguActivityVO implements Serializable {
      */
 	private String title;
 
+	/**
+	 * 活动图
+	 */
+	private String image;
+
+	/**
+	 * 活动准入数量
+	 */
+	private String nums;
+
     /**
      * 开始申请时间
      */
@@ -66,6 +76,35 @@ public class ShiguActivityVO implements Serializable {
 	 * 申请状态
 	 */
 	private ApplyStatus applyStatus;
+
+	/**
+	 * 活动转入服务
+	 */
+	private String services;
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getNums() {
+		return nums;
+	}
+
+	public void setNums(String nums) {
+		this.nums = nums;
+	}
+
+	public String getServices() {
+		return services;
+	}
+
+	public void setServices(String services) {
+		this.services = services;
+	}
 
 	public void setActivityId(Long activityId) {
 		this.activityId = activityId;
