@@ -126,6 +126,7 @@ public class MemberAction {
         return "buyer/memberfxs";
     }
 
+
     /**
      * 第三方账号绑定
      * @return

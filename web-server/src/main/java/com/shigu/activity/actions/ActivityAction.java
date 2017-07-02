@@ -5,6 +5,7 @@ import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.shigu.activity.vo.*;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
@@ -14,6 +15,7 @@ import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +106,18 @@ public class ActivityAction {
         model.addAttribute("awardList", recordUserVoList);
         model.addAttribute("webSite","hz");
         return "activity/styleHuodong";
+    }
+
+    /**
+     * 分销商后台
+     * @return
+     */
+    @RequestMapping("member/awardInfo")
+    public String awardInfo(Model model){
+        List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
+        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
+        model.addAttribute("allInfo", drawPem.getInfo());
+        return "buyer/awardInfo";
     }
 
     @RequestMapping("activity/redbull")
