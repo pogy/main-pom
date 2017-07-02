@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498817828752" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498986026422" rel="stylesheet">
     
   </head>
 <body>
@@ -261,16 +261,16 @@ var webSite = '${webSite!}';
                         <div class="posItem">
                             <h3 class="posArea">${pos.posName!}</h3>
                             <div class="posInfo" <#if pos.goodsId?? && pos.goodsId != ''> data-goodsid="${pos.goodsId!}" </#if>>
-                                <#if pos.goodImgsrc?? && pos.goodImgsrc != ''>
-                                <img src="${pos.goodImgsrc!}">
+                                <#if pos.picUrl?? && pos.picUrl != ''>
+                                <img src="${pos.picUrl!}">
                                 <#else>
                                 <img src="http://style.571xz.com/gys5/css/img/ggDefault.jpg">
                                 </#if>
-                                <p class="validTime">有效期：${pos.startTime!} - ${pos.endTime!}</p>
+                                <p class="validTime">有效期：${pos.goatTime!}</p>
                                 <#if pos.isRelated??>
-                                <b class="reRelateBtn" jbtn="glWindowBtn">重新关联</b>
+                                <b class="reRelateBtn" jbtn="glWindowBtn" data-codeId="${pos.codeId!}">重新关联</b>
                                 <#else>
-                                <b class="relateBtn" jbtn="glWindowBtn">立即关联商品</b>
+                                <b class="relateBtn" jbtn="glWindowBtn" data-codeId="${pos.codeId!}">立即关联商品</b>
                                 </#if>
                             </div>
                         </div>
@@ -285,16 +285,16 @@ var webSite = '${webSite!}';
                         <div class="posItem">
                             <h3 class="posArea">${pos.posName!}</h3>
                             <div class="posInfo" <#if pos.goodsId?? && pos.goodsId != ''> data-goodsid="${pos.goodsId!}" </#if>>
-                                <#if pos.goodImgsrc?? && pos.goodImgsrc != ''>
-                                <img src="${pos.goodImgsrc!}">
+                                <#if pos.picUrl?? && pos.picUrl != ''>
+                                <img src="${pos.picUrl!}">
                                 <#else>
                                 <img src="http://style.571xz.com/gys5/css/img/ggDefault.jpg">
                                 </#if>
-                                <p class="validTime">有效期：${pos.startTime!} - ${pos.endTime!}</p>
+                                <p class="validTime">有效期：${pos.goatTime!}</p>
                                 <#if pos.isRelated??>
-                                <b class="reRelateBtn" jbtn="glWindowBtn">重新关联</b>
+                                <b class="reRelateBtn" jbtn="glWindowBtn" data-codeId="${pos.codeId!}">重新关联</b>
                                 <#else>
-                                <b class="relateBtn" jbtn="glWindowBtn">立即关联商品</b>
+                                <b class="relateBtn" jbtn="glWindowBtn" data-codeId="${pos.codeId!}">立即关联商品</b>
                                 </#if>
                             </div>
                         </div>
@@ -339,7 +339,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498817828752"></script>
+<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498986026422"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
