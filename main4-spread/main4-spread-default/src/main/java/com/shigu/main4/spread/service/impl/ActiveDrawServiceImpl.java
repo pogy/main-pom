@@ -917,17 +917,5 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         return numIidMaps;
     }
 
-    @Override
-    public Boolean findGoods(Long goodsId, Long pemId) {
-        ActiveDrawGoodsExample example=new ActiveDrawGoodsExample();
-        example.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(ActiveDrawGoods.TYPE_FAGOODS);
-        return activeDrawGoodsMapper.countByExample(example)>0;
-    }
 
-    @Override
-    public Boolean findDaliy(Long goodsId, Long pemId) {
-        ActiveDrawGoodsExample example=new ActiveDrawGoodsExample();
-        example.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(ActiveDrawGoods.TYPE_DAILYFIND);
-        return activeDrawGoodsMapper.countByExample(example)>0;
-    }
 }

@@ -149,7 +149,4 @@ public interface ActiveDrawService {
      */
     Map<Long,Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime);
 
-    Boolean findGoods(Long goodsId,Long pemId);
-
-    Boolean findDaliy(Long goodsId,Long pemId);
 }

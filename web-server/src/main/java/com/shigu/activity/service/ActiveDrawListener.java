@@ -7,12 +7,17 @@ import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ActiveDrawRecord;
+import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
+import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.tools.RedisIO;
+import com.shigu.spread.enums.SpreadEnum;
+import com.shigu.spread.services.SpreadService;
+import com.shigu.spread.vo.ItemSpreadVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +43,12 @@ public class ActiveDrawListener implements MessageListener {
 
     @Autowired
     private ActiveDrawRecordMapper activeDrawRecordMapper;
+
+    @Autowired
+    private ActiveDrawGoodsMapper activeDrawGoodsMapper;
+
+    @Autowired
+    private SpreadService spreadService;//因为广告搬到了风格馆,所以查一下是否风格馆商品
 
     @Autowired
     RedisIO redisIO;
@@ -76,11 +87,11 @@ public class ActiveDrawListener implements MessageListener {
         ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
         Long pemId=drawPem.getId();
         // 验证是发现好货商品
-        if(activeDrawServiceImpl.findGoods(itemUpRecordVO.getSupperGoodsId(),pemId)){
+        if(findGoods(itemUpRecordVO.getSupperGoodsId(),pemId)){
             doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_FAGOODS);
         }
         //验证是否每日发现
-        if(activeDrawServiceImpl.findDaliy(itemUpRecordVO.getSupperGoodsId(),pemId)){
+        if(findDaliy(itemUpRecordVO.getSupperGoodsId(),pemId)){
             doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_DAILYFIND);
         }
         return Action.CommitMessage;
@@ -202,5 +213,36 @@ public class ActiveDrawListener implements MessageListener {
         public void setDefaultDraw(Boolean defaultDraw) {
             this.defaultDraw = defaultDraw;
         }
+    }
+
+    /**
+     * 是否好货
+     * @param goodsId
+     * @param pemId
+     * @return
+     */
+    public Boolean findGoods(Long goodsId, Long pemId) {
+        List<ItemSpreadVO> items=spreadService.selItemSpreads("hz", SpreadEnum.MAN_FG).selObj();
+        for(ItemSpreadVO isvo:items){
+            if(isvo.getId()!=null&&goodsId!=null&&isvo.getId().equals(goodsId.toString())){
+                return true;
+            }
+        }
+        //老的方式再检测一段时间
+        ActiveDrawGoodsExample example=new ActiveDrawGoodsExample();
+        example.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(ActiveDrawGoods.TYPE_DAILYFIND);
+        return activeDrawGoodsMapper.countByExample(example)>0;
+    }
+
+    /**
+     * 是否每日发现
+     * @param goodsId
+     * @param pemId
+     * @return
+     */
+    public Boolean findDaliy(Long goodsId, Long pemId) {
+        ActiveDrawGoodsExample example=new ActiveDrawGoodsExample();
+        example.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(ActiveDrawGoods.TYPE_DAILYFIND);
+        return activeDrawGoodsMapper.countByExample(example)>0;
     }
 }
