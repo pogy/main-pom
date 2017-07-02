@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498972991694" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498980800865" rel="stylesheet">
     
   </head>
 <body>
@@ -212,7 +212,7 @@ var webSite = '${webSite!}';
         <ol class="breadNav clearfix">
             <li><a class="index" href="http://www.571xz.com/">首页</a><em>/</em></li>
             <li><a href="javascript:;">营销中心</a><em>/</em></li>
-            <li><a href="${main_host!}seller/actRegister.html">活动报名</a><em>/</em></li>
+            <li><a href="${main_host!}seller/actRegister.htm">活动报名</a><em>/</em></li>
             <li><a href="javascript:;" class="active">${actDetails.actTitle!}</a></li>
         </ol>
         <script>/*============ gys5/actDetails#actDetail BEGIN ============*/
@@ -328,7 +328,7 @@ var actidVal = '${RequestParameters.actid!}';/*query.actid，ftl可通过Request
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498972991694"></script>
+<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498980800865"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
