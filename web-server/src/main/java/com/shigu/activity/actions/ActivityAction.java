@@ -117,10 +117,28 @@ public class ActivityAction {
      * @return
      */
     @RequestMapping("member/awardInfo")
-    public String awardInfo(Model model){
+    public String awardInfo(HttpSession session,Model model){
         List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
         ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
         model.addAttribute("allInfo", drawPem.getInfo());
+
+        List<ActiveDrawRecordUserVo> userVoList =  Collections.emptyList();
+        Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(object != null){
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
+            if(drawLastPem != null){
+                // 用户上一期获奖数据
+                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(),ps.getUserId(), null);
+                for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
+                    ActiveDrawRecordUserVo anUserVoList = iterator.next();
+                    if (anUserVoList.getDrawStatus() != 3) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+        model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
         return "buyer/awardInfo";
     }
 
@@ -131,13 +149,6 @@ public class ActivityAction {
         List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
         ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
         model.addAttribute("allInfo", drawPem.getInfo());
-        // 发现好货商品
-//        List<ActiveDrawGoodsVo> faGoodsVoList = activeDrawServiceImpl.selGoodsList(
-//                drawPem.getId(),
-//                ActiveDrawGoods.TYPE_FAGOODS,
-//                20,
-//                false,false
-//        );
         ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
 //        drawStyleVo.setGoodsList(faGoodsVoList);
         model.addAttribute("styleItem", drawStyleVo);
@@ -153,36 +164,6 @@ public class ActivityAction {
         Collections.shuffle(daliyGoodsVoList);
         model.addAttribute("likeGoodsList", daliyGoodsVoList);
         // 时间处理
-//        model.addAttribute("nowTimeValue", System.currentTimeMillis());
-        // 本期的结束时间，如果没有下一期，取当前期开始时间加7天，有则取下期开始时间
-//        long endTime;
-//        if (activeDrawPemVos.size() == 2) {
-//            endTime = activeDrawPemVos.get(1).getStartTime().getTime();
-//        } else {
-//            endTime = DateUtil.addDay(drawPem.getStartTime(), 7).getTime();
-//        }
-//        model.addAttribute("countdownValue", endTime);
-
-        // 中奖用户列表
-//        model.addAttribute("awardList", JSON.toJSONString(activeDrawServiceImpl.selDrawRecordList(null, null, "ben")));
-        // 用户上一期获奖数据
-//        List<ActiveDrawRecordUserVo> userVoList =  Collections.emptyList();
-//        Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        if(object != null){
-//            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//            ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
-//            if(drawLastPem != null){
-//                // 用户上一期获奖数据
-//                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(),ps.getUserId(), null);
-//                for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
-//                    ActiveDrawRecordUserVo anUserVoList = iterator.next();
-//                    if (anUserVoList.getDrawStatus() != 3) {
-//                        iterator.remove();
-//                    }
-//                }
-//            }
-//        }
-//        model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
         model.addAttribute("webSite", "hz");
         return "activity/findGoods";
     }
