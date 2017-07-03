@@ -228,10 +228,14 @@ public class ActiveDrawListener implements MessageListener {
                 return true;
             }
         }
-        //老的方式再检测一段时间
-        ActiveDrawGoodsExample example=new ActiveDrawGoodsExample();
-        example.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(ActiveDrawGoods.TYPE_FAGOODS);
-        return activeDrawGoodsMapper.countByExample(example)>0;
+        //搜索
+        items=spreadService.selItemSpreads("hz", SpreadEnum.MAN_RM).selObj();
+        for(ItemSpreadVO isvo:items){
+            if(isvo.getId()!=null&&goodsId!=null&&isvo.getId().equals(goodsId.toString())){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
