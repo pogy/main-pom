@@ -3,12 +3,11 @@ package com.shigu.seller.actions;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.storeservices.ShopForCdnService;
-import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.bo.FindGoodsSelBO;
 import com.shigu.seller.services.FindGoodsService;
 import com.shigu.seller.vo.FindGoodsItemVO;
 import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONArray;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 发现好货商户中心操作
@@ -53,7 +50,8 @@ public class FindGoodsAction {
     public JSONObject allGoodsJson(FindGoodsSelBO bo, HttpSession session){
         int size=5;
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ShiguPager<FindGoodsItemVO> pager=findGoodsService.selItemsForFindGoods(bo,ps.getLogshop().getShopId(),size);
+        ShopSession logshop = ps.getLogshop();
+        ShiguPager<FindGoodsItemVO> pager=findGoodsService.selItemsForFindGoods(bo, logshop.getShopId(), logshop.getWebSite(), size);
         JSONObject obj= JsonResponseUtil.success();
         obj.element("items", JSONArray.fromObject(pager.getContent()));
         obj.element("pageOption",pager.selPageOption(size));
