@@ -230,7 +230,7 @@ public class ActiveDrawListener implements MessageListener {
         }
         //老的方式再检测一段时间
         ActiveDrawGoodsExample example=new ActiveDrawGoodsExample();
-        example.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(ActiveDrawGoods.TYPE_DAILYFIND);
+        example.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(ActiveDrawGoods.TYPE_FAGOODS);
         return activeDrawGoodsMapper.countByExample(example)>0;
     }
 
