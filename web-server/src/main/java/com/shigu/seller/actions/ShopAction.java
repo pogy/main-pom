@@ -1153,15 +1153,26 @@ public class ShopAction {
      * 首页广告管理
      * @return
      */
-    @RequestMapping("seller/indexGgChange")
+    @RequestMapping("seller/promotion")
     public String indexGgChange(HttpSession session, Model model) throws IndexGoatException, GoatException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession shopSession = personalSession.getLogshop();
         Long shopId = shopSession.getShopId();
         String webSite = shopSession.getWebSite();
         List<IndexGoatVO> myIndexTerms = goatShopService.selGoatByShopId(webSite, shopId, GoatType.ItemGoat);
-        model.addAttribute("myIndexTerms", myIndexTerms);
-        return "seller/indexGgChange";
+        //分为开始与没开始两种
+        List<IndexGoatVO> inForceList=new ArrayList<>();
+        List<IndexGoatVO> willInForceList=new ArrayList<>();
+        for(IndexGoatVO igv:myIndexTerms){
+            if(igv.getHadStart()){
+                inForceList.add(igv);
+            }else{
+                willInForceList.add(igv);
+            }
+        }
+        model.addAttribute("inForceList", inForceList);
+        model.addAttribute("willInForceList",willInForceList);
+        return "seller/promotion";
     }
 
     /**
