@@ -7,10 +7,10 @@
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/indexV4/css/hzWoman.css?t=1498441472520" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV5/css/hzWoman.css?t=1498818126385" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
-<script>/*============ indexV4/page#layoutHeader BEGIN ============*/
+    <script src="http://style.571xz.com/indexV5/js/jquery.cookie.js"></script>
+<script>/*============ indexV5/page#layoutHeader BEGIN ============*/
 
 '${test!}'
         var hreflocation=window.location.href;
@@ -31,11 +31,11 @@
               }) ;
           }
 
-/*============ indexV4/page#layoutHeader END ============*/
+/*============ indexV5/page#layoutHeader END ============*/
 
 
-</script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/hzWoman.js?t=1498441472520"></script>
+</script>    <script src="http://style.571xz.com/indexV5/js/temp/ekoo.min.js"></script>
+    <script src="http://style.571xz.com/indexV5/js/hzWoman.js?t=1498818126385"></script>
   </head>
 <body class="pageWoman">
 <#include "/common/host_config.ftl">
@@ -611,7 +611,7 @@ var webSite = '${webSite!}';
                 
                 <div class="p1 clearfix">
                     <div class="userIcon">
-                        <img src="http://style.571xz.com/indexV4/css/img/touxiang.png">
+                        <img src="http://style.571xz.com/indexV5/css/img/touxiang.png">
                     </div>
                     <div class="wellcom">
                         <p class="s1">Hi，欢迎来到</p>
@@ -641,7 +641,7 @@ var webSite = '${webSite!}';
             </div>
             
         </div>
-        <script>/*============ indexV4/page#topRtbox BEGIN ============*/
+        <script>/*============ indexV5/page#topRtbox BEGIN ============*/
 
 ${test!}
 var isgys = false;
@@ -652,7 +652,7 @@ if(session_shopId != ""){
     isgys = false;
 }
 
-/*============ indexV4/page#topRtbox END ============*/
+/*============ indexV5/page#topRtbox END ============*/
 
 
 </script>
@@ -675,6 +675,7 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
+                    <div class="tally">${item.styleText!}</div>
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -709,6 +710,7 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
+                    <div class="tally">${item.styleText!}</div>
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -742,6 +744,7 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
+                    <div class="tally">${item.styleText!}</div>
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -804,6 +807,7 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
+                    <div class="tally">${item.styleText!}</div>
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -899,7 +903,7 @@ if(session_shopId != ""){
 <div class="sideNavbar" id="sideNavbar">
     
 </div>
-<script>/*============ indexV4/hzWoman#main BEGIN ============*/
+<script>/*============ indexV5/hzWoman#main BEGIN ============*/
 
 '${hacker!}';
 $(".imgBox img").lazyload({
@@ -907,7 +911,7 @@ $(".imgBox img").lazyload({
     threshold: 400 // 提前开始加载
 });
 
-/*============ indexV4/hzWoman#main END ============*/
+/*============ indexV5/hzWoman#main END ============*/
 
 
 </script>

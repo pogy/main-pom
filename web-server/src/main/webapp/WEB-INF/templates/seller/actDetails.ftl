@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    
-        <title>发现好店 - 四季星座网</title>
+    <title>报名详情 - 四季星座网</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -15,32 +14,16 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findStore.css?t=1496989703859" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498980800865" rel="stylesheet">
     
-    
-    <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findStore.js?t=1496989703859"></script>
   </head>
 <body>
+<input id="mainhost" value="http://192.168.1.66/gys5/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
     <div class="layout">
         <div class="leftbox">
-            <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
-                <div class="cityCon">
-                    <ul>
-                        <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
-                        <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
-                        <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
-                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
-                    </ul>
-                </div>
-            </div>
             <div class="login">
                 <span>你好，</span>
                 <em>请</em>
@@ -193,104 +176,125 @@ var webSite = '${webSite!}';
 
 
 </script>
-<div class="headerV1">
+<div class="header">
     <div class="layout">
-        <div class="logoLeft">
-            <a href="http://${webSite!}.571xz.com">
-                <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
-            </a>
-            <em>发现好货</em>
-        </div>
-        <div class="search">
-            <div class="tabList clearfix">
-                <ul>
+        <a class="logo iconfont" href="http://www.571xz.com"></a>
+        
+        <i class="splitline"></i>
+        <a class="shop" href="http://${session_user_redis__.logshop.webSite!}.571xz.com/${session_user_redis__.logshop.shopId!}">${session_user_redis__.logshop.market!}${session_user_redis__.logshop.shopNum!}</a>
+        <#if (session_user_redis__.otherShops?size) gt 1>
+        <div class="switch">
+            <em>切换<i class="img-jiantou"></i></em>
+            <div class="dropbox">
+                <div class="msgbox">
                     
+                    <#list session_user_redis__.otherShops as store>
+                    <a href="javascript:;" jbtn="toConnact">${store.market!}${store.shopNum!}</a>
+                    </#list>
                     
-                    
-                    
-                    
-                    <li type="goods" class="select">商品</li>
-                    <li type="store" >档口</li>
-                    
-                </ul>
-                <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
-                <a href="${main_host!}picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
-                </#if>
-            </div>
-            <div class="searchBox">
-                
-                <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" >
-                
-                    
-                    
-                    <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
-                    <button class="searchBtn">搜索</button>
-                </form>
-            </div>
-        </div>
-        <script>/*============ xz/page#search BEGIN ============*/
-
-var webSite = '${webSite!}';
-
-/*============ xz/page#search END ============*/
-
-
-</script>
-    </div>
-</div>
-<div class="perchBox">
-    <div class="nav1">
-        <div class="layout">
-            <div class="leftNav">
-                <ul>
-                    <li><a href="http://www.571xz.com/activity/redbull.htm" >发现好货</a><span></span></li>
-                    <li><a href="http://www.571xz.com/activity/findStore.htm" class="select">发现好店</a><span></span></li>
-                </ul>
-            </div>
-            <div class="rightNav">
-                <ul>
-                    <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
-                    <li><a href="http://so.571xz.com/${webSite!}goods.htm">商品库</a></li>
-                    <li><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}">今日新品</a></li>
-                    <li><a href="http://daifa.571xz.com/">一件代发</a></li>
-                    <li><a href="http://zixun.571xz.com/index">资讯</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="storesWrap">
-    <div class="pageTitle layout">
-        <h2>发现好店</h2>
-    </div>
-    <div class="storeList layout">
-        <div class="storeBox">
-            
-            <#list styleItem.shopList as shopItem>
-            <div class="storeItem">
-                <div class="storeInfo">
-                    <h3 class="text-size16 text-center" title="${shopItem.marketName!} ${shopItem.shopNum!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${shopItem.shopId!}" target="_blank">${shopItem.marketName!}<span class="text-size20 pr">${shopItem.shopNum!}</span></a></h3>
-                    <p class="text-center text-999">${shopItem.uText!}</p>
-                    <div class="linkBox">
-                        <a href="javascript:;" xzclick='collectShop' data-shopid='${shopItem.shopId!}'>关注</a>
-                        <a class="toShop" href="http://${webSite!}.571xz.com/shop.htm?id=${shopItem.shopId!}" target="_blank">进店逛逛</a>
+<#assign text>{                        "jid":'toConnact',                        "options":[                            {"name":'tipConText', "value":'抱歉，账号异常！'},                             {"name":'href_', "value":'http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=4000761116'},                             {"name":'tipIcon', "value":'errorTipIcon'},                             {"name":'btText', "value":'联系客服'}                        ]                    }</#assign>
+<#assign $it=text?eval />
+                                        <div jid="toConnact">
+                        <input type="hidden" name="tipConText" value="抱歉，账号异常！" />
+                        <input type="hidden" name="href_" value="http://wpa.b.qq.com/cgi/wpa.php?ln=2&amp;amp;uin=4000761116" />
+                        <input type="hidden" name="tipIcon" value="errorTipIcon" />
+                        <input type="hidden" name="btText" value="联系客服" />
                     </div>
                 </div>
-                <ul class="storeImgs">
-                    <#list shopItem.items as item>
-                    <li><a href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank"><img src="${item.imgsrc!}_240x240.jpg" alt="${item.title!}" title="${item.title!}"></a></li>
-                    </#list>
-                </ul>
             </div>
-            </#list>
         </div>
+        </#if>
     </div>
 </div>
-<div class="imgLoading">
-    <div class="layout">
-        <p>数据加载中……</p>
-        <div class="loading"></div>
-    </div> 
+<div class="wrapper layout">
+  
+        <div class="actDetails">
+        <ol class="breadNav clearfix">
+            <li><a class="index" href="http://www.571xz.com/">首页</a><em>/</em></li>
+            <li><a href="javascript:;">营销中心</a><em>/</em></li>
+            <li><a href="${main_host!}seller/actRegister.htm">活动报名</a><em>/</em></li>
+            <li><a href="javascript:;" class="active">${actDetails.actTitle!}</a></li>
+        </ol>
+        <script>/*============ gys5/actDetails#actDetail BEGIN ============*/
+
+var actidVal = '${RequestParameters.actid!}';/*query.actid，ftl可通过Request直接去请求的参数*/
+
+/*============ gys5/actDetails#actDetail END ============*/
+
+
+</script><div class="actDetail clearfix">
+            
+            <div class="leftImg">
+                <img src="${actDetails.actImg!}" alt="" >
+            </div>
+            <div class="actProcess content shadow-box">
+                <h3 class="title">${actDetails.actTitle!}<span><#if actDetails.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span></h3>
+                <p class="applyRange">${actDetails.applyRange!}</p>
+                <p class="actTime">
+                    <span class="actStartTime">活动开始时间：${actDetails.actStartTime!}</span>
+                    <span class="actEndTime">活动结束时间：${actDetails.actEndTime!}</span>
+                </p>
+                <div class="charge clearfix">
+                    <p>推广渠道：<span>${actDetails.actPosition!}</span></p>
+                    <p>收费标准：<span><#if actDetails.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span></p>
+                </div>
+                <div class="applyQualify clearfix">
+                    <h3 class="title">报名条件：</h3>
+                    <div class="qualifyContent">
+                        
+                        ${actDetails.applyCondition}
+                    </div>
+                    
+                </div>
+                <div class="uploadImgBox clearfix">
+                    <div class=" clearfix">
+                        <div class="activityInfo">
+                            <h3 class="title">活动商品信息：</h3>
+                            <ul>
+                                <li class="clearfix">
+                                    <label>商品1：</label>
+                                    <input type="text" placeholder="请输入产品链接">
+                                </li>
+                                <li class="clearfix">
+                                    <label>商品2：</label>
+                                    <input type="text" placeholder="请输入产品链接">
+                                </li>
+                                <li class="clearfix">
+                                    <label>商品3：</label>
+                                    <input type="text" placeholder="请输入产品链接">
+                                </li>
+                                <li class="clearfix">
+                                    <label>商品4：</label>
+                                    <input type="text" placeholder="请输入产品链接">
+                                </li>
+                                <li class="clearfix">
+                                    <label>商品5：</label>
+                                    <input type="text" placeholder="请输入产品链接">
+                                </li>
+                            </ul>
+                        
+                        </div>
+                        <div class="contactPhone">
+                            <h3 class="title">联系方式：</h3>
+                            <div class="clearfix">
+                                <input type="text" name="" id="" value="" placeholder="请输入您的手机号码">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkBtns">
+<#assign text>{"text":'我要报名', "cls":"goRegister"}</#assign>
+<#assign $it=text?eval />
+                                                <button class="gyButton goRegister" jbtn="" id="">我要报名</button>
+                        
+<#assign text>{"text":'查看报名商品列表', "cls":"checkList"}</#assign>
+<#assign $it=text?eval />
+                                                <button class="gyButton checkList" jbtn="" id="">查看报名商品列表</button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="footer">
     <div class="inner">
@@ -302,6 +306,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -322,6 +327,8 @@ var webSite = '${webSite!}';
         </p>
     </div>
 </div>
+<script src="http://style.571xz.com/global/js/jquery.js"></script>
+<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498980800865"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

@@ -1,0 +1,59 @@
+@startuml
+class ShiguActivityVO {
+- Long activityId;  // 活动ID
+- String title;     // 活动标题
+- String desc;      // 活动介绍
+- String ruleInfo;  // 准入规则
+- String cost_desc; // 付费情况
+- Long locationId;  // 广告位置ID
+- Date startApply;  // 活动报名开始时间
+- Date endApply;    // 活动报名结束时间
+- Date startTime;   // 活动开始时间
+- Date endTime;     // 活动结束时间
+- String service;   // 准入的服务条件
+- ActivityStatus status; // 活动状态
+- ApplyStatus applyStatus; // 申请状态
+}
+
+class ShiguActivityApplyVO {
+-Long applyId;      // 申请id
+-Long activityId;   // 活动ID
+-Boolean choose;    // 申请通过/否
+-Long shopId;       // 发起申请的店铺
+-String items;      // 申请做广告的商品（多个）字符串拼装，';'分隔
+-String phone;      // 联系手机
+}
+
+note left of ShiguActivityVO:活动详情
+
+enum ApplyStatus {
+- APPLY_NOT_BEGUN,   // 活动未开始报名
+- APPLYING,          // 活动正在报名
+- APPLY_CLOSED,     // 报名结束
++ static ApplyStatus check(ShiguActivityVO vo); // 为活动信息设置报名状态
+}
+
+enum ActivityStatus {
+- ACTIVITY_NOT_BEGUN,// 活动未开始
+- ACTION,           // 活动进行中
+- ACTIVITY_CLOSED,   // 活动结束
+
++ static ActivityStatus check(ShiguActivityVO vo); // 为活动信息设置活动状态
+}
+
+note left of ActivityStatus:活动状态由check静态方法\n根据Vo中的各个时间参数\n计算得出
+
+interface ShiguActivityService {
++ ShiguActivityVO info();                   // 当前活动详情
++ void apply(ShiguActivityApplyVO vo);      // 活动报名，验证活动申请状态，如果 ApplyStatus != APPLYING 扔出异常
++ List<ShiguActivityApplyVO> listApplies(); // 报名成功该活动的列表
++ List<ShiguActivityApplyVO> luckyDogs();   // 本活动申请通过的列表
++ void chooseOne(Long applyId);             // 选中一个申请
++ void forgetMe(Long applyId);              // 取消选中一个申请
+}
+
+note top of ShiguActivityService: 本服务采用多例，使用 spring 管理，\n由 SpringBeanFactory 创建新实例，\n单构造单参数 activityId
+
+ShiguActivityVO  -->  ApplyStatus
+ShiguActivityVO  -->  ActivityStatus
+@enduml

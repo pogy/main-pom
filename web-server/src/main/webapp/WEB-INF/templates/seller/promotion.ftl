@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1499061380701" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498989044200" rel="stylesheet">
     
   </head>
 <body>
@@ -245,7 +245,7 @@ var webSite = '${webSite!}';
     </ul> 
 </div>
     <div class="content shadow-box">
-        <div class="promotionTitle"><span>广告推广</span></div>
+        <div class="promotionTitle"><span>广告推广</span><a href="javascript:;" target="_blank">点击查看使用说明</a></div>
         
         <div class="promotionTab">
             <div class="tabTitle clearfix">
@@ -339,7 +339,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/promotion.js?t=1499061380701"></script>
+<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498989044200"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

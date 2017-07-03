@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  * 阿里开放搜索 实现店铺搜索
  * Created by bugzy on 2017/5/31 0031.
  */
-@Service("shopSearchOpenService")
+@Service("shopSearchService")
 public class ShopSearchServiceOpenImpl implements ShopSearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShopSearchServiceOpenImpl.class);
