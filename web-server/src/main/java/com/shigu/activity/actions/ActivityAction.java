@@ -292,8 +292,8 @@ public class ActivityAction {
     }
 
     @RequestMapping("activity/popular")
-    public String gfShow(Model model) {
-        model.addAttribute("goodsList", activityService.gfShow());
+    public String gfShow(Long id, Model model) throws Main4Exception {
+        model.addAttribute("goodsList", activityService.gfShow(id));
         return "activity/gfShow";
     }
 }
