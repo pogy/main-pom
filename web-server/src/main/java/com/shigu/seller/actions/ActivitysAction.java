@@ -7,7 +7,6 @@ import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,14 +56,8 @@ public class ActivitysAction {
     public JSONObject submitInputInfo(Long actid, String inputInfo, HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ActivityApplyBO bo = com.alibaba.fastjson.JSONObject.parseObject(inputInfo, ActivityApplyBO.class);
-        activityService.submitApply(actid, ps.getLogshop().getShopId(), ps.getUserId(), StringUtils.join(bo.getActivityInfo(), ","), bo.getPhoneInfo());
+        activityService.submitApply(actid, ps.getLogshop().getShopId(), ps.getUserId(), bo.getActivityInfo(), bo.getPhoneInfo());
         return JsonResponseUtil.success();
-    }
-
-    @RequestMapping("gfShow")
-    public String gfShow(Model model) {
-        model.addAttribute("goodsList", activityService.gfShow());
-        return "activity/gfShow";
     }
 
 }

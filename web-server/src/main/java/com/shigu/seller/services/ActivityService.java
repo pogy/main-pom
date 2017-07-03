@@ -11,6 +11,7 @@ import com.shigu.main4.activity.services.ShiguActivityService;
 import com.shigu.main4.activity.vo.ShiguActivityApplyVO;
 import com.shigu.main4.activity.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -133,7 +134,7 @@ public class ActivityService {
         return list;
     }
 
-    public void submitApply(Long actid, Long shopId, Long userId, String activityInfo, String phoneInfo) throws JsonErrException {
+    public void submitApply(Long actid, Long shopId, Long userId, List<String> activityInfo, String phoneInfo) throws JsonErrException {
         if (actid == null || activityInfo == null || phoneInfo == null || shiguActivityMapper.selectByPrimaryKey(actid) == null) {
             throw new JsonErrException("活动申请信息不全");
         }
@@ -145,6 +146,18 @@ public class ActivityService {
         vo.setPhone(phoneInfo);
         vo.setShopId(shopId);
         vo.setUserId(userId);
+        vo.setItemIds(new ArrayList<Long>());
+        for (String s : activityInfo) {
+            int i = s.indexOf("=");
+            if (i != -1) {
+                try {
+                    vo.getItemIds().add(Long.valueOf(s.substring(i + 1)));
+                } catch (NumberFormatException ignored){}
+            }
+        }
+        if (vo.getItemIds().size() == 0) {
+            throw new JsonErrException("商品信息不完善");
+        }
         try {
             activity(actid).apply(vo);
         } catch (Exception e) {
@@ -156,10 +169,12 @@ public class ActivityService {
         return SpringBeanFactory.getBean(ShiguActivityService.class, actid);
     }
 
-    public List<GfShowVO> gfShow() {
+    public List<GfShowVO> gfShow(Long id) throws Main4Exception {
+        if (id == null || shiguActivityMapper.selectByPrimaryKey(id) == null)
+            throw new Main4Exception("页面不存在");
         List<GfShowVO> vos = new ArrayList<>();
         List<Long> itemIds = new ArrayList<>();
-        for (ShiguActivityApplyVO vo : activity(ActivityEnum.GF.activityId).luckyDogs()) {
+        for (ShiguActivityApplyVO vo : activity(id).luckyDogs()) {
             itemIds.addAll(vo.getItemIds());
         }
         if (!itemIds.isEmpty()) {
