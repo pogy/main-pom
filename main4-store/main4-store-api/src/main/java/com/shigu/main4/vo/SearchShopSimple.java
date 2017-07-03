@@ -48,7 +48,7 @@ public class SearchShopSimple implements Serializable{
     /**
      * 主营类目
      */
-    private String mainCase;
+    private String mainBus;
 
     public Long getShopId() {
         return shopId;
@@ -114,12 +114,12 @@ public class SearchShopSimple implements Serializable{
         this.imQq = imQq;
     }
 
-    public String getMainCase() {
-        return mainCase;
+    public String getMainBus() {
+        return mainBus;
     }
 
-    public void setMainCase(String mainCase) {
-        this.mainCase = mainCase;
+    public void setMainBus(String mainBus) {
+        this.mainBus = mainBus;
     }
 
     public Long getMarketId() {

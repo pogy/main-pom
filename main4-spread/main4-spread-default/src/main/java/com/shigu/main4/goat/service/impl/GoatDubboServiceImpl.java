@@ -37,6 +37,12 @@ public class GoatDubboServiceImpl implements GoatDubboService {
         return (T) BeanMapper.map(goat,type.getGoatVoClass());
     }
 
+    @Override
+    public <T extends GoatVO> T selGoatPrepareById(Long goatId, GoatType type) throws GoatException {
+        Goat goat=goatFactory.selGoatPrepareById(goatId);
+        return (T) BeanMapper.map(goat,type.getGoatVoClass());
+    }
+
     /**
      * 拿到线上的、预定的、排期的
      * @param localId

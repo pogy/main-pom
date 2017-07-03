@@ -203,6 +203,7 @@ public class ADAuctionAction {
                     list.add(resultVO);
                 }
             }
+            model.addAttribute("indexggQ",term.getTermId());
         }
         model.addAttribute("indexggList",list);
         return ftlDir+"/dtgglistFinish";

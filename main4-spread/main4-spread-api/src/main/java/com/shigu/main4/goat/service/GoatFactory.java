@@ -44,6 +44,8 @@ public interface GoatFactory {
      */
     <T extends Goat>T selGoatById(Long goatId) throws GoatException;
 
+    <T extends Goat>T selGoatPrepareById(Long goatId) throws GoatException;
+
     /**
      * 按广告值获取广告对象
      * @param goatVO

@@ -77,7 +77,7 @@ public class ShopDesignAction {
         //如果有搜索模块
         if(containerVO.getSearchModule()!=null){
             containerVO.getSearchModule().getData().put("catPolymerizations",shopForCdnService.selCatRolymerizations(shopSession.getShopId()));//类目聚合
-            containerVO.getSearchModule().getData().put("goodsList",shopForCdnService.searchItemOnsale(null,shopSession.getShopId(),"time_down",1,20));
+            containerVO.getSearchModule().getData().put("goodsList",shopForCdnService.searchItemOnsale(null,shopSession.getShopId(),shopSession.getWebSite(),"time_down",1,20));
         }
         return "/shop_design/design";
     }
@@ -100,7 +100,7 @@ public class ShopDesignAction {
         //如果有搜索模块
         if(containerVO.getSearchModule()!=null){
             containerVO.getSearchModule().getData().put("catPolymerizations",shopForCdnService.selCatRolymerizations(shopSession.getShopId()));//类目聚合
-            containerVO.getSearchModule().getData().put("goodsList",shopForCdnService.searchItemOnsale(null,shopSession.getShopId(),"time_down",1,20));
+            containerVO.getSearchModule().getData().put("goodsList",shopForCdnService.searchItemOnsale(null,shopSession.getShopId(),shopSession.getWebSite(),"time_down",1,20));
         }
         model.addAttribute("vo",cdnService.shopSimpleVo(shopSession.getShopId()));
         return "/cdn/shop";
@@ -195,8 +195,8 @@ public class ShopDesignAction {
         Long shopId = getShopSession(session).getShopId();
         bo.setIds(shopDesignService.selPromoteItemIds(bo));
         model.addAttribute("bo", bo);
-        model.addAttribute("pager", shopDesignService.selPromoteItems(bo, shopId));
-        model.addAttribute("totalOnsale", shopForCdnService.selItemNumberById(shopId));
+        model.addAttribute("pager", shopDesignService.selPromoteItems(bo, shopId,getShopSession(session).getWebSite()));
+        model.addAttribute("totalOnsale", shopForCdnService.selItemNumberById(shopId,getShopSession(session).getWebSite()));
         return "/shop_design/goods-tui-get-goods-list";
     }
 

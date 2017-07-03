@@ -814,7 +814,7 @@ $.post(
 <script>/*============ shopItemCopy/item#newGoods BEGIN ============*/
 
 $(function(){
-    $.post('shopnew.htm',{"id": storeId},function(data){
+    $.post('shopnew.htm',{"id": storeId,"webSite":'${webSite}'},function(data){
         $('#item_shopnew').html(data);
     });
 });

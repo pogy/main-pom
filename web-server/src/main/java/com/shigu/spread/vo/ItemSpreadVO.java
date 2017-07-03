@@ -37,6 +37,9 @@ public class ItemSpreadVO implements Serializable{
      */
     private String userText;
 
+    public ItemSpreadVO() {
+    }
+
     public ItemSpreadVO(ItemForList item) {
         setId(item.getGoodsId()+"");
         setImgsrc(item.getPicUrl());

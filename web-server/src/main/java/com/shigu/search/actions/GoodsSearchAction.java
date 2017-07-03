@@ -153,29 +153,24 @@ public class GoodsSearchAction {
             bo.setWebSite("hz");
         }
         bo.setRows(40);
-        if (bo.getKeyword() != null)
+        if (bo.getKeyword() != null) {
+            bo.setKeyword(bo.getKeyword().trim());
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
+        }
         model.addAttribute("query", bo);
 
         //排序
-        SearchOrderBy orderBy;
         if (bo.getSort() == null) {
             bo.setSort("comp");
         }
-        if (bo.getSort().equals("xp")) {
-            orderBy = SearchOrderBy.NEW;
-        } else if (bo.getSort().equals("comp")) {
-            orderBy = SearchOrderBy.GOODS_COMMON;
-        } else if (bo.getSort().equals("price-asc")) {
-            orderBy = SearchOrderBy.PRICEUP;
-        } else if (bo.getSort().equals("price-desc")) {
-            orderBy = SearchOrderBy.PRICEDOWN;
-        } else {
-            orderBy = SearchOrderBy.NEW;
+        SearchOrderBy orderBy = SearchOrderBy.valueIs(bo.getSort());
+        if (orderBy == null) {
+            orderBy = SearchOrderBy.COMMON;
         }
         SearchVO vo = goodsSearchService.search(bo, orderBy, true);
 
         ShiguPager<GoodsInSearch> pager = vo.getSearchData();
+        maxTotalSizeOrPage(pager, bo.getRows());
         //得到聚合后的结果
 //        CateNavsInSearch cateNavsInSearch=goodsSearchService.selCateAfterAggs(bo);
         model.addAttribute("markets", goodsSearchService.aggOneCate(categoryInSearchService.selMarkets(bo.getWebSite()),
@@ -189,7 +184,7 @@ public class GoodsSearchAction {
         }
         model.addAttribute("goodslist", pager.getContent() == null ? Collections.emptyList() : pager.getContent());
         model.addAttribute("tjGoodsList", goodsSearchService.selTj(bo.getWebSite(), 1, bo.getPid()));
-        model.addAttribute("pageOption", selPageOption(pager.getTotalCount(), bo.getRows(), pager.getNumber()));
+        model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         //查顶部导航
 //        SearchNav searchNav=goodsSearchService.categoryInSearch(bo);
 //        SearchNav searchNav=new SearchNav();
@@ -197,7 +192,7 @@ public class GoodsSearchAction {
         model.addAttribute("goodsCount", pager.getTotalCount());
         //搜索路径
 //        model.addAttribute("cateNav",searchNav);
-        model.addAttribute("totalPage", pager.getTotalPages());
+        model.addAttribute("totalPage",  pager.getTotalPages()>100?100:pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
         return "search/search";
     }
@@ -224,23 +219,16 @@ public class GoodsSearchAction {
 
         model.addAttribute("query", bo);
         //排序
-        SearchOrderBy orderBy;
         if (bo.getSort() == null) {
             bo.setSort("comp");
         }
-        if (bo.getSort().equals("xp")) {
-            orderBy = SearchOrderBy.NEW;
-        } else if (bo.getSort().equals("comp")) {
-            orderBy = SearchOrderBy.GOODS_COMMON;
-        } else if (bo.getSort().equals("price-asc")) {
-            orderBy = SearchOrderBy.PRICEUP;
-        } else if (bo.getSort().equals("price-desc")) {
-            orderBy = SearchOrderBy.PRICEDOWN;
-        } else {
-            orderBy = SearchOrderBy.GOODS_COMMON;
+        SearchOrderBy orderBy = SearchOrderBy.valueIs(bo.getSort());
+        if (orderBy == null) {
+            orderBy = SearchOrderBy.COMMON;
         }
         //带聚合的结果
         ShiguPager<GoodsInSearch> pager = goodsSearchService.search(bo, orderBy, false).getSearchData();
+        maxTotalSizeOrPage(pager, bo.getRows());
         //处理市场
         model.addAttribute("markets", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.MARKET, website));
         //查顶级类目
@@ -255,9 +243,9 @@ public class GoodsSearchAction {
         //查匹配店铺
         model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(),bo.getWebSite()));
 
-        model.addAttribute("goodslist", pager.getContent() == null ? new ArrayList<>() : pager.getContent());
+        model.addAttribute("goodslist", pager.getContent());
         model.addAttribute("tjGoodsList", goodsSearchService.selTj(bo.getWebSite(), 0, bo.getPid()));
-        model.addAttribute("pageOption", selPageOption(pager.getTotalCount(), bo.getRows(), pager.getNumber()));
+        model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         //查顶部导航
         SearchNav searchNav = goodsSearchService.categoryInSearch(bo);
 //        SearchNav searchNav=new SearchNav();
@@ -270,28 +258,15 @@ public class GoodsSearchAction {
         return "search/goods";
     }
 
-    /**
-     * 拿到翻页信息
-     *
-     * @return
-     */
-    public String selPageOption(int total, int size, int number) {
-        int maxTotal = ItemSearchService.MAX_PAGE * size;
-        return (total > maxTotal ? maxTotal : total) + "," + size + "," + number;
+    private void maxTotalSizeOrPage(ShiguPager pager, int pageSize) {
+        if (pager.getTotalCount() > 5000) {
+            pager.setTotalCount(5000);
+        }
+        pager.calPages(pager.getTotalCount(), pageSize);
+        if (pager.getTotalPages() > 100) {
+            pager.setTotalPages(100);
+            pager.setTotalCount(100 * pageSize);
+        }
     }
 
-    /**
-     * 计算页数
-     *
-     * @param total
-     * @param size
-     * @return
-     */
-    public Integer calTotalPage(int total, int size) {
-        int page = total / size;
-        if (total % size > 0) {
-            page++;
-        }
-        return page > ItemSearchService.MAX_PAGE ? ItemSearchService.MAX_PAGE : page;
-    }
 }

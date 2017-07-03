@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/iwantToRechargein5.css?t=1496989486800" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/iwantToRechargein5.css?t=1498441740341" rel="stylesheet">
     
   </head>
 <body>
@@ -241,6 +241,7 @@ var webSite = '${webSite!}';
             <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
             <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
             <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货广告</a></li> 
+            <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li> 
         </ul> 
     </div>
     
@@ -311,6 +312,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -332,7 +334,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/iwantToRechargein5.js?t=1496989486800"></script>
+<script src="http://style.571xz.com/gys5/js/iwantToRechargein5.js?t=1498441740341"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

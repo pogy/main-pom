@@ -512,8 +512,8 @@ public class CdnAction {
     }
 
     @RequestMapping("shopnew")
-    public String shopnew(Long id,Model model){
-        model.addAttribute("newGoodsList",shopForCdnService.searchItemOnsale(null,id,"time_down",1,5).getContent());
+    public String shopnew(Long id,String webSite,Model model){
+        model.addAttribute("newGoodsList",cdnService.selShopNew(id,webSite,5));
         return "cdn/item_shopnew";
     }
     /**
@@ -670,10 +670,10 @@ public class CdnAction {
             endDate=DateUtil.stringToDate(bo.getEndDate(),"yyyy-MM-dd");
         }
         if(bo.getCid()!=null||bo.getScid()!=null){//类目型
-            pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
+            pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),webSite,
                     bo.getCid(),bo.getScid(),bo.getOrder(),startDate,endDate,bo.getPageNo(),bo.getPageSize());
         }else{
-            pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),
+            pager=shopForCdnService.searchItemOnsale(bo.getPstring(),bo.getId(),webSite,
                     bo.getBeginPrice(),bo.getEndPrice(),bo.getOrder(),startDate,endDate,bo.getPageNo(),bo.getPageSize());
         }
         containerVO.getSearchModule().getData().put("goodsList",pager);

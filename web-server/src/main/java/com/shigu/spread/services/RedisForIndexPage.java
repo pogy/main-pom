@@ -1,6 +1,7 @@
 package com.shigu.spread.services;
 
 
+import com.alibaba.fastjson.JSON;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.spread.exceptions.SpreadCacheException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,13 @@ public class RedisForIndexPage {
      * @return
      */
     public Object getFromCache(String key, Class c) throws SpreadCacheException {
-        Object obj = redisIO.get(INDEX_PAGE_REDIS_PRE + key,  c);
-        if (obj != null) {
-            return obj;
+        String jsonstr=redisIO.get(INDEX_PAGE_REDIS_PRE + key);
+        if (jsonstr != null) {
+            if(jsonstr.startsWith("[")){//是数组
+                return JSON.parseArray(jsonstr,c);
+            }else{
+                return JSON.parseObject(jsonstr,c);
+            }
         } else {
             SpreadCacheException e = new SpreadCacheException();
             e.setType(SpreadCacheException.CacheType.NONE);
