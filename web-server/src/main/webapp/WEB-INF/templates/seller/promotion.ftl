@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498989044200" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498989044201" rel="stylesheet">
     
   </head>
 <body>
@@ -339,7 +339,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498989044200"></script>
+<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498989044201"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
