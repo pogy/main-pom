@@ -28,6 +28,7 @@
         <module>main4-tools</module>
         <module>web-server</module>
         <module>main4-order</module>
+        <module>main4-activity</module>
     </modules>
     <packaging>pom</packaging>
 

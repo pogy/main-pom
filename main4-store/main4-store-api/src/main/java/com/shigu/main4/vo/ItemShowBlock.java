@@ -22,6 +22,12 @@ public class ItemShowBlock implements Serializable{
      * 宝贝Id
      */
     private Long itemId;
+
+    /**
+     * 店铺ID
+     */
+    private Long shopId;
+
     /**
      * 宝贝价格
      */
@@ -69,6 +75,14 @@ public class ItemShowBlock implements Serializable{
 
     public void setItemId(Long itemId) {
         this.itemId = itemId;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
     }
 
     public String getPrice() {

@@ -13,6 +13,7 @@ import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.seller.services.ActivityService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -29,11 +30,14 @@ import javax.servlet.http.HttpSession;
 import java.util.*;
 
 /**
- * 活动
+ * 奖品活动
  * Created by zhaohongbo on 17/4/26.
  */
 @Controller
 public class ActivityAction {
+
+    @Autowired
+    private ActivityService activityService;
 
     @Autowired
     private ActiveDrawServiceImpl activeDrawServiceImpl;
@@ -287,6 +291,9 @@ public class ActivityAction {
         return "activity/fdGdsLqzjb";
     }
 
-
-
+    @RequestMapping("activity/popular")
+    public String gfShow(Model model) {
+        model.addAttribute("goodsList", activityService.gfShow());
+        return "activity/gfShow";
+    }
 }
