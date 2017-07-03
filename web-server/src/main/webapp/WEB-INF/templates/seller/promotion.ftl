@@ -245,7 +245,7 @@ var webSite = '${webSite!}';
     </ul> 
 </div>
     <div class="content shadow-box">
-        <div class="promotionTitle"><span>广告推广</span><a href="javascript:;" target="_blank">点击查看使用说明</a></div>
+        <div class="promotionTitle"><span>广告推广</span><a href="http://zixun.571xz.com/affiche/detail?id=610" target="_blank">点击查看使用说明</a></div>
         
         <div class="promotionTab">
             <div class="tabTitle clearfix">
