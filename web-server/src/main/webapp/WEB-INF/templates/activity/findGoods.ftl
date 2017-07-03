@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1499058805745" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1499067087721" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1499058805745"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1499067087721"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -261,10 +261,19 @@ var webSite = '${webSite!}';
 </div>
 <div class="detailInfo">
     <div class="dailyFoundTitle layout styleTitle"  name="发现好货">
-        <div class="tip">通知：发现好货查询本期中奖结果请前往【分销商后台】— 【会员俱乐部】<a href="${main_host!}member/awardInfo.htm" target="_blank">立即前往</a></div>
+        <div class="tip">亲耐滴代理们，“发现好货”已乔迁至首页C区—风格馆。中奖的小秘密，在后台中新增的“会员俱乐部”栏目里查看哦！
+            <#if !session_user_redis__>
+            <a href="${main_host!}login.htm?backUrl=http://www.571xz.com/activity/redbull.htm">立即前往</a>
+            <#else>
+                <#if session_user_redis__.logshop??>
+                <a href="javascript:;" jbtn="isGysShow">立即前往</a>
+                <#else>
+                <a href="${main_host!}member/awardInfo.htm" target="_blank">立即前往</a>
+                </#if>
+            </#if>
+        </div>
         <h2>发现好货</h2>
     </div>
-    
     <div  class="goodsList layout pr mt" >
             
                 <ul>

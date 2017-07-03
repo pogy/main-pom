@@ -245,7 +245,7 @@ var webSite = '${webSite!}';
     </ul> 
 </div>
     <div class="content shadow-box">
-        <div class="promotionTitle"><span>广告推广</span><a href="javascript:;" target="_blank">点击查看使用说明</a></div>
+        <div class="promotionTitle"><span>广告推广</span><a href="http://zixun.571xz.com/affiche/detail?id=610" target="_blank">点击查看使用说明</a></div>
         
         <div class="promotionTab">
             <div class="tabTitle clearfix">
@@ -276,7 +276,7 @@ var webSite = '${webSite!}';
                         </div>
                         </#list>
                     <#else>
-                        <p class="noPos">您没有用购买广告位，看不到推广信息哦！</p>
+                        <p class="noPos">您还没有购买广告位，看不到推广信息哦！</p>
                     </#if>
                 </div>
                 <div class="clearfix" style="display:none">
@@ -300,7 +300,7 @@ var webSite = '${webSite!}';
                         </div>
                         </#list>
                     <#else>
-                    <p class="noPos">您没有用购买广告位，看不到推广信息哦！</p>
+                    <p class="noPos">您还没有购买广告位，看不到推广信息哦！</p>
                     </#if>
                 </div>
             </div>
