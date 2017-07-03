@@ -139,6 +139,8 @@ public class ActivityAction {
             }
         }
         model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
+        model.addAttribute("lastHdTime","2017年06月26日 ——— 2017年07月03日");
+        model.addAttribute("thisHdTime","2017年07月03日 ——— 2017年07月10日");
         return "buyer/awardInfo";
     }
 
