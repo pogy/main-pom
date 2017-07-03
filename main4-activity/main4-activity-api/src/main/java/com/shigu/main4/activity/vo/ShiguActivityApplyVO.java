@@ -1,6 +1,7 @@
 package com.shigu.main4.activity.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 申请信息
@@ -28,7 +29,7 @@ public class ShiguActivityApplyVO implements Serializable {
     /**
      * 商品链接 ;
      */
-    private String items;
+    private List<Long> itemIds;
 
     /**
      * 用户
@@ -72,12 +73,12 @@ public class ShiguActivityApplyVO implements Serializable {
         return this.shopId;
     }
 
-    public void setItems(String items) {
-        this.items = items;
+    public void setItemIds(List<Long> itemIds) {
+        this.itemIds = itemIds;
     }
 
-    public String getItems() {
-        return this.items;
+    public List<Long> getItemIds() {
+        return this.itemIds;
     }
 
     public void setUserId(Long userId) {

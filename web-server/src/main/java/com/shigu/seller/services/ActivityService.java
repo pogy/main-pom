@@ -7,16 +7,19 @@ import com.opentae.data.mall.interfaces.ShiguActivityApplyMapper;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.activity.enums.ActivityStatus;
+import com.shigu.main4.activity.services.ShiguActivityService;
 import com.shigu.main4.activity.vo.ShiguActivityApplyVO;
 import com.shigu.main4.activity.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.ShopForCdnService;
+import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.vo.ActivityDetailsVo;
 import com.shigu.seller.vo.ActivityListVO;
 import com.shigu.seller.vo.ApplyItemVO;
+import com.shigu.seller.vo.GfShowVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -99,27 +102,9 @@ public class ActivityService {
     public List<ApplyItemVO> applyItems(Long actid, Long userId) {
         List<ApplyItemVO> list = new ArrayList<>();
 
-        List<Long> itemIds = new ArrayList<>();
-
-        ShiguActivityApply apply = new ShiguActivityApply();
-        apply.setUserId(userId);
-        apply.setActivityId(actid);
-        apply = shiguActivityApplyMapper.selectOne(apply);
-
-        if (apply != null) {
-            String items = apply.getItems();
-            if (items != null) {
-                for (String s : items.split(",")) {
-                    int i = s.lastIndexOf("=");
-                    if (i != -1) {
-                        try {
-                            itemIds.add(Long.valueOf(s.substring(i + 1)));
-                        } catch (NumberFormatException ignored){}
-                    }
-                }
-            }
-        }
-        if (!itemIds.isEmpty()) {
+        List<Long> itemIds;
+        ShiguActivityApplyVO applyVO = activity(actid).someOneApply(userId);
+        if (applyVO != null && !(itemIds = applyVO.getItemIds()).isEmpty()) {
             List<ItemShowBlock> items = shopForCdnService.searchItemOnsale(itemIds, "hz", 1, 5).getContent();
             Map<Long, ShopNumAndMarket> marketMap = BeanMapper.list2Map(
                     shiguShopMapper.selShopNumAndMarkets(
@@ -156,17 +141,66 @@ public class ActivityService {
             throw new JsonErrException("用户没有权限参加此项活动");
         }
 
-        ShiguActivityApply apply = new ShiguActivityApply();
-
-        apply.setUserId(userId);
-        apply.setShopId(shopId);
-        apply.setActivityId(actid);
-        apply.setPhone(phoneInfo);
-        apply.setItems(activityInfo);
+        ShiguActivityApplyVO vo = new ShiguActivityApplyVO();
+        vo.setPhone(phoneInfo);
+        vo.setShopId(shopId);
+        vo.setUserId(userId);
         try {
-            shiguActivityApplyMapper.insertSelective(apply);
+            activity(actid).apply(vo);
         } catch (Exception e) {
             throw new JsonErrException("您已经申请过了");
+        }
+    }
+
+    private ShiguActivityService activity(Long actid) {
+        return SpringBeanFactory.getBean(ShiguActivityService.class, actid);
+    }
+
+    public List<GfShowVO> gfShow() {
+        List<GfShowVO> vos = new ArrayList<>();
+        List<Long> itemIds = new ArrayList<>();
+        for (ShiguActivityApplyVO vo : activity(ActivityEnum.GF.activityId).luckyDogs()) {
+            itemIds.addAll(vo.getItemIds());
+        }
+        if (!itemIds.isEmpty()) {
+            List<ItemShowBlock> items = shopForCdnService.searchItemOnsale(itemIds, "hz", 1, itemIds.size()).getContent();
+            Map<Long, ShopNumAndMarket> marketMap = BeanMapper.list2Map(
+                    shiguShopMapper.selShopNumAndMarkets(
+                            new ArrayList<>(
+                                    BeanMapper.getFieldSet(
+                                            items,
+                                            "shopId",
+                                            Long.class)
+                            )),
+                    "shopId",
+                    Long.class
+            );
+            for (ItemShowBlock hz : items) {
+                GfShowVO vo = new GfShowVO();
+                vos.add(vo);
+                vo.setGoodsId(hz.getItemId());
+                vo.setShopId(hz.getShopId());
+                vo.setImgSrc(hz.getImgUrl());
+                vo.setTitle(hz.getTitle());
+                vo.setPiPriceString(hz.getPrice());
+                ShopNumAndMarket shopNumAndMarket = marketMap.get(hz.getShopId());
+                if (shopNumAndMarket != null) {
+                    vo.setMarketName(shopNumAndMarket.getMarket());
+                    vo.setShopNum(shopNumAndMarket.getShopNum());
+                }
+            }
+        }
+        return vos;
+    }
+
+    private enum ActivityEnum {
+        GF("港风", 1),;
+
+        public String name;
+        public Long activityId;
+        ActivityEnum(String name, long activityId) {
+            this.name = name;
+            this.activityId = activityId;
         }
     }
 }

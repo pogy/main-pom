@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 活动服务
@@ -53,7 +55,7 @@ public class ShiguActivityServiceImpl implements ShiguActivityService {
     @Override
     public void apply(ShiguActivityApplyVO vo) throws ActivityException {
         String errMsg = null;
-        if (StringUtils.isEmpty(vo.getItems())) {
+        if (vo.getItemIds() == null || vo.getItemIds().isEmpty()) {
             errMsg = "请补全商品信息";
         }
         if (StringUtils.isEmpty(vo.getPhone())) {
@@ -66,6 +68,7 @@ public class ShiguActivityServiceImpl implements ShiguActivityService {
             throw new ActivityException(errMsg);
         }
         ShiguActivityApply apply = BeanMapper.map(vo, ShiguActivityApply.class);
+        apply.setItems(StringUtils.join(vo.getItemIds(), ","));
         apply.setApplyId(null);
         apply.setActivityId(activityId);
         shiguActivityApplyMapper.insertSelective(apply);
@@ -85,7 +88,18 @@ public class ShiguActivityServiceImpl implements ShiguActivityService {
         ShiguActivityApply apply = new ShiguActivityApply();
         apply.setActivityId(activityId);
         apply.setChoose(choose);
-        return BeanMapper.mapList(shiguActivityApplyMapper.select(apply), ShiguActivityApplyVO.class);
+        List<ShiguActivityApply> select = shiguActivityApplyMapper.select(apply);
+        Map<Long, ShiguActivityApply> activityApplyMap = BeanMapper.list2Map(select, "applyId", Long.class);
+        List<ShiguActivityApplyVO> shiguActivityApplyVOS = BeanMapper.mapList(select, ShiguActivityApplyVO.class);
+        for (ShiguActivityApplyVO shiguActivityApplyVO : shiguActivityApplyVOS) {
+            ShiguActivityApply activityApply = activityApplyMap.get(shiguActivityApplyVO.getApplyId());
+            String[] items = activityApply.getItems().split(",");
+            shiguActivityApplyVO.setItemIds(new ArrayList<Long>(items.length));
+            for (String item : items) {
+                shiguActivityApplyVO.getItemIds().add(Long.valueOf(item));
+            }
+        }
+        return shiguActivityApplyVOS;
     }
 
     /**
@@ -96,6 +110,21 @@ public class ShiguActivityServiceImpl implements ShiguActivityService {
     @Override
     public List<ShiguActivityApplyVO> luckyDogs() {
         return listApply(true);
+    }
+
+    @Override
+    public ShiguActivityApplyVO someOneApply(Long userId) {
+        for (ShiguActivityApplyVO vo : listApplies()) {
+            if (vo.getUserId().equals(userId))
+                return vo;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean yourLuckOne(Long userId) {
+        ShiguActivityApplyVO vo = someOneApply(userId);
+        return vo != null && vo.getChoose();
     }
 
     /**

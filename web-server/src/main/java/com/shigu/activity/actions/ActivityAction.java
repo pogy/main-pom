@@ -12,6 +12,7 @@ import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.seller.services.ActivityService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;
@@ -32,6 +33,9 @@ import java.util.*;
  */
 @Controller
 public class ActivityAction {
+
+    @Autowired
+    private ActivityService activityService;
 
     @Autowired
     private ActiveDrawServiceImpl activeDrawServiceImpl;
@@ -316,6 +320,9 @@ public class ActivityAction {
         return "activity/fdGdsLqzjb";
     }
 
-
-
+    @RequestMapping("activity/popular")
+    public String gfShow(Model model) {
+        model.addAttribute("goodsList", activityService.gfShow());
+        return "activity/gfShow";
+    }
 }

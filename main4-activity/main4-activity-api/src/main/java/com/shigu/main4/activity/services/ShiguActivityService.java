@@ -35,7 +35,11 @@ public interface ShiguActivityService {
      * 本活动申请通过的列表
      * @return
      */
-    List<ShiguActivityApplyVO> luckyDogs(); 
+    List<ShiguActivityApplyVO> luckyDogs();
+
+    ShiguActivityApplyVO someOneApply(Long userId);
+
+    boolean yourLuckOne(Long userId);
 
     /**
      * 选中一个申请

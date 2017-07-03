@@ -61,4 +61,10 @@ public class ActivitysAction {
         return JsonResponseUtil.success();
     }
 
+    @RequestMapping("gfShow")
+    public String gfShow(Model model) {
+        model.addAttribute("goodsList", activityService.gfShow());
+        return "activity/gfShow";
+    }
+
 }
