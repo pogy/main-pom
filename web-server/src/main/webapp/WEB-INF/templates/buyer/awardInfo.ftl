@@ -14,11 +14,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/awardInfo.css?t=1498814907600" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs3/css/awardInfo.css?t=1499075050131" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.66/fxs2/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/fxs3/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -223,32 +223,56 @@ var webSite = '${webSite!}';
     </div>
     <div class="content shadow-box">
         <div class="awardInfo">
-            <h3>发现好货活动奖品<b class="hdRule">活动规则</b></h3>
-            <div class="awardBox">
-                <div class="awardList">
-                    <ul class="clearfix">
-                        
-                    </ul>
+            <h3>发现好货活动奖品</h3>
+            <div class="lastTerm">
+                <p class="hdTime">活动日期：${lastHdTime!}<b class="hdRule" jbtn="lastRule">活动规则</b></p>
+                <div class="awardBox">
+                    <div class="awardList">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                    <div class="findGoods">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                    <div class="dailyFind">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
                 </div>
-                <div class="findGoods">
-                    <ul class="clearfix">
-                        
-                    </ul>
-                </div>
-                <div class="dailyFind">
-                    <ul class="clearfix">
-                        
-                    </ul>
+            </div>
+            <div class="thisTerm">
+                <p class="hdTime">活动日期：${thisHdTime!}<b class="hdRule" jbtn="thisRule">活动规则</b></p>
+                <div class="awardBox">
+                    <div class="awardList">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                    <div class="findGoods">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                    <div class="dailyFind">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <script>/*============ fxs2/awardInfo#main BEGIN ============*/
+    <script>/*============ fxs3/awardInfo#main BEGIN ============*/
 
 var allInfo = ${allInfo!}; //JSON字符串用于奖品模块、获奖名单
+var lastUserAward = ${lastUserAward!}; //JSON字符串用于上期奖品
 
-/*============ fxs2/awardInfo#main END ============*/
+/*============ fxs3/awardInfo#main END ============*/
 
 
 </script>
@@ -286,7 +310,7 @@ var allInfo = ${allInfo!}; //JSON字符串用于奖品模块、获奖名单
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/awardInfo.js?t=1498814907600"></script>
+<script src="http://style.571xz.com/fxs3/js/awardInfo.js?t=1499075050131"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
