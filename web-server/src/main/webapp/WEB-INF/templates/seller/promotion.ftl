@@ -276,7 +276,7 @@ var webSite = '${webSite!}';
                         </div>
                         </#list>
                     <#else>
-                        <p class="noPos">您没有用购买广告位，看不到推广信息哦！</p>
+                        <p class="noPos">您还没有购买广告位，看不到推广信息哦！</p>
                     </#if>
                 </div>
                 <div class="clearfix" style="display:none">
@@ -300,7 +300,7 @@ var webSite = '${webSite!}';
                         </div>
                         </#list>
                     <#else>
-                    <p class="noPos">您没有用购买广告位，看不到推广信息哦！</p>
+                    <p class="noPos">您还没有购买广告位，看不到推广信息哦！</p>
                     </#if>
                 </div>
             </div>
