@@ -63,8 +63,8 @@ public class FindGoodsService {
 
     final String SHOP_SET_LIMIT_SUFFIX="shop_set_";
 
-    public ShiguPager<FindGoodsItemVO> selItemsForFindGoods(FindGoodsSelBO bo,Long shopId,Integer size){
-        ShiguPager<ItemShowBlock> pager=shopForCdnService.searchItemOnsale(bo.getQ(),shopId,"hz"
+    public ShiguPager<FindGoodsItemVO> selItemsForFindGoods(FindGoodsSelBO bo, Long shopId, String webSite, Integer size){
+        ShiguPager<ItemShowBlock> pager=shopForCdnService.searchItemOnsale(bo.getQ(),shopId,webSite
                 ,bo.getStartPrice(),bo.getEndPrice(),"time_down",null,null,bo.getPage(),size);
         List<FindGoodsItemVO> items=new ArrayList<>();
         for(ItemShowBlock isb:pager.getContent()){
