@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
     
-        <title>发现好货 - 四季星座网</title>
+        <title>每日发现 - 四季星座网</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1498815392308" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1499058805745" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1498815392308"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1499058805745"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -220,7 +220,6 @@ var webSite = '${webSite!}';
             <div class="searchBox">
                 
                 <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" >
-                
                     
                     
                     <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
@@ -244,7 +243,7 @@ var webSite = '${webSite!}';
             <div class="leftNav">
                 <ul>
                     
-                    <li><a href="http://www.571xz.com/activity/redbull.htm" class="select">发现好货</a><span></span></li>
+                    <li><a href="http://www.571xz.com/activity/redbull.htm" class="select">每日发现</a><span></span></li>
                 </ul>
             </div>
             <div class="rightNav">
