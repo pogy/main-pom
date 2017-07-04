@@ -68,7 +68,7 @@ public class ActivityService {
 
         // 兼容 多个商品ID的情况，取得第一个有效的ID
         List<Long> itemIds = new ArrayList<>();
-        for (String items : BeanMapper.getFieldList(select, "items", String.class)) {
+        for (String items : BeanMapper.getFieldList(new ArrayList<>(applyMap.values()), "items", String.class)) {
             Long itemId;
             for (String s : items.split(",")) {
                 try {
