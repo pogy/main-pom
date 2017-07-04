@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/actRegister-v1.css?t=1499156816037" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister-v1.css?t=1499158319271" rel="stylesheet">
     
   </head>
 <body>
@@ -483,7 +483,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1499156816037"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister-v1.js?t=1499158319271"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
