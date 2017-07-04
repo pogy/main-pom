@@ -15,19 +15,19 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/popular.css?t=1499133302864" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/popular.css?t=1499153877709" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/popular.js?t=1499133302864"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/popular.js?t=1499153877709"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
 
-<div class="content clearfix">
+<div class="content clearfix" style="background-color:${bgColor!}">
     <div class="bannerImg">
         <div class="imgShow">
-            <img src="http://style.571xz.com/fdGoodsV5/css/img/banner.jpg" alt>
+            <img src="${bannerSrc!}" alt>
         </div>
     </div>
     <div class="detailInfo">
