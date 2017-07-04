@@ -33,9 +33,11 @@ public class AdMst {
 
     @Test
     public void testMsg(){
-        System.out.println(sendSms_quick("18857193391","四季星座网温馨提示：：\"首页热销\"栏目  共10个位置将在今日20点(星期四）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
-        System.out.println(sendSms_quick("17605818805","四季星座网温馨提示：：\"首页热销\"栏目  共10个位置将在今日20点(星期四）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
+        //System.out.println(sendSms_quick("18857193391","四季星座网温馨提示：：\"首页热销\"栏目  共10个位置将在今日20点(星期四）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
+        //System.out.println(sendSms_quick("17605818805","四季星座网温馨提示：：\"首页热销\"栏目  共10个位置将在今日20点(星期四）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
 //        System.out.println(sendSms_quick("18888971970","温馨提示：（报名时间为4月28日-4月30日20时）网站广告位报名入口已发布，本期总计首页29个位置，轮转播区1个，轮转播下方区1个，首页热卖10个，推荐档口7个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
+        System.out.println(sendSms_quick("15168224104;13588494464;18736271422","四季星座网温馨提示：“首页热销”栏目+“首页C区风格馆”栏目 共20个位置将在今日20点(星期二）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
+        //System.out.println(sendSms_quick("13588494464","四季星座网温馨提示：“首页热销”栏目+“首页C区风格馆”栏目 共20个位置将在今日20点(星期二）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
     }
     @Test
     public void sendMsg(){
@@ -51,7 +53,15 @@ public class AdMst {
 //        String[] ts=t.split(",");
 //        List<String> tslist= Arrays.asList(ts);
 
+//        在content内填入短信内容
+        String content = "短信内容";
+        //遍历档口计数
+        int mobileCount = 0;
+        StringBuilder stringBuilder = new StringBuilder();
+        boolean isNumberFilled = false;
+        boolean isLast = false;
         for(ShiguShop s:shopList){
+            mobileCount++;
             String telephone=s.getTelephone();
             if(s.getUserId()!=null){
                 MemberLicenseExample licenseExample=new MemberLicenseExample();
@@ -66,12 +76,22 @@ public class AdMst {
             }
             if(telephone!=null){
                 System.out.println(telephone);
-                System.out.println(sendSms_quick(telephone,"四季星座网温馨提示：：\"首页热销\"栏目  共10个位置将在今日20点(星期四）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
-//                System.out.println(sendSms_quick(telephone,"温馨提示：（报名时间为5月2日-5月4日12时）网站广告位报名入口已发布，本期总计首页32个位置，轮转播区1个，轮转播下方区3个，首页热卖10个，推荐档口8个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
+                stringBuilder.append(';');
+                stringBuilder.append(telephone);
+            }
+            // 一次最多向400个号码发送信息，号码大小约36kb
+            isNumberFilled = mobileCount%400 == 0;
+            // 最后一批号码发送信息
+            isLast = mobileCount == shopList.size();
+            // 发送信息
+            if (isNumberFilled || isLast) {
+                String destmobile = stringBuilder.substring(1);
+                System.out.println(sendSms_quick(destmobile,content));
+                //清空StringBuilder
+                stringBuilder.setLength(0);
             }
 
         }
-//        System.out.println(sendSms_quick("18857193391","温馨提示：（报名时间为4月25日-4月27日20时）网站广告位报名入口已发布，本期总计首页26个位置，轮转播区2个，轮转播下方区1个，首页热卖10个，推荐档口8个，元素馆5个（注意：所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台。【四季星座网】"));
     }
 
     String msg="温馨提示：（报名时间为4月28日-4月30日20时）网站广告位报名入口已发布，本期总计首页29个位置，轮转播区1个，轮转播下方区1个，首页热卖10个，推荐档口7个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】";
