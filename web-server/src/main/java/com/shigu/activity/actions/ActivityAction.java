@@ -2,6 +2,8 @@ package com.shigu.activity.actions;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
+import com.opentae.data.mall.beans.ShiguActivity;
+import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.shigu.activity.vo.*;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
@@ -42,6 +44,9 @@ public class ActivityAction {
 
     @Autowired
     private ShopForCdnService shopForCdnService;
+
+    @Autowired
+    private ShiguActivityMapper shiguActivityMapper;
 
     @Autowired
     private RedisIO redisIO;
@@ -322,6 +327,12 @@ public class ActivityAction {
 
     @RequestMapping("activity/popular")
     public String gfShow(Long id, Model model) throws Main4Exception {
+        ShiguActivity activity;
+        if (id == null || (activity = shiguActivityMapper.selectByPrimaryKey(id)) == null)
+            throw new Main4Exception("页面不存在");
+        model.addAttribute("activeName", activity.getTitle());
+        model.addAttribute("bannerSrc");
+        model.addAttribute("bannerSrcbgColor");
         model.addAttribute("goodsList", activityService.gfShow(id));
         return "activity/gfShow";
     }

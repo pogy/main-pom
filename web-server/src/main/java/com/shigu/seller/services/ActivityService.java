@@ -21,6 +21,7 @@ import com.shigu.seller.vo.ActivityDetailsVo;
 import com.shigu.seller.vo.ActivityListVO;
 import com.shigu.seller.vo.ApplyItemVO;
 import com.shigu.seller.vo.GfShowVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -170,13 +171,19 @@ public class ActivityService {
     }
 
     public List<GfShowVO> gfShow(Long id) throws Main4Exception {
-        if (id == null || shiguActivityMapper.selectByPrimaryKey(id) == null)
-            throw new Main4Exception("页面不存在");
         List<GfShowVO> vos = new ArrayList<>();
         List<Long> itemIds = new ArrayList<>();
-        for (ShiguActivityApplyVO vo : activity(id).luckyDogs()) {
+        ShiguActivityService activityService = activity(id);
+        for (ShiguActivityApplyVO vo : activityService.luckyDogs()) {
             itemIds.addAll(vo.getItemIds());
         }
+        String services = activityService.info().getServices();
+        int sum = 0;
+        try {
+            if (StringUtils.isNotEmpty(services))
+                for (String s : services.split(","))
+                    sum += Integer.valueOf(s);
+        } catch (NumberFormatException ignored){}
         if (!itemIds.isEmpty()) {
             List<ItemShowBlock> items = shopForCdnService.searchItemOnsale(itemIds, "hz", 1, itemIds.size()).getContent();
             Map<Long, ShopNumAndMarket> marketMap = BeanMapper.list2Map(
@@ -198,6 +205,7 @@ public class ActivityService {
                 vo.setImgSrc(hz.getImgUrl());
                 vo.setTitle(hz.getTitle());
                 vo.setPiPriceString(hz.getPrice());
+                vo.setShStatus(sum);
                 ShopNumAndMarket shopNumAndMarket = marketMap.get(hz.getShopId());
                 if (shopNumAndMarket != null) {
                     vo.setMarketName(shopNumAndMarket.getMarket());

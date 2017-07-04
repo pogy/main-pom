@@ -13,6 +13,7 @@ public class GfShowVO {
     private String marketName;
     private String shopNum;
     private Long shopId;
+    private int shStatus;
 
     public Long getGoodsId() {
         return goodsId;
@@ -68,5 +69,13 @@ public class GfShowVO {
 
     public void setShopId(Long shopId) {
         this.shopId = shopId;
+    }
+
+    public int getShStatus() {
+        return shStatus;
+    }
+
+    public void setShStatus(int shStatus) {
+        this.shStatus = shStatus;
     }
 }
