@@ -331,9 +331,9 @@ public class ActivityAction {
         if (id == null || (activity = shiguActivityMapper.selectByPrimaryKey(id)) == null)
             throw new Main4Exception("页面不存在");
         model.addAttribute("activeName", activity.getTitle());
-        model.addAttribute("bannerSrc");
-        model.addAttribute("bannerSrcbgColor");
+        model.addAttribute("bannerSrc", activity.getBanner());
+        model.addAttribute("bgColor", activity.getBkcolor());
         model.addAttribute("goodsList", activityService.gfShow(id));
-        return "activity/gfShow";
+        return "activity/popular";
     }
 }

@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -186,17 +187,20 @@ public class ActivityService {
         } catch (NumberFormatException ignored){}
         if (!itemIds.isEmpty()) {
             List<ItemShowBlock> items = shopForCdnService.searchItemOnsale(itemIds, "hz", 1, itemIds.size()).getContent();
-            Map<Long, ShopNumAndMarket> marketMap = BeanMapper.list2Map(
-                    shiguShopMapper.selShopNumAndMarkets(
-                            new ArrayList<>(
-                                    BeanMapper.getFieldSet(
-                                            items,
-                                            "shopId",
-                                            Long.class)
-                            )),
-                    "shopId",
-                    Long.class
-            );
+            Map<Long, ShopNumAndMarket> marketMap = Collections.emptyMap();
+            if (!items.isEmpty()) {
+                marketMap = BeanMapper.list2Map(
+                        shiguShopMapper.selShopNumAndMarkets(
+                                new ArrayList<>(
+                                        BeanMapper.getFieldSet(
+                                                items,
+                                                "shopId",
+                                                Long.class)
+                                )),
+                        "shopId",
+                        Long.class
+                );
+            }
             for (ItemShowBlock hz : items) {
                 GfShowVO vo = new GfShowVO();
                 vos.add(vo);
