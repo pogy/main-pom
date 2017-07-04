@@ -232,6 +232,210 @@ public class ShiguActivityApplyExample implements SgExample{
             }
         }
 
+        public ShiguActivityApplyExample.Criteria andApplyIdIsNull() {
+            this.addCriterion("apply_id is null");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdIsNotNull() {
+            this.addCriterion("apply_id is not null");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdEqualTo(Long value) {
+            this.addCriterion("apply_id =", value, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdNotEqualTo(Long value) {
+            this.addCriterion("apply_id <>", value, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdGreaterThan(Long value) {
+            this.addCriterion("apply_id >", value, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("apply_id >=", value, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdLessThan(Long value) {
+            this.addCriterion("apply_id <", value, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("apply_id <=", value, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdLike(String value) {
+            this.addCriterion("apply_id like", value, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdNotLike(String value) {
+            this.addCriterion("apply_id not like", value, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }        public ShiguActivityApplyExample.Criteria andApplyIdIn(List<Long> values) {
+            this.addCriterion("apply_id in", values, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdNotIn(List<Long> values) {
+            this.addCriterion("apply_id not in", values, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdBetween(Long value1, Long value2) {
+            this.addCriterion("apply_id between", value1, value2, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andApplyIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("apply_id not between", value1, value2, "applyId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdIsNull() {
+            this.addCriterion("activity_id is null");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdIsNotNull() {
+            this.addCriterion("activity_id is not null");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdEqualTo(Long value) {
+            this.addCriterion("activity_id =", value, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdNotEqualTo(Long value) {
+            this.addCriterion("activity_id <>", value, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdGreaterThan(Long value) {
+            this.addCriterion("activity_id >", value, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("activity_id >=", value, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdLessThan(Long value) {
+            this.addCriterion("activity_id <", value, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("activity_id <=", value, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdLike(String value) {
+            this.addCriterion("activity_id like", value, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdNotLike(String value) {
+            this.addCriterion("activity_id not like", value, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }        public ShiguActivityApplyExample.Criteria andActivityIdIn(List<Long> values) {
+            this.addCriterion("activity_id in", values, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdNotIn(List<Long> values) {
+            this.addCriterion("activity_id not in", values, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdBetween(Long value1, Long value2) {
+            this.addCriterion("activity_id between", value1, value2, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andActivityIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("activity_id not between", value1, value2, "activityId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseIsNull() {
+            this.addCriterion("choose is null");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseIsNotNull() {
+            this.addCriterion("choose is not null");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseEqualTo(Integer value) {
+            this.addCriterion("choose =", value, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseNotEqualTo(Integer value) {
+            this.addCriterion("choose <>", value, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseGreaterThan(Integer value) {
+            this.addCriterion("choose >", value, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseGreaterThanOrEqualTo(Integer value) {
+            this.addCriterion("choose >=", value, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseLessThan(Integer value) {
+            this.addCriterion("choose <", value, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseLessThanOrEqualTo(Integer value) {
+            this.addCriterion("choose <=", value, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseLike(String value) {
+            this.addCriterion("choose like", value, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseNotLike(String value) {
+            this.addCriterion("choose not like", value, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }        public ShiguActivityApplyExample.Criteria andChooseIn(List<Integer> values) {
+            this.addCriterion("choose in", values, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseNotIn(List<Integer> values) {
+            this.addCriterion("choose not in", values, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseBetween(Integer value1, Integer value2) {
+            this.addCriterion("choose between", value1, value2, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andChooseNotBetween(Integer value1, Integer value2) {
+            this.addCriterion("choose not between", value1, value2, "choose");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
         public ShiguActivityApplyExample.Criteria andShopIdIsNull() {
             this.addCriterion("shop_id is null");
             return (ShiguActivityApplyExample.Criteria)this;
@@ -297,6 +501,74 @@ public class ShiguActivityApplyExample implements SgExample{
 
         public ShiguActivityApplyExample.Criteria andShopIdNotBetween(Long value1, Long value2) {
             this.addCriterion("shop_id not between", value1, value2, "shopId");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsIsNull() {
+            this.addCriterion("items is null");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsIsNotNull() {
+            this.addCriterion("items is not null");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsEqualTo(String value) {
+            this.addCriterion("items =", value, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsNotEqualTo(String value) {
+            this.addCriterion("items <>", value, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsGreaterThan(String value) {
+            this.addCriterion("items >", value, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsGreaterThanOrEqualTo(String value) {
+            this.addCriterion("items >=", value, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsLessThan(String value) {
+            this.addCriterion("items <", value, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsLessThanOrEqualTo(String value) {
+            this.addCriterion("items <=", value, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsLike(String value) {
+            this.addCriterion("items like", value, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsNotLike(String value) {
+            this.addCriterion("items not like", value, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }        public ShiguActivityApplyExample.Criteria andItemsIn(List<String> values) {
+            this.addCriterion("items in", values, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsNotIn(List<String> values) {
+            this.addCriterion("items not in", values, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsBetween(String value1, String value2) {
+            this.addCriterion("items between", value1, value2, "items");
+            return (ShiguActivityApplyExample.Criteria)this;
+        }
+
+        public ShiguActivityApplyExample.Criteria andItemsNotBetween(String value1, String value2) {
+            this.addCriterion("items not between", value1, value2, "items");
             return (ShiguActivityApplyExample.Criteria)this;
         }
 
@@ -433,278 +705,6 @@ public class ShiguActivityApplyExample implements SgExample{
 
         public ShiguActivityApplyExample.Criteria andPhoneNotBetween(String value1, String value2) {
             this.addCriterion("phone not between", value1, value2, "phone");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdIsNull() {
-            this.addCriterion("activity_id is null");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdIsNotNull() {
-            this.addCriterion("activity_id is not null");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdEqualTo(Long value) {
-            this.addCriterion("activity_id =", value, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdNotEqualTo(Long value) {
-            this.addCriterion("activity_id <>", value, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdGreaterThan(Long value) {
-            this.addCriterion("activity_id >", value, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("activity_id >=", value, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdLessThan(Long value) {
-            this.addCriterion("activity_id <", value, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("activity_id <=", value, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdLike(String value) {
-            this.addCriterion("activity_id like", value, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdNotLike(String value) {
-            this.addCriterion("activity_id not like", value, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }        public ShiguActivityApplyExample.Criteria andActivityIdIn(List<Long> values) {
-            this.addCriterion("activity_id in", values, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdNotIn(List<Long> values) {
-            this.addCriterion("activity_id not in", values, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdBetween(Long value1, Long value2) {
-            this.addCriterion("activity_id between", value1, value2, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andActivityIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("activity_id not between", value1, value2, "activityId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdIsNull() {
-            this.addCriterion("apply_id is null");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdIsNotNull() {
-            this.addCriterion("apply_id is not null");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdEqualTo(Long value) {
-            this.addCriterion("apply_id =", value, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdNotEqualTo(Long value) {
-            this.addCriterion("apply_id <>", value, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdGreaterThan(Long value) {
-            this.addCriterion("apply_id >", value, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("apply_id >=", value, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdLessThan(Long value) {
-            this.addCriterion("apply_id <", value, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("apply_id <=", value, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdLike(String value) {
-            this.addCriterion("apply_id like", value, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdNotLike(String value) {
-            this.addCriterion("apply_id not like", value, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }        public ShiguActivityApplyExample.Criteria andApplyIdIn(List<Long> values) {
-            this.addCriterion("apply_id in", values, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdNotIn(List<Long> values) {
-            this.addCriterion("apply_id not in", values, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdBetween(Long value1, Long value2) {
-            this.addCriterion("apply_id between", value1, value2, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andApplyIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("apply_id not between", value1, value2, "applyId");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseIsNull() {
-            this.addCriterion("choose is null");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseIsNotNull() {
-            this.addCriterion("choose is not null");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseEqualTo(Boolean value) {
-            this.addCriterion("choose =", value, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseNotEqualTo(Boolean value) {
-            this.addCriterion("choose <>", value, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseGreaterThan(Boolean value) {
-            this.addCriterion("choose >", value, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseGreaterThanOrEqualTo(Boolean value) {
-            this.addCriterion("choose >=", value, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseLessThan(Boolean value) {
-            this.addCriterion("choose <", value, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseLessThanOrEqualTo(Boolean value) {
-            this.addCriterion("choose <=", value, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseLike(String value) {
-            this.addCriterion("choose like", value, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseNotLike(String value) {
-            this.addCriterion("choose not like", value, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }        public ShiguActivityApplyExample.Criteria andChooseIn(List<Boolean> values) {
-            this.addCriterion("choose in", values, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseNotIn(List<Boolean> values) {
-            this.addCriterion("choose not in", values, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseBetween(Boolean value1, Boolean value2) {
-            this.addCriterion("choose between", value1, value2, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andChooseNotBetween(Boolean value1, Boolean value2) {
-            this.addCriterion("choose not between", value1, value2, "choose");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsIsNull() {
-            this.addCriterion("items is null");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsIsNotNull() {
-            this.addCriterion("items is not null");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsEqualTo(String value) {
-            this.addCriterion("items =", value, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsNotEqualTo(String value) {
-            this.addCriterion("items <>", value, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsGreaterThan(String value) {
-            this.addCriterion("items >", value, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsGreaterThanOrEqualTo(String value) {
-            this.addCriterion("items >=", value, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsLessThan(String value) {
-            this.addCriterion("items <", value, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsLessThanOrEqualTo(String value) {
-            this.addCriterion("items <=", value, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsLike(String value) {
-            this.addCriterion("items like", value, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsNotLike(String value) {
-            this.addCriterion("items not like", value, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }        public ShiguActivityApplyExample.Criteria andItemsIn(List<String> values) {
-            this.addCriterion("items in", values, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsNotIn(List<String> values) {
-            this.addCriterion("items not in", values, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsBetween(String value1, String value2) {
-            this.addCriterion("items between", value1, value2, "items");
-            return (ShiguActivityApplyExample.Criteria)this;
-        }
-
-        public ShiguActivityApplyExample.Criteria andItemsNotBetween(String value1, String value2) {
-            this.addCriterion("items not between", value1, value2, "items");
             return (ShiguActivityApplyExample.Criteria)this;
         }
     }

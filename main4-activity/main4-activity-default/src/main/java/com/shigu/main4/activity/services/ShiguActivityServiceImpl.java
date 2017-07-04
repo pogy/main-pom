@@ -71,6 +71,7 @@ public class ShiguActivityServiceImpl implements ShiguActivityService {
         apply.setItems(StringUtils.join(vo.getItemIds(), ","));
         apply.setApplyId(null);
         apply.setActivityId(activityId);
+        apply.setChoose(1);
         shiguActivityApplyMapper.insertSelective(apply);
     }
 
@@ -84,7 +85,7 @@ public class ShiguActivityServiceImpl implements ShiguActivityService {
         return listApply(null);
     }
 
-    private List<ShiguActivityApplyVO> listApply(Boolean choose) {
+    private List<ShiguActivityApplyVO> listApply(Integer choose) {
         ShiguActivityApply apply = new ShiguActivityApply();
         apply.setActivityId(activityId);
         apply.setChoose(choose);
@@ -109,7 +110,7 @@ public class ShiguActivityServiceImpl implements ShiguActivityService {
      */
     @Override
     public List<ShiguActivityApplyVO> luckyDogs() {
-        return listApply(true);
+        return listApply(3);
     }
 
     @Override
@@ -137,10 +138,10 @@ public class ShiguActivityServiceImpl implements ShiguActivityService {
         if (applyId == null) {
             return;
         }
-        changeMyMind(applyId, true);
+        changeMyMind(applyId, 3);
     }
 
-    private void changeMyMind(Long applyId, Boolean choose) {
+    private void changeMyMind(Long applyId, Integer choose) {
         ShiguActivityApply apply = new ShiguActivityApply();
         apply.setActivityId(activityId);
         apply.setApplyId(applyId);
@@ -158,7 +159,7 @@ public class ShiguActivityServiceImpl implements ShiguActivityService {
         if (applyId == null) {
             return;
         }
-        changeMyMind(applyId, false);
+        changeMyMind(applyId, 2);
     }
 
     public Long getActivityId() {

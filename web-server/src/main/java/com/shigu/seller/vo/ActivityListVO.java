@@ -28,9 +28,11 @@ public class ActivityListVO {
 
     private Boolean supportBarter;
 
-    private Boolean hdStatus;
+    private int hdStatus;
 
     private int sqStatus;
+
+    private String goodsImgSrc;
 
     public Long getActid() {
         return actid;
@@ -120,11 +122,11 @@ public class ActivityListVO {
         this.supportBarter = supportBarter;
     }
 
-    public Boolean getHdStatus() {
+    public int getHdStatus() {
         return hdStatus;
     }
 
-    public void setHdStatus(Boolean hdStatus) {
+    public void setHdStatus(int hdStatus) {
         this.hdStatus = hdStatus;
     }
 
@@ -134,5 +136,13 @@ public class ActivityListVO {
 
     public void setSqStatus(int sqStatus) {
         this.sqStatus = sqStatus;
+    }
+
+    public String getGoodsImgSrc() {
+        return goodsImgSrc;
+    }
+
+    public void setGoodsImgSrc(String goodsImgSrc) {
+        this.goodsImgSrc = goodsImgSrc;
     }
 }
