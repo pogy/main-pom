@@ -20,7 +20,7 @@ public class ShiguActivityApply implements Serializable {
     /**
      * 申请是否通过。
      */
-	private Boolean choose;
+	private Integer choose;
 
     /**
      * 
@@ -58,11 +58,11 @@ public class ShiguActivityApply implements Serializable {
 		return this.activityId;
 	}
 
-	public void setChoose(Boolean choose) {
+	public void setChoose(Integer choose) {
 		this.choose = choose;
 	}
 
-	public Boolean getChoose() {
+	public Integer getChoose() {
 		return this.choose;
 	}
 

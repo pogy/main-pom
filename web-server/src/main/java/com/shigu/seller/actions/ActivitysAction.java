@@ -30,7 +30,7 @@ public class ActivitysAction {
     @RequestMapping("actRegister")
     public String actRegister(HttpSession session, Model model) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        model.addAttribute("activities", activityService.selAllActivities(ps.getUserId()));
+        model.addAttribute("activities", activityService.selAllActivities(ps.getUserId(), ps.getLogshop().getWebSite()));
         return "seller/actRegister";
     }
 

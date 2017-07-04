@@ -10,10 +10,15 @@ import java.util.Date;
  */
 public enum ActivityStatus {
 
-    ACTIVITY_NOT_BEGUN,// 活动未开始
-    ACTION,           // 活动进行中
-    ACTIVITY_CLOSED,   // 活动结束
+    ACTIVITY_NOT_BEGUN(1),// 活动未开始
+    ACTION(2),           // 活动进行中
+    ACTIVITY_CLOSED(3),   // 活动结束
     ;
+
+    public int status;
+    ActivityStatus(int i) {
+        this.status = i;
+    }
 
     /**
      *  // 为活动信息设置活动状态
