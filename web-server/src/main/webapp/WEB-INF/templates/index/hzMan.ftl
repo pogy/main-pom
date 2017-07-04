@@ -6,8 +6,7 @@
     <title>[四季星座网]杭州站-四季星座网-四季星座论坛-四季青服装货源，四季青市场，网店代理货源，网上服装进货，男装淘宝货源，女装淘宝货源，网络货源,网店货源导航,淘宝店货源,实体网络进货,杭州网店之家,杭州专业网店货源,杭州网店货源</title>
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
-    
-    <link href="http://style.571xz.com/indexV5/css/hzMan.css?t=1498818124107" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV5/css/hzMan-v1.css?t=1499158951462" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/indexV5/js/jquery.cookie.js"></script>
 <script>/*============ indexV5/page#layoutHeader BEGIN ============*/
@@ -35,7 +34,7 @@
 
 
 </script>    <script src="http://style.571xz.com/indexV5/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV5/js/hzMan.js?t=1498818124107"></script>
+    <script src="http://style.571xz.com/indexV5/js/hzMan-v1.js?t=1499158951462"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -265,7 +264,6 @@ var webSite = '${webSite!}';
         <div class="searchBox">
             
             <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" target="_blank">
-            
                 
                 <input type="hidden" name="pid" value="30">
                 
@@ -582,7 +580,9 @@ var webSite = '${webSite!}';
         <div class="topStoread">
             <ul class="clearfix">
                 <#list topStoread as item>
+                <#if item_index lt 2>
                 <li><a href="${item.href!}" target="_blank"><img src="${item.imgsrc!}"></a></li>
+                </#if>
                 </#list>
             </ul>
         </div>
@@ -915,7 +915,7 @@ $(".imgBox img").lazyload({
 </script>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
