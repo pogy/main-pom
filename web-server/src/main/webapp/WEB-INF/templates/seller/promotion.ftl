@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1498989044201" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1499147423603" rel="stylesheet">
     
   </head>
 <body>
@@ -259,7 +259,7 @@ var webSite = '${webSite!}';
                     <#if (inForceList?size) gt 0>
                         <#list inForceList as pos>
                         <div class="posItem">
-                            <h3 class="posArea">${pos.posName!}</h3>
+                            <h3 class="posArea">${pos.code!}</h3>
                             <div class="posInfo" <#if pos.goodsId?? && pos.goodsId != ''> data-goodsid="${pos.goodsId!}" </#if>>
                                 <#if pos.picUrl?? && pos.picUrl != ''>
                                 <img src="${pos.picUrl!}">
@@ -339,7 +339,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/promotion.js?t=1498989044201"></script>
+<script src="http://style.571xz.com/gys5/js/promotion.js?t=1499147423603"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
