@@ -13,8 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    
-    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1499149497487" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actDetails-v1.css?t=1499158330035" rel="stylesheet">
     
   </head>
 <body>
@@ -278,7 +277,7 @@ var actidVal = '${RequestParameters.actid!}';/*query.actid，ftl可通过Request
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -308,7 +307,7 @@ var actidVal = '${RequestParameters.actid!}';/*query.actid，ftl可通过Request
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1499149497487"></script>
+<script src="http://style.571xz.com/gys5/js/actDetails-v1.js?t=1499158330035"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
