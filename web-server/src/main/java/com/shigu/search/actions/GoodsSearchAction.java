@@ -194,7 +194,12 @@ public class GoodsSearchAction {
 //        model.addAttribute("cateNav",searchNav);
         model.addAttribute("totalPage",  pager.getTotalPages()>100?100:pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
-        return "search/search";
+        if ("kx".equalsIgnoreCase(website)) {
+            return "xieSearch/search";
+        } else  {
+            return "search/search";
+        }
+
     }
 
     /**
@@ -212,7 +217,11 @@ public class GoodsSearchAction {
         }
         bo.setRows(56);
         if (bo.getPid() == null) {
-            bo.setPid(30L);
+            if ("kx".equalsIgnoreCase(website)) {//看鞋网的类目
+                bo.setPid(50011740L);
+            } else {
+                bo.setPid(30L);
+            }
         }
         if (bo.getKeyword() != null)
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
@@ -255,7 +264,12 @@ public class GoodsSearchAction {
         //搜索路径
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
-        return "search/goods";
+        if ("kx".equalsIgnoreCase(website)) {
+            return "xieSearch/goods";
+        } else {
+            return "search/goods";
+        }
+
     }
 
     private void maxTotalSizeOrPage(ShiguPager pager, int pageSize) {

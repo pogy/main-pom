@@ -337,6 +337,22 @@ public class CdnAction {
     }
 
     /**
+     * 看鞋网站首页
+     * @return
+     */
+    @RequestMapping(value = "kxindex" , method = RequestMethod.GET)
+    public String kxindex(Model model, HttpServletRequest request) {
+        String webSite = "kx";
+        Long cid=50011740L;
+
+        //大图
+        model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(SpreadEnum.KX_MAN_DT)));
+//        model.addAttribute("hotBotAdvs",selFromCache(spreadService.selImgBanners(manOrWoman.equals("Woman")?SpreadEnum.WOMAN_HOTBOT:SpreadEnum.MAN_HOTBOT)));
+        model.addAttribute("webSite", webSite);
+        return "index/shoe";
+    }
+
+    /**
      * 常熟站首页
      * @return
      */
@@ -508,7 +524,12 @@ public class CdnAction {
         model.addAttribute("bo",bo);
         model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
 //        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
-        return "cdn/item";
+        if ("kx".equalsIgnoreCase(cdnItem.getWebSite())) {
+            return "cdn/xieItem";
+        } else {
+            return "cdn/item";
+        }
+
     }
 
     @RequestMapping("shopnew")
@@ -588,7 +609,11 @@ public class CdnAction {
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
 //            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
-            return "cdn/shopDown";
+            if ("kx".equalsIgnoreCase(webSite)) {
+                return "cdn/xieShopDown";
+            } else {
+                return "cdn/shopDown";
+            }
         }
         Long pageId=shopDesignService.selPageIdByShopId(bo.getId());
         ContainerVO vo=shopData(bo.getId(),pageId,webSite,model);
@@ -597,8 +622,8 @@ public class CdnAction {
             shopSearch(bo,result,model);
         }
         model.addAttribute("webSite",webSite);
-//        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
-        return "cdn/shop";
+        return "kx".equals(webSite)?"cdn/xieShop":"cdn/shop";
+
     }
 
     private boolean noFitment(ContainerVO vo){
@@ -636,7 +661,12 @@ public class CdnAction {
         int shopStatus = shopBaseService.getShopStatus(shopId);
         if(shopStatus == 1){
 //            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
-            return "cdn/shopDown";
+            if ("kx".equalsIgnoreCase(webSite)) {
+                return "cdn/xieShopDown";
+            } else {
+                return "cdn/shopDown";
+            }
+
         }
 //        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
         return "cdn/shop";
@@ -684,7 +714,11 @@ public class CdnAction {
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
 //            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
-            return "cdn/shopDown";
+            if ("kx".equalsIgnoreCase(webSite)) {
+                return "cdn/xieShopDown";
+            } else {
+                return "cdn/shopDown";
+            }
         }
 //        return "wa".equals(webSite)?"cdn/wa_shop":"cdn/shop";
         return "cdn/shop";
@@ -729,7 +763,12 @@ public class CdnAction {
         model.addAttribute("pageOption",vo.getDiscus().selPageOption(bo.getPageSize()));
         String webSite=vo.getStoreRelation().getWebSite();
 //        return !"wa".equals(webSite)?"cdn/shopcomment":"cdn/wa_shopcomment";
-        return "cdn/shopcomment";
+
+        if ("kx".equalsIgnoreCase(webSite)) {
+            return "cdn/xieShopcomment";
+        } else {
+            return "cdn/shopcomment";
+        }
     }
 
     @RequestMapping("downloadImg")
