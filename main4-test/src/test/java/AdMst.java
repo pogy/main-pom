@@ -1,5 +1,3 @@
-import com.alibaba.dubbo.common.logger.Logger;
-import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.data.mall.beans.MemberLicense;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.MemberLicenseExample;
@@ -15,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -72,15 +69,18 @@ public class AdMst {
                 }
             }
             if(s.getShopId()==40413L){
-                telephone = "18757597186";
+                telephone = "18757597186;15168224104";
+            }
+            if (s.getShopId()==41437L) {
+                telephone = "13666678498";
             }
             if(telephone!=null){
                 System.out.println(telephone);
                 stringBuilder.append(';');
                 stringBuilder.append(telephone);
             }
-            // 一次最多向400个号码发送信息，号码大小约36kb
-            isNumberFilled = mobileCount%400 == 0;
+            // 一次最多向800个号码发送信息，utf8号码大小约72kb
+            isNumberFilled = mobileCount%800 == 0;
             // 最后一批号码发送信息
             isLast = mobileCount == shopList.size();
             // 发送信息
