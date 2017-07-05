@@ -9,6 +9,7 @@ import com.opentae.data.mall.interfaces.ShiguActivityApplyMapper;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.activity.enums.ActivityStatus;
+import com.shigu.main4.activity.enums.ApplyStatus;
 import com.shigu.main4.activity.services.ShiguActivityService;
 import com.shigu.main4.activity.vo.ShiguActivityApplyVO;
 import com.shigu.main4.activity.vo.ShiguActivityVO;
@@ -112,7 +113,7 @@ public class ActivityService {
             vo.setSupportReturn(activity.getServices().contains("1"));
             vo.setSupportBarter(activity.getServices().contains("2"));
 
-            vo.setHdStatus(activity.getStatus().status);
+            vo.setHdStatus(activity.getApplyStatus() == ApplyStatus.APPLY_NOT_BEGUN ? 0 : activity.getStatus().status);
             ShiguActivityApply activityApply = applyMap.get(activity.getActivityId());
             if (activityApply != null) {
                 for (String s : activityApply.getItems().split(",")) {
