@@ -11,11 +11,11 @@
     
     <meta name="description" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/xieSearch/css/search.css?t=1499247714666" rel="stylesheet">
+    <link href="http://style.571xz.com/xieSearch/css/search.css?t=1499248638328" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/xieSearch/js/search.js?t=1499247714666"></script>
+    <script src="http://style.571xz.com/xieSearch/js/search.js?t=1499248638328"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -51,9 +51,6 @@ var main_host = 'http://www.kxie.com/';
         
         <div class="rightbox">
             <ul>
-                <li class="noIndex">
-                    <a href="${main_host!}" class="c_ff4400">四季星座网首页</a>
-                </li>
                 <#if session_user_redis__??>
                     <#if session_user_redis__.logshop??>
                     <li>

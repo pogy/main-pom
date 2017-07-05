@@ -11,11 +11,11 @@
     
     <meta name="description" content="看鞋网，一键代发，一键上传，${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}">
     
-    <link href="http://style.571xz.com/xieShopItem/css/xieShopcomment.css?t=1499247666197" rel="stylesheet">
+    <link href="http://style.571xz.com/xieShopItem/css/xieShopcomment.css?t=1499248646113" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/xieShopItem/js/xieShopcomment.js?t=1499247666197"></script>
+    <script src="http://style.571xz.com/xieShopItem/js/xieShopcomment.js?t=1499248646113"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -51,9 +51,6 @@ var main_host = 'http://www.kxie.com/';
         
         <div class="rightbox">
             <ul>
-                <li class="noIndex">
-                    <a href="${main_host!}" class="c_ff4400">四季星座网首页</a>
-                </li>
                 <#if session_user_redis__??>
                     <#if session_user_redis__.logshop??>
                     <li>
