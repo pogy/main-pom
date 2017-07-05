@@ -26,7 +26,7 @@ public enum ActivityStatus {
      */
     public static ActivityStatus check(ShiguActivityVO vo) {
         if (vo.getStartTime() == null || vo.getEndTime() == null) {
-            throw new RuntimeException(String.format("活动[%d]信息请补全起止时间", vo.getActivityId()));
+            return ACTIVITY_NOT_BEGUN;
         }
         Date now = new Date();
         if (now.before(vo.getStartTime()))

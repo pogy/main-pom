@@ -99,14 +99,14 @@ public class ActivityService {
             activityListVOS.add(vo);
             vo.setActid(activity.getActivityId());
             vo.setActTitle(activity.getTitle());
-            vo.setActEndTime(DateUtil.dateToString(activity.getEndTime(), DATE_FORMAT_PATTERN));
-            vo.setActStartTime(DateUtil.dateToString(activity.getStartTime(), DATE_FORMAT_PATTERN));
+            vo.setActEndTime(pickTime(activity.getEndTime()));
+            vo.setActStartTime(pickTime(activity.getStartTime()));
             vo.setActImg(activity.getImage());
             vo.setActNums(activity.getNums());
             vo.setApplyTime(
-                    DateUtil.dateToString(activity.getStartApply(), DATE_FORMAT_PATTERN)
+                    pickTime(activity.getStartApply())
                             + "-"
-                            + DateUtil.dateToString(activity.getEndApply(), DATE_FORMAT_PATTERN));
+                            + pickTime(activity.getEndApply()));
             vo.setApplyRange(activity.getRuleInfo());
             vo.setChargeStyle(activity.getCostDesc());
             vo.setSupportReturn(activity.getServices().contains("1"));
@@ -130,6 +130,10 @@ public class ActivityService {
             }
         }
         return activityListVOS;
+    }
+
+    private String pickTime(Date date) {
+        return date == null ? "待定" : DateUtil.dateToString(date, DATE_FORMAT_PATTERN);
     }
 
     public ActivityDetailsVo selActivityDetails(Long actid) {
