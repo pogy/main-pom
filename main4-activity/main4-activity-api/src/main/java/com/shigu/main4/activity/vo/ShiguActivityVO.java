@@ -65,7 +65,9 @@ public class ShiguActivityVO implements Serializable {
     /**
      * 活动详情
      */
-	private String desc;
+	private String descInfo;
+
+	private String webSite;
 
 	/**
 	 * 活动状态
@@ -178,12 +180,12 @@ public class ShiguActivityVO implements Serializable {
 		return this.ruleInfo;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescInfo(String descInfo) {
+		this.descInfo = descInfo;
 	}
 
-	public String getDesc() {
-		return this.desc;
+	public String getDescInfo() {
+		return this.descInfo;
 	}
 
 	public ActivityStatus getStatus() {
@@ -192,5 +194,13 @@ public class ShiguActivityVO implements Serializable {
 
 	public ApplyStatus getApplyStatus() {
 		return applyStatus = ApplyStatus.check(this);
+	}
+
+	public String getWebSite() {
+		return webSite;
+	}
+
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
 	}
 }
