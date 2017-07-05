@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/actRegister-v1.css?t=1499158319271" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister-v1.css?t=1499247996060" rel="stylesheet">
     
   </head>
 <body>
@@ -277,7 +277,12 @@ var webSite = '${webSite!}';
                         </p>
                     </div>
                     <div class="applyStatus">
-                        <#if actItem.hdStatus == '1'>
+                        <#if actItem.hdStatus == '0'>
+<#assign text>{"text":'等待报名', "cls":'actEnd'}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton actEnd" jbtn="" id="">等待报名</button>
+                        
+                        <#elseif actItem.hdStatus == '1'>
                             <#if actItem.sqStatus == '0'>
                             
                             <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
@@ -342,7 +347,12 @@ var webSite = '${webSite!}';
                         </p>
                     </div>
                     <div class="applyStatus">
-                        <#if actItem.hdStatus == '1'>
+                        <#if actItem.hdStatus == '0'>
+<#assign text>{"text":'等待报名', "cls":'actEnd'}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton actEnd" jbtn="" id="">等待报名</button>
+                        
+                        <#elseif actItem.hdStatus == '1'>
                             <#if actItem.sqStatus == '0'>
                             
                             <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
@@ -408,7 +418,12 @@ var webSite = '${webSite!}';
                         </p>
                     </div>
                     <div class="applyStatus">
-                        <#if actItem.hdStatus == '1'>
+                        <#if actItem.hdStatus == '0'>
+<#assign text>{"text":'等待报名', "cls":'actEnd'}</#assign>
+<#assign $it=text?eval />
+                                        <button class="gyButton actEnd" jbtn="" id="">等待报名</button>
+                        
+                        <#elseif actItem.hdStatus == '1'>
                             <#if actItem.sqStatus == '0'>
                             
                             <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
@@ -483,7 +498,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actRegister-v1.js?t=1499158319271"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister-v1.js?t=1499247996060"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
