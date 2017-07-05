@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/actRegister-v1.css?t=1499247996060" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister-v1.css?t=1499248298497" rel="stylesheet">
     
   </head>
 <body>
@@ -268,7 +268,7 @@ var webSite = '${webSite!}';
                         </p>
                         <p class="lineHei32">
                             <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
-                            <span class="actNums">名额：${actItem.actNums!} 款商品</span>
+                            <span class="actNums">名额：${actItem.actNums!}</span>
                             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
                         </p>
                         <p class="lineHei32">
@@ -338,7 +338,7 @@ var webSite = '${webSite!}';
                         </p>
                         <p class="lineHei32">
                             <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
-                            <span class="actNums">名额：${actItem.actNums!} 款商品</span>
+                            <span class="actNums">名额：${actItem.actNums!}</span>
                             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
                         </p>
                         <p class="lineHei32">
@@ -409,7 +409,7 @@ var webSite = '${webSite!}';
                         </p>
                         <p class="lineHei32">
                             <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
-                            <span class="actNums">名额：${actItem.actNums!} 款商品</span>
+                            <span class="actNums">名额：${actItem.actNums!}</span>
                             <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
                         </p>
                         <p class="lineHei32">
@@ -498,7 +498,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actRegister-v1.js?t=1499247996060"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister-v1.js?t=1499248298497"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
