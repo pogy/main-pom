@@ -91,6 +91,7 @@ public class ActivityService {
 
         ShiguActivityExample t = new ShiguActivityExample();
         t.setOrderByClause("end_time desc");
+        t.createCriteria().andWebSiteEqualTo(webSite);
         List<ShiguActivity> activities = shiguActivityMapper.selectByExample(t);
         List<ActivityListVO> activityListVOS = new ArrayList<>(activities.size());
         for (ShiguActivityVO activity : BeanMapper.mapList(activities, ShiguActivityVO.class)) {
