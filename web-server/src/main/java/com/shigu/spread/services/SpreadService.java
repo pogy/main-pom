@@ -48,7 +48,7 @@ public class SpreadService {
      * @return
      */
     public ObjFromCache<List<ItemSpreadVO>> selItemSpreads(final String webSite, final SpreadEnum spread){
-        return new ObjFromCache<List<ItemSpreadVO>>(redisForIndexPage,spread.getCode()+"_"+webSite,
+        return new ObjFromCache<List<ItemSpreadVO>>(redisForIndexPage,spread.getCode(),
                 ItemSpreadVO.class) {
             @Override
             public List<ItemSpreadVO> selReal() {

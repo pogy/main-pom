@@ -223,6 +223,15 @@ public class ActivityService {
         return SpringBeanFactory.getBean(ShiguActivityService.class, actid);
     }
 
+    /**
+     * 活动信息
+     * @param id
+     * @return
+     */
+    public ShiguActivityVO activityInfo(Long id){
+        return activity(id).info();
+    }
+
     public List<GfShowVO> gfShow(Long id) throws Main4Exception {
         List<GfShowVO> vos = new ArrayList<>();
         List<Long> itemIds = new ArrayList<>();
