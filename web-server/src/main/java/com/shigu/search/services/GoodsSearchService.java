@@ -138,7 +138,10 @@ public class GoodsSearchService {
         }else{
             manOrWoman=SpreadEnum.SEARCH_RIGHT;
         }
-        // TODO: 17/7/5 这里留个坑,暂时只有杭州站有广告,选写死杭州 
+        // TODO: 17/7/5 这里留个坑,暂时只有杭州站有广告,选写死杭州
+        if(!"hz".equals(webSite)){
+            return new ArrayList<>();
+        }
         ObjFromCache<List<ItemSpreadVO>> objFromCache=spreadService.selItemSpreads("hz", manOrWoman);
         List<ItemSpreadVO> list=objFromCache.selObj();
 //        if(objFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
