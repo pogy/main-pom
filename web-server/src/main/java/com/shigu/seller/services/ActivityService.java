@@ -2,6 +2,7 @@ package com.shigu.seller.services;
 
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.beans.ShiguActivityApply;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.ShopNumAndMarket;
 import com.opentae.data.mall.examples.ShiguActivityExample;
 import com.opentae.data.mall.interfaces.ShiguActivityApplyMapper;
@@ -13,6 +14,7 @@ import com.shigu.main4.activity.vo.ShiguActivityApplyVO;
 import com.shigu.main4.activity.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -27,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 港风活动报名
@@ -176,6 +179,8 @@ public class ActivityService {
         return list;
     }
 
+    private static final Pattern ITEM_PATTERN = Pattern.compile("http(s)?://(hz|gz|cs|jx|ss|bj|wa|www)\\.571xz\\.com/item\\.htm\\?id=(\\d)+");
+
     public void submitApply(Long actid, Long shopId, Long userId, List<String> activityInfo, String phoneInfo) throws JsonErrException {
         if (actid == null || activityInfo == null || phoneInfo == null || shiguActivityMapper.selectByPrimaryKey(actid) == null) {
             throw new JsonErrException("活动申请信息不全");
@@ -190,20 +195,27 @@ public class ActivityService {
         vo.setUserId(userId);
         vo.setItemIds(new ArrayList<Long>());
         for (String s : activityInfo) {
-            int i = s.indexOf("=");
-            if (i != -1) {
-                try {
-                    vo.getItemIds().add(Long.valueOf(s.substring(i + 1)));
-                } catch (NumberFormatException ignored){}
+            if (!ITEM_PATTERN.matcher(s).matches()) {
+                throw new JsonErrException("必须是星座网商品");
             }
+            vo.getItemIds().add(Long.valueOf(s.substring(s.indexOf("=") + 1)));
         }
         if (vo.getItemIds().size() == 0) {
             throw new JsonErrException("商品信息不完善");
+        } else {
+            ShiguShop shiguShop = shiguShopMapper.selectByPrimaryKey(shopId);
+            for (ItemShowBlock itemShowBlock :
+                    shopForCdnService.searchItemOnsale(vo.getItemIds(), shiguShop.getWebSite(), 1, vo.getItemIds().size())
+                    .getContent()) {
+                if (!shopId.equals(itemShowBlock.getShopId())) {
+                    throw new JsonErrException("必须是自己店铺的商品");
+                }
+            }
         }
         try {
             activity(actid).apply(vo);
         } catch (Exception e) {
-            throw new JsonErrException("您已经申请过了");
+            throw new JsonErrException("申请出错.");
         }
     }
 
