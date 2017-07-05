@@ -16,7 +16,7 @@ public enum SpreadEnum {
     WOMAN_GOODS_RIGHT("女装商品库右侧", "WOMAN-GOODS-RIGHT"),
     SEARCH_RIGHT("搜索右侧", "SEARCH-RIGHT"), INDEX_TOP("首页顶部", "INDEX-TOP"), LOGIN_GT("登录页", "LOGIN_GT"),
     BACK_SHOP("供应商后台", "BACK_SHOP"), BACK_MEMBER("分销商后台", "BACK_MEMBER"),
-
+    MAN_GXT("男装小图","MAN-GXT"),
 
     JX_SPREAD_INDEX_DT("濮院站首页幻灯片商品广告", "JX_SPREAD_INDEX_DT"),
     JX_SPREAD_INDEX_XT("濮院站首页幻灯片下方商品广告", "JX_SPREAD_INDEX_XT"),
