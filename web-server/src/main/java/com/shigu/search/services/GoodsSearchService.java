@@ -140,8 +140,8 @@ public class GoodsSearchService {
         }
         ObjFromCache<List<ItemSpreadVO>> objFromCache=spreadService.selItemSpreads(webSite, manOrWoman);
         List<ItemSpreadVO> list=objFromCache.selObj();
-        if(objFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
-            spreadService.createBySync(objFromCache);
+//        if(objFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
+//            spreadService.createBySync(objFromCache);
         Collections.shuffle(list);
         return BeanMapper.mapList(list,TjGoods.class);
     }

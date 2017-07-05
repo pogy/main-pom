@@ -170,10 +170,10 @@ public class CdnAction {
         //全站公告
         model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
         //轮播下方小图
-        /*model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_XT)));*/
         model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_GXT)));
+                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_XT)));
+//        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
+//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_GXT)));
         //大图
         model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_DT:SpreadEnum.MAN_DT)));
@@ -423,8 +423,8 @@ public class CdnAction {
      */
     private Object selFromCache(ObjFromCache fromCache){
         Object obj=fromCache.selObj();
-        if(fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
-            spreadService.createBySync(fromCache);
+//        if(fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
+//            spreadService.createBySync(fromCache);
         return obj;
     }
     /**
@@ -443,7 +443,7 @@ public class CdnAction {
         }
         url=url.substring(7,url.indexOf(".571xz.com"));
         Long shopId=shopBaseService.selShopIdByDomain(url);
-        if("www".equals(url)||"hz".equals(url)){
+        if("www".equals(url)||"hz".equals(url)||"testwww".equals(url)){
             return hzindex4show(request,model);
         }
         if(shopId==null){

@@ -48,7 +48,7 @@ public class SpreadService {
      * @return
      */
     public ObjFromCache<List<ItemSpreadVO>> selItemSpreads(final String webSite, final SpreadEnum spread){
-        return new ObjFromCache<List<ItemSpreadVO>>(redisForIndexPage,spread.getCode(),
+        return new ObjFromCache<List<ItemSpreadVO>>(redisForIndexPage,spread.getCode()+"_"+webSite,
                 ItemSpreadVO.class) {
             @Override
             public List<ItemSpreadVO> selReal() {
@@ -130,12 +130,12 @@ public class SpreadService {
         };
     }
 
-    /**
-     * 用于造缓存
-     */
-    @Async
-    public void createBySync(ObjFromCache fromCache) {
-        Object obj=fromCache.selReal();
-        redisForIndexPage.putCache(fromCache.key,obj);
-    }
+//    /**
+//     * 用于造缓存
+//     */
+//    @Async
+//    public void createBySync(ObjFromCache fromCache) {
+//        Object obj=fromCache.selReal();
+//        redisForIndexPage.putCache(fromCache.key,obj);
+//    }
 }
