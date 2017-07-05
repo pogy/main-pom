@@ -296,9 +296,9 @@ public class ActivityAction {
     @RequestMapping("activity/apply")
     public String apply(Long id,Model model) throws Main4Exception {
         model.addAttribute("webSite","hz");
-        if (id == null) {
-            throw new Main4Exception("页面不存在");
-        }
+//        if (id == null) {
+//            throw new Main4Exception("页面不存在");
+//        }
         int actState;
         ShiguActivityVO vo=activityService.activityInfo(id);
         long current=System.currentTimeMillis();
