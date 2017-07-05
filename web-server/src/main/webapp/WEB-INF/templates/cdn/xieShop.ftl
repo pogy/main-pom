@@ -11,15 +11,23 @@
     
     <meta name="description" content="看鞋网，一键代发，一键上传，${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}">
     
-    <link href="http://style.571xz.com/xieShopItem/css/xieShop.css?t=1499240362623" rel="stylesheet">
+    <link href="http://style.571xz.com/xieShopItem/css/xieShop.css?t=1499247670253" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/xieShopItem/js/xieShop.js?t=1499240362623"></script>
+    <script src="http://style.571xz.com/xieShopItem/js/xieShop.js?t=1499247670253"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
+<script>/*============ xieShopItem/host_config#base BEGIN ============*/
 
+'${test!}';
+var main_host = 'http://www.kxie.com/';
+
+/*============ xieShopItem/host_config#base END ============*/
+
+
+</script>
 <div class="topbar">
     <div class="layout">
         <div class="leftbox">
@@ -27,7 +35,7 @@
                 <span><em><#if webSite == "kx">看鞋网</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
-                        <li><a href="http://www.kanxie.com" <#if webSite == "kx">class="select"</#if>>看鞋网</a></li>
+                        <li><a href="http://www.kxie.com" <#if webSite == "kx">class="select"</#if>>看鞋网</a></li>
                     </ul>
                 </div>
             </div>
@@ -166,7 +174,7 @@ var webSite = '${webSite!}';
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
-            <a href="http://www.kanxie.com/">
+            <a href="http://www.kxie.com/">
                 <img src="http://style.571xz.com/xz/css/img/logo.png" alt="看鞋网" width="150" height="48">
             </a>
         </div>
@@ -192,7 +200,7 @@ var webSite = '${webSite!}';
 function openShop(){
                 var shopId = '${vo.storeRelation.storeId!}';
                 var webSite = '${webSite!}';
-                window.open('http://www.kanxie.com/shop.htm?id=' + shopId);
+                window.open('http://www.kxie.com/shop.htm?id=' + shopId);
             }
 
 /*============ xieShopItem/page#headeV1 END ============*/
@@ -315,7 +323,7 @@ function openShop(){
                 </div>
                 
                 <div class="p2 clearfix">
-                    <b><a href="http://www.kanxie.com/shop.htm?id=${vo.storeRelation.storeId!}">进入店铺</a></b>
+                    <b><a href="http://www.kxie.com/shop.htm?id=${vo.storeRelation.storeId!}">进入店铺</a></b>
                     <#if vo.other.taobaoUrl??>
                     <b xzclick="openTaobaoShop" data-href="${vo.other.taobaoUrl!}">淘宝店铺</b>
                     
@@ -338,7 +346,7 @@ function openShop(){
             
         </div>
         
-        <form id="searchgo3" class="c_shop_search_2016" action="http://www.kanxie.com/${vo.storeRelation.webSite!}search.htm">
+        <form id="searchgo3" class="c_shop_search_2016" action="http://www.kxie.com/${vo.storeRelation.webSite!}search.htm">
             <button id="allSearchbtn">搜全站</button>
             <div class="shopSecrh">
                 <div class="search">
@@ -377,23 +385,19 @@ ${container.html}
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
             <a href="http://jx.571xz.com" target="_blank">濮院站</a>
-            <a href="http://zixun.571xz.com" target="_blank">资讯</a>
-            
-            
-            <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
-            
+            <a href="http://www.kxie.com" target="_blank">看鞋网</a>
         </p>
-        <p class="imgs">
+        <!--#<p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
             <a class="img-yyzz" href="http://idinfo.zjaic.gov.cn/bscx.do?method=hddoc&amp;id=33010200000476" target="_blank" ></a>
             <a class="img-jyxkz" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" title="互联网经营许可证" target="_blank"></a>
             <a class="img-jybz" href="http://www.315online.com.cn/" target="_blank"></a>
             <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
-        </p>
+        </p>#-->
         <p class="jyga">
-            <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <span>&copy; 2017-2017 kxie.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=17015635" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙ICP备17015635号 </a>
         </p>
     </div>
 </div>

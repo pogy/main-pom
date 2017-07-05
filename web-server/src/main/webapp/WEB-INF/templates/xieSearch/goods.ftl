@@ -11,15 +11,23 @@
     
     <meta name="description" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/xieSearch/css/goods.css?t=1499240636279" rel="stylesheet">
+    <link href="http://style.571xz.com/xieSearch/css/goods.css?t=1499247716117" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/xieSearch/js/goods.js?t=1499240636279"></script>
+    <script src="http://style.571xz.com/xieSearch/js/goods.js?t=1499247716117"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
+<script>/*============ xieSearch/host_config#base BEGIN ============*/
 
+'${test!}';
+var main_host = 'http://www.kxie.com/';
+
+/*============ xieSearch/host_config#base END ============*/
+
+
+</script>
 <div class="topbar">
     <div class="layout">
         <div class="leftbox">
@@ -27,7 +35,7 @@
                 <span><em><#if webSite == "kx">看鞋网</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
-                        <li><a href="http://www.kanxie.com" <#if webSite == "kx">class="select"</#if>>看鞋网</a></li>
+                        <li><a href="http://www.kxie.com" <#if webSite == "kx">class="select"</#if>>看鞋网</a></li>
                     </ul>
                 </div>
             </div>
@@ -166,7 +174,7 @@ var webSite = '${webSite!}';
 <div class="headerV1">
     <div class="layout">
         <div class="logoLeft">
-            <a href="http://www.kanxie.com">
+            <a href="http://www.kxie.com">
                 <img src="http://style.571xz.com/xz/css/img/logo.png" alt width=150 height=48 />
             </a>
             <em></em>
@@ -186,7 +194,7 @@ var webSite = '${webSite!}';
             </div>
             <div class="searchBox">
                 
-                <form id="formSearch" action="http://www.kanxie.com/${webSite!}search.htm" >
+                <form id="formSearch" action="http://www.kxie.com/${webSite!}search.htm" >
                     
                     <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
                     <button class="searchBtn">搜索</button>
@@ -208,9 +216,9 @@ var webSite = '${webSite!}';
     <div class="layout navCon">
         <div class="navList">
             <ul>
-                <li class="first"><a href="http://www.kanxie.com" target="_blank">首页</a></li>
-                <li><a href="http://www.kanxie.com/market.htm">逛市场</a></li>
-                <li class="select"><a href="http://www.kanxie.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
+                <li class="first"><a href="http://www.kxie.com" target="_blank">首页</a></li>
+                <li><a href="http://www.kxie.com/market.htm">逛市场</a></li>
+                <li class="select"><a href="http://www.kxie.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
             </ul>
         </div>
     </div>
@@ -426,7 +434,7 @@ var webSite = '${webSite!}';
         <div class="goodslistWindow clearfix">
              <#list goodslist as goods>
              <div class="goodsitem" data-goodsid="${goods.id!}">
-                <a class="imgbox" href="http://www.kanxie.com/item.htm?id=${goods.id!}" target="_blank">
+                <a class="imgbox" href="http://www.kxie.com/item.htm?id=${goods.id!}" target="_blank">
                     
                     <#if goods_index lt 20> 
                         <img class="img" src="${goods.imgsrc!}_240x240.jpg" data-original="${goods.imgsrc!}_240x240.jpg">
@@ -441,9 +449,9 @@ var webSite = '${webSite!}';
                     <span class="pricebox">&yen; ${goods.piprice!}</span>
                     <span class="viewCountBox"></span>
                 </p>
-                <p class="title"><a href="http://www.kanxie.com/item.htm?id=${goods.id!}" target="_blank">${goods.title!}</a></p>
+                <p class="title"><a href="http://www.kxie.com/item.htm?id=${goods.id!}" target="_blank">${goods.title!}</a></p>
                 <div class="p3">
-                    <span class="storeName"><a href="http://www.kanxie.com/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}"><i class="icon1p"></i>${goods.fullStoreName!}</a></span>
+                    <span class="storeName"><a href="http://www.kxie.com/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}"><i class="icon1p"></i>${goods.fullStoreName!}</a></span>
                     
         <#assign text>{"id":"${goods.aliww!}"}</#assign>
 <#assign $it=text?eval />
@@ -498,12 +506,12 @@ $(function(){
            <ul>
                <#list tjGoodsList as goods>
                <li>
-                   <a class="imgbox" href="http://www.kanxie.com/item.htm?id=${goods.id!}" target="_blank">
+                   <a class="imgbox" href="http://www.kxie.com/item.htm?id=${goods.id!}" target="_blank">
                        
                        <img src="${goods.imgsrc!}_240x240.jpg"></a>
                    <p>
                        <em class="money">&yen;${goods.piprice!}</em>
-                       <a class="storename" href="http://www.kanxie.com/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
+                       <a class="storename" href="http://www.kxie.com/shop.htm?id=${goods.storeid!}" target="_blank" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a>
                    </p>
                </li>
                </#list>
@@ -525,23 +533,19 @@ $(function(){
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
             <a href="http://jx.571xz.com" target="_blank">濮院站</a>
-            <a href="http://zixun.571xz.com" target="_blank">资讯</a>
-            
-            
-            <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
-            
+            <a href="http://www.kxie.com" target="_blank">看鞋网</a>
         </p>
-        <p class="imgs">
+        <!--#<p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
             <a class="img-yyzz" href="http://idinfo.zjaic.gov.cn/bscx.do?method=hddoc&amp;id=33010200000476" target="_blank" ></a>
             <a class="img-jyxkz" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" title="互联网经营许可证" target="_blank"></a>
             <a class="img-jybz" href="http://www.315online.com.cn/" target="_blank"></a>
             <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
-        </p>
+        </p>#-->
         <p class="jyga">
-            <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <span>&copy; 2017-2017 kxie.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=17015635" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙ICP备17015635号 </a>
         </p>
     </div>
 </div>
