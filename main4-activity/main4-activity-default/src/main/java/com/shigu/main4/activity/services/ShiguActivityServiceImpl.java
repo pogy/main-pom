@@ -125,7 +125,7 @@ public class ShiguActivityServiceImpl implements ShiguActivityService {
     @Override
     public boolean yourLuckOne(Long userId) {
         ShiguActivityApplyVO vo = someOneApply(userId);
-        return vo != null && vo.getChoose();
+        return vo != null && vo.getChoose() == 3;
     }
 
     /**

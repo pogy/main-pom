@@ -19,7 +19,7 @@ public class ShiguActivityApplyVO implements Serializable {
     /**
      * 申请是否通过。
      */
-    private Boolean choose;
+    private Integer choose;
 
     /**
      * 店铺ID
@@ -57,11 +57,11 @@ public class ShiguActivityApplyVO implements Serializable {
         return this.activityId;
     }
 
-    public void setChoose(Boolean choose) {
+    public void setChoose(Integer choose) {
         this.choose = choose;
     }
 
-    public Boolean getChoose() {
+    public Integer getChoose() {
         return this.choose;
     }
 
