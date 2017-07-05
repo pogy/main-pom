@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>[四季星座网]杭州站-四季星座网-四季星座论坛-四季青服装货源，四季青市场，网店代理货源，网上服装进货，男装淘宝货源，女装淘宝货源，网络货源,网店货源导航,淘宝店货源,实体网络进货,杭州网店之家,杭州专业网店货源,杭州网店货源</title>
-    <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
-    <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
+    <title>[看鞋网]-网店代理货源，网上鞋类进货，男鞋淘宝货源，女鞋淘宝货源，网络货源,网店货源导航,淘宝店货源,实体网络进货,泉州网店之家,泉州专业网店货源,泉州网店货源</title>
+    <meta name="keywords" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
+    <meta name="description" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/xieIndex/css/shoe.css?t=1499162335607" rel="stylesheet">
+    <link href="http://style.571xz.com/xieIndex/css/shoe.css?t=1499239576678" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/xieIndex/js/jquery.cookie.js"></script>
 <script>/*============ xieIndex/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/xieIndex/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/xieIndex/js/shoe.js?t=1499162335607"></script>
+    <script src="http://style.571xz.com/xieIndex/js/shoe.js?t=1499239576678"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -44,16 +44,10 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "kx">看鞋网</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
-                        <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
-                        <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
-                        <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
-                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
+                        <li><a href="http://www.kanxie.com" <#if webSite == "kx">class="select"</#if>>看鞋网</a></li>
                     </ul>
                 </div>
             </div>
@@ -169,26 +163,6 @@
                             <h4>市场大全</h4>
                             <ul>
                                 
-                                <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=4">星座女装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=6">好四季</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=8">置地国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=11">九天国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=12">新杭派</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=13">四季青</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=16">原创男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=17">大码男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=18">男鞋基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=19">周边市场</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -198,17 +172,17 @@
         </div>
     </div>
 </div>
-<script>/*============ xz/page#topbar BEGIN ============*/
+<script>/*============ xz/kxPage#topbar BEGIN ============*/
 
 var webSite = '${webSite!}';
 
-/*============ xz/page#topbar END ============*/
+/*============ xz/kxPage#topbar END ============*/
 
 
 </script>
 <div class="fixtopbar">
     <div class="innner">
-        <a class="logo" href="http://www.571xz.com"><img src="http://style.571xz.com/xz/css/img/mtLogo.png" title="四季星座网-首页" height="30" width="170"></a>
+        <a class="logo" href="http://www.kanxie.com"><img src="http://style.571xz.com/xz/css/img/mtLogo.png" title="四季星座网-首页" height="30" width="170"></a>
          <div class="searchbar">
             <div class="tabbox">
                 <ul> 
@@ -227,7 +201,6 @@ var webSite = '${webSite!}';
                 <button class="btn-search">搜索</button>
             </form>
         </div>
-        
     </div>
 </div>
 <#if topPic??>
@@ -241,8 +214,8 @@ var webSite = '${webSite!}';
 </#if>
 <div class="header layout">
     <div class="logoLeft">
-        <a href="http://${webSite!}.571xz.com">
-            <img src="http://style.571xz.com/xz/css/img/logoWeb.png" alt width=170 height=52 />
+        <a href="http://www.kanxie.com">
+            <img src="http://style.571xz.com/xz/css/img/logo.png" alt width=150 height=48 />
         </a>
         <em></em>
     </div>
@@ -264,20 +237,18 @@ var webSite = '${webSite!}';
         </div>
         <div class="searchBox">
             
-            <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" target="_blank">
-                
-                <input type="hidden" name="pid" value="30">
+            <form id="formSearch" action="http://www.kanxie.com/${webSite!}search.htm" target="_blank">
                 
                 <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
                 <button class="searchBtn">搜索</button>
             </form>
         </div>
     </div>
-    <script>/*============ xz/page#search BEGIN ============*/
+    <script>/*============ xz/kxPage#search BEGIN ============*/
 
 var webSite = '${webSite!}';
 
-/*============ xz/page#search END ============*/
+/*============ xz/kxPage#search END ============*/
 
 
 </script>
@@ -300,48 +271,37 @@ var webSite = '${webSite!}';
                     <h3 class="mtitle"><em>市场分类</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=1">华联A栋</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=2">华联B栋</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=3">义兴堂</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=4">旧车站</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=5">滨江幸福广场</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=6">晋江电子商务中心</a></li>
-                            <li><a target="_blank" href="http://${webSite!}.571xz.com/market.htm?mid=7">周边市场</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/market.htm?mid=1">华联A栋</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/market.htm?mid=2">华联B栋</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/market.htm?mid=3">义兴堂</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/market.htm?mid=4">旧车站</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/market.htm?mid=5">滨江幸福广场</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/market.htm?mid=6">晋江电子商务中心</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/market.htm?mid=7">周边市场</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="list" data-menuid="manCate">
-                    <h3 class="mtitle"><em>男装分类</em><i class="iconfont"></i></h3>
+                <div class="list" data-menuid="manShoes">
+                    <h3 class="mtitle"><em>男鞋分类</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50000436">T恤</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011123">衬衫</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010159">卫衣</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=3035">休闲裤</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010167">牛仔裤</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=运动裤">运动裤</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011745">凉鞋/拖鞋</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=青春潮流">青春潮流</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=日常休闲">日常休闲</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011744">帆布/板鞋</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;=商务皮鞋">商务皮鞋</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="list" data-menuid="xbpsCate">
-                    <h3 class="mtitle"><em>鞋包配饰</em><i class="iconfont"></i></h3>
+                <div class="list" data-menuid="womenShoes">
+                    <h3 class="mtitle"><em>女鞋分类</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=休闲鞋">休闲鞋</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=皮鞋">皮鞋</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50012906">低帮鞋</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=50006842&amp;cid=122654005">箱包</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="list" data-menuid="styleCate">
-                    <h3 class="mtitle"><em>时尚风格</em><i class="iconfont"></i></h3>
-                    <div class="mlist">
-                        <ul class="clearfix">
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=店主">店主</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=休闲">休闲</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=运动">运动</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=情侣">情侣</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;cid=50012032">凉鞋/拖鞋</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=单鞋">单鞋</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;cid=50012042">帆布鞋</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=高帮鞋">高帮鞋</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=靴子">靴子</a></li>
                         </ul>
                     </div>
                 </div>
@@ -349,10 +309,8 @@ var webSite = '${webSite!}';
                     <h3 class="mtitle"><em>流行元素</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=刺绣">刺绣</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=印花">印花</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=纯色">纯色</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=棉麻">棉麻</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=男鞋">男鞋</a></li>
+                            <li><a target="_blank" href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=女鞋">女鞋</a></li>
                         </ul>
                     </div>
                 </div>
@@ -365,148 +323,191 @@ var webSite = '${webSite!}';
                         <div class="itemConTop">
                             <h4 class="itemTitle">市场导航</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=1" target="_blank">华联A栋</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=2" target="_blank">华联B栋</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=3" target="_blank">义兴堂</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=4" target="_blank">旧车站</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=5" target="_blank">滨江幸福广场</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=6" target="_blank">晋江电子商务中心</a></li>
-                                <li><a href="http://${webSite!}.571xz.com/market.htm?mid=7" target="_blank">周边市场</a></li>
+                                <li><a href="http://www.kanxie.com/market.htm?mid=1" target="_blank">华联A栋</a></li>
+                                <li><a href="http://www.kanxie.com/market.htm?mid=2" target="_blank">华联B栋</a></li>
+                                <li><a href="http://www.kanxie.com/market.htm?mid=3" target="_blank">义兴堂</a></li>
+                                <li><a href="http://www.kanxie.com/market.htm?mid=4" target="_blank">旧车站</a></li>
+                                <li><a href="http://www.kanxie.com/market.htm?mid=5" target="_blank">滨江幸福广场</a></li>
+                                <li><a href="http://www.kanxie.com/market.htm?mid=6" target="_blank">晋江电子商务中心</a></li>
+                                <li><a href="http://www.kanxie.com/market.htm?mid=7" target="_blank">周边市场</a></li>
                             </ul>
                         </div>
                     
                     </div>
-                    <div class="innerbox w320c0 manCate" data-width="w320c0">
+                    <div class="innerbox w320c0 manShoes" data-width="w320c0">
                     
                         
                         <div class="itemsbox">
-                            <h4>上衣</h4>
+                            <h4>凉鞋/拖鞋</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50000436" target="_blank">T恤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011123" target="_blank">衬衫</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010402" target="_blank">Polo衫</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011153" target="_blank">背心/马甲</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010159" target="_blank">卫衣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50000557" target="_blank">针织衫/毛衣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011159" target="_blank">风衣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011161" target="_blank">皮衣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010158" target="_blank">夹克</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011129" target="_blank">西装</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011130" target="_blank">西装套装</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50025883" target="_blank">毛呢大衣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011165" target="_blank">棉衣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011167" target="_blank">羽绒服</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=凉拖鞋" target="_blank">凉拖鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=网面鞋" target="_blank">网面鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=洞洞鞋" target="_blank">洞洞鞋</a></li>
                             </ul>
                         </div>
                         <div class="itemsbox">
-                            <h4>裤子</h4>
+                            <h4>青春潮流</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=短裤" target="_blank">短裤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=西装裤" target="_blank">西装裤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50010167" target="_blank">牛仔裤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=3035" target="_blank">休闲裤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=运动裤" target="_blank">运动裤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50011127" target="_blank">皮裤</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;cid=50025885" target="_blank">棉裤</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=潮流低帮" target="_blank">潮流低帮</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=韩版" target="_blank">韩版</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=英伦" target="_blank">英伦</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=复古" target="_blank">复古</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=铆钉" target="_blank"> 铆钉</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=编制" target="_blank">编制</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=豹纹" target="_blank">豹纹</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=大头" target="_blank">大头</a></li>
+                            </ul>
+                        </div>
+                        <div class="itemsbox">
+                            <h4>日常休闲</h4>
+                            <ul class="itemlist clearfix">
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=皮鞋" target="_blank">皮鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;cid=50012906" target="_blank">低帮鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=反绒皮" target="_blank">反绒皮</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=大头鞋" target="_blank">大头鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=帆船鞋" target="_blank">帆船鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=懒人鞋" target="_blank">懒人鞋</a></li>
+                            </ul>
+                        </div>
+                        <div class="itemsbox">
+                            <h4>帆布/板鞋</h4>
+                            <ul class="itemlist clearfix">
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;cid=50012907" target="_blank">高帮鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;cid=50012906" target="_blank">低帮鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=皮革面" target="_blank">皮革面</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=魔术贴" target="_blank">魔术贴</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=条纹" target="_blank">条纹</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=情侣款" target="_blank">情侣款</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=厚底" target="_blank">厚底</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=人本" target="_blank">人本</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=回力" target="_blank">回力</a></li>
+                            </ul>
+                        </div>
+                        <div class="itemsbox">
+                            <h4>商务皮鞋</h4>
+                            <ul class="itemlist clearfix">
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=休闲皮鞋" target="_blank">休闲皮鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=正装皮鞋" target="_blank">正装皮鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=布洛克" target="_blank">布洛克</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=内增高" target="_blank">内增高</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=反绒皮 " target="_blank">反绒皮 </a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=搭扣" target="_blank">搭扣</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=英伦风" target="_blank">英伦风</a></li>
                             </ul>
                         </div>
                         
                     </div>
-                    <div class="innerbox w320c0 xbpsCate" data-width="w320c0">
+                    <div class="innerbox w320c0 womenShoes" data-width="w320c0">
+                    
+                        
+                        <div class="itemsbox">
+                            <h4>凉鞋/拖鞋</h4>
+                            <ul class="itemlist clearfix">
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=鱼嘴" target="_blank">鱼嘴</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=尖头" target="_blank">尖头</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=粗跟" target="_blank">粗跟</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=坡跟" target="_blank">坡跟</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=细跟" target="_blank">细跟</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=厚底" target="_blank">厚底</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=夹趾" target="_blank">夹趾</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=平跟" target="_blank">平跟</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=包头" target="_blank">包头</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=系带" target="_blank">系带</a></li>
+                            </ul>
+                        </div>
+                        <div class="itemsbox">
+                            <h4>单鞋</h4>
+                            <ul class="itemlist clearfix">
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=高跟" target="_blank">高跟</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=平底" target="_blank">平底</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=厚底" target="_blank">厚底</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=中跟" target="_blank">中跟</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=粗跟" target="_blank">粗跟</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=坡跟" target="_blank">坡跟</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=深口" target="_blank">深口</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=尖头" target="_blank">尖头</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=圆头" target="_blank">圆头</a></li>
+                            </ul>
+                        </div>
+                        <div class="itemsbox">
+                            <h4>帆布鞋</h4>
+                            <ul class="itemlist clearfix">
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=高帮" target="_blank">高帮</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=低帮" target="_blank">低帮</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=魔术贴" target="_blank">魔术贴</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=懒人鞋" target="_blank">懒人鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=厚底" target="_blank">厚底</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=系带" target="_blank">系带</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=情侣款" target="_blank">情侣款</a></li>
+                            </ul>
+                        </div>
+                        <div class="itemsbox">
+                            <h4>高帮鞋</h4>
+                            <ul class="itemlist clearfix">
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=内增高" target="_blank">内增高</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=厚底" target="_blank">厚底</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=系带" target="_blank">系带</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=魔术贴" target="_blank">魔术贴</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=拉链" target="_blank">拉链</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=松紧带" target="_blank">松紧带</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=套脚" target="_blank">套脚</a></li>
+                            </ul>
+                        </div>
+                        <div class="itemsbox">
+                            <h4>靴子</h4>
+                            <ul class="itemlist clearfix">
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=裸靴" target="_blank">裸靴</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=短靴" target="_blank">短靴</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=马丁靴" target="_blank">马丁靴</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=中筒" target="_blank">中筒</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=高筒" target="_blank">高筒</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=切尔西靴" target="_blank">切尔西靴</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=雪地靴" target="_blank">雪地靴</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=过膝" target="_blank">过膝</a></li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                    <div class="innerbox w320c0 elementCate" data-width="w320c0">
                     
                         
                         <div class="itemsbox">
                             <h4>男鞋</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740" target="_blank">男鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=小白鞋" target="_blank">小白鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011745" target="_blank">凉鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011746" target="_blank">拖鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011744" target="_blank">帆布鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=皮鞋" target="_blank">皮鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=运动鞋" target="_blank">运动鞋</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=马丁靴" target="_blank">马丁靴</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50011740&amp;keyword=豆豆鞋" target="_blank">豆豆鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=白色" target="_blank">白色</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=纯色" target="_blank">纯色</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=手绘" target="_blank">手绘</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=印花" target="_blank">印花</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=撞色" target="_blank">撞色</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=格子" target="_blank">格子</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=荧光色" target="_blank">荧光色</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=热点" target="_blank">热点</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=韩版" target="_blank">韩版</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=系带" target="_blank">系带</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=校园风" target="_blank">校园风</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=运动风" target="_blank">运动风</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=铆钉" target="_blank">铆钉</a></li>
                             </ul>
                         </div>
                         <div class="itemsbox">
-                            <h4>包包</h4>
+                            <h4>女鞋</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50006842&amp;cid=121434005" target="_blank">钱包</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50006842&amp;cid=122690003" target="_blank">双肩包</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50006842&amp;keyword=单肩包" target="_blank">单肩包</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50006842&amp;keyword=手提包" target="_blank">手提包</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50006842&amp;keyword=斜挎包" target="_blank">斜挎包</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50006842&amp;keyword=手拿包" target="_blank">手拿包</a></li>
-                            </ul>
-                        </div>
-                        <div class="itemsbox">
-                            <h4>配饰</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50010404&amp;cid=50009032" target="_blank">皮带</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50010404&amp;keyword=领带" target="_blank">领带</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50010404&amp;cid=50007003" target="_blank">围巾/丝巾</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50010404&amp;cid=302910" target="_blank">帽子</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50010404&amp;cid=50010410" target="_blank">手套</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50010404&amp;keyword=眼镜" target="_blank">眼镜</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50010404&amp;keyword=手表" target="_blank">手表</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=50010404&amp;keyword=袜子" target="_blank">袜子</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=铆钉" target="_blank">铆钉</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=欧美" target="_blank">欧美</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=韩风" target="_blank">韩风</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=金色" target="_blank">金色</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=银色" target="_blank">银色</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=特色鞋" target="_blank">特色鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=妈妈鞋" target="_blank">妈妈鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=孕妇鞋" target="_blank">孕妇鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=潮鞋" target="_blank">潮鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=大码鞋" target="_blank">大码鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=小码鞋" target="_blank">小码鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=婚鞋" target="_blank">婚鞋</a></li>
+                                <li><a href="http://www.kanxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=负跟鞋" target="_blank">负跟鞋</a></li>
                             </ul>
                         </div>
                         
-                    </div>
-                    <div class="innerbox w240c2 styleCate" data-width="w240c2">
-                        <div class="itemConTop">
-                            <h4 class="itemTitle">时尚风格</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=店主" target="_blank">店主</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=休闲" target="_blank">休闲</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=运动" target="_blank">运动</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=情侣" target="_blank">情侣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=大码" target="_blank">大码</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=北模" target="_blank">北模</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=街拍" target="_blank">街拍</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=摆拍" target="_blank">摆拍</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=港风" target="_blank">港风</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=日系" target="_blank">日系</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=欧美" target="_blank">欧美</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=英伦" target="_blank">英伦</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=原宿" target="_blank">原宿</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=嘻哈" target="_blank">嘻哈</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=原创" target="_blank">原创</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=平铺" target="_blank">平铺</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=硬汉" target="_blank">硬汉</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=绅士" target="_blank">绅士</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=白墙风" target="_blank">白墙风</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=超市风" target="_blank">超市风</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=咖啡店风" target="_blank">咖啡店风</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=中国风" target="_blank">中国风</a></li>
-                            </ul>
-                        </div>
-                    
-                    </div>
-                    <div class="innerbox w240c2 elementCate" data-width="w240c2">
-                        <div class="itemConTop">
-                            <h4 class="itemTitle">流行元素</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=刺绣" target="_blank">刺绣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=印花" target="_blank">印花</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=纯色" target="_blank">纯色</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=棉麻" target="_blank">棉麻</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=丝光棉" target="_blank">丝光棉</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=水洗" target="_blank">水洗</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=旧" target="_blank">做旧</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=破洞" target="_blank">破洞</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=修身" target="_blank">修身</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=条纹" target="_blank">条纹</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=格子" target="_blank">格子</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=字母" target="_blank">字母</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=迷彩" target="_blank">迷彩</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=人物" target="_blank">人物</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=30&amp;keyword=束脚" target="_blank">束脚</a></li>
-                            </ul>
-                        </div>
-                    
                     </div>
                 
             </div>
@@ -520,11 +521,11 @@ var webSite = '${webSite!}';
         <div class="topNav">
             <ul class="clearfix">
                 <li>
-                    <a href="http://hz.571xz.com/market.htm" target="_blank">
+                    <a href="http://www.kanxie.com/market.htm" target="_blank">
 逛市场<i class="hot"></i>                    </a>
                 </li>
                 <li>
-                    <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
+                    <a href="http://www.kanxie.com/kxgoods.htm" target="_blank">
 商品库                    </a>
                 </li>
             </ul>
@@ -587,7 +588,7 @@ var webSite = '${webSite!}';
                     </div>
                     <div class="wellcom">
                         <p class="s1">Hi，欢迎来到</p>
-                        <p>www.571xz.com</p>
+                        <p>www.kanxie.com</p>
                     </div>
                 </div>
                 
@@ -638,13 +639,13 @@ if(session_shopId != ""){
             
             <#list hotsaleGoodslist as item>
             <li class="item1">
-                <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
+                <a class="imgBox" href="http://www.kanxie.com/item.htm?id=${item.id!}" target="_blank">
                     <img src="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
-                    <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
+                    <div class="storeNum" title="${item.storeText!}"><a href="http://www.kanxie.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
                     <div class="tally">${item.styleText!}</div>
@@ -672,13 +673,13 @@ if(session_shopId != ""){
         <ul class="clearfix tle tleL">
             <#list elementGoodslist as item>
             <li class="item1">
-                <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
+                <a class="imgBox" href="http://www.kanxie.com/item.htm?id=${item.id!}" target="_blank">
                     <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
-                    <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
+                    <div class="storeNum" title="${item.storeText!}"><a href="http://www.kanxie.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
                     <div class="tally">${item.styleText!}</div>
@@ -701,12 +702,12 @@ if(session_shopId != ""){
             
             <#list recommendShoplist as item>
             <li class="item2">
-                <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
+                <a class="imgBox" href="http://www.kanxie.com/item.htm?id=${item.id!}" target="_blank">
                     <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 <div class="gsOtInfo">
                     <div class="inSell">
-                        <a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">
+                        <a href="http://www.kanxie.com/shop.htm?id=${item.storeId!}" target="_blank">
                             <span class="s1">${item.marketText!}</span>
                             <span class="s2">${item.storeNum!}</span>
                         </a>
@@ -734,13 +735,13 @@ if(session_shopId != ""){
             <ul class="clearfix tle <#if pitem_index % 2 ==0>tleL<#else>tleR</#if>">
             <#list pitem.items as item>
             <li class="item1">
-                <a class="imgBox" href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank">
+                <a class="imgBox" href="http://www.kanxie.com/item.htm?id=${item.id!}" target="_blank">
                     <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
-                    <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
+                    <div class="storeNum" title="${item.storeText!}"><a href="http://www.kanxie.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
                     <div class="tally">${item.styleText!}</div>

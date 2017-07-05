@@ -5,17 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
     
-        <title>${vo.cdnItem.title!}-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
+        <title>${vo.cdnItem.title!}-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-看鞋网</title>
     
-    <meta name="keywords" content="欢迎前来四季星座网实力档口，选择 ${vo.cdnItem.title!}">
+    <meta name="keywords" content="欢迎前来看鞋网实力档口，选择 ${vo.cdnItem.title!}">
     
-    <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
+    <meta name="description" content="看鞋网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
     
-    <link href="http://style.571xz.com/xieShopItem/css/xieItem.css?t=1499166074185" rel="stylesheet">
+    <link href="http://style.571xz.com/xieShopItem/css/xieItem.css?t=1499240242908" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/xieShopItem/js/xieItem.js?t=1499166074185"></script>
+    <script src="http://style.571xz.com/xieShopItem/js/xieItem.js?t=1499240242908"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -24,16 +24,10 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "kx">看鞋网</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
-                        <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
-                        <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
-                        <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
-                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
+                        <li><a href="http://www.kanxie.com" <#if webSite == "kx">class="select"</#if>>看鞋网</a></li>
                     </ul>
                 </div>
             </div>
@@ -152,26 +146,6 @@
                             <h4>市场大全</h4>
                             <ul>
                                 
-                                <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=4">星座女装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=6">好四季</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=8">置地国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=11">九天国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=12">新杭派</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=13">四季青</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=16">原创男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=17">大码男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=18">男鞋基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=19">周边市场</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -181,19 +155,19 @@
         </div>
     </div>
 </div>
-<script>/*============ xz/page#topbar BEGIN ============*/
+<script>/*============ xz/kxPage#topbar BEGIN ============*/
 
 var webSite = '${webSite!}';
 
-/*============ xz/page#topbar END ============*/
+/*============ xz/kxPage#topbar END ============*/
 
 
 </script>
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
-            <a href="http://${webSite!}.571xz.com/">
-                <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
+            <a href="http://www.kanxie.com/">
+                <img src="http://style.571xz.com/xz/css/img/logo.png" alt="看鞋网" width="150" height="48">
             </a>
         </div>
         <div class="splitline"></div>
@@ -218,7 +192,7 @@ var webSite = '${webSite!}';
 function openShop(){
                 var shopId = '${vo.storeRelation.storeId!}';
                 var webSite = '${webSite!}';
-                window.open('http://'+ webSite +'.571xz.com/shop.htm?id=' + shopId);
+                window.open('http://www.kanxie.com/shop.htm?id=' + shopId);
             }
 
 /*============ xieShopItem/page#headeV1 END ============*/
@@ -317,7 +291,7 @@ function openShop(){
             <div class="storeDetailInfobox">
                 <div class="p1 clearfix">
                     <ul class="r1">
-                        <li><label>地址：</label><#if vo.storeRelation.webSite == "hz">杭州<#elseif vo.storeRelation.webSite == "cs">常熟<#elseif vo.storeRelation.webSite == "gz">广州<#elseif vo.storeRelation.webSite == "ss">石狮<#elseif vo.storeRelation.webSite == "wa">辽源<#elseif vo.storeRelation.webSite == 'jx'>濮院</#if>—${vo.storeRelation.marketName!}${vo.storeRelation.floor!}</li>
+                        <li><label>地址：</label>看鞋网—${vo.storeRelation.marketName!}${vo.storeRelation.floor!}</li>
                         <li><label>电话：</label>${vo.storeRelation.telephone!}</li>
                         <li><label>主营：</label>${vo.other.mainBus!}</li>
                         <li><label>开店时间：</label>${vo.other.openTime!}</li>
@@ -341,7 +315,7 @@ function openShop(){
                 </div>
                 
                 <div class="p2 clearfix">
-                    <b><a href="http://${webSite!}.571xz.com/shop.htm?id=${vo.storeRelation.storeId!}">进入店铺</a></b>
+                    <b><a href="http://www.kanxie.com/shop.htm?id=${vo.storeRelation.storeId!}">进入店铺</a></b>
                     <#if vo.other.taobaoUrl??>
                     <b xzclick="openTaobaoShop" data-href="${vo.other.taobaoUrl!}">淘宝店铺</b>
                     
@@ -364,7 +338,7 @@ function openShop(){
             
         </div>
         
-        <form id="searchgo3" class="c_shop_search_2016" action="http://so.571xz.com/${vo.storeRelation.webSite!}search.htm">
+        <form id="searchgo3" class="c_shop_search_2016" action="http://www.kanxie.com/${vo.storeRelation.webSite!}search.htm">
             <button id="allSearchbtn">搜全站</button>
             <div class="shopSecrh">
                 <div class="search">

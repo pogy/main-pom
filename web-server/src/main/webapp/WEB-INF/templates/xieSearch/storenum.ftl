@@ -5,17 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
     
-        <title>档口搜索 - 四季星座网</title>
+        <title>档口搜索 - 看鞋网</title>
     
-    <meta name="keywords" content="四季星座，四季星座网，男装货源，女装货源，男鞋货源，女鞋货源，杭州服装批发，四季青服饰，淘宝货源，网店货源，服饰批发，代发平台！">
+    <meta name="keywords" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
+    <meta name="description" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/xieSearch/css/storenum.css?t=1499162036711" rel="stylesheet">
+    <link href="http://style.571xz.com/xieSearch/css/storenum.css?t=1499240634843" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/xieSearch/js/storenum.js?t=1499162036711"></script>
+    <script src="http://style.571xz.com/xieSearch/js/storenum.js?t=1499240634843"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -24,16 +24,10 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "kx">看鞋网</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
-                        <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
-                        <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
-                        <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
-                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
+                        <li><a href="http://www.kanxie.com" <#if webSite == "kx">class="select"</#if>>看鞋网</a></li>
                     </ul>
                 </div>
             </div>
@@ -152,26 +146,6 @@
                             <h4>市场大全</h4>
                             <ul>
                                 
-                                <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=4">星座女装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=6">好四季</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=8">置地国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=11">九天国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=12">新杭派</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=13">四季青</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=16">原创男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=17">大码男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=18">男鞋基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=19">周边市场</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -181,19 +155,19 @@
         </div>
     </div>
 </div>
-<script>/*============ xz/page#topbar BEGIN ============*/
+<script>/*============ xz/kxPage#topbar BEGIN ============*/
 
 var webSite = '${webSite!}';
 
-/*============ xz/page#topbar END ============*/
+/*============ xz/kxPage#topbar END ============*/
 
 
 </script>
 <div class="headerV1">
     <div class="layout">
         <div class="logoLeft">
-            <a href="http://${webSite!}.571xz.com">
-                <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
+            <a href="http://www.kanxie.com">
+                <img src="http://style.571xz.com/xz/css/img/logo.png" alt width=150 height=48 />
             </a>
             <em></em>
         </div>
@@ -212,7 +186,7 @@ var webSite = '${webSite!}';
             </div>
             <div class="searchBox">
                 
-                <form id="formSearch" action="http://www.571xz.com/storenum.htm?webSite=${webSite!}" >
+                <form id="formSearch" action="http://www.kanxie.com/storenum.htm?webSite=${webSite!}" >
                     <input class="searchWeb" type=hidden name="webSite" value="${webSite!}">
                     
                     <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
@@ -235,9 +209,9 @@ var webSite = '${webSite!}';
     <div class="layout navCon">
         <div class="navList">
             <ul>
-                <li class="first"><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
-                <li><a href="http://hz.571xz.com/market.htm">逛市场</a></li>
-                <li ><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
+                <li class="first"><a href="http://www.kanxie.com" target="_blank">首页</a></li>
+                <li><a href="http://www.kanxie.com/market.htm">逛市场</a></li>
+                <li ><a href="http://www.kanxie.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
             </ul>
         </div>
     </div>
@@ -328,7 +302,7 @@ var webSite = '${webSite!}';
             </a>
             <div class="storeInfoBox">
                 <div class="p1">
-                    <a class="title" href="http://${webSite!}.571xz.com/shop.htm?id=${store.id!}" title="${store.marketName!} ${store.name!}"><em class="marketName">${store.highMarketName!}</em><em class="storeName">${store.highName!}</em></a>
+                    <a class="title" href="http://www.kanxie.com/shop.htm?id=${store.id!}" title="${store.marketName!} ${store.name!}"><em class="marketName">${store.highMarketName!}</em><em class="storeName">${store.highName!}</em></a>
                     <span class="xy">
     <#assign text>{"num":${store.xy!}}</#assign>
 <#assign $it=text?eval />
@@ -440,7 +414,7 @@ var webSite = '${webSite!}';
             <div class="storeGoodslistBox">
                 <#list store.goodslist as goods>
                 <div class="goodsitem">
-                    <a class="imgbox" href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}">
+                    <a class="imgbox" href="http://www.kanxie.com/item.htm?id=${goods.id!}">
                         
                         <img class="img" src="${goods.imgsrc!}_220x220.jpg">
                     </a>

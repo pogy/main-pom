@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>逛市场 - 四季星座网</title>
-    <meta name="keywords" content="四季星座网,四季星座论坛,杭州网店之家,网店代理货源,淘宝货源,男装货源,女装货源,一件代发,一键上传。">
+    <title>逛市场 - 看鞋网</title>
+    <meta name="keywords" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
+    <meta name="description" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/xieMarket/css/xieIndex.css?t=1499162808600" rel="stylesheet">
+    <link href="http://style.571xz.com/xieMarket/css/xieIndex.css?t=1499239727343" rel="stylesheet">
     
   </head>
 <body>
@@ -18,16 +18,10 @@
     <div class="layout">
         <div class="leftbox">
             <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
+                <span><em><#if webSite == "kx">看鞋网</#if></em><i class="downArrow"></i></span>
                 <div class="cityCon">
                     <ul>
-                        <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
-                        <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
-                        <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
-                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
+                        <li><a href="http://www.kanxie.com" <#if webSite == "kx">class="select"</#if>>看鞋网</a></li>
                     </ul>
                 </div>
             </div>
@@ -146,26 +140,6 @@
                             <h4>市场大全</h4>
                             <ul>
                                 
-                                <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=4">星座女装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=6">好四季</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=8">置地国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=11">九天国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=12">新杭派</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=13">四季青</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=16">原创男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=17">大码男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=18">男鞋基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=19">周边市场</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -175,18 +149,18 @@
         </div>
     </div>
 </div>
-<script>/*============ xz/page#topbar BEGIN ============*/
+<script>/*============ xz/kxPage#topbar BEGIN ============*/
 
 var webSite = '${webSite!}';
 
-/*============ xz/page#topbar END ============*/
+/*============ xz/kxPage#topbar END ============*/
 
 
 </script>
 <div class="header layout">
     <div class="logoLeft">
-        <a href="http://${webSite!}.571xz.com">
-            <img src="http://style.571xz.com/xieMarket/css/img/mtLogo.png" alt width=168 height=30 />
+        <a href="http://www.kanxie.com">
+            <img src="http://style.571xz.com/xz/css/img/logo.png" alt width=150 height=48 />
         </a>
         <em>逛市场</em>
     </div>
@@ -196,11 +170,10 @@ var webSite = '${webSite!}';
             <ul>
                 <li type="goods">商品</li>
                 <li class="select" type="store">档口</li>
-                
             </ul>
         </div>
         <div class="searchBox">
-            <form id="formSearch" action="http://www.571xz.com/storenum.htm?webSite=${webSite!}">
+            <form id="formSearch" action="http://www.kanxie.com/storenum.htm?webSite=${webSite!}">
                 <input type="text" class="searchCon" name="keyword" placeholder="输入档口号进行查询">
                 <input type=hidden name="webSite" value="${webSite!}">
                 <button class="searchBtn">搜索</button>
@@ -229,25 +202,9 @@ var webSite = '${webSite!}';
         </div>
         <div class="navList">
             <ul>
-                <li><a href="http://${webSite!}.571xz.com" target="_blank">首页</a></li>
-                <#if webSite == 'jx'>
-                <li class="select"><a href="http://${webSite!}.571xz.com/market.htm?mid=33">逛市场</a></li> 
-                <#elseif webSite == 'cs'>
-                <li class="select"><a href="http://${webSite!}.571xz.com/market.htm?mid=43">逛市场</a></li>
-                <#elseif webSite == 'ss'>
-                <li class="select"><a href="http://${webSite!}.571xz.com/market.htm?mid=62">逛市场</a></li>
-                <#else>
-                <li class="select"><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
-                </#if>
-                <li><a href="http://so.571xz.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
-                <#if webSite =="hz" || webSite == 'cs'>
-                <li><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}" target="_blank">今日新品</a></li>
-                <#if webSite == 'hz'>
-                <li><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
-                </#if>
-                <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
-                <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
-                </#if>
+                <li><a href="http://www.kanxie.com" target="_blank">首页</a></li>
+                <li class="select"><a href="http://www.kanxie.com/market.htm">逛市场</a></li>
+                <li><a href="http://www.kanxie.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
             </ul>
         </div>
         <div class="storeIn">
@@ -388,7 +345,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/xieMarket/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/xieMarket/js/nprogress.js"></script>
-<script src="http://style.571xz.com/xieMarket/js/xieIndex.js?t=1499162808600"></script>
+<script src="http://style.571xz.com/xieMarket/js/xieIndex.js?t=1499239727343"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
