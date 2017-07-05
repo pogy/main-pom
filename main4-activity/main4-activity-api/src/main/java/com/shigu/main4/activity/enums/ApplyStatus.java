@@ -21,7 +21,7 @@ public enum ApplyStatus {
      */
      public static ApplyStatus check(ShiguActivityVO vo) {
          if (vo.getStartApply() == null || vo.getEndApply() == null) {
-             throw new RuntimeException(String.format("活动[%d]信息请补全申请起止时间", vo.getActivityId()));
+             return APPLY_NOT_BEGUN;
          }
          Date now = new Date();
          if (now.before(vo.getStartApply()))
