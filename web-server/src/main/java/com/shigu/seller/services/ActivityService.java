@@ -2,17 +2,20 @@ package com.shigu.seller.services;
 
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.beans.ShiguActivityApply;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.ShopNumAndMarket;
 import com.opentae.data.mall.examples.ShiguActivityExample;
 import com.opentae.data.mall.interfaces.ShiguActivityApplyMapper;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.activity.enums.ActivityStatus;
+import com.shigu.main4.activity.enums.ApplyStatus;
 import com.shigu.main4.activity.services.ShiguActivityService;
 import com.shigu.main4.activity.vo.ShiguActivityApplyVO;
 import com.shigu.main4.activity.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -27,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 港风活动报名
@@ -88,6 +92,7 @@ public class ActivityService {
 
         ShiguActivityExample t = new ShiguActivityExample();
         t.setOrderByClause("end_time desc");
+        t.createCriteria().andWebSiteEqualTo(webSite);
         List<ShiguActivity> activities = shiguActivityMapper.selectByExample(t);
         List<ActivityListVO> activityListVOS = new ArrayList<>(activities.size());
         for (ShiguActivityVO activity : BeanMapper.mapList(activities, ShiguActivityVO.class)) {
@@ -95,20 +100,20 @@ public class ActivityService {
             activityListVOS.add(vo);
             vo.setActid(activity.getActivityId());
             vo.setActTitle(activity.getTitle());
-            vo.setActEndTime(DateUtil.dateToString(activity.getEndTime(), DATE_FORMAT_PATTERN));
-            vo.setActStartTime(DateUtil.dateToString(activity.getStartTime(), DATE_FORMAT_PATTERN));
+            vo.setActEndTime(pickTime(activity.getEndTime()));
+            vo.setActStartTime(pickTime(activity.getStartTime()));
             vo.setActImg(activity.getImage());
             vo.setActNums(activity.getNums());
             vo.setApplyTime(
-                    DateUtil.dateToString(activity.getStartApply(), DATE_FORMAT_PATTERN)
+                    pickTime(activity.getStartApply())
                             + "-"
-                            + DateUtil.dateToString(activity.getEndApply(), DATE_FORMAT_PATTERN));
+                            + pickTime(activity.getEndApply()));
             vo.setApplyRange(activity.getRuleInfo());
             vo.setChargeStyle(activity.getCostDesc());
             vo.setSupportReturn(activity.getServices().contains("1"));
             vo.setSupportBarter(activity.getServices().contains("2"));
 
-            vo.setHdStatus(activity.getStatus().status);
+            vo.setHdStatus(activity.getApplyStatus() == ApplyStatus.APPLY_NOT_BEGUN ? 0 : activity.getStatus().status);
             ShiguActivityApply activityApply = applyMap.get(activity.getActivityId());
             if (activityApply != null) {
                 for (String s : activityApply.getItems().split(",")) {
@@ -126,6 +131,10 @@ public class ActivityService {
             }
         }
         return activityListVOS;
+    }
+
+    private String pickTime(Date date) {
+        return date == null ? "待定" : DateUtil.dateToString(date, DATE_FORMAT_PATTERN);
     }
 
     public ActivityDetailsVo selActivityDetails(Long actid) {
@@ -176,6 +185,8 @@ public class ActivityService {
         return list;
     }
 
+    private static final Pattern ITEM_PATTERN = Pattern.compile("http(s)?://(hz|gz|cs|jx|ss|bj|wa|www)\\.571xz\\.com/item\\.htm\\?id=(\\d)+");
+
     public void submitApply(Long actid, Long shopId, Long userId, List<String> activityInfo, String phoneInfo) throws JsonErrException {
         if (actid == null || activityInfo == null || phoneInfo == null || shiguActivityMapper.selectByPrimaryKey(actid) == null) {
             throw new JsonErrException("活动申请信息不全");
@@ -190,25 +201,41 @@ public class ActivityService {
         vo.setUserId(userId);
         vo.setItemIds(new ArrayList<Long>());
         for (String s : activityInfo) {
-            int i = s.indexOf("=");
-            if (i != -1) {
-                try {
-                    vo.getItemIds().add(Long.valueOf(s.substring(i + 1)));
-                } catch (NumberFormatException ignored){}
+            if (!ITEM_PATTERN.matcher(s).matches()) {
+                throw new JsonErrException("必须是星座网商品");
             }
+            vo.getItemIds().add(Long.valueOf(s.substring(s.indexOf("=") + 1)));
         }
         if (vo.getItemIds().size() == 0) {
             throw new JsonErrException("商品信息不完善");
+        } else {
+            ShiguShop shiguShop = shiguShopMapper.selectByPrimaryKey(shopId);
+            for (ItemShowBlock itemShowBlock :
+                    shopForCdnService.searchItemOnsale(vo.getItemIds(), shiguShop.getWebSite(), 1, vo.getItemIds().size())
+                    .getContent()) {
+                if (!shopId.equals(itemShowBlock.getShopId())) {
+                    throw new JsonErrException("必须是自己店铺的商品");
+                }
+            }
         }
         try {
             activity(actid).apply(vo);
         } catch (Exception e) {
-            throw new JsonErrException("您已经申请过了");
+            throw new JsonErrException("申请出错.");
         }
     }
 
     private ShiguActivityService activity(Long actid) {
         return SpringBeanFactory.getBean(ShiguActivityService.class, actid);
+    }
+
+    /**
+     * 活动信息
+     * @param id
+     * @return
+     */
+    public ShiguActivityVO activityInfo(Long id){
+        return activity(id).info();
     }
 
     public List<GfShowVO> gfShow(Long id) throws Main4Exception {

@@ -83,6 +83,11 @@ public class ShiguActivity implements Serializable {
 	 */
 	private String services;
 
+	/**
+	 * 分站
+	 */
+	private String webSite;
+
 	public void setActivityId(Long activityId) {
 		this.activityId = activityId;
 	}
@@ -201,5 +206,13 @@ public class ShiguActivity implements Serializable {
 
 	public void setServices(String services) {
 		this.services = services;
+	}
+
+	public String getWebSite() {
+		return webSite;
+	}
+
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
 	}
 }
