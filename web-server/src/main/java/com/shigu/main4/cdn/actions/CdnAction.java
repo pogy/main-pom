@@ -349,6 +349,12 @@ public class CdnAction {
         model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(SpreadEnum.KX_MAN_DT)));
         //轮播下方小图
         model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(SpreadEnum.KX_MAN_XT)));
+        //热卖
+        model.addAttribute("hotsaleGoodslist",selFromCache(spreadService.selItemSpreads(webSite, SpreadEnum.KX_MAN_RM)));
+
+        //全站公告
+        model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
+
         model.addAttribute("webSite", webSite);
         return "index/shoe";
     }
