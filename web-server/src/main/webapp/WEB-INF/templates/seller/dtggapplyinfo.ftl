@@ -13,8 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    
-    <link href="http://style.571xz.com/gys5/css/dtggapplyinfo.css?t=1498817368192" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/dtggapplyinfo.css?t=1499305331868" rel="stylesheet">
     
   </head>
 <body>
@@ -239,6 +238,7 @@ var webSite = '${webSite!}';
     <h2>营销管理</h2>
     <ul>
         <li><a class="selected dtgg"  href="${main_host!}seller/dtggapply.htm?id=1001">免费LED广告</a></li> 
+        <li><a href="https://shop121675953.taobao.com" target="_blank" style="color:#f40">广告位竞拍</a></li> 
         <li><a class="selected indexgg"  href="${main_host!}seller/indexgglist.htm">首页广告申请</a></li> 
         <li><a href="${main_host!}seller/promotion.htm"  >广告展示管理</a></li> 
         <li><a href="${main_host!}seller/actRegister.htm"  >立即报名活动</a></li> 
@@ -278,7 +278,7 @@ var typeId = '${typeId!}'; //广告id
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -308,7 +308,7 @@ var typeId = '${typeId!}'; //广告id
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/dtggapplyinfo.js?t=1498817368192"></script>
+<script src="http://style.571xz.com/gys5/js/dtggapplyinfo.js?t=1499305331868"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
