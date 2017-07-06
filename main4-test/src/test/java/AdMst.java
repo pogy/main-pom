@@ -33,7 +33,7 @@ public class AdMst {
         //System.out.println(sendSms_quick("18857193391","四季星座网温馨提示：：\"首页热销\"栏目  共10个位置将在今日20点(星期四）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
         //System.out.println(sendSms_quick("17605818805","四季星座网温馨提示：：\"首页热销\"栏目  共10个位置将在今日20点(星期四）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
 //        System.out.println(sendSms_quick("18888971970","温馨提示：（报名时间为4月28日-4月30日20时）网站广告位报名入口已发布，本期总计首页29个位置，轮转播区1个，轮转播下方区1个，首页热卖10个，推荐档口7个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】"));
-        System.out.println(sendSms_quick("15168224104;13588494464;18736271422","四季星座网温馨提示：“首页热销”栏目+“首页C区风格馆”栏目 共20个位置将在今日20点(星期二）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
+        System.out.println(sendSms_quick("15168224104","四季星座网温馨提示：（报名时间为7月6日-7月8日20时）网站广 告位报名入口已发布，本期总计首页28个位置，轮转播区2个，推荐档口7个，元素馆5个，商品库右侧8个，搜索右侧6个（注意：所有广 告位不同一区域同一时段内，可重复报名）报名入口为四季星座供应商后台。退订回复T【四季星座网】"));
         //System.out.println(sendSms_quick("13588494464","四季星座网温馨提示：“首页热销”栏目+“首页C区风格馆”栏目 共20个位置将在今日20点(星期二）开始竞拍，竞拍所得金额将用于回馈代理，请登录四季星座网商家后台或淘宝搜索店名“杭州石谷网络科技有限公司”参与竞拍。退订回复T【四季星座网】"));
     }
     @Test
@@ -51,10 +51,12 @@ public class AdMst {
 //        List<String> tslist= Arrays.asList(ts);
 
 //        在content内填入短信内容
-        String content = "短信内容";
+        String content = "四季星座网温馨提示：（报名时间为7月6日-7月8日20时）网站广 告位报名入口已发布，本期总计首页28个位置，轮转播区2个，推荐档口7个，元素馆5个，商品库右侧8个，搜索右侧6个（注意：所有广 告位不同一区域同一时段内，可重复报名）报名入口为四季星座供应商后台。退订回复T【四季星座网】";
         //遍历档口计数
         int mobileCount = 0;
         StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder results = new StringBuilder();
+        String result = null;
         boolean isNumberFilled = false;
         boolean isLast = false;
         for(ShiguShop s:shopList){
@@ -86,12 +88,16 @@ public class AdMst {
             // 发送信息
             if (isNumberFilled || isLast) {
                 String destmobile = stringBuilder.substring(1);
-                System.out.println(sendSms_quick(destmobile,content));
+                result = sendSms_quick(destmobile,content);
+                System.out.println(result);
+                results.append(result);
+                results.append(';');
                 //清空StringBuilder
                 stringBuilder.setLength(0);
             }
-
         }
+//        输出短信平台任务号列表，用于短信未发出时向短信平台客服查询
+        System.out.println(results.toString());
     }
 
     String msg="温馨提示：（报名时间为4月28日-4月30日20时）网站广告位报名入口已发布，本期总计首页29个位置，轮转播区1个，轮转播下方区1个，首页热卖10个，推荐档口7个，元素馆5个，大家注意（所有广告位不同一区域同一时段内，可重复报名）报名入口为供应商后台【四季星座网】";
