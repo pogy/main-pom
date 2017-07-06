@@ -141,8 +141,8 @@ public class ActivityService {
         ActivityDetailsVo vo = new ActivityDetailsVo();
         ShiguActivity activity = shiguActivityMapper.selectByPrimaryKey(actid);
         vo.setActImg(activity.getImage());
-        vo.setActStartTime(DateUtil.dateToString(activity.getStartTime(), DATE_FORMAT_PATTERN));
-        vo.setActEndTime(DateUtil.dateToString(activity.getEndTime(), DATE_FORMAT_PATTERN));
+        vo.setActStartTime(pickTime(activity.getStartTime()));
+        vo.setActEndTime(pickTime(activity.getEndTime()));
         vo.setActTitle(activity.getTitle());
         vo.setActPosition("首页");
         vo.setApplyRange(activity.getRuleInfo());

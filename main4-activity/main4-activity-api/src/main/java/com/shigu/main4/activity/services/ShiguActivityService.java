@@ -29,7 +29,7 @@ public interface ShiguActivityService {
      * 报名成功该活动的列表
      * @return
      */
-    List<ShiguActivityApplyVO> listApplies(); 
+    List<ShiguActivityApplyVO> listApplies();
 
     /**
      * 本活动申请通过的列表
