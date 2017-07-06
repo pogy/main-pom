@@ -1251,5 +1251,73 @@ public class ShiguActivityExample implements SgExample{
             this.addCriterion("services not between", value1, value2, "services");
             return (ShiguActivityExample.Criteria)this;
         }
+
+        public ShiguActivityExample.Criteria andWebSiteIsNull() {
+            this.addCriterion("web_site is null");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteIsNotNull() {
+            this.addCriterion("web_site is not null");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteEqualTo(String value) {
+            this.addCriterion("web_site =", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteNotEqualTo(String value) {
+            this.addCriterion("web_site <>", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteGreaterThan(String value) {
+            this.addCriterion("web_site >", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+            this.addCriterion("web_site >=", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteLessThan(String value) {
+            this.addCriterion("web_site <", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+            this.addCriterion("web_site <=", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteLike(String value) {
+            this.addCriterion("web_site like", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteNotLike(String value) {
+            this.addCriterion("web_site not like", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }        public ShiguActivityExample.Criteria andWebSiteIn(List<String> values) {
+            this.addCriterion("web_site in", values, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteNotIn(List<String> values) {
+            this.addCriterion("web_site not in", values, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteBetween(String value1, String value2) {
+            this.addCriterion("web_site between", value1, value2, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+            this.addCriterion("web_site not between", value1, value2, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
     }
 }
