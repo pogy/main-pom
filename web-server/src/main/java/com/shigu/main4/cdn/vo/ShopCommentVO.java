@@ -46,7 +46,7 @@ public class ShopCommentVO implements Serializable{
     /**
      * 星星数
      */
-    private Long starNum;
+    private Long starNum = 0L;
 
     public ShiguPager<Discus> getDiscus() {
         return discus;

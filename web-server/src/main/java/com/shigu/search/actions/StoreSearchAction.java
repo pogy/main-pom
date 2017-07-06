@@ -40,7 +40,12 @@ public class StoreSearchAction {
         model.addAttribute("storelist",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
         model.addAttribute("webSite",bo.getWebSite());
-        return "search/storenum";
+        if ("kx".equalsIgnoreCase(bo.getWebSite())) {
+            return "xieSearch/storenum";
+        } else {
+            return "search/storenum";
+        }
+
     }
 
 }

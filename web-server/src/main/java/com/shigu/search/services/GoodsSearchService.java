@@ -130,24 +130,29 @@ public class GoodsSearchService {
      * @return
      */
     public List<TjGoods> selTj(String webSite,int type,Long pid){
-        SpreadEnum manOrWoman=SpreadEnum.MAN_GOODS_RIGHT;
-        if(type==0){//商品库
-            if(pid!=null&&(pid==50006843L||pid==16L)){
-                manOrWoman=SpreadEnum.WOMAN_GOODS_RIGHT;
-            }
-        }else{
-            manOrWoman=SpreadEnum.SEARCH_RIGHT;
-        }
-        // TODO: 17/7/5 这里留个坑,暂时只有杭州站有广告,选写死杭州
-        if(!"hz".equals(webSite)){
-            return new ArrayList<>();
-        }
-        ObjFromCache<List<ItemSpreadVO>> objFromCache=spreadService.selItemSpreads("hz", manOrWoman);
+        SpreadEnum manOrWoman=getSpreadEnum(webSite, type, pid);
+
+        ObjFromCache<List<ItemSpreadVO>> objFromCache=spreadService.selItemSpreads(webSite, manOrWoman);
         List<ItemSpreadVO> list=objFromCache.selObj();
-//        if(objFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
-//            spreadService.createBySync(objFromCache);
+        if(objFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
+            spreadService.createBySync(objFromCache);
         Collections.shuffle(list);
         return BeanMapper.mapList(list,TjGoods.class);
+    }
+
+    private SpreadEnum getSpreadEnum(String webSite,int type,  Long  pid) {
+        SpreadEnum pEnum = SpreadEnum.MAN_GOODS_RIGHT;
+        if (type==0) {//商品库
+            if(pid!=null&&(pid==50006843L||pid==16L)){
+                    pEnum = SpreadEnum.WOMAN_GOODS_RIGHT;
+            }
+        }else{
+                pEnum = SpreadEnum.SEARCH_RIGHT;
+        }
+        if ("kx".equalsIgnoreCase(webSite)) {
+            pEnum = SpreadEnum.KX_GOODS_RIGHT;
+        }
+        return pEnum;
     }
 
     /**
