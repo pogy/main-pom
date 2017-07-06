@@ -38,7 +38,7 @@ public enum SpreadEnum {
     CS_WOMAN_TJDK("推荐档口", "CS-WOMAN-TJDK"), CS_WOMAN_XHTX("喜欢T恤", "CS-WOMAN-XHTX"), CS_WOMAN_XHNZ("喜欢牛仔", "CS-WOMAN-XHNZ"),
     CS_WOMAN_XHXZ("喜欢鞋子", "CS-WOMAN-XHXZ"),
 
-    KX_MAN_DT("男鞋大图", "KX-MAN-DT"),   KX_GOODS_RIGHT("看鞋商品库右侧", "KX-GOODS-RIGHT");
+    KX_MAN_DT("男鞋大图", "KX-MAN-DT"),  KX_MAN_XT("看鞋首页大图轮播下方", "KX-MAN-XT"),  KX_GOODS_RIGHT("看鞋商品库右侧", "KX-GOODS-RIGHT");
 
     SpreadEnum(String title, String code) {
         this.title = title;
