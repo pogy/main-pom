@@ -7,6 +7,7 @@ import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.shigu.activity.vo.*;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
+import com.shigu.main4.activity.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
@@ -288,6 +289,28 @@ public class ActivityAction {
         model.addAttribute("bannerSrc", activity.getBanner());
         model.addAttribute("bgColor", activity.getBkcolor());
         model.addAttribute("goodsList", activityService.gfShow(id));
+        model.addAttribute("webSite","hz");
         return "activity/popular";
+    }
+
+    @RequestMapping("activity/apply")
+    public String apply(Long id,Model model) throws Main4Exception {
+        model.addAttribute("webSite","hz");
+//        if (id == null) {
+//            throw new Main4Exception("页面不存在");
+//        }
+        int actState;
+        ShiguActivityVO vo=activityService.activityInfo(id);
+        long current=System.currentTimeMillis();
+        if(vo.getStartApply().getTime()>current){
+            actState=0;
+        }else if(vo.getEndApply().getTime()>current){
+            actState=1;
+        }else {
+            actState=2;
+        }
+        model.addAttribute("actState",actState);
+        model.addAttribute("id",id);
+        return "activity/apply";
     }
 }

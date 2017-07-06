@@ -15,15 +15,256 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/popular.css?t=1499153877709" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/popular.css?t=1499233594364" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/popular.js?t=1499153877709"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/popular.js?t=1499233594364"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
 
+<div class="topbar">
+    <div class="layout">
+        <div class="leftbox">
+            <div class="cityCe">
+                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
+                <div class="cityCon">
+                    <ul>
+                        <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
+                        <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
+                        <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
+                        <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
+                        <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
+                        <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
+                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="login">
+                <span>你好，</span>
+                <em>请</em>
+                <a class="simpleLogin" onclick="loginBack()" target="_blank">登录</a>
+                <a href="http://www.571xz.com/regedit.htm"  target="_blank">注册</a>
+                <a class="tbLogin" href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1">淘宝登录</a>
+                
+            </div>
+        </div>
+        
+        <div class="rightbox">
+            <ul>
+                <li class="noIndex">
+                    <a href="${main_host!}" class="c_ff4400">四季星座网首页</a>
+                </li>
+                <#if session_user_redis__??>
+                    <#if session_user_redis__.logshop??>
+                    <li>
+                        <div class="cnBox">
+                            <a class="cgcom" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
+                            <div class="myStore cnBoxCon">
+                                <ul>
+                                    <li><a href="${main_host!}seller/createGoods21init.htm">发布新商品</a></li>
+                                    <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
+                                </ul>
+                            </div>
+                        </div>    
+                    </li>
+                    <#else>
+                    <li class="noDown">
+                        <a href="${main_host!}carts.htm">
+                            <i class="cgcatIcon"></i>
+                            <span>购物车</span>
+                            <em class="cgNum"></em>
+                        </a>
+                    </li>
+                    <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
+                    <li>
+                        <div class="cnBox">
+                            <a class="cgcom" href="${main_host!}member/index.htm">我的星座<i class="downArrow"></i></a>
+                            <div class="myxz cnBoxCon">
+                                <ul>
+                                    <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cnBox">
+                            <a class="cgcom" href="${main_host!}member/storeCollectinit.htm">我的收藏<i class="downArrow"></i></a>
+                            <div class="myColle cnBoxCon">
+                                <ul>
+                                    <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                </ul>
+                            </div>
+                        </div>    
+                    </li>
+                    </#if>
+                    
+                <#else>
+                    <li class="noDown">
+                        <a href="${main_host!}carts.htm">
+                            <i class="cgcatIcon"></i>
+                            <span>购物车</span>
+                            <em class="cgNum"></em>
+                        </a>
+                    </li>
+                    <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
+                    <li>
+                        <div class="cnBox">
+                            <a class="cgcom" href="${main_host!}member/index.htm">我的星座<i class="downArrow"></i></a>
+                            <div class="myxz cnBoxCon">
+                                <ul>
+                                    <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cnBox">
+                            <a class="cgcom" href="${main_host!}member/storeCollectinit.htm">我的收藏<i class="downArrow"></i></a>
+                            <div class="myColle cnBoxCon">
+                                <ul>
+                                    <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
+                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                                </ul>
+                            </div>
+                        </div>    
+                    </li>
+                    <li>
+                        <div class="cnBox">
+                            <a class="cgcom" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
+                            <div class="myStore cnBoxCon">
+                                <ul>
+                                    <li><a href="${main_host!}seller/createGoods21init.htm">发布新商品</a></li>
+                                    <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
+                                </ul>
+                            </div>
+                        </div>    
+                    </li>
+                </#if>
+                <li class="noDown">
+                    <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
+                    
+                </li>
+                <li>
+                    <div class="cnBox">
+                        <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
+                        <div class="webNav cnBoxCon">
+                            <h4>市场大全</h4>
+                            <ul>
+                                
+                                <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=4">星座女装</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=6">好四季</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=8">置地国际</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=11">九天国际</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=12">新杭派</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=13">四季青</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=16">原创男装</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=17">大码男装</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=18">男鞋基地</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=19">周边市场</a></li>
+                                <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
+                            </ul>
+                        </div>
+                    </div>    
+                </li>
+                    
+            </ul>
+        </div>
+    </div>
+</div>
+<script>/*============ xz/page#topbar BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#topbar END ============*/
+
+
+</script>
+<div class="headerV1">
+    <div class="layout">
+        <div class="logoLeft">
+            <a href="http://${webSite!}.571xz.com">
+                <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
+            </a>
+            <em></em>
+        </div>
+        <div class="search">
+            <div class="tabList clearfix">
+                <ul>
+                    
+                    
+                    
+                    
+                    
+                    <li type="goods" class="select">商品</li>
+                    <li type="store" >档口</li>
+                    
+                </ul>
+                <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
+                <a href="${main_host!}picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
+                </#if>
+            </div>
+            <div class="searchBox">
+                
+                <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" >
+                    
+                    
+                    <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
+                    <button class="searchBtn">搜索</button>
+                </form>
+            </div>
+        </div>
+        <script>/*============ xz/page#search BEGIN ============*/
+
+var webSite = '${webSite!}';
+
+/*============ xz/page#search END ============*/
+
+
+</script>
+    </div>
+</div>
+<div class="topNav">
+    <ul class="clearfix">
+        <li>
+            <a href="http://hz.571xz.com/market.htm" target="_blank">
+逛市场<i class="hot"></i>            </a>
+        </li>
+        <li>
+            <a href="http://so.571xz.com/hzgoods.htm?pid=16" target="_blank">
+商品库            </a>
+        </li>
+        <li>
+            <a href="http://so.571xz.com/newgoods.htm?cid=3" target="_blank">
+今日新品            </a>
+        </li>
+        <li>
+            <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
+发现好货<i class="hot"></i>            </a>
+        </li>
+        <li>
+            <a href="http://daifa.571xz.com/" target="_blank">
+一件代发            </a>
+        </li>
+        <li>
+            <a href="http://zixun.571xz.com/index" target="_blank">
+资讯            </a>
+        </li>
+    </ul>
+</div>
 <div class="content clearfix" style="background-color:${bgColor!}">
     <div class="bannerImg">
         <div class="imgShow">
@@ -59,9 +300,11 @@
                     </div>
                     
                 </li>
+                
                 </#list>
             </ul>
         </div>
+        
     </div>
     <div class="imgLoading">
         <div class="layout">
@@ -72,7 +315,7 @@
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
