@@ -96,6 +96,9 @@ public class ShopCdnBO implements Serializable{
     }
 
     public String getOrder() {
+        if(order==null){
+            order="time_down";
+        }
         return order;
     }
 
