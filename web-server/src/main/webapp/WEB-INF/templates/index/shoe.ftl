@@ -7,7 +7,7 @@
     <meta name="keywords" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     <meta name="description" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/xieIndex/css/shoe.css?t=1499327241055" rel="stylesheet">
+    <link href="http://style.571xz.com/xieIndex/css/shoe.css?t=1499334002045" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/xieIndex/js/jquery.cookie.js"></script>
 <script>/*============ xieIndex/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/xieIndex/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/xieIndex/js/shoe.js?t=1499327241055"></script>
+    <script src="http://style.571xz.com/xieIndex/js/shoe.js?t=1499334002045"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -292,11 +292,17 @@ var webSite = '${webSite!}';
                     <h3 class="mtitle"><em>男鞋分类</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011745">凉鞋/拖鞋</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=青春潮流">青春潮流</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=日常休闲">日常休闲</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;cid=50011744">帆布/板鞋</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;=商务皮鞋">商务皮鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=夏季新款">夏季新款</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword网布鞋">网布鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;cid=50011745">凉鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword休闲鞋">休闲鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=板鞋">板鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;cid=50011744">帆布鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;cid=50012029">运动风</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=豆豆鞋">豆豆鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=乐福鞋">乐福鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=雕花布洛克">雕花布洛克</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=船鞋">船鞋</a></li>
                         </ul>
                     </div>
                 </div>
@@ -304,20 +310,17 @@ var webSite = '${webSite!}';
                     <h3 class="mtitle"><em>女鞋分类</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;cid=50012032">凉鞋/拖鞋</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=单鞋">单鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=凉鞋新款">凉鞋新款</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;cid=50012032">平底凉鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=抢新品">抢新品</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=猫跟鞋">猫跟鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=玛丽珍鞋">玛丽珍鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=小白鞋">小白鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=运动鞋女">运动鞋女</a></li>
                             <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;cid=50012042">帆布鞋</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=高帮鞋">高帮鞋</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=靴子">靴子</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="list" data-menuid="elementCate">
-                    <h3 class="mtitle"><em>流行元素</em><i class="iconfont"></i></h3>
-                    <div class="mlist">
-                        <ul class="clearfix">
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=男鞋">男鞋</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=女鞋">女鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=松糕厚底">松糕厚底</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=平底鞋">平底鞋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=低跟">低跟</a></li>
                         </ul>
                     </div>
                 </div>
@@ -342,179 +345,48 @@ var webSite = '${webSite!}';
                     
                     </div>
                     <div class="innerbox w320c0 manShoes" data-width="w320c0">
+                        <div class="itemConTop">
+                            <h4 class="itemTitle">男鞋</h4>
+                            <ul class="itemlist clearfix">
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=夏季新款" target="_blank">夏季新款</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword网布鞋" target="_blank">网布鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;cid=50011745" target="_blank">凉鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword休闲鞋" target="_blank">休闲鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=板鞋" target="_blank">板鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;cid=50011744" target="_blank">帆布鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;cid=50012029" target="_blank">运动风</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=豆豆鞋" target="_blank">豆豆鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=乐福鞋" target="_blank">乐福鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=雕花布洛克" target="_blank">雕花布洛克</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=船鞋" target="_blank">船鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=增高鞋" target="_blank">增高鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=正装商务" target="_blank">正装商务</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50112002&amp;keyword=户外休闲鞋" target="_blank">户外休闲鞋</a></li>
+                            </ul>
+                        </div>
                     
-                        
-                        <div class="itemsbox">
-                            <h4>凉鞋/拖鞋</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=凉拖鞋" target="_blank">凉拖鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=网面鞋" target="_blank">网面鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=洞洞鞋" target="_blank">洞洞鞋</a></li>
-                            </ul>
-                        </div>
-                        <div class="itemsbox">
-                            <h4>青春潮流</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=潮流低帮" target="_blank">潮流低帮</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=韩版" target="_blank">韩版</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=英伦" target="_blank">英伦</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=复古" target="_blank">复古</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=铆钉" target="_blank"> 铆钉</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=编制" target="_blank">编制</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=豹纹" target="_blank">豹纹</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=大头" target="_blank">大头</a></li>
-                            </ul>
-                        </div>
-                        <div class="itemsbox">
-                            <h4>日常休闲</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=皮鞋" target="_blank">皮鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;cid=50012906" target="_blank">低帮鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=反绒皮" target="_blank">反绒皮</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=大头鞋" target="_blank">大头鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=帆船鞋" target="_blank">帆船鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=懒人鞋" target="_blank">懒人鞋</a></li>
-                            </ul>
-                        </div>
-                        <div class="itemsbox">
-                            <h4>帆布/板鞋</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;cid=50012907" target="_blank">高帮鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;cid=50012906" target="_blank">低帮鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=皮革面" target="_blank">皮革面</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=魔术贴" target="_blank">魔术贴</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=条纹" target="_blank">条纹</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=情侣款" target="_blank">情侣款</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=厚底" target="_blank">厚底</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=人本" target="_blank">人本</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=回力" target="_blank">回力</a></li>
-                            </ul>
-                        </div>
-                        <div class="itemsbox">
-                            <h4>商务皮鞋</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=休闲皮鞋" target="_blank">休闲皮鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=正装皮鞋" target="_blank">正装皮鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=布洛克" target="_blank">布洛克</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=内增高" target="_blank">内增高</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=反绒皮 " target="_blank">反绒皮 </a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=搭扣" target="_blank">搭扣</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=英伦风" target="_blank">英伦风</a></li>
-                            </ul>
-                        </div>
-                        
                     </div>
                     <div class="innerbox w320c0 womenShoes" data-width="w320c0">
-                    
-                        
-                        <div class="itemsbox">
-                            <h4>凉鞋/拖鞋</h4>
+                        <div class="itemConTop">
+                            <h4 class="itemTitle">女鞋</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=鱼嘴" target="_blank">鱼嘴</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=尖头" target="_blank">尖头</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=粗跟" target="_blank">粗跟</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=坡跟" target="_blank">坡跟</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=细跟" target="_blank">细跟</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=厚底" target="_blank">厚底</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=夹趾" target="_blank">夹趾</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=平跟" target="_blank">平跟</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=包头" target="_blank">包头</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=系带" target="_blank">系带</a></li>
-                            </ul>
-                        </div>
-                        <div class="itemsbox">
-                            <h4>单鞋</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=高跟" target="_blank">高跟</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=平底" target="_blank">平底</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=厚底" target="_blank">厚底</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=凉鞋新款" target="_blank">凉鞋新款</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;cid=50012032" target="_blank">平底凉鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=抢新品" target="_blank">抢新品</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=猫跟鞋" target="_blank">猫跟鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=玛丽珍鞋" target="_blank">玛丽珍鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=小白鞋" target="_blank">小白鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=运动鞋女" target="_blank">运动鞋女</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;cid=50012042" target="_blank">帆布鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=松糕厚底" target="_blank">松糕厚底</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=平底鞋" target="_blank">平底鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=低跟" target="_blank">低跟</a></li>
                                 <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=中跟" target="_blank">中跟</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=粗跟" target="_blank">粗跟</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=坡跟" target="_blank">坡跟</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=深口" target="_blank">深口</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=尖头" target="_blank">尖头</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=圆头" target="_blank">圆头</a></li>
-                            </ul>
-                        </div>
-                        <div class="itemsbox">
-                            <h4>帆布鞋</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=高帮" target="_blank">高帮</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=低帮" target="_blank">低帮</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=魔术贴" target="_blank">魔术贴</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=懒人鞋" target="_blank">懒人鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=厚底" target="_blank">厚底</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=系带" target="_blank">系带</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=情侣款" target="_blank">情侣款</a></li>
-                            </ul>
-                        </div>
-                        <div class="itemsbox">
-                            <h4>高帮鞋</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=内增高" target="_blank">内增高</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=厚底" target="_blank">厚底</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=系带" target="_blank">系带</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=魔术贴" target="_blank">魔术贴</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=拉链" target="_blank">拉链</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=松紧带" target="_blank">松紧带</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=套脚" target="_blank">套脚</a></li>
-                            </ul>
-                        </div>
-                        <div class="itemsbox">
-                            <h4>靴子</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=裸靴" target="_blank">裸靴</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=短靴" target="_blank">短靴</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=马丁靴" target="_blank">马丁靴</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=中筒" target="_blank">中筒</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=高筒" target="_blank">高筒</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=切尔西靴" target="_blank">切尔西靴</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=雪地靴" target="_blank">雪地靴</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=过膝" target="_blank">过膝</a></li>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                    <div class="innerbox w320c0 elementCate" data-width="w320c0">
-                    
-                        
-                        <div class="itemsbox">
-                            <h4>男鞋</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=白色" target="_blank">白色</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=纯色" target="_blank">纯色</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=手绘" target="_blank">手绘</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=印花" target="_blank">印花</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=撞色" target="_blank">撞色</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=格子" target="_blank">格子</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=荧光色" target="_blank">荧光色</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=热点" target="_blank">热点</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=韩版" target="_blank">韩版</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=系带" target="_blank">系带</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=校园风" target="_blank">校园风</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=运动风" target="_blank">运动风</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50011740&amp;keyword=铆钉" target="_blank">铆钉</a></li>
-                            </ul>
-                        </div>
-                        <div class="itemsbox">
-                            <h4>女鞋</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=铆钉" target="_blank">铆钉</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=欧美" target="_blank">欧美</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=韩风" target="_blank">韩风</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=金色" target="_blank">金色</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=银色" target="_blank">银色</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=特色鞋" target="_blank">特色鞋</a></li>
+                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=高跟" target="_blank">高跟</a></li>
                                 <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=妈妈鞋" target="_blank">妈妈鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=孕妇鞋" target="_blank">孕妇鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=潮鞋" target="_blank">潮鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=大码鞋" target="_blank">大码鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=小码鞋" target="_blank">小码鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=婚鞋" target="_blank">婚鞋</a></li>
-                                <li><a href="http://www.kxie.com/${webSite!}goods.htm?pid=50006843&amp;keyword=负跟鞋" target="_blank">负跟鞋</a></li>
                             </ul>
                         </div>
-                        
+                    
                     </div>
                 
             </div>
