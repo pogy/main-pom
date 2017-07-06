@@ -170,10 +170,10 @@ public class CdnAction {
         //全站公告
         model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
         //轮播下方小图
-        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_XT)));
 //        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
-//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_GXT)));
+//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_XT)));
+        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
+                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_GXT)));
         //大图
         model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_DT:SpreadEnum.MAN_DT)));
