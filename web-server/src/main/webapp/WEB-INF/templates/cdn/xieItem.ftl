@@ -11,11 +11,11 @@
     
     <meta name="description" content="看鞋网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
     
-    <link href="http://style.571xz.com/xieShopItem/css/xieItem.css?t=1499248646940" rel="stylesheet">
+    <link href="http://style.571xz.com/xieShopItem/css/xieItem.css?t=1499308766526" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/xieShopItem/js/xieItem.js?t=1499248646940"></script>
+    <script src="http://style.571xz.com/xieShopItem/js/xieItem.js?t=1499308766526"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -795,7 +795,7 @@ $.post(
 
 '${test!}'
 $(function(){
-    $.post('shopnew.htm',{"id": storeId},function(data){
+    $.post('shopnew.htm',{"id":storeId, "webSite":'kx'},function(data){
         $('#item_shopnew').html(data);
     });
 })

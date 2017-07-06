@@ -11,11 +11,11 @@
     
     <meta name="description" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/xieSearch/css/storenum.css?t=1499248639202" rel="stylesheet">
+    <link href="http://style.571xz.com/xieSearch/css/storenum.css?t=1499308744437" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/xieSearch/js/storenum.js?t=1499248639202"></script>
+    <script src="http://style.571xz.com/xieSearch/js/storenum.js?t=1499308744437"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -215,7 +215,7 @@ var webSite = '${webSite!}';
         <div class="navList">
             <ul>
                 <li class="first"><a href="http://www.kxie.com" target="_blank">首页</a></li>
-                <li><a href="http://www.kxie.com/market.htm">逛市场</a></li>
+                <li><a href="http://www.kxie.com/market.htm?mid=68">逛市场</a></li>
                 <li ><a href="http://www.kxie.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
             </ul>
         </div>
