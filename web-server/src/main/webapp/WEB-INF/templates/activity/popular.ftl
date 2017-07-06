@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/popular.css?t=1499233594364" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/popular.css?t=1499335057137" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/popular.js?t=1499233594364"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/popular.js?t=1499335057137"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -244,11 +244,11 @@ var webSite = '${webSite!}';
 逛市场<i class="hot"></i>            </a>
         </li>
         <li>
-            <a href="http://so.571xz.com/hzgoods.htm?pid=16" target="_blank">
+            <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
 商品库            </a>
         </li>
         <li>
-            <a href="http://so.571xz.com/newgoods.htm?cid=3" target="_blank">
+            <a href="http://so.571xz.com/newgoods.htm" target="_blank">
 今日新品            </a>
         </li>
         <li>
