@@ -563,7 +563,6 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         if (StringUtils.isEmpty(orderBy)) {
             requestBuilder.addSort(new SortField("created", Order.DECREASE));
         } else {
-            System.out.println("sort by " + orderBy);
             switch (orderBy) {
                 case "price_up":
                     requestBuilder.addSort(new SortField("pi_price", Order.INCREASE));
@@ -593,7 +592,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         Query searchQuery = null;
         if(StringUtils.isNotBlank(keyword)) {
             searchQuery = QueryBuilder.search("title", keyword).boost(10).or(QueryBuilder.search("goods_no", keyword).boost(5));
-            //requestBuilder.addSummary(SummaryBuild.field("title").length(120));
+            requestBuilder.addSummary(SummaryBuild.field("title").length(120));
         }
         Long shopId = shopForCdnBo.getShopId();
         if (shopId != null && shopForCdnBo.getScid() != null) {
