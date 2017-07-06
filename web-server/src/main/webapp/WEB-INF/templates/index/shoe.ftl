@@ -7,7 +7,7 @@
     <meta name="keywords" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     <meta name="description" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/xieIndex/css/shoe.css?t=1499248641667" rel="stylesheet">
+    <link href="http://style.571xz.com/xieIndex/css/shoe.css?t=1499308698962" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/xieIndex/js/jquery.cookie.js"></script>
 <script>/*============ xieIndex/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/xieIndex/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/xieIndex/js/shoe.js?t=1499248641667"></script>
+    <script src="http://style.571xz.com/xieIndex/js/shoe.js?t=1499308698962"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -278,13 +278,13 @@ var webSite = '${webSite!}';
                     <h3 class="mtitle"><em>市场分类</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
-                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=1">华联A栋</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=2">华联B栋</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=3">义兴堂</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=4">旧车站</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=5">滨江幸福广场</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=6">晋江电子商务中心</a></li>
-                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=7">周边市场</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=68">华联A栋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=69">华联B栋</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=70">义兴堂</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=71">旧车站</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=72">滨江幸福广场</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=73">晋江电子商务中心</a></li>
+                            <li><a target="_blank" href="http://www.kxie.com/market.htm?mid=74">周边市场</a></li>
                         </ul>
                     </div>
                 </div>
@@ -330,13 +330,13 @@ var webSite = '${webSite!}';
                         <div class="itemConTop">
                             <h4 class="itemTitle">市场导航</h4>
                             <ul class="itemlist clearfix">
-                                <li><a href="http://www.kxie.com/market.htm?mid=1" target="_blank">华联A栋</a></li>
-                                <li><a href="http://www.kxie.com/market.htm?mid=2" target="_blank">华联B栋</a></li>
-                                <li><a href="http://www.kxie.com/market.htm?mid=3" target="_blank">义兴堂</a></li>
-                                <li><a href="http://www.kxie.com/market.htm?mid=4" target="_blank">旧车站</a></li>
-                                <li><a href="http://www.kxie.com/market.htm?mid=5" target="_blank">滨江幸福广场</a></li>
-                                <li><a href="http://www.kxie.com/market.htm?mid=6" target="_blank">晋江电子商务中心</a></li>
-                                <li><a href="http://www.kxie.com/market.htm?mid=7" target="_blank">周边市场</a></li>
+                                <li><a href="http://www.kxie.com/market.htm?mid=68" target="_blank">华联A栋</a></li>
+                                <li><a href="http://www.kxie.com/market.htm?mid=69" target="_blank">华联B栋</a></li>
+                                <li><a href="http://www.kxie.com/market.htm?mid=70" target="_blank">义兴堂</a></li>
+                                <li><a href="http://www.kxie.com/market.htm?mid=71" target="_blank">旧车站</a></li>
+                                <li><a href="http://www.kxie.com/market.htm?mid=72" target="_blank">滨江幸福广场</a></li>
+                                <li><a href="http://www.kxie.com/market.htm?mid=73" target="_blank">晋江电子商务中心</a></li>
+                                <li><a href="http://www.kxie.com/market.htm?mid=74" target="_blank">周边市场</a></li>
                             </ul>
                         </div>
                     
@@ -528,7 +528,7 @@ var webSite = '${webSite!}';
         <div class="topNav">
             <ul class="clearfix">
                 <li>
-                    <a href="http://www.kxie.com/market.htm" target="_blank">
+                    <a href="http://www.kxie.com/market.htm?mid=68" target="_blank">
 逛市场<i class="hot"></i>                    </a>
                 </li>
                 <li>
