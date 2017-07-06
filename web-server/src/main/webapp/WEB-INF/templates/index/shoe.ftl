@@ -7,7 +7,7 @@
     <meta name="keywords" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     <meta name="description" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <link href="http://style.571xz.com/xieIndex/css/shoe.css?t=1499308698962" rel="stylesheet">
+    <link href="http://style.571xz.com/xieIndex/css/shoe.css?t=1499327241055" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/xieIndex/js/jquery.cookie.js"></script>
 <script>/*============ xieIndex/page#layoutHeader BEGIN ============*/
@@ -35,7 +35,7 @@
 
 
 </script>    <script src="http://style.571xz.com/xieIndex/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/xieIndex/js/shoe.js?t=1499308698962"></script>
+    <script src="http://style.571xz.com/xieIndex/js/shoe.js?t=1499327241055"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -661,71 +661,6 @@ if(session_shopId != ""){
                 <div class="tally">${item.elementText!}</div>
                 </#if>
             </li>
-            
-            </#list>
-            
-        </ul>
-    </div>
-</div>
-<div class="elementGoodslist advs layout">
-    <a class="sideNavbarDot" name="elementGoods" data-text="元素"></a>
-    <h3>流行元素 <span>潮流阵地  时尚前沿</span></h3>
-    <div class="goodslist clearfix">
-        <div class="elementGoods clearfix">
-            <#list elementCateList as item>
-            <div class="element"><a href="${item.href!}" target="_blank">${item.text!}</a></div>
-            </#list>
-        </div>
-        
-        <ul class="clearfix tle tleL">
-            <#list elementGoodslist as item>
-            <li class="item1">
-                <a class="imgBox" href="http://www.kxie.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
-                </a>
-                
-                <div class="gsOtInfo">
-                    <span class="price">¥${item.piprice!}</span>
-                    <div class="storeNum" title="${item.storeText!}"><a href="http://www.kxie.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
-                </div>
-                <#if item.styleText?? && item.styleText != "" >
-                    <div class="tally">${item.styleText!}</div>
-                </#if>
-                <#if item.elementText?? && item.elementText != "">
-                <div class="tally">${item.elementText!}</div>
-                </#if>
-            </li>
-            
-            </#list>
-            
-        </ul>
-    </div>
-</div>
-<div class="recommendShoplist layout advs">
-    <a class="sideNavbarDot" name="recommendShop" data-text="推荐"></a>
-    <h3>推荐档口 <span>实力档口  源头好货</span></h3>
-    <div class="goodslist clearfix">
-        <ul class="clearfix tle tleL">
-            
-            <#list recommendShoplist as item>
-            <li class="item2">
-                <a class="imgBox" href="http://www.kxie.com/item.htm?id=${item.id!}" target="_blank">
-                    <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
-                </a>
-                <div class="gsOtInfo">
-                    <div class="inSell">
-                        <a href="http://www.kxie.com/shop.htm?id=${item.storeId!}" target="_blank">
-                            <span class="s1">${item.marketText!}</span>
-                            <span class="s2">${item.storeNum!}</span>
-                        </a>
-                        
-                    </div>
-                
-                <div class="userText" title="${item.userText!}">${item.userText!}</div>
-                
-                </div>
-            </li>
-            
             
             </#list>
             
