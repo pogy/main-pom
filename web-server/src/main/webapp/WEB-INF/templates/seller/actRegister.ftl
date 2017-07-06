@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/actRegister-v1.css?t=1499248298497" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actRegister.css?t=1499305324333" rel="stylesheet">
     
   </head>
 <body>
@@ -238,6 +238,7 @@ var webSite = '${webSite!}';
     <h2>营销管理</h2>
     <ul>
         <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
+        <li><a href="https://shop121675953.taobao.com" target="_blank" style="color:#f40">广告位竞拍</a></li> 
         <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
         <li><a href="${main_host!}seller/promotion.htm"  >广告展示管理</a></li> 
         <li><a class="selected"  href="${main_host!}seller/actRegister.htm">立即报名活动</a></li> 
@@ -254,213 +255,213 @@ var webSite = '${webSite!}';
         <div class="actContent">
             <div class="actItems allActs">
                 <#list activities as actItem>
-                <div class="actItem clearfix">
-                    <div class="actImg">
-                        <img src=${actItem.actImg!}>
-                    </div>
-                    <div class="actDetails">
-                        <p class="lineHei32">
-                            <span class="actTitle">${actItem.actTitle!}</span>
-                            <span class="applyTime">报名时间：${actItem.applyTime!}</span>
-                        </p>
-                        <p class="lineHei32">
-                            <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
-                        </p>
-                        <p class="lineHei32">
-                            <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
-                            <span class="actNums">名额：${actItem.actNums!}</span>
-                            <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
-                        </p>
-                        <p class="lineHei32">
-                            报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
-                            <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
-                        </p>
-                    </div>
-                    <div class="applyStatus">
-                        <#if actItem.hdStatus == '0'>
+                    <div class="actItem clearfix">
+                        <div class="actImg">
+                            <img src=${actItem.actImg!}>
+                        </div>
+                        <div class="actDetails">
+                            <p class="lineHei32">
+                                <span class="actTitle">${actItem.actTitle!}</span>
+                                <span class="applyTime">报名时间：${actItem.applyTime!}</span>
+                            </p>
+                            <p class="lineHei32">
+                                <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
+                            </p>
+                            <p class="lineHei32">
+                                <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
+                                <span class="actNums">名额：${actItem.actNums!}</span>
+                                <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
+                            </p>
+                            <p class="lineHei32">
+                                报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
+                                <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
+                            </p>
+                        </div>
+                        <div class="applyStatus">
+                            <#if actItem.hdStatus == '0'>
 <#assign text>{"text":'等待报名', "cls":'actEnd'}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton actEnd" jbtn="" id="">等待报名</button>
-                        
-                        <#elseif actItem.hdStatus == '1'>
-                            <#if actItem.sqStatus == '0'>
+                                            <button class="gyButton actEnd" jbtn="" id="">等待报名</button>
                             
-                            <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
-                            
-                            <#elseif actItem.sqStatus == '1'>
+                            <#elseif actItem.hdStatus == '1'>
+                                <#if actItem.sqStatus == '0'>
+                                
+                                <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                                
+                                <#elseif actItem.sqStatus == '1'>
 <#assign text>{"text":'审核中...', "cls":'registered'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton registered" jbtn="" id="">审核中...</button>
-                            
-                            <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
-                            
-                            <#elseif actItem.sqStatus == '2'>
-                            <span class="statusTip">审核未通过</span>
-                            <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
-                            
-                            <#elseif actItem.sqStatus == '3'>
+                                                    <button class="gyButton registered" jbtn="" id="">审核中...</button>
+                                
+                                <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
+                                
+                                <#elseif actItem.sqStatus == '2'>
+                                <span class="statusTip">审核未通过</span>
+                                <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                                
+                                <#elseif actItem.sqStatus == '3'>
 <#assign text>{"text":'报名已通过', "cls":'registerSuccess'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
-                            
-                            <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
-                            
-                            </#if>
-                        <#elseif actItem.hdStatus == '2'>
+                                                    <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
+                                
+                                <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
+                                
+                                </#if>
+                            <#elseif actItem.hdStatus == '2'>
 <#assign text>{"text":'活动进行中', "cls":'actProcess'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton actProcess" jbtn="" id="">活动进行中</button>
-                            
-                        <#else>
+                                                    <button class="gyButton actProcess" jbtn="" id="">活动进行中</button>
+                                
+                            <#else>
 <#assign text>{"text":'已结束', "cls":'actEnd'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton actEnd" jbtn="" id="">已结束</button>
-                            
-                        </#if>
+                                                    <button class="gyButton actEnd" jbtn="" id="">已结束</button>
+                                
+                            </#if>
+                        </div>
                     </div>
-                </div>
                 </#list>
             </div>
             <div class="actItems partedActs">
                 <#list activities as actItem>
-                <#if actItem.sqStatus == "3">
-                <div class="actItem clearfix">
-                    <div class="actImg">
-                        <img src=${actItem.actImg!}>
-                    </div>
-                    <div class="actDetails">
-                        <p class="lineHei32">
-                            <span class="actTitle">${actItem.actTitle!}</span>
-                            <span class="applyTime">报名时间：${actItem.applyTime!}</span>
-                        </p>
-                        <p class="lineHei32">
-                            <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
-                        </p>
-                        <p class="lineHei32">
-                            <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
-                            <span class="actNums">名额：${actItem.actNums!}</span>
-                            <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
-                        </p>
-                        <p class="lineHei32">
-                            报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
-                            <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
-                        </p>
-                    </div>
-                    <div class="applyStatus">
-                        <#if actItem.hdStatus == '0'>
+                    <#if actItem.sqStatus == "3">
+                        <div class="actItem clearfix">
+                            <div class="actImg">
+                                <img src=${actItem.actImg!}>
+                            </div>
+                            <div class="actDetails">
+                                <p class="lineHei32">
+                                    <span class="actTitle">${actItem.actTitle!}</span>
+                                    <span class="applyTime">报名时间：${actItem.applyTime!}</span>
+                                </p>
+                                <p class="lineHei32">
+                                    <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
+                                </p>
+                                <p class="lineHei32">
+                                    <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
+                                    <span class="actNums">名额：${actItem.actNums!}</span>
+                                    <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
+                                </p>
+                                <p class="lineHei32">
+                                    报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
+                                    <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
+                                </p>
+                            </div>
+                            <div class="applyStatus">
+                                <#if actItem.hdStatus == '0'>
 <#assign text>{"text":'等待报名', "cls":'actEnd'}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton actEnd" jbtn="" id="">等待报名</button>
-                        
-                        <#elseif actItem.hdStatus == '1'>
-                            <#if actItem.sqStatus == '0'>
-                            
-                            <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
-                            
-                            <#elseif actItem.sqStatus == '1'>
+                                                <button class="gyButton actEnd" jbtn="" id="">等待报名</button>
+                                
+                                <#elseif actItem.hdStatus == '1'>
+                                    <#if actItem.sqStatus == '0'>
+                                    
+                                    <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                                    
+                                    <#elseif actItem.sqStatus == '1'>
 <#assign text>{"text":'审核中...', "cls":'registered'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton registered" jbtn="" id="">审核中...</button>
-                            
-                            <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
-                            
-                            <#elseif actItem.sqStatus == '2'>
-                            <span class="statusTip">审核未通过</span>
-                            <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
-                            
-                            <#elseif actItem.sqStatus == '3'>
+                                                        <button class="gyButton registered" jbtn="" id="">审核中...</button>
+                                    
+                                    <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
+                                    
+                                    <#elseif actItem.sqStatus == '2'>
+                                    <span class="statusTip">审核未通过</span>
+                                    <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                                    
+                                    <#elseif actItem.sqStatus == '3'>
 <#assign text>{"text":'报名已通过', "cls":'registerSuccess'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
-                            
-                            <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
-                            
-                            </#if>
-                        <#elseif actItem.hdStatus == '2'>
+                                                        <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
+                                    
+                                    <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
+                                    
+                                    </#if>
+                                <#elseif actItem.hdStatus == '2'>
 <#assign text>{"text":'活动进行中', "cls":'actProcess'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton actProcess" jbtn="" id="">活动进行中</button>
-                            
-                        <#else>
+                                                        <button class="gyButton actProcess" jbtn="" id="">活动进行中</button>
+                                    
+                                <#else>
 <#assign text>{"text":'已结束', "cls":'actEnd'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton actEnd" jbtn="" id="">已结束</button>
-                            
-                        </#if>
-                    </div>
-                </div>
-                </#if>
+                                                        <button class="gyButton actEnd" jbtn="" id="">已结束</button>
+                                    
+                                </#if>
+                            </div>
+                        </div>
+                    </#if>
                 </#list>
             </div>
             <div class="actItems noPartedActs">
                 <#list activities as actItem>
-                <#if actItem.sqStatus == "0" || actItem.sqStatus == "1" || actItem.sqStatus == "2">
-                <div class="actItem clearfix">
-                    <div class="actImg">
-                        <img src=${actItem.actImg!}>
-                    </div>
-                    <div class="actDetails">
-                        <p class="lineHei32">
-                            <span class="actTitle">${actItem.actTitle!}</span>
-                            <span class="applyTime">报名时间：${actItem.applyTime!}</span>
-                        </p>
-                        <p class="lineHei32">
-                            <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
-                        </p>
-                        <p class="lineHei32">
-                            <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
-                            <span class="actNums">名额：${actItem.actNums!}</span>
-                            <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
-                        </p>
-                        <p class="lineHei32">
-                            报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
-                            <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
-                        </p>
-                    </div>
-                    <div class="applyStatus">
-                        <#if actItem.hdStatus == '0'>
+                    <#if actItem.sqStatus == "0" || actItem.sqStatus == "1" || actItem.sqStatus == "2">
+                        <div class="actItem clearfix">
+                            <div class="actImg">
+                                <img src=${actItem.actImg!}>
+                            </div>
+                            <div class="actDetails">
+                                <p class="lineHei32">
+                                    <span class="actTitle">${actItem.actTitle!}</span>
+                                    <span class="applyTime">报名时间：${actItem.applyTime!}</span>
+                                </p>
+                                <p class="lineHei32">
+                                    <span class="applyRange">报名产品范围：${actItem.applyRange!}</span>
+                                </p>
+                                <p class="lineHei32">
+                                    <span class="actTime">活动时间：${actItem.actStartTime!}-${actItem.actEndTime!}</span>
+                                    <span class="actNums">名额：${actItem.actNums!}</span>
+                                    <span class="chargeStyle">收费类型：<#if actItem.chargeStyle == 'free'>免费<#else>&yen;${actItem.chargeStyle!}</#if></span>
+                                </p>
+                                <p class="lineHei32">
+                                    报名资质：<#if actItem.supportReturn == true><span class="applyQualify">支持退货</span></#if>
+                                    <#if actItem.supportBarter == true><span class="applyQualify">支持换货</span></#if>
+                                </p>
+                            </div>
+                            <div class="applyStatus">
+                                <#if actItem.hdStatus == '0'>
 <#assign text>{"text":'等待报名', "cls":'actEnd'}</#assign>
 <#assign $it=text?eval />
-                                        <button class="gyButton actEnd" jbtn="" id="">等待报名</button>
-                        
-                        <#elseif actItem.hdStatus == '1'>
-                            <#if actItem.sqStatus == '0'>
-                            
-                            <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
-                            
-                            <#elseif actItem.sqStatus == '1'>
+                                                <button class="gyButton actEnd" jbtn="" id="">等待报名</button>
+                                
+                                <#elseif actItem.hdStatus == '1'>
+                                    <#if actItem.sqStatus == '0'>
+                                    
+                                    <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                                    
+                                    <#elseif actItem.sqStatus == '1'>
 <#assign text>{"text":'审核中...', "cls":'registered'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton registered" jbtn="" id="">审核中...</button>
-                            
-                            <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
-                            
-                            <#elseif actItem.sqStatus == '2'>
-                            <span class="statusTip">审核未通过</span>
-                            <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
-                            
-                            <#elseif actItem.sqStatus == '3'>
+                                                        <button class="gyButton registered" jbtn="" id="">审核中...</button>
+                                    
+                                    <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
+                                    
+                                    <#elseif actItem.sqStatus == '2'>
+                                    <span class="statusTip">审核未通过</span>
+                                    <a href='${main_host!}seller/actDetails.htm?actid=${actItem.actid!}' class="gyButton goRegister">立即报名</a>
+                                    
+                                    <#elseif actItem.sqStatus == '3'>
 <#assign text>{"text":'报名已通过', "cls":'registerSuccess'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
-                            
-                            <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
-                            
-                            </#if>
-                        <#elseif actItem.hdStatus == '2'>
+                                                        <button class="gyButton registerSuccess" jbtn="" id="">报名已通过</button>
+                                    
+                                    <a href="javascript:;" data-actid=${actItem.actid!} data-sqStatus=${actItem.sqStatus!} data-img="${actItem.goodsImgSrc!}" class="checkDetails">查看报名详情</a>
+                                    
+                                    </#if>
+                                <#elseif actItem.hdStatus == '2'>
 <#assign text>{"text":'活动进行中', "cls":'actProcess'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton actProcess" jbtn="" id="">活动进行中</button>
-                            
-                        <#else>
+                                                        <button class="gyButton actProcess" jbtn="" id="">活动进行中</button>
+                                    
+                                <#else>
 <#assign text>{"text":'已结束', "cls":'actEnd'}</#assign>
 <#assign $it=text?eval />
-                                                <button class="gyButton actEnd" jbtn="" id="">已结束</button>
-                            
-                        </#if>
-                    </div>
-                </div>
-                </#if>
+                                                        <button class="gyButton actEnd" jbtn="" id="">已结束</button>
+                                    
+                                </#if>
+                            </div>
+                        </div>
+                    </#if>
                 </#list>
             </div>
         </div>
@@ -498,7 +499,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actRegister-v1.js?t=1499248298497"></script>
+<script src="http://style.571xz.com/gys5/js/actRegister.js?t=1499305324333"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
