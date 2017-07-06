@@ -355,6 +355,11 @@ public class CdnAction {
         //全站公告
         model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
 
+        //猜喜欢
+        List<LoveGoodsList> loves = new ArrayList<>();
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("看鞋",webSite,SpreadEnum.KX_MAN_XH)));
+        model.addAttribute("loveGoodslist",loves);
+
         model.addAttribute("webSite", webSite);
         return "index/shoe";
     }
