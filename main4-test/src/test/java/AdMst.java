@@ -71,7 +71,7 @@ public class AdMst {
                 }
             }
             if(s.getShopId()==40413L){
-                telephone = "18757597186;15168224104";
+                telephone = "18757597186;15168224104;18736271422";
             }
             if (s.getShopId()==41437L) {
                 telephone = "13666678498";
@@ -81,8 +81,8 @@ public class AdMst {
                 stringBuilder.append(';');
                 stringBuilder.append(telephone);
             }
-            // 一次最多向800个号码发送信息，utf8号码大小约72kb
-            isNumberFilled = mobileCount%800 == 0;
+            // 短信平台建议一次最大发送不要超过3000个号码
+            isNumberFilled = mobileCount%2000 == 0;
             // 最后一批号码发送信息
             isLast = mobileCount == shopList.size();
             // 发送信息
