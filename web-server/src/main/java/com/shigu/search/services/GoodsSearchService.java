@@ -115,11 +115,14 @@ public class GoodsSearchService {
      * @return
      */
     public String selNavName(List<CateNav> cates,String value){
-        for(CateNav c:cates){
-            if(c.getId().equals(value)){
-                return c.getText();
+        if (cates !=null) {
+            for(CateNav c:cates){
+                if(c.getId().equals(value)){
+                    return c.getText();
+                }
             }
         }
+
         return null;
     }
 
