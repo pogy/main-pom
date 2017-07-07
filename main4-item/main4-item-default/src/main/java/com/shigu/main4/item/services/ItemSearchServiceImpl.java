@@ -307,6 +307,8 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             for (OpenItemVo openItemVo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
                 SearchItem searchItem = BeanMapper.map(openItemVo, SearchItem.class);
                 searchItem.setItemId(openItemVo.getGoodsId());
+                long digital = openItemVo.getPiPrice()%100;
+                searchItem.setPrice(openItemVo.getPiPrice()/100 + "." + (digital/10) + digital%10);
                 searchItem.setHighLightGoodsNo(openItemVo.getGoodsNo());
                 searchItem.setHighLightTitle(openItemVo.getTitle());
                 pager.getContent().add(searchItem);
