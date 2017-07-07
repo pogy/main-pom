@@ -209,25 +209,13 @@ public class GoatShopService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void prepublishGoatUpdate(GoatLicense license,Long userId, ShiguGoodsTiny good) throws JsonErrException {
-        try {
-            Long goatId = license.getGoatId();
-            Long oldGoatGoodsId = null;
-            ItemGoatVO oldGoatVO = goatDubboService.selGoatPrepareById(goatId, GoatType.ItemGoat);
-            if (oldGoatVO != null) {
-                oldGoatGoodsId = oldGoatVO.getItemId();
-            }
-            Long newGoatGoodsId = good.getGoodsId();
             ItemGoatVO goatVO = new ItemGoatVO();
-            goatVO.setItemId(newGoatGoodsId);
-            goatVO.setGoatId(goatId);
+            goatVO.setItemId(good.getGoodsId());
+            goatVO.setGoatId(license.getGoatId());
             goatVO.setFromTime(license.getSpreadFromTime());
             goatVO.setToTime(license.getSpreadToTime());
             goatVO.setUserId(userId);
             goatDubboService.preparePublish(goatVO, (license.getSpreadFromTime().getTime() - new Date().getTime())/1000);
-            changeHadGoat(oldGoatGoodsId, newGoatGoodsId);
-        } catch (GoatException e) {
-            throw new JsonErrException(e.getMessage());
-        }
     }
 
     /**
