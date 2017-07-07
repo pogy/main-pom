@@ -531,7 +531,8 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             for (OpenItemVo itemVo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
                 ItemShowBlock itemShowBlock = BeanMapper.map(itemVo,ItemShowBlock.class);
                 itemShowBlock.setImgUrl(itemVo.getPicUrl());
-                itemShowBlock.setPrice((itemVo.getPiPrice()/100)+"."+(itemVo.getPiPrice()%100));
+                long digital = itemVo.getPiPrice()%100;
+                itemShowBlock.setPrice((itemVo.getPiPrice()/100) + "." + (digital/10) + digital%10);
                 itemShowBlock.setItemId(itemVo.getGoodsId());
                 itemShowBlock.setWebSite(webSite);
                 itemShowBlock.setShopId(itemVo.getStoreId());
