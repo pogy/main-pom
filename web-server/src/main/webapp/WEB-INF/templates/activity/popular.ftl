@@ -315,6 +315,8 @@ var webSite = '${webSite!}';
             <div class="styleItem">
     <#if item.titleText??>
         <h3 class="styleTitle" name="${item.titleText!}"  id="style${item.id!}" style="background-image:url(${item.titleImg!}"></h3>
+        <#else>
+        <div class="mt40"></div>
     </#if>
     <ul class="clearfix">
         <#list item.goodsList as goods>
