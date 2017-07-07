@@ -256,11 +256,11 @@ public class GoodsSearchAction {
         model.addAttribute("tjGoodsList", goodsSearchService.selTj(bo.getWebSite(), 0, bo.getPid()));
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
         //查顶部导航
-        SearchNav searchNav = goodsSearchService.categoryInSearch(bo);
+//        SearchNav searchNav = goodsSearchService.categoryInSearch(bo);
 //        SearchNav searchNav=new SearchNav();
-        searchNav.setGoodsCount(pager.getTotalCount());
+//        searchNav.setGoodsCount(pager.getTotalCount());
         model.addAttribute("goodsCount", pager.getTotalCount());
-        model.addAttribute("cateNav", searchNav);
+//        model.addAttribute("cateNav", searchNav);
         //搜索路径
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
