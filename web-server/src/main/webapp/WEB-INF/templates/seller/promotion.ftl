@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/promotion.css?t=1499305325145" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/promotion-v1.css?t=1499335653604" rel="stylesheet">
     
   </head>
 <body>
@@ -260,18 +260,22 @@ var webSite = '${webSite!}';
                         <#list inForceList as pos>
                         <div class="posItem">
                             <h3 class="posArea">${pos.code!}</h3>
-                            <div class="posInfo" <#if pos.goodsId?? && pos.goodsId != ''> data-goodsid="${pos.goodsId!}" </#if>>
-                                <#if pos.picUrl?? && pos.picUrl != ''>
-                                <img src="${pos.picUrl!}">
-                                <#else>
-                                <img src="http://style.571xz.com/gys5/css/img/ggDefault.jpg">
-                                </#if>
-                                <p class="validTime">有效期：${pos.startOnline!} - ${pos.endOnline!}</p>
-                                <#if pos.goodsId??>
-                                <b class="reRelateBtn" jbtn="glWindowBtn" data-codeId="${pos.codeId!}">重新关联</b>
-                                <#else>
-                                <b class="relateBtn" jbtn="glWindowBtn" data-codeId="${pos.codeId!}">立即关联商品</b>
-                                </#if>
+                            <div class="posList">
+                                <#list pos.posList as list>
+                                <div class="posInfo" <#if list.goodsId?? && list.goodsId != ''> data-goodsid="${list.goodsId!}" </#if>>
+                                    <#if list.picUrl?? && list.picUrl != ''>
+                                    <img src="${list.picUrl!}">
+                                    <#else>
+                                    <img src="http://style.571xz.com/gys5/css/img/ggDefault.jpg">
+                                    </#if>
+                                    <p class="validTime">有效期：${list.startOnline!} - ${list.endOnline!}</p>
+                                    <#if list.goodsId??>
+                                    <b class="reRelateBtn" jbtn="glWindowBtn" data-codeId="${list.codeId!}">重新关联</b>
+                                    <#else>
+                                    <b class="relateBtn" jbtn="glWindowBtn" data-codeId="${list.codeId!}">立即关联商品</b>
+                                    </#if>
+                                </div>
+                                </#list>
                             </div>
                         </div>
                         </#list>
@@ -283,19 +287,23 @@ var webSite = '${webSite!}';
                     <#if (willInForceList?size) gt 0>
                         <#list willInForceList as pos>
                         <div class="posItem">
-                            <h3 class="posArea">${pos.posName!}</h3>
-                            <div class="posInfo" <#if pos.goodsId?? && pos.goodsId != ''> data-goodsid="${pos.goodsId!}" </#if>>
-                                <#if pos.picUrl?? && pos.picUrl != ''>
-                                <img src="${pos.picUrl!}">
-                                <#else>
-                                <img src="http://style.571xz.com/gys5/css/img/ggDefault.jpg">
-                                </#if>
-                                <p class="validTime">有效期：${pos.startOnline!} - ${pos.endOnline!}</p>
-                                <#if pos.goodsId??>
-                                <b class="reRelateBtn" jbtn="glWindowBtn" data-codeId="${pos.codeId!}">重新关联</b>
-                                <#else>
-                                <b class="relateBtn" jbtn="glWindowBtn" data-codeId="${pos.codeId!}">立即关联商品</b>
-                                </#if>
+                            <h3 class="posArea">${pos.code!}</h3>
+                            <div class="posList">
+                                <#list pos.posList as list>
+                                <div class="posInfo" <#if list.goodsId?? && list.goodsId != ''> data-goodsid="${list.goodsId!}" </#if>>
+                                    <#if list.picUrl?? && list.picUrl != ''>
+                                    <img src="${list.picUrl!}">
+                                    <#else>
+                                    <img src="http://style.571xz.com/gys5/css/img/ggDefault.jpg">
+                                    </#if>
+                                    <p class="validTime">有效期：${list.startOnline!} - ${list.endOnline!}</p>
+                                    <#if pos.goodsId??>
+                                    <b class="reRelateBtn" jbtn="glWindowBtn" data-codeId="${list.codeId!}">重新关联</b>
+                                    <#else>
+                                    <b class="relateBtn" jbtn="glWindowBtn" data-codeId="${list.codeId!}">立即关联商品</b>
+                                    </#if>
+                                </div>
+                                </#list>
                             </div>
                         </div>
                         </#list>
@@ -339,7 +347,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/promotion.js?t=1499305325145"></script>
+<script src="http://style.571xz.com/gys5/js/promotion-v1.js?t=1499335653604"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

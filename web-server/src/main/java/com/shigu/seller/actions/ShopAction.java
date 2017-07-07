@@ -97,7 +97,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 店铺的控制中心
@@ -1161,14 +1163,29 @@ public class ShopAction {
         String webSite = shopSession.getWebSite();
         List<IndexGoatVO> myIndexTerms = goatShopService.selGoatByShopId(webSite, shopId, GoatType.ItemGoat);
         //分为开始与没开始两种
-        List<IndexGoatVO> inForceList=new ArrayList<>();
-        List<IndexGoatVO> willInForceList=new ArrayList<>();
+        List<GoatListVO> inForceList=new ArrayList<>();
+        List<GoatListVO> willInForceList=new ArrayList<>();
+        Map<String,GoatListVO> map=new HashMap<>();
         for(IndexGoatVO igv:myIndexTerms){
+            String key;
             if(igv.getHadStart()){
-                inForceList.add(igv);
+                key=igv.getCode()+"_ol";
             }else{
-                willInForceList.add(igv);
+                key=igv.getCode()+"_unol";
             }
+            GoatListVO glv=map.get(key);
+            if(glv == null){
+                glv=new GoatListVO();
+                glv.setCode(igv.getCode());
+                glv.setPosList(new ArrayList<IndexGoatVO>());
+                map.put(key,glv);
+                if(igv.getHadStart()){
+                    inForceList.add(glv);
+                }else{
+                    willInForceList.add(glv);
+                }
+            }
+            glv.getPosList().add(igv);
         }
         model.addAttribute("inForceList", inForceList);
         model.addAttribute("willInForceList",willInForceList);
