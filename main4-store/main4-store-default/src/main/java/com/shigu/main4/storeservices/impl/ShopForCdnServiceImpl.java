@@ -1,27 +1,22 @@
 package com.shigu.main4.storeservices.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.aliyun.opensearch.SearcherClient;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
-import com.aliyun.opensearch.sdk.generated.commons.OpenSearchClientException;
-import com.aliyun.opensearch.sdk.generated.commons.OpenSearchException;
-import com.aliyun.opensearch.sdk.generated.search.*;
-import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
-import com.aliyun.opensearch.search.SearchParamsBuilder;
+import com.aliyun.opensearch.sdk.generated.search.Order;
+import com.aliyun.opensearch.sdk.generated.search.SortField;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.vo.OpenItemVo;
+import com.shigu.main4.item.vo.SearchGoodsVo;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.bo.ShopForCdnBo;
-import com.shigu.main4.item.vo.SearchGoodsVo;
-import com.shigu.main4.vo.*;
+import com.shigu.main4.vo.CatPolymerization;
+import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.main4.vo.ShopBaseForCdn;
+import com.shigu.main4.vo.ShopCat;
 import com.shigu.opensearchsdk.OpenSearch;
 import com.shigu.opensearchsdk.builder.AggsBuilder;
 import com.shigu.opensearchsdk.builder.FilterBuilder;
@@ -35,7 +30,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
@@ -537,7 +531,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             for (OpenItemVo itemVo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
                 ItemShowBlock itemShowBlock = BeanMapper.map(itemVo,ItemShowBlock.class);
                 itemShowBlock.setImgUrl(itemVo.getPicUrl());
-                itemShowBlock.setPrice(itemVo.getPiPrice()+"");
+                itemShowBlock.setPrice((itemVo.getPiPrice()/100)+"."+(itemVo.getPiPrice()%100));
                 itemShowBlock.setItemId(itemVo.getGoodsId());
                 itemShowBlock.setWebSite(webSite);
                 itemShowBlock.setShopId(itemVo.getStoreId());
