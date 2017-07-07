@@ -1,11 +1,12 @@
-package com.shigu.main4.activity.services;
+package com.shigu.main4.active.services.impl;
 
 import com.opentae.data.mall.beans.ShiguActivityApply;
 import com.opentae.data.mall.interfaces.ShiguActivityApplyMapper;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
+import com.shigu.main4.active.services.ShiguActivityService;
+import com.shigu.main4.active.vo.ShiguActivityApplyVO;
+import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.vo.ShiguActivityApplyVO;
-import com.shigu.main4.activity.vo.ShiguActivityVO;
 import com.shigu.main4.common.util.BeanMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

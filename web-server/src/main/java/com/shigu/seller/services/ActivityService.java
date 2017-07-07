@@ -8,14 +8,12 @@ import com.opentae.data.mall.examples.ShiguActivityExample;
 import com.opentae.data.mall.interfaces.ShiguActivityApplyMapper;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.main4.activity.enums.ActivityStatus;
-import com.shigu.main4.activity.enums.ApplyStatus;
-import com.shigu.main4.activity.services.ShiguActivityService;
-import com.shigu.main4.activity.vo.ShiguActivityApplyVO;
-import com.shigu.main4.activity.vo.ShiguActivityVO;
+import com.shigu.main4.active.enums.ApplyStatus;
+import com.shigu.main4.active.services.ShiguActivityService;
+import com.shigu.main4.active.vo.ShiguActivityApplyVO;
+import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -231,8 +229,6 @@ public class ActivityService {
 
     /**
      * 活动信息
-     * @param id
-     * @return
      */
     public ShiguActivityVO activityInfo(Long id){
         return activity(id).info();
@@ -285,16 +281,5 @@ public class ActivityService {
             }
         }
         return vos;
-    }
-
-    private enum ActivityEnum {
-        GF("港风", 1),;
-
-        public String name;
-        public Long activityId;
-        ActivityEnum(String name, long activityId) {
-            this.name = name;
-            this.activityId = activityId;
-        }
     }
 }

@@ -1,8 +1,8 @@
-package com.shigu.main4.activity.services;
+package com.shigu.main4.active.services;
 
+import com.shigu.main4.active.vo.ShiguActivityApplyVO;
+import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.vo.ShiguActivityApplyVO;
-import com.shigu.main4.activity.vo.ShiguActivityVO;
 
 import java.util.List;
 

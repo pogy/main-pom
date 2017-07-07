@@ -1,6 +1,6 @@
-package com.shigu.main4.activity.enums;
+package com.shigu.main4.active.enums;
 
-import com.shigu.main4.activity.vo.ShiguActivityVO;
+import com.shigu.main4.active.vo.ShiguActivityVO;
 
 import java.util.Date;
 
