@@ -101,25 +101,28 @@ public class CategoryInSearchService {
     public List<CateNav> selSubCates(String cateValue,SearchCategory category, String webSite){
         Cache cache=cacheManager.getCache("searchSubCatesCache");
         String key=webSite + cateValue+" is "+category.getValue();
-        List<CateNav> cateNavs = cache.get(key,List.class);
-        if (cateNavs != null) {
+        List<CateNav> cateNavs=cache.get(key,List.class);
+        if(cateNavs!=null){
+            if(cateNavs.size()==0){
+                return null;
+            }else{
                 return cateNavs;
+            }
         }
         List<CategoryValue> cates=itemSearchService.selSubCategory(cateValue,category, webSite);
         List<CateNav> navs=new ArrayList<>();
-        for (CategoryValue gv:cates) {
-            if (category.equals(SearchCategory.STYLE)) {
+        for(CategoryValue gv:cates){
+            if(category.equals(SearchCategory.STYLE)){
                 navs.add(new CateNav(gv.getSubId()+"",gv.getCateName(),gv.getCateValue()));
             }else{
                 navs.add(new CateNav(gv.getCateValue(),gv.getCateName(),gv.getCateValue()));
             }
         }
         if (navs != null) {
-            cache.put(key, navs);
+            cache.put(key,navs);
         }
-        return navs;
+        return navs.size()==0?null:navs;
     }
-
     /**
      * 查叶子类目
      * @param cid
