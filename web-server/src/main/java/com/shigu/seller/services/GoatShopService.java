@@ -3,13 +3,10 @@ package com.shigu.seller.services;
 import com.google.common.collect.Lists;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.GoatLicense;
-import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.GoatLicenseExample;
-import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.GoatLicenseMapper;
-import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
@@ -42,8 +39,6 @@ public class GoatShopService {
     @Autowired
     private GoatDubboService goatDubboService;
 
-    @Autowired
-    private GoodsCountForsearchMapper goodsCountForsearchMapper;
     /**
      * 获取店铺首页广告数据列表
      * @param webSite 分站
@@ -181,21 +176,13 @@ public class GoatShopService {
     @Transactional(rollbackFor = Exception.class)
     public void publishGoatUpdate(GoatLicense license,Long userId, ShiguGoodsTiny good) throws JsonErrException {
         try {
-            Long goatId = license.getGoatId();
-            ItemGoatVO oldGoatVO = goatDubboService.selGoatById(goatId, GoatType.ItemGoat);
-            Long oldGoatGoodsId = null;
-            if (oldGoatVO!=null) {
-                oldGoatGoodsId = oldGoatVO.getItemId();
-            }
-            Long newGoatGoodId = good.getGoodsId();
             ItemGoatVO goatVO = new ItemGoatVO();
-            goatVO.setItemId(newGoatGoodId);
-            goatVO.setGoatId(goatId);
+            goatVO.setItemId(good.getGoodsId());
+            goatVO.setGoatId(license.getGoatId());
             goatVO.setFromTime(license.getSpreadFromTime());
             goatVO.setToTime(license.getSpreadToTime());
             goatVO.setUserId(userId);
             goatDubboService.publish(goatVO);
-            changeHadGoat(oldGoatGoodsId, newGoatGoodId);
         } catch (GoatException e) {
             throw new JsonErrException(e.getMessage());
         }
@@ -218,33 +205,6 @@ public class GoatShopService {
             goatDubboService.preparePublish(goatVO, (license.getSpreadFromTime().getTime() - new Date().getTime())/1000);
     }
 
-    /**
-     * 广告位更换货物时更新搜索权重中商品广告状态
-     * @param oldGoodsId 广告位原商品id
-     * @param newGoodsId 广告位新商品id
-     * @return
-     */
-    private void changeHadGoat(Long oldGoodsId, Long newGoodsId) {
-        updateHadGoatStatu(oldGoodsId,false);
-        updateHadGoatStatu(newGoodsId,true);
-    }
-
-    /**
-     * 更新搜索权重中商品广告状态
-     * @param goodsId 商品id
-     * @param statu 更新后状态true/false对应goods_count_forsearch表中had_goat的0/1
-     * @return
-     */
-    private void updateHadGoatStatu(Long goodsId, boolean statu) {
-        if(goodsId != null) {
-            GoodsCountForsearchExample goodsCountForsearchExample = new GoodsCountForsearchExample();
-            goodsCountForsearchExample.createCriteria().andGoodsIdEqualTo(goodsId);
-            Integer hadGoat = statu?1:0;
-            GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
-            goodsCountForsearch.setHadGoat(hadGoat);
-            goodsCountForsearchMapper.updateByExampleSelective(goodsCountForsearch,goodsCountForsearchExample);
-        }
-    }
 
     /**
      * 广告授权状态
