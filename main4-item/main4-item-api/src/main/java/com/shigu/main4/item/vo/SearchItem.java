@@ -1,6 +1,7 @@
 package com.shigu.main4.item.vo;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
@@ -86,13 +87,16 @@ public class SearchItem implements Serializable{
     }
 
     public String getPrice() {
-        if(price==null){
+        return price;
+    }
+
+    public String parsePrice(Long priceLong){
+        if(priceLong==null){
             return "--";
         }
-        Integer priceValue = Integer.valueOf(this.price);
-        int digital = priceValue%100;
-        String price = (priceValue/100) + "." + digital/10 + digital%10;
-        return price;
+        Double priceValue = priceLong.doubleValue()/100;
+        DecimalFormat df=new DecimalFormat("0.00");
+        return df.format(priceValue);
     }
 
     public void setPrice(String price) {
