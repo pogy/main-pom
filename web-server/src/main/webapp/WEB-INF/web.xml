@@ -41,11 +41,11 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>PageCachingFilter</filter-name>
-		<url-pattern>/index.html</url-pattern>
+		<url-pattern>/hzindex4show.htm</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>PageCachingFilter</filter-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/newgoods.htm</url-pattern>
 	</filter-mapping>
 	<!--编码过滤器-->
 	<filter>

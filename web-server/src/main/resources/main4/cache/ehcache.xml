@@ -140,8 +140,8 @@
 
     <!-- 页面全部缓存 -->
     <cache name="SimplePageCachingFilter"
-           maxElementsInMemory="10"
-           maxElementsOnDisk="10"
+           maxElementsInMemory="50"
+           maxElementsOnDisk="1000"
            eternal="false"
            overflowToDisk="false"
            timeToIdleSeconds="20"

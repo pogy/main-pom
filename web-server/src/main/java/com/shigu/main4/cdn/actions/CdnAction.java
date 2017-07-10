@@ -145,7 +145,7 @@ public class CdnAction {
      * 杭州首页动态页面
      * @return
      */
-    //@RequestMapping("hzindex4show")
+    @RequestMapping("hzindex4show")
     public String hzindex4show(HttpServletRequest request,Model model){
         Cookie[] cookies=request.getCookies();
         String manOrWoman="Man";
@@ -455,6 +455,8 @@ public class CdnAction {
 //            spreadService.createBySync(fromCache);
         return obj;
     }
+
+
     /**
      * 二级域名首页
      * @return
