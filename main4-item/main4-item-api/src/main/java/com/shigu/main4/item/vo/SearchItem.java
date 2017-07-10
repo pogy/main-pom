@@ -89,6 +89,15 @@ public class SearchItem implements Serializable{
         return price;
     }
 
+    public String parsePrice(Long priceLong){
+        if(priceLong==null){
+            return "--";
+        }
+        Double priceValue = priceLong.doubleValue()/100;
+        DecimalFormat df=new DecimalFormat("0.00");
+        return df.format(priceValue);
+    }
+
     public void setPrice(String price) {
         this.price = price;
     }
