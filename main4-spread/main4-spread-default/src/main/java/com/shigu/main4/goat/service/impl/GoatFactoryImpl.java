@@ -265,10 +265,10 @@ public class GoatFactoryImpl implements GoatFactory {
                 goatItemData = goatItemDataMapper.selectOne(goatItemData);
                 if (goatItemData != null) {
                     Object lastItemIdStr = JSONObject.parseObject(goatItemData.getContext()).get("itemId");
-                    if (lastItemIdStr == null || "".equals((lastItemIdStr + "").trim())) {
+                    if (lastItemIdStr == null || "".equals((lastItemIdStr.toString()).trim())) {
                         return;
                     }
-                    Long lastItemId = Long.parseLong(lastItemIdStr + "");
+                    Long lastItemId = Long.parseLong(lastItemIdStr.toString());
                     int step = DateUtil.daysOfTwo(goatItemData.getLastPublishTime(),now);
                     step = step>7?7:step;
                     GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
