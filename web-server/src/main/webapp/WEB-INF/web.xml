@@ -47,6 +47,11 @@
 		<filter-name>PageCachingFilter</filter-name>
 		<url-pattern>/newgoods.htm</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>PageCachingFilter</filter-name>
+		<url-pattern>/shopnew.htm</url-pattern>
+	</filter-mapping>
+
 	<!--编码过滤器-->
 	<filter>
 		<filter-name>encodingFilter</filter-name>
