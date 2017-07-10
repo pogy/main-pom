@@ -51,6 +51,10 @@
 		<filter-name>PageCachingFilter</filter-name>
 		<url-pattern>/shopnew.htm</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>PageCachingFilter</filter-name>
+		<url-pattern>/market.htm</url-pattern>
+	</filter-mapping>
 	<!-- 活动系列缓存 -->
 	<filter-mapping>
 		<filter-name>PageCachingFilter</filter-name>
