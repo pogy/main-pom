@@ -86,12 +86,6 @@ public class SearchItem implements Serializable{
     }
 
     public String getPrice() {
-        if(price==null){
-            return "--";
-        }
-        Integer priceValue = Integer.valueOf(this.price);
-        int digital = priceValue%100;
-        String price = (priceValue/100) + "." + digital/10 + digital%10;
         return price;
     }
 
