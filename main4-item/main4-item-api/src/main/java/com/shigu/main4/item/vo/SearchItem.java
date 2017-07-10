@@ -1,6 +1,7 @@
 package com.shigu.main4.item.vo;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 /**
