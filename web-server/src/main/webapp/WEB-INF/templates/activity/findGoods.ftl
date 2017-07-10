@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1499143095079" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1499650881813" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1499143095079"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1499650881813"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -243,7 +243,7 @@ var webSite = '${webSite!}';
             <div class="leftNav">
                 <ul>
                     
-                    <li><a href="http://www.571xz.com/activity/redbull.htm" class="select">每日发现</a><span></span></li>
+                    <li><a href="http://www.571xz.com/activity/redbull.htm" class="select">发现好货</a><span></span></li>
                 </ul>
             </div>
             <div class="rightNav">
@@ -301,7 +301,7 @@ var webSite = '${webSite!}';
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>

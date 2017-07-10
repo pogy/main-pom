@@ -13,12 +13,11 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    
-    <link href="http://style.571xz.com/fxs3/css/awardInfo.css?t=1499075050131" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/awardInfo.css?t=1499651796942" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.66/fxs3/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66/fxs2/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -267,12 +266,12 @@ var webSite = '${webSite!}';
         </div>
     </div>
     
-    <script>/*============ fxs3/awardInfo#main BEGIN ============*/
+    <script>/*============ fxs2/awardInfo#main BEGIN ============*/
 
 var allInfo = ${allInfo!}; //JSON字符串用于奖品模块、获奖名单
 var lastUserAward = ${lastUserAward!}; //JSON字符串用于上期奖品
 
-/*============ fxs3/awardInfo#main END ============*/
+/*============ fxs2/awardInfo#main END ============*/
 
 
 </script>
@@ -280,7 +279,7 @@ var lastUserAward = ${lastUserAward!}; //JSON字符串用于上期奖品
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -310,7 +309,7 @@ var lastUserAward = ${lastUserAward!}; //JSON字符串用于上期奖品
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs3/js/awardInfo.js?t=1499075050131"></script>
+<script src="http://style.571xz.com/fxs2/js/awardInfo.js?t=1499651796942"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
