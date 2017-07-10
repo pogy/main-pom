@@ -1,7 +1,7 @@
-package com.shigu.main4.activity.vo;
+package com.shigu.main4.active.vo;
 
-import com.shigu.main4.activity.enums.ActivityStatus;
-import com.shigu.main4.activity.enums.ApplyStatus;
+import com.shigu.main4.active.enums.ActivityStatus;
+import com.shigu.main4.active.enums.ApplyStatus;
 
 import java.io.Serializable;
 import java.util.Date;

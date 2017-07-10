@@ -1,4 +1,4 @@
-package com.shigu.main4.activity.vo;
+package com.shigu.main4.active.vo;
 
 import java.io.Serializable;
 import java.util.List;
