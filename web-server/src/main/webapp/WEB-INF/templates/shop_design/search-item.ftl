@@ -13,25 +13,25 @@
                 <div class="sp_type_nav" style="border-top: 0;">
                 <#if catPolymerizations??>
                     <#list catPolymerizations as poly>
-                    <div class="type_section clearfix">
-                                <div class="s-title">
+                        <div class="type_section clearfix">
+                            <div class="s-title">
                                     <span class="selector-iocn06_${poly.cid}"> <i></i>
-                                        ${poly.name}
+                                    ${poly.name}
                                     </span>
-                                </div>
-                            <div class="sl-value">
-                            <ul>
-                                <#--<li class="">-->
-                                    <#--<a href="/shop/search.htm?id=${shop.shopId}&cid=${poly.cid}">全部</a>-->
-                                <#--</li>-->
-                            <#list poly.subPolymerizations as subpoly>
-                                <li class="">
-                                    <a href="/shop/search.htm?id=${shop.shopId}&cid=${subpoly.cid}">${subpoly.name}(${subpoly.number})</a>
-                                </li>
-                            </#list>
-                            </ul>
                             </div>
-                    </div>
+                            <div class="sl-value">
+                                <ul>
+                                <#--<li class="">-->
+                                <#--<a href="/shop/search.htm?id=${shop.shopId}&cid=${poly.cid}">全部</a>-->
+                                <#--</li>-->
+                                    <#list poly.subPolymerizations as subpoly>
+                                        <li class="">
+                                            <a href="/shop/search.htm?id=${shop.shopId}&cid=${subpoly.cid}">${subpoly.name}(${subpoly.number})</a>
+                                        </li>
+                                    </#list>
+                                </ul>
+                            </div>
+                        </div>
                     </#list>
                 </#if>
                 </div>
@@ -61,38 +61,44 @@
             <div class="sort-row clearfix">
                 <div class="sort-inner">
                     <ul class="sorts">
-                        <#--<li class="sort">-->
-                            <#--<a href="/shop/search.htm?id=${shop.shopId}&amp;order=" class="link " title="">综合</a>-->
-                        <#--</li>-->
-                        <#assign sortparam="id="+shop.shopId/>
-                        <#if bo??>
-                            <#if bo.pstring??>
-                                <#assign sortparam=sortparam+"&pstring="+bo.pstring/>
-                            </#if>
-                            <#if bo.cid??>
-                                <#assign sortparam=sortparam+"&cid="+bo.cid/>
-                            </#if>
-                            <#if bo.scid??>
-                                <#assign sortparam=sortparam+"&scid="+bo.scid/>
-                            </#if>
-                            <#if bo.beginPrice??>
-                                <#assign sortparam=sortparam+"&beginPrice="+bo.beginPrice/>
-                            </#if>
-                            <#if bo.endPrice??>
-                                <#assign sortparam=sortparam+"&endPrice="+bo.endPrice/>
-                            </#if>
-                            <#if bo.dd??>
-                                <#assign sortparam=sortparam+"&dd="+bo.dd/>
-                            </#if>
-                            <#if bo.startDate??>
-                                <#assign sortparam=sortparam+"&startDate="+bo.startDate/>
-                            </#if>
-                            <#if bo.endDate??>
-                                <#assign sortparam=sortparam+"&endDate="+bo.endDate/>
-                            </#if>
+                    <#--<li class="sort">-->
+                    <#--<a href="/shop/search.htm?id=${shop.shopId}&amp;order=" class="link " title="">综合</a>-->
+                    <#--</li>-->
+                    <#assign sortparam="id="+shop.shopId/>
+                    <#if bo??>
+                        <#if bo.pstring??>
+                            <#assign sortparam=sortparam+"&pstring="+bo.pstring/>
                         </#if>
+                        <#if bo.cid??>
+                            <#assign sortparam=sortparam+"&cid="+bo.cid/>
+                        </#if>
+                        <#if bo.scid??>
+                            <#assign sortparam=sortparam+"&scid="+bo.scid/>
+                        </#if>
+                        <#if bo.beginPrice??>
+                            <#assign sortparam=sortparam+"&beginPrice="+bo.beginPrice/>
+                        </#if>
+                        <#if bo.endPrice??>
+                            <#assign sortparam=sortparam+"&endPrice="+bo.endPrice/>
+                        </#if>
+                        <#if bo.dd??>
+                            <#assign sortparam=sortparam+"&dd="+bo.dd/>
+                        </#if>
+                        <#if bo.startDate??>
+                            <#assign sortparam=sortparam+"&startDate="+bo.startDate/>
+                        </#if>
+                        <#if bo.endDate??>
+                            <#assign sortparam=sortparam+"&endDate="+bo.endDate/>
+                        </#if>
+                    </#if>
+                        <li class="sort">
+                            <a href="/shop/search.htm?${sortparam}&amp;order=common" class="link <#if bo??><#if bo.order=='common'>first</#if></#if>" title="">综合</a>
+                        </li>
                         <li class="sort">
                             <a href="/shop/search.htm?${sortparam}&amp;order=time_down" class="link <#if bo??><#if bo.order=='time_down'>first</#if></#if>" title="">新品</a>
+                        </li>
+                        <li class="sort">
+                            <a href="/shop/search.htm?${sortparam}&amp;order=popular" class="link <#if bo??><#if bo.order=='popular'>first</#if></#if>" title="">人气</a>
                         </li>
                         <li class="sort has-droplist">
                             <div class="trigger">
@@ -151,27 +157,27 @@
                                 <span class="icon icon-btn-arrow-2-h"></span>
                             </div>
                         </div>
-                        <#assign timeparam="id="+shop.shopId/>
-                        <#if bo??>
-                            <#if bo.pstring??>
-                                <#assign timeparam=timeparam+"&pstring="+bo.pstring/>
-                            </#if>
-                            <#if bo.cid??>
-                                <#assign timeparam=timeparam+"&cid="+bo.cid/>
-                            </#if>
-                            <#if bo.scid??>
-                                <#assign timeparam=timeparam+"&scid="+bo.scid/>
-                            </#if>
-                            <#if bo.beginPrice??>
-                                <#assign timeparam=timeparam+"&beginPrice="+bo.beginPrice/>
-                            </#if>
-                            <#if bo.endPrice??>
-                                <#assign timeparam=timeparam+"&endPrice="+bo.endPrice/>
-                            </#if>
-                            <#if bo.order??>
-                                <#assign timeparam=timeparam+"&order="+bo.order/>
-                            </#if>
+                    <#assign timeparam="id="+shop.shopId/>
+                    <#if bo??>
+                        <#if bo.pstring??>
+                            <#assign timeparam=timeparam+"&pstring="+bo.pstring/>
                         </#if>
+                        <#if bo.cid??>
+                            <#assign timeparam=timeparam+"&cid="+bo.cid/>
+                        </#if>
+                        <#if bo.scid??>
+                            <#assign timeparam=timeparam+"&scid="+bo.scid/>
+                        </#if>
+                        <#if bo.beginPrice??>
+                            <#assign timeparam=timeparam+"&beginPrice="+bo.beginPrice/>
+                        </#if>
+                        <#if bo.endPrice??>
+                            <#assign timeparam=timeparam+"&endPrice="+bo.endPrice/>
+                        </#if>
+                        <#if bo.order??>
+                            <#assign timeparam=timeparam+"&order="+bo.order/>
+                        </#if>
+                    </#if>
                         <div class="sections">
                             <ul class="clearfix">
                                 <li><a href="?${timeparam}&dd=0">全部</a></li>
@@ -209,7 +215,7 @@
         </div>
         <div class="goods_list clearfix" id="content">
             <div class="goods_list_bd">
-<#list goodsList.content as g>
+            <#list goodsList.content as g>
                 <div class="item-c">
                     <div class="item">
                         <div class="pic">
@@ -244,7 +250,7 @@
                         </div>
                     </div>
                 </div>
-</#list>
+            </#list>
             </div>
         </div>
     <#assign pageparam="id="+shop.shopId/>
@@ -310,16 +316,16 @@
         </div>
     </#if>
     </div>
-    <#if isEditer>
-        <div class="edit-bar">
-            <div class="J_NewInsertNode new-insert-node up" style="display:none ; left: 0px; top: 10px;">
-                <span class="tip">松开鼠标,模块会放到该上方</span>
-            </div>
-            <a class="bar-moveup no-moveup" title="上移"><span></span></a>
-            <a class="bar-movedown no-movedown" title="下移"><span></span></a>
-            <div class="J_NewInsertNode new-insert-node down" style="display:none; left: 0px; bottom: 10px;">
-                <span class="tip">松开鼠标,模块会放到该下方</span>
-            </div>
+<#if isEditer>
+    <div class="edit-bar">
+        <div class="J_NewInsertNode new-insert-node up" style="display:none ; left: 0px; top: 10px;">
+            <span class="tip">松开鼠标,模块会放到该上方</span>
         </div>
-    </#if>
+        <a class="bar-moveup no-moveup" title="上移"><span></span></a>
+        <a class="bar-movedown no-movedown" title="下移"><span></span></a>
+        <div class="J_NewInsertNode new-insert-node down" style="display:none; left: 0px; bottom: 10px;">
+            <span class="tip">松开鼠标,模块会放到该下方</span>
+        </div>
+    </div>
+</#if>
 </div>

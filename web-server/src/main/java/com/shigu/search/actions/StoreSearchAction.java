@@ -34,13 +34,21 @@ public class StoreSearchAction {
         if(bo.getWebSite()==null){
             bo.setWebSite("hz");
         }
+        if (bo.getKeyword() == null) {
+            bo.setKeyword("");
+        }
         model.addAttribute("query",bo);
         model.addAttribute("markets",categoryInSearchService.selMarkets(bo.getWebSite()));
             ShiguPager<StoreInSearch> pager=storeSelFromEsService.searchStore(bo);
         model.addAttribute("storelist",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
         model.addAttribute("webSite",bo.getWebSite());
-        return "search/storenum";
+        if ("kx".equalsIgnoreCase(bo.getWebSite())) {
+            return "xieSearch/storenum";
+        } else {
+            return "search/storenum";
+        }
+
     }
 
 }
