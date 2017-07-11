@@ -41,10 +41,6 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>PageCachingFilter</filter-name>
-		<url-pattern>/hzindex4show.htm</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>PageCachingFilter</filter-name>
 		<url-pattern>/newgoods.htm</url-pattern>
 	</filter-mapping>
 	<filter-mapping>

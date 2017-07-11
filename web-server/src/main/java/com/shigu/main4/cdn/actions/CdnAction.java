@@ -626,6 +626,7 @@ public class CdnAction {
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
 //            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+            model.addAttribute("vo",cdnService.shopSimpleVo(bo.getId()));
             if ("kx".equalsIgnoreCase(webSite)) {
                 return "cdn/xieShopDown";
             } else {
