@@ -624,19 +624,6 @@ var express = '${expressList!}';
 
 
 
-<ul>
-    <li><a href="?state=0" target=_blank>0. 申请换货</a></li>
-    <li>
-       1.等待处理申请
-        <p><a href="?state=1&childState=0" target=_blank>0.申请提交</a></p>
-        <p><a href="?state=1&childState=1" target=_blank>1.同意换货申请</a></p>
-        <p><a href="?state=1&childState=2" target=_blank>2.换货快递已提交</a></p>
-    </li>
-    <li>
-        <a href="?state=2" target=_blank>2. 换货完成</a>
-    </li>
-</ul>
-
 </div>
 
 <div class="footer">
