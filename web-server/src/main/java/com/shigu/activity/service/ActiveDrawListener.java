@@ -256,13 +256,13 @@ public class ActiveDrawListener implements MessageListener {
     private ShiguTempMapper shiguTempMapper;
     public String signUp(String flag, Long userId, Long shopId){
         if (userId==null||shopId==null){
-            return "用户没有登陆，或者此用户没有店铺";
+            return "您还没有店铺";
         }
         ShiguTempExample shiguTempExample =new ShiguTempExample();
         shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
         List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
         if (temps.size()>0){
-            return "已经报过名了";
+            return "您已经报过名了";
         }
         ShiguTemp shiguTemp=new ShiguTemp();
         shiguTemp.setFlag(flag);

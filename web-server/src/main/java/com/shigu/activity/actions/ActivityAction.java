@@ -329,38 +329,21 @@ public class ActivityAction {
     private ActiveDrawListener activeDrawListener;
     @RequestMapping("activity/jsonapply")
     @ResponseBody
-    public JSONObject signUp(Model model, HttpSession session) {
+    public JSONObject signUp(HttpSession session) {
         JSONObject jsonObject=new JSONObject();
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         String flag = "autumn_new";
-        model.addAttribute("webSite", "hz");
-        if (ps.getLogshop() != null) {
-            jsonObject.put("session_user_redis__.logshop", ps.getLogshop());
-            jsonObject.put("session_user_redis__.logshop.webSite", ps.getLogshop().getWebSite());
-            jsonObject.put("session_user_redis__.logshop.shopId", ps.getLogshop().getShopId());
-            jsonObject.put("session_user_redis__.logshop.market", ps.getLogshop().getMarket());
-            jsonObject.put("session_user_redis__.logshop.shopNum", ps.getLogshop().getShopNum());
-            if (activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()).equals("true")){
-                jsonObject.put("result","success");
-            }else {
-                jsonObject.put("msg",activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()));
-            }
-        }
-        List<ShopSession> otherShops = ps.getOtherShops();
-        if (otherShops.size() > 0) {
-            StringBuffer otherShopNames = new StringBuffer();
-            StringBuffer otherShopNums = new StringBuffer();
-            for (ShopSession s : otherShops) {
-                otherShopNames.append(s.getShopName());
-                otherShopNames.append(",");
-                otherShopNums.append(s.getShopNum());
-                otherShopNums.append(",");
-                jsonObject.put("session_user_redis__.otherShops[].market", otherShopNames);
-                jsonObject.put("session_user_redis__.otherShops[].shopNum", otherShopNums);
-            }
-            jsonObject.put("session_user_redis__.otherShops[]", ps.getOtherShops());
+        if (activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()).equals("true")){
+            jsonObject.put("result","success");
+        }else {
+            jsonObject.put("msg",activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()));
         }
         return jsonObject;
+    }
+    @RequestMapping("activity/qzxpApply")
+    public String qzxpApply(Model model){
+        model.addAttribute("webSite","hz");
+        return "activity/qzxpApply";
     }
 }
