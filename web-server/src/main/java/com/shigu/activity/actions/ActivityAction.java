@@ -327,23 +327,27 @@ public class ActivityAction {
     private SignUpService signUpService;*/
     @Autowired
     private ActiveDrawListener activeDrawListener;
+
     @RequestMapping("activity/jsonapply")
     @ResponseBody
     public JSONObject signUp(HttpSession session) {
-        JSONObject jsonObject=new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         String flag = "autumn_new";
-        if (activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()).equals("true")){
-            jsonObject.put("result","success");
-        }else {
-            jsonObject.put("msg",activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()));
+        if (activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()).equals("true")) {
+            jsonObject.put("result", "success");
+        } else {
+            jsonObject.put("msg", activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()));
         }
         return jsonObject;
     }
+
     @RequestMapping("activity/qzxpApply")
-    public String qzxpApply(Model model){
-        model.addAttribute("webSite","hz");
+    public String qzxpApply(Model model, HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        model.addAttribute("alreadyApply", activeDrawListener.checkSignUp(ps.getUserId(), ps.getLogshop().getShopId()));
+        model.addAttribute("webSite", "hz");
         return "activity/qzxpApply";
     }
 }

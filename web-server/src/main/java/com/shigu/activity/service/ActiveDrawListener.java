@@ -175,6 +175,9 @@ public class ActiveDrawListener implements MessageListener {
         }
         activeDrawRecordMapper.insertSelective(activeDrawRecord);
     }
+
+
+
     /**
      * 中奖规则
      */
@@ -272,6 +275,15 @@ public class ActiveDrawListener implements MessageListener {
         shiguTemp.setKey3(dateFormat.format(new Date()));
         shiguTempMapper.insert(shiguTemp);
         return "true";
+    }
+    public boolean checkSignUp(Long userId,Long shopId) {
+        ShiguTempExample shiguTempExample=new ShiguTempExample();
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
+        List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
+        if (temps.size()>0){
+            return true;
+        }
+        return false;
     }
 
 }
