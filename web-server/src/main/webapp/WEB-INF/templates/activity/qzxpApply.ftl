@@ -305,7 +305,7 @@ var webSite = '${webSite!}';
     <div class="banner"></div>
 
     <div class="applyBtn">
-    <#if alreadyApply??>
+    <#if alreadyApply == true>
         <b class="disabled">已报名</b>
     <#else>
         <#if !session_user_redis__> 
@@ -397,7 +397,7 @@ var webSite = '${webSite!}';
     </div>
     
     <div class="applyBtn">
-    <#if alreadyApply??>
+    <#if alreadyApply == true>
         <b class="disabled">已报名</b>
     <#else>
         <#if !session_user_redis__> 
