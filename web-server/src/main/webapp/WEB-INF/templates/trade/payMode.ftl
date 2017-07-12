@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>收银台 - 四季星座网</title>
 
     
     
@@ -20,8 +20,6 @@
     
 
     
-
-
 
     
 
@@ -164,7 +162,6 @@ var webSite = '${webSite!}';
 
 
 
-
 <div class="header layout">
     <div class="logoLeft fl">
         <a href="http://www.571xz.com">
@@ -207,6 +204,7 @@ var webSite = '${webSite!}';
 
 
 
+<div class="minHeight">
 <div class="layout">
     <div class="orderInfo">
     <span class="successIcon fl"></span>
@@ -363,7 +361,6 @@ var webSite = '${webSite!}';
 </#list>
 
                 <div class="lastMoneyBox">
-                    
                 </div>
                 <span class="payNumber fr">支付：<em class="fwb fcF40 arail">${amountPay!}</em>元</span>
             </li>
@@ -428,6 +425,8 @@ var amountPay = '${amountPay!}';
 </div>
 
 
+</div>
+
 <div class="footer">
     <div class="inner">
         <p class="sitemap"> 
@@ -438,6 +437,7 @@ var amountPay = '${amountPay!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://py.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -464,6 +464,10 @@ var amountPay = '${amountPay!}';
         </p>
     </div>
 </div>
+
+
+
+
 
 
 

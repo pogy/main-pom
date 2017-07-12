@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>结算页 - 四季星座网</title>
 
     
     
@@ -162,7 +162,6 @@ var webSite = '${webSite!}';
 
 
 
-
 <div class="header layout">
     <div class="logoLeft fl">
         <a href="http://www.571xz.com">
@@ -205,6 +204,7 @@ var webSite = '${webSite!}';
 
 
 
+<div class="minHeight">
 <div class="main layout">
     <h3 class="infoTitle fs16 yahei">填写并核对订单信息</h3>
     <div class="orderInfoWrite">
@@ -284,7 +284,7 @@ var webSite = '${webSite!}';
 
 
         
-        <div class="consigneeInfo commonCss clearfix">
+        <div class="consigneeInfo marBottom clearfix">
     <h3 class="fs14 yahei">
         收货人信息 
     </h3>
@@ -360,8 +360,7 @@ var webSite = '${webSite!}';
     class="fmButton
         
          fmButton-orange
-         qrBtn
-    "
+         qrBtn"
     
     
         
@@ -409,8 +408,7 @@ var webSite = '${webSite!}';
     class="fmButton
         
          fmButton-lighter-o
-         collBtn
-    "
+         collBtn"
     
     
         
@@ -505,7 +503,7 @@ var webSite = '${webSite!}';
     </div>
     
     <input id="postProv" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.prov!}"</#if> type="hidden"> 
-    <input id="addressId" type="hidden">
+    <input id="addressId" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.addressId!}"</#if> type="hidden">
     <div class="sureConsignee clearfix" <#if !tbOrderAddressInfo>style="display:none"</#if>>
     <div class="simuCheckBox select"><#if tbOrderAddressInfo??>${tbOrderAddressInfo.name!}</#if></div>
     <div id="fullAreaText" class="fl congineeText">
@@ -521,8 +519,6 @@ var webSite = '${webSite!}';
 
 
 </div>
-
-
 
 
 
@@ -730,7 +726,7 @@ var postRulers = ${postRulers!};
     </div>
     <div class="orderAllInfo fl" data-post="${list.postPrice!}" data-firstPost="${list.postCost!}">
         <#list list.orders as order>
-        <div class="orderItemInfo fl" data-id="${order.id!}">
+        <div class="orderItemInfo fl" data-id="${order.shopId!}">
             <div class="orderInfo clearfix">
                 <span class="orderStore">档口：${order.marketName!}  ${order.storeNum!}</span>
                 
@@ -794,7 +790,7 @@ var postRulers = ${postRulers!};
         
         
         
-            <#if $it.value??>
+            <#if $it.value != null >
                 value="${$it.value!}"
             <#else>
                 value="1"
@@ -806,7 +802,7 @@ var postRulers = ${postRulers!};
         
         
         
-            <#if $it.maxValue??>
+            <#if $it.maxValue != null >
                 maxValue="${$it.maxValue!}"
             <#else>
                 maxValue="*"
@@ -826,7 +822,7 @@ var postRulers = ${postRulers!};
         
         
         
-            <#if $it.value??>
+            <#if $it.value != null >
                 value="${$it.value!}"
             <#else>
                 value="1"
@@ -986,8 +982,7 @@ var postRulers = ${postRulers!};
     class="fmButton
         
          fmButton-orange
-        
-    "
+        "
     
     
         
@@ -1021,6 +1016,7 @@ var postRulers = ${postRulers!};
 
         
     </div>
+    <input type="hidden" name="code" id="code" value="${code!}">
 </div>
 
 
@@ -1049,6 +1045,8 @@ var serviceRulers = ${serviceRulers!};
 
 
 
+</div>
+
 <div class="footer">
     <div class="inner">
         <p class="sitemap"> 
@@ -1059,6 +1057,7 @@ var serviceRulers = ${serviceRulers!};
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://py.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -1085,6 +1084,8 @@ var serviceRulers = ${serviceRulers!};
         </p>
     </div>
 </div>
+
+
 
 
 

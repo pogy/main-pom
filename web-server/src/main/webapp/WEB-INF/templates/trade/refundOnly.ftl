@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>收银台 - 四季星座网</title>
+    <title></title>
 
     
     
@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/paySuccess.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/refundOnly.css" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/paySuccess.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/refundOnly.js"></script>
 </head>
 <body>
 
@@ -162,125 +162,98 @@ var webSite = '${webSite!}';
 
 
 
-<div class="header layout">
-    <div class="logoLeft fl">
-        <a href="http://www.571xz.com">
-            <img src="http://style.571xz.com/v2/xz/css/img/mtLogo.png" width="168" height="30" />
+
+<div class="headerOrange">
+    <div class="layout">
+        <a href="http://www.571xz.com" class="fl">
+            <img src="http://style.571xz.com/v2/order/css/img/whiteLogo.png" width="168" height="28" />
         </a>
-        <em class="yahei">收银台</em>
+        <ul class="fl fs16 yahei">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">账号管理</a></li>
+        </ul>
     </div>
-    <div class="statusRight fr">
-        <div class="stTitle clearfix">
-            <ul>
-                
-                <li class="pr cgState">
-                    <h5>1、确认商品</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>2、提交订单</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>3、选择支付方式</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>4、支付成功</h5>
-                    <span class="pa"></span>
-                </li>
-                
-            </ul>
+</div>
+
+
+
+
+<div class="currentPage layout">
+    <label class="fc9">当前位置：</label>
+    <a href="#" target="_blank">首页</a> &gt;
+    <a href="#" target="_blank">我的星座网</a> &gt;
+    <a href="#" target="_blank">我的订单</a> &gt;
+    <span class="fcF40">退款申请</span>
+</div> 
+
+<div class="returnBox layout">
+    <div class="returnLeft fl">
+        <div class="reRefundGoods refundBox">
+    
+    <label class="fl fc6">退货商品：</label>
+    
+    <img src="https://img.alicdn.com/bao/uploaded/i3/2649709601/TB2VlNbxtFopuFjSZFHXXbSlXXa_!!2649709601.jpg_300x300.jpg" >
+    <div class="goodsInfo fl">
+        <p class="arail fs14 fc3">SJXZ_A209_ty63Er_P50</p>
+        <p class="fc9"><span>颜色：图片色</span><span>尺码：XXL</span></p>
+    </div>
+</div>
+
+        
+        <div class="reRefundSuccess refundBox fc6">
+    <h4 class="yahei fc3 fwb">退款成功！</h4>
+    <p>退款总金额：<span class="fcF40 yahei fs14">&yen;<em class="fwb">48.00</em></span></p>
+    <p>退款去向：原路返回（支付宝）<span class="refundSucTime">退款成功时间：<em class="yahei fs14">2017-09-49  09:09:09</em></span></p>
+</div>
+
+        <div class="reApplyRecord">
+    <label class="fl tar">申请记录：</label>
+    <div class="recordList fl">
+        <div class="recordItem clearfix">
+            <img class="fl" src="https://img.alicdn.com/bao/uploaded/i3/904392924/TB23ws4wHxmpuFjSZJiXXXauVXa_!!904392924.jpg_300x300.jpg">
+            <div class="applyRecord fl">
+                <h4>平台客服</h4>
+                <p>已同意退货退款申请</p>
+            </div>
+            <p class="applyTime yahei fs14">2017-09-09  09:09:09</p>
         </div>
-        <div class="subScript"></div>
+        <div class="recordItem clearfix">
+            <img class="fl" src="https://img.alicdn.com/bao/uploaded/i3/904392924/TB23ws4wHxmpuFjSZJiXXXauVXa_!!904392924.jpg_300x300.jpg">
+            <div class="applyRecord fl">
+                <h4>一个人走过的夜晚</h4>
+                <p>买家（一个人走过的夜晚）于2018-09-09 12:09:09 创建了退款申请</p>
+                <p>退款类型：退货退款</p>
+                <p>退款金额：<span class="yahei">&yen;</span>65.00</p>
+            </div>
+            <p class="applyTime yahei fs14">2017-09-09  09:09:09</p>
+        </div>
     </div>
 </div>
 
 
-
-
-
-
-<div class="minHeight">
-<div class="paySucBg">
-    <div class="paySuccess layout">
-    <div class="successTip fwb yahei">订单支付成功，我们尽快为您处理！</div>
-    <ul class="orderInfo fc3">
-        <li>订单编号：<span class="arail fs14">${orderId!}</span></li>
-        <li>支付方式：${payType!}</li>
-        <li>支付总金额：<span class="arail fs14">${amountPay!}</span> 元</li>
+    </div>
+    <div class="returnRight fr">
+        <div class="reOderInfo">
+    <ul>
+        <li><label>订单编号：</label><span class="yahei fs14 fcBlue">20186786895059475</span></li>
+        <li><label>成交时间：</label><span class="yahei fs14">2017-09-09  09:09:09</span></li>
+        <li><label>商品价格：</label><span class="yahei fs14">&yen;<em class="fwb">48.00</em></span></li>
+        <li><label>快递费：</label><span class="yahei fs14">&yen;<em class="fwb">48.00</em></span></li>
+        <li><label>服务费：</label><span class="yahei fs14">&yen;<em class="fwb">48.00</em></span></li>
+        <li><label>订单总额：</label><span class="yahei fs14">&yen;<em class="fwb">2148.00</em></span></li>
     </ul>
-    <p class="gotoTip yahei fs14"><span class="fcF40 fwb time"><em>3</em>s</span><span class="fc6">后自动跳转到我的订单页面！</span></p>
-    <div class="gotoBox">
-        
+</div>
 
-<#assign text>{"href":"orderDetail.htm?orderId=${orderId!}"}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
-
-    <#if $it.href??>
-    <a href="${$it.href!}"
-    <#else>
-    <b 
-    </#if>
+        <div class="reRefundInfo">
+    <ul>
+        <li><label>退款编号：</label><span class="yahei fs14 fcBlue">20186786895059475</span></li>
+        <li><label>退款总额：</label><span class="yahei fs14">&yen;<em class="fwb">2148.00</em></span></li>
+        <li><label>订单状态：</label>已分配</li>
+    </ul>
+</div>
 
 
-    class="fmButton
-         fmButton-sm
-         fmButton-lighter-b
-        "
-    
-        jbtn="click"
-    
-    
-        
-        <#if $it.title??>
-            title=""
-        </#if>
-    
-    
-        
-        <#if $it.id??>
-            id=""
-        </#if>
-    
->
-
-    
-        查看订单
-    
-
-
-    <#if $it.href??>
-    </a>
-    <#else>
-    </b>
-    </#if>
-
-
-
-
-
-
-</#list>
-
-        <a href="http://www.571xz.com/">返回首页</a>
     </div>
-    
-</div>
-
-
-
-
-
-</div>
-
-
-
-
 </div>
 
 <div class="footer">
@@ -293,7 +266,6 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -320,8 +292,6 @@ var webSite = '${webSite!}';
         </p>
     </div>
 </div>
-
-
 
 
 

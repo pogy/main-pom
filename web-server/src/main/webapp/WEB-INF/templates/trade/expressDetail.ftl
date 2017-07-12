@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>收银台 - 四季星座网</title>
+    <title>物流详情 - 四季星座网</title>
 
     
     
@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/paySuccess.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/expressDetail.css" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/paySuccess.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/expressDetail.js"></script>
 </head>
 <body>
 
@@ -162,121 +162,87 @@ var webSite = '${webSite!}';
 
 
 
-<div class="header layout">
-    <div class="logoLeft fl">
-        <a href="http://www.571xz.com">
-            <img src="http://style.571xz.com/v2/xz/css/img/mtLogo.png" width="168" height="30" />
+<div class="headerOrange">
+    <div class="layout">
+        <a href="http://www.571xz.com" class="fl">
+            <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width="168" height="28" />
         </a>
-        <em class="yahei">收银台</em>
-    </div>
-    <div class="statusRight fr">
-        <div class="stTitle clearfix">
-            <ul>
-                
-                <li class="pr cgState">
-                    <h5>1、确认商品</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>2、提交订单</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>3、选择支付方式</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>4、支付成功</h5>
-                    <span class="pa"></span>
-                </li>
-                
-            </ul>
-        </div>
-        <div class="subScript"></div>
+        <ul class="fl fs16 yahei">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">账号管理</a></li>
+        </ul>
     </div>
 </div>
-
-
-
 
 
 
 <div class="minHeight">
-<div class="paySucBg">
-    <div class="paySuccess layout">
-    <div class="successTip fwb yahei">订单支付成功，我们尽快为您处理！</div>
-    <ul class="orderInfo fc3">
-        <li>订单编号：<span class="arail fs14">${orderId!}</span></li>
-        <li>支付方式：${payType!}</li>
-        <li>支付总金额：<span class="arail fs14">${amountPay!}</span> 元</li>
-    </ul>
-    <p class="gotoTip yahei fs14"><span class="fcF40 fwb time"><em>3</em>s</span><span class="fc6">后自动跳转到我的订单页面！</span></p>
-    <div class="gotoBox">
-        
+<div class="currentPage layout">
+    <label class="fc9">当前位置：</label>
+    <a href="#" target="_blank">首页</a> &gt;
+    <a href="#" target="_blank">我的星座网</a> &gt;
+    <a href="#" target="_blank">我的订单</a> &gt;
+    <span class="fcF40">物流详情</span>
+</div> 
 
-<#assign text>{"href":"orderDetail.htm?orderId=${orderId!}"}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
-
-    <#if $it.href??>
-    <a href="${$it.href!}"
-    <#else>
-    <b 
-    </#if>
-
-
-    class="fmButton
-         fmButton-sm
-         fmButton-lighter-b
-        "
-    
-        jbtn="click"
-    
-    
-        
-        <#if $it.title??>
-            title=""
-        </#if>
-    
-    
-        
-        <#if $it.id??>
-            id=""
-        </#if>
-    
->
-
-    
-        查看订单
-    
-
-
-    <#if $it.href??>
-    </a>
-    <#else>
-    </b>
-    </#if>
-
-
-
-
-
-
-</#list>
-
-        <a href="http://www.571xz.com/">返回首页</a>
+<div class="expressInfo layout">
+    <h2 class="fs16 fwb yahei">物流详情</h2>
+    <div class="exoressStatus">
+        <ul>
+            
+            
+            <li class="step1-done"></li>
+            
+            
+            
+            <li class="step2-current"><span class="pa arrow"></span></li>
+            
+            
+            
+            <li></li>
+            
+            
+            
+            <li></li>
+            
+            
+        </ul>
     </div>
-    
+    <div class="expressDetailBox">
+        <div class="expressDetail">
+            <div class="packageTitle yahei fs16">您的包裹
+            <#if expressCurrentState == 0>
+            正在待揽件，请耐心等待...
+            <#elseif expressCurrentState == 1>
+            正在运输中，请耐心等待...
+            <#elseif expressCurrentState == 2>
+            正在派送中，请耐心等待...
+            <#elseif expressCurrentState == 3>
+            已签收，谢谢您的使用！
+            </#if></div>
+            <div class="packageBox pr">
+                <#list expressDetail as detail>
+                <span class="date fwb arail">${detail.date!}</span>
+                <span class="week fwb">${detail.week!}</span>
+                <ul>
+                    <#list detail.detailList as list>
+                    <li>
+                        <span class="time arail">${list.time!}</span>
+                        <span class="desc">${list.desc!}</span>
+                    </li>
+                    </#list>
+                </ul>
+                </#list>
+            </div>
+            <div class="expressTips tar fc9">以上为快递公司原文信息</div>
+        </div>
+    </div>
+    <div class="orderInfo">
+        <p class="fc6"><span class="expressNum">运单编号：<em class="yahei fs14 fwb">${expressId!}</em></span><span>物流公司：</span><em class="fwb fc3">${expressName!}</em></p>
+        <p class="fc6">收货地址：<span class="fc3 fwb">${expressAddrInfo.address!} ${expressAddrInfo.name!} ${expressAddrInfo.phone!}</span></p>
+    </div>
 </div>
 
-
-
-
-
-</div>
 
 
 

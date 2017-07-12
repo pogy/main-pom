@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>进货车 - 四季星座网</title>
 
     
     
@@ -162,7 +162,6 @@ var webSite = '${webSite!}';
 
 
 
-
 <div class="header layout">
     <div class="logoLeft fl">
         <a href="http://www.571xz.com">
@@ -205,8 +204,10 @@ var webSite = '${webSite!}';
 
 
 
+<div class="minHeight">
 <div class="allGoods layout">
     <h3 class="fcF40 yahei fs16">全部商品 <span>${cart.goodsCount!}</span></h3>
+    <#if (cart.orders?size) gt 0>
     <div class="accoutnInfo fr">
         已选商品 <span class="orderTotalNumValue fcF40 fs14 fwb">0</span> 件（不含运费）<span class="yahei fcF40">&yen;</span> <span class="fcF40 fs14 fwb orderTotalPriceValue">0.00</span>
         <span class="accountBtn pr">
@@ -226,8 +227,7 @@ var webSite = '${webSite!}';
     class="fmButton
         
          fmButton-out
-         submitOrders
-    "
+         submitOrders"
     
         jbtn="click"
     
@@ -266,10 +266,12 @@ var webSite = '${webSite!}';
             <div class="tips pa fwb none">请勾选您要结算的商品 <i></i></div>
         </span>
     </div>
+    </#if>
 </div>
 
 
 
+<#if (cart.orders?size) gt 0>
 <div class="listBox layout">
     <div class="listHeader clearfix">
         <ul>
@@ -442,8 +444,20 @@ var webSite = '${webSite!}';
             <div class="fr fc9">发货地：
                 <#if order.webSite == 'hz'>
                     浙江-杭州
+                <#elseif order.webSite == 'cs'>
+                    江苏-常熟
+                <#elseif order.webSite == 'ss'>
+                    福建-石狮
                 <#elseif order.webSite == 'bj'>
                     北京
+                <#elseif order.webSite == 'gz'>
+                    广东-广州
+                <#elseif order.webSite == 'wa'>
+                    吉林-辽源
+                <#elseif order.webSite == 'jx'>
+                    浙江-濮院
+                <#else>
+                    浙江-杭州
                 </#if>
             </div>
         </div>
@@ -528,7 +542,7 @@ var webSite = '${webSite!}';
     </li>
     <li class="goodsInfo">
         <#if childOrder.disabled == true>
-        <a href="javascript:;" class="out"><img src="${childOrder.imgsrc!}_240x240.jpg" class="fl"></a>
+        <a href="javascript:;"><img src="${childOrder.imgsrc!}_240x240.jpg" class="fl"></a>
         <#else>
         <a href="http://${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsid!}" target="_blank"><img src="${childOrder.imgsrc!}_240x240.jpg" class="fl"></a>
         </#if>
@@ -585,8 +599,7 @@ var webSite = '${webSite!}';
     class="fmButton
         
          fmButton-orange
-        
-    "
+        "
     
         jbtn="submit"
     
@@ -638,8 +651,7 @@ var webSite = '${webSite!}';
     class="fmButton
         
          fmButton-none
-        
-    "
+        "
     
         jbtn="close"
     
@@ -702,7 +714,7 @@ var webSite = '${webSite!}';
         
         
         
-            <#if $it.value??>
+            <#if $it.value != null >
                 value="${$it.value!}"
             <#else>
                 value="1"
@@ -710,7 +722,7 @@ var webSite = '${webSite!}';
         
         
         
-            <#if $it.minValue??>
+            <#if $it.minValue != null >
                 minValue="${$it.minValue!}"
             <#else>
                 minValue="1"
@@ -718,7 +730,7 @@ var webSite = '${webSite!}';
         
         
         
-            <#if $it.maxValue??>
+            <#if $it.maxValue != null >
                 maxValue="${$it.maxValue!}"
             <#else>
                 maxValue="*"
@@ -738,7 +750,7 @@ var webSite = '${webSite!}';
         
         
         
-            <#if $it.value??>
+            <#if $it.value != null >
                 value="${$it.value!}"
             <#else>
                 value="1"
@@ -796,9 +808,6 @@ var webSite = '${webSite!}';
 
 
 
-
-
-
             </#list>
         </div>
     </div>
@@ -807,10 +816,17 @@ var webSite = '${webSite!}';
     
     
 </div>
+<#else>
+<div class="layout noData tac">
+    <p class="fs16 fc6">进货车里空空的哦，先去<a href="http://www.571xz.com/">逛一逛</a>吧！</p>
+</div>
+</#if>
 
 
 
 
+
+<#if (cart.orders?size) gt 0>
 <div class="totalAccount layout" id="totalAccount">
     <div class="totalWrap layout">
         <div class="fl operateBox">
@@ -896,8 +912,7 @@ var webSite = '${webSite!}';
     class="fmButton
         
          fmButton-out
-         submitOrders
-    "
+         submitOrders"
     
     
         
@@ -942,6 +957,7 @@ var webSite = '${webSite!}';
         <input type="hidden" id="submitOrderIds" name="childOrderIds">
     </form>
 </div>
+</#if>
 
 
 
@@ -962,6 +978,7 @@ var webSite = '${webSite!}';
 
 
 
+</div>
 
 <div class="footer">
     <div class="inner">
@@ -973,6 +990,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://py.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -999,6 +1017,8 @@ var webSite = '${webSite!}';
         </p>
     </div>
 </div>
+
+
 
 
 
