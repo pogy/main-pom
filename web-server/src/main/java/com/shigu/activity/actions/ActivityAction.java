@@ -308,7 +308,7 @@ public class ActivityAction {
         model.addAttribute("activeName", activity.getTitle());
         model.addAttribute("bannerSrc", activity.getBanner());
         model.addAttribute("bgColor", activity.getBkcolor());
-        model.addAttribute("goodsList", activityService.gfShow(id));
+        model.addAttribute("goodsStyle", activityService.gfShow(id));
         model.addAttribute("webSite","hz");
         return "activity/popular";
     }
