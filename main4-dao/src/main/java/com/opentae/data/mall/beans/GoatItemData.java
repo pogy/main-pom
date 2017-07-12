@@ -11,105 +11,105 @@ public class GoatItemData implements Serializable {
      */
     @Id
     @GeneratedValue(generator = "JDBC")
-	private Long dataId;
+    private Long dataId;
 
     /**
      * 广告ID
      */
-	private Long goatId;
+    private Long goatId;
 
     /**
-     * 
+     *
      */
-	private Long userId;
+    private Long userId;
 
     /**
      * 开始时间
      */
-	private Date fromTime;
+    private Date fromTime;
 
     /**
      * 结束时间
      */
-	private Date toTime;
+    private Date toTime;
 
     /**
      * 广告的内容
      */
-	private String context;
+    private String context;
 
     /**
      * 1有效，0无效，2预设
      */
-	private Integer status;
+    private Integer status;
 
     /**
      * 最后发布时间
      */
-	private Date lastPublishTime;
+    private Date lastPublishTime;
 
-	public void setDataId(Long dataId) {
-		this.dataId = dataId;
-	}
+    public void setDataId(Long dataId) {
+        this.dataId = dataId;
+    }
 
-	public Long getDataId() {
-		return this.dataId;
-	}
+    public Long getDataId() {
+        return this.dataId;
+    }
 
-	public void setGoatId(Long goatId) {
-		this.goatId = goatId;
-	}
+    public void setGoatId(Long goatId) {
+        this.goatId = goatId;
+    }
 
-	public Long getGoatId() {
-		return this.goatId;
-	}
+    public Long getGoatId() {
+        return this.goatId;
+    }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-	public Long getUserId() {
-		return this.userId;
-	}
+    public Long getUserId() {
+        return this.userId;
+    }
 
-	public void setFromTime(Date fromTime) {
-		this.fromTime = fromTime;
-	}
+    public void setFromTime(Date fromTime) {
+        this.fromTime = fromTime;
+    }
 
-	public Date getFromTime() {
-		return this.fromTime;
-	}
+    public Date getFromTime() {
+        return this.fromTime;
+    }
 
-	public void setToTime(Date toTime) {
-		this.toTime = toTime;
-	}
+    public void setToTime(Date toTime) {
+        this.toTime = toTime;
+    }
 
-	public Date getToTime() {
-		return this.toTime;
-	}
+    public Date getToTime() {
+        return this.toTime;
+    }
 
-	public void setContext(String context) {
-		this.context = context;
-	}
+    public void setContext(String context) {
+        this.context = context;
+    }
 
-	public String getContext() {
-		return this.context;
-	}
+    public String getContext() {
+        return this.context;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
-	public Integer getStatus() {
-		return this.status;
-	}
+    public Integer getStatus() {
+        return this.status;
+    }
 
-	public void setLastPublishTime(Date lastPublishTime) {
-		this.lastPublishTime = lastPublishTime;
-	}
+    public void setLastPublishTime(Date lastPublishTime) {
+        this.lastPublishTime = lastPublishTime;
+    }
 
-	public Date getLastPublishTime() {
-		return this.lastPublishTime;
-	}
+    public Date getLastPublishTime() {
+        return this.lastPublishTime;
+    }
 
 }
