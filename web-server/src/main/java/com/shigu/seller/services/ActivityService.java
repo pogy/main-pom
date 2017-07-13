@@ -290,7 +290,8 @@ public class ActivityService {
                 approve.setItem(String.valueOf(hz.getItemId()));
                 List<ShiguActivityApprove> approveList = shiguActivityApproveMapper.select(approve);
                 if (approveList.size() != 1) {
-                    throw new Main4Exception("根据条件查找approve表里面的商品cateid数据有误：activityid="+id + "; itemId=" + hz.getItemId());
+//                    throw new Main4Exception("根据条件查找approve表里面的商品cateid数据有误：activityid="+id + "; itemId=" + hz.getItemId());
+                    continue;
                 }
                 approve = approveList.get(0);
                 vo.setGoodsStyleId(approve.getCateId());
@@ -312,7 +313,10 @@ public class ActivityService {
 
 
             for (Map.Entry<Long, List<GfShowVO>> item : cateShowMap.entrySet()) {
-                ShiguActivityCategory shiguActivityCategory = shiguActivityCategoryMapper.selectByPrimaryKey(item.getKey());
+                ShiguActivityCategory shiguActivityCategory  = new ShiguActivityCategory();
+                shiguActivityCategory.setCateId(item.getKey());
+                shiguActivityCategory = shiguActivityCategoryMapper.selectOne(shiguActivityCategory);
+
                 GfGoodsStyleVO gfGoodsStyleVO = new GfGoodsStyleVO();
                 gfGoodsStyleVO.setId(shiguActivityCategory.getCateId());
                 gfGoodsStyleVO.setTitleText(shiguActivityCategory.getTitle());

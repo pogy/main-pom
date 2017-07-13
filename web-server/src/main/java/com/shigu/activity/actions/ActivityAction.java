@@ -4,13 +4,18 @@ import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
-import com.shigu.activity.service.ActiveDrawListener;
-import com.shigu.activity.vo.*;
+<<<<<<< Temporary merge branch 1
+import com.shigu.activity.vo.ActiveDrawStyleVo;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
-import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.active.vo.ShiguActivityVO;
+=======
+import com.shigu.activity.service.ActiveDrawListener;
+import com.shigu.activity.vo.ActiveDrawStyleVo;
+import com.shigu.component.common.globality.constant.SystemConStant;
+import com.shigu.component.common.globality.response.ResponseBase;
+>>>>>>> Temporary merge branch 2
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
@@ -18,11 +23,9 @@ import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.services.ActivityService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +36,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.ArrayList;
+<<<<<<< Temporary merge branch 1
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+=======
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+//import com.shigu.main4.activity.vo.ShiguActivityVO;
+>>>>>>> Temporary merge branch 2
 
 /**
  * 奖品活动
@@ -59,13 +75,12 @@ public class ActivityAction {
 
     /**
      * 发现好货
-     *
      * @param model
      * @return
      */
     //@RequestMapping(value = "activity/redbull" , method = RequestMethod.GET)
     @Deprecated
-    public String findGodos(HttpSession session, Model model) {
+    public String findGodos(HttpSession session, Model model){
         // 当前期次
         ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem(null);
         // 发现好货商品
@@ -73,7 +88,7 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_FAGOODS,
                 40,
-                false, false);
+                false,false);
         // 发现好店
         List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId(), false);
         ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
@@ -85,31 +100,31 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_DAILYFIND,
                 60,
-                false, false);
+                false,false);
 
         Collections.shuffle(daliyGoodsVoList);
 
         // 获奖数据
-        List<ActiveDrawRecordUserVo> recordUserVoList = activeDrawServiceImpl.selDrawRecordList(null, null, "ben");
+        List<ActiveDrawRecordUserVo> recordUserVoList = activeDrawServiceImpl.selDrawRecordList(null,null, "ben");
 
         // 用户上一期获奖数据
         List<ActiveDrawRecordUserVo> userVoList = new ArrayList<ActiveDrawRecordUserVo>();
         Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (object != null) {
+        if(object != null){
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
-            if (drawLastPem != null) {
+            if(drawLastPem != null){
                 // 用户上一期获奖数据
-                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
+                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(),ps.getUserId(), null);
             }
         }
 
-        if (userVoList == null) {
+        if(userVoList == null){
             userVoList = new ArrayList<ActiveDrawRecordUserVo>();
         }
 
         for (int i = 0; i < userVoList.size(); i++) {
-            if (userVoList.get(i).getDrawStatus().intValue() == 1) {
+            if(userVoList.get(i).getDrawStatus().intValue() == 1){
                 userVoList.get(i).setDrawStatus(2);
             }
         }
@@ -118,7 +133,7 @@ public class ActivityAction {
         model.addAttribute("styleItem", drawStyleVo);
         model.addAttribute("likeGoodsList", daliyGoodsVoList);
         model.addAttribute("awardList", recordUserVoList);
-        model.addAttribute("webSite", "hz");
+        model.addAttribute("webSite","hz");
         return "activity/styleHuodong";
     }
 
@@ -128,19 +143,27 @@ public class ActivityAction {
      * @return
      */
     @RequestMapping("member/awardInfo")
-    public String awardInfo(HttpSession session, Model model) {
+    public String awardInfo(HttpSession session,Model model){
         List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
         ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
         model.addAttribute("allInfo", drawPem.getInfo());
 
+<<<<<<< Temporary merge branch 1
         model.addAttribute("thisHdTime",parseToStartEnd(drawPem.getStartTime()));
         List<ActiveDrawRecordUserVo> userVoList =  Collections.emptyList();
+=======
+        List<ActiveDrawRecordUserVo> userVoList = Collections.emptyList();
+>>>>>>> Temporary merge branch 2
         Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (object != null) {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
+<<<<<<< Temporary merge branch 1
             if(drawLastPem != null){
                 model.addAttribute("lastHdTime",parseToStartEnd(drawLastPem.getStartTime()));
+=======
+            if (drawLastPem != null) {
+>>>>>>> Temporary merge branch 2
                 // 用户上一期获奖数据
                 userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
                 for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
@@ -152,6 +175,11 @@ public class ActivityAction {
             }
         }
         model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
+<<<<<<< Temporary merge branch 1
+=======
+        model.addAttribute("lastHdTime", "2017年06月26日 ——— 2017年07月03日");
+        model.addAttribute("thisHdTime", "2017年07月03日 ——— 2017年07月10日");
+>>>>>>> Temporary merge branch 2
         return "buyer/awardInfo";
     }
 
@@ -186,7 +214,7 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_DAILYFIND,
                 60,
-                false, false
+                false,false
         );
 
         Collections.shuffle(daliyGoodsVoList);
@@ -198,19 +226,18 @@ public class ActivityAction {
 
     /**
      * 用户中奖记录
-     *
      * @param session
      * @return
      */
-    @RequestMapping(value = "activity/userWard", method = RequestMethod.POST)
+    @RequestMapping(value = "activity/userWard" , method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject userWard(HttpSession session) {
+    public JSONObject userWard(HttpSession session){
 
         ResponseBase rsp = new ResponseBase();
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 
-        if (ps == null) {
+        if(ps == null){
             // 未登录
             rsp.setMsg("用户未登陆");
             return JSONObject.fromObject(rsp);
@@ -229,16 +256,15 @@ public class ActivityAction {
 
     /**
      * 查询抽奖
-     *
      * @param tqcode
      * @return
      */
-    @RequestMapping(value = "activity/qtiqucode", method = RequestMethod.POST)
+    @RequestMapping(value = "activity/qtiqucode" , method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject qtiqucode(String tqcode) {
+    public JSONObject qtiqucode(String tqcode){
         JSONObject rspJsonObject = new JSONObject();
 
-        if (StringUtils.isEmpty(tqcode)) {
+        if(StringUtils.isEmpty(tqcode)){
             rspJsonObject.put("status", 1);
             rspJsonObject.put("desc", "请输入有效领取码");
             return rspJsonObject;
@@ -248,7 +274,7 @@ public class ActivityAction {
 
         try {
             ActiveDrawRecordUserVo activeDrawRecordUserVo = activeDrawServiceImpl.selUserDrawList(tqcode);
-            if (activeDrawRecordUserVo == null) {
+            if(activeDrawRecordUserVo == null){
                 rspJsonObject.put("desc", "数据有误");
                 return rspJsonObject;
             }
@@ -267,26 +293,25 @@ public class ActivityAction {
 
     /**
      * 领取奖品
-     *
      * @param tqcode
      * @param userId
      * @return
      */
-    @RequestMapping(value = "activity/qzhongjinag", method = RequestMethod.POST)
+    @RequestMapping(value = "activity/qzhongjinag" , method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject qzhongjinag(String tqcode, Long userId) {
+    public JSONObject qzhongjinag(String tqcode, Long userId){
         JSONObject rspJsonObject = new JSONObject();
         rspJsonObject.put("status", 1);
 
-        if (StringUtils.isEmpty(tqcode) || userId == null) {
+        if(StringUtils.isEmpty(tqcode) || userId == null){
             rspJsonObject.put("desc", "请输入有效领取码和用户");
             return rspJsonObject;
         }
 
-        try {
+        try{
             activeDrawServiceImpl.receUserWard(tqcode, userId);
             rspJsonObject.put("status", 0);
-        } catch (Main4Exception e) {
+        }catch (Main4Exception e){
             e.printStackTrace();
             rspJsonObject.put("desc", e.getMessage());
         }
@@ -296,11 +321,10 @@ public class ActivityAction {
 
     /**
      * 领取奖地址
-     *
      * @return
      */
-    @RequestMapping(value = "activity/receWards", method = RequestMethod.GET)
-    public String receWards() {
+    @RequestMapping(value = "activity/receWards" , method = RequestMethod.GET)
+    public String receWards(){
         return "activity/fdGdsLqzjb";
     }
 
@@ -312,33 +336,32 @@ public class ActivityAction {
         model.addAttribute("activeName", activity.getTitle());
         model.addAttribute("bannerSrc", activity.getBanner());
         model.addAttribute("bgColor", activity.getBkcolor());
-        model.addAttribute("goodsList", activityService.gfShow(id));
-        model.addAttribute("webSite", "hz");
+        model.addAttribute("goodsStyle", activityService.gfShow(id));
+        model.addAttribute("webSite","hz");
         return "activity/popular";
     }
 
-    /*  @RequestMapping("activity/apply")
-      public String apply(Long id,Model model) throws Main4Exception {
-          model.addAttribute("webSite","hz");
-  //        if (id == null) {
-  //            throw new Main4Exception("页面不存在");
-  //        }
-          int actState;
-          ShiguActivityVO vo=activityService.activityInfo(id);
-          long current=System.currentTimeMillis();
-          if(vo.getStartApply().getTime()>current){
-              actState=0;
-          }else if(vo.getEndApply().getTime()>current){
-              actState=1;
-          }else {
-              actState=2;
-          }
-          model.addAttribute("actState",actState);
-          model.addAttribute("id",id);
-          return "activity/apply";
-      }*/
-   /* @Autowired
-    private SignUpService signUpService;*/
+    @RequestMapping("activity/apply")
+    public String apply(Long id,Model model) throws Main4Exception {
+        model.addAttribute("webSite","hz");
+//        if (id == null) {
+//            throw new Main4Exception("页面不存在");
+//        }
+        int actState;
+        ShiguActivityVO vo=activityService.activityInfo(id);
+        long current=System.currentTimeMillis();
+        if(vo.getStartApply().getTime()>current){
+            actState=0;
+        }else if(vo.getEndApply().getTime()>current){
+            actState=1;
+        }else {
+            actState=2;
+        }
+        model.addAttribute("actState",actState);
+        model.addAttribute("id",id);
+        return "activity/apply";
+    }
+
     @Autowired
     private ActiveDrawListener activeDrawListener;
 

@@ -313,50 +313,50 @@ var webSite = '${webSite!}';
     <div>
         <#list goodsStyle as item>
             <div class="styleItem">
-    <#if item.titleText??>
-        <h3 class="styleTitle" name="${item.titleText!}"  id="style${item.id!}" style="background-image:url(${item.titleImg!}"></h3>
-        <#else>
-        <div class="mt40"></div>
-    </#if>
-    <ul class="clearfix">
-        <#list item.goodsList as goods>
-            <li class="goodsItem" >
-    <a href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" class="imgBox">
-        <img src="${goods.imgSrc!}_300x300.jpg" alt="${goods.title!}" >
-    </a>
-    <h4 class="title"><a href="http://hz.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" title="${goods.title!}">${goods.title!}</a></h4>
-    <div class="goodsInfo clearfix pr fcF40">
-        <span class="goodsPrice"><i>&yen;</i>${goods.piPriceString!}</span>
-        <#if goods.shStatus == 0>
-        
-        <#elseif goods.shStatus == 1>
-        <i class="thIcon"></i>
-        <#elseif goods.shStatus == 2>
-        <i class="hhIcon"></i>
-        <#elseif goods.shStatus == 3>
-        <i class="hhIcon"></i>
-        <i class="thIcon"></i>
-        </#if>
-    </div>
-    <div class="otherOpe clearfix">
-        <a class="goodAddr text-999" href="http://www.571xz.com/shop.htm?id=${goods.shopId!}" target="_blank" title="${goods.marketName!} ${goods.shopNum!}">${goods.marketName!} ${goods.shopNum!}</a>
-        <a class="oneKeyUp" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}">一键上传 ></a>
-    </div>
-    
-</li>
+                <#if item.titleText??>
+                    <h3 class="styleTitle" name="${item.titleText!}"  id="style${item.id!}" style="background-image:url(${item.titleImg!}"></h3>
+                    <#else>
+                    <div class="mt40"></div>
+                </#if>
+                <ul class="clearfix">
+                    <#list item.goodsList as goods>
+                        <li class="goodsItem" >
+                            <a href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" class="imgBox">
+                                <img src="${goods.imgSrc!}_300x300.jpg" alt="${goods.title!}" >
+                            </a>
+                            <h4 class="title"><a href="http://hz.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" title="${goods.title!}">${goods.title!}</a></h4>
+                            <div class="goodsInfo clearfix pr fcF40">
+                                <span class="goodsPrice"><i>&yen;</i>${goods.piPriceString!}</span>
+                                <#if goods.shStatus == 0>
+
+                                <#elseif goods.shStatus == 1>
+                                <i class="thIcon"></i>
+                                <#elseif goods.shStatus == 2>
+                                <i class="hhIcon"></i>
+                                <#elseif goods.shStatus == 3>
+                                <i class="hhIcon"></i>
+                                <i class="thIcon"></i>
+                                </#if>
+                            </div>
+                            <div class="otherOpe clearfix">
+                                <a class="goodAddr text-999" href="http://www.571xz.com/shop.htm?id=${goods.shopId!}" target="_blank" title="${goods.marketName!} ${goods.shopNum!}">${goods.marketName!} ${goods.shopNum!}</a>
+                                <a class="oneKeyUp" href="http://www.571xz.com/item.htm?id=${goods.goodsId!}">一键上传 ></a>
+                            </div>
+
+                        </li>
 
 
-        </#list>     
-    </ul>
-    
-</div>
+                    </#list>
+                </ul>
+
+            </div>
 
         </#list>
     </div>
 </div>
 
 
-    <#if (goodsStyle?size)gt1>
+    <#if (goodsStyle?size) gt 0>
     <div class="leftSidebar">
     <div class="styleDot">
         <ul id="leftSidebarbox">
