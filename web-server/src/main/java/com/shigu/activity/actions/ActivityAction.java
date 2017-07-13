@@ -7,7 +7,8 @@ import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.shigu.activity.vo.*;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
-import com.shigu.main4.activity.vo.ShiguActivityVO;
+
+import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
@@ -288,7 +289,7 @@ public class ActivityAction {
         model.addAttribute("activeName", activity.getTitle());
         model.addAttribute("bannerSrc", activity.getBanner());
         model.addAttribute("bgColor", activity.getBkcolor());
-        model.addAttribute("goodsList", activityService.gfShow(id));
+        model.addAttribute("goodsStyle", activityService.gfShow(id));
         model.addAttribute("webSite","hz");
         return "activity/popular";
     }

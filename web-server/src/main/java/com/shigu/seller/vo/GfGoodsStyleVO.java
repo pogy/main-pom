@@ -1,5 +1,6 @@
 package com.shigu.seller.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ public class GfGoodsStyleVO {
     private Long id;
     private String titleText;
     private String titleImg;
-    private List<GfShowVO> goodsList;
+    private List<GfShowVO> goodsList = new ArrayList<>();
 
 
     public Long getId() {
