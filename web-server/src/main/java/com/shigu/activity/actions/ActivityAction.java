@@ -4,18 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
-<<<<<<< Temporary merge branch 1
-import com.shigu.activity.vo.ActiveDrawStyleVo;
-import com.shigu.component.common.globality.constant.SystemConStant;
-import com.shigu.component.common.globality.response.ResponseBase;
-import com.shigu.main4.active.vo.ShiguActivityVO;
-=======
 import com.shigu.activity.service.ActiveDrawListener;
 import com.shigu.activity.vo.ActiveDrawStyleVo;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
->>>>>>> Temporary merge branch 2
+import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
@@ -37,19 +32,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-<<<<<<< Temporary merge branch 1
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-=======
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
-//import com.shigu.main4.activity.vo.ShiguActivityVO;
->>>>>>> Temporary merge branch 2
 
 /**
  * 奖品活动
@@ -148,22 +135,14 @@ public class ActivityAction {
         ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
         model.addAttribute("allInfo", drawPem.getInfo());
 
-<<<<<<< Temporary merge branch 1
         model.addAttribute("thisHdTime",parseToStartEnd(drawPem.getStartTime()));
         List<ActiveDrawRecordUserVo> userVoList =  Collections.emptyList();
-=======
-        List<ActiveDrawRecordUserVo> userVoList = Collections.emptyList();
->>>>>>> Temporary merge branch 2
         Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (object != null) {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
-<<<<<<< Temporary merge branch 1
             if(drawLastPem != null){
                 model.addAttribute("lastHdTime",parseToStartEnd(drawLastPem.getStartTime()));
-=======
-            if (drawLastPem != null) {
->>>>>>> Temporary merge branch 2
                 // 用户上一期获奖数据
                 userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
                 for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
@@ -175,11 +154,6 @@ public class ActivityAction {
             }
         }
         model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
-<<<<<<< Temporary merge branch 1
-=======
-        model.addAttribute("lastHdTime", "2017年06月26日 ——— 2017年07月03日");
-        model.addAttribute("thisHdTime", "2017年07月03日 ——— 2017年07月10日");
->>>>>>> Temporary merge branch 2
         return "buyer/awardInfo";
     }
 
@@ -194,7 +168,7 @@ public class ActivityAction {
         cal.setTime(start);
         String thisStart= DateUtil.dateToString(cal.getTime(),dateFitment);
         cal.add(Calendar.DATE,7);
-        String thisEnd=DateUtil.dateToString(cal.getTime(),dateFitment);
+        String thisEnd= DateUtil.dateToString(cal.getTime(),dateFitment);
         return thisStart+" ——— "+thisEnd;
     }
 
