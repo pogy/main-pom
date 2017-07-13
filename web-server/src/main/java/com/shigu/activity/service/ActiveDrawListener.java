@@ -7,9 +7,12 @@ import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ActiveDrawRecord;
+import com.opentae.data.mall.beans.ShiguTemp;
 import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
+import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
+import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.spread.service.ActiveDrawService;
@@ -23,12 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -173,6 +175,9 @@ public class ActiveDrawListener implements MessageListener {
         }
         activeDrawRecordMapper.insertSelective(activeDrawRecord);
     }
+
+
+
     /**
      * 中奖规则
      */
@@ -249,4 +254,36 @@ public class ActiveDrawListener implements MessageListener {
         example.createCriteria().andPemIdEqualTo(pemId).andGoodsIdEqualTo(goodsId).andTypeEqualTo(ActiveDrawGoods.TYPE_DAILYFIND);
         return activeDrawGoodsMapper.countByExample(example)>0;
     }
+
+    @Autowired
+    private ShiguTempMapper shiguTempMapper;
+    public String signUp(String flag, Long userId, Long shopId){
+        if (userId==null||shopId==null){
+            return "您还没有店铺";
+        }
+        ShiguTempExample shiguTempExample =new ShiguTempExample();
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
+        List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
+        if (temps.size()>0){
+            return "您已经报过名了";
+        }
+        ShiguTemp shiguTemp=new ShiguTemp();
+        shiguTemp.setFlag(flag);
+        shiguTemp.setKey1(userId.toString());
+        shiguTemp.setKey2(shopId.toString());
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        shiguTemp.setKey3(dateFormat.format(new Date()));
+        shiguTempMapper.insertSelective(shiguTemp);
+        return "true";
+    }
+    public boolean checkSignUp(Long userId,Long shopId) {
+        ShiguTempExample shiguTempExample=new ShiguTempExample();
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
+        List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
+        if (temps.size()>0){
+            return true;
+        }
+        return false;
+    }
+
 }
