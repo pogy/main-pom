@@ -356,7 +356,6 @@ var webSite = '${webSite!}';
 </div>
 
 
-    <#if (goodsStyle?size)gt1>
     <div class="leftSidebar">
     <div class="styleDot">
         <ul id="leftSidebarbox">
@@ -370,8 +369,7 @@ var webSite = '${webSite!}';
 
 
 
- 
-    </#if>
+
 </div>
 
 
