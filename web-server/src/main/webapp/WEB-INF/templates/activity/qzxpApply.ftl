@@ -305,16 +305,22 @@ var webSite = '${webSite!}';
     <div class="banner"></div>
 
     <div class="applyBtn">
-    <#if !session_user_redis__> 
-        <b onclick="loginBack()">立刻报名</b>
-    <#else> 
-        <#if session_user_redis__.logshop??> 
-        <b class="supplierBtn">立刻报名</b>
+    <#if alreadyApply == true>
+        <b class="disabled">已报名</b>
+    <#else>
+        <#if !session_user_redis__> 
+            <b onclick="loginBack()">立刻报名</b>
         <#else> 
-        <b class="agentBtn">立刻报名</b>
+            <#if session_user_redis__.logshop??> 
+            <b class="supplierBtn">立刻报名</b>
+            <#else> 
+            <b class="agentBtn">立刻报名</b>
+            </#if>
         </#if>
     </#if>
 </div>
+
+
 
 
 
@@ -391,16 +397,22 @@ var webSite = '${webSite!}';
     </div>
     
     <div class="applyBtn">
-    <#if !session_user_redis__> 
-        <b onclick="loginBack()">立刻报名</b>
-    <#else> 
-        <#if session_user_redis__.logshop??> 
-        <b class="supplierBtn">立刻报名</b>
+    <#if alreadyApply == true>
+        <b class="disabled">已报名</b>
+    <#else>
+        <#if !session_user_redis__> 
+            <b onclick="loginBack()">立刻报名</b>
         <#else> 
-        <b class="agentBtn">立刻报名</b>
+            <#if session_user_redis__.logshop??> 
+            <b class="supplierBtn">立刻报名</b>
+            <#else> 
+            <b class="agentBtn">立刻报名</b>
+            </#if>
         </#if>
     </#if>
 </div>
+
+
 
 
 
