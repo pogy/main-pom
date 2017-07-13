@@ -357,7 +357,9 @@ public class ActivityAction {
     @RequestMapping("activity/qzxpApply")
     public String qzxpApply(Model model, HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        model.addAttribute("alreadyApply", activeDrawListener.checkSignUp(ps.getUserId(), ps.getLogshop().getShopId()));
+        if (ps != null && ps.getLogshop() !=null) {
+            model.addAttribute("alreadyApply", activeDrawListener.checkSignUp(ps.getUserId(), ps.getLogshop().getShopId()));
+        }
         model.addAttribute("webSite", "hz");
         return "activity/qzxpApply";
     }
