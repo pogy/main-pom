@@ -86,14 +86,16 @@ public class ItemShowBlock implements Serializable{
     }
 
     public String getPrice() {
-        if(price==null){
+        return price;
+    }
+
+    public String parsePrice(Long priceLong){
+        if(priceLong==null){
             return "--";
         }
-        String price=this.price;
+        Double priceValue = priceLong.doubleValue()/100;
         DecimalFormat df=new DecimalFormat("0.00");
-        Double dprice=Double.valueOf(price);
-        dprice= dprice/100;
-        return df.format(dprice);
+        return df.format(priceValue);
     }
 
     public String getGoodsNo() {

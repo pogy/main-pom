@@ -165,6 +165,11 @@
             <version>${ehcache.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-web</artifactId>
+            <version>2.0.4</version>
+        </dependency>
 
         <!--freemarker-->
         <dependency>
@@ -427,16 +432,6 @@
             <groupId>org.sword</groupId>
             <artifactId>wechat4j</artifactId>
             <version>1.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-activity-api</artifactId>
-            <version>4.1.8-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-activity-default</artifactId>
-            <version>4.1.8-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

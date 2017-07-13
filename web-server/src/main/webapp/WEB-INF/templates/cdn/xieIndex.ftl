@@ -3,26 +3,36 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>逛市场 - 看鞋网</title>
+    <meta name="keywords" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-    <title>四季星座网-分销商中心-开奖结果</title>
+    <meta name="description" content="看鞋网泉州的鞋类货源批发网,市场包含了华联A栋，华联B栋，义兴堂，滨江幸福广场，晋江电子商务中心等,是网络卖家网络货源平台,网店货源,女鞋货源,泉州女鞋货源,淘宝货源,实体店网络进货渠道，网店货源,实体店网络进货优选渠道!">
     
-        <#if $it.keywords??>
-        <meta name="keywords" content="${$it.keywords!}">
-        </#if>
-    
-        <#if $it.description??>
-        <meta name="description" content="${$it.description!}">
-        </#if>
-    <link href="http://style.571xz.com/fxs2/css/awardInfo.css?t=1499651796942" rel="stylesheet">
+    <link href="http://style.571xz.com/xieMarket/css/xieIndex.css?t=1499308737775" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.66/fxs2/" type="hidden">
 <#include "/common/host_config.ftl">
+<script>/*============ xieMarket/host_config#base BEGIN ============*/
 
+'${test!}';
+var main_host = 'http://www.kxie.com/';
+
+/*============ xieMarket/host_config#base END ============*/
+
+
+</script>
 <div class="topbar">
     <div class="layout">
         <div class="leftbox">
+            <div class="cityCe">
+                <span><em><#if webSite == "kx">看鞋网</#if></em><i class="downArrow"></i></span>
+                <div class="cityCon">
+                    <ul>
+                        <li><a href="http://www.kxie.com" <#if webSite == "kx">class="select"</#if>>看鞋网</a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="login">
                 <span>你好，</span>
                 <em>请</em>
@@ -35,9 +45,6 @@
         
         <div class="rightbox">
             <ul>
-                <li class="noIndex">
-                    <a href="${main_host!}" class="c_ff4400">四季星座网首页</a>
-                </li>
                 <#if session_user_redis__??>
                     <#if session_user_redis__.logshop??>
                     <li>
@@ -138,26 +145,6 @@
                             <h4>市场大全</h4>
                             <ul>
                                 
-                                <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=4">星座女装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=5">钱塘大厦</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=6">好四季</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=7">意法服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=8">置地国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=9">九星服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=10">之江服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=11">九天国际</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=12">新杭派</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=13">四季青</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=14">中纺服饰</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=15">中星外贸</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=16">原创男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=17">大码男装</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=18">男鞋基地</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=19">周边市场</a></li>
-                                <li><a href="http://hz.571xz.com/market.htm?mid=20">石狮工厂店</a></li>
                             </ul>
                         </div>
                     </div>    
@@ -167,115 +154,167 @@
         </div>
     </div>
 </div>
-<script>/*============ xz/page#topbar BEGIN ============*/
+<script>/*============ xz/kxPage#topbar BEGIN ============*/
 
 var webSite = '${webSite!}';
 
-/*============ xz/page#topbar END ============*/
+/*============ xz/kxPage#topbar END ============*/
 
 
 </script>
-<div class="header">
-    <div class="layout">
-        <a class="logo iconfont" href="http://www.571xz.com">&#xe653;</a>
-        
-        <ul>
-            <li ><a href="${main_host!}member/index.htm">首页</a></li>
-            <li ><a href="${main_host!}member/sysSetsindex.htm">账号管理</a></li>
-            
-        </ul>
+<div class="header layout">
+    <div class="logoLeft">
+        <a href="http://www.kxie.com">
+            <img src="http://style.571xz.com/xz/css/img/logo.png" alt width=150 height=48 />
+        </a>
+        <em>逛市场</em>
     </div>
-</div>
-<div class="wrapper layout">
     
-    
-    <div class="sidebar">
-        <h2>商品管理</h2>
-        <ul>
-                <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
-                <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
-                <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
-        </ul> 
-        <h2>代发管理</h2>
-        <ul>
-                <li><a href="http://daifa.571xz.com/daili/offerIndex.htm" >我要代发</a></li>
-        </ul> 
-        <h2>财务信息</h2>
-        <ul>
-                <li><a href="${main_host!}member/iwantToRechargein5.htm" >充值</a></li>
-                <li><a href="${main_host!}member/withdraw5Apply.htm" >提现</a></li>
-        </ul> 
-        <h2>账号管理</h2>
-        <ul>
-                <li><a href="${main_host!}member/safeindex.htm" >安全设置</a></li>
-                <li><a href="${main_host!}member/sysSetsindex.htm" >个人设置</a></li>
-                <li><a href="${main_host!}member/fenxiaoZhanghao.htm" >应用绑定</a></li>
-        </ul> 
-        <h2>供应商申请</h2>
-        <ul>
-                <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
-        </ul> 
-        <h2>会员俱乐部</h2>
-        <ul>
-            <li><a class="selected" href="${main_host!}member/awardInfo.htm">开奖结果</a></li> 
-        </ul> 
-    </div>
-    <div class="content shadow-box">
-        <div class="awardInfo">
-            <h3>发现好货活动奖品</h3>
-            <div class="lastTerm">
-                <p class="hdTime">活动日期：${lastHdTime!}<b class="hdRule" jbtn="lastRule">活动规则</b></p>
-                <div class="awardBox">
-                    <div class="awardList">
-                        <ul class="clearfix">
-                            
-                        </ul>
-                    </div>
-                    <div class="findGoods">
-                        <ul class="clearfix">
-                            
-                        </ul>
-                    </div>
-                    <div class="dailyFind">
-                        <ul class="clearfix">
-                            
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="thisTerm">
-                <p class="hdTime">活动日期：${thisHdTime!}<b class="hdRule" jbtn="thisRule">活动规则</b></p>
-                <div class="awardBox">
-                    <div class="awardList">
-                        <ul class="clearfix">
-                            
-                        </ul>
-                    </div>
-                    <div class="findGoods">
-                        <ul class="clearfix">
-                            
-                        </ul>
-                    </div>
-                    <div class="dailyFind">
-                        <ul class="clearfix">
-                            
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <div class="search">
+        <div class="tabList clearfix">
+            <ul>
+                <li type="goods">商品</li>
+                <li class="select" type="store">档口</li>
+            </ul>
+        </div>
+        <div class="searchBox">
+            <form id="formSearch" action="http://www.kxie.com/storenum.htm?webSite=${webSite!}">
+                <input type="text" class="searchCon" name="keyword" placeholder="输入档口号进行查询">
+                <input type=hidden name="webSite" value="${webSite!}">
+                <button class="searchBtn">搜索</button>
+            </form>
         </div>
     </div>
     
-    <script>/*============ fxs2/awardInfo#main BEGIN ============*/
+    <script>/*============ xieMarket/page#search BEGIN ============*/
 
-var allInfo = ${allInfo!}; //JSON字符串用于奖品模块、获奖名单
-var lastUserAward = ${lastUserAward!}; //JSON字符串用于上期奖品
+var webSite = '${webSite!}';
 
-/*============ fxs2/awardInfo#main END ============*/
+/*============ xieMarket/page#search END ============*/
 
 
 </script>
-    
+</div>
+<div class="nav">
+    <div class="layout navCon">
+        <div class="cateGory">
+            <div class="cateFication">全部商品分类</div>
+            <div class="cateCon">
+                <ul>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="navList">
+            <ul>
+                <li><a href="http://www.kxie.com" target="_blank">首页</a></li>
+                <li class="select"><a href="http://www.kxie.com/market.htm?mid=68">逛市场</a></li>
+                <li><a href="http://www.kxie.com/${webSite!}goods.htm" target="_blank">商品库</a></li>
+            </ul>
+        </div>
+        <div class="storeIn">
+            <i class="iconfont">&#xe644;</i>
+            <a href="${main_host!}ruzhu.htm">商家入驻</a>
+        </div>
+    </div>
+</div>
+<div id="pjaxContainer">
+<div id="filterbarWrapper" class="useFixed_2">
+    <div class="filterbar clearfix" id="filterbar">
+        <div class="layout">
+            <div class="innerbox markets">
+                <div class="ctnbox">
+                    <label><i class="iconfont marketIcon"></i>市场：</label>
+                    <ul>
+                        <#list markets as market>
+                            <li <#if market.id == marketId>class="selected"</#if>><a href="?mid=${market.id!}">${market.name!}</a></li>
+                        </#list>
+                    </ul>
+                    <i class="iconfont showmore">&#xe60b;</i>
+                </div>
+            </div>
+            <div class="innerbox splitline"></div>
+            <div class="innerbox cates">
+                <div class="ctnbox">
+                    <label><i class="iconfont mainDoi"></i>主营：</label>
+                    <ul>
+                        
+                        <li <#if !cateId>class="selected"</#if>><a href="?mid=${marketId!}">全部</a></li>
+                        <#list cates as cate>
+                            <li <#if cate.id == cateId>class="selected"</#if>><a href="?mid=${marketId!}&cid=${cate.id!}">${cate.name!}</a></li>
+                        </#list>
+                    </ul>
+                    <i class="iconfont showmore">&#xe60b;</i>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<div class="marketList layout">
+    <#list marketList as markets>
+        <h3 data-lm='${markets.title!}'>
+            <span>${markets.title!}</span>
+            <i></i>
+        </h3>
+        <ul class="storeList clearfix">
+        <#list markets.stores as store>
+            <li>
+                <div class="bgfff"></div>
+                <a href="shop.htm?id=${store.id!}" target="_blank">
+                    <h5>${store.num!}<#if store.isNew == 1><i></i></#if></h5>
+                    <em>${store.cate!}</em>
+                    <p>
+                        <#list store.tags as tag>
+                        <#if tag == 1>
+                        <i class="tui"></i>
+                        </#if>
+                        <#if tag == 2>
+                        <i class="huan"></i>
+                        </#if>
+                        <#if tag == 3>
+                        <i class="dai"></i>
+                        </#if>
+                        </#list>
+                    </p>
+                </a>
+            </li> 
+        </#list>
+        </ul>
+    </#list>
+</div>
+<script>/*============ xieMarket/xieIndex#marketList BEGIN ============*/
+
+'${hack!}';
+if(this.$wgt && $wgt.setBg){
+    $wgt.setBg();
+}
+
+/*============ xieMarket/xieIndex#marketList END ============*/
+
+
+</script><script>/*============ xieMarket/xieIndex#marketList BEGIN ============*/
+
+'${hack!}';
+var marketName = '${marketName!}';
+if(this.$wgt){
+    $wgt.reloadNavbar &&$wgt.reloadNavbar();
+    $wgt.reloadFilterbar && $wgt.reloadFilterbar();
+    $wgt.marketBar &&$wgt.marketBar();
+}
+
+/*============ xieMarket/xieIndex#marketList END ============*/
+
+
+</script>
+</div>
+<div id="navbar" class="navbar init">
+    <h3>${marketName!}</h3>
+    <ul>
+        
+        
+    </ul>
+    <b><i class="iconfont upArrow"></i>顶部</b>
 </div>
 <div class="footer">
     <div class="inner">
@@ -288,28 +327,26 @@ var lastUserAward = ${lastUserAward!}; //JSON字符串用于上期奖品
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
             <a href="http://jx.571xz.com" target="_blank">濮院站</a>
-            <a href="http://zixun.571xz.com" target="_blank">资讯</a>
-            
-            
-            <a href="http://zixun.571xz.com/article?id=87" target="_blank">联系我们</a>
-            
+            <a href="http://www.kxie.com" target="_blank">看鞋网</a>
         </p>
-        <p class="imgs">
+        <!--#<p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
             <a class="img-yyzz" href="http://idinfo.zjaic.gov.cn/bscx.do?method=hddoc&amp;id=33010200000476" target="_blank" ></a>
             <a class="img-jyxkz" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" title="互联网经营许可证" target="_blank"></a>
             <a class="img-jybz" href="http://www.315online.com.cn/" target="_blank"></a>
             <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
-        </p>
+        </p>#-->
         <p class="jyga">
-            <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <span>&copy; 2017-2017 kxie.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=17015635" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙ICP备17015635号 </a>
         </p>
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/awardInfo.js?t=1499651796942"></script>
+        <script src="http://style.571xz.com/xieMarket/js/jquery.pjax.js"></script>
+        <script src="http://style.571xz.com/xieMarket/js/nprogress.js"></script>
+<script src="http://style.571xz.com/xieMarket/js/xieIndex.js?t=1499308737775"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

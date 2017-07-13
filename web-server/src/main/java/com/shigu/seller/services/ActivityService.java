@@ -1,30 +1,23 @@
 package com.shigu.seller.services;
 
-import com.opentae.data.mall.beans.ShiguActivity;
-import com.opentae.data.mall.beans.ShiguActivityApply;
-import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.beans.ShopNumAndMarket;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguActivityExample;
+import com.opentae.data.mall.interfaces.*;
 import com.opentae.data.mall.interfaces.ShiguActivityApplyMapper;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.main4.activity.enums.ActivityStatus;
-import com.shigu.main4.activity.enums.ApplyStatus;
-import com.shigu.main4.activity.services.ShiguActivityService;
-import com.shigu.main4.activity.vo.ShiguActivityApplyVO;
-import com.shigu.main4.activity.vo.ShiguActivityVO;
+import com.shigu.main4.active.enums.ApplyStatus;
+import com.shigu.main4.active.services.ShiguActivityService;
+import com.shigu.main4.active.vo.ShiguActivityApplyVO;
+import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.main4.vo.ItemShowBlock;
-import com.shigu.seller.vo.ActivityDetailsVo;
-import com.shigu.seller.vo.ActivityListVO;
-import com.shigu.seller.vo.ApplyItemVO;
-import com.shigu.seller.vo.GfShowVO;
+import com.shigu.seller.vo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +44,11 @@ public class ActivityService {
     @Autowired
     private ShiguShopMapper shiguShopMapper;
 
+    @Autowired
+    private ShiguActivityApproveMapper shiguActivityApproveMapper;
+
+    @Autowired
+    private ShiguActivityCategoryMapper shiguActivityCategoryMapper;
 
     private static final String DATE_FORMAT_PATTERN = "yyyy.MM.dd";
 
@@ -225,7 +223,7 @@ public class ActivityService {
         }
     }
 
-    private ShiguActivityService activity(Long actid) {
+    private ShiguActivityService activity( Long actid) {
         return SpringBeanFactory.getBean(ShiguActivityService.class, actid);
     }
 
@@ -238,8 +236,8 @@ public class ActivityService {
         return activity(id).info();
     }
 
-    public List<GfShowVO> gfShow(Long id) throws Main4Exception {
-        List<GfShowVO> vos = new ArrayList<>();
+    public List<GfGoodsStyleVO> gfShow(Long id) throws Main4Exception {
+        List<GfGoodsStyleVO> fGoodsStyleList = new ArrayList<>();
         List<Long> itemIds = new ArrayList<>();
         ShiguActivityService activityService = activity(id);
         for (ShiguActivityApplyVO vo : activityService.luckyDogs()) {
@@ -268,33 +266,53 @@ public class ActivityService {
                         Long.class
                 );
             }
+
+            Map<Long, List<GfShowVO>> cateShowMap = new HashMap<>();
             for (ItemShowBlock hz : items) {
                 GfShowVO vo = new GfShowVO();
-                vos.add(vo);
                 vo.setGoodsId(hz.getItemId());
                 vo.setShopId(hz.getShopId());
                 vo.setImgSrc(hz.getImgUrl());
                 vo.setTitle(hz.getTitle());
                 vo.setPiPriceString(hz.getPrice());
                 vo.setShStatus(sum);
+
+                ShiguActivityApprove approve = new ShiguActivityApprove();
+                approve.setActivityId(id);
+                approve.setItem(String.valueOf(hz.getItemId()));
+                List<ShiguActivityApprove> approveList = shiguActivityApproveMapper.select(approve);
+                if (approveList.size() != 1) {
+                    throw new Main4Exception("根据条件查找approve表里面的商品cateid数据有误：activityid="+id + "; itemId=" + hz.getItemId());
+                }
+                approve = approveList.get(0);
+                vo.setGoodsStyleId(approve.getCateId());
+
                 ShopNumAndMarket shopNumAndMarket = marketMap.get(hz.getShopId());
                 if (shopNumAndMarket != null) {
                     vo.setMarketName(shopNumAndMarket.getMarket());
                     vo.setShopNum(shopNumAndMarket.getShopNum());
                 }
+
+                if (!cateShowMap.containsKey(vo.getGoodsStyleId())) {
+                    List<GfShowVO> gfShowVoList = new ArrayList();
+                    gfShowVoList.add(vo);
+                    cateShowMap.put(vo.getGoodsStyleId(), gfShowVoList);
+                } else {
+                    cateShowMap.get(vo.getGoodsStyleId()).add(vo);
+                }
+            }
+
+
+            for (Map.Entry<Long, List<GfShowVO>> item : cateShowMap.entrySet()) {
+                ShiguActivityCategory shiguActivityCategory = shiguActivityCategoryMapper.selectByPrimaryKey(item.getKey());
+                GfGoodsStyleVO gfGoodsStyleVO = new GfGoodsStyleVO();
+                gfGoodsStyleVO.setId(shiguActivityCategory.getCateId());
+                gfGoodsStyleVO.setTitleText(shiguActivityCategory.getTitle());
+                gfGoodsStyleVO.setTitleImg(shiguActivityCategory.getTitleImg());
+                gfGoodsStyleVO.setGoodsList(item.getValue());
+                fGoodsStyleList.add(gfGoodsStyleVO);
             }
         }
-        return vos;
-    }
-
-    private enum ActivityEnum {
-        GF("港风", 1),;
-
-        public String name;
-        public Long activityId;
-        ActivityEnum(String name, long activityId) {
-            this.name = name;
-            this.activityId = activityId;
-        }
+        return fGoodsStyleList;
     }
 }
