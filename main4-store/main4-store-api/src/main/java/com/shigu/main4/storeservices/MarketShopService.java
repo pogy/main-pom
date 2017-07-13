@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface MarketShopService {
     /**
-     * 按市场ID,查本市场信息
+     * 按外部市场ID,查本市场信息
      * @param outerMarketId
      * @return
      */
