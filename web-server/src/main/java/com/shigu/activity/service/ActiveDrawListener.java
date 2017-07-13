@@ -273,7 +273,7 @@ public class ActiveDrawListener implements MessageListener {
         shiguTemp.setKey2(shopId.toString());
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         shiguTemp.setKey3(dateFormat.format(new Date()));
-        shiguTempMapper.insert(shiguTemp);
+        shiguTempMapper.insertSelective(shiguTemp);
         return "true";
     }
     public boolean checkSignUp(Long userId,Long shopId) {
