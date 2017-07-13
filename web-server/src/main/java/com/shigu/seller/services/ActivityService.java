@@ -108,8 +108,16 @@ public class ActivityService {
                             + pickTime(activity.getEndApply()));
             vo.setApplyRange(activity.getRuleInfo());
             vo.setChargeStyle(activity.getCostDesc());
-            vo.setSupportReturn(activity.getServices().contains("1"));
-            vo.setSupportBarter(activity.getServices().contains("2"));
+            String services = activity.getServices();
+            vo.setQualif(new ArrayList<ActivityQualifVO>());
+            if (StringUtils.isNotEmpty(services)) {
+                for (String s : services.split(";")) {
+                    String[] split = s.split(":");
+                    if (split.length == 2) {
+                        vo.getQualif().add(new ActivityQualifVO(split[0], split[1].equals("1")));
+                    }
+                }
+            }
 
             vo.setHdStatus(activity.getApplyStatus() == ApplyStatus.APPLY_NOT_BEGUN ? 0 : activity.getStatus().status);
             ShiguActivityApply activityApply = applyMap.get(activity.getActivityId());
