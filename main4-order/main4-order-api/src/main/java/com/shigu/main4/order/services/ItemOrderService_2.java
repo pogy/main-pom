@@ -14,7 +14,7 @@ import java.util.List;
  *
  * Created by zhaohongbo on 17/7/14.
  */
-public interface OrderService2 {
+public interface ItemOrderService_2 {
     /**
      * 查询订单的物流信息
      * @param orderId
