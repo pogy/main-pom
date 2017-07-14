@@ -284,6 +284,17 @@ var webSite = '${webSite!}';
 
 
         
+        <input type="hidden" id="updatePostPrice">
+
+<script>
+var postRulers = ${postRulers!};
+var postNameMap = ${postNameMap!};
+</script>
+
+
+
+
+        
         <div class="consigneeInfo marBottom clearfix">
     <h3 class="fs14 yahei">
         收货人信息 
@@ -554,164 +565,17 @@ var webSite = '${webSite!}';
 
         
         
-        <input type="hidden" id="updatePostPrice">
-
-<script>
-var postRulers = ${postRulers!};
-</script>
-
-
-
-
+        <div id="postInfoBox">
+            <div class="portCommonBox marBottom courierName">
+                <h3 class="fs14 yahei">
+                    快递名称
+                </h3>
+                <div class="choiceBox clearfix">
+                    <p class="fcF40">请选择或填写一个地址（快递费用是根据收货地址计算哦）！</p>
+                </div>
+            </div>
+        </div>
         
-
-<#assign text>{"choiceCon":postInfo}</#assign>
-<#assign moduledata7=text?eval />
-<#list [moduledata7] as $it>
-<div class="portCommonBox marBottom courierName">
-    <h3 class="fs14 yahei">
-        快递名称
-        
-    </h3>
-    
-    <div class="choiceBox clearfix">
-        <ul>
-            <#list $it.choiceCon as option>
-            
-
-<#assign text>{"value":"${option.id!}","text":"${option.text!}","checked":option.checked}</#assign>
-<#assign moduledata8=text?eval />
-<#list [moduledata8] as $it>
-<label class="fmRadio clearfix
-    
-        <#if $it.checked??>
-            checked
-        </#if>
-    
-    
-        buttonRadio
-    
-">
-    <input 
-        type="radio"
-        autocomplete="off"
-        
-            name="courierName"
-        
-        
-        
-            <#if $it.value??>
-                value="${$it.value!}"
-            </#if>
-        
-        
-        
-            <#if $it.checked??>
-                checked
-            </#if>
-        
-    >
-    <i class="before"></i>
-    <span>
-    
-        <#if $it.text??>
-            ${$it.text!}
-        </#if>
-    
-    </span>
-</label>
-
-
-
-
-</#list>
-
-            </#list>
-        </ul>
-    </div>
-</div>
-
-
-
-</#list>
-
-
-        
-        
-
-<#assign text>{"choiceCon":[{"text":"有货先发","id":"yhxf","checked":true}]}</#assign>
-<#assign moduledata9=text?eval />
-<#list [moduledata9] as $it>
-<div class="portCommonBox marBottom shipOption">
-    <h3 class="fs14 yahei">
-        发货选择
-        
-            <span>有货先发是指3日内采购到的货物先发货，剩余货物自动退款！</span>
-        
-    </h3>
-    
-    <div class="choiceBox clearfix">
-        <ul>
-            <#list $it.choiceCon as option>
-            
-
-<#assign text>{"value":"${option.id!}","text":"${option.text!}","checked":option.checked}</#assign>
-<#assign moduledata10=text?eval />
-<#list [moduledata10] as $it>
-<label class="fmRadio clearfix
-    
-        <#if $it.checked??>
-            checked
-        </#if>
-    
-    
-        buttonRadio
-    
-">
-    <input 
-        type="radio"
-        autocomplete="off"
-        
-            name="shipOption"
-        
-        
-        
-            <#if $it.value??>
-                value="${$it.value!}"
-            </#if>
-        
-        
-        
-            <#if $it.checked??>
-                checked
-            </#if>
-        
-    >
-    <i class="before"></i>
-    <span>
-    
-        <#if $it.text??>
-            ${$it.text!}
-        </#if>
-    
-    </span>
-</label>
-
-
-
-
-</#list>
-
-            </#list>
-        </ul>
-    </div>
-</div>
-
-
-
-</#list>
-
-
         
         <div class="orderGoods">
     <h3 class="fs14 yahei orderBoxTitle">商品清单 </h3>
@@ -726,16 +590,16 @@ var postRulers = ${postRulers!};
             <li class="serverFee tac">服务费用</li>
         </ul>
     </div>
-    <div class="orderAllInfo fl" data-post="${list.postPrice!}" data-firstPost="${list.postCost!}">
-        <#list list.orders as order>
+    <div class="orderAllInfo fl">
+        <#list goodsOrders as order>
         <div class="orderItemInfo fl" data-id="${order.shopId!}">
             <div class="orderInfo clearfix">
                 <span class="orderStore">档口：${order.marketName!}  ${order.storeNum!}</span>
                 
 
 <#assign text>{"id":order.imQq}</#assign>
-<#assign moduledata11=text?eval />
-<#list [moduledata11] as $it>
+<#assign moduledata7=text?eval />
+<#list [moduledata7] as $it>
 <#if $it.id != "">
 <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
 </#if>
@@ -745,8 +609,8 @@ var postRulers = ${postRulers!};
                 
 
 <#assign text>{"id":order.imWw}</#assign>
-<#assign moduledata12=text?eval />
-<#list [moduledata12] as $it>
+<#assign moduledata8=text?eval />
+<#list [moduledata8] as $it>
 <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
 
 </#list>
@@ -776,8 +640,8 @@ var postRulers = ${postRulers!};
         
 
 <#assign text>{"name":childOrder.id,"value":childOrder.num}</#assign>
-<#assign moduledata13=text?eval />
-<#list [moduledata13] as $it>
+<#assign moduledata9=text?eval />
+<#list [moduledata9] as $it>
 
 <span class="fmNumberInput">
     <i jbtn="reduce">-</i>
@@ -881,8 +745,8 @@ var postRulers = ${postRulers!};
             
 
 <#assign text>{}</#assign>
-<#assign moduledata14=text?eval />
-<#list [moduledata14] as $it>
+<#assign moduledata10=text?eval />
+<#list [moduledata10] as $it>
 <label class="fmCheckbox
     
         checked
@@ -971,8 +835,8 @@ var postRulers = ${postRulers!};
         
 
 <#assign text>{}</#assign>
-<#assign moduledata15=text?eval />
-<#list [moduledata15] as $it>
+<#assign moduledata11=text?eval />
+<#list [moduledata11] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
