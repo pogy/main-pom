@@ -226,7 +226,7 @@ var webSite = '${webSite!}';
             <#list $it.choiceCon as option>
             
 
-<#assign text>{"value":option.id,"text":option.text,"checked":option.checked}</#assign>
+<#assign text>{"value":"${option.id!}","text":"${option.text!}","checked":option.checked}</#assign>
 <#assign moduledata2=text?eval />
 <#list [moduledata2] as $it>
 <label class="fmRadio clearfix
@@ -550,6 +550,8 @@ var webSite = '${webSite!}';
 
 
 
+
+
         
         
         <input type="hidden" id="updatePostPrice">
@@ -577,7 +579,7 @@ var postRulers = ${postRulers!};
             <#list $it.choiceCon as option>
             
 
-<#assign text>{"value":option.id,"text":option.text,"checked":option.checked}</#assign>
+<#assign text>{"value":"${option.id!}","text":"${option.text!}","checked":option.checked}</#assign>
 <#assign moduledata8=text?eval />
 <#list [moduledata8] as $it>
 <label class="fmRadio clearfix
@@ -653,7 +655,7 @@ var postRulers = ${postRulers!};
             <#list $it.choiceCon as option>
             
 
-<#assign text>{"value":option.id,"text":option.text,"checked":option.checked}</#assign>
+<#assign text>{"value":"${option.id!}","text":"${option.text!}","checked":option.checked}</#assign>
 <#assign moduledata10=text?eval />
 <#list [moduledata10] as $it>
 <label class="fmRadio clearfix
