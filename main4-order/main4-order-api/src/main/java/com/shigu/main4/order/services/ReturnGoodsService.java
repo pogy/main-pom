@@ -1,7 +1,6 @@
 package com.shigu.main4.order.services;
 
 import com.shigu.main4.order.vo.ChooseEcpressVo;
-import com.shigu.main4.order.vo.ExchangeVo;
 import com.shigu.main4.order.vo.ExpressVo;
 import com.shigu.main4.order.vo.ReturnGoodsVo;
 
