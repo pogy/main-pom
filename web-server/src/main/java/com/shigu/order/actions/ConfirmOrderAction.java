@@ -48,7 +48,7 @@ public class ConfirmOrderAction {
      * 订单确认提交
      * @param bo
      */
-    @RequestMapping("/order/confirmOrder")
+    @RequestMapping("/order/confirmOrders")
     public String confirmOrders(ConfirmBO bo) throws Main4Exception {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);

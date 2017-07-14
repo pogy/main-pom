@@ -1,5 +1,6 @@
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.bo.ConfirmOrderBO;
 import com.shigu.order.bo.ConfirmSubOrderBO;
@@ -60,7 +61,7 @@ public class ConfirmOrderServiceTest {
         confirmBO.setOrders(confirmOrderBOList);
         try {
             oid = confirmOrderService.submit(confirmBO);
-        } catch (JsonErrException e) {
+        } catch (Main4Exception e) {
             System.out.println("ConfirmOrderService#submit异常");
             System.out.println(e.getMessage());
             e.printStackTrace();
