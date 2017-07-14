@@ -103,7 +103,10 @@ public class CartAction {
         return JSONObject.fromObject(rsp);
     }
 
-
+    /**
+     * 确认订单信息
+     * @param childOrderIds 子单列表
+     */
     @RequestMapping("submitOrders")
     @ResponseBody
     public JSONObject submitOrders(String childOrderIds, HttpSession session) throws JsonErrException {
