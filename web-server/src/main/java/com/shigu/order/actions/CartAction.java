@@ -115,6 +115,6 @@ public class CartAction {
                 cids,
                 ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId()
         );
-        JsonResponseUtil.success().element("code", code);
+        return JsonResponseUtil.success().element("code", code);
     }
 }
