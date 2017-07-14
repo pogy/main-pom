@@ -1,10 +1,10 @@
 package com.shigu.order.actions;
 
 import com.alibaba.fastjson.JSON;
-import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.CartVO;
@@ -13,7 +13,6 @@ import com.shigu.main4.order.vo.ServiceVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.exceptions.OrderException;
-import com.shigu.order.services.ConfirmOrderService;
 import com.shigu.order.vo.OrderSubmitVo;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -21,8 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by zhaohongbo on 17/6/23.
@@ -31,8 +32,6 @@ import java.util.List;
 @RequestMapping
 public class ConfirmOrderAction {
 
-    @Autowired
-    ConfirmOrderService confirmOrderService;
     @Autowired
     ItemOrderService itemOrderService;
     @Autowired
@@ -61,7 +60,7 @@ public class ConfirmOrderAction {
         if (sessionUser != null) {
             userId = sessionUser.getUserId();
         }
-        if (orderSubmitVo.getUserId() !=  userId) {
+        if (!Objects.equals(orderSubmitVo.getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
 

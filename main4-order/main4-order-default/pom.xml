@@ -49,6 +49,11 @@
             <version>${main4-dao.version}</version>
         </dependency>
         <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-common</artifactId>
+            <version>${main4-common.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <scope>test</scope>

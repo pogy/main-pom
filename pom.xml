@@ -48,6 +48,8 @@
         <main4-store-inmarket.version>${project.version}</main4-store-inmarket.version>
         <main4-item-default.version>${project.version}</main4-item-default.version>
         <main4-item-update.version>${project.version}</main4-item-update.version>
+        <main4-order-default-version>${project.version}</main4-order-default-version>
+        <main4-order-api-version>${project.version}</main4-order-api-version>
         <main4-monitor-default.version>${project.version}</main4-monitor-default.version>
 
         <spring.version>4.3.9.RELEASE</spring.version>

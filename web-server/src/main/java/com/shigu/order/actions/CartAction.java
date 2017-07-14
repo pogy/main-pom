@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +42,7 @@ public class CartAction {
      * @param cid
      * @return
      */
-    @RequestMapping("/order/removeChildOrder.json")
+    @RequestMapping("removeChildOrder")
     @ResponseBody
     public JSONObject removeChildOrder(Long cid) {
         ResponseBase rsp = new ResponseBase();
@@ -58,12 +57,12 @@ public class CartAction {
      * @param cids
      * @return
      */
-    @RequestMapping("/order/removeChildOrders.json")
+    @RequestMapping("removeChildOrders")
     @ResponseBody
-    public JSONObject removeChildOrders(String cids) throws JsonErrException {
+    public JSONObject removeChildOrders(List<Long> cids) throws JsonErrException {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
-        cartService.removeAllOrders(parseIds(cids));
+        cartService.removeAllOrders(cids);
         return JSONObject.fromObject(rsp);
     }
 
@@ -75,7 +74,7 @@ public class CartAction {
      * @param size
      * @return
      */
-    @RequestMapping("/order/editChildOrderSKu.json")
+    @RequestMapping("editChildOrderSKu")
     @ResponseBody
     public JSONObject editChildOrderSKu(Long cid, String color, String size) {
         ResponseBase rsp = new ResponseBase();
@@ -92,22 +91,4 @@ public class CartAction {
         cartService.modCartOrderNum(cid, num);
         return JSONObject.fromObject(rsp);
     }
-    /**
-     * ID串转货
-     * @param ids
-     * @return
-     * @throws JsonErrException
-     */
-    private List<Long> parseIds(String ids) throws JsonErrException {
-        if(ids==null){
-            throw new JsonErrException("ids参数异常");
-        }
-        List<Long> idslist=new ArrayList<>();
-        String[] idsarr=ids.split(",");
-        for(String id:idsarr){
-            idslist.add(Long.valueOf(id));
-        }
-        return idslist;
-    }
-
 }
