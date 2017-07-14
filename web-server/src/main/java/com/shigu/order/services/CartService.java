@@ -66,8 +66,8 @@ public class CartService {
         vo.setGoodsCount(itemCart.productNumbers());
 
         Map<Long, List<CartVO>> groupByShop = BeanMapper.groupBy(itemCart.listProduct(), "shopId", Long.class);
+        vo.setOrders(new ArrayList<CartOrderVO>(groupByShop.size()));
         if (!groupByShop.isEmpty()) {
-            vo.setOrders(new ArrayList<CartOrderVO>(groupByShop.size()));
 
             ShiguShopExample shiguShopExample = new ShiguShopExample();
             shiguShopExample.createCriteria().andShopIdIn(new ArrayList<>(groupByShop.keySet()));
@@ -78,13 +78,15 @@ public class CartService {
                 CartOrderVO orderVO = new CartOrderVO();
                 vo.getOrders().add(orderVO);
 
-                ShiguShop shiguShop = shopMap.get(entry.getKey());
                 orderVO.setId(entry.getKey());
-                orderVO.setImQq(shiguShop.getImQq());
-                orderVO.setImWw(shiguShop.getImAliww());
-                orderVO.setWebSite(shiguShop.getWebSite());
-                orderVO.setStoreNum(shiguShop.getShopNum());
-                orderVO.setMarketName(shiguShop.getParentMarketName());
+                ShiguShop shiguShop = shopMap.get(entry.getKey());
+                if (shiguShop != null) {
+                    orderVO.setImQq(shiguShop.getImQq());
+                    orderVO.setImWw(shiguShop.getImAliww());
+                    orderVO.setWebSite(shiguShop.getWebSite());
+                    orderVO.setStoreNum(shiguShop.getShopNum());
+                    orderVO.setMarketName(shiguShop.getParentMarketName());
+                }
                 List<CartVO> productVOS = entry.getValue();
                 orderVO.setChildOrders(new ArrayList<CartChildOrderVO>(productVOS.size()));
                 for (CartVO productVO : productVOS) {
@@ -198,10 +200,10 @@ public class CartService {
      * @param color 颜色
      * @param size  尺码
      */
-    public void editChildOrderSKu(Long cid, String color, String size) {
+    public void editChildOrderSKu(Long cid, String color, String size) throws JsonErrException {
         ItemCart cart = itemCartMapper.selectByPrimaryKey(cid);
         if (cart==null){
-            return;
+            throw new JsonErrException("商品不存在");
         }
         ItemProductSku itemProductSku=new ItemProductSku();
         itemProductSku.setPid(cart.getPid());

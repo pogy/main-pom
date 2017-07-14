@@ -1,10 +1,10 @@
 package com.shigu.order.actions;
 
 import com.alibaba.fastjson.JSON;
-import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.CartVO;
@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -32,11 +33,13 @@ import java.util.List;
 public class ConfirmOrderAction {
 
     @Autowired
-    ConfirmOrderService confirmOrderService;
-    @Autowired
     ItemOrderService itemOrderService;
+
     @Autowired
     OrderConstantService orderConstantService;
+
+    @Autowired
+    ConfirmOrderService confirmOrderService;
 
     @Autowired
     RedisIO redisIO;
@@ -45,8 +48,17 @@ public class ConfirmOrderAction {
      * 订单确认提交
      * @param bo
      */
+    @RequestMapping("/order/confirmOrders")
+    public String confirmOrders(ConfirmBO bo) throws JsonErrException {
+        ResponseBase rsp = new ResponseBase();
+        rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
+        Long oid = confirmOrderService.submit(bo);
+        String payUrl = "/order/payMode.htm?oid="+oid;
+        return "redirect:" + payUrl;
+    }
+
     @RequestMapping("/order/confirmOrder")
-    public String confirmOrders(ConfirmBO bo, HttpServletRequest request, Model model) throws JsonErrException, OrderException {
+    public String confirmOrder(ConfirmBO bo, HttpServletRequest request, Model model) throws OrderException {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
 
@@ -83,10 +95,5 @@ public class ConfirmOrderAction {
         model.addAttribute("webSite", "hz");//站点
 
         return "trade/confirmOrder";
-        ////////////////////////////////////////////////////////
-//        Long oid = confirmOrderService.submit(bo);
-//        String payUrl = "/order/payMode.htm?oid="+oid;
-//
-//        return "redirect:" + payUrl;
     }
 }

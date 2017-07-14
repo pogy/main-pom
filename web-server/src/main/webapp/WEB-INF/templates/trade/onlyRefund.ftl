@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>收银台 - 四季星座网</title>
+    <title>退款 - 四季星座网</title>
 
     
     
@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/paySuccess.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/onlyRefund.css" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/paySuccess.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/onlyRefund.js"></script>
 </head>
 <body>
 
@@ -162,62 +162,51 @@ var webSite = '${webSite!}';
 
 
 
-<div class="header layout">
-    <div class="logoLeft fl">
-        <a href="http://www.571xz.com">
-            <img src="http://style.571xz.com/v2/xz/css/img/mtLogo.png" width="168" height="30" />
+<div class="headerOrange">
+    <div class="layout">
+        <a href="http://www.571xz.com" class="fl">
+            <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width="168" height="28" />
         </a>
-        <em class="yahei">收银台</em>
+        <ul class="fl fs16 yahei">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">账号管理</a></li>
+        </ul>
     </div>
-    <div class="statusRight fr">
-        <div class="stTitle clearfix">
-            <ul>
-                
-                <li class="pr cgState">
-                    <h5>1、确认商品</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>2、提交订单</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>3、选择支付方式</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>4、支付成功</h5>
-                    <span class="pa"></span>
-                </li>
-                
-            </ul>
-        </div>
-        <div class="subScript"></div>
+</div>
+
+
+
+<div class="minHeight">
+<div class="currentPage layout">
+    <label class="fc9">当前位置：</label>
+    <a href="#" target="_blank">首页</a> &gt;
+    <a href="#" target="_blank">我的星座网</a> &gt;
+    <a href="#" target="_blank">我的订单</a> &gt;
+    <span class="fcF40">退款申请</span>
+</div> 
+
+<div class="returnBox layout">
+    <div class="returnLeft fl">
+        <#if onlyRefundStateNum == 0>
+        <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${orderChildId!}">
+    
+    <label class="fl fc6">退款商品：</label>
+    
+    <img src="${orderChildImgSrc!}" >
+    <div class="goodsInfo fl">
+        <p class="arail fs14 fc3">${orderChildCode!}</p>
+        <p class="fc9"><span>颜色：${orderChildColor!}</span><span>尺码：${orderChildSize!}</span></p>
     </div>
 </div>
 
 
 
 
+        <div class="refundApply refundBox">
+    <div class="refundAmount"><label>退款金额：</label><span class="yahei fcF40">&yen;<em class="fs18">${refundAmount!}</em></span></div>
+    
 
-
-<div class="minHeight">
-<div class="paySucBg">
-    <div class="paySuccess layout">
-    <div class="successTip fwb yahei">订单支付成功，我们尽快为您处理！</div>
-    <ul class="orderInfo fc3">
-        <li>订单编号：<span class="arail fs14">${orderId!}</span></li>
-        <li>支付方式：${payType!}</li>
-        <li>支付总金额：<span class="arail fs14">${amountPay!}</span> 元</li>
-    </ul>
-    <p class="gotoTip yahei fs14"><span class="fcF40 fwb time"><em>3</em>s</span><span class="fc6">后自动跳转到我的订单页面！</span></p>
-    <div class="gotoBox">
-        
-
-<#assign text>{"href":"orderDetail.htm?orderId=${orderId!}"}</#assign>
+<#assign text>{}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 
@@ -229,9 +218,9 @@ var webSite = '${webSite!}';
 
 
     class="fmButton
-         fmButton-sm
-         fmButton-lighter-b
-        "
+         fmButton-lg
+         fmButton-orange
+         yahei applyBtn"
     
         jbtn="click"
     
@@ -242,15 +231,13 @@ var webSite = '${webSite!}';
         </#if>
     
     
-        
-        <#if $it.id??>
-            id=""
-        </#if>
+    
+        id="refundApplyBtn"
     
 >
 
     
-        查看订单
+        提交申请
     
 
 
@@ -267,16 +254,158 @@ var webSite = '${webSite!}';
 
 </#list>
 
-        <a href="http://www.571xz.com/">返回首页</a>
-    </div>
+</div>
+
+
+
+<script>
+var orderId = '${orderId!}';
+var orderChildId = '${orderChildId!}';
+</script>
+
+<!---->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <#elseif onlyRefundStateNum == 1>
+        <div class="reWaitFeedback refundBox">
+    
+    <h4 class="fwb yahei fc3">退款申请已提交，请等待处理！</h4>
+    
     
 </div>
 
 
-
-
-
+        <div class="reApplyRecord">
+    <label class="fl tar">申请记录：</label>
+    <div class="recordList fl">
+        
+        <#list applylist as record>
+        <div class="recordItem clearfix">
+            <img class="fl" src="${record.userHeadimg!}">
+            <div class="applyRecord fl">
+                <h4>
+                <#if record.userType == 1>
+                    ${record.userNickname!}
+                <#elseif record.userType == 0>
+                    平台客服
+                </#if>
+                </h4>
+                <p>
+                <#if record.userType == 1>
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                <#elseif record.userType == 0>
+                ${record.recordContent!}
+                </#if>
+                </p>
+            </div>
+            <p class="applyTime yahei fs14">${record.recordTime!}</p>
+        </div>
+        </#list>
+        
+    </div>
 </div>
+
+
+
+
+        <#elseif onlyRefundStateNum == 2>
+        <div class="reRefundSuccess refundBox fc6">
+    <h4 class="yahei fc3 fwb">退款成功！</h4>
+    <p>退款总金额：<span class="fcF40 yahei fs14">&yen;<em class="fwb">${refundAmount!}</em></span></p>
+    <p>退款去向：${refundGoto!}<span class="refundSucTime">退款成功时间：<em class="yahei fs14">${refundSuccessTime!}</em></span></p>
+</div>
+
+
+
+
+        <div class="reApplyRecord">
+    <label class="fl tar">申请记录：</label>
+    <div class="recordList fl">
+        
+        <#list applylist as record>
+        <div class="recordItem clearfix">
+            <img class="fl" src="${record.userHeadimg!}">
+            <div class="applyRecord fl">
+                <h4>
+                <#if record.userType == 1>
+                    ${record.userNickname!}
+                <#elseif record.userType == 0>
+                    平台客服
+                </#if>
+                </h4>
+                <p>
+                <#if record.userType == 1>
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                <#elseif record.userType == 0>
+                ${record.recordContent!}
+                </#if>
+                </p>
+            </div>
+            <p class="applyTime yahei fs14">${record.recordTime!}</p>
+        </div>
+        </#list>
+        
+    </div>
+</div>
+
+
+
+
+        </#if>
+    </div>
+    <div class="returnRight fr">
+        <div class="reOderInfo">
+    <ul>
+        <li><label>订单编号：</label><span class="yahei fs14 fcBlue">${orderId!}</span></li>
+        <li><label>成交时间：</label><span class="yahei fs14">${orderDealTime!}</span></li>
+        <li><label>商品价格：</label><span class="yahei fs14">&yen;<em class="fwb">${orderGoodsPrice!}</em></span></li>
+        <li><label>快递费：</label><span class="yahei fs14">&yen;<em class="fwb">${orderExpressPrice!}</em></span></li>
+        <li><label>服务费：</label><span class="yahei fs14">&yen;<em class="fwb">${orderServicePrice!}</em></span></li>
+        <li><label>订单总额：</label><span class="yahei fs14">&yen;<em class="fwb">${orderTotalPrice!}</em></span></li>
+    </ul>
+</div>
+
+
+
+        <#if refundId??>
+<div class="reRefundInfo">
+    <ul>
+        <li><label>退款编号：</label><span class="yahei fs14 fcBlue">${refundId!}</span></li>
+        <li><label>退款总额：</label><span class="yahei fs14">&yen;<em class="fwb">${refundAmount!}</em></span></li>
+        <li>
+            <label>订单状态：</label>
+            <#if orderState == 0>等待付款
+            <#elseif orderState == 1>等待配货
+            <#elseif orderState == 2>配货中
+            <#elseif orderState == 3>交易完成
+            <#elseif orderState == 4>交易取消
+            </#if>
+        </li>
+    </ul>
+</div>
+</#if>
+
+
+
+    </div>
+</div>
+
+
 
 
 

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>收银台 - 四季星座网</title>
+    <title></title>
 
     
     
@@ -16,24 +16,21 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/paySuccess.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/orderStatus.css" rel="stylesheet">
     
 
     
+
+
 
     
 
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/paySuccess.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/orderStatus.js"></script>
 </head>
 <body>
-
-
-<#assign text>{"isFxs":true}</#assign>
-<#assign moduledata0=text?eval />
-<#list [moduledata0] as $it>
 <div class="topbar">
     <div class="layout">
         <div class="fl">
@@ -50,7 +47,8 @@
                     <a href="${main_host!}" class="fcF40">四季星座网首页</a>
                 </li>
                 
-                <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
+                
+                <#if !session_user_redis__ ||  !session_user_redis__.logshop > 
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
@@ -84,7 +82,7 @@
                 </li>
                 </#if>
                 
-                <#if !session_user_redis__ || $it.isGys?? || session_user_redis__.logshop?? > 
+                <#if !session_user_redis__ || session_user_redis__.logshop?? > 
                 <li>
                     <div class="cnBox pr">
                         <a class="cgcom pr" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
@@ -147,8 +145,6 @@
 
 
 
-</#list>
-
 
 <script>
 var webSite = '${webSite!}';
@@ -162,125 +158,26 @@ var webSite = '${webSite!}';
 
 
 
-<div class="header layout">
-    <div class="logoLeft fl">
-        <a href="http://www.571xz.com">
-            <img src="http://style.571xz.com/v2/xz/css/img/mtLogo.png" width="168" height="30" />
+
+
+
+<div class="headerOrange">
+    <div class="layout">
+        <a href="http://www.571xz.com" class="fl">
+            <img src="http://style.571xz.com/v2/order/css/img/whiteLogo.png" width="168" height="28" />
         </a>
-        <em class="yahei">收银台</em>
-    </div>
-    <div class="statusRight fr">
-        <div class="stTitle clearfix">
-            <ul>
-                
-                <li class="pr cgState">
-                    <h5>1、确认商品</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>2、提交订单</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>3、选择支付方式</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>4、支付成功</h5>
-                    <span class="pa"></span>
-                </li>
-                
-            </ul>
-        </div>
-        <div class="subScript"></div>
+        <ul class="fl fs16 yahei">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">账号管理</a></li>
+        </ul>
     </div>
 </div>
 
 
 
 
-
-
-<div class="minHeight">
-<div class="paySucBg">
-    <div class="paySuccess layout">
-    <div class="successTip fwb yahei">订单支付成功，我们尽快为您处理！</div>
-    <ul class="orderInfo fc3">
-        <li>订单编号：<span class="arail fs14">${orderId!}</span></li>
-        <li>支付方式：${payType!}</li>
-        <li>支付总金额：<span class="arail fs14">${amountPay!}</span> 元</li>
-    </ul>
-    <p class="gotoTip yahei fs14"><span class="fcF40 fwb time"><em>3</em>s</span><span class="fc6">后自动跳转到我的订单页面！</span></p>
-    <div class="gotoBox">
-        
-
-<#assign text>{"href":"orderDetail.htm?orderId=${orderId!}"}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
-
-    <#if $it.href??>
-    <a href="${$it.href!}"
-    <#else>
-    <b 
-    </#if>
-
-
-    class="fmButton
-         fmButton-sm
-         fmButton-lighter-b
-        "
-    
-        jbtn="click"
-    
-    
-        
-        <#if $it.title??>
-            title=""
-        </#if>
-    
-    
-        
-        <#if $it.id??>
-            id=""
-        </#if>
-    
->
-
-    
-        查看订单
-    
-
-
-    <#if $it.href??>
-    </a>
-    <#else>
-    </b>
-    </#if>
-
-
-
-
-
-
-</#list>
-
-        <a href="http://www.571xz.com/">返回首页</a>
-    </div>
-    
-</div>
-
-
-
-
-
-</div>
-
-
-
-
+<div class="currentPage layout">
+    <label class="fc9">当前位置：</label><a href="#">首页</a>&gt;<a href="#">我的星座网</a>&gt;<span class="fcF40">我的订单</span>
 </div>
 
 <div class="footer">
@@ -293,7 +190,6 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -321,9 +217,5 @@ var webSite = '${webSite!}';
     </div>
 </div>
 
-
-
-
-
-
+<!--省略end，让浏览器自动添加-->
 

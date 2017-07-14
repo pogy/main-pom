@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>收银台 - 四季星座网</title>
+    <title>退换货 - 四季星座网</title>
 
     
     
@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/paySuccess.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/returnOrChange.css" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/paySuccess.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/returnOrChange.js"></script>
 </head>
 <body>
 
@@ -162,124 +162,73 @@ var webSite = '${webSite!}';
 
 
 
-<div class="header layout">
-    <div class="logoLeft fl">
-        <a href="http://www.571xz.com">
-            <img src="http://style.571xz.com/v2/xz/css/img/mtLogo.png" width="168" height="30" />
+<div class="headerOrange">
+    <div class="layout">
+        <a href="http://www.571xz.com" class="fl">
+            <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width="168" height="28" />
         </a>
-        <em class="yahei">收银台</em>
-    </div>
-    <div class="statusRight fr">
-        <div class="stTitle clearfix">
-            <ul>
-                
-                <li class="pr cgState">
-                    <h5>1、确认商品</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>2、提交订单</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>3、选择支付方式</h5>
-                    <span class="pa"></span>
-                </li>
-                
-                <li class="pr cgState">
-                    <h5>4、支付成功</h5>
-                    <span class="pa"></span>
-                </li>
-                
-            </ul>
-        </div>
-        <div class="subScript"></div>
+        <ul class="fl fs16 yahei">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">账号管理</a></li>
+        </ul>
     </div>
 </div>
-
-
-
 
 
 
 <div class="minHeight">
-<div class="paySucBg">
-    <div class="paySuccess layout">
-    <div class="successTip fwb yahei">订单支付成功，我们尽快为您处理！</div>
-    <ul class="orderInfo fc3">
-        <li>订单编号：<span class="arail fs14">${orderId!}</span></li>
-        <li>支付方式：${payType!}</li>
-        <li>支付总金额：<span class="arail fs14">${amountPay!}</span> 元</li>
-    </ul>
-    <p class="gotoTip yahei fs14"><span class="fcF40 fwb time"><em>3</em>s</span><span class="fc6">后自动跳转到我的订单页面！</span></p>
-    <div class="gotoBox">
-        
+<div class="currentPage layout">
+    <label class="fc9">当前位置：</label>
+    <a href="#" target="_blank">首页</a> &gt;
+    <a href="#" target="_blank">我的星座网</a> &gt;
+    <a href="#" target="_blank">我的订单</a> &gt;
+    <span class="fcF40">退款申请</span>
+</div> 
 
-<#assign text>{"href":"orderDetail.htm?orderId=${orderId!}"}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
-
-    <#if $it.href??>
-    <a href="${$it.href!}"
-    <#else>
-    <b 
-    </#if>
-
-
-    class="fmButton
-         fmButton-sm
-         fmButton-lighter-b
-        "
+<div class="returnBox layout">
+    <div class="returnLeft fl">
+        <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${orderChildId!}">
     
-        jbtn="click"
+    <label class="fl fc6">退货商品：</label>
     
-    
-        
-        <#if $it.title??>
-            title=""
-        </#if>
-    
-    
-        
-        <#if $it.id??>
-            id=""
-        </#if>
-    
->
-
-    
-        查看订单
-    
-
-
-    <#if $it.href??>
-    </a>
-    <#else>
-    </b>
-    </#if>
-
-
-
-
-
-
-</#list>
-
-        <a href="http://www.571xz.com/">返回首页</a>
+    <img src="${orderChildImgSrc!}" >
+    <div class="goodsInfo fl">
+        <p class="arail fs14 fc3">${orderChildCode!}</p>
+        <p class="fc9"><span>颜色：${orderChildColor!}</span><span>尺码：${orderChildSize!}</span></p>
     </div>
-    
 </div>
 
 
 
 
+        <div class="chooseReturnType">
+    <a href="refund.htm">
+        <h3 class="yahei fs18 fc3">我要退货退款</h3>
+        <p class="fc9">已收到商品，需要退货已收到的商品</p>
+    </a>
+    <a href="exchange.htm" class="exchange">
+        <h3 class="yahei fs18 fc3">我要换货</h3>
+        <p class="fc9">已收到商品，尺码/颜色/质量存在问题，需要换货</p>
+    </a>
+</div>
 
+    </div>
+    <div class="returnRight fr">
+        <div class="reOderInfo">
+    <ul>
+        <li><label>订单编号：</label><span class="yahei fs14 fcBlue">${orderId!}</span></li>
+        <li><label>成交时间：</label><span class="yahei fs14">${orderDealTime!}</span></li>
+        <li><label>商品价格：</label><span class="yahei fs14">&yen;<em class="fwb">${orderGoodsPrice!}</em></span></li>
+        <li><label>快递费：</label><span class="yahei fs14">&yen;<em class="fwb">${orderExpressPrice!}</em></span></li>
+        <li><label>服务费：</label><span class="yahei fs14">&yen;<em class="fwb">${orderServicePrice!}</em></span></li>
+        <li><label>订单总额：</label><span class="yahei fs14">&yen;<em class="fwb">${orderTotalPrice!}</em></span></li>
+    </ul>
 </div>
 
 
 
+    </div>
+</div>
 
 </div>
 
