@@ -1,8 +1,9 @@
 package com.shigu.order.services;
 
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.bo.PackageBO;
@@ -22,7 +23,6 @@ import com.shigu.order.vo.OrderSubmitVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.shigu.main4.common.util.BeanMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +46,14 @@ public class ConfirmOrderService {
      * @param bo
      */
     @Transactional(rollbackFor = Exception.class)
-    public Long submit(ConfirmBO bo) throws JsonErrException {
-        if (bo == null || bo.getOrders().size() == 0 || bo.getCode() == null || bo.getSenderId() == null || bo.getAddressId() == null || bo.getCourierId() == null) {
-            throw new JsonErrException("传入信息不完整");
+    public Long submit(ConfirmBO bo) throws Main4Exception {
+        if (bo == null || bo.getOrders() == null || bo.getOrders().size() == 0 || bo.getCode() == null || bo.getSenderId() == null || bo.getAddressId() == null || bo.getCourierId() == null) {
+            throw new Main4Exception("传入信息不完整");
         }
         String code = bo.getCode();
         OrderSubmitVo orderSubmitVo = redisIO.get(code,OrderSubmitVo.class);
         if (orderSubmitVo == null || orderSubmitVo.getProducts().size() == 0) {
-            throw new JsonErrException("没有找到产品信息");
+            throw new Main4Exception("没有找到产品信息");
         }
         ItemOrderBO itemOrderBO = generateItemOrderBO(bo, orderSubmitVo);
         Long oid = itemOrderService.createOrder(itemOrderBO);

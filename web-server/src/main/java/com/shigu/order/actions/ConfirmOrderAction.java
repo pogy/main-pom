@@ -3,7 +3,7 @@ package com.shigu.order.actions;
 import com.alibaba.fastjson.JSON;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
-import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.BuyerAddressVO;
@@ -13,6 +13,7 @@ import com.shigu.main4.order.vo.ServiceVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.exceptions.OrderException;
+import com.shigu.order.services.ConfirmOrderService;
 import com.shigu.order.vo.OrderSubmitVo;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by zhaohongbo on 17/6/23.
@@ -34,8 +34,12 @@ public class ConfirmOrderAction {
 
     @Autowired
     ItemOrderService itemOrderService;
+
     @Autowired
     OrderConstantService orderConstantService;
+
+    @Autowired
+    ConfirmOrderService confirmOrderService;
 
     @Autowired
     RedisIO redisIO;
@@ -44,8 +48,17 @@ public class ConfirmOrderAction {
      * 订单确认提交
      * @param bo
      */
+    @RequestMapping("/order/confirmOrders")
+    public String confirmOrders(ConfirmBO bo) throws Main4Exception {
+        ResponseBase rsp = new ResponseBase();
+        rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
+        Long oid = confirmOrderService.submit(bo);
+        String payUrl = "/order/payMode.htm?oid="+oid;
+        return "redirect:" + payUrl;
+    }
+
     @RequestMapping("/order/confirmOrder")
-    public String confirmOrders(ConfirmBO bo, HttpServletRequest request, Model model) throws JsonErrException, OrderException {
+    public String confirmOrder(ConfirmBO bo, HttpServletRequest request, Model model) throws OrderException {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
 
@@ -60,7 +73,7 @@ public class ConfirmOrderAction {
         if (sessionUser != null) {
             userId = sessionUser.getUserId();
         }
-        if (!Objects.equals(orderSubmitVo.getUserId(), userId)) {
+        if (orderSubmitVo.getUserId() !=  userId) {
             throw new OrderException("订单信息错误");
         }
 
@@ -82,10 +95,5 @@ public class ConfirmOrderAction {
         model.addAttribute("webSite", "hz");//站点
 
         return "trade/confirmOrder";
-        ////////////////////////////////////////////////////////
-//        Long oid = confirmOrderService.submit(bo);
-//        String payUrl = "/order/payMode.htm?oid="+oid;
-//
-//        return "redirect:" + payUrl;
     }
 }
