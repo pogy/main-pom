@@ -3,7 +3,7 @@ package com.shigu.order.actions;
 import com.alibaba.fastjson.JSON;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
-import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.BuyerAddressVO;
@@ -49,7 +49,7 @@ public class ConfirmOrderAction {
      * @param bo
      */
     @RequestMapping("/order/confirmOrders")
-    public String confirmOrders(ConfirmBO bo) throws JsonErrException {
+    public String confirmOrders(ConfirmBO bo) throws Main4Exception {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
         Long oid = confirmOrderService.submit(bo);
