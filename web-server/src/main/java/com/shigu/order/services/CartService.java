@@ -200,10 +200,10 @@ public class CartService {
      * @param color 颜色
      * @param size  尺码
      */
-    public void editChildOrderSKu(Long cid, String color, String size) {
+    public void editChildOrderSKu(Long cid, String color, String size) throws JsonErrException {
         ItemCart cart = itemCartMapper.selectByPrimaryKey(cid);
         if (cart==null){
-            return;
+            throw new JsonErrException("商品不存在");
         }
         ItemProductSku itemProductSku=new ItemProductSku();
         itemProductSku.setPid(cart.getPid());
