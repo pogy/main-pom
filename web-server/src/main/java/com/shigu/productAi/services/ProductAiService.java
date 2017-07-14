@@ -1,31 +1,25 @@
 package com.shigu.productAi.services;
 
 import cn.productai.api.core.IWebClient;
-import cn.productai.api.core.base.BaseRequest;
 import cn.productai.api.core.enums.LanguageType;
 import cn.productai.api.core.exceptions.ClientException;
-import cn.productai.api.pai.entity.dataset.DataSetBatchAddRequest;
-import cn.productai.api.pai.entity.dataset.DataSetBatchDeleteRequest;
+import cn.productai.api.pai.entity.dataset.DataSetBatchXzAddRequest;
+import cn.productai.api.pai.entity.dataset.DataSetBatchXzDeleteRequest;
 import cn.productai.api.pai.entity.dataset.DataSetModifyResponse;
-import cn.productai.api.pai.entity.dataset.DataSetSingleAddByImageUrlRequest;
 import cn.productai.api.pai.entity.search.ImageSearchByImageUrlRequest;
 import cn.productai.api.pai.entity.search.ImageSearchResponse;
 import cn.productai.api.pai.response.SearchResult;
 import com.shigu.productAi.beans.*;
 import com.shigu.productAi.configs.ProductAiConfig;
-import com.shigu.productAi.utils.DataToCsvUtil;
+import com.shigu.productAi.utils.DataConvertUtil;
 import com.shigu.productAi.utils.ProductAiClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by pc on 2017-07-12.
@@ -48,38 +42,20 @@ public class ProductAiService implements ProductAiInterface{
         IWebClient client = aiClient.getClient();
         List<AiImageInfo> images = bo.getImages();
         //调用添加单个接口
-        DataToCsvUtil csvUtil = null;
-        BaseRequest<DataSetModifyResponse> request=null;
-        if (images.size() == 1) {
-            ArrayList<String> taglist = new ArrayList<>();
-            AiImageInfo imageInfo = images.get(0);
-            if(imageInfo.getTags()!=null) {
-                String[] tags = imageInfo.getTags().split("|");
-                taglist.addAll(Arrays.asList(tags));
-            }
-             request = new DataSetSingleAddByImageUrlRequest(aiConfig.imageSetId
-                    , imageInfo.getImageUrl(), taglist, imageInfo.getMeta());
-        }else  if(images.size()>1){
-            File convert;
 
-            synchronized(DataToCsvUtil.class+DataToCsvUtil.ADD) {
-                csvUtil = new DataToCsvUtil(DataToCsvUtil.ADD);
-                convert = csvUtil.convert(images);
 
-            }
-             request = new DataSetBatchAddRequest(aiConfig.imageSetId);
-            ((DataSetBatchAddRequest) request).setCsvFile(convert);
+        byte[] bytes = DataConvertUtil.dataToMLBytes(images);
+
+        DataSetBatchXzAddRequest request = new DataSetBatchXzAddRequest(aiConfig.imageSetId);
+        request.setBytes(bytes);
             request.setLanguage(LanguageType.Chinese);
 
-        }
             try {
                 DataSetModifyResponse response = client.getResponse(request);
 
                 vo.setImageSetId(response.getDataSetId());
                 vo.setImageSetName(response.getDataSetName());
                 vo.setRequestId(response.getRequestId());
-                assert csvUtil != null;
-                csvUtil.destroyCsv();//销毁csv文件
             } catch (cn.productai.api.core.exceptions.ServerException e) {
 
                 log.error("码隆搜图服务错误，错误码:" + e.getErrorCode() + "\r\n 错误信息: " + e.getErrorMessage()
@@ -157,21 +133,15 @@ public class ProductAiService implements ProductAiInterface{
     @Override
     public ProductAiVo delete(ProductAiDelBo bo) {
         ProductAiVo vo =new ProductAiVo();
-        DataToCsvUtil csvUtil ;
-        File convert;
-        synchronized (DataToCsvUtil.class+DataToCsvUtil.DEL){
-            csvUtil = new DataToCsvUtil(DataToCsvUtil.DEL);
-            convert = csvUtil.convert(bo.getImages());
-        }
-        DataSetBatchDeleteRequest request =new DataSetBatchDeleteRequest(aiConfig.imageSetId);
-        request.setCsvFile(convert);
+        byte[] bytes = DataConvertUtil.dataToMLBytes(bo.getImages());
+        DataSetBatchXzDeleteRequest request =new DataSetBatchXzDeleteRequest(aiConfig.imageSetId);
+        request.setBytes(bytes);
         IWebClient client = aiClient.getClient();
         try {
             DataSetModifyResponse response = client.getResponse(request);
             vo.setImageSetId(response.getDataSetId());
             vo.setImageSetName(response.getDataSetName());
             vo.setRequestId(response.getRequestId());
-            csvUtil.destroyCsv();
         }  catch (cn.productai.api.core.exceptions.ServerException e) {
 
             log.error("码隆搜图服务错误，错误码:" + e.getErrorCode() + "\r\n 错误信息: " + e.getErrorMessage()

@@ -15,31 +15,32 @@ import java.util.List;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class DataToCsvUtil {
+public class DataConvertUtil {
 
     public static String DEL = "del";
-    public  static String ADD = "add";
+    public static String ADD = "add";
     private String type;
     private String path;
 
-    public DataToCsvUtil(String type){
-        this.type =type;
+    public DataConvertUtil(String type) {
+        this.type = type;
     }
-    public  File convert(List<AiImageInfo> list) {
+
+    public File convert(List<AiImageInfo> list) {
         String propath = System.getProperty("user.dir");
         System.out.println(propath);
         Long id = new Date().getTime();
-        path = propath + "/"+type+"AiGoods"+id+".csv";
+        path = propath + "/" + type + "AiGoods" + id + ".csv";
         File file = new File(path);
 
         try {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            OutputStreamWriter writerStream = new OutputStreamWriter(new FileOutputStream(file),"UTF-8");
+            OutputStreamWriter writerStream = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             BufferedWriter writer = new BufferedWriter(writerStream);
             //添加bom头
-            writer.write(new String(new byte[] { (byte) 0xEF, (byte) 0xBB,(byte) 0xBF }));
+            writer.write(new String(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF}));
             for (AiImageInfo info : list) {
                 StringBuilder goodsinfo = new StringBuilder(info.getImageUrl());
                 if (!StringUtils.isEmpty(info.getMeta())) {
@@ -69,6 +70,22 @@ public class DataToCsvUtil {
         }
     }
 
+    public static byte[] dataToMLBytes(List<AiImageInfo> list) {
+        StringBuilder builder = new StringBuilder();
+        for (AiImageInfo info : list) {
+            builder.append(info.getImageUrl());
+            if (!StringUtils.isEmpty(info.getMeta())) {
+                builder.append(",").append(info.getMeta());
+            }
+            if (!StringUtils.isEmpty(info.getTags())) {
+                builder.append(",").append(info.getTags());
+            }
+            builder.append("\r\n");
+
+
+        }
+        return builder.toString().getBytes();
+    }
 
 
 }
