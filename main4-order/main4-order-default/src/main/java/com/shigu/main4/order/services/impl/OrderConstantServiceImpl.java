@@ -164,7 +164,7 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public LogisticsCompanyVO selLogisticsDefault(Long senderId) {
-        return null;
+        return selLogistics(senderId).get(0);
     }
 
     /**
