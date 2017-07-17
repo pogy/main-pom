@@ -13,6 +13,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.order.exceptions.CartException;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
@@ -53,6 +54,12 @@ public class CartService {
 
     @Autowired
     private RedisIO redisIO;
+
+    public ShiguShop selShopById(Long shopId) {
+        ShiguShopExample shiguShopExample = new ShiguShopExample();
+        shiguShopExample.createCriteria().andShopIdEqualTo(shopId);
+        return  (ShiguShop)shiguShopMapper.selectByPrimaryKey(shopId);
+    }
 
     /**
      * 进货车页面
@@ -118,21 +125,22 @@ public class CartService {
     /**
      * 修改进货车内产品数量
      *
+     * @param userId
      * @param cid 进货车产品ID cartId
      * @param num 商品数量
      */
-    public void modCartOrderNum(Long cid, Integer num) throws JsonErrException {
+    public void modCartOrderNum(Long userId, Long cid, Integer num) throws JsonErrException {
         if (num == null || num <= 0) {
             throw new JsonErrException("数量异常");
         }
         if (cid == null) {
             throw new JsonErrException("进货车商品编号缺失");
         }
-        ItemCartExample itemCartExample = new ItemCartExample();
-        itemCartExample.createCriteria().andCartIdEqualTo(cid);
-        ItemCart itemCart = new ItemCart();
-        itemCart.setNum(num);
-        itemCartMapper.updateByExampleSelective(itemCart, itemCartExample);
+        try {
+            getCartByUser(userId).modifyProductNumber(cid, num);
+        } catch (CartException e) {
+            throw new JsonErrException(e.getMessage());
+        }
     }
 
 
@@ -145,7 +153,7 @@ public class CartService {
         if (cids.isEmpty()) {
             throw new JsonErrException("请选择商品");
         }
-        List<CartVO> cartVOS = SpringBeanFactory.getBean(ItemCartImpl.class, userId).listProduct();
+        List<CartVO> cartVOS = getCartByUser(userId).listProduct();
         for (Iterator<CartVO> iterator = cartVOS.iterator(); iterator.hasNext(); ) {
             CartVO cartVO = iterator.next();
             if (!cids.contains(cartVO.getCartId())) {
@@ -166,58 +174,47 @@ public class CartService {
     /**
      * 删除进货车一件产品
      *
+     * @param userId
      * @param cid cartId
      */
-    public void removeChildOrder(Long cid) {
+    public void removeChildOrder(Long userId, Long cid) {
         if (null == cid) {
             return;
         }
-        ItemCartExample itemCartExample = new ItemCartExample();
-        ItemCartExample.Criteria criteria = itemCartExample.createCriteria();
-        criteria.andCartIdEqualTo(cid);
-        itemCartMapper.deleteByExample(itemCartExample);
+        getCartByUser(userId).rmProduct(cid);
+    }
+
+    private ItemCartImpl getCartByUser(Long userId) {
+        return SpringBeanFactory.getBean(ItemCartImpl.class, userId);
     }
 
     /**
      * 批量删除购物车产品
      *
+     * @param userId
      * @param cids 产品ID列表
      */
-    public void removeAllOrders(List<Long> cids) {
-        ItemCartExample itemCartExample = new ItemCartExample();
-        ItemCartExample.Criteria criteria = itemCartExample.createCriteria();
-        criteria.andCartIdIn(cids);
-        itemCartMapper.deleteByExample(itemCartExample);
+    public void removeAllOrders(Long userId, List<Long> cids) {
+        if (cids != null) {
+            for (Long cid : cids) {
+                getCartByUser(userId).rmProduct(cid);
+            }
+        }
     }
-
-    @Autowired
-    private ItemProductSkuMapper itemProductSkuMapper;
 
     /**
      * 修改进货车产品sku
      *
+     * @param userId
      * @param cid   产品ID cartId
      * @param color 颜色
      * @param size  尺码
      */
-    public void editChildOrderSKu(Long cid, String color, String size) throws JsonErrException {
-        ItemCart cart = itemCartMapper.selectByPrimaryKey(cid);
-        if (cart==null){
-            throw new JsonErrException("商品不存在");
+    public void editChildOrderSKu(Long userId, Long cid, String color, String size) throws JsonErrException {
+        try {
+            getCartByUser(userId).modifyProductSku(cid, color, size);
+        } catch (CartException e) {
+            throw new JsonErrException(e.getMessage());
         }
-        ItemProductSku itemProductSku=new ItemProductSku();
-        itemProductSku.setPid(cart.getPid());
-        itemProductSku.setColor(color);
-        itemProductSku.setSize(size);
-        ItemProductSku sku = itemProductSkuMapper.selectOne(itemProductSku);
-        if (sku == null) {
-            sku = new ItemProductSku();
-            sku.setPid(cart.getPid());
-            sku.setColor(color);
-            sku.setSize(size);
-            itemProductSkuMapper.insertSelective(sku);
-        }
-        cart.setSkuId(sku.getSkuId());
-        itemCartMapper.updateByPrimaryKeySelective(cart);
     }
 }

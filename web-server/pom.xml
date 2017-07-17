@@ -443,6 +443,11 @@
             <artifactId>alipay-sdk-java</artifactId>
             <version>20170615110434</version>
         </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-order-default</artifactId>
+            <version>4.1.8-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <repositories>

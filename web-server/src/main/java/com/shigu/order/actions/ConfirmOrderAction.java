@@ -1,6 +1,7 @@
 package com.shigu.order.actions;
 
 import com.alibaba.fastjson.JSON;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -13,7 +14,10 @@ import com.shigu.main4.order.vo.ServiceVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.exceptions.OrderException;
+import com.shigu.order.services.CartService;
 import com.shigu.order.services.ConfirmOrderService;
+import com.shigu.order.vo.ChildGoodsOrder;
+import com.shigu.order.vo.GoodsOrderVO;
 import com.shigu.order.vo.OrderSubmitVo;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -23,7 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by zhaohongbo on 17/6/23.
@@ -44,11 +48,14 @@ public class ConfirmOrderAction {
     @Autowired
     RedisIO redisIO;
 
+    @Autowired
+    CartService cartService;
+
     /**
      * 订单确认提交
      * @param bo
      */
-    @RequestMapping("/order/confirmOrder")
+    @RequestMapping("/order/confirmOrders")
     public String confirmOrders(ConfirmBO bo) throws Main4Exception {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
@@ -73,7 +80,7 @@ public class ConfirmOrderAction {
         if (sessionUser != null) {
             userId = sessionUser.getUserId();
         }
-        if (orderSubmitVo.getUserId() !=  userId) {
+        if (!Objects.equals(orderSubmitVo.getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
 
@@ -86,11 +93,37 @@ public class ConfirmOrderAction {
         List<ServiceVO> serviceRulers = orderConstantService.selServices(bo.getSenderId());//服务费规则
         model.addAttribute("serviceRulers", JSON.toJSONString(serviceRulers));
 
-        LogisticsCompanyVO postInfo = orderConstantService.selLogisticsDefault(bo.getSenderId());//快递公司数据
-        model.addAttribute("postInfo", JSON.toJSONString(postInfo));
+
+
 
         List<CartVO> cartVOList =  orderSubmitVo.getProducts();// 清单数据
-        model.addAttribute("list", cartVOList);
+        Map<Long, GoodsOrderVO> goodsOrdersMap = new HashMap<Long, GoodsOrderVO>();
+        for (CartVO item : cartVOList) {
+            GoodsOrderVO goodsOrderVO = goodsOrdersMap.get(item.getShopId());
+            if (goodsOrderVO == null) {
+                goodsOrderVO = new GoodsOrderVO();
+                goodsOrderVO.setShopId(item.getShopId());
+                goodsOrderVO.setMarketName(item.getMarketName());
+                goodsOrderVO.setStoreNum(item.getShopNum());
+                ShiguShop shop = cartService.selShopById(item.getShopId());
+                goodsOrderVO.setImWw(shop.getImAliww());
+                goodsOrderVO.setImQq(shop.getImQq());
+                goodsOrdersMap.put(item.getShopId(), goodsOrderVO);
+            }
+            ChildGoodsOrder childGoodsOrder = new ChildGoodsOrder();
+            childGoodsOrder.setId(item.getPid());
+            childGoodsOrder.setImgsrc(item.getPicUrl());
+            childGoodsOrder.setColor(item.getSelectiveSku().getColor());
+            childGoodsOrder.setImgsrc(item.getPicUrl());
+            childGoodsOrder.setColor(item.getSelectiveSku().getColor());
+            childGoodsOrder.setGoodsCode(String.valueOf(item.getGoodsId()));
+            childGoodsOrder.setTitle(item.getTitle());
+            childGoodsOrder.setWeight(String.valueOf(item.getWeight()));
+            childGoodsOrder.setNum(String.valueOf(item.getNum()));
+            goodsOrderVO.getChildOrders().add(childGoodsOrder);
+
+        }
+        model.addAttribute("goodsOrders", goodsOrdersMap.values());
 
         model.addAttribute("webSite", "hz");//站点
 

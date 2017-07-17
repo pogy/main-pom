@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.exceptions.CartException;
 import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.vo.ProductVO;
 
@@ -37,15 +38,14 @@ public interface Cart{
      * @param number
      * @return
      */
-    Long modifyProductNumber(Long cartId,Integer number);
+    Long modifyProductNumber(Long cartId,Integer number) throws CartException;
 
+    ItemProduct getProduct(Long cartId) throws CartException;
     /**
      * 修改购物车中产品的sku
      * @param cartId
-     * @param skuId
-     * @return
      */
-    Long modifyProductSku(Long cartId,Long skuId);
+    Long modifyProductSku(Long cartId, String color, String size) throws CartException;
 
     /**
      * 某用户购物车商品数量

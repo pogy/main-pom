@@ -33,6 +33,13 @@ public interface ItemProduct extends Product{
     void modifyPrice(Long price);
 
     /**
+     * 修改sku信息
+     * @param color 颜色
+     * @param size 尺码
+     */
+    Long modSelectiveSku(String color, String size);
+
+    /**
      * 重量查询
      * @return
      */
