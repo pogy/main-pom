@@ -1,7 +1,7 @@
 package com.shigu.main4.order.services;
 
 
-import com.shigu.main4.order.vo.ConfirmOrderVo;
+import com.shigu.main4.order.bo.TbOrderBO;
 import com.shigu.main4.order.vo.GoodsVO;
 import com.shigu.main4.order.vo.TbOrderVO;
 
@@ -22,27 +22,27 @@ public interface TaoOrderService {
     /**
      * ====================================================================================
      * @方法名：
-     * @功能：拉取淘宝订单
-     * @param:vo查询条件
+     * @功能：拉取淘宝订单列表
+     * @param:bo查询条件
      * @return:
      * @exception:
      * ====================================================================================
      *
      */
-    List<TbOrderVO> myTbOrder(TbOrderVO vo);
-
+    List<TbOrderVO> myTbOrders(TbOrderBO bo);
 
     /**
      * ====================================================================================
      * @方法名：
-     * @功能：淘宝下单
-     * @param:
-     * @return: 确认订单 ConfirmOrderVo
+     * @功能：拉取单个淘宝订单
+     * @param:tid淘宝订单id
+     * @return:
      * @exception:
      * ====================================================================================
      *
      */
-    ConfirmOrderVo confirmTaoOrder(Long tbId);
+    TbOrderVO myTbOrder(Long tid);
+
 
 
     /**

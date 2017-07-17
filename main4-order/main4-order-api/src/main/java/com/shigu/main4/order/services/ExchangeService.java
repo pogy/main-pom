@@ -1,9 +1,8 @@
 package com.shigu.main4.order.services;
 
-import com.shigu.main4.order.vo.ChooseEcpressVo;
-import com.shigu.main4.order.vo.ExchangeApplyVo;
-import com.shigu.main4.order.vo.ExchangeVo;
-import com.shigu.main4.order.vo.ExpressVo;
+import com.shigu.main4.order.servicevo.ExpressLogVO;
+import com.shigu.main4.order.servicevo.RefundLogVO;
+import com.shigu.main4.order.vo.*;
 
 import java.util.List;
 
@@ -22,72 +21,83 @@ public interface ExchangeService {
 
     /**
      * ====================================================================================
-     * @方法名： exchange
-     * @功能： 换货展现
-     * @param: 
-     * @return: 
-     * @exception: 
-     * ====================================================================================
-     * 
-     */
-    ExchangeVo exchange(Long orderChildId);
-
-
-    /**
-     * ====================================================================================
      * @方法名：exchangeApply
      * @功能： 换货申请
      * @param: orderChildId 订单子单id，refundReason退货换原因  refundDesc退款说明
-     * @return: 
+     * @return: refundId 退换货ID
      * @exception: 
      * ====================================================================================
      * 
      */
-    ExchangeApplyVo exchangeApply(Long orderChildId, String refundReason, String refundDesc);
+    Long exchangeApply(Long orderChildId, String refundReason, String refundDesc);
 
     /**
      * ====================================================================================
      * @方法名：selectExpress
      * @功能： 查询快递公司
-     * @param: 
+     * @param:
      * @return: 快递公司列表
-     * @exception: 
+     * @exception:
      * ====================================================================================
-     * 
+     *
      */
     List<ExpressVo> selectExpress();
     /**
      * ====================================================================================
      * @方法名：chooseExpress
      * @功能： 选择快递公司
-     * @param: orderChildId 订单子单id   expressId快递公司id，expressCode快递单号
-     * @return: 返回
-     * @exception: 
-     * ====================================================================================
-     * 
-     */
-    ChooseEcpressVo chooseExpress(Long orderChildId	, Long  expressId, String expressCode);
-
-    /**
-     * ====================================================================================
-     * @方法名：modifyExpress
-     * @功能： 修改快递公司
-     * @param: orderChildId 订单子单id   expressId快递公司id，expressCode快递单号
+     * @param: refundId 退换货id expressId快递公司id，expressCode快递单号
      * @return: 返回
      * @exception:
      * ====================================================================================
      *
      */
-    ChooseEcpressVo modifyExpress(Long orderChildId	, Long  expressId, String expressCode);
+    ReturnableExpressInfoVO chooseExpress(Long refundId, Long  expressId, String expressCode);
+
     /**
      * ====================================================================================
-     * @方法名：exchangeFinish
-     * @功能： 换货完成
-     * @param: orderChildId 订单子单id
-     * @return: 返回换货完成
-     * @exception: 
-     * ====================================================================================
-     * 
+     * @方法名：modifyExpress
+     * @功能： 修改快递公司
+     * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
+     * @return: 返回
+     * @exception:
+    * ====================================================================================
+    *
+    */
+    ReturnableExpressInfoVO modifyExpress(Long refundId, Long  expressId, String expressCode);
+
+    /**
+     * 换货日志
+     * @param refundId
+     * @return
      */
-    ExchangeVo exchangeFinish(Long orderChildId);
+    List<RefundLogVO> exchangeLog(Long refundId);
+
+    /**
+     * 换货地址
+     * @param refundId
+     * @return
+     */
+    ReturnableAddressVO exchangeAddress(Long refundId);
+
+    /**
+     * 换货简要信息
+     * @param refundId
+     * @return
+     */
+    ReturnableExpressInfoVO exchangeExpressInfo(Long refundId);
+
+    /**
+     * 快递日志列表
+     * @param refundId
+     * @return
+     */
+    List<ExpressLogVO> exchangeExpressLogs(Long refundId);
+
+    /**
+     * 换货状态信息
+     * @param refundId
+     * @return
+     */
+    ExchangeInfoVO exchangeInfo(Long refundId);
 }
