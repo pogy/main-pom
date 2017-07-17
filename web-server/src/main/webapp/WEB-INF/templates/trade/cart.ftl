@@ -559,7 +559,7 @@ var webSite = '${webSite!}';
     </li>
     <li class="goodsPrice tac fc3 yahei"><span>&yen;</span><span class="fwb">${childOrder.price!}</span></li>
     <li class="goodsAttr fc9 pr">
-        <div class="skuBox" data-colorId="${childOrder.colorId!}" data-sizeId="${childOrder.sizeId!}">
+        <div class="skuBox" data-colorId="${childOrder.color!}" data-sizeId="${childOrder.size!}">
             颜色：${childOrder.color!}<br>尺码：${childOrder.size!}
         </div>
         <#if childOrder.disabled == false>
@@ -808,6 +808,10 @@ var webSite = '${webSite!}';
 
 
 
+
+
+
+
             </#list>
         </div>
     </div>
@@ -958,6 +962,8 @@ var webSite = '${webSite!}';
     </form>
 </div>
 </#if>
+
+
 
 
 
