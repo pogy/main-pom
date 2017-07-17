@@ -54,6 +54,12 @@ public class CartService {
     @Autowired
     private RedisIO redisIO;
 
+    public ShiguShop selShopById(Long shopId) {
+        ShiguShopExample shiguShopExample = new ShiguShopExample();
+        shiguShopExample.createCriteria().andShopIdEqualTo(shopId);
+        return  (ShiguShop)shiguShopMapper.selectByPrimaryKey(shopId);
+    }
+
     /**
      * 进货车页面
      *

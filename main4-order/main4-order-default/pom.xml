@@ -178,5 +178,10 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
         </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-common</artifactId>
+            <version>4.1.8-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>
