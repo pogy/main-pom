@@ -37,7 +37,7 @@ import java.util.*;
  * Created by zhaohongbo on 17/6/23.
  */
 @Controller
-@RequestMapping
+@RequestMapping("order/")
 public class ConfirmOrderAction {
 
     @Autowired
@@ -62,7 +62,7 @@ public class ConfirmOrderAction {
      * 订单确认提交
      * @param bo
      */
-    @RequestMapping("/order/confirmOrders")
+    @RequestMapping("confirmOrders")
     @ResponseBody
     public JSONObject confirmOrders(ConfirmBO bo) throws JsonErrException {
         Long oid = confirmOrderService.submit(bo);
@@ -71,11 +71,8 @@ public class ConfirmOrderAction {
     }
 
 
-    @RequestMapping("/order/confirmOrder")
+    @RequestMapping("confirmOrder")
     public String confirmOrder(ConfirmBO bo, HttpServletRequest request, Model model) throws OrderException {
-        ResponseBase rsp = new ResponseBase();
-        rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
-
         String code = bo.getCode();
         OrderSubmitVo orderSubmitVo = redisIO.get(code, OrderSubmitVo.class);
         ///////////////////////////////////////////////////////////
@@ -116,12 +113,31 @@ public class ConfirmOrderAction {
         model.addAttribute("postNameMap", JSON.toJSONString(postNameMap));
 
         List<ServiceVO> serviceRulers = orderConstantService.selServices(bo.getSenderId());//服务费规则
-        model.addAttribute("serviceRulers", JSON.toJSONString(serviceRulers));
-
 
         CartPageVO vo = cartService.packCartProductVo(orderSubmitVo.getProducts());
+        List<ServiceRuleVO> serviceRuleVOS = new ArrayList<>(vo.getOrders().size());
+        for (CartOrderVO orderVO : vo.getOrders()) {
+            ServiceRuleVO ruleVO = new ServiceRuleVO();
+            serviceRuleVOS.add(ruleVO);
+            ruleVO.setOrderId(orderVO.getShopId());
+            ruleVO.setSenderId(bo.getSenderId());
+            ruleVO.setServices(new ArrayList<ServiceInfoVO>());
+            for (ServiceVO serviceRuler : serviceRulers) {
+                ServiceInfoVO infoVO = new ServiceInfoVO();
+                infoVO.setText(serviceRuler.getName());
+                infoVO.setPrice(String.format("%.2f", serviceRuler.getPrice() * .01));
+                ruleVO.getServices().add(infoVO);
+            }
+        }
+        model.addAttribute("serviceRulers", JSON.toJSONString(serviceRuleVOS));
         model.addAttribute("goodsOrders", vo.getOrders());
         model.addAttribute("webSite", "hz");//站点
         return "trade/confirmOrder";
+    }
+
+    @ResponseBody
+    @RequestMapping("collectCgneeJson")
+    public JSONObject collectCgneeJson() {
+        return JsonResponseUtil.success();
     }
 }

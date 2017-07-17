@@ -632,8 +632,8 @@ var postNameMap = ${postNameMap!};
     </li>
     <li class="goodsPrice tac fc3 yahei"><span>&yen;</span><span class="fwb">${childOrder.price!}</span></li>
     <li class="goodsAttr fc9 pr">
-        <div class="skuBox" data-colorId="${childOrder.colorId!}" data-sizeId="${childOrder.sizeId!}">
-            颜色：${childOrder.colorText!}<br>尺码：${childOrder.sizeText!}
+        <div class="skuBox">
+            颜色：${childOrder.color!}<br>尺码：${childOrder.size!}
         </div>
     </li>
     <li class="goodsCount tac">
