@@ -151,8 +151,7 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         //信息不足
         boolean isInformationInsufficient = buyerAddressVO.getProvId()==null || buyerAddressVO.getCityId()==null || buyerAddressVO.getTownId()==null ||
                 StringUtil.isNull(buyerAddressVO.getAddress()) || buyerAddressVO.getUserId()==null || StringUtil.isNull(buyerAddressVO.getTelephone()) ||
-                StringUtil.isNull(buyerAddressVO.getName()) || StringUtil.isNull(buyerAddressVO.getProvince()) || StringUtil.isNull(buyerAddressVO.getCity()) ||
-                StringUtil.isNull(buyerAddressVO.getTown());
+                StringUtil.isNull(buyerAddressVO.getName());
         if (isInformationInsufficient) {
             try {
                 throw new BuyerAddressException("信息不足");
@@ -177,6 +176,7 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         buyerAddress.setCityName(buyerAddressVO.getCity());
         buyerAddress.setTownName(buyerAddressVO.getTown());
         buyerAddressMapper.insert(buyerAddress);
+        buyerAddressVO.setAddressId(buyerAddress.getAddressId());
     }
 
     /**

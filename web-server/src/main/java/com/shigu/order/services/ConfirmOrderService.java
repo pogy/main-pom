@@ -2,6 +2,12 @@ package com.shigu.order.services;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.opentae.data.mall.beans.OrderCity;
+import com.opentae.data.mall.beans.OrderProv;
+import com.opentae.data.mall.beans.OrderTown;
+import com.opentae.data.mall.interfaces.OrderCityMapper;
+import com.opentae.data.mall.interfaces.OrderProvMapper;
+import com.opentae.data.mall.interfaces.OrderTownMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
@@ -13,8 +19,7 @@ import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.services.ItemOrderService;
-import com.shigu.main4.order.vo.CartVO;
-import com.shigu.main4.order.vo.ItemProductVO;
+import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.ConfirmBO;
@@ -41,6 +46,15 @@ public class ConfirmOrderService {
 
     @Autowired
     private ItemOrderService itemOrderService;
+
+    @Autowired
+    private OrderProvMapper orderProvMapper;
+
+    @Autowired
+    private OrderCityMapper orderCityMapper;
+
+    @Autowired
+    private OrderTownMapper orderTownMapper;
 
     /**
      * 订单确认提交
@@ -168,5 +182,22 @@ public class ConfirmOrderService {
                 throw new JsonErrException(e.getMessage());
             }
         }
+    }
+
+    public String selProvById( Long privId) {
+        OrderProv prov = orderProvMapper.selectByPrimaryKey(privId);
+        return prov.getProvName();
+    }
+
+    public String selCityById( Long cityId) {
+        OrderCity city = orderCityMapper.selectByPrimaryKey(cityId);
+ ;
+        return city.getCityName();
+    }
+
+    public String selTownById( Long townId) {
+        OrderTown town = orderTownMapper.selectByPrimaryKey(townId);
+
+        return town.getTownName();
     }
 }

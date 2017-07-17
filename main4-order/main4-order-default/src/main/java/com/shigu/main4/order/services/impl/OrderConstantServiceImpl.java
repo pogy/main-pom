@@ -9,6 +9,7 @@ import com.opentae.data.mall.interfaces.OrderCityMapper;
 import com.opentae.data.mall.interfaces.OrderConstantMapper;
 import com.opentae.data.mall.interfaces.OrderProvMapper;
 import com.opentae.data.mall.interfaces.OrderTownMapper;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -222,6 +223,8 @@ public class OrderConstantServiceImpl implements OrderConstantService {
         return cityVOS;
     }
 
+
+
     /**
      * 按城市ID查地区
      *
@@ -245,4 +248,6 @@ public class OrderConstantServiceImpl implements OrderConstantService {
         }
         return cityVOS;
     }
+
+
 }

@@ -10,10 +10,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
-import com.shigu.main4.order.vo.BuyerAddressVO;
-import com.shigu.main4.order.vo.CartVO;
-import com.shigu.main4.order.vo.LogisticsCompanyVO;
-import com.shigu.main4.order.vo.ServiceVO;
+import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.exceptions.OrderException;
@@ -137,7 +134,32 @@ public class ConfirmOrderAction {
 
     @ResponseBody
     @RequestMapping("collectCgneeJson")
-    public JSONObject collectCgneeJson() {
-        return JsonResponseUtil.success();
+    public JSONObject collectCgneeJson(BuyerAddressItemVO buyerAddressItem, HttpServletRequest request) {
+
+        Long userId = null;
+        PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (sessionUser != null) {
+            userId = sessionUser.getUserId();
+        }
+
+        BuyerAddressVO buyerAddress = new BuyerAddressVO();
+        buyerAddress.setAddress(buyerAddressItem.getAddress());
+        buyerAddress.setCityId(buyerAddressItem.getCityId());
+        buyerAddress.setName(buyerAddressItem.getName());
+        buyerAddress.setProvId(buyerAddressItem.getProvId());
+        buyerAddress.setTelephone(buyerAddressItem.getPhone());
+        buyerAddress.setTownId(buyerAddressItem.getCountyId());
+        buyerAddress.setUserId(userId);
+
+        buyerAddress.setProvince(confirmOrderService.selProvById(buyerAddress.getProvId()));
+        buyerAddress.setCity(confirmOrderService.selCityById(buyerAddress.getCityId()));
+        buyerAddress.setTown(confirmOrderService.selTownById(buyerAddress.getTownId()));
+        if (buyerAddressItem.getType().equalsIgnoreCase("1")) {
+            itemOrderService.saveBuyerAddress(buyerAddress);
+        } else {
+            buyerAddress.setAddressId(10000000L);
+        }
+
+        return JsonResponseUtil.success().element("addressId", buyerAddress.getAddressId());
     }
 }
