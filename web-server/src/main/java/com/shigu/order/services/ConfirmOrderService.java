@@ -86,7 +86,6 @@ public class ConfirmOrderService {
                 subOrder.setMark(confirmOrderBO.getRemark());
                 subOrder.setNum(confirmSubOrderBO.getNum());
                 subOrder.setProductVO(productsMap.get(Long.parseLong(confirmSubOrderBO.getId())));
-
                 subOrders.add(subOrder);
             }
         }
@@ -94,7 +93,7 @@ public class ConfirmOrderService {
         itemOrderBO.setTitle(itemOrderBO.getSubOrders().get(0).getProductVO().getTitle());
         itemOrderBO.setWebSite(itemOrderBO.getSubOrders().get(0).getProductVO().getWebSite());
         //TODO:订单mark信息
-        itemOrderBO.setMark("");
+        itemOrderBO.setMark(bo.getOrders().get(0).getRemark());
         //TODO:订单服务信息，接口实现后添加
         itemOrderBO.setServiceIds(new ArrayList<Long>(0));
         //TODO:订单包材信息

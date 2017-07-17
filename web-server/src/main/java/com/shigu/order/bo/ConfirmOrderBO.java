@@ -11,7 +11,7 @@ public class ConfirmOrderBO implements Serializable{
     /**
      * 临时订单ID
      */
-    private String orderId;
+    private String shopId;
     /**
      * 订单备注
      */
@@ -21,12 +21,12 @@ public class ConfirmOrderBO implements Serializable{
      */
     private List<ConfirmSubOrderBO> childOrders;
 
-    public String getOrderId() {
-        return orderId;
+    public String getShopId() {
+        return shopId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
     }
 
     public String getRemark() {

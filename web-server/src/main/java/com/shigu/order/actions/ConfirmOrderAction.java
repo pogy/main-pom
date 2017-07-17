@@ -60,7 +60,7 @@ public class ConfirmOrderAction {
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
         Long oid = confirmOrderService.submit(bo);
-        String payUrl = "/order/payMode.htm?oid="+oid;
+        String payUrl = "/trade/payMode.htm?oid="+oid;
         return "redirect:" + payUrl;
     }
 
