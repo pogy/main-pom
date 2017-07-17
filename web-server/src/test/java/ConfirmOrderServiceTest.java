@@ -78,7 +78,7 @@ public class ConfirmOrderServiceTest {
 
     private ConfirmOrderBO getConfirmOrderBO(String orderId, String remark, List<ConfirmSubOrderBO> childOrders) {
         ConfirmOrderBO bo = new ConfirmOrderBO();
-        bo.setOrderId(orderId);
+//        bo.setOrderId(orderId);
         bo.setRemark(remark);
         bo.setChildOrders(childOrders);
         return bo;

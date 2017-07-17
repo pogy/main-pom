@@ -2,8 +2,9 @@ package com.shigu.order.services;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.opentae.data.mall.beans.ExpressCompany;
+import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.LogisticsBO;
@@ -13,19 +14,23 @@ import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.services.OrderConstantService;
+import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemProductVO;
+import com.shigu.main4.order.vo.ServiceVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.bo.ConfirmOrderBO;
 import com.shigu.order.bo.ConfirmSubOrderBO;
-import com.shigu.order.vo.OrderSubmitVo;
+import com.shigu.order.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +47,11 @@ public class ConfirmOrderService {
     @Autowired
     private ItemOrderService itemOrderService;
 
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
+
+    @Autowired
+    private OrderConstantService orderConstantService;
     /**
      * 订单确认提交
      * @param bo
@@ -168,5 +178,61 @@ public class ConfirmOrderService {
                 throw new JsonErrException(e.getMessage());
             }
         }
+    }
+
+    /**
+     * 某用户收藏地址列表
+     * @param userId 用户id
+     * @return 收藏
+     */
+    public List<CollListVO> collListByUser(Long userId) {
+        List<BuyerAddressVO> collList =  itemOrderService.selBuyerAddress(userId);//收藏的地址数据
+        List<CollListVO> collListVOS = new ArrayList<>(collList.size());
+        for (BuyerAddressVO buyerAddressVO : collList) {
+            CollListVO vo = new CollListVO();
+            collListVOS.add(vo);
+            vo.setId(buyerAddressVO.getAddressId());
+            vo.setAddress(buyerAddressVO.getAddress());
+            vo.setName(buyerAddressVO.getName());
+            vo.setPhone(buyerAddressVO.getTelephone());
+        }
+        return collListVOS;
+    }
+
+    /**
+     * 快递公司拼音到字映射
+     */
+    public Map<String, String> postNameMapper() {
+        Map<String, String> postNameMap = new HashMap<>();
+        List<ExpressCompany> select = expressCompanyMapper.select(new ExpressCompany());
+        for (ExpressCompany company : select) {
+            postNameMap.put(company.getEnName(), company.getExpressName());
+        }
+        return postNameMap;
+    }
+
+    /**
+     * 服务规则包装，待完善
+     * @param orders 订单商品信息
+     * @param senderId 发货机构
+     * @return 服务对应表
+     */
+    public List<ServiceRuleVO> serviceRulePack(List<CartOrderVO> orders, Long senderId) {
+        List<ServiceVO> serviceRulers = orderConstantService.selServices(senderId);//服务费规则
+        List<ServiceRuleVO> serviceRuleVOS = new ArrayList<>(orders.size());
+        for (CartOrderVO orderVO : orders) {
+            ServiceRuleVO ruleVO = new ServiceRuleVO();
+            serviceRuleVOS.add(ruleVO);
+            ruleVO.setOrderId(orderVO.getShopId());
+            ruleVO.setSenderId(senderId);
+            ruleVO.setServices(new ArrayList<ServiceInfoVO>());
+            for (ServiceVO serviceRuler : serviceRulers) {
+                ServiceInfoVO infoVO = new ServiceInfoVO();
+                infoVO.setText(serviceRuler.getName());
+                infoVO.setPrice(String.format("%.2f", serviceRuler.getPrice() * .01));
+                ruleVO.getServices().add(infoVO);
+            }
+        }
+        return serviceRuleVOS;
     }
 }

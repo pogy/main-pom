@@ -32,6 +32,8 @@ public class CartChildOrderVO {
 
     private boolean disabled;
 
+    private Double weight;
+
     public Long getId() {
         return id;
     }
@@ -126,5 +128,13 @@ public class CartChildOrderVO {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
     }
 }

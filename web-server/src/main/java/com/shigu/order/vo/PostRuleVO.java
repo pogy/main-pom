@@ -1,13 +1,9 @@
-package com.shigu.main4.order.vo;
-
-import java.io.Serializable;
+package com.shigu.order.vo;
 
 /**
- * 物流公司
- * Created by zhaohongbo on 17/6/1.
+ * Created by bugzy on 2017/7/17 0017.
  */
-public class LogisticsCompanyVO extends OrderConstantVo implements Serializable{
-
+public class PostRuleVO {
     private String name;
 
     private String prov;

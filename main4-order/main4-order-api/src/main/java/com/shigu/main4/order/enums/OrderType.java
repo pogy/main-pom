@@ -5,7 +5,9 @@ package com.shigu.main4.order.enums;
  * Created by zhaohongbo on 17/5/31.
  */
 public enum OrderType {
-    XZ(1); //星座商品的订单
+    XZ(1), //星座商品的订单
+    TB(2), //淘宝订单转化的订单
+    ;
 
     public int type;
     OrderType(int type) {

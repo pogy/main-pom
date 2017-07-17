@@ -1,8 +1,11 @@
 package com.shigu.main4.order.services;
 
-import com.shigu.main4.order.vo.ChooseEcpressVo;
-import com.shigu.main4.order.vo.ExpressVo;
-import com.shigu.main4.order.vo.ReturnGoodsVo;
+import com.shigu.main4.order.servicevo.ExpressLogVO;
+import com.shigu.main4.order.servicevo.RefundLogVO;
+import com.shigu.main4.order.vo.ExchangeInfoVO;
+import com.shigu.main4.order.vo.ReturnGoodsInfoVO;
+import com.shigu.main4.order.vo.ReturnableAddressVO;
+import com.shigu.main4.order.vo.ReturnableExpressInfoVO;
 
 import java.util.List;
 
@@ -19,98 +22,73 @@ import java.util.List;
  */
 public interface ReturnGoodsService {
 
-
-    /**
-     * ====================================================================================
-     * @方法名：returnGoodsIndex
-     * @功能： 退货的展现页面
-     * @param: 
-     * @return: 
-     * @exception: 
-     * ====================================================================================
-     * 
-     */
-    ReturnGoodsVo returnGoodsIndex(Long orderChildId);
     /**
      * ====================================================================================
      * @方法名：returnGoodsApply
      * @功能： 退货申请
      * @param: orderChildId订单子单id，refundCount退货件数，refundMoney退货金额，refundReason退货换原因，refundDesc退款说明
-     * @return: 
+     * @return: refundId
      * @exception: 
      * ====================================================================================
      * 
      */
-    ReturnGoodsVo returnGoodsApply(Long orderChildId,int refundCount,String refundMoney,String refundReason,String refundDesc);
-
-    /**
-     * ====================================================================================
-     * @方法名：平台已同意退货
-     * @功能： daifaagreeReturnGoods
-     * @param: orderChildId 子订单ID
-     * @return: 同意退货的界面
-     * @exception: 
-     * ====================================================================================
-     * 
-     */
-    ReturnGoodsVo  daifaagreeReturnGoods(Long orderChildId);
-
-    /**
-     * ====================================================================================
-     * @方法名：selectExpress
-     * @功能： 查询快递公司
-     * @param:
-     * @return: 快递公司列表
-     * @exception:
-     * ====================================================================================
-     *
-     */
-    List<ExpressVo> selectExpress();
+    Long returnGoodsApply(Long orderChildId,int refundCount,String refundMoney,String refundReason,String refundDesc);
     /**
      * ====================================================================================
      * @方法名：chooseExpress
      * @功能： 选择快递公司并提交
-     * @param: orderChildId 订单子单id   expressId快递公司id，expressCode快递单号
+     * @param: refundId 退换货id  expressId快递公司id，expressCode快递单号
      * @return: 返回
      * @exception:
      * ====================================================================================
      *
      */
-    ReturnGoodsVo chooseExpress(Long orderChildId	, Long  expressId, String expressCode);
+    ReturnableExpressInfoVO chooseExpress(Long refundId, Long  expressId, String expressCode);
 
     /**
      * ====================================================================================
      * @方法名：modifyExpress
      * @功能： 修改快递公司
-     * @param: orderChildId 订单子单id   expressId快递公司id，expressCode快递单号
+     * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
      * @return: 返回
      * @exception:
      * ====================================================================================
      *
      */
-    ReturnGoodsVo modifyExpress(Long orderChildId	, Long  expressId, String expressCode);
+    ReturnableExpressInfoVO modifyExpress(Long refundId	, Long  expressId, String expressCode);
 
     /**
-     * ====================================================================================
-     * @方法名：daifaReceiveReturnGoods
-     * @功能： 退货已收到
-     * @param: orderChildId子订单编号
-     * @return: 返回退货已收到的结果
-     * @exception: 
-     * ====================================================================================
-     * 
+     * 退货日志
+     * @param refundId
+     * @return
      */
-    ReturnGoodsVo  daifaReceiveReturnGoods(Long orderChildId);
-    /**
-     * ====================================================================================
-     * @方法名：returnGoodsFinish
-     * @功能： 退货完成
-     * @param: orderChildId 订单子单id
-     * @return: 返回换货完成
-     * @exception:
-     * ====================================================================================
-     *
-     */
-    ReturnGoodsVo returnGoodsFinish(Long orderChildId);
+    List<RefundLogVO> retrunGoodsLog(Long refundId);
 
+    /**
+     * 退货地址
+     * @param refundId
+     * @return
+     */
+    ReturnableAddressVO retrunGoodsAddress(Long refundId);
+
+    /**
+     * 退货简要信息
+     * @param refundId
+     * @return
+     */
+    ReturnableExpressInfoVO retrunGoodsExpressInfo(Long refundId);
+
+    /**
+     * 快递日志列表
+     * @param refundId
+     * @return
+     */
+    List<ExpressLogVO> retrunGoodsExpressLogs(Long refundId);
+
+    /**
+     * 退货状态信息
+     * @param refundId
+     * @return
+     */
+    ReturnGoodsInfoVO retrunGoodsInfo(Long refundId);
 }

@@ -10,6 +10,8 @@ public class CartOrderVO {
 
     private Long id;
 
+    private Long shopId;
+
     private String marketName;
 
     private String storeNum;
@@ -28,6 +30,14 @@ public class CartOrderVO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
     }
 
     public String getMarketName() {

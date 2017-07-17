@@ -1,12 +1,8 @@
 package com.shigu.order.services;
 
-import com.opentae.data.mall.beans.ItemCart;
-import com.opentae.data.mall.beans.ItemProductSku;
 import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.examples.ItemCartExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.ItemCartMapper;
-import com.opentae.data.mall.interfaces.ItemProductSkuMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
@@ -29,10 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 进货车服务
@@ -55,10 +48,13 @@ public class CartService {
     @Autowired
     private RedisIO redisIO;
 
-    public ShiguShop selShopById(Long shopId) {
+    public Map<Long, ShiguShop> selShopIn(List<Long> shopIds) {
+        if (shopIds == null || shopIds.isEmpty()) {
+            return new HashMap<>();
+        }
         ShiguShopExample shiguShopExample = new ShiguShopExample();
-        shiguShopExample.createCriteria().andShopIdEqualTo(shopId);
-        return  (ShiguShop)shiguShopMapper.selectByPrimaryKey(shopId);
+        shiguShopExample.createCriteria().andShopIdIn(shopIds);
+        return BeanMapper.list2Map(shiguShopMapper.selectByExample(shiguShopExample), "shopId", Long.class);
     }
 
     /**
@@ -69,24 +65,29 @@ public class CartService {
      */
     public CartPageVO selMyCart(Long userId) {
         ItemCartImpl itemCart = SpringBeanFactory.getBean(ItemCartImpl.class, userId);
-        CartPageVO vo = new CartPageVO();
+        CartPageVO vo = packCartProductVo(itemCart.listProduct());
         vo.setGoodsCount(itemCart.productNumbers());
+        return vo;
+    }
 
-        Map<Long, List<CartVO>> groupByShop = BeanMapper.groupBy(itemCart.listProduct(), "shopId", Long.class);
+    /**\
+     * 包装进货车商品对象
+     * @param vos 进货车商品源信息
+     */
+    public CartPageVO packCartProductVo(List<CartVO> vos) {
+        CartPageVO vo = new CartPageVO();
+        Map<Long, List<CartVO>> groupByShop = BeanMapper.groupBy(vos, "shopId", Long.class);
         vo.setOrders(new ArrayList<CartOrderVO>(groupByShop.size()));
         if (!groupByShop.isEmpty()) {
-
-            ShiguShopExample shiguShopExample = new ShiguShopExample();
-            shiguShopExample.createCriteria().andShopIdIn(new ArrayList<>(groupByShop.keySet()));
-            Map<Long, ShiguShop> shopMap =
-                    BeanMapper.list2Map(shiguShopMapper.selectByExample(shiguShopExample), "shopId", Long.class);
+            Map<Long, ShiguShop> shopMap = selShopIn(new ArrayList<>(groupByShop.keySet()));
 
             for (Map.Entry<Long, List<CartVO>> entry : groupByShop.entrySet()) {
                 CartOrderVO orderVO = new CartOrderVO();
                 vo.getOrders().add(orderVO);
-
-                orderVO.setId(entry.getKey());
-                ShiguShop shiguShop = shopMap.get(entry.getKey());
+                Long shopId = entry.getKey();
+                orderVO.setId(shopId);
+                orderVO.setShopId(shopId);
+                ShiguShop shiguShop = shopMap.get(shopId);
                 if (shiguShop != null) {
                     orderVO.setImQq(shiguShop.getImQq());
                     orderVO.setImWw(shiguShop.getImAliww());
