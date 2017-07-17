@@ -1,10 +1,13 @@
 package com.shigu.order.actions;
 
 import com.alibaba.fastjson.JSON;
+import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.BuyerAddressVO;
@@ -16,9 +19,7 @@ import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.CartService;
 import com.shigu.order.services.ConfirmOrderService;
-import com.shigu.order.vo.ChildGoodsOrder;
-import com.shigu.order.vo.GoodsOrderVO;
-import com.shigu.order.vo.OrderSubmitVo;
+import com.shigu.order.vo.*;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -30,10 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by zhaohongbo on 17/6/23.
@@ -43,19 +41,22 @@ import java.util.Objects;
 public class ConfirmOrderAction {
 
     @Autowired
-    ItemOrderService itemOrderService;
+    private ItemOrderService itemOrderService;
 
     @Autowired
-    OrderConstantService orderConstantService;
+    private OrderConstantService orderConstantService;
 
     @Autowired
-    ConfirmOrderService confirmOrderService;
+    private ConfirmOrderService confirmOrderService;
 
     @Autowired
-    RedisIO redisIO;
+    private RedisIO redisIO;
 
     @Autowired
-    CartService cartService;
+    private CartService cartService;
+
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
 
     /**
      * 订单确认提交
@@ -89,50 +90,38 @@ public class ConfirmOrderAction {
         if (!Objects.equals(orderSubmitVo.getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
+        if (bo.getSenderId() == null) {
+            bo.setSenderId(1L);
+        }
 
         List<BuyerAddressVO> collList =  itemOrderService.selBuyerAddress(userId);//收藏的地址数据
-        model.addAttribute("collList", collList);
+        List<CollListVO> collListVOS = new ArrayList<>(collList.size());
+        for (BuyerAddressVO buyerAddressVO : collList) {
+            CollListVO vo = new CollListVO();
+            collListVOS.add(vo);
+            vo.setId(buyerAddressVO.getAddressId());
+            vo.setAddress(buyerAddressVO.getAddress());
+            vo.setName(buyerAddressVO.getName());
+            vo.setPhone(buyerAddressVO.getTelephone());
+        }
+        model.addAttribute("collList", collListVOS);
 
-        LogisticsCompanyVO logisticsDefault = orderConstantService.selLogisticsDefault(bo.getSenderId());//快递规则
-        model.addAttribute("postRulers", JSON.toJSONString(logisticsDefault));
+        List<LogisticsCompanyVO> logisticsCompanyVOS = orderConstantService.selLogistics(bo.getSenderId());//快递规则// TODO:快递对省份的支持信息没有
+        model.addAttribute("postRulers", JSON.toJSONString(BeanMapper.mapList(logisticsCompanyVOS, PostRuleVO.class)));
+        Map<String, String> postNameMap = new HashMap<>();
+        List<ExpressCompany> select = expressCompanyMapper.select(new ExpressCompany());
+        for (ExpressCompany company : select) {
+            postNameMap.put(company.getEnName(), company.getExpressName());
+        }
+        model.addAttribute("postNameMap", JSON.toJSONString(postNameMap));
 
         List<ServiceVO> serviceRulers = orderConstantService.selServices(bo.getSenderId());//服务费规则
         model.addAttribute("serviceRulers", JSON.toJSONString(serviceRulers));
 
 
-
-
-        List<CartVO> cartVOList =  orderSubmitVo.getProducts();// 清单数据
-        Map<Long, GoodsOrderVO> goodsOrdersMap = new HashMap<Long, GoodsOrderVO>();
-        for (CartVO item : cartVOList) {
-            GoodsOrderVO goodsOrderVO = goodsOrdersMap.get(item.getShopId());
-            if (goodsOrderVO == null) {
-                goodsOrderVO = new GoodsOrderVO();
-                goodsOrderVO.setShopId(item.getShopId());
-                goodsOrderVO.setMarketName(item.getMarketName());
-                goodsOrderVO.setStoreNum(item.getShopNum());
-                ShiguShop shop = cartService.selShopById(item.getShopId());
-                goodsOrderVO.setImWw(shop.getImAliww());
-                goodsOrderVO.setImQq(shop.getImQq());
-                goodsOrdersMap.put(item.getShopId(), goodsOrderVO);
-            }
-            ChildGoodsOrder childGoodsOrder = new ChildGoodsOrder();
-            childGoodsOrder.setId(item.getPid());
-            childGoodsOrder.setImgsrc(item.getPicUrl());
-            childGoodsOrder.setColor(item.getSelectiveSku().getColor());
-            childGoodsOrder.setImgsrc(item.getPicUrl());
-            childGoodsOrder.setColor(item.getSelectiveSku().getColor());
-            childGoodsOrder.setGoodsCode(String.valueOf(item.getGoodsId()));
-            childGoodsOrder.setTitle(item.getTitle());
-            childGoodsOrder.setWeight(String.valueOf(item.getWeight()));
-            childGoodsOrder.setNum(String.valueOf(item.getNum()));
-            goodsOrderVO.getChildOrders().add(childGoodsOrder);
-
-        }
-        model.addAttribute("goodsOrders", goodsOrdersMap.values());
-
+        CartPageVO vo = cartService.packCartProductVo(orderSubmitVo.getProducts());
+        model.addAttribute("goodsOrders", vo.getOrders());
         model.addAttribute("webSite", "hz");//站点
-
         return "trade/confirmOrder";
     }
 }
