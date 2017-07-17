@@ -93,10 +93,11 @@ public class ConfirmOrderAction {
         model.addAttribute("postNameMap", JSON.toJSONString(confirmOrderService.postNameMapper()));
 
         // 商品信息
-        CartPageVO vo = cartService.packCartProductVo(orderSubmitVo.getProducts());
+        List<CartOrderVO> vos = cartService.packCartProductVo(orderSubmitVo.getProducts()).getOrders();
         // 商品服务信息
-        model.addAttribute("serviceRulers", JSON.toJSONString(confirmOrderService.serviceRulePack(vo.getOrders(), bo.getSenderId())));
-        model.addAttribute("goodsOrders", vo.getOrders());
+        model.addAttribute("serviceRulers", JSON.toJSONString(confirmOrderService.serviceRulePack(vos, bo.getSenderId())));
+        model.addAttribute("goodsOrders", vos);
+        model.addAttribute("sender", confirmOrderService.senderListDefault(bo.getSenderId()));
         model.addAttribute("webSite", "hz");//站点
         return "trade/confirmOrder";
     }

@@ -3,7 +3,9 @@ package com.shigu.order.services;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ExpressCompany;
+import com.opentae.data.mall.beans.ItemOrderSender;
 import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSenderMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.ItemOrderBO;
@@ -15,10 +17,7 @@ import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
-import com.shigu.main4.order.vo.BuyerAddressVO;
-import com.shigu.main4.order.vo.CartVO;
-import com.shigu.main4.order.vo.ItemProductVO;
-import com.shigu.main4.order.vo.ServiceVO;
+import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.ConfirmBO;
@@ -29,10 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 确认订单
@@ -52,6 +48,10 @@ public class ConfirmOrderService {
 
     @Autowired
     private OrderConstantService orderConstantService;
+
+    @Autowired
+    private ItemOrderSenderMapper itemOrderSenderMapper;
+
     /**
      * 订单确认提交
      * @param bo
@@ -234,5 +234,17 @@ public class ConfirmOrderService {
             }
         }
         return serviceRuleVOS;
+    }
+
+    public List<SenderInfoVO> senderListDefault(Long senderId) {
+        List<SenderInfoVO> infoVOS = new ArrayList<>();
+        for (ItemOrderSender sender : itemOrderSenderMapper.select(new ItemOrderSender())) {
+            SenderInfoVO info = new SenderInfoVO();
+            info.setId(sender.getSenderId().toString());
+            info.setText(sender.getSenderName());
+            info.setChecked(Objects.equals(sender.getSenderId(), senderId));
+            infoVOS.add(info);
+        }
+        return infoVOS;
     }
 }
