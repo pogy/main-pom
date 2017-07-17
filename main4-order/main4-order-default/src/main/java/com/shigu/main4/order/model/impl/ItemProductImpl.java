@@ -62,17 +62,22 @@ public class ItemProductImpl implements ItemProduct{
     @PostConstruct
     private void initProduct() {
         if (pid != null && skuId != null) {
+            ItemProductVO info = info();
+            goodsId = info.getGoodsId();
+            color = info.getSelectiveSku().getColor();
+            size = info.getSelectiveSku().getSize();
             return;
         }
-        ItemProductInfo productInfo = itemProductMapper.selProduct(goodsId, color, size);
-        if (productInfo == null) {
-            productInfo = createProduct(goodsId, color, size);
-        }
+        ItemProductInfo productInfo =  createProduct(goodsId, color, size);
         pid = productInfo.getPid();
         skuId = productInfo.getSkuId();
     }
 
     private ItemProductInfo createProduct(Long goodsId, String color, String size) {
+        ItemProductInfo productInfo = itemProductMapper.selProduct(goodsId, color, size);
+        if (productInfo != null) {
+            return productInfo;
+        }
         com.opentae.data.mall.beans.ItemProduct product = new com.opentae.data.mall.beans.ItemProduct();
         product.setGoodsId(goodsId);
         product = itemProductMapper.selectOne(product);
@@ -154,6 +159,18 @@ public class ItemProductImpl implements ItemProduct{
         itemProductMapper.updateByPrimaryKeySelective(product);
     }
 
+    /**
+     * 修改sku信息
+     *  @param color 颜色
+     * @param size  尺码
+     */
+    @Override
+    public Long modSelectiveSku(String color, String size) {
+        this.color = color;
+        this.size = size;
+        return this.skuId = createProduct(goodsId, color, size).getSkuId();
+    }
+
     @Override
     public Long selWeight() {
         return itemProductMapper.selectByPrimaryKey(pid).getWeight();
@@ -165,5 +182,17 @@ public class ItemProductImpl implements ItemProduct{
 
     public Long getSkuId() {
         return skuId;
+    }
+
+    public Long getGoodsId() {
+        return goodsId;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getSize() {
+        return size;
     }
 }

@@ -48,10 +48,11 @@ public class CartAction {
      */
     @RequestMapping("removeChildOrder")
     @ResponseBody
-    public JSONObject removeChildOrder(Long childOrderId) {
+    public JSONObject removeChildOrder(Long childOrderId, HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
-        cartService.removeChildOrder(childOrderId);
+        cartService.removeChildOrder(ps.getUserId(), childOrderId);
         return JSONObject.fromObject(rsp);
     }
 
@@ -62,14 +63,15 @@ public class CartAction {
      */
     @RequestMapping("removeAllOrders")
     @ResponseBody
-    public JSONObject removeChildOrders(String childOrderIds) throws JsonErrException {
+    public JSONObject removeChildOrders(String childOrderIds, HttpSession session) throws JsonErrException {
         List<Long> cids = new ArrayList<>();
         for (String s : childOrderIds.split(",")) {
             cids.add(Long.valueOf(s));
         }
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
-        cartService.removeAllOrders(cids);
+        cartService.removeAllOrders(ps.getUserId(), cids);
         return JSONObject.fromObject(rsp);
     }
 
@@ -82,10 +84,11 @@ public class CartAction {
      */
     @RequestMapping("editChildOrderSKu")
     @ResponseBody
-    public JSONObject editChildOrderSKu(Long childOrderId, String color, String size) throws JsonErrException {
+    public JSONObject editChildOrderSKu(Long childOrderId, String color, String size, HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
-        cartService.editChildOrderSKu(childOrderId, color, size);
+        cartService.editChildOrderSKu(ps.getUserId(), childOrderId, color, size);
         return JSONObject.fromObject(rsp);
     }
 
@@ -96,10 +99,11 @@ public class CartAction {
      */
     @RequestMapping("editChildOrderNum")
     @ResponseBody
-    public JSONObject modCartOrderNum(Long childOrderId, Integer num) throws JsonErrException {
+    public JSONObject modCartOrderNum(Long childOrderId, Integer num, HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
         rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
-        cartService.modCartOrderNum(childOrderId, num);
+        cartService.modCartOrderNum(ps.getUserId(), childOrderId, num);
         return JSONObject.fromObject(rsp);
     }
 

@@ -2,13 +2,14 @@ package com.shigu.main4.order.model.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ItemCart;
+import com.opentae.data.mall.beans.ItemProductSku;
 import com.opentae.data.mall.examples.ItemCartExample;
-import com.opentae.data.mall.examples.ItemProductExample;
 import com.opentae.data.mall.interfaces.ItemCartMapper;
-import com.opentae.data.mall.interfaces.ItemProductMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.order.exceptions.CartException;
 import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.model.Cart;
+import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ProductVO;
@@ -18,7 +19,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -50,7 +50,13 @@ public class ItemCartImpl implements Cart {
 
     @Override
     public void rmProduct(Long cartId) {
-
+        if (null == cartId) {
+            return;
+        }
+        ItemCartExample itemCartExample = new ItemCartExample();
+        ItemCartExample.Criteria criteria = itemCartExample.createCriteria();
+        criteria.andCartIdEqualTo(cartId);
+        itemCartMapper.deleteByExample(itemCartExample);
     }
 
     /**
@@ -65,46 +71,49 @@ public class ItemCartImpl implements Cart {
         if (pid == null || skuId == null || num == null) {
             return;
         }
-
         ItemCartExample itemCartExample = new ItemCartExample();
-
         itemCartExample.setWebSite("hz");
-
         ItemCartExample.Criteria criteria = itemCartExample.createCriteria();
-
         criteria.andPidEqualTo(pid);
-
         criteria.andSkuIdEqualTo(skuId);
-
         criteria.andUserIdEqualTo(userId);
-
         List<ItemCart> number = itemCartMapper.selectFieldsByExample(itemCartExample, FieldUtil.codeFields("num"));
         if (number.size()<=0||number.get(0)==null){
             return;
         }
         ItemCart selItemCart = number.get(0);
-
         if (num > selItemCart.getNum()) {
-
             throw new ItemCartNumOutOfBoundsException("传入的num值大于存储值");
-
         }
-
         selItemCart.setNum(selItemCart.getNum() - num);
-
         itemCartMapper.updateByExampleSelective(selItemCart, itemCartExample);
-
     }
 
 
     @Override
-    public Long modifyProductNumber(Long cartId, Integer number) {
-        return null;
+    public Long modifyProductNumber(Long cartId, Integer number) throws CartException {
+        if (cartId == null || number == null)
+            throw new CartException("信息不全");
+        ItemCart itemCart = new ItemCart();
+        itemCart.setNum(number);
+        itemCart.setCartId(cartId);
+        return (long) itemCartMapper.updateByPrimaryKeySelective(itemCart);
+    }
+
+    public ItemProduct getProduct(Long cartId) throws CartException {
+        ItemCart cart = itemCartMapper.selectByPrimaryKey(cartId);
+        if (cart==null){
+            throw new CartException("商品不存在");
+        }
+        return SpringBeanFactory.getBean(ItemProductImpl.class, cart.getPid(), cart.getSkuId());
     }
 
     @Override
-    public Long modifyProductSku(Long cartId, Long skuId) {
-        return null;
+    public Long modifyProductSku(Long cartId, String color, String size) throws CartException {
+        ItemCart cart = new ItemCart();
+        cart.setCartId(cartId);
+        cart.setSkuId(getProduct(cartId).modSelectiveSku(color, size));
+        return (long) itemCartMapper.updateByPrimaryKeySelective(cart);
     }
 
     /**
