@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
-import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.BuyerAddressVO;
@@ -21,13 +21,19 @@ import com.shigu.order.vo.GoodsOrderVO;
 import com.shigu.order.vo.OrderSubmitVo;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.JsonResponseUtil;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by zhaohongbo on 17/6/23.
@@ -56,13 +62,13 @@ public class ConfirmOrderAction {
      * @param bo
      */
     @RequestMapping("/order/confirmOrders")
-    public String confirmOrders(ConfirmBO bo) throws Main4Exception {
-        ResponseBase rsp = new ResponseBase();
-        rsp.setResult(SystemConStant.RESPONSE_STATUS_SUCCESS);
+    @ResponseBody
+    public JSONObject confirmOrders(ConfirmBO bo) throws JsonErrException {
         Long oid = confirmOrderService.submit(bo);
         String payUrl = "/trade/payMode.htm?oid="+oid;
-        return "redirect:" + payUrl;
+        return JsonResponseUtil.success().element("redectUrl",payUrl);
     }
+
 
     @RequestMapping("/order/confirmOrder")
     public String confirmOrder(ConfirmBO bo, HttpServletRequest request, Model model) throws OrderException {
