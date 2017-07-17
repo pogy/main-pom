@@ -187,15 +187,9 @@ var webSite = '${webSite!}';
 
 <div class="refundStep layout">
     <ul>
-        
-        <li class="selected"><span>1、买家申请退货退款</span><em></em><i></i><i class="leftArrow"></i></li>
-        
-        <li ><span>2、等待处理退货申请</span><em></em><i></i><i class="leftArrow"></i></li>
-        
-        <li ><span>3、买家退货</span><em></em><i></i><i class="leftArrow"></i></li>
-        
-        <li ><span>4、退货退款完成</span><em></em><i></i><i class="leftArrow"></i></li>
-        
+        <#list refundDesc as refund>
+        <li <#if refund_item lte refundStateNum>class="selected"</#if>><span>${refund!}</span><em></em><i></i><i class="leftArrow"></i></li>
+        </#list>
     </ul>
 </div>
 
@@ -220,11 +214,10 @@ var webSite = '${webSite!}';
 
 
 
-        <div class="reRefundApply refundBox">
+        <div class="refundApply refundBox">
     <ul>
         <li>
             <label><em class="fcF40 vm">*</em> 服务类型：</label>
-            
             
 
 <#assign text>{"name":"service","value":"refund"}</#assign>
@@ -250,12 +243,9 @@ var webSite = '${webSite!}';
 
 
 
-            
         </li>
         <li>
-            
             <label>退款原因：</label>
-            
             
 
 <#assign text>{"name":"reason","value":"0"}</#assign>
@@ -282,23 +272,47 @@ var webSite = '${webSite!}';
 
 
         </li>
-        
-        <li class="refundTotal none">
+        <li>
+            <label><em class="fcF40 vm">*</em> 退货件数：</label>
+            
+
+<#assign text>{"name":"count","value":""}</#assign>
+<#assign moduledata3=text?eval />
+<#list [moduledata3] as $it>
+<div class="fmSelect" id="refundCount">
+    <span class="text">数据加载中...</span>
+    <i class="icon-downarrow bt_arrow"></i>
+    <ul class="options"></ul>
+    <input class="realInput" type="hidden"
+        <#if $it.name??>name="${$it.name!}"</#if>
+        <#if $it.value??>value="${$it.value!}"</#if>
+    >
+</div>
+
+
+
+
+
+</#list>
+
+
+
+
+
+        </li>
+        <li>
             <label><em class="fcF40 vm">*</em> 退款金额：</label>
-            <input class="input" name="refundTotal" value="￥4899.00">
-            <span class="fc9">最多45.00元，含邮费5.00元，服务费5.00元</span>
+            <span class="refundCountNum fcF40 fs14 yahei"><em class="yahei">&yen;</em><em class="fwb" id="refundMoney">${refundGoodsPrice!}</em></span>
         </li>
         <li class="refundDesc">
-            
             <label>退款说明：</label>
-            
-            <textarea ></textarea>
+            <textarea></textarea>
         </li>
         <li>
 
 <#assign text>{}</#assign>
-<#assign moduledata3=text?eval />
-<#list [moduledata3] as $it>
+<#assign moduledata4=text?eval />
+<#list [moduledata4] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -348,6 +362,14 @@ var webSite = '${webSite!}';
 </li>
     </ul>
 </div>
+
+
+<script>
+var refundGoodsPrice = '${refundGoodsPrice!}'
+var refundNum = '${refundNumber!}';
+</script>
+
+
 
 
 
@@ -419,8 +441,8 @@ var webSite = '${webSite!}';
             
 
 <#assign text>{"name":"expressList","value":""}</#assign>
-<#assign moduledata4=text?eval />
-<#list [moduledata4] as $it>
+<#assign moduledata5=text?eval />
+<#list [moduledata5] as $it>
 <div class="fmSelect" id="expressList">
     <span class="text">数据加载中...</span>
     <i class="icon-downarrow bt_arrow"></i>
@@ -450,8 +472,8 @@ var webSite = '${webSite!}';
         <li>
 
 <#assign text>{}</#assign>
-<#assign moduledata5=text?eval />
-<#list [moduledata5] as $it>
+<#assign moduledata6=text?eval />
+<#list [moduledata6] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -501,6 +523,8 @@ var webSite = '${webSite!}';
 </li>
     </ul>
 </div>
+
+
 
 
 
@@ -647,7 +671,7 @@ var webSite = '${webSite!}';
 
 
 
-        <#if refundId??>
+        <#if refundId != ''>
 <div class="reRefundInfo">
     <ul>
         <li><label>退款编号：</label><span class="yahei fs14 fcBlue">${refundId!}</span></li>
@@ -676,6 +700,8 @@ var orderId = '${orderId!}';
 var orderChildId = '${orderChildId!}';
 var express = '${expressList!}';
 </script>
+
+
 
 
 </div>

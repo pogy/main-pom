@@ -61,7 +61,7 @@ public class ConfirmOrderAction {
     @ResponseBody
     public JSONObject confirmOrders(ConfirmBO bo) throws JsonErrException {
         Long oid = confirmOrderService.submit(bo);
-        String payUrl = "/order/payMode.htm?oid="+oid;
+        String payUrl = "/order/payMode.htm?orderId="+oid;
         return JsonResponseUtil.success().element("redectUrl",payUrl);
     }
 
