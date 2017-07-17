@@ -45,6 +45,18 @@ public interface ReturnGoodsService {
 
     /**
      * ====================================================================================
+     * @方法名：平台已同意退货
+     * @功能： daifaagreeReturnGoods
+     * @param: orderChildId 子订单ID
+     * @return: 同意退货的界面
+     * @exception: 
+     * ====================================================================================
+     * 
+     */
+    ReturnGoodsVo  daifaagreeReturnGoods(Long orderChildId);
+
+    /**
+     * ====================================================================================
      * @方法名：selectExpress
      * @功能： 查询快递公司
      * @param:
@@ -57,14 +69,14 @@ public interface ReturnGoodsService {
     /**
      * ====================================================================================
      * @方法名：chooseExpress
-     * @功能： 选择快递公司
+     * @功能： 选择快递公司并提交
      * @param: orderChildId 订单子单id   expressId快递公司id，expressCode快递单号
      * @return: 返回
      * @exception:
      * ====================================================================================
      *
      */
-    ChooseEcpressVo chooseExpress(Long orderChildId	, Long  expressId, String expressCode);
+    ReturnGoodsVo chooseExpress(Long orderChildId	, Long  expressId, String expressCode);
 
     /**
      * ====================================================================================
@@ -76,7 +88,19 @@ public interface ReturnGoodsService {
      * ====================================================================================
      *
      */
-    ChooseEcpressVo modifyExpress(Long orderChildId	, Long  expressId, String expressCode);
+    ReturnGoodsVo modifyExpress(Long orderChildId	, Long  expressId, String expressCode);
+
+    /**
+     * ====================================================================================
+     * @方法名：daifaReceiveReturnGoods
+     * @功能： 退货已收到
+     * @param: orderChildId子订单编号
+     * @return: 返回退货已收到的结果
+     * @exception: 
+     * ====================================================================================
+     * 
+     */
+    ReturnGoodsVo  daifaReceiveReturnGoods(Long orderChildId);
     /**
      * ====================================================================================
      * @方法名：returnGoodsFinish
