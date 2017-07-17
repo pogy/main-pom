@@ -828,7 +828,12 @@ var postNameMap = ${postNameMap!};
         </div>
         <div class="corfirmInfo">
             <p>应付总金额：<em class="fcF40 yahei fs20">&yen;</em><span class="fcF40 yahei totalAmount">0.00</span></p>
-            <p class="confirmAddress fc9"><span>寄送至：浙江杭州上城望江清江路136号 置地国际电商基地 5楼 （四季星座网办公室）</span><span>收货人：王朝晖15868488816</span></p>
+            <p class="confirmAddress fc9">
+                <#if tbOrderAddressInfo??>
+                    <span>寄送至：${tbOrderAddressInfo.address!}</span>
+                    <span>收货人：${tbOrderAddressInfo.name!}</span>
+                </#if>
+            </p>
         </div>
     </div>
     <div class="settleBtn clearfix">

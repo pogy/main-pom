@@ -14,4 +14,40 @@ import java.io.Serializable;
  * @commonents:
  */
 public class ExpressVo implements Serializable{
+    /**
+     * 快递ID
+     */
+    private Long expressId;
+    /**
+     * 快递名
+     */
+    private String expressName;
+
+    /**
+     * 获取 快递ID
+     */
+    public Long getExpressId() {
+        return this.expressId;
+    }
+
+    /**
+     * 设置 快递ID
+     */
+    public void setExpressId(Long expressId) {
+        this.expressId = expressId;
+    }
+
+    /**
+     * 获取 快递名
+     */
+    public String getExpressName() {
+        return this.expressName;
+    }
+
+    /**
+     * 设置 快递名
+     */
+    public void setExpressName(String expressName) {
+        this.expressName = expressName;
+    }
 }
