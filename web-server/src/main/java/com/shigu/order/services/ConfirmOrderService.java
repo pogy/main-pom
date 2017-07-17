@@ -59,9 +59,9 @@ public class ConfirmOrderService {
         //暂时只有星帮代发，页面不传入数据senderId暂时用1
         bo.setSenderId(1L);
         ItemOrderBO itemOrderBO;
-        if (bo.getOrders() == null ||  bo.getAddressId() == null || bo.getCourierId() == null ) {
+        if (bo.getOrders() == null ) {
             //从购物车进入，bo中只有code，以OrderSubmitVO中信息为准
-            itemOrderBO = generateItemOrderBOByCart(orderSubmitVo);
+            itemOrderBO = generateItemOrderBOByCart(orderSubmitVo,bo.getAddressId(),bo.getCourierId());
         } else {
             //从淘宝进入，包含快递、地址等信息
             itemOrderBO = generateItemOrderBO(bo, orderSubmitVo);
@@ -79,12 +79,14 @@ public class ConfirmOrderService {
      * @param orderSubmitVo
      * @return
      */
-    private ItemOrderBO generateItemOrderBOByCart(OrderSubmitVo orderSubmitVo) {
+    private ItemOrderBO generateItemOrderBOByCart(OrderSubmitVo orderSubmitVo,Long addressId,Long companyId) {
         ItemOrderBO itemOrderBO = new ItemOrderBO();
         itemOrderBO.setSenderId(1L);
-        LogisticsBO logistics = new LogisticsBO();
         //TODO:物流信息
-        itemOrderBO.setLogistics();
+        LogisticsBO logistics = new LogisticsBO();
+        logistics.setAddressId(addressId);
+        logistics.setCompanyId(companyId);
+        itemOrderBO.setLogistics(logistics);
         List<PackageBO> packages = Lists.newArrayList();
         List<Long> serviceIds = Lists.newArrayList();
         //TODO:包材信息
