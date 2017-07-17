@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    
-        <title>发现好店 - 四季星座网</title>
+    <title>四季星座网-分销商中心-开奖结果</title>
     
         <#if $it.keywords??>
         <meta name="keywords" content="${$it.keywords!}">
@@ -14,33 +13,16 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
+    <link href="http://style.571xz.com/fxs2/css/awardInfo.css?t=1499651796942" rel="stylesheet">
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findStore.css?t=1496989703859" rel="stylesheet">
-    
-    
-    <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findStore.js?t=1496989703859"></script>
   </head>
 <body>
+<input id="mainhost" value="http://192.168.1.66/fxs2/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
     <div class="layout">
         <div class="leftbox">
-            <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
-                <div class="cityCon">
-                    <ul>
-                        <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
-                        <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
-                        <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
-                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
-                    </ul>
-                </div>
-            </div>
             <div class="login">
                 <span>你好，</span>
                 <em>请</em>
@@ -193,108 +175,111 @@ var webSite = '${webSite!}';
 
 
 </script>
-<div class="headerV1">
+<div class="header">
     <div class="layout">
-        <div class="logoLeft">
-            <a href="http://${webSite!}.571xz.com">
-                <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt width=168 height=30 />
-            </a>
-            <em>发现好货</em>
-        </div>
-        <div class="search">
-            <div class="tabList clearfix">
-                <ul>
-                    
-                    
-                    
-                    
-                    
-                    <li type="goods" class="select">商品</li>
-                    <li type="store" >档口</li>
-                    
-                </ul>
-                <#if webSite == 'hz' || webSite == 'jx' || webSite == 'cs'>
-                <a href="${main_host!}picSearch.htm?webSite=${webSite!}" class="picSearchBox" target="_blank">图搜</a>
-                </#if>
+        <a class="logo iconfont" href="http://www.571xz.com">&#xe653;</a>
+        
+        <ul>
+            <li ><a href="${main_host!}member/index.htm">首页</a></li>
+            <li ><a href="${main_host!}member/sysSetsindex.htm">账号管理</a></li>
+            
+        </ul>
+    </div>
+</div>
+<div class="wrapper layout">
+    
+    
+    <div class="sidebar">
+        <h2>商品管理</h2>
+        <ul>
+                <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
+                <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
+                <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
+        </ul> 
+        <h2>代发管理</h2>
+        <ul>
+                <li><a href="http://daifa.571xz.com/daili/offerIndex.htm" >我要代发</a></li>
+        </ul> 
+        <h2>财务信息</h2>
+        <ul>
+                <li><a href="${main_host!}member/iwantToRechargein5.htm" >充值</a></li>
+                <li><a href="${main_host!}member/withdraw5Apply.htm" >提现</a></li>
+        </ul> 
+        <h2>账号管理</h2>
+        <ul>
+                <li><a href="${main_host!}member/safeindex.htm" >安全设置</a></li>
+                <li><a href="${main_host!}member/sysSetsindex.htm" >个人设置</a></li>
+                <li><a href="${main_host!}member/fenxiaoZhanghao.htm" >应用绑定</a></li>
+        </ul> 
+        <h2>供应商申请</h2>
+        <ul>
+                <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
+        </ul> 
+        <h2>会员俱乐部</h2>
+        <ul>
+            <li><a class="selected" href="${main_host!}member/awardInfo.htm">开奖结果</a></li> 
+        </ul> 
+    </div>
+    <div class="content shadow-box">
+        <div class="awardInfo">
+            <h3>发现好货活动奖品</h3>
+            <div class="lastTerm">
+                <p class="hdTime">活动日期：${lastHdTime!}<b class="hdRule" jbtn="lastRule">活动规则</b></p>
+                <div class="awardBox">
+                    <div class="awardList">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                    <div class="findGoods">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                    <div class="dailyFind">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="searchBox">
-                
-                <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" >
-                
-                    
-                    
-                    <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
-                    <button class="searchBtn">搜索</button>
-                </form>
+            <div class="thisTerm">
+                <p class="hdTime">活动日期：${thisHdTime!}<b class="hdRule" jbtn="thisRule">活动规则</b></p>
+                <div class="awardBox">
+                    <div class="awardList">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                    <div class="findGoods">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                    <div class="dailyFind">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
-        <script>/*============ xz/page#search BEGIN ============*/
+    </div>
+    
+    <script>/*============ fxs2/awardInfo#main BEGIN ============*/
 
-var webSite = '${webSite!}';
+var allInfo = ${allInfo!}; //JSON字符串用于奖品模块、获奖名单
+var lastUserAward = ${lastUserAward!}; //JSON字符串用于上期奖品
 
-/*============ xz/page#search END ============*/
+/*============ fxs2/awardInfo#main END ============*/
 
 
 </script>
-    </div>
-</div>
-<div class="perchBox">
-    <div class="nav1">
-        <div class="layout">
-            <div class="leftNav">
-                <ul>
-                    <li><a href="http://www.571xz.com/activity/redbull.htm" >发现好货</a><span></span></li>
-                    <li><a href="http://www.571xz.com/activity/findStore.htm" class="select">发现好店</a><span></span></li>
-                </ul>
-            </div>
-            <div class="rightNav">
-                <ul>
-                    <li><a href="http://${webSite!}.571xz.com/market.htm">逛市场</a></li>
-                    <li><a href="http://so.571xz.com/${webSite!}goods.htm">商品库</a></li>
-                    <li><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}">今日新品</a></li>
-                    <li><a href="http://daifa.571xz.com/">一件代发</a></li>
-                    <li><a href="http://zixun.571xz.com/index">资讯</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="storesWrap">
-    <div class="pageTitle layout">
-        <h2>发现好店</h2>
-    </div>
-    <div class="storeList layout">
-        <div class="storeBox">
-            
-            <#list styleItem.shopList as shopItem>
-            <div class="storeItem">
-                <div class="storeInfo">
-                    <h3 class="text-size16 text-center" title="${shopItem.marketName!} ${shopItem.shopNum!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${shopItem.shopId!}" target="_blank">${shopItem.marketName!}<span class="text-size20 pr">${shopItem.shopNum!}</span></a></h3>
-                    <p class="text-center text-999">${shopItem.uText!}</p>
-                    <div class="linkBox">
-                        <a href="javascript:;" xzclick='collectShop' data-shopid='${shopItem.shopId!}'>关注</a>
-                        <a class="toShop" href="http://${webSite!}.571xz.com/shop.htm?id=${shopItem.shopId!}" target="_blank">进店逛逛</a>
-                    </div>
-                </div>
-                <ul class="storeImgs">
-                    <#list shopItem.items as item>
-                    <li><a href="http://${webSite!}.571xz.com/item.htm?id=${item.id!}" target="_blank"><img src="${item.imgsrc!}_240x240.jpg" alt="${item.title!}" title="${item.title!}"></a></li>
-                    </#list>
-                </ul>
-            </div>
-            </#list>
-        </div>
-    </div>
-</div>
-<div class="imgLoading">
-    <div class="layout">
-        <p>数据加载中……</p>
-        <div class="loading"></div>
-    </div> 
+    
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -302,6 +287,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -322,6 +308,8 @@ var webSite = '${webSite!}';
         </p>
     </div>
 </div>
+<script src="http://style.571xz.com/global/js/jquery.js"></script>
+<script src="http://style.571xz.com/fxs2/js/awardInfo.js?t=1499651796942"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

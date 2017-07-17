@@ -13,7 +13,10 @@ public class ItemSimpleInfo {
 
     private String shopTitle;
 
-    public ItemSimpleInfo(Long goodsId, String style, String element,String shopTitle) {
+    public ItemSimpleInfo() {
+    }
+
+    public ItemSimpleInfo(Long goodsId, String style, String element, String shopTitle) {
         this.goodsId = goodsId;
         this.style = style;
         this.element = element;

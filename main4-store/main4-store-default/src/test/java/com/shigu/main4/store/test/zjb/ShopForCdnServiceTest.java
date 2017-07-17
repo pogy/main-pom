@@ -28,7 +28,7 @@ public class ShopForCdnServiceTest {
     @Test
     public void selItemNumberById() {
         Long shopId = 32888L;
-        Long resultCount = shopForCdnService.selItemNumberById(shopId);
+        Long resultCount = shopForCdnService.selItemNumberById(shopId,"hz");
         System.out.println("商品总数：" + resultCount);
     }
 
@@ -45,7 +45,7 @@ public class ShopForCdnServiceTest {
         String scid = "1";
         Date dateFrom = ShopForCdnServiceTest.stringToDate("2017-01-01 13:35:00");
         Date dateTo = new Date();
-        ShiguPager<ItemShowBlock> shiguPager = shopForCdnService.searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
+        ShiguPager<ItemShowBlock> shiguPager = shopForCdnService.searchItemOnsale(keyword, shopId,"hz", orderBy, pageNo, pageSize);
         System.out.println(JSON.toJSONString(shiguPager));
 
         /*shiguPager = shopForCdnService.searchItemOnsale(keyword, shopId, priceFrom, priceTo, orderBy, pageNo, pageSize);

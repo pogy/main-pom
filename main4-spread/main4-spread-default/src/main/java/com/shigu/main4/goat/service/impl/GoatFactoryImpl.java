@@ -1,21 +1,17 @@
 package com.shigu.main4.goat.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.GoatItemData;
-import com.opentae.data.mall.beans.GoatOneItem;
-import com.opentae.data.mall.beans.GoatOneLocation;
-import com.opentae.data.mall.beans.GoodsupNoreal;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.GoatItemDataExample;
 import com.opentae.data.mall.examples.GoatOneItemExample;
 import com.opentae.data.mall.examples.GoatOneLocationExample;
 import com.opentae.data.mall.examples.GoodsupNorealExample;
-import com.opentae.data.mall.interfaces.GoatItemDataMapper;
-import com.opentae.data.mall.interfaces.GoatOneItemMapper;
-import com.opentae.data.mall.interfaces.GoatOneLocationMapper;
-import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.beans.ImgGoat;
 import com.shigu.main4.goat.beans.ItemGoat;
@@ -25,12 +21,15 @@ import com.shigu.main4.goat.exceptions.GoatException;
 import com.shigu.main4.goat.service.Goat;
 import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.*;
+import com.shigu.main4.tools.RedisIO;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,8 +44,12 @@ import java.util.*;
 @Service("goatFactory")
 public class GoatFactoryImpl implements GoatFactory {
 
+    private static final Logger logger = LoggerFactory.getLogger(GoatFactoryImpl.class);
     @Autowired
     GoatOneLocationMapper goatOneLocationMapper;
+
+    @Autowired
+    GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     @Resource(name = "tae_mall_goatOneItemMapper")
     GoatOneItemMapper goatOneItemMapper;
@@ -57,13 +60,17 @@ public class GoatFactoryImpl implements GoatFactory {
     @Resource(name="tae_mall_goodsupNorealMapper")
     GoodsupNorealMapper goodsupNorealMapper;
 
+    @Autowired
+    RedisIO redisIO;
     @Override
     public GoatLocation getAlocation(Long localId) throws GoatException {
         GoatOneLocation local = goatOneLocationMapper.selectByPrimaryKey(localId);
         if (local == null) {
             throw new GoatException("广告位置ID:" + localId + "不存在");
         }
-        return getALocationByVo(BeanMapper.map(local, GoatLocationVO.class));
+        GoatLocation location=getALocationByVo(BeanMapper.map(local, GoatLocationVO.class));
+        location.setCode(local.getLocalCode());
+        return location;
     }
 
     /**
@@ -145,6 +152,23 @@ public class GoatFactoryImpl implements GoatFactory {
 
     @Override
     public <T extends Goat> T selGoatById(Long goatId) throws GoatException {
+        return selGoatByIdAndStatus(goatId,1);
+    }
+
+    @Override
+    public <T extends Goat> T selGoatPrepareById(Long goatId) throws GoatException {
+        return selGoatByIdAndStatus(goatId,2);
+    }
+
+    /**
+     * 按广告ID和数据状态来查广告位信息
+     * @param goatId
+     * @param status
+     * @param <T>
+     * @return
+     * @throws GoatException
+     */
+    private <T extends Goat> T selGoatByIdAndStatus(Long goatId,Integer status) throws GoatException {
         //查广告
         GoatOneItem goi = goatOneItemMapper.selectByPrimaryKey(goatId);
         if (goi == null) {
@@ -152,7 +176,7 @@ public class GoatFactoryImpl implements GoatFactory {
         }
         //查出在线广告数据
         GoatItemDataExample goatItemDataExample = new GoatItemDataExample();
-        goatItemDataExample.createCriteria().andGoatIdEqualTo(goatId).andStatusEqualTo(1);
+        goatItemDataExample.createCriteria().andGoatIdEqualTo(goatId).andStatusEqualTo(status);
         goatItemDataExample.setStartIndex(0);
         goatItemDataExample.setEndIndex(1);
         List<GoatItemData> datas = goatItemDataMapper.selectByConditionList(goatItemDataExample);
@@ -226,10 +250,40 @@ public class GoatFactoryImpl implements GoatFactory {
      * @param itemGoatVO
      * @return
      */
-    private ItemGoat selItemGoat(ItemGoatVO itemGoatVO) {
+    private ItemGoat selItemGoat(final ItemGoatVO itemGoatVO) {
         ItemGoat goat = new ItemGoat() {
+
+            /**
+             * 修改广告时更新对应广告位之前商品搜索权重中的had_goat
+             */
+            private  void modifyLastGoodsForSearch() {
+                Date now = new Date();
+                Long goatId = itemGoatVO.getGoatId();
+                GoatItemData goatItemData = new GoatItemData();
+                goatItemData.setGoatId(goatId);
+                goatItemData.setStatus(1);
+                goatItemData = goatItemDataMapper.selectOne(goatItemData);
+                if (goatItemData != null) {
+                    Object lastItemIdStr = JSONObject.parseObject(goatItemData.getContext()).get("itemId");
+                    if (lastItemIdStr == null || "".equals((lastItemIdStr.toString()).trim())) {
+                        return;
+                    }
+                    Long lastItemId = Long.parseLong(lastItemIdStr.toString());
+                    int step = DateUtil.daysOfTwo(goatItemData.getLastPublishTime(),now);
+                    step = step>7?7:step;
+                    GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+                    goodsCountForsearch.setGoodsId(lastItemId);
+                    goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                    step += goodsCountForsearch.getHadGoat();
+                    goodsCountForsearch.setHadGoat(step>20?20:step);
+                    goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+                }
+            }
+
             @Override
-            public void publish() {
+            public void publish()
+            {
+                modifyLastGoodsForSearch();
                 publishCommon(this);
             }
 
@@ -385,6 +439,7 @@ public class GoatFactoryImpl implements GoatFactory {
      * @param vo
      */
     private <T extends GoatVO> void publishCommon(T vo) {
+        final String INDEX_PAGE_REDIS_PRE="index_page_redis_pre_";
         GoatItemDataExample example=new GoatItemDataExample();
         example.createCriteria().andStatusEqualTo(1).andGoatIdEqualTo(vo.getGoatId());
         GoatItemData gid=new GoatItemData();
@@ -392,6 +447,13 @@ public class GoatFactoryImpl implements GoatFactory {
         goatItemDataMapper.updateByExampleSelective(gid,example);
         gid=serializeGoat(vo);
         goatItemDataMapper.insertSelective(gid);
+        //清除缓存,vo.getCode可能没值,需要通过goatId得到
+        try {
+            T gvo=selGoatById(vo.getGoatId());
+            redisIO.del( INDEX_PAGE_REDIS_PRE + gvo.getCode());
+        } catch (GoatException e) {
+            logger.error("上线清日志失败",e);
+        }
     }
 
     private <T extends GoatVO> void preparePublishCommon(T vo,Long second){

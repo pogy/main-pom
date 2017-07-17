@@ -113,8 +113,8 @@ public class UserLoginAction {
         ObjFromCache<List<ImgBannerVO>> listObjFromCache = spreadService.selImgBanners(SpreadEnum.LOGIN_GT);
         List<ImgBannerVO> vos = listObjFromCache.selObj();
         if (!vos.isEmpty()) {
-            if(listObjFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
-                spreadService.createBySync(listObjFromCache);
+//            if(listObjFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
+//                spreadService.createBySync(listObjFromCache);
             model.addAttribute("index_goat", vos.get(0));
         }
         return "buyer/login";

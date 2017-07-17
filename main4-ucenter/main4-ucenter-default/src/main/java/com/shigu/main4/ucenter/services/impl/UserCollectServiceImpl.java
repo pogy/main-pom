@@ -76,6 +76,7 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     @Autowired
     OssIO ossIO;
+
     /**
      * 查询本店收藏的宝贝
      *
@@ -83,11 +84,10 @@ public class UserCollectServiceImpl implements UserCollectService {
      * @param webSite  分站标识
      * @param pageNo   当前页码
      * @param pageSize 每页条数
-     *
      * @return
      */
     @Override
-    public ShiguPager<ItemCollectVO> selItemCollections(Long userId,String keyword, String webSite, int pageNo, int pageSize) {
+    public ShiguPager<ItemCollectVO> selItemCollections(Long userId, String keyword, String webSite, int pageNo, int pageSize) {
         ShiguPager<ItemCollectVO> pager = new ShiguPager<>();
         if (pageNo < 1)
             pageNo = 1;
@@ -100,12 +100,12 @@ public class UserCollectServiceImpl implements UserCollectService {
         if (userId == null)
             return pager;
 
-        int count = shiguGoodsCollectMapper.countTinyGoodsCollect(userId,keyword, webSite);
+        int count = shiguGoodsCollectMapper.countTinyGoodsCollect(userId, keyword, webSite);
         pager.calPages(count, pageSize);
         if (count > 0) {
             List<TinyItemCollect> shiguGoodsCollects
                     = shiguGoodsCollectMapper.tinyGoodsCollect(
-                            userId,keyword , webSite, (pageNo - 1) * pageSize, pageSize);
+                    userId, keyword, webSite, (pageNo - 1) * pageSize, pageSize);
             pager.setContent(BeanMapper.mapList(shiguGoodsCollects, ItemCollectVO.class));
         }
         return pager;
@@ -130,6 +130,7 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     /**
      * 添加商品收藏
+     *
      * @param collect 收藏
      */
     @Override
@@ -152,6 +153,7 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     /**
      * 单个数据包str组成
+     *
      * @param userId
      * @param itemId
      * @param dataPackageAddr
@@ -159,7 +161,7 @@ public class UserCollectServiceImpl implements UserCollectService {
      * @param relativePath1
      * @return
      */
-    public Map<String,String> createDataPackagestr(Long userId ,Long itemId, String dataPackageAddr, String relativePath,String relativePath1){
+    public Map<String, String> createDataPackagestr(Long userId, Long itemId, String dataPackageAddr, String relativePath, String relativePath1) {
         ShiguGoodsIdGenerator shiguGoodsIdGenerator = new ShiguGoodsIdGenerator();
         shiguGoodsIdGenerator.setGoodId(itemId);
         shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectOne(shiguGoodsIdGenerator);
@@ -168,8 +170,11 @@ public class UserCollectServiceImpl implements UserCollectService {
         }
         ShiguGoodsTiny goods = shiguGoodsTinyMapper.selectGoodsById(shiguGoodsIdGenerator.getWebSite(), itemId);
         ShiguGoodsExtends sge = shiguGoodsExtendsMapper.selectGoodsExtendsById(shiguGoodsIdGenerator.getWebSite(), itemId);
-
+        if (goods == null) {
+            return null;
+        }
         Long shopId = goods.getStoreId();
+
 
         String xinpin = "1";
         if ("false".equals(goods.getIsXinpin())) {
@@ -207,7 +212,7 @@ public class UserCollectServiceImpl implements UserCollectService {
         String picture_status = "";//图片状态
         String auction_point = "0";//返点比例
         String goodsdesc = sge.getGoodsDesc();//
-        goodsdesc = goodsdesc.replaceAll("\"", "'").replace("\n","");
+        goodsdesc = goodsdesc.replaceAll("\"", "'").replace("\n", "");
 
 
         //多图
@@ -215,15 +220,51 @@ public class UserCollectServiceImpl implements UserCollectService {
         DataPackageUtil.addDescpic(relativePath + UtilCharacter.UNIX_FILE_SEPARATOR + "xiangqing" + UtilCharacter.UNIX_FILE_SEPARATOR, goodsdesc);
         String picture = subimageString;//新图片
         String video = "";//视频
-        // 销售属性组合
         TaobaoSkuExample example_ts = new TaobaoSkuExample();
         example_ts.createCriteria().andNumIidEqualTo(goods.getNumIid()).andRemark1IsNull();
         example_ts.or().andNumIidEqualTo(goods.getNumIid()).andRemark1NotEqualTo("delete");
         example_ts.setOrderByClause("properties asc");
+        // 销售属性组合
+        StringBuffer skuProps = new StringBuffer();//sku组合属性
         List<TaobaoSku> list_ts = taobaoSkuMapper.selectByExample(example_ts);////淘宝SKU
-        String skuProps = "";//sku组合属性
-        for (int i = 0; i < list_ts.size(); i++) {
-            skuProps += list_ts.get(i).getPrice() + ":" + list_ts.get(i).getQuantity() + ":" + "" + ":" + list_ts.get(i).getProperties() + ";";
+        String input_custom_cpv = "";//自定义属性
+
+        if (list_ts.size() > 0) {
+
+            for (int i = 0; i < list_ts.size(); i++) {
+                skuProps.append(list_ts.get(i).getPrice() + ":" + list_ts.get(i).getQuantity() + ":" + "" + ":" + list_ts.get(i).getProperties() + ";");
+            }
+        } else {
+            String props = sge.getProps();
+            if (!props.contains("20509") || !props.contains("1627207")) {
+                return null;
+            }
+            String substring = props.substring(props.indexOf("1627207"));
+            String colorStr = substring.substring(0, substring.indexOf("20509:"));
+            String sizeStr = substring.substring(substring.indexOf("20509:"), substring.lastIndexOf("20509:"));
+            String s = substring.replace(colorStr, "").replace(sizeStr, "");
+            String s1 = null;
+            if (s.endsWith(";")) {
+                s1 = s.substring(s.indexOf("20509:"), s.indexOf(";") + 1);
+            } else {
+                if (s.split(":").length > 2) {
+                    s1 = s.substring(s.indexOf("20509:"), s.indexOf(";") + 1);
+                } else {
+                    s1 = s.substring(s.indexOf("20509:")) + ";";
+                }
+            }
+            sizeStr += s1;
+
+            String[] sizes = sizeStr.split("20509:");
+            String[] colors = colorStr.split("1627207:");
+
+            for (int i = 1; i < colors.length; i++) {
+                for (int j = 1; j < sizes.length; j++) {
+                    skuProps.append(goods.getPriceString() + ":" + "100" + ":" + "" + ":");
+                    skuProps.append("1627207:" + colors[i]);
+                    skuProps.append("20509:" + sizes[j]);
+                }
+            }
         }
         String inputPids = "";//用户输入ID串@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         String inputValues = "";//用户输入名-值对@@@@@@@@@@@@@@@@@@@@@@@
@@ -239,24 +280,42 @@ public class UserCollectServiceImpl implements UserCollectService {
         String is_xinpin = "0";//新品
         String foodparame = "";//食品专项
         String features = "mysize_tp:-1";//尺码库
+        String buyareatype = "";//采购地
         String global_stock_type = "";//库存类型
+        String global_stock_country = "";//国家地区
         String sub_stock_type = "";//库存计数
-        String sell_promise = "0";//退换货承诺
+        String qualification = "";//商品资质
         String item_size = "";//物流体积
         String item_weight = "";//物流重量
+        String sell_promise = "0";//退换货承诺
+        String custom_design_flag = "";//定制工具
+        String wireless_desc = "";//无线详情
+        String barcode = "";//商品条形码
+        String sku_barcode = "";//sku 条形码
+        String newprepay = "";//7天退货
+        String subtitle = "";//宝贝卖点
+        String cpv_memo = "";//属性备注
+        String add_qualification = "";//增加商品资质
+        String o2o_bind_service = "";//关联线下服务
+        String tmall_extend = "";//tmall扩展
+        String product_combine = "";//产品组合
+        String tmall_item_prop_combine = "";//tmall属性组合
+        String taoschema_extend = "";//taoschema扩展字段
         //查询商品扩展
-        String stuff_status="1";
-        String list_time =TypeConvert.formatDate(goods.getListTime());
-        if("second".equals(goods.getStuffStatus())){
-            stuff_status="3";
+        String stuff_status = "1";
+        String list_time = TypeConvert.formatDate(goods.getListTime());
+        if ("second".equals(goods.getStuffStatus())) {
+            stuff_status = "3";
         }
 
         String contentsString = "";
-        contentsString+=goods.getTitle()+'\t'+goods.getCid()+'\t'+goods.getCidAll()+'\t'+stuff_status+'\t'+goods.getProv()+'\t'+goods.getCity()+'\t'+item_type+'\t'+goods.getPriceString()+'\t'+auction_increment+'\t';
-        contentsString+=goods.getNum()+""+'\t'+valid_thru+'\t'+freight_payer+'\t'+"0"+'\t'+"0"+'\t'+"0"+'\t'+has_invoice+'\t'+has_warranty+'\t'+approve_status+'\t'+has_showcase+'\t';
-        contentsString+=list_time+'\t'+"\""+goodsdesc+"\""+'\t'+sge.getProps()+'\t'+postage_id+'\t'+has_discount+'\t'+modified+'\t'+upload_fail_msg+'\t'+picture_status+'\t'+auction_point+'\t';
-        contentsString+=picture+'\t'+video+'\t'+skuProps+'\t'+inputPids+'\t'+inputValues+'\t'+goods.getOuterId()+'\t'+sge.getPropertyAlias()+'\t'+auto_fill+'\t'+num_id+'\t'+local_cid+'\t'+navigation_type+'\t';
-        contentsString+=user_name+'\t'+syncStatus+'\t'+is_lighting_consigment+'\t'+is_xinpin+'\t'+foodparame+'\t'+features+'\t'+global_stock_type+'\t'+sub_stock_type+'\t'+sell_promise+'\t'+item_size+'\t'+item_weight+'\r'+'\n';
+        contentsString += goods.getTitle() + '\t' + goods.getCid() + '\t' + goods.getCidAll() + '\t' + stuff_status + '\t' + goods.getProv() + '\t' + goods.getCity() + '\t' + item_type + '\t' + goods.getPriceString() + '\t' + auction_increment + '\t';
+        contentsString += goods.getNum() + "" + '\t' + valid_thru + '\t' + freight_payer + '\t' + "0" + '\t' + "0" + '\t' + "0" + '\t' + has_invoice + '\t' + has_warranty + '\t' + approve_status + '\t' + has_showcase + '\t';
+        contentsString += list_time + '\t' + "\"" + goodsdesc + "\"" + '\t' + sge.getProps() + '\t' + postage_id + '\t' + has_discount + '\t' + modified + '\t' + upload_fail_msg + '\t' + picture_status + '\t' + auction_point + '\t';
+        contentsString += picture + '\t' + video + '\t' + skuProps.toString() + '\t' + inputPids + '\t' + inputValues + '\t' + goods.getOuterId() + '\t' + sge.getPropertyAlias() + '\t' + auto_fill + '\t' + num_id + '\t' + local_cid + '\t' + navigation_type + '\t';
+        contentsString += user_name + '\t' + syncStatus + '\t' + is_lighting_consigment + '\t' + is_xinpin + '\t' + foodparame + '\t' + features + '\t' + buyareatype + '\t' + global_stock_type + '\t' + global_stock_country + '\t' + sub_stock_type + '\t' + item_size + '\t';
+        contentsString += item_weight + '\t' + sell_promise + '\t' + custom_design_flag + '\t' + wireless_desc + '\t' + barcode + '\t' + sku_barcode + '\t' + newprepay + '\t' + subtitle + '\t' + cpv_memo + '\t' + input_custom_cpv + '\t' + qualification + '\t';
+        contentsString += add_qualification + '\t' + o2o_bind_service + '\t' + tmall_extend + '\t' + product_combine + '\t' + tmall_item_prop_combine + '\t' + taoschema_extend + '\r' + '\n';
 
         Map<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("contents", contentsString);
@@ -266,6 +325,7 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     /**
      * 数据包生成
+     *
      * @param userId
      * @param itemIds
      * @return
@@ -275,23 +335,30 @@ public class UserCollectServiceImpl implements UserCollectService {
         // 包头         
         String date_package = "";
         // 版本号         
-        String version="version 1.00";
+        String version = "version 1.00";
         // 英文标题栏         
-        String title_EString="title"+'\t'+"cid"+'\t'+"seller_cids"+'\t'+"stuff_status"+'\t'+"location_state"+'\t'+
-                "location_city"+'\t'+"item_type"+'\t'+"price"+'\t'+"auction_increment"+'\t'+"num"+'\t'+"valid_thru"+'\t'
-                +"freight_payer"+'\t'+"post_fee"+'\t'+"ems_fee"+'\t'+"express_fee"+'\t'+"has_invoice"+'\t'+"has_warranty"
-                +'\t'+"approve_status"+'\t'+"has_showcase"+'\t'+"list_time"+'\t'+"description"+'\t'+"cateProps"+'\t'+"postage_id"
-                +'\t'+"has_discount"+'\t'+"modified"+'\t'+"upload_fail_msg"+'\t'+"picture_status"+'\t'+"auction_point"+'\t'+"picture"+
-                '\t'+"video"+'\t'+"skuProps"+'\t'+"inputPids"+'\t'+"inputValues"+'\t'+"outer_id"+'\t'+"propAlias"+'\t'+"auto_fill"+'\t'
-                +"num_id"+'\t'+"local_cid"+'\t'+"navigation_type"+'\t'+"user_name"+'\t'+"syncStatus"+'\t'+"is_lighting_consigment"+'\t'+"is_xinpin"+'\t'+"foodparame"+'\t'+"features"+'\t'+"global_stock_type"+'\t'+"sub_stock_type"+'\t'+"sell_promise"+'\t'+"item_size"+'\t'+"item_weight";
+        String title_EString = "title" + '\t' + "cid" + '\t' + "seller_cids" + '\t' + "stuff_status" + '\t' + "location_state" + '\t' +
+                "location_city" + '\t' + "item_type" + '\t' + "price" + '\t' + "auction_increment" + '\t' + "num" + '\t' + "valid_thru" + '\t'
+                + "freight_payer" + '\t' + "post_fee" + '\t' + "ems_fee" + '\t' + "express_fee" + '\t' + "has_invoice" + '\t' + "has_warranty"
+                + '\t' + "approve_status" + '\t' + "has_showcase" + '\t' + "list_time" + '\t' + "description" + '\t' + "cateProps" + '\t' + "postage_id"
+                + '\t' + "has_discount" + '\t' + "modified" + '\t' + "upload_fail_msg" + '\t' + "picture_status" + '\t' + "auction_point" + '\t' + "picture" +
+                '\t' + "video" + '\t' + "skuProps" + '\t' + "inputPids" + '\t' + "inputValues" + '\t' + "outer_id" + '\t' + "propAlias" + '\t' + "auto_fill" + '\t'
+                + "num_id" + '\t' + "local_cid" + '\t' + "navigation_type" + '\t' + "user_name" + '\t' + "syncStatus" + '\t' + "is_lighting_consigment" + '\t'
+                + "is_xinpin" + '\t' + "foodparame" + '\t' + "features" + '\t' + "buyareatype" + '\t' + "global_stock_type" + '\t' + "global_stock_country" + '\t'
+                + "sub_stock_type" + '\t' + "item_size" + '\t' + "item_weight" + '\t' + "sell_promise" + '\t' + "custom_design_flag" + '\t'
+                + "wireless_desc" + '\t' + "barcode" + '\t' + "sku_barcode" + '\t' + "newprepay" + '\t' + "subtitle" + '\t' + "cpv_memo" + '\t' + "input_custom_cpv" + '\t'
+                + "qualification" + '\t' + "add_qualification" + '\t' + "o2o_bind_service" + '\t' + "tmall_extend" + '\t' + "product_combine" + '\t' + "tmall_item_prop_combine" + '\t'
+                + "taoschema_extend";
         // 中文标题栏         
-        String title_CString="宝贝名称"+'\t'+"宝贝类目"+'\t'+"店铺类目"+'\t'+"新旧程度"+'\t'+"省"+'\t'+"城市"+'\t'+"出售方式"+'\t'+"宝贝价格"
-                +'\t'+"加价幅度"+'\t'+"宝贝数量"+'\t'+"有效期"+'\t'+"运费承担"+'\t'+"平邮"+'\t'+"EMS"+'\t'+"快递"+'\t'+"发票"+'\t'+"保修"
-                +'\t'+"放入仓库"+'\t'+"橱窗推荐"+'\t'+"开始时间"+'\t'+"宝贝描述"+'\t'+"宝贝属性"+'\t'+"邮费模版ID"+'\t'+"会员打折"+'\t'
-                +"修改时间"+'\t'+"上传状态"+'\t'+"图片状态"+'\t'+"返点比例"+'\t'+"新图片"+'\t'+"视频"+'\t'+"销售属性组合"+'\t'+"用户输入ID串"
-                +'\t'+"用户输入名-值对"+'\t'+"商家编码"+'\t'+"销售属性别名"+'\t'+"代充类型"+'\t'+"数字ID"+'\t'+"本地ID"+'\t'+"宝贝分类"
-                +'\t'+"用户名称"+'\t'+"宝贝状态"+'\t'+"闪电发货"+'\t'+"新品"+'\t'+"食品专项"+'\t'+"尺码库"+'\t'+"库存类型"+'\t'+"库存计数"
-                +'\t'+"退换货承诺"+'\t'+"物流体积"+'\t'+"物流重量";
+        String title_CString = "宝贝名称" + '\t' + "宝贝类目" + '\t' + "店铺类目" + '\t' + "新旧程度" + '\t' + "省" + '\t' + "城市" + '\t' + "出售方式" + '\t' + "宝贝价格"
+                + '\t' + "加价幅度" + '\t' + "宝贝数量" + '\t' + "有效期" + '\t' + "运费承担" + '\t' + "平邮" + '\t' + "EMS" + '\t' + "快递" + '\t' + "发票" + '\t' + "保修"
+                + '\t' + "放入仓库" + '\t' + "橱窗推荐" + '\t' + "开始时间" + '\t' + "宝贝描述" + '\t' + "宝贝属性" + '\t' + "邮费模版ID" + '\t' + "会员打折" + '\t'
+                + "修改时间" + '\t' + "上传状态" + '\t' + "图片状态" + '\t' + "返点比例" + '\t' + "新图片" + '\t' + "视频" + '\t' + "销售属性组合" + '\t' + "用户输入ID串"
+                + '\t' + "用户输入名-值对" + '\t' + "商家编码" + '\t' + "销售属性别名" + '\t' + "代充类型" + '\t' + "数字ID" + '\t' + "本地ID" + '\t' + "宝贝分类"
+                + '\t' + "用户名称" + '\t' + "宝贝状态" + '\t' + "闪电发货" + '\t' + "新品" + '\t' + "食品专项" + '\t' + "尺码库" + '\t' + "采购地" + '\t' + "库存类型" + '\t' + "国家地区"
+                + '\t' + "库存计数" + '\t' + "物流体积" + '\t' + "物流重量" + '\t' + "退换货承诺" + '\t' + "定制工具" + '\t' + "无线详情" + '\t' + "商品条形码" + '\t' + "sku 条形码"
+                + '\t' + "7天退货" + '\t' + "宝贝卖点" + '\t' + "属性值备注" + '\t' + "自定义属性" + '\t' + "商品资质" + '\t' + "增加商品资质" + '\t' + "关联线下服务" + '\t' + "tmall属性组合"
+                + '\t' + "taoschema扩展字段";
 
         String DATA_PACKAGE_ADDR = FilePathConstant.ITEM_COLLECT_PACKAGE_PATH_URL;
 
@@ -311,13 +378,15 @@ public class UserCollectServiceImpl implements UserCollectService {
         StringBuffer shopBuffer = new StringBuffer();
 
 
-
         Long shopId = null;
         for (int i = 0; i < itemIds.size(); i++) {
             Map<String, String> hashMap = createDataPackagestr(userId, itemIds.get(i), DATA_PACKAGE_ADDR, relativePath, relativePath1);
+            if (hashMap == null) {
+                continue;
+            }
             contentBuffer.append(hashMap.get("contents"));
             shopBuffer.append(hashMap.get("shopId"));
-            if (i != itemIds.size() && i!=0) {
+            if (i != itemIds.size() && i != 0) {
                 shopBuffer.append(",");
             }
             if (i == 0) {
@@ -344,8 +413,8 @@ public class UserCollectServiceImpl implements UserCollectService {
             File cvs = new File(relativePath);
             FileUtil.deleteDir(cvs);
             File file = new File(zipFileName);
-            String fileName="datapackage/"+folder_yyyyMM+"/"+uuidString + ".zip";
-            String packageUrl=ossIO.uploadFile(file,fileName);
+            String fileName = "datapackage/" + folder_yyyyMM + "/" + uuidString + ".zip";
+            String packageUrl = ossIO.uploadFile(file, fileName);
 
             logger.info("生成数据包成功：" + packageUrl);
             // 删除本地zip
@@ -375,25 +444,26 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     /**
      * 生成数据包 数据包IDS
+     *
      * @param userId
      * @param collectIdList
      * @return
      */
     @Override
     public boolean createDataPackageByCoolectIds(Long userId, List<Long> collectIdList) {
-        if(userId == null){
+        if (userId == null) {
             return false;
         }
-        if(collectIdList == null||collectIdList.size() == 0){
+        if (collectIdList == null || collectIdList.size() == 0) {
             return false;
         }
         // TODO:待优化
         List<Long> goodsList = new ArrayList<Long>();
-        for(int i = 0;i<collectIdList.size();i++){
+        for (int i = 0; i < collectIdList.size(); i++) {
             ShiguGoodsCollect shiguGoodsCollect = new ShiguGoodsCollect();
             shiguGoodsCollect.setGoodsCollectId(collectIdList.get(i));
             shiguGoodsCollect = shiguGoodsCollectMapper.selectOne(shiguGoodsCollect);
-            if(shiguGoodsCollect == null){
+            if (shiguGoodsCollect == null) {
                 continue;
             }
             goodsList.add(shiguGoodsCollect.getGoodsId());
@@ -404,21 +474,26 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     /**
      * 查询数据包
-     * @param userId 用户ID
-     * @param pageNo 当前页
+     *
+     * @param userId   用户ID
+     * @param pageNo   当前页
      * @param pageSize 总页
      * @return
      */
     @Override
     public ShiguPager<DataPackage> selPackages(Long userId, int pageNo, int pageSize) {
-        if(userId == null){
+        if (userId == null) {
             return new ShiguPager<DataPackage>();
         }
-        if(pageNo == 0){pageNo = 1;}
-        if(pageSize == 0){pageSize = 10;}
+        if (pageNo == 0) {
+            pageNo = 1;
+        }
+        if (pageSize == 0) {
+            pageSize = 10;
+        }
         int startIndx = (pageNo - 1) * pageSize;
-        List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selGoodsPackageList(userId, startIndx,pageSize);
-        if(shiguGoodsDataPackageList.size() == 0){
+        List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selGoodsPackageList(userId, startIndx, pageSize);
+        if (shiguGoodsDataPackageList.size() == 0) {
             return new ShiguPager<DataPackage>();
         }
         List<DataPackage> dataPackageList = new ArrayList<DataPackage>();
@@ -429,7 +504,7 @@ public class UserCollectServiceImpl implements UserCollectService {
             dataPackage.setDataPackageId(shiguGoodsDataPackage.getDataPackageId());
             String dataPackageUrl = shiguGoodsDataPackage.getDataPackageUrl();
 
-            if(StringUtils.isEmpty(shiguGoodsDataPackage.getRemark4())){
+            if (StringUtils.isEmpty(shiguGoodsDataPackage.getRemark4())) {
                 // 没有OSS KEY
                 dataPackageUrl = "http://www.571xz.com/" + dataPackageUrl;
             }
@@ -441,19 +516,19 @@ public class UserCollectServiceImpl implements UserCollectService {
                 itemIdStrs = shiguGoodsDataPackage.getGoodsId().toString();
             }
 
-            String [] itemIds = itemIdStrs.split(",");
+            String[] itemIds = itemIdStrs.split(",");
 
             List<PackageItem> packageItemsList = new ArrayList<PackageItem>();
             for (int j = 0; j < itemIds.length; j++) {
                 Long goodsId = Long.valueOf(itemIds[j]);
                 ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
-                if(shiguGoodsIdGenerator == null){
+                if (shiguGoodsIdGenerator == null) {
                     continue;
                 }
                 ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById(shiguGoodsIdGenerator.getWebSite(),
                         goodsId);
                 PackageItem packageItem = new PackageItem();
-                if(shiguGoodsTiny != null){
+                if (shiguGoodsTiny != null) {
                     packageItem.setId(shiguGoodsTiny.getGoodsId());
                     packageItem.setTitle(shiguGoodsTiny.getTitle());
                     packageItem.setPicUrl(shiguGoodsTiny.getPicUrl());
@@ -463,14 +538,14 @@ public class UserCollectServiceImpl implements UserCollectService {
                 // 下架商品区查找
                 ShiguGoodsSoldout shiguGoodsSoldout = shiguGoodsSoldoutMapper.selectGoodsSoldoutById(goodsId,
                         shiguGoodsIdGenerator.getWebSite());
-                if(shiguGoodsSoldout != null){
+                if (shiguGoodsSoldout != null) {
                     packageItem.setId(shiguGoodsSoldout.getGoodsId());
                     packageItem.setPicUrl(shiguGoodsSoldout.getPicUrl());
                     packageItem.setTitle(shiguGoodsSoldout.getTitle());
                     packageItemsList.add(packageItem);
                 }
             }
-            if(packageItemsList.size() == 0){
+            if (packageItemsList.size() == 0) {
                 continue;
             }
             dataPackage.setGoods(packageItemsList);
@@ -486,15 +561,16 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     /**
      * 删除数据包
+     *
      * @param packageIds
      */
     @Override
     public void delPackagesById(Long userId, List<Long> packageIds) {
-        if(packageIds == null || packageIds.size() == 0){
+        if (packageIds == null || packageIds.size() == 0) {
             logger.error("删除数据包>>入参数据为空");
         }
         List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selGoodsPackageListByIds(packageIds);
-        if(shiguGoodsDataPackageList.size() == 0){
+        if (shiguGoodsDataPackageList.size() == 0) {
             return;
         }
         for (int i = 0; i < shiguGoodsDataPackageList.size(); i++) {
@@ -609,7 +685,8 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     /**
      * 按主键删除店铺收藏
-     * @param userId 用户
+     *
+     * @param userId     用户
      * @param collectIds 收藏ID
      */
     @Override
@@ -625,6 +702,7 @@ public class UserCollectServiceImpl implements UserCollectService {
 
     /**
      * 添加店铺收藏
+     *
      * @param collect 店铺收藏
      */
     @Override

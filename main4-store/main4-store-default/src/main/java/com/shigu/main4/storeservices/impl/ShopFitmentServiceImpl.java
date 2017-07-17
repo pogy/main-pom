@@ -365,30 +365,34 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @return
      */
     @Override
-    public ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,ItemPromoteModule promoteModule) {
+    public ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,String webSite,ItemPromoteModule promoteModule) {
         if (promoteModule.getPromoteType() == 2) {
-            return shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(), 1, promoteModule.getItemNum());
+            return shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(),webSite, 1, promoteModule.getItemNum());
         }
-        String sort = "common";
+        String sort = "time_down";
         switch (promoteModule.getSort()) {
             case 1:
-                sort = "time_down";
+                sort = "common";
                 break;
             case 2:
                 sort = "time_down";
                 break;
             case 3:
-                sort = "price_up";
+                sort = "popular";
                 break;
             case 4:
-                sort = "price_down";
+                sort = "price_up";
                 break;
             case 5:
+                sort = "price_down";
+                break;
+            default:
                 break;
         }
         return shopForCdnService.searchItemOnsale(
                 promoteModule.getKeyword(),
                 shopId,
+                webSite,
                 promoteModule.getLowerLimitPrice(),
                 promoteModule.getUpperLimitPrice(),
                 sort,

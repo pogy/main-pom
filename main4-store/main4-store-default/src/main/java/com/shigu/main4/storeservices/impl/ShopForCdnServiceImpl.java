@@ -1,41 +1,42 @@
 package com.shigu.main4.storeservices.impl;
 
-import com.alibaba.fastjson.JSON;
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
+import com.aliyun.opensearch.sdk.generated.search.Order;
+import com.aliyun.opensearch.sdk.generated.search.SortField;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
-import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.item.vo.OpenItemVo;
+import com.shigu.main4.item.vo.SearchGoodsVo;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.bo.ShopForCdnBo;
-import com.shigu.main4.vo.*;
+import com.shigu.main4.vo.CatPolymerization;
+import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.main4.vo.ShopBaseForCdn;
+import com.shigu.main4.vo.ShopCat;
+import com.shigu.opensearchsdk.OpenSearch;
+import com.shigu.opensearchsdk.builder.AggsBuilder;
+import com.shigu.opensearchsdk.builder.FilterBuilder;
+import com.shigu.opensearchsdk.builder.QueryBuilder;
+import com.shigu.opensearchsdk.builder.SummaryBuild;
+import com.shigu.opensearchsdk.query.Query;
+import com.shigu.opensearchsdk.query.TermQuery;
+import com.shigu.opensearchsdk.response.Facet;
+import com.shigu.opensearchsdk.response.Result;
+import com.shigu.opensearchsdk.response.SearchResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.sort.SortOrder;
-import org.omg.CORBA.SystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.*;
+
 
 /**
  * Created by wxc on 2017/2/20.
@@ -66,200 +67,13 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
     @Resource(name = "tae_mall_shiguGoodsTinyMapper")
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
-    /**
-     * 创建ES对象SearchRequestBuilder
-     *
-     * @param shopForCdnBo
-     * @return
-     */
-    public SearchRequestBuilder getSearchRequestBuilder(ShopForCdnBo shopForCdnBo) {
-        if (shopForCdnBo == null) {
-            shopForCdnBo = new ShopForCdnBo();
-        }
-        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("goods");
-        BoolQueryBuilder boleanQueryBuilder = QueryBuilders.boolQuery();
-        int totalrow = shopForCdnBo.getPageSize() * (shopForCdnBo.getPageNo() - 1);
-        srb.setSize(shopForCdnBo.getPageSize());
-        srb.setFrom(totalrow);
+    @Resource
+    private OpenSearch openSearch;
 
-        // 排序设置
-        if (StringUtils.isEmpty(shopForCdnBo.getOrderBy())) {
-            // 默认时间排序
-            srb.addSort("created", SortOrder.DESC);
-        } else {
-            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price_up")) {
-                srb.addSort("piPrice", SortOrder.ASC);
-            }
-            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price_down")) {
-                srb.addSort("piPrice", SortOrder.DESC);
-            }
-            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "time_up")) {
-                srb.addSort("created", SortOrder.ASC);
-            }
-            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "time_down")) {
-                srb.addSort("created", SortOrder.DESC);
-            }
-            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "soldOutTime_desc")) {
-                srb.addSort("soldOutTime", SortOrder.DESC);
-            }
-        }
+    @Resource
+    private ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
 
-        // shopID查询
-        if (shopForCdnBo.getShopId() != null) {
-            QueryBuilder qb = QueryBuilders.termQuery("storeId", shopForCdnBo.getShopId());
-            boleanQueryBuilder.must(qb);
-        }
-
-        List<Long> goodsIds = shopForCdnBo.getGoodsIds();
-        if (goodsIds != null && !goodsIds.isEmpty()) {
-            boleanQueryBuilder.must(QueryBuilders.termsQuery("goodsId", shopForCdnBo.getGoodsIds()));
-        }
-
-        // 标题
-        if (!StringUtils.isEmpty(shopForCdnBo.getKeyword())) {
-            boleanQueryBuilder.should(QueryBuilders.matchQuery("title", shopForCdnBo.getKeyword()).minimumShouldMatch("100%"));
-            boleanQueryBuilder.should(QueryBuilders.matchQuery("goodsNo", shopForCdnBo.getKeyword()).minimumShouldMatch("100%"));
-            boleanQueryBuilder.minimumNumberShouldMatch(1);
-        }
-
-        // CID查询条件
-        if (shopForCdnBo.getCid() != null) {
-            QueryBuilder qb = QueryBuilders.termQuery("cid", shopForCdnBo.getCid());
-            boleanQueryBuilder.must(qb);
-        }
-
-        // 价格区间条件
-        if (shopForCdnBo.getPriceFrom() != null) {
-            Double fromPrice = shopForCdnBo.getPriceFrom() * 100;
-            RangeQueryBuilder qb = QueryBuilders.rangeQuery("piPrice").from(fromPrice.longValue());
-            boleanQueryBuilder.must(qb);
-        }
-
-        if (shopForCdnBo.getPriceTo() != null) {
-            Double toPrice = shopForCdnBo.getPriceTo() * 100;
-            RangeQueryBuilder qb = QueryBuilders.rangeQuery("piPrice").to(toPrice.longValue());
-            boleanQueryBuilder.must(qb);
-        }
-
-        // 时间范围区间
-        if (shopForCdnBo.getDateFrom() != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            RangeQueryBuilder qb = QueryBuilders.rangeQuery("created").from(sdf.format(shopForCdnBo.getDateFrom()));
-            if (shopForCdnBo.getDateTo() != null) {
-                qb.to(sdf.format(shopForCdnBo.getDateTo()));
-            }
-            boleanQueryBuilder.must(qb);
-        } else {
-            if (shopForCdnBo.getDateTo() != null) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                RangeQueryBuilder qb = QueryBuilders.rangeQuery("created").to(sdf.format(shopForCdnBo.getDateTo()));
-                boleanQueryBuilder.must(qb);
-            }
-        }
-
-        // 时间范围区间
-        if (shopForCdnBo.getSoldDateFrom() != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            RangeQueryBuilder qb = QueryBuilders.rangeQuery("soldOutTime").from(sdf.format(shopForCdnBo.getSoldDateFrom()));
-            if (shopForCdnBo.getSoldDateTo() != null) {
-                qb.to(sdf.format(shopForCdnBo.getSoldDateTo()));
-            }
-            boleanQueryBuilder.must(qb);
-        } else {
-            if (shopForCdnBo.getSoldDateTo() != null) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                RangeQueryBuilder qb = QueryBuilders.rangeQuery("soldOutTime").to(sdf.format(shopForCdnBo.getSoldDateTo()));
-                boleanQueryBuilder.must(qb);
-            }
-        }
-
-        if (shopForCdnBo.getIsOff() != null) {
-            QueryBuilder qb = QueryBuilders.termQuery("is_off", shopForCdnBo.getIsOff());
-            boleanQueryBuilder.must(qb);
-        }
-
-        if (shopForCdnBo.getScid() != null) {
-            //先查一下是否父级
-            Long scid=Long.valueOf(shopForCdnBo.getScid());
-            String scidStr;
-            ShiguStorecat storecat=storeCatMapper.selectByPrimaryKey(scid);
-            if(storecat!=null&&storecat.getIsParent()!=null&&storecat.getIsParent()==1){//是父类
-                ShiguStorecatExample catExample=new ShiguStorecatExample();
-                catExample.createCriteria().andParentScidEqualTo(scid);
-                List<ShiguStorecat> subcats=storeCatMapper.selectByExample(catExample);//子级类目
-                scidStr="";
-                if(subcats.size() == 0){
-                    scid=(scid-shopForCdnBo.getShopId())/1000000;
-                    scidStr=scid.toString();
-                }else{
-                    for(ShiguStorecat c:subcats){
-                        scidStr+=","+((c.getScid()-shopForCdnBo.getShopId())/1000000);
-                    }
-                    if(scidStr.startsWith(",")){
-                        scidStr=scidStr.substring(1);
-                    }else{
-                        scidStr=scid.toString();
-                    }
-                }
-            }else{
-                scid=(scid-shopForCdnBo.getShopId())/1000000;
-                scidStr=scid.toString();
-            }
-
-            boleanQueryBuilder.must(QueryBuilders.queryStringQuery(scidStr).field("cidAll"));
-        }
-        srb.setQuery(boleanQueryBuilder);
-
-        return srb;
-    }
-
-    /**
-     * 根据条件BO获取数据
-     *
-     * @param shopForCdnBo
-     * @return
-     */
-    public List<ItemShowBlock> selectItemShowBlockByEsBo(ShopForCdnBo shopForCdnBo) {
-        SearchRequestBuilder srb = getSearchRequestBuilder(shopForCdnBo);
-        SearchResponse response = srb.execute().actionGet();
-        SearchHit[] hits = response.getHits().getHits();
-        List<ItemShowBlock> itemShowBlockList = new ArrayList<ItemShowBlock>();
-        if (hits != null && hits.length > 0) {
-            for (SearchHit hit : hits) {
-                ShiguGoodsTiny shiguGoodsTiny = JSON.parseObject(hit.getSourceAsString(), ShiguGoodsTiny.class);
-                if (shiguGoodsTiny == null) {
-                    return null;
-                }
-                ItemShowBlock itemShowBlock = new ItemShowBlock();
-                itemShowBlock.setImgUrl(shiguGoodsTiny.getPicUrl());
-                itemShowBlock.setItemId(shiguGoodsTiny.getGoodsId());
-                if(shiguGoodsTiny.getPiPrice()!=null)//暂时用一下,等数据修好了,再删除本行
-                itemShowBlock.setPrice(shiguGoodsTiny.getPiPrice().toString());
-                itemShowBlock.setTitle(shiguGoodsTiny.getTitle());
-                itemShowBlock.setWebSite(shiguGoodsTiny.getWebSite());
-                itemShowBlock.setGoodsNo(shiguGoodsTiny.getGoodsNo());
-                itemShowBlock.setSoldOutTime(DateUtil.dateToString(shiguGoodsTiny.getSoldOutTime(),DateUtil.patternD));
-                itemShowBlockList.add(itemShowBlock);
-            }
-        }
-        return itemShowBlockList;
-    }
-
-
-    /**
-     * 查询数据数
-     *
-     * @param shopForCdnBo
-     * @return
-     */
-    public Long selectCountByEsBo(ShopForCdnBo shopForCdnBo) {
-        SearchRequestBuilder srb = getSearchRequestBuilder(shopForCdnBo);
-        srb.setSearchType(SearchType.COUNT);
-        SearchResponse response = srb.execute().actionGet();
-        Long total = response.getHits().getTotalHits();
-        return total;
-    }
-
+    private static final String SEARCH_APP = "goods_search_";
     /**
      * 按店ID查店内类目
      *
@@ -377,12 +191,13 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return
      */
     @Override
-    public Long selItemNumberById(Long shopId) {
+    public Long selItemNumberById(Long shopId,String webSite) {
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setShopId(shopId);
         shopForCdnBo.setIsOff(0);
-        Long total = selectCountByEsBo(shopForCdnBo);
-        return total;
+        shopForCdnBo.setPageNo(1);
+        shopForCdnBo.setPageSize(0);
+        return ((long) getRequestBuilder(shopForCdnBo,webSite).execute().getResult().getTotal());
     }
 
     /**
@@ -392,6 +207,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块信息
      */
     @Override
+    @SuppressWarnings("unchecked")
     public List<ItemShowBlock> selRecomments(Long shopId) {
         if(shopId == null){
             return null;
@@ -426,6 +242,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             itemShowBlock.setPrice(String.valueOf(shiguGoodsTiny.getPiPrice()));
             itemShowBlock.setItemId(shiguGoodsTiny.getGoodsId());
             itemShowBlock.setImgUrl(shiguGoodsTiny.getPicUrl());
+            itemShowBlock.setShopId(shiguGoodsTiny.getStoreId());
             itemShowBlockList.add(itemShowBlock);
         }
         cache.put(shopId, itemShowBlockList);
@@ -450,24 +267,16 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             ShiguShop shiguShop = shiguShopMapper.selectFieldsByPrimaryKey(shopId, FieldUtil.codeFields("shop_id,web_site"));
             if (shiguShop != null) {
                 // 1. ES 查询店铺商品数量（按类目分）
-                SearchResponse response = ElasticConfiguration.searchClient
-                        .prepareSearch("goods")
-                        .setTypes(shiguShop.getWebSite())   // 设置分站
-                        .setQuery(QueryBuilders.boolQuery()
-                                .must(QueryBuilders.termQuery("storeId", shopId))
-                                .filter(QueryBuilders.termQuery("is_off", 0))
-                        )
-                        .addAggregation(AggregationBuilders.terms("cname_count").field("cid").size(1000)
-                                .subAggregation(AggregationBuilders.count("result").field("goodsId")))
-                        .execute().actionGet();
+                com.shigu.opensearchsdk.response.SearchResponse<SearchGoodsVo> searchResponse = openSearch.searchFrom(SearchGoodsVo.class)
+                        .addFilter(FilterBuilder.number("store_id", shopId))
+                        .addAggs(AggsBuilder.count("cid").size(1000))
+                        .execute();
 
-                Aggregation cname_count = response.getAggregations().get("cname_count");
-                // 2. 取得店铺存在商品的类目ID
+                List<Facet.Bucket> items = searchResponse.getResult().getFacet().get(0).getItems();
                 List<Long> cids = new ArrayList<>();
                 cids.add(-10086L);// In empty 会尴尬的
-                LongTerms buckets = (LongTerms) cname_count;
-                for (Terms.Bucket bucket : buckets.getBuckets()) {
-                    cids.add((Long) bucket.getKeyAsNumber());
+                for (Facet.Bucket item : items) {
+                    cids.add(((Facet.LongBucket) item).getValue());
                 }
 
                 // 3. 商品所属类目
@@ -488,13 +297,13 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                 // 5. 父级类目Map<父类目ID，父类目信息>
                 Map<Long, CatPolymerization> polymerizationMap = new HashMap<>();
                 for (ShiguTaobaocat parentTaobaoCat : parentTaobaoCats) {
-                    CatPolymerization catPolymerization = newCatPolymerization(parentTaobaoCat, buckets);
+                    CatPolymerization catPolymerization = newCatPolymerization(parentTaobaoCat, items);
                     catPolymerization.setSubPolymerizations(new ArrayList<CatPolymerization>());
                     polymerizationMap.put(parentTaobaoCat.getCid(), catPolymerization);
                 }
                 // 6. 处理商品类目
                 for (ShiguTaobaocat shiguTaobaocat : shiguTaobaocats) {
-                    CatPolymerization polymerization = newCatPolymerization(shiguTaobaocat, buckets);
+                    CatPolymerization polymerization = newCatPolymerization(shiguTaobaocat, items);
                     CatPolymerization parentPolymerization = polymerizationMap.get(shiguTaobaocat.getParentCid());
 
                     // 有父类目的，加入其父类目的子类目列表%……%￥￥……&*……&
@@ -512,20 +321,23 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         return polymerizationList;
     }
 
-    private CatPolymerization newCatPolymerization(ShiguTaobaocat shiguTaobaocat, LongTerms buckets) {
+    private CatPolymerization newCatPolymerization(ShiguTaobaocat shiguTaobaocat, List<Facet.Bucket> buckets) {
         CatPolymerization polymerization = new CatPolymerization();
         polymerization.setName(shiguTaobaocat.getCname());
         polymerization.setCid(shiguTaobaocat.getCid());
-        Terms.Bucket bucket = buckets.getBucketByKey(shiguTaobaocat.getCid().toString());
-        if (bucket != null)
-            polymerization.setNumber(bucket.getDocCount());
+        for (Facet.Bucket bucket : buckets) {
+            if (((Facet.LongBucket) bucket).getValue().equals(shiguTaobaocat.getCid())) {
+                polymerization.setNumber(((long) bucket.getCount()));
+                break;
+            }
+        }
         return polymerization;
     }
 
     @Override
-    public ShiguPager<ItemShowBlock> searchItemOnsale(List<Long> ids, int pageNo, int pageSize) {
+    public ShiguPager<ItemShowBlock> searchItemOnsale(List<Long> ids,String webSite, int pageNo, int pageSize) {
         ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<>();
-        if (ids.isEmpty()) {
+        if (ids == null || ids.isEmpty()) {
             shiguPager.setContent(Collections.<ItemShowBlock>emptyList());
             shiguPager.calPages(0,5);
             shiguPager.setNumber(1);
@@ -536,10 +348,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shopForCdnBo.setPageSize(pageSize);
         shopForCdnBo.setIsOff(0);
         shopForCdnBo.setGoodsIds(ids);
-        shiguPager.setContent(selectItemShowBlockByEsBo(shopForCdnBo));
-        Long resultCount = selectCountByEsBo(shopForCdnBo);
-        shiguPager.calPages(resultCount.intValue(), pageSize);
-        shiguPager.setNumber(pageNo);
+        selectItemShowBlockByBo(shopForCdnBo,shiguPager,webSite);
         return shiguPager;
     }
 
@@ -553,7 +362,8 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块分页信息
      */
     @Override
-    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, String orderBy, int pageNo, int pageSize) {
+    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId,String webSite, String orderBy, int pageNo, int pageSize) {
+        ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setKeyword(keyword);
         shopForCdnBo.setOrderBy(orderBy);
@@ -561,13 +371,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shopForCdnBo.setPageSize(pageSize);
         shopForCdnBo.setShopId(shopId);
         shopForCdnBo.setIsOff(0);
-        List<ItemShowBlock> itemShowBlockList = selectItemShowBlockByEsBo(shopForCdnBo);
-        ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
-        shiguPager.setContent(itemShowBlockList);
-        Long resultCount = selectCountByEsBo(shopForCdnBo);
-        shiguPager.calPages(resultCount.intValue(), pageSize);
-        shiguPager.setContent(itemShowBlockList);
-        shiguPager.setNumber(pageNo);
+        selectItemShowBlockByBo(shopForCdnBo,shiguPager,webSite);
         return shiguPager;
     }
 
@@ -583,10 +387,11 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块分页信息
      */
     @Override
-    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Long cid, String scid, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
+    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId,String webSite, Long cid, String scid, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
 //        if (cid == null && StringUtils.isEmpty(scid)) {
 //            return searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
 //        }
+        ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setKeyword(keyword);
         shopForCdnBo.setOrderBy(orderBy);
@@ -598,12 +403,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shopForCdnBo.setIsOff(0);
         shopForCdnBo.setDateFrom(startTime);
         shopForCdnBo.setDateTo(endTime);
-        List<ItemShowBlock> itemShowBlockList = selectItemShowBlockByEsBo(shopForCdnBo);
-        Long resultCount = selectCountByEsBo(shopForCdnBo);
-        ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
-        shiguPager.calPages(resultCount.intValue(), pageSize);
-        shiguPager.setContent(itemShowBlockList);
-        shiguPager.setNumber(pageNo);
+        selectItemShowBlockByBo(shopForCdnBo,shiguPager,webSite);
         return shiguPager;
     }
 
@@ -619,10 +419,11 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块分页信息
      */
     @Override
-    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId, Double priceFrom, Double priceTo, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
+    public ShiguPager<ItemShowBlock> searchItemOnsale(String keyword, Long shopId,String webSite, Double priceFrom, Double priceTo, String orderBy,Date startTime,Date endTime, int pageNo, int pageSize) {
 //        if (priceFrom == null || priceTo == null) {
 //            return searchItemOnsale(keyword, shopId, orderBy, pageNo, pageSize);
 //        }
+        ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setKeyword(keyword);
         shopForCdnBo.setOrderBy(orderBy);
@@ -634,12 +435,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shopForCdnBo.setIsOff(0);
         shopForCdnBo.setDateFrom(startTime);
         shopForCdnBo.setDateTo(endTime);
-        List<ItemShowBlock> itemShowBlockList = selectItemShowBlockByEsBo(shopForCdnBo);
-        ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
-        Long resultCount = selectCountByEsBo(shopForCdnBo);
-        shiguPager.calPages(resultCount.intValue(), pageSize);
-        shiguPager.setContent(itemShowBlockList);
-        shiguPager.setNumber(pageNo);
+        selectItemShowBlockByBo(shopForCdnBo,shiguPager,webSite);
         return shiguPager;
     }
 
@@ -662,10 +458,10 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         shopForCdnBo.setSoldDateTo(to);
         shopForCdnBo.setIsOff(1);
         shopForCdnBo.setOrderBy("soldOutTime_desc");
-        List<ItemShowBlock> itemShowBlockList = selectItemShowBlockByEsBo(shopForCdnBo);
+        ShiguGoodsSoldoutExample shiguGoodsSoldoutExample = createExampleByBo(shopForCdnBo);
+        List<ItemShowBlock> itemShowBlockList = selectItemShowBlockByDBBo(shiguGoodsSoldoutExample);
         ShiguPager<ItemShowBlock> shiguPager = new ShiguPager<ItemShowBlock>();
-        Long resultCount = selectCountByEsBo(shopForCdnBo);
-        shiguPager.calPages(resultCount.intValue(), pageSize);
+        shiguPager.calPages(shiguGoodsSoldoutMapper.countByExample(shiguGoodsSoldoutExample), pageSize);
         shiguPager.setContent(itemShowBlockList);
         shiguPager.setNumber(pageNo);
         return shiguPager;
@@ -695,6 +491,292 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             }
         }
         return shopBase;
+    }
+
+    /**
+     * 按条件Bo查询店内仓库中的商品
+     *
+     * @param shopForCdnBo     查询条件
+     * @param shiguPager       返回页面
+     * @param webSite   分站信息
+     * @return 商品豆腐块信息
+     */
+    public List<ItemShowBlock> selectItemShowBlockByBo(ShopForCdnBo shopForCdnBo, ShiguPager<ItemShowBlock> shiguPager, String webSite) {
+        if (shopForCdnBo == null) {
+            shopForCdnBo = new ShopForCdnBo();
+        }
+        boolean isDataBase = (shopForCdnBo.getIsOff() != null && !shopForCdnBo.getIsOff().equals(0)) || shopForCdnBo.getSoldDateFrom() != null || shopForCdnBo.getSoldDateTo() != null;
+        if (isDataBase) {
+            return selectItemShowBlockByDBBo(shopForCdnBo, shiguPager, webSite);
+        }
+        return selectItemSearchBlockByOpenSearchBo(shopForCdnBo,shiguPager,webSite);
+    }
+
+    /**
+     * 按条件Bo在OpenSearch查询店内仓库中的商品
+     *
+     * @param shopForCdnBo     查询条件
+     * @param shiguPager       返回页面
+     * @param webSite   分站信息
+     * @return 商品豆腐块信息
+     */
+    public List<ItemShowBlock> selectItemSearchBlockByOpenSearchBo(ShopForCdnBo shopForCdnBo, ShiguPager<ItemShowBlock> shiguPager, String webSite) {
+        List<ItemShowBlock> itemShowBlocks = Lists.newArrayList();
+        shiguPager.setNumber(shopForCdnBo.getPageNo());
+        shiguPager.setContent(itemShowBlocks);
+        OpenSearch.RequestBuilder<OpenItemVo> searchParamsBuilder = getRequestBuilder(shopForCdnBo,webSite);
+        SearchResponse<OpenItemVo> response = searchParamsBuilder.execute();
+        if (response.isSuccess()) {
+            Result<OpenItemVo> result = response.getResult();
+            shiguPager.calPages(result.getTotal(), shopForCdnBo.getPageSize());
+            for (OpenItemVo itemVo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
+                ItemShowBlock itemShowBlock = BeanMapper.map(itemVo,ItemShowBlock.class);
+                itemShowBlock.setImgUrl(itemVo.getPicUrl());
+                itemShowBlock.setPrice(itemShowBlock.parsePrice(itemVo.getPiPrice()));
+                itemShowBlock.setItemId(itemVo.getGoodsId());
+                itemShowBlock.setWebSite(webSite);
+                itemShowBlock.setShopId(itemVo.getStoreId());
+                itemShowBlocks.add(itemShowBlock);
+            }
+        }
+        return itemShowBlocks;
+    }
+
+    /**
+     * 按条件Bo封装OpenSearch查询条件
+     *
+     * @param shopForCdnBo     查询条件
+     * @return OpenSearch的SearchParamsBuilder条件
+     */
+    public OpenSearch.RequestBuilder<OpenItemVo> getRequestBuilder(ShopForCdnBo shopForCdnBo,String webSite) {
+        String appNameHead="goods_search_";
+        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder = openSearch.searchFrom(appNameHead + webSite,OpenItemVo.class)
+                .from(shopForCdnBo.getPageSize() * (shopForCdnBo.getPageNo() - 1))
+                .size(shopForCdnBo.getPageSize());
+
+        String orderBy = shopForCdnBo.getOrderBy();
+        if (StringUtils.isEmpty(orderBy)) {
+            requestBuilder.addSort(new SortField("created", Order.DECREASE));
+        } else {
+            switch (orderBy) {
+                case "price_up":
+                    requestBuilder.addSort(new SortField("pi_price", Order.INCREASE));
+                    break;
+                case "price_down":
+                    requestBuilder.addSort(new SortField("pi_price", Order.DECREASE));
+                    break;
+                case "time_up":
+                    requestBuilder.addSort(new SortField("created", Order.INCREASE));
+                    break;
+                case "time_down":
+                    requestBuilder.addSort(new SortField("created", Order.DECREASE));
+                    break;
+                case "popular":
+                    requestBuilder.setRank("goods_search_default","goods_search_popular",2000);
+                    break;
+                case "common":
+                    requestBuilder.setRank("rough_project_c","project_c",2000);
+                    break;
+                default:
+                    requestBuilder.addSort(new SortField("created", Order.DECREASE));
+                    break;
+            }
+        }
+
+        String keyword = shopForCdnBo.getKeyword();
+        Query searchQuery = null;
+        if(StringUtils.isNotBlank(keyword)) {
+            searchQuery = QueryBuilder.search("title", keyword).boost(10).or(QueryBuilder.search("goods_no", keyword).boost(5));
+            requestBuilder.addSummary(SummaryBuild.field("title").length(120));
+        }
+        Long shopId = shopForCdnBo.getShopId();
+        if (shopId != null && shopForCdnBo.getScid() != null) {
+            Long scid = Long.valueOf(shopForCdnBo.getScid());
+            String scidStr = selScidStr(shopId,scid);
+            TermQuery cidAllQuery = QueryBuilder.termSearch("cid_all", scidStr);
+            if (searchQuery != null) {
+                searchQuery.and(cidAllQuery);
+            } else {
+                searchQuery = cidAllQuery;
+            }
+        }
+        if (searchQuery != null) {
+            requestBuilder.setQuery(searchQuery);
+        }
+        shopId = shopForCdnBo.getShopId();
+        if (shopId != null) {
+            requestBuilder.addFilter(FilterBuilder.number("store_id", shopId));
+        }
+        List<Long> goodsIds = shopForCdnBo.getGoodsIds();
+        if (goodsIds != null ) {
+            requestBuilder.addFilter(FilterBuilder.termsIn("goods_id", goodsIds.toArray(new Long[goodsIds.size()])));
+        }
+        Long cid = shopForCdnBo.getCid();
+        if (cid != null) {
+            requestBuilder.addFilter(FilterBuilder.number("cid", cid));
+        }
+        Double priceFrom = shopForCdnBo.getPriceFrom();
+        if (priceFrom != null) {
+            Double fromPrice = priceFrom * 100;
+            requestBuilder.addFilter(FilterBuilder.number("pi_price").gte(fromPrice.longValue()));
+        }
+        Double priceTo = shopForCdnBo.getPriceTo();
+        if (priceTo != null) {
+            Double toPrice = priceTo * 100;
+            requestBuilder.addFilter(FilterBuilder.number("pi_price").lte(toPrice.longValue()));
+        }
+        Date dateFrom = shopForCdnBo.getDateFrom();
+        if (dateFrom != null) {
+            requestBuilder.addFilter(FilterBuilder.number("created").gte(dateFrom.getTime()));
+        }
+        Date dateTo = shopForCdnBo.getDateTo();
+        if (dateTo != null) {
+            requestBuilder.addFilter(FilterBuilder.number("created").lte(dateTo.getTime()));
+        }
+        return requestBuilder;
+    }
+
+    /**
+     * 按shopId和scid获取到对应scidStr/cid_all
+     *
+     * @param shopId
+     * @param scid
+     * @return 计算出cid_all或scid_str的结果
+     */
+    private String selScidStr(Long shopId, Long scid) {
+        String scidStr;
+        ShiguStorecat storecat = storeCatMapper.selectByPrimaryKey(scid);
+        if(storecat != null && storecat.getIsParent() != null && storecat.getIsParent() == 1) {//是父类
+            ShiguStorecatExample catExample=new ShiguStorecatExample();
+            catExample.createCriteria().andParentScidEqualTo(scid);
+            List<ShiguStorecat> subcats =storeCatMapper.selectByExample(catExample);//子级类目
+            if(subcats.size() == 0){
+                scid=(scid-shopId)/1000000;
+                scidStr= scid.toString();
+            }else{
+                StringBuilder scidStrb = new StringBuilder();
+                for(ShiguStorecat c:subcats){
+                    scidStrb.append(",").append((c.getScid() - shopId) / 1000000);
+                }
+                if(scidStrb.toString().startsWith(",")){
+                    scidStr = scidStrb.substring(1);
+                }else{
+                    scidStr = scid.toString();
+                }
+            }
+        }else{
+            scid=(scid-shopId)/1000000;
+            scidStr = scid.toString();
+        }
+        return scidStr;
+    }
+
+    /**
+     * 按条件Bo在数据库中查询店内仓库中的商品
+     *
+     * @param shopForCdnBo     查询条件
+     * @param shiguPager       返回页面
+     * @param webSite   分站信息
+     * @return 商品豆腐块信息
+     */
+    private  List<ItemShowBlock> selectItemShowBlockByDBBo(ShopForCdnBo shopForCdnBo, ShiguPager<ItemShowBlock> shiguPager, String webSite) {
+        ShiguGoodsSoldoutExample shiguGoodsSoldoutExample = createExampleByBo(shopForCdnBo);
+        List<ItemShowBlock> itemShowBlocks = selectItemShowBlockByDBBo(shiguGoodsSoldoutExample);
+        shiguPager.setContent(itemShowBlocks);
+        int total = shiguGoodsSoldoutMapper.countByExample(shiguGoodsSoldoutExample);
+        shiguPager.calPages(total, shopForCdnBo.getPageSize());
+        shiguPager.setNumber(shopForCdnBo.getPageNo());
+        return itemShowBlocks;
+    }
+
+    private List<ItemShowBlock> selectItemShowBlockByDBBo(ShiguGoodsSoldoutExample shiguGoodsSoldoutExample) {
+        List<ShiguGoodsSoldout> shiguGoodsSoldouts = shiguGoodsSoldoutMapper.selectFieldsByExample(shiguGoodsSoldoutExample, FieldUtil.codeFields("title,goods_id,pic_url,pi_price,web_site,goods_no,soldout_time"));
+        List<ItemShowBlock> itemShowBlocks = new ArrayList<>();
+        for (ShiguGoodsSoldout shiguGoodsSoldout : shiguGoodsSoldouts){
+            ItemShowBlock itemShowBlock= new ItemShowBlock();
+            itemShowBlock.setShopId(shiguGoodsSoldout.getStoreId());
+            itemShowBlock.setImgUrl(shiguGoodsSoldout.getPicUrl());
+            itemShowBlock.setTitle(shiguGoodsSoldout.getTitle());
+            itemShowBlock.setItemId(shiguGoodsSoldout.getGoodsId());
+            if (null!=shiguGoodsSoldout.getPiPrice()){
+
+                itemShowBlock.setPrice(shiguGoodsSoldout.getPiPrice().toString());
+            }
+            itemShowBlock.setWebSite(shiguGoodsSoldout.getWebSite());
+            itemShowBlock.setGoodsNo(shiguGoodsSoldout.getGoodsNo());
+            itemShowBlock.setSoldOutTime(shiguGoodsSoldout.getSoldoutTime().toString());
+            itemShowBlocks.add(itemShowBlock);
+        }
+        return itemShowBlocks;
+    }
+
+    private ShiguGoodsSoldoutExample createExampleByBo(ShopForCdnBo shopForCdnBo) {
+        ShiguGoodsSoldoutExample shiguGoodsSoldoutExample = new ShiguGoodsSoldoutExample();
+        ShiguGoodsSoldoutExample.Criteria criteria = shiguGoodsSoldoutExample.createCriteria();
+        // 排序设置
+        if (StringUtils.isEmpty(shopForCdnBo.getOrderBy())) {
+            // 默认时间排序
+            shiguGoodsSoldoutExample.setOrderByClause("created desc");
+        } else {
+            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price_up")) {
+                shiguGoodsSoldoutExample.setOrderByClause("pi_price asc");
+            }
+            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price_down")) {
+                shiguGoodsSoldoutExample.setOrderByClause("pi_price desc");
+            }
+            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "time_up")) {
+                shiguGoodsSoldoutExample.setOrderByClause("created asc");
+            }
+            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "time_down")) {
+                shiguGoodsSoldoutExample.setOrderByClause("created desc");
+            }
+            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "soldOutTime_desc")) {
+                shiguGoodsSoldoutExample.setOrderByClause("soldout_time desc");
+            }
+        }
+        /*
+         * 设置查询条件
+         */
+        if (null != shopForCdnBo.getKeyword()&&StringUtils.isNotEmpty(shopForCdnBo.getKeyword())) {
+            criteria.andTitleLike("%"+shopForCdnBo.getKeyword()+"%");
+        }
+        if (null != shopForCdnBo.getGoodsIds() && shopForCdnBo.getGoodsIds().size() > 0) {
+            criteria.andGoodsIdIn(shopForCdnBo.getGoodsIds());
+        }
+        if (null != shopForCdnBo.getCid()) {
+            criteria.andCidEqualTo(shopForCdnBo.getCid());
+        }
+        if (shopForCdnBo.getPriceFrom() != null) {
+            criteria.andPiPriceGreaterThanOrEqualTo(((Double) (shopForCdnBo.getPriceFrom() * 100)).longValue());
+        }
+        if (shopForCdnBo.getPriceTo() != null) {
+            criteria.andPiPriceLessThanOrEqualTo(((Double) (shopForCdnBo.getPriceTo() * 100)).longValue());
+        }
+        if (shopForCdnBo.getDateFrom() != null) {
+            criteria.andCreatedGreaterThanOrEqualTo(shopForCdnBo.getDateFrom());
+        }
+        if (shopForCdnBo.getDateTo() != null) {
+            criteria.andCreatedLessThanOrEqualTo(shopForCdnBo.getDateTo());
+        }
+        if (shopForCdnBo.getSoldDateFrom() != null) {
+            criteria.andSoldoutTimeGreaterThanOrEqualTo(shopForCdnBo.getSoldDateFrom());
+        }
+        if (shopForCdnBo.getSoldDateTo() != null) {
+            criteria.andSoldoutTimeLessThanOrEqualTo(shopForCdnBo.getSoldDateTo());
+        }
+        if (null != shopForCdnBo.getShopId()) {
+            criteria.andStoreIdEqualTo(shopForCdnBo.getShopId());
+        }
+        if (null != shopForCdnBo.getScid() && StringUtils.isNotEmpty(shopForCdnBo.getScid())) {
+            //先查一下是否父级
+            Long scid = Long.parseLong(shopForCdnBo.getScid());
+            String scidStr = selScidStr(shopForCdnBo.getShopId(),scid);
+            criteria.andCidAllEqualTo(scidStr);
+        }
+        shiguGoodsSoldoutExample.setStartIndex(shopForCdnBo.getPageSize() * (shopForCdnBo.getPageNo() - 1));
+        shiguGoodsSoldoutExample.setEndIndex(shopForCdnBo.getPageNo() * shopForCdnBo.getPageSize());
+        shiguGoodsSoldoutExample.setWebSite("hz");
+        return shiguGoodsSoldoutExample;
     }
 
 }

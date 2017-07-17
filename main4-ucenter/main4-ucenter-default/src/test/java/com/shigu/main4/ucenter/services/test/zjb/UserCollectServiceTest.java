@@ -19,7 +19,7 @@ import java.util.List;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration( value="/main4/spring/apache-shiro.xml" )
+@ContextConfiguration( value="/main4/spring/*" )
 public class UserCollectServiceTest {
 
     @Autowired
@@ -32,7 +32,11 @@ public class UserCollectServiceTest {
     public void createPackage(){
 
         List<Long> itemIds = new ArrayList<Long>();
-        itemIds.add(8238152L);
+    /* *//*   itemIds.add(213445L);
+        itemIds.add(165791L);
+        itemIds.add(165843L);*/
+        itemIds.add(169944L);
+
         System.out.println(FilePathConstant.ITEM_COLLECT_PACKAGE_PATH_URL);
         userCollectService.createDataPackage(1000000808L, itemIds);
     }

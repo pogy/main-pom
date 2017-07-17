@@ -16,6 +16,9 @@ public class ItemPromoteModule extends TitleShowModule {
      * 推荐方式 1/2  自动/手动
      */
     private Integer promoteType = 1;
+    /**
+     * 排序维度 1/2/3/4/5  综合/新品/人气/价格升序/价格降序
+     */
     private Integer sort = 1;
     private Integer category;
     private String keyword;

@@ -6,11 +6,10 @@
     <title>[四季星座网]杭州站-四季星座网-四季星座论坛-四季青服装货源，四季青市场，网店代理货源，网上服装进货，男装淘宝货源，女装淘宝货源，网络货源,网店货源导航,淘宝店货源,实体网络进货,杭州网店之家,杭州专业网店货源,杭州网店货源</title>
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
-    
-    <link href="http://style.571xz.com/indexV4/css/hzMan.css?t=1496988567834" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV5/css/hzMan.css?t=1499752154553" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/jquery.cookie.js"></script>
-<script>/*============ indexV4/page#layoutHeader BEGIN ============*/
+    <script src="http://style.571xz.com/indexV5/js/jquery.cookie.js"></script>
+<script>/*============ indexV5/page#layoutHeader BEGIN ============*/
 
 '${test!}'
         var hreflocation=window.location.href;
@@ -31,11 +30,11 @@
               }) ;
           }
 
-/*============ indexV4/page#layoutHeader END ============*/
+/*============ indexV5/page#layoutHeader END ============*/
 
 
-</script>    <script src="http://style.571xz.com/indexV4/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV4/js/hzMan.js?t=1496988567834"></script>
+</script>    <script src="http://style.571xz.com/indexV5/js/temp/ekoo.min.js"></script>
+    <script src="http://style.571xz.com/indexV5/js/hzMan.js?t=1499752154553"></script>
   </head>
 <body >
 <#include "/common/host_config.ftl">
@@ -265,7 +264,6 @@ var webSite = '${webSite!}';
         <div class="searchBox">
             
             <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" target="_blank">
-            
                 
                 <input type="hidden" name="pid" value="30">
                 
@@ -582,7 +580,9 @@ var webSite = '${webSite!}';
         <div class="topStoread">
             <ul class="clearfix">
                 <#list topStoread as item>
+                <#if item_index lt 2>
                 <li><a href="${item.href!}" target="_blank"><img src="${item.imgsrc!}"></a></li>
+                </#if>
                 </#list>
             </ul>
         </div>
@@ -611,7 +611,7 @@ var webSite = '${webSite!}';
                 
                 <div class="p1 clearfix">
                     <div class="userIcon">
-                        <img src="http://style.571xz.com/indexV4/css/img/touxiang.png">
+                        <img src="http://style.571xz.com/indexV5/css/img/touxiang.png">
                     </div>
                     <div class="wellcom">
                         <p class="s1">Hi，欢迎来到</p>
@@ -641,7 +641,7 @@ var webSite = '${webSite!}';
             </div>
             
         </div>
-        <script>/*============ indexV4/page#topRtbox BEGIN ============*/
+        <script>/*============ indexV5/page#topRtbox BEGIN ============*/
 
 ${test!}
 var isgys = false;
@@ -652,7 +652,7 @@ if(session_shopId != ""){
     isgys = false;
 }
 
-/*============ indexV4/page#topRtbox END ============*/
+/*============ indexV5/page#topRtbox END ============*/
 
 
 </script>
@@ -675,6 +675,7 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
+                    <div class="tally">${item.styleText!}</div>
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -703,21 +704,12 @@ if(session_shopId != ""){
                     <img src="http://style.571xz.com/xz/css/img/opacity0.png" data-original="${item.imgsrc!}_300x300.jpg" alt width=230 height=230 />
                 </a>
                 
-                
-                    <#if item_index % 2 == 0>
-                    <div class="sendPhone">
-                        
-                    </div>
-                    <#else>
-                    <div class="sendComputer">
-                        
-                    </div>
-                    </#if>
                 <div class="gsOtInfo">
                     <span class="price">¥${item.piprice!}</span>
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
+                    <div class="tally">${item.styleText!}</div>
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -751,6 +743,7 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
+                    <div class="tally">${item.styleText!}</div>
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -812,6 +805,7 @@ if(session_shopId != ""){
                     <div class="storeNum" title="${item.storeText!}"><a href="http://${webSite!}.571xz.com/shop.htm?id=${item.storeId!}" target="_blank">${item.storeText!}</a></div>
                 </div>
                 <#if item.styleText?? && item.styleText != "" >
+                    <div class="tally">${item.styleText!}</div>
                 </#if>
                 <#if item.elementText?? && item.elementText != "">
                 <div class="tally">${item.elementText!}</div>
@@ -907,7 +901,7 @@ if(session_shopId != ""){
 <div class="sideNavbar" id="sideNavbar">
     
 </div>
-<script>/*============ indexV4/hzMan#main BEGIN ============*/
+<script>/*============ indexV5/hzMan#main BEGIN ============*/
 
 '${hacker!}';
 $(".imgBox img").lazyload({
@@ -915,13 +909,13 @@ $(".imgBox img").lazyload({
     threshold: 400 // 提前开始加载
 });
 
-/*============ indexV4/hzMan#main END ============*/
+/*============ indexV5/hzMan#main END ============*/
 
 
 </script>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -929,6 +923,7 @@ $(".imgBox img").lazyload({
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

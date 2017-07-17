@@ -6,6 +6,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.Jedis;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by zhaohongbo on 17/4/14.
  */
@@ -19,6 +22,34 @@ public class RedisIOTest {
     public void putExTest(){
         System.out.println(redisIO.putTemp("hahaha",111L,100));
 //        System.out.println(redisIO.put("hehe",123L));
+    }
+
+    @Test
+    public void redisUpTest(){
+        String KEY_IN_REDIS="KEY_IN_REDIS2";
+        String findType="DAILY";
+        Long pemId=111L;
+        Long userId=222L;
+        Long goodsId=123L;
+        String key=KEY_IN_REDIS+findType+"_"+pemId+"_"+userId;
+        Set goodsIdSet=redisIO.get(key,Set.class);
+        System.out.println(goodsIdSet);
+        System.out.println(goodsIdSet.contains(goodsId.intValue()));
+    }
+
+    @Test
+    public void putSetTest(){
+        String KEY_IN_REDIS="KEY_IN_REDIS";
+        String findType="DAILY";
+        Long pemId=111L;
+        Long userId=222L;
+        String key=KEY_IN_REDIS+findType+"_"+pemId+"_"+userId;
+        Set<Long> goodsSet=new HashSet<>();
+        goodsSet.add(123L);
+        goodsSet.add(234L);
+        goodsSet.add(123L);
+        goodsSet.add(345L);
+        redisIO.putFixedTemp(key,goodsSet,1000);
     }
 
     @Test
@@ -65,5 +96,12 @@ public class RedisIOTest {
     @Test
     public void test(){
         System.out.println(redisIO.getJedis().configGet("_density_pv_item_*"));
+    }
+
+    @Test
+    public void hsetTest(){
+        redisIO.hset("imkey","123",11);
+        redisIO.hset("imkey","456",11);
+//        System.out.println(redisIO.getJedis().hgetAll());
     }
 }

@@ -29,6 +29,7 @@ public interface ShopSearchService {
      */
     List<SearchShopSimple> selShopByIds(List<Long> shopIds, String website);
 
+
     /**
      * 按shopNum精确匹配一个店
      * @param shopNum

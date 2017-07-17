@@ -40,7 +40,7 @@ public class SpreadService {
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
     @Autowired
-    EhCacheForIndexPage ehCacheForIndexPage;
+    RedisForIndexPage redisForIndexPage;
     
     /**
      * 查广告数据
@@ -48,8 +48,8 @@ public class SpreadService {
      * @return
      */
     public ObjFromCache<List<ItemSpreadVO>> selItemSpreads(final String webSite, final SpreadEnum spread){
-        return new ObjFromCache<List<ItemSpreadVO>>(ehCacheForIndexPage,"selItemSpreads_"+webSite+"_"+spread.getCode(),
-                List.class) {
+        return new ObjFromCache<List<ItemSpreadVO>>(redisForIndexPage,spread.getCode(),
+                ItemSpreadVO.class) {
             @Override
             public List<ItemSpreadVO> selReal() {
                 List<ItemSpreadVO> vos=new ArrayList<>();
@@ -95,6 +95,7 @@ public class SpreadService {
                         }
                         //按顺序搞进去
                         for(Long gid:sortIds){
+                            if(spreadMap.get(gid)!=null)
                             vos.add(spreadMap.get(gid));
                         }
                     }
@@ -111,7 +112,7 @@ public class SpreadService {
      * @return
      */
     public ObjFromCache<List<ImgBannerVO>> selImgBanners(final SpreadEnum spread){
-        return new ObjFromCache<List<ImgBannerVO>>(ehCacheForIndexPage,"selImgBanners_"+spread.getCode(),List.class) {
+        return new ObjFromCache<List<ImgBannerVO>>(redisForIndexPage,spread.getCode(),ImgBannerVO.class) {
             @Override
             public List<ImgBannerVO> selReal() {
                 List<ImgBannerVO> vos=new ArrayList<>();
@@ -129,12 +130,12 @@ public class SpreadService {
         };
     }
 
-    /**
-     * 用于造缓存
-     */
-    @Async
-    public void createBySync(ObjFromCache fromCache) {
-        Object obj=fromCache.selReal();
-        ehCacheForIndexPage.putCache(fromCache.key,obj);
-    }
+//    /**
+//     * 用于造缓存
+//     */
+//    @Async
+//    public void createBySync(ObjFromCache fromCache) {
+//        Object obj=fromCache.selReal();
+//        redisForIndexPage.putCache(fromCache.key,obj);
+//    }
 }
