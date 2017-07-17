@@ -38,9 +38,6 @@ import java.util.*;
 public class ConfirmOrderAction {
 
     @Autowired
-    private ItemOrderService itemOrderService;
-
-    @Autowired
     private OrderConstantService orderConstantService;
 
     @Autowired
@@ -52,8 +49,6 @@ public class ConfirmOrderAction {
     @Autowired
     private CartService cartService;
 
-    @Autowired
-    private ExpressCompanyMapper expressCompanyMapper;
 
     /**
      * 订单确认提交
@@ -63,7 +58,7 @@ public class ConfirmOrderAction {
     @ResponseBody
     public JSONObject confirmOrders(ConfirmBO bo) throws JsonErrException {
         Long oid = confirmOrderService.submit(bo);
-        String payUrl = "/order/payMode.htm?oid="+oid;
+        String payUrl = "/order/payMode.htm?orderId="+oid;
         return JsonResponseUtil.success().element("redectUrl",payUrl);
     }
 
@@ -88,45 +83,16 @@ public class ConfirmOrderAction {
             bo.setSenderId(1L);
         }
 
-        List<BuyerAddressVO> collList =  itemOrderService.selBuyerAddress(userId);//收藏的地址数据
-        List<CollListVO> collListVOS = new ArrayList<>(collList.size());
-        for (BuyerAddressVO buyerAddressVO : collList) {
-            CollListVO vo = new CollListVO();
-            collListVOS.add(vo);
-            vo.setId(buyerAddressVO.getAddressId());
-            vo.setAddress(buyerAddressVO.getAddress());
-            vo.setName(buyerAddressVO.getName());
-            vo.setPhone(buyerAddressVO.getTelephone());
-        }
-        model.addAttribute("collList", collListVOS);
+        model.addAttribute("collList", confirmOrderService.collListByUser(userId));//收藏的地址数据
 
         List<LogisticsCompanyVO> logisticsCompanyVOS = orderConstantService.selLogistics(bo.getSenderId());//快递规则// TODO:快递对省份的支持信息没有
         model.addAttribute("postRulers", JSON.toJSONString(BeanMapper.mapList(logisticsCompanyVOS, PostRuleVO.class)));
-        Map<String, String> postNameMap = new HashMap<>();
-        List<ExpressCompany> select = expressCompanyMapper.select(new ExpressCompany());
-        for (ExpressCompany company : select) {
-            postNameMap.put(company.getEnName(), company.getExpressName());
-        }
-        model.addAttribute("postNameMap", JSON.toJSONString(postNameMap));
+        model.addAttribute("postNameMap", JSON.toJSONString(confirmOrderService.postNameMapper()));
 
-        List<ServiceVO> serviceRulers = orderConstantService.selServices(bo.getSenderId());//服务费规则
-
+        // 商品信息
         CartPageVO vo = cartService.packCartProductVo(orderSubmitVo.getProducts());
-        List<ServiceRuleVO> serviceRuleVOS = new ArrayList<>(vo.getOrders().size());
-        for (CartOrderVO orderVO : vo.getOrders()) {
-            ServiceRuleVO ruleVO = new ServiceRuleVO();
-            serviceRuleVOS.add(ruleVO);
-            ruleVO.setOrderId(orderVO.getShopId());
-            ruleVO.setSenderId(bo.getSenderId());
-            ruleVO.setServices(new ArrayList<ServiceInfoVO>());
-            for (ServiceVO serviceRuler : serviceRulers) {
-                ServiceInfoVO infoVO = new ServiceInfoVO();
-                infoVO.setText(serviceRuler.getName());
-                infoVO.setPrice(String.format("%.2f", serviceRuler.getPrice() * .01));
-                ruleVO.getServices().add(infoVO);
-            }
-        }
-        model.addAttribute("serviceRulers", JSON.toJSONString(serviceRuleVOS));
+        // 商品服务信息
+        model.addAttribute("serviceRulers", JSON.toJSONString(confirmOrderService.serviceRulePack(vo.getOrders(), bo.getSenderId())));
         model.addAttribute("goodsOrders", vo.getOrders());
         model.addAttribute("webSite", "hz");//站点
         return "trade/confirmOrder";

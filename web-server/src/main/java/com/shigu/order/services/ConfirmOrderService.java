@@ -8,8 +8,9 @@ import com.opentae.data.mall.beans.OrderTown;
 import com.opentae.data.mall.interfaces.OrderCityMapper;
 import com.opentae.data.mall.interfaces.OrderProvMapper;
 import com.opentae.data.mall.interfaces.OrderTownMapper;
+import com.opentae.data.mall.beans.ExpressCompany;
+import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.LogisticsBO;
@@ -19,13 +20,18 @@ import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.services.OrderConstantService;
+import com.shigu.main4.order.vo.BuyerAddressVO;
+import com.shigu.main4.order.vo.CartVO;
+import com.shigu.main4.order.vo.ItemProductVO;
+import com.shigu.main4.order.vo.ServiceVO;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.bo.ConfirmOrderBO;
 import com.shigu.order.bo.ConfirmSubOrderBO;
-import com.shigu.order.vo.OrderSubmitVo;
+import com.shigu.order.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +62,11 @@ public class ConfirmOrderService {
     @Autowired
     private OrderTownMapper orderTownMapper;
 
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
+
+    @Autowired
+    private OrderConstantService orderConstantService;
     /**
      * 订单确认提交
      * @param bo
@@ -182,22 +193,5 @@ public class ConfirmOrderService {
                 throw new JsonErrException(e.getMessage());
             }
         }
-    }
-
-    public String selProvById( Long privId) {
-        OrderProv prov = orderProvMapper.selectByPrimaryKey(privId);
-        return prov.getProvName();
-    }
-
-    public String selCityById( Long cityId) {
-        OrderCity city = orderCityMapper.selectByPrimaryKey(cityId);
- ;
-        return city.getCityName();
-    }
-
-    public String selTownById( Long townId) {
-        OrderTown town = orderTownMapper.selectByPrimaryKey(townId);
-
-        return town.getTownName();
     }
 }
