@@ -9,6 +9,15 @@ public class SenderInfoVO {
     private String text;
     private boolean checked;
 
+    public SenderInfoVO() {
+    }
+
+    public SenderInfoVO(String id, String text, boolean checked) {
+        this.id = id;
+        this.text = text;
+        this.checked = checked;
+    }
+
     public String getId() {
         return id;
     }
