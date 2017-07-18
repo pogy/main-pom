@@ -266,4 +266,19 @@ public class ConfirmOrderService {
         }
         return infoVOS;
     }
+
+    public String selProvById(Long provId) {
+        OrderProv prov = orderProvMapper.selectByPrimaryKey(provId);
+        return prov.getProvName();
+    }
+
+    public String selCityById(Long cityId) {
+       OrderCity city = orderCityMapper.selectByPrimaryKey(cityId);
+       return city.getCityName();
+    }
+
+    public String selTownById(Long townId) {
+        OrderTown town = orderTownMapper.selectByPrimaryKey(townId);
+        return town.getTownName();
+    }
 }

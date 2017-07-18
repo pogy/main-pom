@@ -49,6 +49,8 @@ public class ConfirmOrderAction {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    ItemOrderService itemOrderService;
 
     /**
      * 订单确认提交
