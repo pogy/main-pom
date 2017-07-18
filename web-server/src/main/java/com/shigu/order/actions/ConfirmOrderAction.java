@@ -102,6 +102,13 @@ public class ConfirmOrderAction {
     }
 
     @ResponseBody
+    @RequestMapping("deleteCollJson")
+    public JSONObject deleteCollJson(Long id, HttpServletRequest request) {
+        itemOrderService.rmBuyerAddress(id);
+        return JsonResponseUtil.success();
+    }
+
+    @ResponseBody
     @RequestMapping("collectCgneeJson")
     public JSONObject collectCgneeJson(BuyerAddressItemVO buyerAddressItem, HttpServletRequest request) {
 
