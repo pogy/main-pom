@@ -114,9 +114,13 @@ public class ConfirmOrderService {
         for (ConfirmOrderBO confirmOrderBO: confirmOrderBOS) {
             List<ConfirmSubOrderBO> confirmSubOrderBOS = confirmOrderBO.getChildOrders();
             for (ConfirmSubOrderBO confirmSubOrderBO: confirmSubOrderBOS) {
+                int num = confirmSubOrderBO.getNum();
+                if (num <= 0) {
+                    continue;
+                }
                 SubItemOrderBO subOrder = new SubItemOrderBO();
                 subOrder.setMark(confirmOrderBO.getRemark());
-                subOrder.setNum(confirmSubOrderBO.getNum());
+                subOrder.setNum(num);
                 subOrder.setProductVO(productsMap.get(Long.parseLong(confirmSubOrderBO.getId())));
                 subOrders.add(subOrder);
             }
@@ -124,12 +128,21 @@ public class ConfirmOrderService {
         itemOrderBO.setSubOrders(subOrders);
         itemOrderBO.setTitle(itemOrderBO.getSubOrders().get(0).getProductVO().getTitle());
         itemOrderBO.setWebSite(itemOrderBO.getSubOrders().get(0).getProductVO().getWebSite());
-        //TODO:订单mark信息
         itemOrderBO.setMark(bo.getOrders().get(0).getRemark());
-        //TODO:订单服务信息，接口实现后添加
-        itemOrderBO.setServiceIds(new ArrayList<Long>(0));
+
+        itemOrderBO.setServiceIds(BeanMapper.getFieldList(orderConstantService.selServices(bo.getSenderId()), "id", Long.class));
+
         //TODO:订单包材信息
-        itemOrderBO.setPackages(new ArrayList<PackageBO>(0));
+        int size = BeanMapper.groupBy(orderSubmitVo.getProducts(), "shopId", Long.class).size();
+        List<Long> packagesIds = BeanMapper.getFieldList(orderConstantService.selMetarials(bo.getSenderId()), "id", Long.class);
+        List<PackageBO> packageBOS = Lists.newArrayList();
+        for (Long packagesId : packagesIds) {
+            PackageBO packageBO = new PackageBO();
+            packageBOS.add(packageBO);
+            packageBO.setMetarialId(packagesId);
+            packageBO.setNum(size);
+        }
+        itemOrderBO.setPackages(packageBOS);
         return itemOrderBO;
     }
 
@@ -162,9 +175,7 @@ public class ConfirmOrderService {
             CollListVO vo = new CollListVO();
             collListVOS.add(vo);
             vo.setId(buyerAddressVO.getAddressId());
-            StringBuilder addressSb = new StringBuilder();
-            addressSb.append(buyerAddressVO.getProvince()).append(" ").append(buyerAddressVO.getCity()).append(" ").append(buyerAddressVO.getTown()).append(" ").append(buyerAddressVO.getAddress());
-            vo.setAddress(addressSb.toString());
+            vo.setAddress(buyerAddressVO.getProvince() + " " + buyerAddressVO.getCity() + " " + buyerAddressVO.getTown() + " " + buyerAddressVO.getAddress());
             vo.setName(buyerAddressVO.getName());
             vo.setPhone(buyerAddressVO.getTelephone());
         }
