@@ -312,6 +312,7 @@ var postNameMap = ${postNameMap!};
                         <div class="provAndCity congineeBox">
                             <label><span class="fcF40 required">*</span>所在地区：</label>
                             
+                            
 
 <#assign text>{}</#assign>
 <#assign moduledata3=text?eval />
@@ -627,7 +628,7 @@ var postNameMap = ${postNameMap!};
         <a href="javascript:;" class="fl imgBox"><img src="${childOrder.imgsrc!}_70x70.jpg" width=62 height=62 class="fl"></a>
         <div class="fl goodsInfo fc3">
             <h4>${childOrder.title!}</h4>
-            <p class="fwb">商家编码：${childOrder.goodsCode!}</p>
+            <p class="fwb">货号：${childOrder.goodsNo!}</p>
         </div>
     </li>
     <li class="goodsPrice tac fc3 yahei"><span>&yen;</span><span class="fwb">${childOrder.price!}</span></li>
@@ -897,6 +898,8 @@ var postNameMap = ${postNameMap!};
 <script>
 var serviceRulers = ${serviceRulers!};
 </script>
+
+
 
 
 
