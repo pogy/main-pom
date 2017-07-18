@@ -3,7 +3,7 @@ package com.shigu.main4.order.services;
 
 import com.shigu.main4.order.bo.TbOrderBO;
 import com.shigu.main4.order.vo.GoodsVO;
-import com.shigu.main4.order.vo.TbOrderVO;
+import com.shigu.main4.order.servicevo.TbOrderVO;
 
 import java.util.List;
 
