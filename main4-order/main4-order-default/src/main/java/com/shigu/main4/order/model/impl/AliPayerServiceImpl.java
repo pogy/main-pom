@@ -5,6 +5,7 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.AlipayResponse;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
+import com.alipay.api.response.AlipayTradePagePayResponse;
 import com.openJar.requests.sgpay.RefundRequest;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
@@ -57,6 +58,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
                 "  }");//填充业务参数
         String form = "";
         try {
+            AlipayTradePagePayResponse execute = alipayClient.execute(alipayRequest);
             form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
         } catch (AlipayApiException e) {
             throw new PayApplyException(e.getMessage());
