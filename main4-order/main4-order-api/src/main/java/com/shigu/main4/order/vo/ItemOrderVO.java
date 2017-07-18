@@ -1,12 +1,13 @@
 package com.shigu.main4.order.vo;
 
 import com.shigu.main4.order.enums.OrderStatus;
+import com.shigu.main4.order.servicevo.OrderVO;
 
 /**
  * 商品类别订单
  * Created by zhaohongbo on 17/6/1.
  */
-public class ItemOrderVO extends OrderVO{
+public class ItemOrderVO extends OrderVO {
 
     private Long senderId;
 

@@ -1,7 +1,7 @@
 package com.shigu.main4.order.services;
 
 import com.shigu.main4.order.bo.OrderBO;
-import com.shigu.main4.order.vo.OrderVO;
+import com.shigu.main4.order.servicevo.OrderVO;
 
 
 import java.util.List;
@@ -28,7 +28,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    List<OrderVO> myOrder(OrderBO bo);
+    List<OrderVO> myOrder( OrderBO bo);
     /**
      * ====================================================================================
      * @方法名：payTaoOrder
