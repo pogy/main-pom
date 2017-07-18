@@ -6,6 +6,7 @@ import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 商品交易订单服务
@@ -51,4 +52,16 @@ public interface ItemOrderService {
      * @param addressId
      */
     void rmBuyerAddress(Long addressId);
+
+    /**
+     * 临时保存地址，用于确认订单不收藏地址这种情况
+     * @param buyerAddressVO
+     */
+    String saveTmpBuyerAddress(BuyerAddressVO buyerAddressVO) ;
+
+    /**
+     * 获取临时保存地址，用于确认订单不收藏地址这种情况
+     * @param addressId
+     */
+    BuyerAddressVO selTmpBuyerAddress(String addressId) ;
 }

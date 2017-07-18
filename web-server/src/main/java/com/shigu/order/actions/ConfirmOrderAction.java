@@ -130,12 +130,14 @@ public class ConfirmOrderAction {
         buyerAddress.setProvince(confirmOrderService.selProvById(buyerAddress.getProvId()));
         buyerAddress.setCity(confirmOrderService.selCityById(buyerAddress.getCityId()));
         buyerAddress.setTown(confirmOrderService.selTownById(buyerAddress.getTownId()));
+        String addressId;
         if (buyerAddressItem.getType().equalsIgnoreCase("1")) {//确认并且收藏
             itemOrderService.saveBuyerAddress(buyerAddress);
+            addressId = buyerAddress.getAddressId().toString();
         } else {
-            buyerAddress.setAddressId(10000000L);
+            addressId = itemOrderService.saveTmpBuyerAddress(buyerAddress);
         }
 
-        return JsonResponseUtil.success().element("addressId", buyerAddress.getAddressId());
+        return JsonResponseUtil.success().element("addressId", addressId);
     }
 }

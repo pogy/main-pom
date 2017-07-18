@@ -18,6 +18,7 @@ import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.order.vo.SubOrderVO;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 商品订单服务
@@ -45,6 +47,9 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     @Autowired
     private BuyerAddressMapper buyerAddressMapper;
+
+    @Autowired
+    private RedisIO redisIO;
 
     /**
      * oid获取器
@@ -187,5 +192,26 @@ public class ItemOrderServiceImpl implements ItemOrderService{
     @Transactional(rollbackFor = Exception.class)
     public void rmBuyerAddress(Long addressId) {
         buyerAddressMapper.deleteByPrimaryKey(addressId);
+    }
+
+    /**
+     * 临时保存地址，用于确认订单不收藏地址这种情况
+     * @param buyerAddressVO
+     */
+    @Override
+    public String saveTmpBuyerAddress(BuyerAddressVO buyerAddressVO) {
+        String addressId = UUID.randomUUID().toString().replace("-","");
+        redisIO.putTemp("tmp_buyer_address_" + addressId, buyerAddressVO, 200);
+        return addressId;
+    }
+
+    /**
+     * 获取临时保存地址，用于确认订单不收藏地址这种情况
+     * @param addressId
+     */
+    @Override
+    public BuyerAddressVO selTmpBuyerAddress(String addressId) {
+        BuyerAddressVO vo = redisIO.get("tmp_buyer_address_" + addressId, BuyerAddressVO.class);
+        return vo;
     }
 }
