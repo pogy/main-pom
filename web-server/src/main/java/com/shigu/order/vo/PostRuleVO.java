@@ -1,20 +1,40 @@
 package com.shigu.order.vo;
 
 /**
+ * 发货价格规则
  * Created by bugzy on 2017/7/17 0017.
  */
 public class PostRuleVO {
+
+    /**
+     * 快递代号
+     */
     private String name;
 
+    /**
+     * 到达省份
+     */
     private String prov;
 
-    private String startWeight;
+    /**
+     * 起收重量
+     */
+    private Double startWeight;
 
-    private String startPrice;
+    /**
+     * 起步价
+     */
+    private Double startPrice;
 
-    private String addWeight;
+    /**
+     * 加价单位重量
+     */
+    private Double addWeight;
 
-    private String addPrice;
+    /**
+     * 加价单价
+     */
+    private Double addPrice;
 
     public String getName() {
         return name;
@@ -32,35 +52,35 @@ public class PostRuleVO {
         this.prov = prov;
     }
 
-    public String getStartWeight() {
+    public Double getStartWeight() {
         return startWeight;
     }
 
-    public void setStartWeight(String startWeight) {
+    public void setStartWeight(Double startWeight) {
         this.startWeight = startWeight;
     }
 
-    public String getStartPrice() {
+    public Double getStartPrice() {
         return startPrice;
     }
 
-    public void setStartPrice(String startPrice) {
+    public void setStartPrice(Double startPrice) {
         this.startPrice = startPrice;
     }
 
-    public String getAddWeight() {
+    public Double getAddWeight() {
         return addWeight;
     }
 
-    public void setAddWeight(String addWeight) {
+    public void setAddWeight(Double addWeight) {
         this.addWeight = addWeight;
     }
 
-    public String getAddPrice() {
+    public Double getAddPrice() {
         return addPrice;
     }
 
-    public void setAddPrice(String addPrice) {
+    public void setAddPrice(Double addPrice) {
         this.addPrice = addPrice;
     }
 }

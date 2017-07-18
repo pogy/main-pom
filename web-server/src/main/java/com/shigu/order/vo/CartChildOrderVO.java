@@ -32,7 +32,7 @@ public class CartChildOrderVO {
 
     private boolean disabled;
 
-    private Double weight;
+    private Double weight = .1;
 
     public Long getId() {
         return id;

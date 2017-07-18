@@ -212,7 +212,7 @@ public class ConfirmOrderService {
             CollListVO vo = new CollListVO();
             collListVOS.add(vo);
             vo.setId(buyerAddressVO.getAddressId());
-            StringBuffer addressSb = new StringBuffer();
+            StringBuilder addressSb = new StringBuilder();
             addressSb.append(buyerAddressVO.getProvince()).append(" ").append(buyerAddressVO.getCity()).append(" ").append(buyerAddressVO.getTown()).append(" ").append(buyerAddressVO.getAddress());
             vo.setAddress(addressSb.toString());
             vo.setName(buyerAddressVO.getName());

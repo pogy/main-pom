@@ -81,14 +81,27 @@ public class ConfirmOrderAction {
         if (!Objects.equals(orderSubmitVo.getUserId(), userId)) {
             throw new OrderException("订单信息错误");
         }
+        List<SenderInfoVO> senderInfoVOList = confirmOrderService.senderListDefault(bo.getSenderId());
+        model.addAttribute("sender", senderInfoVOList);
         if (bo.getSenderId() == null) {
-            bo.setSenderId(1L);
+            SenderInfoVO senderInfoVO = senderInfoVOList.get(0);
+            bo.setSenderId(Long.valueOf(senderInfoVO.getId()));
+            senderInfoVO.setChecked(true);
         }
 
         model.addAttribute("collList", confirmOrderService.collListByUser(userId));//收藏的地址数据
 
         List<LogisticsCompanyVO> logisticsCompanyVOS = orderConstantService.selLogistics(bo.getSenderId());//快递规则// TODO:快递对省份的支持信息没有
-        model.addAttribute("postRulers", JSON.toJSONString(BeanMapper.mapList(logisticsCompanyVOS, PostRuleVO.class)));
+        List<PostRuleVO> postRuleVOS = new ArrayList<>();
+        for (LogisticsCompanyVO logisticsCompanyVO : logisticsCompanyVOS) {
+            String name = logisticsCompanyVO.getName();
+            List<PostRuleVO> postRuleVOList = BeanMapper.mapList(logisticsCompanyVO.getBourns(), PostRuleVO.class);
+            for (PostRuleVO postRuleVO : postRuleVOList) {
+                postRuleVO.setName(name);
+            }
+            postRuleVOS.addAll(postRuleVOList);
+        }
+        model.addAttribute("postRulers", JSON.toJSONString(postRuleVOS));
         model.addAttribute("postNameMap", JSON.toJSONString(confirmOrderService.postNameMapper()));
 
         // 商品信息
@@ -96,7 +109,6 @@ public class ConfirmOrderAction {
         // 商品服务信息
         model.addAttribute("serviceRulers", JSON.toJSONString(confirmOrderService.serviceRulePack(vos, bo.getSenderId())));
         model.addAttribute("goodsOrders", vos);
-        model.addAttribute("sender", confirmOrderService.senderListDefault(bo.getSenderId()));
         model.addAttribute("webSite", "hz");//站点
         return "trade/confirmOrder";
     }
