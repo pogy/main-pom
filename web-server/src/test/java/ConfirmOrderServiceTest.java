@@ -37,9 +37,9 @@ public class ConfirmOrderServiceTest {
         ConfirmBO confirmBO = new ConfirmBO();
         String code = null;
         Long oid = null;
-        confirmBO.setAddressId(24L);
-        confirmBO.setCourierId(1L);
-        confirmBO.setSenderId(1L);
+//        confirmBO.setAddressId(24L);
+//        confirmBO.setCourierId(1L);
+//        confirmBO.setSenderId(1L);
         try {
             code = cartService.submitOrders(Lists.newArrayList(3L,4L,5L),9968L);
         } catch (JsonErrException e) {
@@ -60,7 +60,7 @@ public class ConfirmOrderServiceTest {
         confirmOrderBOList.add(confirmOrderBOShop2);
         confirmBO.setOrders(confirmOrderBOList);
         try {
-            oid = confirmOrderService.submit(confirmBO);
+            oid = confirmOrderService.confirmOrders(confirmBO);
         } catch (Main4Exception e) {
             System.out.println("ConfirmOrderService#submit异常");
             System.out.println(e.getMessage());
