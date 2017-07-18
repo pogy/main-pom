@@ -5,7 +5,7 @@ package com.shigu.order.vo;
  */
 public class ServiceInfoVO {
     private String text;
-    private String price;
+    private Double price;
 
     public String getText() {
         return text;
@@ -15,11 +15,11 @@ public class ServiceInfoVO {
         this.text = text;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }

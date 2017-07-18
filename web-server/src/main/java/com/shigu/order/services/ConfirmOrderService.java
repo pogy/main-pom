@@ -248,7 +248,7 @@ public class ConfirmOrderService {
             for (ServiceVO serviceRuler : serviceRulers) {
                 ServiceInfoVO infoVO = new ServiceInfoVO();
                 infoVO.setText(serviceRuler.getName());
-                infoVO.setPrice(String.format("%.2f", serviceRuler.getPrice() * .01));
+                infoVO.setPrice(serviceRuler.getPrice() * .01);
                 ruleVO.getServices().add(infoVO);
             }
         }
