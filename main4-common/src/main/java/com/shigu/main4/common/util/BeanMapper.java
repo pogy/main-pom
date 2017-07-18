@@ -1,5 +1,6 @@
 package com.shigu.main4.common.util;
 
+import com.alibaba.fastjson.util.FieldInfo;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -143,8 +144,7 @@ public class BeanMapper {
         try {
             for (T t : list) {
                 if (classField == null) {
-                    classField = t.getClass().getDeclaredField(field);
-                    classField.setAccessible(true);
+                    classField = checkField(t.getClass(), field);
                 }
                 Object o = classField.get(t);
                 if (o == null)
@@ -184,8 +184,7 @@ public class BeanMapper {
         for (T t : list) {
             try {
                 if (classField == null) {
-                    classField = t.getClass().getDeclaredField(field);
-                    classField.setAccessible(true);
+                    classField = checkField(t.getClass(), field);
                 }
                 group.get((classField.get(t))).add(t);
             } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -193,5 +192,21 @@ public class BeanMapper {
             }
         }
         return group;
+    }
+
+    private static Field checkField(Class<?> tClass, String field) throws NoSuchFieldException {
+        Field classField = null;
+        while (classField == null) {
+            if (tClass == Object.class) {
+                throw new NoSuchFieldException(field);
+            }
+            try {
+                classField = tClass.getDeclaredField(field);
+                classField.setAccessible(true);
+            } catch (NoSuchFieldException e) {
+                tClass = tClass.getSuperclass();
+            }
+        }
+        return classField;
     }
 }

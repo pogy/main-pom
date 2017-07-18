@@ -14,7 +14,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-common</artifactId>
-            <version>4.1.7-SNAPSHOT</version>
+            <version>${main4-common.version}</version>
         </dependency>
     </dependencies>
 </project>
