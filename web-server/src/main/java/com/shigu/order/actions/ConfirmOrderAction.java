@@ -135,7 +135,7 @@ public class ConfirmOrderAction {
             itemOrderService.saveBuyerAddress(buyerAddress);
             addressId = buyerAddress.getAddressId().toString();
         } else {
-            addressId = itemOrderService.saveTmpBuyerAddress(buyerAddress);
+            addressId = confirmOrderService.saveTmpBuyerAddress(buyerAddress);
         }
 
         return JsonResponseUtil.success().element("addressId", addressId);

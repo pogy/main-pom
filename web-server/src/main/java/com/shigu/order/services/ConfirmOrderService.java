@@ -72,6 +72,7 @@ public class ConfirmOrderService {
     @Autowired
     private ItemOrderSenderMapper itemOrderSenderMapper;
 
+
     /**
      * 订单确认提交
      * @param bo
@@ -282,5 +283,24 @@ public class ConfirmOrderService {
     public String selTownById(Long townId) {
         OrderTown town = orderTownMapper.selectByPrimaryKey(townId);
         return town.getTownName();
+    }
+
+    /**
+     * 临时保存地址，用于确认订单不收藏地址这种情况
+     * @param buyerAddressVO
+     */
+    public String saveTmpBuyerAddress(BuyerAddressVO buyerAddressVO) {
+        String addressId = UUID.randomUUID().toString().replace("-","");
+        redisIO.putTemp("tmp_buyer_address_" + addressId, buyerAddressVO, 200);
+        return addressId;
+    }
+
+    /**
+     * 获取临时保存地址，用于确认订单不收藏地址这种情况
+     * @param addressId
+     */
+    public BuyerAddressVO selTmpBuyerAddress(String addressId) {
+        BuyerAddressVO vo = redisIO.get("tmp_buyer_address_" + addressId, BuyerAddressVO.class);
+        return vo;
     }
 }

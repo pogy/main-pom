@@ -53,15 +53,4 @@ public interface ItemOrderService {
      */
     void rmBuyerAddress(Long addressId);
 
-    /**
-     * 临时保存地址，用于确认订单不收藏地址这种情况
-     * @param buyerAddressVO
-     */
-    String saveTmpBuyerAddress(BuyerAddressVO buyerAddressVO) ;
-
-    /**
-     * 获取临时保存地址，用于确认订单不收藏地址这种情况
-     * @param addressId
-     */
-    BuyerAddressVO selTmpBuyerAddress(String addressId) ;
 }
