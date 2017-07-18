@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -54,14 +56,24 @@ public class ConfirmOrderAction {
 
     /**
      * 订单确认提交
-     * @param bo
+     * @param request
      */
     @RequestMapping("confirmOrders")
     @ResponseBody
-    public JSONObject confirmOrders(ConfirmBO bo) throws JsonErrException {
-        Long oid = confirmOrderService.submit(bo);
-        String payUrl = "/order/payMode.htm?orderId="+oid;
-        return JsonResponseUtil.success().element("redectUrl",payUrl);
+    public JSONObject confirmOrders(HttpServletRequest request) throws JsonErrException {
+        StringBuilder boStr = new StringBuilder();
+        try {
+            BufferedReader reader = request.getReader();
+            String s;
+            while ((s = reader.readLine()) != null) {
+                boStr.append(s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Long oid = confirmOrderService.submit(JSON.parseObject(boStr.toString(), ConfirmBO.class));
+        String payUrl = "/order/payMode.htm?orderId=" + oid;
+        return JsonResponseUtil.success().element("redectUrl", payUrl);
     }
 
 
