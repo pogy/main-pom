@@ -71,7 +71,7 @@ public class ConfirmOrderAction {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Long oid = confirmOrderService.submit(JSON.parseObject(boStr.toString(), ConfirmBO.class));
+        Long oid = confirmOrderService.confirmOrders(JSON.parseObject(boStr.toString(), ConfirmBO.class));
         String payUrl = "/order/payMode.htm?orderId=" + oid;
         return JsonResponseUtil.success().element("redectUrl", payUrl);
     }

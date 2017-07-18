@@ -78,7 +78,7 @@ public class ConfirmOrderService {
      * @param bo
      */
     @Transactional(rollbackFor = Exception.class)
-    public Long submit(ConfirmBO bo) throws JsonErrException {
+    public Long confirmOrders(ConfirmBO bo) throws JsonErrException {
         if (bo == null || Strings.isNullOrEmpty(bo.getCode())) {
             throw new JsonErrException("传入信息不完整");
         }
