@@ -98,7 +98,6 @@ public class ConfirmOrderService {
         }
         Long oid = itemOrderService.createOrder(itemOrderBO);
         rmCartProductByOrder(itemOrderBO);
-        redisIO.put("order_id_"+oid,itemOrderBO);
         redisIO.del(code);
         return oid;
     }
