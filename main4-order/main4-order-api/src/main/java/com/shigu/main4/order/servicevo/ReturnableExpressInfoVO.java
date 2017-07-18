@@ -1,6 +1,5 @@
-package com.shigu.main4.order.vo;
+package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.servicevo.ExpressLogVO;
 
 import java.io.Serializable;
 import java.util.List;
