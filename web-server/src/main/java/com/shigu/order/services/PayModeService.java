@@ -49,7 +49,6 @@ public class PayModeService {
         payModePageVO.setWebSite(itemOrder.getWebSite());
         payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
         payModePageVO.setAmountPay(PriceConvertUtils.priceToString(itemOrder.getTotalFee()));
-        //TODO:alipay链接
         payModePageVO.setAlipayUrl(aliPayerService.payApply(Long.valueOf(orderId),itemOrder.getTotalFee(),itemOrder.getTitle()).getPayLink());
         //TODO:其他信息
         payModePageVO.setCurrentAmount("等待新XzPaySDK接口实现");

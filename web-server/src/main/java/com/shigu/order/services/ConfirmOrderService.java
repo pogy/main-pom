@@ -87,61 +87,11 @@ public class ConfirmOrderService {
         if (orderSubmitVo == null || orderSubmitVo.getProducts().size() == 0) {
             throw new JsonErrException("没有找到产品信息");
         }
-        //暂时只有星帮代发，页面不传入数据senderId暂时用1
-        bo.setSenderId(1L);
-        ItemOrderBO itemOrderBO;
-        if (bo.getOrders() == null ) {
-            //从购物车进入，bo中只有code，以OrderSubmitVO中信息为准
-            itemOrderBO = generateItemOrderBOByCart(orderSubmitVo,bo.getAddressId(),bo.getCourierId());
-        } else {
-            //从淘宝进入，包含快递、地址等信息
-            itemOrderBO = generateItemOrderBO(bo, orderSubmitVo);
-        }
+        ItemOrderBO itemOrderBO  = generateItemOrderBO(bo, orderSubmitVo);
         Long oid = itemOrderService.createOrder(itemOrderBO);
         rmCartProductByOrder(itemOrderBO);
         redisIO.del(code);
         return oid;
-    }
-
-
-    /**
-     * 从进货车提交订单，传入参数只有ConfirmBO#code，信息以获取的OrderSubmitVo为准
-     * @param orderSubmitVo
-     * @return
-     */
-    private ItemOrderBO generateItemOrderBOByCart(OrderSubmitVo orderSubmitVo,Long addressId,Long companyId) {
-        ItemOrderBO itemOrderBO = new ItemOrderBO();
-        itemOrderBO.setSenderId(1L);
-        //TODO:物流信息
-        LogisticsBO logistics = new LogisticsBO();
-        logistics.setAddressId(addressId);
-        logistics.setCompanyId(companyId);
-        itemOrderBO.setLogistics(logistics);
-        List<PackageBO> packages = Lists.newArrayList();
-        List<Long> serviceIds = Lists.newArrayList();
-        //TODO:包材信息
-        itemOrderBO.setPackages(packages);
-        itemOrderBO.setServiceIds(serviceIds);
-        //TODO:目前暂时默认代发服务
-        serviceIds.add(1L);
-
-        itemOrderBO.setUserId(orderSubmitVo.getUserId());
-        List<SubItemOrderBO> subOrders = Lists.newArrayList();
-        SubItemOrderBO subItemOrderBO;
-        for (CartVO cartVO: orderSubmitVo.getProducts()) {
-            subItemOrderBO = new SubItemOrderBO();
-            subItemOrderBO.setProductVO(cartVO);
-            subItemOrderBO.setNum(cartVO.getNum());
-            //从进货车获取没有标注数据
-            subItemOrderBO.setMark("");
-            subOrders.add(subItemOrderBO);
-        }
-        itemOrderBO.setSubOrders(subOrders);
-        //首个商品信息，获取标注，标题，分站信息
-        itemOrderBO.setMark(subOrders.get(0).getMark());
-        itemOrderBO.setTitle(subOrders.get(0).getProductVO().getTitle());
-        itemOrderBO.setWebSite(subOrders.get(0).getProductVO().getWebSite());
-        return itemOrderBO;
     }
 
     /**
