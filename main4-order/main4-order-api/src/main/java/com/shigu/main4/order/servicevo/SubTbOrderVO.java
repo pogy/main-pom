@@ -1,4 +1,4 @@
-package com.shigu.main4.order.vo;
+package com.shigu.main4.order.servicevo;
 
 import java.io.Serializable;
 

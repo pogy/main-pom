@@ -1,4 +1,4 @@
-package com.shigu.main4.order.vo;
+package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.enums.ExchangeStatusEnum;
 import com.shigu.main4.order.enums.ExchangeWaitStatusEnum;

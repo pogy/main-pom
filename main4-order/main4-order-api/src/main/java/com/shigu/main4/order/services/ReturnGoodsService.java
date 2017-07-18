@@ -2,10 +2,9 @@ package com.shigu.main4.order.services;
 
 import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.RefundLogVO;
-import com.shigu.main4.order.vo.ExchangeInfoVO;
-import com.shigu.main4.order.vo.ReturnGoodsInfoVO;
+import com.shigu.main4.order.servicevo.ReturnableExpressInfoVO;
+import com.shigu.main4.order.servicevo.ReturnGoodsInfoVO;
 import com.shigu.main4.order.vo.ReturnableAddressVO;
-import com.shigu.main4.order.vo.ReturnableExpressInfoVO;
 
 import java.util.List;
 

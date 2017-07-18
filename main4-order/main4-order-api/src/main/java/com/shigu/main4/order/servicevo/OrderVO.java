@@ -1,9 +1,7 @@
-package com.shigu.main4.order.vo;
+package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.enums.MainOrderStatusEnum;
-import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 
 import java.io.Serializable;
 import java.util.Date;
