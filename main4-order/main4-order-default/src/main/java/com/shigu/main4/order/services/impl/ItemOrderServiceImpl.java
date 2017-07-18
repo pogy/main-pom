@@ -1,10 +1,12 @@
 package com.shigu.main4.order.services.impl;
 
 import com.opentae.data.mall.beans.BuyerAddress;
+import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.beans.OrderIdGenerator;
 import com.opentae.data.mall.examples.BuyerAddressExample;
 import com.opentae.data.mall.interfaces.BuyerAddressMapper;
+import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
 import com.shigu.main4.common.tools.StringUtil;
@@ -14,10 +16,8 @@ import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.BuyerAddressException;
 import com.shigu.main4.order.services.ItemOrderService;
-import com.shigu.main4.order.vo.BuyerAddressVO;
-import com.shigu.main4.order.vo.ItemProductVO;
-import com.shigu.main4.order.vo.ItemSkuVO;
-import com.shigu.main4.order.vo.SubOrderVO;
+import com.shigu.main4.order.vo.*;
+import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +45,12 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     @Autowired
     private BuyerAddressMapper buyerAddressMapper;
+
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
+
+    @Autowired
+    private RedisIO redisIO;
 
     /**
      * oid获取器
@@ -79,7 +85,22 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
         // a, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();
-//        itemOrder.addLogistics(logistics.getArrays.asList(order.getOid()), );
+        String companyId = logistics.getCompanyId();
+        ExpressCompany company = new ExpressCompany();
+        company.setEnName(companyId);
+        ExpressCompany expressCompany = expressCompanyMapper.selectOne(company);
+
+        BuyerAddress buyerAddress;
+        try {
+            Long aid = Long.valueOf(logistics.getAddressId());
+            buyerAddress = buyerAddressMapper.selectByPrimaryKey(aid);
+        } catch (NumberFormatException e) {
+            BuyerAddressVO buyerAddressVO = redisIO.get("tmp_buyer_address_" + logistics.getAddressId(), BuyerAddressVO.class);
+            buyerAddress = BeanMapper.map(buyerAddressVO, BuyerAddress.class);
+        }
+        LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
+        logistic.setCompanyId(expressCompany.getExpressCompanyId());
+        itemOrder.addLogistics(null, logistic);
 
         // b, 添加服务
         if (orderBO.getServiceIds() != null) {
