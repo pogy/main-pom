@@ -42,6 +42,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
     @Value("${notifyUrl}")
     private String notifyUrl;
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PayApplyVO payApply(Long oid, Long money, String title) throws PayApplyException {
