@@ -1,15 +1,16 @@
-package com.shigu.main4.order.vo;
+package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.enums.RefundStateEnum;
+
 import com.shigu.main4.order.enums.RetrunbleStatusEnum;
 import com.shigu.main4.order.enums.ReturnGoodsStatusEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by zf on 2017/7/17.
  */
-public class ReturnGoodsInfoVO {
+public class ReturnGoodsInfoVO implements Serializable{
     /**
      * 退款编号
      */
