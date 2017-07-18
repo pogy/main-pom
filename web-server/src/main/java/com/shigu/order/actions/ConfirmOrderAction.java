@@ -122,7 +122,7 @@ public class ConfirmOrderAction {
         model.addAttribute("serviceRulers", JSON.toJSONString(confirmOrderService.serviceRulePack(vos, bo.getSenderId())));
         model.addAttribute("goodsOrders", vos);
         model.addAttribute("webSite", "hz");//站点
-        model.addAttribute("code", bo.getCode());//站点
+        model.addAttribute("code", bo.getCode());
         return "trade/confirmOrder";
     }
 
