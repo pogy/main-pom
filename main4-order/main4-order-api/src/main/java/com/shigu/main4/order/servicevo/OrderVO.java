@@ -21,7 +21,7 @@ public class OrderVO implements Serializable{
 
     private Long payedFee;
 
-
+    private String title;
 
     /**
      * 成交时间
@@ -95,6 +95,14 @@ public class OrderVO implements Serializable{
 
     public void setPayedFee(Long payedFee) {
         this.payedFee = payedFee;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**

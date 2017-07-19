@@ -61,7 +61,7 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
         }
         if (!"SUCCESS".equals(resData.getReturn_code())
                 || !"SUCCESS".equals(resData.getResult_code())) {
-            throw PayApplyException.wxApplyException(new Exception(resData.getErr_code() + " : " + resData.getErr_code_des()));
+            throw PayApplyException.wxApplyException(new Exception(resData.getResult_code() + " : " + resData.getReturn_msg()));
         }
 
         OrderPayApply payApply = new OrderPayApply();

@@ -1,9 +1,9 @@
 package com.shigu.order.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.order.services.PayModeService;
+import com.shigu.order.vo.PayModePageVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -14,7 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Created by whx on 2017/7/17 0017.
@@ -38,7 +41,13 @@ public class PayModeAction {
     public String payMode(String orderId, HttpSession session, Model model) throws JsonErrException, PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
-        model.addAttribute(payModeService.selPayModePageVO(orderId, userId));
+        PayModePageVO payModePageVO = payModeService.selPayModePageVO(orderId, userId);
+        model.addAttribute("orderId", orderId);
+        model.addAttribute("amountPay", payModePageVO.getAmountPay());
+        model.addAttribute("currentAmount", payModePageVO.getCurrentAmount());
+        model.addAttribute("notSetPassword", payModePageVO.getNotSetPassword());
+        model.addAttribute("tempCode", payModePageVO.getTempCode());
+        model.addAttribute("alipayUrl", payModePageVO.getAlipayUrl());
         return "/trade/payMode";
     }
 
@@ -54,8 +63,8 @@ public class PayModeAction {
     @ResponseBody
     public JSONObject payInfoJson(String orderId, HttpSession session) throws JsonErrException, PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        Long userId = ps.getUserId();
-        return JsonResponseUtil.success().element("qrcodeImg",payModeService.wxpay(orderId, userId));
+        String wxpay = payModeService.wxpay(orderId, ps.getUserId());
+        return JsonResponseUtil.success().element("qrcodeImg","http://pan.baidu.com/share/qrcode?w=300&h=300&url=" + wxpay);
     }
 
     /**
@@ -84,5 +93,15 @@ public class PayModeAction {
     @ResponseBody
     public JSONObject payPollingJson() {
         return null;
+    }
+
+    @RequestMapping("/order/alipay")
+    public void alipay(Long id, HttpServletResponse response) throws PayApplyException, IOException {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html");
+        PrintWriter writer = response.getWriter();
+        writer.println(payModeService.alipay(id));
+        writer.flush();
+        writer.close();
     }
 }

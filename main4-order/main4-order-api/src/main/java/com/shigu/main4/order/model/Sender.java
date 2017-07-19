@@ -1,5 +1,9 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.vo.LogisticsTemplateVO;
+
+import java.util.List;
+
 /**
  * 发货单位
  * Created by zhaohongbo on 17/7/18.
@@ -7,7 +11,21 @@ package com.shigu.main4.order.model;
 public interface Sender {
     /**
      * 发货
-     * @param order
      */
-    void sendOrder(Order order);//发放订单给代发
+    void sendOrder(Long oid,String logisticsCode);//发放订单给代发
+
+    /**
+     * 查询发货单位的快递模板
+     * @return
+     */
+    List<LogisticsTemplateVO> selTemplate();//查询发货单位的快递模板
+
+    /**
+     * 生效的快递模板
+     * 如果没有,取系统默认
+     * 系统默认的是sender_id=-1
+     * @return
+     */
+    LogisticsTemplateVO usedTemplate();
+
 }

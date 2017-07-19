@@ -14,7 +14,6 @@ public class LogisticsCompanyVO extends OrderConstantVo implements Serializable{
      */
     private String name;
 
-    private List<BournRuleInfoVo> bourns;
 
 
     public String getName() {
@@ -25,11 +24,4 @@ public class LogisticsCompanyVO extends OrderConstantVo implements Serializable{
         this.name = name;
     }
 
-    public List<BournRuleInfoVo> getBourns() {
-        return bourns;
-    }
-
-    public void setBourns(List<BournRuleInfoVo> bourns) {
-        this.bourns = bourns;
-    }
 }
