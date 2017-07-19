@@ -1,7 +1,11 @@
 package com.shigu.main4.order.model.impl;
 
+import com.opentae.data.mall.examples.LogisticsTemplateExample;
+import com.opentae.data.mall.interfaces.LogisticsTemplateMapper;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.Sender;
 import com.shigu.main4.order.vo.LogisticsTemplateVO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -10,6 +14,9 @@ import java.util.List;
  * Created by zhaohongbo on 17/7/19.
  */
 public class SenderImpl implements Sender {
+
+    @Autowired
+    private LogisticsTemplateMapper logisticsTemplateMapper;
 
     private Long senderId;
 
@@ -24,7 +31,9 @@ public class SenderImpl implements Sender {
 
     @Override
     public List<LogisticsTemplateVO> selTemplate() {
-        return null;
+        LogisticsTemplateExample logisticsTemplateExample = new LogisticsTemplateExample();
+        logisticsTemplateExample.createCriteria().andSenderIdEqualTo(senderId);
+        return BeanMapper.mapList(logisticsTemplateMapper.selectByExample(logisticsTemplateExample),LogisticsTemplateVO.class) ;
     }
 
     @Override
