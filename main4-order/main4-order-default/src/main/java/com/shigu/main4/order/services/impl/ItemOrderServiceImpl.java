@@ -5,10 +5,8 @@ import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.beans.OrderIdGenerator;
 import com.opentae.data.mall.examples.BuyerAddressExample;
-import com.opentae.data.mall.interfaces.BuyerAddressMapper;
-import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
-import com.opentae.data.mall.interfaces.ItemOrderMapper;
-import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
+import com.opentae.data.mall.examples.LogisticsTemplateExample;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
@@ -53,6 +51,9 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private LogisticsTemplateMapper logisticsTemplateMapper;
 
     /**
      * oid获取器
@@ -106,6 +107,7 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
         logistic.setCompanyId(expressCompany.getExpressCompanyId());
         logistic.setAddress(buyerAddress.getAddress());
+        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), company.getExpressCompanyId(), buyerAddress.getProvId(), null));
         itemOrder.addLogistics(null, logistic);
 
         // b, 添加服务
@@ -143,7 +145,10 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     @Override
     public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId,List<PidNumBO> pids) {
-        return null;
+        LogisticsTemplateExample templateExample = new LogisticsTemplateExample();
+        templateExample.createCriteria().andEnabledEqualTo(true).andSenderIdEqualTo(senderId);
+        logisticsTemplateMapper.selectByExample(templateExample);
+        return 0L;
     }
 
     /**
