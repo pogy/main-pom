@@ -4,55 +4,55 @@ package com.shigu.main4.order.vo;
  * 目的地价格规则
  * Created by bugzy on 2017/7/18 0018.
  */
-public class BournRuleInfoVo {
+public class BournRuleInfoVO {
 
-    private String startWeight;
+    private Integer startWeight;
 
-    private String startPrice;
+    private Long startPrice;
 
-    private String prov;
+    private Long provId;
 
-    private String addWeight;
+    private Integer addWeight;
 
-    private String addPrice;
+    private Long addPrice;
 
-    public String getStartWeight() {
+    public Integer getStartWeight() {
         return startWeight;
     }
 
-    public void setStartWeight(String startWeight) {
+    public void setStartWeight(Integer startWeight) {
         this.startWeight = startWeight;
     }
 
-    public String getStartPrice() {
+    public Long getStartPrice() {
         return startPrice;
     }
 
-    public void setStartPrice(String startPrice) {
+    public void setStartPrice(Long startPrice) {
         this.startPrice = startPrice;
     }
 
-    public String getProv() {
-        return prov;
+    public Long getProvId() {
+        return provId;
     }
 
-    public void setProv(String prov) {
-        this.prov = prov;
+    public void setProvId(Long provId) {
+        this.provId = provId;
     }
 
-    public String getAddWeight() {
+    public Integer getAddWeight() {
         return addWeight;
     }
 
-    public void setAddWeight(String addWeight) {
+    public void setAddWeight(Integer addWeight) {
         this.addWeight = addWeight;
     }
 
-    public String getAddPrice() {
+    public Long getAddPrice() {
         return addPrice;
     }
 
-    public void setAddPrice(String addPrice) {
+    public void setAddPrice(Long addPrice) {
         this.addPrice = addPrice;
     }
 }

@@ -10,6 +10,13 @@ import java.util.List;
  * Created by zhaohongbo on 17/7/19.
  */
 public class SenderImpl implements Sender {
+
+    private Long senderId;
+
+    public SenderImpl(Long senderId) {
+        this.senderId = senderId;
+    }
+
     @Override
     public void sendOrder(Long oid, String logistics) {
 
@@ -23,5 +30,13 @@ public class SenderImpl implements Sender {
     @Override
     public LogisticsTemplateVO usedTemplate() {
         return null;
+    }
+
+    public Long getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
     }
 }

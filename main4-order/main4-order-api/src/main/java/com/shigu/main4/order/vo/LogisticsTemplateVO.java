@@ -24,7 +24,7 @@ public class LogisticsTemplateVO {
 
     private Long fromTownId;
 
-    private List<BournRuleInfoVo> bourns;
+    private List<LogisticsCompanyVO> companys;
 
     public Long getTemplateId() {
         return templateId;
@@ -72,5 +72,13 @@ public class LogisticsTemplateVO {
 
     public void setFromTownId(Long fromTownId) {
         this.fromTownId = fromTownId;
+    }
+
+    public List<LogisticsCompanyVO> getCompanys() {
+        return companys;
+    }
+
+    public void setCompanys(List<LogisticsCompanyVO> companys) {
+        this.companys = companys;
     }
 }
