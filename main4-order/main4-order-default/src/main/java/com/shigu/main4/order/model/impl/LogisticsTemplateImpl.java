@@ -22,6 +22,10 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     private Long templateId;
 
+    public LogisticsTemplateImpl(Long templateId) {
+        this.templateId = templateId;
+    }
+
     @Autowired
     private LogisticsTemplateMapper logisticsTemplateMapper;
 
