@@ -15,6 +15,13 @@ import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.BuyerAddressException;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.servicevo.ExpressInfoVO;
+import com.shigu.main4.order.servicevo.ExpressLogVO;
+import com.shigu.main4.order.servicevo.OrderInfoVO;
+import com.shigu.main4.order.servicevo.OrderLogVO;
+import com.shigu.main4.order.servicevo.RefundInfoVO;
+import com.shigu.main4.order.servicevo.RefundLogVO;
+import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -214,5 +221,50 @@ public class ItemOrderServiceImpl implements ItemOrderService{
     @Transactional(rollbackFor = Exception.class)
     public void rmBuyerAddress(Long addressId) {
         buyerAddressMapper.deleteByPrimaryKey(addressId);
+    }
+
+    @Override
+    public ExpressInfoVO expressInfo(Long orderId) {
+        return null;
+    }
+
+    @Override
+    public List<ExpressLogVO> expressLog(Long expressId) {
+        return null;
+    }
+
+    @Override
+    public SubOrderInfoVO suborderInfo(Long subOrderId) {
+        return null;
+    }
+
+    @Override
+    public OrderInfoVO orderInfo(Long orderId) {
+        return null;
+    }
+
+    @Override
+    public List<OrderLogVO> orderLog(Long orderId) {
+        return null;
+    }
+
+    @Override
+    public List<SubOrderInfoVO> suborderInfoByOrderId(Long orderId) {
+        return null;
+    }
+
+    @Override
+    public Long refundApply(Long subOrderId, Integer number) {
+        return null;
+    }
+
+    @Override
+    public RefundInfoVO refundInfo(Long refundId) {
+        return null;
+    }
+
+    @Override
+    public List<RefundLogVO> refundLog(Long refundId) {
+        return null;
     }
 }
