@@ -12,7 +12,7 @@ public interface Sender {
     /**
      * 发货
      */
-    void sendOrder(Long oid,String logistics);//发放订单给代发
+    void sendOrder(Long oid,String logisticsCode);//发放订单给代发
 
     /**
      * 查询发货单位的快递模板
