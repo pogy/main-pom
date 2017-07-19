@@ -158,18 +158,6 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     }
 
     /**
-     * 查询用户默认运费模块
-     *
-     * @param senderId
-     * @return
-     */
-    @Override
-    public LogisticsCompanyVO selLogisticsDefault(Long senderId) {
-        List<LogisticsCompanyVO> companyVOS = selLogistics(senderId);
-        return companyVOS.isEmpty() ? null : companyVOS.get(0);
-    }
-
-    /**
      * 按物流信息ID查物流
      *
      * @param senderId 发送单位ID

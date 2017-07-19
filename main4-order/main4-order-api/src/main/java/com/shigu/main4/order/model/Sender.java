@@ -10,4 +10,6 @@ public interface Sender {
      * @param order
      */
     void sendOrder(Order order);//发放订单给代发
+
+
 }
