@@ -47,30 +47,35 @@ public class AliPayerServiceImpl extends PayerServiceAble {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public PayApplyVO payApply(Long oid, Long money, String title) throws PayApplyException {
+
+        OrderPayApply apply = new OrderPayApply();
+        apply.setOid(oid);
+        apply.setMoney(money);
+        apply.setType(PayType.ALI.getValue());
+
+        orderPayApplyMapper.insertSelective(apply);
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl(returnUrl);
         alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回调和通知地址
 
         alipayRequest.setBizContent("{" +
-                "    \"out_trade_no\":\"" + oid + "\"," +
+                "    \"out_trade_no\":\"" + apply.getApplyId() + "\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
                 "    \"total_amount\":" + AmountUtils.changeF2Y(money) + "," +
                 "    \"subject\":\"" + title + "\"" +
                 "  }");//填充业务参数
         String form = "";
         try {
-            AlipayTradePagePayResponse execute = alipayClient.execute(alipayRequest);
             form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
         } catch (AlipayApiException e) {
             throw new PayApplyException(e.getMessage());
         }
 
-        OrderPayApply apply = new OrderPayApply();
-        apply.setOid(oid);
-        apply.setMoney(money);
-        apply.setType(PayType.ALI.getValue());
-        apply.setPayLink(form);
-        orderPayApplyMapper.insertSelective(apply);
+
+        OrderPayApply payApply = new OrderPayApply();
+        payApply.setApplyId(apply.getApplyId());
+        payApply.setPayLink(form);
+        orderPayApplyMapper.updateByPrimaryKeySelective(payApply);
 
         return BeanMapper.map(orderPayApplyMapper.selectByPrimaryKey(apply.getApplyId()), PayApplyVO.class);
     }
@@ -107,7 +112,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         }
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent("{" +
-                "    \"out_trade_no\":\"" + orderPayApply.getOid()+"\"," +
+                "    \"out_trade_no\":\"" + orderPayApply.getApplyId() + "\"," +
                 "    \"refund_amount\":" + AmountUtils.changeF2Y(money)  + "," +
                 "    \"refund_reason\":\"正常退款\"," +
                 "    \"out_request_no\":\"" + UUIDGenerator.getUUID() + "\"" +
@@ -115,7 +120,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         try {
             AlipayResponse response = alipayClient.execute(request);
             if(!response.isSuccess()){
-                throw new PayerException("支付宝退款失败！");
+                throw new PayerException("支付宝退款失败: "+ response.getCode() + ", " + response.getMsg());
             }
         } catch (AlipayApiException e) {
             throw new PayerException(e.getMessage());

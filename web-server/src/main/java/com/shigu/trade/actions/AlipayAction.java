@@ -43,7 +43,7 @@ public class AlipayAction {
         for (Map.Entry<String, String[]> item : paramsMap.entrySet()) {
             paramsMapAli.put(item.getKey(), item.getValue()[0]);
         }
-        logger.info(paramsMapAli.toString());
+        logger.info("notifyUrl : " + paramsMapAli.toString());
         try {
             boolean signVerified = AlipaySignature.rsaCheckV1(paramsMapAli, aliPayService.getPublicKey(), "utf-8", "RSA") ;//调用SDK验证签名
             String tradeStatus =  paramsMapAli.get("trade_status");
@@ -71,18 +71,15 @@ public class AlipayAction {
         for (Map.Entry<String, String[]> item : paramsMap.entrySet()) {
             paramsMapAli.put(item.getKey(), item.getValue()[0]);
         }
-        logger.info(paramsMapAli.toString());
+        logger.info("returnUrl : " + paramsMapAli.toString());
+        String CONTENT_TYPE = "text/html; charset=utf-8";
+        response.setContentType(CONTENT_TYPE);
         try {
             boolean signVerified = AlipaySignature.rsaCheckV1(paramsMapAli, aliPayService.getPublicKey(), "utf-8", "RSA") ;//调用SDK验证签名
-            String tradeStatus =  paramsMapAli.get("trade_status");
-            if(signVerified){
-                if ("TRADE_SUCCESS".equalsIgnoreCase(tradeStatus) || "TRADE_FINISHED".equalsIgnoreCase(tradeStatus)) {
-                    aliPayService.payNotice(paramsMapAli);
-                    response.getWriter().print("订单支付成功");
-                } else {
-                    response.getWriter().print("订单支付状态未知");
-                }
 
+            if(signVerified){
+                aliPayService.payNotice(paramsMapAli);
+                response.getWriter().print("订单支付成功");
             } else {
                 response.getWriter().print("验签失败");
             }

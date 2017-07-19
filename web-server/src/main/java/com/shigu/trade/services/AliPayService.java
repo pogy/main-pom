@@ -3,6 +3,7 @@ package com.shigu.trade.services;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.PayerService;
+import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.AmountUtils;
 import com.shigu.trade.bo.ScanPayBo;
 import org.slf4j.Logger;
@@ -32,18 +33,12 @@ public class AliPayService {
     public void payNotice(Map<String, String> paramsMapAli) throws PayerException {
         String outTradeNo = paramsMapAli.get("out_trade_no");
         String totalAmount = paramsMapAli.get("total_amount");
-        String sellerId = paramsMapAli.get("seller_id");
+        String buyerId = paramsMapAli.get("buyer_id");
 
         String totalFee = AmountUtils.changeY2F(totalAmount);
 
-        Long applyId;
-        try {
-            applyId = Long.valueOf(outTradeNo.substring(2));
-        } catch (NumberFormatException e) {
-            logger.error(String.format("支付宝支付成功通知： 外部订单号[%s]解析失败.", outTradeNo));
-            throw new PayerException(e.getMessage());
-        }
-        payerService.paySure(applyId, outTradeNo, sellerId, Long.valueOf(totalFee));
+
+        payerService.paySure(Long.valueOf(outTradeNo), "", buyerId, Long.valueOf(totalFee));
     }
 
     public String getPublicKey() {
