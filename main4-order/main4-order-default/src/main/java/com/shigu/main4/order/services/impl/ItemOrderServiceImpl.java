@@ -9,6 +9,7 @@ import com.opentae.data.mall.interfaces.BuyerAddressMapper;
 import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
@@ -168,19 +169,13 @@ public class ItemOrderServiceImpl implements ItemOrderService{
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveBuyerAddress(BuyerAddressVO buyerAddressVO) {
+    public void saveBuyerAddress(BuyerAddressVO buyerAddressVO) throws JsonErrException {
         //信息不足
         boolean isInformationInsufficient = buyerAddressVO.getProvId()==null || buyerAddressVO.getCityId()==null || buyerAddressVO.getTownId()==null ||
                 StringUtil.isNull(buyerAddressVO.getAddress()) || buyerAddressVO.getUserId()==null || StringUtil.isNull(buyerAddressVO.getTelephone()) ||
                 StringUtil.isNull(buyerAddressVO.getName());
         if (isInformationInsufficient) {
-            try {
-                throw new BuyerAddressException("信息不足");
-            } catch (BuyerAddressException e) {
-                logger.error("买家地址存储失败",e);
-            } finally {
-                return;
-            }
+            throw new JsonErrException("买家地址存储失败");
         }
         BuyerAddressExample buyerAddressExample = new BuyerAddressExample();
         buyerAddressExample.createCriteria().andUserIdEqualTo(buyerAddressVO.getUserId());

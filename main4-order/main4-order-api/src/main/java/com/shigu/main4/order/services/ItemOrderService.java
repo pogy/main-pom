@@ -1,5 +1,6 @@
 package com.shigu.main4.order.services;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.PidNumBO;
 import com.shigu.main4.order.enums.OrderType;
@@ -45,7 +46,7 @@ public interface ItemOrderService {
      * 保存地址
      * @param buyerAddressVO
      */
-    void saveBuyerAddress(BuyerAddressVO buyerAddressVO);
+    void saveBuyerAddress(BuyerAddressVO buyerAddressVO) throws JsonErrException;
 
     /**
      * 删除地址
