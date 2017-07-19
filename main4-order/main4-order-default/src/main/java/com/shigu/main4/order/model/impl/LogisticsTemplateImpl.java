@@ -8,7 +8,6 @@ import com.opentae.data.mall.examples.ExpressCompanyExample;
 import com.opentae.data.mall.examples.LogisticsTemplateCompanyExample;
 import com.opentae.data.mall.examples.LogisticsTemplateProvExample;
 import com.opentae.data.mall.interfaces.*;
-import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.vo.BournRuleInfoVO;
@@ -31,23 +30,24 @@ import java.util.List;
 @Scope("prototype")
 public class LogisticsTemplateImpl implements LogisticsTemplate {
 
-    public LogisticsTemplateImpl(Long templateId) {
-        this.templateId = templateId;
-    }
-
     private Long templateId;
 
 
 
+    @Autowired
+    private LogisticsTemplateMapper logisticsTemplateMapper;
 
-    @Autowired
-    private LogisticsTemplateCompanyMapper logisticsTemplateCompanyMapper;
-    @Autowired
-    private ExpressCompanyMapper expressCompanyMapper;
     @Autowired
     private LogisticsTemplateProvMapper logisticsTemplateProvMapper;
 
+    @Autowired
+    private LogisticsTemplateCompanyMapper logisticsTemplateCompanyMapper;
 
+    @Autowired
+    private LogisticsTemplateRuleMapper logisticsTemplateRuleMapper;
+
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
 
 
     /**
@@ -70,11 +70,11 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         this.templateId = templateId;
     }
 
-
     @Override
     public LogisticsTemplateVO templateInfo() {
         return null;
     }
+
 
     /**
      * 按省份查快递公司
@@ -87,14 +87,23 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         LogisticsTemplateProvExample provExample=new LogisticsTemplateProvExample();
         provExample.createCriteria().andTemplateIdEqualTo(templateId).andProvIdEqualTo(provId);
         List<LogisticsTemplateProv> logisticsTemplateProvs = logisticsTemplateProvMapper.selectFieldsByExample(provExample, FieldUtil.codeFields("tp_id,rule_id"));
+        if (logisticsTemplateProvs.size()<=0){
+            return null;
+        }
         List<Long> ruleIds = BeanMapper.getFieldList(logisticsTemplateProvs, "ruleId", Long.class);
         LogisticsTemplateCompanyExample companyExample=new LogisticsTemplateCompanyExample();
         companyExample.createCriteria().andTemplateIdEqualTo(templateId).andRuleIdIn(ruleIds);
         List<LogisticsTemplateCompany> companies = logisticsTemplateCompanyMapper.selectFieldsByExample(companyExample, FieldUtil.codeFields("tc_id,company_id"));
+        if (companies.size()<=0){
+            return null;
+        }
         List<Long> companyIds = BeanMapper.getFieldList(companies, "companyId", Long.class);
         ExpressCompanyExample expressCompanyExample=new ExpressCompanyExample();
         expressCompanyExample.createCriteria().andExpressCompanyIdIn(companyIds);
         List<ExpressCompany> expressCompanies = expressCompanyMapper.selectFieldsByExample(expressCompanyExample, FieldUtil.codeFields("express_company_id,express_name"));
+        if (expressCompanies.size()<=0){
+            return null;
+        }
         List<String> expressNames = BeanMapper.getFieldList(expressCompanies, "expressName", String.class);
         List<LogisticsCompanyVO> voList=new ArrayList<>();
         for (String e:expressNames){
@@ -110,11 +119,5 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     @Override
     public Long calculate(Long provId, Integer goodsNumber, Long weight) {
         return null;
-    }
-
-
-
-    public Long getTemplateId() {
-        return templateId;
     }
 }

@@ -112,6 +112,14 @@ public class ConfirmOrderAction {
 //                postRuleVO.setName(name);
 //            }
 //            postRuleVOS.addAll(postRuleVOList);
+            PostRuleVO ruleVO = new PostRuleVO();
+            ruleVO.setName(name);
+            ruleVO.setAddPrice(1.0);
+            ruleVO.setAddWeight(1.0);
+            ruleVO.setProv("浙江省");
+            ruleVO.setStartPrice(5.0);
+            ruleVO.setStartWeight(0.0);
+            postRuleVOS.add(ruleVO);
         }
         model.addAttribute("postRulers", JSON.toJSONString(postRuleVOS));
         model.addAttribute("postNameMap", JSON.toJSONString(confirmOrderService.postNameMapper()));
