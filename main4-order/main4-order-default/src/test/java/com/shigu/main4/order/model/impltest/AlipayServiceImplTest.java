@@ -27,7 +27,7 @@ public class AlipayServiceImplTest  extends BaseTest {
 
     @Test
     public void refund() throws Exception {
-        aliPayerService.refund(17L,1L);
+        aliPayerService.refund(18L,1L);
     }
 
 }

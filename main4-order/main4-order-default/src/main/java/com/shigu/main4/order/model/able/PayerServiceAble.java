@@ -4,10 +4,12 @@ import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
 import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
 import com.opentae.data.mall.interfaces.OrderPayMapper;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.vo.PayApplyVO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -36,6 +38,9 @@ public abstract class PayerServiceAble implements PayerService{
         OrderPayApply apply;
         if (applyId == null || (apply = orderPayApplyMapper.selectByPrimaryKey(applyId)) == null)
             throw new PayerException(String.format("支付请求不存在：[%d]", applyId));
+        if (StringUtils.isEmpty(outerPid)) {
+            outerPid = apply.getOid().toString();
+        }
         OrderPay orderPay = BeanMapper.map(apply, OrderPay.class);
         orderPay.setCreateTime(null);
         orderPay.setOuterPid(outerPid);
