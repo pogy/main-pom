@@ -32,7 +32,13 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     private Long templateId;
 
+    public Long getTemplateId() {
+        return templateId;
+    }
 
+    public LogisticsTemplateImpl(Long templateId) {
+        this.templateId = templateId;
+    }
 
     @Autowired
     private LogisticsTemplateMapper logisticsTemplateMapper;
@@ -63,11 +69,6 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId);
         logisticsTemplateProvMapper.selectByExample(provExample);
         return null;
-    }
-
-
-    public void setTemplateId(Long templateId) {
-        this.templateId = templateId;
     }
 
     @Override
