@@ -85,7 +85,7 @@ public class ProductAiTest {
         AiImageInfo info =new AiImageInfo();
         //info.setImageUrl("https://img.alicdn.com/bao/uploaded/i3/324975222/TB2ejyNqS0jpuFjy0FlXXc0bpXa_!!324975222.jpg");
         //info.setMeta("20570324-男装");
-         info.setImageUrl("https://img.alicdn.com/bao/uploaded/i4/TB1It.1PXXXXXaBXFXXXXXXXXXX_!!0-item_pic.jpg");
+        info.setImageUrl("https://img.alicdn.com/bao/uploaded/i4/TB1It.1PXXXXXaBXFXXXXXXXXXX_!!0-item_pic.jpg");
         info.setMeta("9928088-男装");
         infolist.add(info);
         ProductAiVo delete = productAiInterface.delete(bo);
