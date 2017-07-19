@@ -71,7 +71,6 @@ public class AliPayerServiceImpl extends PayerServiceAble {
             throw new PayApplyException(e.getMessage());
         }
 
-
         OrderPayApply payApply = new OrderPayApply();
         payApply.setApplyId(apply.getApplyId());
         payApply.setPayLink(form);

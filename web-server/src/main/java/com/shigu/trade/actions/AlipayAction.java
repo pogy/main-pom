@@ -76,7 +76,6 @@ public class AlipayAction {
         response.setContentType(CONTENT_TYPE);
         try {
             boolean signVerified = AlipaySignature.rsaCheckV1(paramsMapAli, aliPayService.getPublicKey(), "utf-8", "RSA") ;//调用SDK验证签名
-
             if(signVerified){
                 aliPayService.payNotice(paramsMapAli);
                 response.getWriter().print("订单支付成功");
@@ -85,11 +84,15 @@ public class AlipayAction {
             }
         } catch (AlipayApiException e) {
             logger.error(e.getMessage());
-            response.getWriter().print("支付失败");
+            response.getWriter().print("支付失败!");
         } catch (PayerException e) {
             logger.error(e.getMessage());
             response.getWriter().print("支付失败");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            response.getWriter().print("交易完成，请核对订单状态！");
         }
+
     }
 
 
