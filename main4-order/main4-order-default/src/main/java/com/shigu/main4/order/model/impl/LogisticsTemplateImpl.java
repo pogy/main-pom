@@ -1,6 +1,11 @@
 package com.shigu.main4.order.model.impl;
 
+import com.opentae.data.mall.beans.LogisticsTemplateProv;
+import com.opentae.data.mall.examples.LogisticsTemplateProvExample;
+import com.opentae.data.mall.interfaces.LogisticsTemplateCompanyMapper;
 import com.opentae.data.mall.interfaces.LogisticsTemplateMapper;
+import com.opentae.data.mall.interfaces.LogisticsTemplateProvMapper;
+import com.opentae.data.mall.interfaces.LogisticsTemplateRuleMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.vo.BournRuleInfoVO;
@@ -26,8 +31,21 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         this.templateId = templateId;
     }
 
+    public Long getTemplateId() {
+        return templateId;
+    }
+
     @Autowired
     private LogisticsTemplateMapper logisticsTemplateMapper;
+
+    @Autowired
+    private LogisticsTemplateProvMapper logisticsTemplateProvMapper;
+
+    @Autowired
+    private LogisticsTemplateCompanyMapper logisticsTemplateCompanyMapper;
+
+    @Autowired
+    private LogisticsTemplateRuleMapper logisticsTemplateRuleMapper;
 
     @Override
     public LogisticsTemplateVO templateInfo() {
@@ -54,6 +72,9 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
      */
     @Override
     public List<BournRuleInfoVO> rules(Long provId, Long companyId) {
+        LogisticsTemplateProvExample provExample = new LogisticsTemplateProvExample();
+        provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId);
+        logisticsTemplateProvMapper.selectByExample(provExample);
         return null;
     }
 

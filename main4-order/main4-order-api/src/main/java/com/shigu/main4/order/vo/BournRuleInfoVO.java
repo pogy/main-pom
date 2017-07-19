@@ -12,6 +12,8 @@ public class BournRuleInfoVO {
 
     private Long provId;
 
+    private Long componyId;
+
     private Integer addWeight;
 
     private Long addPrice;
@@ -38,6 +40,14 @@ public class BournRuleInfoVO {
 
     public void setProvId(Long provId) {
         this.provId = provId;
+    }
+
+    public Long getComponyId() {
+        return componyId;
+    }
+
+    public void setComponyId(Long componyId) {
+        this.componyId = componyId;
     }
 
     public Integer getAddWeight() {
