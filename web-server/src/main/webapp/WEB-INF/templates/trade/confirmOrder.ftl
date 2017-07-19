@@ -15,6 +15,7 @@
 
 
 
+
     
     <link href="http://style.571xz.com/v2/order/css/confirmOrder.css" rel="stylesheet">
     
@@ -286,11 +287,6 @@ var webSite = '${webSite!}';
         
         <input type="hidden" id="updatePostPrice">
 
-<script>
-var postRulers = ${postRulers!};
-var postNameMap = ${postNameMap!};
-</script>
-
 
 
 
@@ -526,6 +522,7 @@ var postNameMap = ${postNameMap!};
     <b class="alterAddress" jbtn="alterAddress">更改地址</b>
 </div>
 <input type="hidden" id="fullAreaInput" name="fullAreaInput" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.address!}"</#if>>
+
 
 
 
