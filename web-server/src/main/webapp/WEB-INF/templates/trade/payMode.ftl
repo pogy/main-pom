@@ -15,6 +15,7 @@
 
 
 
+
     
     <link href="http://style.571xz.com/v2/order/css/payMode.css" rel="stylesheet">
     
@@ -266,7 +267,7 @@ var webSite = '${webSite!}';
 </#list>
 
                 <span class="payNumber fr">支付：<em class="fwb fcF40 arail">${amountPay!}</em>元</span>
-                <input type=hidden name="alipayUrl" value="${alipayUrl!}?id=${orderId!}&tempCode=${tempCode!}"></li>
+                <input type=hidden name="alipayUrl" value="/order/alipay.htm?id=${orderId!}&tempCode=${tempCode!}"></li>
             <li>
                 
 
@@ -361,6 +362,8 @@ var webSite = '${webSite!}';
 </#list>
 
                 <div class="lastMoneyBox">
+                    <span class="lastMoney none"><em class="fc9">余额：</em><em class="yahei">&yen;</em><em class="fs14 fwb">${currentAmount!}</em></span>
+                    <span class="recharge"></span>
                 </div>
                 <span class="payNumber fr">支付：<em class="fwb fcF40 arail">${amountPay!}</em>元</span>
             </li>
@@ -395,6 +398,11 @@ var webSite = '${webSite!}';
 var currentAmount = '${currentAmount!}';
 var amountPay = '${amountPay!}';
 </script>
+
+
+
+
+
 
 
 

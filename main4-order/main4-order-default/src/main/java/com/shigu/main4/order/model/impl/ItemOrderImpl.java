@@ -91,6 +91,7 @@ public class ItemOrderImpl implements ItemOrder{
         orderVO.setPayedFee(order.getPayedFee());
         orderVO.setType(OrderType.typeOf(order.getType()));
         orderVO.setOrderId(order.getOid());
+        orderVO.setTitle(order.getTitle());
         orderVO.setOrderStatus(OrderStatus.statusOf(order.getOrderStatus()));
         return orderVO;
     }
@@ -187,6 +188,7 @@ public class ItemOrderImpl implements ItemOrder{
         itemOrderService.setMoney(serviceVO.getPrice());
         itemOrderService.setOid(oid);
         itemOrderService.setServiceId(serviceId);
+        itemOrderService.setId(null);
         itemOrderServiceMapper.insertSelective(itemOrderService);
 
         // 重新计算订单总额

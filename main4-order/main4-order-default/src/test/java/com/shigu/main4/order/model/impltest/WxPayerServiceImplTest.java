@@ -5,13 +5,15 @@ import com.shigu.main4.order.model.PayerService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
+
 /**
  * 微信支付测试
  * Created by bugzy on 2017/6/14 0014.
  */
 public class WxPayerServiceImplTest extends BaseTest {
 
-    @Autowired
+    @Resource(name = "wxPayerService")
     private PayerService payerService;
 
     @Test
