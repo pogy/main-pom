@@ -24,8 +24,6 @@ public class LogisticsTemplateVO {
 
     private Long fromTownId;
 
-    private List<LogisticsCompanyVO> companys;
-
     public Long getTemplateId() {
         return templateId;
     }
@@ -74,11 +72,4 @@ public class LogisticsTemplateVO {
         this.fromTownId = fromTownId;
     }
 
-    public List<LogisticsCompanyVO> getCompanys() {
-        return companys;
-    }
-
-    public void setCompanys(List<LogisticsCompanyVO> companys) {
-        this.companys = companys;
-    }
 }
