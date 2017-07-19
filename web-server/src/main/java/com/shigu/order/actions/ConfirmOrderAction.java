@@ -135,7 +135,7 @@ public class ConfirmOrderAction {
 
     @ResponseBody
     @RequestMapping("collectCgneeJson")
-    public JSONObject collectCgneeJson(BuyerAddressItemVO buyerAddressItem, HttpServletRequest request) {
+    public JSONObject collectCgneeJson(BuyerAddressItemVO buyerAddressItem, HttpServletRequest request) throws JsonErrException {
 
         Long userId = null;
         PersonalSession sessionUser = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());

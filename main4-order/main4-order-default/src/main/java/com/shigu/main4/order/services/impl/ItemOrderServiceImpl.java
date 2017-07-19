@@ -9,6 +9,7 @@ import com.opentae.data.mall.interfaces.BuyerAddressMapper;
 import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
@@ -19,6 +20,7 @@ import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,12 +96,16 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         try {
             Long aid = Long.valueOf(logistics.getAddressId());
             buyerAddress = buyerAddressMapper.selectByPrimaryKey(aid);
+            String town = StringUtils.isEmpty(buyerAddress.getTownName()) ? "" : buyerAddress.getTownName();
+            buyerAddress.setAddress(buyerAddress.getProvName() + buyerAddress.getCityName() + town + buyerAddress.getAddress());
         } catch (NumberFormatException e) {
             BuyerAddressVO buyerAddressVO = redisIO.get("tmp_buyer_address_" + logistics.getAddressId(), BuyerAddressVO.class);
             buyerAddress = BeanMapper.map(buyerAddressVO, BuyerAddress.class);
+            buyerAddress.setAddress(buyerAddressVO.getProvince() + buyerAddressVO.getCity() + buyerAddressVO.getTown() + buyerAddressVO.getAddress());
         }
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
         logistic.setCompanyId(expressCompany.getExpressCompanyId());
+        logistic.setAddress(buyerAddress.getAddress());
         itemOrder.addLogistics(null, logistic);
 
         // b, 添加服务
@@ -168,19 +174,14 @@ public class ItemOrderServiceImpl implements ItemOrderService{
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveBuyerAddress(BuyerAddressVO buyerAddressVO) {
+    public void saveBuyerAddress(BuyerAddressVO buyerAddressVO) throws JsonErrException {
         //信息不足
-        boolean isInformationInsufficient = buyerAddressVO.getProvId()==null || buyerAddressVO.getCityId()==null || buyerAddressVO.getTownId()==null ||
-                StringUtil.isNull(buyerAddressVO.getAddress()) || buyerAddressVO.getUserId()==null || StringUtil.isNull(buyerAddressVO.getTelephone()) ||
+        boolean isInformationInsufficient = buyerAddressVO.getProvId()==null || buyerAddressVO.getCityId()==null ||
+                buyerAddressVO.getTownId()==null || StringUtil.isNull(buyerAddressVO.getAddress()) ||
+                buyerAddressVO.getUserId()==null || StringUtil.isNull(buyerAddressVO.getTelephone()) ||
                 StringUtil.isNull(buyerAddressVO.getName());
         if (isInformationInsufficient) {
-            try {
-                throw new BuyerAddressException("信息不足");
-            } catch (BuyerAddressException e) {
-                logger.error("买家地址存储失败",e);
-            } finally {
-                return;
-            }
+            throw new JsonErrException("买家地址存储失败");
         }
         BuyerAddressExample buyerAddressExample = new BuyerAddressExample();
         buyerAddressExample.createCriteria().andUserIdEqualTo(buyerAddressVO.getUserId());

@@ -103,10 +103,13 @@ public class ConfirmOrderService {
         ItemOrderBO itemOrderBO = new ItemOrderBO();
         itemOrderBO.setUserId(orderSubmitVo.getUserId());
         itemOrderBO.setSenderId(bo.getSenderId());
+
+        // 设置物流信息
         LogisticsBO logisticsBO = new LogisticsBO();
         logisticsBO.setCompanyId(bo.getCourierId());
         logisticsBO.setAddressId(bo.getAddressId());
         itemOrderBO.setLogistics(logisticsBO);
+
         //订单子订单信息，将ConfirmBo中 ConfirmSubOrderBO#id与OrderSubmitVo中CartVO#cartId对应，存入ItemOrderBO#subOrders中
         List<SubItemOrderBO> subOrders = Lists.newArrayList();
         Map<Long, CartVO> productsMap = BeanMapper.list2Map(orderSubmitVo.getProducts(),"cartId", Long.class);
