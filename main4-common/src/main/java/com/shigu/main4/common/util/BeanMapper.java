@@ -96,8 +96,7 @@ public class BeanMapper {
         try {
             for (T t : list) {
                 if (classField == null) {
-                    classField = t.getClass().getDeclaredField(field);
-                    classField.setAccessible(true);
+                    classField = checkField(t.getClass(), field);
                 }
                 Object ko = classField.get(t);
                 if (ko == null)
@@ -181,15 +180,15 @@ public class BeanMapper {
         for (E e : fieldSet) {
             group.put(e, new ArrayList<T>());
         }
-        for (T t : list) {
-            try {
+        try {
+            for (T t : list) {
                 if (classField == null) {
                     classField = checkField(t.getClass(), field);
                 }
                 group.get((classField.get(t))).add(t);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                throw new RuntimeException(e);
             }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
         return group;
     }
