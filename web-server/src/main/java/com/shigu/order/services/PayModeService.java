@@ -6,11 +6,14 @@ import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.model.PayerService;
+import com.shigu.main4.order.vo.ItemOrderVO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.util.PriceConvertUtils;
 import com.shigu.order.vo.PayModePageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Objects;
 
 /**
@@ -25,13 +28,13 @@ public class PayModeService {
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
-    @Autowired
+    @Resource(name = "aliPayerService")
     private PayerService aliPayerService;
 
-    @Autowired
+    @Resource(name = "wxPayerService")
     private PayerService wxPayerService;
 
-    @Autowired
+    @Resource(name = "xzPayerService")
     private PayerService xzPayerService;
 
     /**
@@ -49,9 +52,9 @@ public class PayModeService {
         payModePageVO.setWebSite(itemOrder.getWebSite());
         payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
         payModePageVO.setAmountPay(PriceConvertUtils.priceToString(itemOrder.getTotalFee()));
-        payModePageVO.setAlipayUrl(aliPayerService.payApply(Long.valueOf(orderId),itemOrder.getTotalFee(),itemOrder.getTitle()).getPayLink());
-        //TODO:其他信息
-        payModePageVO.setCurrentAmount("等待新XzPaySDK接口实现");
+        payModePageVO.setAlipayUrl("/order/alipay.htm");
+//        TODO:其他信息
+        payModePageVO.setCurrentAmount("0.00");
         //TODO:支付密码
         payModePageVO.setNotSetPassword("是否设置支付密码");
         return payModePageVO;
@@ -82,6 +85,12 @@ public class PayModeService {
     public void xzpay(String orderId, String pwd, Long userId) throws JsonErrException, PayApplyException {
         ItemOrder itemOrder = selItemOrder(orderId, userId);
         xzPayerService.payApply(itemOrder.getOid(),itemOrder.getTotalFee(),itemOrder.getTitle());
+    }
+
+    public String alipay(Long orderId) throws PayApplyException {
+        com.shigu.main4.order.model.ItemOrder itemOrder = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
+        ItemOrderVO itemOrderVO = itemOrder.orderInfo();
+        return aliPayerService.payApply(orderId,itemOrderVO.getTotalFee(),itemOrderVO.getTitle()).getPayLink();
     }
 
     /**

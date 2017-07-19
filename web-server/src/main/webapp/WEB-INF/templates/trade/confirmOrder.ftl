@@ -15,6 +15,7 @@
 
 
 
+
     
     <link href="http://style.571xz.com/v2/order/css/confirmOrder.css" rel="stylesheet">
     
@@ -286,11 +287,6 @@ var webSite = '${webSite!}';
         
         <input type="hidden" id="updatePostPrice">
 
-<script>
-var postRulers = ${postRulers!};
-var postNameMap = ${postNameMap!};
-</script>
-
 
 
 
@@ -514,7 +510,7 @@ var postNameMap = ${postNameMap!};
         </div>
     </div>
     
-    <input id="postProv" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.prov!}"</#if> type="hidden"> 
+    <input id="postProv" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.provId!}"</#if> type="hidden"> 
     <input id="addressId" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.addressId!}"</#if> type="hidden">
     <div class="sureConsignee clearfix" <#if !tbOrderAddressInfo>style="display:none"</#if>>
     <div class="simuCheckBox select"><#if tbOrderAddressInfo??>${tbOrderAddressInfo.name!}</#if></div>

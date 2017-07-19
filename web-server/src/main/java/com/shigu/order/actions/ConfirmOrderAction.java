@@ -107,11 +107,11 @@ public class ConfirmOrderAction {
         List<PostRuleVO> postRuleVOS = new ArrayList<>();
         for (LogisticsCompanyVO logisticsCompanyVO : logisticsCompanyVOS) {
             String name = logisticsCompanyVO.getName();
-            List<PostRuleVO> postRuleVOList = BeanMapper.mapList(logisticsCompanyVO.getBourns(), PostRuleVO.class);
-            for (PostRuleVO postRuleVO : postRuleVOList) {
-                postRuleVO.setName(name);
-            }
-            postRuleVOS.addAll(postRuleVOList);
+//            List<PostRuleVO> postRuleVOList = BeanMapper.mapList(logisticsCompanyVO.getBourns(), PostRuleVO.class);
+//            for (PostRuleVO postRuleVO : postRuleVOList) {
+//                postRuleVO.setName(name);
+//            }
+//            postRuleVOS.addAll(postRuleVOList);
         }
         model.addAttribute("postRulers", JSON.toJSONString(postRuleVOS));
         model.addAttribute("postNameMap", JSON.toJSONString(confirmOrderService.postNameMapper()));
