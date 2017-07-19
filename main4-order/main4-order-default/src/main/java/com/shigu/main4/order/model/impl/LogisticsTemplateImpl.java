@@ -4,6 +4,7 @@ import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.vo.BournRuleInfoVO;
 import com.shigu.main4.order.vo.LogisticsCompanyVO;
 import com.shigu.main4.order.vo.LogisticsTemplateVO;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by bugzy on 2017/7/19 0019.
  */
 @Service("logisticsTemplate")
+@Scope("prototype")
 public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     private Long templateId;
