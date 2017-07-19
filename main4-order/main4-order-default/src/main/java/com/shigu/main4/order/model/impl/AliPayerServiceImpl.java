@@ -52,8 +52,8 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         apply.setOid(oid);
         apply.setMoney(money);
         apply.setType(PayType.ALI.getValue());
-
         orderPayApplyMapper.insertSelective(apply);
+
         AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
         alipayRequest.setReturnUrl(returnUrl);
         alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回调和通知地址

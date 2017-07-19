@@ -34,9 +34,7 @@ public class AliPayService {
         String outTradeNo = paramsMapAli.get("out_trade_no");
         String totalAmount = paramsMapAli.get("total_amount");
         String buyerId = paramsMapAli.get("buyer_id");
-
         String totalFee = AmountUtils.changeY2F(totalAmount);
-
 
         payerService.paySure(Long.valueOf(outTradeNo), "", buyerId, Long.valueOf(totalFee));
     }
