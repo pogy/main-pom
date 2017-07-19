@@ -1,9 +1,12 @@
 package com.shigu.main4.order.model.impl;
 
+import com.opentae.data.mall.interfaces.LogisticsTemplateMapper;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.vo.BournRuleInfoVO;
 import com.shigu.main4.order.vo.LogisticsCompanyVO;
 import com.shigu.main4.order.vo.LogisticsTemplateVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +22,12 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     private Long templateId;
 
+    @Autowired
+    private LogisticsTemplateMapper logisticsTemplateMapper;
 
     @Override
     public LogisticsTemplateVO templateInfo() {
-        return null;
+        return BeanMapper.map(logisticsTemplateMapper.selectByPrimaryKey(templateId),LogisticsTemplateVO.class);
     }
 
     /**
