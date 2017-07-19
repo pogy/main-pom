@@ -5,10 +5,8 @@ import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.beans.OrderIdGenerator;
 import com.opentae.data.mall.examples.BuyerAddressExample;
-import com.opentae.data.mall.interfaces.BuyerAddressMapper;
-import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
-import com.opentae.data.mall.interfaces.ItemOrderMapper;
-import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
+import com.opentae.data.mall.examples.LogisticsTemplateExample;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
@@ -17,6 +15,13 @@ import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.BuyerAddressException;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.servicevo.ExpressInfoVO;
+import com.shigu.main4.order.servicevo.ExpressLogVO;
+import com.shigu.main4.order.servicevo.OrderInfoVO;
+import com.shigu.main4.order.servicevo.OrderLogVO;
+import com.shigu.main4.order.servicevo.RefundInfoVO;
+import com.shigu.main4.order.servicevo.RefundLogVO;
+import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -53,6 +58,9 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     @Autowired
     private RedisIO redisIO;
+
+    @Autowired
+    private LogisticsTemplateMapper logisticsTemplateMapper;
 
     /**
      * oid获取器
@@ -106,6 +114,7 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
         logistic.setCompanyId(expressCompany.getExpressCompanyId());
         logistic.setAddress(buyerAddress.getAddress());
+        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), company.getExpressCompanyId(), buyerAddress.getProvId(), null));
         itemOrder.addLogistics(null, logistic);
 
         // b, 添加服务
@@ -143,7 +152,10 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     @Override
     public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId,List<PidNumBO> pids) {
-        return null;
+        LogisticsTemplateExample templateExample = new LogisticsTemplateExample();
+        templateExample.createCriteria().andEnabledEqualTo(true).andSenderIdEqualTo(senderId);
+        logisticsTemplateMapper.selectByExample(templateExample);
+        return 0L;
     }
 
     /**
@@ -209,5 +221,50 @@ public class ItemOrderServiceImpl implements ItemOrderService{
     @Transactional(rollbackFor = Exception.class)
     public void rmBuyerAddress(Long addressId) {
         buyerAddressMapper.deleteByPrimaryKey(addressId);
+    }
+
+    @Override
+    public ExpressInfoVO expressInfo(Long orderId) {
+        return null;
+    }
+
+    @Override
+    public List<ExpressLogVO> expressLog(Long expressId) {
+        return null;
+    }
+
+    @Override
+    public SubOrderInfoVO suborderInfo(Long subOrderId) {
+        return null;
+    }
+
+    @Override
+    public OrderInfoVO orderInfo(Long orderId) {
+        return null;
+    }
+
+    @Override
+    public List<OrderLogVO> orderLog(Long orderId) {
+        return null;
+    }
+
+    @Override
+    public List<SubOrderInfoVO> suborderInfoByOrderId(Long orderId) {
+        return null;
+    }
+
+    @Override
+    public Long refundApply(Long subOrderId, Integer number) {
+        return null;
+    }
+
+    @Override
+    public RefundInfoVO refundInfo(Long refundId) {
+        return null;
+    }
+
+    @Override
+    public List<RefundLogVO> refundLog(Long refundId) {
+        return null;
     }
 }

@@ -6,40 +6,67 @@ import com.opentae.data.mall.beans.LogisticsTemplateProv;
 import com.opentae.data.mall.examples.ExpressCompanyExample;
 import com.opentae.data.mall.examples.LogisticsTemplateCompanyExample;
 import com.opentae.data.mall.examples.LogisticsTemplateProvExample;
-import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
-import com.opentae.data.mall.interfaces.LogisticsTemplateCompanyMapper;
-import com.opentae.data.mall.interfaces.LogisticsTemplateMapper;
-import com.opentae.data.mall.interfaces.LogisticsTemplateProvMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.order.model.LogisticsTemplate;
-import com.shigu.main4.order.vo.BournRuleInfoVo;
+import com.shigu.main4.order.vo.BournRuleInfoVO;
 import com.shigu.main4.order.vo.LogisticsCompanyVO;
 import com.shigu.main4.order.vo.LogisticsTemplateVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 /**
- * Created by jmb on 2017/7/19.
+ * 快递模板
+ * Created by bugzy on 2017/7/19 0019.
  */
-@Repository
+@Service("logisticsTemplate")
 @Scope("prototype")
 public class LogisticsTemplateImpl implements LogisticsTemplate {
-    public LogisticsTemplateImpl(Long templateId) {
-        this.templateId = templateId;
+
+    private Long templateId;
+
+
+
+    @Autowired
+    private LogisticsTemplateMapper logisticsTemplateMapper;
+
+    @Autowired
+    private LogisticsTemplateProvMapper logisticsTemplateProvMapper;
+
+    @Autowired
+    private LogisticsTemplateCompanyMapper logisticsTemplateCompanyMapper;
+
+    @Autowired
+    private LogisticsTemplateRuleMapper logisticsTemplateRuleMapper;
+
+
+
+
+    /**
+     * 查快递规则
+     *
+     * @param provId
+     * @param companyId
+     * @return
+     */
+    @Override
+    public List<BournRuleInfoVO> rules(Long provId, Long companyId) {
+        LogisticsTemplateProvExample provExample = new LogisticsTemplateProvExample();
+        provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId);
+        logisticsTemplateProvMapper.selectByExample(provExample);
+        return null;
     }
 
-    public Long getTemplateId() {
-        return templateId;
-    }
 
     public void setTemplateId(Long templateId) {
         this.templateId = templateId;
     }
 
-    private Long templateId;
     @Autowired
     private LogisticsTemplateCompanyMapper companyMapper;
     @Autowired
@@ -80,13 +107,18 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         return voList;
     }
 
-    @Override
-    public List<BournRuleInfoVo> rules(Long provId, Long companyId) {
-        return null;
-    }
+
 
     @Override
     public Long calculate(Long provId, Integer goodsNumber, Long weight) {
         return null;
+    }
+
+    public LogisticsTemplateImpl(Long templateId) {
+        this.templateId = templateId;
+    }
+
+    public Long getTemplateId() {
+        return templateId;
     }
 }
