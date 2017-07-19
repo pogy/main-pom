@@ -46,7 +46,7 @@ public class ItemOrderServiceImplTest extends BaseTest {
     }
 
     @Test
-    public void saveBuyerAddress() {
+    public void saveBuyerAddress() throws JsonErrException {
         BuyerAddressVO buyerAddressVO = getBuyerAddressVOInstance(1L,1L,"浙江",1L,"杭州",1L,"拱墅",
                 "湖州街",1L,"151xxxxxxxx","zip_code","王浩翔");
         try {
