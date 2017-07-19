@@ -2,6 +2,7 @@ package com.shigu.main4.order.services.impltest;
 
 import com.opentae.data.mall.beans.ItemOrderSender;
 import com.opentae.data.mall.interfaces.ItemOrderSenderMapper;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.model.ItemOrder;
@@ -48,10 +49,18 @@ public class ItemOrderServiceImplTest extends BaseTest {
     public void saveBuyerAddress() {
         BuyerAddressVO buyerAddressVO = getBuyerAddressVOInstance(1L,1L,"浙江",1L,"杭州",1L,"拱墅",
                 "湖州街",1L,"151xxxxxxxx","zip_code","王浩翔");
-        itemOrderService.saveBuyerAddress(buyerAddressVO);
+        try {
+            itemOrderService.saveBuyerAddress(buyerAddressVO);
+        } catch (JsonErrException e) {
+            e.printStackTrace();
+        }
         BuyerAddressVO buyerAddressVO1 = getBuyerAddressVOInstance(1L,null,"浙江",1L,"杭州",1L,"拱墅",
                 "湖州街",1L,"151xxxxxxxx","zip_code","王浩翔");
-        itemOrderService.saveBuyerAddress(buyerAddressVO1);
+        try {
+            itemOrderService.saveBuyerAddress(buyerAddressVO1);
+        } catch (JsonErrException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
