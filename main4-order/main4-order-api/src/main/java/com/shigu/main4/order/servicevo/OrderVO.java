@@ -29,9 +29,9 @@ public class OrderVO implements Serializable{
     /**
      * 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
      */
-    private MainOrderStatusEnum mainState;
+    private Integer mainState;
     /** 是否淘宝订单 **/
-    private  Boolean isTbOrder;
+    private  boolean isTbOrder;
     /** 站点 */
     private String webSire;
 
@@ -212,19 +212,19 @@ public class OrderVO implements Serializable{
         this.serverPay = serverPay;
     }
 
-    public MainOrderStatusEnum getMainState () {
+    public Integer getMainState () {
         return mainState;
     }
 
-    public void setMainState (MainOrderStatusEnum mainState) {
+    public void setMainState (Integer mainState) {
         this.mainState = mainState;
     }
 
-    public Boolean getTbOrder () {
+    public boolean getIsTbOrder () {
         return isTbOrder;
     }
 
-    public void setTbOrder (Boolean isTbOrder) {
+    public void setIsTbOrder (boolean isTbOrder) {
         this.isTbOrder = isTbOrder;
     }
 
