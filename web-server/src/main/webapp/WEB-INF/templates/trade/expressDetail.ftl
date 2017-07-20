@@ -190,35 +190,27 @@ var webSite = '${webSite!}';
     <h2 class="fs16 fwb yahei">物流详情</h2>
     <div class="exoressStatus">
         <ul>
-            
-            
-            <li class="step1-done"></li>
-            
-            
-            
-            <li class="step2-current"><span class="pa arrow"></span></li>
-            
-            
-            
-            <li></li>
-            
-            
-            
-            <li></li>
-            
-            
+            <#list expressStateDesc as desc>
+                <#if desc_index lt expressCurrentState >
+                <li class="step${desc_index+1}-done"></li>
+                <#elseif desc_index == expressCurrentState>
+                <li class="step${desc_index+1}-current"><span class="pa arrow"></span></li>
+                <#else>
+                <li></li>
+                </#if>
+            </#list>
         </ul>
     </div>
     <div class="expressDetailBox">
         <div class="expressDetail">
             <div class="packageTitle yahei fs16">您的包裹
-            <#if expressCurrentState == 0>
+            <#if expressCurrentState == 1>
             正在待揽件，请耐心等待...
-            <#elseif expressCurrentState == 1>
-            正在运输中，请耐心等待...
             <#elseif expressCurrentState == 2>
-            正在派送中，请耐心等待...
+            正在运输中，请耐心等待...
             <#elseif expressCurrentState == 3>
+            正在派送中，请耐心等待...
+            <#elseif expressCurrentState == 4>
             已签收，谢谢您的使用！
             </#if></div>
             <div class="packageBox pr">
@@ -243,8 +235,6 @@ var webSite = '${webSite!}';
         <p class="fc6">收货地址：<span class="fc3 fwb">${expressAddrInfo.address!} ${expressAddrInfo.name!} ${expressAddrInfo.phone!}</span></p>
     </div>
 </div>
-
-
 
 
 
