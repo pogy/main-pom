@@ -46,6 +46,8 @@ public class SubOrderInfoVO {
      * 单价
      */
     private String price;
+
+    private Long priceLong;
     /**子单中商品总数 */
     private Integer num;
     /** 退款数量 */
@@ -272,5 +274,13 @@ public class SubOrderInfoVO {
 
     public void setShState (AfterSaleStatusEnum shState) {
         this.shState = shState;
+    }
+
+    public Long getPriceLong () {
+        return priceLong;
+    }
+
+    public void setPriceLong (Long priceLong) {
+        this.priceLong = priceLong;
     }
 }
