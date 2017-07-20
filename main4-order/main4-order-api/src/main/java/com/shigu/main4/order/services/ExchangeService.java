@@ -1,10 +1,11 @@
 package com.shigu.main4.order.services;
 
-import com.shigu.main4.order.servicevo.ExchangeInfoVO;
+import com.shigu.main4.order.enums.ExchangeStatusEnum;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.RefundLogVO;
 import com.shigu.main4.order.servicevo.ReturnableExpressInfoVO;
-import com.shigu.main4.order.vo.*;
+import com.shigu.main4.order.vo.ExpressVo;
+import com.shigu.main4.order.vo.ReturnableAddressVO;
 
 import java.util.List;
 
@@ -101,5 +102,5 @@ public interface ExchangeService {
      * @param refundId
      * @return
      */
-    ExchangeInfoVO exchangeInfo(Long refundId);
+    ExchangeStatusEnum exchangeInfo(Long refundId);
 }
