@@ -284,19 +284,21 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         expressInfoVO.setReceiverPhone(firstLogisticsVO.getTelephone());
         Integer state = 0;
         try {
-            String jsonStr = kdniaoUtil.getOrderTracesByJson(expressName,expressId);
-            String stateStr = JSON.parseObject(jsonStr).get("State").toString();
-            switch (stateStr) {
-                case "2":
-                    state = 2;
-                    break;
-                case "3":
-                    state = 3;
-                    break;
-                case "4"://问题件
-                default:
-                    state = 1;
-                    break;
+            JSONObject jsonResult = JSON.parseObject(kdniaoUtil.getOrderTracesByJson(expressName,expressId));
+            if ("true".equals(jsonResult.get("Success") + "")){
+                String stateStr = jsonResult.get("State").toString();
+                switch (stateStr) {
+                    case "2":
+                        state = 2;
+                        break;
+                    case "3":
+                        state = 3;
+                        break;
+                    case "4"://问题件
+                    default:
+                        state = 1;
+                        break;
+                }
             }
         } catch (Exception e) {
             state = 0;
@@ -363,6 +365,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         }
         return expressCompany.getRemark2();
     }
+
     /**
      * 子订单信息
      * @param subOrderId
