@@ -15,6 +15,7 @@
 
 
 
+
     
     <link href="http://style.571xz.com/v2/order/css/onlyRefund.css" rel="stylesheet">
     
@@ -188,14 +189,14 @@ var webSite = '${webSite!}';
 <div class="returnBox layout">
     <div class="returnLeft fl">
         <#if onlyRefundStateNum == 0>
-        <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${orderChildId!}">
+        <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${childOrderId!}">
     
     <label class="fl fc6">退款商品：</label>
     
-    <img src="${orderChildImgSrc!}" >
+    <img src="${childOrderImgSrc!}" >
     <div class="goodsInfo fl">
-        <p class="arail fs14 fc3">${orderChildCode!}</p>
-        <p class="fc9"><span>颜色：${orderChildColor!}</span><span>尺码：${orderChildSize!}</span></p>
+        <p class="arail fs14 fc3">${childOrderCode!}</p>
+        <p class="fc9"><span>颜色：${childOrderColor!}</span><span>尺码：${childOrderSize!}</span></p>
     </div>
 </div>
 
@@ -203,12 +204,43 @@ var webSite = '${webSite!}';
 
 
         <div class="refundApply refundBox">
-    <div class="refundAmount"><label>退款金额：</label><span class="yahei fcF40">&yen;<em class="fs18">${refundAmount!}</em></span></div>
+    <li>
+        <label><em class="fcF40 vm">*</em> 退货件数：</label>
+        
+
+<#assign text>{"name":"count","value":""}</#assign>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
+<div class="fmSelect" id="refundCount">
+    <span class="text">数据加载中...</span>
+    <i class="icon-downarrow bt_arrow"></i>
+    <ul class="options"></ul>
+    <input class="realInput" type="hidden"
+        <#if $it.name??>name="${$it.name!}"</#if>
+        <#if $it.value??>value="${$it.value!}"</#if>
+    >
+</div>
+
+
+
+
+
+</#list>
+
+
+
+
+
+    </li>
+    <li>
+        <label><em class="fcF40 vm">*</em> 退款金额：</label>
+        <span class="refundCountNum fcF40 fs14 yahei"><em class="yahei">&yen;</em><em class="fwb" id="refundMoney">${refundGoodsPrice!}</em></span>
+    </li>
     
 
 <#assign text>{}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -261,9 +293,14 @@ var webSite = '${webSite!}';
 <script>
 var orderId = '${orderId!}';
 var orderChildId = '${orderChildId!}';
+var refundGoodsPrice = '${refundGoodsPrice!}'
+var refundNum = '${refundNumber!}';
+var serviceMoney = '${serviceMoney!}'
 </script>
 
-<!---->
+
+
+
 
 
 
@@ -382,7 +419,7 @@ var orderChildId = '${orderChildId!}';
 
 
 
-        <#if refundId??>
+        <#if refundId != ''>
 <div class="reRefundInfo">
     <ul>
         <li><label>退款编号：</label><span class="yahei fs14 fcBlue">${refundId!}</span></li>

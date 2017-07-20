@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>换货 - 四季星座网</title>
+    <title>我的订单 - 分销商中心 - 四季星座网</title>
 
     
     
@@ -16,8 +16,11 @@
 
 
 
+
+
+
     
-    <link href="http://style.571xz.com/v2/order/css/exchange.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/myOrder.css" rel="stylesheet">
     
 
     
@@ -27,12 +30,12 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/exchange.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/myOrder.js"></script>
 </head>
 <body>
 
 
-<#assign text>{"isFxs":true}</#assign>
+<#assign text>{}</#assign>
 <#assign moduledata0=text?eval />
 <#list [moduledata0] as $it>
 <div class="topbar">
@@ -160,37 +163,205 @@ var webSite = '${webSite!}';
 
 
 
-
-
-
-<div class="headerOrange">
+<div class="header">
     <div class="layout">
         <a href="http://www.571xz.com" class="fl">
             <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width="168" height="28" />
         </a>
-        <ul class="fl fs16 yahei">
-            <li><a href="#">首页</a></li>
-            <li><a href="#">账号管理</a></li>
+        <ul class="fl fs16 yahei clearfix">
+            <li><a href="${main_host!}member/index.htm"  >首页</a></li>
+            <li><a href="${main_host!}member/userBalance.htm" >我的钱包</a></li>
+            <li><a href="${main_host!}member/sysSetsindex.htm" >安全中心</a></li>
         </ul>
     </div>
 </div>
 
 
+<div class="wrapper">
+    <div class="layout">
+        <div class="leftSidebar yahei">
 
-<div class="minHeight">
-<div class="currentPage layout">
-    <label class="fc9">当前位置：</label>
-    <a href="#" target="_blank">首页</a> &gt;
-    <a href="#" target="_blank">我的星座网</a> &gt;
-    <a href="#" target="_blank">我的订单</a> &gt;
-    <span class="fcF40">申请售后</span>
-</div> 
-
-<div class="exchangeStep layout">
+    <h2>交易管理</h2>
     <ul>
-        <#list exchangeDesc as desc>
-        <li <#if desc_index lte exchangeStateNum>class="selected"</#if>><span>${desc!}</span><em></em><i></i><i class="leftArrow"></i></li>
-        </#list>
+    
+        
+        <li><a class="selected" href="${main_host!}member/myOrder.htm">我的订单</a></li> 
+        
+    
+        
+            
+            <li><a href="${main_host!}member/myTbOrder.htm" >淘宝订单</a></li>
+            
+        
+    
+        
+            
+            <li><a href="${main_host!}member/shManaOrder.htm" >售后管理</a></li>
+            
+        
+    
+    </ul> 
+
+    <h2>商品管理</h2>
+    <ul>
+    
+        
+            
+            <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
+            
+        
+    
+        
+            
+            <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
+            
+        
+    
+        
+            
+            <li><a href="${main_host!}member/storeCollectinit.htm" >收藏的档口</a></li>
+            
+        
+    
+    </ul> 
+
+    <h2>代发管理</h2>
+    <ul>
+    
+        
+            
+            <li><a href="http://daifa.571xz.com/daili/offerIndex.htm" >我要代发</a></li>
+            
+        
+    
+    </ul> 
+
+    <h2>供应商申请</h2>
+    <ul>
+    
+        
+            
+            <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
+            
+        
+    
+    </ul> 
+
+    <h2>会员俱乐部</h2>
+    <ul>
+    
+        
+            
+            <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
+            
+        
+    
+    </ul> 
+
+</div>
+
+
+
+
+        
+
+<#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"goodsNo","value":"${query.goodsNo!}"},{"name":"st","value":"${query.st!}"},{"name":"et","value":"${query.et!}"},{"name":"orderId","value":"${query.orderId!}"},{"name":"receiver","value":"${query.receiver!}"},{"name":"telePhone","value":"${query.telePhone!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
+    </#list>
+</form>
+</#if>
+
+
+
+
+
+
+
+
+</#list>
+
+
+
+<div class="rightBox fr">
+    <div class="tabBox clearfix yahei">
+    <ul>
+        <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>
+        <li <#if query.status == "1">class="select"</#if>><a href="myOrder.htm?status=1">待付款</a></li>
+        <li <#if query.status == "2">class="select"</#if>><a href="myOrder.htm?status=2">已付款</a></li>
+        <li <#if query.status == "3">class="select"</#if>><a href="myOrder.htm?status=3">已发货</a></li>
+        <li <#if query.status == "4">class="select"</#if>><a href="myOrder.htm?status=4">交易完成</a></li>
+        <li <#if query.status == "5">class="select"</#if>><a href="myOrder.htm?status=5">交易关闭</a></li>
+    </ul>
+</div>
+
+
+    <div class="orderSearch clearfix">
+    <ul>
+        <li><label>商品货号：</label><input type=text name="goodsNo" <#if query.goodsNo??>value="${query.goodsNo!}"</#if>></li>
+        <li>
+            <label>成交时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="starTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if>>
+        </li>
+        <li><label>订单编号：</label><input type=text name="orderId" <#if query.orderId??>value="${query.orderId!}"</#if>></li>
+        <li><label>收货人信息：</label><input type=text name="receiver" placeholder="收货人姓名" class="slInput" <#if query.receiver??>value="${query.receiver!}"</#if>><span class="divideLine"></span><input type=text name="telePhone" placeholder="收货人手机号码" class="slInput" <#if query.telePhone??>value="${query.telePhone!}"</#if>></li>
+        <li class="noMargin">
+            
+
+<#assign text>{}</#assign>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+        
+         fmButton-orange
+         searchBtn"
+    
+        jbtn="searchBtn"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        搜索订单
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+
+</#list>
+
+        </li>
     </ul>
 </div>
 
@@ -198,88 +369,89 @@ var webSite = '${webSite!}';
 
 
 
-<div class="returnBox layout">
-    <div class="returnLeft fl">
-        <#if exchangeStateNum == 0>
-        <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${childOrderId!}">
-    
-    <label class="fl fc6">换货商品：</label>
-    
-    <img src="${childOrderImgSrc!}" >
-    <div class="goodsInfo fl">
-        <p class="arail fs14 fc3">${childOrderCode!}</p>
-        <p class="fc9"><span>颜色：${childOrderColor!}</span><span>尺码：${childOrderSize!}</span></p>
+
+    <div class="orderDetail">
+    <div class="listHead clearfix">
+        <ul>
+            <li class="goods goodsHead">商品</li>
+            <li class="price">单价</li>
+            <li class="num">数量</li>
+            <li class="opera">商品操作</li>
+            <li class="payMoney">实付款(元)</li>
+            <li class="orderState">交易状态</li>
+        </ul>
     </div>
-</div>
-
-
-
-
-        <div class="exchangeApply refundBox">
-    <ul>
-        <li>
-            <label><em class="fcF40 vm">*</em> 服务类型：</label>
+    <#if (orders?size) gt 0>
+        <#list orders as order>
+        <div class="orderItem clearfix <#if order.mainState == 4 || order.mainState == 5>finish</#if>">
+            <div class="orderHead fl">
+                <span class="fc6">订单编号：${order.orderId!}</span>
+                <span class="fc6">成交时间：${order.tradeTime!}</span>
+                <b class="fr delete" jbtn="deleteBtn" data-id="${order.id!}"></b>
+            </div>
+            <div class="childOrderList fl">
+                <#list order.childOrders as childOrder>
+                <ul class="childOrderItem <#if childOrder_index == (order.childOrders?size) - 1>lastChildOrder</#if> clearfix">
+    <li class="goods goodsDetail">
+        <div class="imgBox fl">
+            <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
+        </div>
+        <div class="goodsCon">
+            <a href="http://${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
+            <p class="goodsSku fc9">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
+            <p>商品货号：${childOrder.goodsNo!}</p>
+        </div>
+    </li>
+    <li class="price yahei">&yen;${childOrder.price!}</li>
+    <li class="num">${childOrder.num!}</li>
+    <li class="opera">
+        <#if order.mainState == 1 || order.mainState == 4 || order.mainState == 5>
+        ——
+        </#if>
+        
+        <#if order.mainState == 2>
+            <#if !childOrder.tkNum>
+            <p><a href="onlyRefund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank">申请退款</a></p>
+            <#else>
+                <#if childOrder.tkState == 1>
+                <p class="fcBlue">退款成功 x${childOrder.tkNum!}</p>
+                </#if>
+            </#if>
+        </#if>
+        
+        <#if order.mainState == 3>
+            <#if childOrder.tkState == 1>
+            <p class="fcBlue">退款成功 x${childOrder.tkNum!}</p>
+            </#if>
+            
+            <#if childOrder.tkNum != childOrder.num && childOrder.shState == 0>
+            <p><a href="#" target="_blank" class="fc9">申请售后</a></p>
+            <#elseif childOrder.shState == 1>
+            <p class="fcF40">售后处理中</p>
+            <#elseif childOrder.shState == 2>
+            <p class="fcF40">已退款x${childOrder.shTkNum!}</p>
+            <#elseif childOrder.shState == 3>
+            <p class="fcF40">已换货</p>
+            </#if>
+        </#if>
+        
+    </li>
+    <li class="payMoney">
+        <#if childOrder_index == 0>
+        <p class="totalPay fs16">${order.tradePay!}</p>
+        <p class="fc9">含快递费：${order.postPay!}</p>
+        <p class="fc9">含服务费：${order.serverPay!}</p>
+            <#if order.isTbOrder == true>
+            <i class="tbOrderIcon"></i>
+            </#if>
+        </#if>
+    </li>
+    <li class="orderState">
+        <#if childOrder_index == 0>
+            <#if order.mainState == 1>
             
 
-<#assign text>{"name":"service","value":"exchange"}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
-<div class="fmSelect" id="serviceType">
-    <span class="text">数据加载中...</span>
-    <i class="icon-downarrow bt_arrow"></i>
-    <ul class="options"></ul>
-    <input class="realInput" type="hidden"
-        <#if $it.name??>name="${$it.name!}"</#if>
-        <#if $it.value??>value="${$it.value!}"</#if>
-    >
-</div>
-
-
-
-
-
-</#list>
-
-
-
-
-
-        </li>
-        <li>
-            <label>换货原因：</label>
-            
-
-<#assign text>{"name":"reason","value":"0"}</#assign>
-<#assign moduledata2=text?eval />
-<#list [moduledata2] as $it>
-<div class="fmSelect" id="refundReason">
-    <span class="text">数据加载中...</span>
-    <i class="icon-downarrow bt_arrow"></i>
-    <ul class="options"></ul>
-    <input class="realInput" type="hidden"
-        <#if $it.name??>name="${$it.name!}"</#if>
-        <#if $it.value??>value="${$it.value!}"</#if>
-    >
-</div>
-
-
-
-
-
-</#list>
-
-
-
-
-
-        </li>
-        <li class="refundDesc">
-            <label>换货说明：</label>
-            <textarea ></textarea>
-        </li>
-        <li>
-
-<#assign text>{}</#assign>
+<#assign text>{"href":"payMode.htm?orderId=${order.orderId!}"}</#assign>
 <#assign moduledata3=text?eval />
 <#list [moduledata3] as $it>
 
@@ -291,11 +463,9 @@ var webSite = '${webSite!}';
 
 
     class="fmButton
-         fmButton-lg
+        
          fmButton-orange
-         yahei applyBtn"
-    
-        jbtn="click"
+         toPay"
     
     
         
@@ -312,7 +482,7 @@ var webSite = '${webSite!}';
 >
 
     
-        提交申请
+        立即付款
     
 
 
@@ -328,119 +498,55 @@ var webSite = '${webSite!}';
 
 
 </#list>
-</li>
-    </ul>
-</div>
+
+            <#elseif order.mainState == 2>
+            <p>已付款</p>
+            <#elseif order.mainState == 3>
+            <p>已发货</p>
+            <#elseif order.mainState == 4>
+            <p>交易完成</p>
+            <#elseif order.mainState == 5>
+            <p>交易取消</p>
+            </#if>
+            <p><a href="orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
+            <#if order.mainState == 1>
+            <p><a href="javascript:;" onclick="cancelOrder(${order.orderId!})" class="fc9">取消订单</a></p>
+            <#elseif order.mainState == 4>
+            <p><a href="expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
+            </#if>
+        </#if>
+    </li>
+</ul>
 
 
 
 
 
-        <#elseif exchangeStateNum == 1>
-            <#if exchangeWaitState == 0>
-            <div class="reWaitFeedback refundBox">
+
+
+
+                </#list>
+            </div>
+        </div>
+        </#list>
+    <#else>
+        <p class="fs20 fc6 tac noOrder">暂无订单！</p>
+    </#if>
     
-    <h4 class="fwb yahei fc3">换货申请已提交，请等待处理！</h4>
     
-    
-</div>
-
-
-            <#elseif exchangeWaitState == 1>
-            
-
-
-<div class="reChooseExpress refundBox">
-    
-    <h4 class="yahei fwb fc3">换货申请已通过，请及时确认完成！</h4>
-    <p class="fc3">换货申请已通过，请填写退货物流信息！</p>
-    
-    <ul>
-        <li class="refundAddr">
-            
-            <label>换货地址：</label>
-            
-            <p class="fs3">
-                ${addrInfo.name!} , ${addrInfo.phone!},<br>${addrInfo.address!}
-            </p>
-        </li>
-        <li>
-            <label><em class="fcF40 vm">*</em> 选择快递：</label>
-            
-
-<#assign text>{"name":"expressList","value":""}</#assign>
-<#assign moduledata4=text?eval />
-<#list [moduledata4] as $it>
-<div class="fmSelect" id="expressList">
-    <span class="text">数据加载中...</span>
-    <i class="icon-downarrow bt_arrow"></i>
-    <ul class="options"></ul>
-    <input class="realInput" type="hidden"
-        <#if $it.name??>name="${$it.name!}"</#if>
-        <#if $it.value??>value="${$it.value!}"</#if>
-    >
-</div>
-
-
-
-
-
-</#list>
-
-
-
-
-
-        </li>
-        <li>
-            <label><em class="fcF40 vm">*</em> 物流单号：</label>
-            <input type="text" name="expressCode" class="fmInput" placeholder="请填写物流单号">
-            <div class="errorTip">物流单号格式不正确！</div>
-        </li>
-        <li>
 
 <#assign text>{}</#assign>
-<#assign moduledata5=text?eval />
-<#list [moduledata5] as $it>
+<#assign moduledata4=text?eval />
+<#list [moduledata4] as $it>
 
-    <#if $it.href??>
-    <a href="${$it.href!}"
+<div class="jqPagination " id="jqPagination0" 
+    <#if $it.pageOption??>
+        data-option="${$it.pageOption!}"
     <#else>
-    <b 
+        data-option="${pageOption!}"
     </#if>
+></div>
 
-
-    class="fmButton
-         fmButton-lg
-         fmButton-orange
-         yahei sureBtn"
-    
-        jbtn="click"
-    
-    
-        
-        <#if $it.title??>
-            title=""
-        </#if>
-    
-    
-        
-        <#if $it.id??>
-            id=""
-        </#if>
-    
->
-
-    
-        提交
-    
-
-
-    <#if $it.href??>
-    </a>
-    <#else>
-    </b>
-    </#if>
 
 
 
@@ -448,8 +554,7 @@ var webSite = '${webSite!}';
 
 
 </#list>
-</li>
-    </ul>
+
 </div>
 
 
@@ -479,137 +584,22 @@ var webSite = '${webSite!}';
 
 
 
-            <#elseif exchangeWaitState == 2>
-            <div class="reExpressInfo fc3 refundBox">
-    
-    <h4 class="yahei fwb">换货快递已提交！</h4>
-    
-    
-    <p><span class="fc6">${express.name!}</span><span class="yahei fs14 vm">${express.id!}</span><a href="javascript:;" id="modifyExpress">修改快递</a></p>
-    <#list express.detail as express>
-        <#if i lt 2>
-        <p><span class="yahei fs14">${express.date!}  ${express.time!}</span>${express.desc!}</p>
-        </#if>
-    </#list>
-    
-    <a href="expressDetail.htm" target="_blank">查看详情</a>
+
+
+
+
+
+
+
+
+
 </div>
 
-
-
-
-
-
-
-
-            </#if>
-            <div class="reApplyRecord">
-    <label class="fl tar">申请记录：</label>
-    <div class="recordList fl">
-        
-        <#list applylist as record>
-        <div class="recordItem clearfix">
-            <img class="fl" src="${record.userHeadimg!}">
-            <div class="applyRecord fl">
-                <h4>
-                <#if record.userType == 1>
-                    ${record.userNickname!}
-                <#elseif record.userType == 0>
-                    平台客服
-                </#if>
-                </h4>
-                <p>
-                <#if record.userType == 1>
-                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
-                <#elseif record.userType == 0>
-                ${record.recordContent!}
-                </#if>
-                </p>
-            </div>
-            <p class="applyTime yahei fs14">${record.recordTime!}</p>
-        </div>
-        </#list>
-        
-    </div>
-</div>
-
-
-
-
-        <#elseif exchangeStateNum == 2>
-            <div class="exchageFinish refundBox">
-    <h4 class="yahei fwb fc3">换货完成！</h4>
-    <p>完成时间：<span class="yahei fs14 vm">${exchageFinishTime!}</span></p>
-</div>
-
-
-
-
-            <div class="reApplyRecord">
-    <label class="fl tar">申请记录：</label>
-    <div class="recordList fl">
-        
-        <#list applylist as record>
-        <div class="recordItem clearfix">
-            <img class="fl" src="${record.userHeadimg!}">
-            <div class="applyRecord fl">
-                <h4>
-                <#if record.userType == 1>
-                    ${record.userNickname!}
-                <#elseif record.userType == 0>
-                    平台客服
-                </#if>
-                </h4>
-                <p>
-                <#if record.userType == 1>
-                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
-                <#elseif record.userType == 0>
-                ${record.recordContent!}
-                </#if>
-                </p>
-            </div>
-            <p class="applyTime yahei fs14">${record.recordTime!}</p>
-        </div>
-        </#list>
-        
-    </div>
-</div>
-
-
-
-
-        </#if>
-        
-    </div>
-    <div class="returnRight fr">
-        <div class="reOderInfo">
-    <ul>
-        <li><label>订单编号：</label><span class="yahei fs14 fcBlue">${orderId!}</span></li>
-        <li><label>成交时间：</label><span class="yahei fs14">${orderDealTime!}</span></li>
-        <li><label>商品价格：</label><span class="yahei fs14">&yen;<em class="fwb">${orderGoodsPrice!}</em></span></li>
-        <li><label>快递费：</label><span class="yahei fs14">&yen;<em class="fwb">${orderExpressPrice!}</em></span></li>
-        <li><label>服务费：</label><span class="yahei fs14">&yen;<em class="fwb">${orderServicePrice!}</em></span></li>
-        <li><label>订单总额：</label><span class="yahei fs14">&yen;<em class="fwb">${orderTotalPrice!}</em></span></li>
-    </ul>
-</div>
 
 
 
     </div>
 </div>
-
-
-<script>
-var orderId = '${orderId!}';
-var orderChildId = '${orderChildId!}';
-var express = '${expressList!}';
-</script>
-
-
-
-
-</div>
-
 <div class="footer">
     <div class="inner">
         <p class="sitemap"> 
@@ -650,7 +640,7 @@ var express = '${expressList!}';
 
 
 
-
+<!--省略end，让浏览器自动添加-->
 
 
 

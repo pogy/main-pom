@@ -1,5 +1,6 @@
 package com.shigu.main4.order.services;
 
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.servicevo.OrderVO;
 
@@ -17,29 +18,32 @@ import java.util.List;
  * @since: main-pom
  * @commonents:
  */
+
 public interface OrderListService {
     /**
      * ====================================================================================
      * @方法名：myOrder
      * @功能： 我的订单
-     * @param: vo查询条件  vo一定要有所有订单，待付款，已付款，配货中，交易完成，交易关闭的标记
+     * @param: bo查询条件  bo一定要有所有订单，待付款，已付款，配货中，交易完成，交易关闭的标记
      * @return: 返回订单列表
      * @exception: 
      * ====================================================================================
      * 
      */
-    List<OrderVO> myOrder( OrderBO bo);
+    List<OrderVO> myOrder( OrderBO bo,Long userId);
+
     /**
      * ====================================================================================
-     * @方法名：payTaoOrder
-     * @功能： 立即付款
-     * @param: tbid
-     * @return: 返回到支付方式页面
+     * @方法名：分页数据
+     * @功能： selectCountMyOrder
+     * @param: bo查询条件，userId用户ID
+     * @return: 
      * @exception: 
      * ====================================================================================
      * 
      */
-    Long payTaoOrder(Long tbid);
+    ShiguPager<OrderVO> selectCountMyOrder(OrderBO bo, Long userId);
+
 
     /**
      * ====================================================================================

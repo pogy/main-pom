@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.vo.BournRuleInfoVO;
 import com.shigu.main4.order.vo.LogisticsCompanyVO;
 import com.shigu.main4.order.vo.LogisticsTemplateVO;
@@ -30,7 +31,7 @@ public interface LogisticsTemplate {
      * @param companyId
      * @return
      */
-    List<BournRuleInfoVO> rules(Long provId,Long companyId);
+    List<BournRuleInfoVO> rules(Long provId,Long companyId) throws LogisticsRuleException;
 
     /**
      * 计费
@@ -39,5 +40,5 @@ public interface LogisticsTemplate {
      * @param weight 重量,克为单位
      * @return
      */
-    Long calculate(Long provId,Integer goodsNumber,Long weight);
+    Long calculate(Long provId,Long companyId,Integer goodsNumber,Long weight) throws LogisticsRuleException;
 }
