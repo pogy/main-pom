@@ -17,7 +17,7 @@ public class RefundInfoVO {
      */
     private String refundPrice;
     /**
-     * 退款进度，为0,1,2; 0买家申请退款, 1等待处理退款申请 2退款完成
+     * 退款进度，为0,1; 0买家申请退款1退款完成
      */
     private RefundStateEnum refundState;
     /**
@@ -87,14 +87,14 @@ public class RefundInfoVO {
     }
 
     /**
-     * 获取 退款进度，为0,1,2; 0买家申请退款, 1等待处理退款申请 2退款完成
+     * 获取 退款进度，为0,1; 0买家申请退款1退款完成
      */
     public RefundStateEnum getRefundState() {
         return this.refundState;
     }
 
     /**
-     * 设置 退款进度，为0,1,2; 0买家申请退款, 1等待处理退款申请 2退款完成
+     * 设置 退款进度，为0,1; 0买家申请退款1退款完成
      */
     public void setRefundState(RefundStateEnum refundState) {
         this.refundState = refundState;

@@ -20,14 +20,10 @@ public class ReturnGoodsInfoVO implements Serializable{
      */
     private String refundPrice;
     /**
-     * 退款进度，为0,1,2; 0买家申请退款, 1等待处理退款申请 2买家退货 3退货退款完成
+     * 退款进度，为0,1,2,3,4,5;
+     * 0买家申请退款,1同意申请2已提交快递3到货4等待售后处理5退货完成
      */
     private ReturnGoodsStatusEnum retrunGoodsStatus;
-    /**
-     * 买家退货状态，退货进度为2的时候存在，为0,1,2;
-     * 0平台同意申请，买家填写物流信息， 1退货物流信息提交， 2货物收到，等待处理
-     */
-    private RetrunbleStatusEnum retrunbleStatus;
     /**
      * 退款去向
      */
@@ -65,35 +61,6 @@ public class ReturnGoodsInfoVO implements Serializable{
         this.refundPrice = refundPrice;
     }
 
-    /**
-     * 获取 退款进度，为0,1,2; 0买家申请退款, 1等待处理退款申请 2买家退货 3退货退款完成
-     */
-    public ReturnGoodsStatusEnum getRetrunGoodsStatus() {
-        return this.retrunGoodsStatus;
-    }
-
-    /**
-     * 设置 退款进度，为0,1,2; 0买家申请退款, 1等待处理退款申请 2买家退货 3退货退款完成
-     */
-    public void setRetrunGoodsStatus(ReturnGoodsStatusEnum retrunGoodsStatus) {
-        this.retrunGoodsStatus = retrunGoodsStatus;
-    }
-
-    /**
-     * 买家退货状态，退货进度为2的时候存在，为0,1,2;
-     * 0平台同意申请，买家填写物流信息， 1退货物流信息提交， 2货物收到，等待处理
-     */
-    public RetrunbleStatusEnum getRetrunbleStatus() {
-        return this.retrunbleStatus;
-    }
-
-    /**
-     * 买家退货状态，退货进度为2的时候存在，为0,1,2;
-     * 0平台同意申请，买家填写物流信息， 1退货物流信息提交， 2货物收到，等待处理
-     */
-    public void setRetrunbleStatus(RetrunbleStatusEnum retrunbleStatus) {
-        this.retrunbleStatus = retrunbleStatus;
-    }
 
     /**
      * 获取 退款去向
@@ -121,5 +88,21 @@ public class ReturnGoodsInfoVO implements Serializable{
      */
     public void setRefundSuccessTime(Date refundSuccessTime) {
         this.refundSuccessTime = refundSuccessTime;
+    }
+
+    /**
+     * 退款进度，为0,1,2,3,4,5;
+     * 0买家申请退款,1同意申请2已提交快递3到货4等待售后处理5退货完成
+     */
+    public ReturnGoodsStatusEnum getRetrunGoodsStatus() {
+        return this.retrunGoodsStatus;
+    }
+
+    /**
+     * 退款进度，为0,1,2,3,4,5;
+     * 0买家申请退款,1同意申请2已提交快递3到货4等待售后处理5退货完成
+     */
+    public void setRetrunGoodsStatus(ReturnGoodsStatusEnum retrunGoodsStatus) {
+        this.retrunGoodsStatus = retrunGoodsStatus;
     }
 }

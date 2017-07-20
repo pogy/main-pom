@@ -14,6 +14,8 @@
 
 
 
+
+
     
     <link href="http://style.571xz.com/v2/gysV1/css/goodsSell.css" rel="stylesheet">
     
@@ -372,7 +374,7 @@ var webSite = '${webSite!}';
         <#if (orders?size) gt 0>
             <#list orders as order>
             <div class="orderItem">
-                <div class="mainOrderInfo"><span class="fc666">订单编号：${order.id!}</span><span class="fc666">成交时间：${order.time!}</span></div>
+                <div class="mainOrderInfo"><span class="fc666">订单编号：${order.orderId!}</span><span class="fc666">成交时间：${order.time!}</span></div>
                 <#list order.childOrders as childOrder>
                 <div class="childItem clearfix">
     <ul>

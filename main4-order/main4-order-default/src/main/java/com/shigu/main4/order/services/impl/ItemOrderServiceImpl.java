@@ -245,7 +245,7 @@ public class ItemOrderServiceImpl implements ItemOrderService{
     public ExpressInfoVO expressInfo(Long orderId) {
         com.shigu.main4.order.model.ItemOrder itemOrderModel = SpringBeanFactory.getBean(ItemOrderImpl.class, orderId);
         List<LogisticsVO> logisticsVOS = itemOrderModel.selLogisticses();
-        
+
         return null;
     }
 
@@ -270,14 +270,17 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
         SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
         SubOrderInfoVO subOrderInfoVO = BeanMapper.map(subItemOrderVO,SubOrderInfoVO.class);
-        subOrderInfoVO.setSubOrderId(subOrderId);
+
+        subOrderInfoVO.setChildOrderId (subOrderId);
         subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
-        subOrderInfoVO.setGoodsNum(subItemOrderVO.getNum());
-        subOrderInfoVO.setImgUrl(subItemOrderVO.getProduct().getPicUrl());
+        subOrderInfoVO.setNum(subItemOrderVO.getNum());
+        subOrderInfoVO.setImgsrc (subItemOrderVO.getProduct().getPicUrl());
         subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
         subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
-        subOrderInfoVO.setSkuColor(subItemOrderVO.getColor());
-        subOrderInfoVO.setSkuSize(subItemOrderVO.getSize());
+
+
+        subOrderInfoVO.setColor(subItemOrderVO.getColor());
+        subOrderInfoVO.setSize(subItemOrderVO.getSize());
         //TODO:退货信息
         //subOrderInfoVO.setAfterSaleStatus();
         //subOrderInfoVO.setRefundId();

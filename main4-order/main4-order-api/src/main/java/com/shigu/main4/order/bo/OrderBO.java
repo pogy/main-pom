@@ -13,7 +13,7 @@ public class OrderBO {
     /**
      * 订单状态 null全部订单，1待付款，2已付款，3已发货，4交易完成，5交易取消
      */
-    private MainOrderStatusEnum orderStatus;
+    private MainOrderStatusEnum status;
     /**
      * 货号
      */
@@ -33,11 +33,11 @@ public class OrderBO {
     /**
      * 收件人
      */
-    private String receiverName;
+    private String receiver;
     /**
      * 收件人号码
      */
-    private String receiverPhone;
+    private String telePhone;
     /**
      * 页码
      */
@@ -107,29 +107,29 @@ public class OrderBO {
     /**
      * 获取 收件人
      */
-    public String getReceiverName() {
-        return this.receiverName;
+    public String getReceiver() {
+        return this.receiver;
     }
 
     /**
      * 设置 收件人
      */
-    public void setReceiverName(String receiverName) {
-        this.receiverName = receiverName;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     /**
      * 获取 收件人号码
      */
-    public String getReceiverPhone() {
-        return this.receiverPhone;
+    public String getTelePhone() {
+        return this.telePhone;
     }
 
     /**
      * 设置 收件人号码
      */
-    public void setReceiverPhone(String receiverPhone) {
-        this.receiverPhone = receiverPhone;
+    public void setTelePhone(String telePhone) {
+        this.telePhone = telePhone;
     }
 
     /**
@@ -163,14 +163,14 @@ public class OrderBO {
     /**
      * 获取 订单状态 null全部订单，1待付款，2已付款，3已发货，4交易完成，5交易取消
      */
-    public MainOrderStatusEnum getOrderStatus() {
-        return this.orderStatus;
+    public MainOrderStatusEnum getStatus() {
+        return this.status;
     }
 
     /**
      * 设置 订单状态 null全部订单，1待付款，2已付款，3已发货，4交易完成，5交易取消
      */
-    public void setOrderStatus(MainOrderStatusEnum orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setStatus(MainOrderStatusEnum status) {
+        this.status = status;
     }
 }

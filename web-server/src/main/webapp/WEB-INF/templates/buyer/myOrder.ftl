@@ -385,7 +385,7 @@ var webSite = '${webSite!}';
         <#list orders as order>
         <div class="orderItem clearfix <#if order.mainState == 4 || order.mainState == 5>finish</#if>">
             <div class="orderHead fl">
-                <span class="fc6">订单编号：${order.id!}</span>
+                <span class="fc6">订单编号：${order.orderId!}</span>
                 <span class="fc6">成交时间：${order.tradeTime!}</span>
                 <b class="fr delete" jbtn="deleteBtn" data-id="${order.id!}"></b>
             </div>
@@ -394,11 +394,11 @@ var webSite = '${webSite!}';
                 <ul class="childOrderItem <#if childOrder_index == (order.childOrders?size) - 1>lastChildOrder</#if> clearfix">
     <li class="goods goodsDetail">
         <div class="imgBox fl">
-            <img src="${childOrder.imgsrc!}_80x80.jpg" width=80 height=80>
+            <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
         </div>
         <div class="goodsCon">
             <a href="http://${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
-            <p class="godosSku fc9">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
+            <p class="goodsSku fc9">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
             <p>商品货号：${childOrder.goodsNo!}</p>
         </div>
     </li>
@@ -411,7 +411,7 @@ var webSite = '${webSite!}';
         
         <#if order.mainState == 2>
             <#if !childOrder.tkNum>
-            <p><a href="onlyRefund.htm" target="_blank">申请退款</a></p>
+            <p><a href="onlyRefund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank">申请退款</a></p>
             <#else>
                 <#if childOrder.tkState == 1>
                 <p class="fcBlue">退款成功 x${childOrder.tkNum!}</p>
@@ -441,7 +441,7 @@ var webSite = '${webSite!}';
         <p class="totalPay fs16">${order.tradePay!}</p>
         <p class="fc9">含快递费：${order.postPay!}</p>
         <p class="fc9">含服务费：${order.serverPay!}</p>
-            <#if order.isTbOrder??>
+            <#if order.isTbOrder == true>
             <i class="tbOrderIcon"></i>
             </#if>
         </#if>
@@ -451,7 +451,7 @@ var webSite = '${webSite!}';
             <#if order.mainState == 1>
             
 
-<#assign text>{}</#assign>
+<#assign text>{"href":"payMode.htm?orderId=${order.orderId!}"}</#assign>
 <#assign moduledata3=text?eval />
 <#list [moduledata3] as $it>
 
@@ -508,15 +508,19 @@ var webSite = '${webSite!}';
             <#elseif order.mainState == 5>
             <p>交易取消</p>
             </#if>
-            <p><a href="#" target="_blank" class="fc9">订单详情</a></p>
+            <p><a href="orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
             <#if order.mainState == 1>
-            <p><a href="#" target="_blank" class="fc9">取消订单</a></p>
+            <p><a href="javascript:;" onclick="cancelOrder(${order.orderId!})" class="fc9">取消订单</a></p>
             <#elseif order.mainState == 4>
-            <p><a href="#" target="_blank" class="fc9">查看物流</a></p>
+            <p><a href="expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
             </#if>
         </#if>
     </li>
 </ul>
+
+
+
+
 
 
 
