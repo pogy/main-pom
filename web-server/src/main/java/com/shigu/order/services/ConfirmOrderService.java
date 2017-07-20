@@ -31,7 +31,6 @@ import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ServiceVO;
-import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.ConfirmBO;
@@ -273,7 +272,7 @@ public class ConfirmOrderService {
             for (BournRuleInfoVO rule : rules) {
                 PostRuleVO postRuleVO = BeanMapper.map(rule, PostRuleVO.class);
                 vos.add(postRuleVO);
-                ExpressCompany expressCompany = expressCompanyMap.get(rule.getComponyId());
+                ExpressCompany expressCompany = expressCompanyMap.get(rule.getCompanyId());
                 if (expressCompany != null) {
                     postRuleVO.setName(expressCompany.getEnName());
                     postRuleVO.setText(expressCompany.getExpressName());

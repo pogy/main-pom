@@ -36,6 +36,11 @@ public class PostRuleVO {
      */
     private Double addPrice;
 
+    /**
+     * 1按件，2按重量
+     */
+    private Integer type;
+
     public String getName() {
         return name;
     }
@@ -82,5 +87,13 @@ public class PostRuleVO {
 
     public void setAddPrice(Double addPrice) {
         this.addPrice = addPrice;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

@@ -154,9 +154,9 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         for (BournRuleInfoVO infoVO : bournRuleInfoVOS) {
             LogisticsTemplateCompany company;
             if (companyId == null && (company = ruleCompanyMap.get(infoVO.getRuleId())) != null) {
-                infoVO.setComponyId(company.getCompanyId());
+                infoVO.setCompanyId(company.getCompanyId());
             } else {
-                infoVO.setComponyId(companyId);
+                infoVO.setCompanyId(companyId);
             }
             LogisticsTemplateProv prov;
             if (provId == null && (prov = ruleProvMap.get(infoVO.getRuleId())) != null) {
@@ -210,20 +210,13 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         provExample.createCriteria().andTemplateIdEqualTo(templateId).andProvIdEqualTo(provId);
         List<LogisticsTemplateProv> logisticsTemplateProvs = logisticsTemplateProvMapper.selectFieldsByExample(provExample, FieldUtil.codeFields("tp_id,rule_id"));
 
-        /////////////TODO: 1. ruleIds 依然有 empty 的机会，导致 sql in 查询失败 2.BeanMapper.getFieldList 方法默认会返回空 ArrayList, 此种处理多此一举
-        List<Long> ruleIds = null;
-        if (logisticsTemplateProvs.size() > 0) {
-            ruleIds = BeanMapper.getFieldList(logisticsTemplateProvs, "ruleId", Long.class);
-        }else {
-            ruleIds = new ArrayList<>();
-        }
-        ////////////
+        List<Long> ruleIds  = BeanMapper.getFieldList(logisticsTemplateProvs, "ruleId", Long.class);
 
         LogisticsTemplateRuleExample logisticsTemplateRuleExample = new LogisticsTemplateRuleExample();
         logisticsTemplateRuleExample.createCriteria().andImDefaultEqualTo(true);
         List<LogisticsTemplateRule> logisticsTemplateRules = logisticsTemplateRuleMapper.selectFieldsByExample(logisticsTemplateRuleExample, "rule_id");
         List<Long> ruleIdsDefault = BeanMapper.getFieldList(logisticsTemplateRules, "ruleId", Long.class);
-        ruleIds.addAll(ruleIdsDefault);//TODO: 从业务上讲 ruleIds 经过此行不可能会空，所以 in 查询没机会失败，不需要做 isEmpty 判断。但是ruleIds 以上处理依然多余
+        ruleIds.addAll(ruleIdsDefault);
         LogisticsTemplateCompanyExample companyExample = new LogisticsTemplateCompanyExample();
         companyExample.createCriteria().andTemplateIdEqualTo(templateId).andRuleIdIn(ruleIds);
         List<LogisticsTemplateCompany> companies = logisticsTemplateCompanyMapper.selectFieldsByExample(companyExample, FieldUtil.codeFields("tc_id,company_id"));
@@ -233,19 +226,16 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
             ExpressCompanyExample expressCompanyExample = new ExpressCompanyExample();
             expressCompanyExample.createCriteria().andExpressCompanyIdIn(companyIds);
             List<ExpressCompany> expressCompanies = expressCompanyMapper.selectFieldsByExample(expressCompanyExample, FieldUtil.codeFields("express_company_id,express_name"));
-            if (expressCompanies.size() > 0) {// TODO: 多余的判断
 
-                List<String> expressNames = BeanMapper.getFieldList(expressCompanies, "expressName", String.class);
-
-                for (String e : expressNames) {
-                    LogisticsCompanyVO vo = new LogisticsCompanyVO();
-                    vo.setName(e);
-                    voList.add(vo);
-                }
-
+            for (ExpressCompany e : expressCompanies) {
+                LogisticsCompanyVO vo = new LogisticsCompanyVO();
+                vo.setName(e.getExpressName());
+                vo.setId(e.getExpressCompanyId());
+                voList.add(vo);
             }
+
         }
-        return voList;// TODO ： 返回值缺失 id(companyId),请完善数据
+        return voList;
     }
 
     /**
