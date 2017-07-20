@@ -246,13 +246,12 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
         subOrderInfoVO.setSkuColor(subItemOrderVO.getColor());
         subOrderInfoVO.setSkuSize(subItemOrderVO.getSize());
-        //TODO:子单状态
-        subOrderInfoVO.setOrderStatus();
-        subOrderInfoVO.setAfterSaleStatus();
-        subOrderInfoVO.setRefundId();
-        subOrderInfoVO.setRefundNum();
-        subOrderInfoVO.setRefundType();
-        return null;
+        //TODO:退货信息
+        //subOrderInfoVO.setAfterSaleStatus();
+        //subOrderInfoVO.setRefundId();
+        //subOrderInfoVO.setRefundNum();
+        //subOrderInfoVO.setRefundType();
+        return subOrderInfoVO;
     }
 
     @Override
