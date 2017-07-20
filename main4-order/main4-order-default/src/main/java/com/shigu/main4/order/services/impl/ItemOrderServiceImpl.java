@@ -1,36 +1,52 @@
 package com.shigu.main4.order.services.impl;
 
-import com.opentae.data.mall.beans.BuyerAddress;
-import com.opentae.data.mall.beans.ExpressCompany;
-import com.opentae.data.mall.beans.ItemOrder;
-import com.opentae.data.mall.beans.OrderIdGenerator;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.BuyerAddressExample;
 import com.opentae.data.mall.examples.LogisticsTemplateExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
+import com.shigu.main4.order.enums.RefundTypeEnum;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.model.impl.ItemOrderImpl;
 import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
-import com.shigu.main4.order.servicevo.*;
-import com.shigu.main4.order.utils.PriceConvertUtils;
+import com.shigu.main4.order.servicevo.ExpressInfoVO;
+import com.shigu.main4.order.servicevo.ExpressLogVO;
+import com.shigu.main4.order.servicevo.OrderInfoVO;
+import com.shigu.main4.order.servicevo.OrderLogVO;
+import com.shigu.main4.order.servicevo.RefundInfoVO;
+import com.shigu.main4.order.servicevo.RefundLogVO;
+import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.utils.KdniaoUtil;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.HttpClient;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,7 +54,7 @@ import java.util.List;
  * Created by zhaohongbo on 17/6/2.
  */
 @Service("itemOrderService")
-public class ItemOrderServiceImpl implements ItemOrderService{
+public class ItemOrderServiceImpl implements ItemOrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(ItemOrderServiceImpl.class);
 
@@ -59,6 +75,12 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     @Autowired
     private LogisticsTemplateMapper logisticsTemplateMapper;
+
+    @Autowired
+    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
+
+    @Autowired
+    private KdniaoUtil kdniaoUtil;
 
     @Autowired
     private OrderConstantService orderConstantService;
@@ -164,7 +186,7 @@ public class ItemOrderServiceImpl implements ItemOrderService{
      * @return
      */
     @Override
-    public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId,List<PidNumBO> pids) {
+    public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId, List<PidNumBO> pids) {
         LogisticsTemplateExample templateExample = new LogisticsTemplateExample();
         templateExample.createCriteria().andEnabledEqualTo(true).andSenderIdEqualTo(senderId);
         logisticsTemplateMapper.selectByExample(templateExample);
@@ -183,7 +205,7 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         buyerAddressExample.createCriteria().andUserIdEqualTo(userId);
         List<BuyerAddress> buyerAddresses = buyerAddressMapper.selectByExample(buyerAddressExample);
         BuyerAddressVO buyerAddressVO = null;
-        for (BuyerAddress buyerAddress:buyerAddresses) {
+        for (BuyerAddress buyerAddress : buyerAddresses) {
             buyerAddressVO = BeanMapper.map(buyerAddress, BuyerAddressVO.class);
             buyerAddressVO.setProvince(buyerAddress.getProvName());
             buyerAddressVO.setCity(buyerAddress.getCityName());
@@ -201,9 +223,9 @@ public class ItemOrderServiceImpl implements ItemOrderService{
     @Transactional(rollbackFor = Exception.class)
     public void saveBuyerAddress(BuyerAddressVO buyerAddressVO) throws JsonErrException {
         //信息不足
-        boolean isInformationInsufficient = buyerAddressVO.getProvId()==null || buyerAddressVO.getCityId()==null ||
-                buyerAddressVO.getTownId()==null || StringUtil.isNull(buyerAddressVO.getAddress()) ||
-                buyerAddressVO.getUserId()==null || StringUtil.isNull(buyerAddressVO.getTelephone()) ||
+        boolean isInformationInsufficient = buyerAddressVO.getProvId() == null || buyerAddressVO.getCityId() == null ||
+                buyerAddressVO.getTownId() == null || StringUtil.isNull(buyerAddressVO.getAddress()) ||
+                buyerAddressVO.getUserId() == null || StringUtil.isNull(buyerAddressVO.getTelephone()) ||
                 StringUtil.isNull(buyerAddressVO.getName());
         if (isInformationInsufficient) {
             throw new JsonErrException("买家地址存储失败");
@@ -211,13 +233,13 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         BuyerAddressExample buyerAddressExample = new BuyerAddressExample();
         buyerAddressExample.createCriteria().andUserIdEqualTo(buyerAddressVO.getUserId());
         buyerAddressExample.setOrderByClause("address_id asc");
-        List<Long> userAddressIds = BeanMapper.getFieldList(buyerAddressMapper.selectFieldsByExample(buyerAddressExample,"address_id"),
+        List<Long> userAddressIds = BeanMapper.getFieldList(buyerAddressMapper.selectFieldsByExample(buyerAddressExample, "address_id"),
                 "addressId", Long.class);
         while (userAddressIds.size() >= 5) {
             rmBuyerAddress(userAddressIds.get(0));
             userAddressIds.remove(0);
         }
-        BuyerAddress buyerAddress = BeanMapper.map(buyerAddressVO,BuyerAddress.class);
+        BuyerAddress buyerAddress = BeanMapper.map(buyerAddressVO, BuyerAddress.class);
         buyerAddress.setAddressId(null);
         buyerAddress.setProvName(buyerAddressVO.getProvince());
         buyerAddress.setCityName(buyerAddressVO.getCity());
@@ -260,8 +282,47 @@ public class ItemOrderServiceImpl implements ItemOrderService{
      * @return
      */
     @Override
-    public List<ExpressLogVO> expressLog(Long expressId) {
-        return null;
+    public List<ExpressLogVO> expressLog(Long expressId) throws Main4Exception, ParseException {
+        ItemOrderLogistics itemOrderLogistics = itemOrderLogisticsMapper.selectByPrimaryKey(expressId);
+        if (itemOrderLogistics==null){
+            throw new Main4Exception("数据库没有对应传入的expressId的数据");
+        }
+        ExpressCompany expressCompany=null;
+        if (itemOrderLogistics.getCompanyId()!=null){
+            expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(itemOrderLogistics.getCompanyId(), FieldUtil.codeFields("express_company_id,remark2"));
+        }
+        if (expressCompany==null){
+            throw new Main4Exception("数据库没有对应的快递公司数据");
+        }
+        String orderTracesByJson = null;
+        try {
+            orderTracesByJson = kdniaoUtil.getOrderTracesByJson(expressCompany.getRemark2(), itemOrderLogistics.getCourierNumber());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Main4Exception("调用快递鸟接口抛出的异常");
+        }
+        ExpressResultVO resultVO = JSON.parseObject(orderTracesByJson, ExpressResultVO.class);
+        List<ExpressLogVO> logVOList = new ArrayList<>();
+        String[] weeks = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+        Calendar cal = Calendar.getInstance();
+        if (resultVO.getTraces().size() > 0) {
+            for (SingleMsgVO msg : resultVO.getTraces()) {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date time = format.parse(msg.getAcceptTime());
+                cal.setTime(time);
+                int week_index = cal.get(Calendar.DAY_OF_WEEK) - 1;
+                if (week_index < 0) {
+                    week_index = 0;
+                }
+                ExpressLogVO logVO = new ExpressLogVO();
+                logVO.setLogDesc(msg.getAcceptStation());
+                logVO.setLogWeek(weeks[week_index]);
+                logVO.setLogDate(new SimpleDateFormat("yyyy-MM-dd").format(time).toString());
+                logVO.setLogTime(new SimpleDateFormat("HH:mm:ss").format(time).toString());
+                logVOList.add(logVO);
+            }
+        }
+        return logVOList;
     }
 
     /**

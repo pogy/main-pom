@@ -1,22 +1,19 @@
 package com.shigu.order.actions;
 
 import com.alibaba.fastjson.JSON;
-import com.opentae.data.mall.beans.ExpressCompany;
-import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
-import com.shigu.component.common.globality.constant.SystemConStant;
-import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
-import com.shigu.main4.order.vo.*;
+import com.shigu.main4.order.vo.BuyerAddressItemVO;
+import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.CartService;
 import com.shigu.order.services.ConfirmOrderService;
-import com.shigu.order.vo.*;
+import com.shigu.order.vo.CartOrderVO;
+import com.shigu.order.vo.OrderSubmitVo;
+import com.shigu.order.vo.SenderInfoVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
@@ -30,7 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by zhaohongbo on 17/6/23.
@@ -76,12 +74,10 @@ public class ConfirmOrderAction {
         return JsonResponseUtil.success().element("redectUrl", payUrl);
     }
 
-
     @RequestMapping("confirmOrder")
     public String confirmOrder(ConfirmBO bo, HttpServletRequest request, Model model) throws OrderException {
         String code = bo.getCode();
         OrderSubmitVo orderSubmitVo = redisIO.get(code, OrderSubmitVo.class);
-        ///////////////////////////////////////////////////////////
         if (orderSubmitVo == null) {
             throw new OrderException("订单超时");
         }
@@ -103,27 +99,6 @@ public class ConfirmOrderAction {
 
         model.addAttribute("collList", confirmOrderService.collListByUser(userId));//收藏的地址数据
 
-        List<LogisticsCompanyVO> logisticsCompanyVOS = orderConstantService.selLogistics(bo.getSenderId());//快递规则// TODO:快递对省份的支持信息没有
-        List<PostRuleVO> postRuleVOS = new ArrayList<>();
-        for (LogisticsCompanyVO logisticsCompanyVO : logisticsCompanyVOS) {
-            String name = logisticsCompanyVO.getName();
-//            List<PostRuleVO> postRuleVOList = BeanMapper.mapList(logisticsCompanyVO.getBourns(), PostRuleVO.class);
-//            for (PostRuleVO postRuleVO : postRuleVOList) {
-//                postRuleVO.setName(name);
-//            }
-//            postRuleVOS.addAll(postRuleVOList);
-            PostRuleVO ruleVO = new PostRuleVO();
-            ruleVO.setName(name);
-            ruleVO.setAddPrice(1.0);
-            ruleVO.setAddWeight(1.0);
-            ruleVO.setProv("浙江省");
-            ruleVO.setStartPrice(5.0);
-            ruleVO.setStartWeight(0.0);
-            postRuleVOS.add(ruleVO);
-        }
-        model.addAttribute("postRulers", JSON.toJSONString(postRuleVOS));
-        model.addAttribute("postNameMap", JSON.toJSONString(confirmOrderService.postNameMapper()));
-
         // 商品信息
         List<CartOrderVO> vos = cartService.packCartProductVo(orderSubmitVo.getProducts()).getOrders();
         // 商品服务信息
@@ -132,6 +107,18 @@ public class ConfirmOrderAction {
         model.addAttribute("webSite", "hz");//站点
         model.addAttribute("code", bo.getCode());
         return "trade/confirmOrder";
+    }
+
+    @ResponseBody
+    @RequestMapping("getPostRulerByProvId")
+    public JSONObject getPostRulerByProvId(Long senderId, Long provId) throws JsonErrException {
+        if (senderId == null) {
+            return JsonResponseUtil.error("请选择代发机构");
+        }
+        if (provId == null) {
+            return JsonResponseUtil.error("填写收货地址");
+        }
+        return JsonResponseUtil.success().element("postRulers", confirmOrderService.selPostRules(senderId, provId));
     }
 
     @ResponseBody

@@ -128,4 +128,22 @@ public class LogisticsVO implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "LogisticsVO{" +
+                "id=" + id +
+                ", companyId=" + companyId +
+                ", money=" + money +
+                ", provId=" + provId +
+                ", cityId=" + cityId +
+                ", townId=" + townId +
+                ", address='" + address + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", courierNumber='" + courierNumber + '\'' +
+                ", name='" + name + '\'' +
+                ", soids=" + soids +
+                '}';
+    }
 }

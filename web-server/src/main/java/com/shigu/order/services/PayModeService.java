@@ -90,7 +90,7 @@ public class PayModeService {
     public String alipay(Long orderId) throws PayApplyException {
         com.shigu.main4.order.model.ItemOrder itemOrder = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
         ItemOrderVO itemOrderVO = itemOrder.orderInfo();
-        return aliPayerService.payApply(orderId,itemOrderVO.getTotalFee(),itemOrderVO.getTitle()).getPayLink();
+        return aliPayerService.payApply(orderId,itemOrderVO.getTradePayLong(),itemOrderVO.getTitle()).getPayLink();
     }
 
     /**

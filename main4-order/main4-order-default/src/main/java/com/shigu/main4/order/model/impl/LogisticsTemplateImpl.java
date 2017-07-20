@@ -18,7 +18,7 @@ import com.shigu.main4.order.vo.LogisticsCompanyVO;
 import com.shigu.main4.order.vo.LogisticsTemplateVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,17 +30,52 @@ import java.util.Map;
  * 快递模板
  * Created by bugzy on 2017/7/19 0019.
  */
-@Service("logisticsTemplate")
+@Component("logisticsTemplate")
 @Scope("prototype")
 public class LogisticsTemplateImpl implements LogisticsTemplate {
-    public LogisticsTemplateImpl(Long templateId) {
-        this.templateId = templateId;
-    }
 
     private Long templateId;
 
+    private static Long defaultTemplateId;
+
+    private Long senderId;
+
+    public LogisticsTemplateImpl(Long templateId) {
+        this.templateId = templateId;
+        this.senderId = templateInfo().getSenderId();
+    }
+
+    /**
+     * 根据发货机构id构造
+     * @param senderId 发货机构id
+     * @param placeholder 占位参数，无意义
+     */
+    public LogisticsTemplateImpl(Long senderId, String placeholder) {
+        this.senderId = senderId;
+        com.opentae.data.mall.beans.LogisticsTemplate logisticsTemplate = new com.opentae.data.mall.beans.LogisticsTemplate();
+        logisticsTemplate.setSenderId(senderId);
+        logisticsTemplate.setEnabled(true);
+        List<com.opentae.data.mall.beans.LogisticsTemplate> logisticsTemplates = logisticsTemplateMapper.select(logisticsTemplate);
+        if (logisticsTemplates.isEmpty()) { // 没有所选发货机构则采用 系统默认运费模板
+            if (defaultTemplateId == null) {
+                logisticsTemplate.setSenderId(-1L);
+                logisticsTemplate = logisticsTemplateMapper.selectOne(logisticsTemplate);
+                defaultTemplateId = logisticsTemplate.getTemplateId();
+            }
+            templateId = defaultTemplateId;
+            this.senderId = -1L;
+        } else {
+            logisticsTemplate = logisticsTemplates.get(0);
+            templateId = logisticsTemplate.getTemplateId();
+        }
+    }
+
     public Long getTemplateId() {
         return templateId;
+    }
+
+    public Long getSenderId() {
+        return senderId;
     }
 
     @Autowired
@@ -61,10 +96,10 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     /**
      * 查快递规则
-     *      1. 当 provId 和 companyId 皆不为 Null 时，该方法返回 指定省份的快递公司的所有邮费计算规则
-     *      2. 当 provId 和 companyId 皆为 Null 时，该方法返回 本 template 所有邮费计算规则
+     * 1. 当 provId 和 companyId 皆不为 Null 时，该方法返回 指定省份的快递公司的所有邮费计算规则
+     * 2. 当 provId 和 companyId 皆为 Null 时，该方法返回 本 template 所有邮费计算规则
      *
-     * @param provId 省份id  3.当此参数为Null时，方法将返回指定 companyId 的所有省份规则
+     * @param provId    省份id  3.当此参数为Null时，方法将返回指定 companyId 的所有省份规则
      * @param companyId 公司id  4.当此参数为Null时，方法将返回指定 provId 的所有公司规则
      * @return 规则列表
      */
@@ -122,6 +157,8 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         }
         return bournRuleInfoVOS;
     }
+
+
 
     private List<BournRuleInfoVO> rulesIn(List<Long> rulesIds) {
         List<BournRuleInfoVO> ruleInfo = new ArrayList<>();

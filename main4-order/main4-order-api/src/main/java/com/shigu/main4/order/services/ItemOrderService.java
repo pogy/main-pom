@@ -1,6 +1,7 @@
 package com.shigu.main4.order.services;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.PidNumBO;
 import com.shigu.main4.order.enums.OrderType;
@@ -13,6 +14,7 @@ import com.shigu.main4.order.servicevo.RefundLogVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,14 +68,14 @@ public interface ItemOrderService {
      * @param orderId
      * @return
      */
-    ExpressInfoVO expressInfo(Long orderId);
+    ExpressInfoVO expressInfo(Long orderId) throws Main4Exception;
 
     /**
      * 查询物流日志
      * @param expressId
      * @return
      */
-    List<ExpressLogVO> expressLog(Long expressId);
+    List<ExpressLogVO> expressLog(Long expressId) throws Main4Exception, ParseException;
 
     /**
      * 子订单信息
