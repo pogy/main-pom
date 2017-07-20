@@ -15,6 +15,7 @@
 
 
 
+
     
     <link href="http://style.571xz.com/v2/order/css/paySuccess.css" rel="stylesheet">
     
@@ -217,15 +218,12 @@ var webSite = '${webSite!}';
     <div class="gotoBox">
         
 
-<#assign text>{"href":"orderDetail.htm?orderId=${orderId!}"}</#assign>
+<#assign text>{}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 
-    <#if $it.href??>
-    <a href="${$it.href!}"
-    <#else>
-    <b 
-    </#if>
+    <a href="#"
+        
 
 
     class="fmButton
@@ -254,11 +252,7 @@ var webSite = '${webSite!}';
     
 
 
-    <#if $it.href??>
     </a>
-    <#else>
-    </b>
-    </#if>
 
 
 
