@@ -17,6 +17,8 @@
 
 
 
+
+
     
     <link href="http://style.571xz.com/v2/fxsV1/css/myTbOrder.css" rel="stylesheet">
     
@@ -192,6 +194,12 @@ var webSite = '${webSite!}';
         <li><a class="selected" href="${main_host!}member/myTbOrder.htm">淘宝订单</a></li> 
         
     
+        
+            
+            <li><a href="${main_host!}member/shManaOrder.htm" >售后管理</a></li>
+            
+        
+    
     </ul> 
 
     <h2>商品管理</h2>
@@ -211,7 +219,7 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
+            <li><a href="${main_host!}member/storeCollectinit.htm" >收藏的档口</a></li>
             
         
     
@@ -234,6 +242,17 @@ var webSite = '${webSite!}';
         
             
             <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
+            
+        
+    
+    </ul> 
+
+    <h2>会员俱乐部</h2>
+    <ul>
+    
+        
+            
+            <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
             
         
     
@@ -372,13 +391,13 @@ var webSite = '${webSite!}';
     <ul class="clearfix">
         <li class="goods clearfix borderBot" data-imgSrc="${childOrder.imgSrc!}" data-title="${childOrder.title!}" data-goodsNo="${childOrder.goodsNo!}" data-price="<#if childOrder.newTbPrice??>${childOrder.newTbPrice!}<#else>${childOrder.oldTbPrice!}</#if>" data-tbId="${childOrder.numiid!}">
             <a href="javascript:;" target="_blank" class="imgBox fl">
-                <img src="${childOrder.imgSrc!}_80x80.jpg" alt width=80 height=80>
+                <img src="${childOrder.imgSrc!}_80x80.jpg" alt width="80" height="80">
             </a>
             <div class="goodsInfo fl">
                 <a href="javascript:;" target="_blank" title="${childOrder.title!}">${childOrder.title!}</a>
-                <p class="fc9" title="颜色：${childOrder.color!}   尺码：${childOrder.size!}">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
+                <p class="fc9" title="颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
                 <#if childOrder.goodsNo??>
-                <p class="goodsNoShow" title="${childOrder.goodsNo!}">已关联货号：${childOrder.goodsNo!}</p>
+                <p class="goodsNoShow" title="已关联货号：${childOrder.goodsNo!}">已关联货号：${childOrder.goodsNo!}</p>
                 <p class="goodsGlBtn">
 
 <#assign text>{}</#assign>
