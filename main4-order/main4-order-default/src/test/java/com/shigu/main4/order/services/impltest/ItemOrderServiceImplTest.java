@@ -3,15 +3,20 @@ package com.shigu.main4.order.services.impltest;
 import com.opentae.data.mall.beans.ItemOrderSender;
 import com.opentae.data.mall.interfaces.ItemOrderSenderMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.ParseException;
+import java.util.List;
 
 /**
  *
@@ -84,5 +89,16 @@ public class ItemOrderServiceImplTest extends BaseTest {
         buyerAddressVO.setZipCode(zipCode);
         buyerAddressVO.setName(name);
         return buyerAddressVO;
+    }
+    @Test
+    public void expressLog() throws Main4Exception, ParseException {
+        List<ExpressLogVO> logVOList = itemOrderService.expressLog(5L);
+        if (logVOList.size()==0){
+            System.out.println("没有快递信息");
+        }
+        for (ExpressLogVO vo:logVOList){
+            System.out.println(vo.getLogDate()+"    "+vo.getLogTime()+"   "+vo.getLogWeek());
+            System.out.println(vo.getLogDesc());
+        }
     }
 }

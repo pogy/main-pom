@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class CartChildOrderVO {
 
-    private Long id;
+    private Long childOrderId;
 
     private Long goodsid;
 
@@ -34,12 +34,12 @@ public class CartChildOrderVO {
 
     private Double weight = .1;
 
-    public Long getId() {
-        return id;
+    public Long getChildOrderId() {
+        return childOrderId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setChildOrderId(Long childOrderId) {
+        this.childOrderId = childOrderId;
     }
 
     public Long getGoodsid() {

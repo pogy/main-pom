@@ -85,7 +85,7 @@ public class CartService {
                 CartOrderVO orderVO = new CartOrderVO();
                 vo.getOrders().add(orderVO);
                 Long shopId = entry.getKey();
-                orderVO.setId(shopId);
+                orderVO.setOrderId(shopId);
                 orderVO.setShopId(shopId);
                 ShiguShop shiguShop = shopMap.get(shopId);
                 if (shiguShop != null) {
@@ -100,7 +100,7 @@ public class CartService {
                 for (CartVO productVO : productVOS) {
                     CartChildOrderVO childOrderVO = new CartChildOrderVO();
                     orderVO.getChildOrders().add(childOrderVO);
-                    childOrderVO.setId(productVO.getCartId());
+                    childOrderVO.setChildOrderId(productVO.getCartId());
                     childOrderVO.setGoodsid(productVO.getGoodsId());
                     childOrderVO.setImgsrc(productVO.getPicUrl());
                     childOrderVO.setTitle(productVO.getTitle());

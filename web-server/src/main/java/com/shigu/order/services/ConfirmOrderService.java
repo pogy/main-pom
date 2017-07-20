@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.OrderCity;
 import com.opentae.data.mall.beans.OrderProv;
 import com.opentae.data.mall.beans.OrderTown;
+import com.opentae.data.mall.examples.ExpressCompanyExample;
 import com.opentae.data.mall.interfaces.OrderCityMapper;
 import com.opentae.data.mall.interfaces.OrderProvMapper;
 import com.opentae.data.mall.interfaces.OrderTownMapper;
@@ -19,7 +20,9 @@ import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.bo.PackageBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
 import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
+import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.model.Cart;
+import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
@@ -28,7 +31,6 @@ import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ServiceVO;
-import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.ConfirmBO;
@@ -186,18 +188,6 @@ public class ConfirmOrderService {
     }
 
     /**
-     * 快递公司拼音到字映射
-     */
-    public Map<String, String> postNameMapper() {
-        Map<String, String> postNameMap = new HashMap<>();
-        List<ExpressCompany> select = expressCompanyMapper.select(new ExpressCompany());
-        for (ExpressCompany company : select) {
-            postNameMap.put(company.getEnName(), company.getExpressName());
-        }
-        return postNameMap;
-    }
-
-    /**
      * 服务规则包装，待完善
      * @param orders 订单商品信息
      * @param senderId 发货机构
@@ -264,7 +254,33 @@ public class ConfirmOrderService {
      * @param addressId
      */
     public BuyerAddressVO selTmpBuyerAddress(String addressId) {
-        BuyerAddressVO vo = redisIO.get("tmp_buyer_address_" + addressId, BuyerAddressVO.class);
-        return vo;
+        return redisIO.get("tmp_buyer_address_" + addressId, BuyerAddressVO.class);
+    }
+
+    public List<PostRuleVO> selPostRules(Long senderId, Long provId) throws JsonErrException {
+        List<PostRuleVO> vos = new ArrayList<>();
+        Map<Long, ExpressCompany> expressCompanyMap = Collections.emptyMap();
+        try {
+            LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
+            List<BournRuleInfoVO> rules = logisticsTemplate.rules(provId, null);
+            List<Long> companyIds = BeanMapper.getFieldList(rules, "companyId", Long.class);
+            if (!companyIds.isEmpty()) {
+                ExpressCompanyExample companyExample = new ExpressCompanyExample();
+                companyExample.createCriteria().andExpressCompanyIdIn(companyIds);
+                expressCompanyMap = BeanMapper.list2Map(expressCompanyMapper.selectByExample(companyExample), "expressCompanyId", Long.class);
+            }
+            for (BournRuleInfoVO rule : rules) {
+                PostRuleVO postRuleVO = BeanMapper.map(rule, PostRuleVO.class);
+                vos.add(postRuleVO);
+                ExpressCompany expressCompany = expressCompanyMap.get(rule.getCompanyId());
+                if (expressCompany != null) {
+                    postRuleVO.setName(expressCompany.getEnName());
+                    postRuleVO.setText(expressCompany.getExpressName());
+                }
+            }
+        } catch (LogisticsRuleException e) {
+            throw new JsonErrException(e.getMessage());
+        }
+        return vos;
     }
 }

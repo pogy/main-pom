@@ -87,8 +87,8 @@ public class ItemOrderImpl implements ItemOrder{
         ItemOrderVO orderVO = new ItemOrderVO();
         orderVO.setSenderId(order.getSenderId());
         orderVO.setTradePayLong(order.getTotalFee());
-        orderVO.setRefundFee(order.getRefundFee());
-        orderVO.setPayedFee(order.getPayedFee());
+        orderVO.setRefundFeeLong(order.getRefundFee());
+        orderVO.setPayedFeeLong(order.getPayedFee());
         orderVO.setType(OrderType.typeOf(order.getType()));
         orderVO.setOrderId(order.getOid());
         orderVO.setTitle(order.getTitle());

@@ -24,6 +24,15 @@ public class LogisticsTemplateImplTest extends BaseTest{
     public void rules() throws Exception {
         LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 2L);
         show(template.rules(5L, 3L));
+        show(template.rules(5L, null));
+        show(template.rules(null, 3L));
+        show(template.rules(null, null));
+    }
+
+    @Test
+    public void testSenderTemplate() throws Exception {
+        LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 1L, null);
+        show(template.rules(5L, 3L));
     }
 
     @Test
@@ -41,7 +50,7 @@ public class LogisticsTemplateImplTest extends BaseTest{
         LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 2L);
         List<LogisticsCompanyVO> voList = template.provCompanys(5L);
         for (LogisticsCompanyVO v:voList){
-            System.out.println(v.getName());
+            System.out.println(v.getName()+"   "+v.getId());
         }
     }
 }

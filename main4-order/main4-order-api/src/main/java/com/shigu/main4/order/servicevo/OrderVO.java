@@ -1,10 +1,10 @@
 package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.enums.MainOrderStatusEnum;
 import com.shigu.main4.order.enums.OrderType;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单
@@ -14,45 +14,50 @@ public class OrderVO implements Serializable{
 
     private Long orderId;
     /**交易时间*/
-    private Date tradeTime;
+    private Date tradeTimed;
     /**交易总金额@以分为单位*/
     private Long tradePayLong;
     /** 交易总金额@以元为单位*/
     private String tradePay;
     /** 快递费*/
     private String postPay;
+    private Long postPayLong;
     /**服务费*/
     private String serverPay;
+    private Long serverPayLong;
     /**
      * 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
      */
-    private MainOrderStatusEnum mainState;
+    private Integer mainState;
     /** 是否淘宝订单 **/
-    private  Boolean isTbOrder;
+    private  boolean isTbOrder;
     /** 站点 */
     private String webSire;
 
 
     private OrderType type;
 
-    private Long payedFee;
+    private String payedFee;
+
+    private Long payedFeeLong;
 
     private String title;
 
-    private Long refundFee;
+    private Long refundFeeLong;
 
+    private String refundFee;
     /**
      * 商品金额
      */
     private String orderPrice;
 
-
+    private String tradeTime;
 
 
     /**
      * 子单数据
      */
-    private SubOrderInfoVO childOrders;
+    private List<SubOrderInfoVO> childOrders;
 
 
     public Long getOrderId() {
@@ -71,20 +76,36 @@ public class OrderVO implements Serializable{
         this.type = type;
     }
 
-    public Long getRefundFee() {
-        return refundFee;
-    }
-
-    public void setRefundFee(Long refundFee) {
-        this.refundFee = refundFee;
-    }
-
-    public Long getPayedFee() {
+    public String getPayedFee () {
         return payedFee;
     }
 
-    public void setPayedFee(Long payedFee) {
+    public void setPayedFee (String payedFee) {
         this.payedFee = payedFee;
+    }
+
+    public Long getPayedFeeLong () {
+        return payedFeeLong;
+    }
+
+    public void setPayedFeeLong (Long payedFeeLong) {
+        this.payedFeeLong = payedFeeLong;
+    }
+
+    public Long getRefundFeeLong () {
+        return refundFeeLong;
+    }
+
+    public void setRefundFeeLong (Long refundFeeLong) {
+        this.refundFeeLong = refundFeeLong;
+    }
+
+    public String getRefundFee () {
+        return refundFee;
+    }
+
+    public void setRefundFee (String refundFee) {
+        this.refundFee = refundFee;
     }
 
     public String getTitle() {
@@ -111,6 +132,21 @@ public class OrderVO implements Serializable{
         this.orderPrice = orderPrice;
     }
 
+    public Long getPostPayLong () {
+        return postPayLong;
+    }
+
+    public void setPostPayLong (Long postPayLong) {
+        this.postPayLong = postPayLong;
+    }
+
+    public Long getServerPayLong () {
+        return serverPayLong;
+    }
+
+    public void setServerPayLong (Long serverPayLong) {
+        this.serverPayLong = serverPayLong;
+    }
 
     /**
      * 获取 站点
@@ -126,11 +162,20 @@ public class OrderVO implements Serializable{
         this.webSire = webSire;
     }
 
-    public Date getTradeTime () {
+
+    public Date getTradeTimed () {
+        return tradeTimed;
+    }
+
+    public void setTradeTimed (Date tradeTimed) {
+        this.tradeTimed = tradeTimed;
+    }
+
+    public String getTradeTime () {
         return tradeTime;
     }
 
-    public void setTradeTime (Date tradeTime) {
+    public void setTradeTime (String tradeTime) {
         this.tradeTime = tradeTime;
     }
 
@@ -166,33 +211,27 @@ public class OrderVO implements Serializable{
         this.serverPay = serverPay;
     }
 
-    public MainOrderStatusEnum getMainState () {
+    public Integer getMainState () {
         return mainState;
     }
 
-    public void setMainState (MainOrderStatusEnum mainState) {
+    public void setMainState (Integer mainState) {
         this.mainState = mainState;
     }
 
-    public Boolean getTbOrder () {
+    public boolean getIsTbOrder () {
         return isTbOrder;
     }
 
-    public void setTbOrder (Boolean istbOrder) {
-        this.isTbOrder = istbOrder;
+    public void setIsTbOrder (boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 
-    /**
-     * 获取 子单数据
-     */
-    public SubOrderInfoVO getChildOrders() {
-        return this.childOrders;
+    public List<SubOrderInfoVO> getChildOrders () {
+        return childOrders;
     }
 
-    /**
-     * 设置 子单数据
-     */
-    public void setChildOrders(SubOrderInfoVO childOrders) {
+    public void setChildOrders (List<SubOrderInfoVO> childOrders) {
         this.childOrders = childOrders;
     }
 }

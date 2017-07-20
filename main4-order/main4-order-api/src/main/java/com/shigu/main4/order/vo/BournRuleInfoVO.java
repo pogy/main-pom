@@ -6,13 +6,15 @@ package com.shigu.main4.order.vo;
  */
 public class BournRuleInfoVO {
 
+    private Long ruleId;
+
     private Integer startWeight;
 
     private Long startPrice;
 
     private Long provId;
 
-    private Long componyId;
+    private Long companyId;
 
     private Integer addWeight;
 
@@ -24,6 +26,14 @@ public class BournRuleInfoVO {
     private Integer type;
 
     private Boolean imDefault;
+
+    public Long getRuleId() {
+        return ruleId;
+    }
+
+    public void setRuleId(Long ruleId) {
+        this.ruleId = ruleId;
+    }
 
     public Integer getStartWeight() {
         return startWeight;
@@ -49,12 +59,12 @@ public class BournRuleInfoVO {
         this.provId = provId;
     }
 
-    public Long getComponyId() {
-        return componyId;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setComponyId(Long componyId) {
-        this.componyId = componyId;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public Integer getAddWeight() {
