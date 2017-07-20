@@ -21,11 +21,11 @@ public class OrderBO {
     /**
      * 开始时间
      */
-    private Date startTime;
+    private Date st;
     /**
      * 结束时间
      */
-    private Date endTime;
+    private Date et;
     /**
      * 订单ID
      */
@@ -65,29 +65,29 @@ public class OrderBO {
     /**
      * 获取 开始时间
      */
-    public Date getStartTime() {
-        return this.startTime;
+    public Date getSt() {
+        return this.st;
     }
 
     /**
      * 设置 开始时间
      */
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setSt(Date st) {
+        this.st = st;
     }
 
     /**
      * 获取 结束时间
      */
-    public Date getEndTime() {
-        return this.endTime;
+    public Date getEt() {
+        return this.et;
     }
 
     /**
      * 设置 结束时间
      */
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setEt(Date et) {
+        this.et = et;
     }
 
     /**
