@@ -9,7 +9,6 @@ import com.shigu.main4.order.servicevo.OrderVO;
 import com.shigu.order.services.MyOrderService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
-import com.sun.org.apache.xpath.internal.res.XPATHErrorResources_pt_BR;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,6 +58,7 @@ public class MyOrderAction {
 
         ShiguPager<OrderVO>  pager =myOrderService.selectCountMyOrder(bo,ps.getUserId ());
                 model.addAttribute ("query",bo);//返回查询条件
+
         model.addAttribute ("orders",list);
         model.addAttribute ("pageOption",pager.selPageOption (bo.getPageSize ()));
         return "buyer/myOrder";
