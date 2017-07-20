@@ -28,6 +28,7 @@ import com.shigu.main4.order.servicevo.RefundInfoVO;
 import com.shigu.main4.order.servicevo.RefundLogVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.utils.KdniaoUtil;
+import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -264,16 +265,43 @@ public class ItemOrderServiceImpl implements ItemOrderService {
      * @return
      */
     @Override
-    public ExpressInfoVO expressInfo(Long orderId) {
+    public ExpressInfoVO expressInfo(Long orderId) throws Main4Exception {
+        ExpressInfoVO expressInfoVO = new ExpressInfoVO();
         com.shigu.main4.order.model.ItemOrder itemOrder
                 = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
         List<LogisticsVO> logisticsVOS = itemOrder.selLogisticses();
-        //System.out.println(logisticsVOS);
-        //for (LogisticsVO logisticsVO: logisticsVOS) {
-        //    System.out.println(logisticsVO);
-        //}
-
-        return null;
+        if (logisticsVOS.size() == 0) {
+            throw new Main4Exception("没有查到物流信息");
+        }
+        LogisticsVO firstLogisticsVO = logisticsVOS.get(0);
+        String expressName = selLogisticCompanyCode(firstLogisticsVO.getCompanyId());
+        String expressId = firstLogisticsVO.getCourierNumber();
+        expressInfoVO.setExpressId(expressId);
+        expressInfoVO.setExpressName(expressName);
+        expressInfoVO.setReceiverAddress(firstLogisticsVO.getAddress());
+        expressInfoVO.setReceiverName(firstLogisticsVO.getName());
+        expressInfoVO.setReceiverPhone(firstLogisticsVO.getTelephone());
+        Integer state = 0;
+        try {
+            String jsonStr = kdniaoUtil.getOrderTracesByJson(expressName,expressId);
+            String stateStr = JSON.parseObject(jsonStr).get("State").toString();
+            switch (stateStr) {
+                case "2":
+                    state = 2;
+                    break;
+                case "3":
+                    state = 3;
+                    break;
+                case "4"://问题件
+                default:
+                    state = 1;
+                    break;
+            }
+        } catch (Exception e) {
+            state = 0;
+        }
+        expressInfoVO.setExpressCurrentState(state);
+        return expressInfoVO;
     }
 
     /**
@@ -288,15 +316,13 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             throw new Main4Exception("数据库没有对应传入的expressId的数据");
         }
         ExpressCompany expressCompany=null;
+        String companyCode = "";
         if (itemOrderLogistics.getCompanyId()!=null){
-            expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(itemOrderLogistics.getCompanyId(), FieldUtil.codeFields("express_company_id,remark2"));
-        }
-        if (expressCompany==null){
-            throw new Main4Exception("数据库没有对应的快递公司数据");
+            companyCode = selLogisticCompanyCode(itemOrderLogistics.getCompanyId());
         }
         String orderTracesByJson = null;
         try {
-            orderTracesByJson = kdniaoUtil.getOrderTracesByJson(expressCompany.getRemark2(), itemOrderLogistics.getCourierNumber());
+            orderTracesByJson = kdniaoUtil.getOrderTracesByJson(companyCode, itemOrderLogistics.getCourierNumber());
         } catch (Exception e) {
             e.printStackTrace();
             throw new Main4Exception("调用快递鸟接口抛出的异常");
@@ -325,6 +351,17 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return logVOList;
     }
 
+    //TODO:需要订单常量服务提供接口查询快递公司信息
+    private String selLogisticCompanyCode(Long companyId) throws Main4Exception {
+        ExpressCompany expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(companyId,FieldUtil.codeFields("express_company_id,remark2"));
+        if (expressCompany == null) {
+            throw new  Main4Exception("数据库没有对应的快递公司数据");
+        }
+        if (expressCompany.getRemark2() == null) {
+            throw new  Main4Exception("数据库没有对应的快递公司编码");
+        }
+        return expressCompany.getRemark2();
+    }
     /**
      * 子订单信息
      * @param subOrderId
