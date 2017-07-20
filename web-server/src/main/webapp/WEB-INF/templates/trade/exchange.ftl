@@ -15,6 +15,7 @@
 
 
 
+
     
     <link href="http://style.571xz.com/v2/order/css/exchange.css" rel="stylesheet">
     
@@ -187,13 +188,9 @@ var webSite = '${webSite!}';
 
 <div class="exchangeStep layout">
     <ul>
-        
-        <li class="selected"><span>1、买家申请换货</span><em></em><i></i><i class="leftArrow"></i></li>
-        
-        <li class="selected"><span>2、等待处理换货申请</span><em></em><i></i><i class="leftArrow"></i></li>
-        
-        <li ><span>3、换货完成</span><em></em><i></i><i class="leftArrow"></i></li>
-        
+        <#list exchangeDesc as desc>
+        <li <#if desc_index lte exchangeStateNum>class="selected"</#if>><span>${desc!}</span><em></em><i></i><i class="leftArrow"></i></li>
+        </#list>
     </ul>
 </div>
 
@@ -218,11 +215,10 @@ var webSite = '${webSite!}';
 
 
 
-        <div class="reRefundApply refundBox">
+        <div class="exchangeApply refundBox">
     <ul>
         <li>
             <label><em class="fcF40 vm">*</em> 服务类型：</label>
-            
             
 
 <#assign text>{"name":"service","value":"exchange"}</#assign>
@@ -248,12 +244,9 @@ var webSite = '${webSite!}';
 
 
 
-            
         </li>
         <li>
-            
-            <label>换款原因：</label>
-            
+            <label>换货原因：</label>
             
 
 <#assign text>{"name":"reason","value":"0"}</#assign>
@@ -280,16 +273,8 @@ var webSite = '${webSite!}';
 
 
         </li>
-        
-        <li class="refundTotal none">
-            <label><em class="fcF40 vm">*</em> 退款金额：</label>
-            <input class="input" name="refundTotal" value="￥4899.00">
-            <span class="fc9">最多45.00元，含邮费5.00元，服务费5.00元</span>
-        </li>
         <li class="refundDesc">
-            
-            <label>换款说明：</label>
-            
+            <label>换货说明：</label>
             <textarea ></textarea>
         </li>
         <li>
@@ -492,6 +477,8 @@ var webSite = '${webSite!}';
 
 
 
+
+
             <#elseif exchangeWaitState == 2>
             <div class="reExpressInfo fc3 refundBox">
     
@@ -617,9 +604,6 @@ var orderId = '${orderId!}';
 var orderChildId = '${orderChildId!}';
 var express = '${expressList!}';
 </script>
-
-
-
 
 
 
