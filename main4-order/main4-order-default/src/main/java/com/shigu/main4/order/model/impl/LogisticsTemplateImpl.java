@@ -96,10 +96,10 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     /**
      * 查快递规则
-     *      1. 当 provId 和 companyId 皆不为 Null 时，该方法返回 指定省份的快递公司的所有邮费计算规则
-     *      2. 当 provId 和 companyId 皆为 Null 时，该方法返回 本 template 所有邮费计算规则
+     * 1. 当 provId 和 companyId 皆不为 Null 时，该方法返回 指定省份的快递公司的所有邮费计算规则
+     * 2. 当 provId 和 companyId 皆为 Null 时，该方法返回 本 template 所有邮费计算规则
      *
-     * @param provId 省份id  3.当此参数为Null时，方法将返回指定 companyId 的所有省份规则
+     * @param provId    省份id  3.当此参数为Null时，方法将返回指定 companyId 的所有省份规则
      * @param companyId 公司id  4.当此参数为Null时，方法将返回指定 provId 的所有公司规则
      * @return 规则列表
      */
@@ -158,6 +158,8 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         return bournRuleInfoVOS;
     }
 
+
+
     private List<BournRuleInfoVO> rulesIn(List<Long> rulesIds) {
         List<BournRuleInfoVO> ruleInfo = new ArrayList<>();
         LogisticsTemplateRuleExample ruleExample = new LogisticsTemplateRuleExample();
@@ -188,8 +190,8 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     /**
      * 按省份查快递公司
      *
-     * @param provId
-     * @return
+     * @param provId 省份id
+     * @return 快递公司列表
      */
     @Override
     public List<LogisticsCompanyVO> provCompanys(Long provId) {
@@ -232,14 +234,45 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
                 }
 
             }
->>>>>>>>> Temporary merge branch 2
         }
-        return voList;
+        return voList;// TODO ： 返回值缺失 id(companyId),请完善数据
     }
 
-
+    /**
+     * 计费
+     * @param provId 省份ID
+     * @param goodsNumber 商品数
+     * @param weight 重量,克为单位
+     * @return
+     */
     @Override
-    public Long calculate(Long provId, Integer goodsNumber, Long weight) {
-        return null;
+    public Long calculate(Long provId, Long companyId, Integer goodsNumber, Long weight) throws LogisticsRuleException {
+        // 包邮？
+        LogisticsTemplateVO logisticsTemplateVO = templateInfo();
+        if (logisticsTemplateVO.getFree()) {
+            return 0L;
+        }
+
+        // 算钱
+        List<BournRuleInfoVO> rules = rules(provId, companyId);
+        BournRuleInfoVO vo = null;
+        if (rules.size() == 1) {
+            vo = rules.get(0);
+        } else {
+            for (BournRuleInfoVO rule : rules) {
+                if (!rule.getImDefault()) {
+                    vo = rule;
+                    break;
+                }
+            }
+        }
+        if (vo == null) {
+            throw new LogisticsRuleException(String.format("无默认快递规则; provId[%d],companyId[%d]", provId, companyId));
+        }
+        Long unit = vo.getType() == 1 ? goodsNumber.longValue() : vo.getType() == 2 ? weight : 0; // 计费单元
+        Long add = vo.getAddWeight() == 0 ? 0L  // Double数除以0会发生奇怪的事情、比如取到极值，比如取到 NaN
+                : ((Double)((unit - vo.getStartWeight()) * (vo.getAddPrice() * 1.0 / vo.getAddWeight()))).longValue();
+
+        return vo.getStartPrice() + (add > 0 ? add : 0);
     }
 }
