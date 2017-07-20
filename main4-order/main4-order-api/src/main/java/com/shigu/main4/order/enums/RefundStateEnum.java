@@ -4,8 +4,11 @@ package com.shigu.main4.order.enums;
  * Created by zf on 2017/7/17.
  */
 public enum RefundStateEnum {
-    APPLY_REFUND(0),//申请退款      对应页面"等待处理退款申请"
-    ENT_REFUND(1),//退款完成        对应页面"退款完成"
+    APPLY_REFUND(0),//申请退款
+    DISPOSE_REFUND(1),//商家受理退请求
+    ENT_REFUND(2),//退款完成
+    SELLER_REFUND(3),//商家拒绝受理
+    NOT_REFUND(4),//退款失败
     ;
     public final int refundStatus;
     RefundStateEnum(int refundStatus){

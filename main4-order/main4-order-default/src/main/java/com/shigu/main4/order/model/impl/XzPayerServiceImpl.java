@@ -77,7 +77,7 @@ public class XzPayerServiceImpl extends PayerServiceAble {
         }
         RefundRequest  req = new RefundRequest();
         req.setRefundType(5);
-        req.setMoney(orderPay.getRefundMoney());
+        req.setMoney(Long.valueOf(refundFee));
         req.setOutTradeId(String.valueOf(orderPayApply.getOid()));
 
         List<String> subTradeIdList = new ArrayList<String>();
