@@ -6,6 +6,8 @@ package com.shigu.main4.order.vo;
  */
 public class BournRuleInfoVO {
 
+    private Long ruleId;
+
     private Integer startWeight;
 
     private Long startPrice;
@@ -24,6 +26,14 @@ public class BournRuleInfoVO {
     private Integer type;
 
     private Boolean imDefault;
+
+    public Long getRuleId() {
+        return ruleId;
+    }
+
+    public void setRuleId(Long ruleId) {
+        this.ruleId = ruleId;
+    }
 
     public Integer getStartWeight() {
         return startWeight;

@@ -31,7 +31,7 @@ public interface LogisticsTemplate {
      * @param companyId
      * @return
      */
-    List<BournRuleInfoVO> rules(Long provId,Long companyId);
+    List<BournRuleInfoVO> rules(Long provId,Long companyId) throws LogisticsRuleException;
 
     /**
      * 计费

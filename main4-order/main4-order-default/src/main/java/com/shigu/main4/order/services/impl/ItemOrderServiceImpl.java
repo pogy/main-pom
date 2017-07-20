@@ -11,11 +11,15 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
+import com.shigu.main4.order.enums.AfterSaleStatusEnum;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
+import com.shigu.main4.order.enums.RefundTypeEnum;
 import com.shigu.main4.order.model.SubItemOrder;
+import com.shigu.main4.order.model.impl.ItemOrderImpl;
 import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
@@ -58,6 +62,9 @@ public class ItemOrderServiceImpl implements ItemOrderService{
     @Autowired
     private LogisticsTemplateMapper logisticsTemplateMapper;
 
+    @Autowired
+    private OrderConstantService orderConstantService;
+
     /**
      * oid获取器
      *
@@ -72,6 +79,11 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         return idGenerator.getOid();
     }
 
+    /**
+     * 创建订单
+     * @param orderBO
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createOrder(ItemOrderBO orderBO) {
@@ -146,6 +158,13 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         return order.getOid();
     }
 
+    /**
+     * 重算快递费
+     * @param senderId 发件机构ID
+     * @param companyId 物流公司ID
+     * @param provId 省份ID
+     * @return
+     */
     @Override
     public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId,List<PidNumBO> pids) {
         LogisticsTemplateExample templateExample = new LogisticsTemplateExample();
@@ -219,66 +238,113 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         buyerAddressMapper.deleteByPrimaryKey(addressId);
     }
 
+    /**
+     * 查询订单的物流信息
+     * @param orderId
+     * @return
+     */
     @Override
     public ExpressInfoVO expressInfo(Long orderId) {
+        com.shigu.main4.order.model.ItemOrder itemOrderModel = SpringBeanFactory.getBean(ItemOrderImpl.class, orderId);
+        List<LogisticsVO> logisticsVOS = itemOrderModel.selLogisticses();
+
         return null;
     }
 
+    /**
+     * 查询物流日志
+     * @param expressId
+     * @return
+     */
     @Override
     public List<ExpressLogVO> expressLog(Long expressId) {
         return null;
     }
 
+    /**
+     * 子订单信息
+     * @param subOrderId
+     * @return
+     */
     @Override
     public SubOrderInfoVO suborderInfo(Long subOrderId) {
         //获取信息
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
         SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
         SubOrderInfoVO subOrderInfoVO = BeanMapper.map(subItemOrderVO,SubOrderInfoVO.class);
-
         subOrderInfoVO.setChildOrderId (subOrderId);
         subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
-        subOrderInfoVO.setNum(subItemOrderVO.getNum());
         subOrderInfoVO.setImgsrc (subItemOrderVO.getProduct().getPicUrl());
         subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
         subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
 
-
-        subOrderInfoVO.setColor(subItemOrderVO.getColor());
-        subOrderInfoVO.setSize(subItemOrderVO.getSize());
         //TODO:退货信息
-        //subOrderInfoVO.setAfterSaleStatus();
         //subOrderInfoVO.setRefundId();
         //subOrderInfoVO.setRefundNum();
-        //subOrderInfoVO.setRefundType();
+        //subOrderInfoVO.setShState();
+        //subOrderInfoVO.setShTkNum();
+        //subOrderInfoVO.setTkState();
+        //subOrderInfoVO.setTkNum();
         return subOrderInfoVO;
     }
 
+    /**
+     * 主单简要信息
+     * 不包含子单
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderInfoVO orderInfo(Long orderId) {
         return null;
     }
 
+    /**
+     * 订单日志
+     * @param orderId
+     * @return
+     */
     @Override
     public List<OrderLogVO> orderLog(Long orderId) {
         return null;
     }
 
+    /**
+     * 子订单信息,按主单查
+     * @param orderId
+     * @return
+     */
     @Override
     public List<SubOrderInfoVO> suborderInfoByOrderId(Long orderId) {
         return null;
     }
 
+    /**
+     * 申请退款
+     * @param subOrderId
+     * @param number
+     * @return 退款编号
+     */
     @Override
     public Long refundApply(Long subOrderId, Integer number) {
         return null;
     }
 
+    /**
+     * 退款信息查询
+     * @param refundId
+     * @return
+     */
     @Override
     public RefundInfoVO refundInfo(Long refundId) {
         return null;
     }
 
+    /**
+     * 退款信息日志
+     * @param refundId
+     * @return
+     */
     @Override
     public List<RefundLogVO> refundLog(Long refundId) {
         return null;

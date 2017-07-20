@@ -5,8 +5,10 @@ package com.shigu.main4.order.enums;
  */
 public enum RefundStateEnum {
     APPLY_REFUND(0),//申请退款
-    DISPOSE_REFUND(1),//等待退款处理退款申请
+    DISPOSE_REFUND(1),//商家受理退请求
     ENT_REFUND(2),//退款完成
+    SELLER_REFUND(3),//商家拒绝受理
+    NOT_REFUND(4),//退款失败
     ;
     public final int refundStatus;
     RefundStateEnum(int refundStatus){

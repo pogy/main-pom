@@ -1,12 +1,18 @@
 package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.bo.RefundApplyBO;
+import com.shigu.main4.order.vo.RefundVO;
 
 /**
  * 商品退单
  * Created by zhaohongbo on 17/7/20.
  */
 public interface RefundItemOrder {
+    /**
+     * 退货系统
+     * @return
+     */
+    RefundVO refundinfo();
     /**
      * 退货申请
      * @param applyBO
