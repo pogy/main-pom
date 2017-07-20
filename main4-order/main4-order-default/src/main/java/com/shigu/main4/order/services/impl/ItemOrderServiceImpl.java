@@ -11,10 +11,8 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
-import com.shigu.main4.order.enums.AfterSaleStatusEnum;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
-import com.shigu.main4.order.enums.RefundTypeEnum;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.model.impl.ItemOrderImpl;
 import com.shigu.main4.order.model.impl.SubItemOrderImpl;
@@ -245,8 +243,13 @@ public class ItemOrderServiceImpl implements ItemOrderService{
      */
     @Override
     public ExpressInfoVO expressInfo(Long orderId) {
-        com.shigu.main4.order.model.ItemOrder itemOrderModel = SpringBeanFactory.getBean(ItemOrderImpl.class, orderId);
-        List<LogisticsVO> logisticsVOS = itemOrderModel.selLogisticses();
+        com.shigu.main4.order.model.ItemOrder itemOrder
+                = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
+        List<LogisticsVO> logisticsVOS = itemOrder.selLogisticses();
+        //System.out.println(logisticsVOS);
+        //for (LogisticsVO logisticsVO: logisticsVOS) {
+        //    System.out.println(logisticsVO);
+        //}
 
         return null;
     }

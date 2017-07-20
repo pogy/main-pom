@@ -17,4 +17,9 @@ public class ItemOrderServiceImplTest extends BaseTest {
     public void suborderInfoTest() {
         show(itemOrderService.suborderInfo(10L));
     }
+
+    @Test
+    public void expressInfoTest() {
+        itemOrderService.expressInfo(2L);
+    }
 }
