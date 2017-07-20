@@ -14,6 +14,7 @@ import com.shigu.main4.order.bo.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.BuyerAddressException;
+import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
@@ -235,6 +236,30 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     @Override
     public SubOrderInfoVO suborderInfo(Long subOrderId) {
+        //获取信息
+        SubItemOrderImpl subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
+        SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
+        SubOrderInfoVO subOrderInfoVO = new SubOrderInfoVO();
+
+
+        subOrderInfoVO.setSubOrderId(subOrderId);
+        subOrderInfoVO.setSkuColor(subItemOrderVO.getColor());
+        subOrderInfoVO.setSkuSize(subItemOrderVO.getSize());
+        //TODO:子单状态
+        subOrderInfoVO.setAfterSaleStatus();
+        //TODO:订单号oid
+        subOrderInfoVO.setOrderId(subItemOrderVO.get);
+        subOrderInfoVO.setGoodsId();
+        subOrderInfoVO.setGoodsNo();
+        subOrderInfoVO.setGoodsNum();
+        subOrderInfoVO.setImgUrl();
+        subOrderInfoVO.setOrderStatus();
+        subOrderInfoVO.setPrice();
+        subOrderInfoVO.setTitle();
+        subOrderInfoVO.setRefundId();
+        subOrderInfoVO.setRefundNum();
+        subOrderInfoVO.setRefundType();
+
         return null;
     }
 
