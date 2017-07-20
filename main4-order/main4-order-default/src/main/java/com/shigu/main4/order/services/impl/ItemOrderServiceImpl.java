@@ -11,8 +11,10 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
+import com.shigu.main4.order.enums.AfterSaleStatusEnum;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
+import com.shigu.main4.order.enums.RefundTypeEnum;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.model.impl.ItemOrderImpl;
 import com.shigu.main4.order.model.impl.SubItemOrderImpl;
@@ -270,22 +272,19 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
         SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
         SubOrderInfoVO subOrderInfoVO = BeanMapper.map(subItemOrderVO,SubOrderInfoVO.class);
-
         subOrderInfoVO.setChildOrderId (subOrderId);
         subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
-        subOrderInfoVO.setNum(subItemOrderVO.getNum());
         subOrderInfoVO.setImgsrc (subItemOrderVO.getProduct().getPicUrl());
         subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
         subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
 
-
-        subOrderInfoVO.setColor(subItemOrderVO.getColor());
-        subOrderInfoVO.setSize(subItemOrderVO.getSize());
         //TODO:退货信息
-        //subOrderInfoVO.setAfterSaleStatus();
         //subOrderInfoVO.setRefundId();
         //subOrderInfoVO.setRefundNum();
-        //subOrderInfoVO.setRefundType();
+        //subOrderInfoVO.setShState();
+        //subOrderInfoVO.setShTkNum();
+        //subOrderInfoVO.setTkState();
+        //subOrderInfoVO.setTkNum();
         return subOrderInfoVO;
     }
 
