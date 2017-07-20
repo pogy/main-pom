@@ -1,5 +1,6 @@
 package com.shigu.main4.order.whx;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.services.ItemOrderService;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class ItemOrderServiceImplTest extends BaseTest {
     }
 
     @Test
-    public void expressInfoTest() {
-        itemOrderService.expressInfo(2L);
+    public void expressInfoTest() throws Main4Exception {
+        show(itemOrderService.expressInfo(2L));
     }
 }
