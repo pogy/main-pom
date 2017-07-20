@@ -31,10 +31,6 @@ public class OrderListServiceImpl implements OrderListService {
     }
 
 
-    @Override public Long payTaoOrder (Long tbid) {
-        return null;
-    }
-
     @Override public int removeOrder (Long tbid) {
         return 0;
     }

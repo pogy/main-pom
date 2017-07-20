@@ -34,4 +34,8 @@ public class MyOrderService {
     public ShiguPager<OrderVO> selectCountMyOrder(OrderBO bo, Long userId){
         return orderListService.selectCountMyOrder (bo,userId);
     }
+
+    public int removeOrder(Long orderId){
+       return orderListService.removeOrder (orderId);
+    }
 }

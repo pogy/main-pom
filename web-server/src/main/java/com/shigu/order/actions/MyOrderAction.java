@@ -1,15 +1,21 @@
 package com.shigu.order.actions;
 
+import com.shigu.component.common.globality.constant.SystemConStant;
+import com.shigu.component.common.globality.response.ResponseBase;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.servicevo.OrderVO;
 import com.shigu.order.services.MyOrderService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.sun.org.apache.xpath.internal.res.XPATHErrorResources_pt_BR;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -57,6 +63,33 @@ public class MyOrderAction {
         model.addAttribute ("pageOption",pager.selPageOption (bo.getPageSize ()));
         return "buyer/myOrder";
 
+    }
+    /**
+     * ====================================================================================
+     * @方法名： removeOrder
+     * @user gzy 2017/7/20 14:48
+     * @功能：
+     * @param: [orderId]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @RequestMapping("removeOrder")
+    @ResponseBody
+    public JSONObject removeOrder(Long orderId)throws JsonErrException {
+        ResponseBase rsp = new ResponseBase();
+        if(orderId==null){
+            rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
+
+        }
+       int i=  myOrderService.removeOrder(orderId);
+        if(i>0) {
+            rsp.setResult (SystemConStant.RESPONSE_STATUS_SUCCESS);
+        }else{
+            rsp.setResult (SystemConStant.RESPONSE_STATUS_FAILED);
+        }
+        return JSONObject.fromObject(rsp);
     }
 
 
