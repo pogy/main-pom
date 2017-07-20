@@ -9,7 +9,6 @@ import com.shigu.main4.order.servicevo.OrderVO;
 import com.shigu.order.services.MyOrderService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
-import com.sun.org.apache.xpath.internal.res.XPATHErrorResources_pt_BR;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -59,6 +58,7 @@ public class MyOrderAction {
 
         ShiguPager<OrderVO>  pager =myOrderService.selectCountMyOrder(bo,ps.getUserId ());
                 model.addAttribute ("query",bo);//返回查询条件
+
         model.addAttribute ("orders",list);
         model.addAttribute ("pageOption",pager.selPageOption (bo.getPageSize ()));
         return "buyer/myOrder";
@@ -68,7 +68,7 @@ public class MyOrderAction {
      * ====================================================================================
      * @方法名： removeOrder
      * @user gzy 2017/7/20 14:48
-     * @功能：
+     * @功能：删除订单
      * @param: [orderId]
      * @return: net.sf.json.JSONObject
      * @exception:
@@ -91,6 +91,36 @@ public class MyOrderAction {
         }
         return JSONObject.fromObject(rsp);
     }
+
+    /**
+     * ====================================================================================
+     * @方法名： cancelOrder
+     * @user gzy 2017/7/20 14:48
+     * @功能：取消订单
+     * @param: [orderId]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    @RequestMapping("cancelOrder")
+    @ResponseBody
+    public JSONObject cancelOrder(Long orderId)throws JsonErrException {
+        ResponseBase rsp = new ResponseBase();
+        if(orderId==null){
+            rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
+
+        }
+        int i=  myOrderService.cancelOrder(orderId);
+        if(i>0) {
+            rsp.setResult (SystemConStant.RESPONSE_STATUS_SUCCESS);
+        }else{
+            rsp.setResult (SystemConStant.RESPONSE_STATUS_FAILED);
+        }
+        return JSONObject.fromObject(rsp);
+    }
+
+
 
 
 }

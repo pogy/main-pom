@@ -122,7 +122,38 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         com.shigu.main4.order.model.ItemOrder itemOrder
                 = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, order.getOid());
 
-        // a, 添加物流
+        // a, 添加服务
+        if (orderBO.getServiceIds() != null) {
+            for (Long sid : orderBO.getServiceIds()) {
+                itemOrder.addService(sid);
+            }
+        }
+
+        // b, 添加包材
+        if (orderBO.getPackages() != null) {
+            for (PackageBO packageBO : orderBO.getPackages()) {
+                itemOrder.addPackage(packageBO.getMetarialId(), packageBO.getNum());
+            }
+        }
+
+        // c, 添加子订单
+        if (orderBO.getSubOrders() != null) {
+            List<SubOrderVO> subOrders = new ArrayList<>();
+            for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
+                SubOrderVO vo = new SubOrderVO();
+                vo.setNum(subItemOrderBO.getNum());
+                vo.setMark(subItemOrderBO.getMark());
+                ItemProductVO productVO = subItemOrderBO.getProductVO();
+                vo.setGoodsId(productVO.getGoodsId());
+                ItemSkuVO selectiveSku = productVO.getSelectiveSku();
+                vo.setSize(selectiveSku.getSize());
+                vo.setColor(selectiveSku.getColor());
+                subOrders.add(vo);
+            }
+            itemOrder.addSubOrder(subOrders);
+        }
+
+        // d, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();
         String companyId = logistics.getCompanyId();
         ExpressCompany company = new ExpressCompany();
@@ -146,36 +177,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), company.getExpressCompanyId(), buyerAddress.getProvId(), null));
         itemOrder.addLogistics(null, logistic);
 
-        // b, 添加服务
-        if (orderBO.getServiceIds() != null) {
-            for (Long sid : orderBO.getServiceIds()) {
-                itemOrder.addService(sid);
-            }
-        }
-
-        // c, 添加包材
-        if (orderBO.getPackages() != null) {
-            for (PackageBO packageBO : orderBO.getPackages()) {
-                itemOrder.addPackage(packageBO.getMetarialId(), packageBO.getNum());
-            }
-        }
-
-        // d, 添加子订单
-        if (orderBO.getSubOrders() != null) {
-            List<SubOrderVO> subOrders = new ArrayList<>();
-            for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
-                SubOrderVO vo = new SubOrderVO();
-                vo.setNum(subItemOrderBO.getNum());
-                vo.setMark(subItemOrderBO.getMark());
-                ItemProductVO productVO = subItemOrderBO.getProductVO();
-                vo.setGoodsId(productVO.getGoodsId());
-                ItemSkuVO selectiveSku = productVO.getSelectiveSku();
-                vo.setSize(selectiveSku.getSize());
-                vo.setColor(selectiveSku.getColor());
-                subOrders.add(vo);
-            }
-            itemOrder.addSubOrder(subOrders);
-        }
         return order.getOid();
     }
 
