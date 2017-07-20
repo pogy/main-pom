@@ -4,16 +4,27 @@ import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.vo.RefundVO;
 
-/**
- * Created by whx on 2017/7/20 0020.
- */
 
+/**
+ * 退单
+ * Created by zhaohongbo on 17/7/20.
+ */
 public class RefundItemOrderImpl implements RefundItemOrder {
 
+    private Long refundId;
+
+    public RefundItemOrderImpl(Long refundId) {
+        this.refundId = refundId;
+    }
+
     /**
-     * 退货系统
-     * @return
+     * 退单
+     * @param apply
      */
+    public RefundItemOrderImpl(RefundApplyBO apply, Boolean fromUser) {
+        apply(apply,fromUser);
+    }
+
     @Override
     public RefundVO refundinfo() {
         return null;
@@ -79,5 +90,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     public void error(String reason) {
 
+    }
+
+    public Long getRefundId() {
+        return refundId;
     }
 }
