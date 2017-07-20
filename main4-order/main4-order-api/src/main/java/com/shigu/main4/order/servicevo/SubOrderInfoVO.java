@@ -1,8 +1,8 @@
 package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.enums.AfterSaleStatusEnum;
-import com.shigu.main4.order.enums.MainOrderStatusEnum;
 import com.shigu.main4.order.enums.RefundTypeEnum;
+import com.shigu.main4.order.enums.SubOrderStatus;
 
 /**
  * 子订单信息
@@ -50,9 +50,9 @@ public class SubOrderInfoVO {
      */
     private Integer goodsNum;
     /**
-     * 子单状态, 1等待付款, 2待配货, 3已发货, 4交易完成, 5交易取消
+     * 子单状态, 0初始状态，1已退，2已发
      */
-    private MainOrderStatusEnum orderStatus;
+    private SubOrderStatus subOrderStatus;
     /**
      * 退换货ID
      */
@@ -233,17 +233,17 @@ public class SubOrderInfoVO {
     }
 
     /**
-     * 获取 子单状态, 1等待付款, 2待配货, 3已发货, 4交易完成, 5交易取消
+     * 子单状态, 0初始状态，1已退，2已发
      */
-    public MainOrderStatusEnum getOrderStatus() {
-        return this.orderStatus;
+    public SubOrderStatus getSubOrderStatus() {
+        return subOrderStatus;
     }
 
     /**
-     * 设置 子单状态, 1等待付款, 2待配货, 3已发货, 4交易完成, 5交易取消
+     * 子单状态, 0初始状态，1已退，2已发
      */
-    public void setOrderStatus(MainOrderStatusEnum orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setSubOrderStatus(SubOrderStatus subOrderStatus) {
+        this.subOrderStatus = subOrderStatus;
     }
 
     /**

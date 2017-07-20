@@ -18,6 +18,13 @@ public class BournRuleInfoVO {
 
     private Long addPrice;
 
+    /**
+     * 1按件，2按重量
+     */
+    private Integer type;
+
+    private Boolean imDefault;
+
     public Integer getStartWeight() {
         return startWeight;
     }
@@ -64,5 +71,21 @@ public class BournRuleInfoVO {
 
     public void setAddPrice(Long addPrice) {
         this.addPrice = addPrice;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Boolean getImDefault() {
+        return imDefault;
+    }
+
+    public void setImDefault(Boolean imDefault) {
+        this.imDefault = imDefault;
     }
 }

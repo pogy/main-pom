@@ -13,15 +13,11 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
-import com.shigu.main4.order.exceptions.BuyerAddressException;
+import com.shigu.main4.order.model.SubItemOrder;
+import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.order.services.ItemOrderService;
-import com.shigu.main4.order.servicevo.ExpressInfoVO;
-import com.shigu.main4.order.servicevo.ExpressLogVO;
-import com.shigu.main4.order.servicevo.OrderInfoVO;
-import com.shigu.main4.order.servicevo.OrderLogVO;
-import com.shigu.main4.order.servicevo.RefundInfoVO;
-import com.shigu.main4.order.servicevo.RefundLogVO;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.servicevo.*;
+import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -235,7 +231,27 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     @Override
     public SubOrderInfoVO suborderInfo(Long subOrderId) {
-        return null;
+        //获取信息
+        SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
+        SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
+        SubOrderInfoVO subOrderInfoVO = BeanMapper.map(subItemOrderVO,SubOrderInfoVO.class);
+
+        subOrderInfoVO.setSubOrderId(subOrderId);
+        subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
+        subOrderInfoVO.setGoodsNum(subItemOrderVO.getNum());
+        subOrderInfoVO.setImgUrl(subItemOrderVO.getProduct().getPicUrl());
+        subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
+        subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
+
+
+        subOrderInfoVO.setSkuColor(subItemOrderVO.getColor());
+        subOrderInfoVO.setSkuSize(subItemOrderVO.getSize());
+        //TODO:退货信息
+        //subOrderInfoVO.setAfterSaleStatus();
+        //subOrderInfoVO.setRefundId();
+        //subOrderInfoVO.setRefundNum();
+        //subOrderInfoVO.setRefundType();
+        return subOrderInfoVO;
     }
 
     @Override

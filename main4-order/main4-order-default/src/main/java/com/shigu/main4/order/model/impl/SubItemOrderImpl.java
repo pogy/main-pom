@@ -38,31 +38,55 @@ public class SubItemOrderImpl implements SubItemOrder{
         this.subOrderId = subOrderId;
     }
 
+    /**
+     * 标记为已发
+     */
     @Override
     public void sended() {
 
     }
 
+    /**
+     * 关闭子订单
+     * 没支付前,使用关闭
+     */
     @Override
     public void closed() {
 
     }
 
+    /**
+     * 退款
+     * @param money
+     */
     @Override
     public Long refund(Long money) {
         return null;
     }
 
+    /**
+     * 添加备注
+     * @param msg
+     */
     @Override
     public void addMark(String msg) {
 
     }
 
+    /**
+     * 退款申请
+     * @param number 退件数
+     * @param money
+     */
     @Override
     public Long refundApply(Integer number, Long money) {
         return null;
     }
 
+    /**
+     * 获取子单信息
+     * @return
+     */
     @Override
     public SubItemOrderVO subOrderInfo() {
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
@@ -76,8 +100,11 @@ public class SubItemOrderImpl implements SubItemOrder{
         return filledSubItemOrderVO(subItemOrderVO);
     }
 
-
-
+    /**
+     * 填充子单信息中goodsNo,marketId,marketName,shopId,shopName
+     * @param subItemOrderVO
+     * @return
+     */
     private SubItemOrderVO filledSubItemOrderVO(SubItemOrderVO subItemOrderVO) {
         subItemOrderVO.setGoodsNo("");
         ItemProductVO product = subItemOrderVO.getProduct();
