@@ -18,7 +18,7 @@ import com.shigu.main4.order.vo.LogisticsCompanyVO;
 import com.shigu.main4.order.vo.LogisticsTemplateVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,17 +30,52 @@ import java.util.Map;
  * 快递模板
  * Created by bugzy on 2017/7/19 0019.
  */
-@Service("logisticsTemplate")
+@Component("logisticsTemplate")
 @Scope("prototype")
 public class LogisticsTemplateImpl implements LogisticsTemplate {
-    public LogisticsTemplateImpl(Long templateId) {
-        this.templateId = templateId;
-    }
 
     private Long templateId;
 
+    private static Long defaultTemplateId;
+
+    private Long senderId;
+
+    public LogisticsTemplateImpl(Long templateId) {
+        this.templateId = templateId;
+        this.senderId = templateInfo().getSenderId();
+    }
+
+    /**
+     * 根据发货机构id构造
+     * @param senderId 发货机构id
+     * @param placeholder 占位参数，无意义
+     */
+    public LogisticsTemplateImpl(Long senderId, String placeholder) {
+        this.senderId = senderId;
+        com.opentae.data.mall.beans.LogisticsTemplate logisticsTemplate = new com.opentae.data.mall.beans.LogisticsTemplate();
+        logisticsTemplate.setSenderId(senderId);
+        logisticsTemplate.setEnabled(true);
+        List<com.opentae.data.mall.beans.LogisticsTemplate> logisticsTemplates = logisticsTemplateMapper.select(logisticsTemplate);
+        if (logisticsTemplates.isEmpty()) { // 没有所选发货机构则采用 系统默认运费模板
+            if (defaultTemplateId == null) {
+                logisticsTemplate.setSenderId(-1L);
+                logisticsTemplate = logisticsTemplateMapper.selectOne(logisticsTemplate);
+                defaultTemplateId = logisticsTemplate.getTemplateId();
+            }
+            templateId = defaultTemplateId;
+            this.senderId = -1L;
+        } else {
+            logisticsTemplate = logisticsTemplates.get(0);
+            templateId = logisticsTemplate.getTemplateId();
+        }
+    }
+
     public Long getTemplateId() {
         return templateId;
+    }
+
+    public Long getSenderId() {
+        return senderId;
     }
 
     @Autowired
