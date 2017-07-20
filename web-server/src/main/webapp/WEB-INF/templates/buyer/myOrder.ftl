@@ -451,7 +451,7 @@ var webSite = '${webSite!}';
             <#if order.mainState == 1>
             
 
-<#assign text>{}</#assign>
+<#assign text>{"href":"payMode.htm?orderId=${order.orderId!}"}</#assign>
 <#assign moduledata3=text?eval />
 <#list [moduledata3] as $it>
 
@@ -508,15 +508,19 @@ var webSite = '${webSite!}';
             <#elseif order.mainState == 5>
             <p>交易取消</p>
             </#if>
-            <p><a href="#" target="_blank" class="fc9">订单详情</a></p>
+            <p><a href="orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
             <#if order.mainState == 1>
-            <p><a href="#" target="_blank" class="fc9">取消订单</a></p>
+            <p><a href="javascript:;" onclick="cancelOrder(${order.orderId!})" class="fc9">取消订单</a></p>
             <#elseif order.mainState == 4>
-            <p><a href="#" target="_blank" class="fc9">查看物流</a></p>
+            <p><a href="expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
             </#if>
         </#if>
     </li>
 </ul>
+
+
+
+
 
 
 

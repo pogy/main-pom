@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class CartOrderVO {
 
-    private Long id;
+    private Long orderId;
 
     private Long shopId;
 
@@ -24,12 +24,12 @@ public class CartOrderVO {
 
     private List<CartChildOrderVO> childOrders;
 
-    public Long getId() {
-        return id;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     public Long getShopId() {
