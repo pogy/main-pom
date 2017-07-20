@@ -62,6 +62,11 @@ public class ItemOrderLogistics implements Serializable {
      */
 	private Long oid;
 
+    /**
+     * 姓名
+     */
+	private String name;
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -148,6 +153,14 @@ public class ItemOrderLogistics implements Serializable {
 
 	public Long getOid() {
 		return this.oid;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return this.name;
 	}
 
 }
