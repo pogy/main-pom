@@ -49,13 +49,18 @@ public class SubItemOrderImpl implements SubItemOrder{
     }
 
     @Override
-    public void refund(Long money) {
-
+    public Long refund(Long money) {
+        return null;
     }
 
     @Override
     public void addMark(String msg) {
 
+    }
+
+    @Override
+    public Long refundApply(Integer number, Long money) {
+        return null;
     }
 
     @Override
@@ -70,6 +75,7 @@ public class SubItemOrderImpl implements SubItemOrder{
         subItemOrderVO.setProduct(itemProductVO);
         return filledSubItemOrderVO(subItemOrderVO);
     }
+
 
 
     private SubItemOrderVO filledSubItemOrderVO(SubItemOrderVO subItemOrderVO) {
