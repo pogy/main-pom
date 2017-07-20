@@ -8,6 +8,10 @@ import com.shigu.main4.order.vo.SubItemOrderVO;
  */
 public interface SubItemOrder extends SubOrder{
 
+    /**
+     * 获取子单信息
+     * @return
+     */
     SubItemOrderVO subOrderInfo();
 
     /**
