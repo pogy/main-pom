@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Service
 public class OrderListServiceImpl implements OrderListService {
-    @Override public List<OrderVO> myOrder (OrderBO bo) {
+    @Override public List<OrderVO> myOrder (OrderBO bo,Long userId) {
         return null;
     }
 
