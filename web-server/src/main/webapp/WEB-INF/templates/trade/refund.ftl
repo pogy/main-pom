@@ -201,14 +201,14 @@ var webSite = '${webSite!}';
 <div class="returnBox layout">
     <div class="returnLeft fl">
         <#if refundStateNum == 0>
-        <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${orderChildId!}">
+        <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${childOrderId!}">
     
     <label class="fl fc6">退货商品：</label>
     
-    <img src="${orderChildImgSrc!}" >
+    <img src="${childOrderImgSrc!}" >
     <div class="goodsInfo fl">
-        <p class="arail fs14 fc3">${orderChildCode!}</p>
-        <p class="fc9"><span>颜色：${orderChildColor!}</span><span>尺码：${orderChildSize!}</span></p>
+        <p class="arail fs14 fc3">${childOrderCode!}</p>
+        <p class="fc9"><span>颜色：${childOrderColor!}</span><span>尺码：${childOrderSize!}</span></p>
     </div>
 </div>
 

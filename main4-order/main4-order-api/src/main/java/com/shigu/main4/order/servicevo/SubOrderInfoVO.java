@@ -1,8 +1,8 @@
 package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.enums.AfterSaleStatusEnum;
-import com.shigu.main4.order.enums.MainOrderStatusEnum;
 import com.shigu.main4.order.enums.RefundTypeEnum;
+import com.shigu.main4.order.enums.SubOrderStatus;
 
 /**
  * 子订单信息
@@ -16,7 +16,7 @@ public class SubOrderInfoVO {
     /**
      * 子单ID
      */
-    private Long subOrderId;
+    private Long childOrderId;
     /**
      * 商品ID
      */
@@ -24,35 +24,38 @@ public class SubOrderInfoVO {
     /**
      * 图片地址
      */
-    private String imgUrl;
+    private String imgsrc;
     /**
      * 标题
      */
     private String title;
     /**
-     * 货号(商家编码?)
-     */
-    private String goodsNo;
-    /**
      * 颜色
      */
-    private String skuColor;
+    private String color;
     /**
      * 尺码
      */
-    private String skuSize;
+    private String size;
+    /**
+     * 货号(商家编码?)
+     */
+    private String goodsNo;
+
     /**
      * 单价
      */
     private String price;
+    /**子单中商品总数 */
+    private Integer num;
+    /** 退款数量 */
+    private Integer tkNum;
+    /** 售后退款数量 **/
+    private Integer  shTkNum;
     /**
-     * 子单中商品总数
+     * 子单状态, 0初始状态，1已退，2已发
      */
-    private Integer goodsNum;
-    /**
-     * 子单状态, 1等待付款, 2待配货, 3已发货, 4交易完成, 5交易取消
-     */
-    private MainOrderStatusEnum orderStatus;
+    private SubOrderStatus subOrderStatus;
     /**
      * 退换货ID
      */
@@ -64,11 +67,11 @@ public class SubOrderInfoVO {
     /**
      * 退款状态，0无，1申请，2自动
      */
-    private RefundTypeEnum refundType;
+    private RefundTypeEnum tkState;
     /**
      * 售后状态, 0无，1售后处理中，2已退款，3已换货
      */
-    private AfterSaleStatusEnum afterSaleStatus;
+    private AfterSaleStatusEnum shState;
 
 
 
@@ -94,59 +97,18 @@ public class SubOrderInfoVO {
     /**
      * 获取 子单ID
      */
-    public Long getSubOrderId() {
-        return this.subOrderId;
+    public Long getChildOrderId() {
+        return this.childOrderId;
     }
 
     /**
      * 设置 子单ID
      */
-    public void setSubOrderId(Long subOrderId) {
-        this.subOrderId = subOrderId;
-    }
-
-    /**
-     * 获取 图片地址
-     */
-    public String getImgUrl() {
-        return this.imgUrl;
-    }
-
-    /**
-     * 设置 图片地址
-     */
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setChildOrderId(Long childOrderId) {
+        this.childOrderId = childOrderId;
     }
 
 
-    /**
-     * 获取 颜色
-     */
-    public String getSkuColor() {
-        return this.skuColor;
-    }
-
-    /**
-     * 设置 颜色
-     */
-    public void setSkuColor(String skuColor) {
-        this.skuColor = skuColor;
-    }
-
-    /**
-     * 获取 尺码
-     */
-    public String getSkuSize() {
-        return this.skuSize;
-    }
-
-    /**
-     * 设置 尺码
-     */
-    public void setSkuSize(String skuSize) {
-        this.skuSize = skuSize;
-    }
 
     /**
      * 获取 单价
@@ -160,20 +122,6 @@ public class SubOrderInfoVO {
      */
     public void setPrice(String price) {
         this.price = price;
-    }
-
-    /**
-     * 获取 子单中商品总数
-     */
-    public Integer getGoodsNum() {
-        return this.goodsNum;
-    }
-
-    /**
-     * 设置 子单中商品总数
-     */
-    public void setGoodsNum(Integer goodsNum) {
-        this.goodsNum = goodsNum;
     }
 
     /**
@@ -233,46 +181,20 @@ public class SubOrderInfoVO {
     }
 
     /**
-     * 获取 子单状态, 1等待付款, 2待配货, 3已发货, 4交易完成, 5交易取消
+     * 子单状态, 0初始状态，1已退，2已发
      */
-    public MainOrderStatusEnum getOrderStatus() {
-        return this.orderStatus;
+    public SubOrderStatus getSubOrderStatus() {
+        return subOrderStatus;
     }
 
     /**
-     * 设置 子单状态, 1等待付款, 2待配货, 3已发货, 4交易完成, 5交易取消
+     * 子单状态, 0初始状态，1已退，2已发
      */
-    public void setOrderStatus(MainOrderStatusEnum orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setSubOrderStatus(SubOrderStatus subOrderStatus) {
+        this.subOrderStatus = subOrderStatus;
     }
 
-    /**
-     * 获取 退款状态，0无，1申请，2自动
-     */
-    public RefundTypeEnum getRefundType() {
-        return this.refundType;
-    }
 
-    /**
-     * 设置 退款状态，0无，1申请，2自动
-     */
-    public void setRefundType(RefundTypeEnum refundType) {
-        this.refundType = refundType;
-    }
-
-    /**
-     * 获取 售后状态, 0无，1售后处理中，2已退款，3已换货
-     */
-    public AfterSaleStatusEnum getAfterSaleStatus() {
-        return this.afterSaleStatus;
-    }
-
-    /**
-     * 设置 售后状态, 0无，1售后处理中，2已退款，3已换货
-     */
-    public void setAfterSaleStatus(AfterSaleStatusEnum afterSaleStatus) {
-        this.afterSaleStatus = afterSaleStatus;
-    }
 
     /**
      * 获取 退换货ID
@@ -286,5 +208,69 @@ public class SubOrderInfoVO {
      */
     public void setRefundId(Long refundId) {
         this.refundId = refundId;
+    }
+
+    public String getImgsrc () {
+        return imgsrc;
+    }
+
+    public void setImgsrc (String imgsrc) {
+        this.imgsrc = imgsrc;
+    }
+
+    public String getColor () {
+        return color;
+    }
+
+    public void setColor (String color) {
+        this.color = color;
+    }
+
+    public String getSize () {
+        return size;
+    }
+
+    public void setSize (String size) {
+        this.size = size;
+    }
+
+    public Integer getNum () {
+        return num;
+    }
+
+    public void setNum (Integer num) {
+        this.num = num;
+    }
+
+    public Integer getTkNum () {
+        return tkNum;
+    }
+
+    public void setTkNum (Integer tkNum) {
+        this.tkNum = tkNum;
+    }
+
+    public Integer getShTkNum () {
+        return shTkNum;
+    }
+
+    public void setShTkNum (Integer shTkNum) {
+        this.shTkNum = shTkNum;
+    }
+
+    public RefundTypeEnum getTkState () {
+        return tkState;
+    }
+
+    public void setTkState (RefundTypeEnum tkState) {
+        this.tkState = tkState;
+    }
+
+    public AfterSaleStatusEnum getShState () {
+        return shState;
+    }
+
+    public void setShState (AfterSaleStatusEnum shState) {
+        this.shState = shState;
     }
 }

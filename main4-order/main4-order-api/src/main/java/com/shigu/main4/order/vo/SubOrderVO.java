@@ -8,10 +8,16 @@ import java.io.Serializable;
  */
 public class SubOrderVO implements Serializable{
 
+
     /**
      * 子订单ID
      */
     private Long soid;
+
+    /**
+     * 订单ID
+     */
+    private Long oid;
 
     /**
      * 件数
@@ -29,6 +35,10 @@ public class SubOrderVO implements Serializable{
     private Long goodsId;
 
     /**
+     * 货号(商家编码?)
+     */
+    private String goodsNo;
+    /**
      * 尺码
      */
     private String size;
@@ -44,6 +54,14 @@ public class SubOrderVO implements Serializable{
 
     public void setSoid(Long soid) {
         this.soid = soid;
+    }
+
+    public Long getOid() {
+        return oid;
+    }
+
+    public void setOid(Long oid) {
+        this.oid = oid;
     }
 
     public Integer getNum() {
@@ -84,5 +102,13 @@ public class SubOrderVO implements Serializable{
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
     }
 }

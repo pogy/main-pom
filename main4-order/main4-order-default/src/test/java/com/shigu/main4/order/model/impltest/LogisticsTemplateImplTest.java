@@ -32,6 +32,8 @@ public class LogisticsTemplateImplTest extends BaseTest{
 
     @Test
     public void calculate() throws Exception {
+        LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 2L);
+        show(template.calculate(5L, 3L, 5, 1000L));
     }
 
     @Test
