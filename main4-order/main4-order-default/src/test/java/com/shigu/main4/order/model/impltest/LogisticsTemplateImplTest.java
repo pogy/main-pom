@@ -50,7 +50,7 @@ public class LogisticsTemplateImplTest extends BaseTest{
         LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 2L);
         List<LogisticsCompanyVO> voList = template.provCompanys(5L);
         for (LogisticsCompanyVO v:voList){
-            System.out.println(v.getName());
+            System.out.println(v.getName()+"   "+v.getId());
         }
     }
 }
