@@ -1,23 +1,19 @@
 package com.shigu.main4.order.services.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.BuyerAddressExample;
-import com.opentae.data.mall.examples.LogisticsTemplateExample;
+import com.opentae.data.mall.beans.ItemOrder;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.*;
+import com.shigu.main4.order.enums.MainOrderStatusEnum;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
-import com.shigu.main4.order.enums.RefundTypeEnum;
-import com.shigu.main4.order.model.SubItemOrder;
-import com.shigu.main4.order.model.impl.ItemOrderImpl;
-import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
@@ -80,6 +76,12 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     @Autowired
     private KdniaoUtil kdniaoUtil;
+
+    @Autowired
+    private OrderStatusRecordMapper orderStatusRecordMapper;
+
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
 
     /**
      * oid获取器
@@ -250,6 +252,13 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return null;
     }
 
+    /**
+     * 根据expressId查询订单物流信息
+     * @param expressId
+     * @return
+     * @throws Main4Exception
+     * @throws ParseException
+     */
     @Override
     public List<ExpressLogVO> expressLog(Long expressId) throws Main4Exception, ParseException {
         ItemOrderLogistics itemOrderLogistics = itemOrderLogisticsMapper.selectByPrimaryKey(expressId);
@@ -301,17 +310,88 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     @Override
     public OrderInfoVO orderInfo(Long orderId) {
-        return null;
+        com.shigu.main4.order.model.ItemOrder itemOrder = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
+        ItemOrderVO itemOrderVO = itemOrder.orderInfo();
+
+        OrderInfoVO infoVO = new OrderInfoVO();
+        infoVO.setOrderId(itemOrderVO.getOrderId());
+        infoVO.setOrderDealTime(itemOrderVO.getTradeTimed());
+        infoVO.setOrderPrice(itemOrderVO.getOrderPrice());
+        infoVO.setExpressPrice(itemOrderVO.getPostPay());
+        infoVO.setServicePrice(itemOrderVO.getServerPay());
+        infoVO.setTotalPrice(itemOrderVO.getTradePay());
+        infoVO.setOrderState(itemOrderVO.getMainState());
+        List<LogisticsVO> logisticsVOS = itemOrder.selLogisticses();
+        if (logisticsVOS.size()>0){
+
+            ExpressCompany expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(logisticsVOS.get(0).getCompanyId(), FieldUtil.codeFields("express_company_id,express_name"));
+            if (expressCompany!=null){
+                infoVO.setOrderPostType(expressCompany.getExpressName());
+            }
+        }
+        infoVO.setNowTime(new Date());
+        return infoVO;
     }
 
     @Override
     public List<OrderLogVO> orderLog(Long orderId) {
-        return null;
+        OrderStatusRecordExample orderStatusRecordExample=new OrderStatusRecordExample();
+        orderStatusRecordExample.createCriteria().andOidEqualTo(orderId);
+        orderStatusRecordExample.setOrderByClause("create_time desc");
+        List<OrderLogVO>vos=new ArrayList<>();
+        List<OrderStatusRecord> orderStatusRecords = orderStatusRecordMapper.selectByExample(orderStatusRecordExample);
+        if (orderStatusRecords.size()>0){
+            for (OrderStatusRecord o:orderStatusRecords){
+                OrderLogVO vo=new OrderLogVO();
+                vo.setStateTime(o.getCreateTime());
+                vo.setOrderState(MainOrderStatusEnum.statusOf(o.getStatus()));
+                vos.add(vo);
+            }
+        }
+        return vos;
     }
 
     @Override
     public List<SubOrderInfoVO> suborderInfoByOrderId(Long orderId) {
-        return null;
+        com.shigu.main4.order.model.ItemOrder itemOrder = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
+        List<SubItemOrderVO> subItemOrderVOS = itemOrder.subOrdersInfo();
+        List<SubOrderInfoVO> vos=new ArrayList<>();
+        for (SubItemOrderVO s:subItemOrderVOS){
+            SubOrderInfoVO vo=new SubOrderInfoVO();
+            vo.setOrderId(s.getOid());
+            vo.setChildOrderId(s.getSoid());
+            vo.setGoodsId(s.getGoodsId());
+            vo.setImgsrc(s.getProduct().getPicUrl());
+            vo.setTitle(s.getProduct().getTitle());
+            vo.setColor(s.getColor());
+            vo.setSize(s.getSize());
+            vo.setGoodsNo(s.getGoodsNo());
+            vo.setPrice(String.valueOf(s.getProduct().getPrice()/100));
+            vo.setPriceLong(s.getProduct().getPrice());
+            vo.setNum(s.getNum());
+            ItemOrderRefundExample itemOrderRefundExample=new ItemOrderRefundExample();
+            itemOrderRefundExample.createCriteria().andOidEqualTo(s.getOid()).andSoidEqualTo(s.getSoid());
+            List<ItemOrderRefund> itemOrderRefunds = itemOrderRefundMapper.selectByExample(itemOrderRefundExample);
+            if (itemOrderRefunds.size()>0){
+
+                ItemOrderRefund refund = itemOrderRefunds.get(0);
+                //退货数量
+                vo.setTkNum(refund.getNumber());
+                //售后退款数量
+                vo.setShTkNum(refund.getRefundMoney().intValue());
+                vo.setSubOrderStatus(s.getSubOrderStatus());
+                //退换货id
+                vo.setRefundId(refund.getRefundId());
+                //TODO 退款信息
+                /*//退款数量
+                vo.setRefundNum();
+                //退款状态
+                vo.setTkState(refund.getStatus());
+                //售后状态
+                vo.setShState();*/
+            }
+        }
+        return vos;
     }
 
     @Override

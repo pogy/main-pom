@@ -283,4 +283,29 @@ public class SubOrderInfoVO {
     public void setPriceLong (Long priceLong) {
         this.priceLong = priceLong;
     }
+
+
+    @Override
+    public String toString() {
+        return "SubOrderInfoVO{" +
+                "orderId=" + orderId +
+                ", childOrderId=" + childOrderId +
+                ", goodsId=" + goodsId +
+                ", imgsrc='" + imgsrc + '\'' +
+                ", title='" + title + '\'' +
+                ", color='" + color + '\'' +
+                ", size='" + size + '\'' +
+                ", goodsNo='" + goodsNo + '\'' +
+                ", price='" + price + '\'' +
+                ", priceLong=" + priceLong +
+                ", num=" + num +
+                ", tkNum=" + tkNum +
+                ", shTkNum=" + shTkNum +
+                ", subOrderStatus=" + subOrderStatus +
+                ", refundId=" + refundId +
+                ", refundNum=" + refundNum +
+                ", tkState=" + tkState +
+                ", shState=" + shState +
+                '}';
+    }
 }
