@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 
 
-
 /**
  * 快递模板
  * Created by bugzy on 2017/7/19 0019.
@@ -32,16 +31,12 @@ import java.util.List;
 @Service("logisticsTemplate")
 @Scope("prototype")
 public class LogisticsTemplateImpl implements LogisticsTemplate {
-
-    private Long templateId;
-
-    public Long getTemplateId() {
-        return templateId;
-    }
-
     public LogisticsTemplateImpl(Long templateId) {
         this.templateId = templateId;
     }
+
+    private Long templateId;
+
 
     @Autowired
     private LogisticsTemplateMapper logisticsTemplateMapper;
@@ -94,6 +89,11 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         return ruleInfo;
     }
 
+
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
+    }
+
     @Override
     public LogisticsTemplateVO templateInfo() {
         return null;
@@ -102,42 +102,50 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
     /**
      * 按省份查快递公司
+     *
      * @param provId
      * @return
      */
     @Override
     public List<LogisticsCompanyVO> provCompanys(Long provId) {
-
-        LogisticsTemplateProvExample provExample=new LogisticsTemplateProvExample();
+        List<LogisticsCompanyVO> voList = new ArrayList<>();
+        LogisticsTemplateProvExample provExample = new LogisticsTemplateProvExample();
         provExample.createCriteria().andTemplateIdEqualTo(templateId).andProvIdEqualTo(provId);
         List<LogisticsTemplateProv> logisticsTemplateProvs = logisticsTemplateProvMapper.selectFieldsByExample(provExample, FieldUtil.codeFields("tp_id,rule_id"));
-        if (logisticsTemplateProvs.size()<=0){
-            return null;
+        List<Long> ruleIds = null;
+        if (logisticsTemplateProvs.size() > 0) {
+            ruleIds = BeanMapper.getFieldList(logisticsTemplateProvs, "ruleId", Long.class);
+        }else {
+            ruleIds = new ArrayList<>();
         }
-        List<Long> ruleIds = BeanMapper.getFieldList(logisticsTemplateProvs, "ruleId", Long.class);
-        LogisticsTemplateCompanyExample companyExample=new LogisticsTemplateCompanyExample();
+        LogisticsTemplateRuleExample logisticsTemplateRuleExample = new LogisticsTemplateRuleExample();
+        logisticsTemplateRuleExample.createCriteria().andImDefaultEqualTo(true);
+        List<LogisticsTemplateRule> logisticsTemplateRules = logisticsTemplateRuleMapper.selectFieldsByExample(logisticsTemplateRuleExample, "rule_id");
+        List<Long> ruleIdsDefault = BeanMapper.getFieldList(logisticsTemplateRules, "ruleId", Long.class);
+        ruleIds.addAll(ruleIdsDefault);
+        LogisticsTemplateCompanyExample companyExample = new LogisticsTemplateCompanyExample();
         companyExample.createCriteria().andTemplateIdEqualTo(templateId).andRuleIdIn(ruleIds);
         List<LogisticsTemplateCompany> companies = logisticsTemplateCompanyMapper.selectFieldsByExample(companyExample, FieldUtil.codeFields("tc_id,company_id"));
-        if (companies.size()<=0){
-            return null;
-        }
-        List<Long> companyIds = BeanMapper.getFieldList(companies, "companyId", Long.class);
-        ExpressCompanyExample expressCompanyExample=new ExpressCompanyExample();
-        expressCompanyExample.createCriteria().andExpressCompanyIdIn(companyIds);
-        List<ExpressCompany> expressCompanies = expressCompanyMapper.selectFieldsByExample(expressCompanyExample, FieldUtil.codeFields("express_company_id,express_name"));
-        if (expressCompanies.size()<=0){
-            return null;
-        }
-        List<String> expressNames = BeanMapper.getFieldList(expressCompanies, "expressName", String.class);
-        List<LogisticsCompanyVO> voList=new ArrayList<>();
-        for (String e:expressNames){
-            LogisticsCompanyVO vo=new LogisticsCompanyVO();
-            vo.setName(e);
-            voList.add(vo);
+        if (companies.size() > 0) {
+
+            List<Long> companyIds = BeanMapper.getFieldList(companies, "companyId", Long.class);
+            ExpressCompanyExample expressCompanyExample = new ExpressCompanyExample();
+            expressCompanyExample.createCriteria().andExpressCompanyIdIn(companyIds);
+            List<ExpressCompany> expressCompanies = expressCompanyMapper.selectFieldsByExample(expressCompanyExample, FieldUtil.codeFields("express_company_id,express_name"));
+            if (expressCompanies.size() > 0) {
+
+                List<String> expressNames = BeanMapper.getFieldList(expressCompanies, "expressName", String.class);
+
+                for (String e : expressNames) {
+                    LogisticsCompanyVO vo = new LogisticsCompanyVO();
+                    vo.setName(e);
+                    voList.add(vo);
+                }
+
+            }
         }
         return voList;
     }
-
 
 
     @Override
