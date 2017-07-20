@@ -1,6 +1,5 @@
 package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.enums.MainOrderStatusEnum;
 import com.shigu.main4.order.enums.OrderType;
 
 import java.io.Serializable;

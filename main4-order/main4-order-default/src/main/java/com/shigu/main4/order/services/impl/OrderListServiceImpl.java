@@ -116,4 +116,9 @@ public class OrderListServiceImpl implements OrderListService {
     @Override public int removeOrder (Long tbid) {
         return 1;
     }
+
+    @Override public int cancelOrder (Long tbid) {
+        return 1;
+    }
+
 }
