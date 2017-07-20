@@ -72,6 +72,11 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         return idGenerator.getOid();
     }
 
+    /**
+     * 创建订单
+     * @param orderBO
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createOrder(ItemOrderBO orderBO) {
@@ -146,6 +151,13 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         return order.getOid();
     }
 
+    /**
+     * 重算快递费
+     * @param senderId 发件机构ID
+     * @param companyId 物流公司ID
+     * @param provId 省份ID
+     * @return
+     */
     @Override
     public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId,List<PidNumBO> pids) {
         LogisticsTemplateExample templateExample = new LogisticsTemplateExample();
@@ -219,31 +231,43 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         buyerAddressMapper.deleteByPrimaryKey(addressId);
     }
 
+    /**
+     * 查询订单的物流信息
+     * @param orderId
+     * @return
+     */
     @Override
     public ExpressInfoVO expressInfo(Long orderId) {
         return null;
     }
 
+    /**
+     * 查询物流日志
+     * @param expressId
+     * @return
+     */
     @Override
     public List<ExpressLogVO> expressLog(Long expressId) {
         return null;
     }
 
+    /**
+     * 子订单信息
+     * @param subOrderId
+     * @return
+     */
     @Override
     public SubOrderInfoVO suborderInfo(Long subOrderId) {
         //获取信息
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
         SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
         SubOrderInfoVO subOrderInfoVO = BeanMapper.map(subItemOrderVO,SubOrderInfoVO.class);
-
         subOrderInfoVO.setSubOrderId(subOrderId);
         subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
         subOrderInfoVO.setGoodsNum(subItemOrderVO.getNum());
         subOrderInfoVO.setImgUrl(subItemOrderVO.getProduct().getPicUrl());
         subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
         subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
-
-
         subOrderInfoVO.setSkuColor(subItemOrderVO.getColor());
         subOrderInfoVO.setSkuSize(subItemOrderVO.getSize());
         //TODO:退货信息
@@ -254,31 +278,63 @@ public class ItemOrderServiceImpl implements ItemOrderService{
         return subOrderInfoVO;
     }
 
+    /**
+     * 主单简要信息
+     * 不包含子单
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderInfoVO orderInfo(Long orderId) {
         return null;
     }
 
+    /**
+     * 订单日志
+     * @param orderId
+     * @return
+     */
     @Override
     public List<OrderLogVO> orderLog(Long orderId) {
         return null;
     }
 
+    /**
+     * 子订单信息,按主单查
+     * @param orderId
+     * @return
+     */
     @Override
     public List<SubOrderInfoVO> suborderInfoByOrderId(Long orderId) {
         return null;
     }
 
+    /**
+     * 申请退款
+     * @param subOrderId
+     * @param number
+     * @return 退款编号
+     */
     @Override
     public Long refundApply(Long subOrderId, Integer number) {
         return null;
     }
 
+    /**
+     * 退款信息查询
+     * @param refundId
+     * @return
+     */
     @Override
     public RefundInfoVO refundInfo(Long refundId) {
         return null;
     }
 
+    /**
+     * 退款信息日志
+     * @param refundId
+     * @return
+     */
     @Override
     public List<RefundLogVO> refundLog(Long refundId) {
         return null;
