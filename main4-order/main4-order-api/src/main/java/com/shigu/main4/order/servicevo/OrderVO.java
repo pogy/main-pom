@@ -11,46 +11,44 @@ import java.util.Date;
  * Created by zhaohongbo on 17/6/1.
  */
 public class OrderVO implements Serializable{
+
     private Long orderId;
+    /**交易时间*/
+    private Date tradeTime;
+    /**交易总金额@以分为单位*/
+    private Long tradePayLong;
+    /** 交易总金额@以元为单位*/
+    private String tradePay;
+    /** 快递费*/
+    private String postPay;
+    /**服务费*/
+    private String serverPay;
+    /**
+     * 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
+     */
+    private MainOrderStatusEnum mainState;
+    /** 是否淘宝订单 **/
+    private  Boolean isTbOrder;
+    /** 站点 */
+    private String webSire;
+
 
     private OrderType type;
-
-    private Long totalFee;
-
-    private Long refundFee;
 
     private Long payedFee;
 
     private String title;
 
-    /**
-     * 成交时间
-     */
-    private Date orderDealTime;
+    private Long refundFee;
+
     /**
      * 商品金额
      */
     private String orderPrice;
-    /**
-     * 快递费
-     */
-    private String expressPrice;
-    /**
-     * 服务费
-     */
-    private String servicePrice;
-    /**
-     * 订单总价
-     */
-    private String totalPrice;
-    /**
-     * 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
-     */
-    private MainOrderStatusEnum orderState;
-    /**
-     * 站点
-     */
-    private String webSire;
+
+
+
+
     /**
      * 子单数据
      */
@@ -71,14 +69,6 @@ public class OrderVO implements Serializable{
 
     public void setType(OrderType type) {
         this.type = type;
-    }
-
-    public Long getTotalFee() {
-        return totalFee;
-    }
-
-    public void setTotalFee(Long totalFee) {
-        this.totalFee = totalFee;
     }
 
     public Long getRefundFee() {
@@ -105,19 +95,7 @@ public class OrderVO implements Serializable{
         this.title = title;
     }
 
-    /**
-     * 获取 成交时间
-     */
-    public Date getOrderDealTime() {
-        return this.orderDealTime;
-    }
 
-    /**
-     * 设置 成交时间
-     */
-    public void setOrderDealTime(Date orderDealTime) {
-        this.orderDealTime = orderDealTime;
-    }
 
     /**
      * 获取 商品金额
@@ -133,47 +111,6 @@ public class OrderVO implements Serializable{
         this.orderPrice = orderPrice;
     }
 
-    /**
-     * 获取 快递费
-     */
-    public String getExpressPrice() {
-        return this.expressPrice;
-    }
-
-    /**
-     * 设置 快递费
-     */
-    public void setExpressPrice(String expressPrice) {
-        this.expressPrice = expressPrice;
-    }
-
-    /**
-     * 获取 服务费
-     */
-    public String getServicePrice() {
-        return this.servicePrice;
-    }
-
-    /**
-     * 设置 服务费
-     */
-    public void setServicePrice(String servicePrice) {
-        this.servicePrice = servicePrice;
-    }
-
-    /**
-     * 获取 订单总价
-     */
-    public String getTotalPrice() {
-        return this.totalPrice;
-    }
-
-    /**
-     * 设置 订单总价
-     */
-    public void setTotalPrice(String totalPrice) {
-        this.totalPrice = totalPrice;
-    }
 
     /**
      * 获取 站点
@@ -189,18 +126,60 @@ public class OrderVO implements Serializable{
         this.webSire = webSire;
     }
 
-    /**
-     * 获取 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
-     */
-    public MainOrderStatusEnum getOrderState() {
-        return this.orderState;
+    public Date getTradeTime () {
+        return tradeTime;
     }
 
-    /**
-     * 设置 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
-     */
-    public void setOrderState(MainOrderStatusEnum orderState) {
-        this.orderState = orderState;
+    public void setTradeTime (Date tradeTime) {
+        this.tradeTime = tradeTime;
+    }
+
+    public Long getTradePayLong () {
+        return tradePayLong;
+    }
+
+    public void setTradePayLong (Long tradePayLong) {
+        this.tradePayLong = tradePayLong;
+    }
+
+    public String getTradePay () {
+        return tradePay;
+    }
+
+    public void setTradePay (String tradePay) {
+        this.tradePay = tradePay;
+    }
+
+    public String getPostPay () {
+        return postPay;
+    }
+
+    public void setPostPay (String postPay) {
+        this.postPay = postPay;
+    }
+
+    public String getServerPay () {
+        return serverPay;
+    }
+
+    public void setServerPay (String serverPay) {
+        this.serverPay = serverPay;
+    }
+
+    public MainOrderStatusEnum getMainState () {
+        return mainState;
+    }
+
+    public void setMainState (MainOrderStatusEnum mainState) {
+        this.mainState = mainState;
+    }
+
+    public Boolean getTbOrder () {
+        return isTbOrder;
+    }
+
+    public void setTbOrder (Boolean istbOrder) {
+        this.isTbOrder = istbOrder;
     }
 
     /**
