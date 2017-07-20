@@ -41,12 +41,18 @@ public abstract class PayerServiceAble implements PayerService{
         if (StringUtils.isEmpty(outerPid)) {
             outerPid = apply.getOid().toString();
         }
-        OrderPay orderPay = BeanMapper.map(apply, OrderPay.class);
-        orderPay.setCreateTime(null);
-        orderPay.setOuterPid(outerPid);
-        orderPay.setOuterPuser(outerPuser);
-        orderPay.setMoney(payMoney);
-        orderPayMapper.insertSelective(orderPay);
+        OrderPay orderPay = new OrderPay();
+        orderPay.setApplyId(apply.getApplyId());
+
+        OrderPay tmpOrderPay  = orderPayMapper.selectOne(orderPay);
+        if (tmpOrderPay == null) {
+            orderPay = BeanMapper.map(apply, OrderPay.class);
+            orderPay.setCreateTime(null);
+            orderPay.setOuterPid(outerPid);
+            orderPay.setOuterPuser(outerPuser);
+            orderPay.setMoney(payMoney);
+            orderPayMapper.insertSelective(orderPay);
+        }
     }
 
     @Override
