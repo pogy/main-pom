@@ -64,4 +64,7 @@ public class MyOrderService {
     public int removeOrder(Long orderId){
        return orderListService.removeOrder (orderId);
     }
+    public int cancelOrder(Long orderId){
+        return orderListService.cancelOrder (orderId);
+    }
 }
