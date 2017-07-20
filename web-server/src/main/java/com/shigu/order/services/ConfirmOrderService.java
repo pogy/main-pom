@@ -21,6 +21,7 @@ import com.shigu.main4.order.bo.PackageBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
 import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
@@ -90,7 +91,12 @@ public class ConfirmOrderService {
             throw new JsonErrException("没有找到产品信息");
         }
         ItemOrderBO itemOrderBO  = generateItemOrderBO(bo, orderSubmitVo);
-        Long oid = itemOrderService.createOrder(itemOrderBO);
+        Long oid;
+        try {
+            oid = itemOrderService.createOrder(itemOrderBO);
+        } catch (OrderException e) {
+            throw new JsonErrException(e.getMessage());
+        }
         rmCartProductByOrder(itemOrderBO);
         redisIO.del(code);
         return oid;
@@ -195,6 +201,7 @@ public class ConfirmOrderService {
      */
     public List<ServiceRuleVO> serviceRulePack(List<CartOrderVO> orders, Long senderId) {
         List<ServiceVO> serviceRulers = orderConstantService.selServices(senderId);//服务费规则
+        List<MetarialVO> metarialVOS = orderConstantService.selMetarials(senderId);
         List<ServiceRuleVO> serviceRuleVOS = new ArrayList<>(orders.size());
         for (CartOrderVO orderVO : orders) {
             ServiceRuleVO ruleVO = new ServiceRuleVO();
@@ -206,6 +213,12 @@ public class ConfirmOrderService {
                 ServiceInfoVO infoVO = new ServiceInfoVO();
                 infoVO.setText(serviceRuler.getName());
                 infoVO.setPrice(serviceRuler.getPrice() * .01);
+                ruleVO.getServices().add(infoVO);
+            }
+            for (MetarialVO metarialVO : metarialVOS) {
+                ServiceInfoVO infoVO = new ServiceInfoVO();
+                infoVO.setText(metarialVO.getName());
+                infoVO.setPrice(metarialVO.getPrice() * .01);
                 ruleVO.getServices().add(infoVO);
             }
         }

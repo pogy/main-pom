@@ -9,6 +9,8 @@ public enum RefundStateEnum {
     ENT_REFUND(2),//退款完成
     SELLER_REFUND(3),//商家拒绝受理
     NOT_REFUND(4),//退款失败
+    BUYER_SEND(5),//买家已发件
+    SELLER_CACHED(6),//卖家已收件
     ;
     public final int refundStatus;
     RefundStateEnum(int refundStatus){

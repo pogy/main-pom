@@ -33,7 +33,7 @@ public interface RefundItemOrder {
     void sellerRefuse(String reason);
 
     /**
-     * 用户已发件
+     * 用户已发件。。。。
      * @param buyerCourier
      */
     void userSended(String buyerCourier);

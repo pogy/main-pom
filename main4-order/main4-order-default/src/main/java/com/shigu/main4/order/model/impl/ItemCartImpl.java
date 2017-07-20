@@ -143,6 +143,8 @@ public class ItemCartImpl implements Cart {
             vos.add(cartVO);
             cartVO.setCartId(itemCart.getCartId());
             cartVO.setNum(itemCart.getNum());
+            cartVO.setUserId(userId);
+            cartVO.setSkuId(info.getSelectiveSku().getSkuId());
         }
         return vos;
     }

@@ -5,6 +5,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.PidNumBO;
 import com.shigu.main4.order.enums.OrderType;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.OrderInfoVO;
@@ -33,7 +34,7 @@ public interface ItemOrderService {
      * @param orderBO
      * @return
      */
-    Long createOrder(ItemOrderBO orderBO);
+    Long createOrder(ItemOrderBO orderBO) throws OrderException;
 
     /**
      * 重算快递费
@@ -42,7 +43,7 @@ public interface ItemOrderService {
      * @param provId 省份ID
      * @return
      */
-    Long calculateLogisticsFee(Long senderId,Long companyId,Long provId,List<PidNumBO> pids);
+    Long calculateLogisticsFee(Long senderId,Long companyId,Long provId,List<PidNumBO> pids) throws OrderException;
 
     /**
      * 查询买家有的地址
