@@ -29,7 +29,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    List<OrderVO> myOrder( OrderBO bo);
+    List<OrderVO> myOrder( OrderBO bo,Long userId);
     /**
      * ====================================================================================
      * @方法名：payTaoOrder
