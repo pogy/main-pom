@@ -86,7 +86,7 @@ public class ItemOrderImpl implements ItemOrder{
         com.opentae.data.mall.beans.ItemOrder order = itemOrderMapper.selectByPrimaryKey(oid);
         ItemOrderVO orderVO = new ItemOrderVO();
         orderVO.setSenderId(order.getSenderId());
-        orderVO.setTotalFee(order.getTotalFee());
+        orderVO.setTradePayLong(order.getTotalFee());
         orderVO.setRefundFee(order.getRefundFee());
         orderVO.setPayedFee(order.getPayedFee());
         orderVO.setType(OrderType.typeOf(order.getType()));

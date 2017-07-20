@@ -1,5 +1,6 @@
 package com.shigu.main4.order.services.impl;
 
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.OrderVO;
@@ -20,9 +21,15 @@ import java.util.List;
  */
 @Service
 public class OrderListServiceImpl implements OrderListService {
+
     @Override public List<OrderVO> myOrder (OrderBO bo,Long userId) {
         return null;
     }
+
+    @Override public ShiguPager<OrderVO> selectCountMyOrder (OrderBO bo, Long userId) {
+        return null;
+    }
+
 
     @Override public Long payTaoOrder (Long tbid) {
         return null;
