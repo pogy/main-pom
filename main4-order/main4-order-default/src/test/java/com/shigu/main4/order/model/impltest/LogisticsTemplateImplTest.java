@@ -15,6 +15,25 @@ import java.util.List;
 
 public class LogisticsTemplateImplTest extends BaseTest{
 
+
+    @Test
+    public void getTemplateId() throws Exception {
+    }
+
+    @Test
+    public void rules() throws Exception {
+        LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 2L);
+        show(template.rules(5L, 3L));
+    }
+
+    @Test
+    public void templateInfo() throws Exception {
+    }
+
+    @Test
+    public void calculate() throws Exception {
+    }
+
     @Test
     public void provCompanys(){
         LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 2L);
