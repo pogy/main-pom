@@ -380,6 +380,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
         subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
 
+
         //TODO:退货信息
         //subOrderInfoVO.setRefundId();
         //subOrderInfoVO.setRefundNum();
