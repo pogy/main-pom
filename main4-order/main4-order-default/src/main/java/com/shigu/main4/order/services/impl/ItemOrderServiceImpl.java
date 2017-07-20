@@ -19,6 +19,7 @@ import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.model.impl.ItemOrderImpl;
 import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.OrderInfoVO;
@@ -27,6 +28,7 @@ import com.shigu.main4.order.servicevo.RefundInfoVO;
 import com.shigu.main4.order.servicevo.RefundLogVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.utils.KdniaoUtil;
+import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -81,6 +83,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     @Autowired
     private KdniaoUtil kdniaoUtil;
 
+    @Autowired
+    private OrderConstantService orderConstantService;
+
     /**
      * oid获取器
      *
@@ -95,6 +100,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return idGenerator.getOid();
     }
 
+    /**
+     * 创建订单
+     * @param orderBO
+     * @return
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long createOrder(ItemOrderBO orderBO) {
@@ -170,6 +180,13 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return order.getOid();
     }
 
+    /**
+     * 重算快递费
+     * @param senderId 发件机构ID
+     * @param companyId 物流公司ID
+     * @param provId 省份ID
+     * @return
+     */
     @Override
     public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId, List<PidNumBO> pids) {
         LogisticsTemplateExample templateExample = new LogisticsTemplateExample();
@@ -180,7 +197,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 查询买家有的地址
-     *
      * @param userId
      * @return 买家现有地址列表
      */
@@ -203,7 +219,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 保存地址，BuyerAddressVO中信息不足则会失败，用户已有超过5条地址则会覆盖最老地址
-     *
      * @param buyerAddressVO
      */
     @Override
@@ -237,7 +252,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 删除地址
-     *
      * @param addressId
      */
     @Override
@@ -246,11 +260,58 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         buyerAddressMapper.deleteByPrimaryKey(addressId);
     }
 
+    /**
+     * 查询订单的物流信息
+     * @param orderId
+     * @return
+     */
     @Override
-    public ExpressInfoVO expressInfo(Long orderId) {
-        return null;
+    public ExpressInfoVO expressInfo(Long orderId) throws Main4Exception {
+        ExpressInfoVO expressInfoVO = new ExpressInfoVO();
+        com.shigu.main4.order.model.ItemOrder itemOrder
+                = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
+        List<LogisticsVO> logisticsVOS = itemOrder.selLogisticses();
+        if (logisticsVOS.size() == 0) {
+            throw new Main4Exception("没有查到物流信息");
+        }
+        LogisticsVO firstLogisticsVO = logisticsVOS.get(0);
+        String expressName = selLogisticCompanyCode(firstLogisticsVO.getCompanyId());
+        String expressId = firstLogisticsVO.getCourierNumber();
+        expressInfoVO.setExpressId(expressId);
+        expressInfoVO.setExpressName(expressName);
+        expressInfoVO.setReceiverAddress(firstLogisticsVO.getAddress());
+        expressInfoVO.setReceiverName(firstLogisticsVO.getName());
+        expressInfoVO.setReceiverPhone(firstLogisticsVO.getTelephone());
+        Integer state = 0;
+        try {
+            JSONObject jsonResult = JSON.parseObject(kdniaoUtil.getOrderTracesByJson(expressName,expressId));
+            if ("true".equals(jsonResult.get("Success") + "")){
+                String stateStr = jsonResult.get("State").toString();
+                switch (stateStr) {
+                    case "2":
+                        state = 2;
+                        break;
+                    case "3":
+                        state = 3;
+                        break;
+                    case "4"://问题件
+                    default:
+                        state = 1;
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            state = 0;
+        }
+        expressInfoVO.setExpressCurrentState(state);
+        return expressInfoVO;
     }
 
+    /**
+     * 查询物流日志
+     * @param expressId
+     * @return
+     */
     @Override
     public List<ExpressLogVO> expressLog(Long expressId) throws Main4Exception, ParseException {
         ItemOrderLogistics itemOrderLogistics = itemOrderLogisticsMapper.selectByPrimaryKey(expressId);
@@ -258,15 +319,13 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             throw new Main4Exception("数据库没有对应传入的expressId的数据");
         }
         ExpressCompany expressCompany=null;
+        String companyCode = "";
         if (itemOrderLogistics.getCompanyId()!=null){
-            expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(itemOrderLogistics.getCompanyId(), FieldUtil.codeFields("express_company_id,remark2"));
-        }
-        if (expressCompany==null){
-            throw new Main4Exception("数据库没有对应的快递公司数据");
+            companyCode = selLogisticCompanyCode(itemOrderLogistics.getCompanyId());
         }
         String orderTracesByJson = null;
         try {
-            orderTracesByJson = kdniaoUtil.getOrderTracesByJson(expressCompany.getRemark2(), itemOrderLogistics.getCourierNumber());
+            orderTracesByJson = kdniaoUtil.getOrderTracesByJson(companyCode, itemOrderLogistics.getCourierNumber());
         } catch (Exception e) {
             e.printStackTrace();
             throw new Main4Exception("调用快递鸟接口抛出的异常");
@@ -295,36 +354,103 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return logVOList;
     }
 
-    @Override
-    public SubOrderInfoVO suborderInfo(Long subOrderId) {
-        return null;
+    //TODO:需要订单常量服务提供接口查询快递公司信息
+    private String selLogisticCompanyCode(Long companyId) throws Main4Exception {
+        ExpressCompany expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(companyId,FieldUtil.codeFields("express_company_id,remark2"));
+        if (expressCompany == null) {
+            throw new  Main4Exception("数据库没有对应的快递公司数据");
+        }
+        if (expressCompany.getRemark2() == null) {
+            throw new  Main4Exception("数据库没有对应的快递公司编码");
+        }
+        return expressCompany.getRemark2();
     }
 
+    /**
+     * 子订单信息
+     * @param subOrderId
+     * @return
+     */
+    @Override
+    public SubOrderInfoVO suborderInfo(Long subOrderId) {
+        //获取信息
+        SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
+        SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
+        SubOrderInfoVO subOrderInfoVO = BeanMapper.map(subItemOrderVO,SubOrderInfoVO.class);
+        subOrderInfoVO.setChildOrderId (subOrderId);
+        subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
+        subOrderInfoVO.setImgsrc (subItemOrderVO.getProduct().getPicUrl());
+        subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
+        subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
+
+
+        //TODO:退货信息
+        //subOrderInfoVO.setRefundId();
+        //subOrderInfoVO.setRefundNum();
+        //subOrderInfoVO.setShState();
+        //subOrderInfoVO.setShTkNum();
+        //subOrderInfoVO.setTkState();
+        //subOrderInfoVO.setTkNum();
+        return subOrderInfoVO;
+    }
+
+    /**
+     * 主单简要信息
+     * 不包含子单
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderInfoVO orderInfo(Long orderId) {
         return null;
     }
 
+    /**
+     * 订单日志
+     * @param orderId
+     * @return
+     */
     @Override
     public List<OrderLogVO> orderLog(Long orderId) {
         return null;
     }
 
+    /**
+     * 子订单信息,按主单查
+     * @param orderId
+     * @return
+     */
     @Override
     public List<SubOrderInfoVO> suborderInfoByOrderId(Long orderId) {
         return null;
     }
 
+    /**
+     * 申请退款
+     * @param subOrderId
+     * @param number
+     * @return 退款编号
+     */
     @Override
     public Long refundApply(Long subOrderId, Integer number) {
         return null;
     }
 
+    /**
+     * 退款信息查询
+     * @param refundId
+     * @return
+     */
     @Override
     public RefundInfoVO refundInfo(Long refundId) {
         return null;
     }
 
+    /**
+     * 退款信息日志
+     * @param refundId
+     * @return
+     */
     @Override
     public List<RefundLogVO> refundLog(Long refundId) {
         return null;

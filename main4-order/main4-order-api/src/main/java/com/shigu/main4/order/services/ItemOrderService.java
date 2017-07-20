@@ -68,7 +68,7 @@ public interface ItemOrderService {
      * @param orderId
      * @return
      */
-    ExpressInfoVO expressInfo(Long orderId);
+    ExpressInfoVO expressInfo(Long orderId) throws Main4Exception;
 
     /**
      * 查询物流日志
