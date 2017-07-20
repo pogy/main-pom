@@ -617,7 +617,7 @@ var webSite = '${webSite!}';
             <div class="shopGoodsList clearfix">
                 <#list order.childOrders as childOrder>
                 <ul class="orderItem" 
-    data-id="${childOrder.id!}" 
+    data-id="${childOrder.childOrderId!}" 
     data-price="${childOrder.price!}"
     data-weight="${childOrder.weight!}"
 >
@@ -637,7 +637,7 @@ var webSite = '${webSite!}';
     <li class="goodsCount tac">
         
 
-<#assign text>{"name":childOrder.id,"value":childOrder.num}</#assign>
+<#assign text>{"name":childOrder.childOrderId,"value":childOrder.num}</#assign>
 <#assign moduledata9=text?eval />
 <#list [moduledata9] as $it>
 

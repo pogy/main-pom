@@ -351,12 +351,12 @@ var webSite = '${webSite!}';
     </div>
 
     <#list cart.orders as order>
-    <div class="shopItem" data-id="${order.id!}" data-webSite="${order.webSite!}">
+    <div class="shopItem" data-id="${order.orderId!}" data-webSite="${order.webSite!}">
         <div class="shopInfo clearfix">
             <div class="fl">
                 
 
-<#assign text>{"name":order.id,"text":"${(order.marketName!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}${(order.storeNum!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
+<#assign text>{"name":order.orderId,"text":"${(order.marketName!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}${(order.storeNum!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
 <#assign moduledata3=text?eval />
 <#list [moduledata3] as $it>
 <label class="fmCheckbox
@@ -465,14 +465,14 @@ var webSite = '${webSite!}';
         <div class="shopGoodsList clearfix">
             <#list order.childOrders as childOrder>
             <ul class="goodsItem<#if childOrder.disabled == true> goodsOut</#if>" 
-    data-id="${childOrder.id!}" 
+    data-id="${childOrder.childOrderId!}" 
     data-price="${childOrder.price!}"
 >
     <li class="checkBox">
         <#if childOrder.disabled == false>
         
 
-<#assign text>{"name":childOrder.id,"selectParent":order.id}</#assign>
+<#assign text>{"name":childOrder.childOrderId,"selectParent":order.orderId}</#assign>
 <#assign moduledata6=text?eval />
 <#list [moduledata6] as $it>
 <label class="fmCheckbox
@@ -698,7 +698,7 @@ var webSite = '${webSite!}';
         <#else>
             
 
-<#assign text>{"name":childOrder.id,"value":childOrder.num}</#assign>
+<#assign text>{"name":childOrder.childOrderId,"value":childOrder.num}</#assign>
 <#assign moduledata9=text?eval />
 <#list [moduledata9] as $it>
 
