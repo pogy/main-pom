@@ -4,9 +4,11 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.LogisticsTemplateCompany;
 import com.opentae.data.mall.beans.LogisticsTemplateProv;
+import com.opentae.data.mall.beans.LogisticsTemplateRule;
 import com.opentae.data.mall.examples.ExpressCompanyExample;
 import com.opentae.data.mall.examples.LogisticsTemplateCompanyExample;
 import com.opentae.data.mall.examples.LogisticsTemplateProvExample;
+import com.opentae.data.mall.examples.LogisticsTemplateRuleExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.LogisticsTemplate;
@@ -18,6 +20,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -67,8 +70,28 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     public List<BournRuleInfoVO> rules(Long provId, Long companyId) {
         LogisticsTemplateProvExample provExample = new LogisticsTemplateProvExample();
         provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId);
-        logisticsTemplateProvMapper.selectByExample(provExample);
-        return null;
+        List<Long> supportRules = BeanMapper.getFieldList(logisticsTemplateProvMapper.selectByExample(provExample), "ruleId", Long.class);
+
+        LogisticsTemplateCompanyExample companyExample = new LogisticsTemplateCompanyExample();
+        companyExample.createCriteria().andCompanyIdEqualTo(companyId).andTemplateIdEqualTo(templateId);
+        supportRules.retainAll(BeanMapper.getFieldList(logisticsTemplateCompanyMapper.selectByExample(companyExample), "ruleId", Long.class));
+
+        List<BournRuleInfoVO> ruleInfo = new ArrayList<>(supportRules.size());
+        if (!supportRules.isEmpty()) {
+            LogisticsTemplateRuleExample ruleExample = new LogisticsTemplateRuleExample();
+            ruleExample.createCriteria().andRuleIdIn(supportRules);
+            for (LogisticsTemplateRule templateRule : logisticsTemplateRuleMapper.selectByExample(ruleExample)) {
+                BournRuleInfoVO infoVO = new BournRuleInfoVO();
+                ruleInfo.add(infoVO);
+                infoVO.setStartPrice(templateRule.getFirstFee());
+                infoVO.setStartWeight(templateRule.getFirstUnit());
+                infoVO.setAddPrice(templateRule.getPerFee());
+                infoVO.setAddWeight(templateRule.getPerUnit());
+                infoVO.setComponyId(companyId);
+                infoVO.setProvId(provId);
+            }
+        }
+        return ruleInfo;
     }
 
     @Override
