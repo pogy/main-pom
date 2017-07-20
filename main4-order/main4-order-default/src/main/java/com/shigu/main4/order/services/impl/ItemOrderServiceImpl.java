@@ -14,8 +14,10 @@ import com.shigu.main4.order.bo.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.model.SubItemOrder;
+import com.shigu.main4.order.model.impl.ItemOrderImpl;
 import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
@@ -57,6 +59,9 @@ public class ItemOrderServiceImpl implements ItemOrderService{
 
     @Autowired
     private LogisticsTemplateMapper logisticsTemplateMapper;
+
+    @Autowired
+    private OrderConstantService orderConstantService;
 
     /**
      * oid获取器
@@ -238,6 +243,9 @@ public class ItemOrderServiceImpl implements ItemOrderService{
      */
     @Override
     public ExpressInfoVO expressInfo(Long orderId) {
+        com.shigu.main4.order.model.ItemOrder itemOrderModel = SpringBeanFactory.getBean(ItemOrderImpl.class, orderId);
+        List<LogisticsVO> logisticsVOS = itemOrderModel.selLogisticses();
+        
         return null;
     }
 
