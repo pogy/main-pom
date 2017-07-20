@@ -15,6 +15,7 @@
 
 
 
+
     
     <link href="http://style.571xz.com/v2/order/css/orderDetail.css" rel="stylesheet">
     
@@ -197,26 +198,14 @@ var webSite = '${webSite!}';
     </ul>
     <#else>
     <ul class="title">
-        
-        <li  class="current" >提交订单</li>
-        
-        <li >买家付款</li>
-        
-        <li >商品配货</li>
-        
-        <li >交易完成</li>
-        
+        <#list orderStateText as title>
+        <li <#if title_item lte orderStateNum> class="current" </#if>>${title!}</li>
+        </#list>
     </ul>
     <ul class="status">
-        
-        <li  class="current"><i></i><span>1</span></li>
-        
-        <li ><i></i><span>2</span></li>
-        
-        <li ><i></i><span>3</span></li>
-        
-        <li ><i></i><span>4</span></li>
-        
+        <#list orderStateText as state>
+        <li <#if state_item lte orderStateNum> class="current"</#if>><i></i><span>${state_item+1}</span></li>
+        </#list>
     </ul>
     </#if>
     <ul class="time fs14 arail <#if orderStateNum == 4> cancel </#if>">
