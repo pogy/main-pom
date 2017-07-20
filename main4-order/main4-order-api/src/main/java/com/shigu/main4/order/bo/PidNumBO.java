@@ -10,6 +10,8 @@ public class PidNumBO {
 
     private Integer num;
 
+    private Long weight;
+
     public Long getPid() {
         return pid;
     }
@@ -24,5 +26,13 @@ public class PidNumBO {
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public Long getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Long weight) {
+        this.weight = weight;
     }
 }

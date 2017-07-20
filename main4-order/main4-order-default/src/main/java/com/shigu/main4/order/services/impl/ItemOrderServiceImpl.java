@@ -11,14 +11,17 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.NumberUtils;
 import com.shigu.main4.order.bo.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
-import com.shigu.main4.order.enums.RefundTypeEnum;
+import com.shigu.main4.order.exceptions.LogisticsRuleException;
+import com.shigu.main4.order.exceptions.OrderException;
+import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.model.SubItemOrder;
-import com.shigu.main4.order.model.impl.ItemOrderImpl;
 import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
@@ -33,16 +36,12 @@ import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.HttpClient;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -107,7 +106,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long createOrder(ItemOrderBO orderBO) {
+    public Long createOrder(ItemOrderBO orderBO) throws OrderException {
         // 初始化一个订单
         ItemOrder order = BeanMapper.map(orderBO, ItemOrder.class);
         order.setType(OrderType.XZ.type);
@@ -137,21 +136,30 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         }
 
         // c, 添加子订单
-        if (orderBO.getSubOrders() != null) {
-            List<SubOrderVO> subOrders = new ArrayList<>();
-            for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
-                SubOrderVO vo = new SubOrderVO();
-                vo.setNum(subItemOrderBO.getNum());
-                vo.setMark(subItemOrderBO.getMark());
-                ItemProductVO productVO = subItemOrderBO.getProductVO();
-                vo.setGoodsId(productVO.getGoodsId());
-                ItemSkuVO selectiveSku = productVO.getSelectiveSku();
-                vo.setSize(selectiveSku.getSize());
-                vo.setColor(selectiveSku.getColor());
-                subOrders.add(vo);
-            }
-            itemOrder.addSubOrder(subOrders);
+        if (orderBO.getSubOrders() == null || orderBO.getSubOrders().isEmpty()) {
+            throw new OrderException("订单是空的.");
         }
+        List<PidNumBO> pidNumBOS = new ArrayList<>();
+        List<SubOrderVO> subOrders = new ArrayList<>();
+        for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
+            ItemProductVO productVO = subItemOrderBO.getProductVO();
+
+            PidNumBO numBO = new PidNumBO();
+            pidNumBOS.add(numBO);
+            numBO.setPid(productVO.getPid());
+            numBO.setNum(subItemOrderBO.getNum());
+            numBO.setWeight(productVO.getWeight());
+
+            SubOrderVO vo = new SubOrderVO();
+            vo.setNum(subItemOrderBO.getNum());
+            vo.setMark(subItemOrderBO.getMark());
+            vo.setGoodsId(productVO.getGoodsId());
+            ItemSkuVO selectiveSku = productVO.getSelectiveSku();
+            vo.setSize(selectiveSku.getSize());
+            vo.setColor(selectiveSku.getColor());
+            subOrders.add(vo);
+        }
+        itemOrder.addSubOrder(subOrders);
 
         // d, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();
@@ -174,7 +182,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
         logistic.setCompanyId(expressCompany.getExpressCompanyId());
         logistic.setAddress(buyerAddress.getAddress());
-        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), company.getExpressCompanyId(), buyerAddress.getProvId(), null));
+        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), company.getExpressCompanyId(), buyerAddress.getProvId(), pidNumBOS));
         itemOrder.addLogistics(null, logistic);
 
         return order.getOid();
@@ -188,11 +196,21 @@ public class ItemOrderServiceImpl implements ItemOrderService {
      * @return
      */
     @Override
-    public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId, List<PidNumBO> pids) {
+    public Long calculateLogisticsFee(Long senderId, Long companyId, Long provId, List<PidNumBO> pids) throws OrderException {
         LogisticsTemplateExample templateExample = new LogisticsTemplateExample();
         templateExample.createCriteria().andEnabledEqualTo(true).andSenderIdEqualTo(senderId);
         logisticsTemplateMapper.selectByExample(templateExample);
-        return 0L;
+        LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
+        try {
+            return logisticsTemplate.calculate(
+                    provId,
+                    companyId,
+                    NumberUtils.sum(BeanMapper.getFieldList(pids, "num", Integer.class)).intValue(),
+                    NumberUtils.sum(BeanMapper.getFieldList(pids, "weight", Integer.class)).longValue()
+            );
+        } catch (LogisticsRuleException e) {
+            throw new OrderException(e.getMessage());
+        }
     }
 
     /**
@@ -346,8 +364,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
                 ExpressLogVO logVO = new ExpressLogVO();
                 logVO.setLogDesc(msg.getAcceptStation());
                 logVO.setLogWeek(weeks[week_index]);
-                logVO.setLogDate(new SimpleDateFormat("yyyy-MM-dd").format(time).toString());
-                logVO.setLogTime(new SimpleDateFormat("HH:mm:ss").format(time).toString());
+                logVO.setLogDate(new SimpleDateFormat("yyyy-MM-dd").format(time));
+                logVO.setLogTime(new SimpleDateFormat("HH:mm:ss").format(time));
                 logVOList.add(logVO);
             }
         }
