@@ -7,14 +7,14 @@ package com.shigu.order.vo;
 public class PostRuleVO {
 
     /**
-     * 快递代号
+     * 快递英文名
      */
     private String name;
 
     /**
-     * 到达省份
+     * 快递中文
      */
-    private String prov;
+    private String text;
 
     /**
      * 起收重量
@@ -44,12 +44,12 @@ public class PostRuleVO {
         this.name = name;
     }
 
-    public String getProv() {
-        return prov;
+    public String getText() {
+        return text;
     }
 
-    public void setProv(String prov) {
-        this.prov = prov;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Double getStartWeight() {
