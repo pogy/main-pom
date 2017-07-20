@@ -25,8 +25,9 @@ public class SubItemOrderImpl implements SubItemOrder{
     }
 
     @Override
-    public void refund(Long money) {
+    public Long refund(Long money) {
 
+        return money;
     }
 
     @Override
@@ -36,6 +37,17 @@ public class SubItemOrderImpl implements SubItemOrder{
 
     @Override
     public SubItemOrderVO subOrderInfo() {
+        return null;
+    }
+
+    /**
+     * 退款申请
+     *
+     * @param number 退件数
+     * @param money
+     */
+    @Override
+    public Long refundApply(Integer number, Long money) {
         return null;
     }
 

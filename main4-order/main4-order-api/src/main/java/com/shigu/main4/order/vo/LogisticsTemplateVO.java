@@ -1,7 +1,5 @@
 package com.shigu.main4.order.vo;
 
-import java.util.List;
-
 /**
  * 物流模板
  * Created by zhaohongbo on 17/7/19.
@@ -23,6 +21,11 @@ public class LogisticsTemplateVO {
     private Long fromCityId;
 
     private Long fromTownId;
+
+    /**
+     * 1包邮，0不包
+     */
+    private Boolean free;
 
     public Long getTemplateId() {
         return templateId;
@@ -72,4 +75,11 @@ public class LogisticsTemplateVO {
         this.fromTownId = fromTownId;
     }
 
+    public Boolean getFree() {
+        return free;
+    }
+
+    public void setFree(Boolean free) {
+        this.free = free;
+    }
 }
