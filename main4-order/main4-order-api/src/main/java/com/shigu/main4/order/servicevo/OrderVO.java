@@ -224,8 +224,8 @@ public class OrderVO implements Serializable{
         return isTbOrder;
     }
 
-    public void setTbOrder (Boolean istbOrder) {
-        this.isTbOrder = istbOrder;
+    public void setTbOrder (Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 
     public List<SubOrderInfoVO> getChildOrders () {
