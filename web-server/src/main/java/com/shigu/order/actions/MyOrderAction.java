@@ -91,17 +91,21 @@ public class MyOrderAction {
 
         if(orderId==null){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
-
+            rsp.setMsg ("订单ID为空！");
+            return JSONObject.fromObject(rsp);
         }
         boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
         if(!flag){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
+            rsp.setMsg ("非法访问！");
+            return JSONObject.fromObject(rsp);
         }
        int i=  myOrderService.removeOrder(orderId);
         if(i>0) {
             rsp.setResult (SystemConStant.RESPONSE_STATUS_SUCCESS);
         }else{
             rsp.setResult (SystemConStant.RESPONSE_STATUS_FAILED);
+            rsp.setMsg ("删除订单失败！");
         }
         return JSONObject.fromObject(rsp);
     }
@@ -125,33 +129,41 @@ public class MyOrderAction {
 
         if(orderId==null){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
-
+            rsp.setMsg ("订单ID为空！");
+            return JSONObject.fromObject(rsp);
         }
         boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
         if(!flag){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
+            rsp.setMsg ("非法访问！");
+            return JSONObject.fromObject(rsp);
         }
         int i=  myOrderService.cancelOrder(orderId);
         if(i>0) {
             rsp.setResult (SystemConStant.RESPONSE_STATUS_SUCCESS);
         }else{
             rsp.setResult (SystemConStant.RESPONSE_STATUS_FAILED);
+            rsp.setMsg ("取消订单失败！");
         }
         return JSONObject.fromObject(rsp);
     }
 
     @RequestMapping("orderDetail")
     public String orderDetail(HttpSession session,Long orderId,Model model){
-       // if(orderId==null){
+        if(orderId==null){
             //订单出错
+            model.addAttribute ("msg","订单号不能为空！");
+            return "trade/noOrderInfo";
+        }
 
-       // }
-
-      //  PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-     //   boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
-     //   if(!flag){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
+        if(!flag){
            //没有这个订单
-      //  }else{
+            model.addAttribute ("msg","非法访问！");
+            return "trade/noOrderInfo";
+        }else{
+
             OrderDetailVO detailVo= myOrderService.orderDetail(orderId);
             model.addAttribute ("orderDetailVO",detailVo);
             model.addAttribute ("orderStateText",detailVo.getOrderStateText ());
@@ -163,12 +175,10 @@ public class MyOrderAction {
             model.addAttribute ("childOrders",detailVo.getChildOrders ());
 
             model.addAttribute ("total",detailVo.getTotal ());
-        model.addAttribute ("orderStateNum",detailVo.getOrderStateNum ());
-        model.addAttribute ("orderStateTime",detailVo.getOrderStateTime ());
+            model.addAttribute ("orderStateNum",detailVo.getOrderStateNum ());
+            model.addAttribute ("orderStateTime",detailVo.getOrderStateTime ());
 
-
-
-        //   }
+           }
 
         return "trade/orderDetail";
     }
