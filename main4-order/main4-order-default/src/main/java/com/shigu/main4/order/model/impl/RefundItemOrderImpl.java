@@ -3,12 +3,16 @@ package com.shigu.main4.order.model.impl;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.vo.RefundVO;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 
 /**
  * 退单
  * Created by zhaohongbo on 17/7/20.
  */
+@Repository
+@Scope("prototype")
 public class RefundItemOrderImpl implements RefundItemOrder {
 
     private Long refundId;
