@@ -4,6 +4,7 @@ import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.NumberUtils;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
@@ -203,27 +204,31 @@ public class ItemOrderImpl implements ItemOrder{
         Long total = 0L;
 
         // 子单总额
-        for (SubItemOrderVO subItemOrderVO : subOrdersInfo()) {
-            total += subItemOrderVO.getProduct().getPrice();
+        List<SubItemOrderVO> subOrdersInfo = subOrdersInfo();
+        for (SubItemOrderVO subItemOrderVO : subOrdersInfo) {
+            total += subItemOrderVO.getProduct().getPrice() * subItemOrderVO.getNumber();
         }
         // 物流总额
         for (LogisticsVO logisticsVO : selLogisticses()) {
             total += logisticsVO.getMoney();
         }
 
-        // 发货服务总额
+        // 统计商品总件数
+        Integer goodsNumbers = NumberUtils.sum(BeanMapper.getFieldList(subOrdersInfo, "number", Integer.class)).intValue();
+
+        // 发货服务总额，每种服务都是按件计费 TODO: 不同市场代发费不同，
         ItemOrderService service = new ItemOrderService();
         service.setOid(oid);
         for (ItemOrderService orderService : itemOrderServiceMapper.select(service)) {
-            total += orderService.getMoney();
+            total += orderService.getMoney() * goodsNumbers;
         }
 
-        // 包材总额
-        ItemOrderPackage orderPackage = new ItemOrderPackage();
+        // TODO: 包材总额
+        /*ItemOrderPackage orderPackage = new ItemOrderPackage();
         orderPackage.setOid(oid);
         for (ItemOrderPackage itemOrderPackage : itemOrderPackageMapper.select(orderPackage)) {
             total += itemOrderPackage.getMoney();
-        }
+        }*/
 
         com.opentae.data.mall.beans.ItemOrder order = new com.opentae.data.mall.beans.ItemOrder();
         order.setOid(oid);
