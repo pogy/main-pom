@@ -12,7 +12,6 @@ public enum RefundStateEnum {
     BUYER_SEND(5),//买家已发件
     SELLER_CACHED(6),//卖家已收件
     SELLER_REPRICE(7),//卖家议价
-    BUYER_REPRICE(8),//买家附议
     BUYER_NOREPRICE(9),//买家拒绝附议
     ;
     public final int refundStatus;
