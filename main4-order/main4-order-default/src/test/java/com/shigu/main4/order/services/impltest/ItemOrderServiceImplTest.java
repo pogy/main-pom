@@ -9,6 +9,9 @@ import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
+import com.shigu.main4.order.servicevo.OrderInfoVO;
+import com.shigu.main4.order.servicevo.OrderLogVO;
+import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
@@ -101,4 +104,25 @@ public class ItemOrderServiceImplTest extends BaseTest {
             System.out.println(vo.getLogDesc());
         }
     }
+    @Test
+    public void orderLog(){
+        List<OrderLogVO> vos = itemOrderService.orderLog(1L);
+        for (OrderLogVO vo:vos){
+            System.out.println(vo.getStateTime()+"    "+vo.getOrderState());
+        }
+    }
+    @Test
+    public void orderInfo(){
+        OrderInfoVO vo = itemOrderService.orderInfo(4L);
+        System.out.println(vo);
+    }
+
+    @Test
+    public void suborderInfoByOrderId(){
+        List<SubOrderInfoVO> vos = itemOrderService.suborderInfoByOrderId(1L);
+        for (SubOrderInfoVO s:vos){
+            System.out.println(s.toString());
+        }
+    }
+
 }

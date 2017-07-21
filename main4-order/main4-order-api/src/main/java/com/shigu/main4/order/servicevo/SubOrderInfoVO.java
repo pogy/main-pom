@@ -184,11 +184,15 @@ public class SubOrderInfoVO {
         this.goodsNo = goodsNo;
     }
 
-    public Integer getSubOrderStatus () {
+    /**
+     * 子单状态, 0初始状态，1已退，2已发
+     */
+
+    public Integer getSubOrderStatus() {
         return subOrderStatus;
     }
 
-    public void setSubOrderStatus (Integer subOrderStatus) {
+    public void setSubOrderStatus(Integer subOrderStatus) {
         this.subOrderStatus = subOrderStatus;
     }
 
