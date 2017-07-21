@@ -83,7 +83,7 @@ public class SubItemOrderImpl implements SubItemOrder{
      * @param money
      */
     @Override
-    public Long refundApply(Integer type, Integer number, Long money,String reason) {
+    public Long refundApply(Integer type, Integer number, Long money, String reason) {
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         RefundApplyBO refundApply = new RefundApplyBO();
         refundApply.setSoid(itemOrderSub.getSoid());
