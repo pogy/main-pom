@@ -30,6 +30,10 @@ public class ServiceVO extends OrderConstantVo implements Serializable{
      */
     private String webSite;
     /**
+     * 市场ID
+     */
+    private Long marketId;
+    /**
      * 详细资料
      */
     private String detail;
@@ -80,5 +84,13 @@ public class ServiceVO extends OrderConstantVo implements Serializable{
 
     public void setFeeType(Integer feeType) {
         this.feeType = feeType;
+    }
+
+    public Long getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
     }
 }

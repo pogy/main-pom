@@ -1,6 +1,9 @@
 package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.bo.RefundApplyBO;
+import com.shigu.main4.order.enums.RefundStateEnum;
+import com.shigu.main4.order.exceptions.PayerException;
+import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.vo.RefundVO;
 
 /**
@@ -13,6 +16,14 @@ public interface RefundItemOrder {
      * @return
      */
     RefundVO refundinfo();
+
+    RefundStateEnum refundState();
+
+    /**
+     * 查询修改当前退单状态
+     * @param refundStateEnum
+     */
+    void refundState(RefundStateEnum refundStateEnum);
     /**
      * 退货申请
      * @param applyBO
@@ -52,7 +63,7 @@ public interface RefundItemOrder {
     /**
      * 买家附议
      */
-    void buyerReprice();
+    void buyerReprice() throws RefundException, PayerException;
 
     /**
      * 买家拒绝附议
@@ -68,7 +79,7 @@ public interface RefundItemOrder {
     /**
      * 退成功
      */
-    void success();
+    void success() throws PayerException, RefundException;
 
     /**
      * 退失败
