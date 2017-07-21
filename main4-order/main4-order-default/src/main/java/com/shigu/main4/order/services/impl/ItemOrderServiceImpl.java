@@ -121,20 +121,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         com.shigu.main4.order.model.ItemOrder itemOrder
                 = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, order.getOid());
 
-        // a, 添加服务
-        if (orderBO.getServiceIds() != null) {
-            for (Long sid : orderBO.getServiceIds()) {
-                itemOrder.addService(sid);
-            }
-        }
-
-        // b, 添加包材
-        if (orderBO.getPackages() != null) {
-            for (PackageBO packageBO : orderBO.getPackages()) {
-                itemOrder.addPackage(packageBO.getMetarialId(), packageBO.getNum());
-            }
-        }
-
         // c, 添加子订单
         if (orderBO.getSubOrders() == null || orderBO.getSubOrders().isEmpty()) {
             throw new OrderException("订单是空的.");
@@ -160,6 +146,20 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             subOrders.add(vo);
         }
         itemOrder.addSubOrder(subOrders);
+
+        // a, 添加服务
+        if (orderBO.getServiceIds() != null) {
+            for (Long sid : orderBO.getServiceIds()) {
+                itemOrder.addService(sid);
+            }
+        }
+
+        // b, 添加包材
+        if (orderBO.getPackages() != null) {
+            for (PackageBO packageBO : orderBO.getPackages()) {
+                itemOrder.addPackage(packageBO.getMetarialId(), packageBO.getNum());
+            }
+        }
 
         // d, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();

@@ -137,23 +137,23 @@ public class ConfirmOrderService {
             }
         }
         itemOrderBO.setSubOrders(subOrders);
-        itemOrderBO.setTitle(itemOrderBO.getSubOrders().get(0).getProductVO().getTitle());
+        itemOrderBO.setTitle(itemOrderBO.getSubOrders().get(0).getProductVO().getTitle() + "...等多件");
         itemOrderBO.setWebSite(itemOrderBO.getSubOrders().get(0).getProductVO().getWebSite());
         itemOrderBO.setMark(bo.getOrders().get(0).getRemark());
 
         itemOrderBO.setServiceIds(BeanMapper.getFieldList(orderConstantService.selServices(bo.getSenderId()), "id", Long.class));
 
         //TODO:订单包材信息
-        int size = BeanMapper.groupBy(orderSubmitVo.getProducts(), "shopId", Long.class).size();
-        List<Long> packagesIds = BeanMapper.getFieldList(orderConstantService.selMetarials(bo.getSenderId()), "id", Long.class);
-        List<PackageBO> packageBOS = Lists.newArrayList();
-        for (Long packagesId : packagesIds) {
-            PackageBO packageBO = new PackageBO();
-            packageBOS.add(packageBO);
-            packageBO.setMetarialId(packagesId);
-            packageBO.setNum(size);
-        }
-        itemOrderBO.setPackages(packageBOS);
+//        int size = BeanMapper.groupBy(orderSubmitVo.getProducts(), "shopId", Long.class).size();
+//        List<Long> packagesIds = BeanMapper.getFieldList(orderConstantService.selMetarials(bo.getSenderId()), "id", Long.class);
+//        List<PackageBO> packageBOS = Lists.newArrayList();
+//        for (Long packagesId : packagesIds) {
+//            PackageBO packageBO = new PackageBO();
+//            packageBOS.add(packageBO);
+//            packageBO.setMetarialId(packagesId);
+//            packageBO.setNum(size);
+//        }
+//        itemOrderBO.setPackages(packageBOS);
         return itemOrderBO;
     }
 
@@ -201,7 +201,7 @@ public class ConfirmOrderService {
      */
     public List<ServiceRuleVO> serviceRulePack(List<CartOrderVO> orders, Long senderId) {
         List<ServiceVO> serviceRulers = orderConstantService.selServices(senderId);//服务费规则
-        List<MetarialVO> metarialVOS = orderConstantService.selMetarials(senderId);
+//        List<MetarialVO> metarialVOS = orderConstantService.selMetarials(senderId);
         List<ServiceRuleVO> serviceRuleVOS = new ArrayList<>(orders.size());
         for (CartOrderVO orderVO : orders) {
             ServiceRuleVO ruleVO = new ServiceRuleVO();
@@ -215,12 +215,12 @@ public class ConfirmOrderService {
                 infoVO.setPrice(serviceRuler.getPrice() * .01);
                 ruleVO.getServices().add(infoVO);
             }
-            for (MetarialVO metarialVO : metarialVOS) {
-                ServiceInfoVO infoVO = new ServiceInfoVO();
-                infoVO.setText(metarialVO.getName());
-                infoVO.setPrice(metarialVO.getPrice() * .01);
-                ruleVO.getServices().add(infoVO);
-            }
+//            for (MetarialVO metarialVO : metarialVOS) {TODO: 包材不计算
+//                ServiceInfoVO infoVO = new ServiceInfoVO();
+//                infoVO.setText(metarialVO.getName());
+//                infoVO.setPrice(metarialVO.getPrice() * .01);
+//                ruleVO.getServices().add(infoVO);
+//            }
         }
         return serviceRuleVOS;
     }
