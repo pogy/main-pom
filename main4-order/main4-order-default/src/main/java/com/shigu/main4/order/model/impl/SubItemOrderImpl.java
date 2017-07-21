@@ -1,8 +1,10 @@
 package com.shigu.main4.order.model.impl;
 
+import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.beans.ShiguGoodsSoldout;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsSoldoutMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
@@ -37,6 +39,9 @@ public class SubItemOrderImpl implements SubItemOrder{
 
     @Autowired
     private ShiguGoodsSoldoutMapper shiguGoodsSoldoutMapper;
+
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
 
     public SubItemOrderImpl(Long subOrderId) {
         this.subOrderId = subOrderId;
@@ -106,7 +111,11 @@ public class SubItemOrderImpl implements SubItemOrder{
      */
     @Override
     public RefundVO refundInfos() {
-        return null;
+        ItemOrderRefund query = new ItemOrderRefund();
+        query.setSoid(subOrderId);
+        ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectOne(query);
+        RefundItemOrder refund = SpringBeanFactory.getBean(RefundItemOrder.class, itemOrderRefund.getRefundId());
+        return refund.refundinfo();
     }
 
     /**
