@@ -8,15 +8,24 @@ import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
+import com.shigu.main4.order.enums.RefundStateEnum;
+import com.shigu.main4.order.exceptions.PayerException;
+import com.shigu.main4.order.exceptions.RefundException;
+import com.shigu.main4.order.model.ItemOrder;
+import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.enums.RefundMsgEnum;
 import com.shigu.main4.order.model.RefundItemOrder;
+import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.RefundVO;
+import com.shigu.main4.tools.SpringBeanFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 
 /**
@@ -26,7 +35,6 @@ import javax.annotation.PostConstruct;
 @Repository
 @Scope("prototype")
 public class RefundItemOrderImpl implements RefundItemOrder {
-
 
     private Long refundId;
 
@@ -69,8 +77,30 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @Override
     public RefundVO refundinfo() {
-        return null;
+        ItemOrderRefund refund = itemOrderRefundMapper.selectByPrimaryKey(refundId);
+        RefundVO refundVO = BeanMapper.map(refund, RefundVO.class);
+        refundVO.setRefundState(RefundStateEnum.statusOf(refund.getStatus()));
+        return refundVO;
     }
+
+    @Override
+    public RefundStateEnum refundState() {
+        return refundinfo().getRefundState();
+    }
+
+    /**
+     * 查询修改当前退单状态
+     *
+     * @param refundStateEnum
+     */
+    @Override
+    public void refundState(RefundStateEnum refundStateEnum) {
+        ItemOrderRefund refund = new ItemOrderRefund();
+        refund.setRefundId(refundId);
+        refund.setStatus(refundStateEnum.refundStatus);
+        itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
+    }
+
 
     /**
      * 退货申请
@@ -169,8 +199,32 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      * 退成功
      */
     @Override
-    public void success() {
+    public void success() throws PayerException, RefundException {
+        RefundVO refundinfo = refundinfo();
+        ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
+        List<PayedVO> payedVOS = itemOrder.payedInfo();
+        for (PayedVO payedVO : payedVOS) {
+            if (payedVO.getMoney() >= refundinfo.getHopeMoney()) {
+                SpringBeanFactory.getBean(PayerService.class, payedVO.getPayType().getService())
+                        .refund(payedVO.getPayId(), refundinfo.getHopeMoney());
 
+                ItemRefundLog refundLog = new ItemRefundLog();
+                refundLog.setRefundId(refundinfo.getRefundId());
+                refundLog.setFromStatus(refundState().refundStatus);
+                refundLog.setToStatus(RefundStateEnum.ENT_REFUND.refundStatus);
+                refundLog.setMsg(refundinfo.getReason());
+                itemRefundLogMapper.insertSelective(refundLog);
+
+                // 变更退款状态
+                refundState(RefundStateEnum.ENT_REFUND);
+                return;
+            }
+        }
+        throw new RefundException(String.format(
+                "支付记录中单笔数目[%s]不足以支持希望的退款数目[%d]",
+                StringUtils.join(BeanMapper.getFieldList(payedVOS, "money", Long.class), ','),
+                refundinfo.getHopeMoney()
+        ));
     }
 
     /**
