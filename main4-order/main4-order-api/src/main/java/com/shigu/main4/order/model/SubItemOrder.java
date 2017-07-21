@@ -20,7 +20,7 @@ public interface SubItemOrder extends SubOrder{
      * @param number 退件数
      * @param money
      */
-    Long refundApply(Integer number,Long money);
+    Long refundApply(Integer type,Integer number,Long money,String reason);
 
     /**
      * 退单信息

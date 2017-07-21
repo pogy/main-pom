@@ -31,6 +31,8 @@ import java.util.UUID;
 @Service("xzPayerService")
 public class XzPayerServiceImpl extends PayerServiceAble {
     private static final Logger logger = LoggerFactory.getLogger(XzPayerServiceImpl.class);
+
+    public static final String OUTER_ID_PRE="payorder_";
     @Autowired
     private XzSdkClient xzSdkClient;
 
@@ -78,7 +80,7 @@ public class XzPayerServiceImpl extends PayerServiceAble {
         RefundRequest  req = new RefundRequest();
         req.setRefundType(5);
         req.setMoney(Long.valueOf(refundFee));
-        req.setOutTradeId(String.valueOf(orderPayApply.getOid()));
+        req.setOutTradeId(OUTER_ID_PRE+orderPayApply.getApplyId());
 
         List<String> subTradeIdList = new ArrayList<String>();
         subTradeIdList.add(UUIDGenerator.getUUID());

@@ -83,6 +83,7 @@ public class PayModeService {
      * @throws PayApplyException 没找到订单对象
      */
     public void xzpay(String orderId, String pwd, Long userId) throws JsonErrException, PayApplyException {
+        //验证密码
         ItemOrder itemOrder = selItemOrder(orderId, userId);
         xzPayerService.payApply(itemOrder.getOid(),itemOrder.getTotalFee(),itemOrder.getTitle());
     }
