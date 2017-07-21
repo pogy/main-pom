@@ -15,6 +15,7 @@ import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.enums.RefundMsgEnum;
 import com.shigu.main4.order.model.RefundItemOrder;
+import com.shigu.main4.order.servicevo.RefundInfoVO;
 import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -100,6 +101,33 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         refund.setRefundId(refundId);
         refund.setStatus(refundStateEnum.refundStatus);
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
+    }
+
+    private void refundStateChangeAndLog(RefundStateEnum state) {
+        refundStateChangeAndLog(null, state);
+    }
+    /**
+     * 退单记录修改状态 & 记录 修改历史
+     * @param refundInfo 当前状态信息，可为null, 为null 会自助查询
+     * @param state 修改后状态
+     */
+    @Transactional(rollbackFor = Exception.class)
+    private void refundStateChangeAndLog(RefundVO refundInfo, RefundStateEnum state) {
+        if (refundInfo == null) {
+            refundInfo = refundinfo();
+        }
+        ItemRefundLog refundLog = new ItemRefundLog();
+        refundLog.setRefundId(refundInfo.getRefundId());
+        refundLog.setFromStatus(refundInfo.getRefundState().refundStatus);
+        refundLog.setToStatus(state.refundStatus);
+        refundLog.setMsg(refundInfo.getFailMsg());
+        Boolean imBuyer = state.imBuyer != null ? state.imBuyer
+                : RefundStateEnum.SELLER_REPRICE == refundInfo.getRefundState();
+        refundLog.setImBuyer(imBuyer);
+        itemRefundLogMapper.insertSelective(refundLog);
+
+        // 变更退款状态
+        refundState(state);
     }
 
 
@@ -191,6 +219,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      * 退成功
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void success() throws PayerException, RefundException {
         RefundVO refundinfo = refundinfo();
         ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
@@ -199,16 +228,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
             if (payedVO.getMoney() >= refundinfo.getHopeMoney()) {
                 SpringBeanFactory.getBean(PayerService.class, payedVO.getPayType().getService())
                         .refund(payedVO.getPayId(), refundinfo.getHopeMoney());
-
-                ItemRefundLog refundLog = new ItemRefundLog();
-                refundLog.setRefundId(refundinfo.getRefundId());
-                refundLog.setFromStatus(refundState().refundStatus);
-                refundLog.setToStatus(RefundStateEnum.ENT_REFUND.refundStatus);
-                refundLog.setMsg(refundinfo.getReason());
-                itemRefundLogMapper.insertSelective(refundLog);
-
-                // 变更退款状态
-                refundState(RefundStateEnum.ENT_REFUND);
+                refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND);
                 return;
             }
         }
