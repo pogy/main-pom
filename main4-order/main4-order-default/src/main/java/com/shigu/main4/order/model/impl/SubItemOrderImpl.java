@@ -94,8 +94,10 @@ public class SubItemOrderImpl implements SubItemOrder{
         refundApply.setReason(reason);
         refundApply.setType(type);
 
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrderImpl.class, null);
-        Long refundId = refundItemOrder.apply(refundApply, true);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, refundApply, true);
+
+
+        Long refundId = refundItemOrder.getRefundId();
         return refundId;
     }
 
