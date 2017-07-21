@@ -9,9 +9,11 @@ import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.enums.SubOrderStatus;
+import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.ItemProduct;
+import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -93,6 +95,7 @@ public class ItemOrderImpl implements ItemOrder{
         orderVO.setType(OrderType.typeOf(order.getType()));
         orderVO.setOrderId(order.getOid());
         orderVO.setTitle(order.getTitle());
+        orderVO.setWebSite(order.getWebSite());
         orderVO.setOrderStatus(OrderStatus.statusOf(order.getOrderStatus()));
         return orderVO;
     }
@@ -276,8 +279,9 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
-    public PayApplyVO payApply(PayType payType) {
-        return null;
+    public PayApplyVO payApply(PayType payType) throws PayApplyException {
+        ItemOrderVO orderInfo = orderInfo();
+        return SpringBeanFactory.getBean(PayerService.class, payType.getService()).payApply(orderInfo.getOrderId(), orderInfo.getTotalFee(), orderInfo.getTitle());
     }
 
     @Override

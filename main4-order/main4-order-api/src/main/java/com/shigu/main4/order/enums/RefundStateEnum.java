@@ -7,11 +7,11 @@ public enum RefundStateEnum {
     APPLY_REFUND(0, true),//申请退款
     DISPOSE_REFUND(1, false),//商家受理退请求
     ENT_REFUND(2, null),//退款完成
-    SELLER_REFUND(3, false),//商家拒绝受理
-    NOT_REFUND(4, false),//退款失败
+    SELLER_REFUND(3, false),//商家拒绝受理,msg
+    NOT_REFUND(4, false),//退款失败,msg
     BUYER_SEND(5, true),//买家已发件
     SELLER_CACHED(6, false),//卖家已收件
-    SELLER_REPRICE(7, false),//卖家议价
+    SELLER_REPRICE(7, false),//卖家议价,msg
     BUYER_NOREPRICE(9, true),//买家拒绝附议
     ;
     public final int refundStatus;

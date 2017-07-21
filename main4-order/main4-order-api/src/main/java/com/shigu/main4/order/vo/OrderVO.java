@@ -13,6 +13,8 @@ public class OrderVO implements Serializable{
 
     private String title;
 
+    private String webSite;
+
     private OrderType type;
 
     private Long totalFee;
@@ -35,6 +37,14 @@ public class OrderVO implements Serializable{
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
     }
 
     public OrderType getType() {
