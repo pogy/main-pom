@@ -61,10 +61,8 @@ public class MyOrderAction {
             bo.setPageSize (10);
         }
         List<ShowOrderVO> list=myOrderService.myOrder(bo, ps.getUserId ());
-
         ShiguPager<ShowOrderVO>  pager =myOrderService.selectCountMyOrder(bo,ps.getUserId ());
-                model.addAttribute ("query",bo);//返回查询条件
-
+        model.addAttribute ("query",bo);//返回查询条件
         model.addAttribute ("orders",list);
         model.addAttribute ("pageOption",pager.selPageOption (bo.getPageSize ()));
         return "buyer/myOrder";
@@ -123,7 +121,6 @@ public class MyOrderAction {
     public JSONObject cancelOrder(HttpSession session,Long orderId)throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
-
         if(orderId==null){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
             rsp.setMsg ("订单ID为空！");
@@ -152,7 +149,6 @@ public class MyOrderAction {
             model.addAttribute ("msg","订单号不能为空！");
             return "trade/noOrderInfo";
         }
-
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
         if(!flag){
@@ -170,11 +166,9 @@ public class MyOrderAction {
             model.addAttribute ("orderAddrInfo",detailVo.getOrderAddrInfo ());
             model.addAttribute ("express",detailVo.getExpress ());
             model.addAttribute ("childOrders",detailVo.getChildOrders ());
-
             model.addAttribute ("total",detailVo.getTotal ());
             model.addAttribute ("orderStateNum",detailVo.getOrderStateNum ());
             model.addAttribute ("orderStateTime",detailVo.getOrderStateTime ());
-
            }
 
         return "trade/orderDetail";
