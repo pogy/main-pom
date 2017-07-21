@@ -2,6 +2,7 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 import java.io.Serializable;
 
 public class ItemOrder implements Serializable {
@@ -13,7 +14,7 @@ public class ItemOrder implements Serializable {
 	private Long oid;
 
     /**
-     * 1星座商品类别
+     * 
      */
 	private Integer type;
 
@@ -61,6 +62,16 @@ public class ItemOrder implements Serializable {
      * 备注
      */
 	private String mark;
+
+    /**
+     * 创建时间
+     */
+	private Date createTime;
+
+    /**
+     * 结单时间
+     */
+	private Date finishTime;
 
 	public void setOid(Long oid) {
 		this.oid = oid;
@@ -148,6 +159,22 @@ public class ItemOrder implements Serializable {
 
 	public String getMark() {
 		return this.mark;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getCreateTime() {
+		return this.createTime;
+	}
+
+	public void setFinishTime(Date finishTime) {
+		this.finishTime = finishTime;
+	}
+
+	public Date getFinishTime() {
+		return this.finishTime;
 	}
 
 }

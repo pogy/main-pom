@@ -2,6 +2,8 @@ package com.shigu.main4.order.vo;
 
 import com.shigu.main4.order.enums.OrderStatus;
 
+import java.util.Date;
+
 
 /**
  * 商品类别订单
@@ -12,6 +14,15 @@ public class ItemOrderVO extends OrderVO {
     private Long senderId;
 
     private OrderStatus orderStatus;
+    /**
+     * 单子创建时间
+     */
+    private Date createTime;
+    /**
+     * 单子结束时间,
+     * 未结束时为null
+     */
+    private Date finishTime;
 
     public Long getSenderId() {
         return senderId;
@@ -27,5 +38,21 @@ public class ItemOrderVO extends OrderVO {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getFinishTime() {
+        return finishTime;
+    }
+
+    public void setFinishTime(Date finishTime) {
+        this.finishTime = finishTime;
     }
 }
