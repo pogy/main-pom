@@ -249,18 +249,6 @@ public class GoodsSearchService {
      * @param webSite
      */
     public List<GoodsInSearch> searchByPic(String picUrl, String webSite) throws IOException {
-        //得到IDs
-        RetrieveImageRequest request=new RetrieveImageRequest();
-        if(picUrl!=null){
-            request.setPicUrl(picUrl);
-        }else{
-            return new ArrayList<>();
-        }
-        request.setMinSim(0.1f);
-        request.setWp("intfield1");
-        request.setWs("textfield1 = '"+webSite+"'");
-        request.setSel2(20);
-
         ProductAiSearchBo bo =new ProductAiSearchBo();
         bo.setUrl(picUrl);
         bo.setCount(20);
