@@ -63,7 +63,7 @@ public interface RefundItemOrder {
     /**
      * 买家附议
      */
-    void buyerReprice();
+    void buyerReprice() throws RefundException, PayerException;
 
     /**
      * 买家拒绝附议
