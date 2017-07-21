@@ -312,7 +312,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
                     case "3":
                         state = 3;
                         break;
-                    case "4"://问题件
+                    case "4":
+                        state = 4;
+                        break;
                     default:
                         state = 1;
                         break;
@@ -372,7 +374,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return logVOList;
     }
 
-    //TODO:需要订单常量服务提供接口查询快递公司信息
+    //TODO:获取物流公司对应快递鸟平台公司编码
     private String selLogisticCompanyCode(Long companyId) throws Main4Exception {
         ExpressCompany expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(companyId,FieldUtil.codeFields("express_company_id,remark2"));
         if (expressCompany == null) {

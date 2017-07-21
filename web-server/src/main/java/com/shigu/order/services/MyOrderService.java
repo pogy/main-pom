@@ -2,6 +2,7 @@ package com.shigu.order.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
+import com.shigu.main4.order.enums.SubOrderStatus;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.OrderVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
@@ -43,6 +44,7 @@ public class MyOrderService {
                 List<SubOrderInfoVO> sublist1=new ArrayList<> ();
                 for(SubOrderInfoVO subVo: list.get (i).getChildOrders ()){
                         subVo.setPrice (PriceConvertUtils.priceToString(subVo.getPriceLong ()));
+                      subVo.setSubOrderStatus (subVo.getSubStatusenum ().status);
                     sublist1.add (subVo);
                 }
                 list.get (i).setChildOrders (sublist1);

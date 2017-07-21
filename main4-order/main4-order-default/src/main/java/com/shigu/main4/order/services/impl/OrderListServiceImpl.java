@@ -64,7 +64,7 @@ public class OrderListServiceImpl implements OrderListService {
                        svo.setGoodsNo ("A241 S5-P65");
                        svo.setNum (1);
                        svo.setPriceLong (6500L);
-                       svo.setSubOrderStatus (SubOrderStatus.statusOf (0).status);
+                       svo.setSubStatusenum (SubOrderStatus.statusOf (0));
                        svo.setTitle ("A241 S5-P65 2016秋冬毛线衫男装港风高领毛衣男纯色翻领毛衣");
                        break;
                    }
@@ -76,7 +76,7 @@ public class OrderListServiceImpl implements OrderListService {
                        svo.setGoodsNo ("A242/WX82/P165");
                        svo.setNum (3);
                        svo.setPriceLong (16500L);
-                       svo.setSubOrderStatus (SubOrderStatus.statusOf (2).status);
+                       svo.setSubStatusenum (SubOrderStatus.statusOf (2));
                        svo.setTitle ("修身滚边设计男士帅气一粒扣西装 WX82/P165白");
                        break;
                    }
@@ -88,7 +88,7 @@ public class OrderListServiceImpl implements OrderListService {
                        svo.setGoodsNo ("F088");
                        svo.setNum (2);
                        svo.setPriceLong (11000L);
-                       svo.setSubOrderStatus (SubOrderStatus.statusOf (1).status);
+                       svo.setSubStatusenum (SubOrderStatus.statusOf (1));
                        svo.setTitle ("【品质原创质检F088】秋装男夹克男风衣男外套男大码男P110控148");
                        break;
                    }

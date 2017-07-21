@@ -58,6 +58,8 @@ public class SubOrderInfoVO {
      * 子单状态, 0初始状态，1已退，2已发
      */
     private Integer subOrderStatus;
+
+    private SubOrderStatus subStatusenum;
     /**
      * 退换货ID
      */
@@ -274,5 +276,13 @@ public class SubOrderInfoVO {
 
     public void setPriceLong (Long priceLong) {
         this.priceLong = priceLong;
+    }
+
+    public SubOrderStatus getSubStatusenum () {
+        return subStatusenum;
+    }
+
+    public void setSubStatusenum (SubOrderStatus subStatusenum) {
+        this.subStatusenum = subStatusenum;
     }
 }
