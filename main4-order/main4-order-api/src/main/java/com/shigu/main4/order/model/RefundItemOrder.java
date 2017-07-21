@@ -58,7 +58,7 @@ public interface RefundItemOrder {
      * 卖家议价
      * @param money
      */
-    void sellerProposal(Long money,String msg);
+    void sellerProposal(Long money, String msg);
 
     /**
      * 买家附议
@@ -86,4 +86,6 @@ public interface RefundItemOrder {
      * @param reason
      */
     void error(String reason);
+
+    Long getRefundId();
 }

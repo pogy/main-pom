@@ -1,9 +1,21 @@
 package com.shigu.order.actions;
 
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.TbOrderBO;
+import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
+import com.shigu.main4.order.servicevo.TbOrderVO;
+import com.shigu.main4.order.vo.GoodsVO;
+import com.shigu.order.bo.TaobaoOrderBO;
+import com.shigu.order.services.MyTbOrderService;
+import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.names.SessionEnum;
+import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +33,9 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("order/")
 public class MyTbOrderAction {
+    @Autowired
+    MyTbOrderService myTbOrderService;
+
     /**
      * ====================================================================================
      * @方法名： myTbOrder
@@ -33,12 +48,48 @@ public class MyTbOrderAction {
      *
      */
     @RequestMapping("myTbOrder")
-    public String myTbOrder(HttpSession session, Model model, TbOrderBO bo){
+    public String myTbOrder(HttpSession session, TaobaoOrderBO bo, Model model){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Integer size=10;
+        if(StringUtils.isEmpty(bo.getPage())){
+            bo.setPage(1);
+        }
+        ShiguPager<TbOrderVO> pager=myTbOrderService.myTbOrders(ps.getUserId(),bo.getOrderId(),
+                bo.getPage(),size,bo.getSt(),bo.getEt());
 
-        return null;
+        model.addAttribute("orders",pager.getContent());
+        model.addAttribute("query",bo);
+        model.addAttribute("pageOption",pager.getTotalCount()+","+size+","+bo.getPage());
+        return "buyer/myTbOrder";
     }
 
-    //关联订单
-
+    @RequestMapping("allGlGoodsJson")
+    @ResponseBody
+    public JSONObject allGlGoodsJson(String keyword,Integer page){
+        if(page==null||page<1){
+            page=1;
+        }
+        Integer size=4;
+        ShiguPager<GoodsVO> pager=myTbOrderService.selectglGoods(keyword,page,size);
+        JSONObject obj=new JSONObject();
+        obj.put("result","success");
+        obj.put("goodsList",pager.getContent());
+        obj.put("pageOption",pager.getTotalCount()+","+size+","+page);
+        return obj;
+    }
     //手动关联
+
+    @RequestMapping("glGoodsJson")
+    @ResponseBody
+    public JSONObject glGoodsJson(Long goodsId,Long numiid){
+        JSONObject obj=new JSONObject();
+        try {
+            myTbOrderService.glGoodsJson(numiid,goodsId);
+            obj.put("result","success");
+        } catch (NotFindRelationGoodsException e) {
+            obj.put("result","error");
+            obj.put("msg","未找到可关联的商品");
+        }
+        return obj;
+    }
 }

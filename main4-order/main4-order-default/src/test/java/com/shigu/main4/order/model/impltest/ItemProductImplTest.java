@@ -1,6 +1,8 @@
 package com.shigu.main4.order.model.impltest;
 
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.interfaces.ItemProductMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -24,7 +26,7 @@ public class ItemProductImplTest extends BaseTest {
     }
 
     private ItemProduct getProduct() {
-        return SpringBeanFactory.getBean(ItemProduct.class, 20475519L, "酒红色", "3XL");
+        return SpringBeanFactory.getBean(ItemProduct.class, 20477519L, "酒红色", "3XL");
     }
 
     @Test
@@ -48,9 +50,11 @@ public class ItemProductImplTest extends BaseTest {
 
         assertEquals(primaryKey.getPrice(), modPrice);
     }
-
+    @Autowired
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
     @Test
     public void selWeight() throws Exception {
+        ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById("hz", 20477519L);
         show(getProduct().selWeight());
     }
 

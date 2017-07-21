@@ -4,6 +4,7 @@ import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.tools.SpringBeanFactory;
+import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -11,16 +12,19 @@ import org.junit.Test;
  */
 public class RefundItemOrderImplTest extends BaseTest{
 
+    private static Long generateRefundId;
+
     @Test
     public void applyTest() {
-        RefundApplyBO refundApplyBO = refundApplyBOGenerator(2L, 4L, 1, 100L, "退款构造测试");
+        RefundApplyBO refundApplyBO = refundApplyBOGenerator(38L, 78L, 1, 100L, "退款构造测试");
         RefundItemOrder bean = SpringBeanFactory.getBean(RefundItemOrder.class, refundApplyBO, true);
         show(bean);
+        generateRefundId = bean.getRefundId();
     }
 
     @Test
     public void sellerAgreeTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.sellerAgree();
         //测试重复操作
         refundItemOrder.sellerAgree();
@@ -28,7 +32,7 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sellerRefuseTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
         //测试重复操作
         refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
@@ -36,15 +40,15 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void userSendedTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.userSended("885782656452802268");
         //测试重复操作
         refundItemOrder.userSended("885782656452802268");
     }
 
-    @Test
+    @After
     public void sellerCachedTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.sellerCached();
         //测试重复操作
         refundItemOrder.sellerCached();
@@ -52,7 +56,7 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void errorTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.error("退件失败");
         //测试重复操作
         refundItemOrder.error("退件失败");
@@ -60,15 +64,15 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sellerProposalTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
-        refundItemOrder.sellerProposal(200L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
+        refundItemOrder.sellerProposal(200L,"测试参数");
         //测试重复操作
-        refundItemOrder.sellerProposal(200L);
+        refundItemOrder.sellerProposal(200L,"测试参数");
     }
 
     @Test
     public void buyerNoRepriceTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.buyerNoReprice();
         //测试重复操作
         refundItemOrder.buyerNoReprice();

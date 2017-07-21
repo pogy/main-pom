@@ -2,7 +2,9 @@ package com.shigu.main4.order.model.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ItemCidWeightExample;
 import com.opentae.data.mall.examples.ItemProductSkuExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.ItemProduct;
@@ -21,7 +23,7 @@ import java.util.List;
  */
 @Repository
 @Scope("prototype")
-public class ItemProductImpl implements ItemProduct{
+public class ItemProductImpl implements ItemProduct {
 
     @Autowired
     private ItemProductMapper itemProductMapper;
@@ -41,6 +43,10 @@ public class ItemProductImpl implements ItemProduct{
     @Autowired
     private ShiguShopMapper shiguShopMapper;
 
+    @Autowired
+    private ItemCidWeightMapper itemCidWeightMapper;
+
+
     private Long goodsId;
     private String color;
     private String size;
@@ -53,7 +59,7 @@ public class ItemProductImpl implements ItemProduct{
         this.skuId = skuId;
     }
 
-    public ItemProductImpl(Long goodsId,String color,String size) {
+    public ItemProductImpl(Long goodsId, String color, String size) {
         this.goodsId = goodsId;
         this.color = color;
         this.size = size;
@@ -68,7 +74,7 @@ public class ItemProductImpl implements ItemProduct{
             size = info.getSelectiveSku().getSize();
             return;
         }
-        ItemProductInfo productInfo =  createProduct(goodsId, color, size);
+        ItemProductInfo productInfo = createProduct(goodsId, color, size);
         pid = productInfo.getPid();
         skuId = productInfo.getSkuId();
     }
@@ -161,7 +167,8 @@ public class ItemProductImpl implements ItemProduct{
 
     /**
      * 修改sku信息
-     *  @param color 颜色
+     *
+     * @param color 颜色
      * @param size  尺码
      */
     @Override
@@ -171,9 +178,37 @@ public class ItemProductImpl implements ItemProduct{
         return this.skuId = createProduct(goodsId, color, size).getSkuId();
     }
 
+    /**
+     * 产品重量查询
+     *
+     * @return
+     */
     @Override
     public Long selWeight() {
-        return itemProductMapper.selectByPrimaryKey(pid).getWeight();
+        com.opentae.data.mall.beans.ItemProduct itemProduct = itemProductMapper.selectByPrimaryKey(pid);
+        if (itemProduct.getWeight() == 0) {
+            ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById("hz", itemProduct.getGoodsId());
+            ItemCidWeightExample itemCidWeightExample = new ItemCidWeightExample();
+            if (shiguGoodsTiny != null) {
+
+                itemCidWeightExample.createCriteria().andCidEqualTo(shiguGoodsTiny.getCid());
+
+                List<ItemCidWeight> weights = itemCidWeightMapper.selectByExample(itemCidWeightExample);
+                if (weights.size() > 0 ) {
+                    Long cidWeight=0L;
+                    for (ItemCidWeight i:weights){
+                        cidWeight+=i.getWeight();
+                    }
+                    return cidWeight;
+                } else {
+                    return 1000L;
+                }
+            }
+        }
+
+        return itemProduct.getWeight();
+
+
     }
 
     public Long getPid() {

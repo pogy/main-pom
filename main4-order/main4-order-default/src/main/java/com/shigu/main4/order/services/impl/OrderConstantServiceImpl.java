@@ -124,7 +124,7 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     }
 
     /**
-     * 按市场ID获取代发服务
+     * 按marketId获取代发服务
      * @param senderId
      * @param marketId
      * @return

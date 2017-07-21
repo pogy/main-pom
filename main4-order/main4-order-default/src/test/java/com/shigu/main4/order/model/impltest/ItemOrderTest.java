@@ -3,8 +3,10 @@ package com.shigu.main4.order.model.impltest;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.servicevo.OrderInfoVO;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
+import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.SubOrderVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
@@ -160,4 +162,13 @@ public class ItemOrderTest extends BaseTest {
         ItemOrderVO iv= order.orderInfo();
         System.out.println(iv.getOrderId());
     }
+    @Test
+    public void payedInfo(){
+        ItemOrder order = SpringBeanFactory.getBean(ItemOrder.class, 1L);
+        List<PayedVO> payedVOS = order.payedInfo();
+        for (PayedVO vo:payedVOS){
+            System.out.println(vo);
+        }
+    }
+
 }

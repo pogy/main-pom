@@ -14,67 +14,130 @@ import java.io.Serializable;
  * @commonents:
  */
 public class GoodsVO implements Serializable{
-    //至少要有以下字段
-    //商品ID
-    private Long goodsId;
-    private Long numIid;
+    /**
+     * 商品ID
+     */
+    private Long id;
+    /**
+     * 标题
+     */
     private String title;
-    private String imgUrl;
+    /**
+     * 主图
+     */
+    private String imgSrc;
+    /**
+     * 价格
+     */
     private String price;
+    /**
+     * 货号
+     */
+    private String goodsNo;
+    /**
+     * 市场名
+     */
     private String marketName;
-    private String shopNum;
-    public Long getGoodsId() {
-        return this.goodsId;
-    }
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
+    /**
+     * 档口号
+     */
+    private String storeNum;
+
+    /**
+     * 获取 商品ID
+     */
+    public Long getId() {
+        return this.id;
     }
 
-    public Long getNumIid() {
-        return this.numIid;
+    /**
+     * 设置 商品ID
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setNumIid(Long numIid) {
-        this.numIid = numIid;
-    }
-
+    /**
+     * 获取 标题
+     */
     public String getTitle() {
         return this.title;
     }
 
+    /**
+     * 设置 标题
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getImgUrl() {
-        return this.imgUrl;
+    /**
+     * 获取 主图
+     */
+    public String getImgSrc() {
+        return this.imgSrc;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    /**
+     * 设置 主图
+     */
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 
+    /**
+     * 获取 价格
+     */
     public String getPrice() {
         return this.price;
     }
 
+    /**
+     * 设置 价格
+     */
     public void setPrice(String price) {
         this.price = price;
     }
 
+    /**
+     * 获取 货号
+     */
+    public String getGoodsNo() {
+        return this.goodsNo;
+    }
+
+    /**
+     * 设置 货号
+     */
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
+    }
+
+    /**
+     * 获取 市场名
+     */
     public String getMarketName() {
         return this.marketName;
     }
 
+    /**
+     * 设置 市场名
+     */
     public void setMarketName(String marketName) {
         this.marketName = marketName;
     }
 
-    public String getShopNum() {
-        return this.shopNum;
+    /**
+     * 获取 档口号
+     */
+    public String getStoreNum() {
+        return this.storeNum;
     }
 
-    public void setShopNum(String shopNum) {
-        this.shopNum = shopNum;
+    /**
+     * 设置 档口号
+     */
+    public void setStoreNum(String storeNum) {
+        this.storeNum = storeNum;
     }
 }
