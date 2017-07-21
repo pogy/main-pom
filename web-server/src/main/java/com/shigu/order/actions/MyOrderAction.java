@@ -5,7 +5,8 @@ import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
-import com.shigu.main4.order.servicevo.OrderVO;
+import com.shigu.main4.order.servicevo.OrderDetailVO;
+import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.order.services.MyOrderService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -37,6 +38,7 @@ public class MyOrderAction {
     @Autowired
     MyOrderService myOrderService;
 
+
     /**
      * ====================================================================================
      * @方法名： myOrder
@@ -54,9 +56,9 @@ public class MyOrderAction {
         if(bo.getPageSize ()==null){
             bo.setPageSize (10);
         }
-        List<OrderVO> list=myOrderService.myOrder(bo,ps.getUserId ());
+        List<ShowOrderVO> list=myOrderService.myOrder(bo, ps.getUserId ());
 
-        ShiguPager<OrderVO>  pager =myOrderService.selectCountMyOrder(bo,ps.getUserId ());
+        ShiguPager<ShowOrderVO>  pager =myOrderService.selectCountMyOrder(bo,ps.getUserId ());
                 model.addAttribute ("query",bo);//返回查询条件
 
         model.addAttribute ("orders",list);
@@ -77,11 +79,19 @@ public class MyOrderAction {
      */
     @RequestMapping("removeOrder")
     @ResponseBody
-    public JSONObject removeOrder(Long orderId)throws JsonErrException {
+    public JSONObject removeOrder(HttpSession session,Long orderId)throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
+
+
+
         if(orderId==null){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
 
+        }
+        boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
+        if(!flag){
+            rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
         }
        int i=  myOrderService.removeOrder(orderId);
         if(i>0) {
@@ -105,11 +115,17 @@ public class MyOrderAction {
      */
     @RequestMapping("cancelOrder")
     @ResponseBody
-    public JSONObject cancelOrder(Long orderId)throws JsonErrException {
+    public JSONObject cancelOrder(HttpSession session,Long orderId)throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
+
         if(orderId==null){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
 
+        }
+        boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
+        if(!flag){
+            rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
         }
         int i=  myOrderService.cancelOrder(orderId);
         if(i>0) {
@@ -120,6 +136,22 @@ public class MyOrderAction {
         return JSONObject.fromObject(rsp);
     }
 
+    public String orderDetail(HttpSession session,Long orderId,Model model){
+        if(orderId==null){
+            //订单出错
+        }
+
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
+        if(!flag){
+           //没有这个订单
+        }else{
+            OrderDetailVO detailVo= myOrderService.orderDetail(orderId);
+            model.addAttribute ("orderDetailVO",detailVo);
+        }
+
+        return "buyer/myOrder";
+    }
 
 
 

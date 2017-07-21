@@ -5,8 +5,11 @@ import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.enums.MainOrderStatusEnum;
 import com.shigu.main4.order.enums.SubOrderStatus;
 import com.shigu.main4.order.services.OrderListService;
-import com.shigu.main4.order.servicevo.OrderVO;
+import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
+import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.vo.OrderAddrInfoVO;
+import com.shigu.main4.order.vo.OrderDetailExpressVO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,10 +30,10 @@ import java.util.List;
 @Service
 public class OrderListServiceImpl implements OrderListService {
 
-    @Override public List<OrderVO> myOrder (OrderBO bo,Long userId) {
+    @Override public List<ShowOrderVO> myOrder (OrderBO bo,Long userId) {
 
-            List<OrderVO> list=new ArrayList<> ();
-        OrderVO ovo=new OrderVO ();
+            List<ShowOrderVO> list=new ArrayList<> ();
+        ShowOrderVO ovo=new ShowOrderVO ();
 
         for(int i=0;i<20;i++) {
             ovo.setMainState (MainOrderStatusEnum.statusOf (1).status);
@@ -104,8 +107,8 @@ public class OrderListServiceImpl implements OrderListService {
         return list;
     }
 
-    @Override public ShiguPager<OrderVO> selectCountMyOrder (OrderBO bo, Long userId) {
-        ShiguPager<OrderVO> pager=new ShiguPager<OrderVO>();
+    @Override public ShiguPager<ShowOrderVO> selectCountMyOrder (OrderBO bo, Long userId) {
+        ShiguPager<ShowOrderVO> pager=new ShiguPager<ShowOrderVO>();
         //totalCount+","+size+","+number;
         pager.setTotalCount (15);
         pager.setNumber (12);
@@ -119,6 +122,26 @@ public class OrderListServiceImpl implements OrderListService {
 
     @Override public int cancelOrder (Long tbid) {
         return 1;
+    }
+
+    @Override public OrderAddrInfoVO selectOrderAddrInfo (Long orderId) {
+        return null;
+    }
+
+    @Override public OrderDetailExpressVO selectExpress (Long orderId) {
+        return null;
+    }
+
+    @Override public ShowOrderVO selectMyorder (Long orderId) {
+        return null;
+    }
+
+    @Override public List<SubOrderInfoVO> selectSubList (Long orderId) {
+        return null;
+    }
+
+    @Override public OrderDetailTotalVO selectTotal (Long orderId) {
+        return null;
     }
 
 }
