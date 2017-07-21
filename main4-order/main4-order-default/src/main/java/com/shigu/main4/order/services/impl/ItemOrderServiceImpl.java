@@ -483,11 +483,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
         OrderInfoVO infoVO = new OrderInfoVO();
         infoVO.setOrderId(itemOrderVO.getOrderId());
-        infoVO.setOrderDealTime(itemOrderVO.getTradeTimed());
-        infoVO.setOrderPrice(itemOrderVO.getOrderPrice());
-        infoVO.setExpressPrice(itemOrderVO.getPostPay());
+        /*infoVO.setOrderDealTime(itemOrderVO.getTradeTimed());
+        infoVO.setOrderPrice(String.valueOf(itemOrderVO.getTotalFee()/100));
+        infoVO.setExpressPrice(itemOrderVO.get);
         infoVO.setServicePrice(itemOrderVO.getServerPay());
-        infoVO.setTotalPrice(itemOrderVO.getTradePay());
+        infoVO.setTotalPrice(itemOrderVO.getTradePay());*/
         infoVO.setOrderState(MainOrderStatusEnum.statusOf(itemOrderVO.getOrderStatus().status));
         List<LogisticsVO> logisticsVOS = itemOrder.selLogisticses();
         if (logisticsVOS.size()>0){
