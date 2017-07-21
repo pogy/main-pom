@@ -21,49 +21,25 @@ public class TbOrderVO implements Serializable{
      * 淘宝主单ID
      * PS:转json的时候建议将Long转String,防止数值偏移
      */
-    private Long tid;
+    private Long tbId;
     /**
      * 支付时间
      */
-    private Date payTime;
+    private String time;
     /**
-     * 最后一次在星座网下单时间
+     * 最后一次下单时间
      */
-    private Date lastTradeTime;
+    private String lastTime;
     /**
      * 利润
      */
     private String profits;
     /**
-     * 省
-     */
-    private String receiverState;
-    /**
-     * 市
-     */
-    private String receiverCity;
-    /**
-     * 区
-     */
-    private String receivarDistrict;
-    /**
      * 详细地址,包含街道
      */
-    private String receiverAddress;
+    private String address;
     /**
-     * 收件人
-     */
-    private String receiverName;
-    /**
-     * 手机
-     */
-    private String receiverMobile;
-    /**
-     * 电话
-     */
-    private String receiverPhone;
-    /**
-     * 是否已关联商品
+     * 是否可下单
      */
     private boolean canOrder;
     /**
@@ -75,44 +51,44 @@ public class TbOrderVO implements Serializable{
      * 淘宝主单ID
      * PS:转json的时候建议将Long转String,防止数值偏移
      */
-    public Long getTid() {
-        return this.tid;
+    public Long getTbId() {
+        return this.tbId;
     }
 
     /**
      * 淘宝主单ID
      * PS:转json的时候建议将Long转String,防止数值偏移
      */
-    public void setTid(Long tid) {
-        this.tid = tid;
+    public void setTbId(Long tbId) {
+        this.tbId = tbId;
     }
 
     /**
      * 获取 支付时间
      */
-    public Date getPayTime() {
-        return this.payTime;
+    public String getTime() {
+        return this.time;
     }
 
     /**
      * 设置 支付时间
      */
-    public void setPayTime(Date payTime) {
-        this.payTime = payTime;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     /**
-     * 获取 最后一次在星座网下单时间
+     * 获取 最后一次下单时间
      */
-    public Date getLastTradeTime() {
-        return this.lastTradeTime;
+    public String getLastTime() {
+        return this.lastTime;
     }
 
     /**
-     * 设置 最后一次在星座网下单时间
+     * 设置 最后一次下单时间
      */
-    public void setLastTradeTime(Date lastTradeTime) {
-        this.lastTradeTime = lastTradeTime;
+    public void setLastTime(String lastTime) {
+        this.lastTime = lastTime;
     }
 
     /**
@@ -130,112 +106,28 @@ public class TbOrderVO implements Serializable{
     }
 
     /**
-     * 获取 省
-     */
-    public String getReceiverState() {
-        return this.receiverState;
-    }
-
-    /**
-     * 设置 省
-     */
-    public void setReceiverState(String receiverState) {
-        this.receiverState = receiverState;
-    }
-
-    /**
-     * 获取 市
-     */
-    public String getReceiverCity() {
-        return this.receiverCity;
-    }
-
-    /**
-     * 设置 市
-     */
-    public void setReceiverCity(String receiverCity) {
-        this.receiverCity = receiverCity;
-    }
-
-    /**
-     * 获取 区
-     */
-    public String getReceivarDistrict() {
-        return this.receivarDistrict;
-    }
-
-    /**
-     * 设置 区
-     */
-    public void setReceivarDistrict(String receivarDistrict) {
-        this.receivarDistrict = receivarDistrict;
-    }
-
-    /**
      * 获取 详细地址,包含街道
      */
-    public String getReceiverAddress() {
-        return this.receiverAddress;
+    public String getAddress() {
+        return this.address;
     }
 
     /**
      * 设置 详细地址,包含街道
      */
-    public void setReceiverAddress(String receiverAddress) {
-        this.receiverAddress = receiverAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     /**
-     * 获取 收件人
-     */
-    public String getReceiverName() {
-        return this.receiverName;
-    }
-
-    /**
-     * 设置 收件人
-     */
-    public void setReceiverName(String receiverName) {
-        this.receiverName = receiverName;
-    }
-
-    /**
-     * 获取 手机
-     */
-    public String getReceiverMobile() {
-        return this.receiverMobile;
-    }
-
-    /**
-     * 设置 手机
-     */
-    public void setReceiverMobile(String receiverMobile) {
-        this.receiverMobile = receiverMobile;
-    }
-
-    /**
-     * 获取 电话
-     */
-    public String getReceiverPhone() {
-        return this.receiverPhone;
-    }
-
-    /**
-     * 设置 电话
-     */
-    public void setReceiverPhone(String receiverPhone) {
-        this.receiverPhone = receiverPhone;
-    }
-
-    /**
-     * 获取 是否已关联商品
+     * 获取 是否可下单
      */
     public boolean isCanOrder() {
         return this.canOrder;
     }
 
     /**
-     * 设置 是否已关联商品
+     * 设置 是否可下单
      */
     public void setCanOrder(boolean canOrder) {
         this.canOrder = canOrder;
