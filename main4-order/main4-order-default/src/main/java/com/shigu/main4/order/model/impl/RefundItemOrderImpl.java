@@ -1,15 +1,20 @@
 package com.shigu.main4.order.model.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.ItemRefundLog;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
+import com.shigu.main4.order.enums.RefundMsgEnum;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.vo.RefundVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
@@ -21,6 +26,7 @@ import javax.annotation.PostConstruct;
 @Repository
 @Scope("prototype")
 public class RefundItemOrderImpl implements RefundItemOrder {
+
 
     private Long refundId;
 
@@ -36,6 +42,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
+
+    @Autowired
+    private ItemRefundLogMapper itemRefundLogMapper;
 
     public RefundItemOrderImpl(Long refundId) {
         this.refundId = refundId;
@@ -82,8 +91,18 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      * 卖家受理
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void sellerAgree() {
-
+        ItemRefundLog itemRefundLog = new ItemRefundLog();
+        ItemOrderRefund selectedFields = getSelectedFields("refund_id,status");
+        itemRefundLog.setFromStatus(selectedFields.getStatus());
+        itemRefundLog.setRefundId(refundId);
+        itemRefundLog.setToStatus(1);
+        selectedFields.setStatus(1);
+        itemRefundLog.setImBuyer(false);
+        itemRefundLog.setMsg(RefundMsgEnum.SELLER_AGREE.toString());
+        itemOrderRefundMapper.updateByPrimaryKeySelective(selectedFields);
+        itemRefundLogMapper.insert(itemRefundLog);
     }
 
     /**
@@ -165,5 +184,14 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     public Long getRefundId() {
         return refundId;
+    }
+
+    /**
+     * 获取包含指定字段信息的ItemOrderRefund对象
+     * @param fields
+     * @return
+     */
+    private ItemOrderRefund getSelectedFields(String fields) {
+        return itemOrderRefundMapper.selectFieldsByPrimaryKey(refundId, FieldUtil.codeFields(fields));
     }
 }

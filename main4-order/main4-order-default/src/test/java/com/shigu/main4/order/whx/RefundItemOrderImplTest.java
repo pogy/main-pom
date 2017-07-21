@@ -18,6 +18,12 @@ public class RefundItemOrderImplTest extends BaseTest{
         show(bean);
     }
 
+    @Test
+    public void sellerAgreeTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4);
+        refundItemOrder.sellerAgree();
+    }
+
     private RefundApplyBO refundApplyBOGenerator(Long oid,Long soid,Integer type,Long hopeMoney,String reason) {
         RefundApplyBO refundApplyBO = new RefundApplyBO();
         refundApplyBO.setOid(oid);
