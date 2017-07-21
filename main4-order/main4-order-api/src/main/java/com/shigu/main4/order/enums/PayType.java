@@ -25,4 +25,12 @@ public enum PayType {
     public String getService() {
         return service;
     }
+    public static PayType valueOf(int value) {
+        for (PayType type : values()) {
+            if (type.value == value) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException(String.format("status %d 不合法", value));
+    }
 }

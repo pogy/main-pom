@@ -16,7 +16,7 @@ public class SubItemOrderImplTest extends BaseTest {
 
     @Before
     public void init() {
-        subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class,5L);
+        subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class,78L);
     }
 
     @Test
@@ -27,5 +27,10 @@ public class SubItemOrderImplTest extends BaseTest {
     @Test
     public void refundApplyTest() {
         subItemOrder.refundApply(1, 1, 1L, "test");
+    }
+
+    @Test
+    public void refundInfosTest() {
+        show(subItemOrder.refundInfos());
     }
 }
