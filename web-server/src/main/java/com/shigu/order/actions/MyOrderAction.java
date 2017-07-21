@@ -86,9 +86,6 @@ public class MyOrderAction {
     public JSONObject removeOrder(HttpSession session,Long orderId)throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
-
-
-
         if(orderId==null){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
             rsp.setMsg ("订单ID为空！");
