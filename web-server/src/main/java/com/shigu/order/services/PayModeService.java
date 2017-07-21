@@ -1,12 +1,13 @@
 package com.shigu.order.services;
 
-import com.opentae.data.mall.beans.OrderPayApply;
-import com.opentae.data.mall.examples.OrderPayExample;
+import com.opentae.data.mall.beans.OrderPay;
+import com.opentae.data.mall.beans.OrderPayRelationship;
 import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
 import com.opentae.data.mall.interfaces.OrderPayMapper;
+import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.utils.PriceConvertUtils;
@@ -15,8 +16,6 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.vo.PayModePageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by whx on 2017/7/17 0017.
@@ -32,6 +31,9 @@ public class PayModeService {
 
     @Autowired
     private OrderPayMapper orderPayMapper;
+
+    @Autowired
+    private OrderPayRelationshipMapper orderPayRelationshipMapper;
 
     /**
      * 获取支付方式页面数据
@@ -67,7 +69,7 @@ public class PayModeService {
         return itemOrder(orderId).payApply(payType).getPayLink();
     }
 
-    private com.shigu.main4.order.model.ItemOrder itemOrder(Long orderId) {
+    public com.shigu.main4.order.model.ItemOrder itemOrder(Long orderId) {
         return SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
     }
 
@@ -86,15 +88,36 @@ public class PayModeService {
      * @param orderId 订单id
      * @return
      */
-    public boolean checkPayed(Long orderId) {
-        OrderPayApply apply = new OrderPayApply();
-        apply.setOid(orderId);
-        List<OrderPayApply> select = orderPayApplyMapper.select(apply);
-        if (select.isEmpty()) {
-            return false;
+    public Long checkPayed(Long orderId) {
+        OrderPayRelationship orderPayRelationship = new OrderPayRelationship();
+        orderPayRelationship.setOid(orderId);
+        orderPayRelationship = orderPayRelationshipMapper.selectOne(orderPayRelationship);
+        if (orderPayRelationship != null) {
+            return orderPayRelationship.getPayId();
         }
-        OrderPayExample payExample = new OrderPayExample();
-        payExample.createCriteria().andApplyIdIn(BeanMapper.getFieldList(select, "applyId", Long.class));
-        return orderPayMapper.countByExample(payExample) > 0;
+        return null;
+    }
+
+    /**
+     * 查询支付记录
+     * @param orderId 支付id
+     * @return
+     */
+    public String selPayType(Long orderId) throws Main4Exception {
+        Long payed = checkPayed(orderId);
+        if (payed == null) {
+            throw new Main4Exception("请前往订单列表查看结果");
+        }
+        OrderPay orderPay = orderPayMapper.selectByPrimaryKey(payed);
+        switch (orderPay.getType()) {
+            case 1:
+                return "微信";
+            case 2:
+                return "支付宝";
+            case 3:
+                return "星座宝";
+            default:
+                throw new Main4Exception("支付成功，请前往订单列表查看结果");
+        }
     }
 }
