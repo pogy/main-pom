@@ -86,4 +86,6 @@ public interface RefundItemOrder {
      * @param reason
      */
     void error(String reason);
+
+    Long getRefundId();
 }

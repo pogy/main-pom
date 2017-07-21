@@ -83,7 +83,7 @@ public class SubItemOrderImpl implements SubItemOrder{
      * @param money
      */
     @Override
-    public Long refundApply(Integer type, Integer number, Long money,String reason) {
+    public Long refundApply(Integer type, Integer number, Long money, String reason) {
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         RefundApplyBO refundApply = new RefundApplyBO();
         refundApply.setSoid(itemOrderSub.getSoid());
@@ -94,8 +94,8 @@ public class SubItemOrderImpl implements SubItemOrder{
         refundApply.setReason(reason);
         refundApply.setType(type);
 
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrderImpl.class, null);
-        Long refundId = refundItemOrder.apply(refundApply, true);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, refundApply, true);
+        Long refundId = refundItemOrder.getRefundId();
         return refundId;
     }
 
