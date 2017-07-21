@@ -1,6 +1,7 @@
 package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.enums.PayType;
+import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.SubOrderVO;
@@ -17,7 +18,7 @@ public interface Order{
      * @param payType 支付类别
      * @return
      */
-    PayApplyVO payApply(PayType payType);
+    PayApplyVO payApply(PayType payType) throws PayApplyException;
 
     /**
      * 追加子订单

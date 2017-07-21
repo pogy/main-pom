@@ -1,6 +1,7 @@
 package com.shigu.order.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.order.services.PayModeService;
 import com.shigu.order.vo.PayModePageVO;
@@ -20,9 +21,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
+ * 收银台页面
  * Created by whx on 2017/7/17 0017.
+ * @author bugzy
  */
 @Controller
+@RequestMapping("order/")
 public class PayModeAction {
 
     @Autowired
@@ -37,8 +41,8 @@ public class PayModeAction {
      * @throws JsonErrException
      * @throws PayApplyException
      */
-    @RequestMapping("/order/payMode")
-    public String payMode(String orderId, HttpSession session, Model model) throws JsonErrException, PayApplyException {
+    @RequestMapping("payMode")
+    public String payMode(Long orderId, HttpSession session, Model model) throws JsonErrException, PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         PayModePageVO payModePageVO = payModeService.selPayModePageVO(orderId, userId);
@@ -54,17 +58,16 @@ public class PayModeAction {
     /**
      * 微信支付
      * @param orderId
-     * @param session
      * @return
      * @throws JsonErrException
      * @throws PayApplyException
      */
-    @RequestMapping("/order/payInfoJson")
+    @RequestMapping("payInfoJson")
     @ResponseBody
-    public JSONObject payInfoJson(String orderId, HttpSession session) throws JsonErrException, PayApplyException {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String wxpay = payModeService.wxpay(orderId, ps.getUserId());
-        return JsonResponseUtil.success().element("qrcodeImg","http://pan.baidu.com/share/qrcode?w=300&h=300&url=" + wxpay);
+    public JSONObject payInfoJson(Long orderId) throws JsonErrException, PayApplyException {
+        return JsonResponseUtil.success()
+                // 使用百度云盘二维码生成api
+                .element("qrcodeImg","http://pan.baidu.com/share/qrcode?w=300&h=300&url=" + payModeService.payApply(orderId, PayType.WX));
     }
 
     /**
@@ -76,11 +79,12 @@ public class PayModeAction {
      * @throws JsonErrException
      * @throws PayApplyException
      */
-    @RequestMapping("/order/xzpayJson")
+    @RequestMapping("xzpayJson")
     @ResponseBody
-    public JSONObject xzpayJson(String orderId, String pwd, HttpSession session) throws JsonErrException, PayApplyException {
+    public JSONObject xzpayJson(Long orderId, String pwd, HttpSession session) throws JsonErrException, PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        payModeService.xzpay(orderId,pwd,ps.getUserId());
+        payModeService.checkPwd(pwd, ps.getUserId());
+        payModeService.payApply(orderId, PayType.XZ);
         return JsonResponseUtil.success();
     }
 
@@ -89,18 +93,21 @@ public class PayModeAction {
      * 支付轮询
      * @return
      */
-    @RequestMapping("/order/payPollingJson")
+    @RequestMapping("payPollingJson")
     @ResponseBody
-    public JSONObject payPollingJson() {
+    public JSONObject payPollingJson(Long orderId) {
+        if (payModeService.checkPayed(orderId)) {
+            return JsonResponseUtil.success();
+        }
         return null;
     }
 
-    @RequestMapping("/order/alipay")
+    @RequestMapping("alipay")
     public void alipay(Long id, HttpServletResponse response) throws PayApplyException, IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
-        writer.println(payModeService.alipay(id));
+        writer.println(payModeService.payApply(id, PayType.ALI));
         writer.flush();
         writer.close();
     }
