@@ -2,7 +2,11 @@ package com.shigu.main4.order.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
-import com.shigu.main4.order.servicevo.OrderVO;
+import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
+import com.shigu.main4.order.servicevo.ShowOrderVO;
+import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.vo.OrderAddrInfoVO;
+import com.shigu.main4.order.vo.OrderDetailExpressVO;
 
 
 import java.util.List;
@@ -30,7 +34,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    List<OrderVO> myOrder( OrderBO bo,Long userId);
+    List<ShowOrderVO> myOrder( OrderBO bo,Long userId);
 
     /**
      * ====================================================================================
@@ -42,7 +46,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    ShiguPager<OrderVO> selectCountMyOrder(OrderBO bo, Long userId);
+    ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId);
 
 
     /**
@@ -68,5 +72,66 @@ public interface OrderListService {
      * 
      */
     int cancelOrder(Long tbid);
+
+    /**
+     * ====================================================================================
+     * @方法名：selectOrderAddrInfo
+     * @功能： 查询订单地址信息
+     * @param: 
+     * @return: 
+     * @exception: 
+     * ====================================================================================
+     * 
+     */
+    OrderAddrInfoVO selectOrderAddrInfo(Long orderId);
+
+    /**
+     * ====================================================================================
+     * @方法名：selectExpress
+     * @功能： 查询订单的快递信息
+     * @param: 
+     * @return: 
+     * @exception: 
+     * ====================================================================================
+     * 
+     */
+    OrderDetailExpressVO selectExpress(Long orderId);//
+
+    /**
+     * ====================================================================================
+     * @方法名：selectMyorder
+     * @功能： 查询主订单的信息
+     * @param: 
+     * @return: 
+     * @exception: 
+     * ====================================================================================
+     * 
+     */
+    ShowOrderVO selectMyorder(Long orderId);
+
+    /**
+     * ====================================================================================
+     * @方法名：selectSubList
+     * @功能： 根据主单id查询出子单列表
+     * @param: 
+     * @return: 
+     * @exception: 
+     * ====================================================================================
+     * 
+     */
+    List<SubOrderInfoVO> selectSubList(Long orderId);
+
+    /**
+     * ====================================================================================
+     * @方法名：selectTotal
+     * @功能： 根据主单查询总数
+     * @param: 
+     * @return: 
+     * @exception: 
+     * ====================================================================================
+     * 
+     */
+    OrderDetailTotalVO selectTotal(Long orderId);
+
 
 }

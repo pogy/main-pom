@@ -1,12 +1,19 @@
 package com.shigu.order.services;
 
+import com.opentae.data.mall.beans.ItemOrder;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.enums.SubOrderStatus;
 import com.shigu.main4.order.services.OrderListService;
-import com.shigu.main4.order.servicevo.OrderVO;
+import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
+import com.shigu.main4.order.servicevo.OrderDetailVO;
+import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.utils.PriceConvertUtils;
+import com.shigu.main4.order.vo.OrderAddrInfoVO;
+import com.shigu.main4.order.vo.OrderDetailExpressVO;
 import com.shigu.tools.DateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +37,12 @@ public class MyOrderService {
     @Autowired
     OrderListService orderListService;
 
-    public List<OrderVO> myOrder(OrderBO bo, Long userId) {
-        List<OrderVO> list=orderListService.myOrder (bo,userId);
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
+
+
+    public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) {
+        List<ShowOrderVO> list=orderListService.myOrder (bo,userId);
         if(list.size ()>0){
             for(int i=0;i<list.size ();i++){
 
@@ -59,14 +70,67 @@ public class MyOrderService {
 
     }
 
-    public ShiguPager<OrderVO> selectCountMyOrder(OrderBO bo, Long userId){
+
+    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId){
+
         return orderListService.selectCountMyOrder (bo,userId);
     }
+    public boolean orderFlag(Long orderId,Long userId){
+        boolean flag=false;
+        ItemOrder iorder=  itemOrderMapper.selectByPrimaryKey (orderId);
+
+        if(iorder!=null&&!userId.equals (iorder.getUserId ())){
+            flag=true;
+        }
+
+        return flag;
+    }
+
 
     public int removeOrder(Long orderId){
        return orderListService.removeOrder (orderId);
     }
     public int cancelOrder(Long orderId){
         return orderListService.cancelOrder (orderId);
+    }
+
+
+    public OrderDetailVO orderDetail(Long orderId){
+        ShowOrderVO orderVO= orderListService.selectMyorder (orderId);
+        OrderAddrInfoVO addrVo= orderListService.selectOrderAddrInfo( orderId);
+        OrderDetailExpressVO expressVO= orderListService.selectExpress( orderId);
+        List<SubOrderInfoVO> list=orderListService.selectSubList( orderId);
+        OrderDetailTotalVO totalVO= orderListService.selectTotal( orderId);
+
+        OrderDetailVO vo=new OrderDetailVO();
+        vo.setChildOrders (list);
+        vo.setExpress (expressVO);
+        vo.setOrderAddrInfo (addrVo);
+        vo.setTotal (totalVO);
+        if(orderVO.getOrderCreateTimed ()!=null) {
+            vo.setOrderCreateTime (DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getOrderCreateTimed ()));
+        }
+        vo.setOrderId (orderId);
+        if(orderVO.getTradeTimed ()!=null) {
+            vo.setOrderDealTime (DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getTradeTimed ()));
+        }
+        vo.setOrderStateNum (orderVO.getMainState ().longValue ());
+        vo.setOrderStateText ("'提交订单', '买家付款', '商品配货', '交易完成'");
+        //
+       String  orderStatusTIme="";
+        if(vo.getOrderCreateTime ()!=null){
+            orderStatusTIme=vo.getOrderCreateTime ();
+        }
+        if(vo.getOrderDealTime ()!=null){
+            orderStatusTIme+=","+vo.getOrderDealTime ();
+        }
+        if(orderVO.getDistributionDated()!=null){
+            orderStatusTIme+=","+DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getDistributionDated ());
+        }
+        if(orderVO.getFinishTimed ()!=null){
+            orderStatusTIme+=","+DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getFinishTimed ());
+        }
+        vo.setOrderStateTime (orderStatusTIme);
+        return vo;
     }
 }

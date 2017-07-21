@@ -64,6 +64,14 @@ public class ShowOrderVO implements Serializable {
     /** 订单创建时间 日期型 **/
     private Date orderCreateTimed;
 
+    private Date distributionDated;//配货时间
+
+    private String distributionDate;//配货时间
+
+    private Date finishTimed;//完成时间
+
+    private String finishTime;//完成时间
+
     /**
      * 子单数据
      */
@@ -126,7 +134,37 @@ public class ShowOrderVO implements Serializable {
         this.title = title;
     }
 
+    public Date getDistributionDated () {
+        return distributionDated;
+    }
 
+    public void setDistributionDated (Date distributionDated) {
+        this.distributionDated = distributionDated;
+    }
+
+    public String getDistributionDate () {
+        return distributionDate;
+    }
+
+    public void setDistributionDate (String distributionDate) {
+        this.distributionDate = distributionDate;
+    }
+
+    public Date getFinishTimed () {
+        return finishTimed;
+    }
+
+    public void setFinishTimed (Date finishTimed) {
+        this.finishTimed = finishTimed;
+    }
+
+    public String getFinishTime () {
+        return finishTime;
+    }
+
+    public void setFinishTime (String finishTime) {
+        this.finishTime = finishTime;
+    }
 
     /**
      * 获取 商品金额
