@@ -2,6 +2,7 @@ package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.vo.PayApplyVO;
+import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.SubOrderVO;
 
 import java.util.List;
@@ -30,6 +31,12 @@ public interface Order{
      * @return
      */
     PayApplyVO repayApply(PayType type);
+
+    /**
+     * 已支付的情况查询
+     * @return
+     */
+    List<PayedVO> payedInfo();
 
     /**
      * 付款确认

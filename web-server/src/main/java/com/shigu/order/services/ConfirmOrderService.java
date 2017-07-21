@@ -137,9 +137,16 @@ public class ConfirmOrderService {
             }
         }
         itemOrderBO.setSubOrders(subOrders);
-        itemOrderBO.setTitle(itemOrderBO.getSubOrders().get(0).getProductVO().getTitle() + "...等多件");
-        itemOrderBO.setWebSite(itemOrderBO.getSubOrders().get(0).getProductVO().getWebSite());
-        itemOrderBO.setMark(bo.getOrders().get(0).getRemark());
+        SubItemOrderBO subItemOrderBO = subOrders.get(0);
+        ItemProductVO productVO = subItemOrderBO.getProductVO();
+        String title = productVO.getTitle();
+        if (subOrders.size() > 1) {
+            title = title.length() > 10 ? title.substring(0, 10) : title;
+            title += "...等多件";
+        }
+        itemOrderBO.setTitle(title);
+        itemOrderBO.setWebSite(productVO.getWebSite());
+        itemOrderBO.setMark(subItemOrderBO.getMark());
 
         itemOrderBO.setServiceIds(BeanMapper.getFieldList(orderConstantService.selServices(bo.getSenderId()), "id", Long.class));
 
