@@ -7,10 +7,17 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 订单
- * Created by zhaohongbo on 17/6/1.
+ * @类编号
+ * @类名称：ShowOrderVO
+ * @文件路径：com.shigu.main4.order.servicevo.ShowOrderVO
+ * @内容摘要：
+ * @编码作者：gzy
+ * @创建日期：2017/7/21 13:37
+ * @version: main-pom
+ * @since: main-pom
+ * @commonents:
  */
-public class OrderVO implements Serializable{
+public class ShowOrderVO implements Serializable {
 
     private Long orderId;
     /**交易时间*/
@@ -52,7 +59,10 @@ public class OrderVO implements Serializable{
     private String orderPrice;
 
     private String tradeTime;
-
+    /** 订单创建时间  **/
+    private String orderCreateTime;
+    /** 订单创建时间 日期型 **/
+    private Date orderCreateTimed;
 
     /**
      * 子单数据
@@ -233,5 +243,21 @@ public class OrderVO implements Serializable{
 
     public void setChildOrders (List<SubOrderInfoVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public String getOrderCreateTime () {
+        return orderCreateTime;
+    }
+
+    public void setOrderCreateTime (String orderCreateTime) {
+        this.orderCreateTime = orderCreateTime;
+    }
+
+    public Date getOrderCreateTimed () {
+        return orderCreateTimed;
+    }
+
+    public void setOrderCreateTimed (Date orderCreateTimed) {
+        this.orderCreateTimed = orderCreateTimed;
     }
 }
