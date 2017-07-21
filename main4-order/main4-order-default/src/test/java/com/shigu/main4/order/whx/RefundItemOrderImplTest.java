@@ -20,7 +20,7 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sellerAgreeTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
         refundItemOrder.sellerAgree();
     }
 
