@@ -21,6 +21,11 @@ public class RefundApplyBO {
      * 期望得到金额
      */
     private Long hopeMoney;
+
+    /**
+     * 件数
+     */
+    private Integer number;
     /**
      * 原因
      */
@@ -64,5 +69,13 @@ public class RefundApplyBO {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber( Integer number ) {
+        this.number = number;
     }
 }
