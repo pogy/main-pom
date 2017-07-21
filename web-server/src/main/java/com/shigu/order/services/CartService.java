@@ -10,6 +10,7 @@ import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.order.exceptions.CartException;
+import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
@@ -100,6 +101,7 @@ public class CartService {
                 for (CartVO productVO : productVOS) {
                     CartChildOrderVO childOrderVO = new CartChildOrderVO();
                     orderVO.getChildOrders().add(childOrderVO);
+                    childOrderVO.setWeight(productVO.getWeight());
                     childOrderVO.setChildOrderId(productVO.getCartId());
                     childOrderVO.setGoodsid(productVO.getGoodsId());
                     childOrderVO.setImgsrc(productVO.getPicUrl());

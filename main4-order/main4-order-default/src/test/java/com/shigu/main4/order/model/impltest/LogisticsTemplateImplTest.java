@@ -30,6 +30,12 @@ public class LogisticsTemplateImplTest extends BaseTest{
     }
 
     @Test
+    public void testSenderTemplate() throws Exception {
+        LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 1L, null);
+        show(template.rules(5L, 3L));
+    }
+
+    @Test
     public void templateInfo() throws Exception {
     }
 

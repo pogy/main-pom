@@ -1,6 +1,5 @@
 package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.enums.MainOrderStatusEnum;
 import com.shigu.main4.order.enums.OrderType;
 
 import java.io.Serializable;
@@ -29,9 +28,9 @@ public class OrderVO implements Serializable{
     /**
      * 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
      */
-    private MainOrderStatusEnum mainState;
+    private Integer mainState;
     /** 是否淘宝订单 **/
-    private  Boolean isTbOrder;
+    private  boolean isTbOrder;
     /** 站点 */
     private String webSire;
 
@@ -53,7 +52,10 @@ public class OrderVO implements Serializable{
     private String orderPrice;
 
     private String tradeTime;
-
+    /** 订单创建时间  **/
+    private String orderCreateTime;
+    /** 订单创建时间 日期型 **/
+    private Date orderCreateTimed;
 
     /**
      * 子单数据
@@ -212,19 +214,19 @@ public class OrderVO implements Serializable{
         this.serverPay = serverPay;
     }
 
-    public MainOrderStatusEnum getMainState () {
+    public Integer getMainState () {
         return mainState;
     }
 
-    public void setMainState (MainOrderStatusEnum mainState) {
+    public void setMainState (Integer mainState) {
         this.mainState = mainState;
     }
 
-    public Boolean getTbOrder () {
+    public boolean getIsTbOrder () {
         return isTbOrder;
     }
 
-    public void setTbOrder (Boolean isTbOrder) {
+    public void setIsTbOrder (boolean isTbOrder) {
         this.isTbOrder = isTbOrder;
     }
 
@@ -234,5 +236,21 @@ public class OrderVO implements Serializable{
 
     public void setChildOrders (List<SubOrderInfoVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public String getOrderCreateTime () {
+        return orderCreateTime;
+    }
+
+    public void setOrderCreateTime (String orderCreateTime) {
+        this.orderCreateTime = orderCreateTime;
+    }
+
+    public Date getOrderCreateTimed () {
+        return orderCreateTimed;
+    }
+
+    public void setOrderCreateTimed (Date orderCreateTimed) {
+        this.orderCreateTimed = orderCreateTimed;
     }
 }

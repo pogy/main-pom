@@ -44,6 +44,28 @@ public interface RefundItemOrder {
     void sellerCached();
 
     /**
+     * 卖家议价
+     * @param money
+     */
+    void sellerProposal(Long money);
+
+    /**
+     * 买家附议
+     */
+    void buyerReprice();
+
+    /**
+     * 买家拒绝附议
+     */
+    void buyerNoReprice();
+
+    /**
+     * 修改期望金额
+     * @param money
+     */
+    void modifyHopeMoney(Long money);
+
+    /**
      * 退成功
      */
     void success();

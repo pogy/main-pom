@@ -154,9 +154,9 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         for (BournRuleInfoVO infoVO : bournRuleInfoVOS) {
             LogisticsTemplateCompany company;
             if (companyId == null && (company = ruleCompanyMap.get(infoVO.getRuleId())) != null) {
-                infoVO.setComponyId(company.getCompanyId());
+                infoVO.setCompanyId(company.getCompanyId());
             } else {
-                infoVO.setComponyId(companyId);
+                infoVO.setCompanyId(companyId);
             }
             LogisticsTemplateProv prov;
             if (provId == null && (prov = ruleProvMap.get(infoVO.getRuleId())) != null) {

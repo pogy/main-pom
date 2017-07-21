@@ -21,6 +21,7 @@ import com.shigu.main4.order.bo.PackageBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
 import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
@@ -31,7 +32,6 @@ import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.order.vo.CartVO;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ServiceVO;
-import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.ConfirmBO;
@@ -91,7 +91,12 @@ public class ConfirmOrderService {
             throw new JsonErrException("没有找到产品信息");
         }
         ItemOrderBO itemOrderBO  = generateItemOrderBO(bo, orderSubmitVo);
-        Long oid = itemOrderService.createOrder(itemOrderBO);
+        Long oid;
+        try {
+            oid = itemOrderService.createOrder(itemOrderBO);
+        } catch (OrderException e) {
+            throw new JsonErrException(e.getMessage());
+        }
         rmCartProductByOrder(itemOrderBO);
         redisIO.del(code);
         return oid;
@@ -132,23 +137,30 @@ public class ConfirmOrderService {
             }
         }
         itemOrderBO.setSubOrders(subOrders);
-        itemOrderBO.setTitle(itemOrderBO.getSubOrders().get(0).getProductVO().getTitle());
-        itemOrderBO.setWebSite(itemOrderBO.getSubOrders().get(0).getProductVO().getWebSite());
-        itemOrderBO.setMark(bo.getOrders().get(0).getRemark());
+        SubItemOrderBO subItemOrderBO = subOrders.get(0);
+        ItemProductVO productVO = subItemOrderBO.getProductVO();
+        String title = productVO.getTitle();
+        if (subOrders.size() > 1) {
+            title = title.length() > 10 ? title.substring(0, 10) : title;
+            title += "...等多件";
+        }
+        itemOrderBO.setTitle(title);
+        itemOrderBO.setWebSite(productVO.getWebSite());
+        itemOrderBO.setMark(subItemOrderBO.getMark());
 
         itemOrderBO.setServiceIds(BeanMapper.getFieldList(orderConstantService.selServices(bo.getSenderId()), "id", Long.class));
 
         //TODO:订单包材信息
-        int size = BeanMapper.groupBy(orderSubmitVo.getProducts(), "shopId", Long.class).size();
-        List<Long> packagesIds = BeanMapper.getFieldList(orderConstantService.selMetarials(bo.getSenderId()), "id", Long.class);
-        List<PackageBO> packageBOS = Lists.newArrayList();
-        for (Long packagesId : packagesIds) {
-            PackageBO packageBO = new PackageBO();
-            packageBOS.add(packageBO);
-            packageBO.setMetarialId(packagesId);
-            packageBO.setNum(size);
-        }
-        itemOrderBO.setPackages(packageBOS);
+//        int size = BeanMapper.groupBy(orderSubmitVo.getProducts(), "shopId", Long.class).size();
+//        List<Long> packagesIds = BeanMapper.getFieldList(orderConstantService.selMetarials(bo.getSenderId()), "id", Long.class);
+//        List<PackageBO> packageBOS = Lists.newArrayList();
+//        for (Long packagesId : packagesIds) {
+//            PackageBO packageBO = new PackageBO();
+//            packageBOS.add(packageBO);
+//            packageBO.setMetarialId(packagesId);
+//            packageBO.setNum(size);
+//        }
+//        itemOrderBO.setPackages(packageBOS);
         return itemOrderBO;
     }
 
@@ -196,6 +208,7 @@ public class ConfirmOrderService {
      */
     public List<ServiceRuleVO> serviceRulePack(List<CartOrderVO> orders, Long senderId) {
         List<ServiceVO> serviceRulers = orderConstantService.selServices(senderId);//服务费规则
+//        List<MetarialVO> metarialVOS = orderConstantService.selMetarials(senderId);
         List<ServiceRuleVO> serviceRuleVOS = new ArrayList<>(orders.size());
         for (CartOrderVO orderVO : orders) {
             ServiceRuleVO ruleVO = new ServiceRuleVO();
@@ -209,6 +222,12 @@ public class ConfirmOrderService {
                 infoVO.setPrice(serviceRuler.getPrice() * .01);
                 ruleVO.getServices().add(infoVO);
             }
+//            for (MetarialVO metarialVO : metarialVOS) {TODO: 包材不计算
+//                ServiceInfoVO infoVO = new ServiceInfoVO();
+//                infoVO.setText(metarialVO.getName());
+//                infoVO.setPrice(metarialVO.getPrice() * .01);
+//                ruleVO.getServices().add(infoVO);
+//            }
         }
         return serviceRuleVOS;
     }
@@ -273,7 +292,7 @@ public class ConfirmOrderService {
             for (BournRuleInfoVO rule : rules) {
                 PostRuleVO postRuleVO = BeanMapper.map(rule, PostRuleVO.class);
                 vos.add(postRuleVO);
-                ExpressCompany expressCompany = expressCompanyMap.get(rule.getComponyId());
+                ExpressCompany expressCompany = expressCompanyMap.get(rule.getCompanyId());
                 if (expressCompany != null) {
                     postRuleVO.setName(expressCompany.getEnName());
                     postRuleVO.setText(expressCompany.getExpressName());

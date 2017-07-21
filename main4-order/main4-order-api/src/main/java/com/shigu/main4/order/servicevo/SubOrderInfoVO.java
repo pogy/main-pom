@@ -57,7 +57,9 @@ public class SubOrderInfoVO {
     /**
      * 子单状态, 0初始状态，1已退，2已发
      */
-    private SubOrderStatus subOrderStatus;
+    private Integer subOrderStatus;
+
+    private SubOrderStatus subStatusenum;
     /**
      * 退换货ID
      */
@@ -284,28 +286,11 @@ public class SubOrderInfoVO {
         this.priceLong = priceLong;
     }
 
+    public SubOrderStatus getSubStatusenum () {
+        return subStatusenum;
+    }
 
-    @Override
-    public String toString() {
-        return "SubOrderInfoVO{" +
-                "orderId=" + orderId +
-                ", childOrderId=" + childOrderId +
-                ", goodsId=" + goodsId +
-                ", imgsrc='" + imgsrc + '\'' +
-                ", title='" + title + '\'' +
-                ", color='" + color + '\'' +
-                ", size='" + size + '\'' +
-                ", goodsNo='" + goodsNo + '\'' +
-                ", price='" + price + '\'' +
-                ", priceLong=" + priceLong +
-                ", num=" + num +
-                ", tkNum=" + tkNum +
-                ", shTkNum=" + shTkNum +
-                ", subOrderStatus=" + subOrderStatus +
-                ", refundId=" + refundId +
-                ", refundNum=" + refundNum +
-                ", tkState=" + tkState +
-                ", shState=" + shState +
-                '}';
+    public void setSubStatusenum (SubOrderStatus subStatusenum) {
+        this.subStatusenum = subStatusenum;
     }
 }

@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 
 /**
@@ -20,4 +21,10 @@ public interface SubItemOrder extends SubOrder{
      * @param money
      */
     Long refundApply(Integer number,Long money);
+
+    /**
+     * 退单信息
+     * @return
+     */
+    RefundVO refundInfos();
 }

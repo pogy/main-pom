@@ -24,6 +24,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                 <value>classpath:rd3.properties</value>
                 <value>classpath:opensearch.properties</value>
                 <value>classpath:alipay.properties</value>
+                <value>classpath:KdConfig.properties</value>
             </list>
         </property>
     </bean>
