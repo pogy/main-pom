@@ -80,7 +80,7 @@ public class SubItemOrderImpl implements SubItemOrder{
      * @param money
      */
     @Override
-    public Long refundApply(Integer number, Long money) {
+    public Long refundApply(Integer type,Integer number,Long money,String reason) {
         return null;
     }
 
