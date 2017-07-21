@@ -324,11 +324,6 @@ public class ItemOrderImpl implements ItemOrder{
     }
 
     @Override
-    public List<PayedVO> payedInfo() {
-        return null;
-    }
-
-    @Override
     public Long pay(Long applyId, Long money) {
         return null;
     }

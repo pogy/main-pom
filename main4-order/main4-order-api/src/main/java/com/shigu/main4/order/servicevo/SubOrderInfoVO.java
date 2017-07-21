@@ -184,13 +184,21 @@ public class SubOrderInfoVO {
         this.goodsNo = goodsNo;
     }
 
-    public Integer getSubOrderStatus () {
+    /**
+     * 子单状态, 0初始状态，1已退，2已发
+     */
+    public SubOrderStatus getSubOrderStatus() {
         return subOrderStatus;
     }
 
-    public void setSubOrderStatus (Integer subOrderStatus) {
+    /**
+     * 子单状态, 0初始状态，1已退，2已发
+     */
+    public void setSubOrderStatus(SubOrderStatus subOrderStatus) {
         this.subOrderStatus = subOrderStatus;
     }
+
+
 
     /**
      * 获取 退换货ID

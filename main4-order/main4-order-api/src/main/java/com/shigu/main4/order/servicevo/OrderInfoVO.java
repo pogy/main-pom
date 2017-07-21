@@ -206,4 +206,22 @@ public class OrderInfoVO {
     public void setOrderState(MainOrderStatusEnum orderState) {
         this.orderState = orderState;
     }
+
+
+    @Override
+    public String toString() {
+        return "OrderInfoVO{" +
+                "orderId=" + orderId +
+                ", orderDealTime=" + orderDealTime +
+                ", orderPrice='" + orderPrice + '\'' +
+                ", expressPrice='" + expressPrice + '\'' +
+                ", servicePrice='" + servicePrice + '\'' +
+                ", totalPrice='" + totalPrice + '\'' +
+                ", orderState=" + orderState +
+                ", orderPostType='" + orderPostType + '\'' +
+                ", lack=" + lack +
+                ", endTime=" + endTime +
+                ", nowTime=" + nowTime +
+                '}';
+    }
 }
