@@ -6,6 +6,7 @@ package com.shigu.main4.order.enums;
 public enum  RefundMsgEnum {
     SELLER_AGREE("卖家受理"),
     SELLER_REFUSE("卖家拒绝受理"),
+    SELLER_CACHED("卖家已收货"),
     ;
     public final String refundMsg;
     RefundMsgEnum(String refundMsg) {
