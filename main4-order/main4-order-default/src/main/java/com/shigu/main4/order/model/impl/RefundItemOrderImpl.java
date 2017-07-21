@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemRefundLog;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
 import com.shigu.main4.common.util.BeanMapper;
@@ -55,6 +56,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @Autowired
     private ItemRefundLogMapper itemRefundLogMapper;
+
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
 
     public RefundItemOrderImpl(Long refundId) {
         this.refundId = refundId;
@@ -193,8 +197,10 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Transactional(rollbackFor = Exception.class)
     public void sellerProposal(Long money) {
         logRefundLog(false,null,RefundStateEnum.statusOf(7),RefundMsgEnum.SELLER_PROPOSAL);
-        ItemOrderRefund selectedFields = getSelectedFields("refund_id,seller_proposal_money");
-        selectedFields.setSellerProposalMoney(money);
+        ItemOrderRefund selectedFields = getSelectedFields("refund_id,seller_proposal_money,oid");
+        com.opentae.data.mall.beans.ItemOrder itemOrder = itemOrderMapper.selectFieldsByPrimaryKey(selectedFields.getOid(), FieldUtil.codeFields("oid,payed_fee,refund_fee"));
+        Long abledMoney = itemOrder.getPayedFee()-itemOrder.getRefundFee();
+        selectedFields.setSellerProposalMoney(money>abledMoney?abledMoney:money);
         itemOrderRefundMapper.updateByPrimaryKeySelective(selectedFields);
     }
 

@@ -12,7 +12,7 @@ public class PayModePageVO {
     /**
      * 订单编号
      */
-    private String orderId;
+    private Long orderId;
     /**
      * 应付金额
      */
@@ -42,11 +42,11 @@ public class PayModePageVO {
         this.webSite = webSite;
     }
 
-    public String getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
