@@ -170,7 +170,10 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     public void userSended(String buyerCourier) {
-
+        logRefundLog(true,null,RefundStateEnum.statusOf(5),RefundMsgEnum.USER_SENDED);
+        ItemOrderRefund selectedFields = getSelectedFields("refund_id,buyer_courier");
+        selectedFields.setBuyerCourier(buyerCourier);
+        itemOrderRefundMapper.updateByPrimaryKeySelective(selectedFields);
     }
 
     /**
