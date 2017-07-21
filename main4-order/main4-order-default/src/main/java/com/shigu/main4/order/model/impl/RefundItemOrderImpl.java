@@ -226,6 +226,12 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         doRefundMoney(true);
     }
 
+    /**
+     * 执行退钱
+     * @param buyerWin 买家诉求通过？
+     * @throws PayerException 原路径退钱失败
+     * @throws RefundException 诉求金额不满足
+     */
     @Transactional(rollbackFor = Exception.class)
     private void doRefundMoney(boolean buyerWin) throws PayerException, RefundException {
         RefundVO refundinfo = refundinfo();
