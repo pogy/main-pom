@@ -5,8 +5,12 @@ import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
+import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.OrderDetailVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
+import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.vo.OrderAddrInfoVO;
+import com.shigu.main4.order.vo.OrderDetailExpressVO;
 import com.shigu.order.services.MyOrderService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -57,10 +61,8 @@ public class MyOrderAction {
             bo.setPageSize (10);
         }
         List<ShowOrderVO> list=myOrderService.myOrder(bo, ps.getUserId ());
-
         ShiguPager<ShowOrderVO>  pager =myOrderService.selectCountMyOrder(bo,ps.getUserId ());
-                model.addAttribute ("query",bo);//返回查询条件
-
+        model.addAttribute ("query",bo);//返回查询条件
         model.addAttribute ("orders",list);
         model.addAttribute ("pageOption",pager.selPageOption (bo.getPageSize ()));
         return "buyer/myOrder";
@@ -82,22 +84,23 @@ public class MyOrderAction {
     public JSONObject removeOrder(HttpSession session,Long orderId)throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
-
-
-
         if(orderId==null){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
-
+            rsp.setMsg ("订单ID为空！");
+            return JSONObject.fromObject(rsp);
         }
         boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
         if(!flag){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
+            rsp.setMsg ("非法访问！");
+            return JSONObject.fromObject(rsp);
         }
        int i=  myOrderService.removeOrder(orderId);
         if(i>0) {
             rsp.setResult (SystemConStant.RESPONSE_STATUS_SUCCESS);
         }else{
             rsp.setResult (SystemConStant.RESPONSE_STATUS_FAILED);
+            rsp.setMsg ("删除订单失败！");
         }
         return JSONObject.fromObject(rsp);
     }
@@ -118,37 +121,55 @@ public class MyOrderAction {
     public JSONObject cancelOrder(HttpSession session,Long orderId)throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ResponseBase rsp = new ResponseBase();
-
         if(orderId==null){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
-
+            rsp.setMsg ("订单ID为空！");
+            return JSONObject.fromObject(rsp);
         }
         boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
         if(!flag){
             rsp.setResult (SystemConStant.RESPONSE_STATUS_ERROR);
+            rsp.setMsg ("非法访问！");
+            return JSONObject.fromObject(rsp);
         }
         int i=  myOrderService.cancelOrder(orderId);
         if(i>0) {
             rsp.setResult (SystemConStant.RESPONSE_STATUS_SUCCESS);
         }else{
             rsp.setResult (SystemConStant.RESPONSE_STATUS_FAILED);
+            rsp.setMsg ("取消订单失败！");
         }
         return JSONObject.fromObject(rsp);
     }
 
+    @RequestMapping("orderDetail")
     public String orderDetail(HttpSession session,Long orderId,Model model){
         if(orderId==null){
             //订单出错
+            model.addAttribute ("msg","订单号不能为空！");
+            return "trade/noOrderInfo";
         }
-
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
         if(!flag){
            //没有这个订单
+            model.addAttribute ("msg","非法访问！");
+            return "trade/noOrderInfo";
         }else{
+
             OrderDetailVO detailVo= myOrderService.orderDetail(orderId);
             model.addAttribute ("orderDetailVO",detailVo);
-        }
+            model.addAttribute ("orderStateText",detailVo.getOrderStateText ());
+            model.addAttribute ("orderCreateTime",detailVo.getOrderCreateTime ());
+            model.addAttribute ("orderId",orderId);
+            model.addAttribute ("orderDealTime",detailVo.getOrderDealTime ());
+            model.addAttribute ("orderAddrInfo",detailVo.getOrderAddrInfo ());
+            model.addAttribute ("express",detailVo.getExpress ());
+            model.addAttribute ("childOrders",detailVo.getChildOrders ());
+            model.addAttribute ("total",detailVo.getTotal ());
+            model.addAttribute ("orderStateNum",detailVo.getOrderStateNum ());
+            model.addAttribute ("orderStateTime",detailVo.getOrderStateTime ());
+           }
 
         return "trade/orderDetail";
     }
