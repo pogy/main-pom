@@ -2,6 +2,8 @@ package com.shigu.main4.order.model.impl;
 
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderSubExample;
+import com.opentae.data.mall.examples.OrderPayExample;
+import com.opentae.data.mall.examples.OrderPayRelationshipExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.NumberUtils;
@@ -22,6 +24,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +56,13 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Autowired
     private OrderConstantService orderConstantService;
+
+    @Autowired
+    private OrderPayRelationshipMapper orderPayRelationshipMapper;
+
+    @Autowired
+    private OrderPayMapper orderPayMapper;
+
 
     /**
      * 订单ID
@@ -97,6 +107,7 @@ public class ItemOrderImpl implements ItemOrder{
         orderVO.setTitle(order.getTitle());
         orderVO.setWebSite(order.getWebSite());
         orderVO.setOrderStatus(OrderStatus.statusOf(order.getOrderStatus()));
+        orderVO.setCreateTime(order.getCreateTime());
         return orderVO;
     }
 
@@ -324,7 +335,23 @@ public class ItemOrderImpl implements ItemOrder{
      */
     @Override
     public List<PayedVO> payedInfo() {
-        return null;
+        List<PayedVO> payedVOS=new ArrayList<>();
+        OrderPayRelationshipExample orderPayRelationshipExample=new OrderPayRelationshipExample();
+        orderPayRelationshipExample.createCriteria().andOidEqualTo(oid);
+        List<OrderPayRelationship> orderPayRelationships = orderPayRelationshipMapper.selectByExample(orderPayRelationshipExample);
+        List<Long> payIds = BeanMapper.getFieldList(orderPayRelationships, "payId", Long.class);
+        if (payIds.size()>0){
+            OrderPayExample orderPayExample=new OrderPayExample();
+            orderPayExample.createCriteria().andPayIdIn(payIds);
+            List<OrderPay> orderPays = orderPayMapper.selectByExample(orderPayExample);
+            List<PayedVO> payedVOS1 = BeanMapper.mapList(orderPays, PayedVO.class);
+            Map<Long, OrderPay> type = BeanMapper.list2Map(orderPays, "payId", Long.class);
+            for (PayedVO o:payedVOS1){
+                o.setPayType(PayType.valueOf(type.get(o.getPayId()).getType()));
+            }
+            payedVOS.addAll(payedVOS1);
+        }
+        return payedVOS;
     }
 
     @Override

@@ -1,8 +1,11 @@
 package com.shigu.order.actions;
 
+import com.opentae.data.mall.beans.OrderPay;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
+import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.order.services.PayModeService;
 import com.shigu.order.vo.PayModePageVO;
 import com.shigu.session.main4.PersonalSession;
@@ -88,20 +91,6 @@ public class PayModeAction {
         return JsonResponseUtil.success();
     }
 
-    //TODO:支付轮询
-    /**
-     * 支付轮询
-     * @return
-     */
-    @RequestMapping("payPollingJson")
-    @ResponseBody
-    public JSONObject payPollingJson(Long orderId) {
-        if (payModeService.checkPayed(orderId)) {
-            return JsonResponseUtil.success();
-        }
-        return null;
-    }
-
     @RequestMapping("alipay")
     public void alipay(Long id, HttpServletResponse response) throws PayApplyException, IOException {
         response.setCharacterEncoding("UTF-8");
@@ -110,5 +99,28 @@ public class PayModeAction {
         writer.println(payModeService.payApply(id, PayType.ALI));
         writer.flush();
         writer.close();
+    }
+
+    /**
+     * 支付轮询
+     * @return
+     */
+    @RequestMapping("payPollingJson")
+    @ResponseBody
+    public JSONObject payPollingJson(Long orderId) {
+        Long payId;
+        if ((payId = payModeService.checkPayed(orderId)) != null) {
+            return JsonResponseUtil.success().element("payId", payId);
+        }
+        return null;
+    }
+
+    @RequestMapping("paySuccess")
+    public String paySuccess(Long orderId, Model model) throws Main4Exception {
+        ItemOrderVO itemOrderVO = payModeService.itemOrder(orderId).orderInfo();
+        model.addAttribute("orderId", orderId);
+        model.addAttribute("amountPay", String.format("%.2f", itemOrderVO.getTotalFee() * .01));
+        model.addAttribute("payType", payModeService.selPayType(orderId));
+        return "trade/paySuccess";
     }
 }

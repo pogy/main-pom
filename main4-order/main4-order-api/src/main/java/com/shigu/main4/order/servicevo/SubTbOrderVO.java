@@ -9,15 +9,15 @@ public class SubTbOrderVO implements Serializable {
     /**
      * 子单id
      */
-    private Long oid;
+    private Long tbChildOrderId;
     /**
      * 淘宝商品id
      */
-    private Long numIid;
+    private Long numiid;
     /**
      * 图片地址
      */
-    private String imgUrl;
+    private String imgSrc;
     /**
      * 标题
      */
@@ -25,11 +25,11 @@ public class SubTbOrderVO implements Serializable {
     /**
      * 颜色
      */
-    private String skuColor;
+    private String color;
     /**
      * 尺码
      */
-    private String skuSize;
+    private String size;
     /**
      * 货号
      */
@@ -38,14 +38,17 @@ public class SubTbOrderVO implements Serializable {
      * 淘宝子单价格
      */
     private String oldTbPrice;
+    private Long oldTbPriceLong;
     /**
      * 淘宝子单优惠后价格
      */
     private String newTbPrice;
+    private Long newTbPriceLong;
     /**
      * 星座网价格
      */
     private String xzPrice;
+    private Long xzPriceLong;
     /**
      * 数量
      */
@@ -54,43 +57,29 @@ public class SubTbOrderVO implements Serializable {
     /**
      * 获取 子单id
      */
-    public Long getOid() {
-        return this.oid;
+    public Long getTbChildOrderId() {
+        return this.tbChildOrderId;
     }
 
     /**
      * 设置 子单id
      */
-    public void setOid(Long oid) {
-        this.oid = oid;
-    }
-
-    /**
-     * 获取 淘宝商品id
-     */
-    public Long getNumIid() {
-        return this.numIid;
-    }
-
-    /**
-     * 设置 淘宝商品id
-     */
-    public void setNumIid(Long numIid) {
-        this.numIid = numIid;
+    public void setTbChildOrderId(Long tbChildOrderId) {
+        this.tbChildOrderId = tbChildOrderId;
     }
 
     /**
      * 获取 图片地址
      */
-    public String getImgUrl() {
-        return this.imgUrl;
+    public String getImgSrc() {
+        return this.imgSrc;
     }
 
     /**
      * 设置 图片地址
      */
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 
     /**
@@ -110,29 +99,29 @@ public class SubTbOrderVO implements Serializable {
     /**
      * 获取 颜色
      */
-    public String getSkuColor() {
-        return this.skuColor;
+    public String getColor() {
+        return this.color;
     }
 
     /**
      * 设置 颜色
      */
-    public void setSkuColor(String skuColor) {
-        this.skuColor = skuColor;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     /**
      * 获取 尺码
      */
-    public String getSkuSize() {
-        return this.skuSize;
+    public String getSize() {
+        return this.size;
     }
 
     /**
      * 设置 尺码
      */
-    public void setSkuSize(String skuSize) {
-        this.skuSize = skuSize;
+    public void setSize(String size) {
+        this.size = size;
     }
 
     /**
@@ -203,5 +192,43 @@ public class SubTbOrderVO implements Serializable {
      */
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public Long getOldTbPriceLong() {
+        return this.oldTbPriceLong;
+    }
+
+    public void setOldTbPriceLong(Long oldTbPriceLong) {
+        this.oldTbPriceLong = oldTbPriceLong;
+    }
+
+    public Long getNewTbPriceLong() {
+        return this.newTbPriceLong;
+    }
+
+    public void setNewTbPriceLong(Long newTbPriceLong) {
+        this.newTbPriceLong = newTbPriceLong;
+    }
+
+    public Long getXzPriceLong() {
+        return this.xzPriceLong;
+    }
+
+    public void setXzPriceLong(Long xzPriceLong) {
+        this.xzPriceLong = xzPriceLong;
+    }
+
+    /**
+     * 获取 淘宝商品id
+     */
+    public Long getNumiid() {
+        return this.numiid;
+    }
+
+    /**
+     * 设置 淘宝商品id
+     */
+    public void setNumiid(Long numiid) {
+        this.numiid = numiid;
     }
 }

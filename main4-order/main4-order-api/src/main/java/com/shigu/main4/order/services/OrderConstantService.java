@@ -47,7 +47,7 @@ public interface OrderConstantService {
     ServiceVO selServiceById(Long senderId,Long id);
 
     /**
-     * 按市场ID获取代发服务
+     * 按marketId获取代发服务
      * @param senderId
      * @param marketId
      * @return

@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.beans.ItemOrder;
-import com.opentae.data.mall.examples.BuyerAddressExample;
-import com.opentae.data.mall.examples.ItemOrderRefundExample;
-import com.opentae.data.mall.examples.LogisticsTemplateExample;
-import com.opentae.data.mall.examples.OrderStatusRecordExample;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -101,6 +98,12 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
 
+    @Autowired
+    private ItemOrderServiceMapper itemOrderServiceMapper;
+
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
+
     /**
      * oid获取器
      *
@@ -117,6 +120,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 创建订单
+     *
      * @param orderBO
      * @return
      */
@@ -236,9 +240,10 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 重算快递费
-     * @param senderId 发件机构ID
+     *
+     * @param senderId  发件机构ID
      * @param companyId 物流公司ID
-     * @param provId 省份ID
+     * @param provId    省份ID
      * @return
      */
     @Override
@@ -329,6 +334,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 查询订单的物流信息
+     *
      * @param orderId
      * @return
      */
@@ -351,8 +357,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         expressInfoVO.setReceiverPhone(firstLogisticsVO.getTelephone());
         Integer state = 0;
         try {
-            JSONObject jsonResult = JSON.parseObject(kdniaoUtil.getOrderTracesByJson(expressName,expressId));
-            if ("true".equals(jsonResult.get("Success") + "")){
+            JSONObject jsonResult = JSON.parseObject(kdniaoUtil.getOrderTracesByJson(expressName, expressId));
+            if ("true".equals(jsonResult.get("Success") + "")) {
                 String stateStr = jsonResult.get("State").toString();
                 switch (stateStr) {
                     case "2":
@@ -385,18 +391,19 @@ public class ItemOrderServiceImpl implements ItemOrderService {
      */
     /**
      * 查询物流日志
+     *
      * @param expressId
      * @return
      */
     @Override
     public List<ExpressLogVO> expressLog(Long expressId) throws Main4Exception, ParseException {
         ItemOrderLogistics itemOrderLogistics = itemOrderLogisticsMapper.selectByPrimaryKey(expressId);
-        if (itemOrderLogistics==null){
+        if (itemOrderLogistics == null) {
             throw new Main4Exception("数据库没有对应传入的expressId的数据");
         }
-        ExpressCompany expressCompany=null;
+        ExpressCompany expressCompany = null;
         String companyCode = "";
-        if (itemOrderLogistics.getCompanyId()!=null){
+        if (itemOrderLogistics.getCompanyId() != null) {
             companyCode = selLogisticCompanyCode(itemOrderLogistics.getCompanyId());
         }
         String orderTracesByJson = null;
@@ -432,18 +439,19 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     //TODO:获取物流公司对应快递鸟平台公司编码
     private String selLogisticCompanyCode(Long companyId) throws Main4Exception {
-        ExpressCompany expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(companyId,FieldUtil.codeFields("express_company_id,remark2"));
+        ExpressCompany expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(companyId, FieldUtil.codeFields("express_company_id,remark2"));
         if (expressCompany == null) {
-            throw new  Main4Exception("数据库没有对应的快递公司数据");
+            throw new Main4Exception("数据库没有对应的快递公司数据");
         }
         if (expressCompany.getRemark2() == null) {
-            throw new  Main4Exception("数据库没有对应的快递公司编码");
+            throw new Main4Exception("数据库没有对应的快递公司编码");
         }
         return expressCompany.getRemark2();
     }
 
     /**
      * 子订单信息
+     *
      * @param subOrderId
      * @return
      */
@@ -452,10 +460,10 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         //获取信息
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
         SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
-        SubOrderInfoVO subOrderInfoVO = BeanMapper.map(subItemOrderVO,SubOrderInfoVO.class);
-        subOrderInfoVO.setChildOrderId (subOrderId);
+        SubOrderInfoVO subOrderInfoVO = BeanMapper.map(subItemOrderVO, SubOrderInfoVO.class);
+        subOrderInfoVO.setChildOrderId(subOrderId);
         subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
-        subOrderInfoVO.setImgsrc (subItemOrderVO.getProduct().getPicUrl());
+        subOrderInfoVO.setImgsrc(subItemOrderVO.getProduct().getPicUrl());
         subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
         subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
 
@@ -473,6 +481,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     /**
      * 主单简要信息
      * 不包含子单
+     *
      * @param orderId
      * @return
      */
@@ -480,20 +489,36 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     public OrderInfoVO orderInfo(Long orderId) {
         com.shigu.main4.order.model.ItemOrder itemOrder = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
         ItemOrderVO itemOrderVO = itemOrder.orderInfo();
-
         OrderInfoVO infoVO = new OrderInfoVO();
+        infoVO.setOrderDealTime(itemOrderVO.getCreateTime());
         infoVO.setOrderId(itemOrderVO.getOrderId());
-        /*infoVO.setOrderDealTime(itemOrderVO.getTradeTimed());
-        infoVO.setOrderPrice(String.valueOf(itemOrderVO.getTotalFee()/100));
-        infoVO.setExpressPrice(itemOrderVO.get);
-        infoVO.setServicePrice(itemOrderVO.getServerPay());
-        infoVO.setTotalPrice(itemOrderVO.getTradePay());*/
+        infoVO.setTotalPrice(String.valueOf(itemOrderVO.getTotalFee() / 100));
+        ItemOrderServiceExample itemOrderServiceExample = new ItemOrderServiceExample();
+        itemOrderServiceExample.createCriteria().andOidEqualTo(orderId);
+        List<com.opentae.data.mall.beans.ItemOrderService> itemOrderServices = itemOrderServiceMapper.selectByExample(itemOrderServiceExample);
+        Long servicePrice = 0L;
+        if (itemOrderServices.size() > 0) {
+            for (com.opentae.data.mall.beans.ItemOrderService orderService : itemOrderServices) {
+                servicePrice += orderService.getMoney();
+            }
+            infoVO.setServicePrice(String.valueOf(servicePrice/100));
+        }
+        ItemOrderSubExample itemOrderSubExample = new ItemOrderSubExample();
+        itemOrderSubExample.createCriteria().andOidEqualTo(orderId);
+        List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.selectByExample(itemOrderSubExample);
+        Long orderPrice = 0L;
+        if (itemOrderSubs.size() > 0) {
+            for (ItemOrderSub itemOrderSub : itemOrderSubs) {
+                orderPrice += itemOrderSub.getPrice();
+            }
+        }
+        infoVO.setOrderPrice(String.valueOf(orderPrice / 100));
         infoVO.setOrderState(MainOrderStatusEnum.statusOf(itemOrderVO.getOrderStatus().status));
         List<LogisticsVO> logisticsVOS = itemOrder.selLogisticses();
-        if (logisticsVOS.size()>0){
-
+        if (logisticsVOS.size() > 0) {
+            infoVO.setExpressPrice(String.valueOf(logisticsVOS.get(0).getMoney()));
             ExpressCompany expressCompany = expressCompanyMapper.selectFieldsByPrimaryKey(logisticsVOS.get(0).getCompanyId(), FieldUtil.codeFields("express_company_id,express_name"));
-            if (expressCompany!=null){
+            if (expressCompany != null) {
                 infoVO.setOrderPostType(expressCompany.getExpressName());
             }
         }
@@ -503,19 +528,20 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 订单日志
+     *
      * @param orderId
      * @return
      */
     @Override
     public List<OrderLogVO> orderLog(Long orderId) {
-        OrderStatusRecordExample orderStatusRecordExample=new OrderStatusRecordExample();
+        OrderStatusRecordExample orderStatusRecordExample = new OrderStatusRecordExample();
         orderStatusRecordExample.createCriteria().andOidEqualTo(orderId);
         orderStatusRecordExample.setOrderByClause("create_time desc");
-        List<OrderLogVO>vos=new ArrayList<>();
+        List<OrderLogVO> vos = new ArrayList<>();
         List<OrderStatusRecord> orderStatusRecords = orderStatusRecordMapper.selectByExample(orderStatusRecordExample);
-        if (orderStatusRecords.size()>0){
-            for (OrderStatusRecord o:orderStatusRecords){
-                OrderLogVO vo=new OrderLogVO();
+        if (orderStatusRecords.size() > 0) {
+            for (OrderStatusRecord o : orderStatusRecords) {
+                OrderLogVO vo = new OrderLogVO();
                 vo.setStateTime(o.getCreateTime());
                 vo.setOrderState(MainOrderStatusEnum.statusOf(o.getStatus()));
                 vos.add(vo);
@@ -526,6 +552,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 子订单信息,按主单查
+     *
      * @param orderId
      * @return
      */
@@ -533,9 +560,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     public List<SubOrderInfoVO> suborderInfoByOrderId(Long orderId) {
         com.shigu.main4.order.model.ItemOrder itemOrder = SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
         List<SubItemOrderVO> subItemOrderVOS = itemOrder.subOrdersInfo();
-        List<SubOrderInfoVO> vos=new ArrayList<>();
-        for (SubItemOrderVO s:subItemOrderVOS){
-            SubOrderInfoVO vo=new SubOrderInfoVO();
+        List<SubOrderInfoVO> vos = new ArrayList<>();
+        for (SubItemOrderVO s : subItemOrderVOS) {
+            SubOrderInfoVO vo = new SubOrderInfoVO();
             vo.setOrderId(s.getOid());
             vo.setChildOrderId(s.getSoid());
             vo.setGoodsId(s.getGoodsId());
@@ -544,13 +571,13 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             vo.setColor(s.getColor());
             vo.setSize(s.getSize());
             vo.setGoodsNo(s.getGoodsNo());
-            vo.setPrice(String.valueOf(s.getProduct().getPrice()/100));
+            vo.setPrice(String.valueOf(s.getProduct().getPrice() / 100));
             vo.setPriceLong(s.getProduct().getPrice());
             vo.setNum(s.getNum());
-            ItemOrderRefundExample itemOrderRefundExample=new ItemOrderRefundExample();
+            ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
             itemOrderRefundExample.createCriteria().andOidEqualTo(s.getOid()).andSoidEqualTo(s.getSoid());
             List<ItemOrderRefund> itemOrderRefunds = itemOrderRefundMapper.selectByExample(itemOrderRefundExample);
-            if (itemOrderRefunds.size()>0){
+            if (itemOrderRefunds.size() > 0) {
 
                 ItemOrderRefund refund = itemOrderRefunds.get(0);
                 //退货数量
@@ -574,6 +601,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 申请退款
+     *
      * @param subOrderId
      * @param number
      * @return 退款编号
@@ -585,6 +613,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 退款信息查询
+     *
      * @param refundId
      * @return
      */
@@ -595,6 +624,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     /**
      * 退款信息日志
+     *
      * @param refundId
      * @return
      */
