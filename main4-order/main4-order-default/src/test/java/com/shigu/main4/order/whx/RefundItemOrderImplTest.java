@@ -50,6 +50,30 @@ public class RefundItemOrderImplTest extends BaseTest{
         refundItemOrder.sellerCached();
     }
 
+    @Test
+    public void errorTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        refundItemOrder.error("退件失败");
+        //测试重复操作
+        refundItemOrder.error("退件失败");
+    }
+
+    @Test
+    public void sellerProposalTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        refundItemOrder.sellerProposal(200L);
+        //测试重复操作
+        refundItemOrder.sellerProposal(200L);
+    }
+
+    @Test
+    public void buyerNoRepriceTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        refundItemOrder.buyerNoReprice();
+        //测试重复操作
+        refundItemOrder.buyerNoReprice();
+    }
+
     private RefundApplyBO refundApplyBOGenerator(Long oid,Long soid,Integer type,Long hopeMoney,String reason) {
         RefundApplyBO refundApplyBO = new RefundApplyBO();
         refundApplyBO.setOid(oid);

@@ -180,6 +180,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      * 卖家收到货
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void sellerCached() {
         logRefundLog(false,null,RefundStateEnum.statusOf(6),RefundMsgEnum.SELLER_CACHED);
     }
@@ -189,8 +190,12 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      * @param money
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void sellerProposal(Long money) {
-
+        logRefundLog(false,null,RefundStateEnum.statusOf(7),RefundMsgEnum.SELLER_PROPOSAL);
+        ItemOrderRefund selectedFields = getSelectedFields("refund_id,seller_proposal_money");
+        selectedFields.setSellerProposalMoney(money);
+        itemOrderRefundMapper.updateByPrimaryKeySelective(selectedFields);
     }
 
     /**
@@ -206,7 +211,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     public void buyerNoReprice() {
-
+        logRefundLog(true,null,RefundStateEnum.statusOf(9),RefundMsgEnum.BUYER_NO_REPRICE);
     }
 
     /**
@@ -248,7 +253,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     public void error(String reason) {
-
+        logRefundLog(true,reason,RefundStateEnum.statusOf(4),RefundMsgEnum.ERROR);
     }
 
     public Long getRefundId() {
