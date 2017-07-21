@@ -1,17 +1,21 @@
 package com.shigu.order.services;
 
+import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayRelationship;
-import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.mall.interfaces.OrderPayMapper;
 import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.buyer.services.PaySdkClientService;
+import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
+import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.ItemOrderVO;
+import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.vo.PayModePageVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +31,7 @@ public class PayModeService {
     private PaySdkClientService paySdkClientService;
 
     @Autowired
-    private OrderPayApplyMapper orderPayApplyMapper;
+    private MemberUserMapper memberUserMapper;
 
     @Autowired
     private OrderPayMapper orderPayMapper;
@@ -65,8 +69,8 @@ public class PayModeService {
      * @return 支付链接，星座宝没有支付链接
      * @throws PayApplyException 支付申请异常
      */
-    public String payApply(Long orderId, PayType payType) throws PayApplyException {
-        return itemOrder(orderId).payApply(payType).getPayLink();
+    public PayApplyVO payApply(Long orderId, PayType payType) throws PayApplyException {
+        return itemOrder(orderId).payApply(payType);
     }
 
     public com.shigu.main4.order.model.ItemOrder itemOrder(Long orderId) {
@@ -80,7 +84,12 @@ public class PayModeService {
      * @throws JsonErrException
      */
     public void checkPwd(String pwd, Long userId) throws JsonErrException {
-
+        MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
+        if (memberUser.getPayPassword() == null) {
+            throw new JsonErrException("请设置支付密码");
+        } else if (!memberUser.getPayPassword().equals(EncryptUtil.encrypt(pwd))){
+            throw new JsonErrException("密码错误");
+        }
     }
 
     /**
@@ -119,5 +128,10 @@ public class PayModeService {
             default:
                 throw new Main4Exception("支付成功，请前往订单列表查看结果");
         }
+    }
+
+    public void payxz(PayApplyVO payApplyVO) {
+        //TODO:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+//        SpringBeanFactory.getBean(PayerService.class, "xzPayerService").paySure();
     }
 }

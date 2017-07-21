@@ -61,9 +61,9 @@ public class RefundItemOrderImplTest extends BaseTest{
     @Test
     public void sellerProposalTest() {
         RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
-        refundItemOrder.sellerProposal(200L);
-        //测试重复操作
-        refundItemOrder.sellerProposal(200L);
+//        refundItemOrder.sellerProposal(200L);
+//        测试重复操作
+//        refundItemOrder.sellerProposal(200L);
     }
 
     @Test

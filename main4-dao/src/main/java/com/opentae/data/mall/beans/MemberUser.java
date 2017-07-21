@@ -79,6 +79,7 @@ public class MemberUser implements Serializable{
     private String idCardImg;
     private Long registerSource;
     private String zfbAccount;
+    private String payPassword;
 
     @Transient
     private String subUserNameGroups;
@@ -585,5 +586,13 @@ public class MemberUser implements Serializable{
 
     public void setSubUserNameGroups(String subUserNameGroups) {
         this.subUserNameGroups = subUserNameGroups;
+    }
+
+    public String getPayPassword() {
+        return payPassword;
+    }
+
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword;
     }
 }

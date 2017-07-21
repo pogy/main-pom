@@ -6,6 +6,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.ItemOrderVO;
+import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.order.services.PayModeService;
 import com.shigu.order.vo.PayModePageVO;
 import com.shigu.session.main4.PersonalSession;
@@ -70,7 +71,7 @@ public class PayModeAction {
     public JSONObject payInfoJson(Long orderId) throws JsonErrException, PayApplyException {
         return JsonResponseUtil.success()
                 // 使用百度云盘二维码生成api
-                .element("qrcodeImg","http://pan.baidu.com/share/qrcode?w=300&h=300&url=" + payModeService.payApply(orderId, PayType.WX));
+                .element("qrcodeImg","http://pan.baidu.com/share/qrcode?w=300&h=300&url=" + payModeService.payApply(orderId, PayType.WX).getPayLink());
     }
 
     /**
@@ -87,7 +88,9 @@ public class PayModeAction {
     public JSONObject xzpayJson(Long orderId, String pwd, HttpSession session) throws JsonErrException, PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         payModeService.checkPwd(pwd, ps.getUserId());
-        payModeService.payApply(orderId, PayType.XZ);
+        PayApplyVO payApplyVO = payModeService.payApply(orderId, PayType.XZ);
+
+        payModeService.payxz(payApplyVO);
         return JsonResponseUtil.success();
     }
 
@@ -96,7 +99,7 @@ public class PayModeAction {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
-        writer.println(payModeService.payApply(id, PayType.ALI));
+        writer.println(payModeService.payApply(id, PayType.ALI).getPayLink());
         writer.flush();
         writer.close();
     }
