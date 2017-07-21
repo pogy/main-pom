@@ -11,6 +11,7 @@ import com.shigu.main4.order.enums.SubOrderStatus;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
+import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -80,6 +81,16 @@ public class SubItemOrderImpl implements SubItemOrder{
      */
     @Override
     public Long refundApply(Integer number, Long money) {
+        return null;
+    }
+
+    /**
+     * 退单信息
+     *
+     * @return
+     */
+    @Override
+    public RefundVO refundInfos() {
         return null;
     }
 

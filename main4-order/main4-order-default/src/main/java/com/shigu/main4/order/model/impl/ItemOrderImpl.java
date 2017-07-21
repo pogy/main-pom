@@ -87,9 +87,9 @@ public class ItemOrderImpl implements ItemOrder{
         com.opentae.data.mall.beans.ItemOrder order = itemOrderMapper.selectByPrimaryKey(oid);
         ItemOrderVO orderVO = new ItemOrderVO();
         orderVO.setSenderId(order.getSenderId());
-        orderVO.setTradePayLong(order.getTotalFee());
-        orderVO.setRefundFeeLong(order.getRefundFee());
-        orderVO.setPayedFeeLong(order.getPayedFee());
+        orderVO.setTotalFee(order.getTotalFee());
+        orderVO.setRefundFee(order.getRefundFee());
+        orderVO.setPayedFee(order.getPayedFee());
         orderVO.setType(OrderType.typeOf(order.getType()));
         orderVO.setOrderId(order.getOid());
         orderVO.setTitle(order.getTitle());
@@ -310,6 +310,21 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Override
     public PayApplyVO repayApply(PayType type) {
+        return null;
+    }
+
+    /**
+     * 已支付的情况查询
+     *
+     * @return
+     */
+    @Override
+    public List<PayedVO> payedInfo() {
+        return null;
+    }
+
+    @Override
+    public List<PayedVO> payedInfo() {
         return null;
     }
 
