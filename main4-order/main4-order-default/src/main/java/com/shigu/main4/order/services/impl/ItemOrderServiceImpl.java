@@ -557,7 +557,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
                 vo.setTkNum(refund.getNumber());
                 //售后退款数量
                 vo.setShTkNum(refund.getRefundMoney().intValue());
-                vo.setSubOrderStatus(s.getSubOrderStatus());
+               /* vo.setSubOrderStatus();*/
                 //退换货id
                 vo.setRefundId(refund.getRefundId());
                 //TODO 退款信息
