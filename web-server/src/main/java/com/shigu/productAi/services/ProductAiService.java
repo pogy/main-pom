@@ -1,6 +1,11 @@
 package com.shigu.productAi.services;
 
+import cn.productai.api.core.ISearchTag;
+import cn.productai.api.core.ITag;
 import cn.productai.api.core.IWebClient;
+import cn.productai.api.core.entity.AndTag;
+import cn.productai.api.core.entity.SearchTag;
+import cn.productai.api.core.entity.TagBase;
 import cn.productai.api.core.enums.LanguageType;
 import cn.productai.api.core.exceptions.ClientException;
 import cn.productai.api.pai.entity.dataset.DataSetBatchXzAddRequest;
@@ -79,12 +84,24 @@ public class ProductAiService implements ProductAiInterface{
     @Override
     public List<AiImageInfo> search(ProductAiSearchBo bo) {
         IWebClient client = aiClient.getClient();
+
+
         ImageSearchByImageUrlRequest request = new ImageSearchByImageUrlRequest(aiConfig.clothesSearchId);
         request.setUrl(bo.getUrl());
         request.setCount(bo.getCount());
 
         request.setLoc(bo.getIoc());
-
+        request.tags = bo.getTags();
+//        if(bo.getTags()!=null) {
+//            String[] strings = bo.getTags().split("\\|");
+//            ITag tags = new SearchTag();
+//            request.setSearchTag(tags);
+//            ISearchTag tag = new AndTag();
+//            for(String tagstr:strings) {
+//                tag.Add(tagstr);
+//            }
+//            tags.setTag(tag);
+//        }
         request.setLanguage(LanguageType.Chinese);
         List<AiImageInfo> images = new ArrayList<>();
         try {

@@ -1,11 +1,8 @@
 package com.shigu.search.services;
 
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.imgsearch.beans.Record;
 import com.shigu.imgsearch.requests.RetrieveImageRequest;
 import com.shigu.imgsearch.responses.RetrieveImageResponse;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -21,17 +18,18 @@ import com.shigu.main4.storeservices.ShopSearchService;
 import com.shigu.main4.tools.ImgClientEnum;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.SearchShopSimple;
+import com.shigu.productAi.beans.AiImageInfo;
+import com.shigu.productAi.beans.ProductAiSearchBo;
+import com.shigu.productAi.services.ProductAiInterface;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.utils.ShopWeightComparator;
 import com.shigu.search.vo.*;
 import com.shigu.spread.enums.SpreadEnum;
-import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +68,8 @@ public class GoodsSearchService {
 
     @Autowired
     SpreadService spreadService;
+    @Autowired
+    ProductAiInterface productAiInterface;
 
     String dbUid="aliyun_1582227";
     String dbSeckey="vsDnnCviEeeHHwAWPhwgkg";
@@ -261,7 +261,12 @@ public class GoodsSearchService {
         request.setWs("textfield1 = '"+webSite+"'");
         request.setSel2(20);
 
-        RetrieveImageResponse response= ImgClientEnum.valueOf(webSite).execute(request);
+        ProductAiSearchBo bo =new ProductAiSearchBo();
+        bo.setUrl(picUrl);
+        bo.setCount(20);
+        bo.setTags(webSite);
+        List<AiImageInfo> search = productAiInterface.search(bo);
+
         //添加搜索记录
         String dateKey=webSite+"img_search_"+ DateUtil.dateToString(new Date(),"yyyy_MM");
         Long searched=redisIO.get(dateKey,Long.class);
@@ -270,20 +275,19 @@ public class GoodsSearchService {
         }
         searched++;
         redisIO.put(dateKey,searched);
-        if(response.getRetcode()==0&&response.getRecord()!=null){
-            List<Long> goodsId=new ArrayList<>();
-            for(Record r:response.getRecord()){
-                List<String> para=r.getPara();
-                if(para!=null&&para.size()>0){
-                    goodsId.add(Long.valueOf(para.get(0)));
+
+        if(search.size()>0){
+            List<Long> goodsId = new ArrayList<>();
+            for(AiImageInfo info:search){
+                if(StringUtils.isNotEmpty(info.getMeta())){
+                    goodsId.add(Long.parseLong(info.getMeta()));
                 }
             }
-            List<GoodsInSearch> imgGoods=new ArrayList<>();
+            List<GoodsInSearch> imgGoods = new ArrayList<>();
             if(goodsId.size()>0){
                 ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,webSite,1,20);
                 ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager,webSite);
                 if (goodsPager != null) {
-//                    return pager.getContent();
                     List<GoodsInSearch> imgs = goodsPager.getContent();
                     Map<Long,GoodsInSearch> imgMap=new HashMap<>();
                     for(GoodsInSearch gis:imgs){

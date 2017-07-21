@@ -34,6 +34,7 @@ public class ProductAiTest {
         ProductAiSearchBo bo =new ProductAiSearchBo();
         bo.setUrl("https://img.alicdn.com/bao/uploaded/i3/324975222/TB2ejyNqS0jpuFjy0FlXXc0bpXa_!!324975222.jpg");
         bo.setCount(5);
+        bo.setTags("cs");
 
         List<AiImageInfo> search = productAiInterface.search(bo);
         for (AiImageInfo info:search
@@ -70,6 +71,7 @@ public class ProductAiTest {
         AiImageInfo info =new AiImageInfo();
         info.setImageUrl("https://img.alicdn.com/bao/uploaded/i2/424259443/TB2t5tkXlEOyuJjy0FdXXbzApXa_!!424259443.jpg");
         info.setMeta("20886293-男装");
+        info.setTags("hz");
         infolist.add(info);
 
         ProductAiVo productAiAddVo = productAiInterface.addAi(bo);
