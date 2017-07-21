@@ -40,10 +40,7 @@ public class OrderInfoVO {
      * 发货方式
      */
     private String orderPostType;
-    /**
-     * 部分商品是否缺货
-     */
-    private boolean lack;
+
     /**
      * 结束时间(订单自动关闭时间?)
      */
@@ -151,19 +148,7 @@ public class OrderInfoVO {
         this.orderPostType = orderPostType;
     }
 
-    /**
-     * 获取 部分商品是否缺货
-     */
-    public boolean isLack() {
-        return this.lack;
-    }
 
-    /**
-     * 设置 部分商品是否缺货
-     */
-    public void setLack(boolean lack) {
-        this.lack = lack;
-    }
 
     /**
      * 获取 结束时间(订单自动关闭时间?)
@@ -219,7 +204,7 @@ public class OrderInfoVO {
                 ", totalPrice='" + totalPrice + '\'' +
                 ", orderState=" + orderState +
                 ", orderPostType='" + orderPostType + '\'' +
-                ", lack=" + lack +
+
                 ", endTime=" + endTime +
                 ", nowTime=" + nowTime +
                 '}';

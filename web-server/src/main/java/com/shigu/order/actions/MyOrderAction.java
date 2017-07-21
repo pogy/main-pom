@@ -5,8 +5,12 @@ import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
+import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.OrderDetailVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
+import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.vo.OrderAddrInfoVO;
+import com.shigu.main4.order.vo.OrderDetailExpressVO;
 import com.shigu.order.services.MyOrderService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -136,19 +140,35 @@ public class MyOrderAction {
         return JSONObject.fromObject(rsp);
     }
 
+    @RequestMapping("orderDetail")
     public String orderDetail(HttpSession session,Long orderId,Model model){
-        if(orderId==null){
+       // if(orderId==null){
             //订单出错
-        }
 
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
-        if(!flag){
+       // }
+
+      //  PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+     //   boolean flag=myOrderService.orderFlag(orderId,ps.getUserId ());
+     //   if(!flag){
            //没有这个订单
-        }else{
+      //  }else{
             OrderDetailVO detailVo= myOrderService.orderDetail(orderId);
             model.addAttribute ("orderDetailVO",detailVo);
-        }
+            model.addAttribute ("orderStateText",detailVo.getOrderStateText ());
+            model.addAttribute ("orderCreateTime",detailVo.getOrderCreateTime ());
+            model.addAttribute ("orderId",orderId);
+            model.addAttribute ("orderDealTime",detailVo.getOrderDealTime ());
+            model.addAttribute ("orderAddrInfo",detailVo.getOrderAddrInfo ());
+            model.addAttribute ("express",detailVo.getExpress ());
+            model.addAttribute ("childOrders",detailVo.getChildOrders ());
+
+            model.addAttribute ("total",detailVo.getTotal ());
+        model.addAttribute ("orderStateNum",detailVo.getOrderStateNum ());
+        model.addAttribute ("orderStateTime",detailVo.getOrderStateTime ());
+
+
+
+        //   }
 
         return "trade/orderDetail";
     }

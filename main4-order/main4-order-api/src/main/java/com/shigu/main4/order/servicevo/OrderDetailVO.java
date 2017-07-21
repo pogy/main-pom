@@ -18,9 +18,9 @@ import java.util.List;
  */
 public class OrderDetailVO {
 
-    private String orderStateText;//订单状态文字描述：'提交订单', '买家付款', '商品配货', '交易完成'
+    private String[] orderStateText;//订单状态文字描述：'提交订单', '买家付款', '商品配货', '交易完成'
 
-    private String orderCreateTime;//创建时间YYYY-MM-dd HH:mm:ss
+    private Long orderCreateTime;//创建时间YYYY-MM-dd HH:mm:ss
 
     private Long orderId;//订单编号
 
@@ -35,21 +35,21 @@ public class OrderDetailVO {
     private OrderDetailTotalVO total;//总计
     private  Long  orderStateNum;//当前订单处于哪种状态，为1,2,3,4,5; 1提交订单，2待配货，3已发货，4交易完成，5取消订单
 
-    private String orderStateTime;//订单状态时间，每条状态对应一条时间，当前处于第几种状态刚返回几条时间值，多条用逗号分隔。 状态为5返回两条时间值
+    private String[] orderStateTime;//订单状态时间，每条状态对应一条时间，当前处于第几种状态刚返回几条时间值，多条用逗号分隔。 状态为5返回两条时间值
 
-    public String getOrderStateText () {
+    public String[] getOrderStateText () {
         return orderStateText;
     }
 
-    public void setOrderStateText (String orderStateText) {
+    public void setOrderStateText (String[] orderStateText) {
         this.orderStateText = orderStateText;
     }
 
-    public String getOrderCreateTime () {
+    public Long getOrderCreateTime () {
         return orderCreateTime;
     }
 
-    public void setOrderCreateTime (String orderCreateTime) {
+    public void setOrderCreateTime (Long orderCreateTime) {
         this.orderCreateTime = orderCreateTime;
     }
 
@@ -109,11 +109,11 @@ public class OrderDetailVO {
         this.orderStateNum = orderStateNum;
     }
 
-    public String getOrderStateTime () {
+    public String[] getOrderStateTime () {
         return orderStateTime;
     }
 
-    public void setOrderStateTime (String orderStateTime) {
+    public void setOrderStateTime (String[] orderStateTime) {
         this.orderStateTime = orderStateTime;
     }
 }
