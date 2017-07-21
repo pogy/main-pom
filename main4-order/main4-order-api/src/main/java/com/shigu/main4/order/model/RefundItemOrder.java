@@ -33,7 +33,7 @@ public interface RefundItemOrder {
     void sellerRefuse(String reason);
 
     /**
-     * 用户已发件。。。。
+     * 用户已发件
      * @param buyerCourier
      */
     void userSended(String buyerCourier);
@@ -42,6 +42,28 @@ public interface RefundItemOrder {
      * 卖家收到货
      */
     void sellerCached();
+
+    /**
+     * 卖家议价
+     * @param money
+     */
+    void sellerProposal(Long money);
+
+    /**
+     * 买家附议
+     */
+    void buyerReprice();
+
+    /**
+     * 买家拒绝附议
+     */
+    void buyerNoReprice();
+
+    /**
+     * 修改期望金额
+     * @param money
+     */
+    void modifyHopeMoney(Long money);
 
     /**
      * 退成功
