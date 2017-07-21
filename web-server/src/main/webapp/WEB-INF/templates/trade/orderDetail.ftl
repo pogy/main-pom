@@ -401,6 +401,7 @@ $(function(){
 
 
 
+
 <div class="orderGoodsInfo layout">
     <div class="goodsInfoHead">
         <ul>
@@ -425,11 +426,11 @@ $(function(){
             <li class="goodsCount fs14"><span class="yahei fwb">${childOrder.num!}</span></li>
             <li class="goodsPrice fs14 yahei">&yen; <span class="fwb">${childOrder.price!}</span></li>
             <li class="goodsStatus">
-                <#if childOrder.orderState == 1>
+                <#if orderStateNum == 1>
                     <span class="fcF40">待付款</span>
-                <#elseif childOrder.orderState == 2>
+                <#elseif orderStateNum == 2>
                     <span>已付款</span>
-                <#elseif childOrder.orderState == 3>
+                <#elseif orderStateNum == 3>
                     <#if childOrder.shState == 0>
                     <span>已发货</span>
                     <#elseif childOrder.shState == 1>
@@ -441,7 +442,7 @@ $(function(){
                     <#elseif childOrder.shState == 3>
                     <span class="fcBlue">换货成功</span>
                     </#if>
-                <#elseif childOrder.orderState == 4>
+                <#elseif orderStateNum == 4>
                     <span>交易完成</span>
                     <#if childOrder.shState == 1>
                     <br><span class="fcBlue">售后处理中</span>
@@ -452,7 +453,7 @@ $(function(){
                     <#elseif childOrder.shState == 3><br>
                     <span class="fcBlue">换货成功</span>
                     </#if>
-                <#elseif childOrder.orderState == 5>
+                <#elseif orderStateNum == 5>
                     <span>交易已取消</span>
                 </#if>
             </li>
