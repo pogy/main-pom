@@ -34,6 +34,14 @@ public class RefundItemOrderImplTest extends BaseTest{
         refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
     }
 
+    @Test
+    public void userSendedTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        refundItemOrder.userSended("885782656452802268");
+        //测试重复操作
+        refundItemOrder.userSended("885782656452802268");
+    }
+
     private RefundApplyBO refundApplyBOGenerator(Long oid,Long soid,Integer type,Long hopeMoney,String reason) {
         RefundApplyBO refundApplyBO = new RefundApplyBO();
         refundApplyBO.setOid(oid);
