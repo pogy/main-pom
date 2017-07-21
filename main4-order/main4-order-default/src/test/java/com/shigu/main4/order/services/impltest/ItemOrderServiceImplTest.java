@@ -113,7 +113,7 @@ public class ItemOrderServiceImplTest extends BaseTest {
     }
     @Test
     public void orderInfo(){
-        OrderInfoVO vo = itemOrderService.orderInfo(4L);
+        OrderInfoVO vo = itemOrderService.orderInfo(2L);
         System.out.println(vo);
     }
 
@@ -124,5 +124,6 @@ public class ItemOrderServiceImplTest extends BaseTest {
             System.out.println(s.toString());
         }
     }
+
 
 }

@@ -3,6 +3,7 @@ package com.shigu.main4.order.vo;
 import com.shigu.main4.order.enums.OrderType;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 订单
@@ -22,6 +23,16 @@ public class OrderVO implements Serializable{
     private Long refundFee;
 
     private Long payedFee;
+
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public Long getOrderId() {
         return orderId;
