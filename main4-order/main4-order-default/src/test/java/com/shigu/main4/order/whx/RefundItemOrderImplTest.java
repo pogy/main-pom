@@ -18,6 +18,38 @@ public class RefundItemOrderImplTest extends BaseTest{
         show(bean);
     }
 
+    @Test
+    public void sellerAgreeTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        refundItemOrder.sellerAgree();
+        //测试重复操作
+        refundItemOrder.sellerAgree();
+    }
+
+    @Test
+    public void sellerRefuseTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
+        //测试重复操作
+        refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
+    }
+
+    @Test
+    public void userSendedTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        refundItemOrder.userSended("885782656452802268");
+        //测试重复操作
+        refundItemOrder.userSended("885782656452802268");
+    }
+
+    @Test
+    public void sellerCachedTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        refundItemOrder.sellerCached();
+        //测试重复操作
+        refundItemOrder.sellerCached();
+    }
+
     private RefundApplyBO refundApplyBOGenerator(Long oid,Long soid,Integer type,Long hopeMoney,String reason) {
         RefundApplyBO refundApplyBO = new RefundApplyBO();
         refundApplyBO.setOid(oid);

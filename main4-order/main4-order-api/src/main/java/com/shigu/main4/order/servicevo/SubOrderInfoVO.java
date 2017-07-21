@@ -187,18 +187,14 @@ public class SubOrderInfoVO {
     /**
      * 子单状态, 0初始状态，1已退，2已发
      */
-    public SubOrderStatus getSubOrderStatus() {
+
+    public Integer getSubOrderStatus() {
         return subOrderStatus;
     }
 
-    /**
-     * 子单状态, 0初始状态，1已退，2已发
-     */
-    public void setSubOrderStatus(SubOrderStatus subOrderStatus) {
+    public void setSubOrderStatus(Integer subOrderStatus) {
         this.subOrderStatus = subOrderStatus;
     }
-
-
 
     /**
      * 获取 退换货ID

@@ -123,6 +123,11 @@ public class OrderConstantServiceImpl implements OrderConstantService {
         return OrderConstantType.SERVICE.get(senderId, id);
     }
 
+    @Override
+    public ServiceVO selDfService(Long senderId, Long marketId) {
+        return null;
+    }
+
     /**
      * 查询所有包材
      *

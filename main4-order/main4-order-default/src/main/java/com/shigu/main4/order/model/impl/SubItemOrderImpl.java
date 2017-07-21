@@ -9,7 +9,6 @@ import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.enums.SubOrderStatus;
-import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.vo.ItemProductVO;
@@ -84,10 +83,11 @@ public class SubItemOrderImpl implements SubItemOrder{
      * @param money
      */
     @Override
-    public Long refundApply(Integer number, Long money)  {
+    public Long refundApply(Integer type, Integer number, Long money) {
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         RefundApplyBO refundApply = new RefundApplyBO();
-        refundApply.setSoid(itemOrderSub.getSoid());;
+        refundApply.setSoid(itemOrderSub.getSoid());
+        ;
         refundApply.setOid(itemOrderSub.getOid());
         refundApply.setHopeMoney(money);
         refundApply.setNumber(number);

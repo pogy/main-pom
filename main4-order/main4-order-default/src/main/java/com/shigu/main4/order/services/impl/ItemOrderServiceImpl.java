@@ -483,11 +483,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
         OrderInfoVO infoVO = new OrderInfoVO();
         infoVO.setOrderId(itemOrderVO.getOrderId());
-        infoVO.setOrderDealTime(itemOrderVO.getTradeTimed());
-        infoVO.setOrderPrice(itemOrderVO.getOrderPrice());
-        infoVO.setExpressPrice(itemOrderVO.getPostPay());
+        /*infoVO.setOrderDealTime(itemOrderVO.getTradeTimed());
+        infoVO.setOrderPrice(String.valueOf(itemOrderVO.getTotalFee()/100));
+        infoVO.setExpressPrice(itemOrderVO.get);
         infoVO.setServicePrice(itemOrderVO.getServerPay());
-        infoVO.setTotalPrice(itemOrderVO.getTradePay());
+        infoVO.setTotalPrice(itemOrderVO.getTradePay());*/
         infoVO.setOrderState(MainOrderStatusEnum.statusOf(itemOrderVO.getOrderStatus().status));
         List<LogisticsVO> logisticsVOS = itemOrder.selLogisticses();
         if (logisticsVOS.size()>0){
@@ -557,7 +557,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
                 vo.setTkNum(refund.getNumber());
                 //售后退款数量
                 vo.setShTkNum(refund.getRefundMoney().intValue());
-                vo.setSubOrderStatus(s.getSubOrderStatus());
+               /* vo.setSubOrderStatus();*/
                 //退换货id
                 vo.setRefundId(refund.getRefundId());
                 //TODO 退款信息
