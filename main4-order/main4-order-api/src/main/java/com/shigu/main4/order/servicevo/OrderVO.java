@@ -52,7 +52,10 @@ public class OrderVO implements Serializable{
     private String orderPrice;
 
     private String tradeTime;
-
+    /** 订单创建时间  **/
+    private String orderCreateTime;
+    /** 订单创建时间 日期型 **/
+    private Date orderCreateTimed;
 
     /**
      * 子单数据
@@ -233,5 +236,21 @@ public class OrderVO implements Serializable{
 
     public void setChildOrders (List<SubOrderInfoVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public String getOrderCreateTime () {
+        return orderCreateTime;
+    }
+
+    public void setOrderCreateTime (String orderCreateTime) {
+        this.orderCreateTime = orderCreateTime;
+    }
+
+    public Date getOrderCreateTimed () {
+        return orderCreateTimed;
+    }
+
+    public void setOrderCreateTimed (Date orderCreateTimed) {
+        this.orderCreateTimed = orderCreateTimed;
     }
 }
