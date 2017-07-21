@@ -241,7 +241,7 @@ var webSite = '${webSite!}';
         <span class="fcF40">
             
 
-<#assign text>{"nowTime":"${(nowTime!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}","endTime":"${(endTime!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
+<#assign text>{"endTime":orderCreateTime+72*60*60*1000}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <span id="countdown1" class="xzCountdown" data-format="%dd天%hh小时%mm分%ss秒" data-nowTime="${$it.nowTime!}" data-endTime="${$it.endTime!}"></span>
@@ -401,6 +401,7 @@ $(function(){
 
 
 
+
 <div class="orderGoodsInfo layout">
     <div class="goodsInfoHead">
         <ul>
@@ -412,24 +413,24 @@ $(function(){
         </ul>
     </div>
     <div class="goodsList clearfix">
-        <#list list.childOrders as childOrder>
+        <#list childOrders as childOrder>
         <ul>
             <li class="goodsDesc">
                 <a href="http://${webSite!}.571xz.com/item.htm?id=${childOrder.childOrderId!}" target="_blank" class="fl"><img src="${childOrder.imgsrc!}"></a>
                 <div class="goodsTitle pr fl">
                     <h4><a href="http://${webSite!}.571xz.com/item.htm?id=${childOrder.childOrderId!}" target="_blank">${childOrder.title!}</a></h4>
-                    <p class="marketCode fwb pa">商品货号：${childOrder.goodsCode!}</p>
+                    <p class="marketCode fwb pa">商品货号：${childOrder.goodsNo!}</p>
                 </div>
             </li>
             <li class="goodsAttrs fwb fc3">${childOrder.color!} ${childOrder.size!}</li>
             <li class="goodsCount fs14"><span class="yahei fwb">${childOrder.num!}</span></li>
             <li class="goodsPrice fs14 yahei">&yen; <span class="fwb">${childOrder.price!}</span></li>
             <li class="goodsStatus">
-                <#if childOrder.status == 1>
+                <#if orderStateNum == 1>
                     <span class="fcF40">待付款</span>
-                <#elseif childOrder.status == 2>
+                <#elseif orderStateNum == 2>
                     <span>已付款</span>
-                <#elseif childOrder.status == 3>
+                <#elseif orderStateNum == 3>
                     <#if childOrder.shState == 0>
                     <span>已发货</span>
                     <#elseif childOrder.shState == 1>
@@ -441,7 +442,7 @@ $(function(){
                     <#elseif childOrder.shState == 3>
                     <span class="fcBlue">换货成功</span>
                     </#if>
-                <#elseif childOrder.status == 4>
+                <#elseif orderStateNum == 4>
                     <span>交易完成</span>
                     <#if childOrder.shState == 1>
                     <br><span class="fcBlue">售后处理中</span>
@@ -452,7 +453,7 @@ $(function(){
                     <#elseif childOrder.shState == 3><br>
                     <span class="fcBlue">换货成功</span>
                     </#if>
-                <#elseif childOrder.status == 5>
+                <#elseif orderStateNum == 5>
                     <span>交易已取消</span>
                 </#if>
             </li>
