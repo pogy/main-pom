@@ -22,6 +22,16 @@ public class RefundItemOrderImplTest extends BaseTest{
     public void sellerAgreeTest() {
         RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
         refundItemOrder.sellerAgree();
+        //测试重复操作
+        refundItemOrder.sellerAgree();
+    }
+
+    @Test
+    public void sellerRefuseTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
+        //测试重复操作
+        refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
     }
 
     private RefundApplyBO refundApplyBOGenerator(Long oid,Long soid,Integer type,Long hopeMoney,String reason) {

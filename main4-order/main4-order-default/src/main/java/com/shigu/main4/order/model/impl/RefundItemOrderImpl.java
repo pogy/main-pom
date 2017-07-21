@@ -9,6 +9,7 @@ import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.enums.RefundMsgEnum;
+import com.shigu.main4.order.enums.RefundStateEnum;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.vo.RefundVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.Objects;
 
 
 /**
@@ -93,16 +95,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void sellerAgree() {
-        ItemRefundLog itemRefundLog = new ItemRefundLog();
-        ItemOrderRefund selectedFields = getSelectedFields("refund_id,status");
-        itemRefundLog.setFromStatus(selectedFields.getStatus());
-        itemRefundLog.setRefundId(refundId);
-        itemRefundLog.setToStatus(1);
-        selectedFields.setStatus(1);
-        itemRefundLog.setImBuyer(false);
-        itemRefundLog.setMsg(RefundMsgEnum.SELLER_AGREE.toString());
-        itemOrderRefundMapper.updateByPrimaryKeySelective(selectedFields);
-        itemRefundLogMapper.insert(itemRefundLog);
+        logRefundLog(false,null,RefundStateEnum.statusOf(1),RefundMsgEnum.SELLER_AGREE);
     }
 
     /**
@@ -111,7 +104,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     public void sellerRefuse(String reason) {
-
+        logRefundLog(false,reason,RefundStateEnum.statusOf(3),RefundMsgEnum.SELLER_REFUSE);
     }
 
     /**
@@ -193,5 +186,34 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     private ItemOrderRefund getSelectedFields(String fields) {
         return itemOrderRefundMapper.selectFieldsByPrimaryKey(refundId, FieldUtil.codeFields(fields));
+    }
+
+    /**
+     * 退款请求状态变更及日志记录
+     * @param imBuyer
+     * @param toStatus
+     * @param msg
+     */
+    private void logRefundLog(Boolean imBuyer,String reason,RefundStateEnum toStatus, RefundMsgEnum msg) {
+        ItemOrderRefund selectedFields = getSelectedFields("refund_id,reason,status");
+        //已经是请求处理的状态
+        boolean isSameStatus = Objects.equals(selectedFields.getStatus(),toStatus.refundStatus);
+        //退单原因没有改变
+        boolean isSameReason = reason == null || Objects.equals(reason,selectedFields.getReason());
+        if (isSameStatus && isSameReason) {
+            return;
+        }
+        ItemRefundLog itemRefundLog = new ItemRefundLog();
+        itemRefundLog.setFromStatus(selectedFields.getStatus());
+        itemRefundLog.setRefundId(refundId);
+        itemRefundLog.setToStatus(toStatus.refundStatus);
+        selectedFields.setStatus(toStatus.refundStatus);
+        itemRefundLog.setImBuyer(imBuyer);
+        if (!isSameReason) {
+            selectedFields.setReason(reason);
+        }
+        itemRefundLog.setMsg("退款状态：" + msg.refundMsg + "，原因：" + selectedFields.getReason());
+        itemOrderRefundMapper.updateByPrimaryKeySelective(selectedFields);
+        itemRefundLogMapper.insert(itemRefundLog);
     }
 }
