@@ -1,7 +1,7 @@
 package com.shigu.main4.order.vo;
 
 import com.shigu.main4.order.enums.OrderStatus;
-import com.shigu.main4.order.servicevo.OrderVO;
+
 
 /**
  * 商品类别订单

@@ -1,10 +1,14 @@
 package com.shigu.main4.order.services.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.examples.BuyerAddressExample;
+import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.LogisticsTemplateExample;
+import com.opentae.data.mall.examples.OrderStatusRecordExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -16,7 +20,10 @@ import com.shigu.main4.order.enums.MainOrderStatusEnum;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.RefundTypeEnum;
-import com.shigu.main4.order.model.SubItemOrder;
+import com.shigu.main4.order.exceptions.LogisticsRuleException;
+import com.shigu.main4.order.exceptions.OrderException;
+import com.shigu.main4.order.model.*;
+import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.model.impl.ItemOrderImpl;
 import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.order.services.ItemOrderService;
@@ -87,6 +94,12 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
     @Autowired
     private OrderConstantService orderConstantService;
+
+    @Autowired
+    private OrderStatusRecordMapper orderStatusRecordMapper;
+
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
 
     /**
      * oid获取器
@@ -204,7 +217,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
 
         // d, 添加子订单
         if (orderBO.getSubOrders() != null) {
-            List<SubOrderVO> subOrders = new ArrayList<>();
+            subOrders = new ArrayList<>();
             for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
                 SubOrderVO vo = new SubOrderVO();
                 vo.setNum(subItemOrderBO.getNum());
@@ -475,7 +488,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         infoVO.setExpressPrice(itemOrderVO.getPostPay());
         infoVO.setServicePrice(itemOrderVO.getServerPay());
         infoVO.setTotalPrice(itemOrderVO.getTradePay());
-        infoVO.setOrderState(itemOrderVO.getMainState());
+        infoVO.setOrderState(MainOrderStatusEnum.statusOf(itemOrderVO.getOrderStatus().status));
         List<LogisticsVO> logisticsVOS = itemOrder.selLogisticses();
         if (logisticsVOS.size()>0){
 
