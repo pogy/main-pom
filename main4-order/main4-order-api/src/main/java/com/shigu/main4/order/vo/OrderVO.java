@@ -11,6 +11,8 @@ import java.io.Serializable;
 public class OrderVO implements Serializable{
     private Long orderId;
 
+    private String title;
+
     private OrderType type;
 
     private Long totalFee;
@@ -25,6 +27,14 @@ public class OrderVO implements Serializable{
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public OrderType getType() {
