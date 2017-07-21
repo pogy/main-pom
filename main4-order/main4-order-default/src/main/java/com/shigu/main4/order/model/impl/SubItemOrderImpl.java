@@ -7,12 +7,16 @@ import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsSoldoutMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.enums.SubOrderStatus;
+import com.shigu.main4.order.exceptions.PayerException;
+import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -80,8 +84,17 @@ public class SubItemOrderImpl implements SubItemOrder{
      * @param money
      */
     @Override
-    public Long refundApply(Integer number, Long money) {
-        return null;
+    public Long refundApply(Integer number, Long money)  {
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
+        RefundApplyBO refundApply = new RefundApplyBO();
+        refundApply.setSoid(itemOrderSub.getSoid());;
+        refundApply.setOid(itemOrderSub.getOid());
+        refundApply.setHopeMoney(money);
+        refundApply.setNumber(number);
+
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrderImpl.class, null);
+        Long refundId = refundItemOrder.apply(refundApply, true);
+        return refundId;
     }
 
     /**
