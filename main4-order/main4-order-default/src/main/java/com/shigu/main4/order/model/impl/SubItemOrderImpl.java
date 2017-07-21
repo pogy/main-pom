@@ -84,11 +84,6 @@ public class SubItemOrderImpl implements SubItemOrder{
         return null;
     }
 
-    @Override
-    public RefundVO refundInfos() {
-        return null;
-    }
-
     /**
      * 退单信息
      *
