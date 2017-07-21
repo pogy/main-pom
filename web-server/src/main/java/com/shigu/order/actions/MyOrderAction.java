@@ -150,7 +150,7 @@ public class MyOrderAction {
             model.addAttribute ("orderDetailVO",detailVo);
         }
 
-        return "buyer/myOrder";
+        return "trade/orderDetail";
     }
 
 
