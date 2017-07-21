@@ -197,8 +197,8 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      * 买家附议
      */
     @Override
-    public void buyerReprice() {
-
+    public void buyerReprice() throws RefundException, PayerException {
+        doRefundMoney(false);
     }
 
     /**
@@ -222,15 +222,28 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      * 退成功
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void success() throws PayerException, RefundException {
+        doRefundMoney(true);
+    }
+
+    /**
+     * 执行退钱
+     * @param buyerWin 买家诉求通过？
+     * @throws PayerException 原路径退钱失败
+     * @throws RefundException 诉求金额不满足
+     */
+    @Transactional(rollbackFor = Exception.class)
+    private void doRefundMoney(boolean buyerWin) throws PayerException, RefundException {
         RefundVO refundinfo = refundinfo();
+
+        // 买家赢 使用 hopeMoney, 卖家赢使用 sellerProposalMoney
+        Long money = buyerWin ? refundinfo.getHopeMoney() : refundinfo.getSellerProposalMoney();
         ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
         List<PayedVO> payedVOS = itemOrder.payedInfo();
         for (PayedVO payedVO : payedVOS) {
-            if (payedVO.getMoney() >= refundinfo.getHopeMoney()) {
+            if (payedVO.getMoney() >= money) {
                 SpringBeanFactory.getBean(PayerService.class, payedVO.getPayType().getService())
-                        .refund(payedVO.getPayId(), refundinfo.getHopeMoney());
+                        .refund(payedVO.getPayId(), money);
                 refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND);
                 return;
             }
@@ -238,7 +251,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         throw new RefundException(String.format(
                 "支付记录中单笔数目[%s]不足以支持希望的退款数目[%d]",
                 StringUtils.join(BeanMapper.getFieldList(payedVOS, "money", Long.class), ','),
-                refundinfo.getHopeMoney()
+                money
         ));
     }
 

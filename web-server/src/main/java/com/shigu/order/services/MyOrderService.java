@@ -65,7 +65,6 @@ public class MyOrderService {
             }
         }
 
-
        return  list;
 
     }
@@ -99,37 +98,55 @@ public class MyOrderService {
         ShowOrderVO orderVO= orderListService.selectMyorder (orderId);
         OrderAddrInfoVO addrVo= orderListService.selectOrderAddrInfo( orderId);
         OrderDetailExpressVO expressVO= orderListService.selectExpress( orderId);
-        List<SubOrderInfoVO> list=orderListService.selectSubList( orderId);
-        OrderDetailTotalVO totalVO= orderListService.selectTotal( orderId);
 
+        List<SubOrderInfoVO> list=orderListService.selectSubList( orderId);
+        List<SubOrderInfoVO> list1=new ArrayList<> ();
+        for(SubOrderInfoVO subVo: list){
+            subVo.setPrice (PriceConvertUtils.priceToString(subVo.getPriceLong ()));
+            subVo.setSubOrderStatus (subVo.getSubStatusenum ().status);
+            list1.add (subVo);
+        }
         OrderDetailVO vo=new OrderDetailVO();
-        vo.setChildOrders (list);
+        vo.setChildOrders (list1);
+
+        OrderDetailTotalVO totalVO= orderListService.selectTotal( orderId);
+        totalVO.setServicePrice (PriceConvertUtils.priceToString (totalVO.getServicePriceLong()));
+        totalVO.setOrderTotalPrice (PriceConvertUtils.priceToString (totalVO.getOrderTotalPriceLong()));
+        totalVO.setExpressPrice (PriceConvertUtils.priceToString (totalVO.getExpressPriceLong()));
+        totalVO.setChildOrdersPrice (PriceConvertUtils.priceToString (totalVO.getChildOrdersPriceLong()));
+
+
+
         vo.setExpress (expressVO);
         vo.setOrderAddrInfo (addrVo);
         vo.setTotal (totalVO);
         if(orderVO.getOrderCreateTimed ()!=null) {
-            vo.setOrderCreateTime (DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getOrderCreateTimed ()));
+            vo.setOrderCreateTime (orderVO.getOrderCreateTimed ().getTime ());
         }
         vo.setOrderId (orderId);
         if(orderVO.getTradeTimed ()!=null) {
             vo.setOrderDealTime (DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getTradeTimed ()));
         }
         vo.setOrderStateNum (orderVO.getMainState ().longValue ());
-        vo.setOrderStateText ("'提交订单', '买家付款', '商品配货', '交易完成'");
+        String[] orderStateText={"提交订单", "买家付款", "商品配货", "交易完成"};
+        vo.setOrderStateText (orderStateText);
         //
-       String  orderStatusTIme="";
-        if(vo.getOrderCreateTime ()!=null){
-            orderStatusTIme=vo.getOrderCreateTime ();
+
+       String[] orderStatusTIme=new String[4];
+        if(orderVO.getOrderCreateTimed ()!=null){
+            orderStatusTIme[0]=DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getOrderCreateTimed ());
+
         }
         if(vo.getOrderDealTime ()!=null){
-            orderStatusTIme+=","+vo.getOrderDealTime ();
+            orderStatusTIme[1]=vo.getOrderDealTime ();
         }
         if(orderVO.getDistributionDated()!=null){
-            orderStatusTIme+=","+DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getDistributionDated ());
+            orderStatusTIme[2]=DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getDistributionDated ());
         }
         if(orderVO.getFinishTimed ()!=null){
-            orderStatusTIme+=","+DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getFinishTimed ());
+            orderStatusTIme[3]=DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getFinishTimed ());
         }
+
         vo.setOrderStateTime (orderStatusTIme);
         return vo;
     }
