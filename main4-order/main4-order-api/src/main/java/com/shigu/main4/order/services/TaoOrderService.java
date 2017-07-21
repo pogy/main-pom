@@ -1,7 +1,12 @@
 package com.shigu.main4.order.services;
 
 
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.TbOrderBO;
+import com.shigu.main4.order.enums.TbOrderStatusEnum;
+import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
+import com.shigu.main4.order.exceptions.NotFindSessionException;
+import com.shigu.main4.order.servicevo.RelationGoodsVO;
 import com.shigu.main4.order.vo.GoodsVO;
 import com.shigu.main4.order.servicevo.TbOrderVO;
 
@@ -19,6 +24,19 @@ import java.util.List;
  * @commonents:
  */
 public interface TaoOrderService {
+
+    /**
+     * ====================================================================================
+     * @方法名：
+     * @功能： 获取淘宝session
+     * @param: userId:星座用户ID
+     * @return:
+     * @exception: 未查询到sessionKey
+     * ====================================================================================
+     *
+     */
+    String myTbSessionKey(Long userId) throws NotFindSessionException;
+
     /**
      * ====================================================================================
      * @方法名：
@@ -29,7 +47,7 @@ public interface TaoOrderService {
      * ====================================================================================
      *
      */
-    List<TbOrderVO> myTbOrders(TbOrderBO bo);
+    ShiguPager<TbOrderVO> myTbOrders(TbOrderBO bo, String sessionKey);
 
     /**
      * ====================================================================================
@@ -41,47 +59,32 @@ public interface TaoOrderService {
      * ====================================================================================
      *
      */
-    TbOrderVO myTbOrder(Long tid);
-
-
+    TbOrderVO myTbOrder(Long tid , TbOrderStatusEnum status,String sessionKey);
 
     /**
      * ====================================================================================
      * @方法名：glGoodsJson
-     * @功能：关联
+     * @功能： 关联,如果已关联,返回关联的货号,如果未关联,根据numiid查询商品进行管理,成功则返回货号
      * @param:numiid商品ID
      * @return:商家编码 货号
      * @exception:
      * ====================================================================================
      *
      */
-    String glGoodsJson(Long numiid);
+    RelationGoodsVO glGoodsJson(Long numiid) throws NotFindRelationGoodsException;
 
-
-
-    /**
-     * ====================================================================================
-     * @方法名：glGoodsJson
-     * @功能：重新关联
-     * @param:numiid商品ID
-     * @return:商家编码  货号
-     * @exception:
-     * ====================================================================================
-     *
-     */
-    String reglGoodsJson(Long numiid);
 
     /**
      * ====================================================================================
      * @方法名：selectglGoodsJson
      * @功能： 关联搜索
-     * @param: condition搜索的条件
+     * @param: condition搜索的条件,可能为空
      * @return: 返回搜索出来的商品
      * @exception: 
      * ====================================================================================
      * 
      */
-    List<GoodsVO> selectglGoodsJson(String condition);
+    ShiguPager<GoodsVO> selectglGoodsJson(String condition,Integer page,Integer pageSize);
 
     /**
      * ====================================================================================
@@ -93,6 +96,6 @@ public interface TaoOrderService {
      * ====================================================================================
      * 
      */
-    GoodsVO glGoodsJson(Long numiid,Long goodsId);
+    RelationGoodsVO glGoodsJson(Long numiid,Long goodsId) throws NotFindRelationGoodsException;
 
 }

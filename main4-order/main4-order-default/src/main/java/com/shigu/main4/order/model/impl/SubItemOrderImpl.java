@@ -87,7 +87,7 @@ public class SubItemOrderImpl implements SubItemOrder{
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         RefundApplyBO refundApply = new RefundApplyBO();
         refundApply.setSoid(itemOrderSub.getSoid());
-        ;
+
         refundApply.setOid(itemOrderSub.getOid());
         refundApply.setHopeMoney(money);
         refundApply.setNumber(number);
