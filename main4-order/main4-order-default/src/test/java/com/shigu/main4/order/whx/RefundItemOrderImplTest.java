@@ -42,6 +42,14 @@ public class RefundItemOrderImplTest extends BaseTest{
         refundItemOrder.userSended("885782656452802268");
     }
 
+    @Test
+    public void sellerCachedTest() {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 4L);
+        refundItemOrder.sellerCached();
+        //测试重复操作
+        refundItemOrder.sellerCached();
+    }
+
     private RefundApplyBO refundApplyBOGenerator(Long oid,Long soid,Integer type,Long hopeMoney,String reason) {
         RefundApplyBO refundApplyBO = new RefundApplyBO();
         refundApplyBO.setOid(oid);

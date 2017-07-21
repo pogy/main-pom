@@ -153,7 +153,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     public void sellerCached() {
-
+        logRefundLog(false,null,RefundStateEnum.statusOf(6),RefundMsgEnum.SELLER_CACHED);
     }
 
     /**
