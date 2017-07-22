@@ -274,9 +274,11 @@ public class GoatFactoryImpl implements GoatFactory {
                     GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
                     goodsCountForsearch.setGoodsId(lastItemId);
                     goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
-                    step += goodsCountForsearch.getHadGoat();
-                    goodsCountForsearch.setHadGoat(step>20?20:step);
-                    goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+                    if(goodsCountForsearch != null && goodsCountForsearch.getHadGoat() != null) {
+                        step += goodsCountForsearch.getHadGoat();
+                        goodsCountForsearch.setHadGoat(step > 20 ? 20 : step);
+                        goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+                    }
                 }
             }
 
