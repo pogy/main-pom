@@ -195,11 +195,7 @@ public class ItemProductImpl implements ItemProduct {
 
                 List<ItemCidWeight> weights = itemCidWeightMapper.selectByExample(itemCidWeightExample);
                 if (weights.size() > 0 ) {
-                    Long cidWeight=0L;
-                    for (ItemCidWeight i:weights){
-                        cidWeight+=i.getWeight();
-                    }
-                    return cidWeight;
+                    return weights.get(0).getWeight();
                 } else {
                     return 1000L;
                 }

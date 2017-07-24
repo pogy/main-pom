@@ -131,6 +131,9 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public ServiceVO selDfService(Long senderId, Long marketId) {
+        if (marketId == null) {
+            return null;
+        }
         List<ServiceVO> serviceList = selServices(senderId);
         for (ServiceVO item : serviceList) {
             if (Objects.equals(marketId, item.getMarketId())) {
