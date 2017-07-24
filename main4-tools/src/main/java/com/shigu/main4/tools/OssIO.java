@@ -1,9 +1,11 @@
 package com.shigu.main4.tools;
 
+import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.CopyObjectResult;
 import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectListing;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +17,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -104,6 +108,35 @@ public class OssIO {
             }
         }
         return domain+filePath;
+    }
+
+    /**
+     * 创建一个文件夹
+     * @param parentDir 上层目录
+     * @param dirName 创建新目录
+     */
+    public String createDir(String parentDir, String dirName) {
+        if (StringUtils.isEmpty(parentDir))  {
+            parentDir = "";
+        }
+        String createdDir = null;
+        // 创建OSSClient实例
+        OSSClient ossClient = null;
+        try {
+            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+            int end = dirName.lastIndexOf("/");
+            if (end != dirName.length() -1) {
+                dirName = dirName + "/";
+            }
+
+            createdDir = parentDir + dirName;
+            ossClient.putObject(bucketName, createdDir, new ByteArrayInputStream(new byte[0]));
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
+        return createdDir;
     }
 
     /**
@@ -207,6 +240,29 @@ public class OssIO {
             }
         }
     }
+    /**
+     * 生成一个签名的url
+     * @param key 上传对象的key
+     * @return 生成的url字符串
+     */
+    public String createKey(String key){
+        // 创建OSSClient实例
+        OSSClient ossClient = null;
+        try {
+            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+            //设置生效时间
+            Date expiration = new Date(new Date().getTime() + 600 * 1000);
+            //生成url
+            URL url = ossClient.generatePresignedUrl(bucketName, key, expiration, HttpMethod.PUT);
+            return url.toString();
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
+
+    }
+
 
 
     public String getEndpoint() {
