@@ -135,6 +135,50 @@
   <session-config>
     <session-timeout>100</session-timeout>
   </session-config>
+
+	<!--session共享-->
+	<filter>
+		<filter-name>TaeSessionFilter</filter-name>
+		<filter-class>com.taobao.tae.session.TaeSessionFilter</filter-class>
+		<init-param>
+			<param-name>ocs_username</param-name>
+			<!--<param-value>m-bp12b819f01f4c44</param-value>-->
+			<param-value>root</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ocs_password</param-name>
+			<!--<param-value>Mem81682024</param-value>-->
+			<param-value>killer81682024</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ocs_host</param-name>
+			<!--<param-value>m-bp12b819f01f4c44.memcache.rds.aliyuncs.com</param-value>-->
+			<param-value>192.168.1.193</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ocs_port</param-name>
+			<param-value>11211</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cache_type</param-name>
+			<!--<param-value>ocs</param-value>-->
+			<param-value>memcached</param-value>
+		</init-param>
+		<init-param>
+			<param-name>debug_switch</param-name>
+			<param-value>on</param-value>
+			<!-- debug开关，on为开启，off为关闭，开启debug后可直接通过url查询某个SessionId的所有Session内容 -->
+		</init-param>
+		<init-param>
+			<param-name>debug_auth</param-name>
+			<param-value>killer81682024</param-value>
+			<!-- 使用debug url时候的密码，防止debug开关开启session数据暴露，密码内容可自定义 -->
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>TaeSessionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
   
   <!-- druid数据源Web监控配置 -->
 	<filter>

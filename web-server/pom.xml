@@ -433,6 +433,17 @@
             <artifactId>wechat4j</artifactId>
             <version>1.2-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>tae-session</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>spymemcached</artifactId>
+            <version>2.10.3</version>
+        </dependency>
     </dependencies>
 
     <repositories>
