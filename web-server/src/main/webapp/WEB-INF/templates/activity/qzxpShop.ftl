@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>秋装新品发布会 爆款预告 抢先get - 四季星座网</title>
 
     
     
@@ -309,103 +309,103 @@ var webSite = '${webSite!}';
     <ul class="layout">
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=40413" target="_blank" data-name="A001">
+            <a href="http://hz.571xz.com/shop.htm?id=40413" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A001.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=40923" target="_blank" data-name="A007">
+            <a href="http://hz.571xz.com/shop.htm?id=40923" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A007.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=40908" target="_blank" data-name="A009">
+            <a href="http://hz.571xz.com/shop.htm?id=40908" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A009.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=29479" target="_blank" data-name="A231A">
+            <a href="http://hz.571xz.com/shop.htm?id=29479" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A231A.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=40238" target="_blank" data-name="A326">
+            <a href="http://hz.571xz.com/shop.htm?id=40238" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A326.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=35026" target="_blank" data-name="B297">
+            <a href="http://hz.571xz.com/shop.htm?id=35026" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/B297.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=42603" target="_blank" data-name="B249">
+            <a href="http://hz.571xz.com/shop.htm?id=42603" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/B249.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=35348" target="_blank" data-name="A247">
+            <a href="http://hz.571xz.com/shop.htm?id=35348" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A247.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=29911" target="_blank" data-name="A249">
+            <a href="http://hz.571xz.com/shop.htm?id=29911" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A249.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=35922" target="_blank" data-name="A088">
+            <a href="http://hz.571xz.com/shop.htm?id=35922" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A088.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=29727" target="_blank" data-name="C211">
+            <a href="http://hz.571xz.com/shop.htm?id=29727" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/C211.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=39899" target="_blank" data-name="A448">
+            <a href="http://hz.571xz.com/shop.htm?id=39899" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A448.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=35611" target="_blank" data-name="A210">
+            <a href="http://hz.571xz.com/shop.htm?id=35611" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A210.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=42592" target="_blank" data-name="A409-2">
+            <a href="http://hz.571xz.com/shop.htm?id=42592" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A409-2.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=35477" target="_blank" data-name="B231">
+            <a href="http://hz.571xz.com/shop.htm?id=35477" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/B231.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=29913" target="_blank" data-name="C219">
+            <a href="http://hz.571xz.com/shop.htm?id=29913" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/C219.jpg">
             </a>
         </li>
         
         <li>
-            <a href="http://hz.571xz.com/shop.htm?id=35748" target="_blank" data-name="A240">
+            <a href="http://hz.571xz.com/shop.htm?id=35748" target="_blank">
                 <img src="http://style.571xz.com/v2/qzhd/img/A240.jpg">
             </a>
         </li>
