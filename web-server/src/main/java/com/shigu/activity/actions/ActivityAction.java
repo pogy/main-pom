@@ -363,4 +363,12 @@ public class ActivityAction {
         model.addAttribute("webSite", "hz");
         return "activity/qzxpApply";
     }
+    /**
+     * 临时用一下
+     */
+    @RequestMapping("activity/qzxpShop")
+    public String  qzxpShop(Model model){
+        model.addAttribute("webSite","hz");
+        return "activity/qzxpShop";
+    }
 }
