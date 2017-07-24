@@ -1,0 +1,2 @@
+JAVA_OPTS="-Xms300M -Xmx1500M -Xmn100M  -Xss256k  -XX:MetaspaceSize=64m  -XX:MaxMetaspaceSize=1024m  -XX:SurvivorRatio=10 -XX:+PrintGC -Xloggc:/acs/log/gc.log -Duser.timezone=Asia/Shanghai "
+
