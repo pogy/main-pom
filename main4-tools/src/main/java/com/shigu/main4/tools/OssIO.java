@@ -1,6 +1,9 @@
 package com.shigu.main4.tools;
 
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.CopyObjectResult;
+import com.aliyun.oss.model.OSSObjectSummary;
+import com.aliyun.oss.model.ObjectListing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * oss io 交互
@@ -102,16 +107,83 @@ public class OssIO {
     }
 
     /**
+     * 列出目录下所有的文件信息
+     * @param filePath 目录
+     */
+    public List<OssFile> listFiles( String filePath) {
+        OSSClient ossClient = null;
+        List<OssFile> fileList = new ArrayList<OssFile>();
+        try {
+            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+            ObjectListing objectListing = ossClient.listObjects(bucketName, filePath);
+            for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+                OssFile file = new OssFile();
+                file.setLastModified(objectSummary.getLastModified());
+                file.setName(objectSummary.getKey());
+                file.setSize(objectSummary.getSize());
+                fileList.add(file);
+            }
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
+        return fileList;
+    }
+
+    /**
+     * 重命名文件
+     * @param srcFilePath  原名
+     * @param dstFilePath  目标名
+     */
+    public void renameFile(String srcFilePath, String dstFilePath) {
+        // 创建OSSClient实例
+        OSSClient ossClient = null;
+        try {
+            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+            // 拷贝Object
+            CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath);
+            logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
+            ossClient.deleteObject(bucketName,srcFilePath);
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
+    }
+
+    /**
      * 删除一个文件
      * @param filePath
      */
-    public void deleteFile(String filePath){
+    public void deleteFile(String filePath) {
         // 创建OSSClient实例
         OSSClient ossClient = null;
         try {
             ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 // 删除Object
             ossClient.deleteObject(bucketName, filePath);
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
+    }
+
+    /**
+     * 移动文件
+     * @param srcFilePath  原路径
+     * @param dstFilePath  目标路径
+     */
+    public void moveFile(String srcFilePath, String dstFilePath) {
+        // 创建OSSClient实例
+        OSSClient ossClient = null;
+        try {
+            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+            // 拷贝Object
+            CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath);
+            logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
+            ossClient.deleteObject(bucketName,srcFilePath);
         } finally {
             if (ossClient != null) {
                 ossClient.shutdown();
