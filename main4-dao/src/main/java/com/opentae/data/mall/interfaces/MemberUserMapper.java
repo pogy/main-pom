@@ -30,4 +30,6 @@ public interface MemberUserMapper extends Mapper<MemberUser> {
     int selectMemberUserCountByBo(@Param("userName") String userName,@Param("userNick") String userNick,
                                               @Param("loginPhone") String loginPhone, @Param("subUserName") String subUserName);
 
+    /** 用户余额 */
+    Long userBalance(@Param("userId")Long userId);
 }

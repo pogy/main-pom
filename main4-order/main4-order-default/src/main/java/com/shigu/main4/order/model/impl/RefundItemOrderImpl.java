@@ -1,6 +1,5 @@
 package com.shigu.main4.order.model.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemRefundLog;
@@ -9,14 +8,13 @@ import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
+import com.shigu.main4.order.enums.RefundMsgEnum;
 import com.shigu.main4.order.enums.RefundStateEnum;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.PayerService;
-import com.shigu.main4.order.enums.RefundMsgEnum;
 import com.shigu.main4.order.model.RefundItemOrder;
-import com.shigu.main4.order.servicevo.RefundInfoVO;
 import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -27,8 +25,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -264,7 +262,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         List<PayedVO> payedVOS = itemOrder.payedInfo();
         for (PayedVO payedVO : payedVOS) {
             if (payedVO.getMoney() >= money) {
-                SpringBeanFactory.getBean(PayerService.class, payedVO.getPayType().getService())
+                SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
                         .refund(payedVO.getPayId(), money);
                 refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND);
                 return;
