@@ -17,6 +17,7 @@ import com.tencent.protocol.refund_protocol.RefundReqData;
 import com.tencent.protocol.refund_protocol.RefundResData;
 import com.tencent.protocol.unify_protocol.UnifyPayReqData;
 import com.tencent.protocol.unify_protocol.UnifyPayResData;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +31,9 @@ import java.util.Calendar;
  */
 @Service("wxPayerService")
 public class WxPayerServiceImpl extends  PayerServiceAble {
+
+    @Value("${weixin.pay.notify.url}")
+    private String notifyUrl;
 
     @PostConstruct
     public void initWXPay() {
@@ -53,8 +57,7 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
                     "oa",
                     wxOutTradeNo(apply.getApplyId()),
                     money.intValue(),
-//                    "http://1487uc2861.51mypc.cn/api/wxnotify.json"
-                    "http://www.571xz.com/api/wxnotify.json"
+                    notifyUrl
             );
         } catch (Exception e) {
             throw PayApplyException.wxApplyException(e);
