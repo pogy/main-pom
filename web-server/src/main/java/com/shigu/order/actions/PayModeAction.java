@@ -1,12 +1,10 @@
 package com.shigu.order.actions;
 
-import com.opentae.data.mall.beans.OrderPay;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.ItemOrderVO;
-import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.order.services.PayModeService;
 import com.shigu.order.vo.PayModePageVO;
 import com.shigu.session.main4.PersonalSession;
@@ -42,11 +40,10 @@ public class PayModeAction {
      * @param session
      * @param model
      * @return
-     * @throws JsonErrException
      * @throws PayApplyException
      */
     @RequestMapping("payMode")
-    public String payMode(Long orderId, HttpSession session, Model model) throws JsonErrException, PayApplyException {
+    public String payMode(Long orderId, HttpSession session, Model model) throws PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         PayModePageVO payModePageVO = payModeService.selPayModePageVO(orderId, userId);
