@@ -12,7 +12,9 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
+import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.PayerService;
+import com.shigu.main4.order.model.impl.XzPayerServiceImpl;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.PayApplyVO;
@@ -56,9 +58,10 @@ public class PayModeService {
         payModePageVO.setAmountPay(PriceConvertUtils.priceToString(itemOrderVO.getTotalFee()));
         payModePageVO.setAlipayUrl("/order/alipay.htm");
 //        TODO:其他信息
-        payModePageVO.setCurrentAmount("0.00");
+        payModePageVO.setCurrentAmount(String.format("%.2f", memberUserMapper.userBalance(userId) * .01));
         //TODO:支付密码
-        payModePageVO.setNotSetPassword("是否设置支付密码");
+        MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
+        payModePageVO.setNotSetPassword(memberUser.getPayPassword() == null ? "没有支付密码" : null);
         return payModePageVO;
     }
 
@@ -130,8 +133,17 @@ public class PayModeService {
         }
     }
 
-    public void payxz(PayApplyVO payApplyVO) {
-        //TODO:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-//        SpringBeanFactory.getBean(PayerService.class, "xzPayerService").paySure();
+    public void payxz(PayApplyVO payApplyVO, Long userId) throws JsonErrException {
+        MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
+        try {
+            SpringBeanFactory.getBean("xzPayerService", PayerService.class)
+                    .paySure(
+                            payApplyVO.getApplyId(),
+                            "XZPAY-" + payApplyVO.getApplyId(),
+                            memberUser.getUserName(),
+                            payApplyVO.getMoney());
+        } catch (PayerException e) {
+            throw new JsonErrException("扣款异常");
+        }
     }
 }

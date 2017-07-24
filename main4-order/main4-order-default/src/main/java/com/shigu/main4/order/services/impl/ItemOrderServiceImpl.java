@@ -205,36 +205,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), company.getExpressCompanyId(), buyerAddress.getProvId(), pidNumBOS));
         itemOrder.addLogistics(null, logistic);
 
-        // b, 添加服务
-        if (orderBO.getServiceIds() != null) {
-            for (Long sid : orderBO.getServiceIds()) {
-                itemOrder.addService(sid);
-            }
-        }
-
-        // c, 添加包材
-        if (orderBO.getPackages() != null) {
-            for (PackageBO packageBO : orderBO.getPackages()) {
-                itemOrder.addPackage(packageBO.getMetarialId(), packageBO.getNum());
-            }
-        }
-
-        // d, 添加子订单
-        if (orderBO.getSubOrders() != null) {
-            subOrders = new ArrayList<>();
-            for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
-                SubOrderVO vo = new SubOrderVO();
-                vo.setNum(subItemOrderBO.getNum());
-                vo.setMark(subItemOrderBO.getMark());
-                ItemProductVO productVO = subItemOrderBO.getProductVO();
-                vo.setGoodsId(productVO.getGoodsId());
-                ItemSkuVO selectiveSku = productVO.getSelectiveSku();
-                vo.setSize(selectiveSku.getSize());
-                vo.setColor(selectiveSku.getColor());
-                subOrders.add(vo);
-            }
-            itemOrder.addSubOrder(subOrders);
-        }
         return order.getOid();
     }
 
@@ -401,7 +371,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         if (itemOrderLogistics == null) {
             throw new Main4Exception("数据库没有对应传入的expressId的数据");
         }
-        ExpressCompany expressCompany = null;
         String companyCode = "";
         if (itemOrderLogistics.getCompanyId() != null) {
             companyCode = selLogisticCompanyCode(itemOrderLogistics.getCompanyId());
@@ -429,8 +398,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
                 ExpressLogVO logVO = new ExpressLogVO();
                 logVO.setLogDesc(msg.getAcceptStation());
                 logVO.setLogWeek(weeks[week_index]);
-                logVO.setLogDate(new SimpleDateFormat("yyyy-MM-dd").format(time).toString());
-                logVO.setLogTime(new SimpleDateFormat("HH:mm:ss").format(time).toString());
+                logVO.setLogDate(new SimpleDateFormat("yyyy-MM-dd").format(time));
+                logVO.setLogTime(new SimpleDateFormat("HH:mm:ss").format(time));
                 logVOList.add(logVO);
             }
         }

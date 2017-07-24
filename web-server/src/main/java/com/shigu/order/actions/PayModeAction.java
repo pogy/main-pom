@@ -88,9 +88,8 @@ public class PayModeAction {
     public JSONObject xzpayJson(Long orderId, String pwd, HttpSession session) throws JsonErrException, PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         payModeService.checkPwd(pwd, ps.getUserId());
-        PayApplyVO payApplyVO = payModeService.payApply(orderId, PayType.XZ);
 
-        payModeService.payxz(payApplyVO);
+        payModeService.payxz(payModeService.payApply(orderId, PayType.XZ), ps.getUserId());
         return JsonResponseUtil.success();
     }
 

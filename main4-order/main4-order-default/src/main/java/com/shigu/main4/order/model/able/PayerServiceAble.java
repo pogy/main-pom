@@ -2,8 +2,10 @@ package com.shigu.main4.order.model.able;
 
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
+import com.opentae.data.mall.beans.OrderPayRelationship;
 import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
 import com.opentae.data.mall.interfaces.OrderPayMapper;
+import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.exceptions.PayerException;
@@ -23,6 +25,9 @@ public abstract class PayerServiceAble implements PayerService{
 
     @Autowired
     protected OrderPayMapper orderPayMapper;
+
+    @Autowired
+    private OrderPayRelationshipMapper orderPayRelationshipMapper;
 
     @Override
     public Long payedLeft(Long payId) {
@@ -52,6 +57,12 @@ public abstract class PayerServiceAble implements PayerService{
             orderPay.setOuterPuser(outerPuser);
             orderPay.setMoney(payMoney);
             orderPayMapper.insertSelective(orderPay);
+
+            // 记录 oid - payid 关系
+            OrderPayRelationship relationship = new OrderPayRelationship();
+            relationship.setOid(apply.getOid());
+            relationship.setPayId(orderPay.getPayId());
+            orderPayRelationshipMapper.insertSelective(relationship);
         }
     }
 
