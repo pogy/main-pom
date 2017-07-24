@@ -2,24 +2,14 @@ package com.shigu.order.services;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.opentae.data.mall.beans.OrderCity;
-import com.opentae.data.mall.beans.OrderProv;
-import com.opentae.data.mall.beans.OrderTown;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ExpressCompanyExample;
-import com.opentae.data.mall.interfaces.OrderCityMapper;
-import com.opentae.data.mall.interfaces.OrderProvMapper;
-import com.opentae.data.mall.interfaces.OrderTownMapper;
-import com.opentae.data.mall.beans.ExpressCompany;
-import com.opentae.data.mall.beans.ItemOrderSender;
-import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
-import com.opentae.data.mall.interfaces.ItemOrderSenderMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.bo.LogisticsBO;
-import com.shigu.main4.order.bo.PackageBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
-import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.Cart;
@@ -28,10 +18,6 @@ import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
-import com.shigu.main4.order.vo.BuyerAddressVO;
-import com.shigu.main4.order.vo.CartVO;
-import com.shigu.main4.order.vo.ItemProductVO;
-import com.shigu.main4.order.vo.ServiceVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.ConfirmBO;
@@ -173,11 +159,7 @@ public class ConfirmOrderService {
         Cart cart = SpringBeanFactory.getBean(ItemCartImpl.class, itemOrderBO.getUserId());
         for (SubItemOrderBO subItemOrderBO: itemOrderBO.getSubOrders()) {
             ItemProductVO productVO = subItemOrderBO.getProductVO();
-            try {
-                cart.rmProductByNum(productVO.getPid(), productVO.getSelectiveSku().getSkuId(), subItemOrderBO.getNum());
-            } catch (ItemCartNumOutOfBoundsException e) {
-                throw new JsonErrException(e.getMessage());
-            }
+            cart.rmProductByNum(productVO.getPid(), productVO.getSelectiveSku().getSkuId(), subItemOrderBO.getNum());
         }
     }
 
