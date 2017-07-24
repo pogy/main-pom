@@ -205,6 +205,7 @@ public class GoatShopService {
             goatDubboService.preparePublish(goatVO, (license.getSpreadFromTime().getTime() - new Date().getTime())/1000);
     }
 
+
     /**
      * 广告授权状态
      */

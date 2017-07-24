@@ -41,6 +41,8 @@ public class ShiguActivityApplyVO implements Serializable {
      */
     private String phone;
 
+    private String cateIds;
+
     public void setApplyId(Long applyId) {
         this.applyId = applyId;
     }
@@ -97,4 +99,11 @@ public class ShiguActivityApplyVO implements Serializable {
         return this.phone;
     }
 
+    public String getCateIds() {
+        return cateIds;
+    }
+
+    public void setCateIds( String cateIds ) {
+        this.cateIds = cateIds;
+    }
 }

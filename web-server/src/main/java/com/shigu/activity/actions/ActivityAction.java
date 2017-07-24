@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
+import com.shigu.activity.service.ActiveDrawListener;
 import com.shigu.activity.vo.ActiveDrawStyleVo;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
@@ -125,6 +126,7 @@ public class ActivityAction {
 
     /**
      * 分销商后台
+     *
      * @return
      */
     @RequestMapping("member/awardInfo")
@@ -136,13 +138,13 @@ public class ActivityAction {
         model.addAttribute("thisHdTime",parseToStartEnd(drawPem.getStartTime()));
         List<ActiveDrawRecordUserVo> userVoList =  Collections.emptyList();
         Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(object != null){
+        if (object != null) {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
             if(drawLastPem != null){
                 model.addAttribute("lastHdTime",parseToStartEnd(drawLastPem.getStartTime()));
                 // 用户上一期获奖数据
-                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(),ps.getUserId(), null);
+                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
                 for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
                     ActiveDrawRecordUserVo anUserVoList = iterator.next();
                     if (anUserVoList.getDrawStatus() != 3) {
@@ -166,7 +168,7 @@ public class ActivityAction {
         cal.setTime(start);
         String thisStart= DateUtil.dateToString(cal.getTime(),dateFitment);
         cal.add(Calendar.DATE,7);
-        String thisEnd=DateUtil.dateToString(cal.getTime(),dateFitment);
+        String thisEnd= DateUtil.dateToString(cal.getTime(),dateFitment);
         return thisStart+" ——— "+thisEnd;
     }
 
@@ -308,7 +310,7 @@ public class ActivityAction {
         model.addAttribute("activeName", activity.getTitle());
         model.addAttribute("bannerSrc", activity.getBanner());
         model.addAttribute("bgColor", activity.getBkcolor());
-        model.addAttribute("goodsList", activityService.gfShow(id));
+        model.addAttribute("goodsStyle", activityService.gfShow(id));
         model.addAttribute("webSite","hz");
         return "activity/popular";
     }
@@ -332,5 +334,33 @@ public class ActivityAction {
         model.addAttribute("actState",actState);
         model.addAttribute("id",id);
         return "activity/apply";
+    }
+
+    @Autowired
+    private ActiveDrawListener activeDrawListener;
+
+    @RequestMapping("activity/jsonapply")
+    @ResponseBody
+    public JSONObject signUp(HttpSession session) {
+        JSONObject jsonObject = new JSONObject();
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        String flag = "autumn_new";
+        if (activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()).equals("true")) {
+            jsonObject.put("result", "success");
+        } else {
+            jsonObject.put("msg", activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()));
+        }
+        return jsonObject;
+    }
+
+    @RequestMapping("activity/qzxpApply")
+    public String qzxpApply(Model model, HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps != null && ps.getLogshop() !=null) {
+            model.addAttribute("alreadyApply", activeDrawListener.checkSignUp(ps.getUserId(), ps.getLogshop().getShopId()));
+        }
+        model.addAttribute("webSite", "hz");
+        return "activity/qzxpApply";
     }
 }

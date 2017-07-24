@@ -14,6 +14,7 @@ public class GfShowVO {
     private String shopNum;
     private Long shopId;
     private int shStatus;
+    private Long goodsStyleId;
 
     public Long getGoodsId() {
         return goodsId;
@@ -77,5 +78,13 @@ public class GfShowVO {
 
     public void setShStatus(int shStatus) {
         this.shStatus = shStatus;
+    }
+
+    public Long getGoodsStyleId() {
+        return goodsStyleId;
+    }
+
+    public void setGoodsStyleId( Long goodsStyleId ) {
+        this.goodsStyleId = goodsStyleId;
     }
 }

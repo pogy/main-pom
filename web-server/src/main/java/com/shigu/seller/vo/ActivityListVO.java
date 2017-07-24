@@ -1,5 +1,7 @@
 package com.shigu.seller.vo;
 
+import java.util.List;
+
 /**
  * 活动信息
  * Created by bugzy on 2017/6/30 0030.
@@ -24,9 +26,7 @@ public class ActivityListVO {
 
     private String chargeStyle;
 
-    private Boolean supportReturn;
-
-    private Boolean supportBarter;
+    private List<ActivityQualifVO> qualif;
 
     private int hdStatus;
 
@@ -106,20 +106,12 @@ public class ActivityListVO {
         this.chargeStyle = chargeStyle;
     }
 
-    public Boolean getSupportReturn() {
-        return supportReturn;
+    public List<ActivityQualifVO> getQualif() {
+        return qualif;
     }
 
-    public void setSupportReturn(Boolean supportReturn) {
-        this.supportReturn = supportReturn;
-    }
-
-    public Boolean getSupportBarter() {
-        return supportBarter;
-    }
-
-    public void setSupportBarter(Boolean supportBarter) {
-        this.supportBarter = supportBarter;
+    public void setQualif(List<ActivityQualifVO> qualif) {
+        this.qualif = qualif;
     }
 
     public int getHdStatus() {
