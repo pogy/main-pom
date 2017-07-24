@@ -2,6 +2,7 @@ package com.shigu.main4.order.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
+import com.shigu.main4.order.enums.ShStatusEnum;
 import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
@@ -48,18 +49,29 @@ public interface OrderListService {
      */
     ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId);
 
+    /**
+     *
+     * 查询售后列表
+     * @param shStatus
+     * @param page
+     * @param pageSize
+     * @param userId
+     * @return
+     */
+    ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus,Integer page,Integer pageSize, Long userId);
+
 
     /**
      * ====================================================================================
      * @方法名：removeOrder
      * @功能： 删除订单
-     * @param: tbid 订单ID
+     * @param: orderId 订单ID
      * @return: 如果大于0就删除成功
      * @exception: 
      * ====================================================================================
      * 
      */
-    int removeOrder(Long tbid);
+    int removeOrder(Long orderId);
 
     /**
      * ====================================================================================
@@ -71,7 +83,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    int cancelOrder(Long tbid);
+    int cancelOrder(Long orderId);
 
     /**
      * ====================================================================================
