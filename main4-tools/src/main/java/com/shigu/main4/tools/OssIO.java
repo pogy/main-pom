@@ -4,6 +4,7 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.CopyObjectResult;
 import com.aliyun.oss.model.OSSObjectSummary;
 import com.aliyun.oss.model.ObjectListing;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,6 +105,35 @@ public class OssIO {
             }
         }
         return domain+filePath;
+    }
+
+    /**
+     * 创建一个文件夹
+     * @param parentDir 上层目录
+     * @param dirName 创建新目录
+     */
+    public String createDir(String parentDir, String dirName) {
+        if (StringUtils.isEmpty(parentDir))  {
+            parentDir = "";
+        }
+        String createdDir = null;
+        // 创建OSSClient实例
+        OSSClient ossClient = null;
+        try {
+            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+            int end = dirName.lastIndexOf("/");
+            if (end != dirName.length() -1) {
+                dirName = dirName + "/";
+            }
+
+            createdDir = parentDir + dirName;
+            ossClient.putObject(bucketName, createdDir, new ByteArrayInputStream(new byte[0]));
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
+        return createdDir;
     }
 
     /**
