@@ -26,4 +26,9 @@ public class OssIOTest {
         System.out.println(found);
         ossClient.shutdown();
     }
+    @Test
+    public void createKey(){
+        String key = ossIO.createKey("tupian");
+        System.out.println(key);
+    }
 }

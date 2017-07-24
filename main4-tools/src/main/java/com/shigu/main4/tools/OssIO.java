@@ -154,6 +154,13 @@ public class OssIO {
                 file.setLastModified(objectSummary.getLastModified());
                 file.setName(objectSummary.getKey());
                 file.setSize(objectSummary.getSize());
+                file.setType(0);//文件
+                fileList.add(file);
+            }
+            for (String commonPrefix : objectListing.getCommonPrefixes()) {
+                OssFile file = new OssFile();
+                file.setName(commonPrefix);
+                file.setType(1);//目录
                 fileList.add(file);
             }
         } finally {
@@ -240,6 +247,7 @@ public class OssIO {
             }
         }
     }
+    //TODO 暂时不能用
     /**
      * 生成一个签名的url
      * @param key 上传对象的key
@@ -263,6 +271,35 @@ public class OssIO {
 
     }
 
+
+    /**
+     * 添加关联关系
+     * @param file
+     * @param goodsId
+     * @return
+     */
+    public void addRelatedGoods(String file, Long goodsId) {
+
+    }
+
+    /**
+     * 删除关联关系
+     * @param file
+     * @param goodsId
+     * @return
+     */
+    public void delRelatedGoods(String file, Long goodsId) {
+
+    }
+
+    /**
+     * 返回关联商品
+     * @param file
+     * @return
+     */
+    public List<OssFile> selRelatedGoods(String file) {
+        return null;
+    }
 
 
     public String getEndpoint() {
