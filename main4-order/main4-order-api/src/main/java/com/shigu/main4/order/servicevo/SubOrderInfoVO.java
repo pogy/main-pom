@@ -71,11 +71,13 @@ public class SubOrderInfoVO {
     /**
      * 退款状态，0无，1申请，2自动
      */
-    private RefundTypeEnum tkState;
+    private Integer tkState;
+    private RefundTypeEnum tkStateEnum;
     /**
      * 售后状态, 0无，1售后处理中，2已退款，3已换货
      */
-    private AfterSaleStatusEnum shState;
+    private Integer shState;
+    private AfterSaleStatusEnum shStateEnum;
 
 
 
@@ -258,21 +260,6 @@ public class SubOrderInfoVO {
         this.shTkNum = shTkNum;
     }
 
-    public RefundTypeEnum getTkState () {
-        return tkState;
-    }
-
-    public void setTkState (RefundTypeEnum tkState) {
-        this.tkState = tkState;
-    }
-
-    public AfterSaleStatusEnum getShState () {
-        return shState;
-    }
-
-    public void setShState (AfterSaleStatusEnum shState) {
-        this.shState = shState;
-    }
 
     public Long getPriceLong () {
         return priceLong;
@@ -288,5 +275,49 @@ public class SubOrderInfoVO {
 
     public void setSubStatusenum (SubOrderStatus subStatusenum) {
         this.subStatusenum = subStatusenum;
+    }
+
+    /**
+     * 获取 退款状态，0无，1申请，2自动
+     */
+    public Integer getTkState() {
+        return this.tkState;
+    }
+
+    /**
+     * 设置 退款状态，0无，1申请，2自动
+     */
+    public void setTkState(Integer tkState) {
+        this.tkState = tkState;
+    }
+
+    /**
+     * 获取 售后状态, 0无，1售后处理中，2已退款，3已换货
+     */
+    public Integer getShState() {
+        return this.shState;
+    }
+
+    /**
+     * 设置 售后状态, 0无，1售后处理中，2已退款，3已换货
+     */
+    public void setShState(Integer shState) {
+        this.shState = shState;
+    }
+
+    public RefundTypeEnum getTkStateEnum() {
+        return this.tkStateEnum;
+    }
+
+    public void setTkStateEnum(RefundTypeEnum tkStateEnum) {
+        this.tkStateEnum = tkStateEnum;
+    }
+
+    public AfterSaleStatusEnum getShStateEnum() {
+        return this.shStateEnum;
+    }
+
+    public void setShStateEnum(AfterSaleStatusEnum shStateEnum) {
+        this.shStateEnum = shStateEnum;
     }
 }
