@@ -15,11 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>img-search-sdk</artifactId>
-            <version>1.0.0-RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>sites.main</groupId>
             <artifactId>main4-ucenter-default</artifactId>
             <version>${main4-ucenter-api.version}</version>
         </dependency>
