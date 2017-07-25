@@ -294,7 +294,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         ShiguPager<SearchItem> pager = new ShiguPager<>();
         pager.setNumber(page);
 
-        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder = openSearch.searchFrom(OpenItemVo.class)
+        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder = openSearch.searchFrom(SEARCH_APP+webSite,OpenItemVo.class)
                 .from((page - 1) * pageSize).size(pageSize);
         if (ids != null && !ids.isEmpty()) {
             requestBuilder.addFilter(FilterBuilder.termsIn("goods_id", ids.toArray(new Long[ids.size()])));
