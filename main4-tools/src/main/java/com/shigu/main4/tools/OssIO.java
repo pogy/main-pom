@@ -274,36 +274,6 @@ public class OssIO {
     }
 
 
-    /**
-     * 添加关联关系
-     * @param file
-     * @param goodsId
-     * @return
-     */
-    public void addRelatedGoods(String file, Long goodsId) {
-
-    }
-
-    /**
-     * 删除关联关系
-     * @param file
-     * @param goodsId
-     * @return
-     */
-    public void delRelatedGoods(String file, Long goodsId) {
-
-    }
-
-    /**
-     * 返回关联商品
-     * @param file
-     * @return
-     */
-    public List<OssFile> selRelatedGoods(String file) {
-        return null;
-    }
-
-
     public String getEndpoint() {
         return endpoint;
     }
