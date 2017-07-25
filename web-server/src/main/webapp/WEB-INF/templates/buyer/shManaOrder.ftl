@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>退换货 - 四季星座网</title>
+    <title>售后管理 - 分销商中心 - 四季星座网</title>
 
     
     
@@ -16,8 +16,14 @@
 
 
 
+
+
+
+
+
+
     
-    <link href="http://style.571xz.com/v2/order/css/returnOrChange.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/shManaOrder.css" rel="stylesheet">
     
 
     
@@ -27,12 +33,12 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/returnOrChange.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/shManaOrder.js"></script>
 </head>
 <body>
 
 
-<#assign text>{"isFxs":true}</#assign>
+<#assign text>{}</#assign>
 <#assign moduledata0=text?eval />
 <#list [moduledata0] as $it>
 <div class="topbar">
@@ -160,81 +166,313 @@ var webSite = '${webSite!}';
 
 
 
-
-
-
-<div class="headerOrange">
+<div class="header">
     <div class="layout">
         <a href="http://www.571xz.com" class="fl">
             <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width="168" height="28" />
         </a>
-        <ul class="fl fs16 yahei">
-            <li><a href="#">首页</a></li>
-            <li><a href="#">账号管理</a></li>
+        <ul class="fl fs16 yahei clearfix">
+            <li><a href="${main_host!}member/index.htm"  >首页</a></li>
+            <li><a href="${main_host!}member/userBalance.htm" >我的钱包</a></li>
+            <li><a href="${main_host!}member/sysSetsindex.htm" >安全中心</a></li>
         </ul>
     </div>
 </div>
 
 
+<div class="wrapper">
+    <div class="layout">
+        <div class="leftSidebar yahei">
 
-<div class="minHeight">
-<div class="currentPage layout">
-    <label class="fc9">当前位置：</label>
-    <a href="#" target="_blank">首页</a> &gt;
-    <a href="#" target="_blank">我的星座网</a> &gt;
-    <a href="#" target="_blank">我的订单</a> &gt;
-    <span class="fcF40">退款申请</span>
-</div> 
-
-<div class="returnBox layout">
-    <div class="returnLeft fl">
-        <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${childOrderId!}">
-    
-    <label class="fl fc6">退货商品：</label>
-    
-    <img src="${childOrderImgSrc!}" >
-    <div class="goodsInfo fl">
-        <p class="arail fs14 fc3">${childOrderCode!}</p>
-        <p class="fc9"><span>颜色：${childOrderColor!}</span><span>尺码：${childOrderSize!}</span></p>
-    </div>
-</div>
-
-
-
-
-        <div class="chooseReturnType">
-    <a href="refund.htm?childOrderId=${childOrderId!}">
-        <h3 class="yahei fs18 fc3">我要退货退款</h3>
-        <p class="fc9">已收到商品，需要退货已收到的商品</p>
-    </a>
-    <a href="exchange.htm?childOrderId=${childOrderId!}" class="exchange">
-        <h3 class="yahei fs18 fc3">我要换货</h3>
-        <p class="fc9">已收到商品，尺码/颜色/质量存在问题，需要换货</p>
-    </a>
-</div>
-
-
-
-    </div>
-    <div class="returnRight fr">
-        <div class="reOderInfo">
+    <h2>交易管理</h2>
     <ul>
-        <li><label>订单编号：</label><span class="yahei fs14 fcBlue">${orderId!}</span></li>
-        <li><label>成交时间：</label><span class="yahei fs14">${orderDealTime!}</span></li>
-        <li><label>商品价格：</label><span class="yahei fs14">&yen;<em class="fwb">${orderGoodsPrice!}</em></span></li>
-        <li><label>快递费：</label><span class="yahei fs14">&yen;<em class="fwb">${orderExpressPrice!}</em></span></li>
-        <li><label>服务费：</label><span class="yahei fs14">&yen;<em class="fwb">${orderServicePrice!}</em></span></li>
-        <li><label>订单总额：</label><span class="yahei fs14">&yen;<em class="fwb">${orderTotalPrice!}</em></span></li>
+    
+        
+            
+            <li><a href="${main_host!}member/myOrder.htm" >我的订单</a></li>
+            
+        
+    
+        
+            
+            <li><a href="${main_host!}member/myTbOrder.htm" >淘宝订单</a></li>
+            
+        
+    
+        
+        <li><a class="selected" href="${main_host!}member/shManaOrder.htm">售后管理</a></li> 
+        
+    
+    </ul> 
+
+    <h2>商品管理</h2>
+    <ul>
+    
+        
+            
+            <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
+            
+        
+    
+        
+            
+            <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
+            
+        
+    
+        
+            
+            <li><a href="${main_host!}member/storeCollectinit.htm" >收藏的档口</a></li>
+            
+        
+    
+    </ul> 
+
+    <h2>代发管理</h2>
+    <ul>
+    
+        
+            
+            <li><a href="http://daifa.571xz.com/daili/offerIndex.htm" >我要代发</a></li>
+            
+        
+    
+    </ul> 
+
+    <h2>供应商申请</h2>
+    <ul>
+    
+        
+            
+            <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
+            
+        
+    
+    </ul> 
+
+    <h2>会员俱乐部</h2>
+    <ul>
+    
+        
+            
+            <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
+            
+        
+    
+    </ul> 
+
+</div>
+
+
+
+
+        
+
+<#assign text>{"fields":[{"name":"shStatus","value":"${query.shStatus!}"}]}</#assign>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
+    </#list>
+</form>
+</#if>
+
+
+
+
+
+</#list>
+
+
+
+<div class="rightBox fr">
+    <div class="tabBox clearfix yahei">
+    <ul>
+        <li <#if !query.shStatus>class="select"</#if>><a href="shManaOrder.htm">所有订单</a></li>
+        <li <#if query.shStatus == "1">class="select"</#if>><a href="shManaOrder.htm?shStatus=1">退款</a></li>
+        <li <#if query.shStatus == "2">class="select"</#if>><a href="shManaOrder.htm?shStatus=2">换货</a></li>
     </ul>
 </div>
 
 
+    
+    <div class="orderDetail">
+    <div class="listHead clearfix">
+        <ul>
+            <li class="goods goodsHead">商品</li>
+            <li class="price">单价</li>
+            <li class="num">数量</li>
+            <li class="opera">商品操作</li>
+            <li class="payMoney">实付款(元)</li>
+            <li class="orderState">交易状态</li>
+        </ul>
+    </div>
+    <#if (orders?size) gt 0>
+        <#list orders as order>
+        <div class="orderItem clearfix <#if order.mainState == 4>finish</#if>">
+            <div class="orderHead fl">
+                <span class="fc6">订单编号：${order.orderId!}</span>
+                <span class="fc6">成交时间：${order.tradeTime!}</span>
+                <b class="fr delete" jbtn="deleteBtn" data-id="${order.orderId!}"></b>
+            </div>
+            <div class="childOrderList fl">
+                <#list order.childOrders as childOrder>
+                <ul class="childOrderItem <#if childOrder_index == (order.childOrders?size) - 1>lastChildOrder</#if> clearfix">
+    <li class="goods goodsDetail">
+        <div class="imgBox fl">
+            <img src="${childOrder.imgsrc!}_80x80.jpg" width="80" height="80">
+        </div>
+        <div class="goodsCon">
+            <a href="http://${order.webSite!}.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank" class="goodsTitle" title="${childOrder.title!}">${childOrder.title!}</a>
+            <p class="goodsSku fc9">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
+            <p>商品货号：${childOrder.goodsNo!}</p>
+        </div>
+    </li>
+    <li class="price yahei">&yen;${childOrder.price!}</li>
+    <li class="num">${childOrder.num!}</li>
+    <li class="opera">
+        
+        <#if order.mainState == 3>
+            <#if childOrder.tkState == 1>
+            <p class="fcBlue">退款成功 x${childOrder.tkNum!}</p>
+            </#if>
+            
+            <#if childOrder.tkNum != childOrder.num && childOrder.shState == 0>
+            <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+            <#elseif childOrder.shState == 4 || childOrder.shState == 5>
+                <#if childOrder.shState == 4>
+                <p><a class="fcF40" href="refund.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
+                <#else>
+                <p><a class="fcF40" href="exchange.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
+                </#if>
+            <#elseif childOrder.shState == 2>
+            <p class="fcF40">退款完成x${childOrder.shTkNum!}</p>
+            <#elseif childOrder.shState == 3>
+            <p class="fcF40">换货完成</p>
+            </#if>
+        <#elseif order.mainState == 4>
+            <#if childOrder.tkState == 1>
+            <p class="fcBlue">退款成功 x${childOrder.tkNum!}</p>
+            </#if>
+        
+            <#if childOrder.shState == 1>
+            <p class="fcF40">售后处理中</p>
+            <#elseif childOrder.shState == 2>
+            <p class="fcF40">退款完成x${childOrder.shTkNum!}</p>
+            <#elseif childOrder.shState == 3>
+            <p class="fcF40">换货完成</p>
+            </#if>
+        
+        </#if>
+        
+    </li>
+    <li class="payMoney">
+        <#if childOrder_index == 0>
+        <p class="totalPay fs16">${order.tradePay!}</p>
+        <p class="fc9">含快递费：${order.postPay!}</p>
+        <p class="fc9">含服务费：${order.serverPay!}</p>
+            <#if order.isTbOrder == true>
+            <i class="tbOrderIcon"></i>
+            </#if>
+        </#if>
+    </li>
+    <li class="orderState">
+        <#if childOrder_index == 0>
+            <#if order.mainState == 2>
+            <p>待配货</p>
+            <#elseif order.mainState == 3>
+            <p>已发货</p>
+            <#elseif order.mainState == 4>
+            <p>交易完成</p>
+            </#if>
+            <p><a href="orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
+            <#if order.mainState == 3>
+            <p><a href="expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
+            </#if>
+        </#if>
+    </li>
+</ul>
+
+
+
+
+                </#list>
+            </div>
+        </div>
+        </#list>
+    <#else>
+        <p class="fs20 fc6 tac noOrder">暂无订单！</p>
+    </#if>
+    
+    
+
+<#assign text>{}</#assign>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
+
+<div class="jqPagination " id="jqPagination0" 
+    <#if $it.pageOption??>
+        data-option="${$it.pageOption!}" 
+    <#else>
+        data-option="${pageOption!}"
+    </#if>
+></div>
+
+
+
+
+
+
+
+</#list>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
 
     </div>
 </div>
-
-</div>
-
 <div class="footer">
     <div class="inner">
         <p class="sitemap"> 
@@ -275,7 +513,7 @@ var webSite = '${webSite!}';
 
 
 
-
+<!--省略end，让浏览器自动添加-->
 
 
 

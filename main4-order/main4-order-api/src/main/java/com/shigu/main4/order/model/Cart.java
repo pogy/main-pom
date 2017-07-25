@@ -1,7 +1,6 @@
 package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.exceptions.CartException;
-import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.vo.ProductVO;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public interface Cart{
      * @param skuId
      * @param num
      */
-    void rmProductByNum(Long pid,Long skuId,Integer num) throws ItemCartNumOutOfBoundsException;
+    void rmProductByNum(Long pid,Long skuId,Integer num);
 
     /**
      * 修改购物车中产品数量

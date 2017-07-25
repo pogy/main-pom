@@ -3,14 +3,14 @@ package com.opentae.data.mall.examples;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import com.opentae.core.mybatis.SgExample;
 
-public class MemberUserExample {
+public class MemberUserExample implements SgExample{
     protected String orderByClause;
     protected boolean distinct;
     protected List<MemberUserExample.Criteria> oredCriteria = new ArrayList();
 
     public MemberUserExample() {
-
     }
 
     private Integer startIndex;
@@ -266,7 +266,6 @@ public class MemberUserExample {
             this.addCriterion("user_id <", value, "userId");
             return (MemberUserExample.Criteria)this;
         }
-
 
         public MemberUserExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
             this.addCriterion("user_id <=", value, "userId");
@@ -4446,6 +4445,142 @@ public class MemberUserExample {
 
         public MemberUserExample.Criteria andZfbAccountNotBetween(String value1, String value2) {
             this.addCriterion("zfb_account not between", value1, value2, "zfbAccount");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordIsNull() {
+            this.addCriterion("pay_password is null");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordIsNotNull() {
+            this.addCriterion("pay_password is not null");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordEqualTo(String value) {
+            this.addCriterion("pay_password =", value, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordNotEqualTo(String value) {
+            this.addCriterion("pay_password <>", value, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordGreaterThan(String value) {
+            this.addCriterion("pay_password >", value, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordGreaterThanOrEqualTo(String value) {
+            this.addCriterion("pay_password >=", value, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordLessThan(String value) {
+            this.addCriterion("pay_password <", value, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordLessThanOrEqualTo(String value) {
+            this.addCriterion("pay_password <=", value, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordLike(String value) {
+            this.addCriterion("pay_password like", value, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordNotLike(String value) {
+            this.addCriterion("pay_password not like", value, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }        public MemberUserExample.Criteria andPayPasswordIn(List<String> values) {
+            this.addCriterion("pay_password in", values, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordNotIn(List<String> values) {
+            this.addCriterion("pay_password not in", values, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordBetween(String value1, String value2) {
+            this.addCriterion("pay_password between", value1, value2, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andPayPasswordNotBetween(String value1, String value2) {
+            this.addCriterion("pay_password not between", value1, value2, "payPassword");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsIsNull() {
+            this.addCriterion("sub_user_name_groups is null");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsIsNotNull() {
+            this.addCriterion("sub_user_name_groups is not null");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsEqualTo(String value) {
+            this.addCriterion("sub_user_name_groups =", value, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsNotEqualTo(String value) {
+            this.addCriterion("sub_user_name_groups <>", value, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsGreaterThan(String value) {
+            this.addCriterion("sub_user_name_groups >", value, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsGreaterThanOrEqualTo(String value) {
+            this.addCriterion("sub_user_name_groups >=", value, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsLessThan(String value) {
+            this.addCriterion("sub_user_name_groups <", value, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsLessThanOrEqualTo(String value) {
+            this.addCriterion("sub_user_name_groups <=", value, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsLike(String value) {
+            this.addCriterion("sub_user_name_groups like", value, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsNotLike(String value) {
+            this.addCriterion("sub_user_name_groups not like", value, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }        public MemberUserExample.Criteria andSubUserNameGroupsIn(List<String> values) {
+            this.addCriterion("sub_user_name_groups in", values, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsNotIn(List<String> values) {
+            this.addCriterion("sub_user_name_groups not in", values, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsBetween(String value1, String value2) {
+            this.addCriterion("sub_user_name_groups between", value1, value2, "subUserNameGroups");
+            return (MemberUserExample.Criteria)this;
+        }
+
+        public MemberUserExample.Criteria andSubUserNameGroupsNotBetween(String value1, String value2) {
+            this.addCriterion("sub_user_name_groups not between", value1, value2, "subUserNameGroups");
             return (MemberUserExample.Criteria)this;
         }
     }

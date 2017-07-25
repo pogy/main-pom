@@ -38,9 +38,6 @@ import java.util.Objects;
 public class ConfirmOrderAction {
 
     @Autowired
-    private OrderConstantService orderConstantService;
-
-    @Autowired
     private ConfirmOrderService confirmOrderService;
 
     @Autowired

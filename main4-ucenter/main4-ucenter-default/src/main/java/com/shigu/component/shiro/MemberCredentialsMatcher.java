@@ -1,5 +1,6 @@
 package com.shigu.component.shiro;
 
+import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.component.shiro.enums.LoginErrorEnum;
 import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.session.main4.PersonalSession;
@@ -61,7 +62,7 @@ public class MemberCredentialsMatcher extends ShiguCredentialsMatcher {
             String pwd=super.getUserBaseService().selUserPwdByUserId(auth.getUserId());
             if(pwd==null){
                 return false;
-            }if(!pwd.equals(encrypt(new String(password)))){
+            }if(!pwd.equals(EncryptUtil.encrypt(new String(password)))){
                 return false;
             }
         }

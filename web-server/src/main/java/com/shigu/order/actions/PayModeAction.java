@@ -1,6 +1,5 @@
 package com.shigu.order.actions;
 
-import com.opentae.data.mall.beans.OrderPay;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.enums.PayType;
@@ -41,11 +40,10 @@ public class PayModeAction {
      * @param session
      * @param model
      * @return
-     * @throws JsonErrException
      * @throws PayApplyException
      */
     @RequestMapping("payMode")
-    public String payMode(Long orderId, HttpSession session, Model model) throws JsonErrException, PayApplyException {
+    public String payMode(Long orderId, HttpSession session, Model model) throws PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         PayModePageVO payModePageVO = payModeService.selPayModePageVO(orderId, userId);
@@ -70,7 +68,7 @@ public class PayModeAction {
     public JSONObject payInfoJson(Long orderId) throws JsonErrException, PayApplyException {
         return JsonResponseUtil.success()
                 // 使用百度云盘二维码生成api
-                .element("qrcodeImg","http://pan.baidu.com/share/qrcode?w=300&h=300&url=" + payModeService.payApply(orderId, PayType.WX));
+                .element("qrcodeImg","http://pan.baidu.com/share/qrcode?w=300&h=300&url=" + payModeService.payApply(orderId, PayType.WX).getPayLink());
     }
 
     /**
@@ -87,7 +85,8 @@ public class PayModeAction {
     public JSONObject xzpayJson(Long orderId, String pwd, HttpSession session) throws JsonErrException, PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         payModeService.checkPwd(pwd, ps.getUserId());
-        payModeService.payApply(orderId, PayType.XZ);
+
+        payModeService.payxz(payModeService.payApply(orderId, PayType.XZ), ps.getUserId());
         return JsonResponseUtil.success();
     }
 
@@ -96,7 +95,7 @@ public class PayModeAction {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
-        writer.println(payModeService.payApply(id, PayType.ALI));
+        writer.println(payModeService.payApply(id, PayType.ALI).getPayLink());
         writer.flush();
         writer.close();
     }

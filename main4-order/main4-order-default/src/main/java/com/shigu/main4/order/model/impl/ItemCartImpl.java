@@ -2,12 +2,10 @@ package com.shigu.main4.order.model.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ItemCart;
-import com.opentae.data.mall.beans.ItemProductSku;
 import com.opentae.data.mall.examples.ItemCartExample;
 import com.opentae.data.mall.interfaces.ItemCartMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.exceptions.CartException;
-import com.shigu.main4.order.exceptions.ItemCartNumOutOfBoundsException;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.vo.CartVO;
@@ -67,26 +65,26 @@ public class ItemCartImpl implements Cart {
      * @param num
      */
     @Override
-    public void rmProductByNum(Long pid, Long skuId, Integer num) throws ItemCartNumOutOfBoundsException {
+    public void rmProductByNum(Long pid, Long skuId, Integer num) {
         if (pid == null || skuId == null || num == null) {
             return;
         }
         ItemCartExample itemCartExample = new ItemCartExample();
-        itemCartExample.setWebSite("hz");
         ItemCartExample.Criteria criteria = itemCartExample.createCriteria();
         criteria.andPidEqualTo(pid);
         criteria.andSkuIdEqualTo(skuId);
         criteria.andUserIdEqualTo(userId);
-        List<ItemCart> number = itemCartMapper.selectFieldsByExample(itemCartExample, FieldUtil.codeFields("num"));
-        if (number.size()<=0||number.get(0)==null){
+        List<ItemCart> number = itemCartMapper.selectFieldsByExample(itemCartExample, FieldUtil.codeFields("cart_id,num"));
+        if (number.isEmpty()){
             return;
         }
         ItemCart selItemCart = number.get(0);
-        if (num > selItemCart.getNum()) {
-            throw new ItemCartNumOutOfBoundsException("传入的num值大于存储值");
+        if (num < selItemCart.getNum()) {
+            selItemCart.setNum(selItemCart.getNum() - num);
+            itemCartMapper.updateByExampleSelective(selItemCart, itemCartExample);
+        } else {
+            itemCartMapper.deleteByPrimaryKey(selItemCart.getCartId());
         }
-        selItemCart.setNum(selItemCart.getNum() - num);
-        itemCartMapper.updateByExampleSelective(selItemCart, itemCartExample);
     }
 
 
