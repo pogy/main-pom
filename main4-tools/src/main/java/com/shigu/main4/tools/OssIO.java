@@ -4,6 +4,7 @@ import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.*;
+import com.sun.xml.internal.ws.api.addressing.WSEndpointReference;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,18 +144,16 @@ public class OssIO {
         try {
             ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
             ObjectListing objectListing = ossClient.listObjects(bucketName, filePath);
-            for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+            for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) { //以"/"结尾的是目录，否则是文件
                 OssFile file = new OssFile();
                 file.setLastModified(objectSummary.getLastModified());
                 file.setName(objectSummary.getKey());
                 file.setSize(objectSummary.getSize());
-                file.setType(0);//文件
                 fileList.add(file);
             }
             for (String commonPrefix : objectListing.getCommonPrefixes()) {
                 OssFile file = new OssFile();
                 file.setName(commonPrefix);
-                file.setType(1);//目录
                 fileList.add(file);
             }
         } finally {
@@ -172,6 +171,29 @@ public class OssIO {
      */
     public void renameFile(String srcFilePath, String dstFilePath) {
         moveFile(srcFilePath, dstFilePath);
+    }
+
+
+
+    /**
+     * 获取文件或者目录总大小,以byte为单位
+     * @param filePath  文件路径
+     */
+    public long getFileSize(String filePath) {
+        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+
+        Long totalSize = 0L;
+        if(filePath.endsWith("/")) {
+            ObjectListing objectListing = ossClient.listObjects(bucketName, filePath);
+            for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+                totalSize += objectSummary.getSize();
+            }
+        } else {
+            OSSObject ossObject = ossClient.getObject(bucketName, filePath);
+            ObjectMetadata metadata = ossObject.getObjectMetadata();
+            totalSize += metadata.getContentLength();
+        }
+        return totalSize;
     }
 
     /**

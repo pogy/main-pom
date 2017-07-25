@@ -7,18 +7,9 @@ import java.util.List;
  * Created by Administrator on 2017/7/24.
  */
 public class OssFile {
-    private int type;//0表示文件；1表示目录
     private String name;
     private Date lastModified;
     private long size;
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType( int type ) {
-        this.type = type;
-    }
 
     public String getName() {
         return name;

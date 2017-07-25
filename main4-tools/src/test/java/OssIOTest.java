@@ -33,7 +33,7 @@ public class OssIOTest {
 
     @Test
     public void testCreateDir() {
-        ossIO.createDir("testdir/", "innerdir");
+        ossIO.createDir("testdir/", "innerdir/aa/ff");
     }
 
     @Test
@@ -55,5 +55,11 @@ public class OssIOTest {
     @Test
     public void testMoveFile() {
         ossIO.moveFile("testdir/11/33/logoWeb1.png", "testdir/11/44/logoWeb.png");
+    }
+
+
+    @Test
+    public void testGetFileSize() {
+        ossIO.getFileSize("testdir/");
     }
 }
