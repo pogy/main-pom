@@ -151,11 +151,6 @@ public class OssIO {
                 file.setSize(objectSummary.getSize());
                 fileList.add(file);
             }
-            for (String commonPrefix : objectListing.getCommonPrefixes()) {
-                OssFile file = new OssFile();
-                file.setName(commonPrefix);
-                fileList.add(file);
-            }
         } finally {
             if (ossClient != null) {
                 ossClient.shutdown();
@@ -183,12 +178,12 @@ public class OssIO {
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 
         Long totalSize = 0L;
-        if(filePath.endsWith("/")) {
+        if(filePath.endsWith("/")) {//目录
             ObjectListing objectListing = ossClient.listObjects(bucketName, filePath);
             for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
                 totalSize += objectSummary.getSize();
             }
-        } else {
+        } else {//单个文件
             OSSObject ossObject = ossClient.getObject(bucketName, filePath);
             ObjectMetadata metadata = ossObject.getObjectMetadata();
             totalSize += metadata.getContentLength();
