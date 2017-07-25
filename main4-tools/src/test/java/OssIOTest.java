@@ -1,10 +1,13 @@
 import com.aliyun.oss.OSSClient;
+import com.shigu.main4.tools.OssFile;
 import com.shigu.main4.tools.OssIO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 /**
  * oss test
@@ -30,5 +33,31 @@ public class OssIOTest {
     public void createKey(){
         String key = ossIO.createKey("tupian");
         System.out.println(key);
+    }
+
+    @Test
+    public void testCreateDir() {
+        ossIO.createDir("testdir/", "innerdir");
+    }
+
+    @Test
+    public void testListFile() {
+        List<OssFile> list =  ossIO.listFiles("testdir/");
+        System.out.println(list);
+    }
+
+    @Test
+    public void testRenameFile() {
+        ossIO.renameFile("testdir/11/33/logoWeb.png", "testdir/11/33/logoWeb1.png");
+    }
+
+    @Test
+    public void testDeleteFile() {
+        ossIO.deleteFile("testdir/11/22/");
+    }
+
+    @Test
+    public void testMoveFile() {
+        ossIO.moveFile("testdir/11/33/logoWeb1.png", "testdir/11/44/logoWeb.png");
     }
 }

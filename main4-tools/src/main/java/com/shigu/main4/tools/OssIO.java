@@ -2,25 +2,17 @@ package com.shigu.main4.tools;
 
 import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.CopyObjectResult;
-import com.aliyun.oss.model.OSSObjectSummary;
-import com.aliyun.oss.model.ObjectListing;
+import com.aliyun.oss.common.utils.BinaryUtil;
+import com.aliyun.oss.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * oss io 交互
@@ -44,6 +36,9 @@ public class OssIO {
 
     @Value("${oss.ossHost}")
     private String domain;
+
+    @Value("${oss.dir}")
+    private String dir;
 
     /**
      * 上传一个文件
@@ -247,28 +242,35 @@ public class OssIO {
             }
         }
     }
-    //TODO 暂时不能用
-    /**
-     * 生成一个签名的url
-     * @param key 上传对象的key
-     * @return 生成的url字符串
-     */
-    public String createKey(String key){
-        // 创建OSSClient实例
-        OSSClient ossClient = null;
-        try {
-            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-            //设置生效时间
-            Date expiration = new Date(new Date().getTime() + 600 * 1000);
-            //生成url
-            URL url = ossClient.generatePresignedUrl(bucketName, key, expiration, HttpMethod.PUT);
-            return url.toString();
-        } finally {
-            if (ossClient != null) {
-                ossClient.shutdown();
-            }
-        }
 
+    /**
+     * 构造Post签名信息
+     * @return
+     */
+    public Map<String, String> createPostSignInfo() throws UnsupportedEncodingException {
+        OSSClient client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+        Map<String, String> respMap = new LinkedHashMap<String, String>();
+
+        long expireTime = 30;
+        long expireEndTime = System.currentTimeMillis() + expireTime * 1000;
+        Date expiration = new Date(expireEndTime);
+        PolicyConditions policyConds = new PolicyConditions();
+        policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 1048576000);
+        policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+
+        String postPolicy = client.generatePostPolicy(expiration, policyConds);
+        byte[] binaryData = postPolicy.getBytes("utf-8");
+        String encodedPolicy = BinaryUtil.toBase64String(binaryData);
+        String postSignature = client.calculatePostSignature(postPolicy);
+
+
+        respMap.put("accessid", accessKeyId);
+        respMap.put("policy", encodedPolicy);
+        respMap.put("signature", postSignature);
+        respMap.put("dir", dir);
+        respMap.put("host", domain);
+        respMap.put("expire", String.valueOf(expireEndTime / 1000));
+        return respMap;
     }
 
 
