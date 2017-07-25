@@ -106,7 +106,7 @@ public interface ItemAddOrUpdateService {
      * @param url
      * @param type
      */
-    void addImgToSearch(Long goodsId,String webSite,String url,int type);
+    void addImgToSearch(Long goodsId,String webSite,String oldUrl,String url,int type);
 
     /**
      * 修改商品风格
