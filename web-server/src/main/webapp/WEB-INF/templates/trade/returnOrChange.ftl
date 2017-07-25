@@ -203,15 +203,17 @@ var webSite = '${webSite!}';
 
 
         <div class="chooseReturnType">
-    <a href="refund.htm">
+    <a href="refund.htm?childOrderId=${childOrderId!}">
         <h3 class="yahei fs18 fc3">我要退货退款</h3>
         <p class="fc9">已收到商品，需要退货已收到的商品</p>
     </a>
-    <a href="exchange.htm" class="exchange">
+    <a href="exchange.htm?childOrderId=${childOrderId!}" class="exchange">
         <h3 class="yahei fs18 fc3">我要换货</h3>
         <p class="fc9">已收到商品，尺码/颜色/质量存在问题，需要换货</p>
     </a>
 </div>
+
+
 
     </div>
     <div class="returnRight fr">
