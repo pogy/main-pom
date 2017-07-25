@@ -18,7 +18,7 @@ import java.util.Map;
 @Controller
 public class FilePostSignAction {
     @Autowired
-    OssIO ossIO;
+    private OssIO ossIO;
 
     @RequestMapping("file/getSignInfo")
     public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
