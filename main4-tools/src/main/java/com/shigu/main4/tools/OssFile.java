@@ -11,7 +11,6 @@ public class OssFile {
     private String name;
     private Date lastModified;
     private long size;
-    private List<Long> relateedList;//关联的商品id
 
     public int getType() {
         return type;
@@ -43,13 +42,5 @@ public class OssFile {
 
     public void setSize( long size ) {
         this.size = size;
-    }
-
-    public List<Long> getRelateedList() {
-        return relateedList;
-    }
-
-    public void setRelateedList( List<Long> relateedList ) {
-        this.relateedList = relateedList;
     }
 }

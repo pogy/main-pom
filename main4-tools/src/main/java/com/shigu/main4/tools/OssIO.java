@@ -37,8 +37,7 @@ public class OssIO {
     @Value("${oss.ossHost}")
     private String domain;
 
-    @Value("${oss.dir}")
-    private String dir;
+    private String dir = "udf/";
 
     /**
      * 上传一个文件
@@ -138,7 +137,7 @@ public class OssIO {
      * 列出目录下所有的文件信息
      * @param filePath 目录
      */
-    public List<OssFile> listFiles( String filePath) {
+    public List<OssFile> listFiles(String filePath) {
         OSSClient ossClient = null;
         List<OssFile> fileList = new ArrayList<OssFile>();
         try {
@@ -172,19 +171,7 @@ public class OssIO {
      * @param dstFilePath  目标名
      */
     public void renameFile(String srcFilePath, String dstFilePath) {
-        // 创建OSSClient实例
-        OSSClient ossClient = null;
-        try {
-            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-            // 拷贝Object
-            CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath);
-            logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
-            ossClient.deleteObject(bucketName,srcFilePath);
-        } finally {
-            if (ossClient != null) {
-                ossClient.shutdown();
-            }
-        }
+        moveFile(srcFilePath, dstFilePath);
     }
 
     /**
@@ -247,7 +234,7 @@ public class OssIO {
      * 构造Post签名信息
      * @return
      */
-    public Map<String, String> createPostSignInfo() throws UnsupportedEncodingException {
+    public Map<String, String> createPostSignInfo(Long userId) throws UnsupportedEncodingException {
         OSSClient client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         Map<String, String> respMap = new LinkedHashMap<String, String>();
 
@@ -267,7 +254,7 @@ public class OssIO {
         respMap.put("accessid", accessKeyId);
         respMap.put("policy", encodedPolicy);
         respMap.put("signature", postSignature);
-        respMap.put("dir", dir);
+        respMap.put("dir", dir + userId.toString() + "/temp/");
         respMap.put("host", domain);
         respMap.put("expire", String.valueOf(expireEndTime / 1000));
         return respMap;
