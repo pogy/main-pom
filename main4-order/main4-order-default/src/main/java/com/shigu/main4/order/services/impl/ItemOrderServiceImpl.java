@@ -429,21 +429,30 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         //获取信息
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
         SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
-        SubOrderInfoVO subOrderInfoVO = BeanMapper.map(subItemOrderVO, SubOrderInfoVO.class);
-        subOrderInfoVO.setChildOrderId(subOrderId);
+        SubOrderInfoVO subOrderInfoVO = new SubOrderInfoVO();
+                //BeanMapper.map(subItemOrderVO, SubOrderInfoVO.class);
         subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
+        subOrderInfoVO.setChildOrderId(subOrderId);
+        subOrderInfoVO.setGoodsId(subItemOrderVO.getGoodsId());
         subOrderInfoVO.setImgsrc(subItemOrderVO.getProduct().getPicUrl());
-        subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
         subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
-
-
-        //TODO:退货信息
+        subOrderInfoVO.setColor(subItemOrderVO.getColor());
+        subOrderInfoVO.setSize(subItemOrderVO.getSize());
+        subOrderInfoVO.setGoodsNo(subItemOrderVO.getGoodsNo());
+        subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
+        subOrderInfoVO.setPriceLong(subItemOrderVO.getProduct().getPrice());
+        subOrderInfoVO.setNum(subItemOrderVO.getNum());
+        //todo:退款及售后信息填充
+        //subOrderInfoVO.setTkNum();
+        //subOrderInfoVO.setShTkNum();
+        subOrderInfoVO.setSubOrderStatus(subItemOrderVO.getSubOrderStatus().status);
+        subOrderInfoVO.setSubStatusenum(subItemOrderVO.getSubOrderStatus());
         //subOrderInfoVO.setRefundId();
         //subOrderInfoVO.setRefundNum();
-        //subOrderInfoVO.setShState();
-        //subOrderInfoVO.setShTkNum();
         //subOrderInfoVO.setTkState();
-        //subOrderInfoVO.setTkNum();
+        //subOrderInfoVO.setTkStateEnum();
+        //subOrderInfoVO.setShState();
+        //subOrderInfoVO.setShStateEnum();
         return subOrderInfoVO;
     }
 

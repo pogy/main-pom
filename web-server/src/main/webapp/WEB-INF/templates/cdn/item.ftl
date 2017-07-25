@@ -1,156 +1,149 @@
-<#assign text>{}</#assign><#assign $it=text?eval /><!doctype html>
+<!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-    <title>${vo.cdnItem.title!}-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
-    
-    <meta name="keywords" content="欢迎前来四季星座网实力档口，选择 ${vo.cdnItem.title!}">
-    
-    <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
-    
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1497503671065" rel="stylesheet">
+
+    <title></title>
+
     
     
-    <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1497503671065"></script>
-  </head>
-<body>
+    
+    
 <#include "/common/host_config.ftl">
 
+
+
+
+
+    
+    <link href="http://style.571xz.com/v2/goodsDetail/css/item.css" rel="stylesheet">
+    
+
+    
+
+    
+
+    
+    <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
+    
+    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js"></script>
+</head>
+<body>
+
+
+
+<#assign text>{}</#assign>
+<#assign moduledata0=text?eval />
+<#list [moduledata0] as $it>
 <div class="topbar">
     <div class="layout">
-        <div class="leftbox">
-            <div class="cityCe">
-                <span><em><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "ss">石狮<#elseif webSite == "bj">北京<#elseif webSite == "gz">广州<#elseif webSite == "wa">辽源<#elseif webSite == "jx">濮院</#if></em><i class="downArrow"></i></span>
-                <div class="cityCon">
-                    <ul>
-                        <li><a href="http://hz.571xz.com" <#if webSite == "hz">class="select"</#if>>杭州</a></li>
-                        <li><a href="http://cs.571xz.com" <#if webSite == "cs">class="select"</#if>>常熟</a></li>
-                        <li><a href="http://ss.571xz.com" <#if webSite == "ss">class="select"</#if>>石狮</a></li>
-                        <li><a href="http://bj.571xz.com" <#if webSite == "bj">class="select"</#if>>北京</a></li>
-                        <li><a href="http://gz.571xz.com" <#if webSite == "gz">class="select"</#if>>广州</a></li>
-                        <li><a href="http://wa.571xz.com" <#if webSite == "wa">class="select"</#if>>辽源</a></li>
-                        <li><a href="http://jx.571xz.com" <#if webSite == "jx">class="select"</#if>>濮院</a></li>
-                    </ul>
-                </div>
+        <div class="fl">
+            
+            <div class="cityChooseBox fl pr">
+                <span class="lable pr">
+                    <em>
+                        <#if webSite == 'hz'>
+                            杭州
+                        <#elseif webSite == 'cs'>
+                            常熟
+                        <#elseif webSite == 'ss'>
+                            石狮
+                        <#elseif webSite == 'bj'>
+                            北京
+                        <#elseif webSite == 'gz'>
+                            广州
+                        <#elseif webSite == 'wa'>
+                            辽源
+                        <#elseif webSite == 'jx'>
+                            濮院
+                        <#else>
+                            杭州
+                        </#if>
+                    </em>
+                    <i class="downArrow"></i>
+                </span>
+                <ul>
+                    <li><a href="http://hz.571xz.com" <#if webSite == 'hz'>class="select"</#if>>杭州</a></li>
+                    <li><a href="http://cs.571xz.com" <#if webSite == 'cs'>class="select"</#if>>常熟</a></li>
+                    <li><a href="http://ss.571xz.com" <#if webSite == 'ss'>class="select"</#if>>石狮</a></li>
+                    <li><a href="http://bj.571xz.com" <#if webSite == 'bj'>class="select"</#if>>北京</a></li>
+                    <li><a href="http://gz.571xz.com" <#if webSite == 'gz'>class="select"</#if>>广州</a></li>
+                    <li><a href="http://wa.571xz.com" <#if webSite == 'wa'>class="select"</#if>>辽源</a></li>
+                    <li><a href="http://jx.571xz.com" <#if webSite == 'jx'>class="select"</#if>>濮院</a></li>
+                </ul>
             </div>
-            <div class="login">
-                <span>你好，</span>
-                <em>请</em>
-                <a class="simpleLogin" onclick="loginBack()" target="_blank">登录</a>
-                <a href="http://www.571xz.com/regedit.htm"  target="_blank">注册</a>
-                <a class="tbLogin" href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1">淘宝登录</a>
+            
+            <div class="loginBox fl">
                 
             </div>
         </div>
-        
-        <div class="rightbox">
-            <ul>
+        <div class="fr">
+            <ul class="menuContainer">
+                
+                 
                 <li class="noIndex">
-                    <a href="${main_host!}" class="c_ff4400">四季星座网首页</a>
+                    <a href="${main_host!}" class="fcF40">四季星座网首页</a>
                 </li>
-                <#if session_user_redis__??>
-                    <#if session_user_redis__.logshop??>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
-                            <div class="myStore cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}seller/createGoods21init.htm">发布新商品</a></li>
-                                    <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
-                                </ul>
-                            </div>
-                        </div>    
-                    </li>
-                    <#else>
-                    <li class="noDown">
-                        <a href="${main_host!}carts.htm">
-                            <i class="cgcatIcon"></i>
-                            <span>购物车</span>
-                            <em class="cgNum"></em>
-                        </a>
-                    </li>
-                    <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}member/index.htm">我的星座<i class="downArrow"></i></a>
-                            <div class="myxz cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
-                                </ul>
-                            </div>
+                
+                <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
+                <li class="noDown">
+                    <a href="${main_host!}carts.htm">
+                        <i class="cgcatIcon"></i>
+                        <span>购物车</span>
+                        
+                        
+                    </a>
+                </li>
+                <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
+                <li>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr" href="${main_host!}member/index.htm">我的星座<i class="downArrow"></i></a>
+                        <div class="myxz cnBoxCon pa">
+                            <ul>
+                                <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li>
+                                <li><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
+                            </ul>
                         </div>
-                    </li>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}member/storeCollectinit.htm">我的收藏<i class="downArrow"></i></a>
-                            <div class="myColle cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
-                                </ul>
-                            </div>
-                        </div>    
-                    </li>
-                    </#if>
-                    
-                <#else>
-                    <li class="noDown">
-                        <a href="${main_host!}carts.htm">
-                            <i class="cgcatIcon"></i>
-                            <span>购物车</span>
-                            <em class="cgNum"></em>
-                        </a>
-                    </li>
-                    <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}member/index.htm">我的星座<i class="downArrow"></i></a>
-                            <div class="myxz cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
-                                </ul>
-                            </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr" href="${main_host!}member/storeCollectinit.htm">我的收藏<i class="downArrow"></i></a>
+                        <div class="myColle cnBoxCon pa">
+                            <ul>
+                                <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
+                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                            </ul>
                         </div>
-                    </li>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}member/storeCollectinit.htm">我的收藏<i class="downArrow"></i></a>
-                            <div class="myColle cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
-                                </ul>
-                            </div>
-                        </div>    
-                    </li>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
-                            <div class="myStore cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}seller/createGoods21init.htm">发布新商品</a></li>
-                                    <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
-                                </ul>
-                            </div>
-                        </div>    
-                    </li>
+                    </div>    
+                </li>
+                </#if>
+                
+                <#if !session_user_redis__ || $it.isGys?? || session_user_redis__.logshop?? > 
+                <li>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
+                        <div class="myStore cnBoxCon pa">
+                            <ul>
+                                <li><a href="${main_host!}seller/createGoods21init.htm">发布新商品</a></li>
+                                <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
+                            </ul>
+                        </div>
+                    </div>    
+                </li>
                 </#if>
                 <li class="noDown">
                     <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
-                    
                 </li>
+                <#if webSite?? && webSite != ''>
                 <li>
-                    <div class="cnBox">
-                        <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
-                        <div class="webNav cnBoxCon">
-                            <h4>市场大全</h4>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
+                        <div class="webNav cnBoxCon pa">
+                            <h4 class="fs14 fcF40">市场大全</h4>
+                            
                             <ul>
-                                
                                 <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
@@ -175,657 +168,914 @@
                         </div>
                     </div>    
                 </li>
-                    
+                </#if>
             </ul>
         </div>
     </div>
 </div>
-<script>/*============ xz/page#topbar BEGIN ============*/
 
+
+
+
+
+
+
+
+
+
+</#list>
+
+
+<script>
 var webSite = '${webSite!}';
-
-/*============ xz/page#topbar END ============*/
-
-
 </script>
+
+
+
+
+
+
+
 <div class="headeV1">
     <div class="layout">
         <div class="logoBox">
-            <a href="http://${webSite!}.571xz.com/">
-                <img src="http://style.571xz.com/xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
+            <a href="http://${webSite!}.571xz.com">
+                <img src="/style/xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
         <div class="splitline"></div>
-        <div class="storeInfobox hover">
-            <div class="storeLogo iconfont"></div>
+        
+        <div class="shopInfobox hover" 
+            <#if shopInfo.xzUrl??>
+                onclick="jumpShopLink('${shopInfo.xzUrl!}')"
+            <#else> 
+                onclick="javascript:void(0)"
+            </#if>
+        >
+            <div class="storeLogo icon-shop"></div>
             
             <div class="storeNamebox">
-                <h3 onclick="openShop()">${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}</h3>
-<#assign text>{"id":"${vo.storeRelation.imWw!}"}</#assign>
-<#assign $it=text?eval />
-                <a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
-<#assign text>{"id":"${vo.storeRelation.imQq!}"}</#assign>
-<#assign $it=text?eval />
-                <#if $it.id != "">
-                <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
-                </#if>
-                <i class="ti iconfont">&#xe60b;</i>
+                <h3>${shopInfo.marketName!}${shopInfo.shopNo!}</h3>
+                
+
+<#assign text>{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
+<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+
+</#list>
+
+                
+
+<#assign text>{"id":"${shopInfo.imQq!}"}</#assign>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
+<#if $it.id != "">
+<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+</#if>
+
+</#list>
+
+                <i class="ti icon-downarrow"></i>
             </div>
-            
-<script>/*============ shopItemCopy/page#headeV1 BEGIN ============*/
+            <div class="storeDetailInfobox">
+    <div class="p1 clearfix">
+        <ul class="r1">
+            <li><label>地址：</label><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "gz">广州<#elseif webSite == "ss">石狮<#elseif webSite == "wa">辽源</#if>—${shopInfo.marketName!}${shopInfo.floor!}</li>
+            <li><label>电话：</label>${shopInfo.telephone!}</li>
+            <li><label>主营：</label>${shopInfo.mainBus!}</li>
+            <li><label>开店时间：</label>${shopInfo.openTime!}</li>
+        </ul>
+        <ul class="r2">
+            <#if shopInfo.shopLicenses??>
+                <#list shopInfo.shopLicenses as license>
+                    <#if license.licenseType == 3> 
+                    <li><i class="i1"></i>实体认证</li>
+                    </#if>
+                </#list>
+            </#if>
+            <#if shopInfo.tbAuthState == '0'>
+            <li><i class="i2"></i>未授权</li>
+            <#elseif shopInfo.tbAuthState == '1'>
+            <li><i class="i2"></i>同步授权</li>
+            <#elseif shopInfo.tbAuthState == '2'>
+            <li><i class="i2"></i>授权过期</li>
+            </#if>
+        </ul>
+    </div>
+    
+    
+    <div class="p2 clearfix">
+        <#if shopInfo.tbUrl??>
+        <b xzclick="openTaobaoShop" data-href="${shopInfo.tbUrl!}">淘宝店铺</b>
+        <#else>
+        <em class="disabled">淘宝店铺</em>
+        </#if>
+        <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
+            <b xzclick="addGoodsDataCannot">数据包</b>
+        <#else>
+            <b xzclick="addGoodsData" data-goodsid="${goodsInfo.goodsId!}">数据包</b>
+        </#if>
+        <b xzclick="collectShop" data-shopid="${shopInfo.shopId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
+        
+        
 
-function openShop(){
-                var shopId = '${vo.storeRelation.storeId!}';
-                var webSite = '${webSite!}';
-                window.open('http://'+ webSite +'.571xz.com/shop.htm?id=' + shopId);
-            }
-
-/*============ shopItemCopy/page#headeV1 END ============*/
 
 
-</script>            
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    
+    
+</div>
             <div class="storeXybox">
-<#assign text>{"num":${vo.starNum!}}</#assign>
-<#assign $it=text?eval />
+                
 
-                <em class="shopLevel">
-                <#if $it.num lt 11>
-                    <i class="star1"></i>
-                <#elseif $it.num lt 41>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                <#elseif $it.num lt 91>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                <#elseif $it.num lt 151>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                <#elseif $it.num lt 251>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                <#elseif $it.num lt 501>
-                    <i class="star2"></i>
-                <#elseif $it.num lt 1001>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                <#elseif $it.num lt 2001>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                <#elseif $it.num lt 5001>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                <#elseif $it.num lt 10001>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                <#elseif $it.num lt 20001>
-                    <i class="star3"></i>
-                <#elseif $it.num lt 50001>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                <#elseif $it.num lt 100001>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                <#elseif $it.num lt 200001>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                <#elseif $it.num lt 500001>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                <#elseif $it.num lt 1000001>
-                    <i class="star4"></i>
-                <#elseif $it.num lt 2000001>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                <#elseif $it.num lt 5000001>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                <#elseif $it.num lt 10000001>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                <#elseif $it.num gt 10000000>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                </#if>
-                </em>
+<#assign text>{"num":shopInfo.starNum}</#assign>
+<#assign moduledata3=text?eval />
+<#list [moduledata3] as $it>
+
+<em class="shopLevel">
+<#if $it.num lt 11>
+    <i class="star1"></i>
+<#elseif $it.num lt 41>
+    <i class="star1"></i>
+    <i class="star1"></i>
+<#elseif $it.num lt 91>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+<#elseif $it.num lt 151>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+<#elseif $it.num lt 251>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+    <i class="star1"></i>
+<#elseif $it.num lt 501>
+    <i class="star2"></i>
+<#elseif $it.num lt 1001>
+    <i class="star2"></i>
+    <i class="star2"></i>
+<#elseif $it.num lt 2001>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+<#elseif $it.num lt 5001>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+<#elseif $it.num lt 10001>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+    <i class="star2"></i>
+<#elseif $it.num lt 20001>
+    <i class="star3"></i>
+<#elseif $it.num lt 50001>
+    <i class="star3"></i>
+    <i class="star3"></i>
+<#elseif $it.num lt 100001>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+<#elseif $it.num lt 200001>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+<#elseif $it.num lt 500001>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+    <i class="star3"></i>
+<#elseif $it.num lt 1000001>
+    <i class="star4"></i>
+<#elseif $it.num lt 2000001>
+    <i class="star4"></i>
+    <i class="star4"></i>
+<#elseif $it.num lt 5000001>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+<#elseif $it.num lt 10000001>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+<#elseif $it.num gt 10000000>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+    <i class="star4"></i>
+</#if>
+</em>
+
+
+</#list>
+
             </div>
             
             <div class="storeDetailInfobox">
-                <div class="p1 clearfix">
-                    <ul class="r1">
-                        <li><label>地址：</label><#if vo.storeRelation.webSite == "hz">杭州<#elseif vo.storeRelation.webSite == "cs">常熟<#elseif vo.storeRelation.webSite == "gz">广州<#elseif vo.storeRelation.webSite == "ss">石狮<#elseif vo.storeRelation.webSite == "wa">辽源<#elseif vo.storeRelation.webSite == 'jx'>濮院</#if>—${vo.storeRelation.marketName!}${vo.storeRelation.floor!}</li>
-                        <li><label>电话：</label>${vo.storeRelation.telephone!}</li>
-                        <li><label>主营：</label>${vo.other.mainBus!}</li>
-                        <li><label>开店时间：</label>${vo.other.openTime!}</li>
-                    </ul>
-                    <ul class="r2">
-                        <#if vo.shopLicenses??>
-                        <#list vo.shopLicenses as license>
-                            <#if license.licenseType == 3> 
-                            <li><i class="i1"></i>实体认证</li>
-                            </#if>
-                        </#list>
-                        </#if>
-                        <#if vo.hasAuth == 0>
-                        <li><i class="i2"></i>未授权</li>
-                        <#elseif vo.hasAuth == 1>
-                        <li><i class="i2"></i>同步授权</li>
-                        <#elseif vo.hasAuth == 2>
-                        <li><i class="i2"></i>授权过期</li>
-                        </#if>
-                    </ul>
-                </div>
-                
-                <div class="p2 clearfix">
-                    <b><a href="http://${webSite!}.571xz.com/shop.htm?id=${vo.storeRelation.storeId!}">进入店铺</a></b>
-                    <#if vo.other.taobaoUrl??>
-                    <b xzclick="openTaobaoShop" data-href="${vo.other.taobaoUrl!}">淘宝店铺</b>
-                    
-                    <#else>
-                    <em class="disabled">淘宝店铺</em>
+    <div class="p1 clearfix">
+        <ul class="r1">
+            <li><label>地址：</label><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "gz">广州<#elseif webSite == "ss">石狮<#elseif webSite == "wa">辽源</#if>—${shopInfo.marketName!}${shopInfo.floor!}</li>
+            <li><label>电话：</label>${shopInfo.telephone!}</li>
+            <li><label>主营：</label>${shopInfo.mainBus!}</li>
+            <li><label>开店时间：</label>${shopInfo.openTime!}</li>
+        </ul>
+        <ul class="r2">
+            <#if shopInfo.shopLicenses??>
+                <#list shopInfo.shopLicenses as license>
+                    <#if license.licenseType == 3> 
+                    <li><i class="i1"></i>实体认证</li>
                     </#if>
-                    <#if session_user_redis__.logshop.shopId??>
-                        
-                        <b xzclick="collectShopCannot" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
-                    <#else>
-                        
-                        <b xzclick="collectShop" data-shopid="${vo.storeRelation.storeId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
-                    </#if>
+                </#list>
+            </#if>
+            <#if shopInfo.tbAuthState == '0'>
+            <li><i class="i2"></i>未授权</li>
+            <#elseif shopInfo.tbAuthState == '1'>
+            <li><i class="i2"></i>同步授权</li>
+            <#elseif shopInfo.tbAuthState == '2'>
+            <li><i class="i2"></i>授权过期</li>
+            </#if>
+        </ul>
+    </div>
+    
+    
+    <div class="p2 clearfix">
+        <#if shopInfo.tbUrl??>
+        <b xzclick="openTaobaoShop" data-href="${shopInfo.tbUrl!}">淘宝店铺</b>
+        <#else>
+        <em class="disabled">淘宝店铺</em>
+        </#if>
+        <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
+            <b xzclick="addGoodsDataCannot">数据包</b>
+        <#else>
+            <b xzclick="addGoodsData" data-goodsid="${goodsInfo.goodsId!}">数据包</b>
+        </#if>
+        <b xzclick="collectShop" data-shopid="${shopInfo.shopId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    
+    
+</div>
             
-            
-            
-                </div>
+
                 
-            </div>
             
         </div>
         
-        <form id="searchgo3" class="c_shop_search_2016" action="http://so.571xz.com/${vo.storeRelation.webSite!}search.htm">
+        <form id="searchgo3" class="c_shop_search_2016" action="http://so.571xz.com/${webSite!}search.htm">
             <button id="allSearchbtn">搜全站</button>
             <div class="shopSecrh">
                 <div class="search">
-                    <input id="keyword" name="keyword" class="text-search" placeholder="请输入搜索关键字" type="text" value="${query.pstring!}">
+                    <input id="keyword" name="keyword" class="text-search" placeholder="请输入搜索关键字" type="text" value="<#if query??>${query.pstring!}</#if>">
                     <input id="soInStore" class="btn-search" value="搜本店铺" type="button">
                 </div>
             </div>
         </form>
         
-<script>/*============ shopItemCopy/page#headeV1 BEGIN ============*/
-
-var webSite = '${webSite!}';
-
-/*============ shopItemCopy/page#headeV1 END ============*/
-
-
-</script>        
+        
     </div>
 </div>
-${navCon}
-<script>/*============ shopItemCopy/item#main BEGIN ============*/
-
-var goodsId = '${vo.itemId!}';
-
-/*============ shopItemCopy/item#main END ============*/
 
 
-</script><div class="content_top layout">
-    <div class="leftbox">
-        <div class="shopContent">
-            <div class="proBanner">
-                <div class="bigBanner">
-                    <ul>
-                        <#list vo.cdnItem.imgUrl as img>
-                        <#if img_index == 0>
-                        <li><a href="javascript:;"><img id="conImage" src="${img!}_400x400.jpg"></a></li>
-                        </#if>
-                        </#list>
-                    </ul>
-                </div>
-                <div class="imageBox">
-                    <ul>
-                        <#list vo.cdnItem.imgUrl as img>
-                            <#if img_index lt 6>
-                            <li class="" data_img='${img!}'><a href="javascript:;"><img src='${img!}_72x72.jpg'  width="72px" height="72px"></a></li>
-                            </#if>
-                        </#list>
-                    </ul>
-                </div>
-                <div class="shareBox">
-                    <a class="red" href="javascript:;" onclick="sc_goods(${vo.itemId!})" ><span class="iconfont">&#xe649;</span>收藏商品<!--（228人气）--></a>
-                    <a class="green" href="http://wpa.b.qq.com/cgi/wpa.php?ln=2&uin=${qiye_qq!}" target="_blankt"><span class="iconfont">&#xe677;</span>举报</a>
-                </div>
-            </div>
-            <div class="proconInfo">
-                <#if vo.onsale == true>
-                <div class="ewm">
-                    <span><div id="j_erweimahhh" style="width:100px;height:100px;background:url(http://www.571xz.com/images/loading_s.gif) center no-repeat;margin: 0 auto;"></div></span>
-                    <p>扫二维码上传微信<a style="font-size: 12px; color: #1179EA;" href="http://www.571xz.com/help_site/help.htm?p=xzwfx">(帮助)</a></p>
-                </div>
-                </#if>
-                <div id="proTitle"><!--这里有三种情况 所以要这样混,0 淘宝 1 数据包 2本站输入 3:剽窃 -->
-                    <#if vo.cdnItem.itemFrom.value == "taobao">
-                    <#if vo.cdnItem.tbNumIid != null>
-                    <a class="tb-main-title"  rel="nofollow" href="https://item.taobao.com/item.htm?id=${vo.cdnItem.tbNumIid!}" target="_blankt">${vo.cdnItem.title!}</a>
-                    <#else>
-                    <a class="tb-main-title"  rel="nofollow" href="javascript:;" target="_blankt">${vo.cdnItem.title!}</a>
-                    </#if>
-                    <#elseif vo.cdnItem.itemFrom.value == "package">
-                    <span class="iconfont" title="此商品为数据包上传">&#xe6a6;</span><h2 class="packageTitle">${vo.cdnItem.title!}</h2>
-                    <#else>
-                    <h2>${vo.cdnItem.title!}</h2>
-                    </#if>
-                </div>
-                <div class="proPrice">
-                    <p>零售价：<span class="style1">¥${vo.cdnItem.price!}</span><a href="http://zixun.571xz.com/article?id=382" target="_blank" style="color: #ff4400; margin-left: 10px;">什么是零售价？</a></p>
-                    <#if vo.cdnItem.price == vo.cdnItem.piPrice>
-                    <p>拿货价：<span class="style2" style="position: relative;">¥${vo.cdnItem.piPrice!}<b class='iconfont alt_no_pi_price' alt='卖家可能未对该商品设置批发价，请通知卖家来星座网设置批发价' title='卖家可能未对该商品设置批发价，请通知卖家来星座网设置批发价'>&#xe630;</b></span></p>
-                    <#else>
-                    <p>拿货价：<span class="style2">¥${vo.cdnItem.piPrice!}</span></p>
-                    </#if>
-                </div>
-                <table class="proconTable" width="100%" border="0" cellspacing="0" cellpadding="0">
-                  <tr>
-                    <td class="name" width="68">上架时间：</td>
-                    <td>${vo.cdnItem.listTime!} <em>货号：</em>${vo.cdnItem.huohao!}<em>发货地：</em>${vo.cdnItem.sendFrom!}</td>
-                  </tr>
-                  <tr>
-                    <td class="name">选择尺码：</td>
-                    <td class="selectStyle"  id="size_id">
-                    <#list vo.cdnItem.sizes as size>
-                    <span class="radioBtn">
-                        <label>
-                            <input name="size" type="radio" data-value='${size.pid!}:${size.vid!}' title="${size.value!}"/>${size.value!}
-                        </label>
-                    </span>
-                    </#list>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="name">选择颜色：</td>
-                    <td class="selectStyle" id="color_id">
-                        <#list vo.cdnItem.colors as fcolor>
-                            
-                            <span class="radioBtn" data-value='${fcolor.pid!}:${fcolor.vid!}' title="${fcolor.value!}" ><label><input name="color" type="radio" data-value='${fcolor.pid!}:${fcolor.vid!}' title="${fcolor.value!}"  />${fcolor.value!}</label></span>
-                            
-                        </#list>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="name">选择数量：</td>
-                    <td>
-                        <div class="selectNum">
-                            <a href="javascript:;" id="Cuts">-</a>
-                            <input type="text" id="Num" value="1">
-                            <a href="javascript:;" id="Add">+</a>
-                        </div>
-                        <span style="margin-left: 10px; line-height: 26px;" id="imclicks">-次浏览</span>
-                        
-                    </td>
-                  </tr>
-                   <#if vo.onsale == true>
-                  <tr>
-                      <td colspan="2">
-                        <div  id="j_upload_btns"></div>
-                        <div>
-                            <button class="addPro imgDownload" xzclick="showDownloadWindow" data-goodsid="${vo.itemId!}">
-                                <span>图片下载</span>
-                            </button>
-                        </div>
-                        <div id="j_upload_items">
-                            <button class="keyUpload"  onclick="showOnkeyUploadWindow();this.blur();"  >
-                                <span>一键上传</span>
-                            </button>
-                        </div>
-                      </td>
-                    
-                  </tr>
-                  <tr class="j_upload_item">
-                    <td colspan="2">
-                        <div class="boxBtn">
-                            <a  class="first" href="http://www.571xz.net/publish.htm?id=${vo.itemId!}" target="_blankt"  alt="上传淘宝"  title="点击按钮，可将本商品直接上传至您的淘宝店" >传淘宝</a>
-                            <a href="http://1688.571xz.com/offer/publish.htm?id=${vo.itemId!}" target="_blankt" alt="上传阿里"  title="点击按钮，可将本商品直接上传至您的阿里巴巴">传阿里</a>
-                             
-                            <a href="javascript:;" onclick="sc_goods(${vo.itemId!})" title="点击按钮，可将本商品在线生成数据包"  data-hhh="20160307test4" >加数据包</a>
-                        </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2">
-                        <!--<p style="color:#ff4901"><font color="#666">提示：</font>代发本商品为认证代发团队接单，在线进货直接向本商家下单。</p>-->
-                    </td>
-                  </tr>
-                  <#else>
-                  <tr>
-                    <td colspan="2">
-                    <div style="width: 100%;height: 150px;text-align: center;line-height: 150px;font-size: 42px;border: 3px #ddd dashed;">
-                    商品已下架!
-                    </div>
-                    </td>
-                  </tr>
-                  </#if>
-                </table>
-            </div>
+
+
+
+${userShopHdHtml}
+
+
+
+
+
+
+
+
+<div class="content layout">
+    <div class="topContentBox clearfix">
+        <div class="leftCol1">
             
-        </div>
-        <input type="hidden" id="goodsId" value="${vo.itemId!}">
-        <script>/*============ shopItemCopy/item#goodsinfo BEGIN ============*/
-
-var marketId = ${vo.cdnItem.marketId!};
-var storeId = ${vo.cdnItem.shopId!};
-var item_id = ${vo.itemId!};
-if(storeId == 34869){
-    var supportStore=false;
-}else{
-    var supportStore=true;
-}
-var gysShopId = '${session_user_redis__.logshop.shopId!}';
-if(gysShopId && gysShopId != ""){
-    var isGys = true;
-}else{
-    var isGys = false;
-}
-$.post(
-        "itemclicks.json",{"id":item_id},function (data) {
-            $('#imclicks').html(data.number+"次浏览");
-        }
-);
-
-/*============ shopItemCopy/item#goodsinfo END ============*/
-
-
-</script>
-    </div>
-    <div class="rightbox">
-        <div class="shopInfo">
-            <h2>${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}</h2>
-            <div class="Diamonds xinyuxingxingS">
-                <div class="starnumbox">
-                <#if vo.starNum lt 11>
-                    <i class="star1"></i>
-                <#elseif vo.starNum lt 41>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                <#elseif vo.starNum lt 91>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                <#elseif vo.starNum lt 151>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                <#elseif vo.starNum lt 251>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                    <i class="star1"></i>
-                <#elseif vo.starNum lt 501>
-                    <i class="star2"></i>
-                <#elseif vo.starNum lt 1001>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                <#elseif vo.starNum lt 2001>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                <#elseif vo.starNum lt 5001>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                <#elseif vo.starNum lt 10001>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                    <i class="star2"></i>
-                <#elseif vo.starNum lt 20001>
-                    <i class="star3"></i>
-                <#elseif vo.starNum lt 50001>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                <#elseif vo.starNum lt 100001>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                <#elseif vo.starNum lt 200001>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                <#elseif vo.starNum lt 500001>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                    <i class="star3"></i>
-                <#elseif vo.starNum lt 1000001>
-                    <i class="star4"></i>
-                <#elseif vo.starNum lt 2000001>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                <#elseif vo.starNum lt 5000001>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                <#elseif vo.starNum lt 10000001>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                <#elseif vo.starNum gt 10000000>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
-                    <i class="star4"></i>
+<div class="goodsPicbox">
+    <div class="bigBanner">
+        <ul>
+            <#list goodsInfo.imgUrls as imgUrl>
+                <#if img_index == 0>
+                <li><a href="javascript:;"><img id="conImage" src="${imgUrl!}_400x400.jpg"></a></li>
                 </#if>
-                </div>
-                
-                
-            </div>
-            <ul class="setShow item_page">
-                <#if vo.storeRelation.webSite == "hz" || vo.storeRelation.webSite == "cs" || vo.storeRelation.webSite == "ss" >
-                <li>
-                    <div class="iconfont cor1">&#xe63d;</div>
-                    <p>一件代发</p>
-                </li>
-                </#if>
-                <#list vo.tags as tag>
-                <#if tag == 1>
-                    <li><div class="iconfont cor2">&#xe67a;</div><p>退现金</p></li>
-                </#if>
-                <#if tag == 2>
-                <li><div class="iconfont cor3">&#xe673;</div><p>包换款</p></li>
-                </#if>
-                </#list>
-                
-            </ul>
-            <div class="txtInfo">
-                <p>市场：${vo.storeRelation.marketName!} ${vo.storeRelation.floor!}</p>
-                <p>电话：<font color="#ff4901">${vo.storeRelation.telephone!}</font></p>
-                <p>本商品库存：${vo.cdnItem.num!}</p> 
-                
-            </div>
-            <ul class="contactUl" style="display:none">
-                <li>在线客服：</li>
-                <li>
-                    <#if vo.storeRelation.imQq?? && vo.storeRelation.imQq != "">
-                    <a class="online" href="http://wpa.qq.com/msgrd?v=3&amp;uin=${vo.storeRelation.imQq!}&amp;site=qq&amp;menu=yes" target="_blank" style="color:#333"><i class="qq"></i>和我联系</a>
-                    </#if>
-                    
-                    
-                    <a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=${vo.storeRelation.imWw!}&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8"><img src="http://amos.alicdn.com/online.aw?v=2&amp;uid=${vo.storeRelation.imWw!}&amp;site=cntaobao&amp;s=1&amp;charset=utf-8" alt="点这里给我发消息" border="0"></a>
-        
-        
-                </li>
-            </ul>
-            <div class="Coll">
-                <ul>
-                    <li>
-                        <#if session_user_redis__.logshop.shopId??>
-                        <a href="javascript:;" id="scStore" xzclick="collectShopCannot" title="收藏本店">收藏本店</a>
-                        <#else>
-                        <a href="javascript:;" id="scStore" xzclick="collectShop" data-id="${vo.storeRelation.storeId!}" title="收藏本店">收藏本店</a>
-                        </#if>
-                    </li>
-                    <#if vo.other.taobaoUrl != "">
-                    <li><a href="${vo.other.taobaoUrl!}"  rel="nofollow" target="_blank" title="进入批发商淘宝店铺">进入淘宝店</a></li>
-                    <#else>
-                    <li><a class="disabled" rel="nofollow" target="_blank" title="进入批发商淘宝店铺">进入淘宝店</a></li>
-                    </#if>
-                </ul>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-<div class="content_main layout">
-    <div class="leftbox">
-        
-        
-<#assign text>{            "freemarker":true,            "fields":[                {"name":'id', 'value':${vo.storeRelation.storeId!}}            ]        }</#assign>
-<#assign $it=text?eval />
-                <form id="wgt_search">
-            <#list $it.fields as field>
-            <input type=hidden name="${field.name!}" value="${field.value!}">
             </#list>
-        </form>
-        
-        <h2 class="shopStyle">站内搜索</h2>
-        <ul class="searchInfo">
-        <form>
-            <input name="storeNumId" value="${vo.storeRelation.storeId!}" type="hidden">
-            <li>商品：<input class="pro" name="keyword" id="pstring" value="" type="text"></li>
-            <li>价格：<input class="price j_Num" name="" placeholder="￥" value="" id="beginPrice" type="text"><span>-</span><input class="price j_Num" name="" placeholder="￥" value="" id="endPrice" type="text"></li>
-            <li><input class="button" id="dosearchOnShop" value="确定" type="button"></li>
-        </form>
+        </ul>
+        <span class="scalceIcon"></span>
+    </div>
+    <div class="imageBox">
+        <ul>
+            <#list goodsInfo.imgUrls as imgUrl>
+                <#if img_index lt 6>
+                <li class="" data-img='${imgUrl!}'><a href="javascript:;"><img src='${imgUrl!}_72x72.jpg'></a></li>
+                </#if>
+            </#list>
         </ul>
         
-        <h2 class="shopStyle">商品分类</h2>
-        <ul class="sxUl">
-            <li class="all"><a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=2"><span class="iconfont"></span>查看所有宝贝</a></li>
-            <li class="allTime">
-                <a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=3">今日新款</a>
-                <a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=5">本周更新</a>
-                <a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;timeflag=6">本月更新</a>
+
+
+
+    </div>
+    <div class="shareBox">
+        <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
+            <a xzclick="addGoodsDataCannot" href="javascript:;" class="store">收藏此商品</a>
+        <#else>
+            <a xzclick="addGoodsData" href="javascript:;" class="store">收藏此商品</a>
+        </#if>
+        <a class="find_error" href="http://www.571xz.com/contact.htm" target="_blank">我要纠错<span class="text-999">（如价格有误请联系我们客服修改）</span></a>
+        
+    </div>
+</div>
+
+        </div>
+        <div class="leftCol2">
+            
+<div class="goodsOrderBox" id="goodsOrderBox" data-goodsid="${goodsInfo.goodsId!}">
+    <div class="goodsTitle">
+        <h2 class="fs18 fc3 yahei"><a href="#" target="_blank">${goodsInfo.title!}</a>
+            
+            <#list goodsInfo.services as service>
+                <#if service == 1>
+                <span class="return fs12 fc6 simsun">可退</span>
+                </#if>
+                <#if service == 2>
+                <span class="change fs12 fc6 simsun">可换</span>
+                </#if>
+            </#list>
+        </h2>
+        
+    </div>
+    <div class="goodsNumber">
+        <span class="text-666">货号：<em class="fcF40 fs14 arail">${goodsInfo.goodsNo!}</em></span><span class="fc3 online arail"><em>${goodsInfo.postTime!}</em>上架</span>
+        
+    </div>
+    <div class="goodsPrice clearfix">
+        <ul>
+            <li class="piprice">
+                <label class="fc9">价格</label>
+                <span class="fcF40 yahei">&yen;<em class="fs18 arail">${goodsInfo.piPrice!}</em></span>
+            </li>
+            <li class="minprice">
+                <label class="fc9">电商最低零售价</label>
+                <span class="fcF40 fs14 yahei">&yen;<em class="arail">${goodsInfo.liPrice!}</em>
+                    <div class="tipsbox fs12 simsun">
+                        售卖时不能低于此价格，否则会被厂家投诉
+                        <i class="i1"></i>
+                        <i class="i2"></i>
+                    </div>
+                </span>
+            </li>
+            <li class="view">
+                <label class="fc9">浏览</label>
+                <span class="fc3 yahei fs14"><em class="arail">${goodsInfo.viewNum!}</em></span>
             </li>
         </ul>
         
-        <#list vo.shopCats as cat>
+    </div>
+    
+    
+    
+    <div class="goodsColors clearfix">
+        <label class="fc9 fl">颜色</label>
+        <div id="colorsMetabox" class="colors clearfix">
             
-            <span class="shopMenu" title="${cat.name!}">
-                <a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;scid=${cat.cid!}&amp;timeflag=2">${cat.name!}</a>
-                <#if cat.subCats??> 
-                <span class="iconfont j_iconfont">&#xe658;</span>
+        </div>
+        
+    </div>
+    <div class="sizeBoxOuter">
+        <div class="sizeBox clearfix">
+            <label class="fc9">尺码</label>
+            <div class="sizes"></div>
+        </div>
+        <div class="viewMorebox">
+            <b class="button"><i class="icon-downarrow"></i></b>
+        </div>
+    </div>
+    
+    <div class="orderMenubox">
+        <div class="countbox"><em>0</em>件</div>
+        <div class="pricebox yahei fcF40">&yen;<em>0</em></div>
+        <div class="menuButtonbox yahei tac">已选商品清单<i class="icon-uparrow"></i></div>
+        <div class="menuListbox">
+            <table>
+                <tr>
+                    <td class="colorText"><span title="卡其色（长袖）">卡其色（长袖）</span></td>
+                    <td class="countText"><span>22件</span></td>
+                    <td class="allSelectedbox">aaa</td>
+                </tr>
+                <tr>
+                    <td class="colorText"><span title="卡其色（长袖）">卡其色（长袖）</span></td>
+                    <td class="countText"><span>22件</span></td>
+                    <td class="allSelectedbox">aaa</td>
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+    
+    
+
+    <div class="buttonbox clearfix">
+        <b class="btn btn-lg btn-orange addGwc">加入进货车</b>
+        <b class="btn btn-lg btn-orange picDownload" id="picDownload" data-goodsid="${shopInfo.goodsId!}">图片下载</b>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <b class="btn btn-lg oneKeyUp hover" data-goodsid="${shopInfo.goodsId!}">一键上传</b>
+        
+        
+    </div>
+    <div class="payMode">
+        <label class="fc9">支付</label>
+        <span class="alipay">支付宝</span>
+        <span class="weixin">微信</span>
+    </div>
+    
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+var colorsMeta = ${goodsInfo.colorsMeta!};
+var sizesMeta = ${goodsInfo.sizesMeta!};
+var piPrice = '${goodsInfo.piPrice!}';
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <div class="leftCol3">
+            
+<div class="goodsHistoryBox fr">
+    <h2 class="pr tac"><span class="text-999">看了又看</span></h2>
+    <ul>
+        <#list tjGoodsList as tjGoods>
+        <Li>
+            <a href="http://${webSite!}.571xz.com/item.htm?id=${tjGoods.goodsId!}" target="_blank"><img src="${tjGoods.imgUrl!}_140x140.jpg" title="${tjGoods.title!}" /></a>
+            <p class="text-size14"><em class="yahei">&yen;</em>${tjGoods.price!}</p>
+        </Li>
+        </#list>
+    </ul>
+</div>
+
+
+        </div>
+    </div>
+    <div class="detailContentBox">
+        <div class="pageFixbar clearfix">
+    <div class="fixContainer ">
+        <div class="layout">
+            <div class="shopName" >
+                <span class="nameDetails" 
+                    <#if shopInfo.xzUrl??>
+                        onclick="jumpShopUrl(event, '${shopInfo.xzUrl!}')"
+                    <#else> 
+                        onclick="javascript:void(0)"
+                    </#if>>电商基地A025</span>
+                <span>
+
+<#assign text>{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
+<#assign moduledata4=text?eval />
+<#list [moduledata4] as $it>
+<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+
+</#list>
+</span>
+                <span>
+
+<#assign text>{"id":"${(shopInfo.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
+<#assign moduledata5=text?eval />
+<#list [moduledata5] as $it>
+<#if $it.id != "">
+<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+</#if>
+
+</#list>
+</span>
+                <i class="ti icon-downarrow"></i>
+                <div class="storeDetailInfobox">
+    <div class="p1 clearfix">
+        <ul class="r1">
+            <li><label>地址：</label><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "gz">广州<#elseif webSite == "ss">石狮<#elseif webSite == "wa">辽源</#if>—${shopInfo.marketName!}${shopInfo.floor!}</li>
+            <li><label>电话：</label>${shopInfo.telephone!}</li>
+            <li><label>主营：</label>${shopInfo.mainBus!}</li>
+            <li><label>开店时间：</label>${shopInfo.openTime!}</li>
+        </ul>
+        <ul class="r2">
+            <#if shopInfo.shopLicenses??>
+                <#list shopInfo.shopLicenses as license>
+                    <#if license.licenseType == 3> 
+                    <li><i class="i1"></i>实体认证</li>
+                    </#if>
+                </#list>
+            </#if>
+            <#if shopInfo.tbAuthState == '0'>
+            <li><i class="i2"></i>未授权</li>
+            <#elseif shopInfo.tbAuthState == '1'>
+            <li><i class="i2"></i>同步授权</li>
+            <#elseif shopInfo.tbAuthState == '2'>
+            <li><i class="i2"></i>授权过期</li>
+            </#if>
+        </ul>
+    </div>
+    
+    
+    <div class="p2 clearfix">
+        <#if shopInfo.tbUrl??>
+        <b xzclick="openTaobaoShop" data-href="${shopInfo.tbUrl!}">淘宝店铺</b>
+        <#else>
+        <em class="disabled">淘宝店铺</em>
+        </#if>
+        <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
+            <b xzclick="addGoodsDataCannot">数据包</b>
+        <#else>
+            <b xzclick="addGoodsData" data-goodsid="${goodsInfo.goodsId!}">数据包</b>
+        </#if>
+        <b xzclick="collectShop" data-shopid="${shopInfo.shopId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    
+    
+</div>
+            </div>
+            <div class="goodsTitle">
+                <h3 class="titleStyle">
+                    商品详情
+                </h3>
+            </div>
+            <div class="joinCart">
+                <b>加入购物车</b>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+        <div class="clearfix">
+            <div class="leftCol1">
+                <div class="shopSearch">
+    <h2 class="shopStyle">本店搜索</h2>
+    <ul class="searchInfo">
+    <form>
+        <input name="storeNumId" value="${shopInfo.shopId!}" type="hidden">
+        <li><span class="wordKeyword">关键字</span><input class="pro" name="keyword" id="pstring" value="" type="text"></li>
+        <li><span class="wordPrice">价格</span><input class="price j_Num" name="" placeholder="¥" value="" id="beginPrice" type="text"><span style="color:#999">-</span><input class="price j_Num" name="" placeholder="¥" value="" id="endPrice" type="text"></li>
+        <li><input class="button" id="dosearchOnShop" value="搜索" type="button"></li>
+    </form>
+    </ul>
+</div>
+
+
+
+
+<#assign text>{}</#assign>
+<#assign moduledata6=text?eval />
+<#list [moduledata6] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+    <input type=hidden name="${field.name!}" value="${field.value!}">
+    </#list>
+</form>
+</#if>
+
+
+
+
+
+</#list>
+
+
+                <div class="shopGoodsCate">
+    <h2 class="shopStyle">宝贝分类</h2>
+    <div class="shopCateList">
+        <ul class="sxUl">
+            <li class="all fwb"><a href="shop.htm?id=${shopInfo.shopId!}&amp;timeflag=2"><i class="open"></i>查看所有宝贝</a></li>
+            <li class="allTime"><a href="shop.htm?id=${shopInfo.shopId!}&amp;timeflag=3">今日新品</a></li>
+            <li><a href="shop.htm?id=${shopInfo.shopId!}&amp;timeflag=5">7日新品</a></li>
+            <li><a href="shop.htm?id=${shopInfo.shopId!}&amp;timeflag=6">30日新品</a></li>
+        </ul>
+        
+        <#list shopCats as cat>
+            
+            <div class="shopMenu fwb" title="${cat.name!}">
+                <#if (cat.subCats?size) gt 0>
+                <i class="open"></i>
                 <#else>
-                <span class="iconfont">&#xe676;</span>
+                <i></i>
                 </#if>
-            </span>
+                <a href="shop.htm?id=${shopInfo.shopId!}&amp;scid=${cat.cid!}&amp;timeflag=2">${cat.name!}</a>
+            </div>
             
             <#if (cat.subCats?size) gt 0>
             <ul class="menuList">
                 <#list cat.subCats as subCat>
-                <li><a href="shop.htm?id=${vo.storeRelation.storeId!}&amp;scid=${subCat.cid!}&amp;timeflag=2">${subCat.name!}</a></li>
+                <li><a href="shop.htm?id=${shopInfo.shopId!}&amp;scid=${subCat.cid!}&amp;timeflag=2">${subCat.name!}</a></li>
                 </#list>
             </ul>
             </#if>
         
         </#list>
-        
     </div>
+</div>
+
+
+
+
+
+
+            </div>
+            <div class="leftCol2">
+                <div class="goodsAttribute">
     
-    <div class="right">
-        <div class="conRight">
-            <h1 class="conTitle">
-                <a class="select" href="javascript:;">商品详情</a>
-                <!-- <a href="javascript:;">互动评论</a> -->
-            </h1>
-            <ul class="shopConTab">
-                <li class="shopli" style="display:block">
-                    <div class="conProInfo">
-                        <ul>
-                            <#list vo.cdnItem.normalProps as prop>
-                            <li title="${prop.value!}"><span>${prop.pname!}:</span>${prop.value!}</li>
-                            </#list>
-                        </ul>
-                    </div>
-                    <div class="proPicSow">
-                        ${vo.cdnItem.description}
-                    </div>
+    <ul class="clearfix">
+        <#list goodsInfo.normalAttrs as attr>
+            <li>${attr.name!}：${attr.value!}</li>
+        </#list>
+    </ul>
+</div>
+
+                <div class="goodsDetail">
+    ${goodsInfo.descHtml}
+</div>
+
+
+
+
+            </div>
+            <div class="leftCol3">
+                <div id="onkeyupFixbar" class="onkeyupFixbar">
+    <div class="innerbox">
+         <ul class="keybox">
+                <li><a href="http://www.571xz.net/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
+                <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
+                <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox"></div></li>
+                <li class="addData"><b xzclick="addGoodsData"><i class="ii"></i><span>加入数据包</span></b></li>
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <li class="imgDownload" id="picDownload"><b xzclick="imgDownload"><i class="ii"></i><span>图片下载</span></b></li>
+                <li class="copyCode" id="copyCodeBtn">
+                    <b><i class="ii"></i><span>复制详情HTML代码</span></b>
                 </li>
-           </ul>
+        </ul>
+        <p class="copyCodeSuccess"><em>宝贝描述复制完成</em></p>
+       <div class="grewLine"></div>
+        <div class="contactbox">
+            <h3>联系档口</h3>
+            <#if shopInfo.imWw??><p class="wangwang"><a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
+
+<#assign text>{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
+<#assign moduledata7=text?eval />
+<#list [moduledata7] as $it>
+<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
+
+</#list>
+</p></#if>
+            <#if shopInfo.imQq?? && shopInfo.imQq != ""><p class="qq"><a href="http://wpa.qq.com/msgrd?v=3&uin=${shopInfo.imQq!}&site=qq&menu=yes" target="_blank">档口QQ</a>
+
+<#assign text>{"id":"${(shopInfo.imQq!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
+<#assign moduledata8=text?eval />
+<#list [moduledata8] as $it>
+<#if $it.id != "">
+<a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
+</#if>
+
+</#list>
+</p></#if>
         </div>
     </div>
-    <div class="right2box">
-        <div id="onkeyupFixbar" class="onkeyupFixbar">
-            <div class="innerbox">
-                <ul class="keybox">
-                    <li><a class="btn" href="http://www.571xz.net/publish.htm?id=${vo.itemId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
-                    <li><a class="btn" href="http://1688.571xz.com/offer/publish.htm?id=${vo.itemId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
-                    <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${vo.itemId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox"></div></li>
-                    <li class="addData"><b xzclick="addGoodsData"><i class="ii"></i><span>加入数据包</span></b></li>
-                </ul>
-                <div class="grewLine"></div>
-                <div class="contactbox">
-                    <h3>联系档口</h3>
-                    <#if vo.storeRelation.imWw??><p class="wangwang">档口旺旺<#assign text>{"id":"${vo.storeRelation.imWw!}"}</#assign>
-<#assign $it=text?eval />
-<a class="imAliww" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${$it.id!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank"></a>
-        </p></#if>
-                    <#if vo.storeRelation.imQq?? && vo.storeRelation.imQq != ""><p class="qq">档口QQ<#assign text>{"id":"${vo.storeRelation.imQq!}"}</#assign>
-<#assign $it=text?eval />
-<#if $it.id != "">
-        <a class="imQQ" href="http://wpa.qq.com/msgrd?v=3&uin=${$it.id!}&site=qq&menu=yes" target="_blank"></a>
-        </#if>
-        </p></#if>
-                </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="http://style.571xz.com/v2/xz/js/clipboard/ZeroClipboard.js"></script>
+
+
             </div>
         </div>
     </div>
 </div>
-<div id="item_shopnew">
-</div>
-<script>/*============ shopItemCopy/item#newGoods BEGIN ============*/
-
-$(function(){
-    $.post('shopnew.htm',{"id": storeId,"webSite":'${webSite}'},function(data){
-        $('#item_shopnew').html(data);
-    });
-});
-
-/*============ shopItemCopy/item#newGoods END ============*/
+<div class="layout">
+    <div id="item_shopnew" class="layout"></div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+var shopId = '${shopInfo.shopId!}';
 </script>
+
+
+
+</div>
+
+
+
+
+<script src="http://style.571xz.com/v2/xz/js/rightbarV1.js"></script>
+
+
+
+
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -833,6 +1083,7 @@ $(function(){
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://py.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -842,17 +1093,25 @@ $(function(){
         <p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
             <a class="img-yyzz" href="http://idinfo.zjaic.gov.cn/bscx.do?method=hddoc&amp;id=33010200000476" target="_blank" ></a>
-            <a class="img-jyxkz" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" title="互联网经营许可证" target="_blank"></a>
+            <a class="img-jyxkz" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank"></a>
             <a class="img-jybz" href="http://www.315online.com.cn/" target="_blank"></a>
             <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
         </p>
         <p class="jyga">
-            <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <span>&copy; 2009-2017 571xz.com 版权所有</span>
+            <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank">增值电信业务经营许可证： 浙B2-20120165</a>
+            | 
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank">
+                <img src="http://style.571xz.com/v2/global/css/img/beian.png" alt="浙公网安备">
+                浙公网安备 33010202000302号
+            </a> 
         </p>
     </div>
 </div>
-<#include "/common/cnzz.ftl">
-</body>
-</html>
+
+
+
+
+<!--省略end，让浏览器自动添加-->
