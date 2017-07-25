@@ -1,6 +1,7 @@
 package com.shigu.main4.item.services.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
@@ -216,7 +217,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         cleanItemCache(itemId);
 
         //8、图搜首图添加
-        addImgToSearch(itemId,webSite, tiny.getPicUrl(), 1);
+        addImgToSearch(itemId,webSite, null ,tiny.getPicUrl(), 1);
     }
 
     private void cleanItemCache(Long itemId) {
@@ -365,7 +366,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         cleanItemCache(itemId);
 
         //8、图搜主图删除
-        addImgToSearch(itemId,webSite, tiny.getPicUrl(), 0);
+        addImgToSearch(itemId,webSite,null, tiny.getPicUrl(), 0);
     }
 
     /**
@@ -506,7 +507,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             cleanItemCache(itemId);
 
             //12、图搜主图删除
-            addImgToSearch(itemId,webSite, picUrl, 0);
+            addImgToSearch(itemId,webSite,null, picUrl, 0);
         }
     }
 
@@ -651,7 +652,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         goodsAddToRedis.addToRedis(seb);
         sameItemUtilAddRemove(tiny, true);
         //添加首图到图搜
-        addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),tiny.getPicUrl(),1);
+        addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),null,tiny.getPicUrl(),1);
 
         return tiny.getGoodsId();
     }
@@ -699,7 +700,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                                     .setDoc(JSON.toJSONStringWithDateFormat(esGoods, "yyyy-MM-dd HH:mm:ss"))
                     );
                 }
-                addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),tiny.getPicUrl(),1);
+                addImgToSearch(tiny.getGoodsId(),tiny.getWebSite(),null,tiny.getPicUrl(),1);
             }
             if (bulk.numberOfActions() > 0) {
                 BulkResponse bulkResponse = bulk.get();
@@ -804,7 +805,8 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         }
         if (changed){
             if (picChange) {
-                addImgToSearch(synItem.getGoodsId(),item.getWebSite(), synItem.getPicUrl(), 1);
+                //查询一下图片有没有修改
+                addImgToSearch(synItem.getGoodsId(),item.getWebSite(),synItem.getPicUrl(),item.getPicUrl(), 1);
             }
             return updateItem(synItem);
         }
@@ -962,7 +964,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 shiguGoodsModifiedMapper.updateByPrimaryKeySelective(goodsModified);
             }
             if (picModifild) {
-                addImgToSearch(synItem.getGoodsId(),item.getWebSite(), synItem.getPicUrl(), 1);
+                addImgToSearch(synItem.getGoodsId(),item.getWebSite(), synItem.getPicUrl(),item.getPicUrl(), 1);
             }
             return updateItem(item);
         }
@@ -1043,9 +1045,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     }
 
     @Override
-    public void addImgToSearch(Long goodsId,String webSite, String url, int type) {
+    public void addImgToSearch(Long goodsId,String webSite,String oldUrl, String url, int type) {
         if(goodsId!=null&&StringUtils.isNotEmpty(url)){
-            ImgToSearch imgToSearch=new ImgToSearch(goodsId,webSite,url,type);
+            ImgToSearch imgToSearch=new ImgToSearch(goodsId,webSite,oldUrl,url,type);
             redisIO.rpush("update_del_img_search",imgToSearch);
         }
     }
