@@ -19,6 +19,9 @@
 
 
 
+
+
+
     
     <link href="http://style.571xz.com/v2/fxsV1/css/shManaOrder.css" rel="stylesheet">
     
@@ -312,7 +315,7 @@ var webSite = '${webSite!}';
             <div class="orderHead fl">
                 <span class="fc6">订单编号：${order.orderId!}</span>
                 <span class="fc6">成交时间：${order.tradeTime!}</span>
-                <b class="fr delete" jbtn="deleteBtn" data-id="${order.id!}"></b>
+                <b class="fr delete" jbtn="deleteBtn" data-id="${order.orderId!}"></b>
             </div>
             <div class="childOrderList fl">
                 <#list order.childOrders as childOrder>
@@ -338,8 +341,12 @@ var webSite = '${webSite!}';
             
             <#if childOrder.tkNum != childOrder.num && childOrder.shState == 0>
             <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
-            <#elseif childOrder.shState == 1>
-            <p class="fcF40">售后处理中</p>
+            <#elseif childOrder.shState == 4 || childOrder.shState == 5>
+                <#if childOrder.shState == 4>
+                <p><a class="fcF40" href="refund.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
+                <#else>
+                <p><a class="fcF40" href="exchange.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
+                </#if>
             <#elseif childOrder.shState == 2>
             <p class="fcF40">退款完成x${childOrder.shTkNum!}</p>
             <#elseif childOrder.shState == 3>
