@@ -5,6 +5,8 @@ import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
+import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.seller.vo.GoodsFileVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +24,11 @@ public class GoodsFileService {
     /**
      * g更加文件路径获取
      */
-    public List<GoodsFile> selGoodsFileByFile( String fileKey) {
+    public List<GoodsFileVO> selGoodsFileByFile( String fileKey) {
         GoodsFileExample goodsExample=new GoodsFileExample();
         goodsExample.createCriteria().andFileKeyEqualTo(fileKey);
         List<GoodsFile> goodsFiles = goodsFileMapper.selectByExample(goodsExample);
-        return goodsFiles;
+        return BeanMapper.mapList(goodsFiles, GoodsFileVO.class);
     }
 
     /**
