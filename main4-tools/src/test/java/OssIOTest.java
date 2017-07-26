@@ -38,7 +38,7 @@ public class OssIOTest {
 
     @Test
     public void testListFile() {
-        List<OssFile> list =  ossIO.getFileList("testdir/");
+        List<OssFile> list =  ossIO.getFileList("testdir2/");
         System.out.println(list);
     }
 
@@ -60,6 +60,6 @@ public class OssIOTest {
 
     @Test
     public void testGetFileSize() {
-        ossIO.getSizeInfo("testdir/");
+        ossIO.getSizeInfo("testdir2/");
     }
 }

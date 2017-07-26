@@ -7,31 +7,49 @@ import java.util.List;
  * Created by Administrator on 2017/7/24.
  */
 public class OssFile {
-    private String name;
-    private Date lastModified;
-    private long size;
+    private String fileId;
+    private String fileType;
+    private String filename;
+    private Date fileCreateTime;
+    private double fileSize;
 
-    public String getName() {
-        return name;
+    public String getFileId() {
+        return fileId;
     }
 
-    public void setName( String name ) {
-        this.name = name;
+    public void setFileId( String fileId ) {
+        this.fileId = fileId;
     }
 
-    public Date getLastModified() {
-        return lastModified;
+    public String getFileType() {
+        return fileType;
     }
 
-    public void setLastModified( Date lastModified ) {
-        this.lastModified = lastModified;
+    public void setFileType( String fileType ) {
+        this.fileType = fileType;
     }
 
-    public long getSize() {
-        return size;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setSize( long size ) {
-        this.size = size;
+    public void setFilename( String filename ) {
+        this.filename = filename;
+    }
+
+    public Date getFileCreateTime() {
+        return fileCreateTime;
+    }
+
+    public void setFileCreateTime( Date fileCreateTime ) {
+        this.fileCreateTime = fileCreateTime;
+    }
+
+    public double getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize( double fileSize ) {
+        this.fileSize = fileSize;
     }
 }

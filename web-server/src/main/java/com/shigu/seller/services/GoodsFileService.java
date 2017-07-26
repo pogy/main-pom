@@ -10,6 +10,8 @@ import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.vo.GoodsFileVO;
+import com.shigu.tools.Arith;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +33,7 @@ public class GoodsFileService {
     OssIO ossIO;
 
     /**
-     * g更加文件路径获取
+     * 根据文件路径获取关联商品信息
      */
     public List<ItemShowBlock> selGoodsFileByFile( String fileKey) {
         GoodsFileExample goodsExample=new GoodsFileExample();
@@ -40,6 +42,18 @@ public class GoodsFileService {
 
         List<ItemShowBlock> items = shopForCdnService.searchItemOnsale( BeanMapper.getFieldList(goodsFiles, "id", Long.class), "hz", 1, goodsFiles.size()).getContent();
         return items;
+    }
+
+    /**
+     * 获取文件列表
+     */
+    public List<GoodsFileVO> selFilesByFileId( String fileKey,  String userId) {
+
+        if (StringUtils.isEmpty(fileKey)) {
+            fileKey = ossIO.getDir() + userId + "/";
+        }
+        List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(fileKey), GoodsFileVO.class);
+        return files;
     }
 
     /**
@@ -120,6 +134,10 @@ public class GoodsFileService {
      */
     public void moveFile(String fileId,  String targetFileId) {
         ossIO.moveFile(fileId, targetFileId);
+    }
+
+    public double getSizeInfo(String filePath) {
+        return ossIO.getSizeInfo(filePath);
     }
 
 }

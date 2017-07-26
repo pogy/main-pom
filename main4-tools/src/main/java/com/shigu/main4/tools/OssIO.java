@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.*;
 
@@ -39,6 +40,8 @@ public class OssIO {
     private String domain;
 
     private String dir = "udf/";
+
+
 
     /**
      * 上传一个文件
@@ -144,11 +147,19 @@ public class OssIO {
         try {
             ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
             ObjectListing objectListing = ossClient.listObjects(bucketName, filePath);
+
             for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) { //以"/"结尾的是目录，否则是文件
                 OssFile file = new OssFile();
-                file.setLastModified(objectSummary.getLastModified());
-                file.setName(objectSummary.getKey());
-                file.setSize(objectSummary.getSize());
+                file.setFileCreateTime(objectSummary.getLastModified());
+                file.setFileId(objectSummary.getKey());
+                file.setFileSize(div((double)objectSummary.getSize(), (double)1024, 3));//kb
+                if (objectSummary.getKey().endsWith("/")) { //目录
+                    file.setFileType("1");
+                } else {
+                    file.setFileType("0");
+                }
+                String[] items = file.getFileId().split("/");
+                file.setFilename(items[items.length -1]);
                 fileList.add(file);
             }
         } finally {
@@ -162,10 +173,10 @@ public class OssIO {
 
 
     /**
-     * 获取文件或者目录总大小,以byte为单位
+     * 获取文件或者目录总大小,以mb为单位
      * @param filePath  文件路径
      */
-    public long getSizeInfo(String filePath) {
+    public double getSizeInfo(String filePath) {
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 
         Long totalSize = 0L;
@@ -179,7 +190,19 @@ public class OssIO {
             ObjectMetadata metadata = ossObject.getObjectMetadata();
             totalSize += metadata.getContentLength();
         }
-        return totalSize;
+
+
+        return div((double)totalSize, (double)1024*1024, 3);
+    }
+
+    public  double div(double v1,double v2,int scale){
+        if(scale<0){
+            throw new IllegalArgumentException(
+                    "The scale must be a positive integer or zero");
+        }
+        BigDecimal b1 = new BigDecimal(Double.toString(v1));
+        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+        return b1.divide(b2,scale,BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     /**
@@ -319,6 +342,10 @@ public class OssIO {
         respMap.put("host", domain);
         respMap.put("expire", String.valueOf(expireEndTime / 1000));
         return respMap;
+    }
+
+    public String getDir() {
+        return dir;
     }
 
 
