@@ -5,14 +5,13 @@ import com.shigu.main4.order.enums.ShStatusEnum;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.LogisticsService;
-import com.shigu.main4.order.servicevo.AfterSaleSimpleOrderVO;
-import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
-import com.shigu.main4.order.servicevo.SubAfterSaleSimpleOrderVO;
+import com.shigu.main4.order.servicevo.*;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.decorateVo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -79,11 +78,19 @@ public class AfterSaleShowService {
         }
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(Long.parseLong(refundId));
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
+        AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(Long.parseLong(refundId));
+        List<RefundLogVO> rlist = afterSaleService.afterSaleApplication(Long.parseLong(refundId));
         AbstractRefundVo vo = new OrderRefundVo();
         AbstractRefundVo vo1 = new OrderSimpleRefundDecorate(vo,afterSaleSimpleOrderVO);//主单信息
-        AbstractRefundVo vo2 = new RefundStatusInfoDecorate(vo1,afterSaleStatusVO);
+        AbstractRefundVo vo2 = new RefundStatusInfoDecorate(vo1,afterSaleStatusVO);//退款状态信息
+        AbstractRefundVo vo3 = new RefundSimpleInfoDecorate(vo2,afterSaleInfoVO);  //退款信息编号和钱
+        AbstractRefundVo vo4 = new RefundLogDecorate(vo3,rlist);//申请信息
+        AbstractRefundVo von = null;
         switch (afterSaleStatusVO.getAfterSaleStatus()){
             case RETURN_ENT:{
+                AfterSaleEntVO afterSaleEntVO = afterSaleService.afterEnt(Long.parseLong(refundId));
+                von = new RefundEndDecorate(vo2,afterSaleEntVO);
+                von.doAdd();
                 break;
             }
             case AGREE_PROCESS:{

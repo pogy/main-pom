@@ -49,13 +49,17 @@ public class RefundStatusInfoDecorate extends RefundVoDecorate{
             }
             case REFUSE_PROCESS:{
                 refundStateNum = 2;
-                returnState = 2;
+                waitState = 2;
                 break;
             }
-            case WAIT_AFTER_SALE:{
+            case REFUSE_MONEY_CHANGED:{
+                refundStateNum = 3;
+                returnState =4;
                 break;
             }
             case DISPOSE_RETRUN_GOODS:{
+                refundStateNum =2 ;
+                waitState =1;
                 break;
             }
             case REFUND_MONEY_CHANGED:{
