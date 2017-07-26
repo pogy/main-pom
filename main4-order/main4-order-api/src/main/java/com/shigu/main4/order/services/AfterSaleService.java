@@ -145,6 +145,7 @@ public interface AfterSaleService {
      * 同意(拒绝)退款金额
      * @create: zf
      * @param isAgree
+     * @param refundId:退换货id
      */
-    void agreeOrRejectRefundPrice(boolean isAgree);
+    void agreeOrRejectRefundPrice(Long refundId,boolean isAgree);
 }
