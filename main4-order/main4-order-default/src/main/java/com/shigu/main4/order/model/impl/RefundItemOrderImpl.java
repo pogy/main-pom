@@ -16,6 +16,7 @@ import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.vo.PayedVO;
+import com.shigu.main4.order.vo.RefundProcessVO;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -90,6 +91,21 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     public RefundStateEnum refundState() {
         return refundinfo().getRefundState();
+    }
+
+    @Override
+    public List<RefundProcessVO> refundLogs() {
+        return null;
+    }
+
+    /**
+     * 退货日志查询
+     *
+     * @return
+     */
+    @Override
+    public List<RefundProcessVO> refundLogs() {
+        return null;
     }
 
     /**

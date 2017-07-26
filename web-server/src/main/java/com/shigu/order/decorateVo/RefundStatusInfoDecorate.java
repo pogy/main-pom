@@ -1,8 +1,9 @@
 package com.shigu.order.decorateVo;
 
-import com.shigu.main4.order.services.ReturnGoodsService;
-import com.shigu.main4.order.servicevo.ReturnGoodsInfoVO;
+import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
+import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -10,30 +11,27 @@ import java.util.Map;
  *
  * @author pc
  * @version 3.0.0-SNAPSHOT
- * @description
+ * @description xx
  * @since 3.0.0-SNAPSHOT
  */
-public class RefundInfoDecorate extends RefundVoDecorate{
+public class RefundStatusInfoDecorate extends RefundVoDecorate{
 
-    private ReturnGoodsInfoVO returnGoodsInfoVO;
+    private AfterSaleStatusVO afterSaleStatusVO;
 
-    public RefundInfoDecorate(AbstractRefundVo vo,ReturnGoodsInfoVO returnGoodsInfoVO){
+    public RefundStatusInfoDecorate(AbstractRefundVo vo,AfterSaleStatusVO afterSaleStatusVO){
         super(vo);
-        this.returnGoodsInfoVO = returnGoodsInfoVO;
-    }
-    public RefundInfoDecorate(AbstractRefundVo vo) {
-        super(vo);
+        this.afterSaleStatusVO = afterSaleStatusVO;
     }
 
-    public void setRefundInfo(){
 
-        Map<String, Object> map = this.getViewVo();
-        map.put("refundId",returnGoodsInfoVO.getRefundId());
-        map.put("refundAmount",returnGoodsInfoVO.getRefundPrice());
+    private void setRefundInfo(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("refundId",afterSaleStatusVO.getSubOrderId());
+        System.out.println("设置退款信息");
         int refundStateNum = 0;
         int waitState = 0;
         int returnState = 0;
-        switch (returnGoodsInfoVO.getRetrunGoodsStatus()){
+        switch (afterSaleStatusVO.getAfterSaleStatus()){
 
             case RETURN_ENT:{
                 refundStateNum = 4;
@@ -71,13 +69,20 @@ public class RefundInfoDecorate extends RefundVoDecorate{
         map.put("returnState",refundStateNum);
         map.put("waitState",waitState);
         map.put("returnState",returnState);
+        super.addMap(map);
 
 
     }
 
+//    @Override
+//    public Map<String, Object> getViewVo() {
+//        setRefundInfo();
+//        return super.getViewVo();
+//    }
+
     @Override
-    public Map<String, Object> getViewVo() {
+    public void doAdd() {
         setRefundInfo();
-        return super.getViewVo();
+        super.doAdd();
     }
 }
