@@ -2,6 +2,7 @@ package com.shigu.seller.actions;
 
 import com.opentae.data.mall.beans.GoodsFile;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.vo.FindGoodsItemVO;
@@ -19,7 +20,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/7/26.
@@ -31,6 +36,28 @@ public class GoodsFileAction {
 
     @Autowired
     GoodsFileService goodsFileService;
+
+    @Autowired
+    private OssIO ossIO;
+
+    @RequestMapping("goodsFile/getSignInfo")
+    public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Long userId = getUserId(request.getSession());
+        Map<String, String> infoMap = ossIO.createPostSignInfo(userId);
+        JSONObject jsonInfo = JSONObject.fromObject(infoMap);
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST");
+
+        String callbackFunName = request.getParameter("callback");
+        if (callbackFunName==null || callbackFunName.equalsIgnoreCase(""))
+            response.getWriter().println(jsonInfo.toString());
+        else
+            response.getWriter().println(callbackFunName + "( "+jsonInfo.toString()+" )");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.flushBuffer();
+        return null;
+    }
 
     /**
      * 根据文件路径获取关联商品
@@ -91,6 +118,17 @@ public class GoodsFileAction {
     public JSONObject renameFile(String fileId, String fileType, String newName) {
         goodsFileService.rename(fileId, fileType, newName);
         return JsonResponseUtil.success();
+    }
+
+    /**
+     * 当前登陆的session
+     *
+     * @param session
+     * @return
+     */
+    private Long getUserId(HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        return ps.getUserId();
     }
 
 }
