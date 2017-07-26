@@ -81,9 +81,9 @@ public class AfterSaleService {
         vo = new OrderRefundVo();
         vo1 = new SubWithOrderRefundDecorate(vo,itemOrderService,childOrderId);
         vo2 = new RefundInfoDecorate(vo1,returnGoodsInfoVO);
-
+        AbstractRefundVo vo3;
         if(returnGoodsInfoVO.getRetrunGoodsStatus() == ReturnGoodsStatusEnum.EXPRESS_SUBMIT){
-            AbstractRefundVo vo3 = new LogisticsDecorate(vo2,logisticsService,Long.parseLong(refundId));
+            vo3 = new LogisticsDecorate(vo2,logisticsService,Long.parseLong(refundId));
         }
 
         return null;
