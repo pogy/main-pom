@@ -27,12 +27,6 @@ public interface AfterSaleService {
      */
     AfterSaleSimpleOrderVO afterSaleSimpleOrder(Long subOrderId);
 
-    /**
-     * 获取该子单还可退数量
-     * @param subOrderId:订单子单id
-     * @return refundableNum:可退的数量
-     */
-    Integer refundableNum(Long subOrderId);
 
     /**
      * 申请退货退款

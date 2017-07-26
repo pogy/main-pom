@@ -30,11 +30,6 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     }
 
     @Override
-    public Integer refundableNum(Long subOrderId) {
-        return null;
-    }
-
-    @Override
     public Long returnGoodsApply(Long subOrderId, int refundCount, String refundMoney, String refundReason, String refundDesc) {
         return null;
     }
