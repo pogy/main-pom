@@ -130,7 +130,7 @@ public class GoodsFileAction {
      */
     @RequestMapping("goodsFile/moveFile")
     @ResponseBody
-    public JSONObject renameFile(String fileId, String targetFileId) {
+    public JSONObject moveFile(String fileId, String targetFileId) {
         goodsFileService.moveFile(fileId, targetFileId);
         return JsonResponseUtil.success();
     }
@@ -164,6 +164,25 @@ public class GoodsFileAction {
     public JSONObject deleteFile(String fileId, String fileType) {
         boolean ret = goodsFileService.deleteFile(fileId, fileType);
         return JsonResponseUtil.success();
+    }
+
+    /**
+     * 获取文件列表
+     * @param fileId
+     * @param fileId
+     * @return
+     */
+    @RequestMapping("goodsFile/getFileList")
+    @ResponseBody
+    public JSONObject getFileList( HttpServletRequest request, String fileId) {
+        Long userId = getUserId(request.getSession());
+        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(fileId, userId.toString());
+        GoodsFileVO file = files.get(0);
+        JSONObject obj= JsonResponseUtil.success();
+        obj.element("fileId", file.getFileId());
+        obj.element("fileName", file.getFilename());
+        obj.element("fileList", files.subList(1, files.size()));
+        return obj;
     }
 
     /**

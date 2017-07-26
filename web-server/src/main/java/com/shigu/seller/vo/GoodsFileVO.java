@@ -1,39 +1,56 @@
 package com.shigu.seller.vo;
 
 
+import java.util.Date;
+
 /**
  * Created by Administrator on 2017/7/26.
  */
 public class GoodsFileVO {
+    private String fileId;
+    private String fileType;
+    private String filename;
+    private Date fileCreateTime;
+    private double fileSize;
 
-    private Long id;
-
-    private String fileKey;
-
-    private Long goodsId;
-
-    public Long getId() {
-        return id;
+    public String getFileId() {
+        return fileId;
     }
 
-    public void setId( Long id ) {
-        this.id = id;
+    public void setFileId( String fileId ) {
+        this.fileId = fileId;
     }
 
-    public String getFileKey() {
-        return fileKey;
+    public String getFileType() {
+        return fileType;
     }
 
-    public void setFileKey( String fileKey ) {
-        this.fileKey = fileKey;
+    public void setFileType( String fileType ) {
+        this.fileType = fileType;
     }
 
-    public Long getGoodsId() {
-        return goodsId;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setGoodsId( Long goodsId ) {
-        this.goodsId = goodsId;
+    public void setFilename( String filename ) {
+        this.filename = filename;
+    }
+
+    public Date getFileCreateTime() {
+        return fileCreateTime;
+    }
+
+    public void setFileCreateTime( Date fileCreateTime ) {
+        this.fileCreateTime = fileCreateTime;
+    }
+
+    public double getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize( double fileSize ) {
+        this.fileSize = fileSize;
     }
 }
 

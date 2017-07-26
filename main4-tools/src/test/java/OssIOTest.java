@@ -60,6 +60,8 @@ public class OssIOTest {
 
     @Test
     public void testGetFileSize() {
-        ossIO.getSizeInfo("testdir2/");
+//        ossIO.getSizeInfo("testdir2/");
+        ossIO.getFileList("testdir2/");
     }
+
 }
