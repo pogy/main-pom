@@ -54,7 +54,7 @@ public class GoodsFileAction {
      * @param goodsId
      * @return
      */
-    @RequestMapping("goodsFile/save")
+    @RequestMapping("goodsFile/glGoodsJson")
     @ResponseBody
     public JSONObject saveGoodsFile( String fileKey, Long goodsId) {
         goodsFileService.saveGoodsFile(fileKey, goodsId);
@@ -63,14 +63,13 @@ public class GoodsFileAction {
 
     /**
      * 取消关联关系
-     * @param fileKey
      * @param goodsId
      * @return
      */
-    @RequestMapping("goodsFile/save")
+    @RequestMapping("goodsFile/cacelGlJson")
     @ResponseBody
-    public JSONObject delGoodsFile( String fileKey, Long goodsId) {
-        goodsFileService.delGoodsfile(fileKey, goodsId);
+    public JSONObject delGoodsFile(Long goodsId) {
+        goodsFileService.delGoodsfile(goodsId);
         return JsonResponseUtil.success();
     }
 

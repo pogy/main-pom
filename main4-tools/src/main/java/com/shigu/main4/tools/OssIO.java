@@ -159,15 +159,6 @@ public class OssIO {
         return fileList;
     }
 
-    /**
-     * 重命名文件
-     * @param srcFilePath  原名
-     * @param dstFilePath  目标名
-     */
-    public void renameFile(String srcFilePath, String dstFilePath) {
-        moveFile(srcFilePath, dstFilePath);
-    }
-
 
 
     /**
@@ -225,18 +216,40 @@ public class OssIO {
      */
     public void moveFile(String srcFilePath, String dstFilePath) {
         // 创建OSSClient实例
-        OSSClient ossClient = null;
+        OSSClient ossClient = ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
-            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-            // 拷贝Object
-            CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath);
-            logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
-            ossClient.deleteObject(bucketName,srcFilePath);
+            if(srcFilePath.endsWith("/")) {//目录
+                String[] items = srcFilePath.split("/");
+                int len =items.length-1;
+                String sonDir = items[len];
+                String newDstFilePath = dstFilePath + sonDir + "/";
+                ObjectListing objectListing = ossClient.listObjects(bucketName, srcFilePath);
+                for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+                    ossClient.copyObject(bucketName, objectSummary.getKey(), bucketName, newDstFilePath);
+                }
+            } else {
+                // 拷贝Object
+                CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath);
+                logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
+                ossClient.deleteObject(bucketName,srcFilePath);
+            }
+
+            deleteFile(srcFilePath);
         } finally {
             if (ossClient != null) {
                 ossClient.shutdown();
             }
         }
+    }
+
+
+    /**
+     * 重命名文件
+     * @param srcFilePath  原名
+     * @param dstFilePath  目标名
+     */
+    public void renameFile(String srcFilePath, String dstFilePath) {
+        moveFile(srcFilePath, dstFilePath);
     }
 
     /**

@@ -44,7 +44,7 @@ public class OssIOTest {
 
     @Test
     public void testRenameFile() {
-        ossIO.renameFile("testdir/11/33/logoWeb.png", "testdir/11/33/logoWeb1.png");
+        ossIO.renameFile("testdir2/dd/", "testdir2/11/");
     }
 
     @Test
@@ -54,7 +54,7 @@ public class OssIOTest {
 
     @Test
     public void testMoveFile() {
-        ossIO.moveFile("testdir/11/33/logoWeb1.png", "testdir/11/44/logoWeb.png");
+        ossIO.moveFile("testdir2/zz/", "testdir2/rr/");
     }
 
 

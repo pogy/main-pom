@@ -6,6 +6,7 @@ import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.tools.OssIO;
 import com.shigu.seller.vo.GoodsFileVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ import java.util.List;
 public class GoodsFileService {
     @Autowired
     GoodsFileMapper goodsFileMapper;
+
+    @Autowired
+    OssIO ossIO;
 
     /**
      * g更加文件路径获取
@@ -58,15 +62,22 @@ public class GoodsFileService {
 
     /**
      * 取消关联关系
-     * @param fileKey
      * @param goodsId
      * @return
      */
-    public int delGoodsfile(String fileKey, Long goodsId) {
+    public int delGoodsfile(Long goodsId) {
         GoodsFile goodsFile = new GoodsFile();
         goodsFile.setGoodsId(goodsId);
-        goodsFile.setFileKey(fileKey);
         return goodsFileMapper.delete(goodsFile);
     }
+
+    public void deleteFile(String fileKey, String fileType) {
+        if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("1") ) {
+            fileKey = fileKey +"/";
+        }
+        ossIO.deleteFile(fileKey);
+    }
+
+
 
 }
