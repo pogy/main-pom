@@ -2,6 +2,7 @@ package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.ItemCartMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -9,14 +10,19 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.newcdn.vo.CdnCollectShopVO;
 import com.shigu.main4.order.exceptions.CartException;
 import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.model.impl.ItemCartImpl;
+import com.shigu.main4.order.model.impl.ItemProductImpl;
 import com.shigu.main4.order.vo.CartVO;
+import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.OrderSubmitType;
+import com.shigu.order.bo.AddCartBO;
+import com.shigu.order.bo.AddCartPropBO;
 import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
@@ -218,6 +224,22 @@ public class CartService {
             getCartByUser(userId).modifyProductSku(cid, color, size);
         } catch (CartException e) {
             throw new JsonErrException(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 新增进货车
+     * @param userId
+     * @param goodsId
+     * @param skus
+     */
+    public void addCartOrder(Long userId, Long goodsId, List<AddCartPropBO> skus){
+        ItemCartImpl itemCart = SpringBeanFactory.getBean(ItemCartImpl.class, userId);
+        for(AddCartPropBO sku:skus){
+            ItemProductImpl itemp=SpringBeanFactory.getBean(ItemProductImpl.class,goodsId,sku.getColor(),sku.getSize() );
+            ItemProductVO vo=itemp.info();
+            itemCart.addProduct(vo,sku.getCount());
         }
     }
 }

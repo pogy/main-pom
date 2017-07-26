@@ -5,9 +5,10 @@ package com.shigu.main4.order.enums;
  */
 public enum AfterSaleStatusEnum {
     NOT_AFTER_SALE(0),//无售后
-    DISPOSE_AFTER_SALE(1),//申请售后
     REFUND_ENT(2),//已退款
     CHANGE_ENT(3),//以换货
+    DISPOSE_FERUND(4),//申请退货
+    DISPOSE_CHANGE(5),//申请换货
     ;
     public final int afterSaleStatus;
 
