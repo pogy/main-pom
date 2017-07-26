@@ -30,11 +30,6 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     }
 
     @Override
-    public Long refundablePrice(Long subOrderId) {
-        return null;
-    }
-
-    @Override
     public Long returnGoodsApply(Long subOrderId, int refundCount, String refundMoney, String refundReason, String refundDesc) {
         return null;
     }
@@ -95,7 +90,12 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     }
 
     @Override
-    public void agreeOrRejectRefundPrice(boolean isAgree) {
+    public void agreeOrRejectRefundPrice(Long refundId,boolean isAgree) {
 
+    }
+
+    @Override
+    public AfterSaleEntVO afterEnt(Long refundId) {
+        return null;
     }
 }

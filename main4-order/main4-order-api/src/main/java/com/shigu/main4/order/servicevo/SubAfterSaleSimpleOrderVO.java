@@ -31,6 +31,15 @@ public class SubAfterSaleSimpleOrderVO {
     private Long price;
 
     /**
+     * 子单中商品总数
+     */
+    private Integer num;
+    /**
+     * 子单中售后的数量(包含已退和申请中的)
+     */
+    private Integer refundNum;
+
+    /**
      * 获取 子单ID
      */
     public Long getSubOrderId() {
@@ -112,5 +121,33 @@ public class SubAfterSaleSimpleOrderVO {
      */
     public void setPrice(Long price) {
         this.price = price;
+    }
+
+    /**
+     * 获取 子单中商品总数
+     */
+    public Integer getNum() {
+        return this.num;
+    }
+
+    /**
+     * 设置 子单中商品总数
+     */
+    public void setNum(Integer num) {
+        this.num = num;
+    }
+
+    /**
+     * 获取 子单中售后的数量(包含已退和申请中的)
+     */
+    public Integer getRefundNum() {
+        return this.refundNum;
+    }
+
+    /**
+     * 设置 子单中售后的数量(包含已退和申请中的)
+     */
+    public void setRefundNum(Integer refundNum) {
+        this.refundNum = refundNum;
     }
 }

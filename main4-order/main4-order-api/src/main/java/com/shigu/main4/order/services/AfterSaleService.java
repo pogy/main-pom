@@ -27,12 +27,6 @@ public interface AfterSaleService {
      */
     AfterSaleSimpleOrderVO afterSaleSimpleOrder(Long subOrderId);
 
-    /**
-     * 获取该子单还可退的款
-     * @param subOrderId:订单子单id
-     * @return refundablePrice:可退的金额
-     */
-    Long refundablePrice(Long subOrderId);
 
     /**
      * 申请退货退款
@@ -145,6 +139,14 @@ public interface AfterSaleService {
      * 同意(拒绝)退款金额
      * @create: zf
      * @param isAgree
+     * @param refundId:退换货id
      */
-    void agreeOrRejectRefundPrice(boolean isAgree);
+    void agreeOrRejectRefundPrice(Long refundId,boolean isAgree);
+
+    /**
+     * 售后结束信息(结束时间,如果是退货退款的单,还返回钱款去向数据)
+     * @param refundId
+     * @return
+     */
+    AfterSaleEntVO afterEnt(Long refundId);
 }
