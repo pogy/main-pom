@@ -2,7 +2,7 @@ package com.shigu.main4.order.model;
 
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.bo.RefundApplyBO;
-import com.shigu.main4.order.enums.RefundStateEnum;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.vo.RefundProcessVO;

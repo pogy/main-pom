@@ -1,6 +1,6 @@
 package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.enums.MainOrderStatusEnum;
+import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 
 import java.util.Date;
 

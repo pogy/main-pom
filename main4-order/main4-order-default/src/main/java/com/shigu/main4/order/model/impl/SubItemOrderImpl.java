@@ -10,7 +10,7 @@ import com.opentae.data.mall.interfaces.ShiguGoodsSoldoutMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
-import com.shigu.main4.order.enums.SubOrderStatus;
+import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.vo.ItemProductVO;

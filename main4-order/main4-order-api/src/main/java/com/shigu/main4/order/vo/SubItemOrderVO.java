@@ -1,6 +1,6 @@
 package com.shigu.main4.order.vo;
 
-import com.shigu.main4.order.enums.SubOrderStatus;
+import com.shigu.main4.order.zfenums.SubOrderStatus;
 
 import java.io.Serializable;
 

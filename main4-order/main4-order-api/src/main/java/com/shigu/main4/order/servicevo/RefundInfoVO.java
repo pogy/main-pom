@@ -1,6 +1,6 @@
 package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.enums.RefundStateEnum;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
 
 import java.util.Date;
 

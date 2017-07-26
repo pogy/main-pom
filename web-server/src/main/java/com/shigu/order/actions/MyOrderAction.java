@@ -56,9 +56,13 @@ public class MyOrderAction {
      */
     @RequestMapping("myOrder")
     public String myOrder(HttpSession session, Model model, OrderBO bo){
+
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if(bo.getPageSize ()==null){
             bo.setPageSize (10);
+        }
+        if(bo.getPage ()==null){
+            bo.setPage (1);
         }
         List<ShowOrderVO> list=myOrderService.myOrder(bo, ps.getUserId ());
         ShiguPager<ShowOrderVO>  pager =myOrderService.selectCountMyOrder(bo,ps.getUserId ());

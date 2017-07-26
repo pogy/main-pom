@@ -1,23 +1,31 @@
 package com.shigu.main4.order.services.impl;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderLogistics;
 import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.enums.*;
 import com.shigu.main4.order.model.ItemOrder;
+import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
-import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
-import com.shigu.main4.order.servicevo.ShowOrderVO;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
+import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
+import com.shigu.main4.order.zfenums.RefundTypeEnum;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
+import com.shigu.main4.order.zfenums.SubOrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,7 +45,10 @@ import java.util.List;
 public class OrderListServiceImpl implements OrderListService {
 
 
+    @Autowired
+    private ItemOrderService itemOrderService;
 
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * ====================================================================================
@@ -285,9 +296,11 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
+    //todo: com.shigu.main4.order.model.Order#remove方法
     @Override
     public int removeOrder(Long orderId) {
+        ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
+        orderModel.remove();
         return 1;
     }
 
@@ -301,9 +314,11 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
+    //todo: com.shigu.main4.order.model.Order#closed方法
     @Override
     public int cancelOrder(Long orderId) {
+        ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
+        orderModel.closed();
         return 1;
     }
 
@@ -340,41 +355,29 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
     @Override
-    public OrderDetailExpressVO selectExpress (Long orderId) {
+    public OrderDetailExpressVO selectExpress (Long orderId) throws Main4Exception, ParseException {
         OrderDetailExpressVO vo=new OrderDetailExpressVO();
-        vo.setId ("446652085546");
-        vo.setName ("中通快递 ");
-        List<OrderDetailExpressDetailVO> detail=new ArrayList<> ();
-        OrderDetailExpressDetailVO dvo=new OrderDetailExpressDetailVO();
-        dvo.setOrderId (orderId);
-        dvo.setDate ("2017-07-20");
-        dvo.setDesc ("您的订单开始处理");
-        dvo.setTime ("13:04:56");
-        detail.add (dvo);
-
-        OrderDetailExpressDetailVO dvo1=new OrderDetailExpressDetailVO();
-        dvo1.setOrderId (orderId);
-        dvo1.setDate ("2017-07-20");
-        dvo1.setDesc ("您的订单待配货");
-        dvo1.setTime ("15:55:04");
-        detail.add (dvo1);
-
-        OrderDetailExpressDetailVO dvo2=new OrderDetailExpressDetailVO();
-        dvo2.setOrderId (orderId);
-        dvo2.setDate ("2017-07-20");
-        dvo2.setDesc ("卖家发货");
-        dvo2.setTime ("16:53:28");
-        detail.add (dvo2);
-
-        OrderDetailExpressDetailVO dvo3=new OrderDetailExpressDetailVO();
-        dvo3.setOrderId (orderId);
-        dvo3.setDate ("2017-07-20");
-        dvo3.setDesc ("您的包裹已出库");
-        dvo3.setTime ("17:58:19");
-        detail.add (dvo3);
-        vo.setDetail (detail);
+        ExpressInfoVO expressInfoVO = itemOrderService.expressInfo(orderId);
+        if (expressInfoVO != null) {
+            String expressId = expressInfoVO.getExpressId();
+            vo.setName(expressInfoVO.getExpressName());
+            vo.setId(expressId);
+            ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
+            List<OrderDetailExpressDetailVO> detailVOS = Lists.newArrayList();
+            if (orderModel.selLogisticses().size()>0) {
+                for (ExpressLogVO expressLogVO:itemOrderService.expressLog(orderModel.selLogisticses().get(0).getId())){
+                    OrderDetailExpressDetailVO detailVO = new OrderDetailExpressDetailVO();
+                    detailVO.setId(expressId);
+                    detailVO.setOrderId(orderId);
+                    detailVO.setDate(expressLogVO.getLogDate());
+                    detailVO.setTime(expressLogVO.getLogTime());
+                    detailVO.setDesc(expressLogVO.getLogDesc());
+                    detailVOS.add(detailVO);
+                }
+            }
+            vo.setDetail(detailVOS);
+        }
         return vo;
     }
 
@@ -392,14 +395,31 @@ public class OrderListServiceImpl implements OrderListService {
     @Override
     public ShowOrderVO selectMyorder (Long orderId) {
         ShowOrderVO vo=new ShowOrderVO();
-        vo.setOrderCreateTimed (new Date());//创建时间
-        vo.setTradeTimed (new Date());//付款时间
-        vo.setDistributionDated (new Date());//分配时间
-        vo.setFinishTimed (new Date ());//完成时间
-        vo.setIsTbOrder (true);
-        vo.setMainState (1);
-        vo.setOrderId (orderId);
-
+        ItemOrderVO itemOrderVO = SpringBeanFactory.getBean(ItemOrder.class, orderId).orderInfo();
+        OrderDetailTotalVO orderDetailTotalVO = selectTotal(orderId);
+        List<SubOrderInfoVO> subOrderInfoVOS = itemOrderService.suborderInfoByOrderId(orderId);
+        vo.setOrderId(orderId);
+        vo.setTradeTimed(itemOrderVO.getCreateTime());
+        vo.setTradeTime(simpleDateFormat.format(itemOrderVO.getCreateTime()));
+        vo.setOrderCreateTimed(itemOrderVO.getCreateTime());
+        vo.setOrderCreateTime(simpleDateFormat.format(itemOrderVO.getCreateTime()));
+        vo.setTradePayLong(orderDetailTotalVO.getOrderTotalPriceLong());
+        vo.setTradePay(orderDetailTotalVO.getOrderTotalPrice());
+        vo.setPostPay(orderDetailTotalVO.getExpressPrice());
+        vo.setPostPayLong(orderDetailTotalVO.getExpressPriceLong());
+        vo.setMainState(itemOrderVO.getOrderStatus().status);
+        //vo.setIsTbOrder();
+        vo.setWebSite(itemOrderVO.getWebSite());
+        //vo.setType();
+        vo.setPayedFee(PriceConvertUtils.priceToString(itemOrderVO.getPayedFee()));
+        vo.setPayedFeeLong(itemOrderVO.getPayedFee());
+        vo.setTitle(itemOrderVO.getTitle());
+        vo.setRefundFeeLong(itemOrderVO.getRefundFee());
+        vo.setRefundFee(PriceConvertUtils.priceToString(itemOrderVO.getRefundFee()));
+        vo.setOrderPrice(orderDetailTotalVO.getOrderTotalPrice());
+        vo.setFinishTimed(itemOrderVO.getFinishTime());
+        vo.setFinishTime(simpleDateFormat.format(itemOrderVO.getFinishTime()));
+        vo.setChildOrders(subOrderInfoVOS);
         return vo;
     }
 
@@ -413,62 +433,10 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
+    //todo: com.shigu.main4.order.services.ItemOrderService#suborderInfoByOrderId需要实现
     @Override
     public List<SubOrderInfoVO> selectSubList (Long orderId) {
-        List<SubOrderInfoVO> listsub=new ArrayList<> ();
-
-        for(int k=0;k<3;k++) {
-            SubOrderInfoVO svo=new SubOrderInfoVO();
-            int p= 1+k+1;
-            svo.setOrderId (orderId);
-            svo.setChildOrderId (new Long(p));
-            switch (k){
-                case 0:{
-                    svo.setImgsrc ("https://img.alicdn.com/bao/uploaded/i4/270913282/TB2LQlAXB7c61BjSZFIXXcZmVXa-270913282.jpg");
-                    svo.setColor ("白");
-                    svo.setSize ("L");
-                    svo.setGoodsId (9522391L);
-                    svo.setGoodsNo ("A241 S5-P65");
-                    svo.setNum (1);
-                    svo.setPriceLong (6500L);
-                    svo.setSubStatusenum (SubOrderStatus.statusOf (0));
-                    svo.setTitle ("A241 S5-P65 2016秋冬毛线衫男装港风高领毛衣男纯色翻领毛衣");
-                    break;
-                }
-                case 1:{
-                    svo.setImgsrc ("https://img.alicdn.com/bao/uploaded/i3/138989925/TB2rAD4XRAkyKJjy0FeXXadhpXa_!!138989925.jpg");
-                    svo.setColor ("蓝");
-                    svo.setSize ("XL");
-                    svo.setGoodsId (20915911L);
-                    svo.setGoodsNo ("A242/WX82/P165");
-                    svo.setNum (3);
-                    svo.setPriceLong (16500L);
-                    svo.setSubStatusenum (SubOrderStatus.statusOf (2));
-                    svo.setTitle ("修身滚边设计男士帅气一粒扣西装 WX82/P165白");
-                    break;
-                }
-                default:{
-                    svo.setImgsrc ("https://img.alicdn.com/bao/uploaded/i3/2744642519/TB2H_0CX2AkyKJjy0FfXXaxhpXa_!!2744642519.jpg");
-                    svo.setColor ("红");
-                    svo.setSize ("XXL");
-                    svo.setGoodsId (20918332L);
-                    svo.setGoodsNo ("F088");
-                    svo.setNum (2);
-                    svo.setPriceLong (11000L);
-                    svo.setSubStatusenum (SubOrderStatus.statusOf (1));
-                    svo.setTitle ("【品质原创质检F088】秋装男夹克男风衣男外套男大码男P110控148");
-                    break;
-                }
-            }
-            svo.setOrderId (orderId);
-            listsub.add (svo);
-
-
-        }
-
-
-        return listsub;
+        return itemOrderService.suborderInfoByOrderId(orderId);
     }
 
     /**
@@ -481,6 +449,7 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
+    //todo: com.shigu.main4.order.model.ItemOrder#selServices需要实现
     @Override
     public OrderDetailTotalVO selectTotal (Long orderId) {
         OrderDetailTotalVO vo=new OrderDetailTotalVO();
