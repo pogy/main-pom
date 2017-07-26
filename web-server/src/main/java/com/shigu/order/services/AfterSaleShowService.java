@@ -6,6 +6,8 @@ import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.servicevo.*;
+import com.shigu.main4.order.vo.ExpressVo;
+import com.shigu.main4.order.vo.ReturnableAddressVO;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.decorateVo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,15 +73,17 @@ public class AfterSaleShowService {
         return viewVo;
     }
 
-    public Map<String, Object> refund(String refundId) {
-        ShStatusEnum shStatusEnum = afterSaleService.queryAfterSaleType(Long.parseLong(refundId));
+    public Map<String, Object> refund(String refundIds) {
+        Long refundId = Long.parseLong(refundIds);
+        ShStatusEnum shStatusEnum = afterSaleService.queryAfterSaleType(refundId);
         if(shStatusEnum == null||shStatusEnum.shStatus == 2){
             return null;
         }
-        AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(Long.parseLong(refundId));
+
+        AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
-        AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(Long.parseLong(refundId));
-        List<RefundLogVO> rlist = afterSaleService.afterSaleApplication(Long.parseLong(refundId));
+        AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(refundId);
+        List<RefundLogVO> rlist = afterSaleService.afterSaleApplication(refundId);
         AbstractRefundVo vo = new OrderRefundVo();
         AbstractRefundVo vo1 = new OrderSimpleRefundDecorate(vo,afterSaleSimpleOrderVO);//主单信息
         AbstractRefundVo vo2 = new RefundStatusInfoDecorate(vo1,afterSaleStatusVO);//退款状态信息
@@ -88,27 +92,42 @@ public class AfterSaleShowService {
         AbstractRefundVo von = null;
         switch (afterSaleStatusVO.getAfterSaleStatus()){
             case RETURN_ENT:{
-                AfterSaleEntVO afterSaleEntVO = afterSaleService.afterEnt(Long.parseLong(refundId));
-                von = new RefundEndDecorate(vo2,afterSaleEntVO);
-                von.doAdd();
+                //页面4
+                AfterSaleEntVO afterSaleEntVO = afterSaleService.afterEnt(refundId);
+                von = new RefundEndDecorate(vo4,afterSaleEntVO);//退款完成
                 break;
             }
             case AGREE_PROCESS:{
+                //页面3-1
+                ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
+                List<ExpressVo> expressVos = afterSaleService.selectExpress();
+                AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4,returnableAddressVO);//退货地址
+                von = new RefundExpressDetorate(vo5,expressVos);//快递列表
                 break;
             }
             case EXPRESS_SUBMIT:{
+                //页面3-2
+                ReturnableExpressInfoVO returnableExpressInfoVO = afterSaleService.retrunGoodsExpressInfo(refundId);//退货简要信息
+                von = new RefundExpressInfoDecorate(vo4,returnableExpressInfoVO);
                 break;
             }
             case REFUSE_PROCESS:{
+                //页面2-2
                 break;
             }
-            case WAIT_AFTER_SALE:{
+            case REFUSE_MONEY_CHANGED:{
+                //页面3-4
+
                 break;
             }
             case DISPOSE_RETRUN_GOODS:{
+                //2-1
+
                 break;
             }
             case REFUND_MONEY_CHANGED:{
+                //3-3
+                break;
             }
             default:{
                 break;

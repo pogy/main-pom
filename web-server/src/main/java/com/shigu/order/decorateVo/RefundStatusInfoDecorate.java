@@ -27,6 +27,7 @@ public class RefundStatusInfoDecorate extends RefundVoDecorate{
     private void setRefundInfo(){
         Map<String,Object> map = new HashMap<>();
         map.put("refundId",afterSaleStatusVO.getSubOrderId());
+        map.put("refuseReason",afterSaleStatusVO.getContent());
         System.out.println("设置退款信息");
         int refundStateNum = 0;
         int waitState = 0;
