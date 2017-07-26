@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1498441430463" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1498814565678" rel="stylesheet">
     
   </head>
 <body>
@@ -216,6 +216,10 @@ var webSite = '${webSite!}';
         <ul>
                 <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
         </ul> 
+        <h2>会员俱乐部</h2>
+        <ul>
+                <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
+        </ul> 
     </div>
     <div class="content">
     <div class="account-info shadow-box pd30">
@@ -309,7 +313,7 @@ var tHref = '${tHref!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1498441430463"></script>
+<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1498814565678"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

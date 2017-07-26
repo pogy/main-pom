@@ -9,6 +9,7 @@ import com.opentae.data.mall.interfaces.MemberUserSubMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
+import com.shigu.main4.tools.RedisIO;
 import org.apache.lucene.search.Query;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -35,8 +36,13 @@ import java.util.*;
 @ContextConfiguration(value = "/ac.xml")
 public class ShiguGoodsupTest {
 
+
     @Autowired
     private MemberUserSubMapper memberUserSubMapper;
+
+    @Autowired
+    RedisIO redisIO;
+
 
     /**
      * 批量更新shigugoodsup userId(一)

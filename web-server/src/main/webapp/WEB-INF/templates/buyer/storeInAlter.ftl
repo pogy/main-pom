@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/storeInAlter.css?t=1498441432038" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/storeInAlter.css?t=1498814567270" rel="stylesheet">
     
   </head>
 <body>
@@ -216,6 +216,10 @@ var webSite = '${webSite!}';
         <ul>
             <li><a class="selected" href="${main_host!}member/storeIn.htm">店铺申请</a></li> 
         </ul> 
+        <h2>会员俱乐部</h2>
+        <ul>
+                <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
+        </ul> 
     </div>
     <div class="main">
         <div class="layout rz_content">
@@ -369,7 +373,7 @@ var selectReturnValue = { //3级联动回填数据
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/storeInAlter.js?t=1498441432038"></script>
+<script src="http://style.571xz.com/fxs2/js/storeInAlter.js?t=1498814567270"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

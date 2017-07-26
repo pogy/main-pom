@@ -15,6 +15,9 @@ public class FindGoodsItemVO {
         this.setGoodsNo(isb.getGoodsNo());
         this.setPicUrl(isb.getImgUrl());
         this.setTitle(isb.getTitle());
+        if (this.title != null) {
+            this.title = this.getTitle().replace("<em>", "").replace("</em>", "");
+        }
         this.setPrice(isb.getPrice());
     }
 

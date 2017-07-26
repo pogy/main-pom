@@ -46,8 +46,9 @@
                                             <select class="input-box" name="sort">
                                                 <option value="1" <#if moduleSet.sort==1>selected</#if>>综合排序</option>
                                                 <option value="2" <#if moduleSet.sort==2>selected</#if>>新品排序</option>
-                                                <option value="3" <#if moduleSet.sort==3>selected</#if>>价格最低在前</option>
-                                                <option value="4" <#if moduleSet.sort==4>selected</#if>>价格最低在后</option>
+                                                <option value="3" <#if moduleSet.sort==3>selected</#if>>人气排序</option>
+                                                <option value="4" <#if moduleSet.sort==4>selected</#if>>价格最低在前</option>
+                                                <option value="5" <#if moduleSet.sort==5>selected</#if>>价格最低在后</option>
                                             </select>
                                         </div>
                                     </div>

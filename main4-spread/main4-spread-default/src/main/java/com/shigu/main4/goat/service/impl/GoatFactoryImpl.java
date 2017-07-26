@@ -1,21 +1,17 @@
 package com.shigu.main4.goat.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.GoatItemData;
-import com.opentae.data.mall.beans.GoatOneItem;
-import com.opentae.data.mall.beans.GoatOneLocation;
-import com.opentae.data.mall.beans.GoodsupNoreal;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.GoatItemDataExample;
 import com.opentae.data.mall.examples.GoatOneItemExample;
 import com.opentae.data.mall.examples.GoatOneLocationExample;
 import com.opentae.data.mall.examples.GoodsupNorealExample;
-import com.opentae.data.mall.interfaces.GoatItemDataMapper;
-import com.opentae.data.mall.interfaces.GoatOneItemMapper;
-import com.opentae.data.mall.interfaces.GoatOneLocationMapper;
-import com.opentae.data.mall.interfaces.GoodsupNorealMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.beans.ImgGoat;
 import com.shigu.main4.goat.beans.ItemGoat;
@@ -51,6 +47,9 @@ public class GoatFactoryImpl implements GoatFactory {
     private static final Logger logger = LoggerFactory.getLogger(GoatFactoryImpl.class);
     @Autowired
     GoatOneLocationMapper goatOneLocationMapper;
+
+    @Autowired
+    GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     @Resource(name = "tae_mall_goatOneItemMapper")
     GoatOneItemMapper goatOneItemMapper;
@@ -251,10 +250,42 @@ public class GoatFactoryImpl implements GoatFactory {
      * @param itemGoatVO
      * @return
      */
-    private ItemGoat selItemGoat(ItemGoatVO itemGoatVO) {
+    private ItemGoat selItemGoat(final ItemGoatVO itemGoatVO) {
         ItemGoat goat = new ItemGoat() {
+
+            /**
+             * 修改广告时更新对应广告位之前商品搜索权重中的had_goat
+             */
+            private  void modifyLastGoodsForSearch() {
+                Date now = new Date();
+                Long goatId = itemGoatVO.getGoatId();
+                GoatItemData goatItemData = new GoatItemData();
+                goatItemData.setGoatId(goatId);
+                goatItemData.setStatus(1);
+                goatItemData = goatItemDataMapper.selectOne(goatItemData);
+                if (goatItemData != null) {
+                    Object lastItemIdStr = JSONObject.parseObject(goatItemData.getContext()).get("itemId");
+                    if (lastItemIdStr == null || "".equals((lastItemIdStr.toString()).trim())) {
+                        return;
+                    }
+                    Long lastItemId = Long.parseLong(lastItemIdStr.toString());
+                    int step = DateUtil.daysOfTwo(goatItemData.getLastPublishTime(),now);
+                    step = step>7?7:step;
+                    GoodsCountForsearch goodsCountForsearch = new GoodsCountForsearch();
+                    goodsCountForsearch.setGoodsId(lastItemId);
+                    goodsCountForsearch = goodsCountForsearchMapper.selectOne(goodsCountForsearch);
+                    if(goodsCountForsearch != null && goodsCountForsearch.getHadGoat() != null) {
+                        step += goodsCountForsearch.getHadGoat();
+                        goodsCountForsearch.setHadGoat(step > 20 ? 20 : step);
+                        goodsCountForsearchMapper.updateByPrimaryKeySelective(goodsCountForsearch);
+                    }
+                }
+            }
+
             @Override
-            public void publish() {
+            public void publish()
+            {
+                modifyLastGoodsForSearch();
                 publishCommon(this);
             }
 
