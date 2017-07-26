@@ -99,6 +99,16 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     }
 
     /**
+     * 退货日志查询
+     *
+     * @return
+     */
+    @Override
+    public List<RefundProcessVO> refundLogs() {
+        return null;
+    }
+
+    /**
      * 查询修改当前退单状态
      *
      * @param refundStateEnum
