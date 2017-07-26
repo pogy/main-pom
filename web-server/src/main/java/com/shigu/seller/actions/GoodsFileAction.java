@@ -26,11 +26,11 @@ public class GoodsFileAction {
     GoodsFileService goodsFileService;
 
     /**
-     * 根据文件路径获取
+     * 根据文件路径获取关联商品
      */
     @RequestMapping("goodsFile/fileList")
     @ResponseBody
-    public JSONObject selGoodsFileByFile( String fileKey, Model model) {
+    public JSONObject selGoodsFileByFile(String fileKey) {
         List<GoodsFileVO> goodsFilesList = goodsFileService.selGoodsFileByFile(fileKey);
         return JsonResponseUtil.success().element("fileList", goodsFilesList);
     }
@@ -56,7 +56,7 @@ public class GoodsFileAction {
      */
     @RequestMapping("goodsFile/glGoodsJson")
     @ResponseBody
-    public JSONObject saveGoodsFile( String fileKey, Long goodsId) {
+    public JSONObject saveGoodsFile(String fileKey, Long goodsId) {
         goodsFileService.saveGoodsFile(fileKey, goodsId);
         return JsonResponseUtil.success();
     }

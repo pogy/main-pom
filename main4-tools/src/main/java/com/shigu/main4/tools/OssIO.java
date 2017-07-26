@@ -191,7 +191,6 @@ public class OssIO {
         OSSClient ossClient = null;
         try {
             ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-// 删除Object
             if(filePath.endsWith("/")) {//目录
                 ObjectListing objectListing = ossClient.listObjects(bucketName, filePath);
                 List<OSSObjectSummary> summaries = objectListing.getObjectSummaries();
@@ -220,12 +219,14 @@ public class OssIO {
         try {
             if(srcFilePath.endsWith("/")) {//目录
                 String[] items = srcFilePath.split("/");
-                int len =items.length-1;
+                int len = items.length-1;
                 String sonDir = items[len];
+
                 String newDstFilePath = dstFilePath + sonDir + "/";
                 ObjectListing objectListing = ossClient.listObjects(bucketName, srcFilePath);
                 for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                    ossClient.copyObject(bucketName, objectSummary.getKey(), bucketName, newDstFilePath);
+                    String newDstFilePathItem = newDstFilePath + objectSummary.getKey().substring(srcFilePath.length());
+                    ossClient.copyObject(bucketName, objectSummary.getKey(), bucketName, newDstFilePathItem);
                 }
             } else {
                 // 拷贝Object
@@ -249,7 +250,28 @@ public class OssIO {
      * @param dstFilePath  目标名
      */
     public void renameFile(String srcFilePath, String dstFilePath) {
-        moveFile(srcFilePath, dstFilePath);
+        // 创建OSSClient实例
+        OSSClient ossClient = ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+        try {
+            if(srcFilePath.endsWith("/")) {//目录
+                ObjectListing objectListing = ossClient.listObjects(bucketName, srcFilePath);
+                for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+                    String newDstFilePathItem = dstFilePath + objectSummary.getKey().substring(srcFilePath.length());
+                    ossClient.copyObject(bucketName, objectSummary.getKey(), bucketName, newDstFilePathItem);
+                }
+            } else {
+                // 拷贝Object
+                CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath);
+                logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
+                ossClient.deleteObject(bucketName,srcFilePath);
+            }
+
+            deleteFile(srcFilePath);
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
     }
 
     /**
