@@ -132,8 +132,17 @@ public class AfterSaleShowService {
             default:{
                 break;
             }
+
+
+        }
+        if(von == null){
+            vo4.doAdd();
+           return vo4.getViewVo();
+        }else{
+            von.doAdd();
+            return von.getViewVo();
         }
 
-        return null;
+
     }
 }
