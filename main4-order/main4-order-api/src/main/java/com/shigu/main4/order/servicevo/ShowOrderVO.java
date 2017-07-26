@@ -39,7 +39,7 @@ public class ShowOrderVO implements Serializable {
     /** 是否淘宝订单 **/
     private  boolean isTbOrder;
     /** 站点 */
-    private String webSire;
+    private String webSite;
 
 
     private OrderType type;
@@ -196,20 +196,13 @@ public class ShowOrderVO implements Serializable {
         this.serverPayLong = serverPayLong;
     }
 
-    /**
-     * 获取 站点
-     */
-    public String getWebSire() {
-        return this.webSire;
+    public String getWebSite() {
+        return webSite;
     }
 
-    /**
-     * 设置 站点
-     */
-    public void setWebSire(String webSire) {
-        this.webSire = webSire;
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
     }
-
 
     public Date getTradeTimed () {
         return tradeTimed;

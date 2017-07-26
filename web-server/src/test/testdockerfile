@@ -1,0 +1,10 @@
+from registry.acs.aliyun.com/open/centos:3.0.0
+MAINTAINER zhaohongbo
+COPY jdk8.tar /acs/user/jdk.tar
+RUN cd /acs/user/ && tar -xzf jdk.tar && rm -rf /acs/user/jdk.tar &&
+
+ENV JAVA_HOME /acs/user/jdk
+ENV PATH &PATH:/acs/user/jdk/bin
+RUN source /etc/profile
+COPY start /acs/bin/start
+COPY check /acs/bin/check

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "`ps aux|grep java|grep -v grep|wc -l`" -eq 0  ];then
+        echo "failed"
+        exit 1
+fi
+echo "success"
+exit 0
