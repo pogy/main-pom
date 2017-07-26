@@ -17,8 +17,9 @@ public interface SubItemOrder extends SubOrder{
 
     /**
      * 退款申请
+     * @param type 0未确定,1退款，2A类退货，3B类退货,4换货
      * @param number 退件数
-     * @param money
+     * @param money 退钱数
      */
     Long refundApply(Integer type,Integer number,Long money,String reason);
 

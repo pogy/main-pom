@@ -232,6 +232,142 @@ public class ItemOrderSenderExample implements SgExample{
             }
         }
 
+        public ItemOrderSenderExample.Criteria andAddressIsNull() {
+            this.addCriterion("address is null");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressIsNotNull() {
+            this.addCriterion("address is not null");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressEqualTo(String value) {
+            this.addCriterion("address =", value, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressNotEqualTo(String value) {
+            this.addCriterion("address <>", value, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressGreaterThan(String value) {
+            this.addCriterion("address >", value, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressGreaterThanOrEqualTo(String value) {
+            this.addCriterion("address >=", value, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressLessThan(String value) {
+            this.addCriterion("address <", value, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressLessThanOrEqualTo(String value) {
+            this.addCriterion("address <=", value, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressLike(String value) {
+            this.addCriterion("address like", value, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressNotLike(String value) {
+            this.addCriterion("address not like", value, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }        public ItemOrderSenderExample.Criteria andAddressIn(List<String> values) {
+            this.addCriterion("address in", values, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressNotIn(List<String> values) {
+            this.addCriterion("address not in", values, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressBetween(String value1, String value2) {
+            this.addCriterion("address between", value1, value2, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andAddressNotBetween(String value1, String value2) {
+            this.addCriterion("address not between", value1, value2, "address");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameIsNull() {
+            this.addCriterion("name is null");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameIsNotNull() {
+            this.addCriterion("name is not null");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameEqualTo(String value) {
+            this.addCriterion("name =", value, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameNotEqualTo(String value) {
+            this.addCriterion("name <>", value, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameGreaterThan(String value) {
+            this.addCriterion("name >", value, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameGreaterThanOrEqualTo(String value) {
+            this.addCriterion("name >=", value, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameLessThan(String value) {
+            this.addCriterion("name <", value, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameLessThanOrEqualTo(String value) {
+            this.addCriterion("name <=", value, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameLike(String value) {
+            this.addCriterion("name like", value, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameNotLike(String value) {
+            this.addCriterion("name not like", value, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }        public ItemOrderSenderExample.Criteria andNameIn(List<String> values) {
+            this.addCriterion("name in", values, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameNotIn(List<String> values) {
+            this.addCriterion("name not in", values, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameBetween(String value1, String value2) {
+            this.addCriterion("name between", value1, value2, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andNameNotBetween(String value1, String value2) {
+            this.addCriterion("name not between", value1, value2, "name");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
         public ItemOrderSenderExample.Criteria andTopicIsNull() {
             this.addCriterion("topic is null");
             return (ItemOrderSenderExample.Criteria)this;
@@ -368,6 +504,74 @@ public class ItemOrderSenderExample implements SgExample{
             return (ItemOrderSenderExample.Criteria)this;
         }
 
+        public ItemOrderSenderExample.Criteria andTelephoneIsNull() {
+            this.addCriterion("telephone is null");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneIsNotNull() {
+            this.addCriterion("telephone is not null");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneEqualTo(String value) {
+            this.addCriterion("telephone =", value, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneNotEqualTo(String value) {
+            this.addCriterion("telephone <>", value, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneGreaterThan(String value) {
+            this.addCriterion("telephone >", value, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneGreaterThanOrEqualTo(String value) {
+            this.addCriterion("telephone >=", value, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneLessThan(String value) {
+            this.addCriterion("telephone <", value, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneLessThanOrEqualTo(String value) {
+            this.addCriterion("telephone <=", value, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneLike(String value) {
+            this.addCriterion("telephone like", value, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneNotLike(String value) {
+            this.addCriterion("telephone not like", value, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }        public ItemOrderSenderExample.Criteria andTelephoneIn(List<String> values) {
+            this.addCriterion("telephone in", values, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneNotIn(List<String> values) {
+            this.addCriterion("telephone not in", values, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneBetween(String value1, String value2) {
+            this.addCriterion("telephone between", value1, value2, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andTelephoneNotBetween(String value1, String value2) {
+            this.addCriterion("telephone not between", value1, value2, "telephone");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
         public ItemOrderSenderExample.Criteria andTypeIsNull() {
             this.addCriterion("type is null");
             return (ItemOrderSenderExample.Criteria)this;
@@ -501,6 +705,74 @@ public class ItemOrderSenderExample implements SgExample{
 
         public ItemOrderSenderExample.Criteria andSenderIdNotBetween(Long value1, Long value2) {
             this.addCriterion("sender_id not between", value1, value2, "senderId");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteIsNull() {
+            this.addCriterion("web_site is null");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteIsNotNull() {
+            this.addCriterion("web_site is not null");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteEqualTo(String value) {
+            this.addCriterion("web_site =", value, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteNotEqualTo(String value) {
+            this.addCriterion("web_site <>", value, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteGreaterThan(String value) {
+            this.addCriterion("web_site >", value, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+            this.addCriterion("web_site >=", value, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteLessThan(String value) {
+            this.addCriterion("web_site <", value, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+            this.addCriterion("web_site <=", value, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteLike(String value) {
+            this.addCriterion("web_site like", value, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteNotLike(String value) {
+            this.addCriterion("web_site not like", value, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }        public ItemOrderSenderExample.Criteria andWebSiteIn(List<String> values) {
+            this.addCriterion("web_site in", values, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteNotIn(List<String> values) {
+            this.addCriterion("web_site not in", values, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteBetween(String value1, String value2) {
+            this.addCriterion("web_site between", value1, value2, "webSite");
+            return (ItemOrderSenderExample.Criteria)this;
+        }
+
+        public ItemOrderSenderExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+            this.addCriterion("web_site not between", value1, value2, "webSite");
             return (ItemOrderSenderExample.Criteria)this;
         }
     }

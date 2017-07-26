@@ -6,6 +6,7 @@ import com.opentae.data.mall.beans.ItemRefundLog;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.enums.RefundMsgEnum;
@@ -65,6 +66,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     /**
      * 退单
+     *
      * @param apply
      */
     public RefundItemOrderImpl(RefundApplyBO apply, Boolean fromUser) {
@@ -76,7 +78,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @PostConstruct
     public void init() {
         if (refundApplyBO != null || fromUser != null) {
-            apply(refundApplyBO,fromUser);
+            apply(refundApplyBO, fromUser);
         }
     }
 
@@ -120,10 +122,12 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     private void refundStateChangeAndLog(RefundStateEnum state) {
         refundStateChangeAndLog(null, state);
     }
+
     /**
      * 退单记录修改状态 & 记录 修改历史
+     *
      * @param refundInfo 当前状态信息，可为null, 为null 会自助查询
-     * @param state 修改后状态
+     * @param state      修改后状态
      */
     @Transactional(rollbackFor = Exception.class)
     private void refundStateChangeAndLog(RefundVO refundInfo, RefundStateEnum state) {
@@ -147,17 +151,17 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     /**
      * 退货申请
+     *
      * @param applyBO
      * @param fromUser
      * @return
      */
     @Override
     public Long apply(RefundApplyBO applyBO, Boolean fromUser) {
-        ItemOrderRefund itemOrderRefund = BeanMapper.map(applyBO,ItemOrderRefund.class);
+        ItemOrderRefund itemOrderRefund = BeanMapper.map(applyBO, ItemOrderRefund.class);
         itemOrderRefund.setUserApply(fromUser);
         itemOrderRefundMapper.insertSelective(itemOrderRefund);
-        refundId = itemOrderRefund.getRefundId();
-        return refundId;
+        return refundId = itemOrderRefund.getRefundId();
     }
 
     /**
@@ -166,12 +170,12 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void sellerAgree() {
-        RefundVO refundinfo = refundinfo();
-        refundStateChangeAndLog(refundinfo,RefundStateEnum.statusOf(1));
+        refundStateChangeAndLog(RefundStateEnum.DISPOSE_REFUND);
     }
 
     /**
      * 卖家拒绝受理
+     *
      * @param reason
      */
     @Override
@@ -182,21 +186,22 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         refundinfo.setFailMsg(reason);
         ItemOrderRefund refund = BeanMapper.map(refundinfo, ItemOrderRefund.class);
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
-        refundStateChangeAndLog(refundinfo,RefundStateEnum.statusOf(3));
+        refundStateChangeAndLog(refundinfo, RefundStateEnum.SELLER_REFUND);
     }
 
     /**
      * 用户已发件
+     *
      * @param buyerCourier
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void userSended(String buyerCourier) {
-        RefundVO refundinfo = refundinfo();
-        refundStateChangeAndLog(refundinfo,RefundStateEnum.statusOf(5));
-        ItemOrderRefund selectedFields = getSelectedFields("refund_id,buyer_courier");
-        selectedFields.setBuyerCourier(buyerCourier);
-        itemOrderRefundMapper.updateByPrimaryKeySelective(selectedFields);
+        refundStateChangeAndLog(RefundStateEnum.BUYER_SEND);
+        ItemOrderRefund orderRefund = new ItemOrderRefund();
+        orderRefund.setRefundId(refundId);
+        orderRefund.setBuyerCourier(buyerCourier);
+        itemOrderRefundMapper.updateByPrimaryKeySelective(orderRefund);
     }
 
     /**
@@ -205,29 +210,30 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void sellerCached() {
-        RefundVO refundinfo = refundinfo();
-        refundStateChangeAndLog(refundinfo,RefundStateEnum.statusOf(6));
+        refundStateChangeAndLog(RefundStateEnum.SELLER_CACHED);
     }
 
     /**
      * 卖家议价
+     *
      * @param money
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void sellerProposal(Long money, String msg) {
-        RefundVO refundinfo = refundinfo();
-        refundinfo.setFailMsg(msg);
-        ItemOrderRefund refund = BeanMapper.map(refundinfo, ItemOrderRefund.class);
+        ItemOrderRefund refund = new ItemOrderRefund();
+        refund.setRefundId(refundId);
+        refund.setSellerProposalMoney(money);
+        refund.setFailMsg(msg);
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
-        refundStateChangeAndLog(refundinfo,RefundStateEnum.statusOf(7));
+        refundStateChangeAndLog(RefundStateEnum.SELLER_REPRICE);
     }
 
     /**
      * 买家附议
      */
     @Override
-    public void buyerReprice() throws RefundException, PayerException {
+    public void buyerReprice() throws Main4Exception {
         doRefundMoney(false);
     }
 
@@ -237,12 +243,12 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     @Transactional
     public void buyerNoReprice() {
-        RefundVO refundinfo = refundinfo();
-        refundStateChangeAndLog(refundinfo,RefundStateEnum.statusOf(9));
+        refundStateChangeAndLog(RefundStateEnum.BUYER_NOREPRICE);
     }
 
     /**
      * 修改期望金额
+     *
      * @param money
      */
     @Override
@@ -260,8 +266,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     /**
      * 执行退钱
+     *
      * @param buyerWin 买家诉求通过？
-     * @throws PayerException 原路径退钱失败
+     * @throws PayerException  原路径退钱失败
      * @throws RefundException 诉求金额不满足
      */
     @Transactional(rollbackFor = Exception.class)
@@ -289,58 +296,20 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     /**
      * 退失败
+     *
      * @param reason
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void error(String reason) {
-        RefundVO refundinfo = refundinfo();
-        //填充退款日志信息
-        refundinfo.setFailMsg(reason);
-        ItemOrderRefund refund = BeanMapper.map(refundinfo, ItemOrderRefund.class);
+        ItemOrderRefund refund = new ItemOrderRefund();
+        refund.setRefundId(refundId);
+        refund.setFailMsg(reason);
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
-        refundStateChangeAndLog(refundinfo,RefundStateEnum.statusOf(4));
+        refundStateChangeAndLog(RefundStateEnum.NOT_REFUND);
     }
 
     public Long getRefundId() {
         return refundId;
-    }
-
-    /**
-     * 获取包含指定字段信息的ItemOrderRefund对象
-     * @param fields
-     * @return
-     */
-    private ItemOrderRefund getSelectedFields(String fields) {
-        return itemOrderRefundMapper.selectFieldsByPrimaryKey(refundId, FieldUtil.codeFields(fields));
-    }
-
-    /**
-     * 退款请求状态变更及日志记录
-     * @param imBuyer
-     * @param toStatus
-     * @param msg
-     */
-    private void logRefundLog(Boolean imBuyer,String reason,RefundStateEnum toStatus, RefundMsgEnum msg) {
-        ItemOrderRefund selectedFields = getSelectedFields("refund_id,reason,status");
-        //已经是请求处理的状态
-        boolean isSameStatus = Objects.equals(selectedFields.getStatus(),toStatus.refundStatus);
-        //退单原因没有改变
-        boolean isSameReason = reason == null || Objects.equals(reason,selectedFields.getReason());
-        if (isSameStatus && isSameReason) {
-            return;
-        }
-        ItemRefundLog itemRefundLog = new ItemRefundLog();
-        itemRefundLog.setFromStatus(selectedFields.getStatus());
-        itemRefundLog.setRefundId(refundId);
-        itemRefundLog.setToStatus(toStatus.refundStatus);
-        selectedFields.setStatus(toStatus.refundStatus);
-        itemRefundLog.setImBuyer(imBuyer);
-        if (!isSameReason) {
-            selectedFields.setReason(reason);
-        }
-        itemRefundLog.setMsg("退款状态：" + msg.refundMsg + "，原因：" + selectedFields.getReason());
-        itemOrderRefundMapper.updateByPrimaryKeySelective(selectedFields);
-        itemRefundLogMapper.insert(itemRefundLog);
     }
 }

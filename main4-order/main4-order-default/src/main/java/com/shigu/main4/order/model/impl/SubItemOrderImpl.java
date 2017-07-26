@@ -99,9 +99,7 @@ public class SubItemOrderImpl implements SubItemOrder{
         refundApply.setReason(reason);
         refundApply.setType(type);
 
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, refundApply, true);
-        Long refundId = refundItemOrder.getRefundId();
-        return refundId;
+        return SpringBeanFactory.getBean(RefundItemOrder.class, refundApply, true).getRefundId();
     }
 
     /**
@@ -169,9 +167,5 @@ public class SubItemOrderImpl implements SubItemOrder{
 
     public Long getSubOrderId() {
         return subOrderId;
-    }
-
-    public void setSubOrderId(Long subOrderId) {
-        this.subOrderId = subOrderId;
     }
 }

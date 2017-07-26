@@ -16,6 +16,7 @@ import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.model.PayerService;
+import com.shigu.main4.order.model.Sender;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -289,8 +290,7 @@ public class ItemOrderImpl implements ItemOrder {
     @Override
     public SenderVO selSender() {
         if (senderVO == null) {
-            ItemOrderSender itemOrderSender = itemOrderSenderMapper.selectByPrimaryKey(orderInfo().getSenderId());
-            senderVO = BeanMapper.map(itemOrderSender, SenderVO.class);
+            senderVO = SpringBeanFactory.getBean(Sender.class, orderInfo().getSenderId()).senderInfo();
         }
         return senderVO;
     }
