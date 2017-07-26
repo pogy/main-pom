@@ -755,7 +755,7 @@ var piPrice = '${goodsInfo.piPrice!}';
                         onclick="jumpShopUrl(event, '${shopInfo.xzUrl!}')"
                     <#else> 
                         onclick="javascript:void(0)"
-                    </#if>>电商基地A025</span>
+                    </#if>>${shopInfo.marketName!}${shopInfo.shopNo!}</span>
                 <span>
 
 <#assign text>{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
