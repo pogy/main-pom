@@ -98,11 +98,11 @@ public class GoodsFileService {
      *  @param fileType
      * @return
      */
-    public void deleteFile(String fileKey, String fileType) {
+    public boolean deleteFile(String fileKey, String fileType) {
         if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("1") ) {
             fileKey = fileKey +"/";
         }
-        ossIO.deleteFile(fileKey);
+        return ossIO.deleteFile(fileKey);
     }
 
     /**
@@ -112,7 +112,7 @@ public class GoodsFileService {
      * @param newName
      * @return
      */
-    public void rename(String fileKey, String fileType, String newName) {
+    public boolean  rename(String fileKey, String fileType, String newName) {
         if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("1") ) {
             fileKey = fileKey +"/";
         }
@@ -123,7 +123,7 @@ public class GoodsFileService {
         int len = items.length-1;
         String newPath =  fileKey.substring(0, fileKey.length()-items[len].length()-1) + newName;
 
-        ossIO.renameFile(fileKey, newPath);
+        return ossIO.renameFile(fileKey, newPath);
     }
 
     /**
@@ -132,8 +132,18 @@ public class GoodsFileService {
      * @param targetFileId
      * @return
      */
-    public void moveFile(String fileId,  String targetFileId) {
-        ossIO.moveFile(fileId, targetFileId);
+    public boolean moveFile(String fileId,  String targetFileId) {
+        return ossIO.moveFile(fileId, targetFileId);
+    }
+
+    /**
+     * 移动文件
+     * @param parentDir
+     * @param dir
+     * @return
+     */
+    public String createDir(String parentDir, String dir) {
+        return ossIO.createDir(parentDir, dir);
     }
 
     public double getSizeInfo(String filePath) {

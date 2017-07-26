@@ -209,7 +209,8 @@ public class OssIO {
      * 删除一个文件
      * @param filePath
      */
-    public void deleteFile(String filePath) {
+    public boolean deleteFile(String filePath) {
+        boolean ret = true;
         // 创建OSSClient实例
         OSSClient ossClient = null;
         try {
@@ -224,11 +225,16 @@ public class OssIO {
             } else {
                 ossClient.deleteObject(bucketName, filePath);
             }
-        } finally {
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            ret = false;
+        }
+        finally {
             if (ossClient != null) {
                 ossClient.shutdown();
             }
         }
+        return ret;
     }
 
     /**
@@ -236,7 +242,8 @@ public class OssIO {
      * @param srcFilePath  原路径
      * @param dstFilePath  目标路径
      */
-    public void moveFile(String srcFilePath, String dstFilePath) {
+    public boolean moveFile(String srcFilePath, String dstFilePath) {
+        boolean ret = true;
         // 创建OSSClient实例
         OSSClient ossClient = ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
@@ -259,11 +266,16 @@ public class OssIO {
             }
 
             deleteFile(srcFilePath);
-        } finally {
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            ret = false;
+        }
+        finally {
             if (ossClient != null) {
                 ossClient.shutdown();
             }
         }
+        return ret;
     }
 
 
@@ -272,7 +284,8 @@ public class OssIO {
      * @param srcFilePath  原名
      * @param dstFilePath  目标名
      */
-    public void renameFile(String srcFilePath, String dstFilePath) {
+    public boolean renameFile(String srcFilePath, String dstFilePath) {
+        boolean ret = true;
         // 创建OSSClient实例
         OSSClient ossClient = ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
@@ -290,11 +303,15 @@ public class OssIO {
             }
 
             deleteFile(srcFilePath);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            ret = false;
         } finally {
             if (ossClient != null) {
                 ossClient.shutdown();
             }
         }
+        return ret;
     }
 
     /**
@@ -303,15 +320,20 @@ public class OssIO {
      * @return
      */
     public boolean fileExist(String filePath){
+        boolean ret = true;
         OSSClient ossClient = null;
         try {
             ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-            return ossClient.doesObjectExist(bucketName, filePath);
+            ret =  ossClient.doesObjectExist(bucketName, filePath);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            ret = false;
         } finally {
             if (ossClient != null) {
                 ossClient.shutdown();
             }
         }
+        return ret;
     }
 
     /**
