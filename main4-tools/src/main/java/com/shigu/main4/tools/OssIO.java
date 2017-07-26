@@ -141,7 +141,7 @@ public class OssIO {
      * 列出目录下所有的文件信息
      * @param filePath 目录
      */
-    public List<OssFile> getFileList(String filePath) {
+    public List<OssFile> getFileList(String filePath, String homeDirZip) {
         OSSClient ossClient = null;
         List<OssFile> fileList = new ArrayList<OssFile>();
         try {
@@ -150,16 +150,15 @@ public class OssIO {
 
             for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) { //以"/"结尾的是目录，否则是文件
                 OssFile file = new OssFile();
-                file.setFileCreateTime(objectSummary.getLastModified());
+                file.setFileCreateTime(objectSummary.getLastModified().getTime());
                 file.setFileId(objectSummary.getKey());
-                file.setFileSize(div((double)objectSummary.getSize(), (double)1024, 3));//kb
-                if (objectSummary.getKey().endsWith("/")) { //目录
-                    file.setFileType("1");
-                } else {
-                    file.setFileType("0");
-                }
+                file.setFileSize(String.valueOf(objectSummary.getSize()));//kb
                 String[] items = file.getFileId().split("/");
-                file.setFilename(items[items.length -1]);
+                file.setFileName(items[items.length -1]);
+                if(homeDirZip.equalsIgnoreCase(file.getFileId())) {//判断是否是根目录
+                    file.setIsRoot(true);
+                }
+
                 fileList.add(file);
             }
         } finally {
@@ -176,7 +175,7 @@ public class OssIO {
      * 获取文件或者目录总大小,以mb为单位
      * @param filePath  文件路径
      */
-    public double getSizeInfo(String filePath) {
+    public long getSizeInfo(String filePath) {
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 
         Long totalSize = 0L;
@@ -191,19 +190,9 @@ public class OssIO {
             totalSize += metadata.getContentLength();
         }
 
-
-        return div((double)totalSize, (double)1024*1024, 3);
+        return totalSize;
     }
 
-    public  double div(double v1,double v2,int scale){
-        if(scale<0){
-            throw new IllegalArgumentException(
-                    "The scale must be a positive integer or zero");
-        }
-        BigDecimal b1 = new BigDecimal(Double.toString(v1));
-        BigDecimal b2 = new BigDecimal(Double.toString(v2));
-        return b1.divide(b2,scale,BigDecimal.ROUND_HALF_UP).doubleValue();
-    }
 
     /**
      * 删除一个文件
@@ -247,12 +236,11 @@ public class OssIO {
         // 创建OSSClient实例
         OSSClient ossClient = ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
+            String[] items = srcFilePath.split("/");
+            int len = items.length-1;
+            String itemLast = items[len];
             if(srcFilePath.endsWith("/")) {//目录
-                String[] items = srcFilePath.split("/");
-                int len = items.length-1;
-                String sonDir = items[len];
-
-                String newDstFilePath = dstFilePath + sonDir + "/";
+                String newDstFilePath = dstFilePath + itemLast + "/";
                 ObjectListing objectListing = ossClient.listObjects(bucketName, srcFilePath);
                 for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
                     String newDstFilePathItem = newDstFilePath + objectSummary.getKey().substring(srcFilePath.length());
@@ -260,9 +248,8 @@ public class OssIO {
                 }
             } else {
                 // 拷贝Object
-                CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath);
+                CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath + itemLast);
                 logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
-                ossClient.deleteObject(bucketName,srcFilePath);
             }
 
             deleteFile(srcFilePath);
@@ -356,7 +343,10 @@ public class OssIO {
         String encodedPolicy = BinaryUtil.toBase64String(binaryData);
         String postSignature = client.calculatePostSignature(postPolicy);
 
-
+        if (!fileExist(dir + userId.toString())) {
+            createDir(dir + userId.toString(), "/temp/");
+            createDir(dir + userId.toString(), "/zip/");
+        }
         respMap.put("accessid", accessKeyId);
         respMap.put("policy", encodedPolicy);
         respMap.put("signature", postSignature);

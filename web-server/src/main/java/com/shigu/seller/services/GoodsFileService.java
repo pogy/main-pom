@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -48,12 +49,46 @@ public class GoodsFileService {
      * 获取文件列表
      */
     public List<GoodsFileVO> selFilesByFileId( String fileKey,  String userId) {
-
+        String homeDirZip = getHomeDir(userId) + "zip/";
         if (StringUtils.isEmpty(fileKey)) {
-            fileKey = ossIO.getDir() + userId + "/";
+            fileKey = homeDirZip;
         }
-        List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(fileKey), GoodsFileVO.class);
+
+        List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(fileKey, homeDirZip), GoodsFileVO.class);
+        for (GoodsFileVO item : files) {
+            if (item.getFileId().endsWith(".zip") || item.getFileId().endsWith(".7z") || item.getFileId().endsWith(".rar") ) {
+                item.setFileType("picBkg");
+            } else if(item.getFileId().endsWith("/")) {
+                item.setFileType("folder");
+            } else {
+                item.setFileType("other");
+            }
+
+            double fileSize = Double.parseDouble(item.getFileSize());
+
+            if (1048576 < fileSize) {
+                double mSize = div(fileSize, (double)1048576, 3);
+                item.setFileSize(mSize + "mb");
+            } else {
+                double kSize = div(fileSize, (double)1024, 3);
+                item.setFileSize(kSize + "kb");
+            }
+            if ("folder".equalsIgnoreCase(item.getFileType())) {
+
+            }
+         }
         return files;
+    }
+
+
+    public  double div(double v1,double v2,int scale){
+        if(scale<0){
+            throw new IllegalArgumentException(
+                    "The scale must be a positive integer or zero");
+        }
+        BigDecimal b1 = new BigDecimal(Double.toString(v1));
+        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+        return b1.divide(b2,scale,BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     /**
@@ -99,7 +134,7 @@ public class GoodsFileService {
      * @return
      */
     public boolean deleteFile(String fileKey, String fileType) {
-        if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("1") ) {
+        if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("folder") ) {
             fileKey = fileKey +"/";
         }
         return ossIO.deleteFile(fileKey);
@@ -113,10 +148,10 @@ public class GoodsFileService {
      * @return
      */
     public boolean  rename(String fileKey, String fileType, String newName) {
-        if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("1") ) {
+        if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("folder") ) {
             fileKey = fileKey +"/";
         }
-        if (!newName.endsWith("/") && fileType.equalsIgnoreCase("1") ) {
+        if (!newName.endsWith("/") && fileType.equalsIgnoreCase("folder") ) {
             newName = newName +"/";
         }
         String[] items = fileKey.split("/");
@@ -147,7 +182,15 @@ public class GoodsFileService {
     }
 
     public double getSizeInfo(String filePath) {
-        return ossIO.getSizeInfo(filePath);
+        return div((double)ossIO.getSizeInfo(filePath), (double)1024*1024, 3);
+    }
+
+    public boolean fileExist(String filePath) {
+        return ossIO.fileExist(filePath);
+    }
+
+    public String getHomeDir(String userId) {
+        return ossIO.getDir() + userId + "/";
     }
 
 }

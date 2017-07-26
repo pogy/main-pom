@@ -294,6 +294,13 @@ public class ShopAction {
         return JsonResponseUtil.success();
     }
 
+    @RequestMapping("seller/pictureSpace")
+    public String pictureSpace(OnsaleItemBO bo, HttpSession session, Model model) {
+            ShopSession shopSession = getShopSession(session);
+            model.addAttribute("get",bo);
+            return "seller/pictureSpace";
+    }
+
     /**
      * 选择类目
      * @return

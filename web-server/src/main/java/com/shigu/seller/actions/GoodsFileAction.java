@@ -42,7 +42,7 @@ public class GoodsFileAction {
     @Autowired
     private OssIO ossIO;
 
-    @RequestMapping("goodsFile/getAccessKey")
+    @RequestMapping("seller/getAccessInfo")
     public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long userId = getUserId(request.getSession());
         Map<String, String> infoMap = ossIO.createPostSignInfo(userId);
@@ -64,7 +64,7 @@ public class GoodsFileAction {
     /**
      * 根据文件路径获取关联商品
      */
-    @RequestMapping("goodsFile/readGlGoodsJson")
+    @RequestMapping("seller/readGlGoodsJson")
     @ResponseBody
     public JSONObject selGoodsFileByFile(String fileKey) {
         List<ItemShowBlock> goodsFilesList = goodsFileService.selGoodsFileByFile(fileKey);
@@ -76,7 +76,7 @@ public class GoodsFileAction {
      * @param goodsId
      * @return
      */
-    @RequestMapping("goodsFile/selectById")
+    @RequestMapping("seller/selectById")
     @ResponseBody
     public JSONObject selGoodsFileByGoodsId(Long goodsId) {
         GoodsFile goodsFile = goodsFileService.selGoodsFileByGoodsId(goodsId);
@@ -89,7 +89,7 @@ public class GoodsFileAction {
      * @param goodsId
      * @return
      */
-    @RequestMapping("goodsFile/glGoodsJson")
+    @RequestMapping("seller/glGoodsJson")
     @ResponseBody
     public JSONObject saveGoodsFile(String fileKey, Long goodsId) {
         goodsFileService.saveGoodsFile(fileKey, goodsId);
@@ -101,7 +101,7 @@ public class GoodsFileAction {
      * @param goodsId
      * @return
      */
-    @RequestMapping("goodsFile/cacelGlJson")
+    @RequestMapping("seller/cacelGlJson")
     @ResponseBody
     public JSONObject delGoodsFile(Long goodsId) {
         goodsFileService.delGoodsfile(goodsId);
@@ -115,7 +115,7 @@ public class GoodsFileAction {
      * @param newName
      * @return
      */
-    @RequestMapping("goodsFile/renameFile")
+    @RequestMapping("seller/renameFile")
     @ResponseBody
     public JSONObject renameFile(String fileId, String fileType, String newName) {
         goodsFileService.rename(fileId, fileType, newName);
@@ -125,31 +125,47 @@ public class GoodsFileAction {
     /**
      * 移动文件
      * @param fileId
-     * @param targetFileId
+     * @param targetFolderId
      * @return
      */
-    @RequestMapping("goodsFile/moveFile")
+    @RequestMapping("seller/moveFile")
     @ResponseBody
-    public JSONObject moveFile(String fileId, String targetFileId) {
-        goodsFileService.moveFile(fileId, targetFileId);
+    public JSONObject moveFile(String fileId, String targetFolderId) {
+        goodsFileService.moveFile(fileId, targetFolderId);
         return JsonResponseUtil.success();
     }
 
+
     /**
-     * 创建文件
-     * @param parentDir
-     * @param dir
+     * 删除文件
+     * @param fileId
+     * @param fileType
      * @return
      */
-    @RequestMapping("goodsFile/createFoler")
+    @RequestMapping("seller/delFile")
     @ResponseBody
-    public JSONObject createFoler(String parentDir, String dir) {
-        String fileId = goodsFileService.createDir(parentDir, dir);
+    public JSONObject delFile(String fileId, String fileType) {
+        goodsFileService.deleteFile(fileId, fileType);
+        return JsonResponseUtil.success();
+    }
+    /**
+     * 创建文件
+     * @return
+     */
+    @RequestMapping("seller/createFolder")
+    @ResponseBody
+    public JSONObject createFoler(HttpServletRequest request, String fileName) {
+        Long userId = getUserId(request.getSession());
+        String parentDir = goodsFileService.getHomeDir(userId.toString()) + "zip/";
+        String fileId = goodsFileService.createDir(parentDir, fileName);
 
         JSONObject obj= JsonResponseUtil.success();
         obj.element("fileId",fileId);
-        obj.element("fileName",dir);
-        obj.element("fileCreateTime", DateUtil.dateToString(new Date(), DateUtil.patternD));
+        obj.element("fileName",fileName);
+        obj.element("fileCreateTime", new Date().getTime());
+        obj.element("fileSize", "0kb");
+        obj.element("hasLinkGoods", false);
+        obj.element("fileType", "folder");
         return obj;
     }
 
@@ -159,7 +175,7 @@ public class GoodsFileAction {
      * @param fileType
      * @return
      */
-    @RequestMapping("goodsFile/deleteFile")
+    @RequestMapping("seller/deleteFile")
     @ResponseBody
     public JSONObject deleteFile(String fileId, String fileType) {
         boolean ret = goodsFileService.deleteFile(fileId, fileType);
@@ -172,17 +188,75 @@ public class GoodsFileAction {
      * @param fileId
      * @return
      */
-    @RequestMapping("goodsFile/getFileList")
+    @RequestMapping("seller/getFileList")
     @ResponseBody
     public JSONObject getFileList( HttpServletRequest request, String fileId) {
         Long userId = getUserId(request.getSession());
         List<GoodsFileVO> files = goodsFileService.selFilesByFileId(fileId, userId.toString());
-        GoodsFileVO file = files.get(0);
         JSONObject obj= JsonResponseUtil.success();
-        obj.element("fileId", file.getFileId());
-        obj.element("fileName", file.getFilename());
-        obj.element("fileList", files.subList(1, files.size()));
+        if (files != null && 0 < files.size()) {
+            GoodsFileVO file = files.get(0);
+            if (file.getIsRoot()) {
+                obj.element("fileId", "");
+                obj.element("fileName", "");
+                obj.element("isRoot", true);
+            } else {
+                obj.element("fileId", file.getFileId());
+                obj.element("fileName", file.getFileName());
+                obj.element("isRoot", false);
+            }
+
+            obj.element("fileList", files.subList(1, files.size()));
+        } else {
+            obj.element("fileId", "");
+            obj.element("fileName", "");
+            obj.element("fileList", "");
+        }
+
         return obj;
+    }
+
+    /**
+     * 获取图片空间容量信息
+
+     * @return
+     */
+    @RequestMapping("seller/getSizeInfo")
+    @ResponseBody
+    public JSONObject getSizeInfo( HttpServletRequest request) {
+        Long userId = getUserId(request.getSession());
+
+        JSONObject obj= JsonResponseUtil.success();
+        obj.element("totalSize", 1000);
+        obj.element("useSize", goodsFileService.getSizeInfo("udf/" + userId.toString() + "/zip/"));
+        return obj;
+    }
+
+    /**
+     * 通知服务器创建文件成功并返回文件信息
+     * @return
+     */
+    @RequestMapping("seller/noticeUploadFile")
+    @ResponseBody
+    public JSONObject noticeUploadFile(HttpServletRequest request, String fileName, String targetForderName) {
+        Long userId = getUserId(request.getSession());
+
+        JSONObject obj= JsonResponseUtil.success();
+        String dir = goodsFileService.getHomeDir(userId.toString()) + "temp/" + targetForderName;
+        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(dir + fileName, userId.toString());
+        if (0 < files.size()) {
+            GoodsFileVO file = files.get(0);
+
+            obj.element("fileId", file.getFileId());
+            obj.element("fileType", "picBkg");
+            obj.element("fileSize", String.valueOf(file.getFileSize()));
+            obj.element("fileCreateTime", file.getFileCreateTime());
+            obj.element("hasLinkGoods", false);
+        }
+
+        return obj;
+
+
     }
 //
 //    /**

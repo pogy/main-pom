@@ -9,9 +9,18 @@ import java.util.Date;
 public class GoodsFileVO {
     private String fileId;
     private String fileType;
-    private String filename;
-    private Date fileCreateTime;
-    private double fileSize;
+    private String fileName;
+    private long fileCreateTime;
+    private String fileSize;
+    private boolean isRoot;
+
+    public boolean getIsRoot() {
+        return isRoot;
+    }
+
+    public void setIsRoot( boolean root ) {
+        isRoot = root;
+    }
 
     public String getFileId() {
         return fileId;
@@ -29,27 +38,27 @@ public class GoodsFileVO {
         this.fileType = fileType;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilename( String filename ) {
-        this.filename = filename;
+    public void setFileName( String fileName ) {
+        this.fileName = fileName;
     }
 
-    public Date getFileCreateTime() {
+    public long getFileCreateTime() {
         return fileCreateTime;
     }
 
-    public void setFileCreateTime( Date fileCreateTime ) {
+    public void setFileCreateTime( long fileCreateTime ) {
         this.fileCreateTime = fileCreateTime;
     }
 
-    public double getFileSize() {
+    public String getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize( double fileSize ) {
+    public void setFileSize( String fileSize ) {
         this.fileSize = fileSize;
     }
 }

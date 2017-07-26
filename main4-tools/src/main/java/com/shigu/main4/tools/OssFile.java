@@ -9,9 +9,19 @@ import java.util.List;
 public class OssFile {
     private String fileId;
     private String fileType;
-    private String filename;
-    private Date fileCreateTime;
-    private double fileSize;
+    private String fileName;
+    private long fileCreateTime;
+    private String fileSize;
+    private boolean isRoot;
+
+
+    public boolean getIsRoot() {
+        return this.isRoot;
+    }
+
+    public void setIsRoot( boolean val ) {
+        this.isRoot = val;
+    }
 
     public String getFileId() {
         return fileId;
@@ -29,27 +39,27 @@ public class OssFile {
         this.fileType = fileType;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getFileName() {
+        return fileName;
     }
 
-    public void setFilename( String filename ) {
-        this.filename = filename;
+    public void setFileName( String fileName ) {
+        this.fileName = fileName;
     }
 
-    public Date getFileCreateTime() {
+    public long getFileCreateTime() {
         return fileCreateTime;
     }
 
-    public void setFileCreateTime( Date fileCreateTime ) {
+    public void setFileCreateTime( long fileCreateTime ) {
         this.fileCreateTime = fileCreateTime;
     }
 
-    public double getFileSize() {
+    public String getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize( double fileSize ) {
+    public void setFileSize( String fileSize ) {
         this.fileSize = fileSize;
     }
 }
