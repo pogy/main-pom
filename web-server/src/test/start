@@ -1,0 +1,4 @@
+#!/bin/bash
+ENV_FILE=/acs/conf/env.properties
+THIS_PATH="/acs/user/"
+WEBROOT="/acs/code/"

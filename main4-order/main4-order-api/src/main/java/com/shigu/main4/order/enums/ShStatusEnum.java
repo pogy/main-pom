@@ -19,4 +19,5 @@ public enum ShStatusEnum {
         }
         throw new IllegalArgumentException(String.format("shStatus %d 不合法", shStatus));
     }
+
 }

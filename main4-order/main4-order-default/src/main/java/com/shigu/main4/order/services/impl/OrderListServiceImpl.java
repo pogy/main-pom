@@ -38,6 +38,7 @@ public class OrderListServiceImpl implements OrderListService {
 
 
 
+
     /**
      * ====================================================================================
      * @方法名：myOrder
@@ -49,10 +50,11 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     //todo
-    @Override public List<ShowOrderVO> myOrder (OrderBO bo,Long userId) {
+    @Override
+    public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) {
 
-        List<ShowOrderVO> list=new ArrayList<> ();
-        ShowOrderVO ovo=new ShowOrderVO ();
+        List<ShowOrderVO> list = new ArrayList<>();
+        ShowOrderVO ovo = new ShowOrderVO();
 
         for(int i=0;i<20;i++) {
             ovo.setMainState (MainOrderStatusEnum.statusOf (1).status);
@@ -137,11 +139,12 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     //todo
-    @Override public ShiguPager<ShowOrderVO> selectCountMyOrder (OrderBO bo, Long userId) {
-        ShiguPager<ShowOrderVO> pager=new ShiguPager<ShowOrderVO>();
+    @Override
+    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) {
+        ShiguPager<ShowOrderVO> pager = new ShiguPager<ShowOrderVO>();
         //totalCount+","+size+","+number;
-        pager.setTotalCount (15);
-        pager.setNumber (12);
+        pager.setTotalCount(15);
+        pager.setNumber(12);
         return pager;
     }
 
@@ -157,9 +160,9 @@ public class OrderListServiceImpl implements OrderListService {
     @Override
     //todo
     public ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus, Integer page, Integer pageSize, Long userId) {
-        List<ShowOrderVO> list=new ArrayList<> ();
-        ShowOrderVO ovo=new ShowOrderVO ();
-        for(int i=0;i<20;i++) {
+        List<ShowOrderVO> list = new ArrayList<>();
+        ShowOrderVO ovo = new ShowOrderVO();
+        for (int i = 0; i < 20; i++) {
             ovo.setMainState(MainOrderStatusEnum.statusOf(1).status);
             String oidString = "201707200034" + i;
             Long orderId = new Long(oidString);
@@ -283,7 +286,8 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     //todo
-    @Override public int removeOrder (Long orderId) {
+    @Override
+    public int removeOrder(Long orderId) {
         return 1;
     }
 
@@ -298,7 +302,8 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     //todo
-    @Override public int cancelOrder (Long orderId) {
+    @Override
+    public int cancelOrder(Long orderId) {
         return 1;
     }
 
@@ -312,7 +317,8 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    @Override public OrderAddrInfoVO selectOrderAddrInfo (Long orderId) {
+    @Override
+    public OrderAddrInfoVO selectOrderAddrInfo (Long orderId) {
         OrderAddrInfoVO addrvo = null;
         ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
         List<LogisticsVO> logisticsVOS = orderModel.selLogisticses();
@@ -335,7 +341,8 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     //todo
-    @Override public OrderDetailExpressVO selectExpress (Long orderId) {
+    @Override
+    public OrderDetailExpressVO selectExpress (Long orderId) {
         OrderDetailExpressVO vo=new OrderDetailExpressVO();
         vo.setId ("446652085546");
         vo.setName ("中通快递 ");
@@ -382,7 +389,8 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     //todo
-    @Override public ShowOrderVO selectMyorder (Long orderId) {
+    @Override
+    public ShowOrderVO selectMyorder (Long orderId) {
         ShowOrderVO vo=new ShowOrderVO();
         vo.setOrderCreateTimed (new Date());//创建时间
         vo.setTradeTimed (new Date());//付款时间
@@ -406,7 +414,8 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     //todo
-    @Override public List<SubOrderInfoVO> selectSubList (Long orderId) {
+    @Override
+    public List<SubOrderInfoVO> selectSubList (Long orderId) {
         List<SubOrderInfoVO> listsub=new ArrayList<> ();
 
         for(int k=0;k<3;k++) {
@@ -473,7 +482,8 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     //todo
-    @Override public OrderDetailTotalVO selectTotal (Long orderId) {
+    @Override
+    public OrderDetailTotalVO selectTotal (Long orderId) {
         OrderDetailTotalVO vo=new OrderDetailTotalVO();
 
         ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);

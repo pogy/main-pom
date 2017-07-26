@@ -13,6 +13,8 @@
 <#include "/common/host_config.ftl">
 
 
+
+
     
     <link href="http://style.571xz.com/v2/qzhd/css/popular.css" rel="stylesheet">
     
@@ -193,7 +195,6 @@ var webSite = '${webSite!}';
 
 
 
-
 <div class="header layout">
     <div class="logoLeft fl">
         <a href="http://${webSite!}.571xz.com">
@@ -302,7 +303,6 @@ var webSite = '${webSite!}';
 
 
 
-
 <div class="content clearfix" style="background:${bgColor!}">
     <div class="bannerImg">
         <div class="imgShow">
@@ -314,7 +314,7 @@ var webSite = '${webSite!}';
         <#list goodsStyle as item>
             <div class="styleItem">
     <#if item.titleText??>
-        <h3 class="styleTitle" name="${item.titleText!}"  id="style${item.id!}" style="background-image:url(${item.titleImg!}"></h3>
+        <h3 class="styleTitle" name="${item.titleText!}"  id="style${item.id!}" style="background-image:url(${item.titleImg!})"></h3>
         <#else>
         <div class="mt40"></div>
     </#if>
@@ -369,7 +369,7 @@ var webSite = '${webSite!}';
 
 
 
-
+ 
 </div>
 
 
@@ -420,4 +420,7 @@ var webSite = '${webSite!}';
 
 
 <!--省略end，让浏览器自动添加-->
+
+<#include "/common/cnzz.ftl">
+
 

@@ -4,6 +4,7 @@ import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
+import com.shigu.main4.order.vo.OrderServiceVO;
 import com.shigu.main4.order.vo.SenderVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 
@@ -69,6 +70,12 @@ public interface ItemOrder extends Order{
      * @param money 退的费用
      */
     void refundService(Long id,Long money) throws RefundException;//退服务
+
+    /**
+     * 查询本单的服务
+     * @return
+     */
+    List<OrderServiceVO> selServices();
 
     /**
      * 全单发货.
