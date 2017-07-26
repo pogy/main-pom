@@ -9,7 +9,7 @@ import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.enums.RefundMsgEnum;
-import com.shigu.main4.order.enums.RefundStateEnum;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -91,11 +91,6 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     public RefundStateEnum refundState() {
         return refundinfo().getRefundState();
-    }
-
-    @Override
-    public List<RefundProcessVO> refundLogs() {
-        return null;
     }
 
     /**

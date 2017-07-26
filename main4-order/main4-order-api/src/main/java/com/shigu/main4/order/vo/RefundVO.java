@@ -1,6 +1,6 @@
 package com.shigu.main4.order.vo;
 
-import com.shigu.main4.order.enums.RefundStateEnum;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
 
 /**
  * 退单信息

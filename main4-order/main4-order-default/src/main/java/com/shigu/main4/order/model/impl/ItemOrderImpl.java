@@ -10,7 +10,7 @@ import com.shigu.main4.common.util.NumberUtils;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
-import com.shigu.main4.order.enums.SubOrderStatus;
+import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -268,6 +268,11 @@ public class ItemOrderImpl implements ItemOrder {
         } else {
             throw new RefundException(String.format("服务费不足。服务费总额[%d], 已退[%d]", serviceMoney, refundMoney));
         }
+    }
+
+    @Override
+    public List<OrderServiceVO> selServices() {
+        return null;
     }
 
     @Override

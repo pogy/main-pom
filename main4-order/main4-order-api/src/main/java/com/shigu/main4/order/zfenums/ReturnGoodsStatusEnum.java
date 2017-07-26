@@ -1,4 +1,4 @@
-package com.shigu.main4.order.enums;
+package com.shigu.main4.order.zfenums;
 
 /**
  * Created by zf on 2017/7/17.
