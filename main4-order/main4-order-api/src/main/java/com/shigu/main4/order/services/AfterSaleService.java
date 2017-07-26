@@ -1,6 +1,6 @@
 package com.shigu.main4.order.services;
 
-import com.shigu.main4.order.enums.ShStatusEnum;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.ExpressVo;
 import com.shigu.main4.order.vo.ReturnableAddressVO;

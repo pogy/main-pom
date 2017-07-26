@@ -3,14 +3,12 @@ package com.shigu.main4.order.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.TbOrderBO;
-import com.shigu.main4.order.enums.TbOrderStatusEnum;
+import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
 import com.shigu.main4.order.servicevo.RelationGoodsVO;
 import com.shigu.main4.order.vo.GoodsVO;
 import com.shigu.main4.order.servicevo.TbOrderVO;
-
-import java.util.List;
 
 /**
  * @类编号
@@ -73,18 +71,6 @@ public interface TaoOrderService {
      */
     RelationGoodsVO glGoodsJson(Long numiid) throws NotFindRelationGoodsException;
 
-
-    /**
-     * ====================================================================================
-     * @方法名：selectglGoodsJson
-     * @功能： 关联搜索
-     * @param: condition搜索的条件,可能为空
-     * @return: 返回搜索出来的商品
-     * @exception: 
-     * ====================================================================================
-     * 
-     */
-    ShiguPager<GoodsVO> selectglGoodsJson(String condition,Integer page,Integer pageSize);
 
     /**
      * ====================================================================================

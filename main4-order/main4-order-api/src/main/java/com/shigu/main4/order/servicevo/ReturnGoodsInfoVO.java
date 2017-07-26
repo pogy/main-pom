@@ -1,8 +1,7 @@
 package com.shigu.main4.order.servicevo;
 
 
-import com.shigu.main4.order.enums.RetrunbleStatusEnum;
-import com.shigu.main4.order.enums.ReturnGoodsStatusEnum;
+import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
 
 import java.io.Serializable;
 import java.util.Date;
