@@ -99,13 +99,13 @@ public class NoRealUP {
 //                    }
                     set.add(sgt.getGoodsId());
                 }
-//                if(Math.random()<0.5){
-//                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
-////                    if(set.contains(sgt.getGoodsId())){
-////                        System.out.println(sgt.getGoodsId());
-////                    }
-//                    set.add(sgt.getGoodsId());
-//                }
+                if(Math.random()<0.5){
+                    itemUpRecordService.addItemUpRecord(upGoods(sgt));
+//                    if(set.contains(sgt.getGoodsId())){
+//                        System.out.println(sgt.getGoodsId());
+//                    }
+                    set.add(sgt.getGoodsId());
+                }
             }
             page++;
             example.setStartIndex(page*size);
