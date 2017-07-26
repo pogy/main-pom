@@ -294,9 +294,11 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
+    //todo: com.shigu.main4.order.model.Order#remove方法
     @Override
     public int removeOrder(Long orderId) {
+        ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
+        orderModel.remove();
         return 1;
     }
 
