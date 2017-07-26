@@ -6,7 +6,9 @@ import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.OssIO;
+import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.vo.GoodsFileVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,16 +25,21 @@ public class GoodsFileService {
     GoodsFileMapper goodsFileMapper;
 
     @Autowired
+    ShopForCdnService shopForCdnService;
+
+    @Autowired
     OssIO ossIO;
 
     /**
      * g更加文件路径获取
      */
-    public List<GoodsFileVO> selGoodsFileByFile( String fileKey) {
+    public List<ItemShowBlock> selGoodsFileByFile( String fileKey) {
         GoodsFileExample goodsExample=new GoodsFileExample();
         goodsExample.createCriteria().andFileKeyEqualTo(fileKey);
         List<GoodsFile> goodsFiles = goodsFileMapper.selectByExample(goodsExample);
-        return BeanMapper.mapList(goodsFiles, GoodsFileVO.class);
+
+        List<ItemShowBlock> items = shopForCdnService.searchItemOnsale( BeanMapper.getFieldList(goodsFiles, "id", Long.class), "hz", 1, goodsFiles.size()).getContent();
+        return items;
     }
 
     /**
@@ -71,6 +78,12 @@ public class GoodsFileService {
         return goodsFileMapper.delete(goodsFile);
     }
 
+    /**
+     * 删除文件
+     * @param fileKey
+     *  @param fileType
+     * @return
+     */
     public void deleteFile(String fileKey, String fileType) {
         if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("1") ) {
             fileKey = fileKey +"/";
@@ -78,6 +91,25 @@ public class GoodsFileService {
         ossIO.deleteFile(fileKey);
     }
 
+    /**
+     * 重命名文件
+     * @param fileKey
+     * @param fileType
+     * @param newName
+     * @return
+     */
+    public void rename(String fileKey, String fileType, String newName) {
+        if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("1") ) {
+            fileKey = fileKey +"/";
+        }
+        if (!newName.endsWith("/") && fileType.equalsIgnoreCase("1") ) {
+            newName = newName +"/";
+        }
+        String[] items = fileKey.split("/");
+        int len = items.length-1;
+        String newPath =  fileKey.substring(0, fileKey.length()-items[len].length()-1) + newName;
 
+        ossIO.renameFile(fileKey, newPath);
+    }
 
 }
