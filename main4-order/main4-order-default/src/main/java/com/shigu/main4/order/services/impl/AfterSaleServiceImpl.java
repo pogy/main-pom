@@ -30,7 +30,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     }
 
     @Override
-    public Long refundablePrice(Long subOrderId) {
+    public Integer refundableNum(Long subOrderId) {
         return null;
     }
 
