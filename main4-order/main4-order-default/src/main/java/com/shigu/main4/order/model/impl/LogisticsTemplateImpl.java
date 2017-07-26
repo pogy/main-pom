@@ -220,7 +220,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         LogisticsTemplateCompanyExample companyExample = new LogisticsTemplateCompanyExample();
         companyExample.createCriteria().andTemplateIdEqualTo(templateId).andRuleIdIn(ruleIds);
         List<LogisticsTemplateCompany> companies = logisticsTemplateCompanyMapper.selectFieldsByExample(companyExample, FieldUtil.codeFields("tc_id,company_id"));
-        if (companies.size() > 0) {
+        if (!companies.isEmpty()) {
 
             List<Long> companyIds = BeanMapper.getFieldList(companies, "companyId", Long.class);
             ExpressCompanyExample expressCompanyExample = new ExpressCompanyExample();
