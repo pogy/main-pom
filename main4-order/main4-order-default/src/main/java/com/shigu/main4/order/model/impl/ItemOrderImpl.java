@@ -81,7 +81,7 @@ public class ItemOrderImpl implements ItemOrder{
     @Override
     public List<LogisticsVO> selLogisticses() {
         ItemOrderLogistics logistics = new ItemOrderLogistics();
-        logistics.setOid(oid);
+        logistics.setOid(oid==null?-1L:oid);
         List<ItemOrderLogistics> select = itemOrderLogisticsMapper.select(logistics);
 
         ItemOrderSub orderSub = new ItemOrderSub();

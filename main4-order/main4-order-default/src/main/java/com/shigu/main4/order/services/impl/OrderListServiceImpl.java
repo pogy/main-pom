@@ -2,17 +2,21 @@ package com.shigu.main4.order.services.impl;
 
 import com.opentae.data.mall.beans.ItemOrderLogistics;
 import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.enums.*;
+import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressDetailVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +40,7 @@ public class OrderListServiceImpl implements OrderListService {
 
     @Autowired
     private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
+
 
     /**
      * ====================================================================================
@@ -313,15 +318,11 @@ public class OrderListServiceImpl implements OrderListService {
      */
     @Override public OrderAddrInfoVO selectOrderAddrInfo (Long orderId) {
         OrderAddrInfoVO addrvo = null;
-        if (orderId == null) {
-            return addrvo;
-        }
-        ItemOrderLogistics itemOrderLogistics = new ItemOrderLogistics();
-        itemOrderLogistics.setOid(orderId);
-        ItemOrderLogistics resultLogistics = itemOrderLogisticsMapper.selectOne(itemOrderLogistics);
-        if (resultLogistics != null) {
-            addrvo = BeanMapper.map(resultLogistics,OrderAddrInfoVO.class);
-            addrvo.setPhone(resultLogistics.getTelephone());
+        ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
+        List<LogisticsVO> logisticsVOS = orderModel.selLogisticses();
+        if (logisticsVOS.size()>0) {
+            addrvo = BeanMapper.map(logisticsVOS.get(0),OrderAddrInfoVO.class);
+            addrvo.setPhone(logisticsVOS.get(0).getTelephone());
             addrvo.setOrderId(orderId);
         }
         return addrvo;
@@ -482,6 +483,7 @@ public class OrderListServiceImpl implements OrderListService {
         vo.setExpressPriceLong (1200L);
         vo.setOrderTotalPriceLong (15900L);
         vo.setServicePriceLong (500L);
+
         return vo;
     }
 
