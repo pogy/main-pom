@@ -202,7 +202,12 @@ public class OssIO {
             ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 // 删除Object
             if(filePath.endsWith("/")) {//目录
-
+                ObjectListing objectListing = ossClient.listObjects(bucketName, filePath);
+                List<OSSObjectSummary> summaries = objectListing.getObjectSummaries();
+                int size = summaries.size();
+                for (int i=size-1; 0<= i;i--) {
+                    ossClient.deleteObject(bucketName, summaries.get(i).getKey());
+                }
             } else {
                 ossClient.deleteObject(bucketName, filePath);
             }
