@@ -4,7 +4,10 @@ import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.enums.RefundStateEnum;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
+import com.shigu.main4.order.vo.RefundProcessVO;
 import com.shigu.main4.order.vo.RefundVO;
+
+import java.util.List;
 
 /**
  * 商品退单
@@ -18,6 +21,12 @@ public interface RefundItemOrder {
     RefundVO refundinfo();
 
     RefundStateEnum refundState();
+
+    /**
+     * 退货日志查询
+     * @return
+     */
+    List<RefundProcessVO> refundLogs();
 
     /**
      * 查询修改当前退单状态
