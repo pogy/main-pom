@@ -14,22 +14,23 @@ public class EncodeParamter {
      * @return
      */
     public static String iosToUtf8(String param){
-        if(param==null){
-            return null;
-        }
-        String[] escapeChar = {"%", "_"};
-        try {
-            param = new String(param.getBytes("ISO8859-1"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        StringBuilder sb = new StringBuilder(param);
-        for (String c : escapeChar) {
-            int i = sb.indexOf(c);
-            if (i > -1)
-                sb.insert(i, "\\");
-        }
-        return sb.toString();
+//        if(param==null){
+//            return null;
+//        }
+//        String[] escapeChar = {"%", "_"};
+//        try {
+//            param = new String(param.getBytes("ISO8859-1"), "UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        StringBuilder sb = new StringBuilder(param);
+//        for (String c : escapeChar) {
+//            int i = sb.indexOf(c);
+//            if (i > -1)
+//                sb.insert(i, "\\");
+//        }
+//        return sb.toString();
+        return param;
     }
 
     /**

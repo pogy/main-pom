@@ -200,7 +200,7 @@ var webSite = '${webSite!}';
     <div class="layout">
         <div class="logoBox">
             <a href="http://${webSite!}.571xz.com">
-                <img src="/style/xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
+                <img src="http://style.571xz.com/v2//xz/css/img/mtLogo.png" alt="四季星座网" width="168" height="30">
             </a>
         </div>
         <div class="splitline"></div>
@@ -519,7 +519,7 @@ ${userShopHdHtml}
     <div class="bigBanner">
         <ul>
             <#list goodsInfo.imgUrls as imgUrl>
-                <#if img_index == 0>
+                <#if imgUrl_index == 0>
                 <li><a href="javascript:;"><img id="conImage" src="${imgUrl!}_400x400.jpg"></a></li>
                 </#if>
             </#list>
@@ -727,8 +727,6 @@ var piPrice = '${goodsInfo.piPrice!}';
 
 
 
-
-
         </div>
         <div class="leftCol3">
             
@@ -737,7 +735,7 @@ var piPrice = '${goodsInfo.piPrice!}';
     <ul>
         <#list tjGoodsList as tjGoods>
         <Li>
-            <a href="http://${webSite!}.571xz.com/item.htm?id=${tjGoods.goodsId!}" target="_blank"><img src="${tjGoods.imgUrl!}_140x140.jpg" title="${tjGoods.title!}" /></a>
+            <a href="http://${webSite!}.571xz.com/item.htm?id=${tjGoods.goodsId!}" target="_blank"><img src="${tjGoods.imgSrc!}_140x140.jpg" title="${tjGoods.title!}" /></a>
             <p class="text-size14"><em class="yahei">&yen;</em>${tjGoods.price!}</p>
         </Li>
         </#list>
@@ -757,7 +755,7 @@ var piPrice = '${goodsInfo.piPrice!}';
                         onclick="jumpShopUrl(event, '${shopInfo.xzUrl!}')"
                     <#else> 
                         onclick="javascript:void(0)"
-                    </#if>>电商基地A025</span>
+                    </#if>>${shopInfo.marketName!}${shopInfo.shopNo!}</span>
                 <span>
 
 <#assign text>{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
@@ -1064,6 +1062,21 @@ var shopId = '${shopInfo.shopId!}';
 
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

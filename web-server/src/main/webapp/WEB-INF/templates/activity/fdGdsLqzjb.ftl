@@ -6,6 +6,7 @@
 <#include "/common/host_config.ftl">
 
 <body>
+
 <script>/*============ h5te/page#layout BEGIN ============*/
 
 '${userId!}';

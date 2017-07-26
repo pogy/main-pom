@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/withdraw5Apply.css?t=1498441432912" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/withdraw5Apply.css?t=1498814568159" rel="stylesheet">
     
   </head>
 <body>
@@ -216,6 +216,10 @@ var webSite = '${webSite!}';
         <ul>
                 <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
         </ul> 
+        <h2>会员俱乐部</h2>
+        <ul>
+                <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
+        </ul> 
     </div>
     <div class="content shadow-box">
         <div class="info-head clearfix">
@@ -309,7 +313,7 @@ id="dosubmit"                        class="button1"
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/withdraw5Apply.js?t=1498441432912"></script>
+<script src="http://style.571xz.com/fxs2/js/withdraw5Apply.js?t=1498814568159"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

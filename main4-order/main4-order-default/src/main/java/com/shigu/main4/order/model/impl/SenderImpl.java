@@ -1,6 +1,5 @@
 package com.shigu.main4.order.model.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.LogisticsTemplate;
 import com.opentae.data.mall.examples.LogisticsTemplateExample;
 import com.opentae.data.mall.interfaces.LogisticsTemplateMapper;
@@ -59,7 +58,4 @@ public class SenderImpl implements Sender {
         return senderId;
     }
 
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
-    }
 }

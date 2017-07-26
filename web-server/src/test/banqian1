@@ -1,0 +1,391 @@
+rm -f /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/dubbo*
+rm -f /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/applicationContext.xml
+rm -f /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/mall_config.properties
+rm -f /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/xz_sdk.properties
+rm -f /acs/user/tomcat/webapps/ROOT/WEB-INF/templates/common/host_config.ftl
+rm -f /acs/user/tomcat/webapps/ROOT/WEB-INF/web.xml
+rm -f /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/oss.properties
+rm -f /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/redis.properties
+rm -f /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/opensearch.properties
+
+cp /acs/conf/opensearch.properties /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/
+cp /acs/conf/dubbo* /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/
+cp /acs/conf/applicationContext.xml /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/
+cp /acs/conf/mall_config.properties /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/
+cp /acs/conf/xz_sdk.properties /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/
+cp /acs/conf/host_config.ftl /acs/user/tomcat/webapps/ROOT/WEB-INF/templates/common/
+cp /acs/conf/web.xml /acs/user/tomcat/webapps/ROOT/WEB-INF/web.xml
+cp /acs/conf/oss.properties /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/
+cp /acs/conf/redis.properties /acs/user/tomcat/webapps/ROOT/WEB-INF/classes/
+
+com.aliyun.openservices.shade.com.alibaba.rocketmq.shade.io.netty.util.concurrent.DefaultPromise
+
+
+opensearch.properties
+===============================
+accesskey=LTAINlvsCqKlSP4I
+secret=XbfaARrK5PkUtqRfqWLfy5L9OQ9nQJ
+appName=search_shop
+host=http://intranet.opensearch-cn-hangzhou.aliyuncs.com
+
+dubbo.properties
+===============================
+dubbo.container=log4j,spring
+dubbo.application.name=main4_site
+dubbo.application.owner=
+dubbo.registry.address=zookeeper://120.26.193.241:30004
+dubbo.protocol.name=dubbo
+dubbo.protocol.port=30001
+dubbo.protocol.host=114.55.15.212
+dubbo.service.loadbalance=roundrobin
+dubbo.log4j.file=logs/dubbo-demo-consumer.log
+dubbo.log4j.level=WARN
+
+dubbo_application.xml
+===============================
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <bean class="com.shigu.services.DubboAllService">
+        <property name="maintbOnsaleService" ref="mainTbOnsaleService"/>
+        <property name="tbPropsService" ref="tbPropsService"/>
+        <property name="taobaoSynService" ref="taobaoSynService"/>
+        <property name="taobaoTmcService" ref="taobaoTmcService"/>
+    </bean>
+    <dubbo:reference interface="com.shigu.tb.finder.services.MainTbOnsaleService" id="mainTbOnsaleService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.tb.finder.services.TaobaoSynService" id="taobaoSynService" timeout="1000000"/>
+    <dubbo:reference interface="com.shigu.tb.finder.services.TbPropsService" id="tbPropsService" timeout="15000"/>
+    <dubbo:reference interface="com.shigu.tb.finder.services.TaobaoTmcService" id="taobaoTmcService" timeout="10000"/>
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopRegistService" ref="shopRegistService" timeout="300000"/>
+    <dubbo:service interface="com.shigu.main4.item.services.ItemAddOrUpdateService" ref="itemAddOrUpdateService" timeout="300000"/>
+    <dubbo:service interface="com.shigu.main4.monitor.services.ItemUpRecordService" ref="itemUpRecordService" timeout="300000"/>
+        <dubbo:service interface="com.shigu.main4.ucenter.services.UserLicenseService" ref="userLicenseService" timeout="20000"/>
+    <dubbo:service interface="com.shigu.main4.ucenter.services.WxUserService" ref="wxUserService" timeout="20000"/>
+</beans>
+
+applicationContext.xml
+================================
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:task="http://www.springframework.org/schema/task"
+        xmlns:mvc="http://www.springframework.org/schema/mvc"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/mvc
+     http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+    <context:component-scan base-package="com.opentae.*,com.shigu.*,com.openJar.*,com.searchtool.*">
+    </context:component-scan>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:mall_config.properties</value>
+                <value>classpath:xz_sdk.properties</value>
+                <value>classpath:oss.properties</value>
+                <value>classpath:redis.properties</value>
+                <value>classpath:rd3.properties</value>
+                <value>classpath:opensearch.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <task:executor id="shiguexecutor" pool-size="5"/>
+    <task:annotation-driven executor="shiguexecutor"/>
+
+    <bean id="xzSdkClient" class="com.shigu.tools.XzSdkClient">
+        <property name="appkey" value="${xz_appkey}"/>
+        <property name="secret" value="${xz_secret}"/>
+        <property name="type" value="${xz_type}"/>
+        <property name="mainHost" value="${xz_main_host}"/>
+        <property name="yjHost" value="${xz_yj_host}"/>
+        <property name="xzMainBus" value="${xz_mainbus}"/>
+
+        <property name="mailfrom" value="${xz_mailfrom}"/>
+        <property name="smtphost" value="${xz_smtphost}"/>
+        <property name="mailuser" value="${xz_mailuser}"/>
+        <property name="mailpwd" value="${xz_mailpwd}"/>
+        <property name="smtpauth" value="${xz_smtpauth}"/>
+        <property name="smtptimeout" value="${xz_smtptimeout}"/>
+
+    </bean>
+
+    <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
+        <property name="properties">
+            <map>
+                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"/>
+            </map>
+        </property>
+    </bean>
+    <import resource="spring-database/mall.xml"/>
+    <bean id="druid-stat-interceptor"
+          class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
+    </bean>
+
+    <import resource="classpath*:main4/spring/*.xml"/>
+    <import resource="dubbo_application.xml"/>
+    <bean id="exceptionResolver" class="com.shigu.resolver.ExceptionResolver"/>
+    <import resource="mvc.xml"/>
+    <import resource="message_queue.xml"/>
+</beans>
+
+
+mall_config.properties
+=============================
+mysqljdbc.driverClassName=com.mysql.jdbc.Driver
+mysqljdbc.url=jdbc:mysql://rds16ccszpxb72dqhstp.mysql.rds.aliyuncs.com/shigu_mall?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+mysqljdbc.username=main4
+mysqljdbc.password=Killer81682024
+
+xz_sdk.properties
+=============================
+xz_appkey=3838438
+xz_secret=37456A6A5CA10F9A988F12BFECD88575
+xz_type=rest
+xz_main_host=http://www.571xz.com/
+xz_yj_host=http://www.571xz.net/
+xz_mainbus=\u5973\u88c5\u002c\u7537\u88c5\u002c\u7ae5\u88c5\u002c\u7537\u978b\u002c\u914d\u4ef6\u002c\u5973\u978b\u002c\u5305\u5305\u002c\u60c5\u4fa3\u88c5\u002c\u5185\u8863\u002c\u5176\u4ed6
+xz_mailfrom=web571xz@126.com
+xz_smtphost=smtp.126.com
+xz_mailuser=\u56DB\u5B63\u661F\u5EA7\u7F51
+xz_mailpwd=a123456
+xz_smtpauth=true
+xz_smtptimeout=25000
+xz_buyer_theme=buyer
+xz_seller_theme=seller
+
+host_config.ftl
+=============================
+<#assign main_host="http://www.571xz.com/" />
+<#assign qiye_qq="4000761116" />
+<#assign qiye_wwFir="杭州石谷网络科技有限公司" />
+<#assign qiye_wwSec="杭州石谷网络科技有限公司" />
+<#assign qiyeEmail="admin@571xz.com" />
+<#assign qiyePhone="400-076-1116" />
+<script>
+var main_host='${main_host}';
+</script>
+
+
+web.xml
+==============================
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/log4j.properties</param-value>
+	</context-param>
+	<listener>
+		<listener-class>com.shigu.core.config.Log4jListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:applicationContext.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	<filter>
+		<filter-name>PageCachingFilter</filter-name>
+		<filter-class>net.sf.ehcache.constructs.web.filter.SimplePageCachingFilter</filter-class>
+		<init-param>
+			<param-name>cacheName</param-name>
+			<param-value>SimplePageCachingFilter</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>PageCachingFilter</filter-name>
+		<url-pattern>/item.htm</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>PageCachingFilter</filter-name>
+		<url-pattern>/shop.htm</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>PageCachingFilter</filter-name>
+		<url-pattern>/newgoods.htm</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>PageCachingFilter</filter-name>
+		<url-pattern>/shopnew.htm</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>PageCachingFilter</filter-name>
+		<url-pattern>/market.htm</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>PageCachingFilter</filter-name>
+		<url-pattern>/activity/redbull.htm</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>PageCachingFilter</filter-name>
+		<url-pattern>/activity/apply.htm</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>PageCachingFilter</filter-name>
+		<url-pattern>/activity/popular.htm</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!--Spring MVC Servlet-->
+	<servlet>
+		<servlet-name>myappSite</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextClass</param-name>
+			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>myappSite</servlet-name>
+		<url-pattern>*.htm</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>myappSite</servlet-name>
+		<url-pattern>*.json</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>myappSite</servlet-name>
+		<url-pattern>*.action</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>myappSite</servlet-name>
+		<url-pattern>/index.html</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>shiroFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>shiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <session-config>
+    <session-timeout>100</session-timeout>
+  </session-config>
+
+	<filter>
+		<filter-name>TaeSessionFilter</filter-name>
+		<filter-class>com.taobao.tae.session.TaeSessionFilter</filter-class>
+		<init-param>
+			<param-name>ocs_username</param-name>
+			<param-value>m-bp12b819f01f4c44</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ocs_password</param-name>
+			<param-value>Mem81682024</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ocs_host</param-name>
+			<param-value>m-bp12b819f01f4c44.memcache.rds.aliyuncs.com</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ocs_port</param-name>
+			<param-value>11211</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cache_type</param-name>
+			<param-value>ocs</param-value>
+		</init-param>
+		<init-param>
+			<param-name>debug_switch</param-name>
+			<param-value>on</param-value>
+		</init-param>
+		<init-param>
+			<param-name>debug_auth</param-name>
+			<param-value>killer81682024</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>TaeSessionFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>druidWebStat</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>/assets/*,/css/*,/style/*,/jslib/*,*.js,*.css,/druid*,/attached/*,/uploadFile/*,*.jsp</param-value>
+		</init-param>
+		<init-param>
+			<param-name>principalSessionName</param-name>
+			<param-value>session_user_redis__</param-value>
+		</init-param>
+		<init-param>
+		    <param-name>profileEnable</param-name>
+		    <param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>druidWebStat</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+<servlet>
+    <servlet-name>DruidStatView</servlet-name>
+    <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>DruidStatView</servlet-name>
+    <url-pattern>/druid/*</url-pattern>
+</servlet-mapping>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.html</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/500.html</location>
+	</error-page>
+</web-app>
+
+oss.properties
+=========================
+oss.endpoint=http://oss-cn-hangzhou-internal.aliyuncs.com
+oss.accessKeyId=LTAIvKyLsWQRMB6d
+oss.accessKeySecret=KEht23PjjSO9G8oCUhbx4xHnyQwcnG
+oss.ossHost=http://imgs.571xz.net/
+
+redis.properties
+=========================
+redis.host=r-bp1ce514f820bd84.redis.rds.aliyuncs.com
+redis.port=6379
+redis.pass=Killer81682024
+redis.maxIdle=300
+redis.maxActive=600
+redis.maxWait=1000
+redis.testOnBorrow=true

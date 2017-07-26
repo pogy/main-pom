@@ -148,4 +148,5 @@ public interface ActiveDrawService {
      * @return
      */
     Map<Long,Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime);
+
 }

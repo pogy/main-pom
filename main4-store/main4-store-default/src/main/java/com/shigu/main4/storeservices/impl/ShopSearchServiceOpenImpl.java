@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  * 阿里开放搜索 实现店铺搜索
  * Created by bugzy on 2017/5/31 0031.
  */
-@Service("shopSearchOpenService")
+@Service("shopSearchService")
 public class ShopSearchServiceOpenImpl implements ShopSearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShopSearchServiceOpenImpl.class);
@@ -186,7 +186,7 @@ public class ShopSearchServiceOpenImpl implements ShopSearchService {
         }
 
         ShiguShopExample shiguShopExample = new ShiguShopExample();
-        shiguShopExample.createCriteria().andShopNumEqualTo(shopNum).andWebSiteEqualTo(webSite);
+        shiguShopExample.createCriteria().andShopNumEqualTo(shopNum).andWebSiteEqualTo(webSite).andShopStatusEqualTo(0);
         List<ShiguShop> shiguShopList = shiguShopMapper.selectByExample(shiguShopExample);
         List<Long> marketIdList = new ArrayList<>(BeanMapper.getFieldSet(shiguShopList, "marketId", Long.class));
         List<Long> shopIdList = new ArrayList<>(BeanMapper.getFieldSet(shiguShopList, "shopId", Long.class));

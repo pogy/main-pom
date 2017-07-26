@@ -14,7 +14,7 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/sysSetsindex.css?t=1498441435517" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/sysSetsindex.css?t=1498814570795" rel="stylesheet">
     
   </head>
 <body>
@@ -216,6 +216,10 @@ var webSite = '${webSite!}';
         <ul>
                 <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
         </ul> 
+        <h2>会员俱乐部</h2>
+        <ul>
+                <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
+        </ul> 
     </div>
     <div class="content shadow-box">
         <ul class="formbox">
@@ -301,7 +305,7 @@ id="dosubmit"                    class="button1"
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/sysSetsindex.js?t=1498441435517"></script>
+<script src="http://style.571xz.com/fxs2/js/sysSetsindex.js?t=1498814570795"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

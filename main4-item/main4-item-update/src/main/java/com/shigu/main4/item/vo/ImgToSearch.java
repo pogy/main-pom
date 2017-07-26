@@ -10,14 +10,17 @@ public class ImgToSearch {
 
     private String picUrl;
 
+    private String oldPicUrl;
+
     private String webSite;
     /**
      * 0删除,1添加或更新
      */
     private Integer type;
 
-    public ImgToSearch(Long goodsId, String webSite,String picUrl,  Integer type) {
+    public ImgToSearch(Long goodsId, String webSite,String oldPicUrl,String picUrl,  Integer type) {
         this.goodsId = goodsId;
+        this.oldPicUrl = oldPicUrl;
         this.picUrl = picUrl;
         this.webSite = webSite;
         this.type = type;
@@ -45,6 +48,14 @@ public class ImgToSearch {
 
     public void setPicUrl(String picUrl) {
         this.picUrl = picUrl;
+    }
+
+    public String getOldPicUrl() {
+        return oldPicUrl;
+    }
+
+    public void setOldPicUrl(String oldPicUrl) {
+        this.oldPicUrl = oldPicUrl;
     }
 
     public Integer getType() {
