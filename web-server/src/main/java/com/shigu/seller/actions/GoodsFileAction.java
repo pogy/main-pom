@@ -42,7 +42,7 @@ public class GoodsFileAction {
     @Autowired
     private OssIO ossIO;
 
-    @RequestMapping("goodsFile/getSignInfo")
+    @RequestMapping("goodsFile/getAccessKey")
     public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long userId = getUserId(request.getSession());
         Map<String, String> infoMap = ossIO.createPostSignInfo(userId);
@@ -184,26 +184,25 @@ public class GoodsFileAction {
         obj.element("fileList", files.subList(1, files.size()));
         return obj;
     }
-
-    /**
-     * 获取用户登录信息
-     */
-    @RequestMapping("goodsFile/jsonislogin")
-    @ResponseBody
-    public JSONObject jsonislogin(HttpServletRequest request) {
-        PersonalSession ps = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String userNick = "";
-        if (ps != null) {
-            userNick =  ps.getUserNick();
-        }
-        JSONObject obj= JsonResponseUtil.success();
-        obj.element("userNick",userNick);
-        return obj;
-    }
+//
+//    /**
+//     * 获取用户登录信息
+//     */
+//    @RequestMapping("goodsFile/jsonislogin")
+//    @ResponseBody
+//    public JSONObject jsonislogin(HttpServletRequest request) {
+//        PersonalSession ps = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+//        String userNick = "";
+//        if (ps != null) {
+//            userNick =  ps.getUserNick();
+//        }
+//        JSONObject obj= JsonResponseUtil.success();
+//        obj.element("userNick",userNick);
+//        return obj;
+//    }
 
     private Long getUserId(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         return ps.getUserId();
     }
-
 }
