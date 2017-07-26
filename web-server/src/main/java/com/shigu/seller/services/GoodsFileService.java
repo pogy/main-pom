@@ -38,7 +38,7 @@ public class GoodsFileService {
         goodsExample.createCriteria().andFileKeyEqualTo(fileKey);
         List<GoodsFile> goodsFiles = goodsFileMapper.selectByExample(goodsExample);
 
-        List<ItemShowBlock> items = shopForCdnService.searchItemOnsale( BeanMapper.getFieldList(goodsFiles, "id", Long.class), "hz", 1, goodsFiles.size()).getContent();
+        List<ItemShowBlock> items = shopForCdnService.searchItemOnsale( BeanMapper.getFieldList(goodsFiles, "goodsId", Long.class), "hz", 1, goodsFiles.size()).getContent();
         return items;
     }
 
@@ -110,6 +110,16 @@ public class GoodsFileService {
         String newPath =  fileKey.substring(0, fileKey.length()-items[len].length()-1) + newName;
 
         ossIO.renameFile(fileKey, newPath);
+    }
+
+    /**
+     * 移动文件
+     * @param fileId
+     * @param targetFileId
+     * @return
+     */
+    public void moveFile(String fileId,  String targetFileId) {
+        ossIO.moveFile(fileId, targetFileId);
     }
 
 }

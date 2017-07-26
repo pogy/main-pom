@@ -121,11 +121,26 @@ public class GoodsFileAction {
     }
 
     /**
+     * 移动文件
+     * @param fileId
+     * @param targetFileId
+     * @return
+     */
+    @RequestMapping("goodsFile/moveFile")
+    @ResponseBody
+    public JSONObject renameFile(String fileId, String targetFileId) {
+        goodsFileService.moveFile(fileId, targetFileId);
+        return JsonResponseUtil.success();
+    }
+
+    /**
      * 当前登陆的session
      *
      * @param session
      * @return
      */
+    @RequestMapping("")
+    @ResponseBody
     private Long getUserId(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         return ps.getUserId();
