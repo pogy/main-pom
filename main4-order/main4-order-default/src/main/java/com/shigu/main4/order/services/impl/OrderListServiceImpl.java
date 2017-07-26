@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +48,7 @@ public class OrderListServiceImpl implements OrderListService {
     @Autowired
     private ItemOrderService itemOrderService;
 
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * ====================================================================================
@@ -393,14 +395,31 @@ public class OrderListServiceImpl implements OrderListService {
     @Override
     public ShowOrderVO selectMyorder (Long orderId) {
         ShowOrderVO vo=new ShowOrderVO();
-        vo.setOrderCreateTimed (new Date());//创建时间
-        vo.setTradeTimed (new Date());//付款时间
-        vo.setDistributionDated (new Date());//分配时间
-        vo.setFinishTimed (new Date ());//完成时间
-        vo.setIsTbOrder (true);
-        vo.setMainState (1);
-        vo.setOrderId (orderId);
-
+        ItemOrderVO itemOrderVO = SpringBeanFactory.getBean(ItemOrder.class, orderId).orderInfo();
+        OrderDetailTotalVO orderDetailTotalVO = selectTotal(orderId);
+        List<SubOrderInfoVO> subOrderInfoVOS = itemOrderService.suborderInfoByOrderId(orderId);
+        vo.setOrderId(orderId);
+        vo.setTradeTimed(itemOrderVO.getCreateTime());
+        vo.setTradeTime(simpleDateFormat.format(itemOrderVO.getCreateTime()));
+        vo.setOrderCreateTimed(itemOrderVO.getCreateTime());
+        vo.setOrderCreateTime(simpleDateFormat.format(itemOrderVO.getCreateTime()));
+        vo.setTradePayLong(orderDetailTotalVO.getOrderTotalPriceLong());
+        vo.setTradePay(orderDetailTotalVO.getOrderTotalPrice());
+        vo.setPostPay(orderDetailTotalVO.getExpressPrice());
+        vo.setPostPayLong(orderDetailTotalVO.getExpressPriceLong());
+        vo.setMainState(itemOrderVO.getOrderStatus().status);
+        //vo.setIsTbOrder();
+        vo.setWebSite(itemOrderVO.getWebSite());
+        //vo.setType();
+        vo.setPayedFee(PriceConvertUtils.priceToString(itemOrderVO.getPayedFee()));
+        vo.setPayedFeeLong(itemOrderVO.getPayedFee());
+        vo.setTitle(itemOrderVO.getTitle());
+        vo.setRefundFeeLong(itemOrderVO.getRefundFee());
+        vo.setRefundFee(PriceConvertUtils.priceToString(itemOrderVO.getRefundFee()));
+        vo.setOrderPrice(orderDetailTotalVO.getOrderTotalPrice());
+        vo.setFinishTimed(itemOrderVO.getFinishTime());
+        vo.setFinishTime(simpleDateFormat.format(itemOrderVO.getFinishTime()));
+        vo.setChildOrders(subOrderInfoVOS);
         return vo;
     }
 
