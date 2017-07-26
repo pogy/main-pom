@@ -1,5 +1,6 @@
 package com.shigu.order.decorateVo;
 
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.OrderInfoVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
@@ -25,29 +26,30 @@ public class SubWithOrderRefundDecorate extends RefundVoDecorate{
         this.childOrderId = childOrderId;
     }
 
-    public void setRefundInfo(){
+    private void setRefundInfo(){
 
         SubOrderInfoVO subOrderInfoVO = itemOrderService.suborderInfo(this.childOrderId);
         OrderInfoVO orderInfoVO = itemOrderService.orderInfo(subOrderInfoVO.getOrderId());
-        Map<String, Object> map = this.getViewVo();
+        Map<String,Object> map = new HashMap<>();
+        System.out.println("设置退款订单信息");
         map.put("childOrderId",subOrderInfoVO.getChildOrderId());
         map.put("childOrderImgSrc",subOrderInfoVO.getImgsrc());
         map.put("childOrderCode",subOrderInfoVO.getGoodsNo());
         map.put("childOrderColor",subOrderInfoVO.getColor());
         map.put("childOrderSize",subOrderInfoVO.getSize());
         map.put("orderId",subOrderInfoVO.getOrderId());
-        map.put("orderDealTime",orderInfoVO.getOrderDealTime());
+        map.put("orderDealTime", DateUtil.dateToString(orderInfoVO.getOrderDealTime(),DateUtil.patternD));
         map.put("orderGoodsPrice",subOrderInfoVO.getPrice());
-        map.put("refundNumber",subOrderInfoVO.getNum()-subOrderInfoVO.getRefundNum());
+        map.put("refundNumber",subOrderInfoVO.getNum()-(subOrderInfoVO.getRefundNum() == null? 0:1));
         map.put("orderExpressPrice",orderInfoVO.getExpressPrice());
         map.put("orderServicePrice",orderInfoVO.getServicePrice());
         map.put("orderTotalPrice",orderInfoVO.getTotalPrice());
+        super.addMap(map);
     }
 
     @Override
     public Map<String, Object> getViewVo() {
         setRefundInfo();
-        Map<String, Object> viewVo = super.getViewVo();
-        return viewVo;
+        return super.getViewVo();
     }
 }

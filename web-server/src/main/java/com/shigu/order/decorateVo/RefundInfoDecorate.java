@@ -1,8 +1,8 @@
 package com.shigu.order.decorateVo;
 
-import com.shigu.main4.order.services.ReturnGoodsService;
 import com.shigu.main4.order.servicevo.ReturnGoodsInfoVO;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author pc
  * @version 3.0.0-SNAPSHOT
- * @description
+ * @description xx
  * @since 3.0.0-SNAPSHOT
  */
 public class RefundInfoDecorate extends RefundVoDecorate{
@@ -21,15 +21,13 @@ public class RefundInfoDecorate extends RefundVoDecorate{
         super(vo);
         this.returnGoodsInfoVO = returnGoodsInfoVO;
     }
-    public RefundInfoDecorate(AbstractRefundVo vo) {
-        super(vo);
-    }
 
-    public void setRefundInfo(){
 
-        Map<String, Object> map = this.getViewVo();
+    private void setRefundInfo(){
+        Map<String,Object> map = new HashMap<>();
         map.put("refundId",returnGoodsInfoVO.getRefundId());
         map.put("refundAmount",returnGoodsInfoVO.getRefundPrice());
+        System.out.println("设置退款信息");
         int refundStateNum = 0;
         int waitState = 0;
         int returnState = 0;
@@ -71,6 +69,7 @@ public class RefundInfoDecorate extends RefundVoDecorate{
         map.put("returnState",refundStateNum);
         map.put("waitState",waitState);
         map.put("returnState",returnState);
+        super.addMap(map);
 
 
     }

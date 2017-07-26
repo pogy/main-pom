@@ -55,9 +55,15 @@ public class AfterSaleService {
 //        Map<String, Object> stringObjectMap = refundBaseMap(subOrderInfoVO, orderInfoVO);
 
         //TODO 这块要重新规划
+        ReturnGoodsInfoVO returnGoodsInfoVO = returnGoodsService.retrunGoodsInfo(Long.parseLong("111"));
+
         AbstractRefundVo vo = new OrderRefundVo();
         AbstractRefundVo vo1 = new SubWithOrderRefundDecorate(vo,itemOrderService,Long.parseLong(childOrderId));
-        Map<String, Object> viewVo = vo1.getViewVo();
+
+        AbstractRefundVo vo2 = new RefundInfoDecorate(vo1,returnGoodsInfoVO);
+
+
+        Map<String, Object> viewVo = vo2.getViewVo();
 
 
         return viewVo;
@@ -81,11 +87,15 @@ public class AfterSaleService {
         vo = new OrderRefundVo();
         vo1 = new SubWithOrderRefundDecorate(vo,itemOrderService,childOrderId);
         vo2 = new RefundInfoDecorate(vo1,returnGoodsInfoVO);
-        AbstractRefundVo vo3;
+        AbstractRefundVo vo3 = null;
         if(returnGoodsInfoVO.getRetrunGoodsStatus() == ReturnGoodsStatusEnum.EXPRESS_SUBMIT){
             vo3 = new LogisticsDecorate(vo2,logisticsService,Long.parseLong(refundId));
         }
+        if(vo3!=null){
+            return vo3.getViewVo();
+        }
 
-        return null;
+
+        return vo2.getViewVo();
     }
 }

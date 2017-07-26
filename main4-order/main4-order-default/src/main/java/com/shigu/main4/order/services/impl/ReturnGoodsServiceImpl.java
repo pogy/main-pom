@@ -1,5 +1,6 @@
 package com.shigu.main4.order.services.impl;
 
+import com.shigu.main4.order.enums.ReturnGoodsStatusEnum;
 import com.shigu.main4.order.services.ReturnGoodsService;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.RefundLogVO;
@@ -10,6 +11,7 @@ import com.shigu.main4.order.vo.ReturnableAddressVO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,7 +65,12 @@ public class ReturnGoodsServiceImpl implements ReturnGoodsService{
 
     @Override
     public ReturnGoodsInfoVO retrunGoodsInfo(Long refundId) {
-        return null;
+        ReturnGoodsInfoVO vo = new ReturnGoodsInfoVO();
+        vo.setRefundId("111");
+        vo.setRefundPrice("100");
+        vo.setRefundSuccessTime(new Date());
+        vo.setRetrunGoodsStatus(ReturnGoodsStatusEnum.AGREE_PROCESS);
+        return vo;
     }
 
     @Override
