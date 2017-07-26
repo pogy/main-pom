@@ -24,6 +24,7 @@ public class ItemOrderVO extends OrderVO {
      */
     private Date finishTime;
 
+
     public Long getSenderId() {
         return senderId;
     }
