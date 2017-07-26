@@ -388,4 +388,9 @@ public class ItemOrderImpl implements ItemOrder {
     public void closed() {
 
     }
+
+    @Override
+    public void remove() {
+
+    }
 }

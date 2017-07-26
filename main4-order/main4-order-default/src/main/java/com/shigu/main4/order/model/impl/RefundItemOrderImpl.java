@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -34,7 +35,7 @@ import java.util.Objects;
  * 退单
  * Created by zhaohongbo on 17/7/20.
  */
-@Repository
+@Service
 @Scope("prototype")
 public class RefundItemOrderImpl implements RefundItemOrder {
 
@@ -91,11 +92,6 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     public RefundStateEnum refundState() {
         return refundinfo().getRefundState();
-    }
-
-    @Override
-    public List<RefundProcessVO> refundLogs() {
-        return null;
     }
 
     /**
