@@ -27,4 +27,9 @@ public class RefundVoDecorate extends AbstractRefundVo{
     public void addMap(Map<String, Object> map) {
         abstractRefundVo.addMap(map);
     }
+
+    @Override
+    public void doAdd() {
+
+    }
 }
