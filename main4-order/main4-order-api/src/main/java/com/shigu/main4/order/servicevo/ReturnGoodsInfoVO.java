@@ -14,7 +14,7 @@ public class ReturnGoodsInfoVO implements Serializable{
     /**
      * 退款编号
      */
-    private String refundCode;
+    private String refundId;
     /**
      * 退款金额
      */
@@ -33,18 +33,12 @@ public class ReturnGoodsInfoVO implements Serializable{
      */
     private Date refundSuccessTime;
 
-    /**
-     * 获取 退款编号
-     */
-    public String getRefundCode() {
-        return this.refundCode;
+    public String getRefundId() {
+        return refundId;
     }
 
-    /**
-     * 设置 退款编号
-     */
-    public void setRefundCode(String refundCode) {
-        this.refundCode = refundCode;
+    public void setRefundId(String refundId) {
+        this.refundId = refundId;
     }
 
     /**

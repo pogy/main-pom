@@ -4,6 +4,7 @@ import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.RefundLogVO;
 import com.shigu.main4.order.servicevo.ReturnableExpressInfoVO;
 import com.shigu.main4.order.servicevo.ReturnGoodsInfoVO;
+import com.shigu.main4.order.vo.ApplyOperaterVo;
 import com.shigu.main4.order.vo.ReturnableAddressVO;
 
 import java.util.List;
@@ -90,4 +91,18 @@ public interface ReturnGoodsService {
      * @return
      */
     ReturnGoodsInfoVO retrunGoodsInfo(Long refundId);
+
+    /**
+     * 查询操作员操作记录
+     * @param refundId 申请退款id
+     * @return collection
+     */
+    List<ApplyOperaterVo> returnGoodsOperater(Long refundId);
+
+    /**
+     * 查询子单id
+     * @param refundId 申请退货id
+     * @return long
+     */
+    Long selChildOrderId(Long refundId);
 }
