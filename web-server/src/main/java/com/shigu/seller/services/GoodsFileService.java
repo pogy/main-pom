@@ -36,7 +36,7 @@ public class GoodsFileService {
      * @param goodsId
      * @return
      */
-    public GoodsFile selGoodsFileByFile(Long goodsId) {
+    public GoodsFile selGoodsFileByGoodsId(Long goodsId) {
         GoodsFile goodsFile = new GoodsFile();
         goodsFile.setGoodsId(goodsId);
         goodsFile = (GoodsFile) goodsFileMapper.selectOne(goodsFile);
@@ -55,4 +55,18 @@ public class GoodsFileService {
         goodsFile.setFileKey(fileKey);
         return goodsFileMapper.insert(goodsFile);
     }
+
+    /**
+     * 取消关联关系
+     * @param fileKey
+     * @param goodsId
+     * @return
+     */
+    public int delGoodsfile(String fileKey, Long goodsId) {
+        GoodsFile goodsFile = new GoodsFile();
+        goodsFile.setGoodsId(goodsId);
+        goodsFile.setFileKey(fileKey);
+        return goodsFileMapper.delete(goodsFile);
+    }
+
 }

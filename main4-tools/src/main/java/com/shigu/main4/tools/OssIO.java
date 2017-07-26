@@ -138,7 +138,7 @@ public class OssIO {
      * 列出目录下所有的文件信息
      * @param filePath 目录
      */
-    public List<OssFile> listFiles(String filePath) {
+    public List<OssFile> getFileList(String filePath) {
         OSSClient ossClient = null;
         List<OssFile> fileList = new ArrayList<OssFile>();
         try {
@@ -174,7 +174,7 @@ public class OssIO {
      * 获取文件或者目录总大小,以byte为单位
      * @param filePath  文件路径
      */
-    public long getFileSize(String filePath) {
+    public long getSizeInfo(String filePath) {
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 
         Long totalSize = 0L;
@@ -201,7 +201,11 @@ public class OssIO {
         try {
             ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
 // 删除Object
-            ossClient.deleteObject(bucketName, filePath);
+            if(filePath.endsWith("/")) {//目录
+
+            } else {
+                ossClient.deleteObject(bucketName, filePath);
+            }
         } finally {
             if (ossClient != null) {
                 ossClient.shutdown();
