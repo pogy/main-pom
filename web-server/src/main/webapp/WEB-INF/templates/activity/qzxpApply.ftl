@@ -13,6 +13,8 @@
 <#include "/common/host_config.ftl">
 
 
+
+
     
     <link href="http://style.571xz.com/v2/qzhd/css/qzxpApply.css" rel="stylesheet">
     
@@ -352,6 +354,10 @@ var webSite = '${webSite!}';
 
 
 
+
+
+
+
 </div>
 <div class="blueBg">
     <div class="actIntroduce yahei layout">
@@ -444,6 +450,10 @@ var webSite = '${webSite!}';
 
 
 
+
+
+
+
 </div>
 
 
@@ -493,4 +503,7 @@ var webSite = '${webSite!}';
 
 
 <!--省略end，让浏览器自动添加-->
+
+<#include "/common/cnzz.ftl">
+
 
