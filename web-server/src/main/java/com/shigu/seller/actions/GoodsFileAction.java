@@ -36,7 +36,7 @@ public class GoodsFileAction {
     }
 
     /**
-     * 更加goodsId获取
+     * 根据goodsId获取
      * @param goodsId
      * @return
      */
