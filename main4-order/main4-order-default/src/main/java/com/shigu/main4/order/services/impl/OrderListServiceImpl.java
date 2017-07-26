@@ -73,7 +73,7 @@ public class OrderListServiceImpl implements OrderListService {
             }
             ovo.setTradePayLong (2800L);
             ovo.setTradeTimed (new Date ());
-            ovo.setWebSire ("hz");
+            ovo.setWebSite ("hz");
             List<SubOrderInfoVO> listsub=new ArrayList<> ();
             for(int k=0;k<3;k++) {
                 SubOrderInfoVO svo=new SubOrderInfoVO();
@@ -179,7 +179,7 @@ public class OrderListServiceImpl implements OrderListService {
             }
             ovo.setTradePayLong(2800L);
             ovo.setTradeTimed(new Date());
-            ovo.setWebSire("hz");
+            ovo.setWebSite("hz");
             ovo.setMainState(4);
             List<SubOrderInfoVO> listsub = new ArrayList<>();
             for (int k = 0; k < 3; k++) {
@@ -481,11 +481,9 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
     @Override
     public OrderDetailTotalVO selectTotal (Long orderId) {
         OrderDetailTotalVO vo=new OrderDetailTotalVO();
-
         ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
         ItemOrderVO itemOrderVO = orderModel.orderInfo();
         vo.setOrderTotalPriceLong(itemOrderVO.getTotalFee());
@@ -501,7 +499,12 @@ public class OrderListServiceImpl implements OrderListService {
         }
         vo.setChildOrdersPriceLong(childOrdersPrice);
         vo.setChildOrdersPrice(PriceConvertUtils.priceToString(childOrdersPrice));
-        //vo.setServicePriceLong();
+        long servicePrice = 0;
+        for (OrderServiceVO orderServiceVO:orderModel.selServices()) {
+            servicePrice += orderServiceVO.getMoney();
+        }
+        vo.setServicePriceLong(servicePrice);
+        vo.setServicePrice(PriceConvertUtils.priceToString(servicePrice));
         return vo;
     }
 

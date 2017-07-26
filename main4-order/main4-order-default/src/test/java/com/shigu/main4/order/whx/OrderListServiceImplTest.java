@@ -18,4 +18,9 @@ public class OrderListServiceImplTest extends BaseTest {
         show(orderListService.selectOrderAddrInfo(5L));
         show(orderListService.selectOrderAddrInfo(90L));
     }
+
+    @Test
+    public void selectTotalTest() {
+        show(orderListService.selectTotal(71L));
+    }
 }
