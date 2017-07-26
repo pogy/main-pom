@@ -12,10 +12,8 @@ import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
-import com.shigu.main4.order.vo.LogisticsVO;
-import com.shigu.main4.order.vo.OrderAddrInfoVO;
-import com.shigu.main4.order.vo.OrderDetailExpressDetailVO;
-import com.shigu.main4.order.vo.OrderDetailExpressVO;
+import com.shigu.main4.order.utils.PriceConvertUtils;
+import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,8 +36,6 @@ import java.util.List;
 @Service
 public class OrderListServiceImpl implements OrderListService {
 
-    @Autowired
-    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
 
 
     /**
@@ -479,11 +475,23 @@ public class OrderListServiceImpl implements OrderListService {
     //todo
     @Override public OrderDetailTotalVO selectTotal (Long orderId) {
         OrderDetailTotalVO vo=new OrderDetailTotalVO();
-        vo.setChildOrdersPriceLong (12300L);
-        vo.setExpressPriceLong (1200L);
-        vo.setOrderTotalPriceLong (15900L);
-        vo.setServicePriceLong (500L);
 
+        ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
+        ItemOrderVO itemOrderVO = orderModel.orderInfo();
+        vo.setOrderTotalPriceLong(itemOrderVO.getTotalFee());
+        vo.setOrderTotalPrice(PriceConvertUtils.priceToString(vo.getOrderTotalPriceLong()));
+        List<LogisticsVO> logisticsVOs = orderModel.selLogisticses();
+        if (logisticsVOs.size()>0) {
+            vo.setExpressPriceLong(logisticsVOs.get(0).getMoney());
+            vo.setExpressPrice(PriceConvertUtils.priceToString(vo.getExpressPriceLong()));
+        }
+        long childOrdersPrice = 0;
+        for (SubItemOrderVO subItemOrderVO:orderModel.subOrdersInfo()) {
+            childOrdersPrice += subItemOrderVO.getNum()*subItemOrderVO.getProduct().getPrice();
+        }
+        vo.setChildOrdersPriceLong(childOrdersPrice);
+        vo.setChildOrdersPrice(PriceConvertUtils.priceToString(childOrdersPrice));
+        //vo.setServicePriceLong();
         return vo;
     }
 
