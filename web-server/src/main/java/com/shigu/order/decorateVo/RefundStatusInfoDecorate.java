@@ -1,6 +1,7 @@
 package com.shigu.order.decorateVo;
 
-import com.shigu.main4.order.servicevo.ReturnGoodsInfoVO;
+import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
+import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,25 +14,24 @@ import java.util.Map;
  * @description xx
  * @since 3.0.0-SNAPSHOT
  */
-public class RefundInfoDecorate extends RefundVoDecorate{
+public class RefundStatusInfoDecorate extends RefundVoDecorate{
 
-    private ReturnGoodsInfoVO returnGoodsInfoVO;
+    private AfterSaleStatusVO afterSaleStatusVO;
 
-    public RefundInfoDecorate(AbstractRefundVo vo,ReturnGoodsInfoVO returnGoodsInfoVO){
+    public RefundStatusInfoDecorate(AbstractRefundVo vo,AfterSaleStatusVO afterSaleStatusVO){
         super(vo);
-        this.returnGoodsInfoVO = returnGoodsInfoVO;
+        this.afterSaleStatusVO = afterSaleStatusVO;
     }
 
 
     private void setRefundInfo(){
         Map<String,Object> map = new HashMap<>();
-        map.put("refundId",returnGoodsInfoVO.getRefundId());
-        map.put("refundAmount",returnGoodsInfoVO.getRefundPrice());
+        map.put("refundId",afterSaleStatusVO.getSubOrderId());
         System.out.println("设置退款信息");
         int refundStateNum = 0;
         int waitState = 0;
         int returnState = 0;
-        switch (returnGoodsInfoVO.getRetrunGoodsStatus()){
+        switch (afterSaleStatusVO.getAfterSaleStatus()){
 
             case RETURN_ENT:{
                 refundStateNum = 4;
@@ -49,13 +49,17 @@ public class RefundInfoDecorate extends RefundVoDecorate{
             }
             case REFUSE_PROCESS:{
                 refundStateNum = 2;
-                returnState = 2;
+                waitState = 2;
                 break;
             }
-            case WAIT_AFTER_SALE:{
+            case REFUSE_MONEY_CHANGED:{
+                refundStateNum = 3;
+                returnState =4;
                 break;
             }
             case DISPOSE_RETRUN_GOODS:{
+                refundStateNum =2 ;
+                waitState =1;
                 break;
             }
             case REFUND_MONEY_CHANGED:{
@@ -74,9 +78,15 @@ public class RefundInfoDecorate extends RefundVoDecorate{
 
     }
 
+//    @Override
+//    public Map<String, Object> getViewVo() {
+//        setRefundInfo();
+//        return super.getViewVo();
+//    }
+
     @Override
-    public Map<String, Object> getViewVo() {
+    public void doAdd() {
         setRefundInfo();
-        return super.getViewVo();
+        super.doAdd();
     }
 }

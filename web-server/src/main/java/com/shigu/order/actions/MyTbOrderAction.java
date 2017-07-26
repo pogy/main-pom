@@ -65,12 +65,12 @@ public class MyTbOrderAction {
 
     @RequestMapping("allGlGoodsJson")
     @ResponseBody
-    public JSONObject allGlGoodsJson(String keyword,Integer page){
+    public JSONObject allGlGoodsJson(String keyword,String webSite,Integer page){
         if(page==null||page<1){
             page=1;
         }
         Integer size=4;
-        ShiguPager<GoodsVO> pager=myTbOrderService.selectglGoods(keyword,page,size);
+        ShiguPager<GoodsVO> pager=myTbOrderService.selectglGoods(keyword,webSite,page,size);
         JSONObject obj=new JSONObject();
         obj.put("result","success");
         obj.put("goodsList",pager.getContent());

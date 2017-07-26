@@ -1,17 +1,17 @@
 package com.shigu.order.services;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.order.enums.ReturnGoodsStatusEnum;
+import com.shigu.main4.order.enums.ShStatusEnum;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.LogisticsService;
-import com.shigu.main4.order.servicevo.ReturnGoodsInfoVO;
-import com.shigu.main4.order.servicevo.ReturnableExpressInfoVO;
+import com.shigu.main4.order.servicevo.*;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.decorateVo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,55 +44,77 @@ public class AfterSaleShowService {
     }
 
     public Map<String,Object> returnOrChange(String childOrderId) {
-//
-//        SubOrderInfoVO subOrderInfoVO = itemOrderService.suborderInfo(Long.parseLong(childOrderId));
-//        OrderInfoVO orderInfoVO = itemOrderService.orderInfo(subOrderInfoVO.getOrderId());
-//        Map<String, Object> stringObjectMap = refundBaseMap(subOrderInfoVO, orderInfoVO);
-
-        //TODO 这块要重新规划
-        /*ReturnGoodsInfoVO returnGoodsInfoVO = afterSaleService.retrunGoodsInfo(Long.parseLong("111"));
+        SubAfterSaleSimpleOrderVO subAfterSaleSimpleOrderVO = afterSaleService.subAfterSaleSimpleOrder(Long.parseLong(childOrderId));
+        AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(Long.parseLong(childOrderId));
 
         AbstractRefundVo vo = new OrderRefundVo();
-        AbstractRefundVo vo1 = new SubWithOrderRefundDecorate(vo,itemOrderService,Long.parseLong(childOrderId));
-
-        AbstractRefundVo vo2 = new RefundInfoDecorate(vo1,returnGoodsInfoVO);
-
-
-        Map<String, Object> viewVo = vo2.getViewVo();
-
-
-        return viewVo;*/
-        return null;
+        AbstractRefundVo vo1 = new SubSimpleRefundDecorate(vo,subAfterSaleSimpleOrderVO);//子单信息
+        AbstractRefundVo vo2 = new OrderSimpleRefundDecorate(vo1,afterSaleSimpleOrderVO);//主单信息
+        vo2.doAdd();
+        return vo2.getViewVo();
     }
 
 
 
     public Map<String, Object> refundChildOrder(String childOrderId) {
+
+        SubAfterSaleSimpleOrderVO subAfterSaleSimpleOrderVO = afterSaleService.subAfterSaleSimpleOrder(Long.parseLong(childOrderId));
+        AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(Long.parseLong(childOrderId));
         AbstractRefundVo vo = new OrderRefundVo();
-        AbstractRefundVo vo1 = new SubWithOrderRefundDecorate(vo,itemOrderService,Long.parseLong(childOrderId));
-        Map<String, Object> viewVo = vo1.getViewVo();
+        AbstractRefundVo vo1 = new SubSimpleRefundDecorate(vo,subAfterSaleSimpleOrderVO);//子单信息
+        AbstractRefundVo vo2 = new OrderSimpleRefundDecorate(vo1,afterSaleSimpleOrderVO);//主单信息
+        vo2.doAdd();
+        Map<String, Object> viewVo = vo2.getViewVo();
+
         viewVo.put("refundStateNum",1);//这个是申请退货
 
         return viewVo;
     }
 
     public Map<String, Object> refund(String refundId) {
-       /* Long childOrderId = afterSaleService.selChildOrderId(Long.parseLong(refundId));
-        ReturnGoodsInfoVO returnGoodsInfoVO = afterSaleService.retrunGoodsInfo(Long.parseLong(refundId));
-        AbstractRefundVo vo,vo1,vo2;
-        vo = new OrderRefundVo();
-        vo1 = new SubWithOrderRefundDecorate(vo,itemOrderService,childOrderId);
-        vo2 = new RefundInfoDecorate(vo1,returnGoodsInfoVO);
-        AbstractRefundVo vo3 = null;
-        if(returnGoodsInfoVO.getRetrunGoodsStatus() == ReturnGoodsStatusEnum.EXPRESS_SUBMIT){
-            vo3 = new LogisticsDecorate(vo2,logisticsService,Long.parseLong(refundId));
+        ShStatusEnum shStatusEnum = afterSaleService.queryAfterSaleType(Long.parseLong(refundId));
+        if(shStatusEnum == null||shStatusEnum.shStatus == 2){
+            return null;
         }
-        if(vo3!=null){
-            return vo3.getViewVo();
+        AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(Long.parseLong(refundId));
+        AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
+        AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(Long.parseLong(refundId));
+        List<RefundLogVO> rlist = afterSaleService.afterSaleApplication(Long.parseLong(refundId));
+        AbstractRefundVo vo = new OrderRefundVo();
+        AbstractRefundVo vo1 = new OrderSimpleRefundDecorate(vo,afterSaleSimpleOrderVO);//主单信息
+        AbstractRefundVo vo2 = new RefundStatusInfoDecorate(vo1,afterSaleStatusVO);//退款状态信息
+        AbstractRefundVo vo3 = new RefundSimpleInfoDecorate(vo2,afterSaleInfoVO);  //退款信息编号和钱
+        AbstractRefundVo vo4 = new RefundLogDecorate(vo3,rlist);//申请信息
+        AbstractRefundVo von = null;
+        switch (afterSaleStatusVO.getAfterSaleStatus()){
+            case RETURN_ENT:{
+                AfterSaleEntVO afterSaleEntVO = afterSaleService.afterEnt(Long.parseLong(refundId));
+                von = new RefundEndDecorate(vo2,afterSaleEntVO);
+                von.doAdd();
+                break;
+            }
+            case AGREE_PROCESS:{
+                break;
+            }
+            case EXPRESS_SUBMIT:{
+                break;
+            }
+            case REFUSE_PROCESS:{
+                break;
+            }
+            case WAIT_AFTER_SALE:{
+                break;
+            }
+            case DISPOSE_RETRUN_GOODS:{
+                break;
+            }
+            case REFUND_MONEY_CHANGED:{
+            }
+            default:{
+                break;
+            }
         }
 
-
-        return vo2.getViewVo();*/
         return null;
     }
 }

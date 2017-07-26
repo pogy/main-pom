@@ -9,7 +9,7 @@ public enum ReturnGoodsStatusEnum {
     REFUSE_PROCESS(2),//拒绝申请
     EXPRESS_SUBMIT(3),//已提交快递,                 对应页面"买家退货-退货物理信息提交"
     REFUND_MONEY_CHANGED(4),//退款金额已修改       对应 ”买家退货-退款金额已修改“
-    WAIT_AFTER_SALE(5),//等待售后处理               对应页面"买家退货-货物收到"
+    REFUSE_MONEY_CHANGED(5),//不同意金额修改               对应页面"买家退货-不同意退款金额"
     RETURN_ENT(6),//退(换)货完成                     对应页面"退货退款完成"
     ;
     public final int returnGoodsStatus;
