@@ -17,7 +17,6 @@ import com.shigu.main4.order.vo.BuyerAddressVO;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 商品交易订单服务
