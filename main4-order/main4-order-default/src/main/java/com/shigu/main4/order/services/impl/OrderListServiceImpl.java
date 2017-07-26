@@ -1,6 +1,9 @@
 package com.shigu.main4.order.services.impl;
 
+import com.opentae.data.mall.beans.ItemOrderLogistics;
+import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.enums.*;
 import com.shigu.main4.order.services.OrderListService;
@@ -10,6 +13,7 @@ import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressDetailVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,9 +34,23 @@ import java.util.List;
 @Service
 public class OrderListServiceImpl implements OrderListService {
 
+    @Autowired
+    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
+
+    /**
+     * ====================================================================================
+     * @方法名：myOrder
+     * @功能： 我的订单
+     * @param: bo查询条件  bo一定要有所有订单，待付款，已付款，配货中，交易完成，交易关闭的标记
+     * @return: 返回订单列表
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    //todo
     @Override public List<ShowOrderVO> myOrder (OrderBO bo,Long userId) {
 
-            List<ShowOrderVO> list=new ArrayList<> ();
+        List<ShowOrderVO> list=new ArrayList<> ();
         ShowOrderVO ovo=new ShowOrderVO ();
 
         for(int i=0;i<20;i++) {
@@ -107,6 +125,17 @@ public class OrderListServiceImpl implements OrderListService {
         return list;
     }
 
+    /**
+     * ====================================================================================
+     * @方法名：分页数据
+     * @功能： selectCountMyOrder
+     * @param: bo查询条件，userId用户ID
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    //todo
     @Override public ShiguPager<ShowOrderVO> selectCountMyOrder (OrderBO bo, Long userId) {
         ShiguPager<ShowOrderVO> pager=new ShiguPager<ShowOrderVO>();
         //totalCount+","+size+","+number;
@@ -115,7 +144,17 @@ public class OrderListServiceImpl implements OrderListService {
         return pager;
     }
 
+    /**
+     *
+     * 查询售后列表
+     * @param shStatus
+     * @param page
+     * @param pageSize
+     * @param userId
+     * @return
+     */
     @Override
+    //todo
     public ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus, Integer page, Integer pageSize, Long userId) {
         List<ShowOrderVO> list=new ArrayList<> ();
         ShowOrderVO ovo=new ShowOrderVO ();
@@ -232,25 +271,73 @@ public class OrderListServiceImpl implements OrderListService {
         return pager;
     }
 
-
+    /**
+     * ====================================================================================
+     * @方法名：removeOrder
+     * @功能： 删除订单
+     * @param: orderId 订单ID
+     * @return: 如果大于0就删除成功
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    //todo
     @Override public int removeOrder (Long orderId) {
         return 1;
     }
 
+    /**
+     * ====================================================================================
+     * @方法名：取消订单
+     * @功能：
+     * @param:
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    //todo
     @Override public int cancelOrder (Long orderId) {
         return 1;
     }
 
+    /**
+     * ====================================================================================
+     * @方法名：selectOrderAddrInfo
+     * @功能： 查询订单地址信息
+     * @param:
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @Override public OrderAddrInfoVO selectOrderAddrInfo (Long orderId) {
-
-        OrderAddrInfoVO addrvo=new OrderAddrInfoVO();
-        addrvo.setAddress ("上海上海市浦东新区 浦东新区航头镇航帆路20号");
-        addrvo.setName ("刘家磊");
-        addrvo.setPhone ("021-50126998");
-        addrvo.setOrderId (orderId);
+        OrderAddrInfoVO addrvo = null;
+        if (orderId == null) {
+            return addrvo;
+        }
+        ItemOrderLogistics itemOrderLogistics = new ItemOrderLogistics();
+        itemOrderLogistics.setOid(orderId);
+        ItemOrderLogistics resultLogistics = itemOrderLogisticsMapper.selectOne(itemOrderLogistics);
+        if (resultLogistics != null) {
+            addrvo = BeanMapper.map(resultLogistics,OrderAddrInfoVO.class);
+            addrvo.setPhone(resultLogistics.getTelephone());
+            addrvo.setOrderId(orderId);
+        }
         return addrvo;
     }
 
+    /**
+     * ====================================================================================
+     * @方法名：selectExpress
+     * @功能： 查询订单的快递信息
+     * @param:
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    //todo
     @Override public OrderDetailExpressVO selectExpress (Long orderId) {
         OrderDetailExpressVO vo=new OrderDetailExpressVO();
         vo.setId ("446652085546");
@@ -287,6 +374,17 @@ public class OrderListServiceImpl implements OrderListService {
         return vo;
     }
 
+    /**
+     * ====================================================================================
+     * @方法名：selectMyorder
+     * @功能： 查询主订单的信息
+     * @param:
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    //todo
     @Override public ShowOrderVO selectMyorder (Long orderId) {
         ShowOrderVO vo=new ShowOrderVO();
         vo.setOrderCreateTimed (new Date());//创建时间
@@ -300,6 +398,17 @@ public class OrderListServiceImpl implements OrderListService {
         return vo;
     }
 
+    /**
+     * ====================================================================================
+     * @方法名：selectSubList
+     * @功能： 根据主单id查询出子单列表
+     * @param:
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    //todo
     @Override public List<SubOrderInfoVO> selectSubList (Long orderId) {
         List<SubOrderInfoVO> listsub=new ArrayList<> ();
 
@@ -356,6 +465,17 @@ public class OrderListServiceImpl implements OrderListService {
         return listsub;
     }
 
+    /**
+     * ====================================================================================
+     * @方法名：selectTotal
+     * @功能： 根据主单查询总数
+     * @param:
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    //todo
     @Override public OrderDetailTotalVO selectTotal (Long orderId) {
         OrderDetailTotalVO vo=new OrderDetailTotalVO();
         vo.setChildOrdersPriceLong (12300L);
