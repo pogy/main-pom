@@ -1,9 +1,9 @@
 package com.shigu.order.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.order.bo.AfterSaleBo;
-import com.shigu.order.services.AfterSaleService;
+import com.shigu.order.services.AfterSaleShowService;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.Map;
 @RequestMapping("order/")
 public class AfterSaleAction {
     @Autowired
-    private AfterSaleService afterSaleService;
+    private AfterSaleShowService afterSaleShowService;
 
 
     /**
@@ -40,7 +40,7 @@ public class AfterSaleAction {
     @RequestMapping(value = "returnOrChange",method = RequestMethod.GET)
     public String returnOrChange(@RequestParam(value = "childOrderId")String childOrderId, Model model){
 
-        Map<String,Object> map = afterSaleService.returnOrChange(childOrderId);
+        Map<String,Object> map = afterSaleShowService.returnOrChange(childOrderId);
 
         model.addAllAttributes(map);
 
@@ -51,11 +51,11 @@ public class AfterSaleAction {
     public String refund(String childOrderId,String refundId,Model model){
 
         if(!StringUtils.isEmpty(childOrderId)){
-            Map<String,Object> map = afterSaleService.refundChildOrder(childOrderId);
+            Map<String,Object> map = afterSaleShowService.refundChildOrder(childOrderId);
             model.addAllAttributes(map);
             return "trade/refund";
         }else if(!StringUtils.isEmpty(refundId)){
-            Map<String,Object> map = afterSaleService.refund(refundId);
+            Map<String,Object> map = afterSaleShowService.refund(refundId);
             return "trade/refund";
         }
 
@@ -82,7 +82,7 @@ public class AfterSaleAction {
             return JsonResponseUtil.error("快递单号不能空");
         }
 
-        afterSaleService.chooseExpress(childOrderId,expressId,expressCode);
+        afterSaleShowService.chooseExpress(childOrderId,expressId,expressCode);
         return JsonResponseUtil.success();
 
     }
@@ -106,7 +106,7 @@ public class AfterSaleAction {
            return JsonResponseUtil.error("退货数量不能空");
         }
 
-        return JsonResponseUtil.success().element("refundId",afterSaleService.applyReturnOrder(bo));
+        return JsonResponseUtil.success().element("refundId",afterSaleShowService.applyReturnOrder(bo));
     }
 
 
