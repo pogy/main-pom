@@ -16,6 +16,11 @@ import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
+import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
+import com.shigu.main4.order.zfenums.RefundTypeEnum;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
+import com.shigu.main4.order.zfenums.SubOrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

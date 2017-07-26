@@ -54,6 +54,14 @@ public class CdnShopInfoVO {
      * 星星数
      */
     private Long starNum;
+    /**
+     * 手机号
+     */
+    private String mobile;
+    /**
+     * 淘宝地址
+     */
+    private String tbUrl;
 
     /**
      * 获取 档口ID
@@ -221,5 +229,33 @@ public class CdnShopInfoVO {
      */
     public void setStarNum(Long starNum) {
         this.starNum = starNum;
+    }
+
+    /**
+     * 获取 淘宝地址
+     */
+    public String getTbUrl() {
+        return this.tbUrl;
+    }
+
+    /**
+     * 设置 淘宝地址
+     */
+    public void setTbUrl(String tbUrl) {
+        this.tbUrl = tbUrl;
+    }
+
+    /**
+     * 获取 手机号
+     */
+    public String getMobile() {
+        return this.mobile;
+    }
+
+    /**
+     * 设置 手机号
+     */
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }
