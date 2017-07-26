@@ -25,6 +25,7 @@ public interface ReturnGoodsService {
     /**
      * ====================================================================================
      * @方法名：returnGoodsApply
+     * @create: zf
      * @功能： 退货申请
      * @param: orderChildId订单子单id，refundCount退货件数，refundMoney退货金额，refundReason退货换原因，refundDesc退款说明
      * @return: refundId
@@ -36,6 +37,7 @@ public interface ReturnGoodsService {
     /**
      * ====================================================================================
      * @方法名：chooseExpress
+     * @create: zf
      * @功能： 选择快递公司并提交
      * @param: refundId 退换货id  expressId快递公司id，expressCode快递单号
      * @return: 返回
@@ -48,6 +50,7 @@ public interface ReturnGoodsService {
     /**
      * ====================================================================================
      * @方法名：modifyExpress
+     * @create: zf
      * @功能： 修改快递公司
      * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
      * @return: 返回
@@ -59,6 +62,7 @@ public interface ReturnGoodsService {
 
     /**
      * 退货日志
+     * @create: zf
      * @param refundId
      * @return
      */
@@ -66,6 +70,7 @@ public interface ReturnGoodsService {
 
     /**
      * 退货地址
+     * @create: zf
      * @param refundId
      * @return
      */
@@ -73,6 +78,7 @@ public interface ReturnGoodsService {
 
     /**
      * 退货简要信息
+     * @create: zf
      * @param refundId
      * @return
      */
@@ -80,6 +86,7 @@ public interface ReturnGoodsService {
 
     /**
      * 快递日志列表
+     * @create: zf
      * @param refundId
      * @return
      */
@@ -87,6 +94,7 @@ public interface ReturnGoodsService {
 
     /**
      * 退货状态信息
+     * @create: zf
      * @param refundId
      * @return
      */

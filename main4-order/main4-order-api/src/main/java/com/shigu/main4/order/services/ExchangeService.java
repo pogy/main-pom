@@ -26,6 +26,7 @@ public interface ExchangeService {
      * ====================================================================================
      * @方法名：exchangeApply
      * @功能： 换货申请
+     * @create: zf
      * @param: orderChildId 订单子单id，refundReason退货换原因  refundDesc退款说明
      * @return: refundId 退换货ID
      * @exception: 
@@ -38,6 +39,7 @@ public interface ExchangeService {
      * ====================================================================================
      * @方法名：selectExpress
      * @功能： 查询快递公司
+     * @create: zf
      * @param:
      * @return: 快递公司列表
      * @exception:
@@ -49,6 +51,7 @@ public interface ExchangeService {
      * ====================================================================================
      * @方法名：chooseExpress
      * @功能： 选择快递公司
+     * @create: zf
      * @param: refundId 退换货id expressId快递公司id，expressCode快递单号
      * @return: 返回
      * @exception:
@@ -61,6 +64,7 @@ public interface ExchangeService {
      * ====================================================================================
      * @方法名：modifyExpress
      * @功能： 修改快递公司
+     * @create: zf
      * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
      * @return: 返回
      * @exception:
@@ -71,6 +75,7 @@ public interface ExchangeService {
 
     /**
      * 换货日志
+     * @create: zf
      * @param refundId
      * @return
      */
@@ -78,6 +83,7 @@ public interface ExchangeService {
 
     /**
      * 换货地址
+     * @create: zf
      * @param refundId
      * @return
      */
@@ -85,6 +91,7 @@ public interface ExchangeService {
 
     /**
      * 换货简要信息
+     * @create: zf
      * @param refundId
      * @return
      */
@@ -92,6 +99,7 @@ public interface ExchangeService {
 
     /**
      * 快递日志列表
+     * @create: zf
      * @param refundId
      * @return
      */
@@ -99,6 +107,7 @@ public interface ExchangeService {
 
     /**
      * 换货状态信息
+     * @create: zf
      * @param refundId
      * @return
      */
