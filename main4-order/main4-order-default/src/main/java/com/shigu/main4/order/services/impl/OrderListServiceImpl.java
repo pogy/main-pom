@@ -1,8 +1,10 @@
 package com.shigu.main4.order.services.impl;
 
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderLogistics;
 import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.OrderBO;
@@ -10,15 +12,14 @@ import com.shigu.main4.order.enums.*;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
-import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
-import com.shigu.main4.order.servicevo.ShowOrderVO;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -343,41 +344,29 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
     @Override
-    public OrderDetailExpressVO selectExpress (Long orderId) {
+    public OrderDetailExpressVO selectExpress (Long orderId) throws Main4Exception, ParseException {
         OrderDetailExpressVO vo=new OrderDetailExpressVO();
-        vo.setId ("446652085546");
-        vo.setName ("中通快递 ");
-        List<OrderDetailExpressDetailVO> detail=new ArrayList<> ();
-        OrderDetailExpressDetailVO dvo=new OrderDetailExpressDetailVO();
-        dvo.setOrderId (orderId);
-        dvo.setDate ("2017-07-20");
-        dvo.setDesc ("您的订单开始处理");
-        dvo.setTime ("13:04:56");
-        detail.add (dvo);
-
-        OrderDetailExpressDetailVO dvo1=new OrderDetailExpressDetailVO();
-        dvo1.setOrderId (orderId);
-        dvo1.setDate ("2017-07-20");
-        dvo1.setDesc ("您的订单待配货");
-        dvo1.setTime ("15:55:04");
-        detail.add (dvo1);
-
-        OrderDetailExpressDetailVO dvo2=new OrderDetailExpressDetailVO();
-        dvo2.setOrderId (orderId);
-        dvo2.setDate ("2017-07-20");
-        dvo2.setDesc ("卖家发货");
-        dvo2.setTime ("16:53:28");
-        detail.add (dvo2);
-
-        OrderDetailExpressDetailVO dvo3=new OrderDetailExpressDetailVO();
-        dvo3.setOrderId (orderId);
-        dvo3.setDate ("2017-07-20");
-        dvo3.setDesc ("您的包裹已出库");
-        dvo3.setTime ("17:58:19");
-        detail.add (dvo3);
-        vo.setDetail (detail);
+        ExpressInfoVO expressInfoVO = itemOrderService.expressInfo(orderId);
+        if (expressInfoVO != null) {
+            String expressId = expressInfoVO.getExpressId();
+            vo.setName(expressInfoVO.getExpressName());
+            vo.setId(expressId);
+            ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
+            List<OrderDetailExpressDetailVO> detailVOS = Lists.newArrayList();
+            if (orderModel.selLogisticses().size()>0) {
+                for (ExpressLogVO expressLogVO:itemOrderService.expressLog(orderModel.selLogisticses().get(0).getId())){
+                    OrderDetailExpressDetailVO detailVO = new OrderDetailExpressDetailVO();
+                    detailVO.setId(expressId);
+                    detailVO.setOrderId(orderId);
+                    detailVO.setDate(expressLogVO.getLogDate());
+                    detailVO.setTime(expressLogVO.getLogTime());
+                    detailVO.setDesc(expressLogVO.getLogDesc());
+                    detailVOS.add(detailVO);
+                }
+            }
+            vo.setDetail(detailVOS);
+        }
         return vo;
     }
 
