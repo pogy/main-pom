@@ -84,6 +84,7 @@ public class GoatShopService {
         IndexGoatVO indexGoatVO = BeanMapper.map(itemGoatVO, IndexGoatVO.class);
         //有一种可能性是,同一个人,对同一个广告连续买了2期,那么权限里应该有2个,一个在线的,一个预发布的
         indexGoatVO.setCodeId(itemGoatVO.getGoatId()+"_"+isonline);
+        indexGoatVO.setHadStart(isonline==1);
         indexGoatVO.setWebSite(webSite);
         indexGoatVO.setCode(itemGoatVO.getDescription());
         indexGoatVO.setType(itemGoatVO.getTitle());
@@ -97,7 +98,7 @@ public class GoatShopService {
                 indexGoatVO.setPicUrl(tiny.getPicUrl());
             }
         }
-        Format format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Format format = new SimpleDateFormat("MM/dd HH:mm");
         indexGoatVO.setStartOnline(format.format(spreadStart));
         indexGoatVO.setEndOnline(format.format(spreadEnd));
         return indexGoatVO;
@@ -203,6 +204,7 @@ public class GoatShopService {
             goatVO.setUserId(userId);
             goatDubboService.preparePublish(goatVO, (license.getSpreadFromTime().getTime() - new Date().getTime())/1000);
     }
+
 
     /**
      * 广告授权状态

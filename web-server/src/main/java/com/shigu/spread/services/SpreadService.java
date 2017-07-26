@@ -95,6 +95,7 @@ public class SpreadService {
                         }
                         //按顺序搞进去
                         for(Long gid:sortIds){
+                            if(spreadMap.get(gid)!=null)
                             vos.add(spreadMap.get(gid));
                         }
                     }
@@ -129,12 +130,12 @@ public class SpreadService {
         };
     }
 
-    /**
-     * 用于造缓存
-     */
-    @Async
-    public void createBySync(ObjFromCache fromCache) {
-        Object obj=fromCache.selReal();
-        redisForIndexPage.putCache(fromCache.key,obj);
-    }
+//    /**
+//     * 用于造缓存
+//     */
+//    @Async
+//    public void createBySync(ObjFromCache fromCache) {
+//        Object obj=fromCache.selReal();
+//        redisForIndexPage.putCache(fromCache.key,obj);
+//    }
 }

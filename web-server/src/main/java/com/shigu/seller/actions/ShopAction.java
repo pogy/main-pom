@@ -97,7 +97,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 店铺的控制中心
@@ -1153,15 +1155,41 @@ public class ShopAction {
      * 首页广告管理
      * @return
      */
-    @RequestMapping("seller/indexGgChange")
+    @RequestMapping("seller/promotion")
     public String indexGgChange(HttpSession session, Model model) throws IndexGoatException, GoatException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         ShopSession shopSession = personalSession.getLogshop();
         Long shopId = shopSession.getShopId();
         String webSite = shopSession.getWebSite();
         List<IndexGoatVO> myIndexTerms = goatShopService.selGoatByShopId(webSite, shopId, GoatType.ItemGoat);
-        model.addAttribute("myIndexTerms", myIndexTerms);
-        return "seller/indexGgChange";
+        //分为开始与没开始两种
+        List<GoatListVO> inForceList=new ArrayList<>();
+        List<GoatListVO> willInForceList=new ArrayList<>();
+        Map<String,GoatListVO> map=new HashMap<>();
+        for(IndexGoatVO igv:myIndexTerms){
+            String key;
+            if(igv.getHadStart()){
+                key=igv.getCode()+"_ol";
+            }else{
+                key=igv.getCode()+"_unol";
+            }
+            GoatListVO glv=map.get(key);
+            if(glv == null){
+                glv=new GoatListVO();
+                glv.setCode(igv.getCode());
+                glv.setPosList(new ArrayList<IndexGoatVO>());
+                map.put(key,glv);
+                if(igv.getHadStart()){
+                    inForceList.add(glv);
+                }else{
+                    willInForceList.add(glv);
+                }
+            }
+            glv.getPosList().add(igv);
+        }
+        model.addAttribute("inForceList", inForceList);
+        model.addAttribute("willInForceList",willInForceList);
+        return "seller/promotion";
     }
 
     /**

@@ -3,97 +3,113 @@ package com.opentae.data.mall.beans;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
+import java.io.Serializable;
 
-/**
- * 广告中的数据
- * Created by zhaohongbo on 17/5/5.
- */
-public class GoatItemData {
+public class GoatItemData implements Serializable {
     /**
      * 主键
      */
     @Id
-    @GeneratedValue(generator="JDBC")
+    @GeneratedValue(generator = "JDBC")
     private Long dataId;
+
     /**
      * 广告ID
      */
     private Long goatId;
+
     /**
-     * 用户ID
+     *
      */
     private Long userId;
+
     /**
-     * 广告开始时间
+     * 开始时间
      */
     private Date fromTime;
+
     /**
-     * 广告结束时间
+     * 结束时间
      */
     private Date toTime;
+
     /**
-     * 广告私有数据
+     * 广告的内容
      */
     private String context;
+
     /**
      * 1有效，0无效，2预设
      */
     private Integer status;
 
-    public Long getDataId() {
-        return dataId;
-    }
+    /**
+     * 最后发布时间
+     */
+    private Date lastPublishTime;
 
     public void setDataId(Long dataId) {
         this.dataId = dataId;
     }
 
-    public Long getGoatId() {
-        return goatId;
+    public Long getDataId() {
+        return this.dataId;
     }
 
     public void setGoatId(Long goatId) {
         this.goatId = goatId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getGoatId() {
+        return this.goatId;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Date getFromTime() {
-        return fromTime;
+    public Long getUserId() {
+        return this.userId;
     }
 
     public void setFromTime(Date fromTime) {
         this.fromTime = fromTime;
     }
 
-    public Date getToTime() {
-        return toTime;
+    public Date getFromTime() {
+        return this.fromTime;
     }
 
     public void setToTime(Date toTime) {
         this.toTime = toTime;
     }
 
-    public String getContext() {
-        return context;
+    public Date getToTime() {
+        return this.toTime;
     }
 
     public void setContext(String context) {
         this.context = context;
     }
 
-    public Integer getStatus() {
-        return status;
+    public String getContext() {
+        return this.context;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getStatus() {
+        return this.status;
+    }
+
+    public void setLastPublishTime(Date lastPublishTime) {
+        this.lastPublishTime = lastPublishTime;
+    }
+
+    public Date getLastPublishTime() {
+        return this.lastPublishTime;
     }
 
 }

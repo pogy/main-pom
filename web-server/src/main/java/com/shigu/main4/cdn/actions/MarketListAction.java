@@ -46,7 +46,12 @@ public class MarketListAction {
         model.addAttribute("webSite",marketVO.getWebSite());
         model.addAttribute("marketId",bo.getMid());
         model.addAttribute("cateId",bo.getCid());
-        return "cdn/index";
+        if ("kx".equalsIgnoreCase(marketVO.getWebSite())) {
+            return "cdn/xieIndex";
+        } else {
+            return "cdn/index";
+        }
+
     }
 
     /**

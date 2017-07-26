@@ -13,8 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    
-    <link href="http://style.571xz.com/gys5/css/createGoods21init.css?t=1498441733540" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/createGoods21init.css?t=1499305336704" rel="stylesheet">
     
   </head>
 <body>
@@ -207,44 +206,44 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <div class="wrapper layout">
+  
     
-    
-    <div class="sidebar shadow-box">
-        <h2>商品管理</h2>
-        <ul>
-            <li><a class="selected"  href="${main_host!}seller/createGoods21init.htm">发布商品</a></li> 
-            <li><a href="${main_host!}seller/storeGoodsList21init.htm"  >出售中的商品</a></li> 
-            <li><a href="${main_host!}seller/storeGoodsListinit.htm?pinteger=2"  >仓库中的商品</a></li> 
-            <li><a href="${main_host!}seller/storeGoodsNoListinit.htm"  >批量修改货号</a></li> 
-            <li><a href="${main_host!}seller/xiufuGoods21init.htm"  >商品类目管理</a></li> 
-        </ul> 
-        <h2>店铺管理</h2>
-        <ul>
-            <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
-            <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
-            <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
-            <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
-            <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
-        </ul> 
-        <h2>财务信息</h2>
-        <ul>
-            <li><a href="${main_host!}seller/iwantToRechargein5.htm"  >充值</a></li> 
-            <li><a href="${main_host!}seller/withdraw5Apply.htm"  >提现</a></li> 
-        </ul> 
-        <h2>账号管理</h2>
-        <ul>
-            <li><a href="${main_host!}seller/safeindex.htm"  >安全设置</a></li> 
-            <li><a href="${main_host!}seller/sysSetsindex.htm"  >个人信息</a></li> 
-        </ul> 
-        <h2>营销管理</h2>
-        <ul>
-            <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
-            <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
-            <li><a href="${main_host!}seller/findGoodsChange.htm"  >发现好货广告</a></li> 
-            <li><a href="${main_host!}seller/indexGgChange.htm"  >首页广告管理</a></li> 
-        </ul> 
-    </div>
-    
+<div class="sidebar shadow-box">
+    <h2>商品管理</h2>
+    <ul>
+        <li><a class="selected"  href="${main_host!}seller/createGoods21init.htm">发布商品</a></li> 
+        <li><a href="${main_host!}seller/storeGoodsList21init.htm"  >出售中的商品</a></li> 
+        <li><a href="${main_host!}seller/storeGoodsListinit.htm?pinteger=2"  >仓库中的商品</a></li> 
+        <li><a href="${main_host!}seller/storeGoodsNoListinit.htm"  >批量修改货号</a></li> 
+        <li><a href="${main_host!}seller/xiufuGoods21init.htm"  >商品类目管理</a></li> 
+    </ul> 
+    <h2>店铺管理</h2>
+    <ul>
+        <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
+        <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
+        <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
+        <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
+        <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
+    </ul> 
+    <h2>财务信息</h2>
+    <ul>
+        <li><a href="${main_host!}seller/iwantToRechargein5.htm"  >充值</a></li> 
+        <li><a href="${main_host!}seller/withdraw5Apply.htm"  >提现</a></li> 
+    </ul> 
+    <h2>账号管理</h2>
+    <ul>
+        <li><a href="${main_host!}seller/safeindex.htm"  >安全设置</a></li> 
+        <li><a href="${main_host!}seller/sysSetsindex.htm"  >个人信息</a></li> 
+    </ul> 
+    <h2>营销管理</h2>
+    <ul>
+        <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
+        <li><a href="https://shop121675953.taobao.com" target="_blank" style="color:#f40">广告位竞拍</a></li> 
+        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
+        <li><a href="${main_host!}seller/promotion.htm"  >广告展示管理</a></li> 
+        <li><a href="${main_host!}seller/actRegister.htm"  >立即报名活动</a></li> 
+    </ul> 
+</div>
     <div class="content shadow-box">
         
         
@@ -267,9 +266,9 @@ var webSite = '${webSite!}';
 <#assign text>{"text":'立即开通', "href":"${main_host!}seller/ghTongbu.htm", "freemarker":true}</#assign>
 <#assign $it=text?eval />
                                                     <#if $it.href??>
-                                    <a class="gyButton" href="${$it.href!}" id="${$it.id!}">${$it.text!}</a>
+                                    <a class="gyButton " href="${$it.href!}" id="${$it.id!}">${$it.text!}</a>
                                 <#else>
-                                    <button class="gyButton" jbtn="${$it.jbtn!}" id="${$it.id!}">${$it.text!}</button>
+                                    <button class="gyButton " jbtn="${$it.jbtn!}" id="${$it.id!}">${$it.text!}</button>
                                 </#if>
                             
                             <#else>
@@ -291,7 +290,7 @@ var webSite = '${webSite!}';
                             <#if get.feedback == 1>
 <#assign text>{"text":'立即同步', "jbtn":'toSq'}</#assign>
 <#assign $it=text?eval />
-                                                        <button class="gyButton" jbtn="toSq" id="">立即同步</button>
+                                                        <button class="gyButton " jbtn="toSq" id="">立即同步</button>
                             
 <#assign text>{                        "jid":'toSq',                         "options":[                            {"name":'tipConText', "value":'您未授权淘宝店铺'},                            {"name":'href_', "value":"${main_host!}seller/ghTongbu.htm"},                            {"name":'tipIcon', "value":'errorTipIcon'},                            {"name":'btText', "value":'立即授权'}                        ],                        "freemarker":true}</#assign>
 <#assign $it=text?eval />
@@ -303,7 +302,7 @@ var webSite = '${webSite!}';
                             <#elseif get.feedback == 2>
 <#assign text>{"text":'立即同步', "jbtn":'againSq'}</#assign>
 <#assign $it=text?eval />
-                                                        <button class="gyButton" jbtn="againSq" id="">立即同步</button>
+                                                        <button class="gyButton " jbtn="againSq" id="">立即同步</button>
                             
 <#assign text>{                        "jid":'againSq',                         "options":[                            {"name":'tipConText', "value":'您的淘宝店授权过期'},                            {"name":'href_', "value":"${main_host!}ortherLogin.htm?ortherLoginType=1&backUrl=${main_host!}seller/createGoods21init.htm"},                            {"name":'tipIcon', "value":'errorTipIcon'},                            {"name":'btText', "value":'重新授权'}                        ],                        "freemarker":true}</#assign>
 <#assign $it=text?eval />
@@ -316,7 +315,7 @@ var webSite = '${webSite!}';
                         <#else>
 <#assign text>{"text":'立即同步', "jbtn":'toTb'}</#assign>
 <#assign $it=text?eval />
-                                                        <button class="gyButton" jbtn="toTb" id="">立即同步</button>
+                                                        <button class="gyButton " jbtn="toTb" id="">立即同步</button>
                             
                         </#if>
                     </div>
@@ -330,9 +329,9 @@ var webSite = '${webSite!}';
 <#assign text>{"text":'手动发布', "href":"${main_host!}seller/releaseGoodsinit.htm", "freemarker":true}</#assign>
 <#assign $it=text?eval />
                                             <#if $it.href??>
-                                <a class="gyButton" href="${$it.href!}" id="${$it.id!}">${$it.text!}</a>
+                                <a class="gyButton " href="${$it.href!}" id="${$it.id!}">${$it.text!}</a>
                             <#else>
-                                <button class="gyButton" jbtn="${$it.jbtn!}" id="${$it.id!}">${$it.text!}</button>
+                                <button class="gyButton " jbtn="${$it.jbtn!}" id="${$it.id!}">${$it.text!}</button>
                             </#if>
                         
                     </div>
@@ -347,7 +346,7 @@ var webSite = '${webSite!}';
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -377,7 +376,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/createGoods21init.js?t=1498441733540"></script>
+<script src="http://style.571xz.com/gys5/js/createGoods21init.js?t=1499305336704"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

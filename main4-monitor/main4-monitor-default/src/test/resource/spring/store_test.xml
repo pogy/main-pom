@@ -132,8 +132,8 @@
         <property name="configLocation" value="classpath:/cache/item-cache.xml"/>
     </bean>
 
-    <bean id="itemcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager" ref="ehcacheManager"/>
-        <property name="transactionAware" value="true"/>
-    </bean>
+    <!--<bean id="itemcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">-->
+        <!--<property name="cacheManager" ref="ehcacheManager"/>-->
+        <!--<property name="transactionAware" value="true"/>-->
+    <!--</bean>-->
 </beans>

@@ -38,6 +38,10 @@ public class IndexGoatVO {
      * 商品ID
      */
     private Long goodsId;
+    /**
+     * 是否已经开始
+     */
+    private Boolean hadStart;
 
     public Long getGoodsId() {
         return goodsId;
@@ -101,5 +105,13 @@ public class IndexGoatVO {
 
     public void setEndOnline(String endOnline) {
         this.endOnline = endOnline;
+    }
+
+    public Boolean getHadStart() {
+        return hadStart;
+    }
+
+    public void setHadStart(Boolean hadStart) {
+        this.hadStart = hadStart;
     }
 }

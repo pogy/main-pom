@@ -2,16 +2,23 @@ package com.shigu.activity.actions;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
-import com.shigu.activity.vo.*;
+import com.opentae.data.mall.beans.ShiguActivity;
+import com.opentae.data.mall.interfaces.ShiguActivityMapper;
+import com.shigu.activity.service.ActiveDrawListener;
+import com.shigu.activity.vo.ActiveDrawStyleVo;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
+import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
-import com.shigu.main4.spread.vo.active.draw.*;
+import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
+import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
+import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
+import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.seller.services.ActivityService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;
@@ -24,20 +31,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * 活动
+ * 奖品活动
  * Created by zhaohongbo on 17/4/26.
  */
 @Controller
 public class ActivityAction {
 
     @Autowired
+    private ActivityService activityService;
+
+    @Autowired
     private ActiveDrawServiceImpl activeDrawServiceImpl;
 
     @Autowired
     private ShopForCdnService shopForCdnService;
+
+    @Autowired
+    private ShiguActivityMapper shiguActivityMapper;
 
     @Autowired
     private RedisIO redisIO;
@@ -106,6 +124,54 @@ public class ActivityAction {
         return "activity/styleHuodong";
     }
 
+    /**
+     * 分销商后台
+     *
+     * @return
+     */
+    @RequestMapping("member/awardInfo")
+    public String awardInfo(HttpSession session,Model model){
+        List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
+        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
+        model.addAttribute("allInfo", drawPem.getInfo());
+
+        model.addAttribute("thisHdTime",parseToStartEnd(drawPem.getStartTime()));
+        List<ActiveDrawRecordUserVo> userVoList =  Collections.emptyList();
+        Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (object != null) {
+            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+            ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
+            if(drawLastPem != null){
+                model.addAttribute("lastHdTime",parseToStartEnd(drawLastPem.getStartTime()));
+                // 用户上一期获奖数据
+                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
+                for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
+                    ActiveDrawRecordUserVo anUserVoList = iterator.next();
+                    if (anUserVoList.getDrawStatus() != 3) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+        model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
+        return "buyer/awardInfo";
+    }
+
+    /**
+     * 发现好货开始结束时间显示
+     * @param start
+     * @return
+     */
+    private String parseToStartEnd(Date start){
+        final String dateFitment="yyyy年MM月dd日";
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(start);
+        String thisStart= DateUtil.dateToString(cal.getTime(),dateFitment);
+        cal.add(Calendar.DATE,7);
+        String thisEnd= DateUtil.dateToString(cal.getTime(),dateFitment);
+        return thisStart+" ——— "+thisEnd;
+    }
+
     @RequestMapping("activity/redbull")
     public String findGoods(HttpSession session, Model model) {
 
@@ -113,15 +179,8 @@ public class ActivityAction {
         List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
         ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
         model.addAttribute("allInfo", drawPem.getInfo());
-        // 发现好货商品
-        List<ActiveDrawGoodsVo> faGoodsVoList = activeDrawServiceImpl.selGoodsList(
-                drawPem.getId(),
-                ActiveDrawGoods.TYPE_FAGOODS,
-                20,
-                false,false
-        );
         ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
-        drawStyleVo.setGoodsList(faGoodsVoList);
+//        drawStyleVo.setGoodsList(faGoodsVoList);
         model.addAttribute("styleItem", drawStyleVo);
 
         // 每日发现商品
@@ -135,82 +194,9 @@ public class ActivityAction {
         Collections.shuffle(daliyGoodsVoList);
         model.addAttribute("likeGoodsList", daliyGoodsVoList);
         // 时间处理
-        model.addAttribute("nowTimeValue", System.currentTimeMillis());
-        // 本期的结束时间，如果没有下一期，取当前期开始时间加7天，有则取下期开始时间
-        long endTime;
-        if (activeDrawPemVos.size() == 2) {
-            endTime = activeDrawPemVos.get(1).getStartTime().getTime();
-        } else {
-            endTime = DateUtil.addDay(drawPem.getStartTime(), 7).getTime();
-        }
-        model.addAttribute("countdownValue", endTime);
-
-        // 中奖用户列表
-        model.addAttribute("awardList", JSON.toJSONString(activeDrawServiceImpl.selDrawRecordList(null, null, "ben")));
-        // 用户上一期获奖数据
-        List<ActiveDrawRecordUserVo> userVoList =  Collections.emptyList();
-        Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(object != null){
-            PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-            ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
-            if(drawLastPem != null){
-                // 用户上一期获奖数据
-                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(),ps.getUserId(), null);
-                for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
-                    ActiveDrawRecordUserVo anUserVoList = iterator.next();
-                    if (anUserVoList.getDrawStatus() != 3) {
-                        iterator.remove();
-                    }
-                }
-            }
-        }
-        model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
         model.addAttribute("webSite", "hz");
         return "activity/findGoods";
     }
-
-    @RequestMapping("activity/findStore")
-    public String findShop(Model model) {
-        // 当前期次
-        ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem();
-        // 发现好店
-        List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId(), false);
-        packShopItems(faShopVoList, drawPem.getId());
-        ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
-        drawStyleVo.setShopList(faShopVoList);
-        model.addAttribute("styleItem", drawStyleVo);
-        model.addAttribute("webSite","hz");
-        return "activity/findStore";
-    }
-
-    private void packShopItems(List<ActiveDrawShopVo> faShopVoList, Long pemId) {
-        String key = "find_store_" + pemId;
-        Map<Integer, List<ShopItemVo>> itemVoMap = redisIO.get(key, Map.class);
-        if (itemVoMap == null) {
-            itemVoMap = new HashMap<>();
-            for (ActiveDrawShopVo shopVo : faShopVoList) {
-                List<ShopItemVo> itemVos = new ArrayList<>();
-                itemVoMap.put(shopVo.getShopId().intValue(), itemVos);
-                for (ItemShowBlock itemShowBlock :
-                        shopForCdnService.searchItemOnsale(
-                                null,
-                                shopVo.getShopId(),
-                                "hz",
-                                "time_down",
-                                1,
-                                3
-                        ).getContent()) {
-                    itemVos.add(new ShopItemVo(itemShowBlock.getItemId(), itemShowBlock.getImgUrl(), itemShowBlock.getTitle()));
-                }
-            }
-            redisIO.putTemp(key, itemVoMap, 600);
-        }
-
-        for (ActiveDrawShopVo activeDrawShopVo : faShopVoList) {
-            activeDrawShopVo.setItems(itemVoMap.get(activeDrawShopVo.getShopId().intValue()));
-        }
-    }
-
 
     /**
      * 用户中奖记录
@@ -231,8 +217,8 @@ public class ActivityAction {
             return JSONObject.fromObject(rsp);
         }
 
-        // 当前期次
-        ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem(null);
+//        // 当前期次
+//        ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem(null);
         // 中奖记录
         List<ActiveDrawRecordUserVo> drawRecordList = activeDrawServiceImpl.selDrawNowUserRecord(ps.getUserId());
 
@@ -316,6 +302,73 @@ public class ActivityAction {
         return "activity/fdGdsLqzjb";
     }
 
+    @RequestMapping("activity/popular")
+    public String gfShow(Long id, Model model) throws Main4Exception {
+        ShiguActivity activity;
+        if (id == null || (activity = shiguActivityMapper.selectByPrimaryKey(id)) == null)
+            throw new Main4Exception("页面不存在");
+        model.addAttribute("activeName", activity.getTitle());
+        model.addAttribute("bannerSrc", activity.getBanner());
+        model.addAttribute("bgColor", activity.getBkcolor());
+        model.addAttribute("goodsStyle", activityService.gfShow(id));
+        model.addAttribute("webSite","hz");
+        return "activity/popular";
+    }
 
+    @RequestMapping("activity/apply")
+    public String apply(Long id,Model model) throws Main4Exception {
+        model.addAttribute("webSite","hz");
+//        if (id == null) {
+//            throw new Main4Exception("页面不存在");
+//        }
+        int actState;
+        ShiguActivityVO vo=activityService.activityInfo(id);
+        long current=System.currentTimeMillis();
+        if(vo.getStartApply().getTime()>current){
+            actState=0;
+        }else if(vo.getEndApply().getTime()>current){
+            actState=1;
+        }else {
+            actState=2;
+        }
+        model.addAttribute("actState",actState);
+        model.addAttribute("id",id);
+        return "activity/apply";
+    }
 
+    @Autowired
+    private ActiveDrawListener activeDrawListener;
+
+    @RequestMapping("activity/jsonapply")
+    @ResponseBody
+    public JSONObject signUp(HttpSession session) {
+        JSONObject jsonObject = new JSONObject();
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long userId = ps.getUserId();
+        String flag = "autumn_new";
+        if (activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()).equals("true")) {
+            jsonObject.put("result", "success");
+        } else {
+            jsonObject.put("msg", activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()));
+        }
+        return jsonObject;
+    }
+
+    @RequestMapping("activity/qzxpApply")
+    public String qzxpApply(Model model, HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if (ps != null && ps.getLogshop() !=null) {
+            model.addAttribute("alreadyApply", activeDrawListener.checkSignUp(ps.getUserId(), ps.getLogshop().getShopId()));
+        }
+        model.addAttribute("webSite", "hz");
+        return "activity/qzxpApply";
+    }
+    /**
+     * 临时用一下
+     */
+    @RequestMapping("activity/qzxpShop")
+    public String  qzxpShop(Model model){
+        model.addAttribute("webSite","hz");
+        return "activity/qzxpShop";
+    }
 }
