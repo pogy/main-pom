@@ -13,7 +13,7 @@ import java.util.Map;
 public abstract class AbstractRefundVo {
     public abstract Map<String, Object> getViewVo();
     public abstract void addMap(Map<String,Object> map);
-
+    public abstract void doAdd();
 
 
 }

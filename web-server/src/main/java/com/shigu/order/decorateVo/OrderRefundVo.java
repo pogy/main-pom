@@ -31,5 +31,9 @@ public class OrderRefundVo extends AbstractRefundVo{
         vo.putAll(map);
     }
 
+    @Override
+    public void doAdd() {
+    }
+
 
 }

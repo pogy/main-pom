@@ -33,8 +33,8 @@ public class OrderSimpleRefundDecorate extends RefundVoDecorate{
     }
 
     @Override
-    public Map<String, Object> getViewVo() {
+    public void doAdd() {
         setOrderSimpleInfo();
-        return super.getViewVo();
+        super.doAdd();
     }
 }

@@ -36,12 +36,14 @@ public class SubSimpleRefundDecorate extends RefundVoDecorate{
         map.put("childOrderColor",subAfterSaleSimpleOrderVO.getColor());
         map.put("childOrderSize",subAfterSaleSimpleOrderVO.getSize());
         map.put("refundGoodsPrice",subAfterSaleSimpleOrderVO.getPrice());
+        map.put("refundNumber",subAfterSaleSimpleOrderVO.getNum()
+                -(subAfterSaleSimpleOrderVO.getRefundNum()==null?0:subAfterSaleSimpleOrderVO.getRefundNum()));
         super.addMap(map);
     }
 
     @Override
-    public Map<String, Object> getViewVo() {
+    public void doAdd() {
         setRefundInfo();
-        return super.getViewVo();
+        super.doAdd();
     }
 }
