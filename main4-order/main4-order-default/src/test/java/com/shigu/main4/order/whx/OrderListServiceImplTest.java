@@ -23,4 +23,9 @@ public class OrderListServiceImplTest extends BaseTest {
     public void selectTotalTest() {
         show(orderListService.selectTotal(71L));
     }
+
+    @Test
+    public void selectSubListTest() {
+        show(orderListService.selectSubList(70L));
+    }
 }

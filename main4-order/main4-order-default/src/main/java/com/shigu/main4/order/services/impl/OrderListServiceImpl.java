@@ -8,6 +8,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.enums.*;
 import com.shigu.main4.order.model.ItemOrder;
+import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
@@ -37,6 +38,8 @@ import java.util.List;
 public class OrderListServiceImpl implements OrderListService {
 
 
+    @Autowired
+    private ItemOrderService itemOrderService;
 
 
     /**
@@ -413,62 +416,9 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
     @Override
     public List<SubOrderInfoVO> selectSubList (Long orderId) {
-        List<SubOrderInfoVO> listsub=new ArrayList<> ();
-
-        for(int k=0;k<3;k++) {
-            SubOrderInfoVO svo=new SubOrderInfoVO();
-            int p= 1+k+1;
-            svo.setOrderId (orderId);
-            svo.setChildOrderId (new Long(p));
-            switch (k){
-                case 0:{
-                    svo.setImgsrc ("https://img.alicdn.com/bao/uploaded/i4/270913282/TB2LQlAXB7c61BjSZFIXXcZmVXa-270913282.jpg");
-                    svo.setColor ("白");
-                    svo.setSize ("L");
-                    svo.setGoodsId (9522391L);
-                    svo.setGoodsNo ("A241 S5-P65");
-                    svo.setNum (1);
-                    svo.setPriceLong (6500L);
-                    svo.setSubStatusenum (SubOrderStatus.statusOf (0));
-                    svo.setTitle ("A241 S5-P65 2016秋冬毛线衫男装港风高领毛衣男纯色翻领毛衣");
-                    break;
-                }
-                case 1:{
-                    svo.setImgsrc ("https://img.alicdn.com/bao/uploaded/i3/138989925/TB2rAD4XRAkyKJjy0FeXXadhpXa_!!138989925.jpg");
-                    svo.setColor ("蓝");
-                    svo.setSize ("XL");
-                    svo.setGoodsId (20915911L);
-                    svo.setGoodsNo ("A242/WX82/P165");
-                    svo.setNum (3);
-                    svo.setPriceLong (16500L);
-                    svo.setSubStatusenum (SubOrderStatus.statusOf (2));
-                    svo.setTitle ("修身滚边设计男士帅气一粒扣西装 WX82/P165白");
-                    break;
-                }
-                default:{
-                    svo.setImgsrc ("https://img.alicdn.com/bao/uploaded/i3/2744642519/TB2H_0CX2AkyKJjy0FfXXaxhpXa_!!2744642519.jpg");
-                    svo.setColor ("红");
-                    svo.setSize ("XXL");
-                    svo.setGoodsId (20918332L);
-                    svo.setGoodsNo ("F088");
-                    svo.setNum (2);
-                    svo.setPriceLong (11000L);
-                    svo.setSubStatusenum (SubOrderStatus.statusOf (1));
-                    svo.setTitle ("【品质原创质检F088】秋装男夹克男风衣男外套男大码男P110控148");
-                    break;
-                }
-            }
-            svo.setOrderId (orderId);
-            listsub.add (svo);
-
-
-        }
-
-
-        return listsub;
+        return itemOrderService.suborderInfoByOrderId(orderId);
     }
 
     /**
