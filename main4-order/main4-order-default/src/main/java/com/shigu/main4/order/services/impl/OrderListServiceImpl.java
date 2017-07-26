@@ -305,9 +305,11 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
+    //todo: com.shigu.main4.order.model.Order#closed方法
     @Override
     public int cancelOrder(Long orderId) {
+        ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
+        orderModel.closed();
         return 1;
     }
 
@@ -405,6 +407,7 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
+    //todo: com.shigu.main4.order.services.ItemOrderService#suborderInfoByOrderId需要实现
     @Override
     public List<SubOrderInfoVO> selectSubList (Long orderId) {
         return itemOrderService.suborderInfoByOrderId(orderId);
@@ -420,6 +423,7 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
+    //todo: com.shigu.main4.order.model.ItemOrder#selServices需要实现
     @Override
     public OrderDetailTotalVO selectTotal (Long orderId) {
         OrderDetailTotalVO vo=new OrderDetailTotalVO();
