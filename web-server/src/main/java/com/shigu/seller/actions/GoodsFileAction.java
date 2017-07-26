@@ -2,7 +2,6 @@ package com.shigu.seller.actions;
 
 import com.opentae.data.mall.beans.GoodsFile;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.services.GoodsFileService;
@@ -42,8 +41,8 @@ public class GoodsFileAction {
     @Autowired
     private OssIO ossIO;
 
-    @RequestMapping("goodsFile/getAccessKey")
-    public String getAccessKey( HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @RequestMapping("goodsFile/getSignInfo")
+    public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long userId = getUserId(request.getSession());
         Map<String, String> infoMap = ossIO.createPostSignInfo(userId);
         JSONObject jsonInfo = JSONObject.fromObject(infoMap);
@@ -130,57 +129,11 @@ public class GoodsFileAction {
      */
     @RequestMapping("goodsFile/moveFile")
     @ResponseBody
-    public JSONObject moveFile(String fileId, String targetFileId) {
+    public JSONObject renameFile(String fileId, String targetFileId) {
         goodsFileService.moveFile(fileId, targetFileId);
         return JsonResponseUtil.success();
     }
 
-    /**
-     * 创建文件
-     * @param parentDir
-     * @param dir
-     * @return
-     */
-    @RequestMapping("goodsFile/createFoler")
-    @ResponseBody
-    public JSONObject createFoler(String parentDir, String dir) {
-        String fileId = goodsFileService.createDir(parentDir, dir);
-
-        JSONObject obj= JsonResponseUtil.success();
-        obj.element("fileId",fileId);
-        obj.element("fileName",dir);
-        obj.element("fileCreateTime", DateUtil.dateToString(new Date(), DateUtil.patternD));
-        return obj;
-    }
-
-    /**
-     * 删除文件
-     * @param fileId
-     * @param fileType
-     * @return
-     */
-    @RequestMapping("goodsFile/deleteFile")
-    @ResponseBody
-    public JSONObject deleteFile(String fileId, String fileType) {
-        boolean ret = goodsFileService.deleteFile(fileId, fileType);
-        return JsonResponseUtil.success();
-    }
-
-    /**
-     * 获取用户登录信息
-     */
-    @RequestMapping("goodsFile/jsonislogin")
-    @ResponseBody
-    public JSONObject jsonislogin(HttpServletRequest request) {
-        PersonalSession ps = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String userNick = "";
-        if (ps != null) {
-            userNick =  ps.getUserNick();
-        }
-        JSONObject obj= JsonResponseUtil.success();
-        obj.element("userNick",userNick);
-        return obj;
-    }
 
     private Long getUserId(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());

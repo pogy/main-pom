@@ -33,7 +33,7 @@ public class GoodsFileService {
     OssIO ossIO;
 
     /**
-     * 根据文件路径获取关联商品信息
+     * g更加文件路径获取
      */
     public List<ItemShowBlock> selGoodsFileByFile( String fileKey) {
         GoodsFileExample goodsExample=new GoodsFileExample();
