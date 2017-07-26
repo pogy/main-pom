@@ -74,18 +74,6 @@ public interface TaoOrderService {
 
     /**
      * ====================================================================================
-     * @方法名：selectglGoodsJson
-     * @功能： 关联搜索
-     * @param: condition搜索的条件,可能为空
-     * @return: 返回搜索出来的商品
-     * @exception: 
-     * ====================================================================================
-     * 
-     */
-    ShiguPager<GoodsVO> selectglGoodsJson(String condition,Integer page,Integer pageSize);
-
-    /**
-     * ====================================================================================
      * @方法名：
      * @功能： 搜索后的关联
      * @param: numiid淘宝订单的商品ID,goodsId是搜索出来的ID

@@ -2,6 +2,10 @@ package com.shigu.order.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.item.enums.SearchOrderBy;
+import com.shigu.main4.item.services.ItemSearchService;
+import com.shigu.main4.item.vo.SearchItem;
+import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.main4.order.bo.TbOrderBO;
 import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
@@ -12,6 +16,8 @@ import com.shigu.main4.order.servicevo.SubTbOrderVO;
 import com.shigu.main4.order.servicevo.TbOrderVO;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.GoodsVO;
+import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.vo.StoreRelation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,6 +33,10 @@ import java.util.List;
 public class MyTbOrderService {
     @Autowired
     TaoOrderService taoOrderService;
+    @Autowired
+    ItemSearchService itemSearchService;
+    @Autowired
+    StoreRelationService storeRelationService;
 
     public ShiguPager<TbOrderVO> myTbOrders(Long userId,Long orderId, Integer page,Integer size, String startTime, String endTime) {
         String sessionKey;
@@ -86,8 +96,27 @@ public class MyTbOrderService {
         return tvo;
     }
 
-    public ShiguPager<GoodsVO> selectglGoods(String keyword,Integer page,Integer size){
-        return taoOrderService.selectglGoodsJson(keyword,page,size);
+    public ShiguPager<GoodsVO> selectglGoods(String keyword,String webSite, Integer page, Integer size){
+        ShiguAggsPager pager= itemSearchService.searchItem(keyword,webSite,null,null,null,null,null,null,null,null, SearchOrderBy.COMMON,page,size,false);
+        ShiguPager<GoodsVO> vo=new ShiguPager<>();
+        List<GoodsVO> gs=new ArrayList<>();
+        for(SearchItem pa:pager.getContent()){
+            GoodsVO g=new GoodsVO();
+            g.setTitle(pa.getTitle());
+            g.setPrice(pa.getPrice());
+            StoreRelation shop=storeRelationService.selRelationById(pa.getItemId());
+            g.setStoreNum(shop.getStoreNum());
+            g.setMarketName(shop.getMarketName());
+            g.setImgSrc(pa.getPicUrl());
+            g.setId(pa.getItemId());
+            g.setGoodsNo(pa.getGoodsNo());
+            gs.add(g);
+        }
+        vo.setTotalPages(pager.getTotalPages());
+        vo.setContent(gs);
+        vo.setTotalCount(pager.getTotalCount());
+        vo.setNumber(pager.getNumber());
+        return vo;
     }
 
     public void glGoodsJson(Long numIid,Long goodsId) throws NotFindRelationGoodsException {

@@ -24,7 +24,7 @@ public class RefundLogVO {
     /**
      * 记录创建时间
      */
-    private Date logTime;
+    private String logTime;
     /**
      * 内容
      */
@@ -72,17 +72,11 @@ public class RefundLogVO {
         this.headImgUrl = headImgUrl;
     }
 
-    /**
-     * 获取 记录创建时间
-     */
-    public Date getLogTime() {
-        return this.logTime;
+    public String getLogTime() {
+        return logTime;
     }
 
-    /**
-     * 设置 记录创建时间
-     */
-    public void setLogTime(Date logTime) {
+    public void setLogTime(String logTime) {
         this.logTime = logTime;
     }
 

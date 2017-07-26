@@ -4,11 +4,13 @@ import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
 import com.shigu.main4.order.zfenums.RefundTypeEnum;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
 
+import java.io.Serializable;
+
 /**
  * 子订单信息
  * Created by zhaohongbo on 17/7/14.
  */
-public class SubOrderInfoVO {
+public class SubOrderInfoVO implements Serializable{
     /**
      * 订单ID
      */
@@ -42,11 +44,9 @@ public class SubOrderInfoVO {
      */
     private String goodsNo;
 
-    /**
-     * 单价
-     */
+    /** 单价：前端要展现的字符串 */
     private String price;
-
+    /**单价：接口传出来的数值*/
     private Long priceLong;
     /**子单中商品总数 */
     private Integer num;
@@ -54,6 +54,7 @@ public class SubOrderInfoVO {
     private Integer tkNum;
     /** 售后退款数量 **/
     private Integer  shTkNum;
+
     /**
      * 子单状态, 0初始状态，1已退，2已发
      */
@@ -68,21 +69,14 @@ public class SubOrderInfoVO {
      * 退款数量(已退和已申请退款的数量)
      */
     private Integer refundNum;
-    /**
-     * 退款状态，0无，1申请，2自动
-     */
+    /** 前端： 退款状态，0无，1退款成功  */
     private Integer tkState;
+    /** 接口传出来的枚举型 */
     private RefundTypeEnum tkStateEnum;
-    /**
-     * 售后状态, 0无，1售后处理中，2已退款，3已换货
-     */
+    /**  前端：售后状态,  0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中 */
     private Integer shState;
+    /** 接口传出来的枚举型 */
     private AfterSaleStatusEnum shStateEnum;
-
-
-
-
-
 
     /**
      * 获取 订单ID

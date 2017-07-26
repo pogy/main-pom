@@ -227,54 +227,6 @@ public class TaoOrderServiceImpl implements TaoOrderService{
         return v;
     }
 
-    @Override
-    public ShiguPager<GoodsVO> selectglGoodsJson(String condition, Integer page, Integer pageSize) {
-        ShiguPager<GoodsVO> v=new ShiguPager<>();
-        List<GoodsVO> gs=new ArrayList<>();
-        GoodsVO g=new GoodsVO();
-        g.setGoodsNo("A1");
-        g.setId(900001l);
-        g.setImgSrc("https://img.alicdn.com/bao/uploaded/i4/691575494/TB29FoJwhxmpuFjSZFNXXXrRXXa_!!691575494.jpg");
-        g.setMarketName("电商基地");
-        g.setStoreNum("A001");
-        g.setPrice("15.00");
-        g.setTitle("男士棉麻5分五分裤男夏天运动沙滩中");
-        gs.add(g);
-        g=new GoodsVO();
-        g.setGoodsNo("A2");
-        g.setId(900002l);
-        g.setImgSrc("https://img.alicdn.com/bao/uploaded/i3/TB1sbydSpXXXXXXaFXXXXXXXXXX_!!0-item_pic.jpg");
-        g.setMarketName("电商基地");
-        g.setStoreNum("A001");
-        g.setPrice("15.00");
-        g.setTitle("男士棉麻5分五分裤男夏天运动沙滩中");
-        gs.add(g);
-        if(page==1){
-            g=new GoodsVO();
-            g.setGoodsNo("A4");
-            g.setId(900004l);
-            g.setImgSrc("https://img.alicdn.com/bao/uploaded/i1/56987976/TB23YmBagIlyKJjSZFqXXX9xpXa_!!56987976.jpg");
-            g.setMarketName("电商基地");
-            g.setStoreNum("A001");
-            g.setPrice("15.00");
-            g.setTitle("男士棉麻5分五分裤男夏天运动沙滩中");
-            gs.add(g);
-            g=new GoodsVO();
-            g.setGoodsNo("A5");
-            g.setId(900005l);
-            g.setImgSrc("https://img.alicdn.com/bao/uploaded/i1/2744642519/TB2yVfyXuUkyKJjSsphXXbdaVXa_!!2744642519.jpg");
-            g.setMarketName("电商基地");
-            g.setStoreNum("A001");
-            g.setPrice("15.00");
-            g.setTitle("男士棉麻5分五分裤男夏天运动沙滩中");
-            gs.add(g);
-        }
-        v.setTotalPages(2);
-        v.setTotalCount(6);
-        v.setNumber(page);
-        v.setContent(gs);
-        return v;
-    }
 
     @Override
     public RelationGoodsVO glGoodsJson(Long numiid, Long goodsId) throws NotFindRelationGoodsException {

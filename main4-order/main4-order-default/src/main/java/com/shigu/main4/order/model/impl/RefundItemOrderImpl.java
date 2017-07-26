@@ -93,6 +93,11 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         return refundinfo().getRefundState();
     }
 
+    @Override
+    public List<RefundProcessVO> refundLogs() {
+        return null;
+    }
+
     /**
      * 退货日志查询
      *
