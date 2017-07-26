@@ -112,4 +112,14 @@ public class GoodsFileService {
         ossIO.renameFile(fileKey, newPath);
     }
 
+    /**
+     * 移动文件
+     * @param fileId
+     * @param targetFileId
+     * @return
+     */
+    public void moveFile(String fileId,  String targetFileId) {
+        ossIO.moveFile(fileId, targetFileId);
+    }
+
 }
