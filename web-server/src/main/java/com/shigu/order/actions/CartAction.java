@@ -1,15 +1,23 @@
 package com.shigu.order.actions;
 
+import com.google.gson.Gson;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.order.bo.AddCartBO;
+import com.shigu.order.bo.AddCartPropBO;
 import com.shigu.order.services.CartService;
+import com.shigu.order.vo.CartPageVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
+import com.shigu.tools.ResultRetUtil;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +25,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,4 +136,49 @@ public class CartAction {
         );
         return JsonResponseUtil.success().element("code", code);
     }
+
+
+//===================================================20170725张峰=======================================================
+    /**
+     * 进货车数量jsonp
+     * @param session
+     * @param response
+     * @param callback
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping("getOrderNum")
+    @ResponseBody
+    public String cartCount(HttpSession session, HttpServletResponse response, String callback) throws IOException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        int count=0;
+        if(ps!=null){
+            CartPageVO cart=cartService.selMyCart(ps.getUserId());
+            count=cart.getOrders().size();
+        }
+        ResultRetUtil.returnJsonp(callback,"{'result':'success','orderNum':'"+count+"'}",response);
+        return null;
+    }
+
+    /**
+     * 加入进货车
+     * @param session
+     * @return
+     */
+    @RequestMapping("addGoodsToCart")
+    public void addGoodsToCart(HttpSession session, HttpServletResponse response, String callback, String goodsSku) throws IOException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        JSONObject obj=new JSONObject();
+        obj.put("result","success");
+        try {
+            Gson g=new Gson();
+            AddCartBO bo=g.fromJson(goodsSku,AddCartBO.class);
+            cartService.addCartOrder(ps.getUserId(),bo.getGoodsId(),bo.getDatalist());
+        } catch (IllegalStateException e) {
+            obj.put("result","error");
+            obj.put("msg","商品不存在");
+        }
+        ResultRetUtil.returnJsonp(callback,obj.toString(),response);
+    }
+
 }
