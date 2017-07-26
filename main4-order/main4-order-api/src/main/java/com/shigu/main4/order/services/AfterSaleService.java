@@ -148,4 +148,11 @@ public interface AfterSaleService {
      * @param refundId:退换货id
      */
     void agreeOrRejectRefundPrice(Long refundId,boolean isAgree);
+
+    /**
+     * 售后结束信息(结束时间,如果是退货退款的单,还返回钱款去向数据)
+     * @param refundId
+     * @return
+     */
+    AfterSaleEntVO afterEnt(Long refundId);
 }

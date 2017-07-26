@@ -98,4 +98,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     public void agreeOrRejectRefundPrice(Long refundId,boolean isAgree) {
 
     }
+
+    @Override
+    public AfterSaleEntVO afterEnt(Long refundId) {
+        return null;
+    }
 }
