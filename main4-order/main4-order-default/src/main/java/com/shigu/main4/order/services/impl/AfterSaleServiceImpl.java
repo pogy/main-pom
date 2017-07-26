@@ -3,10 +3,10 @@ package com.shigu.main4.order.services.impl;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
-import com.shigu.main4.order.enums.RefundStateEnum;
-import com.shigu.main4.order.enums.ReturnGoodsStatusEnum;
-import com.shigu.main4.order.enums.ShStatusEnum;
-import com.shigu.main4.order.enums.UserTypeEnum;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
+import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
+import com.shigu.main4.order.zfenums.UserTypeEnum;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
@@ -163,14 +163,14 @@ public class AfterSaleServiceImpl implements AfterSaleService{
                 afterSaleStatus = ReturnGoodsStatusEnum.EXPRESS_SUBMIT;
                 break;
             case SELLER_CACHED:
-                afterSaleStatus = ReturnGoodsStatusEnum.WAIT_AFTER_SALE;
-                break;
+                //TODO: 该状态没有对应
+                throw new IllegalStateException(String.format("该状态没有对应: state[%s]", RefundStateEnum.BUYER_NOREPRICE));
             case SELLER_REPRICE:
                 afterSaleStatus = ReturnGoodsStatusEnum.REFUND_MONEY_CHANGED;
                 break;
             case BUYER_NOREPRICE:
-                //TODO: 该状态没有对应
-                throw new IllegalStateException(String.format("该状态没有对应: state[%s]", RefundStateEnum.BUYER_NOREPRICE));
+                afterSaleStatus = ReturnGoodsStatusEnum.REFUSE_MONEY_CHANGED;
+                break;
         }
         statusVo.setAfterSaleStatus(afterSaleStatus);
         String content = null;
@@ -215,7 +215,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         List<RefundProcessVO> refundProcessVOS = SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundLogs();
         return refundProcessVOS.stream().map(o -> {
             RefundLogVO vo = new RefundLogVO();
-            vo.setLogTime(o.getCreateTime());
+            vo.setLogTime(DateUtil.dateToString(o.getCreateTime(), null));
             vo.setLogDesc(o.getMsg());
             vo.setUserType(o.getImBuyer() ? UserTypeEnum.BUYER : UserTypeEnum.CUSTOM_SERVICE);
             vo.setHeadImgUrl("");// TODO:期待一个默认头像

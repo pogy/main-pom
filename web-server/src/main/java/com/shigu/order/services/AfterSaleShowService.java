@@ -1,6 +1,7 @@
 package com.shigu.order.services;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.services.ItemOrderService;
@@ -73,7 +74,7 @@ public class AfterSaleShowService {
         return viewVo;
     }
 
-    public Map<String, Object> refund(String refundIds) {
+    public Map<String, Object> refund(String refundIds) throws Main4Exception {
         Long refundId = Long.parseLong(refundIds);
         ShStatusEnum shStatusEnum = afterSaleService.queryAfterSaleType(refundId);
         if(shStatusEnum == null||shStatusEnum.shStatus == 2){
