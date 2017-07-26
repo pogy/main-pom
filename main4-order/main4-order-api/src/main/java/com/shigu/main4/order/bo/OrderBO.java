@@ -13,7 +13,9 @@ public class OrderBO {
     /**
      * 订单状态 null全部订单，1待付款，2已付款，3已发货，4交易完成，5交易取消
      */
-    private MainOrderStatusEnum status;
+    //private MainOrderStatusEnum status;
+
+    private String status;
     /**
      * 货号
      */
@@ -21,11 +23,11 @@ public class OrderBO {
     /**
      * 开始时间
      */
-    private Date st;
+    private String st;
     /**
      * 结束时间
      */
-    private Date et;
+    private String et;
     /**
      * 订单ID
      */
@@ -62,31 +64,19 @@ public class OrderBO {
         this.goodsNo = goodsNo;
     }
 
-    /**
-     * 获取 开始时间
-     */
-    public Date getSt() {
-        return this.st;
+    public String getSt () {
+        return st;
     }
 
-    /**
-     * 设置 开始时间
-     */
-    public void setSt(Date st) {
+    public void setSt (String st) {
         this.st = st;
     }
 
-    /**
-     * 获取 结束时间
-     */
-    public Date getEt() {
-        return this.et;
+    public String getEt () {
+        return et;
     }
 
-    /**
-     * 设置 结束时间
-     */
-    public void setEt(Date et) {
+    public void setEt (String et) {
         this.et = et;
     }
 
@@ -160,17 +150,11 @@ public class OrderBO {
         this.pageSize = pageSize;
     }
 
-    /**
-     * 获取 订单状态 null全部订单，1待付款，2已付款，3已发货，4交易完成，5交易取消
-     */
-    public MainOrderStatusEnum getStatus() {
-        return this.status;
+    public String getStatus () {
+        return status;
     }
 
-    /**
-     * 设置 订单状态 null全部订单，1待付款，2已付款，3已发货，4交易完成，5交易取消
-     */
-    public void setStatus(MainOrderStatusEnum status) {
+    public void setStatus (String status) {
         this.status = status;
     }
 }

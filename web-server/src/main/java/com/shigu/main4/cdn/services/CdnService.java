@@ -353,6 +353,7 @@ public class CdnService {
         if(other!=null){
             vo.setOpenTime(other.getOpenTime());
             vo.setMainBus(other.getMainBus());
+            vo.setTbUrl(other.getTaobaoUrl());
         }
         //是否实体认证
         ShiguShopLicense license = new ShiguShopLicense();
