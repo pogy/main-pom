@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 商品订单
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 @Repository
 @Scope("prototype")
-public class ItemOrderImpl implements ItemOrder{
+public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
@@ -75,7 +76,7 @@ public class ItemOrderImpl implements ItemOrder{
     private SenderVO senderVO;
 
     public ItemOrderImpl(Long oid) {
-        this.oid=oid;
+        this.oid = oid;
     }
 
     @Override
@@ -86,11 +87,10 @@ public class ItemOrderImpl implements ItemOrder{
 
         ItemOrderSub orderSub = new ItemOrderSub();
         orderSub.setOid(oid);
-        Map<Long, List<ItemOrderSub>> logisticsGroup = BeanMapper.groupBy(itemOrderSubMapper.select(orderSub), "logisticsId", Long.class);
+        Map<Long, List<ItemOrderSub>> longListMap = itemOrderSubMapper.select(orderSub).stream().collect(Collectors.groupingBy(ItemOrderSub::getLogisticsId));
+
         List<LogisticsVO> logisticsVOS = BeanMapper.mapList(select, LogisticsVO.class);
-        for (LogisticsVO logisticsVO : logisticsVOS) {
-            logisticsVO.setSoids(BeanMapper.getFieldList(logisticsGroup.get(logisticsVO.getId()), "soid", Long.class));
-        }
+        logisticsVOS.forEach(logisticsVO -> logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList())));
         return logisticsVOS;
     }
 
@@ -129,7 +129,7 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long addLogistics(List<Long> soids,LogisticsVO logistics) {
+    public Long addLogistics(List<Long> soids, LogisticsVO logistics) {
         ItemOrderLogistics orderLogistics = BeanMapper.map(logistics, ItemOrderLogistics.class);
         orderLogistics.setOid(oid);
         itemOrderLogisticsMapper.insertSelective(orderLogistics);
@@ -161,7 +161,7 @@ public class ItemOrderImpl implements ItemOrder{
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addPackage(Long metarialId,Integer num) {
+    public void addPackage(Long metarialId, Integer num) {
         MetarialVO metarialVO = orderConstantService.selMetarialById(selSender().getSenderId(), metarialId);
         ItemOrderPackage orderPackage = BeanMapper.map(metarialVO, ItemOrderPackage.class);
         orderPackage.setId(null);
@@ -335,18 +335,18 @@ public class ItemOrderImpl implements ItemOrder{
      */
     @Override
     public List<PayedVO> payedInfo() {
-        List<PayedVO> payedVOS=new ArrayList<>();
-        OrderPayRelationshipExample orderPayRelationshipExample=new OrderPayRelationshipExample();
+        List<PayedVO> payedVOS = new ArrayList<>();
+        OrderPayRelationshipExample orderPayRelationshipExample = new OrderPayRelationshipExample();
         orderPayRelationshipExample.createCriteria().andOidEqualTo(oid);
         List<OrderPayRelationship> orderPayRelationships = orderPayRelationshipMapper.selectByExample(orderPayRelationshipExample);
         List<Long> payIds = BeanMapper.getFieldList(orderPayRelationships, "payId", Long.class);
-        if (payIds.size()>0){
-            OrderPayExample orderPayExample=new OrderPayExample();
+        if (payIds.size() > 0) {
+            OrderPayExample orderPayExample = new OrderPayExample();
             orderPayExample.createCriteria().andPayIdIn(payIds);
             List<OrderPay> orderPays = orderPayMapper.selectByExample(orderPayExample);
             List<PayedVO> payedVOS1 = BeanMapper.mapList(orderPays, PayedVO.class);
             Map<Long, OrderPay> type = BeanMapper.list2Map(orderPays, "payId", Long.class);
-            for (PayedVO o:payedVOS1){
+            for (PayedVO o : payedVOS1) {
                 o.setPayType(PayType.valueOf(type.get(o.getPayId()).getType()));
             }
             payedVOS.addAll(payedVOS1);
