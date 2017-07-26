@@ -478,3 +478,6 @@ var webSite = '${webSite!}';
 
 <!--省略end，让浏览器自动添加-->
 
+<#include "/common/cnzz.ftl">
+
+
