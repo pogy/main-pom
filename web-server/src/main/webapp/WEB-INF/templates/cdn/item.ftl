@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>${goodsInfo.title!}-${shopInfo.marketName!}${shopInfo.shopNo!}-四季星座网</title>
 
     
     
@@ -90,7 +90,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -205,17 +205,17 @@ var webSite = '${webSite!}';
         </div>
         <div class="splitline"></div>
         
-        <div class="shopInfobox hover" 
-            <#if shopInfo.xzUrl??>
-                onclick="jumpShopLink('${shopInfo.xzUrl!}')"
-            <#else> 
-                onclick="javascript:void(0)"
-            </#if>
-        >
+        <div class="shopInfobox hover">
             <div class="storeLogo icon-shop"></div>
             
             <div class="storeNamebox">
-                <h3>${shopInfo.marketName!}${shopInfo.shopNo!}</h3>
+                <h3 
+                <#if shopInfo.xzUrl??>
+                    onclick="jumpShopLink('${shopInfo.xzUrl!}')"
+                <#else> 
+                    onclick="javascript:void(0)"
+                </#if>
+                >${shopInfo.marketName!}${shopInfo.shopNo!}</h3>
                 
 
 <#assign text>{"id":"${(shopInfo.imWw!(''))?replace('\\', '\\\\')?replace('\"','\\\"')}"}</#assign>
@@ -266,17 +266,17 @@ var webSite = '${webSite!}';
     
     
     <div class="p2 clearfix">
+        <b><a href="http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <b xzclick="openTaobaoShop" data-href="${shopInfo.tbUrl!}">淘宝店铺</b>
         <#else>
         <em class="disabled">淘宝店铺</em>
         </#if>
         <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
-            <b xzclick="addGoodsDataCannot">数据包</b>
+            <b xzclick="collectShopCannot"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
         <#else>
-            <b xzclick="addGoodsData" data-goodsid="${goodsInfo.goodsId!}">数据包</b>
+            <b xzclick="collectShop" data-shopid="${shopInfo.shopId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
         </#if>
-        <b xzclick="collectShop" data-shopid="${shopInfo.shopId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
         
         
 
@@ -434,17 +434,17 @@ var webSite = '${webSite!}';
     
     
     <div class="p2 clearfix">
+        <b><a href="http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <b xzclick="openTaobaoShop" data-href="${shopInfo.tbUrl!}">淘宝店铺</b>
         <#else>
         <em class="disabled">淘宝店铺</em>
         </#if>
         <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
-            <b xzclick="addGoodsDataCannot">数据包</b>
+            <b xzclick="collectShopCannot"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
         <#else>
-            <b xzclick="addGoodsData" data-goodsid="${goodsInfo.goodsId!}">数据包</b>
+            <b xzclick="collectShop" data-shopid="${shopInfo.shopId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
         </#if>
-        <b xzclick="collectShop" data-shopid="${shopInfo.shopId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
         
         
 
@@ -555,7 +555,11 @@ ${userShopHdHtml}
             
 <div class="goodsOrderBox" id="goodsOrderBox" data-goodsid="${goodsInfo.goodsId!}">
     <div class="goodsTitle">
-        <h2 class="fs18 fc3 yahei"><a href="#" target="_blank">${goodsInfo.title!}</a>
+        <#if goodsInfo.goodsFrom == 1>
+        <h2 class="fs18 fc3 yahei"><a href="http://item.taobao.com/item.htm?id=${goodsInfo.tbGoodsId!}" target="_blank">${goodsInfo.title!}</a>
+        <#elseif goodsInfo.goodsFrom == 2>
+        <h2 class="fs18 fc3 yahei">${goodsInfo.title!}
+        </#if>
             
             <#list goodsInfo.services as service>
                 <#if service == 1>
@@ -640,7 +644,7 @@ ${userShopHdHtml}
 
     <div class="buttonbox clearfix">
         <b class="btn btn-lg btn-orange addGwc">加入进货车</b>
-        <b class="btn btn-lg btn-orange picDownload" id="picDownload" data-goodsid="${shopInfo.goodsId!}">图片下载</b>
+        <b class="btn btn-lg btn-orange picDownload" id="picDownload" data-goodsid="${goodsInfo.goodsId!}">图片下载</b>
         
 
 
@@ -659,7 +663,7 @@ ${userShopHdHtml}
 
 
 
-        <b class="btn btn-lg oneKeyUp hover" data-goodsid="${shopInfo.goodsId!}">一键上传</b>
+        <b class="btn btn-lg oneKeyUp hover" data-goodsid="${goodsInfo.goodsId!}">一键上传</b>
         
         
     </div>
@@ -805,17 +809,17 @@ var piPrice = '${goodsInfo.piPrice!}';
     
     
     <div class="p2 clearfix">
+        <b><a href="http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}">进入店铺</a></b>
         <#if shopInfo.tbUrl??>
         <b xzclick="openTaobaoShop" data-href="${shopInfo.tbUrl!}">淘宝店铺</b>
         <#else>
         <em class="disabled">淘宝店铺</em>
         </#if>
         <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
-            <b xzclick="addGoodsDataCannot">数据包</b>
+            <b xzclick="collectShopCannot"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
         <#else>
-            <b xzclick="addGoodsData" data-goodsid="${goodsInfo.goodsId!}">数据包</b>
+            <b xzclick="collectShop" data-shopid="${shopInfo.shopId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
         </#if>
-        <b xzclick="collectShop" data-shopid="${shopInfo.shopId!}" class="b3"><i class="iconfont">&#xe6b3;</i>收藏档口</b>
         
         
 
@@ -856,7 +860,7 @@ var piPrice = '${goodsInfo.piPrice!}';
                 </h3>
             </div>
             <div class="joinCart">
-                <b>加入购物车</b>
+                <b>加入进货车</b>
             </div>
         </div>
     </div>
@@ -943,7 +947,7 @@ var piPrice = '${goodsInfo.piPrice!}';
     
     <ul class="clearfix">
         <#list goodsInfo.normalAttrs as attr>
-            <li>${attr.name!}：${attr.value!}</li>
+            <li title="${attr.value!}">${attr.name!}：${attr.value!}</li>
         </#list>
     </ul>
 </div>
@@ -1081,6 +1085,8 @@ var shopId = '${shopInfo.shopId!}';
 
 
 
+
+
 <script src="http://style.571xz.com/v2/xz/js/rightbarV1.js"></script>
 
 
@@ -1128,3 +1134,7 @@ var shopId = '${shopInfo.shopId!}';
 
 
 <!--省略end，让浏览器自动添加-->
+
+<#include "/common/cnzz.ftl">
+
+
