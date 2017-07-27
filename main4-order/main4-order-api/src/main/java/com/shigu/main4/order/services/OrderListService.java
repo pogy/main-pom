@@ -60,7 +60,7 @@ public interface OrderListService {
      * @param userId
      * @return
      */
-    ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus,Integer page,Integer pageSize, Long userId);
+    ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus,Integer page,Integer pageSize, Long userId) throws ParseException;
 
 
     /**

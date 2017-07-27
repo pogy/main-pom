@@ -274,7 +274,8 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public List<OrderServiceVO> selServices() {
-        return null;
+        //return null;
+        return new ArrayList<>();
     }
 
     @Override
