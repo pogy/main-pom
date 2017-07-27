@@ -83,6 +83,7 @@ public class MyTbOrderService {
                         RelationGoodsVO rgv=taoOrderService.glGoodsJson(subvo.getNumiid());
                         subvo.setGoodsNo(rgv.getGoodsNo());
                         subvo.setXzPrice(rgv.getPrice());
+                        subvo.setWebSite(rgv.getWebSite());
                         lr+= subvo.getNewTbPriceLong()-rgv.getPriceLong();
                     } catch (NotFindRelationGoodsException e) {
                         vo.setCanOrder(false);

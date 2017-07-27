@@ -54,6 +54,8 @@ public class SubTbOrderVO implements Serializable {
      */
     private Integer num;
 
+    private String webSite;
+
     /**
      * 获取 子单id
      */
@@ -230,5 +232,13 @@ public class SubTbOrderVO implements Serializable {
      */
     public void setNumiid(Long numiid) {
         this.numiid = numiid;
+    }
+
+    public String getWebSite() {
+        return this.webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
     }
 }
