@@ -166,7 +166,8 @@ public class AfterSaleShowAction {
             return JsonResponseUtil.error("退货数量不能空");
         }
 
-        return JsonResponseUtil.success().element("refundId", afterSaleShowService.applyReturnOrder(bo));
+        JSONObject refundId = JsonResponseUtil.success().element("refundId", afterSaleShowService.applyReturnOrder(bo).toString());
+        return refundId;
     }
 
     /**

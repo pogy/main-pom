@@ -73,7 +73,7 @@ public class RefundStatusInfoDecorate extends RefundVoDecorate {
                 break;
             }
         }
-        map.put("returnState",refundStateNum);
+        map.put("refundStateNum",refundStateNum);
         map.put("waitState",waitState);
         map.put("returnState",returnState);
         super.addMap(map);

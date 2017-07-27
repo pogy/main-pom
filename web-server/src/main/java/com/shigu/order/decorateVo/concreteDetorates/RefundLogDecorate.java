@@ -36,10 +36,11 @@ public class RefundLogDecorate extends RefundVoDecorate {
             log.setRecordTime(logVO.getLogTime());
             log.setUserNickname(logVO.getUserNick());
             log.setUserType(logVO.getUserType().type);
+            log.setUserHeadimg(logVO.getHeadImgUrl());
             alist.add(log);
         }
         map.put("applylist",alist);
-
+        super.addMap(map);
 
     }
 

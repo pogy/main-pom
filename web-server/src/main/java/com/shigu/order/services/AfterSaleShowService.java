@@ -1,6 +1,7 @@
 package com.shigu.order.services;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.services.ItemOrderService;
@@ -32,6 +33,8 @@ import java.util.Map;
 public class AfterSaleShowService {
     @Autowired
     private AfterSaleService afterSaleService;
+    //测试用
+    private static ReturnGoodsStatusEnum testStatus = ReturnGoodsStatusEnum.AGREE_PROCESS;
 
     public Long applyReturnOrder(AfterSaleBo bo) throws JsonErrException {
         return afterSaleService.returnGoodsApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundCount(), bo.getRefundMoney()
@@ -77,6 +80,7 @@ public class AfterSaleShowService {
         }
 
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
+        afterSaleStatusVO.setAfterSaleStatus(testStatus);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(refundId);
         List<RefundLogVO> rlist = afterSaleService.afterSaleApplication(refundId);

@@ -5,6 +5,7 @@ import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.OrderInfoVO;
 import com.shigu.main4.order.servicevo.SubAfterSaleSimpleOrderVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.order.decorateVo.AbstractRefundVo;
 import com.shigu.order.decorateVo.RefundVoDecorate;
 
@@ -36,7 +37,7 @@ public class SubSimpleRefundDecorate extends RefundVoDecorate {
         map.put("childOrderCode",subAfterSaleSimpleOrderVO.getGoodsNo());
         map.put("childOrderColor",subAfterSaleSimpleOrderVO.getColor());
         map.put("childOrderSize",subAfterSaleSimpleOrderVO.getSize());
-        map.put("refundGoodsPrice",subAfterSaleSimpleOrderVO.getPrice());
+        map.put("refundGoodsPrice", PriceConvertUtils.priceToString(subAfterSaleSimpleOrderVO.getPrice()));
         map.put("refundNumber",subAfterSaleSimpleOrderVO.getNum()
                 -(subAfterSaleSimpleOrderVO.getRefundNum()==null?0:subAfterSaleSimpleOrderVO.getRefundNum()));
         super.addMap(map);

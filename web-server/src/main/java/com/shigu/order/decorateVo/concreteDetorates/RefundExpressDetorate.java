@@ -4,6 +4,7 @@ import com.shigu.main4.order.vo.ExpressVo;
 import com.shigu.order.decorateVo.AbstractRefundVo;
 import com.shigu.order.decorateVo.RefundVoDecorate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,9 @@ public class RefundExpressDetorate extends RefundVoDecorate {
     private void setRefundExpress(){
         Map<String,Object> map = new HashMap<>();
         StringBuilder builder =new StringBuilder("");
+        if(list == null){
+            list = new ArrayList<>();
+        }
         for(ExpressVo expressVo:list){
             builder.append(expressVo.getExpressId()).append(":");
             builder.append(expressVo.getExpressName()).append(",");
