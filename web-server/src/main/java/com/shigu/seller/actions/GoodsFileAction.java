@@ -253,7 +253,7 @@ public class GoodsFileAction {
 
             obj.element("fileId", file.getFileId());
             obj.element("fileName", fileName);
-            obj.element("fileType", "picBkg");
+            obj.element("fileType", file.getFileType());
             obj.element("fileSize", file.getFileSize());
             obj.element("fileCreateTime", file.getFileCreateTime());
             obj.element("hasLinkGoods", false);
