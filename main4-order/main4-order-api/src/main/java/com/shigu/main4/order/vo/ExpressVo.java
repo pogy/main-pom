@@ -23,10 +23,6 @@ public class ExpressVo implements Serializable{
      * 快递名
      */
     private String expressName;
-    /**
-     * 退回快递填写的时间戳
-     */
-    private Long returnableExpressTime;
 
     /**
      * 获取 快递ID
@@ -54,19 +50,5 @@ public class ExpressVo implements Serializable{
      */
     public void setExpressName(String expressName) {
         this.expressName = expressName;
-    }
-
-    /**
-     * 获取 退回快递填写的时间戳
-     */
-    public Long getReturnableExpressTime() {
-        return this.returnableExpressTime;
-    }
-
-    /**
-     * 设置 退回快递填写的时间戳
-     */
-    public void setReturnableExpressTime(Long returnableExpressTime) {
-        this.returnableExpressTime = returnableExpressTime;
     }
 }
