@@ -342,13 +342,16 @@ var webSite = '${webSite!}';
 
     
     <div class="content shadowBox">
-   
    <div class="headTitle fc6">
     <h2 class="fs16 fwb yahei">图片空间</h2><span class="fcF40">*四季星座网免费赠送各档口 1G ( 1024M ) 空间容量!</span>
 </div>
 
 
-   <div class="headButton">
+   <div id="bodyContent" class="hideContent">
+    
+    <p class="loadingTips">图片空间加载中...</p>
+    
+    <div class="headButton">
     
 
 <#assign text>{}</#assign>
@@ -452,29 +455,13 @@ var webSite = '${webSite!}';
     <span class="fcF40">上传的文件为压缩包（zip、rar、7z），才可关联对应的商品哦！</span>
     
     <div class="imgSpace fr" id="pictureSpaceSizeInfo">
-        <div class="allBar pr"><div class="bar" style="width:40%"></div></div>
+        <div class="allBar pr"><div class="bar" style="width:0%"></div></div>
         <p class="infotext">0M/0M</p>
     </div>
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   <div class="fileList yahei" id="fileList">
+    <div class="fileList yahei" id="fileList">
     <div class="subNav" id="subNav"><span class="active">全部文件</span> <span class="fcBlue">&gt;</span> 2017年秋装</div>
     <div class="listTitle fc6">
         <ul class="clearfix">
@@ -484,100 +471,27 @@ var webSite = '${webSite!}';
         </ul>
     </div>
     <div class="fileItems" id="fileItemsBox">
-        <div class="fileItem">
-            <ul class="clearfix">
-                <li class="name">
-                    <i class="fileIcon icon-folder"></i><span class="fileName">2017年秋装</span>
-                    <input type="text" value="2017年秋装"><i class="sure" jbtn="renameSure"></i><i class="cancel" jbtn="renameCancel"></i>
-                    <div class="operate pr">
-                        <b jbtn="delete">删除</b>
-                        <div class="operateMore pr tac">
-                            <b>更多操作</b>
-                            <div class="operateMoreList pa">
-                                <em></em>
-                                <ul>
-                                    <li data-name="rename">重命名</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="size">23M</li>
-                <li class="cjTime">2017-09-09 12:00</li>
-            </ul>
-        </div>
         
-        <div class="fileItem">
-            <ul class="clearfix">
-                <li class="name">
-                    <i class="fileIcon icon-compress"></i><span class="fileName">秋装新品第一波 2017-07-09.zip</span>
-                    <input type="text" value="秋装新品第一波 2017-07-09.zip"><i class="sure" jbtn="renameSure"></i><i class="cancel" jbtn="renameCancel"></i>
-                    <div class="operate pr">
-                        <b jbtn="relateGood">关联商品</b><span>|</span>
-                        <b jbtn="delete">删除</b>
-                        <div class="operateMore pr tac">
-                            <b>更多操作</b>
-                            <div class="operateMoreList pa">
-                                <em></em>
-                                <ul>
-                                    <li data-name="download">下载</li>
-                                    <li data-name="rename">重命名</li>
-                                    <li data-name="moveto">移动到</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="size">23M</li>
-                <li class="cjTime">2017-09-09 12:00</li>
-            </ul>
-        </div>
-        <div class="fileItem">
-            <ul class="clearfix">
-                <li class="name">
-                    <i class="fileIcon icon-img"></i><span class="fileName">baomar1200motuoche.jpg</span>
-                    <input type="text" value="baomar1200motuoche.jpg"><i class="sure" jbtn="renameSure"></i><i class="cancel" jbtn="renameCancel"></i>
-                    <div class="operate pr">
-                        <b jbtn="relateView" data-type="1">查看关联</b><span>|</span>
-                        <b jbtn="relateGood" data-type="2">关联商品</b><span>|</span>
-                        <b jbtn="delete">删除</b>
-                        <div class="operateMore pr tac">
-                            <b>更多操作</b>
-                            <div class="operateMoreList pa">
-                                <em></em>
-                                <ul>
-                                    <li data-name="download">下载</li>
-                                    <li data-name="rename">重命名</li>
-                                    <li data-name="moveto">移动到</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="size">23M</li>
-                <li class="cjTime">2017-09-09 12:00</li>
-            </ul>
-        </div>
         
-        <p class="fs16 fwb fc6 noFile">暂无任何文件！</p>
+        
     </div>
+</div>
+
+
+    
+    
 </div>
 
 
 
 
-   
 
 
 
 
 
-   <div class="successTip pa"><i></i><span>文件上传成功！</span></div>
-<div class="errorTip pa"><i></i><span>上传失败！单个文件大于150M！</span></div>
 
 
-   
-   
 
 
 
@@ -616,8 +530,6 @@ var webSite = '${webSite!}';
 
 
 
-   
-   
 
 
 
@@ -628,100 +540,11 @@ var webSite = '${webSite!}';
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
-   <div class="successTip pa"><i></i><span>文件上传成功！</span></div>
+<div class="successTip pa"><i></i><span>文件上传成功！</span></div>
 <div class="errorTip pa"><i></i><span>上传失败！单个文件大于150M！</span></div>
 
 
 
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -776,6 +599,38 @@ var webSite = '${webSite!}';
 
 
    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 
