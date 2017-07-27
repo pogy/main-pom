@@ -44,9 +44,9 @@ public class GoodsFileAction {
 
     private static long QUOTA = 1000l;
 
-    private static String ZIP = "zip";
+    private static String ZIP = "zip/";
 
-    private static String TEMP = "temp";
+    private static String TEMP = "temp/";
 
     @RequestMapping("seller/getAccessInfo")
     public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -256,19 +256,22 @@ public class GoodsFileAction {
         JSONObject obj= JsonResponseUtil.success();
         String dirTmp = goodsFileService.getHomeDir(userId.toString()) + TEMP;
         String dirZip = goodsFileService.getHomeDir(userId.toString()) + ZIP;
-        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(dirTmp + targetFolderId + "/" + fileName, userId.toString());
+        if (!StringUtils.isEmpty(targetFolderId) && !targetFolderId.endsWith("/")) {
+            targetFolderId = targetFolderId + "/";
+        }
+        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(dirTmp + targetFolderId  + fileName, userId.toString());
         if (0 < files.size()) {
             GoodsFileVO file = files.get(0);
 
             double fileSizeVal = Double.parseDouble(file.getFileSize());
             if ("kb".equalsIgnoreCase(file.getUnit())) {
-                fileSizeVal = Arith.div(fileSizeVal, 1024);
+                fileSizeVal = Arith.div(fileSizeVal, 1024);//以mb为单位
             }
             if (QUOTA < Arith.add(goodsFileService.getSizeInfo(dirZip), fileSizeVal)) {
                 throw new JsonErrException("上传文件总量超过限额！");
             }
 
-            goodsFileService.moveFile(dirTmp +  targetFolderId + "/" + fileName, dirZip  +  targetFolderId + "/" + fileName);
+            goodsFileService.moveFile(dirTmp +  targetFolderId  + fileName, dirZip  +  targetFolderId  + fileName);
 
             obj.element("fileId", file.getFileId());
             obj.element("fileName", fileName);
