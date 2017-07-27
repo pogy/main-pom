@@ -42,7 +42,9 @@ public class GoodsFileService {
     @Autowired
     ShopLicenseService shopLicenseService;
 
-    final long defaultSize=1000000;
+    final String ROOT_PATH="udf/";
+
+    final long DEFAULT_SIZE=1000000;
 
     /**
      * 查店铺的容量支持
@@ -51,8 +53,10 @@ public class GoodsFileService {
      */
     public Long shopDataSize(Long shopId){
         ShopLicense license=shopLicenseService.selShopLIcenseByType(shopId, ShopLicenseTypeEnum.DATA_DEV);
-
-        return null;
+        if (license == null) {
+            return DEFAULT_SIZE;
+        }
+        return Long.valueOf(license.getContext());
     }
     /**
      * g更加文件路径获取
@@ -236,8 +240,12 @@ public class GoodsFileService {
         return ossIO.fileExist(filePath);
     }
 
-    public String getHomeDir(String userId) {
-        return ossIO.getDir() + userId + "/";
+    public String getHomeDir(Long shopId) {
+        return  ROOT_PATH + shopId + "/zip/";
+    }
+
+    public String getTempDir(Long shopId) {
+        return ROOT_PATH + shopId + "/temp/";
     }
 
 }

@@ -39,8 +39,6 @@ public class OssIO {
     @Value("${oss.ossHost}")
     private String domain;
 
-    private String dir = "udf/";
-
 
 
     /**
@@ -323,7 +321,7 @@ public class OssIO {
      * 构造Post签名信息
      * @return
      */
-    public Map<String, String> createPostSignInfo(Long userId) throws UnsupportedEncodingException {
+    public Map<String, String> createPostSignInfo(String filepath) throws UnsupportedEncodingException {
         OSSClient client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         Map<String, String> respMap = new LinkedHashMap<String, String>();
 
@@ -332,28 +330,20 @@ public class OssIO {
         Date expiration = new Date(expireEndTime);
         PolicyConditions policyConds = new PolicyConditions();
         policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 1048576000);
-        policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+        policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, filepath);
 
         String postPolicy = client.generatePostPolicy(expiration, policyConds);
         byte[] binaryData = postPolicy.getBytes("utf-8");
         String encodedPolicy = BinaryUtil.toBase64String(binaryData);
         String postSignature = client.calculatePostSignature(postPolicy);
 
-        if (!fileExist(dir + userId.toString())) {
-            createDir(dir + userId.toString(), "/temp/");
-            createDir(dir + userId.toString(), "/zip/");
-        }
         respMap.put("accessid", accessKeyId);
         respMap.put("policy", encodedPolicy);
         respMap.put("signature", postSignature);
-        respMap.put("dir", dir + userId.toString() + "/temp/");
+        respMap.put("dir", filepath);
         respMap.put("host", domain);
         respMap.put("expire", String.valueOf(expireEndTime / 1000));
         return respMap;
-    }
-
-    public String getDir() {
-        return dir;
     }
 
 

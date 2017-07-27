@@ -42,16 +42,10 @@ public class GoodsFileAction {
     @Autowired
     private OssIO ossIO;
 
-    private static long QUOTA = 1000l;
-
-    private static String ZIP = "zip/";
-
-    private static String TEMP = "temp/";
-
     @RequestMapping("seller/getAccessInfo")
     public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Long userId = getUserId(request.getSession());
-        Map<String, String> infoMap = ossIO.createPostSignInfo(userId);
+        PersonalSession ps = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Map<String, String> infoMap = ossIO.createPostSignInfo(goodsFileService.getTempDir(ps.getLogshop().getShopId()));
         JSONObject jsonInfo = JSONObject.fromObject(infoMap);
 
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -72,7 +66,7 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/readGlGoodsJson")
     @ResponseBody
-    public JSONObject selGoodsFileByFile(String fileKey) {
+    public JSONObject selGoodsFileByFile(String fileKey,HttpSession session) {
         List<ItemShowBlock> goodsFilesList = goodsFileService.selGoodsFileByFile(fileKey);
         return JsonResponseUtil.success().element("goods", goodsFilesList);
     }
@@ -189,10 +183,14 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/deleteFile")
     @ResponseBody
-    public JSONObject deleteFile(String fileId, String fileType) {
-        boolean ret = goodsFileService.deleteFile(fileId, fileType);
-        // TODO: 17/7/27  错误情况为什么不返回
-        return JsonResponseUtil.success();
+    public JSONObject deleteFile(String fileId, String fileType,HttpSession session) throws JsonErrException {
+        Long userId = getUserId(session);
+        String parentDir = goodsFileService.getHomeDir(userId.toString()) + ZIP;
+        boolean ret = goodsFileService.deleteFile(parentDir+fileId, fileType);
+        if(ret){
+            return JsonResponseUtil.success();
+        }
+        throw new JsonErrException("删除文件失败");
     }
 
     /**
@@ -236,12 +234,11 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/getSizeInfo")
     @ResponseBody
-    public JSONObject getSizeInfo( HttpServletRequest request) {
-        Long userId = getUserId(request.getSession());
-
+    public JSONObject getSizeInfo( HttpSession session) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         JSONObject obj= JsonResponseUtil.success();
-        obj.element("totalSize", QUOTA);
-        obj.element("useSize", goodsFileService.getSizeInfo(goodsFileService.getHomeDir(userId.toString())  + ZIP));
+        obj.element("totalSize", goodsFileService.shopDataSize(ps.getLogshop().getShopId()));
+        obj.element("useSize", goodsFileService.getSizeInfo(goodsFileService.getHomeDir(ps.getUserId().toString())  + ZIP));
         return obj;
     }
 
@@ -288,8 +285,4 @@ public class GoodsFileAction {
     }
 
 
-    private Long getUserId(HttpSession session) {
-        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return ps.getUserId();
-    }
 }
