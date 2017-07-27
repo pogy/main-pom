@@ -1,11 +1,14 @@
 package com.shigu.main4.order.services.impl;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
+import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderLogisticsExample;
+import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -25,9 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -56,6 +57,9 @@ public class OrderListServiceImpl implements OrderListService {
 
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
+
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -108,154 +112,48 @@ public class OrderListServiceImpl implements OrderListService {
      * @return
      */
     @Override
-    //todo
     public ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus, Integer page, Integer pageSize, Long userId) throws ParseException {
+        Integer startRow = (page - 1) * pageSize;
+        Integer endRow = page * pageSize;
         ShiguPager<ShowOrderVO> pager = new ShiguPager<>();
+        List<ShowOrderVO> showVOS = Lists.newArrayList();
+        int totalCount = 0;
         ItemOrderExample example = new ItemOrderExample();
         example.createCriteria().andUserIdEqualTo(userId).andOrderStatusLessThan(5);
         List<Long> oids = itemOrderMapper.selectByExample(example).stream().map(com.opentae.data.mall.beans.ItemOrder::getOid).collect(Collectors.toList());
-        List<ShowOrderVO> showVOS = Lists.newArrayList();
-        for (Long oid: oids) {
-            ShowOrderVO showVO = selectMyorder(oid);
-            boolean hasRefund = false;
-            List<SubOrderInfoVO> refundSubOrderInfoVos = Lists.newArrayList();
-            for (SubOrderInfoVO subOrderInfoVO:showVO.getChildOrders()) {
-                switch (shStatus) {
-                    case CHANGE:
-                        if (subOrderInfoVO.getShState() == 3 || subOrderInfoVO.getShState() == 5) {
-                            refundSubOrderInfoVos.add(subOrderInfoVO);
-                            hasRefund = true;
-                        }
-                        break;
-                    case REFUND:
-                        if (subOrderInfoVO.getShState() == 1 || subOrderInfoVO.getShState() == 2 || subOrderInfoVO.getShState() == 4) {
-                            refundSubOrderInfoVos.add(subOrderInfoVO);
-                            hasRefund = true;
-                        }
-                        break;
-                }
+        if (oids.size()>0) {
+            ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
+            ItemOrderRefundExample.Criteria criteria = refundExample.createCriteria().andOidIn(oids);
+            switch (shStatus) {
+                case CHANGE:
+                    criteria.andTypeEqualTo(4);
+                    break;
+                case REFUND:
+                   criteria.andTypeBetween(1,3);
+                    break;
             }
-            if (hasRefund) {
-                showVO.setChildOrders(refundSubOrderInfoVos);
-                showVOS.add(showVO);
+            totalCount = itemOrderRefundMapper.countByExample(refundExample);
+            refundExample.setStartIndex(startRow);
+            refundExample.setEndIndex(endRow);
+            List<ItemOrderRefund> itemOrderRefunds = itemOrderRefundMapper.selectByExample(refundExample);
+            Set<Long> soids = itemOrderRefunds.stream().map(ItemOrderRefund::getSoid).collect(Collectors.toSet());
+            for (Long aLong : itemOrderRefunds.stream().map(ItemOrderRefund::getOid).collect(Collectors.toSet())) {
+                ShowOrderVO showOrderVO = selectMyorder(aLong);
+                List<SubOrderInfoVO> childOrders = showOrderVO.getChildOrders();
+                Iterator<SubOrderInfoVO> iterator = childOrders.iterator();
+                while (iterator.hasNext()) {
+                    SubOrderInfoVO subOrderInfoVO = iterator.next();
+                    if (!soids.contains(subOrderInfoVO.getChildOrderId())) {
+                        childOrders.remove(subOrderInfoVO);
+                    }
+                }
+                showVOS.add(showOrderVO);
             }
         }
+        pager.setNumber(page);
+        pager.calPages(totalCount,pageSize);
         pager.setContent(showVOS);
-
         return pager;
-        //List<ShowOrderVO> list = new ArrayList<>();
-        //ShowOrderVO ovo = new ShowOrderVO();
-        //for (int i = 0; i < 20; i++) {
-        //    ovo.setMainState(MainOrderStatusEnum.statusOf(1).status);
-        //    String oidString = "201707200034" + i;
-        //    Long orderId = new Long(oidString);
-        //    ovo.setOrderId(orderId);
-        //    ovo.setOrderPrice("2200");
-        //    ovo.setPayedFeeLong(2200L);
-        //    ovo.setPostPayLong(500L);
-        //    ovo.setRefundFeeLong(0L);
-        //    ovo.setServerPayLong(100L);
-        //    if ((i / 2) == 1) {
-        //        ovo.setIsTbOrder(false);
-        //    } else {
-        //        ovo.setIsTbOrder(true);
-        //    }
-        //    ovo.setTradePayLong(2800L);
-        //    ovo.setTradeTimed(new Date());
-        //    ovo.setWebSite("hz");
-        //    ovo.setMainState(4);
-        //    List<SubOrderInfoVO> listsub = new ArrayList<>();
-        //    for (int k = 0; k < 3; k++) {
-        //        SubOrderInfoVO svo = new SubOrderInfoVO();
-        //        int p = i * 10 + k + 1;
-        //        svo.setChildOrderId(new Long(p));
-        //        switch (k) {
-        //            case 0: {
-        //                svo.setImgsrc("https://img.alicdn.com/bao/uploaded/i4/270913282/TB2LQlAXB7c61BjSZFIXXcZmVXa-270913282.jpg");
-        //                svo.setColor("白");
-        //                svo.setSize("L");
-        //                svo.setGoodsId(9522391L);
-        //                svo.setGoodsNo("A241 S5-P65");
-        //                svo.setNum(1);
-        //                svo.setPriceLong(6500L);
-        //                svo.setSubStatusenum(SubOrderStatus.statusOf(0));
-        //                svo.setRefundId(1000L);
-        //                if(shStatus==null){
-        //                    svo.setTkNum(1);
-        //                    svo.setTkStateEnum(RefundTypeEnum.DISPOSE_REFUND);
-        //                }else{
-        //                    if(shStatus==ShStatusEnum.REFUND){
-        //                        svo.setTkNum(1);
-        //                        svo.setTkStateEnum(RefundTypeEnum.DISPOSE_REFUND);
-        //                    }else{
-        //                        svo.setShTkNum(1);
-        //                        svo.setShStateEnum(AfterSaleStatusEnum.statusOf(1));
-        //                    }
-        //                }
-        //                svo.setTitle("A241 S5-P65 2016秋冬毛线衫男装港风高领毛衣男纯色翻领毛衣");
-        //                break;
-        //            }
-        //            case 1: {
-        //                svo.setImgsrc("https://img.alicdn.com/bao/uploaded/i3/138989925/TB2rAD4XRAkyKJjy0FeXXadhpXa_!!138989925.jpg");
-        //                svo.setColor("蓝");
-        //                svo.setSize("XL");
-        //                svo.setGoodsId(20915911L);
-        //                svo.setGoodsNo("A242/WX82/P165");
-        //                svo.setNum(3);
-        //                svo.setPriceLong(16500L);
-        //                svo.setSubStatusenum(SubOrderStatus.statusOf(2));
-        //                svo.setTitle("修身滚边设计男士帅气一粒扣西装 WX82/P165白");
-        //                svo.setRefundId(1000L);
-        //                if(shStatus==null){
-        //                    svo.setTkNum(1);
-        //                    svo.setShTkNum(1);
-        //                    svo.setTkStateEnum(RefundTypeEnum.ENT_REFUND);
-        //                }else{
-        //                    if(shStatus==ShStatusEnum.REFUND){
-        //                        svo.setTkNum(1);
-        //                        svo.setShTkNum(2);
-        //                        svo.setTkStateEnum(RefundTypeEnum.ENT_REFUND);
-        //                    }else{
-        //                        svo.setShStateEnum(AfterSaleStatusEnum.statusOf(3));
-        //                        svo.setShTkNum(2);
-        //                    }
-        //                }
-        //                break;
-        //            }
-        //            default: {
-        //                svo.setImgsrc("https://img.alicdn.com/bao/uploaded/i3/2744642519/TB2H_0CX2AkyKJjy0FfXXaxhpXa_!!2744642519.jpg");
-        //                svo.setColor("红");
-        //                svo.setSize("XXL");
-        //                svo.setGoodsId(20918332L);
-        //                svo.setGoodsNo("F088");
-        //                svo.setNum(2);
-        //                svo.setPriceLong(11000L);
-        //                svo.setSubStatusenum(SubOrderStatus.statusOf(1));
-        //                svo.setTitle("【品质原创质检F088】秋装男夹克男风衣男外套男大码男P110控148");
-        //                svo.setRefundId(1000L);
-        //                if(shStatus==null){
-        //                    svo.setShStateEnum(AfterSaleStatusEnum.statusOf(k));
-        //                }else{
-        //                    if(shStatus==ShStatusEnum.REFUND){
-        //                        svo.setTkStateEnum(RefundTypeEnum.DISPOSE_REFUND);
-        //                    }else{
-        //                        svo.setShStateEnum(AfterSaleStatusEnum.statusOf(k+2));
-        //                    }
-        //                }
-        //                break;
-        //            }
-        //        }
-        //        svo.setOrderId(orderId);
-        //        listsub.add(svo);
-        //    }
-        //    ovo.setChildOrders(listsub);
-        //    list.add(ovo);
-        //}
-        //ShiguPager<ShowOrderVO> pager=new ShiguPager<ShowOrderVO>();
-        //pager.setNumber (page);
-        //pager.setContent(list);
-        //pager.calPages(5,pageSize);
-        //return pager;
     }
 
     /**
