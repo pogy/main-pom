@@ -51,7 +51,7 @@ public class MyOrderAction {
      * @exception: ====================================================================================
      */
     @RequestMapping("myOrder")
-    public String myOrder(HttpSession session, Model model, OrderBO bo) {
+    public String myOrder(HttpSession session, Model model, OrderBO bo) throws ParseException {
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (bo.getPageSize() == null) {

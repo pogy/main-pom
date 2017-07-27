@@ -4,6 +4,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.services.OrderListService;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +16,11 @@ import java.text.ParseException;
 public class OrderListServiceImplTest extends BaseTest {
 
     @Autowired private OrderListService orderListService;
+
+    @Test
+    public void selectCountShManaOrderTest() throws ParseException {
+        show(orderListService.selectCountShManaOrder(ShStatusEnum.REFUND,1,20,9968L));
+    }
 
     @Test
     public void selectCountMyOrderTest() throws ParseException {

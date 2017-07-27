@@ -41,7 +41,7 @@ public class MyOrderService {
     private ItemOrderMapper itemOrderMapper;
 
 
-    public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) {
+    public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) throws ParseException {
         List<ShowOrderVO> list = orderListService.myOrder(bo, userId);
         if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
@@ -70,7 +70,7 @@ public class MyOrderService {
     }
 
 
-    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) {
+    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) throws ParseException {
 
         return orderListService.selectCountMyOrder(bo, userId);
     }
