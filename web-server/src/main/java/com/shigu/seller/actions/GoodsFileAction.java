@@ -243,13 +243,18 @@ public class GoodsFileAction {
         Long userId = getUserId(request.getSession());
 
         JSONObject obj= JsonResponseUtil.success();
-        String dir = goodsFileService.getHomeDir(userId.toString()) + "temp/" + targetFolderId;
-        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(dir + fileName, userId.toString());
+        String dirTmp = goodsFileService.getHomeDir(userId.toString()) + "temp/";
+        String dirZip = goodsFileService.getHomeDir(userId.toString()) + "zip/";
+        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(dirTmp + targetFolderId + "/" + fileName, userId.toString());
         if (0 < files.size()) {
             GoodsFileVO file = files.get(0);
+
+            goodsFileService.moveFile(dirTmp + fileName, dirZip  + fileName);
+
             obj.element("fileId", file.getFileId());
+            obj.element("fileName", fileName);
             obj.element("fileType", "picBkg");
-            obj.element("fileSize", String.valueOf(file.getFileSize()));
+            obj.element("fileSize", file.getFileSize());
             obj.element("fileCreateTime", file.getFileCreateTime());
             obj.element("hasLinkGoods", false);
         } else {
@@ -257,8 +262,6 @@ public class GoodsFileAction {
         }
 
         return obj;
-
-
     }
 
 

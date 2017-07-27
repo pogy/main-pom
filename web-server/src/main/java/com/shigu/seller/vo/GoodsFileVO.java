@@ -12,6 +12,7 @@ public class GoodsFileVO {
     private String fileName;
     private long fileCreateTime;
     private String fileSize;
+
     private boolean isRoot;
 
     public boolean getIsRoot() {
