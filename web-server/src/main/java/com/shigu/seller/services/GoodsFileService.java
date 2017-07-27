@@ -78,13 +78,12 @@ public class GoodsFileService {
 
             if (1048576 < fileSize) {
                 double mSize = div(fileSize, (double)1048576, 3);
-                item.setFileSize(mSize + "mb");
+                item.setFileSize(mSize + "");
+                item.setUnit("mb");
             } else {
                 double kSize = div(fileSize, (double)1024, 3);
-                item.setFileSize(kSize + "kb");
-            }
-            if ("folder".equalsIgnoreCase(item.getFileType())) {
-
+                item.setFileSize(kSize + "");
+                item.setUnit("kb");
             }
 
             newFiles.add(item);
