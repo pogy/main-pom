@@ -12,16 +12,6 @@ public class OssFile {
     private String fileName;
     private long fileCreateTime;
     private String fileSize;
-    private boolean isRoot;
-
-
-    public boolean getIsRoot() {
-        return this.isRoot;
-    }
-
-    public void setIsRoot( boolean val ) {
-        this.isRoot = val;
-    }
 
     public String getFileId() {
         return fileId;

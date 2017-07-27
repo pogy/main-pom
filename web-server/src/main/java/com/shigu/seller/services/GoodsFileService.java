@@ -1,5 +1,6 @@
 package com.shigu.seller.services;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品文件关联类
@@ -34,6 +36,8 @@ public class GoodsFileService {
     @Autowired
     OssIO ossIO;
 
+
+    public Long shopDataSize(Long ){}
     /**
      * g更加文件路径获取
      */
@@ -51,14 +55,26 @@ public class GoodsFileService {
      */
     public List<GoodsFileVO> selFilesByFileId( String fileKey,  String userId) {
         String homeDirZip = getHomeDir(userId) + "zip/";
-        if (StringUtils.isEmpty(fileKey)) {
-            fileKey = homeDirZip;
-        }
-
-        List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(fileKey, homeDirZip), GoodsFileVO.class);
+        List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(homeDirZip), GoodsFileVO.class);
         List<GoodsFileVO> newFiles = new ArrayList<GoodsFileVO>();
         GoodsFileVO lastItem = null;
+        List<String> fileKeys=BeanMapper.getFieldList(files,"fileId",String.class);//文件ID
+        List<String> hasConnected=new ArrayList<>();
+        if(fileKeys.size()>0){
+            GoodsFileExample goodsFileExample=new GoodsFileExample();
+            goodsFileExample.createCriteria().andFileKeyIn(fileKeys);
+            goodsFileExample.setDistinct(true);
+            List<GoodsFile> gfiles=goodsFileMapper.selectFieldsByExample(goodsFileExample, FieldUtil.codeFields("file_key"));
+            hasConnected=BeanMapper.getFieldList(gfiles,"fileKey",String.class);
+        }
         for (GoodsFileVO item : files) {
+            fileKeys.add(item.getFileId());
+            item.setHasLinkGoods(hasConnected.contains(item.getFileId()));
+            item.setFileId(item.getFileId().replace(homeDirZip,""));
+            if(item.getFileId().equals("")){
+                item.setIsRoot(true);
+                item.setFileName("/");
+            }
             if (lastItem != null && -1 <item.getFileId().indexOf(lastItem.getFileId())) {//过滤下层文件的显示
                 continue;
             }
@@ -86,9 +102,9 @@ public class GoodsFileService {
             if ("folder".equalsIgnoreCase(item.getFileType())) {
 
             }
-
             newFiles.add(item);
          }
+
          return newFiles;
     }
 

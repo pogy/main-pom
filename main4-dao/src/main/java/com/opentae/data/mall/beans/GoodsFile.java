@@ -2,40 +2,48 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
-/**
- * Created by Administrator on 2017/7/25.
- */
-public class GoodsFile {
+public class GoodsFile implements Serializable {
+    /**
+     * 
+     */
     @Id
-    @GeneratedValue(generator="JDBC")
-    private Long id;
+    @GeneratedValue(generator = "JDBC")
+	private Long id;
 
-    private String fileKey;
+    /**
+     * 
+     */
+	private String fileKey;
 
-    private Long goodsId;
+    /**
+     * 
+     */
+	private Long goodsId;
 
-    public Long getId() {
-        return id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setId( Long id ) {
-        this.id = id;
-    }
+	public Long getId() {
+		return this.id;
+	}
 
-    public String getFileKey() {
-        return fileKey;
-    }
+	public void setFileKey(String fileKey) {
+		this.fileKey = fileKey;
+	}
 
-    public void setFileKey( String fileKey ) {
-        this.fileKey = fileKey;
-    }
+	public String getFileKey() {
+		return this.fileKey;
+	}
 
-    public Long getGoodsId() {
-        return goodsId;
-    }
+	public void setGoodsId(Long goodsId) {
+		this.goodsId = goodsId;
+	}
 
-    public void setGoodsId( Long goodsId ) {
-        this.goodsId = goodsId;
-    }
+	public Long getGoodsId() {
+		return this.goodsId;
+	}
+
 }

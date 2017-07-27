@@ -15,6 +15,24 @@ public class GoodsFileVO {
 
     private boolean isRoot;
 
+    private boolean hasLinkGoods;
+
+    public boolean isRoot() {
+        return isRoot;
+    }
+
+    public void setRoot(boolean root) {
+        isRoot = root;
+    }
+
+    public boolean isHasLinkGoods() {
+        return hasLinkGoods;
+    }
+
+    public void setHasLinkGoods(boolean hasLinkGoods) {
+        this.hasLinkGoods = hasLinkGoods;
+    }
+
     public boolean getIsRoot() {
         return isRoot;
     }

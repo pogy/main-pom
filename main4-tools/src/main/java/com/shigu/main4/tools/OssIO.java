@@ -141,7 +141,7 @@ public class OssIO {
      * 列出目录下所有的文件信息
      * @param filePath 目录
      */
-    public List<OssFile> getFileList(String filePath, String homeDirZip) {
+    public List<OssFile> getFileList(String filePath) {
         OSSClient ossClient = null;
         List<OssFile> fileList = new ArrayList<OssFile>();
         try {
@@ -155,10 +155,6 @@ public class OssIO {
                 file.setFileSize(String.valueOf(objectSummary.getSize()));//kb
                 String[] items = file.getFileId().split("/");
                 file.setFileName(items[items.length -1]);
-                if(homeDirZip.equalsIgnoreCase(file.getFileId())) {//判断是否是根目录
-                    file.setIsRoot(true);
-                }
-
                 fileList.add(file);
             }
         } finally {

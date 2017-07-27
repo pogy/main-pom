@@ -180,6 +180,7 @@ public class GoodsFileAction {
     @ResponseBody
     public JSONObject deleteFile(String fileId, String fileType) {
         boolean ret = goodsFileService.deleteFile(fileId, fileType);
+        // TODO: 17/7/27  错误情况为什么不返回
         return JsonResponseUtil.success();
     }
 

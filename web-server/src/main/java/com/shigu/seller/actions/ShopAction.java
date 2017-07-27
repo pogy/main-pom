@@ -295,8 +295,7 @@ public class ShopAction {
     }
 
     @RequestMapping("seller/pictureSpace")
-    public String pictureSpace(OnsaleItemBO bo, HttpSession session, Model model) {
-            ShopSession shopSession = getShopSession(session);
+    public String pictureSpace(OnsaleItemBO bo, Model model) {
             model.addAttribute("get",bo);
             return "seller/pictureSpace";
     }

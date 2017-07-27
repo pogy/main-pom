@@ -1,15 +1,11 @@
 package com.opentae.data.mall.examples;
 
-import com.opentae.core.mybatis.SgExample;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import com.opentae.core.mybatis.SgExample;
 
-/**
- * Created by Administrator on 2017/7/25.
- */
-public class GoodsFileExample implements SgExample {
+public class GoodsFileExample implements SgExample{
     protected String orderByClause;
     protected boolean distinct;
     protected List<GoodsFileExample.Criteria> oredCriteria = new ArrayList();
@@ -17,12 +13,74 @@ public class GoodsFileExample implements SgExample {
     public GoodsFileExample() {
     }
 
-    private Long id;
-    private Long goodsId;
-    private String fileKey;
+    private Integer startIndex;
+    private Integer endIndex;
+    private String fields;
+    protected String sqlStirng;
+    private String webSite;
 
+    public String getWebSite() {
+        return this.webSite;
+    }
 
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
+    }
 
+    public String getSqlStirng() {
+        return this.sqlStirng;
+    }
+
+    public void setSqlStirng(String sqlStirng) {
+        this.sqlStirng = sqlStirng;
+    }
+
+    public Integer getStartIndex() {
+        return this.startIndex;
+    }
+
+    public void setStartIndex(Integer startIndex) {
+        this.startIndex = startIndex;
+    }
+
+    public Integer getEndIndex() {
+        return this.endIndex;
+    }
+
+    public void setEndIndex(Integer endIndex) {
+        this.endIndex = endIndex;
+    }
+
+    public String getFields() {
+        return this.fields;
+    }
+
+    public void setFields(String fields) {
+        this.fields = fields;
+    }
+    public void setOrderByClause(String orderByClause) {
+        this.orderByClause = orderByClause;
+    }
+
+    public String getOrderByClause() {
+        return this.orderByClause;
+    }
+
+    public void setDistinct(boolean distinct) {
+        this.distinct = distinct;
+    }
+
+    public boolean isDistinct() {
+        return this.distinct;
+    }
+
+    public List<GoodsFileExample.Criteria> getOredCriteria() {
+        return this.oredCriteria;
+    }
+
+    public void or(GoodsFileExample.Criteria criteria) {
+        this.oredCriteria.add(criteria);
+    }
 
     public GoodsFileExample.Criteria or() {
         GoodsFileExample.Criteria criteria = this.createCriteriaInternal();
@@ -174,17 +232,208 @@ public class GoodsFileExample implements SgExample {
             }
         }
 
-
-        public GoodsFileExample.Criteria andGoodsIdEqualTo(Long value) {
-            this.addCriterion("goods_id =", value, "goodsId");
+        public GoodsFileExample.Criteria andFileKeyIsNull() {
+            this.addCriterion("file_key is null");
             return (GoodsFileExample.Criteria)this;
         }
 
+        public GoodsFileExample.Criteria andFileKeyIsNotNull() {
+            this.addCriterion("file_key is not null");
+            return (GoodsFileExample.Criteria)this;
+        }
 
         public GoodsFileExample.Criteria andFileKeyEqualTo(String value) {
             this.addCriterion("file_key =", value, "fileKey");
             return (GoodsFileExample.Criteria)this;
         }
 
+        public GoodsFileExample.Criteria andFileKeyNotEqualTo(String value) {
+            this.addCriterion("file_key <>", value, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andFileKeyGreaterThan(String value) {
+            this.addCriterion("file_key >", value, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andFileKeyGreaterThanOrEqualTo(String value) {
+            this.addCriterion("file_key >=", value, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andFileKeyLessThan(String value) {
+            this.addCriterion("file_key <", value, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andFileKeyLessThanOrEqualTo(String value) {
+            this.addCriterion("file_key <=", value, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andFileKeyLike(String value) {
+            this.addCriterion("file_key like", value, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andFileKeyNotLike(String value) {
+            this.addCriterion("file_key not like", value, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }        public GoodsFileExample.Criteria andFileKeyIn(List<String> values) {
+            this.addCriterion("file_key in", values, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andFileKeyNotIn(List<String> values) {
+            this.addCriterion("file_key not in", values, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andFileKeyBetween(String value1, String value2) {
+            this.addCriterion("file_key between", value1, value2, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andFileKeyNotBetween(String value1, String value2) {
+            this.addCriterion("file_key not between", value1, value2, "fileKey");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdIsNull() {
+            this.addCriterion("goods_id is null");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdIsNotNull() {
+            this.addCriterion("goods_id is not null");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdEqualTo(Long value) {
+            this.addCriterion("goods_id =", value, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdNotEqualTo(Long value) {
+            this.addCriterion("goods_id <>", value, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdGreaterThan(Long value) {
+            this.addCriterion("goods_id >", value, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("goods_id >=", value, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdLessThan(Long value) {
+            this.addCriterion("goods_id <", value, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("goods_id <=", value, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdLike(String value) {
+            this.addCriterion("goods_id like", value, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdNotLike(String value) {
+            this.addCriterion("goods_id not like", value, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }        public GoodsFileExample.Criteria andGoodsIdIn(List<Long> values) {
+            this.addCriterion("goods_id in", values, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdNotIn(List<Long> values) {
+            this.addCriterion("goods_id not in", values, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdBetween(Long value1, Long value2) {
+            this.addCriterion("goods_id between", value1, value2, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("goods_id not between", value1, value2, "goodsId");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdIsNull() {
+            this.addCriterion("id is null");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdIsNotNull() {
+            this.addCriterion("id is not null");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdEqualTo(Long value) {
+            this.addCriterion("id =", value, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdNotEqualTo(Long value) {
+            this.addCriterion("id <>", value, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdGreaterThan(Long value) {
+            this.addCriterion("id >", value, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("id >=", value, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdLessThan(Long value) {
+            this.addCriterion("id <", value, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("id <=", value, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdLike(String value) {
+            this.addCriterion("id like", value, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdNotLike(String value) {
+            this.addCriterion("id not like", value, "id");
+            return (GoodsFileExample.Criteria)this;
+        }        public GoodsFileExample.Criteria andIdIn(List<Long> values) {
+            this.addCriterion("id in", values, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdNotIn(List<Long> values) {
+            this.addCriterion("id not in", values, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdBetween(Long value1, Long value2) {
+            this.addCriterion("id between", value1, value2, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("id not between", value1, value2, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
     }
 }
