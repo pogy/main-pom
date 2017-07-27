@@ -183,7 +183,8 @@ public class AfterSaleShowAction {
         }
         return JsonResponseUtil.success().element("refundId ",afterSaleShowService.exchangeApply(bo));
     }
-
+    @RequestMapping(value = "agreeRefundMoney",method = RequestMethod.POST)
+    @ResponseBody
     public JSONObject agreeRefundMoney(String refundId,Integer agreeState){
         if(StringUtils.isEmpty(refundId)){
             return JsonResponseUtil.error("售后id不能空");

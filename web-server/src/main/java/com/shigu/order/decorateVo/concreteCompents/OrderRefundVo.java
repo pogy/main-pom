@@ -29,12 +29,12 @@ public class OrderRefundVo extends AbstractRefundVo {
         if(vo == null){
             vo = new HashMap<>();
         }
-        System.out.println(11);
         vo.putAll(map);
     }
 
     @Override
     public void doAdd() {
+
     }
 
 

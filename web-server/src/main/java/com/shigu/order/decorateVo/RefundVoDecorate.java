@@ -30,6 +30,6 @@ public class RefundVoDecorate extends AbstractRefundVo{
 
     @Override
     public void doAdd() {
-
+        abstractRefundVo.doAdd();
     }
 }

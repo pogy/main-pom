@@ -31,7 +31,6 @@ public class SubSimpleRefundDecorate extends RefundVoDecorate {
 
 
         Map<String,Object> map = new HashMap<>();
-        System.out.println("设置退款子单信息");
         map.put("childOrderId",subAfterSaleSimpleOrderVO.getSubOrderId());
         map.put("childOrderImgSrc",subAfterSaleSimpleOrderVO.getPicUrl());
         map.put("childOrderCode",subAfterSaleSimpleOrderVO.getGoodsNo());
@@ -48,4 +47,6 @@ public class SubSimpleRefundDecorate extends RefundVoDecorate {
         setRefundInfo();
         super.doAdd();
     }
+
+
 }
