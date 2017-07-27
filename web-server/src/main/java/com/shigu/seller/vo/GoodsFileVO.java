@@ -12,6 +12,8 @@ public class GoodsFileVO {
     private String fileName;
     private long fileCreateTime;
     private String fileSize;
+    private String unit;
+
 
     private boolean isRoot;
 
@@ -79,6 +81,14 @@ public class GoodsFileVO {
 
     public void setFileSize( String fileSize ) {
         this.fileSize = fileSize;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit( String unit ) {
+        this.unit = unit;
     }
 }
 

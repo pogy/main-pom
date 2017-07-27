@@ -2,19 +2,18 @@ package com.shigu.seller.actions;
 
 import com.opentae.data.mall.beans.GoodsFile;
 import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.services.GoodsFileService;
-import com.shigu.seller.vo.FindGoodsItemVO;
+
 import com.shigu.seller.vo.GoodsFileVO;
 import com.shigu.session.main4.PersonalSession;
-import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.Arith;
 import com.shigu.tools.JsonResponseUtil;
-import net.sf.json.JSONArray;
+
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +41,12 @@ public class GoodsFileAction {
 
     @Autowired
     private OssIO ossIO;
+
+    private static long QUOTA = 1000l;
+
+    private static String ZIP = "zip/";
+
+    private static String TEMP = "temp/";
 
     @RequestMapping("seller/getAccessInfo")
     public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -131,7 +136,13 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/moveFile")
     @ResponseBody
-    public JSONObject moveFile(String fileId, String targetFolderId) {
+    public JSONObject moveFile(HttpServletRequest request, String fileId, String targetFolderId) {
+        Long userId = getUserId(request.getSession());
+
+        if (StringUtils.isEmpty(targetFolderId)) {
+            targetFolderId = goodsFileService.getHomeDir(userId.toString()) + ZIP;
+        }
+
         goodsFileService.moveFile(fileId, targetFolderId);
         return JsonResponseUtil.success();
     }
@@ -157,7 +168,7 @@ public class GoodsFileAction {
     @ResponseBody
     public JSONObject createFoler(HttpServletRequest request, String fileName) {
         Long userId = getUserId(request.getSession());
-        String parentDir = goodsFileService.getHomeDir(userId.toString()) + "zip/";
+        String parentDir = goodsFileService.getHomeDir(userId.toString()) + ZIP;
         String fileId = goodsFileService.createDir(parentDir, fileName);
 
         JSONObject obj= JsonResponseUtil.success();
@@ -229,8 +240,8 @@ public class GoodsFileAction {
         Long userId = getUserId(request.getSession());
 
         JSONObject obj= JsonResponseUtil.success();
-        obj.element("totalSize", 1000);
-        obj.element("useSize", goodsFileService.getSizeInfo("udf/" + userId.toString() + "/zip/"));
+        obj.element("totalSize", QUOTA);
+        obj.element("useSize", goodsFileService.getSizeInfo(goodsFileService.getHomeDir(userId.toString())  + ZIP));
         return obj;
     }
 
@@ -244,18 +255,29 @@ public class GoodsFileAction {
         Long userId = getUserId(request.getSession());
 
         JSONObject obj= JsonResponseUtil.success();
-        String dirTmp = goodsFileService.getHomeDir(userId.toString()) + "temp/";
-        String dirZip = goodsFileService.getHomeDir(userId.toString()) + "zip/";
-        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(dirTmp + targetFolderId + "/" + fileName, userId.toString());
+        String dirTmp = goodsFileService.getHomeDir(userId.toString()) + TEMP;
+        String dirZip = goodsFileService.getHomeDir(userId.toString()) + ZIP;
+        if (!StringUtils.isEmpty(targetFolderId) && !targetFolderId.endsWith("/")) {
+            targetFolderId = targetFolderId + "/";
+        }
+        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(dirTmp + targetFolderId  + fileName, userId.toString());
         if (0 < files.size()) {
             GoodsFileVO file = files.get(0);
 
-            goodsFileService.moveFile(dirTmp + fileName, dirZip  + fileName);
+            double fileSizeVal = Double.parseDouble(file.getFileSize());
+            if ("kb".equalsIgnoreCase(file.getUnit())) {
+                fileSizeVal = Arith.div(fileSizeVal, 1024);//以mb为单位
+            }
+            if (QUOTA < Arith.add(goodsFileService.getSizeInfo(dirZip), fileSizeVal)) {
+                throw new JsonErrException("上传文件总量超过限额！");
+            }
+
+            goodsFileService.moveFile(dirTmp +  targetFolderId  + fileName, dirZip  +  targetFolderId  + fileName);
 
             obj.element("fileId", file.getFileId());
             obj.element("fileName", fileName);
             obj.element("fileType", file.getFileType());
-            obj.element("fileSize", file.getFileSize());
+            obj.element("fileSize", file.getFileSize() + file.getUnit());
             obj.element("fileCreateTime", file.getFileCreateTime());
             obj.element("hasLinkGoods", false);
         } else {
