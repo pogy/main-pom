@@ -1,6 +1,8 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.vo.ExpressVo;
+import com.shigu.order.decorateVo.AbstractRefundVo;
+import com.shigu.order.decorateVo.RefundVoDecorate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +16,10 @@ import java.util.Map;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class RefundExpressDetorate extends RefundVoDecorate{
+public class RefundExpressDetorate extends RefundVoDecorate {
     private List<ExpressVo> list;
 
-    public RefundExpressDetorate(AbstractRefundVo vo,List<ExpressVo> list){
+    public RefundExpressDetorate(AbstractRefundVo vo, List<ExpressVo> list){
         super(vo);
         this.list = list;
     }

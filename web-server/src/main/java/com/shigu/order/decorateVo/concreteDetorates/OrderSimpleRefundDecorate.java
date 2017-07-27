@@ -1,6 +1,8 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.AfterSaleSimpleOrderVO;
+import com.shigu.order.decorateVo.AbstractRefundVo;
+import com.shigu.order.decorateVo.RefundVoDecorate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,7 @@ import java.util.Map;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class OrderSimpleRefundDecorate extends RefundVoDecorate{
+public class OrderSimpleRefundDecorate extends RefundVoDecorate {
     private AfterSaleSimpleOrderVO afterSaleSimpleOrderVO;
     public OrderSimpleRefundDecorate(AbstractRefundVo vo, AfterSaleSimpleOrderVO afterSaleSimpleOrderVO){
         super(vo);

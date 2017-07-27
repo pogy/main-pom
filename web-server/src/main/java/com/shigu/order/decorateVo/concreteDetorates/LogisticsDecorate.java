@@ -1,7 +1,9 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.vo.LogisticsShipVo;
+import com.shigu.order.decorateVo.AbstractRefundVo;
+import com.shigu.order.decorateVo.RefundVoDecorate;
 
 import java.util.Map;
 
@@ -13,7 +15,7 @@ import java.util.Map;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class LogisticsDecorate extends RefundVoDecorate{
+public class LogisticsDecorate extends RefundVoDecorate {
     private LogisticsService logisticsService;
     private Long refundId;
     public LogisticsDecorate(AbstractRefundVo vo) {

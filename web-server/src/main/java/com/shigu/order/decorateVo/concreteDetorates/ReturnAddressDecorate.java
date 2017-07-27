@@ -1,6 +1,8 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.vo.ReturnableAddressVO;
+import com.shigu.order.decorateVo.AbstractRefundVo;
+import com.shigu.order.decorateVo.RefundVoDecorate;
 import com.shigu.order.vo.AddInfoVo;
 
 import java.util.HashMap;
@@ -14,10 +16,10 @@ import java.util.Map;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class ReturnAddressDecorate extends RefundVoDecorate{
+public class ReturnAddressDecorate extends RefundVoDecorate {
     private ReturnableAddressVO returnableAddressVO;
 
-    public ReturnAddressDecorate(AbstractRefundVo vo,ReturnableAddressVO returnableAddressVO){
+    public ReturnAddressDecorate(AbstractRefundVo vo, ReturnableAddressVO returnableAddressVO){
         super(vo);
         this.returnableAddressVO = returnableAddressVO;
     }

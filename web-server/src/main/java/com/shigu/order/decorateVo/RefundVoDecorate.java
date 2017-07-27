@@ -14,7 +14,7 @@ public class RefundVoDecorate extends AbstractRefundVo{
     private AbstractRefundVo abstractRefundVo;
 
 
-    RefundVoDecorate(AbstractRefundVo vo){
+    public RefundVoDecorate(AbstractRefundVo vo){
         this.abstractRefundVo = vo;
     }
 

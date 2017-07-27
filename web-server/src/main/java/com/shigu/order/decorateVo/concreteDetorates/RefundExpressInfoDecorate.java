@@ -1,7 +1,9 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.ReturnableExpressInfoVO;
+import com.shigu.order.decorateVo.AbstractRefundVo;
+import com.shigu.order.decorateVo.RefundVoDecorate;
 import com.shigu.order.vo.ExpressDetailVo;
 import com.shigu.order.vo.ExpressVo;
 
@@ -18,10 +20,10 @@ import java.util.Map;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class RefundExpressInfoDecorate extends RefundVoDecorate{
+public class RefundExpressInfoDecorate extends RefundVoDecorate {
     private ReturnableExpressInfoVO returnableExpressInfoVO;
 
-    public RefundExpressInfoDecorate(AbstractRefundVo vo,ReturnableExpressInfoVO returnableExpressInfoVO){
+    public RefundExpressInfoDecorate(AbstractRefundVo vo, ReturnableExpressInfoVO returnableExpressInfoVO){
         super(vo);
         this.returnableExpressInfoVO =returnableExpressInfoVO;
     }
