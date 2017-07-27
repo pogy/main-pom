@@ -37,7 +37,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    List<ShowOrderVO> myOrder( OrderBO bo,Long userId);
+    List<ShowOrderVO> myOrder( OrderBO bo,Long userId) throws ParseException;
 
     /**
      * ====================================================================================
@@ -49,7 +49,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId);
+    ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) throws ParseException;
 
     /**
      *
