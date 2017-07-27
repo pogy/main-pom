@@ -1,6 +1,7 @@
 package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.vo.LogisticsTemplateVO;
+import com.shigu.main4.order.vo.SenderVO;
 
 import java.util.List;
 
@@ -9,6 +10,11 @@ import java.util.List;
  * Created by zhaohongbo on 17/7/18.
  */
 public interface Sender {
+
+    /**
+     * 发货机构信息
+     */
+    SenderVO senderInfo();
     /**
      * 发货
      */
