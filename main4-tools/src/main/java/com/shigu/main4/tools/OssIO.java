@@ -147,12 +147,14 @@ public class OssIO {
             ObjectListing objectListing = ossClient.listObjects(bucketName, filePath);
 
             for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) { //以"/"结尾的是目录，否则是文件
+                if(objectSummary.getKey().equals(filePath)){
+                    continue;
+                }
                 OssFile file = new OssFile();
                 file.setFileCreateTime(objectSummary.getLastModified().getTime());
                 file.setFileId(objectSummary.getKey());
                 file.setFileSize(String.valueOf(objectSummary.getSize()));//kb
-                String[] items = file.getFileId().split("/");
-                file.setFileName(items[items.length -1]);
+                file.setFileName(objectSummary.getKey());
                 fileList.add(file);
             }
         } finally {
@@ -166,7 +168,7 @@ public class OssIO {
 
 
     /**
-     * 获取文件或者目录总大小,以mb为单位
+     * 获取文件或者目录总大小,以b为单位
      * @param filePath  文件路径
      */
     public long getSizeInfo(String filePath) {
@@ -230,22 +232,9 @@ public class OssIO {
         // 创建OSSClient实例
         OSSClient ossClient = ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
-            String[] items = srcFilePath.split("/");
-            int len = items.length-1;
-            String itemLast = items[len];
-            if(srcFilePath.endsWith("/")) {//目录
-                String newDstFilePath = dstFilePath + itemLast + "/";
-                ObjectListing objectListing = ossClient.listObjects(bucketName, srcFilePath);
-                for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                    String newDstFilePathItem = newDstFilePath + objectSummary.getKey().substring(srcFilePath.length());
-                    ossClient.copyObject(bucketName, objectSummary.getKey(), bucketName, newDstFilePathItem);
-                }
-            } else {
                 // 拷贝Object
-                CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath + itemLast);
+                CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath );
                 logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
-            }
-
             deleteFile(srcFilePath);
         } catch (Exception e) {
             logger.error(e.getMessage());
