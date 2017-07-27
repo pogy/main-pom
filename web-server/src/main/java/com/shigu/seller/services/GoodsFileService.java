@@ -12,6 +12,7 @@ import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.main4.vo.ShopLicense;
 import com.shigu.seller.vo.GoodsFileVO;
 import com.shigu.tools.Arith;
 import org.apache.commons.lang.StringUtils;
@@ -41,13 +42,16 @@ public class GoodsFileService {
     @Autowired
     ShopLicenseService shopLicenseService;
 
+    final long defaultSize=1000000;
+
     /**
      * 查店铺的容量支持
      * @param shopId
      * @return
      */
     public Long shopDataSize(Long shopId){
-        shopLicenseService.selShopLIcenseByType(shopId, ShopLicenseTypeEnum.DATA_DEV);
+        ShopLicense license=shopLicenseService.selShopLIcenseByType(shopId, ShopLicenseTypeEnum.DATA_DEV);
+
         return null;
     }
     /**
@@ -67,7 +71,11 @@ public class GoodsFileService {
      */
     public List<GoodsFileVO> selFilesByFileId( String fileKey,  String userId) {
         String homeDirZip = getHomeDir(userId) + "zip/";
-        List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(homeDirZip), GoodsFileVO.class);
+        String filePath=homeDirZip;
+        if(org.apache.commons.lang3.StringUtils.isNotEmpty(fileKey)){
+            filePath+=fileKey;
+        }
+        List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(filePath), GoodsFileVO.class);
         List<GoodsFileVO> newFiles = new ArrayList<GoodsFileVO>();
         GoodsFileVO lastItem = null;
         List<String> fileKeys=BeanMapper.getFieldList(files,"fileId",String.class);//文件ID
