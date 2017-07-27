@@ -109,6 +109,7 @@ public class ItemOrderImpl implements ItemOrder {
         orderVO.setWebSite(order.getWebSite());
         orderVO.setOrderStatus(OrderStatus.statusOf(order.getOrderStatus()));
         orderVO.setCreateTime(order.getCreateTime());
+        orderVO.setFinishTime(order.getFinishTime());
         return orderVO;
     }
 
