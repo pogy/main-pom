@@ -7,7 +7,9 @@ import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.storeservices.ShopForCdnService;
+import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.vo.GoodsFileVO;
@@ -36,8 +38,18 @@ public class GoodsFileService {
     @Autowired
     OssIO ossIO;
 
+    @Autowired
+    ShopLicenseService shopLicenseService;
 
-    public Long shopDataSize(Long ){}
+    /**
+     * 查店铺的容量支持
+     * @param shopId
+     * @return
+     */
+    public Long shopDataSize(Long shopId){
+        shopLicenseService.selShopLIcenseByType(shopId, ShopLicenseTypeEnum.DATA_DEV);
+        return null;
+    }
     /**
      * g更加文件路径获取
      */

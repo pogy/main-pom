@@ -2,6 +2,7 @@ package com.shigu.main4.storeservices.impl;
 
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.ShiguShopLicense;
+import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.examples.ShiguShopLicenseExample;
 import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
 import com.shigu.main4.common.vo.ShiguTags;
@@ -122,5 +123,11 @@ public class ShopLicenseServiceImpl implements ShopLicenseService{
             shopLicenses.add(sl);
         }
         return shopLicenses;
+    }
+
+    @Override
+    public ShopLicense selShopLIcenseByType(Long shopId, ShopLicenseTypeEnum type) {
+
+        return null;
     }
 }
