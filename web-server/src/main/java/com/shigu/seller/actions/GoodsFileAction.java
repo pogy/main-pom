@@ -42,7 +42,11 @@ public class GoodsFileAction {
     @Autowired
     private OssIO ossIO;
 
-    private static long quota = 1000l;
+    private static long QUOTA = 1000l;
+
+    private static String ZIP = "zip";
+
+    private static String TEMP = "temp";
 
     @RequestMapping("seller/getAccessInfo")
     public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -136,7 +140,7 @@ public class GoodsFileAction {
         Long userId = getUserId(request.getSession());
 
         if (StringUtils.isEmpty(targetFolderId)) {
-            targetFolderId = goodsFileService.getHomeDir(userId.toString()) + "zip/";
+            targetFolderId = goodsFileService.getHomeDir(userId.toString()) + ZIP;
         }
 
         goodsFileService.moveFile(fileId, targetFolderId);
@@ -164,7 +168,7 @@ public class GoodsFileAction {
     @ResponseBody
     public JSONObject createFoler(HttpServletRequest request, String fileName) {
         Long userId = getUserId(request.getSession());
-        String parentDir = goodsFileService.getHomeDir(userId.toString()) + "zip/";
+        String parentDir = goodsFileService.getHomeDir(userId.toString()) + ZIP;
         String fileId = goodsFileService.createDir(parentDir, fileName);
 
         JSONObject obj= JsonResponseUtil.success();
@@ -235,8 +239,8 @@ public class GoodsFileAction {
         Long userId = getUserId(request.getSession());
 
         JSONObject obj= JsonResponseUtil.success();
-        obj.element("totalSize", quota);
-        obj.element("useSize", goodsFileService.getSizeInfo("udf/" + userId.toString() + "/zip/"));
+        obj.element("totalSize", QUOTA);
+        obj.element("useSize", goodsFileService.getSizeInfo(goodsFileService.getHomeDir(userId.toString())  + ZIP));
         return obj;
     }
 
@@ -250,8 +254,8 @@ public class GoodsFileAction {
         Long userId = getUserId(request.getSession());
 
         JSONObject obj= JsonResponseUtil.success();
-        String dirTmp = goodsFileService.getHomeDir(userId.toString()) + "temp/";
-        String dirZip = goodsFileService.getHomeDir(userId.toString()) + "zip/";
+        String dirTmp = goodsFileService.getHomeDir(userId.toString()) + TEMP;
+        String dirZip = goodsFileService.getHomeDir(userId.toString()) + ZIP;
         List<GoodsFileVO> files = goodsFileService.selFilesByFileId(dirTmp + targetFolderId + "/" + fileName, userId.toString());
         if (0 < files.size()) {
             GoodsFileVO file = files.get(0);
@@ -260,7 +264,7 @@ public class GoodsFileAction {
             if ("kb".equalsIgnoreCase(file.getUnit())) {
                 fileSizeVal = Arith.div(fileSizeVal, 1024);
             }
-            if (quota < Arith.add(goodsFileService.getSizeInfo(dirZip), fileSizeVal)) {
+            if (QUOTA < Arith.add(goodsFileService.getSizeInfo(dirZip), fileSizeVal)) {
                 throw new JsonErrException("上传文件总量超过限额！");
             }
 
