@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,7 +56,16 @@ public class GoodsFileService {
         }
 
         List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(fileKey, homeDirZip), GoodsFileVO.class);
+        List<GoodsFileVO> newFiles = new ArrayList<GoodsFileVO>();
+        GoodsFileVO lastItem = null;
         for (GoodsFileVO item : files) {
+            if (lastItem != null && -1 <item.getFileId().indexOf(lastItem.getFileId())) {//过滤下层文件的显示
+                continue;
+            }
+            if (!fileKey.equalsIgnoreCase(item.getFileId())) {
+                lastItem = item;
+            }
+
             if (item.getFileId().endsWith(".zip") || item.getFileId().endsWith(".7z") || item.getFileId().endsWith(".rar") ) {
                 item.setFileType("picBkg");
             } else if(item.getFileId().endsWith("/")) {
@@ -76,8 +86,10 @@ public class GoodsFileService {
             if ("folder".equalsIgnoreCase(item.getFileType())) {
 
             }
+
+            newFiles.add(item);
          }
-        return files;
+        return newFiles;
     }
 
 

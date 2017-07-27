@@ -1,6 +1,7 @@
 package com.shigu.seller.actions;
 
 import com.opentae.data.mall.beans.GoodsFile;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.tools.OssIO;
@@ -238,42 +239,28 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/noticeUploadFile")
     @ResponseBody
-    public JSONObject noticeUploadFile(HttpServletRequest request, String fileName, String targetForderName) {
+    public JSONObject noticeUploadFile(HttpServletRequest request, String fileName, String targetFolderId) throws JsonErrException {
         Long userId = getUserId(request.getSession());
 
         JSONObject obj= JsonResponseUtil.success();
-        String dir = goodsFileService.getHomeDir(userId.toString()) + "temp/" + targetForderName;
+        String dir = goodsFileService.getHomeDir(userId.toString()) + "temp/" + targetFolderId;
         List<GoodsFileVO> files = goodsFileService.selFilesByFileId(dir + fileName, userId.toString());
         if (0 < files.size()) {
             GoodsFileVO file = files.get(0);
-
             obj.element("fileId", file.getFileId());
             obj.element("fileType", "picBkg");
             obj.element("fileSize", String.valueOf(file.getFileSize()));
             obj.element("fileCreateTime", file.getFileCreateTime());
             obj.element("hasLinkGoods", false);
+        } else {
+            throw new JsonErrException("文件上传失败！");
         }
 
         return obj;
 
 
     }
-//
-//    /**
-//     * 获取用户登录信息
-//     */
-//    @RequestMapping("goodsFile/jsonislogin")
-//    @ResponseBody
-//    public JSONObject jsonislogin(HttpServletRequest request) {
-//        PersonalSession ps = (PersonalSession) request.getSession().getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        String userNick = "";
-//        if (ps != null) {
-//            userNick =  ps.getUserNick();
-//        }
-//        JSONObject obj= JsonResponseUtil.success();
-//        obj.element("userNick",userNick);
-//        return obj;
-//    }
+
 
     private Long getUserId(HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
