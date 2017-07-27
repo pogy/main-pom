@@ -2,10 +2,12 @@ package com.shigu.main4.order.model.impl;
 
 import com.opentae.data.mall.beans.LogisticsTemplate;
 import com.opentae.data.mall.examples.LogisticsTemplateExample;
+import com.opentae.data.mall.interfaces.ItemOrderSenderMapper;
 import com.opentae.data.mall.interfaces.LogisticsTemplateMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.Sender;
 import com.shigu.main4.order.vo.LogisticsTemplateVO;
+import com.shigu.main4.order.vo.SenderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -23,10 +25,21 @@ public class SenderImpl implements Sender {
     @Autowired
     private LogisticsTemplateMapper logisticsTemplateMapper;
 
+    @Autowired
+    private ItemOrderSenderMapper itemOrderSenderMapper;
+
     private Long senderId;
 
     public SenderImpl(Long senderId) {
         this.senderId = senderId;
+    }
+
+    /**
+     * 发货机构信息
+     */
+    @Override
+    public SenderVO senderInfo() {
+        return BeanMapper.map(itemOrderSenderMapper.selectByPrimaryKey(senderId), SenderVO.class);
     }
 
     @Override

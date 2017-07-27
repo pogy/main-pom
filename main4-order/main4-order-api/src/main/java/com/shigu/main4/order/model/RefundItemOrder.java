@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.order.exceptions.PayerException;
@@ -72,7 +73,7 @@ public interface RefundItemOrder {
     /**
      * 买家附议
      */
-    void buyerReprice() throws RefundException, PayerException;
+    void buyerReprice() throws Main4Exception;
 
     /**
      * 买家拒绝附议

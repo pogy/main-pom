@@ -352,28 +352,26 @@ public class ItemOrderServiceImpl implements ItemOrderService {
      * @throws Main4Exception
      * @throws ParseException
      */
-    /**
-     * 查询物流日志
-     *
-     * @param expressId
-     * @return
-     */
     @Override
     public List<ExpressLogVO> expressLog(Long expressId) throws Main4Exception, ParseException {
         ItemOrderLogistics itemOrderLogistics = itemOrderLogisticsMapper.selectByPrimaryKey(expressId);
         if (itemOrderLogistics == null) {
-            throw new Main4Exception("数据库没有对应传入的expressId的数据");
+            throw new Main4Exception("快递信息不存在");
         }
         String companyCode = "";
         if (itemOrderLogistics.getCompanyId() != null) {
             companyCode = selLogisticCompanyCode(itemOrderLogistics.getCompanyId());
         }
-        String orderTracesByJson = null;
+        return expressLog(companyCode, itemOrderLogistics.getCourierNumber());
+    }
+
+    public List<ExpressLogVO> expressLog(String companyCode, String courierNumber) throws Main4Exception, ParseException {
+        String orderTracesByJson;
         try {
-            orderTracesByJson = kdniaoUtil.getOrderTracesByJson(companyCode, itemOrderLogistics.getCourierNumber());
+            orderTracesByJson = kdniaoUtil.getOrderTracesByJson(companyCode, courierNumber);
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new Main4Exception("调用快递鸟接口抛出的异常");
+            logger.error("快递查询失败", e);
+            throw new Main4Exception("快递查询失败");
         }
         ExpressResultVO resultVO = JSON.parseObject(orderTracesByJson, ExpressResultVO.class);
         List<ExpressLogVO> logVOList = new ArrayList<>();
