@@ -4,16 +4,13 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
+import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressDetailVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
-import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
-import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
-import com.shigu.main4.order.zfenums.RefundTypeEnum;
-import com.shigu.main4.order.zfenums.ShStatusEnum;
-import com.shigu.main4.order.zfenums.SubOrderStatus;
+import com.shigu.main4.order.zfenums.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,28 +38,26 @@ public class OrderListServiceImpl implements OrderListService {
         ShowOrderVO ovo = new ShowOrderVO();
 
         for (int i = 0; i < 20; i++) {
-            ovo.setMainState(MainOrderStatusEnum.statusOf(1).status);
+            ovo.setMainState(MainOrderStatusEnum.statusOf(1));
             String oidString = "201707200034" + i;
             Long orderId = new Long(oidString);
             ovo.setOrderId(orderId);
-            ovo.setOrderPrice("2200");
-            ovo.setPayedFeeLong(2200L);
-            ovo.setPostPayLong(500L);
-            ovo.setRefundFeeLong(0L);
-            ovo.setServerPayLong(100L);
+            ovo.setPostPrice(500L);
+            ovo.setServerPrice(100L);
             if ((i / 2) == 1) {
                 ovo.setIsTbOrder(false);
             } else {
                 ovo.setIsTbOrder(true);
             }
-            ovo.setTradePayLong(2800L);
-            ovo.setTradeTimed(new Date());
+            ovo.setOrderPrice(2800L);
+            ovo.setPayTime(new Date());
             ovo.setWebSite("hz");
             List<SubOrderInfoVO> listsub = new ArrayList<>();
             for (int k = 0; k < 3; k++) {
                 SubOrderInfoVO svo = new SubOrderInfoVO();
                 int p = i * 10 + k + 1;
-                svo.setChildOrderId(new Long(p));
+                svo.setOrderId(new Long(p));
+                svo.setSubOrderId(orderId+k);
                 switch (k) {
                     case 0: {
                         svo.setImgsrc("https://img.alicdn.com/bao/uploaded/i4/270913282/TB2LQlAXB7c61BjSZFIXXcZmVXa-270913282.jpg");
@@ -70,9 +65,13 @@ public class OrderListServiceImpl implements OrderListService {
                         svo.setSize("L");
                         svo.setGoodsId(9522391L);
                         svo.setGoodsNo("A241 S5-P65");
-                        svo.setNum(1);
-                        svo.setPriceLong(6500L);
-                        svo.setSubStatusenum(SubOrderStatus.statusOf(0));
+                        svo.setNum(3);
+                        svo.setPrice(6500L);
+                        svo.setShTkNum(1);
+                        svo.setTkNum(1);
+                        svo.setTkState(RefundStateEnum.APPLY_REFUND);
+                        svo.setShTkNum(1);
+                        svo.setShState(AfterSaleStatusEnum.REFUND_ENT);
                         svo.setTitle("A241 S5-P65 2016秋冬毛线衫男装港风高领毛衣男纯色翻领毛衣");
                         break;
                     }
@@ -83,8 +82,12 @@ public class OrderListServiceImpl implements OrderListService {
                         svo.setGoodsId(20915911L);
                         svo.setGoodsNo("A242/WX82/P165");
                         svo.setNum(3);
-                        svo.setPriceLong(16500L);
-                        svo.setSubStatusenum(SubOrderStatus.statusOf(2));
+                        svo.setPrice(6500L);
+                        svo.setShTkNum(1);
+                        svo.setTkNum(1);
+                        svo.setTkState(RefundStateEnum.APPLY_REFUND);
+                        svo.setShTkNum(1);
+                        svo.setShState(AfterSaleStatusEnum.REFUND_ENT);
                         svo.setTitle("修身滚边设计男士帅气一粒扣西装 WX82/P165白");
                         break;
                     }
@@ -94,14 +97,17 @@ public class OrderListServiceImpl implements OrderListService {
                         svo.setSize("XXL");
                         svo.setGoodsId(20918332L);
                         svo.setGoodsNo("F088");
-                        svo.setNum(2);
-                        svo.setPriceLong(11000L);
-                        svo.setSubStatusenum(SubOrderStatus.statusOf(1));
+                        svo.setNum(5);
+                        svo.setPrice(6500L);
+                        svo.setShTkNum(1);
+                        svo.setTkNum(1);
+                        svo.setTkState(RefundStateEnum.BUYER_NOREPRICE);
+                        svo.setShTkNum(1);
+                        svo.setShState(AfterSaleStatusEnum.DISPOSE_FERUND);
                         svo.setTitle("【品质原创质检F088】秋装男夹克男风衣男外套男大码男P110控148");
                         break;
                     }
                 }
-                svo.setOrderId(orderId);
                 listsub.add(svo);
 
 
@@ -113,8 +119,8 @@ public class OrderListServiceImpl implements OrderListService {
     }
 
     @Override
-    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) {
-        ShiguPager<ShowOrderVO> pager = new ShiguPager<ShowOrderVO>();
+    public ShiguPager selectCountMyOrder(OrderBO bo, Long userId) {
+        ShiguPager pager = new ShiguPager();
         //totalCount+","+size+","+number;
         pager.setTotalCount(15);
         pager.setNumber(12);
@@ -126,29 +132,25 @@ public class OrderListServiceImpl implements OrderListService {
         List<ShowOrderVO> list = new ArrayList<>();
         ShowOrderVO ovo = new ShowOrderVO();
         for (int i = 0; i < 20; i++) {
-            ovo.setMainState(MainOrderStatusEnum.statusOf(1).status);
+            ovo.setMainState(MainOrderStatusEnum.statusOf(1));
             String oidString = "201707200034" + i;
             Long orderId = new Long(oidString);
             ovo.setOrderId(orderId);
-            ovo.setOrderPrice("2200");
-            ovo.setPayedFeeLong(2200L);
-            ovo.setPostPayLong(500L);
-            ovo.setRefundFeeLong(0L);
-            ovo.setServerPayLong(100L);
             if ((i / 2) == 1) {
                 ovo.setIsTbOrder(false);
             } else {
                 ovo.setIsTbOrder(true);
             }
-            ovo.setTradePayLong(2800L);
-            ovo.setTradeTimed(new Date());
+            ovo.setOrderPrice(2800L);
+            ovo.setPayTime(new Date());
             ovo.setWebSite("hz");
-            ovo.setMainState(4);
+            ovo.setMainState(MainOrderStatusEnum.statusOf(4));
             List<SubOrderInfoVO> listsub = new ArrayList<>();
             for (int k = 0; k < 3; k++) {
                 SubOrderInfoVO svo = new SubOrderInfoVO();
                 int p = i * 10 + k + 1;
-                svo.setChildOrderId(new Long(p));
+                svo.setOrderId(new Long(p));
+                svo.setSubOrderId(orderId+k);
                 switch (k) {
                     case 0: {
                         svo.setImgsrc("https://img.alicdn.com/bao/uploaded/i4/270913282/TB2LQlAXB7c61BjSZFIXXcZmVXa-270913282.jpg");
@@ -157,19 +159,18 @@ public class OrderListServiceImpl implements OrderListService {
                         svo.setGoodsId(9522391L);
                         svo.setGoodsNo("A241 S5-P65");
                         svo.setNum(1);
-                        svo.setPriceLong(6500L);
-                        svo.setSubStatusenum(SubOrderStatus.statusOf(0));
+                        svo.setPrice(6500L);
                         svo.setRefundId(1000L);
                         if (shStatus == null) {
                             svo.setTkNum(1);
-                            svo.setTkStateEnum(RefundTypeEnum.DISPOSE_REFUND);
+                            svo.setTkState(RefundStateEnum.DISPOSE_REFUND);
                         } else {
                             if (shStatus == ShStatusEnum.REFUND) {
                                 svo.setTkNum(1);
-                                svo.setTkStateEnum(RefundTypeEnum.DISPOSE_REFUND);
+                                svo.setTkState(RefundStateEnum.DISPOSE_REFUND);
                             } else {
                                 svo.setShTkNum(1);
-                                svo.setShStateEnum(AfterSaleStatusEnum.statusOf(1));
+                                svo.setShState(AfterSaleStatusEnum.statusOf(1));
                             }
                         }
                         svo.setTitle("A241 S5-P65 2016秋冬毛线衫男装港风高领毛衣男纯色翻领毛衣");
@@ -182,21 +183,20 @@ public class OrderListServiceImpl implements OrderListService {
                         svo.setGoodsId(20915911L);
                         svo.setGoodsNo("A242/WX82/P165");
                         svo.setNum(3);
-                        svo.setPriceLong(16500L);
-                        svo.setSubStatusenum(SubOrderStatus.statusOf(2));
+                        svo.setPrice(16500L);
                         svo.setTitle("修身滚边设计男士帅气一粒扣西装 WX82/P165白");
                         svo.setRefundId(1000L);
                         if (shStatus == null) {
                             svo.setTkNum(1);
                             svo.setShTkNum(1);
-                            svo.setTkStateEnum(RefundTypeEnum.ENT_REFUND);
+                            svo.setTkState(RefundStateEnum.ENT_REFUND);
                         } else {
                             if (shStatus == ShStatusEnum.REFUND) {
                                 svo.setTkNum(1);
                                 svo.setShTkNum(2);
-                                svo.setTkStateEnum(RefundTypeEnum.ENT_REFUND);
+                                svo.setTkState(RefundStateEnum.ENT_REFUND);
                             } else {
-                                svo.setShStateEnum(AfterSaleStatusEnum.statusOf(3));
+                                svo.setShState(AfterSaleStatusEnum.statusOf(3));
                                 svo.setShTkNum(2);
                             }
                         }
@@ -209,23 +209,21 @@ public class OrderListServiceImpl implements OrderListService {
                         svo.setGoodsId(20918332L);
                         svo.setGoodsNo("F088");
                         svo.setNum(2);
-                        svo.setPriceLong(11000L);
-                        svo.setSubStatusenum(SubOrderStatus.statusOf(1));
+                        svo.setPrice(11000L);
                         svo.setTitle("【品质原创质检F088】秋装男夹克男风衣男外套男大码男P110控148");
                         svo.setRefundId(1000L);
                         if (shStatus == null) {
-                            svo.setShStateEnum(AfterSaleStatusEnum.statusOf(k));
+                            svo.setShState(AfterSaleStatusEnum.statusOf(k));
                         } else {
                             if (shStatus == ShStatusEnum.REFUND) {
-                                svo.setTkStateEnum(RefundTypeEnum.DISPOSE_REFUND);
+                                svo.setTkState(RefundStateEnum.DISPOSE_REFUND);
                             } else {
-                                svo.setShStateEnum(AfterSaleStatusEnum.statusOf(k + 2));
+                                svo.setShState(AfterSaleStatusEnum.statusOf(k + 2));
                             }
                         }
                         break;
                     }
                 }
-                svo.setOrderId(orderId);
                 listsub.add(svo);
             }
             ovo.setChildOrders(listsub);
@@ -298,16 +296,14 @@ public class OrderListServiceImpl implements OrderListService {
     }
 
     @Override
-    public ShowOrderVO selectMyorder(Long orderId) {
-        ShowOrderVO vo = new ShowOrderVO();
+    public ShowOrderDetailVO selectMyorder(Long orderId) {
+        ShowOrderDetailVO vo = new ShowOrderDetailVO();
         vo.setOrderCreateTimed(new Date());//创建时间
-        vo.setTradeTimed(new Date());//付款时间
-        vo.setDistributionDated(new Date());//分配时间
+        vo.setPayTime(new Date());//付款时间
+        vo.setSendTime(new Date());//发货时间
         vo.setFinishTimed(new Date());//完成时间
-        vo.setIsTbOrder(true);
-        vo.setMainState(1);
+        vo.setMainState(MainOrderStatusEnum.statusOf(1));
         vo.setOrderId(orderId);
-
         return vo;
     }
 
@@ -319,7 +315,7 @@ public class OrderListServiceImpl implements OrderListService {
             SubOrderInfoVO svo = new SubOrderInfoVO();
             int p = 1 + k + 1;
             svo.setOrderId(orderId);
-            svo.setChildOrderId(new Long(p));
+            svo.setSubOrderId(new Long(p));
             switch (k) {
                 case 0: {
                     svo.setImgsrc("https://img.alicdn.com/bao/uploaded/i4/270913282/TB2LQlAXB7c61BjSZFIXXcZmVXa-270913282.jpg");
@@ -327,9 +323,13 @@ public class OrderListServiceImpl implements OrderListService {
                     svo.setSize("L");
                     svo.setGoodsId(9522391L);
                     svo.setGoodsNo("A241 S5-P65");
-                    svo.setNum(1);
-                    svo.setPriceLong(6500L);
-                    svo.setSubStatusenum(SubOrderStatus.statusOf(0));
+                    svo.setNum(3);
+                    svo.setPrice(6500L);
+                    svo.setShTkNum(1);
+                    svo.setTkNum(1);
+                    svo.setTkState(RefundStateEnum.APPLY_REFUND);
+                    svo.setShTkNum(1);
+                    svo.setShState(AfterSaleStatusEnum.REFUND_ENT);
                     svo.setTitle("A241 S5-P65 2016秋冬毛线衫男装港风高领毛衣男纯色翻领毛衣");
                     break;
                 }
@@ -340,8 +340,12 @@ public class OrderListServiceImpl implements OrderListService {
                     svo.setGoodsId(20915911L);
                     svo.setGoodsNo("A242/WX82/P165");
                     svo.setNum(3);
-                    svo.setPriceLong(16500L);
-                    svo.setSubStatusenum(SubOrderStatus.statusOf(2));
+                    svo.setPrice(6500L);
+                    svo.setShTkNum(1);
+                    svo.setTkNum(1);
+                    svo.setTkState(RefundStateEnum.APPLY_REFUND);
+                    svo.setShTkNum(1);
+                    svo.setShState(AfterSaleStatusEnum.REFUND_ENT);
                     svo.setTitle("修身滚边设计男士帅气一粒扣西装 WX82/P165白");
                     break;
                 }
@@ -351,14 +355,17 @@ public class OrderListServiceImpl implements OrderListService {
                     svo.setSize("XXL");
                     svo.setGoodsId(20918332L);
                     svo.setGoodsNo("F088");
-                    svo.setNum(2);
-                    svo.setPriceLong(11000L);
-                    svo.setSubStatusenum(SubOrderStatus.statusOf(1));
+                    svo.setNum(5);
+                    svo.setPrice(6500L);
+                    svo.setShTkNum(1);
+                    svo.setTkNum(1);
+                    svo.setTkState(RefundStateEnum.BUYER_NOREPRICE);
+                    svo.setShTkNum(1);
+                    svo.setShState(AfterSaleStatusEnum.DISPOSE_FERUND);
                     svo.setTitle("【品质原创质检F088】秋装男夹克男风衣男外套男大码男P110控148");
                     break;
                 }
             }
-            svo.setOrderId(orderId);
             listsub.add(svo);
 
 

@@ -3,15 +3,16 @@ package com.shigu.order.services;
 import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.services.OrderListService;
-import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
-import com.shigu.main4.order.servicevo.OrderDetailVO;
-import com.shigu.main4.order.servicevo.ShowOrderVO;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
+import com.shigu.order.vo.MyOrderDetailVO;
+import com.shigu.order.vo.MyOrderVO;
+import com.shigu.order.vo.SubMyOrderVO;
 import com.shigu.tools.DateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,35 +40,44 @@ public class MyOrderService {
     private ItemOrderMapper itemOrderMapper;
 
 
-    public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) {
+    public List<MyOrderVO> myOrder(OrderBO bo, Long userId) {
         List<ShowOrderVO> list=orderListService.myOrder (bo,userId);
-        if(list.size ()>0){
-            for(int i=0;i<list.size ();i++){
+        List<MyOrderVO> vos=new ArrayList<>();
 
-                list.get (i).setTradePay (PriceConvertUtils.priceToString (list.get(i).getTradePayLong ()));
-                list.get(i).setServerPay (PriceConvertUtils.priceToString (list.get(i).getServerPayLong ()));
-                list.get (i).setRefundFee (PriceConvertUtils.priceToString (list.get(i).getRefundFeeLong ()));
-                list.get (i).setPostPay (PriceConvertUtils.priceToString (list.get(i).getPostPayLong ()));
-                list.get (i).setPayedFee (PriceConvertUtils.priceToString (list.get(i).getPayedFeeLong ()));
-                List<SubOrderInfoVO> sublist=list.get (i).getChildOrders ();
-                List<SubOrderInfoVO> sublist1=new ArrayList<> ();
-                for(SubOrderInfoVO subVo: list.get (i).getChildOrders ()){
-                        subVo.setPrice (PriceConvertUtils.priceToString(subVo.getPriceLong ()));
-                      subVo.setSubOrderStatus (subVo.getSubStatusenum ().status);
-                    sublist1.add (subVo);
-                }
-                list.get (i).setChildOrders (sublist1);
-                //日期
-                list.get (i).setTradeTime (DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",list.get (i).getTradeTimed ()));
-
+        for(ShowOrderVO show:list){
+            MyOrderVO vo=new MyOrderVO();
+            vo.setIsTbOrder(show.getIsTbOrder());
+            vo.setMainState(show.getMainState().status);
+            vo.setOrderId(show.getOrderId());
+            vo.setPostPay(PriceConvertUtils.priceToString (show.getPostPrice()));
+            vo.setServerPay(PriceConvertUtils.priceToString(show.getServerPrice()));
+            vo.setTradePay(PriceConvertUtils.priceToString(show.getServerPrice()+show.getOrderPrice()+show.getPostPrice()));
+            vo.setTradeTime(DateUtil.dateToString(show.getPayTime(),DateUtil.patternD));
+            vo.setWebSite(show.getWebSite());
+            List<SubMyOrderVO> subs=new ArrayList<>();
+            for(SubOrderInfoVO so:show.getChildOrders()){
+                SubMyOrderVO sub=new SubMyOrderVO();
+                sub.setChildOrderId(so.getSubOrderId());
+                sub.setColor(so.getColor());
+                sub.setGoodsId(so.getGoodsId());
+                sub.setGoodsNo(so.getGoodsNo());
+                sub.setImgsrc(so.getImgsrc());
+                sub.setNum(so.getNum());
+                sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
+                sub.setRefundId(so.getRefundId());
+                sub.setShState(so.getShState().afterSaleStatus);
+                sub.setShTkNum(so.getShTkNum());
+                sub.setSize(so.getSize());
+                sub.setTitle(so.getTitle());
+                sub.setTkNum(so.getTkNum());
+                sub.setTkState(so.getTkState().refundStatus==2?1:0);
+                subs.add(sub);
             }
+            vo.setChildOrders(subs);
+            vos.add(vo);
         }
-
-       return  list;
-
+        return vos;
     }
-
-
     public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId){
 
         return orderListService.selectCountMyOrder (bo,userId);
@@ -82,8 +92,6 @@ public class MyOrderService {
 
         return flag;
     }
-
-
     public int removeOrder(Long orderId){
        return orderListService.removeOrder (orderId);
     }
@@ -92,20 +100,33 @@ public class MyOrderService {
     }
 
 
-    public OrderDetailVO orderDetail(Long orderId){
-        ShowOrderVO orderVO= orderListService.selectMyorder (orderId);
+    public MyOrderDetailVO orderDetail(Long orderId){
+        ShowOrderDetailVO orderVO= orderListService.selectMyorder (orderId);
         OrderAddrInfoVO addrVo= orderListService.selectOrderAddrInfo( orderId);
         OrderDetailExpressVO expressVO= orderListService.selectExpress( orderId);
 
         List<SubOrderInfoVO> list=orderListService.selectSubList( orderId);
-        List<SubOrderInfoVO> list1=new ArrayList<> ();
-        for(SubOrderInfoVO subVo: list){
-            subVo.setPrice (PriceConvertUtils.priceToString(subVo.getPriceLong ()));
-            subVo.setSubOrderStatus (subVo.getSubStatusenum ().status);
-            list1.add (subVo);
+        List<SubMyOrderVO> subs=new ArrayList<>();
+        for(SubOrderInfoVO so:list){
+            SubMyOrderVO sub=new SubMyOrderVO();
+            sub.setChildOrderId(so.getSubOrderId());
+            sub.setColor(so.getColor());
+            sub.setGoodsId(so.getGoodsId());
+            sub.setGoodsNo(so.getGoodsNo());
+            sub.setImgsrc(so.getImgsrc());
+            sub.setNum(so.getNum());
+            sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
+            sub.setRefundId(so.getRefundId());
+            sub.setShState(so.getShState().afterSaleStatus);
+            sub.setShTkNum(so.getShTkNum());
+            sub.setSize(so.getSize());
+            sub.setTitle(so.getTitle());
+            sub.setTkNum(so.getTkNum());
+            sub.setTkState(so.getTkState().refundStatus==2?1:0);
+            subs.add(sub);
         }
-        OrderDetailVO vo=new OrderDetailVO();
-        vo.setChildOrders (list1);
+        MyOrderDetailVO vo=new MyOrderDetailVO();
+        vo.setChildOrders (subs);
 
         OrderDetailTotalVO totalVO= orderListService.selectTotal( orderId);
         totalVO.setServicePrice (PriceConvertUtils.priceToString (totalVO.getServicePriceLong()));
@@ -122,11 +143,11 @@ public class MyOrderService {
             vo.setOrderCreateTime (orderVO.getOrderCreateTimed ().getTime ());
         }
         vo.setOrderId (orderId);
-        if(orderVO.getTradeTimed ()!=null) {
-            vo.setOrderDealTime (DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getTradeTimed ()));
+        if(orderVO.getPayTime ()!=null) {
+            vo.setOrderDealTime (DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getPayTime ()));
         }
-        vo.setOrderStateNum (orderVO.getMainState ().longValue ());
-        String[] orderStateText={"提交订单", "买家付款", "商品配货", "交易完成"};
+        vo.setOrderStateNum (orderVO.getMainState ().status);
+        String[] orderStateText={"提交订单", "买家付款", "商品发货", "交易完成"};
         vo.setOrderStateText (orderStateText);
         //
 
@@ -138,8 +159,8 @@ public class MyOrderService {
         if(vo.getOrderDealTime ()!=null){
             orderStatusTIme[1]=vo.getOrderDealTime ();
         }
-        if(orderVO.getDistributionDated()!=null){
-            orderStatusTIme[2]=DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getDistributionDated ());
+        if(orderVO.getSendTime()!=null){
+            orderStatusTIme[2]=DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getSendTime());
         }
         if(orderVO.getFinishTimed ()!=null){
             orderStatusTIme[3]=DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getFinishTimed ());

@@ -11,6 +11,10 @@ public class CdnGoodsInfoVO {
      */
     private Long goodsId;
     /**
+     * 淘宝商品ID
+     */
+    private Long tbGoodsId;
+    /**
      * 标题
      */
     private String title;
@@ -294,5 +298,19 @@ public class CdnGoodsInfoVO {
      */
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    /**
+     * 获取 淘宝商品ID
+     */
+    public Long getTbGoodsId() {
+        return this.tbGoodsId;
+    }
+
+    /**
+     * 设置 淘宝商品ID
+     */
+    public void setTbGoodsId(Long tbGoodsId) {
+        this.tbGoodsId = tbGoodsId;
     }
 }

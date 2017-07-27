@@ -1,11 +1,14 @@
 package com.shigu.order.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.utils.PriceConvertUtils;
+import com.shigu.order.vo.MyOrderVO;
+import com.shigu.order.vo.SubMyOrderVO;
 import com.shigu.tools.DateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,7 @@ public class ShManaOrderService {
     @Autowired
     OrderListService orderListService;
 
-    public ShiguPager<ShowOrderVO> selectShList(Integer shStatus,Integer page,Integer size,Long userId){
+    public ShiguPager<MyOrderVO> selectShList(Integer shStatus,Integer page,Integer size,Long userId){
         if(page==null){
             page=1;
         }
@@ -30,29 +33,44 @@ public class ShManaOrderService {
             e=ShStatusEnum.statusOf(shStatus);
         }
         ShiguPager<ShowOrderVO> pager=orderListService.selectCountShManaOrder(e,page,size,userId);
-        List<ShowOrderVO> list=pager.getContent();
-        if(list.size ()>0){
-            for(int i=0;i<list.size ();i++){
-                list.get (i).setTradePay (PriceConvertUtils.priceToString (list.get(i).getTradePayLong ()));
-                list.get(i).setServerPay (PriceConvertUtils.priceToString (list.get(i).getServerPayLong ()));
-                list.get (i).setRefundFee (PriceConvertUtils.priceToString (list.get(i).getRefundFeeLong ()));
-                list.get (i).setPostPay (PriceConvertUtils.priceToString (list.get(i).getPostPayLong ()));
-                list.get (i).setPayedFee (PriceConvertUtils.priceToString (list.get(i).getPayedFeeLong ()));
-                List<SubOrderInfoVO> sublist=list.get (i).getChildOrders ();
-                List<SubOrderInfoVO> sublist1=new ArrayList<>();
-                for(SubOrderInfoVO subVo: list.get (i).getChildOrders ()){
-                    subVo.setPrice (PriceConvertUtils.priceToString(subVo.getPriceLong ()));
-                    subVo.setSubOrderStatus (subVo.getSubStatusenum ().status);
-                    subVo.setShState(subVo.getShStateEnum()==null?0:subVo.getShStateEnum().afterSaleStatus);
-                    subVo.setTkState(subVo.getTkStateEnum()==null?0:subVo.getTkStateEnum().refundType);
-                    sublist1.add (subVo);
-                }
-                list.get (i).setChildOrders (sublist1);
-                //日期
-                list.get (i).setTradeTime (DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",list.get (i).getTradeTimed ()));
-
+        List<MyOrderVO> vos=new ArrayList<>();
+        for(ShowOrderVO show:pager.getContent()){
+            MyOrderVO vo=new MyOrderVO();
+            vo.setIsTbOrder(show.getIsTbOrder());
+            vo.setMainState(show.getMainState().status);
+            vo.setOrderId(show.getOrderId());
+            vo.setPostPay(PriceConvertUtils.priceToString (show.getPostPrice()));
+            vo.setServerPay(PriceConvertUtils.priceToString(show.getServerPrice()));
+            vo.setTradePay(PriceConvertUtils.priceToString(show.getServerPrice()+show.getOrderPrice()+show.getPostPrice()));
+            vo.setTradeTime(DateUtil.dateToString(show.getPayTime(),DateUtil.patternD));
+            vo.setWebSite(show.getWebSite());
+            List<SubMyOrderVO> subs=new ArrayList<>();
+            for(SubOrderInfoVO so:show.getChildOrders()){
+                SubMyOrderVO sub=new SubMyOrderVO();
+                sub.setChildOrderId(so.getSubOrderId());
+                sub.setColor(so.getColor());
+                sub.setGoodsId(so.getGoodsId());
+                sub.setGoodsNo(so.getGoodsNo());
+                sub.setImgsrc(so.getImgsrc());
+                sub.setNum(so.getNum());
+                sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
+                sub.setRefundId(so.getRefundId());
+                sub.setShState(so.getShState().afterSaleStatus);
+                sub.setShTkNum(so.getShTkNum());
+                sub.setSize(so.getSize());
+                sub.setTitle(so.getTitle());
+                sub.setTkNum(so.getTkNum());
+                sub.setTkState(so.getTkState().refundStatus==2?1:0);
+                subs.add(sub);
             }
+            vo.setChildOrders(subs);
+            vos.add(vo);
         }
-        return pager;
+        ShiguPager<MyOrderVO> v=new ShiguPager<>();
+        v.setNumber(pager.getNumber());
+        v.setContent(vos);
+        v.setTotalCount(pager.getTotalCount());
+        v.setTotalPages(pager.getTotalPages());
+        return v;
     }
 }
