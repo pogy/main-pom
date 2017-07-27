@@ -29,7 +29,7 @@ public class ImgSearchTest {
 
     @Test
     public void test(){
-        itemAddOrUpdateService.addImgToSearch(20224369L, "hz", "https://img.alicdn.com/bao/uploaded/i1/1122621970/TB20BQ4hthvOuFjSZFBXXcZgFXa_!!1122621970.jpg",1);
+        itemAddOrUpdateService.addImgToSearch(20224369L, "hz", null,"https://img.alicdn.com/bao/uploaded/i1/1122621970/TB20BQ4hthvOuFjSZFBXXcZgFXa_!!1122621970.jpg",1);
     }
 
     @Test
@@ -38,7 +38,7 @@ public class ImgSearchTest {
             @Override
             public void doWork(List<ShiguGoodsTiny> shiguGoodsTinies) throws Exception {
                 for (ShiguGoodsTiny tiny : shiguGoodsTinies) {
-                    itemAddOrUpdateService.addImgToSearch(tiny.getGoodsId(), tiny.getWebSite(), tiny.getPicUrl(), 1);
+                    itemAddOrUpdateService.addImgToSearch(tiny.getGoodsId(), tiny.getWebSite(),null, tiny.getPicUrl(), 1);
                 }
             }
         };
