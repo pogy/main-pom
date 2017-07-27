@@ -181,17 +181,6 @@ var webSite = '${webSite!}';
     
     <div class="sidebar shadowBox">
 
-    <h2>订单管理</h2>
-    <ul>
-    
-        
-        
-        <li><a href="${main_host!}seller/goodsSell.htm"  >已卖出的商品</a></li> 
-        
-        
-    
-    </ul> 
-
     <h2>商品管理</h2>
     <ul>
     
@@ -676,8 +665,6 @@ var webSite = '${webSite!}';
 
 
 <!--省略end，让浏览器自动添加-->
-
-<#include "/common/cnzz.ftl">
 
 
 
