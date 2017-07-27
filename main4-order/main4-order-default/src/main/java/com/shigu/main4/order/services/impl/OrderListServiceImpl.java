@@ -124,13 +124,15 @@ public class OrderListServiceImpl implements OrderListService {
         if (oids.size()>0) {
             ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
             ItemOrderRefundExample.Criteria criteria = refundExample.createCriteria().andOidIn(oids);
-            switch (shStatus) {
-                case CHANGE:
-                    criteria.andTypeEqualTo(4);
-                    break;
-                case REFUND:
-                   criteria.andTypeBetween(1,3);
-                    break;
+            if (shStatus != null) {
+                switch (shStatus) {
+                    case CHANGE:
+                        criteria.andTypeEqualTo(4);
+                        break;
+                    case REFUND:
+                        criteria.andTypeBetween(1,3);
+                        break;
+                }
             }
             totalCount = itemOrderRefundMapper.countByExample(refundExample);
             refundExample.setStartIndex(startRow);
