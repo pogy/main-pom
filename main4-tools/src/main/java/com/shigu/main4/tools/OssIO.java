@@ -1,10 +1,8 @@
 package com.shigu.main4.tools;
 
-import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.*;
-import com.sun.xml.internal.ws.api.addressing.WSEndpointReference;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.math.BigDecimal;
-import java.net.URL;
 import java.util.*;
 
 /**
