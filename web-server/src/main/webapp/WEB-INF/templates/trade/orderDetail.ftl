@@ -55,7 +55,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -199,12 +199,12 @@ var webSite = '${webSite!}';
     <#else>
     <ul class="title">
         <#list orderStateText as title>
-        <li <#if title_index lte orderStateNum> class="current" </#if>>${title!}</li>
+        <li <#if title_index lt orderStateNum> class="current" </#if>>${title!}</li>
         </#list>
     </ul>
     <ul class="status">
         <#list orderStateText as state>
-        <li <#if state_index lte orderStateNum> class="current"</#if>><i></i><span>${state_index+1}</span></li>
+        <li <#if state_index lt orderStateNum> class="current"</#if>><i></i><span>${state_index+1}</span></li>
         </#list>
     </ul>
     </#if>
@@ -386,7 +386,7 @@ $(function(){
                     }
                 }, {
                     orderId: orderId
-                }, {loaddingType:-1, loaddingText:'正在取消订单,请稍后…'});
+                }, {loaddingType:1, loaddingText:'正在取消订单,请稍后…'});
                
             }
         });
@@ -429,7 +429,7 @@ $(function(){
                 <#if orderStateNum == 1>
                     <span class="fcF40">待付款</span>
                 <#elseif orderStateNum == 2>
-                    <span>已付款</span>
+                    <span>待配货</span>
                 <#elseif orderStateNum == 3>
                     <#if childOrder.shState == 0>
                     <span>已发货</span>

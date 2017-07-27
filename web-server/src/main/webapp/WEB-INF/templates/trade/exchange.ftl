@@ -55,7 +55,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -189,7 +189,7 @@ var webSite = '${webSite!}';
 <div class="exchangeStep layout">
     <ul>
         <#list exchangeDesc as desc>
-        <li <#if desc_index lte exchangeStateNum>class="selected"</#if>><span>${desc!}</span><em></em><i></i><i class="leftArrow"></i></li>
+        <li <#if desc_index lt exchangeStateNum>class="selected"</#if>><span>${desc!}</span><em></em><i></i><i class="leftArrow"></i></li>
         </#list>
     </ul>
 </div>
@@ -200,7 +200,7 @@ var webSite = '${webSite!}';
 
 <div class="returnBox layout">
     <div class="returnLeft fl">
-        <#if exchangeStateNum == 0>
+        <#if exchangeStateNum == 1>
         <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${childOrderId!}">
     
     <label class="fl fc6">换货商品：</label>
@@ -243,7 +243,6 @@ var webSite = '${webSite!}';
 
 
 
-
         </li>
         <li>
             <label>换货原因：</label>
@@ -267,7 +266,6 @@ var webSite = '${webSite!}';
 
 
 </#list>
-
 
 
 
@@ -336,18 +334,9 @@ var webSite = '${webSite!}';
 
 
 
-        <#elseif exchangeStateNum == 1>
-            <#if exchangeWaitState == 0>
-            <div class="reWaitFeedback refundBox">
-    
-    <h4 class="fwb yahei fc3">换货申请已提交，请等待处理！</h4>
-    
-    
-</div>
-
-
-            <#elseif exchangeWaitState == 1>
-            
+        <#elseif exchangeStateNum == 2>
+            <#if query.express??>
+                
 
 
 <div class="reChooseExpress refundBox">
@@ -386,7 +375,6 @@ var webSite = '${webSite!}';
 
 
 </#list>
-
 
 
 
@@ -469,6 +457,9 @@ var webSite = '${webSite!}';
 
 
 
+<script>
+var refundId = '${refundId!}';
+</script>
 
 
 
@@ -478,21 +469,118 @@ var webSite = '${webSite!}';
 
 
 
-
-            <#elseif exchangeWaitState == 2>
-            <div class="reExpressInfo fc3 refundBox">
+            <#else>
+                <#if exchangeWaitState == 1>
+                <div class="reWaitFeedback refundBox">
     
-    <h4 class="yahei fwb">换货快递已提交！</h4>
+    <h4 class="fwb yahei fc3">换货申请已提交，请等待处理！</h4>
+    
+</div>
+
+
+                <#elseif exchangeWaitState == 2>
+                
+
+
+<div class="reChooseExpress refundBox">
+    
+    <h4 class="yahei fwb fc3">换货申请已通过，请及时确认完成！</h4>
+    <p class="fc3">换货申请已通过，请填写退货物流信息！</p>
+    
+    <ul>
+        <li class="refundAddr">
+            
+            <label>换货地址：</label>
+            
+            <p class="fs3">
+                ${addrInfo.name!} , ${addrInfo.phone!},<br>${addrInfo.address!}
+            </p>
+        </li>
+        <li>
+            <label><em class="fcF40 vm">*</em> 选择快递：</label>
+            
+
+<#assign text>{"name":"expressList","value":""}</#assign>
+<#assign moduledata6=text?eval />
+<#list [moduledata6] as $it>
+<div class="fmSelect" id="expressList">
+    <span class="text">数据加载中...</span>
+    <i class="icon-downarrow bt_arrow"></i>
+    <ul class="options"></ul>
+    <input class="realInput" type="hidden"
+        <#if $it.name??>name="${$it.name!}"</#if>
+        <#if $it.value??>value="${$it.value!}"</#if>
+    >
+</div>
+
+
+
+
+
+</#list>
+
+
+
+
+        </li>
+        <li>
+            <label><em class="fcF40 vm">*</em> 物流单号：</label>
+            <input type="text" name="expressCode" class="fmInput" placeholder="请填写物流单号">
+            <div class="errorTip">物流单号格式不正确！</div>
+        </li>
+        <li>
+
+<#assign text>{}</#assign>
+<#assign moduledata7=text?eval />
+<#list [moduledata7] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+         fmButton-lg
+         fmButton-orange
+         yahei sureBtn"
+    
+        jbtn="click"
     
     
-    <p><span class="fc6">${express.name!}</span><span class="yahei fs14 vm">${express.id!}</span><a href="javascript:;" id="modifyExpress">修改快递</a></p>
-    <#list express.detail as express>
-        <#if i lt 2>
-        <p><span class="yahei fs14">${express.date!}  ${express.time!}</span>${express.desc!}</p>
+        
+        <#if $it.title??>
+            title=""
         </#if>
-    </#list>
     
-    <a href="expressDetail.htm" target="_blank">查看详情</a>
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        提交
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+
+</#list>
+</li>
+    </ul>
 </div>
 
 
@@ -502,8 +590,66 @@ var webSite = '${webSite!}';
 
 
 
-            </#if>
-            <div class="reApplyRecord">
+
+
+
+
+
+
+
+
+
+
+<script>
+var refundId = '${refundId!}';
+</script>
+
+
+
+
+
+
+
+
+
+                <#elseif exchangeWaitState == 3>
+                <div class="reExpressInfo fc3 refundBox">
+    
+    <h4 class="yahei fwb">换货快递已提交！</h4>
+    
+    
+    <p><span class="fc6" data-expressId="${express.id!}">${express.name!}</span><span class="yahei fs14 vm">${express.code!}</span><a href="javascript:;" id="modifyExpress">修改快递</a></p>
+    <#list express.detail as express>
+        <#if express_index lt 2>
+        <p><span class="yahei fs14">${express.date!}  ${express.time!}</span>${express.desc!}</p>
+        </#if>
+    </#list>
+    
+    <a href="expressDetail.htm" target="_blank">查看详情</a>
+</div>
+
+
+
+<script>
+var expressCreateTime = ${express.createTime!};
+</script>
+
+
+
+
+                <#elseif exchangeWaitState == 4>
+                <div class="reRefuseApply refundBox">
+    
+    <h4 class="fwb yahei fc3">换货申请已拒绝！</h4>
+    
+    <p class="refuseReason fcF40">${refuseReason!}</p>
+</div>
+
+
+
+
+                </#if>
+                <div class="reApplyRecord">
     <label class="fl tar">申请记录：</label>
     <div class="recordList fl">
         
@@ -536,7 +682,8 @@ var webSite = '${webSite!}';
 
 
 
-        <#elseif exchangeStateNum == 2>
+            </#if>
+        <#elseif exchangeStateNum == 3>
             <div class="exchageFinish refundBox">
     <h4 class="yahei fwb fc3">换货完成！</h4>
     <p>完成时间：<span class="yahei fs14 vm">${exchageFinishTime!}</span></p>
@@ -601,9 +748,12 @@ var webSite = '${webSite!}';
 
 <script>
 var orderId = '${orderId!}';
-var orderChildId = '${orderChildId!}';
+var childOrderId = '${childOrderId!}';
 var express = '${expressList!}';
 </script>
+
+
+
 
 
 

@@ -55,7 +55,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -189,7 +189,7 @@ var webSite = '${webSite!}';
 <div class="refundStep layout">
     <ul>
         <#list refundDesc as refund>
-        <li <#if refund_item lte refundStateNum>class="selected"</#if>><span>${refund!}</span><em></em><i></i><i class="leftArrow"></i></li>
+        <li <#if refund_index lt refundStateNum>class="selected"</#if>><span>${refund!}</span><em></em><i></i><i class="leftArrow"></i></li>
         </#list>
     </ul>
 </div>
@@ -200,7 +200,7 @@ var webSite = '${webSite!}';
 
 <div class="returnBox layout">
     <div class="returnLeft fl">
-        <#if refundStateNum == 0>
+        <#if refundStateNum == 1>
         <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${childOrderId!}">
     
     <label class="fl fc6">退货商品：</label>
@@ -243,7 +243,6 @@ var webSite = '${webSite!}';
 
 
 
-
         </li>
         <li>
             <label>退款原因：</label>
@@ -271,7 +270,6 @@ var webSite = '${webSite!}';
 
 
 
-
         </li>
         <li>
             <label><em class="fcF40 vm">*</em> 退货件数：</label>
@@ -295,7 +293,6 @@ var webSite = '${webSite!}';
 
 
 </#list>
-
 
 
 
@@ -376,16 +373,28 @@ var refundNum = '${refundNumber!}';
 
 
 
-        <#elseif refundStateNum == 1>
-        <div class="reWaitFeedback refundBox">
+        <#elseif refundStateNum == 2>
+            <#if waitState == 1>
+                <div class="reWaitFeedback refundBox">
     
     <h4 class="fwb yahei fc3">退货退款申请已提交，请等待处理！</h4>
-    
     
 </div>
 
 
-        <div class="reApplyRecord">
+            <#elseif waitState == 2>
+                <div class="reRefuseApply refundBox">
+    
+    <h4 class="fwb yahei fc3">退货退款申请已拒绝！</h4>
+    
+    <p class="refuseReason fcF40">${refuseReason!}</p>
+</div>
+
+
+
+
+            </#if>
+            <div class="reApplyRecord">
     <label class="fl tar">申请记录：</label>
     <div class="recordList fl">
         
@@ -418,9 +427,9 @@ var refundNum = '${refundNumber!}';
 
 
 
-        <#elseif refundStateNum == 2>
-            <#if returnState == 0>
-            
+        <#elseif refundStateNum == 3>
+            <#if query.express??>
+                
 
 
 <div class="reChooseExpress refundBox">
@@ -459,7 +468,6 @@ var refundNum = '${refundNumber!}';
 
 
 </#list>
-
 
 
 
@@ -542,6 +550,123 @@ var refundNum = '${refundNumber!}';
 
 
 
+<script>
+var refundId = '${refundId!}';
+</script>
+
+
+
+
+
+
+
+
+
+            <#else>
+                <#if returnState == 1>
+                
+
+
+<div class="reChooseExpress refundBox">
+    
+    <h4 class="yahei fwb fc3">已同意退货退款申请！</h4>
+    <p class="fc3">退货退款申请已通过，请填写退货物流信息！</p>
+    
+    <ul>
+        <li class="refundAddr">
+            
+            <label>退货地址：</label>
+            
+            <p class="fs3">
+                ${addrInfo.name!} , ${addrInfo.phone!},<br>${addrInfo.address!}
+            </p>
+        </li>
+        <li>
+            <label><em class="fcF40 vm">*</em> 选择快递：</label>
+            
+
+<#assign text>{"name":"expressList","value":""}</#assign>
+<#assign moduledata7=text?eval />
+<#list [moduledata7] as $it>
+<div class="fmSelect" id="expressList">
+    <span class="text">数据加载中...</span>
+    <i class="icon-downarrow bt_arrow"></i>
+    <ul class="options"></ul>
+    <input class="realInput" type="hidden"
+        <#if $it.name??>name="${$it.name!}"</#if>
+        <#if $it.value??>value="${$it.value!}"</#if>
+    >
+</div>
+
+
+
+
+
+</#list>
+
+
+
+
+        </li>
+        <li>
+            <label><em class="fcF40 vm">*</em> 物流单号：</label>
+            <input type="text" name="expressCode" class="fmInput" placeholder="请填写物流单号">
+            <div class="errorTip">物流单号格式不正确！</div>
+        </li>
+        <li>
+
+<#assign text>{}</#assign>
+<#assign moduledata8=text?eval />
+<#list [moduledata8] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+         fmButton-lg
+         fmButton-orange
+         yahei sureBtn"
+    
+        jbtn="click"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        提交
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+
+</#list>
+</li>
+    </ul>
+</div>
 
 
 
@@ -552,15 +677,35 @@ var refundNum = '${refundNumber!}';
 
 
 
-            <#elseif returnState == 1>
-            <div class="reExpressInfo fc3 refundBox">
+
+
+
+
+
+
+
+
+<script>
+var refundId = '${refundId!}';
+</script>
+
+
+
+
+
+
+
+
+
+                <#elseif returnState == 2>
+                <div class="reExpressInfo fc3 refundBox">
     
     <h4 class="yahei fwb">退货快递已提交！</h4>
     
     
-    <p><span class="fc6">${express.name!}</span><span class="yahei fs14 vm">${express.id!}</span><a href="javascript:;" id="modifyExpress">修改快递</a></p>
+    <p><span class="fc6" data-expressId="${express.id!}">${express.name!}</span><span class="yahei fs14 vm">${express.code!}</span><a href="javascript:;" id="modifyExpress">修改快递</a></p>
     <#list express.detail as express>
-        <#if i lt 2>
+        <#if express_index lt 2>
         <p><span class="yahei fs14">${express.date!}  ${express.time!}</span>${express.desc!}</p>
         </#if>
     </#list>
@@ -570,16 +715,171 @@ var refundNum = '${refundNumber!}';
 
 
 
+<script>
+var expressCreateTime = ${express.createTime!};
+</script>
+
+
+
+
+                <#elseif returnState == 3>
+                
+                <div class="modifyRefundMoney refundBox">
+    <h4 class="fwb yahei fc3">退款金额已修改！</h4>
+    <p class="fc6">退款金额已修改为：<span class="fcF40 yahei">&yen; <em class="fs14">${modifyRefundMoney!}</em></span></p>
+    <div class="agreeBtns yahei">
+        
+
+<#assign text>{}</#assign>
+<#assign moduledata9=text?eval />
+<#list [moduledata9] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+         fmButton-lg
+         fmButton-orange
+         agreeBtn"
+    
+        jbtn="agree"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        同意退款金额
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
 
 
 
 
 
-            <#elseif returnState == 2>
-            <div class="getReturnGoods refundBox">
-    <h4 class="yahei fwb fc3">货物已收到，等待处理中！</h4>
+
+</#list>
+
+        
+
+<#assign text>{}</#assign>
+<#assign moduledata10=text?eval />
+<#list [moduledata10] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+         fmButton-lg
+         fmButton-white-o
+         disagreeBtn"
+    
+        jbtn="disagree"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+        
+        <#if $it.id??>
+            id=""
+        </#if>
+    
+>
+
+    
+        不同意退款金额
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+
+</#list>
+
+    </div>
 </div>
+
+
+
+<script>
+var refundId = '${refundId!}';
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <#elseif returnState == 4>
+                <div class="disagreeRefundMondy refundBox">
+    <h4 class="fwb yahei fc3">您不同意修改后的退款金额！</h4>
+    <p class="fc6">修改过的价格，您不同意，请等待处理！</p>
+</div>
+
+
+                </#if>
             </#if>
+            
             <div class="reApplyRecord">
     <label class="fl tar">申请记录：</label>
     <div class="recordList fl">
@@ -613,10 +913,10 @@ var refundNum = '${refundNumber!}';
 
 
 
-        <#elseif refundStateNum == 3>
+        <#elseif refundStateNum == 4>
         <div class="reRefundSuccess refundBox fc6">
     <h4 class="yahei fc3 fwb">退款成功！</h4>
-    <p>退款总金额：<span class="fcF40 yahei fs14">&yen;<em class="fwb">${refundAmount!}</em></span></p>
+    <p>退款总金额：<span class="fcF40 yahei fs14">&yen;<em class="fwb">${finalRefundAmount!}</em></span></p>
     <p>退款去向：${refundGoto!}<span class="refundSucTime">退款成功时间：<em class="yahei fs14">${refundSuccessTime!}</em></span></p>
 </div>
 
@@ -676,16 +976,15 @@ var refundNum = '${refundNumber!}';
 <div class="reRefundInfo">
     <ul>
         <li><label>退款编号：</label><span class="yahei fs14 fcBlue">${refundId!}</span></li>
-        <li><label>退款总额：</label><span class="yahei fs14">&yen;<em class="fwb">${refundAmount!}</em></span></li>
-        <li>
-            <label>订单状态：</label>
-            <#if orderState == 0>等待付款
-            <#elseif orderState == 1>等待配货
-            <#elseif orderState == 2>配货中
-            <#elseif orderState == 3>交易完成
-            <#elseif orderState == 4>交易取消
+        <li><label>退款总额：</label><span class="yahei fs14">&yen;<em class="fwb">
+            <#if $pageid == 'refund' && refundStateNum == 4>
+                ${finalRefundAmount!}
+            <#else>
+                ${refundAmount!}
             </#if>
+            </em></span>
         </li>
+        
     </ul>
 </div>
 </#if>
@@ -698,9 +997,11 @@ var refundNum = '${refundNumber!}';
 
 <script>
 var orderId = '${orderId!}';
-var orderChildId = '${orderChildId!}';
+var childOrderId = '${childOrderId!}';
 var express = '${expressList!}';
 </script>
+
+
 
 
 
