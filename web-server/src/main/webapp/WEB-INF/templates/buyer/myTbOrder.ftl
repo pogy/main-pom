@@ -19,6 +19,9 @@
 
 
 
+
+
+
     
     <link href="http://style.571xz.com/v2/fxsV1/css/myTbOrder.css" rel="stylesheet">
     
@@ -58,7 +61,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -280,9 +283,6 @@ var webSite = '${webSite!}';
 
 
 
-
-
-
 </#list>
 
 
@@ -290,9 +290,9 @@ var webSite = '${webSite!}';
     <h3 class="yahei fs16 webH3">淘宝已卖出商品</h3>
     <div class="orderSearch clearfix">
     <ul>
-        <li><label>订单编号：</label><input type=text name="orderId" <#if query.orderId??>value="${query.orderId!}"</#if>></li>
+        <li><label>订单编号：</label><input type="text" name="orderId" <#if query.orderId??>value="${query.orderId!}"</#if>></li>
         <li>
-            <label>成交时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="starTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if>>
+            <label>成交时间：</label><input type="text" class="jqDatepicker slInput" data-format="%Y-%M-%D" name="starTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if>>
         </li>
         <li class="noMargin">
             
@@ -377,7 +377,7 @@ var webSite = '${webSite!}';
         <div class="orderBox">
         <#if (orders?size) gt 0>
             <#list orders as order>
-            <div class="orderItem">
+            <div class="orderItem" data-id="${order.tbId!}">
     <div class="orderHead">
         <span class="fc6">订单编号：<em class="fs14">${order.tbId!}</em></span>
         <span class="fc6">成交时间：<em class="fs14">${order.time!}</em></span>
@@ -387,7 +387,7 @@ var webSite = '${webSite!}';
     </div>
     <div class="orderInfo">
         <#list order.childOrders as childOrder>
-        <div class="childOrderItem" name="${childOrder.numiid!}">
+        <div class="childOrderItem" name="${childOrder.numiid!}" data-webSite="${childOrder.webSite!}">
     <ul class="clearfix">
         <li class="goods clearfix borderBot" data-imgSrc="${childOrder.imgSrc!}" data-title="${childOrder.title!}" data-goodsNo="${childOrder.goodsNo!}" data-price="<#if childOrder.newTbPrice??>${childOrder.newTbPrice!}<#else>${childOrder.oldTbPrice!}</#if>" data-tbId="${childOrder.numiid!}">
             <a href="javascript:;" target="_blank" class="imgBox fl">
@@ -637,6 +637,8 @@ var webSite = '${webSite!}';
 </div>
 
 
+
+
         </#list>
     </div>
     <div class="receAddress">
@@ -659,7 +661,7 @@ var webSite = '${webSite!}';
 
 <div class="jqPagination " id="orderPagination" 
     <#if $it.pageOption??>
-        data-option="${$it.pageOption!}"
+        data-option="${$it.pageOption!}" 
     <#else>
         data-option="${pageOption!}"
     </#if>
@@ -731,9 +733,6 @@ var webSite = '${webSite!}';
 
 
 
-
-
-
 </#list>
 
 
@@ -784,6 +783,9 @@ var webSite = '${webSite!}';
 
 
 <!--省略end，让浏览器自动添加-->
+
+<#include "/common/cnzz.ftl">
+
 
 
 
