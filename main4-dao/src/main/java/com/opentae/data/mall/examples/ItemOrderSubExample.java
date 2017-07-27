@@ -436,6 +436,74 @@ public class ItemOrderSubExample implements SgExample{
             return (ItemOrderSubExample.Criteria)this;
         }
 
+        public ItemOrderSubExample.Criteria andGoodsNoIsNull() {
+            this.addCriterion("goods_no is null");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoIsNotNull() {
+            this.addCriterion("goods_no is not null");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoEqualTo(String value) {
+            this.addCriterion("goods_no =", value, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoNotEqualTo(String value) {
+            this.addCriterion("goods_no <>", value, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoGreaterThan(String value) {
+            this.addCriterion("goods_no >", value, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoGreaterThanOrEqualTo(String value) {
+            this.addCriterion("goods_no >=", value, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoLessThan(String value) {
+            this.addCriterion("goods_no <", value, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoLessThanOrEqualTo(String value) {
+            this.addCriterion("goods_no <=", value, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoLike(String value) {
+            this.addCriterion("goods_no like", value, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoNotLike(String value) {
+            this.addCriterion("goods_no not like", value, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }        public ItemOrderSubExample.Criteria andGoodsNoIn(List<String> values) {
+            this.addCriterion("goods_no in", values, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoNotIn(List<String> values) {
+            this.addCriterion("goods_no not in", values, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoBetween(String value1, String value2) {
+            this.addCriterion("goods_no between", value1, value2, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoNotBetween(String value1, String value2) {
+            this.addCriterion("goods_no not between", value1, value2, "goodsNo");
+            return (ItemOrderSubExample.Criteria)this;
+        }
+
         public ItemOrderSubExample.Criteria andDistributionNumIsNull() {
             this.addCriterion("distribution_num is null");
             return (ItemOrderSubExample.Criteria)this;

@@ -107,6 +107,11 @@ public class ItemOrderSub implements Serializable {
      */
 	private String color;
 
+    /**
+     * 货号
+     */
+	private String goodsNo;
+
 	public void setSoid(Long soid) {
 		this.soid = soid;
 	}
@@ -265,6 +270,14 @@ public class ItemOrderSub implements Serializable {
 
 	public String getColor() {
 		return this.color;
+	}
+
+	public void setGoodsNo(String goodsNo) {
+		this.goodsNo = goodsNo;
+	}
+
+	public String getGoodsNo() {
+		return this.goodsNo;
 	}
 
 }

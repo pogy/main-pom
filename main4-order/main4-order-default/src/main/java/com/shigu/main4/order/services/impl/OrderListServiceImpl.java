@@ -1,26 +1,24 @@
 package com.shigu.main4.order.services.impl;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
-import com.opentae.data.mall.beans.ItemOrderLogistics;
+import com.opentae.data.mall.examples.ItemOrderExample;
+import com.opentae.data.mall.examples.ItemOrderLogisticsExample;
+import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.OrderBO;
-import com.shigu.main4.order.enums.*;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
+import com.shigu.main4.order.zfenums.*;
 import com.shigu.main4.tools.SpringBeanFactory;
-import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
-import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
-import com.shigu.main4.order.zfenums.RefundTypeEnum;
-import com.shigu.main4.order.zfenums.ShStatusEnum;
-import com.shigu.main4.order.zfenums.SubOrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +46,15 @@ public class OrderListServiceImpl implements OrderListService {
     @Autowired
     private ItemOrderService itemOrderService;
 
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
+
+    @Autowired
+    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
+
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
+
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
@@ -60,83 +67,14 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
     @Override
-    public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) {
-
-        List<ShowOrderVO> list = new ArrayList<>();
-        ShowOrderVO ovo = new ShowOrderVO();
-
-        for(int i=0;i<20;i++) {
-            ovo.setMainState (MainOrderStatusEnum.statusOf (1).status);
-            String oidString="201707200034"+i;
-            Long orderId=new Long(oidString);
-            ovo.setOrderId (orderId);
-            ovo.setOrderPrice ("2200");
-            ovo.setPayedFeeLong(2200L);
-            ovo.setPostPayLong(500L);
-            ovo.setRefundFeeLong (0L);
-            ovo.setServerPayLong (100L);
-            if((i/2)==1) {
-                ovo.setIsTbOrder (false);
-            }else{
-                ovo.setIsTbOrder (true);
-            }
-            ovo.setTradePayLong (2800L);
-            ovo.setTradeTimed (new Date ());
-            ovo.setWebSite ("hz");
-            List<SubOrderInfoVO> listsub=new ArrayList<> ();
-            for(int k=0;k<3;k++) {
-                SubOrderInfoVO svo=new SubOrderInfoVO();
-                int p= i*10+k+1;
-                svo.setChildOrderId (new Long(p));
-               switch (k){
-                   case 0:{
-                       svo.setImgsrc ("https://img.alicdn.com/bao/uploaded/i4/270913282/TB2LQlAXB7c61BjSZFIXXcZmVXa-270913282.jpg");
-                       svo.setColor ("白");
-                       svo.setSize ("L");
-                       svo.setGoodsId (9522391L);
-                       svo.setGoodsNo ("A241 S5-P65");
-                       svo.setNum (1);
-                       svo.setPriceLong (6500L);
-                       svo.setSubStatusenum (SubOrderStatus.statusOf (0));
-                       svo.setTitle ("A241 S5-P65 2016秋冬毛线衫男装港风高领毛衣男纯色翻领毛衣");
-                       break;
-                   }
-                   case 1:{
-                       svo.setImgsrc ("https://img.alicdn.com/bao/uploaded/i3/138989925/TB2rAD4XRAkyKJjy0FeXXadhpXa_!!138989925.jpg");
-                       svo.setColor ("蓝");
-                       svo.setSize ("XL");
-                       svo.setGoodsId (20915911L);
-                       svo.setGoodsNo ("A242/WX82/P165");
-                       svo.setNum (3);
-                       svo.setPriceLong (16500L);
-                       svo.setSubStatusenum (SubOrderStatus.statusOf (2));
-                       svo.setTitle ("修身滚边设计男士帅气一粒扣西装 WX82/P165白");
-                       break;
-                   }
-                   default:{
-                       svo.setImgsrc ("https://img.alicdn.com/bao/uploaded/i3/2744642519/TB2H_0CX2AkyKJjy0FfXXaxhpXa_!!2744642519.jpg");
-                       svo.setColor ("红");
-                       svo.setSize ("XXL");
-                       svo.setGoodsId (20918332L);
-                       svo.setGoodsNo ("F088");
-                       svo.setNum (2);
-                       svo.setPriceLong (11000L);
-                       svo.setSubStatusenum (SubOrderStatus.statusOf (1));
-                       svo.setTitle ("【品质原创质检F088】秋装男夹克男风衣男外套男大码男P110控148");
-                       break;
-                   }
-               }
-                svo.setOrderId (orderId);
-                listsub.add (svo);
-
-
-            }
-            ovo.setChildOrders (listsub);
-            list.add (ovo);
+    public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) throws ParseException {
+        List<Long> orderIds = selOrderIdsByBO(bo, userId);
+        List<ShowOrderVO> showOrderVOS = Lists.newArrayList();
+        for (Long orderId:orderIds) {
+            showOrderVOS.add(selectMyorder(orderId));
         }
-        return list;
+        return showOrderVOS;
     }
 
     /**
@@ -149,13 +87,12 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
     @Override
-    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) {
+    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) throws ParseException {
         ShiguPager<ShowOrderVO> pager = new ShiguPager<ShowOrderVO>();
-        //totalCount+","+size+","+number;
-        pager.setTotalCount(15);
-        pager.setNumber(12);
+        pager.setContent(myOrder(bo,userId));
+        pager.setNumber(bo.getPage());
+        pager.calPages(selCountByBo(bo,userId),bo.getPageSize());
         return pager;
     }
 
@@ -391,7 +328,7 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo
+    //todo: com.shigu.main4.order.model.ItemOrder#selServices ,com.shigu.main4.order.services.ItemOrderService#suborderInfoByOrderId
     @Override
     public ShowOrderVO selectMyorder (Long orderId) {
         ShowOrderVO vo=new ShowOrderVO();
@@ -408,17 +345,19 @@ public class OrderListServiceImpl implements OrderListService {
         vo.setPostPay(orderDetailTotalVO.getExpressPrice());
         vo.setPostPayLong(orderDetailTotalVO.getExpressPriceLong());
         vo.setMainState(itemOrderVO.getOrderStatus().status);
-        //vo.setIsTbOrder();
+        vo.setIsTbOrder(itemOrderVO.getType().type == 2);
         vo.setWebSite(itemOrderVO.getWebSite());
-        //vo.setType();
+        vo.setType(itemOrderVO.getType());
         vo.setPayedFee(PriceConvertUtils.priceToString(itemOrderVO.getPayedFee()));
         vo.setPayedFeeLong(itemOrderVO.getPayedFee());
         vo.setTitle(itemOrderVO.getTitle());
         vo.setRefundFeeLong(itemOrderVO.getRefundFee());
         vo.setRefundFee(PriceConvertUtils.priceToString(itemOrderVO.getRefundFee()));
         vo.setOrderPrice(orderDetailTotalVO.getOrderTotalPrice());
-        vo.setFinishTimed(itemOrderVO.getFinishTime());
-        vo.setFinishTime(simpleDateFormat.format(itemOrderVO.getFinishTime()));
+        if (itemOrderVO.getFinishTime() != null) {
+            vo.setFinishTimed(itemOrderVO.getFinishTime());
+            vo.setFinishTime(simpleDateFormat.format(itemOrderVO.getFinishTime()));
+        }
         vo.setChildOrders(subOrderInfoVOS);
         return vo;
     }
@@ -477,4 +416,126 @@ public class OrderListServiceImpl implements OrderListService {
         return vo;
     }
 
+
+
+    /**
+     * 根据bo查询orderIds
+     * @param bo
+     * @param userId
+     * @return
+     * @throws ParseException 输入日期格式错误
+     */
+    private List<Long> selOrderIdsByBO(OrderBO bo, Long userId) throws ParseException {
+        //需要对item_order_logistics表进行查询
+        boolean searchFromOrderLogistics = bo.getReceiver() != null || bo.getTelePhone() != null;
+        //需要对item_order_sub表进行查询
+        boolean searchFromItemOrderSub = bo.getGoodsNo() != null;
+        Integer startIndex = (bo.getPage() - 1) * bo.getPageSize();
+        Integer endIndex = bo.getPage() * bo.getPageSize();
+        ItemOrderExample itemOrderExample = getItemOrederExampleByBO(bo, userId);
+        if (!searchFromOrderLogistics || !searchFromItemOrderSub) {
+            itemOrderExample.setStartIndex(startIndex);
+            itemOrderExample.setEndIndex(endIndex);
+        }
+        List<Long> oids = BeanMapper.getFieldList(itemOrderMapper.selectByExample(itemOrderExample), "oid", Long.class);
+
+        if (oids.size()>0 && (searchFromOrderLogistics)) {
+            ItemOrderLogisticsExample itemOrderLogisticsExample = getItemOrderLogisticsExampleByBO(bo, oids);
+            if (!searchFromItemOrderSub) {
+                itemOrderLogisticsExample.setStartIndex(startIndex);
+                itemOrderLogisticsExample.setEndIndex(endIndex);
+            }
+            oids = BeanMapper.getFieldList(itemOrderLogisticsMapper.selectByExample(itemOrderLogisticsExample),"oid",Long.class);
+        }
+        if (oids.size()>0 && searchFromItemOrderSub) {
+            ItemOrderSubExample itemOrderSubExample = getItemOrderSubExample(bo,oids);
+            itemOrderSubExample.setStartIndex(startIndex);
+            itemOrderSubExample.setEndIndex(endIndex);
+            oids = BeanMapper.getFieldList(itemOrderSubMapper.selectByExample(itemOrderSubExample),"oid",Long.class);
+        }
+        return oids;
+    }
+
+    /**
+     * 根据bo获取记录总数
+     * @param bo
+     * @param userId
+     * @return
+     * @throws ParseException 输入日期格式错误
+     */
+    private int selCountByBo(OrderBO bo, Long userId) throws ParseException {
+        boolean searchFromOrderLogistics = bo.getReceiver() != null || bo.getTelePhone() != null;
+        boolean searchFromItemOrderSub = bo.getGoodsNo() != null;
+        ItemOrderExample itemOrederExample = getItemOrederExampleByBO(bo, userId);
+        if (!searchFromOrderLogistics && !searchFromItemOrderSub) {
+            return itemOrderMapper.countByExample(itemOrederExample);
+        }
+        List<Long> oids = BeanMapper.getFieldList(itemOrderMapper.selectByExample(itemOrederExample), "oid", Long.class);
+        if (oids.size() == 0) {
+            return 0;
+        }
+        ItemOrderLogisticsExample itemOrderLogisticsExample = getItemOrderLogisticsExampleByBO(bo, oids);
+        if (!searchFromItemOrderSub) {
+
+
+            return itemOrderLogisticsMapper.countByExample(itemOrderLogisticsExample);
+        }
+        oids = BeanMapper.getFieldList(itemOrderLogisticsMapper.selectByExample(itemOrderLogisticsExample),"oid",Long.class);
+        return oids.size() > 0? itemOrderSubMapper.countByExample(getItemOrderSubExample(bo,oids)): 0;
+    }
+
+    /**
+     * 根据bo获取从item_order查询时的example,分页在调用处处理
+     * @param bo
+     * @param userId
+     * @return
+     * @throws ParseException 输入日期格式错误
+     */
+    private ItemOrderExample getItemOrederExampleByBO(OrderBO bo, Long userId) throws ParseException {
+        ItemOrderExample itemOrderExample = new ItemOrderExample();
+        ItemOrderExample.Criteria criteria = itemOrderExample.createCriteria().andUserIdEqualTo(userId);
+        if (bo.getStatus() != null) {
+            criteria.andOrderStatusEqualTo(Integer.valueOf(bo.getStatus()));
+        }
+        if (bo.getOrderId() != null) {
+            criteria.andOidEqualTo(bo.getOrderId());
+        }
+        if (bo.getSt() != null) {
+            criteria.andCreateTimeGreaterThanOrEqualTo(simpleDateFormat.parse(bo.getSt()));
+        }
+        if (bo.getEt() != null) {
+            criteria.andCreateTimeLessThanOrEqualTo(simpleDateFormat.parse(bo.getEt()));
+        }
+        return itemOrderExample;
+    }
+
+    private ItemOrderLogisticsExample getItemOrderLogisticsExampleByBO(OrderBO bo, List<Long> oids) {
+        ItemOrderLogisticsExample itemOrderLogisticsExample = new ItemOrderLogisticsExample();
+        ItemOrderLogisticsExample.Criteria criteria = itemOrderLogisticsExample.createCriteria();
+        if (bo.getReceiver() != null) {
+            criteria.andNameEqualTo(bo.getReceiver());
+        }
+        if (bo.getTelePhone() != null) {
+            criteria.andTelephoneEqualTo(bo.getTelePhone());
+        }
+        if (oids.size()>0) {
+            criteria.andOidIn(oids);
+        } else {
+            // oids为空
+            criteria.andIdEqualTo(-1L);
+        }
+        return itemOrderLogisticsExample;
+    }
+
+    private ItemOrderSubExample getItemOrderSubExample(OrderBO bo, List<Long> oids) {
+        ItemOrderSubExample itemOrderSubExample = new ItemOrderSubExample();
+        ItemOrderSubExample.Criteria criteria = itemOrderSubExample.createCriteria().andGoodsNoEqualTo(bo.getGoodsNo());
+        if (oids.size()>0) {
+            criteria.andOidIn(oids);
+        } else {
+            // oids为空
+            criteria.andSoidEqualTo(-1L);
+        }
+        return itemOrderSubExample;
+    }
 }
