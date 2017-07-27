@@ -1,6 +1,6 @@
 package com.shigu.main4.order.bo;
 
-import com.shigu.main4.order.enums.TbOrderStatusEnum;
+import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
 
 import java.util.Date;
 

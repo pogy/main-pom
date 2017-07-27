@@ -2,7 +2,7 @@ package com.shigu.main4.order.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
-import com.shigu.main4.order.enums.ShStatusEnum;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;

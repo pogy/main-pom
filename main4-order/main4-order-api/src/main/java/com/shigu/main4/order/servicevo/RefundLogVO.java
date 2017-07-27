@@ -1,6 +1,6 @@
 package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.enums.UserTypeEnum;
+import com.shigu.main4.order.zfenums.UserTypeEnum;
 
 import java.util.Date;
 

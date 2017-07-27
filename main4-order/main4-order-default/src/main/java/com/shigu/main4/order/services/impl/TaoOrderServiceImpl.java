@@ -3,7 +3,7 @@ package com.shigu.main4.order.services.impl;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.bo.TbOrderBO;
-import com.shigu.main4.order.enums.TbOrderStatusEnum;
+import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
 import com.shigu.main4.order.services.TaoOrderService;

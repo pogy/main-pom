@@ -9,7 +9,7 @@ import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.enums.RefundMsgEnum;
-import com.shigu.main4.order.enums.RefundStateEnum;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -34,7 +35,7 @@ import java.util.Objects;
  * 退单
  * Created by zhaohongbo on 17/7/20.
  */
-@Repository
+@Service
 @Scope("prototype")
 public class RefundItemOrderImpl implements RefundItemOrder {
 
@@ -92,8 +93,6 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     public RefundStateEnum refundState() {
         return refundinfo().getRefundState();
     }
-
-
 
     /**
      * 退货日志查询

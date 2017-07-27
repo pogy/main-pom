@@ -1,6 +1,6 @@
 package com.shigu.main4.order.services.impl;
 
-import com.shigu.main4.order.enums.ShStatusEnum;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.ExpressVo;

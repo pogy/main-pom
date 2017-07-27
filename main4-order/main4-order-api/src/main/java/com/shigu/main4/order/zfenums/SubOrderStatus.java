@@ -1,4 +1,4 @@
-package com.shigu.main4.order.enums;
+package com.shigu.main4.order.zfenums;
 
 /**
  * 子订单状态  '0初始状态，1已退，2已发',

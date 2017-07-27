@@ -7,7 +7,7 @@ import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.main4.order.bo.TbOrderBO;
-import com.shigu.main4.order.enums.TbOrderStatusEnum;
+import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
 import com.shigu.main4.order.services.TaoOrderService;

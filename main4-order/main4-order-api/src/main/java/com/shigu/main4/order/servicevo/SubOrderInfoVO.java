@@ -1,8 +1,8 @@
 package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.enums.AfterSaleStatusEnum;
-import com.shigu.main4.order.enums.RefundTypeEnum;
-import com.shigu.main4.order.enums.SubOrderStatus;
+import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
+import com.shigu.main4.order.zfenums.RefundTypeEnum;
+import com.shigu.main4.order.zfenums.SubOrderStatus;
 
 import java.io.Serializable;
 

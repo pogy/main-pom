@@ -1,6 +1,6 @@
 package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.enums.ReturnGoodsStatusEnum;
+import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
 
 /**
  * Created by zf on 2017/7/26.

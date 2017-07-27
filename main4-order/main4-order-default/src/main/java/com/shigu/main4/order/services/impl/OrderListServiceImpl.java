@@ -2,7 +2,6 @@ package com.shigu.main4.order.services.impl;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
-import com.shigu.main4.order.enums.*;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
@@ -10,6 +9,11 @@ import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressDetailVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
+import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
+import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
+import com.shigu.main4.order.zfenums.RefundTypeEnum;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
+import com.shigu.main4.order.zfenums.SubOrderStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -53,7 +57,7 @@ public class OrderListServiceImpl implements OrderListService {
             }
             ovo.setTradePayLong(2800L);
             ovo.setTradeTimed(new Date());
-            ovo.setWebSire("hz");
+            ovo.setWebSite("hz");
             List<SubOrderInfoVO> listsub = new ArrayList<>();
             for (int k = 0; k < 3; k++) {
                 SubOrderInfoVO svo = new SubOrderInfoVO();
@@ -138,7 +142,7 @@ public class OrderListServiceImpl implements OrderListService {
             }
             ovo.setTradePayLong(2800L);
             ovo.setTradeTimed(new Date());
-            ovo.setWebSire("hz");
+            ovo.setWebSite("hz");
             ovo.setMainState(4);
             List<SubOrderInfoVO> listsub = new ArrayList<>();
             for (int k = 0; k < 3; k++) {

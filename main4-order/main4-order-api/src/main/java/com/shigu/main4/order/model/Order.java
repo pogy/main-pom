@@ -73,4 +73,9 @@ public interface Order{
      * 交易关闭
      */
     void closed();//交易关闭
+
+    /**
+     * 删除订单
+     */
+    void remove();//删除订单
 }
