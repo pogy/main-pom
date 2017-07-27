@@ -42,7 +42,7 @@ public class GoodsFileAction {
     @Autowired
     private OssIO ossIO;
 
-    private static long QUOTA = 1000l;
+    private static int QUOTA = 1000;
 
     private static String ZIP = "zip/";
 
@@ -269,7 +269,7 @@ public class GoodsFileAction {
                 fileSizeVal = Arith.div(fileSizeVal, 1024);//以mb为单位
             }
             if (QUOTA < Arith.add(goodsFileService.getSizeInfo(dirZip), fileSizeVal)) {
-                throw new JsonErrException("上传文件总量超过限额！");
+                throw new JsonErrException("文件总存储量超过限额！");
             }
 
             goodsFileService.moveFile(dirTmp +  targetFolderId  + fileName, dirZip  +  targetFolderId  + fileName);

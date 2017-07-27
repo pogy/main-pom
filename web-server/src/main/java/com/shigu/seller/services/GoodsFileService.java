@@ -113,11 +113,11 @@ public class GoodsFileService {
             double fileSize = Double.parseDouble(item.getFileSize());
 
             if (1048576 < fileSize) {
-                double mSize = div(fileSize, (double)1048576, 3);
+                double mSize = Arith.div(fileSize, (double)1048576, 3);
                 item.setFileSize(mSize + "");
                 item.setUnit("mb");
             } else {
-                double kSize = div(fileSize, (double)1024, 3);
+                double kSize = Arith.div(fileSize, (double)1024, 3);
                 item.setFileSize(kSize + "");
                 item.setUnit("kb");
             }
