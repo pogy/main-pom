@@ -2,16 +2,21 @@ package com.shigu.seller.actions;
 
 import com.opentae.data.mall.beans.GoodsFile;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.seller.bo.OnsaleItemBO;
 import com.shigu.seller.services.GoodsFileService;
 
+import com.shigu.seller.vo.GoodsFileSearchVO;
 import com.shigu.seller.vo.GoodsFileVO;
 import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.ShopSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.Arith;
 import com.shigu.tools.JsonResponseUtil;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -39,24 +44,12 @@ public class GoodsFileAction {
     @Autowired
     GoodsFileService goodsFileService;
 
-    @Autowired
-    private OssIO ossIO;
-
-    private static int QUOTA = 1000;
-
-    private static String ZIP = "zip/";
-
-    private static String TEMP = "temp/";
-
     @RequestMapping("seller/getAccessInfo")
     public String getPostSign( HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Long userId = getUserId(request.getSession());
-        Map<String, String> infoMap = ossIO.createPostSignInfo(userId);
+        Map<String, String> infoMap = goodsFileService.createPostSignInfo(logshop(request.getSession()).getShopId());
         JSONObject jsonInfo = JSONObject.fromObject(infoMap);
-
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST");
-
         String callbackFunName = request.getParameter("callback");
         if (callbackFunName==null || callbackFunName.equalsIgnoreCase(""))
             response.getWriter().println(jsonInfo.toString());
@@ -67,38 +60,74 @@ public class GoodsFileAction {
         return null;
     }
 
+    @RequestMapping("seller/pictureSpace")
+    public String pictureSpace(OnsaleItemBO bo, Model model) {
+        model.addAttribute("get",bo);
+        return "seller/pictureSpace";
+    }
+
+    /**
+     * 获取所有商品
+     * @return
+     */
+    @RequestMapping("seller/getGoodslist")
+    @ResponseBody
+    public JSONObject getGoodslist(Integer page,String keyword,HttpSession session){
+        if (page == null) {
+            page=1;
+        }
+        ShopSession shop=logshop(session);
+        final int size=10;
+        ShiguPager<GoodsFileSearchVO> pager=goodsFileService.searchGoodsForFile(shop.getShopId(),shop.getWebSite(),keyword
+        ,page,size);
+        return JsonResponseUtil.success().element("pageOption",pager.selPageOption(size))
+                .element("goodslist", JSONArray.fromObject(pager.getContent()));
+    }
+
+    /**
+     * 已关联的商品
+     * @param page
+     * @param fileId
+     * @param session
+     * @return
+     */
+    @RequestMapping("seller/getGlGoodslist")
+    @ResponseBody
+    public JSONObject getGlGoodslist(Integer page,String fileId,HttpSession session) throws JsonErrException {
+        if(org.apache.commons.lang3.StringUtils.isEmpty(fileId)){
+            throw new JsonErrException("key信息异常");
+        }
+        if (page == null) {
+            page=1;
+        }
+        ShopSession shop=logshop(session);
+        final int size=10;
+        ShiguPager<GoodsFileSearchVO> pager=goodsFileService.fileRelationFile(shop.getShopId(),fileId,shop.getWebSite(),page,size);
+        return JsonResponseUtil.success().element("pageOption",pager.selPageOption(size))
+                .element("goodslist", JSONArray.fromObject(pager.getContent()));
+    }
+
     /**
      * 根据文件路径获取关联商品
      */
     @RequestMapping("seller/readGlGoodsJson")
     @ResponseBody
-    public JSONObject selGoodsFileByFile(String fileKey) {
-        List<ItemShowBlock> goodsFilesList = goodsFileService.selGoodsFileByFile(fileKey);
+    public JSONObject selGoodsFileByFile(String fileKey,HttpSession session) {
+        List<ItemShowBlock> goodsFilesList = goodsFileService.selGoodsFileByFile(logshop(session).getShopId(),fileKey);
         return JsonResponseUtil.success().element("goods", goodsFilesList);
     }
 
     /**
-     * 根据goodsId获取
-     * @param goodsId
-     * @return
-     */
-    @RequestMapping("seller/selectById")
-    @ResponseBody
-    public JSONObject selGoodsFileByGoodsId(Long goodsId) {
-        GoodsFile goodsFile = goodsFileService.selGoodsFileByGoodsId(goodsId);
-        return JsonResponseUtil.success();
-    }
-
-    /**
      * 增加关联关系
-     * @param fileKey
-     * @param goodsId
+     * @param fileId
+     * @param goodsIds
      * @return
      */
     @RequestMapping("seller/glGoodsJson")
     @ResponseBody
-    public JSONObject saveGoodsFile(String fileKey, Long goodsId) {
-        goodsFileService.saveGoodsFile(fileKey, goodsId);
+    public JSONObject saveGoodsFile(String fileId, String goodsIds,HttpSession session) throws JsonErrException {
+        ShopSession shop=logshop(session);
+        goodsFileService.saveGoodsFile(fileId,shop.getShopId(), goodsIds,shop.getWebSite());
         return JsonResponseUtil.success();
     }
 
@@ -109,8 +138,9 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/cacelGlJson")
     @ResponseBody
-    public JSONObject delGoodsFile(Long goodsId) {
-        goodsFileService.delGoodsfile(goodsId);
+    public JSONObject delGoodsFile(Long goodsId,String fileId,HttpSession session) throws JsonErrException {
+        ShopSession shop=logshop(session);
+        goodsFileService.delGoodsfile(goodsId,shop.getShopId(),fileId,shop.getWebSite());
         return JsonResponseUtil.success();
     }
 
@@ -123,8 +153,9 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/renameFile")
     @ResponseBody
-    public JSONObject renameFile(String fileId, String fileType, String newName) {
-        goodsFileService.rename(fileId, fileType, newName);
+    public JSONObject renameFile(String fileId, String fileType, String newName,HttpSession session) {
+        goodsFileService.rename(logshop(session).getShopId(),fileId, fileType, newName);
+
         return JsonResponseUtil.success();
     }
 
@@ -136,41 +167,20 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/moveFile")
     @ResponseBody
-    public JSONObject moveFile(HttpServletRequest request, String fileId, String targetFolderId) {
-        Long userId = getUserId(request.getSession());
-
-        if (StringUtils.isEmpty(targetFolderId)) {
-            targetFolderId = goodsFileService.getHomeDir(userId.toString()) + ZIP;
-        }
-
-        goodsFileService.moveFile(fileId, targetFolderId);
+    public JSONObject moveFile(String fileId, String targetFolderId,HttpSession session) {
+        goodsFileService.moveFile(logshop(session).getShopId(),fileId, targetFolderId);
         return JsonResponseUtil.success();
     }
 
 
-    /**
-     * 删除文件
-     * @param fileId
-     * @param fileType
-     * @return
-     */
-    @RequestMapping("seller/delFile")
-    @ResponseBody
-    public JSONObject delFile(String fileId, String fileType) {
-        goodsFileService.deleteFile(fileId, fileType);
-        return JsonResponseUtil.success();
-    }
     /**
      * 创建文件
      * @return
      */
     @RequestMapping("seller/createFolder")
     @ResponseBody
-    public JSONObject createFoler(HttpServletRequest request, String fileName) {
-        Long userId = getUserId(request.getSession());
-        String parentDir = goodsFileService.getHomeDir(userId.toString()) + ZIP;
-        String fileId = goodsFileService.createDir(parentDir, fileName);
-
+    public JSONObject createFoler(String fileName,HttpSession session) {
+        String fileId = goodsFileService.createDir(logshop(session).getShopId(), fileName);
         JSONObject obj= JsonResponseUtil.success();
         obj.element("fileId",fileId);
         obj.element("fileName",fileName);
@@ -189,10 +199,11 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/deleteFile")
     @ResponseBody
-    public JSONObject deleteFile(String fileId, String fileType) {
-        boolean ret = goodsFileService.deleteFile(fileId, fileType);
-        // TODO: 17/7/27  错误情况为什么不返回
-        return JsonResponseUtil.success();
+    public JSONObject deleteFile(String fileId, String fileType,HttpSession session) throws JsonErrException {
+        if(goodsFileService.deleteFile(logshop(session).getShopId(),fileId, fileType)){
+            return JsonResponseUtil.success();
+        }
+        throw new JsonErrException("删除文件失败");
     }
 
     /**
@@ -203,29 +214,19 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/getFileList")
     @ResponseBody
-    public JSONObject getFileList( HttpServletRequest request, String fileId) {
-        Long userId = getUserId(request.getSession());
-        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(fileId, userId.toString());
+    public JSONObject getFileList(String fileId,HttpSession session) {
+        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(logshop(session).getShopId(),fileId);
         JSONObject obj= JsonResponseUtil.success();
-        if (files != null && 0 < files.size()) {
-            GoodsFileVO file = files.get(0);
-            if (file.getIsRoot()) {
-                obj.element("fileId", "");
-                obj.element("fileName", "");
-                obj.element("isRoot", true);
-            } else {
-                obj.element("fileId", file.getFileId());
-                obj.element("fileName", file.getFileName());
-                obj.element("isRoot", false);
-            }
-
-            obj.element("fileList", files.subList(1, files.size()));
-        } else {
+        if(org.apache.commons.lang3.StringUtils.isNotEmpty(fileId)&&fileId.contains("/")){
+            obj.element("fileId", fileId);
+            obj.element("fileName", fileId);
+            obj.element("isRoot", false);
+        }else{//根目录
             obj.element("fileId", "");
             obj.element("fileName", "");
-            obj.element("fileList", "");
+            obj.element("isRoot", true);
         }
-
+        obj.element("fileList", files);
         return obj;
     }
 
@@ -236,12 +237,11 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/getSizeInfo")
     @ResponseBody
-    public JSONObject getSizeInfo( HttpServletRequest request) {
-        Long userId = getUserId(request.getSession());
-
+    public JSONObject getSizeInfo( HttpSession session) {
         JSONObject obj= JsonResponseUtil.success();
-        obj.element("totalSize", QUOTA);
-        obj.element("useSize", goodsFileService.getSizeInfo(goodsFileService.getHomeDir(userId.toString())  + ZIP));
+        Long shopId=logshop(session).getShopId();
+        obj.element("totalSize", goodsFileService.shopDataSize(shopId)/1024);
+        obj.element("useSize", goodsFileService.getSizeInfo(shopId));
         return obj;
     }
 
@@ -251,45 +251,29 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/noticeUploadFile")
     @ResponseBody
-    public JSONObject noticeUploadFile(HttpServletRequest request, String fileName, String targetFolderId) throws JsonErrException {
-        Long userId = getUserId(request.getSession());
-
-        JSONObject obj= JsonResponseUtil.success();
-        String dirTmp = goodsFileService.getHomeDir(userId.toString()) + TEMP;
-        String dirZip = goodsFileService.getHomeDir(userId.toString()) + ZIP;
-        if (!StringUtils.isEmpty(targetFolderId) && !targetFolderId.endsWith("/")) {
-            targetFolderId = targetFolderId + "/";
-        }
-        List<GoodsFileVO> files = goodsFileService.selFilesByFileId(dirTmp + targetFolderId  + fileName, userId.toString());
-        if (0 < files.size()) {
-            GoodsFileVO file = files.get(0);
-
-            double fileSizeVal = Double.parseDouble(file.getFileSize());
-            if ("kb".equalsIgnoreCase(file.getUnit())) {
-                fileSizeVal = Arith.div(fileSizeVal, 1024);//以mb为单位
-            }
-            if (QUOTA < Arith.add(goodsFileService.getSizeInfo(dirZip), fileSizeVal)) {
-                throw new JsonErrException("文件总存储量超过限额！");
-            }
-
-            goodsFileService.moveFile(dirTmp +  targetFolderId  + fileName, dirZip  +  targetFolderId  + fileName);
-
-            obj.element("fileId", file.getFileId());
-            obj.element("fileName", fileName);
-            obj.element("fileType", file.getFileType());
-            obj.element("fileSize", file.getFileSize() + file.getUnit());
-            obj.element("fileCreateTime", file.getFileCreateTime());
-            obj.element("hasLinkGoods", false);
-        } else {
-            throw new JsonErrException("文件上传失败！");
-        }
-
-        return obj;
+    public JSONObject noticeUploadFile(String fileId,HttpSession session) throws JsonErrException {
+        GoodsFileVO vo=goodsFileService.uploadFile(logshop(session).getShopId(),fileId);
+        return JSONObject.fromObject(vo).element("result","success");
     }
 
+    /**
+     * 下载图片中转
+     * @return
+     */
+    @RequestMapping("downfilezip")
+    public String downfilezip(String key,Long shopId){
+        return goodsFileService.zipUrl(shopId,key);
+    }
 
-    private Long getUserId(HttpSession session) {
+    /**
+     * 得到当前登陆的店铺
+     * @param session
+     * @return
+     */
+    private ShopSession logshop(HttpSession session){
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        return ps.getUserId();
+        return ps.getLogshop();
     }
+
+
 }

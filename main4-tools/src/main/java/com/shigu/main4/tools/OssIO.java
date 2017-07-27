@@ -1,10 +1,8 @@
 package com.shigu.main4.tools;
 
-import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.*;
-import com.sun.xml.internal.ws.api.addressing.WSEndpointReference;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.math.BigDecimal;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -38,8 +34,6 @@ public class OssIO {
 
     @Value("${oss.ossHost}")
     private String domain;
-
-    private String dir = "udf/";
 
 
 
@@ -149,12 +143,14 @@ public class OssIO {
             ObjectListing objectListing = ossClient.listObjects(bucketName, filePath);
 
             for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) { //以"/"结尾的是目录，否则是文件
+                if(objectSummary.getKey().equals(filePath)){
+                    continue;
+                }
                 OssFile file = new OssFile();
                 file.setFileCreateTime(objectSummary.getLastModified().getTime());
                 file.setFileId(objectSummary.getKey());
                 file.setFileSize(String.valueOf(objectSummary.getSize()));//kb
-                String[] items = file.getFileId().split("/");
-                file.setFileName(items[items.length -1]);
+                file.setFileName(objectSummary.getKey());
                 fileList.add(file);
             }
         } finally {
@@ -168,7 +164,7 @@ public class OssIO {
 
 
     /**
-     * 获取文件或者目录总大小,以mb为单位
+     * 获取文件或者目录总大小,以b为单位
      * @param filePath  文件路径
      */
     public long getSizeInfo(String filePath) {
@@ -232,22 +228,9 @@ public class OssIO {
         // 创建OSSClient实例
         OSSClient ossClient = ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
-            String[] items = srcFilePath.split("/");
-            int len = items.length-1;
-            String itemLast = items[len];
-            if(srcFilePath.endsWith("/")) {//目录
-                String newDstFilePath = dstFilePath + itemLast + "/";
-                ObjectListing objectListing = ossClient.listObjects(bucketName, srcFilePath);
-                for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                    String newDstFilePathItem = newDstFilePath + objectSummary.getKey().substring(srcFilePath.length());
-                    ossClient.copyObject(bucketName, objectSummary.getKey(), bucketName, newDstFilePathItem);
-                }
-            } else {
                 // 拷贝Object
-                CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath + itemLast);
+                CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath );
                 logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
-            }
-
             deleteFile(srcFilePath);
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -323,7 +306,7 @@ public class OssIO {
      * 构造Post签名信息
      * @return
      */
-    public Map<String, String> createPostSignInfo(Long userId) throws UnsupportedEncodingException {
+    public Map<String, String> createPostSignInfo(String filepath) throws UnsupportedEncodingException {
         OSSClient client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         Map<String, String> respMap = new LinkedHashMap<String, String>();
 
@@ -332,28 +315,20 @@ public class OssIO {
         Date expiration = new Date(expireEndTime);
         PolicyConditions policyConds = new PolicyConditions();
         policyConds.addConditionItem(PolicyConditions.COND_CONTENT_LENGTH_RANGE, 0, 1048576000);
-        policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, dir);
+        policyConds.addConditionItem(MatchMode.StartWith, PolicyConditions.COND_KEY, filepath);
 
         String postPolicy = client.generatePostPolicy(expiration, policyConds);
         byte[] binaryData = postPolicy.getBytes("utf-8");
         String encodedPolicy = BinaryUtil.toBase64String(binaryData);
         String postSignature = client.calculatePostSignature(postPolicy);
 
-        if (!fileExist(dir + userId.toString())) {
-            createDir(dir + userId.toString(), "/temp/");
-            createDir(dir + userId.toString(), "/zip/");
-        }
         respMap.put("accessid", accessKeyId);
         respMap.put("policy", encodedPolicy);
         respMap.put("signature", postSignature);
-        respMap.put("dir", dir + userId.toString() + "/temp/");
+        respMap.put("dir", filepath);
         respMap.put("host", domain);
         respMap.put("expire", String.valueOf(expireEndTime / 1000));
         return respMap;
-    }
-
-    public String getDir() {
-        return dir;
     }
 
 

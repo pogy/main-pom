@@ -410,6 +410,24 @@ var webSite = '${webSite!}';
             </a>
         </li>
         
+        <li>
+            <a href="http://hz.571xz.com/shop.htm?id=40269" target="_blank">
+                <img src="http://style.571xz.com/v2/qzhd/img/A066.jpg">
+            </a>
+        </li>
+        
+        <li>
+            <a href="http://hz.571xz.com/shop.htm?id=40435" target="_blank">
+                <img src="http://style.571xz.com/v2/qzhd/img/A002.jpg">
+            </a>
+        </li>
+        
+        <li>
+            <a href="http://hz.571xz.com/shop.htm?id=29674" target="_blank">
+                <img src="http://style.571xz.com/v2/qzhd/img/C213.jpg">
+            </a>
+        </li>
+        
     </ul>
 </div>
 
@@ -459,4 +477,7 @@ var webSite = '${webSite!}';
 
 
 <!--省略end，让浏览器自动添加-->
+
+<#include "/common/cnzz.ftl">
+
 

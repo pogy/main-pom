@@ -5,7 +5,6 @@ package com.shigu.main4.enums;
  *
  *  店铺权益类型枚举
  *
- * @see com.opentae.data.mall.beans.ShiguShopLicense.licenseType
  * @author wxc
  * @version domwiki 4.0.0
  * @since domwiki 4.0.0
@@ -39,7 +38,7 @@ public enum ShopLicenseTypeEnum {
      */
     STAR("星星数，内容为星星的数量",6),
 
-    DATA_DEV("用户数据盘",8);
+    SHOPDATA("用户数据盘",8);
 
     private String title;
     private Integer value;

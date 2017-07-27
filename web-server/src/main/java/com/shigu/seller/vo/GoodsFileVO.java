@@ -1,6 +1,8 @@
 package com.shigu.seller.vo;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Date;
 
 /**
@@ -15,17 +17,8 @@ public class GoodsFileVO {
     private String unit;
 
 
-    private boolean isRoot;
-
     private boolean hasLinkGoods;
 
-    public boolean isRoot() {
-        return isRoot;
-    }
-
-    public void setRoot(boolean root) {
-        isRoot = root;
-    }
 
     public boolean isHasLinkGoods() {
         return hasLinkGoods;
@@ -33,14 +26,6 @@ public class GoodsFileVO {
 
     public void setHasLinkGoods(boolean hasLinkGoods) {
         this.hasLinkGoods = hasLinkGoods;
-    }
-
-    public boolean getIsRoot() {
-        return isRoot;
-    }
-
-    public void setIsRoot( boolean root ) {
-        isRoot = root;
     }
 
     public String getFileId() {
@@ -60,6 +45,17 @@ public class GoodsFileVO {
     }
 
     public String getFileName() {
+        if(StringUtils.isNotEmpty(fileName)&&fileName.contains("/")){
+            String name=fileName;
+            if(name.endsWith("/")){
+                name=name.substring(0,name.length()-1);
+            }
+            if(name.contains("/")){
+                return name.substring(name.lastIndexOf("/")+1,name.length());
+            }else{
+                return name;
+            }
+        }
         return fileName;
     }
 
