@@ -1,6 +1,7 @@
 package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.enums.OrderType;
+import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,275 +21,158 @@ import java.util.List;
 public class ShowOrderVO implements Serializable {
 
     private Long orderId;
-    /**交易时间*/
-    private Date tradeTimed;
-    /**交易总金额@以分为单位*/
-    private Long tradePayLong;
-    /** 交易总金额@以元为单位*/
-    private String tradePay;
-    /** 快递费*/
-    private String postPay;
-    private Long postPayLong;
-    /**服务费*/
-    private String serverPay;
-    private Long serverPayLong;
+    /**
+     * 订单总金额
+     */
+    private Long orderPrice;
+    /**
+     * 快递费
+     */
+    private Long postPrice;
+    /**
+     * 服务费
+     */
+    private Long serverPrice;
     /**
      * 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
      */
-    private Integer mainState;
-    /** 是否淘宝订单 **/
-    private  boolean isTbOrder;
-    /** 站点 */
-    private String webSite;
-
-
-    private OrderType type;
-
-    private String payedFee;
-
-    private Long payedFeeLong;
-
-    private String title;
-
-    private Long refundFeeLong;
-
-    private String refundFee;
+    private MainOrderStatusEnum mainState;
     /**
-     * 商品金额
+     * 是否淘宝订单
      */
-    private String orderPrice;
-
-    private String tradeTime;
-    /** 订单创建时间  **/
-    private String orderCreateTime;
-    /** 订单创建时间 日期型 **/
-    private Date orderCreateTimed;
-
-    private Date distributionDated;//配货时间
-
-    private String distributionDate;//配货时间
-
-    private Date finishTimed;//完成时间
-
-    private String finishTime;//完成时间
+    private  Boolean isTbOrder;
+    /**
+     * 站点
+     */
+    private String webSite;
+    /**
+     * 支付时间
+     */
+    private Date payTime;
 
     /**
      * 子单数据
      */
     private List<SubOrderInfoVO> childOrders;
 
-
     public Long getOrderId() {
-        return orderId;
+        return this.orderId;
     }
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public OrderType getType() {
-        return type;
-    }
-
-    public void setType(OrderType type) {
-        this.type = type;
-    }
-
-    public String getPayedFee () {
-        return payedFee;
-    }
-
-    public void setPayedFee (String payedFee) {
-        this.payedFee = payedFee;
-    }
-
-    public Long getPayedFeeLong () {
-        return payedFeeLong;
-    }
-
-    public void setPayedFeeLong (Long payedFeeLong) {
-        this.payedFeeLong = payedFeeLong;
-    }
-
-    public Long getRefundFeeLong () {
-        return refundFeeLong;
-    }
-
-    public void setRefundFeeLong (Long refundFeeLong) {
-        this.refundFeeLong = refundFeeLong;
-    }
-
-    public String getRefundFee () {
-        return refundFee;
-    }
-
-    public void setRefundFee (String refundFee) {
-        this.refundFee = refundFee;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getDistributionDated () {
-        return distributionDated;
-    }
-
-    public void setDistributionDated (Date distributionDated) {
-        this.distributionDated = distributionDated;
-    }
-
-    public String getDistributionDate () {
-        return distributionDate;
-    }
-
-    public void setDistributionDate (String distributionDate) {
-        this.distributionDate = distributionDate;
-    }
-
-    public Date getFinishTimed () {
-        return finishTimed;
-    }
-
-    public void setFinishTimed (Date finishTimed) {
-        this.finishTimed = finishTimed;
-    }
-
-    public String getFinishTime () {
-        return finishTime;
-    }
-
-    public void setFinishTime (String finishTime) {
-        this.finishTime = finishTime;
+    /**
+     * 获取 快递费
+     */
+    public Long getPostPrice() {
+        return this.postPrice;
     }
 
     /**
-     * 获取 商品金额
+     * 设置 快递费
      */
-    public String getOrderPrice() {
-        return this.orderPrice;
+    public void setPostPrice(Long postPrice) {
+        this.postPrice = postPrice;
     }
 
     /**
-     * 设置 商品金额
+     * 获取 服务费
      */
-    public void setOrderPrice(String orderPrice) {
-        this.orderPrice = orderPrice;
+    public Long getServerPrice() {
+        return this.serverPrice;
     }
 
-    public Long getPostPayLong () {
-        return postPayLong;
+    /**
+     * 设置 服务费
+     */
+    public void setServerPrice(Long serverPrice) {
+        this.serverPrice = serverPrice;
     }
 
-    public void setPostPayLong (Long postPayLong) {
-        this.postPayLong = postPayLong;
+    /**
+     * 获取 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
+     */
+    public MainOrderStatusEnum getMainState() {
+        return this.mainState;
     }
 
-    public Long getServerPayLong () {
-        return serverPayLong;
+    /**
+     * 设置 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
+     */
+    public void setMainState(MainOrderStatusEnum mainState) {
+        this.mainState = mainState;
     }
 
-    public void setServerPayLong (Long serverPayLong) {
-        this.serverPayLong = serverPayLong;
-    }
 
+    /**
+     * 获取 站点
+     */
     public String getWebSite() {
-        return webSite;
+        return this.webSite;
     }
 
+    /**
+     * 设置 站点
+     */
     public void setWebSite(String webSite) {
         this.webSite = webSite;
     }
 
-    public Date getTradeTimed () {
-        return tradeTimed;
+    /**
+     * 获取 支付时间
+     */
+    public Date getPayTime() {
+        return this.payTime;
     }
 
-    public void setTradeTimed (Date tradeTimed) {
-        this.tradeTimed = tradeTimed;
+    /**
+     * 设置 支付时间
+     */
+    public void setPayTime(Date payTime) {
+        this.payTime = payTime;
     }
 
-    public String getTradeTime () {
-        return tradeTime;
+    /**
+     * 获取 子单数据
+     */
+    public List<SubOrderInfoVO> getChildOrders() {
+        return this.childOrders;
     }
 
-    public void setTradeTime (String tradeTime) {
-        this.tradeTime = tradeTime;
-    }
-
-    public Long getTradePayLong () {
-        return tradePayLong;
-    }
-
-    public void setTradePayLong (Long tradePayLong) {
-        this.tradePayLong = tradePayLong;
-    }
-
-    public String getTradePay () {
-        return tradePay;
-    }
-
-    public void setTradePay (String tradePay) {
-        this.tradePay = tradePay;
-    }
-
-    public String getPostPay () {
-        return postPay;
-    }
-
-    public void setPostPay (String postPay) {
-        this.postPay = postPay;
-    }
-
-    public String getServerPay () {
-        return serverPay;
-    }
-
-    public void setServerPay (String serverPay) {
-        this.serverPay = serverPay;
-    }
-
-    public Integer getMainState () {
-        return mainState;
-    }
-
-    public void setMainState (Integer mainState) {
-        this.mainState = mainState;
-    }
-
-    public boolean getIsTbOrder () {
-        return isTbOrder;
-    }
-
-    public void setIsTbOrder (boolean isTbOrder) {
-        this.isTbOrder = isTbOrder;
-    }
-
-    public List<SubOrderInfoVO> getChildOrders () {
-        return childOrders;
-    }
-
-    public void setChildOrders (List<SubOrderInfoVO> childOrders) {
+    /**
+     * 设置 子单数据
+     */
+    public void setChildOrders(List<SubOrderInfoVO> childOrders) {
         this.childOrders = childOrders;
     }
 
-    public String getOrderCreateTime () {
-        return orderCreateTime;
+    /**
+     * 获取 订单总金额
+     */
+    public Long getOrderPrice() {
+        return this.orderPrice;
     }
 
-    public void setOrderCreateTime (String orderCreateTime) {
-        this.orderCreateTime = orderCreateTime;
+    /**
+     * 设置 订单总金额
+     */
+    public void setOrderPrice(Long orderPrice) {
+        this.orderPrice = orderPrice;
     }
 
-    public Date getOrderCreateTimed () {
-        return orderCreateTimed;
+    /**
+     * 获取 是否淘宝订单
+     */
+    public Boolean getIsTbOrder() {
+        return this.isTbOrder;
     }
 
-    public void setOrderCreateTimed (Date orderCreateTimed) {
-        this.orderCreateTimed = orderCreateTimed;
+    /**
+     * 设置 是否淘宝订单
+     */
+    public void setIsTbOrder(Boolean isTbOrder) {
+        this.isTbOrder = isTbOrder;
     }
 }

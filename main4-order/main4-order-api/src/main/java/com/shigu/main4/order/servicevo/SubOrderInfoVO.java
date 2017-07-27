@@ -1,8 +1,7 @@
 package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
-import com.shigu.main4.order.zfenums.RefundTypeEnum;
-import com.shigu.main4.order.zfenums.SubOrderStatus;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
 
 import java.io.Serializable;
 
@@ -11,14 +10,15 @@ import java.io.Serializable;
  * Created by zhaohongbo on 17/7/14.
  */
 public class SubOrderInfoVO implements Serializable{
-    /**
-     * 订单ID
-     */
     private Long orderId;
     /**
      * 子单ID
      */
-    private Long childOrderId;
+    private Long subOrderId;
+    /**
+     * 退换货ID
+     */
+    private Long refundId;
     /**
      * 商品ID
      */
@@ -43,111 +43,47 @@ public class SubOrderInfoVO implements Serializable{
      * 货号(商家编码?)
      */
     private String goodsNo;
-
-    /** 单价：前端要展现的字符串 */
-    private String price;
-    /**单价：接口传出来的数值*/
-    private Long priceLong;
-    /**子单中商品总数 */
+    /**
+     * 单价：接口传出来的数值
+     */
+    private Long price;
+    /**
+     * 商品数
+     */
     private Integer num;
-    /** 退款数量 */
+    /**
+     * 售前(发货前)退款数
+     */
     private Integer tkNum;
-    /** 售后退款数量 **/
-    private Integer  shTkNum;
-
     /**
-     * 子单状态, 0初始状态，1已退，2已发
+     * 售后退款数量
      */
-    private Integer subOrderStatus;
-
-    private SubOrderStatus subStatusenum;
-    /**
-     * 退换货ID
-     */
-    private Long refundId;
+    private Integer shTkNum;
     /**
      * 退款数量(已退和已申请退款的数量)
      */
     private Integer refundNum;
-    /** 前端： 退款状态，0无，1退款成功  */
-    private Integer tkState;
-    /** 接口传出来的枚举型 */
-    private RefundTypeEnum tkStateEnum;
-    /**  前端：售后状态,  0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中 */
-    private Integer shState;
-    /** 接口传出来的枚举型 */
-    private AfterSaleStatusEnum shStateEnum;
+    /**
+     * 售前(发货前)退款状态
+     */
+    private RefundStateEnum tkState;
+    /**
+     * 售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
+     */
+    private AfterSaleStatusEnum shState;
 
     /**
-     * 获取 订单ID
+     * 获取 退换货ID
      */
-    public Long getOrderId() {
-        return this.orderId;
+    public Long getRefundId() {
+        return this.refundId;
     }
 
     /**
-     * 设置 订单ID
+     * 设置 退换货ID
      */
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    /**
-     * 获取 子单ID
-     */
-    public Long getChildOrderId() {
-        return this.childOrderId;
-    }
-
-    /**
-     * 设置 子单ID
-     */
-    public void setChildOrderId(Long childOrderId) {
-        this.childOrderId = childOrderId;
-    }
-
-
-
-    /**
-     * 获取 单价
-     */
-    public String getPrice() {
-        return this.price;
-    }
-
-    /**
-     * 设置 单价
-     */
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    /**
-     * 获取 标题
-     */
-    public String getTitle() {
-        return this.title;
-    }
-
-    /**
-     * 设置 标题
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    /**
-     * 获取 退款数量(已退和已申请退款的数量)
-     */
-    public Integer getRefundNum() {
-        return this.refundNum;
-    }
-
-    /**
-     * 设置 退款数量(已退和已申请退款的数量)
-     */
-    public void setRefundNum(Integer refundNum) {
-        this.refundNum = refundNum;
+    public void setRefundId(Long refundId) {
+        this.refundId = refundId;
     }
 
     /**
@@ -165,6 +101,62 @@ public class SubOrderInfoVO implements Serializable{
     }
 
     /**
+     * 获取 图片地址
+     */
+    public String getImgsrc() {
+        return this.imgsrc;
+    }
+
+    /**
+     * 设置 图片地址
+     */
+    public void setImgsrc(String imgsrc) {
+        this.imgsrc = imgsrc;
+    }
+
+    /**
+     * 获取 标题
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * 设置 标题
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * 获取 颜色
+     */
+    public String getColor() {
+        return this.color;
+    }
+
+    /**
+     * 设置 颜色
+     */
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    /**
+     * 获取 尺码
+     */
+    public String getSize() {
+        return this.size;
+    }
+
+    /**
+     * 设置 尺码
+     */
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    /**
      * 获取 货号(商家编码?)
      */
     public String getGoodsNo() {
@@ -179,137 +171,122 @@ public class SubOrderInfoVO implements Serializable{
     }
 
     /**
-     * 子单状态, 0初始状态，1已退，2已发
+     * 获取 单价：接口传出来的数值
      */
-
-    public Integer getSubOrderStatus() {
-        return subOrderStatus;
-    }
-
-    public void setSubOrderStatus(Integer subOrderStatus) {
-        this.subOrderStatus = subOrderStatus;
+    public Long getPrice() {
+        return this.price;
     }
 
     /**
-     * 获取 退换货ID
+     * 设置 单价：接口传出来的数值
      */
-    public Long getRefundId() {
-        return this.refundId;
+    public void setPrice(Long price) {
+        this.price = price;
     }
 
     /**
-     * 设置 退换货ID
+     * 获取 商品数
      */
-    public void setRefundId(Long refundId) {
-        this.refundId = refundId;
+    public Integer getNum() {
+        return this.num;
     }
 
-    public String getImgsrc () {
-        return imgsrc;
-    }
-
-    public void setImgsrc (String imgsrc) {
-        this.imgsrc = imgsrc;
-    }
-
-    public String getColor () {
-        return color;
-    }
-
-    public void setColor (String color) {
-        this.color = color;
-    }
-
-    public String getSize () {
-        return size;
-    }
-
-    public void setSize (String size) {
-        this.size = size;
-    }
-
-    public Integer getNum () {
-        return num;
-    }
-
-    public void setNum (Integer num) {
+    /**
+     * 设置 商品数
+     */
+    public void setNum(Integer num) {
         this.num = num;
     }
 
-    public Integer getTkNum () {
-        return tkNum;
-    }
-
-    public void setTkNum (Integer tkNum) {
-        this.tkNum = tkNum;
-    }
-
-    public Integer getShTkNum () {
-        return shTkNum;
-    }
-
-    public void setShTkNum (Integer shTkNum) {
-        this.shTkNum = shTkNum;
-    }
-
-
-    public Long getPriceLong () {
-        return priceLong;
-    }
-
-    public void setPriceLong (Long priceLong) {
-        this.priceLong = priceLong;
-    }
-
-    public SubOrderStatus getSubStatusenum () {
-        return subStatusenum;
-    }
-
-    public void setSubStatusenum (SubOrderStatus subStatusenum) {
-        this.subStatusenum = subStatusenum;
+    /**
+     * 获取 售前(发货前)退款数
+     */
+    public Integer getTkNum() {
+        return this.tkNum;
     }
 
     /**
-     * 获取 退款状态，0无，1申请，2自动
+     * 设置 售前(发货前)退款数
      */
-    public Integer getTkState() {
+    public void setTkNum(Integer tkNum) {
+        this.tkNum = tkNum;
+    }
+
+    /**
+     * 获取 售后退款数量
+     */
+    public Integer getShTkNum() {
+        return this.shTkNum;
+    }
+
+    /**
+     * 设置 售后退款数量
+     */
+    public void setShTkNum(Integer shTkNum) {
+        this.shTkNum = shTkNum;
+    }
+
+    /**
+     * 获取 退款数量(已退和已申请退款的数量)
+     */
+    public Integer getRefundNum() {
+        return this.refundNum;
+    }
+
+    /**
+     * 设置 退款数量(已退和已申请退款的数量)
+     */
+    public void setRefundNum(Integer refundNum) {
+        this.refundNum = refundNum;
+    }
+
+    /**
+     * 获取 售前(发货前)退款状态
+     */
+    public RefundStateEnum getTkState() {
         return this.tkState;
     }
 
     /**
-     * 设置 退款状态，0无，1申请，2自动
+     * 设置 售前(发货前)退款状态
      */
-    public void setTkState(Integer tkState) {
+    public void setTkState(RefundStateEnum tkState) {
         this.tkState = tkState;
     }
 
     /**
-     * 获取 售后状态, 0无，1售后处理中，2已退款，3已换货
+     * 获取 售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
      */
-    public Integer getShState() {
+    public AfterSaleStatusEnum getShState() {
         return this.shState;
     }
 
     /**
-     * 设置 售后状态, 0无，1售后处理中，2已退款，3已换货
+     * 设置 售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
      */
-    public void setShState(Integer shState) {
+    public void setShState(AfterSaleStatusEnum shState) {
         this.shState = shState;
     }
 
-    public RefundTypeEnum getTkStateEnum() {
-        return this.tkStateEnum;
+    /**
+     * 获取 子单ID
+     */
+    public Long getSubOrderId() {
+        return this.subOrderId;
     }
 
-    public void setTkStateEnum(RefundTypeEnum tkStateEnum) {
-        this.tkStateEnum = tkStateEnum;
+    /**
+     * 设置 子单ID
+     */
+    public void setSubOrderId(Long subOrderId) {
+        this.subOrderId = subOrderId;
     }
 
-    public AfterSaleStatusEnum getShStateEnum() {
-        return this.shStateEnum;
+    public Long getOrderId() {
+        return this.orderId;
     }
 
-    public void setShStateEnum(AfterSaleStatusEnum shStateEnum) {
-        this.shStateEnum = shStateEnum;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 }
