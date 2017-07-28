@@ -227,12 +227,12 @@ var webSite = '${webSite!}';
     
         
         
-        <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
+        <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修</a></li> 
         
         
     
         
-        <li><a class="selected"  href="${main_host!}seller/pictureSpace.htm">图片空间</a></li> 
+        <li><a class="selected"  href="${main_host!}seller/pictureSpace.htm">图片空间<i class="new"></i></a></li> 
         
     
         

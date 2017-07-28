@@ -164,7 +164,7 @@ public class GoodsFileAction {
     @RequestMapping("seller/renameFile")
     @ResponseBody
     public JSONObject renameFile(String fileId, String fileType, String newName,HttpSession session) throws JsonErrException  {
-        if (!goodsFileService.checkFileId(fileId)) {
+        if (!goodsFileService.checkFileId(fileId) || !goodsFileService.checkFileId(newName)) {
             throw new JsonErrException("key信息异常");
         }
         goodsFileService.rename(logshop(session).getShopId(),fileId, fileType, newName);
@@ -197,6 +197,9 @@ public class GoodsFileAction {
     @ResponseBody
     public JSONObject createFoler(String fileName,HttpSession session) throws JsonErrException {
         String fileId = goodsFileService.createDir(logshop(session).getShopId(), fileName);
+        if (!goodsFileService.checkFileId(fileId)) {
+            throw new JsonErrException("key信息异常");
+        }
         JSONObject obj= JsonResponseUtil.success();
         obj.element("fileId",fileId);
         obj.element("fileName",fileName);
