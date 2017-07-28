@@ -345,6 +345,7 @@ public class CdnService {
         vo.setMarketName(shop.getMarketName());
         vo.setShopId(shopId);
         vo.setShopNo(shop.getStoreNum());
+        vo.setMobile(shop.getTelephone());
         //星星数
         Long starNum=shopForCdnService.selShopStarById(shopId);
         starNum=starNum==null?0:starNum;
