@@ -273,10 +273,10 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
+    //todo: 服务信息获取
     public List<OrderServiceVO> selServices() {
         ItemOrderService itemOrderService = new ItemOrderService();
         itemOrderService.setOid(oid);
-        //todo:缺失num字段来源
         List<OrderServiceVO> collect = BeanMapper.mapList(itemOrderServiceMapper.select(itemOrderService),OrderServiceVO.class);
         return collect;
     }

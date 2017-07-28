@@ -13,8 +13,7 @@ import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.NumberUtils;
 import com.shigu.main4.order.bo.*;
-import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
-import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
+import com.shigu.main4.order.zfenums.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
@@ -422,7 +421,6 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
         SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
         SubOrderInfoVO subOrderInfoVO = new SubOrderInfoVO();
-                //BeanMapper.map(subItemOrderVO, SubOrderInfoVO.class);
         subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
         subOrderInfoVO.setChildOrderId(subOrderId);
         subOrderInfoVO.setGoodsId(subItemOrderVO.getGoodsId());
@@ -434,18 +432,39 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
         subOrderInfoVO.setPriceLong(subItemOrderVO.getProduct().getPrice());
         subOrderInfoVO.setNum(subItemOrderVO.getNum());
-        //todo:退款及售后信息填充
         RefundVO refundVO = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId).refundInfos();
-        //subOrderInfoVO.setTkNum();
-        //subOrderInfoVO.setShTkNum();
+        //todo：售后退款数量确定
+        subOrderInfoVO.setTkNum(0);
+        if (SubOrderStatus.RETURNED.equals(subOrderInfoVO.getSubStatusenum())) {
+            subOrderInfoVO.setTkNum(subOrderInfoVO.getNum());
+        }
+        subOrderInfoVO.setShTkNum(refundVO.getNumber());
         subOrderInfoVO.setSubOrderStatus(subItemOrderVO.getSubOrderStatus().status);
         subOrderInfoVO.setSubStatusenum(subItemOrderVO.getSubOrderStatus());
         subOrderInfoVO.setRefundId(refundVO.getRefundId());
         subOrderInfoVO.setRefundNum(refundVO.getNumber());
-        //subOrderInfoVO.setTkState();
-        //subOrderInfoVO.setTkStateEnum();
-        //subOrderInfoVO.setShState();
-        //subOrderInfoVO.setShStateEnum();
+        //售后处理完成
+        boolean refundENT = RefundStateEnum.ENT_REFUND.equals(refundVO.getRefundState());
+        if (refundENT) {
+            subOrderInfoVO.setTkStateEnum(RefundTypeEnum.DISPOSE_REFUND);
+        } else {
+            subOrderInfoVO.setTkStateEnum(RefundTypeEnum.NOT_REFUND);
+        }
+        RefundTypeEnum tkStateEnum = subOrderInfoVO.getTkStateEnum();
+        subOrderInfoVO.setTkState(tkStateEnum.refundType);
+        Integer refundType = refundVO.getType();
+        //todo: 退货状态需要再确定
+        if (refundType ==1) {
+            subOrderInfoVO.setShStateEnum(refundENT?AfterSaleStatusEnum.REFUND_ENT:AfterSaleStatusEnum.HANDLE);
+        } else if (refundType == 2 || refundType == 3) {
+            subOrderInfoVO.setShStateEnum(refundENT?AfterSaleStatusEnum.CHANGE_ENT:AfterSaleStatusEnum.DISPOSE_FERUND);
+        } else if (refundType == 4) {
+            subOrderInfoVO.setShStateEnum(refundENT?AfterSaleStatusEnum.CHANGE_ENT:AfterSaleStatusEnum.DISPOSE_CHANGE);
+        } else {
+            subOrderInfoVO.setShStateEnum(AfterSaleStatusEnum.NOT_AFTER_SALE);
+        }
+
+        subOrderInfoVO.setShState(subOrderInfoVO.getShStateEnum().afterSaleStatus);
         return subOrderInfoVO;
     }
 
