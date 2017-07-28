@@ -493,9 +493,6 @@ public class GoodsFileService {
      * @return
      */
     public boolean checkFileId(String fileId) {
-        if (StringUtils.isEmpty(fileId)) {
-            return false;
-        }
         if (fileId.contains("/") && fileId.indexOf("/") != fileId.lastIndexOf("/")) {
             return false;
         }
