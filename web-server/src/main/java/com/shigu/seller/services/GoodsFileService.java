@@ -132,7 +132,6 @@ public class GoodsFileService {
     public List<GoodsFileVO> selFilesByFileId(Long shopId , String fileKey) {
         List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(parseMyFilePath(shopId,fileKey)), GoodsFileVO.class);
         List<GoodsFileVO> newFiles = new ArrayList<GoodsFileVO>();
-        GoodsFileVO lastItem = null;
         List<String> fileKeys=BeanMapper.getFieldList(files,"fileId",String.class);//文件ID
         List<String> hasConnected=new ArrayList<>();
         if(fileKeys.size()>0){
@@ -150,11 +149,9 @@ public class GoodsFileService {
             if(item.getFileId().equals("")){
                 item.setFileName("/");
             }
-            if (lastItem != null && -1 <item.getFileId().indexOf(lastItem.getFileId())) {//过滤下层文件的显示
+            String fileId=item.getFileId();
+            if (fileId.contains("/") && fileId.indexOf("/") != fileId.length()) {//过滤下层文件的显示
                 continue;
-            }
-            if (!fileKey.equalsIgnoreCase(item.getFileId())) {
-                lastItem = item;
             }
 
             if (item.getFileId().endsWith(".zip") || item.getFileId().endsWith(".7z") || item.getFileId().endsWith(".rar") ) {
