@@ -392,7 +392,11 @@ public class GoodsFileService {
         }
         String path=getHomeDir(shopId)+fileKey;
         GoodsFileExample goodsFileExample=new GoodsFileExample();
-        goodsFileExample.createCriteria().andFileKeyEqualTo(path);
+        if(fileType.equals("folder")&&!fileKey.equals("/")){//文件夹
+            goodsFileExample.createCriteria().andFileKeyLike(path+"%");
+        }else {
+            goodsFileExample.createCriteria().andFileKeyEqualTo(path);
+        }
         goodsFileMapper.deleteByExample(goodsFileExample);
         return ossIO.deleteFile(path);
     }
@@ -411,14 +415,19 @@ public class GoodsFileService {
         if (!newName.endsWith("/") && fileType.equalsIgnoreCase("folder") ) {
             newName = newName +"/";
         }
-        String[] items = fileKey.split("/");
-        int len = items.length-1;
-        String newPath =  fileKey.substring(0, fileKey.length()-items[len].length()-1) + newName;
-
-        boolean result=ossIO.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newPath);
+        String newFileKey = newName;
+        if(fileKey.contains("/") && !fileType.equalsIgnoreCase("folder")) {
+            newFileKey = fileKey.substring(0, fileKey.indexOf("/"))+"/"+ newName;
+        }
+        boolean result=ossIO.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newFileKey);
         if(result){
             //修改表
-            modifyDataGoodsFile(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newPath);
+            //如果文件夹
+            if (fileType.equalsIgnoreCase("folder") ) {//如果是文件夹
+
+            }else{
+                modifyDataGoodsFile(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
+            }
         }
         return result;
     }
@@ -426,10 +435,19 @@ public class GoodsFileService {
     /**
      * 移动文件
      * @param fileId
-     * @param targetFileId
+     * @param targetFlordId
      * @return
      */
-    public boolean moveFile(Long shopId,String fileId,  String targetFileId) {
+    public boolean moveFile(Long shopId,String fileId,  String targetFlordId) {
+        String targetFileId;
+        if(targetFlordId.equals("")&&fileId.contains("/")){//移到根目录
+            targetFileId=fileId.substring(fileId.indexOf("/")+1,fileId.length());
+        }else{
+            targetFileId=targetFlordId+fileId;
+        }
+        if(fileId.equals(targetFileId)){
+            return false;
+        }
         boolean result=ossIO.moveFile(getHomeDir(shopId)+fileId, getHomeDir(shopId)+targetFileId);
         if(result){
             //修改表
@@ -453,7 +471,8 @@ public class GoodsFileService {
      * @return
      */
     public String createDir(Long shopId, String dir) {
-        return ossIO.createDir(getHomeDir(shopId), dir);
+        String fildPath=ossIO.createDir(getHomeDir(shopId), dir);
+        return fildPath.replace(getHomeDir(shopId),"");
     }
 
     public double getSizeInfo(Long shopId) {

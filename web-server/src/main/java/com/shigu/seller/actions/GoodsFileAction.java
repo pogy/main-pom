@@ -185,7 +185,8 @@ public class GoodsFileAction {
         obj.element("fileId",fileId);
         obj.element("fileName",fileName);
         obj.element("fileCreateTime", new Date().getTime());
-        obj.element("fileSize", "0kb");
+        obj.element("fileSize", "0");
+        obj.element("unit","kb");
         obj.element("hasLinkGoods", false);
         obj.element("fileType", "folder");
         return obj;
@@ -261,8 +262,8 @@ public class GoodsFileAction {
      * @return
      */
     @RequestMapping("downfilezip")
-    public String downfilezip(String key,Long shopId){
-        return goodsFileService.zipUrl(shopId,key);
+    public String downfilezip(String key,Long sid){
+        return "redirect:"+goodsFileService.zipUrl(sid,key);
     }
 
     /**

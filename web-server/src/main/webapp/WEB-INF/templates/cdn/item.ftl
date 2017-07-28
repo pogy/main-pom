@@ -496,7 +496,7 @@ var goodsId = '${vo.itemId!}';
                             </button>
                             <script>/*============ shopItemCopy/item#showDownloadWindow BEGIN ============*/
 
-var hasYt = ${hasYt!}; // 判断是否存在原图下载
+var hasYt = ${hasYt}; // 判断是否存在原图下载
 
 /*============ shopItemCopy/item#showDownloadWindow END ============*/
 

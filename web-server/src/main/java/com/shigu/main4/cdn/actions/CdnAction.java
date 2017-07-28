@@ -544,7 +544,7 @@ public class CdnAction {
         model.addAttribute("vo",itemShowVO);
         model.addAttribute("bo",bo);
         model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
-        model.addAttribute("hasYt",goodsFileService.hasDatu(id));
+        model.addAttribute("hasYt",goodsFileService.hasDatu(id)+"");
 //        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
         if ("kx".equalsIgnoreCase(cdnItem.getWebSite())) {
             return "cdn/xieItem";
