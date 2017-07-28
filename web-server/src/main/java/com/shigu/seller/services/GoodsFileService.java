@@ -181,11 +181,11 @@ public class GoodsFileService {
         if (1048576 < size) {
             double mSize = div(size, (double)1048576, 3);
             sizeVO.setFileSize(df.format(mSize));
-            sizeVO.setUnit("mb");
+            sizeVO.setUnit("M");
         } else {
             double kSize = div(size, (double)1024, 3);
             sizeVO.setFileSize(df.format(kSize));
-            sizeVO.setUnit("kb");
+            sizeVO.setUnit("KB");
         }
         return sizeVO;
     }
