@@ -330,7 +330,11 @@ var webSite = '${webSite!}';
 
 
     
-    <div class="content shadowBox">
+    <script>
+var shopId = '${session_user_redis__.logshop.shopId!}';
+</script>
+
+<div class="content shadowBox">
    <div class="headTitle fc6">
     <h2 class="fs16 fwb yahei">图片空间</h2><span class="fcF40">*四季星座网免费赠送各档口 1G ( 1024M ) 空间容量!</span>
 </div>
@@ -527,12 +531,8 @@ var webSite = '${webSite!}';
 
 
 
-
-
 <div class="successTip pa"><i></i><span>文件上传成功！</span></div>
 <div class="errorTip pa"><i></i><span>上传失败！单个文件大于150M！</span></div>
-
-
 
 
 
