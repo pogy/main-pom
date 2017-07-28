@@ -500,14 +500,23 @@ public class GoodsFileService {
             return false;
         }
 
-        if (fileId.matches(".*(<|>|&|$|\t|\n|\r).*")) {
-            return false;
+        for (int i=0; i < sCharCount; i++) {
+            if (fileId.contains(sChar[i])) {
+                return false;
+            }
         }
 
         if (fileId.contains("../")) {
             return false;
         }
         return true;
+    }
+    private static  String sChar[] = {"<",">","&","$","\t","\n","\r"};
+    private static int sCharCount = sChar.length;
+
+    public static void main(String[] arg) {
+        GoodsFileService ss = new GoodsFileService();
+        ss.checkFileId("提问\n题/");
     }
 
     /**
