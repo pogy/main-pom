@@ -55,7 +55,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     @Override
     public Long exchangeApply(Long subOrderId, String refundReason, String refundDesc) {
-        return null;
+        return 110L;
     }
 
     @Override

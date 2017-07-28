@@ -83,16 +83,16 @@ public class AfterSaleShowAction {
      * @return  返回页面
      */
     @RequestMapping(value = "exchange", method = RequestMethod.GET)
-    public String exchange(@RequestParam(value = "childOrderId",required = false)String childOrderId
-            , @RequestParam(value = "refundId",required = false)String refundId
+    public String exchange(@RequestParam(value = "childOrderId",required = false)Long childOrderId
+            , @RequestParam(value = "refundId",required = false)Long refundId
             ,@RequestParam(value="express",required = false)Integer express, Model model) throws Main4Exception, ParseException {
         if (!StringUtils.isEmpty(childOrderId) && StringUtils.isEmpty(refundId)) {
-            Map<String, Object> map = afterSaleShowService.exchangeChildOrder(Long.parseLong(childOrderId));
+            Map<String, Object> map = afterSaleShowService.exchangeChildOrder(childOrderId);
             model.addAllAttributes(map);
             return "trade/exchange";
 
         } else if (!StringUtils.isEmpty(refundId)) {
-            Map<String, Object> map = afterSaleShowService.exchange(Long.parseLong(refundId),express);
+            Map<String, Object> map = afterSaleShowService.exchange(refundId,express);
             model.addAllAttributes(map);
             return "trade/exchange";
         }
