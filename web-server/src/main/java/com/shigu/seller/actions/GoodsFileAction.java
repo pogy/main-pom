@@ -185,7 +185,8 @@ public class GoodsFileAction {
         obj.element("fileId",fileId);
         obj.element("fileName",fileName);
         obj.element("fileCreateTime", new Date().getTime());
-        obj.element("fileSize", "0kb");
+        obj.element("fileSize", "0");
+        obj.element("unit","kb");
         obj.element("hasLinkGoods", false);
         obj.element("fileType", "folder");
         return obj;
