@@ -244,7 +244,7 @@ public class GoodsFileService {
      * @param pageSize
      * @return
      */
-    public ShiguPager<GoodsFileSearchVO> fileRelationFile(Long shopId,String fileId,String webSite,Integer pageNo,Integer pageSize){
+    public ShiguPager<GoodsFileSearchVO> fileRelationFile(Long shopId, String fileId, String webSite, Integer pageNo, Integer pageSize){
         GoodsFileExample example=new GoodsFileExample();
         example.createCriteria().andFileKeyEqualTo(getHomeDir(shopId)+fileId);
         example.setStartIndex((pageNo-1)*pageSize);
@@ -513,5 +513,29 @@ public class GoodsFileService {
     private String getTempDir(Long shopId) {
         return ROOT_PATH + shopId + "/temp/";
     }
+
+    /**
+     * 检测文件路径合法性
+     * @param fileId
+     * @return
+     */
+    public boolean checkFileId(String fileId) {
+        if (StringUtils.isEmpty(fileId)) {
+            return false;
+        }
+        if (fileId.contains("/") && fileId.indexOf("/") != fileId.lastIndexOf("/")) {
+            return false;
+        }
+
+        if (fileId.matches(".*(<|>|&|$|\t|\n|\r).*")) {
+            return false;
+        }
+
+        if (fileId.contains("../")) {
+            return false;
+        }
+        return true;
+    }
+
 
 }
