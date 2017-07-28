@@ -431,7 +431,7 @@ public class GoodsFileService {
             //修改表
             //如果文件夹
             if (fileType.equalsIgnoreCase("folder") ) {//如果是文件夹
-
+                goodsFileMapper.replaceFileDir(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
             }else{
                 modifyDataGoodsFile(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
             }
