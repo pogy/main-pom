@@ -422,7 +422,12 @@ public class GoodsFileService {
         boolean result=ossIO.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newPath);
         if(result){
             //修改表
-            modifyDataGoodsFile(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newPath);
+            //如果文件夹
+            if (fileType.equalsIgnoreCase("folder") ) {//如果是文件夹
+
+            }else{
+                modifyDataGoodsFile(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newPath);
+            }
         }
         return result;
     }
