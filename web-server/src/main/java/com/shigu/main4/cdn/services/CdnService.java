@@ -35,6 +35,7 @@ import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
 import com.shigu.main4.vo.*;
+import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.zhb.utils.BeanMapper;
@@ -89,6 +90,8 @@ public class CdnService {
     ItemBrowerService itemBrowerService;
     @Autowired
     ShiguShopLicenseMapper shiguShopLicenseMapper;
+    @Autowired
+    GoodsFileService goodsFileService;
 
     /**
      * banner部分的html
@@ -323,6 +326,8 @@ public class CdnService {
             ss.add(s.getValue());
         }
         vo.setSizesMeta(JSONArray.fromObject(ss).toString());
+        vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId));
+
         return vo;
     }
 
