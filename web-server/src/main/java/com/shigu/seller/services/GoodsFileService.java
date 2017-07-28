@@ -150,7 +150,7 @@ public class GoodsFileService {
                 item.setFileName("/");
             }
             String fileId=item.getFileId();
-            if (fileId.contains("/") && fileId.indexOf("/") != fileId.length()) {//过滤下层文件的显示
+            if (fileId.contains("/") && fileId.indexOf("/") != fileId.length()-1) {//过滤下层文件的显示
                 continue;
             }
 
