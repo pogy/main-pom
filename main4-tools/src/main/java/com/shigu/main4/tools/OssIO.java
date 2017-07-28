@@ -265,7 +265,6 @@ public class OssIO {
                 // 拷贝Object
                 CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath);
                 logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
-                ossClient.deleteObject(bucketName,srcFilePath);
             }
 
             deleteFile(srcFilePath);
