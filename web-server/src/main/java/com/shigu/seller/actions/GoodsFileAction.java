@@ -197,6 +197,9 @@ public class GoodsFileAction {
     @ResponseBody
     public JSONObject createFoler(String fileName,HttpSession session) throws JsonErrException {
         String fileId = goodsFileService.createDir(logshop(session).getShopId(), fileName);
+        if (!goodsFileService.checkFileId(fileId)) {
+            throw new JsonErrException("key信息异常");
+        }
         JSONObject obj= JsonResponseUtil.success();
         obj.element("fileId",fileId);
         obj.element("fileName",fileName);
