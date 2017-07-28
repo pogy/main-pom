@@ -262,8 +262,8 @@ public class GoodsFileAction {
      * @return
      */
     @RequestMapping("downfilezip")
-    public String downfilezip(String key,Long shopId){
-        return goodsFileService.zipUrl(shopId,key);
+    public String downfilezip(String key,Long sid){
+        return "redirect:"+goodsFileService.zipUrl(sid,key);
     }
 
     /**
