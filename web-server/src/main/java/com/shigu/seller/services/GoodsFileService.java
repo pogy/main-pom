@@ -28,7 +28,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -167,6 +169,7 @@ public class GoodsFileService {
             BeanMapper.map(sizeparseToShow(fileSize),item);
             newFiles.add(item);
          }
+        Collections.sort(newFiles);
          return newFiles;
     }
 
@@ -177,13 +180,14 @@ public class GoodsFileService {
      */
     public FileSizeVO sizeparseToShow(Double size){
         FileSizeVO sizeVO=new FileSizeVO();
+        DecimalFormat df=new DecimalFormat("0.0");
         if (1048576 < size) {
             double mSize = div(size, (double)1048576, 3);
-            sizeVO.setFileSize(mSize + "");
+            sizeVO.setFileSize(df.format(mSize));
             sizeVO.setUnit("mb");
         } else {
             double kSize = div(size, (double)1024, 3);
-            sizeVO.setFileSize(kSize + "");
+            sizeVO.setFileSize(df.format(kSize));
             sizeVO.setUnit("kb");
         }
         return sizeVO;
@@ -408,7 +412,7 @@ public class GoodsFileService {
      * @param newName
      * @return
      */
-    public boolean  rename(Long shopId,String fileKey, String fileType, String newName) {
+    public boolean  rename(Long shopId,String fileKey, String fileType, String newName) throws JsonErrException {
         if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("folder") ) {
             fileKey = fileKey +"/";
         }
@@ -418,6 +422,9 @@ public class GoodsFileService {
         String newFileKey = newName;
         if(fileKey.contains("/") && !fileType.equalsIgnoreCase("folder")) {
             newFileKey = fileKey.substring(0, fileKey.indexOf("/"))+"/"+ newName;
+        }
+        if(ossIO.fileExist(getHomeDir(shopId)+newFileKey)){
+            throw new JsonErrException("存在同名文件");
         }
         boolean result=ossIO.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newFileKey);
         if(result){
@@ -438,7 +445,7 @@ public class GoodsFileService {
      * @param targetFlordId
      * @return
      */
-    public boolean moveFile(Long shopId,String fileId,  String targetFlordId) {
+    public boolean moveFile(Long shopId,String fileId,  String targetFlordId) throws JsonErrException {
         String targetFileId;
         if(targetFlordId.equals("")&&fileId.contains("/")){//移到根目录
             targetFileId=fileId.substring(fileId.indexOf("/")+1, fileId.length());
@@ -447,6 +454,9 @@ public class GoodsFileService {
         }
         if(fileId.equals(targetFileId)){
             return false;
+        }
+        if(ossIO.fileExist(getHomeDir(shopId)+targetFileId)){
+            throw new JsonErrException("目标文件夹下已经存在同名文件");
         }
         boolean result=ossIO.moveFile(getHomeDir(shopId)+fileId, getHomeDir(shopId)+targetFileId);
         if(result){
@@ -470,7 +480,10 @@ public class GoodsFileService {
      * @param dir
      * @return
      */
-    public String createDir(Long shopId, String dir) {
+    public String createDir(Long shopId, String dir) throws JsonErrException {
+        if(ossIO.fileExist(getHomeDir(shopId)+dir+"/")){
+            throw new JsonErrException("文件夹已经存在");
+        }
         String fildPath=ossIO.createDir(getHomeDir(shopId), dir);
         return fildPath.replace(getHomeDir(shopId),"");
     }

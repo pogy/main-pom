@@ -195,7 +195,7 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/createFolder")
     @ResponseBody
-    public JSONObject createFoler(String fileName,HttpSession session) {
+    public JSONObject createFoler(String fileName,HttpSession session) throws JsonErrException {
         String fileId = goodsFileService.createDir(logshop(session).getShopId(), fileName);
         JSONObject obj= JsonResponseUtil.success();
         obj.element("fileId",fileId);
