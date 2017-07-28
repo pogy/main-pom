@@ -42,10 +42,6 @@ public class ShManaOrderService {
                 List<SubOrderInfoVO> sublist=list.get (i).getChildOrders ();
                 List<SubOrderInfoVO> sublist1=new ArrayList<>();
                 for(SubOrderInfoVO subVo: list.get (i).getChildOrders ()){
-                    subVo.setPrice (PriceConvertUtils.priceToString(subVo.getPriceLong ()));
-                    subVo.setSubOrderStatus (subVo.getSubStatusenum ().status);
-                    subVo.setShState(subVo.getShStateEnum()==null?0:subVo.getShStateEnum().afterSaleStatus);
-                    subVo.setTkState(subVo.getTkStateEnum()==null?0:subVo.getTkStateEnum().refundType);
                     sublist1.add (subVo);
                 }
                 list.get (i).setChildOrders (sublist1);

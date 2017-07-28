@@ -47,9 +47,16 @@ public class SubOrderInfoVO implements Serializable{
      */
     private String goodsNo;
     /**
+     * 单价：显示
+     */
+    private String price;
+    /**
      * 单价：接口传出来的数值
      */
-    private Long price;
+    private Long priceLong;
+
+
+
     /**
      * 商品数
      */
@@ -173,18 +180,26 @@ public class SubOrderInfoVO implements Serializable{
         this.goodsNo = goodsNo;
     }
 
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
     /**
      * 获取 单价：接口传出来的数值
      */
-    public Long getPrice() {
-        return this.price;
+    public Long getPriceLong() {
+        return priceLong;
     }
 
     /**
      * 设置 单价：接口传出来的数值
      */
-    public void setPrice(Long price) {
-        this.price = price;
+    public void setPriceLong(Long priceLong) {
+        this.priceLong = priceLong;
     }
 
     /**

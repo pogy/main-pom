@@ -54,8 +54,6 @@ public class MyOrderService {
                 List<SubOrderInfoVO> sublist = list.get(i).getChildOrders();
                 List<SubOrderInfoVO> sublist1 = new ArrayList<>();
                 for (SubOrderInfoVO subVo : list.get(i).getChildOrders()) {
-                    subVo.setPrice(PriceConvertUtils.priceToString(subVo.getPriceLong()));
-                    subVo.setSubOrderStatus(subVo.getSubStatusenum().status);
                     sublist1.add(subVo);
                 }
                 list.get(i).setChildOrders(sublist1);
@@ -104,8 +102,6 @@ public class MyOrderService {
         List<SubOrderInfoVO> list = orderListService.selectSubList(orderId);
         List<SubOrderInfoVO> list1 = new ArrayList<>();
         for (SubOrderInfoVO subVo : list) {
-            subVo.setPrice(PriceConvertUtils.priceToString(subVo.getPriceLong()));
-            subVo.setSubOrderStatus(subVo.getSubStatusenum().status);
             list1.add(subVo);
         }
         OrderDetailVO vo = new OrderDetailVO();
