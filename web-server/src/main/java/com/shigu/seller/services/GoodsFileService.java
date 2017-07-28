@@ -392,7 +392,11 @@ public class GoodsFileService {
         }
         String path=getHomeDir(shopId)+fileKey;
         GoodsFileExample goodsFileExample=new GoodsFileExample();
-        goodsFileExample.createCriteria().andFileKeyEqualTo(path);
+        if(fileType.equals("folder")&&!fileKey.equals("/")){//文件夹
+            goodsFileExample.createCriteria().andFileKeyLike(path+"%");
+        }else {
+            goodsFileExample.createCriteria().andFileKeyEqualTo(path);
+        }
         goodsFileMapper.deleteByExample(goodsFileExample);
         return ossIO.deleteFile(path);
     }
