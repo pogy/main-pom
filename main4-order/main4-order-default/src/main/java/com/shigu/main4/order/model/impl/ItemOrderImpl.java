@@ -274,8 +274,11 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public List<OrderServiceVO> selServices() {
-        //return null;
-        return new ArrayList<>();
+        ItemOrderService itemOrderService = new ItemOrderService();
+        itemOrderService.setOid(oid);
+        //todo:缺失num字段来源
+        List<OrderServiceVO> collect = BeanMapper.mapList(itemOrderServiceMapper.select(itemOrderService),OrderServiceVO.class);
+        return collect;
     }
 
     @Override

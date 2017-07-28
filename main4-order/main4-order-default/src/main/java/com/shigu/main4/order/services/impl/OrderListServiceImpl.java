@@ -411,8 +411,6 @@ public class OrderListServiceImpl implements OrderListService {
         }
         ItemOrderLogisticsExample itemOrderLogisticsExample = getItemOrderLogisticsExampleByBO(bo, oids);
         if (!searchFromItemOrderSub) {
-
-
             return itemOrderLogisticsMapper.countByExample(itemOrderLogisticsExample);
         }
         oids = BeanMapper.getFieldList(itemOrderLogisticsMapper.selectByExample(itemOrderLogisticsExample),"oid",Long.class);

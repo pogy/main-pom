@@ -21,7 +21,7 @@ public class OrderListServiceImplTest extends BaseTest {
 
     @Test
     public void selectCountShManaOrderTest() throws ParseException {
-        show(orderListService.selectCountShManaOrder(ShStatusEnum.CHANGE,1,20,9968L));
+        show(orderListService.selectCountShManaOrder(ShStatusEnum.REFUND,1,20,9968L));
     }
 
     @Test
