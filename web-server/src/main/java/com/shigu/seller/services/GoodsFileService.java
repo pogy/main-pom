@@ -441,7 +441,7 @@ public class GoodsFileService {
     public boolean moveFile(Long shopId,String fileId,  String targetFlordId) {
         String targetFileId;
         if(targetFlordId.equals("")&&fileId.contains("/")){//移到根目录
-            targetFileId=fileId.substring(fileId.indexOf("/")+1,fileId.length());
+            targetFileId=fileId.substring(fileId.indexOf("/")+1, fileId.length());
         }else{
             targetFileId=targetFlordId+fileId;
         }
@@ -486,6 +486,30 @@ public class GoodsFileService {
     public String zipUrl(Long shopId,String key){
         return ossIO.getDomain()+getHomeDir(shopId)+key;
     }
+
+    /**
+     * 检测文件路径合法性
+     * @param fileId
+     * @return
+     */
+    public boolean checkFileId(String fileId) {
+        if (StringUtils.isEmpty(fileId)) {
+            return false;
+        }
+        if (fileId.contains("/") && fileId.indexOf("/") != fileId.lastIndexOf("/")) {
+            return false;
+        }
+
+        if (fileId.matches(".*(<|>|&|$|\t|\n|\r).*")) {
+            return false;
+        }
+
+        if (fileId.contains("../")) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * 拿用户根目录
      * @param shopId
@@ -513,29 +537,5 @@ public class GoodsFileService {
     private String getTempDir(Long shopId) {
         return ROOT_PATH + shopId + "/temp/";
     }
-
-    /**
-     * 检测文件路径合法性
-     * @param fileId
-     * @return
-     */
-    public boolean checkFileId(String fileId) {
-        if (StringUtils.isEmpty(fileId)) {
-            return false;
-        }
-        if (fileId.contains("/") && fileId.indexOf("/") != fileId.lastIndexOf("/")) {
-            return false;
-        }
-
-        if (fileId.matches(".*(<|>|&|$|\t|\n|\r).*")) {
-            return false;
-        }
-
-        if (fileId.contains("../")) {
-            return false;
-        }
-        return true;
-    }
-
 
 }
