@@ -94,6 +94,9 @@ public class GoodsFileAction {
     @RequestMapping("seller/getGlGoodslist")
     @ResponseBody
     public JSONObject getGlGoodslist(Integer page,String fileId,HttpSession session) throws JsonErrException {
+        if(org.apache.commons.lang3.StringUtils.isEmpty(fileId)){
+            throw new JsonErrException("key信息异常");
+        }
         if (!goodsFileService.checkFileId(fileId)) {
             throw new JsonErrException("key信息异常");
         }
