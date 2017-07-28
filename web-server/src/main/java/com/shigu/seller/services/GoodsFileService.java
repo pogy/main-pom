@@ -506,13 +506,10 @@ public class GoodsFileService {
             }
         }
 
-        if (fileId.contains("../")) {
-            return false;
-        }
         return true;
     }
 
-    private static  String sChar[] = {"<",">","&","$","\t","\n","\r"};
+    private static  String sChar[] = {"<",">","&","$","\t","\n","\r","../"};
     private static int sCharCount = sChar.length;
 
 
