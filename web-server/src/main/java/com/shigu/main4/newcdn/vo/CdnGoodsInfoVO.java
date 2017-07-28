@@ -74,6 +74,10 @@ public class CdnGoodsInfoVO {
      * 尺码
      */
     private String sizesMeta;
+    /**
+     * 是否有原图
+     */
+    private Boolean hasOriginalPic;
 
 
     /**
@@ -312,5 +316,19 @@ public class CdnGoodsInfoVO {
      */
     public void setTbGoodsId(Long tbGoodsId) {
         this.tbGoodsId = tbGoodsId;
+    }
+
+    /**
+     * 获取 是否有原图
+     */
+    public Boolean getHasOriginalPic() {
+        return this.hasOriginalPic;
+    }
+
+    /**
+     * 设置 是否有原图
+     */
+    public void setHasOriginalPic(Boolean hasOriginalPic) {
+        this.hasOriginalPic = hasOriginalPic;
     }
 }
