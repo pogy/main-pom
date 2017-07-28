@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 
 /**
  * Created by zf on 2017/7/24.
@@ -25,7 +26,7 @@ public class ShManaOrderAction {
     ShManaOrderService shManaOrderService;
 
     @RequestMapping("shManaOrder")
-    public String shManaOrder(HttpSession session, ShManaOrderBo bo, Model model){
+    public String shManaOrder(HttpSession session, ShManaOrderBo bo, Model model) throws ParseException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         Integer size=10;

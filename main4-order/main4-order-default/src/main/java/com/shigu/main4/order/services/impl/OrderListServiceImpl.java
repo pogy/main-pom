@@ -270,7 +270,7 @@ public class OrderListServiceImpl implements OrderListService {
         ShowOrderVO vo=new ShowOrderVO();
         ItemOrderVO itemOrderVO = SpringBeanFactory.getBean(ItemOrder.class, orderId).orderInfo();
         OrderDetailTotalVO orderDetailTotalVO = selectTotal(orderId);
-        List<SubOrderInfoVO> subOrderInfoVOS = itemOrderService.suborderInfoByOrderId(orderId);
+        List<SubOrderInfoVO> subOrderInfoVOS = selectSubList(orderId);
         vo.setOrderId(orderId);
         vo.setTradeTimed(itemOrderVO.getCreateTime());
         vo.setTradeTime(simpleDateFormat.format(itemOrderVO.getCreateTime()));

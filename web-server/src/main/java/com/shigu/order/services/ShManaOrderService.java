@@ -10,6 +10,7 @@ import com.shigu.tools.DateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class ShManaOrderService {
     @Autowired
     OrderListService orderListService;
 
-    public ShiguPager<ShowOrderVO> selectShList(Integer shStatus,Integer page,Integer size,Long userId){
+    public ShiguPager<ShowOrderVO> selectShList(Integer shStatus,Integer page,Integer size,Long userId) throws ParseException {
         if(page==null){
             page=1;
         }
