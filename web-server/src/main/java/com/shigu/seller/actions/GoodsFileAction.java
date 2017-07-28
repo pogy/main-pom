@@ -164,7 +164,7 @@ public class GoodsFileAction {
     @RequestMapping("seller/renameFile")
     @ResponseBody
     public JSONObject renameFile(String fileId, String fileType, String newName,HttpSession session) throws JsonErrException  {
-        if (!goodsFileService.checkFileId(fileId)) {
+        if (!goodsFileService.checkFileId(fileId) || !goodsFileService.checkFileId(newName)) {
             throw new JsonErrException("key信息异常");
         }
         goodsFileService.rename(logshop(session).getShopId(),fileId, fileType, newName);
