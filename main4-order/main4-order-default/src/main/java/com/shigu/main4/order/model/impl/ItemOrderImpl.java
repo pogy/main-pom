@@ -90,7 +90,11 @@ public class ItemOrderImpl implements ItemOrder {
         Map<Long, List<ItemOrderSub>> longListMap = itemOrderSubMapper.select(orderSub).stream().collect(Collectors.groupingBy(ItemOrderSub::getLogisticsId));
 
         List<LogisticsVO> logisticsVOS = BeanMapper.mapList(select, LogisticsVO.class);
-        logisticsVOS.forEach(logisticsVO -> logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList())));
+        logisticsVOS.forEach(logisticsVO -> {
+                if(longListMap.get(logisticsVO.getId()) != null){
+                    logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList()));
+                }
+            });
         return logisticsVOS;
     }
 
