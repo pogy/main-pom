@@ -449,7 +449,8 @@ var shopId = '${session_user_redis__.logshop.shopId!}';
     
     <div class="imgSpace fr" id="pictureSpaceSizeInfo">
         <div class="allBar pr"><div class="bar" style="width:0%"></div></div>
-        <p class="infotext">0M/0M</p>
+        <p class="infotext fl">0M/0M</p>
+        <p class="fr fc3">扩容功能即将上线</p>
     </div>
 </div>
 
