@@ -555,9 +555,9 @@ ${userShopHdHtml}
             
 <div class="goodsOrderBox" id="goodsOrderBox" data-goodsid="${goodsInfo.goodsId!}">
     <div class="goodsTitle">
-        <#if goodsInfo.goodsFrom == 1>
+        <#if goodsInfo.tbGoodsId??>
         <h2 class="fs18 fc3 yahei"><a href="http://item.taobao.com/item.htm?id=${goodsInfo.tbGoodsId!}" target="_blank">${goodsInfo.title!}</a>
-        <#elseif goodsInfo.goodsFrom == 2>
+        <#else>
         <h2 class="fs18 fc3 yahei">${goodsInfo.title!}
         </#if>
             
@@ -659,6 +659,12 @@ ${userShopHdHtml}
 
 
 
+
+
+
+<script>
+var hasYt = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图下载
+</script>
 
 
 
