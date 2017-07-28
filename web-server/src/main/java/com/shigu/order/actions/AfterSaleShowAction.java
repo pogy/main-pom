@@ -1,6 +1,7 @@
 package com.shigu.order.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.services.AfterSaleShowService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.ParseException;
 import java.util.Map;
 
 /**
@@ -58,7 +60,7 @@ public class AfterSaleShowAction {
     @RequestMapping(value = "refund", method = RequestMethod.GET)
     public String refund(@RequestParam(value = "childOrderId",required = false)String childOrderId
             , @RequestParam(value = "refundId",required = false)String refundId
-            ,@RequestParam(value="express",required = false)Integer express, Model model) {
+            ,@RequestParam(value="express",required = false)Integer express, Model model) throws Main4Exception, ParseException {
 
         if (!StringUtils.isEmpty(childOrderId) && StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.refundChildOrder(childOrderId);
@@ -83,7 +85,7 @@ public class AfterSaleShowAction {
     @RequestMapping(value = "exchange", method = RequestMethod.GET)
     public String exchange(@RequestParam(value = "childOrderId",required = false)String childOrderId
             , @RequestParam(value = "refundId",required = false)String refundId
-            ,@RequestParam(value="express",required = false)Integer express, Model model) {
+            ,@RequestParam(value="express",required = false)Integer express, Model model) throws Main4Exception, ParseException {
         if (!StringUtils.isEmpty(childOrderId) && StringUtils.isEmpty(refundId)) {
             Map<String, Object> map = afterSaleShowService.exchangeChildOrder(Long.parseLong(childOrderId));
             model.addAllAttributes(map);
@@ -184,6 +186,13 @@ public class AfterSaleShowAction {
         }
         return JsonResponseUtil.success().element("refundId ",afterSaleShowService.exchangeApply(bo));
     }
+
+    /**
+     * 同意退款金额
+     * @param refundId
+     * @param agreeState
+     * @return
+     */
     @RequestMapping(value = "agreeRefundMoney",method = RequestMethod.POST)
     @ResponseBody
     public JSONObject agreeRefundMoney(String refundId,Integer agreeState){

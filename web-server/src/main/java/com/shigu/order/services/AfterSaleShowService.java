@@ -1,6 +1,7 @@
 package com.shigu.order.services;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.order.services.AfterSaleService;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +35,10 @@ import java.util.Map;
 public class AfterSaleShowService {
     @Autowired
     private AfterSaleService afterSaleService;
+    @Autowired
+    private ItemOrderService itemOrderService;
     //测试用
-    private static ReturnGoodsStatusEnum testStatus = ReturnGoodsStatusEnum.AGREE_PROCESS;
+    private static ReturnGoodsStatusEnum testStatus = ReturnGoodsStatusEnum.REFUND_MONEY_CHANGED;
 
     public Long applyReturnOrder(AfterSaleBo bo) throws JsonErrException {
         return afterSaleService.returnGoodsApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundCount(), bo.getRefundMoney()
@@ -43,6 +47,7 @@ public class AfterSaleShowService {
 
     public void chooseExpress(String refundId, String expressId, String expressCode) {
         afterSaleService.chooseExpress(Long.parseLong(refundId), Long.parseLong(expressId), expressCode);
+        testStatus = ReturnGoodsStatusEnum.EXPRESS_SUBMIT;
     }
 
     public Map<String, Object> returnOrChange(String childOrderId) {
@@ -72,7 +77,7 @@ public class AfterSaleShowService {
         return viewVo;
     }
 
-    public Map<String, Object> refund(String refundIds, Integer express) {
+    public Map<String, Object> refund(String refundIds, Integer express) throws Main4Exception, ParseException {
         Long refundId = Long.parseLong(refundIds);
         ShStatusEnum shStatusEnum = afterSaleService.queryAfterSaleType(refundId);
         if (shStatusEnum == null || shStatusEnum.shStatus == 2) {
@@ -107,8 +112,7 @@ public class AfterSaleShowService {
             }
             case EXPRESS_SUBMIT: {
                 //页面3-2
-                ReturnableExpressInfoVO returnableExpressInfoVO = afterSaleService.retrunGoodsExpressInfo(refundId);//退货简要信息
-                von = new RefundExpressInfoDecorate(vo4, returnableExpressInfoVO);
+               von = chooseDecorate(refundId,express,vo4,von);
                 break;
             }
             case REFUSE_PROCESS: {
@@ -135,20 +139,21 @@ public class AfterSaleShowService {
 
 
         }
-        Map<String,Object> returnmap;
+
+        Map<String, Object> returnmap;
         if (von == null) {
-          von = vo4;
+            von = vo4;
         }
         von.doAdd();
         returnmap = von.getViewVo();
         //修改快递特殊处理
-        if(!StringUtils.isEmpty(express) && express == 1
-                && (returnmap.get("refundStateNum")!=null&& (Integer)returnmap.get("refundStateNum")== 3)
-                && (returnmap.get("returnState")!=null && (Integer)returnmap.get("returnState") == 2)
-                ){
-           returnmap.put("express",express);
-           returnmap.replace("refundStateNum",3);
-           returnmap.replace("returnState",1);
+        if (!StringUtils.isEmpty(express) && express == 1
+                && (returnmap.get("refundStateNum") != null && (Integer) returnmap.get("refundStateNum") == 3)
+                && (returnmap.get("returnState") != null && (Integer) returnmap.get("returnState") == 2)
+                ) {
+            returnmap.put("express", express);
+            returnmap.replace("refundStateNum", 3);
+            returnmap.replace("returnState", 1);
         }
 
         return returnmap;
@@ -170,7 +175,7 @@ public class AfterSaleShowService {
         return viewVo;
     }
 
-    public Map<String, Object> exchange(long refundId,Integer express) {
+    public Map<String, Object> exchange(long refundId, Integer express) throws Main4Exception, ParseException {
         ShStatusEnum shStatusEnum = afterSaleService.queryAfterSaleType(refundId);
         if (shStatusEnum == null || shStatusEnum.shStatus == 1) {
             return null;
@@ -197,8 +202,8 @@ public class AfterSaleShowService {
             }
             //2-3
             case EXPRESS_SUBMIT: {
-                ReturnableExpressInfoVO returnableExpressInfoVO = afterSaleService.retrunGoodsExpressInfo(refundId);//退货简要信息
-                von = new RefundExpressInfoDecorate(vo4, returnableExpressInfoVO);
+                von = chooseDecorate(refundId,express,vo4,von);
+
                 break;
             }
             //2-2
@@ -221,47 +226,73 @@ public class AfterSaleShowService {
 
 
         }
-         Map<String,Object> returnmap;
+
+        if (express != null && express == 1) {
+            ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
+            List<ExpressVo> expressVos = afterSaleService.selectExpress();
+            AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);//退货地址
+            von = new RefundExpressDetorate(vo5, expressVos);//快递列表
+        }
+        Map<String, Object> returnmap;
         if (von == null) {
             von = vo4;
         }
         von.doAdd();
         returnmap = von.getViewVo();
         //修改快递特殊处理
-        if(!StringUtils.isEmpty(express) && express == 1
-                && (returnmap.get("exchangeStateNum")!=null&& (Integer)returnmap.get("exchangeStateNum")== 2)
-                && (returnmap.get("exchangeWaitState")!=null && (Integer)returnmap.get("exchangeWaitState") == 2)
-                ){
-           returnmap.put("express",express);
-           returnmap.replace("refundStateNum",2);
-           returnmap.replace("returnState",1);
+        if (!StringUtils.isEmpty(express) && express == 1
+                && (returnmap.get("exchangeStateNum") != null && (Integer) returnmap.get("exchangeStateNum") == 2)
+                && (returnmap.get("exchangeWaitState") != null && (Integer) returnmap.get("exchangeWaitState") == 2)
+                ) {
+            returnmap.put("express", express);
+            returnmap.replace("refundStateNum", 2);
+            returnmap.replace("returnState", 1);
         }
         return returnmap;
     }
 
     public void modifyExpress(String refundId, String expressId, String expressCode) {
-        afterSaleService.modifyExpress(Long.parseLong(refundId),Long.parseLong(expressId),expressCode);
+        afterSaleService.modifyExpress(Long.parseLong(refundId), Long.parseLong(expressId), expressCode);
     }
 
     public Long exchangeApply(AfterSaleBo bo) {
-        return afterSaleService.exchangeApply(Long.parseLong(bo.getChildOrderId()),bo.getRefundReason(),bo.getRefundDesc());
+        return afterSaleService.exchangeApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundReason(), bo.getRefundDesc());
     }
 
     public void agreeRefunMoney(long refundId, Integer agreeState) {
         boolean isAgree = false;
-        switch (agreeState){
-            case 1:{
+        switch (agreeState) {
+            case 1: {
                 isAgree = true;
+                testStatus = ReturnGoodsStatusEnum.RETURN_ENT;
                 break;
             }
-            case 2:{
+            case 2: {
                 isAgree = false;
+                testStatus = ReturnGoodsStatusEnum.REFUSE_MONEY_CHANGED;
                 break;
             }
-            default:{
+            default: {
                 break;
             }
         }
-        afterSaleService.agreeOrRejectRefundPrice(refundId,isAgree);
+        afterSaleService.agreeOrRejectRefundPrice(refundId, isAgree);
+
+    }
+
+    //修改快递和提教快递判断处理
+    private AbstractRefundVo chooseDecorate(Long refundId, Integer express, AbstractRefundVo vo4, AbstractRefundVo von) throws Main4Exception, ParseException {
+        if (express == null || express != 1) {
+            ReturnableExpressInfoVO returnableExpressInfoVO = afterSaleService.retrunGoodsExpressInfo(refundId);//退货简要信息
+            List<ExpressLogVO> expressLogVOS = itemOrderService.expressLog(Long.parseLong(
+                    returnableExpressInfoVO.getExpressCode()));
+            von = new RefundExpressInfoDecorate(vo4, returnableExpressInfoVO, expressLogVOS);//物流信息修饰
+        } else {
+            ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
+            List<ExpressVo> expressVos = afterSaleService.selectExpress();
+            AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);//退货地址
+            von = new RefundExpressDetorate(vo5, expressVos);//快递列表
+        }
+        return von;
     }
 }

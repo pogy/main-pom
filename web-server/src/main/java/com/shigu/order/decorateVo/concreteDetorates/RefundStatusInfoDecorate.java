@@ -2,6 +2,7 @@ package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
 import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
+import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.order.decorateVo.AbstractRefundVo;
 import com.shigu.order.decorateVo.RefundVoDecorate;
 
@@ -68,6 +69,8 @@ public class RefundStatusInfoDecorate extends RefundVoDecorate {
             case REFUND_MONEY_CHANGED:{
                 refundStateNum = 3;
                 returnState = 3;
+                map.put("modifyRefundMoney", PriceConvertUtils.priceToString(afterSaleStatusVO.getModifyRefundPrice()));
+                break;
             }
             default:{
                 break;

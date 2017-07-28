@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * Created by pc on 2017-07-26.
- *
+ *修饰快递日志
  * @author pc
  * @version 3.0.0-SNAPSHOT
  * @description
@@ -22,19 +22,23 @@ import java.util.Map;
  */
 public class RefundExpressInfoDecorate extends RefundVoDecorate {
     private ReturnableExpressInfoVO returnableExpressInfoVO;
+    private List<ExpressLogVO> loglist;
 
-    public RefundExpressInfoDecorate(AbstractRefundVo vo, ReturnableExpressInfoVO returnableExpressInfoVO){
+    public RefundExpressInfoDecorate(AbstractRefundVo vo, ReturnableExpressInfoVO returnableExpressInfoVO
+            ,List<ExpressLogVO> loglist){
         super(vo);
         this.returnableExpressInfoVO =returnableExpressInfoVO;
+        this.loglist = loglist;
     }
     private void setRefundExpressInfo(){
         Map map = new HashMap<>();
         ExpressVo vo = new ExpressVo();
         vo.setId(returnableExpressInfoVO.getExpressCode());
         vo.setName(returnableExpressInfoVO.getExpressName());
+        vo.setCreateTime(returnableExpressInfoVO.getReturnableExpressTime());
         List<ExpressDetailVo> elist= new ArrayList<>();
         vo.setDetail(elist);
-        for(ExpressLogVO logVO:returnableExpressInfoVO.getExpressDetails()){
+        for(ExpressLogVO logVO:loglist){
             ExpressDetailVo vode = new ExpressDetailVo();
             vode.setDate(logVO.getLogDate());
             vode.setDesc(logVO.getLogDesc());

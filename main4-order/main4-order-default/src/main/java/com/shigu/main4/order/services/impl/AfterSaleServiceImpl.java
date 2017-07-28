@@ -9,6 +9,7 @@ import com.shigu.main4.order.zfenums.UserTypeEnum;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -67,6 +68,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         AfterSaleStatusVO vo = new AfterSaleStatusVO();
         vo.setContent("卧槽");
         vo.setSubOrderId(105L);
+        vo.setModifyRefundPrice(1000L);
 
         return vo;
     }
@@ -98,7 +100,18 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         return vo;
     }
     @Override
-    public List<ExpressVo> selectExpress() { return null; }
+    public List<ExpressVo> selectExpress() {
+        ExpressVo vo = new ExpressVo();
+        vo.setExpressId(1L);
+        vo.setExpressName("申通");
+        ExpressVo vo2 = new ExpressVo();
+        vo2.setExpressName("饶星快递");
+        vo2.setExpressId(2L);
+        List<ExpressVo> list = new ArrayList<>();
+        list.add(vo);
+        list.add(vo2);
+        return list;
+    }
     @Override
     public void chooseExpress(Long refundId, Long expressId, String expressCode) {
 
@@ -116,7 +129,11 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     @Override
     public ReturnableExpressInfoVO retrunGoodsExpressInfo(Long refundId) {
-        return null;
+        ReturnableExpressInfoVO vo = new ReturnableExpressInfoVO();
+        vo.setExpressCode("25");
+        vo.setExpressName("饶星快递");
+        vo.setReturnableExpressTime(new Date().getTime());
+        return vo;
     }
 
     @Override
@@ -126,6 +143,11 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     @Override
     public AfterSaleEntVO afterEnt(Long refundId) {
-        return null;
+        AfterSaleEntVO vo = new AfterSaleEntVO();
+        vo.setAfterSeleEntDate("2017-7-11 11:11:11");
+        vo.setPriceGoto("送小姐了");
+        vo.setPrice(100L);
+
+        return vo;
     }
 }

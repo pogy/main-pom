@@ -24,7 +24,7 @@ public class RefundEndDecorate extends RefundVoDecorate {
 
     private void setRefundEndInfo(){
         Map<String,Object> map = new HashMap<>();
-        map.put("refundAmount",afterSaleEntVO.getPrice());
+      //  map.put("refundAmount",afterSaleEntVO.getPrice());
         map.put("refundGoto",afterSaleEntVO.getPriceGoto());
         map.put("refundSuccessTime",afterSaleEntVO.getAfterSeleEntDate());
         super.addMap(map);

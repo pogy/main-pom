@@ -425,21 +425,21 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         SubOrderInfoVO subOrderInfoVO = new SubOrderInfoVO();
                 //BeanMapper.map(subItemOrderVO, SubOrderInfoVO.class);
         subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
-        subOrderInfoVO.setChildOrderId(subOrderId);
+//        subOrderInfoVO.setChildOrderId(subOrderId);
         subOrderInfoVO.setGoodsId(subItemOrderVO.getGoodsId());
         subOrderInfoVO.setImgsrc(subItemOrderVO.getProduct().getPicUrl());
         subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
         subOrderInfoVO.setColor(subItemOrderVO.getColor());
         subOrderInfoVO.setSize(subItemOrderVO.getSize());
         subOrderInfoVO.setGoodsNo(subItemOrderVO.getGoodsNo());
-        subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
-        subOrderInfoVO.setPriceLong(subItemOrderVO.getProduct().getPrice());
+//        subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
+//        subOrderInfoVO.setPriceLong(subItemOrderVO.getProduct().getPrice());
         subOrderInfoVO.setNum(subItemOrderVO.getNum());
         //todo:退款及售后信息填充
         //subOrderInfoVO.setTkNum();
         //subOrderInfoVO.setShTkNum();
-        subOrderInfoVO.setSubOrderStatus(subItemOrderVO.getSubOrderStatus().status);
-        subOrderInfoVO.setSubStatusenum(subItemOrderVO.getSubOrderStatus());
+//        subOrderInfoVO.setSubOrderStatus(subItemOrderVO.getSubOrderStatus().status);
+//        subOrderInfoVO.setSubStatusenum(subItemOrderVO.getSubOrderStatus());
         //subOrderInfoVO.setRefundId();
         //subOrderInfoVO.setRefundNum();
         //subOrderInfoVO.setTkState();
@@ -535,15 +535,15 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         for (SubItemOrderVO s : subItemOrderVOS) {
             SubOrderInfoVO vo = new SubOrderInfoVO();
             vo.setOrderId(s.getOid());
-            vo.setChildOrderId(s.getSoid());
+//            vo.setChildOrderId(s.getSoid());
             vo.setGoodsId(s.getGoodsId());
             vo.setImgsrc(s.getProduct().getPicUrl());
             vo.setTitle(s.getProduct().getTitle());
             vo.setColor(s.getColor());
             vo.setSize(s.getSize());
             vo.setGoodsNo(s.getGoodsNo());
-            vo.setPrice(String.valueOf(s.getProduct().getPrice() / 100));
-            vo.setPriceLong(s.getProduct().getPrice());
+//            vo.setPrice(String.valueOf(s.getProduct().getPrice() / 100));
+//            vo.setPriceLong(s.getProduct().getPrice());
             vo.setNum(s.getNum());
             ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
             itemOrderRefundExample.createCriteria().andOidEqualTo(s.getOid()).andSoidEqualTo(s.getSoid());
