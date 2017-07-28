@@ -13,6 +13,7 @@ import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.NumberUtils;
 import com.shigu.main4.order.bo.*;
+import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
 import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
@@ -434,16 +435,17 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         subOrderInfoVO.setPriceLong(subItemOrderVO.getProduct().getPrice());
         subOrderInfoVO.setNum(subItemOrderVO.getNum());
         //todo:退款及售后信息填充
+        RefundVO refundVO = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId).refundInfos();
         //subOrderInfoVO.setTkNum();
         //subOrderInfoVO.setShTkNum();
         subOrderInfoVO.setSubOrderStatus(subItemOrderVO.getSubOrderStatus().status);
         subOrderInfoVO.setSubStatusenum(subItemOrderVO.getSubOrderStatus());
-        //subOrderInfoVO.setRefundId();
-        //subOrderInfoVO.setRefundNum();
+        subOrderInfoVO.setRefundId(refundVO.getRefundId());
+        subOrderInfoVO.setRefundNum(refundVO.getNumber());
         //subOrderInfoVO.setTkState();
         //subOrderInfoVO.setTkStateEnum();
-        //subOrderInfoVO.setShState();
-        //subOrderInfoVO.setShStateEnum();
+        subOrderInfoVO.setShState(refundVO.getType());
+        subOrderInfoVO.setShStateEnum(AfterSaleStatusEnum.statusOf(refundVO.getType()));
         return subOrderInfoVO;
     }
 
