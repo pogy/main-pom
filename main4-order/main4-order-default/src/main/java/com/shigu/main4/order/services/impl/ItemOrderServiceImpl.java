@@ -444,8 +444,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         subOrderInfoVO.setRefundNum(refundVO.getNumber());
         //subOrderInfoVO.setTkState();
         //subOrderInfoVO.setTkStateEnum();
-        subOrderInfoVO.setShState(refundVO.getType());
-        subOrderInfoVO.setShStateEnum(AfterSaleStatusEnum.statusOf(refundVO.getType()));
+        //subOrderInfoVO.setShState();
+        //subOrderInfoVO.setShStateEnum();
         return subOrderInfoVO;
     }
 
