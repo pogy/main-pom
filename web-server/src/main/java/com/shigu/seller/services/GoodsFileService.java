@@ -415,18 +415,18 @@ public class GoodsFileService {
         if (!newName.endsWith("/") && fileType.equalsIgnoreCase("folder") ) {
             newName = newName +"/";
         }
-        String[] items = fileKey.split("/");
-        int len = items.length-1;
-        String newPath =  fileKey.substring(0, fileKey.length()-items[len].length()-1) + newName;
-
-        boolean result=ossIO.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newPath);
+        String newFileKey = newName;
+        if(fileKey.contains("/") && !fileType.equalsIgnoreCase("folder")) {
+            newFileKey = fileKey.substring(0, fileKey.indexOf("/"))+"/"+ newName;
+        }
+        boolean result=ossIO.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newFileKey);
         if(result){
             //修改表
             //如果文件夹
             if (fileType.equalsIgnoreCase("folder") ) {//如果是文件夹
 
             }else{
-                modifyDataGoodsFile(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newPath);
+                modifyDataGoodsFile(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
             }
         }
         return result;
@@ -441,7 +441,7 @@ public class GoodsFileService {
     public boolean moveFile(Long shopId,String fileId,  String targetFlordId) {
         String targetFileId;
         if(targetFlordId.equals("")&&fileId.contains("/")){//移到根目录
-            targetFileId=fileId.substring(fileId.indexOf("/"),fileId.length());
+            targetFileId=fileId.substring(fileId.indexOf("/")+1,fileId.length());
         }else{
             targetFileId=targetFlordId+fileId;
         }
