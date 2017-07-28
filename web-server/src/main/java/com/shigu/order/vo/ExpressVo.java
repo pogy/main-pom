@@ -13,6 +13,7 @@ import java.util.List;
 public class ExpressVo {
     private String name;
     private String id;
+    private Long createTime;
     private List<ExpressDetailVo> detail;
 
     public String getName() {
@@ -37,5 +38,13 @@ public class ExpressVo {
 
     public void setDetail(List<ExpressDetailVo> detail) {
         this.detail = detail;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 }

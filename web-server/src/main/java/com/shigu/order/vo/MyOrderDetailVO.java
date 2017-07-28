@@ -1,5 +1,7 @@
-package com.shigu.main4.order.servicevo;
+package com.shigu.order.vo;
 
+import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
+import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
 
@@ -16,7 +18,7 @@ import java.util.List;
  * @since: main-pom
  * @commonents:
  */
-public class OrderDetailVO {
+public class MyOrderDetailVO {
 
     private String[] orderStateText;//订单状态文字描述：'提交订单', '买家付款', '商品配货', '交易完成'
 
@@ -30,10 +32,10 @@ public class OrderDetailVO {
 
     private OrderDetailExpressVO express;//快递信息
 
-    List<SubOrderInfoVO> childOrders;//订单子单
+    List<SubMyOrderVO> childOrders;//订单子单
 
     private OrderDetailTotalVO total;//总计
-    private  Long  orderStateNum;//当前订单处于哪种状态，为1,2,3,4,5; 1提交订单，2待配货，3已发货，4交易完成，5取消订单
+    private  Integer  orderStateNum;//当前订单处于哪种状态，为1,2,3,4,5; 1提交订单，2待配货，3已发货，4交易完成，5取消订单
 
     private String[] orderStateTime;//订单状态时间，每条状态对应一条时间，当前处于第几种状态刚返回几条时间值，多条用逗号分隔。 状态为5返回两条时间值
 
@@ -85,11 +87,11 @@ public class OrderDetailVO {
         this.express = express;
     }
 
-    public List<SubOrderInfoVO> getChildOrders () {
+    public List<SubMyOrderVO> getChildOrders () {
         return childOrders;
     }
 
-    public void setChildOrders (List<SubOrderInfoVO> childOrders) {
+    public void setChildOrders (List<SubMyOrderVO> childOrders) {
         this.childOrders = childOrders;
     }
 
@@ -101,11 +103,11 @@ public class OrderDetailVO {
         this.total = total;
     }
 
-    public Long getOrderStateNum () {
+    public Integer getOrderStateNum () {
         return orderStateNum;
     }
 
-    public void setOrderStateNum (Long orderStateNum) {
+    public void setOrderStateNum (Integer orderStateNum) {
         this.orderStateNum = orderStateNum;
     }
 

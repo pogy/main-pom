@@ -55,7 +55,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -231,7 +231,7 @@ var webSite = '${webSite!}';
         </div>
     </div>
     <div class="orderInfo">
-        <p class="fc6"><span class="expressNum">运单编号：<em class="yahei fs14 fwb">${expressId!}</em></span><span>物流公司：</span><em class="fwb fc3">${expressName!}</em></p>
+        <p class="fc6"><span class="expressNum">运单编号：<em class="yahei fs14 fwb">${expressCode!}</em></span><span>物流公司：</span><em class="fwb fc3">${expressName!}</em></p>
         <p class="fc6">收货地址：<span class="fc3 fwb">${expressAddrInfo.address!} ${expressAddrInfo.name!} ${expressAddrInfo.phone!}</span></p>
     </div>
 </div>

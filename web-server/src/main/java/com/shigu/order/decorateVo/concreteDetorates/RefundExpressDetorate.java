@@ -1,7 +1,10 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.vo.ExpressVo;
+import com.shigu.order.decorateVo.AbstractRefundVo;
+import com.shigu.order.decorateVo.RefundVoDecorate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,21 +17,18 @@ import java.util.Map;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class RefundExpressDetorate extends RefundVoDecorate{
+public class RefundExpressDetorate extends RefundVoDecorate {
     private List<ExpressVo> list;
 
-    public RefundExpressDetorate(AbstractRefundVo vo,List<ExpressVo> list){
+    public RefundExpressDetorate(AbstractRefundVo vo, List<ExpressVo> list){
         super(vo);
         this.list = list;
-    }
-
-    RefundExpressDetorate(AbstractRefundVo vo) {
-        super(vo);
     }
 
     private void setRefundExpress(){
         Map<String,Object> map = new HashMap<>();
         StringBuilder builder =new StringBuilder("");
+        if(list == null) list = new ArrayList<>();
         for(ExpressVo expressVo:list){
             builder.append(expressVo.getExpressId()).append(":");
             builder.append(expressVo.getExpressName()).append(",");

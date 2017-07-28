@@ -5,6 +5,7 @@ import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.order.bo.ShManaOrderBo;
 import com.shigu.order.services.MyOrderService;
 import com.shigu.order.services.ShManaOrderService;
+import com.shigu.order.vo.MyOrderVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;
@@ -29,7 +30,7 @@ public class ShManaOrderAction {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
         Integer size=10;
-        ShiguPager<ShowOrderVO> pager=shManaOrderService.selectShList(bo.getShStatus(),bo.getPage(),size,userId);
+        ShiguPager<MyOrderVO> pager=shManaOrderService.selectShList(bo.getShStatus(),bo.getPage(),size,userId);
 
 
         model.addAttribute("orders",pager.getContent());

@@ -3,6 +3,7 @@ package com.shigu.main4.order.services;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
+import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
@@ -49,7 +50,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId);
+    ShiguPager selectCountMyOrder(OrderBO bo, Long userId);
 
     /**
      *
@@ -92,8 +93,8 @@ public interface OrderListService {
      * @方法名：selectOrderAddrInfo
      * @功能： 查询订单地址信息
      * @param: 
-     * @return: 
-     * @exception: 
+     * @return:
+     * @exception:
      * ====================================================================================
      * 
      */
@@ -118,10 +119,10 @@ public interface OrderListService {
      * @param: 
      * @return: 
      * @exception: 
-     * ====================================================================================
+     * ===============================================================================
      * 
      */
-    ShowOrderVO selectMyorder(Long orderId);
+    ShowOrderDetailVO selectMyorder(Long orderId);
 
     /**
      * ====================================================================================

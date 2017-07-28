@@ -87,7 +87,7 @@ public interface ItemOrderService {
      */
     List<ExpressLogVO> expressLog(String companyCode, String courierNumber) throws Main4Exception, ParseException;
     /**
-     * 子订单信息
+     * 子订单信息(作废)
      * @param subOrderId
      * @return
      */
@@ -95,7 +95,7 @@ public interface ItemOrderService {
 
     /**
      * 主单简要信息
-     * 不包含子单
+     * 不包含子单(作废)
      * @param orderId
      * @return
      */
@@ -109,7 +109,7 @@ public interface ItemOrderService {
     List<OrderLogVO> orderLog(Long orderId);
 
     /**
-     * 子订单信息,按主单查
+     * 子订单信息,按主单查(作废)
      * @param orderId
      * @return
      */

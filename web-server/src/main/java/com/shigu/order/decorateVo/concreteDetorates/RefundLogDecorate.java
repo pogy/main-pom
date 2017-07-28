@@ -1,6 +1,8 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.RefundLogVO;
+import com.shigu.order.decorateVo.AbstractRefundVo;
+import com.shigu.order.decorateVo.RefundVoDecorate;
 import com.shigu.order.vo.ApplyUserLog;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.Map;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class RefundLogDecorate extends RefundVoDecorate{
+public class RefundLogDecorate extends RefundVoDecorate {
 
     private List<RefundLogVO> list;
 
@@ -34,10 +36,11 @@ public class RefundLogDecorate extends RefundVoDecorate{
             log.setRecordTime(logVO.getLogTime());
             log.setUserNickname(logVO.getUserNick());
             log.setUserType(logVO.getUserType().type);
+            log.setUserHeadimg(logVO.getHeadImgUrl());
             alist.add(log);
         }
         map.put("applylist",alist);
-
+        super.addMap(map);
 
     }
 

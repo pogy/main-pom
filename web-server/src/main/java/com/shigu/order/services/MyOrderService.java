@@ -63,6 +63,8 @@ public class MyOrderService {
                 list.get(i).setTradeTime(DateParseUtil.parseDate("YYYY-MM-dd HH:mm:ss", list.get(i).getTradeTimed()));
 
             }
+            vo.setChildOrders(subs);
+            vos.add(vo);
         }
 
         return list;

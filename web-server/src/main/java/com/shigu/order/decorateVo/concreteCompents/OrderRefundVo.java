@@ -1,4 +1,6 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateVo.concreteCompents;
+
+import com.shigu.order.decorateVo.AbstractRefundVo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +13,7 @@ import java.util.Map;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class OrderRefundVo extends AbstractRefundVo{
+public class OrderRefundVo extends AbstractRefundVo {
     protected Map<String,Object> vo;
 
     @Override
@@ -27,12 +29,12 @@ public class OrderRefundVo extends AbstractRefundVo{
         if(vo == null){
             vo = new HashMap<>();
         }
-        System.out.println(11);
         vo.putAll(map);
     }
 
     @Override
     public void doAdd() {
+
     }
 
 

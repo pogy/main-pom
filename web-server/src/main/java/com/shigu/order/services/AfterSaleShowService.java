@@ -74,7 +74,7 @@ public class AfterSaleShowService {
         return viewVo;
     }
 
-    public Map<String, Object> refund(String refundIds) throws Main4Exception {
+    public Map<String, Object> refund(String refundIds) {
         Long refundId = Long.parseLong(refundIds);
         ShStatusEnum shStatusEnum = afterSaleService.queryAfterSaleType(refundId);
         if(shStatusEnum == null||shStatusEnum.shStatus == 2){

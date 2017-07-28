@@ -30,6 +30,7 @@ import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
+import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.ContainerVO;
 import com.shigu.session.main4.PersonalSession;
@@ -119,6 +120,9 @@ public class CdnAction {
 
     @Autowired
     GoodsSelFromEsService goodsSelFromEsService;
+
+    @Autowired
+    GoodsFileService goodsFileService;
 
     /**
      * 联系我们
@@ -476,19 +480,19 @@ public class CdnAction {
         //拼baseUrl
     }
 
-    /**
-     * 商品点击量
-     * @param id
-     * @return
-     */
-    @RequestMapping("itemclicks")
-    @ResponseBody
-    public JSONObject itemclicks(Long id){
-        if(id==null){
-            return JsonResponseUtil.success().element("number",-1);
-        }
-        return JsonResponseUtil.success().element("number",itemBrowerService.addUnrealBrower(id,1).getNumber());
-    }
+//    /**
+//     * 商品点击量
+//     * @param id
+//     * @return
+//     */
+//    @RequestMapping("itemclicks")
+//    @ResponseBody
+//    public JSONObject itemclicks(Long id){
+//        if(id==null){
+//            return JsonResponseUtil.success().element("number",-1);
+//        }
+//        return JsonResponseUtil.success().element("number",itemBrowerService.addUnrealBrower(id,1).getNumber());
+//    }
 //    /**
 //     * 商品页面
 //     * @param bo
@@ -528,6 +532,7 @@ public class CdnAction {
 //        model.addAttribute("vo",itemShowVO);
 //        model.addAttribute("bo",bo);
 //        model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
+//        model.addAttribute("hasYt",goodsFileService.hasDatu(id));
 ////        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
 //        if ("kx".equalsIgnoreCase(cdnItem.getWebSite())) {
 //            return "cdn/xieItem";
@@ -542,27 +547,27 @@ public class CdnAction {
 //        model.addAttribute("newGoodsList",cdnService.selShopNew(id,webSite,5));
 //        return "cdn/item_shopnew";
 //    }
-//    /**
-//     * 收藏商品
-//     * @param bo
-//     */
-//    @RequestMapping({"jsonScAddGoods","jsonScAdd"})
-//    @ResponseBody
-//    public void jsonScAddGoods(@Valid ScGoodsBO bo,BindingResult result,HttpServletResponse response, HttpSession session) throws JsonErrException, IOException {
-//        response.addHeader("Access-Control-Allow-Origin", "*");
-//        if(result.hasErrors()){
-////            throw new JsonErrException("2");//对前台说已经添加过了
-//            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
-//            return;
-//        }
-//        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        if(cdnService.addItemCollect(ps.getUserId(),bo)){
-////            return JsonResponseUtil.success();
-//            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'success'}",response);
-//        }else{
-//            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
-//        }
-//    }
+    /**
+     * 收藏商品
+     * @param bo
+     */
+    @RequestMapping({"jsonScAddGoods","jsonScAdd"})
+    @ResponseBody
+    public void jsonScAddGoods(@Valid ScGoodsBO bo,BindingResult result,HttpServletResponse response, HttpSession session) throws JsonErrException, IOException {
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        if(result.hasErrors()){
+//            throw new JsonErrException("2");//对前台说已经添加过了
+            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
+            return;
+        }
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(cdnService.addItemCollect(ps.getUserId(),bo)){
+//            return JsonResponseUtil.success();
+            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'success'}",response);
+        }else{
+            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
+        }
+    }
 
     /**
      * 收藏店铺
@@ -778,12 +783,16 @@ public class CdnAction {
     }
 
     @RequestMapping("downloadImg")
-    public void downloadImg(HttpServletResponse response, String callback, Long goodsId, HttpSession session) throws IOException {
+    public void downloadImg(HttpServletResponse response, String callback, Long goodsId,Integer type, HttpSession session) throws IOException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //如果店铺,不能下载图片
         if(personalSession.getLogshop()!=null){
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);
             return ;
+        }
+        if(type!=null &&type == 2){
+            String content = "{'result':'success','msg':'成功','sourceHref':'" + goodsFileService.datuUrl(goodsId) + "'}";
+            ResultRetUtil.returnJsonp(callback,content,response);
         }
         String url = shopsItemService.itemImgzipUrl(goodsId);
         String content;

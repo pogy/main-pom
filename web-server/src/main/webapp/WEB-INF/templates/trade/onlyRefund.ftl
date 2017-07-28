@@ -55,7 +55,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -188,7 +188,7 @@ var webSite = '${webSite!}';
 
 <div class="returnBox layout">
     <div class="returnLeft fl">
-        <#if onlyRefundStateNum == 0>
+        <#if onlyRefundStateNum == 1>
         <div class="reRefundGoods refundBox" data-orderId="${orderId!}" data-goodsId="${childOrderId!}">
     
     <label class="fl fc6">退款商品：</label>
@@ -226,7 +226,6 @@ var webSite = '${webSite!}';
 
 
 </#list>
-
 
 
 
@@ -292,10 +291,11 @@ var webSite = '${webSite!}';
 
 <script>
 var orderId = '${orderId!}';
-var orderChildId = '${orderChildId!}';
+var childOrderId = '${childOrderId!}';
 var refundGoodsPrice = '${refundGoodsPrice!}'
 var refundNum = '${refundNumber!}';
-var serviceMoney = '${serviceMoney!}'
+var serviceMoney = '${orderServicePrice!}';
+var expressMoney = '${orderExpressPrice!}';
 </script>
 
 
@@ -318,11 +318,11 @@ var serviceMoney = '${serviceMoney!}'
 
 
 
-        <#elseif onlyRefundStateNum == 1>
+        <#elseif onlyRefundStateNum == 2>
         <div class="reWaitFeedback refundBox">
     
     <h4 class="fwb yahei fc3">退款申请已提交，请等待处理！</h4>
-    
+    <p>退款总金额：<span class="fcF40 yahei fs14">&yen;<em class="fwb">${refundAmount!}</em></span></p>
     
 </div>
 
@@ -360,11 +360,55 @@ var serviceMoney = '${serviceMoney!}'
 
 
 
-        <#elseif onlyRefundStateNum == 2>
+        <#elseif onlyRefundStateNum == 3>
         <div class="reRefundSuccess refundBox fc6">
     <h4 class="yahei fc3 fwb">退款成功！</h4>
-    <p>退款总金额：<span class="fcF40 yahei fs14">&yen;<em class="fwb">${refundAmount!}</em></span></p>
+    <p>退款总金额：<span class="fcF40 yahei fs14">&yen;<em class="fwb">${finalRefundAmount!}</em></span></p>
     <p>退款去向：${refundGoto!}<span class="refundSucTime">退款成功时间：<em class="yahei fs14">${refundSuccessTime!}</em></span></p>
+</div>
+
+
+
+
+        <div class="reApplyRecord">
+    <label class="fl tar">申请记录：</label>
+    <div class="recordList fl">
+        
+        <#list applylist as record>
+        <div class="recordItem clearfix">
+            <img class="fl" src="${record.userHeadimg!}">
+            <div class="applyRecord fl">
+                <h4>
+                <#if record.userType == 1>
+                    ${record.userNickname!}
+                <#elseif record.userType == 0>
+                    平台客服
+                </#if>
+                </h4>
+                <p>
+                <#if record.userType == 1>
+                买家（${record.userNickname!}）于 ${record.recordTime!} ${record.recordContent!}
+                <#elseif record.userType == 0>
+                ${record.recordContent!}
+                </#if>
+                </p>
+            </div>
+            <p class="applyTime yahei fs14">${record.recordTime!}</p>
+        </div>
+        </#list>
+        
+    </div>
+</div>
+
+
+
+
+        <#elseif onlyRefundStateNum == 4>
+        <div class="reRefuseApply refundBox">
+    
+    <h4 class="fwb yahei fc3">退款申请已拒绝！</h4>
+    
+    <p class="refuseReason fcF40">${refuseReason!}</p>
 </div>
 
 
@@ -423,16 +467,15 @@ var serviceMoney = '${serviceMoney!}'
 <div class="reRefundInfo">
     <ul>
         <li><label>退款编号：</label><span class="yahei fs14 fcBlue">${refundId!}</span></li>
-        <li><label>退款总额：</label><span class="yahei fs14">&yen;<em class="fwb">${refundAmount!}</em></span></li>
-        <li>
-            <label>订单状态：</label>
-            <#if orderState == 0>等待付款
-            <#elseif orderState == 1>等待配货
-            <#elseif orderState == 2>配货中
-            <#elseif orderState == 3>交易完成
-            <#elseif orderState == 4>交易取消
+        <li><label>退款总额：</label><span class="yahei fs14">&yen;<em class="fwb">
+            <#if $pageid == 'refund' && refundStateNum == 4>
+                ${finalRefundAmount!}
+            <#else>
+                ${refundAmount!}
             </#if>
+            </em></span>
         </li>
+        
     </ul>
 </div>
 </#if>

@@ -1,6 +1,9 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.AfterSaleSimpleOrderVO;
+import com.shigu.main4.order.utils.PriceConvertUtils;
+import com.shigu.order.decorateVo.AbstractRefundVo;
+import com.shigu.order.decorateVo.RefundVoDecorate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +16,7 @@ import java.util.Map;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class OrderSimpleRefundDecorate extends RefundVoDecorate{
+public class OrderSimpleRefundDecorate extends RefundVoDecorate {
     private AfterSaleSimpleOrderVO afterSaleSimpleOrderVO;
     public OrderSimpleRefundDecorate(AbstractRefundVo vo, AfterSaleSimpleOrderVO afterSaleSimpleOrderVO){
         super(vo);
@@ -21,12 +24,13 @@ public class OrderSimpleRefundDecorate extends RefundVoDecorate{
     }
     private void setOrderSimpleInfo(){
         Map<String,Object> map = new HashMap<>();
+
         map.put("orderId",afterSaleSimpleOrderVO.getOrderId());
         map.put("orderDealTime",afterSaleSimpleOrderVO.getEndDate());
-        map.put("orderGoodsPrice",afterSaleSimpleOrderVO.getOrderPrice());
-        map.put("orderExpressPrice",afterSaleSimpleOrderVO.getExpressPrice());
-        map.put("orderServicePrice",afterSaleSimpleOrderVO.getServicePrice());
-        map.put("orderTotalPrice",afterSaleSimpleOrderVO.getTotalPrice());
+        map.put("orderGoodsPrice",PriceConvertUtils.priceToString(afterSaleSimpleOrderVO.getOrderPrice()));
+        map.put("orderExpressPrice",PriceConvertUtils.priceToString(afterSaleSimpleOrderVO.getExpressPrice()));
+        map.put("orderServicePrice",PriceConvertUtils.priceToString(afterSaleSimpleOrderVO.getServicePrice()));
+        map.put("orderTotalPrice",PriceConvertUtils.priceToString(afterSaleSimpleOrderVO.getTotalPrice()));
 
         super.addMap(map);
 
@@ -37,4 +41,6 @@ public class OrderSimpleRefundDecorate extends RefundVoDecorate{
         setOrderSimpleInfo();
         super.doAdd();
     }
+
+
 }

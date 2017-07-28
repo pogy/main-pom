@@ -1,7 +1,9 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
-import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
+import com.shigu.main4.order.utils.PriceConvertUtils;
+import com.shigu.order.decorateVo.AbstractRefundVo;
+import com.shigu.order.decorateVo.RefundVoDecorate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +16,11 @@ import java.util.Map;
  * @description xx
  * @since 3.0.0-SNAPSHOT
  */
-public class RefundStatusInfoDecorate extends RefundVoDecorate{
+public class RefundStatusInfoDecorate extends RefundVoDecorate {
 
     private AfterSaleStatusVO afterSaleStatusVO;
 
-    public RefundStatusInfoDecorate(AbstractRefundVo vo,AfterSaleStatusVO afterSaleStatusVO){
+    public RefundStatusInfoDecorate(AbstractRefundVo vo, AfterSaleStatusVO afterSaleStatusVO){
         super(vo);
         this.afterSaleStatusVO = afterSaleStatusVO;
     }
@@ -66,12 +68,14 @@ public class RefundStatusInfoDecorate extends RefundVoDecorate{
             case REFUND_MONEY_CHANGED:{
                 refundStateNum = 3;
                 returnState = 3;
+                map.put("modifyRefundMoney", PriceConvertUtils.priceToString(afterSaleStatusVO.getModifyRefundPrice()));
+                break;
             }
             default:{
                 break;
             }
         }
-        map.put("returnState",refundStateNum);
+        map.put("refundStateNum",refundStateNum);
         map.put("waitState",waitState);
         map.put("returnState",returnState);
         super.addMap(map);

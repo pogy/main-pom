@@ -17,9 +17,9 @@ public class ReturnableExpressInfoVO implements Serializable{
      */
     private String expressCode;
     /**
-     * 退换货快递详情(最多两条)
+     * 退回快递填写的时间戳
      */
-    private List<ExpressLogVO> expressDetails;
+    private Long returnableExpressTime;
 
     /**
      * 获取 退换货快递
@@ -50,16 +50,16 @@ public class ReturnableExpressInfoVO implements Serializable{
     }
 
     /**
-     * 获取 退换货快递详情(最多两条)
+     * 获取 退回快递填写的时间戳
      */
-    public List<ExpressLogVO> getExpressDetails() {
-        return this.expressDetails;
+    public Long getReturnableExpressTime() {
+        return this.returnableExpressTime;
     }
 
     /**
-     * 设置 退换货快递详情(最多两条)
+     * 设置 退回快递填写的时间戳
      */
-    public void setExpressDetails(List<ExpressLogVO> expressDetails) {
-        this.expressDetails = expressDetails;
+    public void setReturnableExpressTime(Long returnableExpressTime) {
+        this.returnableExpressTime = returnableExpressTime;
     }
 }
