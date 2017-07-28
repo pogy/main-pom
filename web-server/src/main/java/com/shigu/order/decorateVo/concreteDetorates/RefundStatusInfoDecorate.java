@@ -1,7 +1,6 @@
 package com.shigu.order.decorateVo.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
-import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.order.decorateVo.AbstractRefundVo;
 import com.shigu.order.decorateVo.RefundVoDecorate;

@@ -24,11 +24,7 @@ public class ExchangeStatusInfoDecorate extends RefundVoDecorate {
     }
 
 
-    public ExchangeStatusInfoDecorate(AbstractRefundVo vo) {
-        super(vo);
-    }
-
-    public void setExchangeStatusInfo() {
+    private void setExchangeStatusInfo() {
         Map<String, Object> map = new HashMap<>();
         int exchangeStateNum = 0;
         int exchangeWaitState = 0;

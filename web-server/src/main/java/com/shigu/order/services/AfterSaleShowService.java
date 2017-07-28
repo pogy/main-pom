@@ -2,16 +2,15 @@ package com.shigu.order.services;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
-import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.services.ItemOrderService;
-import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.ExpressVo;
 import com.shigu.main4.order.vo.ReturnableAddressVO;
+import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.order.bo.AfterSaleBo;
-import com.shigu.order.decorateVo.*;
+import com.shigu.order.decorateVo.AbstractRefundVo;
 import com.shigu.order.decorateVo.concreteCompents.OrderExchangeVo;
 import com.shigu.order.decorateVo.concreteCompents.OrderRefundVo;
 import com.shigu.order.decorateVo.concreteDetorates.*;
@@ -115,7 +114,7 @@ public class AfterSaleShowService {
             }
             case EXPRESS_SUBMIT: {
                 //页面3-2
-               von = chooseDecorate(refundId,express,vo4,von);
+               von = chooseDecorate(refundId,express,vo4, null);
                 break;
             }
             case REFUSE_PROCESS: {
@@ -211,7 +210,7 @@ public class AfterSaleShowService {
             }
             //2-3
             case EXPRESS_SUBMIT: {
-                von = chooseDecorate(refundId,express,vo4,von);
+                von = chooseDecorate(refundId,express,vo4, null);
 
                 break;
             }

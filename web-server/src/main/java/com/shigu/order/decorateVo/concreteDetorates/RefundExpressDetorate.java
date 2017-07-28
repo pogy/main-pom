@@ -25,16 +25,10 @@ public class RefundExpressDetorate extends RefundVoDecorate {
         this.list = list;
     }
 
-    RefundExpressDetorate(AbstractRefundVo vo) {
-        super(vo);
-    }
-
     private void setRefundExpress(){
         Map<String,Object> map = new HashMap<>();
         StringBuilder builder =new StringBuilder("");
-        if(list == null){
-            list = new ArrayList<>();
-        }
+        if(list == null) list = new ArrayList<>();
         for(ExpressVo expressVo:list){
             builder.append(expressVo.getExpressId()).append(":");
             builder.append(expressVo.getExpressName()).append(",");

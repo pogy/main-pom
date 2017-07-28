@@ -2,7 +2,6 @@ package com.shigu.order.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.services.AfterSaleShowService;
 import com.shigu.tools.JsonResponseUtil;
@@ -168,8 +167,7 @@ public class AfterSaleShowAction {
             return JsonResponseUtil.error("退货数量不能空");
         }
 
-        JSONObject refundId = JsonResponseUtil.success().element("refundId", afterSaleShowService.applyReturnOrder(bo).toString());
-        return refundId;
+        return JsonResponseUtil.success().element("refundId", afterSaleShowService.applyReturnOrder(bo).toString());
     }
 
     /**
@@ -189,9 +187,9 @@ public class AfterSaleShowAction {
 
     /**
      * 同意退款金额
-     * @param refundId
-     * @param agreeState
-     * @return
+     * @param refundId 售后id
+     * @param agreeState 是否同意 1同意 2不同意
+     * @return json
      */
     @RequestMapping(value = "agreeRefundMoney",method = RequestMethod.POST)
     @ResponseBody

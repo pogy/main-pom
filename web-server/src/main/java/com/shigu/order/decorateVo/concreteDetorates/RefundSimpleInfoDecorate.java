@@ -24,10 +24,6 @@ public class RefundSimpleInfoDecorate extends RefundVoDecorate {
     }
 
 
-    RefundSimpleInfoDecorate(AbstractRefundVo vo) {
-        super(vo);
-    }
-
     private void setAfterSaleInfo(){
         Map<String,Object> map = new HashMap<>();
         map.put("refundId",afterSaleInfoVO.getRefundId());
