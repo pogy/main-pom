@@ -30,6 +30,7 @@ import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
+import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.ContainerVO;
 import com.shigu.session.main4.PersonalSession;
@@ -119,6 +120,9 @@ public class CdnAction {
 
     @Autowired
     GoodsSelFromEsService goodsSelFromEsService;
+
+    @Autowired
+    GoodsFileService goodsFileService;
 
     /**
      * 联系我们
@@ -489,80 +493,81 @@ public class CdnAction {
         }
         return JsonResponseUtil.success().element("number",itemBrowerService.addUnrealBrower(id,1).getNumber());
     }
-//    /**
-//     * 商品页面
-//     * @param bo
-//     * @return
-//     */
-//    @RequestMapping("item")
-//    public String item(ItemBO bo, Model model) throws CdnException, IOException, TemplateException {
-//        Long id=bo.getId();
-//        //如果东北商品,用东北的模板
-//        ItemShowVO itemShowVO=new ItemShowVO();
-//        itemShowVO.setItemId(id);
-//        CdnItem cdnItem=showForCdnService.selItemById(id);
-//        itemShowVO.setOnsale(cdnItem!=null&&cdnItem.getOnsale());
-//        if(cdnItem==null){//已经下架
-//            cdnItem=showForCdnService.selItemInstockById(id);
-//        }
-//        if(cdnItem==null){//商品不存在
-//            throw new CdnException("商品不存在");
-//        }
-//        //店招
-//        model.addAttribute("navCon",cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite()));
-//        // 商品详情懒加载
-//        if(cdnItem.getDescription()!=null)
-//            cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
-//                    .replace("<script>","")
-//                    .replace("</script>",""));
-//        itemShowVO.setCdnItem(cdnItem);
-////        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
-//        itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
-//        Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
-//        starNum=starNum==null?0:    starNum;
-//        itemShowVO.setStarNum(starNum);
-//        itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
-//        itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
-//        itemShowVO.setDomain(shopBaseService.selDomain(cdnItem.getShopId()));
-//        itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
-//        model.addAttribute("vo",itemShowVO);
-//        model.addAttribute("bo",bo);
-//        model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
-////        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
-//        if ("kx".equalsIgnoreCase(cdnItem.getWebSite())) {
-//            return "cdn/xieItem";
-//        } else {
-//            return "cdn/item";
-//        }
-//
-//    }
-//
-//    @RequestMapping("shopnew")
-//    public String shopnew(Long id,String webSite,Model model){
-//        model.addAttribute("newGoodsList",cdnService.selShopNew(id,webSite,5));
-//        return "cdn/item_shopnew";
-//    }
-//    /**
-//     * 收藏商品
-//     * @param bo
-//     */
-//    @RequestMapping({"jsonScAddGoods","jsonScAdd"})
-//    @ResponseBody
-//    public void jsonScAddGoods(@Valid ScGoodsBO bo,BindingResult result,HttpServletResponse response, HttpSession session) throws JsonErrException, IOException {
-//        response.addHeader("Access-Control-Allow-Origin", "*");
-//        if(result.hasErrors()){
-////            throw new JsonErrException("2");//对前台说已经添加过了
-//            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
-//            return;
-//        }
-//        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        if(cdnService.addItemCollect(ps.getUserId(),bo)){
-////            return JsonResponseUtil.success();
-//            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'success'}",response);
-//        }else{
-//            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
-//        }
-//    }
+    /**
+     * 商品页面
+     * @param bo
+     * @return
+     */
+    @RequestMapping("item")
+    public String item(ItemBO bo, Model model) throws CdnException, IOException, TemplateException {
+        Long id=bo.getId();
+        //如果东北商品,用东北的模板
+        ItemShowVO itemShowVO=new ItemShowVO();
+        itemShowVO.setItemId(id);
+        CdnItem cdnItem=showForCdnService.selItemById(id);
+        itemShowVO.setOnsale(cdnItem!=null&&cdnItem.getOnsale());
+        if(cdnItem==null){//已经下架
+            cdnItem=showForCdnService.selItemInstockById(id);
+        }
+        if(cdnItem==null){//商品不存在
+            throw new CdnException("商品不存在");
+        }
+        //店招
+        model.addAttribute("navCon",cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite()));
+        // 商品详情懒加载
+        if(cdnItem.getDescription()!=null)
+            cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
+                    .replace("<script>","")
+                    .replace("</script>",""));
+        itemShowVO.setCdnItem(cdnItem);
+//        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
+        itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
+        Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
+        starNum=starNum==null?0:    starNum;
+        itemShowVO.setStarNum(starNum);
+        itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
+        itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
+        itemShowVO.setDomain(shopBaseService.selDomain(cdnItem.getShopId()));
+        itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
+        model.addAttribute("vo",itemShowVO);
+        model.addAttribute("bo",bo);
+        model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
+        model.addAttribute("hasYt",goodsFileService.hasDatu(id));
+//        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
+        if ("kx".equalsIgnoreCase(cdnItem.getWebSite())) {
+            return "cdn/xieItem";
+        } else {
+            return "cdn/item";
+        }
+
+    }
+
+    @RequestMapping("shopnew")
+    public String shopnew(Long id,String webSite,Model model){
+        model.addAttribute("newGoodsList",cdnService.selShopNew(id,webSite,5));
+        return "cdn/item_shopnew";
+    }
+    /**
+     * 收藏商品
+     * @param bo
+     */
+    @RequestMapping({"jsonScAddGoods","jsonScAdd"})
+    @ResponseBody
+    public void jsonScAddGoods(@Valid ScGoodsBO bo,BindingResult result,HttpServletResponse response, HttpSession session) throws JsonErrException, IOException {
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        if(result.hasErrors()){
+//            throw new JsonErrException("2");//对前台说已经添加过了
+            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
+            return;
+        }
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(cdnService.addItemCollect(ps.getUserId(),bo)){
+//            return JsonResponseUtil.success();
+            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'success'}",response);
+        }else{
+            ResultRetUtil.returnJsonp(bo.getCallback(),"{'result':'error','msg':'2'}",response);
+        }
+    }
 
     /**
      * 收藏店铺
@@ -778,12 +783,16 @@ public class CdnAction {
     }
 
     @RequestMapping("downloadImg")
-    public void downloadImg(HttpServletResponse response, String callback, Long goodsId, HttpSession session) throws IOException {
+    public void downloadImg(HttpServletResponse response, String callback, Long goodsId,Integer type, HttpSession session) throws IOException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //如果店铺,不能下载图片
         if(personalSession.getLogshop()!=null){
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);
             return ;
+        }
+        if(type!=null &&type == 2){
+            String content = "{'result':'success','msg':'成功','sourceHref':'" + goodsFileService.datuUrl(goodsId) + "'}";
+            ResultRetUtil.returnJsonp(callback,content,response);
         }
         String url = shopsItemService.itemImgzipUrl(goodsId);
         String content;

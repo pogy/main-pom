@@ -1,10 +1,13 @@
 import com.aliyun.oss.OSSClient;
+import com.shigu.main4.tools.OssFile;
 import com.shigu.main4.tools.OssIO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 /**
  * oss test
@@ -26,4 +29,39 @@ public class OssIOTest {
         System.out.println(found);
         ossClient.shutdown();
     }
+
+
+    @Test
+    public void testCreateDir() {
+        ossIO.createDir("testdir/", "innerdir/aa/ff");
+    }
+
+    @Test
+    public void testListFile() {
+        List<OssFile> list =  ossIO.getFileList("testdir2/");
+        System.out.println(list);
+    }
+
+    @Test
+    public void testRenameFile() {
+        ossIO.renameFile("testdir2/ss/cc/", "testdir2/ss/pp/");
+    }
+
+    @Test
+    public void testDeleteFile() {
+        ossIO.deleteFile("testdir/aa/");
+    }
+
+    @Test
+    public void testMoveFile() {
+        ossIO.moveFile("testdir2/cc/", "testdir2/ss/");
+    }
+
+
+    @Test
+    public void testGetFileSize() {
+//        ossIO.getSizeInfo("testdir2/");
+        ossIO.getFileList("testdir2/");
+    }
+
 }
