@@ -1,5 +1,7 @@
 package com.shigu.main4.order.whx;
 
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.OrderBO;
@@ -69,7 +71,7 @@ public class OrderListServiceImplTest extends BaseTest {
 
     @Test
     public void selectSubListTest() {
-        show(orderListService.selectSubList(70L));
+        show(orderListService.selectSubList(68L));
     }
 
     @Test
@@ -81,6 +83,28 @@ public class OrderListServiceImplTest extends BaseTest {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    @Autowired
+    private ItemOrderMapper itemOrderMapper;
+
+    @Test
+    public void testOrderInfos() {
+        show(itemOrderMapper.selOrderInfoDetailByOrderId(68L));
+        System.out.println("-------------------------------------------------------------------------");
+        show(itemOrderMapper.selOrderInfoDetailByOrderId(2L));
+    }
+
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
+
+    @Test
+    public void testSubOrderInfos() {
+       itemOrderSubMapper.selSubOrderAndRefundInfos(68L).forEach(subOrderInfo -> {
+           show(subOrderInfo);
+           show(subOrderInfo.getItemOrderRefund());
+           System.out.println("--------------------");
+       });
     }
 
     private OrderBO generateOrderBO(String status, Long orderId, String startTime, String endTime, String goodsNo, String receiver, String telePhone, Integer page, Integer pageSize) {

@@ -420,51 +420,28 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         //获取信息
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
         SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
+        RefundVO refundVO = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId).refundInfos();
         SubOrderInfoVO subOrderInfoVO = new SubOrderInfoVO();
         subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
-        subOrderInfoVO.setChildOrderId(subOrderId);
+        subOrderInfoVO.setSubOrderId(subOrderId);
+        subOrderInfoVO.setRefundId(refundVO.getRefundId());
         subOrderInfoVO.setGoodsId(subItemOrderVO.getGoodsId());
         subOrderInfoVO.setImgsrc(subItemOrderVO.getProduct().getPicUrl());
         subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
         subOrderInfoVO.setColor(subItemOrderVO.getColor());
         subOrderInfoVO.setSize(subItemOrderVO.getSize());
         subOrderInfoVO.setGoodsNo(subItemOrderVO.getGoodsNo());
-        subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
-        subOrderInfoVO.setPriceLong(subItemOrderVO.getProduct().getPrice());
+        subOrderInfoVO.setPrice(subItemOrderVO.getProduct().getPrice());
         subOrderInfoVO.setNum(subItemOrderVO.getNum());
-        RefundVO refundVO = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId).refundInfos();
-        //todo：售后退款数量确定
-        subOrderInfoVO.setTkNum(0);
-        if (SubOrderStatus.RETURNED.equals(subOrderInfoVO.getSubStatusenum())) {
-            subOrderInfoVO.setTkNum(subOrderInfoVO.getNum());
-        }
-        subOrderInfoVO.setShTkNum(refundVO.getNumber());
-        subOrderInfoVO.setSubOrderStatus(subItemOrderVO.getSubOrderStatus().status);
-        subOrderInfoVO.setSubStatusenum(subItemOrderVO.getSubOrderStatus());
-        subOrderInfoVO.setRefundId(refundVO.getRefundId());
-        subOrderInfoVO.setRefundNum(refundVO.getNumber());
-        //售后处理完成
-        boolean refundENT = RefundStateEnum.ENT_REFUND.equals(refundVO.getRefundState());
-        if (refundENT) {
-            subOrderInfoVO.setTkStateEnum(RefundTypeEnum.DISPOSE_REFUND);
-        } else {
-            subOrderInfoVO.setTkStateEnum(RefundTypeEnum.NOT_REFUND);
-        }
-        RefundTypeEnum tkStateEnum = subOrderInfoVO.getTkStateEnum();
-        subOrderInfoVO.setTkState(tkStateEnum.refundType);
-        Integer refundType = refundVO.getType();
-        //todo: 退货状态需要再确定
-        if (refundType ==1) {
-            subOrderInfoVO.setShStateEnum(refundENT?AfterSaleStatusEnum.REFUND_ENT:AfterSaleStatusEnum.HANDLE);
-        } else if (refundType == 2 || refundType == 3) {
-            subOrderInfoVO.setShStateEnum(refundENT?AfterSaleStatusEnum.CHANGE_ENT:AfterSaleStatusEnum.DISPOSE_FERUND);
-        } else if (refundType == 4) {
-            subOrderInfoVO.setShStateEnum(refundENT?AfterSaleStatusEnum.CHANGE_ENT:AfterSaleStatusEnum.DISPOSE_CHANGE);
-        } else {
-            subOrderInfoVO.setShStateEnum(AfterSaleStatusEnum.NOT_AFTER_SALE);
-        }
 
-        subOrderInfoVO.setShState(subOrderInfoVO.getShStateEnum().afterSaleStatus);
+        //todo：退款数量确定
+        subOrderInfoVO.setTkNum(refundVO.getNumber());
+        //todo：售后退款数量确定
+        //subOrderInfoVO.setShTkNum(refundVO.getNumber());
+        subOrderInfoVO.setRefundNum(refundVO.getNumber());
+
+        subOrderInfoVO.setTkState(refundVO.getRefundState());
+        //subOrderInfoVO.setShState();
         return subOrderInfoVO;
     }
 
@@ -554,15 +531,14 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         for (SubItemOrderVO s : subItemOrderVOS) {
             SubOrderInfoVO vo = new SubOrderInfoVO();
             vo.setOrderId(s.getOid());
-            vo.setChildOrderId(s.getSoid());
+            vo.setSubOrderId(s.getSoid());
             vo.setGoodsId(s.getGoodsId());
             vo.setImgsrc(s.getProduct().getPicUrl());
             vo.setTitle(s.getProduct().getTitle());
             vo.setColor(s.getColor());
             vo.setSize(s.getSize());
             vo.setGoodsNo(s.getGoodsNo());
-            vo.setPrice(String.valueOf(s.getProduct().getPrice() / 100));
-            vo.setPriceLong(s.getProduct().getPrice());
+            vo.setPrice(s.getProduct().getPrice());
             vo.setNum(s.getNum());
             ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
             itemOrderRefundExample.createCriteria().andOidEqualTo(s.getOid()).andSoidEqualTo(s.getSoid());

@@ -1,7 +1,9 @@
 package com.shigu.main4.order.services.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.SubOrderInfos;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderLogisticsExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
@@ -20,6 +22,7 @@ import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -146,7 +150,7 @@ public class OrderListServiceImpl implements OrderListService {
                 Iterator<SubOrderInfoVO> iterator = childOrders.iterator();
                 while (iterator.hasNext()) {
                     SubOrderInfoVO subOrderInfoVO = iterator.next();
-                    if (!soids.contains(subOrderInfoVO.getChildOrderId())) {
+                    if (!soids.contains(subOrderInfoVO.getSubOrderId())) {
                         childOrders.remove(subOrderInfoVO);
                     }
                 }
@@ -311,7 +315,25 @@ public class OrderListServiceImpl implements OrderListService {
     //todo: com.shigu.main4.order.services.ItemOrderService#suborderInfoByOrderId需要实现
     @Override
     public List<SubOrderInfoVO> selectSubList (Long orderId) {
-        return itemOrderService.suborderInfoByOrderId(orderId);
+        List<SubOrderInfos> subOrderInfos = itemOrderSubMapper.selSubOrderAndRefundInfos(orderId);
+        List<SubOrderInfoVO> subOrderInfoVOS = Lists.newArrayList();
+        subOrderInfos.forEach(subOrderInfo->{
+            SubOrderInfoVO vo = BeanMapper.map(subOrderInfo, SubOrderInfoVO.class);
+            ItemOrderRefund refund = subOrderInfo.getItemOrderRefund();
+            vo.setOrderId(subOrderInfo.getOid());
+            vo.setSubOrderId(subOrderInfo.getSoid());
+            vo.setImgsrc(subOrderInfo.getPicUrl());
+            if (refund != null) {
+                vo.setRefundId(refund.getRefundId());
+                vo.setRefundNum(refund.getNumber());
+                vo.setTkNum(refund.getNumber());
+                vo.setTkState(RefundStateEnum.statusOf(refund.getStatus()));
+                //vo.setShTkNum();
+                //vo.setShState();
+            }
+            subOrderInfoVOS.add(vo);
+        });
+        return subOrderInfoVOS;
     }
 
     /**
@@ -460,6 +482,8 @@ public class OrderListServiceImpl implements OrderListService {
         }
         return itemOrderLogisticsExample;
     }
+
+
 
     private ItemOrderSubExample getItemOrderSubExample(OrderBO bo, List<Long> oids) {
         ItemOrderSubExample itemOrderSubExample = new ItemOrderSubExample();
