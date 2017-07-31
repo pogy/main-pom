@@ -120,13 +120,11 @@ public class OrderListServiceImpl implements OrderListService {
     @Override
     public ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus, Integer page, Integer pageSize, Long userId) throws ParseException {
         Integer startRow = (page - 1) * pageSize;
-        Integer endRow = page * pageSize;
         ShiguPager<ShowOrderVO> pager = new ShiguPager<>();
         List<ShowOrderVO> showVOS = Lists.newArrayList();
-        int totalCount = 0;
         ItemOrderExample example = new ItemOrderExample();
         example.createCriteria().andUserIdEqualTo(userId).andOrderStatusLessThan(5);
-        List<Long> oids = itemOrderMapper.selectByExample(example).stream().map(com.opentae.data.mall.beans.ItemOrder::getOid).collect(Collectors.toList());
+        List<Long> oids = itemOrderMapper.selOidsByUserId(userId,shStatus==null?null:shStatus.shStatus,startRow,pageSize);
         if (oids.size()>0) {
             ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
             ItemOrderRefundExample.Criteria criteria = refundExample.createCriteria().andOidIn(oids);
@@ -140,9 +138,6 @@ public class OrderListServiceImpl implements OrderListService {
                         break;
                 }
             }
-            totalCount = itemOrderRefundMapper.countByExample(refundExample);
-            refundExample.setStartIndex(startRow);
-            refundExample.setEndIndex(endRow);
             List<ItemOrderRefund> itemOrderRefunds = itemOrderRefundMapper.selectByExample(refundExample);
             Set<Long> soids = itemOrderRefunds.stream().map(ItemOrderRefund::getSoid).collect(Collectors.toSet());
             for (Long aLong : itemOrderRefunds.stream().map(ItemOrderRefund::getOid).collect(Collectors.toSet())) {
@@ -162,7 +157,7 @@ public class OrderListServiceImpl implements OrderListService {
             }
         }
         pager.setNumber(page);
-        pager.calPages(totalCount,pageSize);
+        pager.calPages(itemOrderMapper.selShOrderCount(userId,shStatus==null?null:shStatus.shStatus),pageSize);
         pager.setContent(showVOS);
         return pager;
     }

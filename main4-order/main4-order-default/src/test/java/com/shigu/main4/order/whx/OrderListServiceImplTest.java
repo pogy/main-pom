@@ -107,6 +107,14 @@ public class OrderListServiceImplTest extends BaseTest {
        });
     }
 
+    @Test
+    public void pagerTest() {
+        show(itemOrderMapper.selOidsByUserId(9968L,null,5,6));
+        show(itemOrderMapper.selOidsByUserId(9968L,1,0,5));
+        show(itemOrderMapper.selShOrderCount(9968L,1));
+        show(itemOrderMapper.selShOrderCount(9968L,null));
+    }
+
     private OrderBO generateOrderBO(String status, Long orderId, String startTime, String endTime, String goodsNo, String receiver, String telePhone, Integer page, Integer pageSize) {
         OrderBO bo = new OrderBO();
         bo.setOrderId(orderId);

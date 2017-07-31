@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
+import java.util.List;
+
 /**
  * 
  * Created by exampleCreater.
@@ -17,4 +19,8 @@ import org.springframework.context.annotation.Scope;
 @Lazy(true)
 public interface ItemOrderMapper extends Mapper<ItemOrder> {
     OrderInfos selOrderInfoDetailByOrderId(@Param("oid") Long orderId);
+
+    List<Long> selOidsByUserId(@Param("userId") Long userId,@Param("shStatus") Integer shStatus,@Param("startRow") Integer startRow, @Param("pageSize") Integer pageSize);
+
+    int selShOrderCount(@Param("userId") Long userId,@Param("shStatus") Integer shStatus);
 }

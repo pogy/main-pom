@@ -179,6 +179,35 @@
         ;
     </select>
 
+    <select id="selOidsByUserId" resultType="java.lang.Long">
+        SELECT
+        DISTINCT a.oid
+        FROM item_order AS a
+        LEFT JOIN item_order_refund AS b ON a.oid = b.oid
+        WHERE a.user_id = #{userId}
+        <if test="shStatus == 1">
+            AND (b.type BETWEEN 1 AND 3)
+        </if>
+        <if test="shStatus == 2">
+            AND b.type = 4
+        </if>
+        ORDER BY a.create_time DESC
+        LIMIT #{startRow},#{pageSize}
+    </select>
+
+    <select id="selShOrderCount" resultType="int">
+        SELECT
+        COUNT(DISTINCT a.oid)
+        FROM item_order AS a
+        LEFT JOIN item_order_refund AS b ON a.oid = b.oid
+        WHERE a.user_id = #{userId}
+        <if test="shStatus == 1">
+            AND ( b.type BETWEEN 1 AND 3 )
+        </if>
+        <if test="shStatus == 2">
+            AND b.type = 4
+        </if>
+    </select>
 
 
 </mapper>
