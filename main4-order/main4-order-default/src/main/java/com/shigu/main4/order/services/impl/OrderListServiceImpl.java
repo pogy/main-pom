@@ -322,15 +322,31 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setSubOrderId(subOrderInfo.getSoid());
             vo.setImgsrc(subOrderInfo.getPicUrl());
             //vo.setPrice(PriceConvertUtils.priceToString(subOrderInfo.getPrice()));
+            //售后默认信息
+            vo.setShState(AfterSaleStatusEnum.NOT_AFTER_SALE);
+            vo.setShTkNum(0);
+            vo.setTkNum(0);
+            vo.setTkState(RefundStateEnum.APPLY_REFUND);
             if (refund != null) {
                 vo.setRefundId(refund.getRefundId());
                 vo.setRefundNum(refund.getNumber());
                 vo.setTkNum(refund.getNumber());
                 vo.setTkState(RefundStateEnum.statusOf(refund.getStatus()));
-
-
-                //vo.setShTkNum();
-                //vo.setShState();
+                if (refund.getStatus() == 2) {
+                    if (refund.getType() == 2 || refund.getType() == 3 ) {
+                        vo.setShState(AfterSaleStatusEnum.REFUND_ENT);
+                    }
+                    if (refund.getType() == 4) {
+                        vo.setShState(AfterSaleStatusEnum.CHANGE_ENT);
+                    }
+                } else {
+                    if (refund.getType() == 2 || refund.getType() == 3) {
+                        vo.setShState(AfterSaleStatusEnum.DISPOSE_FERUND);
+                    }
+                    if (refund.getType() == 4) {
+                        vo.setShState(AfterSaleStatusEnum.DISPOSE_CHANGE);
+                    }
+                }
             }
             subOrderInfoVOS.add(vo);
         });
