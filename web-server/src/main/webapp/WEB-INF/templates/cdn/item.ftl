@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
     
-    <link href="http://style.571xz.com/shopItemCopy/css/itemv1.css?t=1501217403087" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1501490411280" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/itemv1.js?t=1501217403087"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1501490411280"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -400,7 +400,13 @@ var goodsId = '${vo.itemId!}';
                     <ul>
                         <#list vo.cdnItem.imgUrl as img>
                         <#if img_index == 0>
-                        <li><a href="javascript:;"><img id="conImage" src="${img!}_400x400.jpg"></a></li>
+                            <#if vo.cdnItem.itemFrom.value == "taobao">
+                                <#if vo.cdnItem.tbNumIid != null>
+                                <li><a data-href="https://item.taobao.com/item.htm?id=${vo.cdnItem.tbNumIid!}" target="_blank"><img id="conImage" src="${img!}_400x400.jpg"></a></li>
+                                </#if>
+                            <#else>
+                                <li><a href="javascript:;"><img id="conImage" src="${img!}_400x400.jpg"></a></li>
+                            </#if>
                         </#if>
                         </#list>
                     </ul>
@@ -409,7 +415,7 @@ var goodsId = '${vo.itemId!}';
                     <ul>
                         <#list vo.cdnItem.imgUrl as img>
                             <#if img_index lt 6>
-                            <li class="" data_img='${img!}'><a href="javascript:;"><img src='${img!}_72x72.jpg'  width="72px" height="72px"></a></li>
+                            <li class="" data_img='${img!}'><a href="${img!}" target="_blank"><img src='${img!}_72x72.jpg'  width="72px" height="72px"></a></li>
                             </#if>
                         </#list>
                     </ul>
