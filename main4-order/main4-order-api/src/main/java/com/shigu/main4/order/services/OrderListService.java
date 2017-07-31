@@ -110,7 +110,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    OrderDetailExpressVO selectExpress(Long orderId) throws Main4Exception, ParseException;//
+    OrderDetailExpressVO selectExpress(Long orderId) throws Main4Exception, ParseException, Main4Exception, ParseException;//
 
     /**
      * ====================================================================================

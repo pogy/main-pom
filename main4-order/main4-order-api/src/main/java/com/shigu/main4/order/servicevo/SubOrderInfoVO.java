@@ -68,7 +68,7 @@ public class SubOrderInfoVO implements Serializable{
      */
     private RefundStateEnum tkState;
     /**
-     * 售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
+     * 售后状态 0无，1售后处理中，2已退款，3已换货, 4退货中, 5换货中
      */
     private AfterSaleStatusEnum shState;
 
