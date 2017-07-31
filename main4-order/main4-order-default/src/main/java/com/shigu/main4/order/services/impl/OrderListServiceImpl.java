@@ -4,9 +4,7 @@ import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.SubOrderInfos;
 import com.opentae.data.mall.examples.ItemOrderExample;
-import com.opentae.data.mall.examples.ItemOrderLogisticsExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
-import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
@@ -31,7 +29,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -78,7 +78,8 @@ public class OrderListServiceImpl implements OrderListService {
      */
     @Override
     public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) throws ParseException {
-        List<Long> orderIds = selOrderIdsByBO(bo, userId);
+        List<Long> orderIds = selOrderIdsByBO(bo,userId);
+                selOrderIdsByBO(bo, userId);
         List<ShowOrderVO> showOrderVOS = Lists.newArrayList();
         for (Long orderId:orderIds) {
             ShowOrderVO vo = BeanMapper.map(selectMyorder(orderId), ShowOrderVO.class);
@@ -124,7 +125,7 @@ public class OrderListServiceImpl implements OrderListService {
         List<ShowOrderVO> showVOS = Lists.newArrayList();
         ItemOrderExample example = new ItemOrderExample();
         example.createCriteria().andUserIdEqualTo(userId).andOrderStatusLessThan(5);
-        List<Long> oids = itemOrderMapper.selOidsByUserId(userId,shStatus==null?null:shStatus.shStatus,startRow,pageSize);
+        List<Long> oids = itemOrderMapper.selShOidsByUserId(userId,shStatus==null?null:shStatus.shStatus,startRow,pageSize);
         if (oids.size()>0) {
             ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
             ItemOrderRefundExample.Criteria criteria = refundExample.createCriteria().andOidIn(oids);
@@ -397,34 +398,13 @@ public class OrderListServiceImpl implements OrderListService {
      * @throws ParseException 输入日期格式错误
      */
     private List<Long> selOrderIdsByBO(OrderBO bo, Long userId) throws ParseException {
-        //需要对item_order_logistics表进行查询
-        boolean searchFromOrderLogistics = bo.getReceiver() != null || bo.getTelePhone() != null;
-        //需要对item_order_sub表进行查询
-        boolean searchFromItemOrderSub = bo.getGoodsNo() != null;
-        Integer startIndex = (bo.getPage() - 1) * bo.getPageSize();
-        Integer endIndex = bo.getPage() * bo.getPageSize();
-        ItemOrderExample itemOrderExample = getItemOrderExampleByBO(bo, userId);
-        if (!searchFromOrderLogistics || !searchFromItemOrderSub) {
-            itemOrderExample.setStartIndex(startIndex);
-            itemOrderExample.setEndIndex(endIndex);
+        if (bo == null) {
+            bo = new OrderBO();
         }
-        List<Long> oids = BeanMapper.getFieldList(itemOrderMapper.selectByExample(itemOrderExample), "oid", Long.class);
-
-        if (oids.size()>0 && (searchFromOrderLogistics)) {
-            ItemOrderLogisticsExample itemOrderLogisticsExample = getItemOrderLogisticsExampleByBO(bo, oids);
-            if (!searchFromItemOrderSub) {
-                itemOrderLogisticsExample.setStartIndex(startIndex);
-                itemOrderLogisticsExample.setEndIndex(endIndex);
-            }
-            oids = BeanMapper.getFieldList(itemOrderLogisticsMapper.selectByExample(itemOrderLogisticsExample),"oid",Long.class);
-        }
-        if (oids.size()>0 && searchFromItemOrderSub) {
-            ItemOrderSubExample itemOrderSubExample = getItemOrderSubExample(bo,oids);
-            itemOrderSubExample.setStartIndex(startIndex);
-            itemOrderSubExample.setEndIndex(endIndex);
-            oids = BeanMapper.getFieldList(itemOrderSubMapper.selectByExample(itemOrderSubExample),"oid",Long.class);
-        }
-        return oids;
+        bo.setPageSize(bo.getPageSize() == null?10:bo.getPageSize());
+        int startRow = bo.getPage() == null ? 1 : (bo.getPage() - 1) * bo.getPageSize();
+        return itemOrderMapper.selOidsByBo(userId, bo.getOrderId(), bo.getStatus() == null ? null : Integer.valueOf(bo.getStatus()),
+                simpleDateFormat.parse(bo.getSt()), simpleDateFormat.parse(bo.getEt()), bo.getGoodsNo(), bo.getReceiver(), bo.getTelePhone(), startRow, bo.getPageSize());
     }
 
     /**
@@ -435,78 +415,11 @@ public class OrderListServiceImpl implements OrderListService {
      * @throws ParseException 输入日期格式错误
      */
     private int selCountByBo(OrderBO bo, Long userId) throws ParseException {
-        boolean searchFromOrderLogistics = bo.getReceiver() != null || bo.getTelePhone() != null;
-        boolean searchFromItemOrderSub = bo.getGoodsNo() != null;
-        ItemOrderExample itemOrederExample = getItemOrderExampleByBO(bo, userId);
-        if (!searchFromOrderLogistics && !searchFromItemOrderSub) {
-            return itemOrderMapper.countByExample(itemOrederExample);
+        if (bo == null) {
+            bo = new OrderBO();
         }
-        List<Long> oids = BeanMapper.getFieldList(itemOrderMapper.selectByExample(itemOrederExample), "oid", Long.class);
-        if (oids.size() == 0) {
-            return 0;
-        }
-        ItemOrderLogisticsExample itemOrderLogisticsExample = getItemOrderLogisticsExampleByBO(bo, oids);
-        if (!searchFromItemOrderSub) {
-            return itemOrderLogisticsMapper.countByExample(itemOrderLogisticsExample);
-        }
-        oids = BeanMapper.getFieldList(itemOrderLogisticsMapper.selectByExample(itemOrderLogisticsExample),"oid",Long.class);
-        return oids.size() > 0? itemOrderSubMapper.countByExample(getItemOrderSubExample(bo,oids)): 0;
+        return itemOrderMapper.selOidsCountByBo(userId, bo.getOrderId(), bo.getStatus() == null ? null : Integer.valueOf(bo.getStatus()),
+                simpleDateFormat.parse(bo.getSt()), simpleDateFormat.parse(bo.getEt()), bo.getGoodsNo(), bo.getReceiver(), bo.getTelePhone());
     }
 
-    /**
-     * 根据bo获取从item_order查询时的example,分页在调用处处理
-     * @param bo
-     * @param userId
-     * @return
-     * @throws ParseException 输入日期格式错误
-     */
-    private ItemOrderExample getItemOrderExampleByBO(OrderBO bo, Long userId) throws ParseException {
-        ItemOrderExample itemOrderExample = new ItemOrderExample();
-        ItemOrderExample.Criteria criteria = itemOrderExample.createCriteria().andUserIdEqualTo(userId);
-        if (bo.getStatus() != null) {
-            criteria.andOrderStatusEqualTo(Integer.valueOf(bo.getStatus()));
-        }
-        if (bo.getOrderId() != null) {
-            criteria.andOidEqualTo(bo.getOrderId());
-        }
-        if (bo.getSt() != null) {
-            criteria.andCreateTimeGreaterThanOrEqualTo(simpleDateFormat.parse(bo.getSt()));
-        }
-        if (bo.getEt() != null) {
-            criteria.andCreateTimeLessThanOrEqualTo(simpleDateFormat.parse(bo.getEt()));
-        }
-        return itemOrderExample;
-    }
-
-    private ItemOrderLogisticsExample getItemOrderLogisticsExampleByBO(OrderBO bo, List<Long> oids) {
-        ItemOrderLogisticsExample itemOrderLogisticsExample = new ItemOrderLogisticsExample();
-        ItemOrderLogisticsExample.Criteria criteria = itemOrderLogisticsExample.createCriteria();
-        if (bo.getReceiver() != null) {
-            criteria.andNameEqualTo(bo.getReceiver());
-        }
-        if (bo.getTelePhone() != null) {
-            criteria.andTelephoneEqualTo(bo.getTelePhone());
-        }
-        if (oids.size()>0) {
-            criteria.andOidIn(oids);
-        } else {
-            // oids为空
-            criteria.andIdEqualTo(-1L);
-        }
-        return itemOrderLogisticsExample;
-    }
-
-
-
-    private ItemOrderSubExample getItemOrderSubExample(OrderBO bo, List<Long> oids) {
-        ItemOrderSubExample itemOrderSubExample = new ItemOrderSubExample();
-        ItemOrderSubExample.Criteria criteria = itemOrderSubExample.createCriteria().andGoodsNoEqualTo(bo.getGoodsNo());
-        if (oids.size()>0) {
-            criteria.andOidIn(oids);
-        } else {
-            // oids为空
-            criteria.andSoidEqualTo(-1L);
-        }
-        return itemOrderSubExample;
-    }
 }
