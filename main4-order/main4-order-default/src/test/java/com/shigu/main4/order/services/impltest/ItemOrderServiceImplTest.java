@@ -111,19 +111,6 @@ public class ItemOrderServiceImplTest extends BaseTest {
             System.out.println(vo.getStateTime()+"    "+vo.getOrderState());
         }
     }
-    @Test
-    public void orderInfo(){
-        OrderInfoVO vo = itemOrderService.orderInfo(2L);
-        System.out.println(vo);
-    }
-
-    @Test
-    public void suborderInfoByOrderId(){
-        List<SubOrderInfoVO> vos = itemOrderService.suborderInfoByOrderId(1L);
-        for (SubOrderInfoVO s:vos){
-            System.out.println(s.toString());
-        }
-    }
 
 
 }

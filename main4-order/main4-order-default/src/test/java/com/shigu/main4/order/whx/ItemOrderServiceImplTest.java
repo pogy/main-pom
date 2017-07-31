@@ -15,12 +15,6 @@ public class ItemOrderServiceImplTest extends BaseTest {
     @Autowired
     private ItemOrderService itemOrderService;
 
-    @Test
-    public void suborderInfoTest() {
-        SubOrderInfoVO subOrderInfoVO = itemOrderService.suborderInfo(10L);
-        show(subOrderInfoVO);
-        System.out.println(subOrderInfoVO);
-    }
 
     @Test
     public void expressInfoTest() throws Main4Exception {
