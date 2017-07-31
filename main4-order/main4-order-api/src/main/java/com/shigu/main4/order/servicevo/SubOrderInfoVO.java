@@ -50,10 +50,6 @@ public class SubOrderInfoVO implements Serializable{
      * 单价：显示
      */
     private String price;
-    /**
-     * 单价：接口传出来的数值
-     */
-    private Long priceLong;
 
 
 
@@ -186,20 +182,6 @@ public class SubOrderInfoVO implements Serializable{
 
     public void setPrice(String price) {
         this.price = price;
-    }
-
-    /**
-     * 获取 单价：接口传出来的数值
-     */
-    public Long getPriceLong() {
-        return priceLong;
-    }
-
-    /**
-     * 设置 单价：接口传出来的数值
-     */
-    public void setPriceLong(Long priceLong) {
-        this.priceLong = priceLong;
     }
 
     /**
