@@ -193,7 +193,7 @@ public class AfterSaleShowAction {
      */
     @RequestMapping(value = "agreeRefundMoney",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject agreeRefundMoney(String refundId,Integer agreeState){
+    public JSONObject agreeRefundMoney(String refundId,Integer agreeState) throws Main4Exception {
         if(StringUtils.isEmpty(refundId)){
             return JsonResponseUtil.error("售后id不能空");
         }

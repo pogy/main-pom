@@ -8,7 +8,7 @@ package com.shigu.order.vo;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class AddInfoVo {
+public class AddInfoVO {
     private String name;
     private String phone;
     private String address;

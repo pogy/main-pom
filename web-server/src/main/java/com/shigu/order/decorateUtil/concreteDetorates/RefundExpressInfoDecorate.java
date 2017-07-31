@@ -1,11 +1,11 @@
-package com.shigu.order.decorateVo.concreteDetorates;
+package com.shigu.order.decorateUtil.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.ReturnableExpressInfoVO;
-import com.shigu.order.decorateVo.AbstractRefundVo;
-import com.shigu.order.decorateVo.RefundVoDecorate;
-import com.shigu.order.vo.ExpressDetailVo;
-import com.shigu.order.vo.ExpressVo;
+import com.shigu.order.decorateUtil.AbstractRefundVo;
+import com.shigu.order.decorateUtil.RefundVoDecorate;
+import com.shigu.order.vo.ExpressDetailVO;
+import com.shigu.order.vo.ExpressVO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,14 +32,14 @@ public class RefundExpressInfoDecorate extends RefundVoDecorate {
     }
     private void setRefundExpressInfo(){
         Map<String,Object> map = new HashMap<>();
-        ExpressVo vo = new ExpressVo();
+        ExpressVO vo = new ExpressVO();
         vo.setId(returnableExpressInfoVO.getExpressCode());
         vo.setName(returnableExpressInfoVO.getExpressName());
         vo.setCreateTime(returnableExpressInfoVO.getReturnableExpressTime());
-        List<ExpressDetailVo> elist= new ArrayList<>();
+        List<ExpressDetailVO> elist= new ArrayList<>();
         vo.setDetail(elist);
         for(ExpressLogVO logVO:loglist){
-            ExpressDetailVo vode = new ExpressDetailVo();
+            ExpressDetailVO vode = new ExpressDetailVO();
             vode.setDate(logVO.getLogDate());
             vode.setDesc(logVO.getLogDesc());
             vode.setTime(logVO.getLogTime());

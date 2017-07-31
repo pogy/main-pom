@@ -1,26 +1,26 @@
-package com.shigu.order.decorateVo.concreteDetorates;
+package com.shigu.order.decorateUtil.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
 import com.shigu.main4.order.utils.PriceConvertUtils;
-import com.shigu.order.decorateVo.AbstractRefundVo;
-import com.shigu.order.decorateVo.RefundVoDecorate;
+import com.shigu.order.decorateUtil.AbstractRefundVo;
+import com.shigu.order.decorateUtil.RefundVoDecorate;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by pc on 2017-07-25.
- *
+ *售后退货状态修饰
  * @author pc
  * @version 3.0.0-SNAPSHOT
  * @description xx
  * @since 3.0.0-SNAPSHOT
  */
-public class RefundStatusInfoDecorate extends RefundVoDecorate {
+public class ReturnStatusInfoDecorate extends RefundVoDecorate {
 
     private AfterSaleStatusVO afterSaleStatusVO;
 
-    public RefundStatusInfoDecorate(AbstractRefundVo vo, AfterSaleStatusVO afterSaleStatusVO){
+    public ReturnStatusInfoDecorate(AbstractRefundVo vo, AfterSaleStatusVO afterSaleStatusVO){
         super(vo);
         this.afterSaleStatusVO = afterSaleStatusVO;
     }

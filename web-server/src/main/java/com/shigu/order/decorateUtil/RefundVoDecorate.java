@@ -1,4 +1,4 @@
-package com.shigu.order.decorateVo;
+package com.shigu.order.decorateUtil;
 
 import java.util.Map;
 

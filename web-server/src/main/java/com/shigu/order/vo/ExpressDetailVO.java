@@ -8,7 +8,7 @@ package com.shigu.order.vo;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class ExpressDetailVo {
+public class ExpressDetailVO {
     private String date;
     private String time;
     private String desc;

@@ -10,11 +10,11 @@ import java.util.List;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class ExpressVo {
+public class ExpressVO {
     private String name;
     private String id;
     private Long createTime;
-    private List<ExpressDetailVo> detail;
+    private List<ExpressDetailVO> detail;
 
     public String getName() {
         return name;
@@ -32,11 +32,11 @@ public class ExpressVo {
         this.id = id;
     }
 
-    public List<ExpressDetailVo> getDetail() {
+    public List<ExpressDetailVO> getDetail() {
         return detail;
     }
 
-    public void setDetail(List<ExpressDetailVo> detail) {
+    public void setDetail(List<ExpressDetailVO> detail) {
         this.detail = detail;
     }
 

@@ -1,8 +1,8 @@
-package com.shigu.order.decorateVo.concreteDetorates;
+package com.shigu.order.decorateUtil.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.RefundLogVO;
-import com.shigu.order.decorateVo.AbstractRefundVo;
-import com.shigu.order.decorateVo.RefundVoDecorate;
+import com.shigu.order.decorateUtil.AbstractRefundVo;
+import com.shigu.order.decorateUtil.RefundVoDecorate;
 import com.shigu.order.vo.ApplyUserLog;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 /**
  * Created by pc on 2017-07-26.
- *
+ *售后用户日志修饰
  * @author pc
  * @version 3.0.0-SNAPSHOT
  * @description

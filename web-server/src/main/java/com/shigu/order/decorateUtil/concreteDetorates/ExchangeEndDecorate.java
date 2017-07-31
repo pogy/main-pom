@@ -1,8 +1,8 @@
-package com.shigu.order.decorateVo.concreteDetorates;
+package com.shigu.order.decorateUtil.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.AfterSaleEntVO;
-import com.shigu.order.decorateVo.AbstractRefundVo;
-import com.shigu.order.decorateVo.RefundVoDecorate;
+import com.shigu.order.decorateUtil.AbstractRefundVo;
+import com.shigu.order.decorateUtil.RefundVoDecorate;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,9 +1,9 @@
-package com.shigu.order.decorateVo.concreteDetorates;
+package com.shigu.order.decorateUtil.concreteDetorates;
 
 import com.shigu.main4.order.vo.ReturnableAddressVO;
-import com.shigu.order.decorateVo.AbstractRefundVo;
-import com.shigu.order.decorateVo.RefundVoDecorate;
-import com.shigu.order.vo.AddInfoVo;
+import com.shigu.order.decorateUtil.AbstractRefundVo;
+import com.shigu.order.decorateUtil.RefundVoDecorate;
+import com.shigu.order.vo.AddInfoVO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class ReturnAddressDecorate extends RefundVoDecorate {
     }
     private void setReturnAdress(){
         Map<String,Object> map = new HashMap<>();
-        AddInfoVo vo = new AddInfoVo();
+        AddInfoVO vo = new AddInfoVO();
         vo.setAddress(returnableAddressVO.getReceiverAddress());
         vo.setName(returnableAddressVO.getReceiverName());
         vo.setPhone(returnableAddressVO.getReceiverPhone());
