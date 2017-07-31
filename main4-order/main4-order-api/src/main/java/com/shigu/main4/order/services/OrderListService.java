@@ -38,7 +38,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    List<ShowOrderVO> myOrder( OrderBO bo,Long userId);
+    List<ShowOrderVO> myOrder( OrderBO bo,Long userId) throws ParseException;
 
     /**
      * ====================================================================================
@@ -50,7 +50,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    ShiguPager selectCountMyOrder(OrderBO bo, Long userId);
+    ShiguPager selectCountMyOrder(OrderBO bo, Long userId) throws ParseException;
 
     /**
      *
@@ -61,7 +61,7 @@ public interface OrderListService {
      * @param userId
      * @return
      */
-    ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus,Integer page,Integer pageSize, Long userId);
+    ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus,Integer page,Integer pageSize, Long userId) throws ParseException;
 
 
     /**

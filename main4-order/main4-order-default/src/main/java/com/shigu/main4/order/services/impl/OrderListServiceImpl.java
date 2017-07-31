@@ -2,6 +2,7 @@ package com.shigu.main4.order.services.impl;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.SubOrderInfos;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderLogisticsExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
@@ -76,98 +77,34 @@ public class OrderListServiceImpl implements OrderListService {
      *
      */
     @Override
-    public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) {
-
-        List<ShowOrderVO> list = new ArrayList<>();
-        ShowOrderVO ovo = new ShowOrderVO();
-
-        for (int i = 0; i < 20; i++) {
-            ovo.setMainState(MainOrderStatusEnum.statusOf(1));
-            String oidString = "201707200034" + i;
-            Long orderId = new Long(oidString);
-            ovo.setOrderId(orderId);
-            ovo.setPostPrice(500L);
-            ovo.setServerPrice(100L);
-            if ((i / 2) == 1) {
-                ovo.setIsTbOrder(false);
-            } else {
-                ovo.setIsTbOrder(true);
-            }
-            ovo.setOrderPrice(2800L);
-            ovo.setPayTime(new Date());
-            ovo.setWebSite("hz");
-            List<SubOrderInfoVO> listsub = new ArrayList<>();
-            for (int k = 0; k < 3; k++) {
-                SubOrderInfoVO svo = new SubOrderInfoVO();
-                int p = i * 10 + k + 1;
-                svo.setOrderId(new Long(p));
-                svo.setSubOrderId(orderId+k);
-                switch (k) {
-                    case 0: {
-                        svo.setImgsrc("https://img.alicdn.com/bao/uploaded/i4/270913282/TB2LQlAXB7c61BjSZFIXXcZmVXa-270913282.jpg");
-                        svo.setColor("白");
-                        svo.setSize("L");
-                        svo.setGoodsId(9522391L);
-                        svo.setGoodsNo("A241 S5-P65");
-                        svo.setNum(3);
-                        svo.setPrice(6500L);
-                        svo.setShTkNum(1);
-                        svo.setTkNum(1);
-                        svo.setTkState(RefundStateEnum.APPLY_REFUND);
-                        svo.setShTkNum(1);
-                        svo.setShState(AfterSaleStatusEnum.REFUND_ENT);
-                        svo.setTitle("A241 S5-P65 2016秋冬毛线衫男装港风高领毛衣男纯色翻领毛衣");
-                        break;
-                    }
-                    case 1: {
-                        svo.setImgsrc("https://img.alicdn.com/bao/uploaded/i3/138989925/TB2rAD4XRAkyKJjy0FeXXadhpXa_!!138989925.jpg");
-                        svo.setColor("蓝");
-                        svo.setSize("XL");
-                        svo.setGoodsId(20915911L);
-                        svo.setGoodsNo("A242/WX82/P165");
-                        svo.setNum(3);
-                        svo.setPrice(6500L);
-                        svo.setShTkNum(1);
-                        svo.setTkNum(1);
-                        svo.setTkState(RefundStateEnum.APPLY_REFUND);
-                        svo.setShTkNum(1);
-                        svo.setShState(AfterSaleStatusEnum.REFUND_ENT);
-                        svo.setTitle("修身滚边设计男士帅气一粒扣西装 WX82/P165白");
-                        break;
-                    }
-                    default: {
-                        svo.setImgsrc("https://img.alicdn.com/bao/uploaded/i3/2744642519/TB2H_0CX2AkyKJjy0FfXXaxhpXa_!!2744642519.jpg");
-                        svo.setColor("红");
-                        svo.setSize("XXL");
-                        svo.setGoodsId(20918332L);
-                        svo.setGoodsNo("F088");
-                        svo.setNum(5);
-                        svo.setPrice(6500L);
-                        svo.setShTkNum(1);
-                        svo.setTkNum(1);
-                        svo.setTkState(RefundStateEnum.BUYER_NOREPRICE);
-                        svo.setShTkNum(1);
-                        svo.setShState(AfterSaleStatusEnum.DISPOSE_FERUND);
-                        svo.setTitle("【品质原创质检F088】秋装男夹克男风衣男外套男大码男P110控148");
-                        break;
-                    }
-                }
-                listsub.add(svo);
-
-
-            }
-            ovo.setChildOrders(listsub);
-            list.add(ovo);
+    public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) throws ParseException {
+        List<Long> orderIds = selOrderIdsByBO(bo, userId);
+        List<ShowOrderVO> showOrderVOS = Lists.newArrayList();
+        for (Long orderId:orderIds) {
+            ShowOrderVO vo = BeanMapper.map(selectMyorder(orderId), ShowOrderVO.class);
+            vo.setChildOrders(selectSubList(orderId));
+            //todo:ShowOrderDetailVO缺少部分信息
+            showOrderVOS.add(vo);
         }
-        return list;
+        return showOrderVOS;
     }
 
+    /**
+     * ====================================================================================
+     * @方法名：分页数据
+     * @功能： selectCountMyOrder
+     * @param: bo查询条件，userId用户ID
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @Override
-    public ShiguPager selectCountMyOrder(OrderBO bo, Long userId) {
-        ShiguPager pager = new ShiguPager();
-        //totalCount+","+size+","+number;
-        pager.setTotalCount(15);
-        pager.setNumber(12);
+    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) throws ParseException {
+        ShiguPager<ShowOrderVO> pager = new ShiguPager<ShowOrderVO>();
+        pager.setContent(myOrder(bo,userId));
+        pager.setNumber(bo.getPage());
+        pager.calPages(selCountByBo(bo,userId),bo.getPageSize());
         return pager;
     }
 
@@ -323,15 +260,44 @@ public class OrderListServiceImpl implements OrderListService {
         return vo;
     }
 
+    /**
+     * ====================================================================================
+     * @方法名：selectMyorder
+     * @功能： 查询主订单的信息
+     * @param:
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @Override
     public ShowOrderDetailVO selectMyorder(Long orderId) {
         ShowOrderDetailVO vo = new ShowOrderDetailVO();
-        vo.setOrderCreateTimed(new Date());//创建时间
-        vo.setPayTime(new Date());//付款时间
-        vo.setSendTime(new Date());//发货时间
-        vo.setFinishTimed(new Date());//完成时间
-        vo.setMainState(MainOrderStatusEnum.statusOf(1));
+        ItemOrderVO itemOrderVO = SpringBeanFactory.getBean(ItemOrder.class, orderId).orderInfo();
+        OrderDetailTotalVO orderDetailTotalVO = selectTotal(orderId);
         vo.setOrderId(orderId);
+        vo.setOrderCreateTimed(itemOrderVO.getCreateTime());
+        vo.setPostPrice(orderDetailTotalVO.getExpressPriceLong());
+        vo.setMainState(MainOrderStatusEnum.statusOf(itemOrderVO.getOrderStatus().status));
+        vo.setOrderPrice(orderDetailTotalVO.getOrderTotalPriceLong());
+        vo.setServerPrice(orderDetailTotalVO.getServicePriceLong());
+        vo.setFinishTimed(itemOrderVO.getFinishTime());
+
+        vo.setPayTime(itemOrderVO.getCreateTime());
+        vo.setSendTime(vo.getOrderCreateTimed());
+        //vo.setTradeTimed(itemOrderVO.getCreateTime());
+        //vo.setTradeTime(simpleDateFormat.format(itemOrderVO.getCreateTime()));
+        //vo.setOrderCreateTime(simpleDateFormat.format(itemOrderVO.getCreateTime()));
+        //vo.setTradePayLong(orderDetailTotalVO.getOrderTotalPriceLong());
+        //vo.setTradePay(orderDetailTotalVO.getOrderTotalPrice());
+        //vo.setIsTbOrder(itemOrderVO.getType().type == 2);
+        //vo.setWebSite(itemOrderVO.getWebSite());
+        //vo.setType(itemOrderVO.getType());
+        //vo.setPayedFee(PriceConvertUtils.priceToString(itemOrderVO.getPayedFee()));
+        //vo.setPayedFeeLong(itemOrderVO.getPayedFee());
+        //vo.setTitle(itemOrderVO.getTitle());
+        //vo.setRefundFeeLong(itemOrderVO.getRefundFee());
+        //vo.setRefundFee(PriceConvertUtils.priceToString(itemOrderVO.getRefundFee()));
         return vo;
     }
 
@@ -355,12 +321,14 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setOrderId(subOrderInfo.getOid());
             vo.setSubOrderId(subOrderInfo.getSoid());
             vo.setImgsrc(subOrderInfo.getPicUrl());
-            vo.setPrice(PriceConvertUtils.priceToString(subOrderInfo.getPrice()));
+            //vo.setPrice(PriceConvertUtils.priceToString(subOrderInfo.getPrice()));
             if (refund != null) {
                 vo.setRefundId(refund.getRefundId());
                 vo.setRefundNum(refund.getNumber());
                 vo.setTkNum(refund.getNumber());
                 vo.setTkState(RefundStateEnum.statusOf(refund.getStatus()));
+
+
                 //vo.setShTkNum();
                 //vo.setShState();
             }

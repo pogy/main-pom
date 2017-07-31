@@ -2,6 +2,7 @@ package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.bo.OrderBO;
@@ -17,6 +18,7 @@ import com.shigu.tools.DateParseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class MyOrderService {
     private ItemOrderMapper itemOrderMapper;
 
 
-    public List<MyOrderVO> myOrder(OrderBO bo, Long userId) {
+    public List<MyOrderVO> myOrder(OrderBO bo, Long userId) throws ParseException {
         List<ShowOrderVO> list=orderListService.myOrder (bo,userId);
         List<MyOrderVO> vos=new ArrayList<>();
 
@@ -78,7 +80,7 @@ public class MyOrderService {
         }
         return vos;
     }
-    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId){
+    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) throws ParseException {
 
         return orderListService.selectCountMyOrder (bo,userId);
     }
@@ -100,7 +102,7 @@ public class MyOrderService {
     }
 
 
-    public MyOrderDetailVO orderDetail(Long orderId){
+    public MyOrderDetailVO orderDetail(Long orderId) throws Main4Exception, ParseException {
         ShowOrderDetailVO orderVO= orderListService.selectMyorder (orderId);
         OrderAddrInfoVO addrVo= orderListService.selectOrderAddrInfo( orderId);
         OrderDetailExpressVO expressVO= orderListService.selectExpress( orderId);

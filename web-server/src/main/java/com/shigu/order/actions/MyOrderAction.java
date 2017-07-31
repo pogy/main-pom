@@ -3,6 +3,7 @@ package com.shigu.order.actions;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -51,7 +53,7 @@ public class MyOrderAction {
      *
      */
     @RequestMapping("myOrder")
-    public String myOrder(HttpSession session, Model model, OrderBO bo){
+    public String myOrder(HttpSession session, Model model, OrderBO bo) throws ParseException {
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if(bo.getPageSize ()==null){
@@ -143,7 +145,7 @@ public class MyOrderAction {
     }
 
     @RequestMapping("orderDetail")
-    public String orderDetail(HttpSession session,Long orderId,Model model){
+    public String orderDetail(HttpSession session,Long orderId,Model model) throws Main4Exception, ParseException {
         if(orderId==null){
             //订单出错
             model.addAttribute ("msg","订单号不能为空！");
