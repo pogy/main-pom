@@ -644,7 +644,7 @@ ${userShopHdHtml}
 
     <div class="buttonbox clearfix">
         <b class="btn btn-lg btn-orange addGwc">加入进货车</b>
-        <b class="btn btn-lg btn-orange picDownload" id="picDownload" data-goodsid="${goodsInfo.goodsId!}">图片下载</b>
+        <b class="btn btn-lg btn-orange picDownload" id="picDownload" data-goodsid="${goodsInfo.goodsId!}">图片下载 <#if goodsInfo.hasOriginalPic == true><i class="originalPicIcon"></i></#if></b>
         
 
 
