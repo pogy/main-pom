@@ -282,11 +282,11 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         ReturnableExpressInfoVO vo = new ReturnableExpressInfoVO();
         vo.setExpressCode(refundinfo.getBuyerCourier());
         vo.setExpressName("");// TODO：没有保存退货发货的公司
-        try {
-            vo.setExpressDetails(itemOrderService.expressLog("", refundinfo.getBuyerCourier()));
-        } catch (ParseException e) {
-            throw new Main4Exception(e.getMessage());
-        }
+//        try {
+//            vo.setExpressDetails(itemOrderService.expressLog("", refundinfo.getBuyerCourier()));
+//        } catch (ParseException e) {
+//            throw new Main4Exception(e.getMessage());
+//        }
         return vo;
     }
 

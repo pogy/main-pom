@@ -323,7 +323,7 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setOrderId(subOrderInfo.getOid());
             vo.setSubOrderId(subOrderInfo.getSoid());
             vo.setImgsrc(subOrderInfo.getPicUrl());
-            vo.setPrice(PriceConvertUtils.priceToString(subOrderInfo.getPrice()));
+            vo.setPrice(subOrderInfo.getPrice());
             if (refund != null) {
                 vo.setRefundId(refund.getRefundId());
                 vo.setRefundNum(refund.getNumber());
