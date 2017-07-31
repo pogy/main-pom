@@ -6,7 +6,6 @@ import com.shigu.buyer.vo.FloorVO;
 import com.shigu.buyer.vo.MarketVO;
 import com.shigu.buyer.vo.SiteVO;
 import com.shigu.component.shiro.enums.RoleEnum;
-import com.shigu.component.shiro.enums.UserType;
 import com.shigu.exceptions.RuzhuException;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -164,7 +163,6 @@ public class OpenShopAction {
         Long applyId;
         try {
             applyId=shopRegistService.registShop(shopRegister);
-            shopExamineTypeService.examineInfoComplement(applyId);
         } catch (ShopRegistException e) {
             throw new JsonErrException(e.getMessage());
         }

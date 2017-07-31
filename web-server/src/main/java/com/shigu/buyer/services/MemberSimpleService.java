@@ -1,10 +1,10 @@
 package com.shigu.buyer.services;
 
 import com.opentae.data.mall.beans.MemberUserSub;
-import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.shigu.main4.storeservices.ShopBaseService;
+import com.shigu.main4.vo.ShopBase;
 import com.shigu.session.main4.enums.LoginFromType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class MemberSimpleService {
     MemberUserSubMapper memberUserSubMapper;
 
     @Autowired
-    ShiguShopMapper shiguShopMapper;
+    ShopBaseService shopBaseService;
 
     /**
      * 查用户的淘宝昵称,如果有多个淘宝账号,只取第一个
@@ -41,9 +41,8 @@ public class MemberSimpleService {
     }
 
     public void updateShopNick(Long shopId,String nick){
-        ShiguShop shop=new ShiguShop();
-        shop.setShopId(shopId);
+        ShopBase shop = shopBaseService.shopBaseForUpdate(shopId);
         shop.setTbNick(nick);
-        shiguShopMapper.updateByPrimaryKeySelective(shop);
+        shopBaseService.modifyShopBase(shopId, shop);
     }
 }
