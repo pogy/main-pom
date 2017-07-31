@@ -35,7 +35,7 @@ import java.util.List;
  * @commonents:
  */
 @Controller
-@RequestMapping("order/")
+@RequestMapping({"order/","member/"})
 public class MyOrderAction {
     @Autowired
     MyOrderService myOrderService;
@@ -77,9 +77,7 @@ public class MyOrderAction {
      * @功能：删除订单
      * @param: [orderId]
      * @return: net.sf.json.JSONObject
-     * @exception:
-     * ====================================================================================
-     *
+     * @exception: ====================================================================================
      */
     @RequestMapping("removeOrder")
     @ResponseBody

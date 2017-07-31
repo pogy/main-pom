@@ -83,7 +83,7 @@ public class ItemOrderImpl implements ItemOrder {
     @Override
     public List<LogisticsVO> selLogisticses() {
         ItemOrderLogistics logistics = new ItemOrderLogistics();
-        logistics.setOid(oid);
+        logistics.setOid(oid==null?-1L:oid);
         List<ItemOrderLogistics> select = itemOrderLogisticsMapper.select(logistics);
 
         ItemOrderSub orderSub = new ItemOrderSub();
@@ -298,8 +298,7 @@ public class ItemOrderImpl implements ItemOrder {
     @Override
     public SenderVO selSender() {
         if (senderVO == null) {
-            ItemOrderSender itemOrderSender = itemOrderSenderMapper.selectByPrimaryKey(orderInfo().getSenderId());
-            senderVO = BeanMapper.map(itemOrderSender, SenderVO.class);
+            senderVO = SpringBeanFactory.getBean(Sender.class, orderInfo().getSenderId()).senderInfo();
         }
         return senderVO;
     }

@@ -1,6 +1,7 @@
 package com.shigu.main4.order.services;
 
 import com.shigu.main4.order.zfenums.ShStatusEnum;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.ExpressVo;
 import com.shigu.main4.order.vo.ReturnableAddressVO;
@@ -116,7 +117,7 @@ public interface AfterSaleService {
      * @param refundId:退换货id
      * @return
      */
-    ReturnableExpressInfoVO queryExpress(Long refundId);
+    ReturnableExpressInfoVO queryExpress(Long refundId) throws Main4Exception;
 
     /**
      * ====================================================================================
@@ -133,7 +134,7 @@ public interface AfterSaleService {
      * @param refundId:退换货id
      * @return
      */
-    ReturnableExpressInfoVO retrunGoodsExpressInfo(Long refundId);
+    ReturnableExpressInfoVO retrunGoodsExpressInfo(Long refundId) throws Main4Exception;
 
     /**
      * 同意(拒绝)退款金额
@@ -141,7 +142,7 @@ public interface AfterSaleService {
      * @param isAgree
      * @param refundId:退换货id
      */
-    void agreeOrRejectRefundPrice(Long refundId,boolean isAgree);
+    void agreeOrRejectRefundPrice(Long refundId,boolean isAgree) throws Main4Exception;
 
     /**
      * 售后结束信息(结束时间,如果是退货退款的单,还返回钱款去向数据)

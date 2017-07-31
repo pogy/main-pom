@@ -77,7 +77,7 @@ public class CdnGoodsInfoVO {
     /**
      * 是否有原图
      */
-    private Boolean hasOriginalPic;
+    private String hasOriginalPic;
 
 
     /**
@@ -321,14 +321,14 @@ public class CdnGoodsInfoVO {
     /**
      * 获取 是否有原图
      */
-    public Boolean getHasOriginalPic() {
+    public String getHasOriginalPic() {
         return this.hasOriginalPic;
     }
 
     /**
      * 设置 是否有原图
      */
-    public void setHasOriginalPic(Boolean hasOriginalPic) {
+    public void setHasOriginalPic(String hasOriginalPic) {
         this.hasOriginalPic = hasOriginalPic;
     }
 }

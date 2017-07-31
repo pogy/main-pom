@@ -5,6 +5,7 @@ import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -14,7 +15,7 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     private static Long generateRefundId;
 
-    @Test
+    @Before
     public void applyTest() {
         RefundApplyBO refundApplyBO = refundApplyBOGenerator(38L, 78L, 1, 100L, "退款构造测试");
         RefundItemOrder bean = SpringBeanFactory.getBean(RefundItemOrder.class, refundApplyBO, true);
@@ -46,7 +47,7 @@ public class RefundItemOrderImplTest extends BaseTest{
         refundItemOrder.userSended("885782656452802268");
     }
 
-    @After
+    @Test
     public void sellerCachedTest() {
         RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.sellerCached();

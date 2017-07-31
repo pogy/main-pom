@@ -7,7 +7,10 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.services.OrderListService;
-import com.shigu.main4.order.servicevo.*;
+import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
+import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
+import com.shigu.main4.order.servicevo.ShowOrderVO;
+import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
@@ -95,7 +98,7 @@ public class MyOrderService {
         return flag;
     }
     public int removeOrder(Long orderId){
-       return orderListService.removeOrder (orderId);
+        return orderListService.removeOrder (orderId);
     }
     public int cancelOrder(Long orderId){
         return orderListService.cancelOrder (orderId);
@@ -153,7 +156,7 @@ public class MyOrderService {
         vo.setOrderStateText (orderStateText);
         //
 
-       String[] orderStatusTIme=new String[4];
+        String[] orderStatusTIme=new String[4];
         if(orderVO.getOrderCreateTimed ()!=null){
             orderStatusTIme[0]=DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getOrderCreateTimed ());
 

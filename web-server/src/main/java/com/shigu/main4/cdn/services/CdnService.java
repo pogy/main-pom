@@ -326,7 +326,7 @@ public class CdnService {
             ss.add(s.getValue());
         }
         vo.setSizesMeta(JSONArray.fromObject(ss).toString());
-        vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId));
+        vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId)+"");
 
         return vo;
     }

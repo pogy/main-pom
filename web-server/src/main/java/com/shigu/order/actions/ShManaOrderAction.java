@@ -21,7 +21,7 @@ import java.text.ParseException;
  * Created by zf on 2017/7/24.
  */
 @Controller
-@RequestMapping("order/")
+@RequestMapping({"order/","member/"})
 public class ShManaOrderAction {
     @Autowired
     ShManaOrderService shManaOrderService;
