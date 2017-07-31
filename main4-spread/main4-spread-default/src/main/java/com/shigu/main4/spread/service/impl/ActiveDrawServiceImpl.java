@@ -32,6 +32,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.spread.bo.ActiveDrawRecordBO;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
@@ -915,6 +916,28 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             }
         }
         return numIidMaps;
+    }
+
+    @Override
+    public void addActiveDrawRecord(ActiveDrawRecordBO activeDrawRecord) {
+        if(activeDrawRecord == null || activeDrawRecord.getPemId() == null ||
+                activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
+            return;
+        }
+        ActiveDrawRecord drawRecord = new ActiveDrawRecord();
+        drawRecord.setPemId(activeDrawRecord.getPemId());
+        drawRecord.setUserId(activeDrawRecord.getUserId());
+        drawRecord.setEnabled(false);
+        drawRecord.setReceivesYes(false);
+        drawRecord.setCreateTime(new Date());
+        drawRecord.setModifyTime(new Date());
+        drawRecord.setWard(activeDrawRecord.getWard());
+        int count = activeDrawRecordMapper.selectCount(drawRecord);
+        if(count > 0){
+            // 已经新增数据
+            return;
+        }
+        activeDrawRecordMapper.insertSelective(drawRecord);
     }
 
 

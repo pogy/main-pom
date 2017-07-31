@@ -13,6 +13,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
+import com.shigu.main4.item.services.ItemPicRelationService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.tools.OssIO;
@@ -56,6 +57,9 @@ public class GoodsFileService {
 
     @Autowired
     ShopForCdnService shopForCdnService;
+
+    @Autowired
+    ItemPicRelationService itemPicRelationService;
 
     final String ROOT_PATH="udf/";
 
@@ -326,10 +330,7 @@ public class GoodsFileService {
         }
         for(Long id:longIds){
             try {
-                GoodsFile gf=new GoodsFile();
-                gf.setFileKey(getHomeDir(shopId)+fileKey);
-                gf.setGoodsId(id);
-                goodsFileMapper.insertSelective(gf);
+                itemPicRelationService.addFileRelation(id,getHomeDir(shopId)+fileKey);
             } catch (Exception e) {
             }
         }
@@ -347,7 +348,7 @@ public class GoodsFileService {
         }
         GoodsFileExample example=new GoodsFileExample();
         example.createCriteria().andFileKeyEqualTo(getHomeDir(shopId)+fileId).andGoodsIdEqualTo(goodsId);
-        return goodsFileMapper.deleteByExample(example);
+        return itemPicRelationService.removeFileRelation(getHomeDir(shopId)+fileId,goodsId)?1:0;
     }
 
     /**
@@ -392,13 +393,7 @@ public class GoodsFileService {
             fileKey = fileKey +"/";
         }
         String path=getHomeDir(shopId)+fileKey;
-        GoodsFileExample goodsFileExample=new GoodsFileExample();
-        if(fileType.equals("folder")&&!fileKey.equals("/")){//文件夹
-            goodsFileExample.createCriteria().andFileKeyLike(path+"%");
-        }else {
-            goodsFileExample.createCriteria().andFileKeyEqualTo(path);
-        }
-        goodsFileMapper.deleteByExample(goodsFileExample);
+        itemPicRelationService.removeFileRelation(path,fileType);
         return ossIO.deleteFile(path);
     }
 
@@ -428,9 +423,9 @@ public class GoodsFileService {
             //修改表
             //如果文件夹
             if (fileType.equalsIgnoreCase("folder") ) {//如果是文件夹
-                goodsFileMapper.replaceFileDir(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
+                itemPicRelationService.updateFileRelationByDir(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
             }else{
-                modifyDataGoodsFile(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
+                itemPicRelationService.updateFileRelation(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
             }
         }
         return result;
@@ -458,19 +453,11 @@ public class GoodsFileService {
         boolean result=ossIO.moveFile(getHomeDir(shopId)+fileId, getHomeDir(shopId)+targetFileId);
         if(result){
             //修改表
-            modifyDataGoodsFile(getHomeDir(shopId)+fileId,getHomeDir(shopId)+targetFileId);
+            itemPicRelationService.updateFileRelation(getHomeDir(shopId)+fileId,getHomeDir(shopId)+targetFileId);
         }
         return result;
     }
 
-    private void modifyDataGoodsFile(String from,String to){
-        //修改表
-        GoodsFileExample example=new GoodsFileExample();
-        example.createCriteria().andFileKeyEqualTo(from);
-        GoodsFile df=new GoodsFile();
-        df.setFileKey(to);
-        goodsFileMapper.updateByExampleSelective(df,example);
-    }
 
     /**
      * 移动文件

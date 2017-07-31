@@ -14,7 +14,9 @@ import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
+import com.shigu.main4.spread.bo.ActiveDrawRecordBO;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.tools.RedisIO;
@@ -156,24 +158,7 @@ public class ActiveDrawListener implements MessageListener {
      * @param activeDrawRecord
      */
     public void addActiveDrawRecord(ActiveDrawRecord activeDrawRecord){
-        if(activeDrawRecord == null || activeDrawRecord.getPemId() == null ||
-                activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
-            return;
-        }
-        ActiveDrawRecord drawRecord = new ActiveDrawRecord();
-        drawRecord.setPemId(activeDrawRecord.getPemId());
-        drawRecord.setUserId(activeDrawRecord.getUserId());
-        activeDrawRecord.setEnabled(false);
-        activeDrawRecord.setReceivesYes(false);
-        activeDrawRecord.setCreateTime(new Date());
-        activeDrawRecord.setModifyTime(new Date());
-        drawRecord.setWard(activeDrawRecord.getWard());
-        int count = activeDrawRecordMapper.selectCount(drawRecord);
-        if(count > 0){
-            // 已经新增数据
-            return;
-        }
-        activeDrawRecordMapper.insertSelective(activeDrawRecord);
+        activeDrawServiceImpl.addActiveDrawRecord(BeanMapper.map(activeDrawRecord, ActiveDrawRecordBO.class));
     }
 
 

@@ -1,6 +1,7 @@
 package com.shigu.main4.spread.service;
 
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.spread.bo.ActiveDrawRecordBO;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
@@ -148,5 +149,7 @@ public interface ActiveDrawService {
      * @return
      */
     Map<Long,Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime);
+
+    void addActiveDrawRecord(ActiveDrawRecordBO activeDrawRecord);
 
 }

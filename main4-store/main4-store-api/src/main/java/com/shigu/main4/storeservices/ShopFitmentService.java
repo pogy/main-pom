@@ -21,6 +21,8 @@ public interface ShopFitmentService {
      */
     void initShopFitment(Long shopId) throws ShopFitmentException;
 
+    int updatePageBackground(Long shopId,Long pageId,Integer type,String picUrl);
+
     /**
      * 创建页面
      * @param pageName
