@@ -404,7 +404,8 @@ public class OrderListServiceImpl implements OrderListService {
         bo.setPageSize(bo.getPageSize() == null?10:bo.getPageSize());
         int startRow = bo.getPage() == null ? 1 : (bo.getPage() - 1) * bo.getPageSize();
         return itemOrderMapper.selOidsByBo(userId, bo.getOrderId(), bo.getStatus() == null ? null : Integer.valueOf(bo.getStatus()),
-                bo.getSt()==null?null:simpleDateFormat.parse(bo.getSt()), bo.getEt()==null?null:simpleDateFormat.parse(bo.getEt()), bo.getGoodsNo(), bo.getReceiver(), bo.getTelePhone(), startRow, bo.getPageSize());
+                bo.getSt()==null?null:simpleDateFormat.parse(bo.getSt() + " 00:00:00"), bo.getEt()==null?null:simpleDateFormat.parse(bo.getEt() + " 23:59:59"),
+                bo.getGoodsNo(), bo.getReceiver(), bo.getTelePhone(), startRow, bo.getPageSize());
     }
 
     /**
@@ -419,7 +420,8 @@ public class OrderListServiceImpl implements OrderListService {
             bo = new OrderBO();
         }
         return itemOrderMapper.selOidsCountByBo(userId, bo.getOrderId(), bo.getStatus() == null ? null : Integer.valueOf(bo.getStatus()),
-                bo.getSt()==null?null:simpleDateFormat.parse(bo.getSt()), bo.getEt()==null?null:simpleDateFormat.parse(bo.getEt()), bo.getGoodsNo(), bo.getReceiver(), bo.getTelePhone());
+                bo.getSt()==null?null:simpleDateFormat.parse(bo.getSt() + " 00:00:00"), bo.getEt()==null?null:simpleDateFormat.parse(bo.getEt() + " 23:59:59"),
+                bo.getGoodsNo(), bo.getReceiver(), bo.getTelePhone());
     }
 
 }
