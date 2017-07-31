@@ -13,7 +13,7 @@ import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.NumberUtils;
 import com.shigu.main4.order.bo.*;
-import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
+import com.shigu.main4.order.zfenums.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
@@ -420,30 +420,28 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         //获取信息
         SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrderImpl.class, subOrderId);
         SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
+        RefundVO refundVO = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId).refundInfos();
         SubOrderInfoVO subOrderInfoVO = new SubOrderInfoVO();
-                //BeanMapper.map(subItemOrderVO, SubOrderInfoVO.class);
         subOrderInfoVO.setOrderId(subItemOrderVO.getOid());
-//        subOrderInfoVO.setChildOrderId(subOrderId);
+        subOrderInfoVO.setSubOrderId(subOrderId);
+        subOrderInfoVO.setRefundId(refundVO.getRefundId());
         subOrderInfoVO.setGoodsId(subItemOrderVO.getGoodsId());
         subOrderInfoVO.setImgsrc(subItemOrderVO.getProduct().getPicUrl());
         subOrderInfoVO.setTitle(subItemOrderVO.getProduct().getTitle());
         subOrderInfoVO.setColor(subItemOrderVO.getColor());
         subOrderInfoVO.setSize(subItemOrderVO.getSize());
         subOrderInfoVO.setGoodsNo(subItemOrderVO.getGoodsNo());
-//        subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
-//        subOrderInfoVO.setPriceLong(subItemOrderVO.getProduct().getPrice());
+        subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
         subOrderInfoVO.setNum(subItemOrderVO.getNum());
-        //todo:退款及售后信息填充
-        //subOrderInfoVO.setTkNum();
-        //subOrderInfoVO.setShTkNum();
-//        subOrderInfoVO.setSubOrderStatus(subItemOrderVO.getSubOrderStatus().status);
-//        subOrderInfoVO.setSubStatusenum(subItemOrderVO.getSubOrderStatus());
-        //subOrderInfoVO.setRefundId();
-        //subOrderInfoVO.setRefundNum();
-        //subOrderInfoVO.setTkState();
-        //subOrderInfoVO.setTkStateEnum();
+
+        //todo：退款数量确定
+        subOrderInfoVO.setTkNum(refundVO.getNumber());
+        //todo：售后退款数量确定
+        //subOrderInfoVO.setShTkNum(refundVO.getNumber());
+        subOrderInfoVO.setRefundNum(refundVO.getNumber());
+
+        subOrderInfoVO.setTkState(refundVO.getRefundState());
         //subOrderInfoVO.setShState();
-        //subOrderInfoVO.setShStateEnum();
         return subOrderInfoVO;
     }
 
@@ -533,15 +531,15 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         for (SubItemOrderVO s : subItemOrderVOS) {
             SubOrderInfoVO vo = new SubOrderInfoVO();
             vo.setOrderId(s.getOid());
-//            vo.setChildOrderId(s.getSoid());
+            vo.setChildOrderId(s.getSoid());
             vo.setGoodsId(s.getGoodsId());
             vo.setImgsrc(s.getProduct().getPicUrl());
             vo.setTitle(s.getProduct().getTitle());
             vo.setColor(s.getColor());
             vo.setSize(s.getSize());
             vo.setGoodsNo(s.getGoodsNo());
-//            vo.setPrice(String.valueOf(s.getProduct().getPrice() / 100));
-//            vo.setPriceLong(s.getProduct().getPrice());
+            vo.setPrice(String.valueOf(s.getProduct().getPrice() / 100));
+            vo.setPriceLong(s.getProduct().getPrice());
             vo.setNum(s.getNum());
             ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
             itemOrderRefundExample.createCriteria().andOidEqualTo(s.getOid()).andSoidEqualTo(s.getSoid());

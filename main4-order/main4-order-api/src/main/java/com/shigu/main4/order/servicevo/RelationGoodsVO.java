@@ -16,6 +16,14 @@ public class RelationGoodsVO {
 
     private String webSite;
 
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
+    }
+
     /**
      * 获取 货号
      */
@@ -51,13 +59,5 @@ public class RelationGoodsVO {
 
     public void setPriceLong(Long priceLong) {
         this.priceLong = priceLong;
-    }
-
-    public String getWebSite() {
-        return this.webSite;
-    }
-
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
     }
 }

@@ -113,6 +113,7 @@ public class ItemOrderImpl implements ItemOrder {
         orderVO.setWebSite(order.getWebSite());
         orderVO.setOrderStatus(OrderStatus.statusOf(order.getOrderStatus()));
         orderVO.setCreateTime(order.getCreateTime());
+        orderVO.setFinishTime(order.getFinishTime());
         return orderVO;
     }
 
@@ -276,8 +277,12 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
+    //todo: 服务信息获取
     public List<OrderServiceVO> selServices() {
-        return null;
+        ItemOrderService itemOrderService = new ItemOrderService();
+        itemOrderService.setOid(oid);
+        List<OrderServiceVO> collect = BeanMapper.mapList(itemOrderServiceMapper.select(itemOrderService),OrderServiceVO.class);
+        return collect;
     }
 
     @Override
