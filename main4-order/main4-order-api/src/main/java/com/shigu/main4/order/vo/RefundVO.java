@@ -52,6 +52,11 @@ public class RefundVO {
      */
     private Long soid;
 
+    /**
+     * '0未确定,1退款，2A类退货，3B类退货,4换货
+     */
+    private Integer type;
+
     public Long getRefundId() {
         return refundId;
     }
@@ -138,5 +143,13 @@ public class RefundVO {
 
     public void setSoid(Long soid) {
         this.soid = soid;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

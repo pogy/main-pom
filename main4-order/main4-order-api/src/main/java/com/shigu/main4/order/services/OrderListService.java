@@ -1,5 +1,6 @@
 package com.shigu.main4.order.services;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
@@ -11,6 +12,7 @@ import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
 
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -36,7 +38,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    List<ShowOrderVO> myOrder( OrderBO bo,Long userId);
+    List<ShowOrderVO> myOrder( OrderBO bo,Long userId) throws ParseException;
 
     /**
      * ====================================================================================
@@ -48,7 +50,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    ShiguPager selectCountMyOrder(OrderBO bo, Long userId);
+    ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) throws ParseException;
 
     /**
      *
@@ -59,7 +61,7 @@ public interface OrderListService {
      * @param userId
      * @return
      */
-    ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus,Integer page,Integer pageSize, Long userId);
+    ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus,Integer page,Integer pageSize, Long userId) throws ParseException;
 
 
     /**
@@ -108,7 +110,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    OrderDetailExpressVO selectExpress(Long orderId);//
+    OrderDetailExpressVO selectExpress(Long orderId) throws Main4Exception, ParseException;//
 
     /**
      * ====================================================================================

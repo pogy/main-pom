@@ -78,6 +78,15 @@ public interface ItemOrderService {
     List<ExpressLogVO> expressLog(Long expressId) throws Main4Exception, ParseException;
 
     /**
+     * 查询物流日志
+     * @param companyCode 公司代码
+     * @param courierNumber 快递单号
+     * @return logs
+     * @throws Main4Exception
+     * @throws ParseException
+     */
+    List<ExpressLogVO> expressLog(String companyCode, String courierNumber) throws Main4Exception, ParseException;
+    /**
      * 子订单信息(作废)
      * @param subOrderId
      * @return
