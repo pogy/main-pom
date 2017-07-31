@@ -185,6 +185,7 @@
         FROM item_order AS a
         LEFT JOIN item_order_refund AS b ON a.oid = b.oid
         WHERE a.user_id = #{userId}
+        AND b.refund_id > 0
         <if test="shStatus == 1">
             AND (b.type BETWEEN 1 AND 3)
         </if>
@@ -201,6 +202,7 @@
         FROM item_order AS a
         LEFT JOIN item_order_refund AS b ON a.oid = b.oid
         WHERE a.user_id = #{userId}
+        AND b.refund_id > 0
         <if test="shStatus == 1">
             AND ( b.type BETWEEN 1 AND 3 )
         </if>
