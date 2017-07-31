@@ -22,7 +22,6 @@
         <module>main4-store</module>
         <module>main4-item</module>
         <module>main4-test</module>
-        <module>main4-admin</module>
         <module>main4-monitor</module>
         <module>main4-spread</module>
         <module>main4-tools</module>
