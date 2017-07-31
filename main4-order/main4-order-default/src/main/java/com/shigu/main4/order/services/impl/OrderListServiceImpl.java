@@ -153,7 +153,9 @@ public class OrderListServiceImpl implements OrderListService {
                 while (iterator.hasNext()) {
                     SubOrderInfoVO subOrderInfoVO = iterator.next();
                     if (!soids.contains(subOrderInfoVO.getSubOrderId())) {
-                        childOrders.remove(subOrderInfoVO);
+                        if (shStatus!=null) {
+                            iterator.remove();
+                        }
                     }
                 }
                 showVOS.add(showOrderVO);
