@@ -6,9 +6,10 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
-import com.shigu.main4.order.servicevo.OrderDetailVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
 import com.shigu.order.services.MyOrderService;
+import com.shigu.order.vo.MyOrderDetailVO;
+import com.shigu.order.vo.MyOrderVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;
@@ -34,7 +35,7 @@ import java.util.List;
  * @commonents:
  */
 @Controller
-@RequestMapping("order/")
+@RequestMapping({"order/","member/"})
 public class MyOrderAction {
     @Autowired
     MyOrderService myOrderService;
@@ -60,7 +61,7 @@ public class MyOrderAction {
         if (bo.getPage() == null) {
             bo.setPage(1);
         }
-        List<ShowOrderVO> list = myOrderService.myOrder(bo, ps.getUserId());
+        List<MyOrderVO> list = myOrderService.myOrder(bo, ps.getUserId());
         ShiguPager<ShowOrderVO> pager = myOrderService.selectCountMyOrder(bo, ps.getUserId());
         model.addAttribute("query", bo);//返回查询条件
         model.addAttribute("orders", list);
@@ -156,7 +157,7 @@ public class MyOrderAction {
             return "trade/noOrderInfo";
         } else {
 
-            OrderDetailVO detailVo = myOrderService.orderDetail(orderId);
+            MyOrderDetailVO detailVo = myOrderService.orderDetail(orderId);
             model.addAttribute("orderDetailVO", detailVo);
             model.addAttribute("orderStateText", detailVo.getOrderStateText());
             model.addAttribute("orderCreateTime", detailVo.getOrderCreateTime());

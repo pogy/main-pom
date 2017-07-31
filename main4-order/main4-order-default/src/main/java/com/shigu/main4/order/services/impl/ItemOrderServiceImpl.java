@@ -431,7 +431,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         subOrderInfoVO.setColor(subItemOrderVO.getColor());
         subOrderInfoVO.setSize(subItemOrderVO.getSize());
         subOrderInfoVO.setGoodsNo(subItemOrderVO.getGoodsNo());
-        subOrderInfoVO.setPrice(PriceConvertUtils.priceToString(subItemOrderVO.getProduct().getPrice()));
+        subOrderInfoVO.setPrice(subItemOrderVO.getProduct().getPrice());
         subOrderInfoVO.setNum(subItemOrderVO.getNum());
 
         //todo：退款数量确定
@@ -531,15 +531,14 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         for (SubItemOrderVO s : subItemOrderVOS) {
             SubOrderInfoVO vo = new SubOrderInfoVO();
             vo.setOrderId(s.getOid());
-            vo.setChildOrderId(s.getSoid());
+            vo.setSubOrderId(s.getSoid());
             vo.setGoodsId(s.getGoodsId());
             vo.setImgsrc(s.getProduct().getPicUrl());
             vo.setTitle(s.getProduct().getTitle());
             vo.setColor(s.getColor());
             vo.setSize(s.getSize());
             vo.setGoodsNo(s.getGoodsNo());
-            vo.setPrice(String.valueOf(s.getProduct().getPrice() / 100));
-            vo.setPriceLong(s.getProduct().getPrice());
+            vo.setPrice(s.getProduct().getPrice());
             vo.setNum(s.getNum());
             ItemOrderRefundExample itemOrderRefundExample = new ItemOrderRefundExample();
             itemOrderRefundExample.createCriteria().andOidEqualTo(s.getOid()).andSoidEqualTo(s.getSoid());

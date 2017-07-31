@@ -25,7 +25,7 @@ public class ShManaOrderService {
     @Autowired
     OrderListService orderListService;
 
-    public ShiguPager<ShowOrderVO> selectShList(Integer shStatus,Integer page,Integer size,Long userId) throws ParseException {
+    public ShiguPager<MyOrderVO> selectShList(Integer shStatus,Integer page,Integer size,Long userId) throws ParseException {
         if(page==null){
             page=1;
         }
@@ -56,12 +56,12 @@ public class ShManaOrderService {
                 sub.setNum(so.getNum());
                 sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
                 sub.setRefundId(so.getRefundId());
-                sub.setShState(so.getShState().afterSaleStatus);
+                sub.setShState(so.getShState()==null?0:so.getShState().afterSaleStatus);
                 sub.setShTkNum(so.getShTkNum());
                 sub.setSize(so.getSize());
                 sub.setTitle(so.getTitle());
                 sub.setTkNum(so.getTkNum());
-                sub.setTkState(so.getTkState().refundStatus==2?1:0);
+                sub.setTkState(so.getTkState()==null?null:so.getTkState().refundStatus==2?1:0);
                 subs.add(sub);
             }
             vo.setChildOrders(subs);
