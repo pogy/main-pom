@@ -1,5 +1,6 @@
 package com.shigu.main4.order.services;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
@@ -11,6 +12,7 @@ import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
 
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -108,7 +110,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    OrderDetailExpressVO selectExpress(Long orderId) throws Main4Exception, ParseException;//
+    OrderDetailExpressVO selectExpress(Long orderId) throws Main4Exception, ParseException, Main4Exception, ParseException;//
 
     /**
      * ====================================================================================
