@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ItemOrderMapper">
+    <resultMap id="itemOrderLogistics" type="com.opentae.data.mall.beans.ItemOrderLogistics">
+        <id property="id" column="logistics_id"></id>
+        <result property="companyId" column="company_id"></result>
+        <result property="courierNumber" column="courier_number"></result>
+        <result property="money" column="logistics_money"></result>
+        <result property="provId" column="prov_id"></result>
+        <result property="cityId" column="city_id"></result>
+        <result property="townId" column="town_id"></result>
+        <result property="address" column="address"></result>
+        <result property="telephone" column="telephone"></result>
+        <result property="zipCode" column="zip_code"></result>
+        <result property="oid" column="logistics_oid"></result>
+        <result property="name" column="logistics_receiver"></result>
+    </resultMap>
+    <resultMap id="itemOrderServices" type="com.opentae.data.mall.beans.ItemOrderService">
+        <id property="id" column="service_pk"></id>
+        <result property="serviceId" column="service_id"></result>
+        <result property="money" column="service_money"></result>
+        <result property="oid" column="service_oid"></result>
+        <result property="name" column="service_name"></result>
+        <result property="refundMoney" column="service_refund_money"></result>
+    </resultMap>
+    <resultMap id="itemOrderPackages" type="com.opentae.data.mall.beans.ItemOrderPackage">
+        <id property="id" column="package_id"></id>
+        <result property="metarialId" column="metarial_id" ></result>
+        <result property="money" column="package_money" ></result>
+        <result property="num" column="package_num" ></result>
+        <result property="oid" column="package_oid" ></result>
+        <result property="name" column="package_name" ></result>
+        <result property="refundMoney" column="package_refund_money" ></result>
+    </resultMap>
+    <resultMap id="itemOrderRefund" type="com.opentae.data.mall.beans.ItemOrderRefund">
+        <id property="refundId" column="refund_id"></id>
+        <result property="oid" column="sub_refund_oid"></result>
+        <result property="soid" column="sub_refund_soid"></result>
+        <result property="type" column="sub_refund_type"></result>
+        <result property="buyerCourier" column="buyer_courier"></result>
+        <result property="status" column="sub_refund_status"></result>
+        <result property="userApply" column="user_apply"></result>
+        <result property="failMsg" column="fail_msg"></result>
+        <result property="refundMoney" column="sub_order_refund_money"></result>
+        <result property="hopeMoney" column="hope_money"></result>
+        <result property="number" column="sub_order_number"></result>
+        <result property="reason" column="reason"></result>
+        <result property="sellerProposalMoney" column="seller_proposal_money"></result>
+    </resultMap>
+    <resultMap id="subOrderInfos" type="com.opentae.data.mall.beans.SubOrderInfos">
+        <id property="soid" column="soid"></id>
+        <result property="oid" column="sub_order_oid"></result>
+        <result property="logisticsId" column="sub_order_logistics_id"></result>
+        <result property="pid" column="pid"></result>
+        <result property="skuId" column="sku_id"></result>
+        <result property="num" column="sub_order_num"></result>
+        <result property="distributionNum" column="sub_order_distribution_num"></result>
+        <result property="shouldPayMoney" column="sub_order_should_pay_money"></result>
+        <result property="payMoney" column="sub_order_pay_money"></result>
+        <result property="refundMoney" column="sub_order_refund_money"></result>
+        <result property="status" column="sub_order_status"></result>
+        <result property="mark" column="sub_order_mark"></result>
+        <result property="goodsId" column="goods_id"></result>
+        <result property="picUrl" column="pic_url"></result>
+        <result property="webSite" column="web_site"></result>
+        <result property="title" column="title"></result>
+        <result property="price" column="sub_order_item_price"></result>
+        <result property="weight" column="weight"></result>
+        <result property="size" column="size"></result>
+        <result property="color" column="color"></result>
+        <result property="goodsNo" column="goods_no"></result>
+        <association property="itemOrderRefund" resultMap="itemOrderRefund" javaType="com.opentae.data.mall.beans.ItemOrderRefund"></association>
+    </resultMap>
+    <resultMap id="OrderInfoDetail" type="com.opentae.data.mall.beans.OrderInfos">
+        <id property="oid" column="oid"></id>
+        <result property="type" column="type"></result>
+        <result property="totalFee" column="total_fee"></result>
+        <result property="payedFee" column="payed_fee"></result>
+        <result property="refundFee" column="refund_fee"></result>
+        <result property="userId" column="user_id"></result>
+        <result property="senderId" column="sender_id"></result>
+        <result property="title" column="title"></result>
+        <result property="webSite" column="web_site"></result>
+        <result property="orderStatus" column="order_status"></result>
+        <result property="mark" column="mark"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="finishTime" column="finish_time"></result>
+        <result property="outerId" column="outer_id"></result>
+        <association property="itemOrderLogistics" javaType="com.opentae.data.mall.beans.ItemOrderLogistics" resultMap="itemOrderLogistics"></association>
+        <collection property="itemOrderServices" ofType="com.opentae.data.mall.beans.ItemOrderService" resultMap="itemOrderServices"></collection>
+        <collection property="itemOrderPackages" ofType="com.opentae.data.mall.beans.ItemOrderPackage" resultMap="itemOrderPackages"></collection>
+        <collection property="subOrderInfos" ofType="com.opentae.data.mall.beans.SubOrderInfos" resultMap="subOrderInfos"></collection>
+    </resultMap>
+
+    <select id="selOrderInfoDetailByOrderId" resultMap="OrderInfoDetail">
+        SELECT
+            main_order.oid,
+            main_order.type,
+            main_order.total_fee,
+            main_order.payed_fee,
+            main_order.refund_fee,
+            main_order.user_id,
+            main_order.sender_id,
+            main_order.title,
+            main_order.web_site,
+            main_order.order_status,
+            main_order.mark,
+            main_order.create_time,
+            main_order.finish_time,
+            main_order.outer_id,
+            logistics.id AS logistics_id,
+            logistics.company_id,
+            logistics.courier_number,
+            logistics.money AS logistics_money,
+            logistics.prov_id,
+            logistics.city_id,
+            logistics.town_id,
+            logistics.address,
+            logistics.telephone,
+            logistics.oid AS logistics_oid,
+            logistics.zip_code,
+            logistics.name AS logistics_receiver,
+            service.id AS service_pk,
+            service.oid AS service_oid,
+            service.service_id,
+            service.money AS service_money,
+            service.name AS service_name,
+            service.refund_money AS service_refund_money,
+            package.id AS package_id,
+            package.oid AS package_oid,
+            package.metarial_id,
+            package.money AS package_money,
+            package.num AS package_num,
+            package.name AS package_name,
+            package.refund_money AS package_refund_money,
+            sub_order.soid,
+            sub_order.oid AS sub_order_oid,
+            sub_order.pid,
+            sub_order.sku_id,
+            sub_order.num AS sub_order_num,
+            sub_order.distribution_num AS sub_order_distribution_num,
+            sub_order.should_pay_money AS sub_order_should_pay_money,
+            sub_order.pay_money AS sub_order_pay_money,
+            sub_order.refund_money AS sub_order_refund_money,
+            sub_order.status AS sub_order_status,
+            sub_order.mark AS sub_order_mark,
+            sub_order.goods_id,
+            sub_order.pic_url,
+            sub_order.web_site,
+            sub_order.title,
+            sub_order.price AS sub_order_item_price,
+            sub_order.logistics_id AS sub_order_logistics_id,
+            sub_order.weight,
+            sub_order.size,
+            sub_order.color,
+            sub_order.goods_no,
+            sub_refund.refund_id,
+            sub_refund.oid AS sub_refund_oid,
+            sub_refund.soid AS sub_refund_soid,
+            sub_refund.type AS sub_refund_type,
+            sub_refund.buyer_courier,
+            sub_refund.status AS sub_refund_status,
+            sub_refund.user_apply,
+            sub_refund.fail_msg,
+            sub_refund.refund_money AS sub_order_refund_money,
+            sub_refund.hope_money,
+            sub_refund.number AS sub_order_number,
+            sub_refund.reason,
+            sub_refund.seller_proposal_money
+        FROM
+            item_order AS main_order
+            LEFT JOIN item_order_logistics AS logistics ON main_order.oid = logistics.oid
+            LEFT JOIN item_order_service AS service ON main_order.oid = service.oid
+            LEFT JOIN item_order_package AS package ON main_order.oid = package.oid
+            LEFT JOIN item_order_sub AS sub_order ON main_order.oid = sub_order.oid AND sub_order.logistics_id = logistics.id
+            LEFT JOIN item_order_refund AS sub_refund ON sub_refund.soid = sub_order.soid
+        WHERE
+            main_order.oid = ${oid}
+        ;
+    </select>
+
+
+
+</mapper>
