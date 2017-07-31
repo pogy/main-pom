@@ -40,6 +40,7 @@ import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
+import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.AreaVO;
 import com.shigu.seller.vo.ContainerVO;
@@ -131,6 +132,9 @@ public class CdnAction {
 
     @Autowired
     GoodsSelFromEsService goodsSelFromEsService;
+
+    @Autowired
+    GoodsFileService goodsFileService;
 
     /**
      * 联系我们
@@ -540,6 +544,7 @@ public class CdnAction {
         model.addAttribute("vo",itemShowVO);
         model.addAttribute("bo",bo);
         model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
+        model.addAttribute("hasYt",goodsFileService.hasDatu(id)+"");
 //        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
         if ("kx".equalsIgnoreCase(cdnItem.getWebSite())) {
             return "cdn/xieItem";
@@ -790,12 +795,16 @@ public class CdnAction {
     }
 
     @RequestMapping("downloadImg")
-    public void downloadImg(HttpServletResponse response, String callback, Long goodsId, HttpSession session) throws IOException {
+    public void downloadImg(HttpServletResponse response, String callback, Long goodsId,Integer type, HttpSession session) throws IOException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //如果店铺,不能下载图片
         if(personalSession.getLogshop()!=null){
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);
             return ;
+        }
+        if(type!=null &&type == 2){
+            String content = "{'result':'success','msg':'成功','sourceHref':'" + goodsFileService.datuUrl(goodsId) + "'}";
+            ResultRetUtil.returnJsonp(callback,content,response);
         }
         String url = shopsItemService.itemImgzipUrl(goodsId);
         String content;

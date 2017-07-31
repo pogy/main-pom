@@ -2,8 +2,10 @@ package com.shigu.main4.storeservices.impl;
 
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.ShiguShopLicense;
+import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.examples.ShiguShopLicenseExample;
 import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.storeservices.ShopLicenseService;
@@ -122,5 +124,16 @@ public class ShopLicenseServiceImpl implements ShopLicenseService{
             shopLicenses.add(sl);
         }
         return shopLicenses;
+    }
+
+    @Override
+    public ShopLicense selShopLIcenseByType(Long shopId, ShopLicenseTypeEnum type) {
+        ShiguShopLicenseExample shiguShopLicenseExample=new ShiguShopLicenseExample();
+        shiguShopLicenseExample.createCriteria().andShopIdEqualTo(shopId).andLicenseTypeEqualTo(type.getValue());
+        List<ShiguShopLicense> licenses=shiguShopLicenseMapper.selectByExample(shiguShopLicenseExample);
+        if(licenses.size()>0){
+            return BeanMapper.map(licenses.get(0),ShopLicense.class);
+        }
+        return null;
     }
 }

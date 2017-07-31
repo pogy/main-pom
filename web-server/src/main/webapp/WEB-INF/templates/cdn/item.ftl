@@ -4,17 +4,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     
-    <title>${vo.cdnItem.title!}-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
+    
+        <title>${vo.cdnItem.title!}-${vo.storeRelation.marketName!}${vo.storeRelation.storeNum!}-四季星座网</title>
     
     <meta name="keywords" content="欢迎前来四季星座网实力档口，选择 ${vo.cdnItem.title!}">
     
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
     
-    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1497503671065" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/itemv1.css?t=1501217403087" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1497503671065"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/itemv1.js?t=1501217403087"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -492,7 +493,18 @@ var goodsId = '${vo.itemId!}';
                         <div>
                             <button class="addPro imgDownload" xzclick="showDownloadWindow" data-goodsid="${vo.itemId!}">
                                 <span>图片下载</span>
+                                <#if hasYt == true>
+                                <i class="originalPicIcon"></i>
+                                </#if>
                             </button>
+                            <script>/*============ shopItemCopy/item#showDownloadWindow BEGIN ============*/
+
+var hasYt = ${hasYt!}; // 判断是否存在原图下载
+
+/*============ shopItemCopy/item#showDownloadWindow END ============*/
+
+
+</script>
                         </div>
                         <div id="j_upload_items">
                             <button class="keyUpload"  onclick="showOnkeyUploadWindow();this.blur();"  >
@@ -813,11 +825,12 @@ $.post(
 </div>
 <script>/*============ shopItemCopy/item#newGoods BEGIN ============*/
 
+'${test!}'
 $(function(){
-    $.post('shopnew.htm',{"id": storeId,"webSite":'${webSite}'},function(data){
+    $.post('shopnew.htm',{"id": storeId, "webSite": '${webSite!}'},function(data){
         $('#item_shopnew').html(data);
     });
-});
+})
 
 /*============ shopItemCopy/item#newGoods END ============*/
 
@@ -825,7 +838,7 @@ $(function(){
 </script>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -833,6 +846,7 @@ $(function(){
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

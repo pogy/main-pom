@@ -1,6 +1,7 @@
 package com.shigu.main4.storeservices;
 
 import com.shigu.main4.common.vo.ShiguTags;
+import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.vo.ShopLicense;
 
 import java.util.List;
@@ -33,4 +34,12 @@ public interface ShopLicenseService {
      * @return 权益列表
      */
     List<ShopLicense> selShopLicenses(Long shopId);
+
+    /**
+     *
+     * @param shopId
+     * @param type
+     * @return
+     */
+    ShopLicense selShopLIcenseByType(Long shopId, ShopLicenseTypeEnum type);
 }
