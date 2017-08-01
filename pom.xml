@@ -44,9 +44,7 @@
         <main4-common.version>${project.version}</main4-common.version>
         <main4-dao.version>${project.version}</main4-dao.version>
         <main4-store-default.version>${project.version}</main4-store-default.version>
-        <main4-store-inmarket.version>${project.version}</main4-store-inmarket.version>
         <main4-item-default.version>${project.version}</main4-item-default.version>
-        <main4-item-update.version>${project.version}</main4-item-update.version>
         <main4-monitor-default.version>${project.version}</main4-monitor-default.version>
 
         <spring.version>4.3.9.RELEASE</spring.version>

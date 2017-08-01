@@ -130,5 +130,6 @@
             <artifactId>main4-item-api</artifactId>
             <version>${main4-item-api.version}</version>
         </dependency>
+
     </dependencies>
 </project>
