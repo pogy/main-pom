@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>开奖结果 - 分销商中心 - 四季星座网</title>
+    <title>修改支付密码 - 分销商中心 - 四季星座网</title>
 
     
     
@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/awardInfo.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/safeXgPaymm.css" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/awardInfo.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/safeXgPaymm.js"></script>
 </head>
 <body>
 
@@ -174,7 +174,7 @@ var webSite = '${webSite!}';
         <ul class="fl fs16 yahei clearfix">
             <li><a href="${main_host!}member/index.htm"  >首页</a></li>
             <li><a href="${main_host!}member/userBalance.htm" >我的钱包</a></li>
-            <li><a href="${main_host!}member/sysSetsindex.htm" >安全中心</a></li>
+            <li><a href="${main_host!}member/sysSetsindex.htm" class="selected">安全中心</a></li>
         </ul>
     </div>
 </div>
@@ -184,80 +184,24 @@ var webSite = '${webSite!}';
     <div class="layout">
         <div class="leftSidebar yahei">
 
-    <h2>交易管理</h2>
+    <h2>安全中心</h2>
     <ul>
     
         
             
-            <li><a href="${main_host!}order/myOrder.htm" >我的订单</a></li>
+            <li><a class="selected" href="${main_host!}member/safeindex.htm">安全设置</a></li> 
             
         
     
         
             
-            <li><a href="${main_host!}order/myTbOrder.htm" >淘宝订单</a></li>
+            <li><a href="${main_host!}member/sysSetsindex.htm" >个人设置</a></li>
             
         
     
         
             
-            <li><a href="${main_host!}order/shManaOrder.htm" >售后管理</a></li>
-            
-        
-    
-    </ul> 
-
-    <h2>商品管理</h2>
-    <ul>
-    
-        
-            
-            <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
-            
-        
-    
-        
-            
-            <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
-            
-        
-    
-        
-            
-            <li><a href="${main_host!}member/storeCollectinit.htm" >收藏的档口</a></li>
-            
-        
-    
-    </ul> 
-
-    <h2>代发管理</h2>
-    <ul>
-    
-        
-            
-            <li><a href="http://daifa.571xz.com/daili/offerIndex.htm" >我要代发</a></li>
-            
-        
-    
-    </ul> 
-
-    <h2>供应商申请</h2>
-    <ul>
-    
-        
-            
-            <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
-            
-        
-    
-    </ul> 
-
-    <h2>会员俱乐部</h2>
-    <ul>
-    
-        
-            
-            <li><a class="selected" href="${main_host!}member/awardInfo.htm">开奖结果</a></li> 
+            <li><a href="${main_host!}member/fenxiaoZhanghao.htm" >应用绑定</a></li>
             
         
     
@@ -268,50 +212,82 @@ var webSite = '${webSite!}';
 
 
 
-        <div class="rightBox yahei fr">
-    <div class="awardInfo">
-        <h3>发现好货活动奖品</h3>
-        <div class="lastTerm">
-            <p class="hdTime">活动日期：${lastHdTime!}<b class="hdRule" jbtn="lastRule">活动规则</b></p>
-            <div class="awardBox">
-                <div class="awardList">
-                    <ul class="clearfix">
-                        
-                    </ul>
-                </div>
-                <div class="findGoods">
-                    <ul class="clearfix">
-                        
-                    </ul>
-                </div>
-                <div class="dailyFind">
-                    <ul class="clearfix">
-                        
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="thisTerm">
-            <p class="hdTime">活动日期：${thisHdTime!}<b class="hdRule" jbtn="thisRule">活动规则</b></p>
-            <div class="awardBox">
-                <div class="awardList">
-                    <ul class="clearfix">
-                        
-                    </ul>
-                </div>
-                <div class="findGoods">
-                    <ul class="clearfix">
-                        
-                    </ul>
-                </div>
-                <div class="dailyFind">
-                    <ul class="clearfix">
-                        
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div class="rightBox fr">
+    <div class="headTop clearfix">
+    <#if hasPayPwd == false>
+    <em>设置支付密码</em>
+    <#else>
+    <em>修改支付密码</em>
+    </#if>
+</div>
+
+
+    <ul class="formbox">
+        <#if hasPayPwd == true>
+        <li class="clearfix">
+            <label>原密码：</label>
+            <input type="password" class="textinput" id="pwd1" placeholder="请输入原密码">
+        </li>
+        </#if>
+        <li class="clearfix">
+            <label>新密码：</label>
+            <input type="password" class="textinput" id="pwd2" placeholder="请输入新密码">
+        </li>
+        <li class="clearfix">
+            <label>确认密码：</label>
+            <input type="password" class="textinput" id="pwd3" placeholder="请输入确认密码">
+        </li>
+        <li class="clearfix">
+            
+
+<#assign text>{}</#assign>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+        
+         fmButton-orange
+         button1"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+    
+        id="dosubmit"
+    
+>
+
+    
+        保存
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+
+</#list>
+
+        </li>
+    </ul>
 </div>
 
 
@@ -320,10 +296,7 @@ var webSite = '${webSite!}';
 
 
 
-<script >
-var allInfo = ${allInfo!}; //JSON字符串用于奖品模块、获奖名单
-var lastUserAward = ${lastUserAward!}; //JSON字符串用于上期奖品
-</script>
+
 
 
 

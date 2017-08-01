@@ -61,7 +61,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -188,7 +188,9 @@ var webSite = '${webSite!}';
     <ul>
     
         
-        <li><a class="selected" href="${main_host!}member/userBalance.htm">我的资金</a></li> 
+            
+            <li><a class="selected" href="${main_host!}member/userBalance.htm">我的资金</a></li> 
+            
         
     
         
@@ -382,6 +384,9 @@ var webSite = '${webSite!}';
 
 
 <!--省略end，让浏览器自动添加-->
+
+<#include "/common/cnzz.ftl">
+
 
 
 

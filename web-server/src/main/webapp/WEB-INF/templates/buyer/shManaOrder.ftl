@@ -61,7 +61,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -189,18 +189,20 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a href="${main_host!}member/myOrder.htm" >我的订单</a></li>
+            <li><a href="${main_host!}order/myOrder.htm" >我的订单</a></li>
             
         
     
         
             
-            <li><a href="${main_host!}member/myTbOrder.htm" >淘宝订单</a></li>
+            <li><a href="${main_host!}order/myTbOrder.htm" >淘宝订单</a></li>
             
         
     
         
-        <li><a class="selected" href="${main_host!}member/shManaOrder.htm">售后管理</a></li> 
+            
+            <li><a class="selected" href="${main_host!}order/shManaOrder.htm">售后管理</a></li> 
+            
         
     
     </ul> 
@@ -340,12 +342,12 @@ var webSite = '${webSite!}';
             </#if>
             
             <#if childOrder.tkNum != childOrder.num && childOrder.shState == 0>
-            <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+            <p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
             <#elseif childOrder.shState == 4 || childOrder.shState == 5>
                 <#if childOrder.shState == 4>
-                <p><a class="fcF40" href="refund.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
+                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
                 <#else>
-                <p><a class="fcF40" href="exchange.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
+                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
                 </#if>
             <#elseif childOrder.shState == 2>
             <p class="fcF40">退款完成x${childOrder.shTkNum!}</p>
@@ -387,9 +389,9 @@ var webSite = '${webSite!}';
             <#elseif order.mainState == 4>
             <p>交易完成</p>
             </#if>
-            <p><a href="orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
+            <p><a href="${main_host!}order/orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
             <#if order.mainState == 3>
-            <p><a href="expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
+            <p><a href="${main_host!}order/expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
             </#if>
         </#if>
     </li>
@@ -514,6 +516,9 @@ var webSite = '${webSite!}';
 
 
 <!--省略end，让浏览器自动添加-->
+
+<#include "/common/cnzz.ftl">
+
 
 
 

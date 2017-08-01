@@ -61,7 +61,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -188,18 +188,20 @@ var webSite = '${webSite!}';
     <ul>
     
         
-        <li><a class="selected" href="${main_host!}member/myOrder.htm">我的订单</a></li> 
-        
-    
-        
             
-            <li><a href="${main_host!}member/myTbOrder.htm" >淘宝订单</a></li>
+            <li><a class="selected" href="${main_host!}order/myOrder.htm">我的订单</a></li> 
             
         
     
         
             
-            <li><a href="${main_host!}member/shManaOrder.htm" >售后管理</a></li>
+            <li><a href="${main_host!}order/myTbOrder.htm" >淘宝订单</a></li>
+            
+        
+    
+        
+            
+            <li><a href="${main_host!}order/shManaOrder.htm" >售后管理</a></li>
             
         
     
@@ -304,7 +306,7 @@ var webSite = '${webSite!}';
     <ul>
         <li><label>商品货号：</label><input type=text name="goodsNo" <#if query.goodsNo??>value="${query.goodsNo!}"</#if>></li>
         <li>
-            <label>成交时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="starTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if>>
+            <label>时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="starTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if>>
         </li>
         <li><label>订单编号：</label><input type=text name="orderId" <#if query.orderId??>value="${query.orderId!}"</#if>></li>
         <li><label>收货人信息：</label><input type=text name="receiver" placeholder="收货人姓名" class="slInput" <#if query.receiver??>value="${query.receiver!}"</#if>><span class="divideLine"></span><input type=text name="telePhone" placeholder="收货人手机号码" class="slInput" <#if query.telePhone??>value="${query.telePhone!}"</#if>></li>
@@ -386,7 +388,7 @@ var webSite = '${webSite!}';
         <div class="orderItem clearfix <#if order.mainState == 4 || order.mainState == 5>finish</#if>">
             <div class="orderHead fl">
                 <span class="fc6">订单编号：${order.orderId!}</span>
-                <span class="fc6">成交时间：${order.tradeTime!}</span>
+                <span class="fc6">时间：${order.tradeTime!}</span>
                 <b class="fr delete" jbtn="deleteBtn" data-id="${order.orderId!}"></b>
             </div>
             <div class="childOrderList fl">
@@ -425,12 +427,12 @@ var webSite = '${webSite!}';
             </#if>
             
             <#if childOrder.tkNum != childOrder.num && childOrder.shState == 0>
-            <p><a href="returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+            <p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
             <#elseif childOrder.shState == 4 || childOrder.shState == 5>
                 <#if childOrder.shState == 4>
-                <p><a class="fcF40" href="refund.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
+                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
                 <#else>
-                <p><a class="fcF40" href="exchange.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
+                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
                 </#if>
             <#elseif childOrder.shState == 2>
             <p class="fcF40">退款完成x${childOrder.shTkNum!}</p>
@@ -471,7 +473,7 @@ var webSite = '${webSite!}';
             <#if order.mainState == 1>
             
 
-<#assign text>{"href":"payMode.htm?orderId=${order.orderId!}"}</#assign>
+<#assign text>{"href":"${main_host!}order/payMode.htm?orderId=${order.orderId!}"}</#assign>
 <#assign moduledata3=text?eval />
 <#list [moduledata3] as $it>
 
@@ -528,11 +530,11 @@ var webSite = '${webSite!}';
             <#elseif order.mainState == 5>
             <p>交易取消</p>
             </#if>
-            <p><a href="orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
+            <p><a href="${main_host!}order/orderDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">订单详情</a></p>
             <#if order.mainState == 1>
             <p><a href="javascript:;" onclick="cancelOrder(${order.orderId!})" class="fc9">取消订单</a></p>
             <#elseif order.mainState == 3>
-            <p><a href="expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
+            <p><a href="${main_host!}order/expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
             </#if>
         </#if>
     </li>
@@ -661,6 +663,9 @@ var webSite = '${webSite!}';
 
 
 <!--省略end，让浏览器自动添加-->
+
+<#include "/common/cnzz.ftl">
+
 
 
 
