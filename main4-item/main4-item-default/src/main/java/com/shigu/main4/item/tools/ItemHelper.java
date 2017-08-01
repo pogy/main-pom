@@ -1,18 +1,18 @@
 package com.shigu.main4.item.tools;
 
-import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.beans.ShiguGoodsExtends;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.ShiguPropImgs;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.vo.ShiguPropImg;
 import com.shigu.main4.item.vo.SynItem;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by wxc on 2017/2/28.

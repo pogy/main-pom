@@ -1,4 +1,4 @@
-package com.shigu.main4.item.services.impl;
+package com.shigu.main4.item.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
