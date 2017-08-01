@@ -159,12 +159,12 @@ public class MyOrderService {
             sub.setTkNum(so.getTkNum());
             if(so.getTkState()!=null){
                 switch (so.getTkState().refundStatus){
-                    case 2:{
-                        sub.setTkState(2);
+                    case 0:case 1:{
+                        sub.setTkState(1);
                         break;
                     }
-                    case 1|2:{
-                        sub.setTkState(1);
+                    case 2:{
+                        sub.setTkState(2);
                         break;
                     }
                     default:{

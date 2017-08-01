@@ -92,27 +92,4 @@ public interface ItemOrderService {
      * @return
      */
     List<OrderLogVO> orderLog(Long orderId);
-
-    /**
-     * 申请退款
-     * @param subOrderId
-     * @param number
-     * @return 退款编号
-     */
-    Long refundApply(Long subOrderId,Integer number);
-
-    /**
-     * 退款信息查询
-     * @param refundId
-     * @return
-     */
-    RefundInfoVO refundInfo(Long refundId);
-
-    /**
-     * 退款信息日志
-     * @param refundId
-     * @return
-     */
-    List<RefundLogVO> refundLog(Long refundId);
-
 }
