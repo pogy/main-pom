@@ -51,8 +51,6 @@ public class UserBaseServiceImpl implements UserBaseService {
     EhCacheManager ehCacheManager;
     @Autowired
     MemberLicenseMapper memberLicenseMapper;
-    @Autowired
-    private SysUserMapper sysUserMapper;
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
@@ -171,11 +169,7 @@ public class UserBaseServiceImpl implements UserBaseService {
     }
 
     public SysUserSession selSysForSessionByUserName(String userName) {
-        SysUser sysUser = new SysUser();
-        sysUser.setLoginName(userName);
-        sysUser = sysUserMapper.selectOne(sysUser);
-        SysUserSession sysUserSession = BeanMapper.map(sysUser,SysUserSession.class);
-        return sysUserSession;
+        return null;
     }
 
     public String selSysPwdByUserId(Long userId) {

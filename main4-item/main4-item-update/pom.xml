@@ -18,11 +18,6 @@
             <version>${main4-item-api.version}</version>
         </dependency>
         <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-dao</artifactId>
-            <version>${main4-dao.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
             <version>${spring.version}</version>

@@ -83,11 +83,6 @@
             <version>${servlet-api.version}</version>
         </dependency>
         <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-dao</artifactId>
-            <version>${main4-dao.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <scope>test</scope>
@@ -143,16 +138,32 @@
             <version>4.1.8.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>xinzuo-mybatis</groupId>
-            <artifactId>xinzuo-mybatis</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-tools</artifactId>
             <version>${main4-tools.version}</version>
         </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>xinzuo-mybatis</groupId>
+                <artifactId>xinzuo-mybatis</artifactId>
+                <version>1.0.2-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>opentae-beans</groupId>
+                <artifactId>common</artifactId>
+            </dependency>
     </dependencies>
 
 </project>

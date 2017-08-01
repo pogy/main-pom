@@ -43,11 +43,6 @@
             <version>${ehcache.version}</version>
         </dependency>
         <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-dao</artifactId>
-            <version>${main4-dao.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <scope>test</scope>
