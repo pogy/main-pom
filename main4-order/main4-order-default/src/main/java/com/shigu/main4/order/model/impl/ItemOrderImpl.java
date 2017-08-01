@@ -384,7 +384,7 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public void payed() {
-        changeStatus(OrderStatus.WAIT_SELLER_SEND_GOODS);
+        changeStatus(OrderStatus.BUYER_PAYED);
     }
 
     @Override

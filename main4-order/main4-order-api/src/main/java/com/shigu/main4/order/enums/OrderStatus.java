@@ -6,11 +6,10 @@ package com.shigu.main4.order.enums;
  */
 public enum OrderStatus {
     WAIT_BUYER_PAY(1), //等待买家付款
-    SELLER_CONSIGNED_PART(2), //卖家部分发货
-    WAIT_SELLER_SEND_GOODS(3), //等待卖家发货
+    BUYER_PAYED(2),//订单已支付
+    SELLER_SENDED_GOODS(3), //卖家已发货
     TRADE_FINISHED(4),  //交易完成
-    TRADE_CLOSED(5), //付款以后用户退款成功，交易自动关闭
-    SELLER_SENDED(6);//订单已经移除
+    TRADE_CLOSED(5); //付款以后用户退款成功，交易自动关闭
 
     public final int status;
 
