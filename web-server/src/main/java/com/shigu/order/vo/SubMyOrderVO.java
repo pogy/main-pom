@@ -9,9 +9,13 @@ public class SubMyOrderVO {
      */
     private Long childOrderId;
     /**
+     * 售前id
+     */
+    private Long sqRefundId;
+    /**
      * 	售后id
      */
-    private Long refundId;
+    private Long shRefundId;
     /**
      * 	商品Id
      */
@@ -53,7 +57,7 @@ public class SubMyOrderVO {
      */
     private Integer shTkNum;
     /**
-     * 退款状态 0无，1退款成功(对应tkNum)
+     * 退款状态 0无，1:申请中,2:成功,3:拒绝
      */
     private Integer tkState;
     /**
@@ -73,20 +77,6 @@ public class SubMyOrderVO {
      */
     public void setChildOrderId(Long childOrderId) {
         this.childOrderId = childOrderId;
-    }
-
-    /**
-     * 获取 	售后id
-     */
-    public Long getRefundId() {
-        return this.refundId;
-    }
-
-    /**
-     * 设置 	售后id
-     */
-    public void setRefundId(Long refundId) {
-        this.refundId = refundId;
     }
 
     /**
@@ -255,5 +245,33 @@ public class SubMyOrderVO {
      */
     public void setShState(Integer shState) {
         this.shState = shState;
+    }
+
+    /**
+     * 获取 售前id
+     */
+    public Long getSqRefundId() {
+        return this.sqRefundId;
+    }
+
+    /**
+     * 设置 售前id
+     */
+    public void setSqRefundId(Long sqRefundId) {
+        this.sqRefundId = sqRefundId;
+    }
+
+    /**
+     * 获取 	售后id
+     */
+    public Long getShRefundId() {
+        return this.shRefundId;
+    }
+
+    /**
+     * 设置 	售后id
+     */
+    public void setShRefundId(Long shRefundId) {
+        this.shRefundId = shRefundId;
     }
 }

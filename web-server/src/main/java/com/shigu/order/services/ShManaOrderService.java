@@ -45,25 +45,7 @@ public class ShManaOrderService {
             vo.setTradePay(PriceConvertUtils.priceToString(show.getServerPrice()+show.getOrderPrice()+show.getPostPrice()));
             vo.setTradeTime(DateUtil.dateToString(show.getPayTime(),DateUtil.patternD));
             vo.setWebSite(show.getWebSite());
-            List<SubMyOrderVO> subs=new ArrayList<>();
-            for(SubOrderInfoVO so:show.getChildOrders()){
-                SubMyOrderVO sub=new SubMyOrderVO();
-                sub.setChildOrderId(so.getSubOrderId());
-                sub.setColor(so.getColor());
-                sub.setGoodsId(so.getGoodsId());
-                sub.setGoodsNo(so.getGoodsNo());
-                sub.setImgsrc(so.getImgsrc());
-                sub.setNum(so.getNum());
-                sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
-                sub.setRefundId(so.getRefundId());
-                sub.setShState(so.getShState()==null?0:so.getShState().afterSaleStatus);
-                sub.setShTkNum(so.getShTkNum());
-                sub.setSize(so.getSize());
-                sub.setTitle(so.getTitle());
-                sub.setTkNum(so.getTkNum());
-                sub.setTkState(so.getTkState()==null?null:so.getTkState().refundStatus==2?1:0);
-                subs.add(sub);
-            }
+            List<SubMyOrderVO> subs=MyOrderService.toSubMyOrderVO(show.getChildOrders());
             vo.setChildOrders(subs);
             vos.add(vo);
         }

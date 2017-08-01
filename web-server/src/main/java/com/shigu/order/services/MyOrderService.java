@@ -59,25 +59,7 @@ public class MyOrderService {
             vo.setTradePay(PriceConvertUtils.priceToString(show.getServerPrice()+show.getOrderPrice()+show.getPostPrice()));
             vo.setTradeTime(DateUtil.dateToString(show.getPayTime(),DateUtil.patternD));
             vo.setWebSite(show.getWebSite());
-            List<SubMyOrderVO> subs=new ArrayList<>();
-            for(SubOrderInfoVO so:show.getChildOrders()){
-                SubMyOrderVO sub=new SubMyOrderVO();
-                sub.setChildOrderId(so.getSubOrderId());
-                sub.setColor(so.getColor());
-                sub.setGoodsId(so.getGoodsId());
-                sub.setGoodsNo(so.getGoodsNo());
-                sub.setImgsrc(so.getImgsrc());
-                sub.setNum(so.getNum());
-                sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
-                sub.setRefundId(so.getRefundId());
-                sub.setShState(so.getShState().afterSaleStatus);
-                sub.setShTkNum(so.getShTkNum());
-                sub.setSize(so.getSize());
-                sub.setTitle(so.getTitle());
-                sub.setTkNum(so.getTkNum());
-                sub.setTkState(so.getTkState().refundStatus==2?1:0);
-                subs.add(sub);
-            }
+            List<SubMyOrderVO> subs=toSubMyOrderVO(show.getChildOrders());
             vo.setChildOrders(subs);
             vos.add(vo);
         }
@@ -111,25 +93,7 @@ public class MyOrderService {
         OrderDetailExpressVO expressVO= orderListService.selectExpress( orderId);
 
         List<SubOrderInfoVO> list=orderListService.selectSubList( orderId);
-        List<SubMyOrderVO> subs=new ArrayList<>();
-        for(SubOrderInfoVO so:list){
-            SubMyOrderVO sub=new SubMyOrderVO();
-            sub.setChildOrderId(so.getSubOrderId());
-            sub.setColor(so.getColor());
-            sub.setGoodsId(so.getGoodsId());
-            sub.setGoodsNo(so.getGoodsNo());
-            sub.setImgsrc(so.getImgsrc());
-            sub.setNum(so.getNum());
-            sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
-            sub.setRefundId(so.getRefundId());
-            sub.setShState(so.getShState().afterSaleStatus);
-            sub.setShTkNum(so.getShTkNum());
-            sub.setSize(so.getSize());
-            sub.setTitle(so.getTitle());
-            sub.setTkNum(so.getTkNum());
-            sub.setTkState(so.getTkState().refundStatus==2?1:0);
-            subs.add(sub);
-        }
+        List<SubMyOrderVO> subs=toSubMyOrderVO(list);
         MyOrderDetailVO vo=new MyOrderDetailVO();
         vo.setChildOrders (subs);
 
@@ -173,5 +137,45 @@ public class MyOrderService {
 
         vo.setOrderStateTime (orderStatusTIme);
         return vo;
+    }
+
+    public static List<SubMyOrderVO> toSubMyOrderVO(List<SubOrderInfoVO> list){
+        List<SubMyOrderVO> subs=new ArrayList<>();
+        for(SubOrderInfoVO so:list){
+            SubMyOrderVO sub=new SubMyOrderVO();
+            sub.setChildOrderId(so.getSubOrderId());
+            sub.setColor(so.getColor());
+            sub.setGoodsId(so.getGoodsId());
+            sub.setGoodsNo(so.getGoodsNo());
+            sub.setImgsrc(so.getImgsrc());
+            sub.setNum(so.getNum());
+            sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
+            sub.setSqRefundId(so.getPreSaleRefundId());
+            sub.setShRefundId(so.getAfterSaleRefundId());
+            sub.setShState(so.getShState().afterSaleStatus);
+            sub.setShTkNum(so.getShTkNum());
+            sub.setSize(so.getSize());
+            sub.setTitle(so.getTitle());
+            sub.setTkNum(so.getTkNum());
+            if(so.getTkState()!=null){
+                switch (so.getTkState().refundStatus){
+                    case 2:{
+                        sub.setTkState(2);
+                        break;
+                    }
+                    case 1|2:{
+                        sub.setTkState(1);
+                        break;
+                    }
+                    default:{
+                        sub.setTkState(3);
+                    }
+                }
+            }else{
+                sub.setTkState(0);
+            }
+            subs.add(sub);
+        }
+        return subs;
     }
 }
