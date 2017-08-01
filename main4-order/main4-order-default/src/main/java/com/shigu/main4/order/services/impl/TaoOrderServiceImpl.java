@@ -167,7 +167,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
     @Override
     public RelationGoodsVO glGoodsJson(Long numiid) throws NotFindRelationGoodsException {
         if (numiid == null) {
-            throw new NotFindRelationGoodsException();
+            throw new NotFindRelationGoodsException("numiid为null");
         }
         ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
         shiguGoodsTinyExample.setWebSite("hz");
@@ -182,7 +182,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
     @Override
     public RelationGoodsVO glGoodsJson(Long numiid, Long goodsId) throws NotFindRelationGoodsException {
         if (numiid == null || goodsId == null) {
-            throw new NotFindRelationGoodsException();
+            throw new NotFindRelationGoodsException("numiid或goodsid为空");
         }
         RelationGoodsVO vo = new RelationGoodsVO();
         ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById("hz", goodsId);
@@ -258,7 +258,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             address+=","+t.getReceiverMobile();
         }
         if (!StringUtils.isEmpty(t.getReceiverAddress())){
-            address+=","+t.getReceiverState()+" "+t.getReceiverDistrict()+" "+t.getReceiverCity()+" "+t.getReceiverAddress();
+            address+=","+t.getReceiverState()+" "+t.getReceiverCity()+" "+t.getReceiverDistrict()+" "+t.getReceiverAddress();
         }
         tbOrderVO.setAddress(address);
         if (t.getPayTime()!=null){
