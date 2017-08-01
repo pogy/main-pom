@@ -243,23 +243,7 @@ public class ActiveDrawListener implements MessageListener {
     @Autowired
     private ShiguTempMapper shiguTempMapper;
     public String signUp(String flag, Long userId, Long shopId){
-        if (userId==null||shopId==null){
-            return "您还没有店铺";
-        }
-        ShiguTempExample shiguTempExample =new ShiguTempExample();
-        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
-        List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
-        if (temps.size()>0){
-            return "您已经报过名了";
-        }
-        ShiguTemp shiguTemp=new ShiguTemp();
-        shiguTemp.setFlag(flag);
-        shiguTemp.setKey1(userId.toString());
-        shiguTemp.setKey2(shopId.toString());
-        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        shiguTemp.setKey3(dateFormat.format(new Date()));
-        shiguTempMapper.insertSelective(shiguTemp);
-        return "true";
+        return activeDrawServiceImpl.shiguTempSigup(flag,userId,shopId);
     }
     public boolean checkSignUp(Long userId,Long shopId) {
         ShiguTempExample shiguTempExample=new ShiguTempExample();

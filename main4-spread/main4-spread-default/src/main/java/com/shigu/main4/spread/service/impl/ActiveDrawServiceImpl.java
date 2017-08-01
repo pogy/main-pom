@@ -10,6 +10,7 @@ import com.opentae.data.mall.beans.ActiveDrawShop;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguMarket;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.beans.ShiguTemp;
 import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
 import com.opentae.data.mall.examples.ActiveDrawPemExample;
 import com.opentae.data.mall.examples.ActiveDrawPitExample;
@@ -18,6 +19,7 @@ import com.opentae.data.mall.examples.ActiveDrawShopExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawPemMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawPitMapper;
@@ -26,6 +28,7 @@ import com.opentae.data.mall.interfaces.ActiveDrawShopMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -53,6 +56,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -95,6 +99,9 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
 
     @Autowired
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+
+    @Autowired
+    private ShiguTempMapper shiguTempMapper;
 
     /**
      * 查询当前期次
@@ -938,6 +945,27 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             return;
         }
         activeDrawRecordMapper.insertSelective(drawRecord);
+    }
+
+    @Override
+    public String shiguTempSigup(String flag, Long userId, Long shopId) {
+        if (userId==null||shopId==null){
+            return "您还没有店铺";
+        }
+        ShiguTempExample shiguTempExample =new ShiguTempExample();
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
+        List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
+        if (temps.size()>0){
+            return "您已经报过名了";
+        }
+        ShiguTemp shiguTemp=new ShiguTemp();
+        shiguTemp.setFlag(flag);
+        shiguTemp.setKey1(userId.toString());
+        shiguTemp.setKey2(shopId.toString());
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        shiguTemp.setKey3(dateFormat.format(new Date()));
+        shiguTempMapper.insertSelective(shiguTemp);
+        return "true";
     }
 
 

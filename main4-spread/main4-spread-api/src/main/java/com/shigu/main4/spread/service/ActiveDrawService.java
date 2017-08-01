@@ -152,4 +152,6 @@ public interface ActiveDrawService {
 
     void addActiveDrawRecord(ActiveDrawRecordBO activeDrawRecord);
 
+    String shiguTempSigup(String flag, Long userId, Long shopId);
+
 }
