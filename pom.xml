@@ -12,7 +12,7 @@
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.1.8-SNAPSHOT</version>
+    <version>4.1.9-SNAPSHOT</version>
     <!--versions:update-child-modules-->
     <modules>
         <module>main4-dao</module>
@@ -22,7 +22,6 @@
         <module>main4-store</module>
         <module>main4-item</module>
         <module>main4-test</module>
-        <module>main4-admin</module>
         <module>main4-monitor</module>
         <module>main4-spread</module>
         <module>main4-tools</module>
@@ -45,11 +44,7 @@
         <main4-common.version>${project.version}</main4-common.version>
         <main4-dao.version>${project.version}</main4-dao.version>
         <main4-store-default.version>${project.version}</main4-store-default.version>
-        <main4-store-inmarket.version>${project.version}</main4-store-inmarket.version>
         <main4-item-default.version>${project.version}</main4-item-default.version>
-        <main4-item-update.version>${project.version}</main4-item-update.version>
-        <main4-order-default-version>${project.version}</main4-order-default-version>
-        <main4-order-api-version>${project.version}</main4-order-api-version>
         <main4-monitor-default.version>${project.version}</main4-monitor-default.version>
 
         <spring.version>4.3.9.RELEASE</spring.version>
@@ -121,8 +116,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>

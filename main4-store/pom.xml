@@ -13,7 +13,6 @@
     <modules>
         <module>main4-store-api</module>
         <module>main4-store-default</module>
-        <module>main4-store-inmarket</module>
     </modules>
     <packaging>pom</packaging>
 

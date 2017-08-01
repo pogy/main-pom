@@ -1,8 +1,7 @@
-package com.shigu.main4.item.services.impl;
+package com.shigu.main4.item.services;
 
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.main4.item.services.PriceCalculateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

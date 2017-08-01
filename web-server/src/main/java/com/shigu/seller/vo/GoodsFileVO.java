@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2017/7/26.
  */
-public class GoodsFileVO {
+public class GoodsFileVO implements Comparable<GoodsFileVO>{
     private String fileId;
     private String fileType;
     private String fileName;
@@ -85,6 +85,25 @@ public class GoodsFileVO {
 
     public void setUnit( String unit ) {
         this.unit = unit;
+    }
+
+    @Override
+    public int compareTo(GoodsFileVO o) {
+        if(o.getFileType().equals(this.getFileType())){
+            return o.getFileCreateTime()>this.getFileCreateTime()?1:-1;
+        }
+        switch (o.getFileType()){
+            case "folder":
+                if(!this.getFileType().equals("folder"))
+                    return 1;
+            case "picBkg":
+                switch (this.getFileType()){
+                    case "other":return 1;
+                    case "folder":return -1;
+                }
+            case "other":if(!this.getFileType().equals("other"))return -1;
+        }
+        return 0;
     }
 }
 
