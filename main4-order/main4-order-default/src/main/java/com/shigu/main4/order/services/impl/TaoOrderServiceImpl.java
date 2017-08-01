@@ -296,8 +296,8 @@ public class TaoOrderServiceImpl implements TaoOrderService {
                 vo.setSize(o.getSkuPropertiesName().split(";")[1].split(":")[1]);
                 if (map.size()>0){
                     vo.setGoodsNo(map.get(o.getNumIid()).getGoodsNo());
-                    vo.setXzPrice(map.get(o.getNumIid()).getPriceString());
-                    vo.setXzPriceLong(map.get(o.getNumIid()).getPrice());
+                    vo.setXzPrice(map.get(o.getNumIid()).getPiPriceString());
+                    vo.setXzPriceLong(map.get(o.getNumIid()).getPiPrice());
                 }
                 vo.setTitle(o.getTitle());
                 childOrders.add(vo);
