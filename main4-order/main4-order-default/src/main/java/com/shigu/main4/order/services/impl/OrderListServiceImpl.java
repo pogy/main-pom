@@ -323,11 +323,17 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setShState(AfterSaleStatusEnum.NOT_AFTER_SALE);
             vo.setShTkNum(0);
             vo.setTkNum(0);
+            vo.setRefundNum(0);
             vo.setTkState(RefundStateEnum.APPLY_REFUND);
             if (refund != null) {
                 vo.setRefundId(refund.getRefundId());
                 vo.setRefundNum(refund.getNumber());
-                vo.setTkNum(refund.getNumber());
+                if (refund.getType() == 2 || refund.getType() == 3) {
+                    vo.setShTkNum(refund.getNumber());
+                }
+                if (refund.getType() == 1) {
+                    vo.setTkNum(refund.getNumber());
+                }
                 vo.setTkState(RefundStateEnum.statusOf(refund.getStatus()));
                 if (refund.getStatus() == 2) {
                     if (refund.getType() == 2 || refund.getType() == 3 ) {
