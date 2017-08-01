@@ -72,6 +72,11 @@ public class ItemProduct implements Serializable {
      */
 	private Long weight;
 
+    /**
+     * 货号
+     */
+	private String goodsNo;
+
 	public void setPid(Long pid) {
 		this.pid = pid;
 	}
@@ -174,6 +179,14 @@ public class ItemProduct implements Serializable {
 
 	public Long getWeight() {
 		return this.weight;
+	}
+
+	public void setGoodsNo(String goodsNo) {
+		this.goodsNo = goodsNo;
+	}
+
+	public String getGoodsNo() {
+		return this.goodsNo;
 	}
 
 }

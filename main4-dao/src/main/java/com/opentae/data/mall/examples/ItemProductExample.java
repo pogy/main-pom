@@ -232,6 +232,74 @@ public class ItemProductExample implements SgExample{
             }
         }
 
+        public ItemProductExample.Criteria andGoodsNoIsNull() {
+            this.addCriterion("goods_no is null");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoIsNotNull() {
+            this.addCriterion("goods_no is not null");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoEqualTo(String value) {
+            this.addCriterion("goods_no =", value, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoNotEqualTo(String value) {
+            this.addCriterion("goods_no <>", value, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoGreaterThan(String value) {
+            this.addCriterion("goods_no >", value, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoGreaterThanOrEqualTo(String value) {
+            this.addCriterion("goods_no >=", value, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoLessThan(String value) {
+            this.addCriterion("goods_no <", value, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoLessThanOrEqualTo(String value) {
+            this.addCriterion("goods_no <=", value, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoLike(String value) {
+            this.addCriterion("goods_no like", value, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoNotLike(String value) {
+            this.addCriterion("goods_no not like", value, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }        public ItemProductExample.Criteria andGoodsNoIn(List<String> values) {
+            this.addCriterion("goods_no in", values, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoNotIn(List<String> values) {
+            this.addCriterion("goods_no not in", values, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoBetween(String value1, String value2) {
+            this.addCriterion("goods_no between", value1, value2, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
+        public ItemProductExample.Criteria andGoodsNoNotBetween(String value1, String value2) {
+            this.addCriterion("goods_no not between", value1, value2, "goodsNo");
+            return (ItemProductExample.Criteria)this;
+        }
+
         public ItemProductExample.Criteria andGoodsIdIsNull() {
             this.addCriterion("goods_id is null");
             return (ItemProductExample.Criteria)this;
