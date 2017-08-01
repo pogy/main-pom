@@ -91,7 +91,7 @@ public class MyOrderService {
         boolean flag=false;
         ItemOrder iorder=  itemOrderMapper.selectByPrimaryKey (orderId);
 
-        if(iorder!=null&&!userId.equals (iorder.getUserId ())){
+        if(iorder!=null && userId.equals (iorder.getUserId ())){
             flag=true;
         }
 

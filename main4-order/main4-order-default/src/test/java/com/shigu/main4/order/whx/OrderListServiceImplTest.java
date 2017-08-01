@@ -104,7 +104,7 @@ public class OrderListServiceImplTest extends BaseTest {
 
     @Test
     public void testSubOrderInfos() {
-       itemOrderSubMapper.selSubOrderAndRefundInfos(68L).forEach(subOrderInfo -> {
+       itemOrderSubMapper.selSubOrderAndRefundInfos(112L).forEach(subOrderInfo -> {
            show(subOrderInfo);
            show(subOrderInfo.getItemOrderRefund());
            System.out.println("--------------------");
