@@ -77,7 +77,10 @@ public class PreSaleShowAction {
     @RequestMapping("order/onlyRefundApply")
     @ResponseBody
     public JSONObject onlyRefundApply(Long childOrderId,Integer refundCount){
-        Long refundId=afterSaleService.refundApply(childOrderId,refundCount);
+        SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(childOrderId);
+        Long refundId=afterSaleService.returnGoodsApply(childOrderId,refundCount,
+                PriceConvertUtils.priceToString(refundCount*PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice())),
+                null,null);
         JSONObject obj=new JSONObject();
         obj.put("result","success");
         obj.put("refundId",refundId);

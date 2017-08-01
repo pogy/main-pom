@@ -436,37 +436,4 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     }
 
 
-    /**
-     * 申请退款
-     *
-     * @param subOrderId
-     * @param number
-     * @return 退款编号
-     */
-    @Override
-    public Long refundApply(Long subOrderId, Integer number) {
-        return null;
-    }
-
-    /**
-     * 退款信息查询
-     *
-     * @param refundId
-     * @return
-     */
-    @Override
-    public RefundInfoVO refundInfo(Long refundId) {
-        return null;
-    }
-
-    /**
-     * 退款信息日志
-     *
-     * @param refundId
-     * @return
-     */
-    @Override
-    public List<RefundLogVO> refundLog(Long refundId) {
-        return null;
-    }
 }
