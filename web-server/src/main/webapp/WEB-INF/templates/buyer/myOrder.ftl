@@ -61,7 +61,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -304,7 +304,7 @@ var webSite = '${webSite!}';
     <ul>
         <li><label>商品货号：</label><input type=text name="goodsNo" <#if query.goodsNo??>value="${query.goodsNo!}"</#if>></li>
         <li>
-            <label>成交时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="starTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if>>
+            <label>时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="starTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if>>
         </li>
         <li><label>订单编号：</label><input type=text name="orderId" <#if query.orderId??>value="${query.orderId!}"</#if>></li>
         <li><label>收货人信息：</label><input type=text name="receiver" placeholder="收货人姓名" class="slInput" <#if query.receiver??>value="${query.receiver!}"</#if>><span class="divideLine"></span><input type=text name="telePhone" placeholder="收货人手机号码" class="slInput" <#if query.telePhone??>value="${query.telePhone!}"</#if>></li>
@@ -386,7 +386,7 @@ var webSite = '${webSite!}';
         <div class="orderItem clearfix <#if order.mainState == 4 || order.mainState == 5>finish</#if>">
             <div class="orderHead fl">
                 <span class="fc6">订单编号：${order.orderId!}</span>
-                <span class="fc6">成交时间：${order.tradeTime!}</span>
+                <span class="fc6">时间：${order.tradeTime!}</span>
                 <b class="fr delete" jbtn="deleteBtn" data-id="${order.orderId!}"></b>
             </div>
             <div class="childOrderList fl">
@@ -661,6 +661,9 @@ var webSite = '${webSite!}';
 
 
 <!--省略end，让浏览器自动添加-->
+
+<#include "/common/cnzz.ftl">
+
 
 
 

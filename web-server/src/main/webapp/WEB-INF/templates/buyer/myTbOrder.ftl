@@ -382,7 +382,7 @@ var webSite = '${webSite!}';
         <span class="fc6">订单编号：<em class="fs14">${order.tbId!}</em></span>
         <span class="fc6">成交时间：<em class="fs14">${order.time!}</em></span>
         <#if order.lastTime??>
-        <em class="fr fcBlue">${order.lastTime!}&nbsp;&nbsp;已下单</em>
+        <em class="fr fcBlue">最近下单时间：${order.lastTime!}</em>
         </#if>
     </div>
     <div class="orderInfo">

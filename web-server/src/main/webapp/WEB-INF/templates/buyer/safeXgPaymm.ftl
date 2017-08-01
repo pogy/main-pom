@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>个人信息设置 - 分销商中心 - 四季星座网</title>
+    <title>修改支付密码 - 分销商中心 - 四季星座网</title>
 
     
     
@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/sysSetsindex.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/safeXgPaymm.css" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/sysSetsindex.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/safeXgPaymm.js"></script>
 </head>
 <body>
 
@@ -188,13 +188,13 @@ var webSite = '${webSite!}';
     <ul>
     
         
-            
-            <li><a href="${main_host!}member/safeindex.htm" >安全设置</a></li>
-            
+        <li><a class="selected" href="${main_host!}member/safeindex.htm">安全设置</a></li> 
         
     
         
-        <li><a class="selected" href="${main_host!}member/sysSetsindex.htm">个人设置</a></li> 
+            
+            <li><a href="${main_host!}member/sysSetsindex.htm" >个人设置</a></li>
+            
         
     
         
@@ -210,70 +210,32 @@ var webSite = '${webSite!}';
 
 
 
-        <div class="rightBox fr fc6">
-    <div class="setHeadImg yahei clearfix">
-    <label>当前头像：</label>
-    <div class="picbox">
-        <img src="${userInfo.headUrl!}">
-        <input type="file" name="file">
-        <em>更换头像</em>
-    </div>
-    <div class="uidbox">
-        <em>${userInfo.userId!}</em>
-        <span>星座宝账户</span>
-    </div>
+        <div class="rightBox fr">
+    <div class="headTop clearfix">
+    <#if hasPayPwd == false>
+    <em>设置支付密码</em>
+    <#else>
+    <em>修改支付密码</em>
+    </#if>
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="setBaseInfo">
-    <ul>
-        <li class="clearfix baseItem">
-            <label>用户名：</label>
-            <input class="textinput" name="nickname" id="name" placeholder="请输入您的昵称" value="${userInfo.userNick!}">
+    <ul class="formbox">
+        <#if hasPayPwd == true>
+        <li class="clearfix">
+            <label>原密码：</label>
+            <input type="password" class="textinput" id="pwd1" placeholder="请输入原密码">
         </li>
-        <li class="clearfix baseItem">
-            <label>电子邮箱：</label>
-            <input class="textinput" name="email" id="email" placeholder="请输入您的电子邮箱" value="${userInfo.email!}">
+        </#if>
+        <li class="clearfix">
+            <label>新密码：</label>
+            <input type="password" class="textinput" id="pwd2" placeholder="请输入新密码">
         </li>
-        <li class="clearfix baseItem">
-            <label>性别：</label>
-            <label class="rdname"><input type="radio" name="sex" value="0" <#if userInfo.sex=="0">checked</#if>>保密</label>
-            <label class="rdname"><input type="radio" name="sex" value="1" <#if userInfo.sex=="1">checked</#if>>男</label>
-            <label class="rdname"><input type="radio" name="sex" value="2" <#if userInfo.sex=="2">checked</#if>>女</label>
+        <li class="clearfix">
+            <label>确认密码：</label>
+            <input type="password" class="textinput" id="pwd3" placeholder="请输入确认密码">
         </li>
-        <li class="clearfix baseItem">
-            <label>QQ：</label>
-            <input class="textinput" name="qq" id="qq" placeholder="请输入您的QQ号码" value="${userInfo.imQq!}">
-        </li>
-        <li class="clearfix baseItem">
-            <label>微信：</label>
-            <input class="textinput" name="wx" id="wx" placeholder="请输入您的微信号码" value="${userInfo.imWx!}">
-        </li>
-        <li class="clearfix baseItem">
-            <label>阿里旺旺：</label>
-            <input class="textinput" name="ww" id="ww" placeholder="请输入您的旺旺" value="${userInfo.imWw!}">
-        </li>
-        <li class="clearfix baseItem">
+        <li class="clearfix">
             
 
 <#assign text>{}</#assign>
@@ -346,7 +308,14 @@ var webSite = '${webSite!}';
 
 
 
-</div>
+
+
+
+
+
+
+
+
 
 
 
