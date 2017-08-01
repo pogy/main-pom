@@ -278,7 +278,7 @@ public class OrderListServiceImpl implements OrderListService {
         vo.setOrderPrice(orderDetailTotalVO.getChildOrdersPriceLong());
         vo.setServerPrice(orderDetailTotalVO.getServicePriceLong());
         vo.setFinishTimed(itemOrderVO.getFinishTime());
-        vo.setTbOrder(!(itemOrderVO.getOuterId() == null || itemOrderVO.getOuterId().isEmpty()));
+        vo.setIsTbOrder(!(itemOrderVO.getOuterId() == null || itemOrderVO.getOuterId().isEmpty()));
         vo.setPayTime(itemOrderVO.getCreateTime());
         vo.setSendTime(vo.getOrderCreateTimed());
         //vo.setTradeTimed(itemOrderVO.getCreateTime());

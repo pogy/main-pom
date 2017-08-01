@@ -47,11 +47,11 @@ public class ShowOrderDetailVO {
      */
     private Boolean isTbOrder;
 
-    public Boolean getTbOrder() {
+    public Boolean getIsTbOrder() {
         return isTbOrder;
     }
 
-    public void setTbOrder(Boolean tbOrder) {
+    public void setIsTbOrder(Boolean tbOrder) {
         isTbOrder = tbOrder;
     }
 
