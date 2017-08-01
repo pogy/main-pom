@@ -24,7 +24,7 @@
         <result property="size" column="size"></result>
         <result property="color" column="color"></result>
         <result property="goodsNo" column="goods_no"></result>
-        <collection property="itemOrderRefund" javaType="com.opentae.data.mall.beans.ItemOrderRefund">
+        <collection property="itemOrderRefund" ofType="com.opentae.data.mall.beans.ItemOrderRefund">
             <id property="refundId" column="refund_id"></id>
             <result property="oid" column="sub_refund_oid"></result>
             <result property="soid" column="sub_refund_soid"></result>
