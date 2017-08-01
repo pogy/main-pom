@@ -384,7 +384,7 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public void payed() {
-        changeStatus(OrderStatus.SELLER_CONSIGNED_PART);
+        changeStatus(OrderStatus.WAIT_SELLER_SEND_GOODS);
     }
 
     @Override
@@ -399,7 +399,7 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public void remove() {
-        changeStatus(OrderStatus.TRADE_REMOVED);
+        // TODO: 17/8/1 需要备份数据
     }
 
     /**
