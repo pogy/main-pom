@@ -26,6 +26,16 @@ public class OrderVO implements Serializable{
 
     private Date createTime;
 
+    private String outerId;
+
+    public String getOuterId() {
+        return outerId;
+    }
+
+    public void setOuterId(String outerId) {
+        this.outerId = outerId;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }

@@ -77,6 +77,19 @@ public class ItemProductVO extends ProductVO implements Serializable{
      */
     private ItemSkuVO selectiveSku;
 
+    /**
+     * 货号
+     */
+    private String goodsNo;
+
+    public String getGoodsNo() {
+        return goodsNo;
+    }
+
+    public void setGoodsNo(String goodsNo) {
+        this.goodsNo = goodsNo;
+    }
+
     public ItemSkuVO getSelectiveSku() {
         return selectiveSku;
     }

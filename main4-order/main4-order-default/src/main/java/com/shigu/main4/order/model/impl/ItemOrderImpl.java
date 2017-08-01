@@ -118,6 +118,7 @@ public class ItemOrderImpl implements ItemOrder {
         orderVO.setOrderStatus(OrderStatus.statusOf(order.getOrderStatus()));
         orderVO.setCreateTime(order.getCreateTime());
         orderVO.setFinishTime(order.getFinishTime());
+        orderVO.setOuterId(order.getOuterId());
         return orderVO;
     }
 
@@ -327,7 +328,7 @@ public class ItemOrderImpl implements ItemOrder {
             sub.setTitle(info.getTitle());
             sub.setPrice(info.getPrice());
             sub.setWeight(info.getWeight());
-
+            sub.setGoodsNo(info.getGoodsNo());
             sub.setDistributionNum(0);
             // 应付总价 产品单价 X 数量
             sub.setShouldPayMoney(sub.getPrice() * sub.getNum());

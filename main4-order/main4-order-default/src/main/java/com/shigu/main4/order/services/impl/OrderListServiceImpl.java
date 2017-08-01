@@ -11,6 +11,7 @@ import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.model.ItemOrder;
@@ -172,7 +173,6 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo: com.shigu.main4.order.model.Order#remove方法
     @Override
     public int removeOrder(Long orderId) {
         ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
@@ -190,7 +190,6 @@ public class OrderListServiceImpl implements OrderListService {
      * ====================================================================================
      *
      */
-    //todo: com.shigu.main4.order.model.Order#closed方法
     @Override
     public int cancelOrder(Long orderId) {
         ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
@@ -279,7 +278,7 @@ public class OrderListServiceImpl implements OrderListService {
         vo.setOrderPrice(orderDetailTotalVO.getChildOrdersPriceLong());
         vo.setServerPrice(orderDetailTotalVO.getServicePriceLong());
         vo.setFinishTimed(itemOrderVO.getFinishTime());
-
+        vo.setTbOrder(!(itemOrderVO.getOuterId() == null || itemOrderVO.getOuterId().isEmpty()));
         vo.setPayTime(itemOrderVO.getCreateTime());
         vo.setSendTime(vo.getOrderCreateTimed());
         //vo.setTradeTimed(itemOrderVO.getCreateTime());

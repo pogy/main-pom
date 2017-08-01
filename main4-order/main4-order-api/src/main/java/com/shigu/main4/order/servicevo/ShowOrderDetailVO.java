@@ -42,6 +42,19 @@ public class ShowOrderDetailVO {
      */
     private Long serverPrice;
 
+    /**
+     * 是否淘宝订单
+     */
+    private Boolean isTbOrder;
+
+    public Boolean getTbOrder() {
+        return isTbOrder;
+    }
+
+    public void setTbOrder(Boolean tbOrder) {
+        isTbOrder = tbOrder;
+    }
+
     public Long getOrderId() {
         return this.orderId;
     }
