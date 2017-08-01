@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
  * @commonents:
  */
 @Controller
-@RequestMapping({"order/","member/"})
+@RequestMapping("order/")
 public class MyTbOrderAction {
     @Autowired
     MyTbOrderService myTbOrderService;

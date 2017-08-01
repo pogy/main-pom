@@ -16,9 +16,13 @@ public class SubOrderInfoVO implements Serializable{
      */
     private Long subOrderId;
     /**
+     * 售前退款ID
+     */
+    private Long preSaleRefundId;
+    /**
      * 退换货ID
      */
-    private Long refundId;
+    private Long afterSaleRefundId;
     /**
      * 商品ID
      */
@@ -71,20 +75,6 @@ public class SubOrderInfoVO implements Serializable{
      * 售后状态 0无，1售后处理中，2已退款，3已换货, 4退货中, 5换货中
      */
     private AfterSaleStatusEnum shState;
-
-    /**
-     * 获取 退换货ID
-     */
-    public Long getRefundId() {
-        return this.refundId;
-    }
-
-    /**
-     * 设置 退换货ID
-     */
-    public void setRefundId(Long refundId) {
-        this.refundId = refundId;
-    }
 
     /**
      * 获取 商品ID
@@ -288,5 +278,33 @@ public class SubOrderInfoVO implements Serializable{
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
+    }
+
+    /**
+     * 获取 售前退款ID
+     */
+    public Long getPreSaleRefundId() {
+        return this.preSaleRefundId;
+    }
+
+    /**
+     * 设置 售前退款ID
+     */
+    public void setPreSaleRefundId(Long preSaleRefundId) {
+        this.preSaleRefundId = preSaleRefundId;
+    }
+
+    /**
+     * 获取 退换货ID
+     */
+    public Long getAfterSaleRefundId() {
+        return this.afterSaleRefundId;
+    }
+
+    /**
+     * 设置 退换货ID
+     */
+    public void setAfterSaleRefundId(Long afterSaleRefundId) {
+        this.afterSaleRefundId = afterSaleRefundId;
     }
 }

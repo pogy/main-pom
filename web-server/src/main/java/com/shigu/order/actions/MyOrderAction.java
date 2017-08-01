@@ -35,7 +35,7 @@ import java.util.List;
  * @commonents:
  */
 @Controller
-@RequestMapping({"order/","member/"})
+@RequestMapping("order/")
 public class MyOrderAction {
     @Autowired
     MyOrderService myOrderService;

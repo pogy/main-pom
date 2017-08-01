@@ -22,7 +22,7 @@ public class ShowOrderVO implements Serializable {
 
     private Long orderId;
     /**
-     * 订单总金额
+     * 商品总金额
      */
     private Long orderPrice;
     /**
@@ -149,14 +149,14 @@ public class ShowOrderVO implements Serializable {
     }
 
     /**
-     * 获取 订单总金额
+     * 获取 商品总金额
      */
     public Long getOrderPrice() {
         return this.orderPrice;
     }
 
     /**
-     * 设置 订单总金额
+     * 设置 商品总金额
      */
     public void setOrderPrice(Long orderPrice) {
         this.orderPrice = orderPrice;
