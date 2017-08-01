@@ -16,7 +16,5 @@ import org.springframework.context.annotation.Scope;
 @Lazy(true)
 public interface ShiguGoodsSoldoutMapper extends Mapper<ShiguGoodsSoldout> {
 
-    /** 查询下架的商品 */
-    ShiguGoodsSoldout selectGoodsSoldoutById(@Param("goodsId") Long goodsId, @Param("webSite") String webSite);
 
 }

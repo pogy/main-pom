@@ -16,7 +16,5 @@ import org.springframework.context.annotation.Scope;
 @Lazy(true)
 public interface ShiguGoodsExtendsMapper extends Mapper<ShiguGoodsExtends> {
 
-    /** 查询商品扩展 */
-    ShiguGoodsExtends selectGoodsExtendsById(@Param("website") String website, @Param("goodsId") Long goodsId);
 
 }
