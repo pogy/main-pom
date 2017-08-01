@@ -313,7 +313,7 @@ public class OrderListServiceImpl implements OrderListService {
         List<SubOrderInfoVO> subOrderInfoVOS = Lists.newArrayList();
         subOrderInfos.forEach(subOrderInfo->{
             SubOrderInfoVO vo = BeanMapper.map(subOrderInfo, SubOrderInfoVO.class);
-            ItemOrderRefund refund = subOrderInfo.getItemOrderRefund();
+
             vo.setOrderId(subOrderInfo.getOid());
             vo.setSubOrderId(subOrderInfo.getSoid());
             vo.setImgsrc(subOrderInfo.getPicUrl());
@@ -324,32 +324,35 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setTkNum(0);
             vo.setRefundNum(0);
             vo.setTkState(RefundStateEnum.APPLY_REFUND);
-            if (refund != null) {
-                vo.setRefundId(refund.getRefundId());
-                vo.setRefundNum(refund.getNumber());
-                if (refund.getType() == 2 || refund.getType() == 3) {
-                    vo.setShTkNum(refund.getNumber());
+            List<ItemOrderRefund> refunds = subOrderInfo.getItemOrderRefund();
+            refunds.forEach(refund->{
+                if (refund != null) {
+                    vo.setTkState(RefundStateEnum.statusOf(refund.getStatus()));
+                    if (refund.getType() == 0) {
+                        vo.setShState(AfterSaleStatusEnum.NOT_AFTER_SALE);
+                    }else if (refund.getType() == 1) {
+                        vo.setShState(AfterSaleStatusEnum.HANDLE);
+                        vo.setPreSaleRefundId(refund.getRefundId());
+                        vo.setTkNum(vo.getTkNum()+refund.getNumber());
+                    } else if (refund.getType() == 2 || refund.getType() == 3 ) {
+                        if (refund.getStatus() == 2) {
+                            vo.setShState(AfterSaleStatusEnum.REFUND_ENT);
+                        } else {
+                            vo.setShState(AfterSaleStatusEnum.DISPOSE_FERUND);
+                        }
+                        vo.setShTkNum(vo.getShTkNum()+refund.getNumber());
+                        vo.setAfterSaleRefundId(refund.getRefundId());
+                    }else if (refund.getType() == 4) {
+                        if (refund.getStatus() == 2) {
+                            vo.setShState(AfterSaleStatusEnum.CHANGE_ENT);
+                        } else {
+                            vo.setShState(AfterSaleStatusEnum.DISPOSE_CHANGE);
+                        }
+                        vo.setAfterSaleRefundId(refund.getRefundId());
+                    }
+                    vo.setRefundNum(vo.getRefundNum()+refund.getNumber());
                 }
-                if (refund.getType() == 1) {
-                    vo.setTkNum(refund.getNumber());
-                }
-                vo.setTkState(RefundStateEnum.statusOf(refund.getStatus()));
-                if (refund.getStatus() == 2) {
-                    if (refund.getType() == 2 || refund.getType() == 3 ) {
-                        vo.setShState(AfterSaleStatusEnum.REFUND_ENT);
-                    }
-                    if (refund.getType() == 4) {
-                        vo.setShState(AfterSaleStatusEnum.CHANGE_ENT);
-                    }
-                } else {
-                    if (refund.getType() == 2 || refund.getType() == 3) {
-                        vo.setShState(AfterSaleStatusEnum.DISPOSE_FERUND);
-                    }
-                    if (refund.getType() == 4) {
-                        vo.setShState(AfterSaleStatusEnum.DISPOSE_CHANGE);
-                    }
-                }
-            }
+            });
             subOrderInfoVOS.add(vo);
         });
         return subOrderInfoVOS;

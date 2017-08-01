@@ -1,17 +1,19 @@
 package com.opentae.data.mall.beans;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/7/28 0028.
  */
 public class SubOrderInfos extends ItemOrderSub{
 
-    private ItemOrderRefund itemOrderRefund;
+    private List<ItemOrderRefund> itemOrderRefund;
 
-    public ItemOrderRefund getItemOrderRefund() {
+    public List<ItemOrderRefund> getItemOrderRefund() {
         return itemOrderRefund;
     }
 
-    public void setItemOrderRefund(ItemOrderRefund itemOrderRefund) {
+    public void setItemOrderRefund(List<ItemOrderRefund> itemOrderRefund) {
         this.itemOrderRefund = itemOrderRefund;
     }
 }
