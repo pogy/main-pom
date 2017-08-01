@@ -75,7 +75,7 @@ public class OrderListServiceImplTest extends BaseTest {
 
     @Test
     public void selectSubListTest() {
-        show(orderListService.selectSubList(68L));
+        show(orderListService.selectSubList(2L));
     }
 
     @Test

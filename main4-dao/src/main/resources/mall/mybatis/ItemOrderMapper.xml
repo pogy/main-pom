@@ -69,7 +69,7 @@
         <result property="size" column="size"></result>
         <result property="color" column="color"></result>
         <result property="goodsNo" column="goods_no"></result>
-        <association property="itemOrderRefund" resultMap="itemOrderRefund" javaType="com.opentae.data.mall.beans.ItemOrderRefund"></association>
+        <collection property="itemOrderRefund" resultMap="itemOrderRefund" ofType="com.opentae.data.mall.beans.ItemOrderRefund"></collection>
     </resultMap>
     <resultMap id="OrderInfoDetail" type="com.opentae.data.mall.beans.OrderInfos">
         <id property="oid" column="oid"></id>
