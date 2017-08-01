@@ -188,7 +188,9 @@ var webSite = '${webSite!}';
     <ul>
     
         
-        <li><a class="selected" href="${main_host!}member/safeindex.htm">安全设置</a></li> 
+            
+            <li><a class="selected" href="${main_host!}member/safeindex.htm">安全设置</a></li> 
+            
         
     
         

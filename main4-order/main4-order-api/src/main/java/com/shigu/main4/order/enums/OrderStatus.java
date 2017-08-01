@@ -9,7 +9,8 @@ public enum OrderStatus {
     SELLER_CONSIGNED_PART(2), //卖家部分发货
     WAIT_SELLER_SEND_GOODS(3), //等待卖家发货
     TRADE_FINISHED(4),  //交易完成
-    TRADE_CLOSED(5); //付款以后用户退款成功，交易自动关闭
+    TRADE_CLOSED(5), //付款以后用户退款成功，交易自动关闭
+    TRADE_REMOVED(6);//订单已经移除
 
     public final int status;
 

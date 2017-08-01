@@ -189,19 +189,19 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a href="${main_host!}member/myOrder.htm" >我的订单</a></li>
+            <li><a href="${main_host!}order/myOrder.htm" >我的订单</a></li>
             
         
     
         
             
-            <li><a href="${main_host!}member/myTbOrder.htm" >淘宝订单</a></li>
+            <li><a href="${main_host!}order/myTbOrder.htm" >淘宝订单</a></li>
             
         
     
         
             
-            <li><a href="${main_host!}member/shManaOrder.htm" >售后管理</a></li>
+            <li><a href="${main_host!}order/shManaOrder.htm" >售后管理</a></li>
             
         
     
@@ -245,7 +245,9 @@ var webSite = '${webSite!}';
     <ul>
     
         
-        <li><a class="selected" href="${main_host!}member/storeIn.htm">店铺申请</a></li> 
+            
+            <li><a class="selected" href="${main_host!}member/storeIn.htm">店铺申请</a></li> 
+            
         
     
     </ul> 
