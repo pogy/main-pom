@@ -79,7 +79,6 @@ public class OrderListServiceImpl implements OrderListService {
     @Override
     public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) throws ParseException {
         List<Long> orderIds = selOrderIdsByBO(bo,userId);
-                selOrderIdsByBO(bo, userId);
         List<ShowOrderVO> showOrderVOS = Lists.newArrayList();
         for (Long orderId:orderIds) {
             ShowOrderVO vo = BeanMapper.map(selectMyorder(orderId), ShowOrderVO.class);
@@ -275,9 +274,9 @@ public class OrderListServiceImpl implements OrderListService {
         OrderDetailTotalVO orderDetailTotalVO = selectTotal(orderId);
         vo.setOrderId(orderId);
         vo.setOrderCreateTimed(itemOrderVO.getCreateTime());
-        vo.setPostPrice(orderDetailTotalVO.getExpressPriceLong());
         vo.setMainState(MainOrderStatusEnum.statusOf(itemOrderVO.getOrderStatus().status));
-        vo.setOrderPrice(orderDetailTotalVO.getOrderTotalPriceLong());
+        vo.setPostPrice(orderDetailTotalVO.getExpressPriceLong());
+        vo.setOrderPrice(orderDetailTotalVO.getChildOrdersPriceLong());
         vo.setServerPrice(orderDetailTotalVO.getServicePriceLong());
         vo.setFinishTimed(itemOrderVO.getFinishTime());
 
@@ -366,6 +365,7 @@ public class OrderListServiceImpl implements OrderListService {
         OrderDetailTotalVO vo=new OrderDetailTotalVO();
         ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
         ItemOrderVO itemOrderVO = orderModel.orderInfo();
+        List<SubItemOrderVO> subOrdersInfo = orderModel.subOrdersInfo();
         vo.setOrderTotalPriceLong(itemOrderVO.getTotalFee());
         vo.setOrderTotalPrice(PriceConvertUtils.priceToString(vo.getOrderTotalPriceLong()));
         List<LogisticsVO> logisticsVOs = orderModel.selLogisticses();
@@ -374,7 +374,7 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setExpressPrice(PriceConvertUtils.priceToString(vo.getExpressPriceLong()));
         }
         long childOrdersPrice = 0;
-        for (SubItemOrderVO subItemOrderVO:orderModel.subOrdersInfo()) {
+        for (SubItemOrderVO subItemOrderVO: subOrdersInfo) {
             childOrdersPrice += subItemOrderVO.getNum()*subItemOrderVO.getProduct().getPrice();
         }
         vo.setChildOrdersPriceLong(childOrdersPrice);
