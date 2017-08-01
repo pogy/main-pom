@@ -194,7 +194,9 @@ var webSite = '${webSite!}';
         
     
         
-        <li><a class="selected" href="${main_host!}member/sysSetsindex.htm">个人设置</a></li> 
+            
+            <li><a class="selected" href="${main_host!}member/sysSetsindex.htm">个人设置</a></li> 
+            
         
     
         

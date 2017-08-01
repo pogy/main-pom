@@ -200,7 +200,9 @@ var webSite = '${webSite!}';
         
     
         
-        <li><a class="selected" href="${main_host!}member/fenxiaoZhanghao.htm">应用绑定</a></li> 
+            
+            <li><a class="selected" href="${main_host!}member/fenxiaoZhanghao.htm">应用绑定</a></li> 
+            
         
     
     </ul> 

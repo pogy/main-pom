@@ -194,7 +194,9 @@ var webSite = '${webSite!}';
         
     
         
-        <li><a class="selected" href="${main_host!}member/capStatistic.htm">资金明细</a></li> 
+            
+            <li><a class="selected" href="${main_host!}member/capStatistic.htm">资金明细</a></li> 
+            
         
     
     </ul> 

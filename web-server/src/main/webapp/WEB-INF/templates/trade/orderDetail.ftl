@@ -260,14 +260,19 @@ var webSite = '${webSite!}';
 <#assign moduledata2=text?eval />
 <#list [moduledata2] as $it>
 
-    <a href="payMode.htm"
-        
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
 
 
     class="fmButton
          fmButton-sm
          fmButton-orange
-        "
+         payBtn"
+    
+        jbtn="click"
     
     
         
@@ -288,7 +293,11 @@ var webSite = '${webSite!}';
     
 
 
+    <#if $it.href??>
     </a>
+    <#else>
+    </b>
+    </#if>
 
 
 
@@ -365,6 +374,10 @@ $(function(){
             e.$container.html('倒计时结束');
         }
     });   
+    
+    $(document).on('click', '.payBtn', function(){
+        window.location = main_host + 'payMode.htm?orderId='+orderId;
+    });
     
     //取消订单
     $('#cancelOrderBtn').on('click', function(){

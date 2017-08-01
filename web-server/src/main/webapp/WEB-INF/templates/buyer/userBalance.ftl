@@ -188,7 +188,9 @@ var webSite = '${webSite!}';
     <ul>
     
         
-        <li><a class="selected" href="${main_host!}member/userBalance.htm">我的资金</a></li> 
+            
+            <li><a class="selected" href="${main_host!}member/userBalance.htm">我的资金</a></li> 
+            
         
     
         
