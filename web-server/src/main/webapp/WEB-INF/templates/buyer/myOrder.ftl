@@ -412,12 +412,10 @@ var webSite = '${webSite!}';
         </#if>
         
         <#if order.mainState == 2>
-            <#if !childOrder.tkNum>
+            <#if childOrder.tkState == 0>
             <p><a href="onlyRefund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank">申请退款</a></p>
-            <#else>
-                <#if childOrder.tkState == 1>
-                <p class="fcBlue">退款成功 x${childOrder.tkNum!}</p>
-                </#if>
+            <#elseif childOrder.tkState == 1>
+            <p class="fcBlue">退款成功 x${childOrder.tkNum!}</p>
             </#if>
         </#if>
         
