@@ -191,6 +191,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             vo.setPrice(shiguGoodsTiny.getPriceString());
             vo.setPriceLong(shiguGoodsTiny.getPrice());
             vo.setWebSite("hz");
+            vo.setGoodsId(shiguGoodsTiny.getGoodsId());
         }
         ShiguGoodsTaoRelationExample shiguGoodsTaoRelationExample = new ShiguGoodsTaoRelationExample();
         shiguGoodsTaoRelationExample.createCriteria().andNumIidEqualTo(numiid).andGoodsIdEqualTo(goodsId);
@@ -298,6 +299,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
                     vo.setGoodsNo(map.get(o.getNumIid()).getGoodsNo());
                     vo.setXzPrice(map.get(o.getNumIid()).getPiPriceString());
                     vo.setXzPriceLong(map.get(o.getNumIid()).getPiPrice());
+
                 }
                 vo.setTitle(o.getTitle());
                 childOrders.add(vo);
