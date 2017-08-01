@@ -7,8 +7,10 @@ import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -57,6 +59,9 @@ public class GoodsFileService {
     @Autowired
     ShopForCdnService shopForCdnService;
 
+    @Autowired
+    ShiguShopMapper shiguShopMapper;
+
     final String ROOT_PATH="udf/";
 
     final long DEFAULT_SIZE=1048576;
@@ -70,6 +75,7 @@ public class GoodsFileService {
     public Map<String, String> createPostSignInfo(Long shopId) throws UnsupportedEncodingException {
         return ossIO.createPostSignInfo(getTempDir(shopId));
     }
+
     /**
      * 查店铺的容量支持
      * @param shopId
@@ -78,7 +84,11 @@ public class GoodsFileService {
     public Long shopDataSize(Long shopId){
         ShopLicense license=shopLicenseService.selShopLIcenseByType(shopId, ShopLicenseTypeEnum.SHOPDATA);
         if (license == null) {
-            return DEFAULT_SIZE;
+            //判断是否电商
+            ShiguShopExample example=new ShiguShopExample();
+            example.createCriteria().andShopIdEqualTo(shopId).andMarketIdEqualTo(1087L);
+            int much=shiguShopMapper.countByExample(example)>0?3:1;
+            return much*DEFAULT_SIZE;
         }
         return Long.valueOf(license.getContext());
     }
