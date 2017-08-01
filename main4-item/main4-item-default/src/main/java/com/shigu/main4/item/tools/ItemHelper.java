@@ -1,5 +1,8 @@
 package com.shigu.main4.item.tools;
 
+import com.opentae.data.mall.beans.ShiguGoodsExtends;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.ShiguPropImgs;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.ItemFrom;
 import com.shigu.main4.item.vo.ShiguPropImg;
