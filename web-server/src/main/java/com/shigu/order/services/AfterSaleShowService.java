@@ -36,9 +36,6 @@ public class AfterSaleShowService {
     private AfterSaleService afterSaleService;
     @Autowired
     private ItemOrderService itemOrderService;
-    //TODO 测试用
-    private static ReturnGoodsStatusEnum testStatus = ReturnGoodsStatusEnum.REFUND_MONEY_CHANGED;
-    private static ReturnGoodsStatusEnum testStatusC = ReturnGoodsStatusEnum.AGREE_PROCESS;
 
 
     public Long applyReturnOrder(AfterSaleBo bo) throws JsonErrException {
@@ -48,8 +45,6 @@ public class AfterSaleShowService {
 
     public void chooseExpress(String refundId, String expressId, String expressCode) {
         afterSaleService.chooseExpress(Long.parseLong(refundId), Long.parseLong(expressId), expressCode);
-        testStatus = ReturnGoodsStatusEnum.EXPRESS_SUBMIT;
-        testStatusC = ReturnGoodsStatusEnum.EXPRESS_SUBMIT;
     }
 
     public Map<String, Object> returnOrChange(String childOrderId) {
@@ -87,7 +82,6 @@ public class AfterSaleShowService {
         }
 
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
-        afterSaleStatusVO.setAfterSaleStatus(testStatus);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(refundId);
         List<RefundLogVO> rlist = afterSaleService.afterSaleApplication(refundId);
@@ -180,15 +174,10 @@ public class AfterSaleShowService {
     public Map<String, Object> exchange(long refundId, Integer express) throws Main4Exception, ParseException {
 
         ShStatusEnum shStatusEnum = afterSaleService.queryAfterSaleType(refundId);
-        shStatusEnum = ShStatusEnum.CHANGE;
         if (shStatusEnum == null || shStatusEnum.shStatus == 1) {
             return null;
         }
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
-        //TODO 测试用
-        testStatusC = ReturnGoodsStatusEnum.RETURN_ENT;
-        afterSaleStatusVO.setAfterSaleStatus(testStatusC);
-
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AbstractRefundVo vo = new OrderExchangeVo();
         AbstractRefundVo vo1 = new OrderSimpleRefundDecorate(vo, afterSaleSimpleOrderVO);//主单信息
@@ -272,12 +261,10 @@ public class AfterSaleShowService {
         switch (agreeState) {
             case 1: {
                 isAgree = true;
-                testStatus = ReturnGoodsStatusEnum.RETURN_ENT;
                 break;
             }
             case 2: {
                 isAgree = false;
-                testStatus = ReturnGoodsStatusEnum.REFUSE_MONEY_CHANGED;
                 break;
             }
             default: {
