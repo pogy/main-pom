@@ -13,8 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    
-    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1498980800865" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/actDetails.css?t=1501227515196" rel="stylesheet">
     
   </head>
 <body>
@@ -255,22 +254,6 @@ var actidVal = '${RequestParameters.actid!}';/*query.actid，ftl可通过Request
                                     <label>商品1：</label>
                                     <input type="text" placeholder="请输入产品链接">
                                 </li>
-                                <li class="clearfix">
-                                    <label>商品2：</label>
-                                    <input type="text" placeholder="请输入产品链接">
-                                </li>
-                                <li class="clearfix">
-                                    <label>商品3：</label>
-                                    <input type="text" placeholder="请输入产品链接">
-                                </li>
-                                <li class="clearfix">
-                                    <label>商品4：</label>
-                                    <input type="text" placeholder="请输入产品链接">
-                                </li>
-                                <li class="clearfix">
-                                    <label>商品5：</label>
-                                    <input type="text" placeholder="请输入产品链接">
-                                </li>
                             </ul>
                         
                         </div>
@@ -286,10 +269,6 @@ var actidVal = '${RequestParameters.actid!}';/*query.actid，ftl可通过Request
 <#assign $it=text?eval />
                                                 <button class="gyButton goRegister" jbtn="" id="">我要报名</button>
                         
-<#assign text>{"text":'查看报名商品列表', "cls":"checkList"}</#assign>
-<#assign $it=text?eval />
-                                                <button class="gyButton checkList" jbtn="" id="">查看报名商品列表</button>
-                        
                     </div>
                 </div>
             </div>
@@ -298,7 +277,7 @@ var actidVal = '${RequestParameters.actid!}';/*query.actid，ftl可通过Request
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -328,7 +307,7 @@ var actidVal = '${RequestParameters.actid!}';/*query.actid，ftl可通过Request
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1498980800865"></script>
+<script src="http://style.571xz.com/gys5/js/actDetails.js?t=1501227515196"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

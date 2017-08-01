@@ -34,6 +34,9 @@ public class StoreSearchAction {
         if(bo.getWebSite()==null){
             bo.setWebSite("hz");
         }
+        if (bo.getKeyword() == null) {
+            bo.setKeyword("");
+        }
         model.addAttribute("query",bo);
         model.addAttribute("markets",categoryInSearchService.selMarkets(bo.getWebSite()));
             ShiguPager<StoreInSearch> pager=storeSelFromEsService.searchStore(bo);

@@ -23,6 +23,16 @@ public class ShiguActivity implements Serializable {
      */
 	private String image;
 
+	/**
+	 * 活动banner
+	 */
+	private String banner;
+
+	/**
+	 * 活动背景色
+	 */
+	private String bkcolor;
+
     /**
      * 活动准入数量
      */
@@ -73,6 +83,11 @@ public class ShiguActivity implements Serializable {
 	 */
 	private String services;
 
+	/**
+	 * 分站
+	 */
+	private String webSite;
+
 	public void setActivityId(Long activityId) {
 		this.activityId = activityId;
 	}
@@ -95,6 +110,22 @@ public class ShiguActivity implements Serializable {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public String getBanner() {
+		return banner;
+	}
+
+	public void setBanner(String banner) {
+		this.banner = banner;
+	}
+
+	public String getBkcolor() {
+		return bkcolor;
+	}
+
+	public void setBkcolor(String bkcolor) {
+		this.bkcolor = bkcolor;
 	}
 
 	public String getNums() {
@@ -175,5 +206,13 @@ public class ShiguActivity implements Serializable {
 
 	public void setServices(String services) {
 		this.services = services;
+	}
+
+	public String getWebSite() {
+		return webSite;
+	}
+
+	public void setWebSite(String webSite) {
+		this.webSite = webSite;
 	}
 }

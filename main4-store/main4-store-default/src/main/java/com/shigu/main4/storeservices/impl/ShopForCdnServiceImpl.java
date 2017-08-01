@@ -1,31 +1,27 @@
 package com.shigu.main4.storeservices.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.aliyun.opensearch.SearcherClient;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
-import com.aliyun.opensearch.sdk.generated.commons.OpenSearchClientException;
-import com.aliyun.opensearch.sdk.generated.commons.OpenSearchException;
-import com.aliyun.opensearch.sdk.generated.search.*;
-import com.aliyun.opensearch.sdk.generated.search.general.SearchResult;
-import com.aliyun.opensearch.search.SearchParamsBuilder;
+import com.aliyun.opensearch.sdk.generated.search.Order;
+import com.aliyun.opensearch.sdk.generated.search.SortField;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
-import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.vo.OpenItemVo;
+import com.shigu.main4.item.vo.SearchGoodsVo;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.bo.ShopForCdnBo;
-import com.shigu.main4.item.vo.SearchGoodsVo;
-import com.shigu.main4.vo.*;
+import com.shigu.main4.vo.CatPolymerization;
+import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.main4.vo.ShopBaseForCdn;
+import com.shigu.main4.vo.ShopCat;
 import com.shigu.opensearchsdk.OpenSearch;
 import com.shigu.opensearchsdk.builder.AggsBuilder;
 import com.shigu.opensearchsdk.builder.FilterBuilder;
 import com.shigu.opensearchsdk.builder.QueryBuilder;
+import com.shigu.opensearchsdk.builder.SummaryBuild;
 import com.shigu.opensearchsdk.query.Query;
 import com.shigu.opensearchsdk.query.TermQuery;
 import com.shigu.opensearchsdk.response.Facet;
@@ -35,7 +31,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
@@ -454,7 +449,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
      * @return 商品豆腐块分页信息
      */
     @Override
-       public ShiguPager<ItemShowBlock> searchItemInstock(Date from, Date to, Long shopId, int pageNo, int pageSize) {
+    public ShiguPager<ItemShowBlock> searchItemInstock(Date from, Date to, Long shopId, int pageNo, int pageSize) {
         ShopForCdnBo shopForCdnBo = new ShopForCdnBo();
         shopForCdnBo.setPageNo(pageNo);
         shopForCdnBo.setPageSize(pageSize);
@@ -537,7 +532,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             for (OpenItemVo itemVo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
                 ItemShowBlock itemShowBlock = BeanMapper.map(itemVo,ItemShowBlock.class);
                 itemShowBlock.setImgUrl(itemVo.getPicUrl());
-                itemShowBlock.setPrice(itemVo.getPiPrice()+"");
+                itemShowBlock.setPrice(itemShowBlock.parsePrice(itemVo.getPiPrice()));
                 itemShowBlock.setItemId(itemVo.getGoodsId());
                 itemShowBlock.setWebSite(webSite);
                 itemShowBlock.setShopId(itemVo.getStoreId());
@@ -576,6 +571,12 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
                 case "time_down":
                     requestBuilder.addSort(new SortField("created", Order.DECREASE));
                     break;
+                case "popular":
+                    requestBuilder.setRank("goods_search_default","goods_search_popular",2000);
+                    break;
+                case "common":
+                    requestBuilder.setRank("rough_project_c","project_c",2000);
+                    break;
                 default:
                     requestBuilder.addSort(new SortField("created", Order.DECREASE));
                     break;
@@ -583,39 +584,15 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         }
 
         String keyword = shopForCdnBo.getKeyword();
-        StringBuilder query = new StringBuilder();
         Query searchQuery = null;
         if(StringUtils.isNotBlank(keyword)) {
             searchQuery = QueryBuilder.search("title", keyword).boost(10).or(QueryBuilder.search("goods_no", keyword).boost(5));
+            requestBuilder.addSummary(SummaryBuild.field("title").length(120));
         }
         Long shopId = shopForCdnBo.getShopId();
         if (shopId != null && shopForCdnBo.getScid() != null) {
             Long scid = Long.valueOf(shopForCdnBo.getScid());
-            String scidStr;
-            ShiguStorecat storecat = storeCatMapper.selectByPrimaryKey(scid);
-            if(storecat != null && storecat.getIsParent() != null && storecat.getIsParent() == 1) {//是父类
-                ShiguStorecatExample catExample=new ShiguStorecatExample();
-                catExample.createCriteria().andParentScidEqualTo(scid);
-                List<ShiguStorecat> subcats =storeCatMapper.selectByExample(catExample);//子级类目
-                if(subcats.size() == 0){
-                    scid=(scid-shopId)/1000000;
-                    scidStr= scid.toString();
-                }else{
-
-                    StringBuilder scidStrb = new StringBuilder();
-                    for(ShiguStorecat c:subcats){
-                        scidStrb.append(",").append((c.getScid() - shopId) / 1000000);
-                    }
-                    if(scidStrb.toString().startsWith(",")){
-                        scidStr = scidStrb.substring(1);
-                    }else{
-                        scidStr = scid.toString();
-                    }
-                }
-            }else{
-                scid=(scid-shopId)/1000000;
-                scidStr = scid.toString();
-            }
+            String scidStr = selScidStr(shopId,scid);
             TermQuery cidAllQuery = QueryBuilder.termSearch("cid_all", scidStr);
             if (searchQuery != null) {
                 searchQuery.and(cidAllQuery);
@@ -626,7 +603,6 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         if (searchQuery != null) {
             requestBuilder.setQuery(searchQuery);
         }
-
         shopId = shopForCdnBo.getShopId();
         if (shopId != null) {
             requestBuilder.addFilter(FilterBuilder.number("store_id", shopId));
@@ -658,6 +634,41 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             requestBuilder.addFilter(FilterBuilder.number("created").lte(dateTo.getTime()));
         }
         return requestBuilder;
+    }
+
+    /**
+     * 按shopId和scid获取到对应scidStr/cid_all
+     *
+     * @param shopId
+     * @param scid
+     * @return 计算出cid_all或scid_str的结果
+     */
+    private String selScidStr(Long shopId, Long scid) {
+        String scidStr;
+        ShiguStorecat storecat = storeCatMapper.selectByPrimaryKey(scid);
+        if(storecat != null && storecat.getIsParent() != null && storecat.getIsParent() == 1) {//是父类
+            ShiguStorecatExample catExample=new ShiguStorecatExample();
+            catExample.createCriteria().andParentScidEqualTo(scid);
+            List<ShiguStorecat> subcats =storeCatMapper.selectByExample(catExample);//子级类目
+            if(subcats.size() == 0){
+                scid=(scid-shopId)/1000000;
+                scidStr= scid.toString();
+            }else{
+                StringBuilder scidStrb = new StringBuilder();
+                for(ShiguStorecat c:subcats){
+                    scidStrb.append(",").append((c.getScid() - shopId) / 1000000);
+                }
+                if(scidStrb.toString().startsWith(",")){
+                    scidStr = scidStrb.substring(1);
+                }else{
+                    scidStr = scid.toString();
+                }
+            }
+        }else{
+            scid=(scid-shopId)/1000000;
+            scidStr = scid.toString();
+        }
+        return scidStr;
     }
 
     /**
@@ -759,31 +770,7 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         if (null != shopForCdnBo.getScid() && StringUtils.isNotEmpty(shopForCdnBo.getScid())) {
             //先查一下是否父级
             Long scid = Long.parseLong(shopForCdnBo.getScid());
-            String scidStr;
-            ShiguStorecat storecat = storeCatMapper.selectByPrimaryKey(scid);
-            if (storecat != null && storecat.getIsParent() != null && storecat.getIsParent() == 1) {//是父类
-                ShiguStorecatExample catExample = new ShiguStorecatExample();
-                catExample.createCriteria().andParentScidEqualTo(scid);
-                List<ShiguStorecat> subcats = storeCatMapper.selectByExample(catExample);//子级类目
-                scidStr = "";
-                if (subcats.size() == 0) {
-                    scid = (scid - shopForCdnBo.getShopId()) / 1000000;
-                    scidStr = scid.toString();
-
-                } else {
-                    for (ShiguStorecat c : subcats) {
-                        scidStr += "," + ((c.getScid() - shopForCdnBo.getShopId()) / 1000000);
-                    }
-                    if (scidStr.startsWith(",")) {
-                        scidStr = scidStr.substring(1);
-                    } else {
-                        scidStr = scid.toString();
-                    }
-                }
-            } else {
-                scid = (scid - shopForCdnBo.getShopId()) / 1000000;
-                scidStr = scid.toString();
-            }
+            String scidStr = selScidStr(shopForCdnBo.getShopId(),scid);
             criteria.andCidAllEqualTo(scidStr);
         }
         shiguGoodsSoldoutExample.setStartIndex(shopForCdnBo.getPageSize() * (shopForCdnBo.getPageNo() - 1));

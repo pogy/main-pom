@@ -186,7 +186,7 @@ public class ShopSearchServiceOpenImpl implements ShopSearchService {
         }
 
         ShiguShopExample shiguShopExample = new ShiguShopExample();
-        shiguShopExample.createCriteria().andShopNumEqualTo(shopNum).andWebSiteEqualTo(webSite);
+        shiguShopExample.createCriteria().andShopNumEqualTo(shopNum).andWebSiteEqualTo(webSite).andShopStatusEqualTo(0);
         List<ShiguShop> shiguShopList = shiguShopMapper.selectByExample(shiguShopExample);
         List<Long> marketIdList = new ArrayList<>(BeanMapper.getFieldSet(shiguShopList, "marketId", Long.class));
         List<Long> shopIdList = new ArrayList<>(BeanMapper.getFieldSet(shiguShopList, "shopId", Long.class));

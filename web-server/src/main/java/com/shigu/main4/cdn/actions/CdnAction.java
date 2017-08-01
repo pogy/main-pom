@@ -40,6 +40,7 @@ import com.shigu.search.bo.NewGoodsBO;
 import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
+import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.AreaVO;
 import com.shigu.seller.vo.ContainerVO;
@@ -132,6 +133,9 @@ public class CdnAction {
     @Autowired
     GoodsSelFromEsService goodsSelFromEsService;
 
+    @Autowired
+    GoodsFileService goodsFileService;
+
     /**
      * 联系我们
      * @return
@@ -145,7 +149,7 @@ public class CdnAction {
      * 杭州首页动态页面
      * @return
      */
-    //@RequestMapping("hzindex4show")
+    @RequestMapping("hzindex4show")
     public String hzindex4show(HttpServletRequest request,Model model){
         Cookie[] cookies=request.getCookies();
         String manOrWoman="Man";
@@ -170,8 +174,10 @@ public class CdnAction {
         //全站公告
         model.addAttribute("notices",selFromCache(indexShowService.selNavVOs(SpreadEnum.QZGG)));
         //轮播下方小图
+//        model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
+//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_XT)));
         model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_XT)));
+                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XT:SpreadEnum.MAN_GXT)));
         //大图
         model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
                 manOrWoman.equals("Woman")?SpreadEnum.WOMAN_DT:SpreadEnum.MAN_DT)));
@@ -395,6 +401,7 @@ public class CdnAction {
         //轮播下方小图
         model.addAttribute("topStoread",selFromCache(spreadService.selImgBanners(
                 manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XT:SpreadEnum.CS_MAN_XT)));
+
         //大图
         model.addAttribute("topBanner",selFromCache(spreadService.selImgBanners(
                 manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_DT:SpreadEnum.CS_MAN_DT)));
@@ -448,10 +455,12 @@ public class CdnAction {
      */
     private Object selFromCache(ObjFromCache fromCache){
         Object obj=fromCache.selObj();
-        if(fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
-            spreadService.createBySync(fromCache);
+//        if(fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
+//            spreadService.createBySync(fromCache);
         return obj;
     }
+
+
     /**
      * 二级域名首页
      * @return
@@ -468,7 +477,7 @@ public class CdnAction {
         }
         url=url.substring(7,url.indexOf(".571xz.com"));
         Long shopId=shopBaseService.selShopIdByDomain(url);
-        if("www".equals(url)||"hz".equals(url)){
+        if("www".equals(url)||"hz".equals(url)||"testwww".equals(url)){
             return hzindex4show(request,model);
         }
         if(shopId==null){
@@ -535,6 +544,7 @@ public class CdnAction {
         model.addAttribute("vo",itemShowVO);
         model.addAttribute("bo",bo);
         model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
+        model.addAttribute("hasYt",goodsFileService.hasDatu(id)+"");
 //        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
         if ("kx".equalsIgnoreCase(cdnItem.getWebSite())) {
             return "cdn/xieItem";
@@ -621,6 +631,7 @@ public class CdnAction {
         int shopStatus = shopBaseService.getShopStatus(bo.getId());
         if(shopStatus == 1){
 //            return "wa".equals(webSite)?"cdn/wa_shopDown":"cdn/shopDown";
+            model.addAttribute("vo",cdnService.shopSimpleVo(bo.getId()));
             if ("kx".equalsIgnoreCase(webSite)) {
                 return "cdn/xieShopDown";
             } else {
@@ -784,12 +795,16 @@ public class CdnAction {
     }
 
     @RequestMapping("downloadImg")
-    public void downloadImg(HttpServletResponse response, String callback, Long goodsId, HttpSession session) throws IOException {
+    public void downloadImg(HttpServletResponse response, String callback, Long goodsId,Integer type, HttpSession session) throws IOException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         //如果店铺,不能下载图片
         if(personalSession.getLogshop()!=null){
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);
             return ;
+        }
+        if(type!=null &&type == 2){
+            String content = "{'result':'success','msg':'成功','sourceHref':'" + goodsFileService.datuUrl(goodsId) + "'}";
+            ResultRetUtil.returnJsonp(callback,content,response);
         }
         String url = shopsItemService.itemImgzipUrl(goodsId);
         String content;

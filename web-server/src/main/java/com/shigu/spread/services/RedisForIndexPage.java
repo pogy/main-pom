@@ -52,7 +52,7 @@ public class RedisForIndexPage {
             return;
         }
 
-        redisIO.putFixedTemp(INDEX_PAGE_REDIS_PRE + key, obj, 24*60*60);
+        redisIO.putTemp(INDEX_PAGE_REDIS_PRE + key, obj, 24*60*60);
     }
 
     /**

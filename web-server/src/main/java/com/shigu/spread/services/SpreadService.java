@@ -130,12 +130,12 @@ public class SpreadService {
         };
     }
 
-    /**
-     * 用于造缓存
-     */
-    @Async
-    public void createBySync(ObjFromCache fromCache) {
-        Object obj=fromCache.selReal();
-        redisForIndexPage.putCache(fromCache.key,obj);
-    }
+//    /**
+//     * 用于造缓存
+//     */
+//    @Async
+//    public void createBySync(ObjFromCache fromCache) {
+//        Object obj=fromCache.selReal();
+//        redisForIndexPage.putCache(fromCache.key,obj);
+//    }
 }

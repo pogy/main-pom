@@ -37,8 +37,8 @@ public enum ShopLicenseTypeEnum {
     /**
      * 6、星星数，内容为星星的数量
      */
-    STAR("星星数，内容为星星的数量",6)
-    ;
+    STAR("星星数，内容为星星的数量",6),
+    SHOPDATA("用户数据盘",8);
 
     private String title;
     private Integer value;

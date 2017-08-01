@@ -436,6 +436,142 @@ public class ShiguActivityExample implements SgExample{
             return (ShiguActivityExample.Criteria)this;
         }
 
+        public ShiguActivityExample.Criteria andBannerIsNull() {
+            this.addCriterion("banner is null");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerIsNotNull() {
+            this.addCriterion("banner is not null");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerEqualTo(String value) {
+            this.addCriterion("banner =", value, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerNotEqualTo(String value) {
+            this.addCriterion("banner <>", value, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerGreaterThan(String value) {
+            this.addCriterion("banner >", value, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerGreaterThanOrEqualTo(String value) {
+            this.addCriterion("banner >=", value, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerLessThan(String value) {
+            this.addCriterion("banner <", value, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerLessThanOrEqualTo(String value) {
+            this.addCriterion("banner <=", value, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerLike(String value) {
+            this.addCriterion("banner like", value, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerNotLike(String value) {
+            this.addCriterion("banner not like", value, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }        public ShiguActivityExample.Criteria andBannerIn(List<String> values) {
+            this.addCriterion("banner in", values, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerNotIn(List<String> values) {
+            this.addCriterion("banner not in", values, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerBetween(String value1, String value2) {
+            this.addCriterion("banner between", value1, value2, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBannerNotBetween(String value1, String value2) {
+            this.addCriterion("banner not between", value1, value2, "banner");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorIsNull() {
+            this.addCriterion("bkcolor is null");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorIsNotNull() {
+            this.addCriterion("bkcolor is not null");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorEqualTo(String value) {
+            this.addCriterion("bkcolor =", value, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorNotEqualTo(String value) {
+            this.addCriterion("bkcolor <>", value, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorGreaterThan(String value) {
+            this.addCriterion("bkcolor >", value, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorGreaterThanOrEqualTo(String value) {
+            this.addCriterion("bkcolor >=", value, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorLessThan(String value) {
+            this.addCriterion("bkcolor <", value, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorLessThanOrEqualTo(String value) {
+            this.addCriterion("bkcolor <=", value, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorLike(String value) {
+            this.addCriterion("bkcolor like", value, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorNotLike(String value) {
+            this.addCriterion("bkcolor not like", value, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }        public ShiguActivityExample.Criteria andBkcolorIn(List<String> values) {
+            this.addCriterion("bkcolor in", values, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorNotIn(List<String> values) {
+            this.addCriterion("bkcolor not in", values, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorBetween(String value1, String value2) {
+            this.addCriterion("bkcolor between", value1, value2, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andBkcolorNotBetween(String value1, String value2) {
+            this.addCriterion("bkcolor not between", value1, value2, "bkcolor");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
         public ShiguActivityExample.Criteria andNumsIsNull() {
             this.addCriterion("nums is null");
             return (ShiguActivityExample.Criteria)this;
@@ -980,71 +1116,71 @@ public class ShiguActivityExample implements SgExample{
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescIsNull() {
-            this.addCriterion("desc is null");
+        public ShiguActivityExample.Criteria andDescInfoIsNull() {
+            this.addCriterion("desc_info is null");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescIsNotNull() {
-            this.addCriterion("desc is not null");
+        public ShiguActivityExample.Criteria andDescInfoIsNotNull() {
+            this.addCriterion("desc_info is not null");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescEqualTo(String value) {
-            this.addCriterion("desc =", value, "desc");
+        public ShiguActivityExample.Criteria andDescInfoEqualTo(String value) {
+            this.addCriterion("desc_info =", value, "descInfo");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescNotEqualTo(String value) {
-            this.addCriterion("desc <>", value, "desc");
+        public ShiguActivityExample.Criteria andDescInfoNotEqualTo(String value) {
+            this.addCriterion("desc_info <>", value, "descInfo");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescGreaterThan(String value) {
-            this.addCriterion("desc >", value, "desc");
+        public ShiguActivityExample.Criteria andDescInfoGreaterThan(String value) {
+            this.addCriterion("desc_info >", value, "descInfo");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescGreaterThanOrEqualTo(String value) {
-            this.addCriterion("desc >=", value, "desc");
+        public ShiguActivityExample.Criteria andDescInfoGreaterThanOrEqualTo(String value) {
+            this.addCriterion("desc_info >=", value, "descInfo");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescLessThan(String value) {
-            this.addCriterion("desc <", value, "desc");
+        public ShiguActivityExample.Criteria andDescInfoLessThan(String value) {
+            this.addCriterion("desc_info <", value, "descInfo");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescLessThanOrEqualTo(String value) {
-            this.addCriterion("desc <=", value, "desc");
+        public ShiguActivityExample.Criteria andDescInfoLessThanOrEqualTo(String value) {
+            this.addCriterion("desc_info <=", value, "descInfo");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescLike(String value) {
-            this.addCriterion("desc like", value, "desc");
+        public ShiguActivityExample.Criteria andDescInfoLike(String value) {
+            this.addCriterion("desc_info like", value, "descInfo");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescNotLike(String value) {
-            this.addCriterion("desc not like", value, "desc");
+        public ShiguActivityExample.Criteria andDescInfoNotLike(String value) {
+            this.addCriterion("desc_info not like", value, "descInfo");
             return (ShiguActivityExample.Criteria)this;
-        }        public ShiguActivityExample.Criteria andDescIn(List<String> values) {
-            this.addCriterion("desc in", values, "desc");
-            return (ShiguActivityExample.Criteria)this;
-        }
-
-        public ShiguActivityExample.Criteria andDescNotIn(List<String> values) {
-            this.addCriterion("desc not in", values, "desc");
+        }        public ShiguActivityExample.Criteria andDescInfoIn(List<String> values) {
+            this.addCriterion("desc_info in", values, "descInfo");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescBetween(String value1, String value2) {
-            this.addCriterion("desc between", value1, value2, "desc");
+        public ShiguActivityExample.Criteria andDescInfoNotIn(List<String> values) {
+            this.addCriterion("desc_info not in", values, "descInfo");
             return (ShiguActivityExample.Criteria)this;
         }
 
-        public ShiguActivityExample.Criteria andDescNotBetween(String value1, String value2) {
-            this.addCriterion("desc not between", value1, value2, "desc");
+        public ShiguActivityExample.Criteria andDescInfoBetween(String value1, String value2) {
+            this.addCriterion("desc_info between", value1, value2, "descInfo");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andDescInfoNotBetween(String value1, String value2) {
+            this.addCriterion("desc_info not between", value1, value2, "descInfo");
             return (ShiguActivityExample.Criteria)this;
         }
 
@@ -1113,6 +1249,74 @@ public class ShiguActivityExample implements SgExample{
 
         public ShiguActivityExample.Criteria andServicesNotBetween(String value1, String value2) {
             this.addCriterion("services not between", value1, value2, "services");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteIsNull() {
+            this.addCriterion("web_site is null");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteIsNotNull() {
+            this.addCriterion("web_site is not null");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteEqualTo(String value) {
+            this.addCriterion("web_site =", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteNotEqualTo(String value) {
+            this.addCriterion("web_site <>", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteGreaterThan(String value) {
+            this.addCriterion("web_site >", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+            this.addCriterion("web_site >=", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteLessThan(String value) {
+            this.addCriterion("web_site <", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+            this.addCriterion("web_site <=", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteLike(String value) {
+            this.addCriterion("web_site like", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteNotLike(String value) {
+            this.addCriterion("web_site not like", value, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }        public ShiguActivityExample.Criteria andWebSiteIn(List<String> values) {
+            this.addCriterion("web_site in", values, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteNotIn(List<String> values) {
+            this.addCriterion("web_site not in", values, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteBetween(String value1, String value2) {
+            this.addCriterion("web_site between", value1, value2, "webSite");
+            return (ShiguActivityExample.Criteria)this;
+        }
+
+        public ShiguActivityExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+            this.addCriterion("web_site not between", value1, value2, "webSite");
             return (ShiguActivityExample.Criteria)this;
         }
     }

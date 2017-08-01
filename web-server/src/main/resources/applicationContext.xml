@@ -17,12 +17,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath:mall_config.properties</value>
-                <value>classpath:xz_sdk.properties</value>
-                <value>classpath:oss.properties</value>
-                <value>classpath:redis.properties</value>
-                <value>classpath:rd3.properties</value>
-                <value>classpath:opensearch.properties</value>
+                <value>classpath:*.properties</value>
             </list>
         </property>
     </bean>
@@ -63,10 +58,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
     <!-- shiro 配置文件 -->
     <import resource="classpath*:main4/spring/*.xml"/>
-    <import resource="dubbo_application.xml"/>
-    <!--<import resource="dubbo_application_test.xml"/>-->
+    <!--<import resource="dubbo_application.xml"/>-->
+    <import resource="dubbo_application_test.xml"/>
     <bean id="exceptionResolver" class="com.shigu.resolver.ExceptionResolver"/>
+
     <import resource="mvc.xml"/>
-    <import resource="message_queue.xml"/>
-    <!--<import resource="message_queue_test.xml"/>-->
+    <!--<import resource="message_queue.xml"/>-->
+    <import resource="message_queue_test.xml"/>
 </beans>

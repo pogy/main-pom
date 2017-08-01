@@ -12,7 +12,7 @@
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.1.8-SNAPSHOT</version>
+    <version>4.1.9-SNAPSHOT</version>
     <!--versions:update-child-modules-->
     <modules>
         <module>main4-dao</module>
@@ -22,13 +22,11 @@
         <module>main4-store</module>
         <module>main4-item</module>
         <module>main4-test</module>
-        <module>main4-admin</module>
         <module>main4-monitor</module>
         <module>main4-spread</module>
         <module>main4-tools</module>
         <module>web-server</module>
         <module>main4-order</module>
-        <module>main4-activity</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -46,9 +44,7 @@
         <main4-common.version>${project.version}</main4-common.version>
         <main4-dao.version>${project.version}</main4-dao.version>
         <main4-store-default.version>${project.version}</main4-store-default.version>
-        <main4-store-inmarket.version>${project.version}</main4-store-inmarket.version>
         <main4-item-default.version>${project.version}</main4-item-default.version>
-        <main4-item-update.version>${project.version}</main4-item-update.version>
         <main4-monitor-default.version>${project.version}</main4-monitor-default.version>
 
         <spring.version>4.3.9.RELEASE</spring.version>
@@ -63,6 +59,12 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>opensearch</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
 
         <!--测试用-->
         <dependency>
@@ -105,6 +107,7 @@
             <scope>test</scope>
         </dependency>
 
+
     </dependencies>
 
     <build>
@@ -123,7 +126,7 @@
     <repositories>
         <repository>
             <id>nexus</id>
-            <url>http://xzof.f3322.net:8881/nexus/content/groups/public/</url>
+            <url>http://571xz.iok.la:8881/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -135,7 +138,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>nexus</id>
-            <url>http://xzof.f3322.net:8881/nexus/content/groups/public/</url>
+            <url>http://571xz.iok.la:8881/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -150,12 +153,12 @@
         <repository>
             <id>releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://xzof.f3322.net:8881/nexus/content/repositories/releases/</url>
+            <url>http://571xz.iok.la:8881/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://xzof.f3322.net:8881/nexus/content/repositories/snapshots/</url>
+            <url>http://571xz.iok.la:8881/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

@@ -41,6 +41,7 @@ public class FindGoodsAction {
         model.addAttribute("myFindTerms",findGoodsService.termVOs(ps.getLogshop().getShopId()));
         return "seller/findGoodsChange";
     }
+
     /**
      * 查询所有商品
      * @return

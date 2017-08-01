@@ -222,7 +222,7 @@ public class CdnService {
             isb.setGoodsNo(tiny.getGoodsNo());
             isb.setItemId(tiny.getGoodsId());
             isb.setImgUrl(tiny.getPicUrl());
-            isb.setPrice(tiny.getPiPrice()==null?null:tiny.getPiPrice().toString());
+            isb.setPrice(isb.parsePrice(tiny.getPiPrice()==null?null:tiny.getPiPrice()));
             isb.setTitle(tiny.getTitle());
             blocks.add(isb);
         }

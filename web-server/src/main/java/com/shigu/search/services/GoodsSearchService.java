@@ -1,13 +1,8 @@
 package com.shigu.search.services;
 
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.shigu.imgsearch.beans.Record;
-import com.shigu.imgsearch.requests.RetrieveImageRequest;
-import com.shigu.imgsearch.responses.RetrieveImageResponse;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -18,20 +13,20 @@ import com.shigu.main4.item.vo.AggsCount;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.main4.storeservices.ShopSearchService;
-import com.shigu.main4.tools.ImgClientEnum;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.vo.SearchShopSimple;
+import com.shigu.productAi.beans.AiImageInfo;
+import com.shigu.productAi.beans.ProductAiSearchBo;
+import com.shigu.productAi.services.ProductAiInterface;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.utils.ShopWeightComparator;
 import com.shigu.search.vo.*;
 import com.shigu.spread.enums.SpreadEnum;
-import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +65,8 @@ public class GoodsSearchService {
 
     @Autowired
     SpreadService spreadService;
+    @Autowired
+    ProductAiInterface productAiInterface;
 
     String dbUid="aliyun_1582227";
     String dbSeckey="vsDnnCviEeeHHwAWPhwgkg";
@@ -134,26 +131,42 @@ public class GoodsSearchService {
      */
     public List<TjGoods> selTj(String webSite,int type,Long pid){
         SpreadEnum manOrWoman=getSpreadEnum(webSite, type, pid);
-
+        if (manOrWoman == null) {
+            return new ArrayList<>();
+        }
         ObjFromCache<List<ItemSpreadVO>> objFromCache=spreadService.selItemSpreads(webSite, manOrWoman);
         List<ItemSpreadVO> list=objFromCache.selObj();
-        if(objFromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
-            spreadService.createBySync(objFromCache);
         Collections.shuffle(list);
         return BeanMapper.mapList(list,TjGoods.class);
     }
 
+    /**
+     * 取广告类别
+     * @param webSite
+     * @param type   0是商品库  否则 搜索
+     * @param pid 大类ID
+     * @return
+     */
     private SpreadEnum getSpreadEnum(String webSite,int type,  Long  pid) {
-        SpreadEnum pEnum = SpreadEnum.MAN_GOODS_RIGHT;
-        if (type==0) {//商品库
-            if(pid!=null&&(pid==50006843L||pid==16L)){
-                    pEnum = SpreadEnum.WOMAN_GOODS_RIGHT;
-            }
-        }else{
-                pEnum = SpreadEnum.SEARCH_RIGHT;
-        }
-        if ("kx".equalsIgnoreCase(webSite)) {
-            pEnum = SpreadEnum.KX_GOODS_RIGHT;
+        SpreadEnum pEnum = null;
+        switch (webSite){
+            case "hz":
+                if (type==0) {//商品库
+                    if(pid!=null&&(pid==50006843L||pid==16L)){
+                        pEnum = SpreadEnum.WOMAN_GOODS_RIGHT;
+                    }else{
+                        pEnum = SpreadEnum.MAN_GOODS_RIGHT;
+                    }
+                }else{
+                    pEnum = SpreadEnum.SEARCH_RIGHT;
+                }
+                break;
+            case "bj":break;
+            case "kx":pEnum = SpreadEnum.KX_GOODS_RIGHT;break;
+            case "cs":break;
+            case "ss":break;
+            case "jx":break;
+            case "gz":break;
         }
         return pEnum;
     }
@@ -236,19 +249,12 @@ public class GoodsSearchService {
      * @param webSite
      */
     public List<GoodsInSearch> searchByPic(String picUrl, String webSite) throws IOException {
-        //得到IDs
-        RetrieveImageRequest request=new RetrieveImageRequest();
-        if(picUrl!=null){
-            request.setPicUrl(picUrl);
-        }else{
-            return new ArrayList<>();
-        }
-        request.setMinSim(0.1f);
-        request.setWp("intfield1");
-        request.setWs("textfield1 = '"+webSite+"'");
-        request.setSel2(20);
+        ProductAiSearchBo bo =new ProductAiSearchBo();
+        bo.setUrl(picUrl);
+        bo.setCount(20);
+        bo.setTags(webSite);
+        List<AiImageInfo> search = productAiInterface.search(bo);
 
-        RetrieveImageResponse response= ImgClientEnum.valueOf(webSite).execute(request);
         //添加搜索记录
         String dateKey=webSite+"img_search_"+ DateUtil.dateToString(new Date(),"yyyy_MM");
         Long searched=redisIO.get(dateKey,Long.class);
@@ -257,20 +263,19 @@ public class GoodsSearchService {
         }
         searched++;
         redisIO.put(dateKey,searched);
-        if(response.getRetcode()==0&&response.getRecord()!=null){
-            List<Long> goodsId=new ArrayList<>();
-            for(Record r:response.getRecord()){
-                List<String> para=r.getPara();
-                if(para!=null&&para.size()>0){
-                    goodsId.add(Long.valueOf(para.get(0)));
+
+        if(search.size()>0){
+            List<Long> goodsId = new ArrayList<>();
+            for(AiImageInfo info:search){
+                if(StringUtils.isNotEmpty(info.getMeta())){
+                    goodsId.add(Long.parseLong(info.getMeta()));
                 }
             }
-            List<GoodsInSearch> imgGoods=new ArrayList<>();
+            List<GoodsInSearch> imgGoods = new ArrayList<>();
             if(goodsId.size()>0){
                 ShiguPager<SearchItem> pager=itemSearchService.searchItemByIds(goodsId,webSite,1,20);
                 ShiguPager<GoodsInSearch> goodsPager=goodsSelFromEsService.addShopInfoToGoods(pager,webSite);
                 if (goodsPager != null) {
-//                    return pager.getContent();
                     List<GoodsInSearch> imgs = goodsPager.getContent();
                     Map<Long,GoodsInSearch> imgMap=new HashMap<>();
                     for(GoodsInSearch gis:imgs){

@@ -42,16 +42,16 @@ public abstract class ObjFromCache<T>{
             obj= (T) redisForIndexPage.getFromCache(key,tclass);
             return obj;
         } catch (SpreadCacheException e) {
-            type=e.getType();
-            if(type.equals(SpreadCacheException.CacheType.NONE)){
+//            type=e.getType();
+//            if(type.equals(SpreadCacheException.CacheType.NONE)){
                 obj=selReal();
                 redisForIndexPage.putCache(key,obj);
                 return obj;
-            }else if(type.equals(SpreadCacheException.CacheType.LONG)){
-                return (T) e.getObj();
-            }
+//            }else if(type.equals(SpreadCacheException.CacheType.LONG)){
+//                return (T) e.getObj();
+//            }
         }
-        return null;
+//        return null;
     }
 
     public SpreadCacheException.CacheType getType() {

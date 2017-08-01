@@ -5,7 +5,7 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.1.8-SNAPSHOT</version>
+        <version>4.1.9-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,7 +13,6 @@
     <modules>
         <module>main4-store-api</module>
         <module>main4-store-default</module>
-        <module>main4-store-inmarket</module>
     </modules>
     <packaging>pom</packaging>
 

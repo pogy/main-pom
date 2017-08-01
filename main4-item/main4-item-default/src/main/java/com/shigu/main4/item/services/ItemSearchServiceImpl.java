@@ -103,12 +103,12 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         SearchQuery searchQuery = null;
         if (StringUtils.isNotEmpty(keyword)) {
             String keywordNum = keyword.replaceAll(CHS_PATTERN.toString(), "");
-            String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
-            if (StringUtils.isNotEmpty(keywordChina)) {
+//            String keywordChina = keyword.replaceAll(NUMBER_PATTERN.toString(), "");
+//            if (StringUtils.isNotEmpty(keywordChina)) {
                 searchQuery = QueryBuilder.search("title", keyword);
                 requestBuilder.addSummary(SummaryBuild.field("title").length(120));
-            }
-            if (StringUtils.isNotEmpty(keywordNum)) {
+//            }
+            if (StringUtils.isNotEmpty(keywordNum)&&keywordNum.equals(keyword)) {//非中文的才匹配货号
                 SearchQuery goodsNoQuery = QueryBuilder.search("goods_no", keyword);
                 if (searchQuery == null) {
                     searchQuery = goodsNoQuery;
@@ -294,7 +294,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         ShiguPager<SearchItem> pager = new ShiguPager<>();
         pager.setNumber(page);
 
-        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder = openSearch.searchFrom(OpenItemVo.class)
+        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder = openSearch.searchFrom(SEARCH_APP+webSite,OpenItemVo.class)
                 .from((page - 1) * pageSize).size(pageSize);
         if (ids != null && !ids.isEmpty()) {
             requestBuilder.addFilter(FilterBuilder.termsIn("goods_id", ids.toArray(new Long[ids.size()])));
@@ -307,6 +307,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             for (OpenItemVo openItemVo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
                 SearchItem searchItem = BeanMapper.map(openItemVo, SearchItem.class);
                 searchItem.setItemId(openItemVo.getGoodsId());
+                searchItem.setPrice(searchItem.parsePrice(openItemVo.getPiPrice()));
                 searchItem.setHighLightGoodsNo(openItemVo.getGoodsNo());
                 searchItem.setHighLightTitle(openItemVo.getTitle());
                 pager.getContent().add(searchItem);
