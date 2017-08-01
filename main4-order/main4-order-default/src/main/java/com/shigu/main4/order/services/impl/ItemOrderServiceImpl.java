@@ -122,6 +122,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     public Long createOrder(ItemOrderBO orderBO) throws OrderException {
         // 初始化一个订单
         ItemOrder order = BeanMapper.map(orderBO, ItemOrder.class);
+        order.setOid(idGenerator(OrderType.XZ));
         order.setType(OrderType.XZ.type);
         order.setTotalFee(0L);
         order.setPayedFee(0L);
