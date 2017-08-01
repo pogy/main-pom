@@ -1,16 +1,20 @@
 package com.shigu.main4.order.model.able;
 
+import com.opentae.data.mall.beans.OrderIdGenerator;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
 import com.opentae.data.mall.beans.OrderPayRelationship;
+import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
 import com.opentae.data.mall.interfaces.OrderPayMapper;
 import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.exceptions.PayerException;
+import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.vo.PayApplyVO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,6 +32,9 @@ public abstract class PayerServiceAble implements PayerService{
 
     @Autowired
     private OrderPayRelationshipMapper orderPayRelationshipMapper;
+
+    @Autowired
+    private OrderIdGeneratorMapper orderIdGeneratorMapper;
 
     @Override
     public Long payedLeft(Long payId) {
@@ -63,6 +70,11 @@ public abstract class PayerServiceAble implements PayerService{
             relationship.setOid(apply.getOid());
             relationship.setPayId(orderPay.getPayId());
             orderPayRelationshipMapper.insertSelective(relationship);
+        }
+        OrderIdGenerator orderId=orderIdGeneratorMapper.selectByPrimaryKey(apply.getApplyId());
+        if (orderId != null&&orderId.getType()==1) {//商品订单
+            ItemOrder order= SpringBeanFactory.getBean(ItemOrder.class,apply.getOid());
+            order.payed();
         }
     }
 

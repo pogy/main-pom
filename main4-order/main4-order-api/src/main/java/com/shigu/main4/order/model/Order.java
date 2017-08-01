@@ -40,14 +40,6 @@ public interface Order{
     List<PayedVO> payedInfo();
 
     /**
-     * 付款确认
-     * @param applyId
-     * @param money
-     * @return
-     */
-    Long pay(Long applyId,Long money);
-
-    /**
      * 全单退订
      * @param money
      */

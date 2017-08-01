@@ -26,6 +26,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -64,6 +65,9 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private OrderPayMapper orderPayMapper;
+
+    @Autowired
+    private OrderStatusRecordMapper orderStatusRecordMapper;
 
 
     /**
@@ -369,11 +373,6 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
-    public Long pay(Long applyId, Long money) {
-        return null;
-    }
-
-    @Override
     public void refunds(Long money) {
 
     }
@@ -385,21 +384,37 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public void payed() {
-
+        changeStatus(OrderStatus.SELLER_CONSIGNED_PART);
     }
 
     @Override
     public void finished() {
-
+        changeStatus(OrderStatus.TRADE_FINISHED);
     }
 
     @Override
     public void closed() {
-
+        changeStatus(OrderStatus.TRADE_CLOSED);
     }
 
     @Override
     public void remove() {
+        changeStatus(OrderStatus.TRADE_REMOVED);
+    }
 
+    /**
+     * 改状态
+     * @param status
+     */
+    private void changeStatus(OrderStatus status){
+        OrderStatusRecord record=new OrderStatusRecord();
+        record.setCreateTime(new Date());
+        record.setOid(oid);
+        record.setStatus(status.status);
+        orderStatusRecordMapper.insertSelective(record);
+        com.opentae.data.mall.beans.ItemOrder order=new com.opentae.data.mall.beans.ItemOrder();
+        order.setOid(oid);
+        order.setOrderStatus(status.status);
+        itemOrderMapper.updateByPrimaryKeySelective(order);
     }
 }
