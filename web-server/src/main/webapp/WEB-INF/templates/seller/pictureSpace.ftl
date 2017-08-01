@@ -227,12 +227,12 @@ var webSite = '${webSite!}';
     
         
         
-        <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
+        <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修</a></li> 
         
         
     
         
-        <li><a class="selected"  href="${main_host!}seller/pictureSpace.htm">图片空间</a></li> 
+        <li><a class="selected"  href="${main_host!}seller/pictureSpace.htm">图片空间<i class="new"></i></a></li> 
         
     
         
@@ -330,7 +330,11 @@ var webSite = '${webSite!}';
 
 
     
-    <div class="content shadowBox">
+    <script>
+var shopId = '${session_user_redis__.logshop.shopId!}';
+</script>
+
+<div class="content shadowBox">
    <div class="headTitle fc6">
     <h2 class="fs16 fwb yahei">图片空间</h2><span class="fcF40">*四季星座网免费赠送各档口 1G ( 1024M ) 空间容量!</span>
 </div>
@@ -445,7 +449,8 @@ var webSite = '${webSite!}';
     
     <div class="imgSpace fr" id="pictureSpaceSizeInfo">
         <div class="allBar pr"><div class="bar" style="width:0%"></div></div>
-        <p class="infotext">0M/0M</p>
+        <p class="infotext fl">0M/0M</p>
+        <p class="fr fc3">扩容功能即将上线</p>
     </div>
 </div>
 
@@ -527,12 +532,8 @@ var webSite = '${webSite!}';
 
 
 
-
-
 <div class="successTip pa"><i></i><span>文件上传成功！</span></div>
 <div class="errorTip pa"><i></i><span>上传失败！单个文件大于150M！</span></div>
-
-
 
 
 

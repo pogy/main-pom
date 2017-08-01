@@ -1,5 +1,6 @@
 package com.shigu.main4.order.utils;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 /**
@@ -14,5 +15,11 @@ public class PriceConvertUtils {
         Double priceValue = price.doubleValue()/100;
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(priceValue);
+    }
+    public static Long StringToLong(String price){
+        BigDecimal mon = new BigDecimal(price);
+        BigDecimal mon100 = new BigDecimal("100");
+        return mon.multiply(mon100).longValue();
+
     }
 }

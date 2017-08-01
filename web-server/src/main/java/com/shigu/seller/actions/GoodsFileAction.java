@@ -94,7 +94,7 @@ public class GoodsFileAction {
     @RequestMapping("seller/getGlGoodslist")
     @ResponseBody
     public JSONObject getGlGoodslist(Integer page,String fileId,HttpSession session) throws JsonErrException {
-        if(org.apache.commons.lang3.StringUtils.isEmpty(fileId)){
+        if(org.apache.commons.lang3.StringUtils.isEmpty(fileId)||!goodsFileService.checkFileId(fileId)){
             throw new JsonErrException("key信息异常");
         }
         if (page == null) {
@@ -112,7 +112,10 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/readGlGoodsJson")
     @ResponseBody
-    public JSONObject selGoodsFileByFile(String fileKey,HttpSession session) {
+    public JSONObject selGoodsFileByFile(String fileKey,HttpSession session) throws JsonErrException {
+        if (!goodsFileService.checkFileId(fileKey)) {
+            throw new JsonErrException("key信息异常");
+        }
         List<ItemShowBlock> goodsFilesList = goodsFileService.selGoodsFileByFile(logshop(session).getShopId(),fileKey);
         return JsonResponseUtil.success().element("goods", goodsFilesList);
     }
@@ -126,6 +129,10 @@ public class GoodsFileAction {
     @RequestMapping("seller/glGoodsJson")
     @ResponseBody
     public JSONObject saveGoodsFile(String fileId, String goodsIds,HttpSession session) throws JsonErrException {
+        if (!goodsFileService.checkFileId(fileId)) {
+            throw new JsonErrException("key信息异常");
+        }
+
         ShopSession shop=logshop(session);
         goodsFileService.saveGoodsFile(fileId,shop.getShopId(), goodsIds,shop.getWebSite());
         return JsonResponseUtil.success();
@@ -139,6 +146,9 @@ public class GoodsFileAction {
     @RequestMapping("seller/cacelGlJson")
     @ResponseBody
     public JSONObject delGoodsFile(Long goodsId,String fileId,HttpSession session) throws JsonErrException {
+        if (!goodsFileService.checkFileId(fileId)) {
+            throw new JsonErrException("key信息异常");
+        }
         ShopSession shop=logshop(session);
         goodsFileService.delGoodsfile(goodsId,shop.getShopId(),fileId,shop.getWebSite());
         return JsonResponseUtil.success();
@@ -153,7 +163,10 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/renameFile")
     @ResponseBody
-    public JSONObject renameFile(String fileId, String fileType, String newName,HttpSession session) {
+    public JSONObject renameFile(String fileId, String fileType, String newName,HttpSession session) throws JsonErrException  {
+        if (!goodsFileService.checkFileId(fileId) || !goodsFileService.checkFileId(newName)) {
+            throw new JsonErrException("key信息异常");
+        }
         goodsFileService.rename(logshop(session).getShopId(),fileId, fileType, newName);
 
         return JsonResponseUtil.success();
@@ -167,7 +180,10 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/moveFile")
     @ResponseBody
-    public JSONObject moveFile(String fileId, String targetFolderId,HttpSession session) {
+    public JSONObject moveFile(String fileId, String targetFolderId,HttpSession session) throws JsonErrException {
+        if (!goodsFileService.checkFileId(fileId)) {
+            throw new JsonErrException("key信息异常");
+        }
         goodsFileService.moveFile(logshop(session).getShopId(),fileId, targetFolderId);
         return JsonResponseUtil.success();
     }
@@ -179,13 +195,17 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/createFolder")
     @ResponseBody
-    public JSONObject createFoler(String fileName,HttpSession session) {
+    public JSONObject createFoler(String fileName,HttpSession session) throws JsonErrException {
         String fileId = goodsFileService.createDir(logshop(session).getShopId(), fileName);
+        if (!goodsFileService.checkFileId(fileId)) {
+            throw new JsonErrException("key信息异常");
+        }
         JSONObject obj= JsonResponseUtil.success();
         obj.element("fileId",fileId);
         obj.element("fileName",fileName);
         obj.element("fileCreateTime", new Date().getTime());
-        obj.element("fileSize", "0kb");
+        obj.element("fileSize", "0");
+        obj.element("unit","kb");
         obj.element("hasLinkGoods", false);
         obj.element("fileType", "folder");
         return obj;
@@ -200,6 +220,9 @@ public class GoodsFileAction {
     @RequestMapping("seller/deleteFile")
     @ResponseBody
     public JSONObject deleteFile(String fileId, String fileType,HttpSession session) throws JsonErrException {
+        if (!goodsFileService.checkFileId(fileId)) {
+            throw new JsonErrException("key信息异常");
+        }
         if(goodsFileService.deleteFile(logshop(session).getShopId(),fileId, fileType)){
             return JsonResponseUtil.success();
         }
@@ -214,7 +237,10 @@ public class GoodsFileAction {
      */
     @RequestMapping("seller/getFileList")
     @ResponseBody
-    public JSONObject getFileList(String fileId,HttpSession session) {
+    public JSONObject getFileList(String fileId,HttpSession session) throws JsonErrException {
+        if (!goodsFileService.checkFileId(fileId)) {
+            throw new JsonErrException("key信息异常");
+        }
         List<GoodsFileVO> files = goodsFileService.selFilesByFileId(logshop(session).getShopId(),fileId);
         JSONObject obj= JsonResponseUtil.success();
         if(org.apache.commons.lang3.StringUtils.isNotEmpty(fileId)&&fileId.contains("/")){
@@ -252,6 +278,9 @@ public class GoodsFileAction {
     @RequestMapping("seller/noticeUploadFile")
     @ResponseBody
     public JSONObject noticeUploadFile(String fileId,HttpSession session) throws JsonErrException {
+        if (!goodsFileService.checkFileId(fileId)) {
+            throw new JsonErrException("key信息异常");
+        }
         GoodsFileVO vo=goodsFileService.uploadFile(logshop(session).getShopId(),fileId);
         return JSONObject.fromObject(vo).element("result","success");
     }
@@ -261,8 +290,8 @@ public class GoodsFileAction {
      * @return
      */
     @RequestMapping("downfilezip")
-    public String downfilezip(String key,Long shopId){
-        return goodsFileService.zipUrl(shopId,key);
+    public String downfilezip(String key,Long sid){
+        return "redirect:"+goodsFileService.zipUrl(sid,key);
     }
 
     /**

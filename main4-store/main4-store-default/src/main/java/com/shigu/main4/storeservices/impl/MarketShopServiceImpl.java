@@ -1,27 +1,36 @@
 package com.shigu.main4.storeservices.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.beans.ShiguMarket;
+import com.opentae.data.mall.beans.ShiguOuterFloor;
+import com.opentae.data.mall.beans.ShiguOuterMarket;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguOuterMarketExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.interfaces.ShiguMarketMapper;
+import com.opentae.data.mall.interfaces.ShiguOuterFloorMapper;
+import com.opentae.data.mall.interfaces.ShiguOuterMarketMapper;
+import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.storeservices.MarketShopService;
 import com.shigu.main4.storeservices.vo.MarketShopListComparator;
 import com.shigu.main4.vo.FloorShow;
 import com.shigu.main4.vo.MarketNavShow;
 import com.shigu.main4.vo.MarketShow;
 import com.shigu.main4.vo.ShopShow;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 /**

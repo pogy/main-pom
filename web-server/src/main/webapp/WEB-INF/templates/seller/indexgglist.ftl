@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/indexgglist.css?t=1501149290965" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/indexgglist.css?t=1501227518800" rel="stylesheet">
     
   </head>
 <body>
@@ -220,8 +220,8 @@ var webSite = '${webSite!}';
     <h2>店铺管理</h2>
     <ul>
         <li><a href="http://${session_user_redis__.logshop.webSite!}.571xz.com/shop.htm?id=${session_user_redis__.logshop.shopId!}"  target="_blank">查看我的店铺</a></li> 
-        <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修<i class="ne"></i></a></li> 
-        <li><a href="${main_host!}seller/pictureSpace.htm"  >图片空间</a></li> 
+        <li><a href="${main_host!}seller/design.htm"  target="_blank">店铺装修</a></li> 
+        <li><a href="${main_host!}seller/pictureSpace.htm"  >图片空间<i class="new"></i></a></li> 
         <li><a href="${main_host!}seller/shiguStoreerjiyuming.htm"  >二级域名</a></li> 
         <li><a href="${main_host!}seller/shiguStorebasicStore.htm"  >店铺资料</a></li> 
         <li><a href="${main_host!}seller/ghTongbu.htm"  >授权管理</a></li> 
@@ -321,7 +321,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/indexgglist.js?t=1501149290965"></script>
+<script src="http://style.571xz.com/gys5/js/indexgglist.js?t=1501227518800"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

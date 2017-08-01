@@ -28,7 +28,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -130,7 +132,6 @@ public class GoodsFileService {
     public List<GoodsFileVO> selFilesByFileId(Long shopId , String fileKey) {
         List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(parseMyFilePath(shopId,fileKey)), GoodsFileVO.class);
         List<GoodsFileVO> newFiles = new ArrayList<GoodsFileVO>();
-        GoodsFileVO lastItem = null;
         List<String> fileKeys=BeanMapper.getFieldList(files,"fileId",String.class);//文件ID
         List<String> hasConnected=new ArrayList<>();
         if(fileKeys.size()>0){
@@ -148,11 +149,9 @@ public class GoodsFileService {
             if(item.getFileId().equals("")){
                 item.setFileName("/");
             }
-            if (lastItem != null && -1 <item.getFileId().indexOf(lastItem.getFileId())) {//过滤下层文件的显示
+            String fileId=item.getFileId();
+            if (fileId.contains("/") && fileId.indexOf("/") != fileId.length()-1&&!fileKey.endsWith("/")) {//过滤下层文件的显示
                 continue;
-            }
-            if (!fileKey.equalsIgnoreCase(item.getFileId())) {
-                lastItem = item;
             }
 
             if (item.getFileId().endsWith(".zip") || item.getFileId().endsWith(".7z") || item.getFileId().endsWith(".rar") ) {
@@ -167,6 +166,7 @@ public class GoodsFileService {
             BeanMapper.map(sizeparseToShow(fileSize),item);
             newFiles.add(item);
          }
+        Collections.sort(newFiles);
          return newFiles;
     }
 
@@ -177,14 +177,15 @@ public class GoodsFileService {
      */
     public FileSizeVO sizeparseToShow(Double size){
         FileSizeVO sizeVO=new FileSizeVO();
+        DecimalFormat df=new DecimalFormat("0.0");
         if (1048576 < size) {
             double mSize = div(size, (double)1048576, 3);
-            sizeVO.setFileSize(mSize + "");
-            sizeVO.setUnit("mb");
+            sizeVO.setFileSize(df.format(mSize));
+            sizeVO.setUnit("M");
         } else {
             double kSize = div(size, (double)1024, 3);
-            sizeVO.setFileSize(kSize + "");
-            sizeVO.setUnit("kb");
+            sizeVO.setFileSize(df.format(kSize));
+            sizeVO.setUnit("KB");
         }
         return sizeVO;
     }
@@ -244,7 +245,7 @@ public class GoodsFileService {
      * @param pageSize
      * @return
      */
-    public ShiguPager<GoodsFileSearchVO> fileRelationFile(Long shopId,String fileId,String webSite,Integer pageNo,Integer pageSize){
+    public ShiguPager<GoodsFileSearchVO> fileRelationFile(Long shopId, String fileId, String webSite, Integer pageNo, Integer pageSize){
         GoodsFileExample example=new GoodsFileExample();
         example.createCriteria().andFileKeyEqualTo(getHomeDir(shopId)+fileId);
         example.setStartIndex((pageNo-1)*pageSize);
@@ -392,7 +393,11 @@ public class GoodsFileService {
         }
         String path=getHomeDir(shopId)+fileKey;
         GoodsFileExample goodsFileExample=new GoodsFileExample();
-        goodsFileExample.createCriteria().andFileKeyEqualTo(path);
+        if(fileType.equals("folder")&&!fileKey.equals("/")){//文件夹
+            goodsFileExample.createCriteria().andFileKeyLike(path+"%");
+        }else {
+            goodsFileExample.createCriteria().andFileKeyEqualTo(path);
+        }
         goodsFileMapper.deleteByExample(goodsFileExample);
         return ossIO.deleteFile(path);
     }
@@ -404,21 +409,29 @@ public class GoodsFileService {
      * @param newName
      * @return
      */
-    public boolean  rename(Long shopId,String fileKey, String fileType, String newName) {
+    public boolean  rename(Long shopId,String fileKey, String fileType, String newName) throws JsonErrException {
         if (!fileKey.endsWith("/") && fileType.equalsIgnoreCase("folder") ) {
             fileKey = fileKey +"/";
         }
         if (!newName.endsWith("/") && fileType.equalsIgnoreCase("folder") ) {
             newName = newName +"/";
         }
-        String[] items = fileKey.split("/");
-        int len = items.length-1;
-        String newPath =  fileKey.substring(0, fileKey.length()-items[len].length()-1) + newName;
-
-        boolean result=ossIO.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newPath);
+        String newFileKey = newName;
+        if(fileKey.contains("/") && !fileType.equalsIgnoreCase("folder")) {
+            newFileKey = fileKey.substring(0, fileKey.indexOf("/"))+"/"+ newName;
+        }
+        if(ossIO.fileExist(getHomeDir(shopId)+newFileKey)){
+            throw new JsonErrException("存在同名文件");
+        }
+        boolean result=ossIO.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newFileKey);
         if(result){
             //修改表
-            modifyDataGoodsFile(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newPath);
+            //如果文件夹
+            if (fileType.equalsIgnoreCase("folder") ) {//如果是文件夹
+                goodsFileMapper.replaceFileDir(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
+            }else{
+                modifyDataGoodsFile(getHomeDir(shopId)+fileKey,getHomeDir(shopId)+newFileKey);
+            }
         }
         return result;
     }
@@ -426,10 +439,22 @@ public class GoodsFileService {
     /**
      * 移动文件
      * @param fileId
-     * @param targetFileId
+     * @param targetFlordId
      * @return
      */
-    public boolean moveFile(Long shopId,String fileId,  String targetFileId) {
+    public boolean moveFile(Long shopId,String fileId,  String targetFlordId) throws JsonErrException {
+        String targetFileId;
+        if(targetFlordId.equals("")&&fileId.contains("/")){//移到根目录
+            targetFileId=fileId.substring(fileId.indexOf("/")+1, fileId.length());
+        }else{
+            targetFileId=targetFlordId+fileId;
+        }
+        if(fileId.equals(targetFileId)){
+            return false;
+        }
+        if(ossIO.fileExist(getHomeDir(shopId)+targetFileId)){
+            throw new JsonErrException("目标文件夹下已经存在同名文件");
+        }
         boolean result=ossIO.moveFile(getHomeDir(shopId)+fileId, getHomeDir(shopId)+targetFileId);
         if(result){
             //修改表
@@ -452,8 +477,12 @@ public class GoodsFileService {
      * @param dir
      * @return
      */
-    public String createDir(Long shopId, String dir) {
-        return ossIO.createDir(getHomeDir(shopId), dir);
+    public String createDir(Long shopId, String dir) throws JsonErrException {
+        if(ossIO.fileExist(getHomeDir(shopId)+dir+"/")){
+            throw new JsonErrException("文件夹已经存在");
+        }
+        String fildPath=ossIO.createDir(getHomeDir(shopId), dir);
+        return fildPath.replace(getHomeDir(shopId),"");
     }
 
     public double getSizeInfo(Long shopId) {
@@ -467,6 +496,34 @@ public class GoodsFileService {
     public String zipUrl(Long shopId,String key){
         return ossIO.getDomain()+getHomeDir(shopId)+key;
     }
+
+    /**
+     * 检测文件路径合法性
+     * @param fileId
+     * @return
+     */
+    public boolean checkFileId(String fileId) {
+        if (StringUtils.isEmpty(fileId)) {
+            return true;
+        }
+        if (fileId.contains("/") && fileId.indexOf("/") != fileId.lastIndexOf("/")) {
+            return false;
+        }
+
+        for (int i=0; i < sCharCount; i++) {
+            if (fileId.contains(sChar[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static  String sChar[] = {"<",">","&","$","\t","\n","\r","../"};
+    private static int sCharCount = sChar.length;
+
+
+
     /**
      * 拿用户根目录
      * @param shopId
