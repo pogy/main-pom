@@ -238,6 +238,7 @@ var webSite = '${webSite!}';
             <input type="password" class="textinput" id="pwd3" placeholder="请输入确认密码">
         </li>
         <li class="clearfix">
+            <#if hasPayPwd == true>
             
 
 <#assign text>{}</#assign>
@@ -286,9 +287,61 @@ var webSite = '${webSite!}';
 
 </#list>
 
+            <#else>
+            
+
+<#assign text>{}</#assign>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+        
+         fmButton-orange
+         button1"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+    
+        id="setSubmit"
+    
+>
+
+    
+        保存
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+
+</#list>
+
+            </#if>
         </li>
     </ul>
 </div>
+
+
 
 
 
