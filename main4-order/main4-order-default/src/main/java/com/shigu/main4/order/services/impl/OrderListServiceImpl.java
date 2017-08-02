@@ -329,6 +329,7 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setShTkNum(0);
             vo.setTkNum(0);
             vo.setRefundNum(0);
+            vo.setShState(AfterSaleStatusEnum.NOT_AFTER_SALE);
             List<SubOrderRefundBoxingVO> refunds = subOrderInfo.getRefunds();
             refunds.forEach(refund->{
                 if (refund != null) {
