@@ -18,14 +18,4 @@ import java.util.List;
 @Lazy(true)
 public interface MemberLicenseApplyMapper extends Mapper<MemberLicenseApply> {
 
-    /**
-     * 查询会员权益申请
-     */
-    List<MemberLicenseApply> selectLicenseApplyListByBo(@Param("userName") String userName, @Param("mobiles") String mobiles,
-                                                        @Param("applyStatus") Long applyStatus, @Param("userId") Long userId,
-                                                        @Param("startRow") Integer startRow, @Param("endRow") Integer endRow);
-
-    /** 查询权益记录 */
-    int selectLicenseApplyCountByBo(@Param("userName") String userName, @Param("mobiles") String mobiles,
-                                    @Param("applyStatus") Long applyStatus, @Param("userId") Long userId);
 }
