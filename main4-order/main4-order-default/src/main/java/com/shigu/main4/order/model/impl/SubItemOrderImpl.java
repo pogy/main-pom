@@ -112,6 +112,9 @@ public class SubItemOrderImpl implements SubItemOrder{
         ItemOrderRefund query = new ItemOrderRefund();
         query.setSoid(subOrderId);
         ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectOne(query);
+        if (itemOrderRefund == null) {
+            return null;
+        }
         RefundItemOrder refund = SpringBeanFactory.getBean(RefundItemOrder.class, itemOrderRefund.getRefundId());
         return refund.refundinfo();
     }
