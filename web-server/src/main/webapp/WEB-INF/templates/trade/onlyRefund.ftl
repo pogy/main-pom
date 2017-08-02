@@ -294,8 +294,7 @@ var orderId = '${orderId!}';
 var childOrderId = '${childOrderId!}';
 var refundGoodsPrice = '${refundGoodsPrice!}'
 var refundNum = '${refundNumber!}';
-var serviceMoney = '${orderServicePrice!}';
-var expressMoney = '${orderExpressPrice!}';
+var otherRefundPrice = ${otherRefundPrice!};
 </script>
 
 
