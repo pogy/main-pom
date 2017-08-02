@@ -215,7 +215,12 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         RefundVO refundinfo = SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundinfo();
         AfterSaleInfoVO infoVO = new AfterSaleInfoVO();
         infoVO.setRefundId(refundId);
-        infoVO.setRefundPrice(refundinfo.getRefundMoney());
+        //如果退完成,返回实际退款
+        if(refundinfo.getRefundState().equals(RefundStateEnum.ENT_REFUND)){
+            infoVO.setRefundPrice(refundinfo.getRefundMoney());
+        }else{
+            infoVO.setRefundPrice(refundinfo.getHopeMoney());
+        }
         return infoVO;
     }
 
