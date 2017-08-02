@@ -1,17 +1,14 @@
 package com.shigu.main4.item.services.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.item.exceptions.ItemAddException;
-import com.shigu.main4.item.exceptions.ItemDownException;
-import com.shigu.main4.item.exceptions.ItemModifyException;
-import com.shigu.main4.item.exceptions.ItemUpException;
-import com.shigu.main4.item.exceptions.ItemUpdateException;
-import com.shigu.main4.item.exceptions.SameItemException;
-import com.shigu.main4.item.exceptions.SystemSynItemException;
+import com.shigu.main4.item.exceptions.*;
 import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.PriceCalculateService;
 import com.shigu.main4.item.tools.GoodsAddToRedis;
@@ -39,18 +36,11 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.ITEM_ALREADY_DOWN_SET;
-import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.ITEM_DOES_NOT_EXIST;
+import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.*;
 import static com.shigu.main4.item.exceptions.ItemUpdateException.ItemUpdateExceptionEnum.IllegalArgumentException;
 import static com.shigu.main4.item.exceptions.SystemSynItemException.SynItemExceptionEnum.ES_SYN_HAS_ERROR;
 

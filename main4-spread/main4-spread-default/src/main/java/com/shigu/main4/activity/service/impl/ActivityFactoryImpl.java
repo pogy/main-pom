@@ -150,7 +150,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
         example.createCriteria().andTypeEqualTo(type.ordinal()).andStartTimeGreaterThan(new Date());
         example.setStartIndex(0);
         example.setEndIndex(1);
-        List<SpreadTerm> terms = spreadTermMapper.selectFieldsByConditionList(example, FieldUtil.codeFields("term_id"));
+        List<SpreadTerm> terms = spreadTermMapper.selectFieldsByExample(example, FieldUtil.codeFields("term_id"));
         if (terms.size() > 0) {
             return selTermById(terms.get(0).getTermId());
         }
@@ -162,9 +162,7 @@ public class ActivityFactoryImpl implements ActivityFactory {
         if (termId == null) {
             return null;
         }
-        SpreadTerm sterm = new SpreadTerm();
-        sterm.setTermId(termId);
-        sterm = spreadTermMapper.selectOne(sterm);
+        SpreadTerm sterm = spreadTermMapper.selectByPrimaryKey(termId);
         if (sterm == null) {
             return null;
         }
