@@ -55,7 +55,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -516,7 +516,7 @@ var webSite = '${webSite!}';
     <div class="simuCheckBox select"><#if tbOrderAddressInfo??>${tbOrderAddressInfo.name!}</#if></div>
     <div id="fullAreaText" class="fl congineeText">
         <#if tbOrderAddressInfo??>
-            ${tbOrderAddressInfo.address!}
+            ${tbOrderAddressInfo.allAddressInfo!}
         </#if>
     </div>
     <b class="alterAddress" jbtn="alterAddress">更改地址</b>
