@@ -180,8 +180,8 @@ var webSite = '${webSite!}';
 <div class="minHeight">
 <div class="currentPage layout">
     <label class="fc9">当前位置：</label>
-    <a href="#" target="_blank">首页</a> &gt;
-    <a href="#" target="_blank">我的星座网</a> &gt;
+    <a href="http://www.571xz.com">首页</a> &gt;
+    <a href="${main_host!}member/index.htm">我的星座网</a> &gt;
     
     <span class="fcF40">我的订单</span>
 </div> 
@@ -256,7 +256,7 @@ var webSite = '${webSite!}';
         <div class="goto">
             您可以
 
-<#assign text>{}</#assign>
+<#assign text>{"href":"${main_host!}order/payMode.htm?orderId=${orderId!}"}</#assign>
 <#assign moduledata2=text?eval />
 <#list [moduledata2] as $it>
 
@@ -271,8 +271,6 @@ var webSite = '${webSite!}';
          fmButton-sm
          fmButton-orange
          payBtn"
-    
-        jbtn="click"
     
     
         
@@ -375,9 +373,9 @@ $(function(){
         }
     });   
     
-    $(document).on('click', '.payBtn', function(){
+    /*$(document).on('click', '.payBtn', function(){
         window.location = main_host + 'payMode.htm?orderId='+orderId;
-    });
+    });*/
     
     //取消订单
     $('#cancelOrderBtn').on('click', function(){
