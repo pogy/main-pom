@@ -171,7 +171,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         itemOrderRefund.setUserApply(fromUser);
         itemOrderRefundMapper.insertSelective(itemOrderRefund);
         ItemRefundLog refundLog = new ItemRefundLog();
-        refundLog.setRefundId(this.refundId);
+        refundLog.setRefundId(itemOrderRefund.getRefundId());
         refundLog.setFromStatus(-1);
         refundLog.setToStatus(RefundStateEnum.APPLY_REFUND.refundStatus);
         refundLog.setMsg(itemOrderRefund.getReason());
