@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -218,6 +219,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         ItemOrderRefund orderRefund = new ItemOrderRefund();
         orderRefund.setRefundId(refundId);
         orderRefund.setBuyerCourier(buyerCourier);
+        orderRefund.setBuyerReturnTime(new Date());
         itemOrderRefundMapper.updateByPrimaryKeySelective(orderRefund);
     }
 

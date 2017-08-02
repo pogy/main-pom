@@ -2,6 +2,8 @@ package com.shigu.main4.order.vo;
 
 import com.shigu.main4.order.zfenums.RefundStateEnum;
 
+import java.util.Date;
+
 /**
  * 退单信息
  * Created by zhaohongbo on 17/7/20.
@@ -15,6 +17,10 @@ public class RefundVO {
      * 买家邮寄单号
      */
     private String buyerCourier;
+    /**
+     * 回寄时间
+     */
+    private Date buyerReturnTime;
     /**
      * 退状态
      */
@@ -151,5 +157,13 @@ public class RefundVO {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Date getBuyerReturnTime() {
+        return buyerReturnTime;
+    }
+
+    public void setBuyerReturnTime(Date buyerReturnTime) {
+        this.buyerReturnTime = buyerReturnTime;
     }
 }
