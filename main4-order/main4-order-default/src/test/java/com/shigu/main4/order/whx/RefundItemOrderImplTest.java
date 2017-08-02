@@ -13,10 +13,11 @@ import org.junit.Test;
  */
 public class RefundItemOrderImplTest extends BaseTest{
 
-    private static Long generateRefundId=20L;
+    private static Long generateRefundId=32L;
 
+    @Test
     public void applyTest() {
-        RefundApplyBO refundApplyBO = refundApplyBOGenerator(112L, 202L, 1, 4500L, "退款构造测试");
+        RefundApplyBO refundApplyBO = refundApplyBOGenerator(38L, 78L, 1, 100L, "退款构造测试");
         RefundItemOrder bean = SpringBeanFactory.getBean(RefundItemOrder.class, refundApplyBO, true);
         show(bean);
         generateRefundId = bean.getRefundId();
@@ -27,13 +28,15 @@ public class RefundItemOrderImplTest extends BaseTest{
         RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.sellerAgree();
         //测试重复操作
-        refundItemOrder.sellerAgree();
+//        refundItemOrder.sellerAgree();
     }
 
     @Test
     public void sellerRefuseTest() {
         RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
+        //测试重复操作
+//        refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
     }
 
     @Test

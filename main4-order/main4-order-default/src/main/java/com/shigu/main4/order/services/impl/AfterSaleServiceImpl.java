@@ -189,16 +189,8 @@ public class AfterSaleServiceImpl implements AfterSaleService{
                 break;
         }
         statusVo.setAfterSaleStatus(afterSaleStatus);
-        String content = null;
-        switch (statusVo.getAfterSaleStatus()) {
-            case REFUSE_PROCESS:
-                content = refundinfo.getReason();
-                break;
-            case REFUND_MONEY_CHANGED:
-                content = String.format("%.2f", refundinfo.getRefundMoney() * .01);
-                break;
-        }
-        statusVo.setContent(content);
+        statusVo.setContent(refundinfo.getReason());
+        statusVo.setModifyRefundPrice(refundinfo.getRefundMoney());
         return statusVo;
     }
 

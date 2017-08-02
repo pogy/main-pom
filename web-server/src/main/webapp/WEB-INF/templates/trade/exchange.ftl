@@ -619,13 +619,7 @@ var refundId = '${refundId!}';
     
     
     <p><span class="fc6" data-expressId="${express.id!}">${express.name!}</span><span class="yahei fs14 vm">${express.code!}</span><a href="javascript:;" id="modifyExpress">修改快递</a></p>
-    <#list express.detail as express>
-        <#if express_index lt 2>
-        <p><span class="yahei fs14">${express.date!}  ${express.time!}</span>${express.desc!}</p>
-        </#if>
-    </#list>
     
-    <a href="expressDetail.htm" target="_blank">查看详情</a>
 </div>
 
 

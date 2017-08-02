@@ -29,6 +29,12 @@ public class SubRefundOrderVO {
      * 最多可退货件数
      */
     private Integer refundNumber;
+    /**
+     * 可退的其他金额(快递费,服务费),
+     * 除了当前子单外,没有存在未完全退完的子单时,
+     * 返回该值
+     */
+    private String otherRefundPrice;
 
     /**
      * 获取 	退换货子单id
@@ -126,5 +132,23 @@ public class SubRefundOrderVO {
      */
     public void setRefundNumber(Integer refundNumber) {
         this.refundNumber = refundNumber;
+    }
+
+    /**
+     * 可退的其他金额(快递费,服务费),
+     * 除了当前子单外,没有存在未完全退完的子单时,
+     * 返回该值
+     */
+    public String getOtherRefundPrice() {
+        return this.otherRefundPrice;
+    }
+
+    /**
+     * 可退的其他金额(快递费,服务费),
+     * 除了当前子单外,没有存在未完全退完的子单时,
+     * 返回该值
+     */
+    public void setOtherRefundPrice(String otherRefundPrice) {
+        this.otherRefundPrice = otherRefundPrice;
     }
 }

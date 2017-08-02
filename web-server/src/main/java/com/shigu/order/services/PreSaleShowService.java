@@ -29,6 +29,9 @@ public class PreSaleShowService {
         sub.setChildOrderSize(subSimple.getSize());
         sub.setRefundGoodsPrice(PriceConvertUtils.priceToString(subSimple.getPrice()));
         sub.setRefundNumber(subSimple.getNum()-(subSimple.getRefundNum()==null?0:subSimple.getRefundNum()));
+        if(subSimple.getOtherRefundPrice()!=null){
+            sub.setOtherRefundPrice(PriceConvertUtils.priceToString(subSimple.getOtherRefundPrice()));
+        }
         return sub;
     }
 

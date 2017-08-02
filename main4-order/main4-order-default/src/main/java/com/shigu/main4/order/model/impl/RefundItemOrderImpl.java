@@ -103,6 +103,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     public List<RefundProcessVO> refundLogs() {
         ItemRefundLogExample example = new ItemRefundLogExample();
         example.createCriteria().andRefundIdEqualTo(refundId);
+        example.setOrderByClause("create_time desc");
         List<RefundProcessVO> collect = itemRefundLogMapper.selectByExample(example).stream().map(o -> {
             RefundProcessVO vo = new RefundProcessVO();
             vo.setCreateTime(o.getCreateTime());
