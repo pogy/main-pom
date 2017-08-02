@@ -170,6 +170,13 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         ItemOrderRefund itemOrderRefund = BeanMapper.map(applyBO, ItemOrderRefund.class);
         itemOrderRefund.setUserApply(fromUser);
         itemOrderRefundMapper.insertSelective(itemOrderRefund);
+        ItemRefundLog refundLog = new ItemRefundLog();
+        refundLog.setRefundId(this.refundId);
+        refundLog.setFromStatus(-1);
+        refundLog.setToStatus(RefundStateEnum.APPLY_REFUND.refundStatus);
+        refundLog.setMsg(itemOrderRefund.getReason());
+        refundLog.setImBuyer(fromUser);
+        itemRefundLogMapper.insertSelective(refundLog);
         return refundId = itemOrderRefund.getRefundId();
     }
 
