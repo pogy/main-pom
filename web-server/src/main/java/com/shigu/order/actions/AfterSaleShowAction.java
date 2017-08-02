@@ -182,7 +182,7 @@ public class AfterSaleShowAction {
         if (StringUtils.isEmpty(bo.getChildOrderId())) {
             return JsonResponseUtil.error("订单id不能空");
         }
-        return JsonResponseUtil.success().element("refundId ",afterSaleShowService.exchangeApply(bo));
+        return JsonResponseUtil.success().element("refundId",afterSaleShowService.exchangeApply(bo));
     }
 
     /**
