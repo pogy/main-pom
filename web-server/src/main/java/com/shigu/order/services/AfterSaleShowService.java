@@ -2,6 +2,7 @@ package com.shigu.order.services;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.*;
@@ -40,7 +41,7 @@ public class AfterSaleShowService {
     private ItemOrderService itemOrderService;
     @Autowired
     PreSaleShowService preSaleShowService;
-    public Long applyReturnOrder(AfterSaleBo bo) throws JsonErrException {
+    public Long applyReturnOrder(AfterSaleBo bo) throws JsonErrException, OrderException {
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(Long.parseLong(bo.getChildOrderId()));
         Long aLong = PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
         Long refundMoney = bo.getRefundCount()*aLong;
@@ -276,7 +277,7 @@ public class AfterSaleShowService {
         afterSaleService.modifyExpress(Long.parseLong(refundId), Long.parseLong(expressId), expressCode);
     }
 
-    public Long exchangeApply(AfterSaleBo bo) {
+    public Long exchangeApply(AfterSaleBo bo) throws OrderException {
         return afterSaleService.exchangeApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundReason(), bo.getRefundDesc());
     }
 
