@@ -80,7 +80,7 @@ public class PreSaleShowAction {
     public JSONObject onlyRefundApply(Long childOrderId,Integer refundCount) throws OrderException {
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(childOrderId);
         Long refundId=afterSaleService.preRefundApply(childOrderId,refundCount,
-                PriceConvertUtils.priceToString(refundCount*PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice())));
+                refundCount*PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice()));
         JSONObject obj=new JSONObject();
         obj.put("result","success");
         obj.put("refundId",refundId);
