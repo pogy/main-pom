@@ -76,6 +76,7 @@ public class OrderListServiceImplTest extends BaseTest {
     @Test
     public void selectSubListTest() {
         show(orderListService.selectSubList(2L));
+        show(orderListService.selectSubList(70L));
     }
 
     @Test
@@ -92,24 +93,11 @@ public class OrderListServiceImplTest extends BaseTest {
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
-    @Test
-    public void testOrderInfos() {
-        show(itemOrderMapper.selOrderInfoDetailByOrderId(68L));
-        System.out.println("-------------------------------------------------------------------------");
-        show(itemOrderMapper.selOrderInfoDetailByOrderId(2L));
-    }
 
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
 
-    @Test
-    public void testSubOrderInfos() {
-       itemOrderSubMapper.selSubOrderAndRefundInfos(2L).forEach(subOrderInfo -> {
-           show(subOrderInfo);
-           show(subOrderInfo.getItemOrderRefund());
-           System.out.println("--------------------");
-       });
-    }
+
 
     @Test
     public void shPagerTest() {

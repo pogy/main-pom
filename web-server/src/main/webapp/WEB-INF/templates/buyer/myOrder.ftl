@@ -415,17 +415,17 @@ var webSite = '${webSite!}';
             <#if childOrder.tkState == 0>
             <p><a href="onlyRefund.htm?childOrderId=${childOrder.childOrderId!}" target="_blank">申请退款</a></p>
             <#elseif childOrder.tkState == 1>
-            <p><a class="fcF40" href="onlyRefund.htm?childOrderId=${childOrder.sqRefundId!}" target="_blank">退款申请中</a></p>
+            <p><a class="fcF40" href="onlyRefund.htm?refundId=${childOrder.sqRefundId!}" target="_blank">退款申请中</a></p>
             <#elseif childOrder.tkState == 2>
-            <p><a class="fcBlue" href="onlyRefund.htm?childOrderId=${childOrder.sqRefundId!}" target="_blank">退款成功 x${childOrder.tkNum!}</a></p>
+            <p><a class="fcBlue" href="onlyRefund.htm?refundId=${childOrder.sqRefundId!}" target="_blank">退款成功 x${childOrder.tkNum!}</a></p>
             <#elseif childOrder.tkState == 3>
-            <p><a class="fcF40" href="onlyRefund.htm?childOrderId=${childOrder.sqRefundId!}" target="_blank">申请拒绝</a></p>
+            <p><a class="fcF40" href="onlyRefund.htm?refundId=${childOrder.sqRefundId!}" target="_blank">申请拒绝</a></p>
             </#if>
         </#if>
         
         <#if order.mainState == 3>
             <#if childOrder.tkState == 2>
-            <p><a class="fcBlue" href="onlyRefund.htm?childOrderId=${childOrder.sqRefundId!}" target="_blank">退款成功 x${childOrder.tkNum!}</a></p>
+            <p><a class="fcBlue" href="onlyRefund.htm?refundId=${childOrder.sqRefundId!}" target="_blank">退款成功 x${childOrder.tkNum!}</a></p>
             </#if>
             
             <#if childOrder.tkNum != childOrder.num && childOrder.shState == 0>
@@ -451,7 +451,7 @@ var webSite = '${webSite!}';
         
         <#if order.mainState == 4>
             <#if childOrder.tkState == 2>
-            <p><a class="fcBlue" href="onlyRefund.htm?childOrderId=${childOrder.sqRefundId!}" target="_blank">退款成功 x${childOrder.tkNum!}</a></p>
+            <p><a class="fcBlue" href="onlyRefund.htm?refundId=${childOrder.sqRefundId!}" target="_blank">退款成功 x${childOrder.tkNum!}</a></p>
             </#if>
             
             <#if childOrder.shState == 4 || childOrder.shState == 5>
