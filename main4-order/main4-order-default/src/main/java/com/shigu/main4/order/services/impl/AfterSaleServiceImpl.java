@@ -1,5 +1,7 @@
 package com.shigu.main4.order.services.impl;
 
+import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -41,6 +43,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     @Autowired
     private ItemOrderService itemOrderService;
 
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
+
     /**
      * 售后页面的子单简单数据
      *
@@ -60,6 +65,18 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
         RefundVO refundVO = subItemOrder.refundInfos();
         vo.setRefundNum(refundVO == null ? 0 : refundVO.getNumber());
+        vo.setOtherRefundPrice(0L);
+
+        Long oid = subItemOrderVO.getOid();
+        ItemOrder order = SpringBeanFactory.getBean(ItemOrder.class, oid);
+        List<Long> allSubId = order.subOrdersInfo().stream().map(SubItemOrderVO::getSoid).collect(Collectors.toList());
+
+        ItemOrderRefund refund = new ItemOrderRefund();
+        refund.setOid(oid);
+        allSubId.removeAll(itemOrderRefundMapper.select(refund).stream().map(ItemOrderRefund::getSoid).distinct().collect(Collectors.toList()));
+        if (allSubId.size() == 1 && allSubId.get(0).equals(subOrderId)) {
+            vo.setOtherRefundPrice(order.orderOtherAmount());
+        }
         return vo;
     }
 

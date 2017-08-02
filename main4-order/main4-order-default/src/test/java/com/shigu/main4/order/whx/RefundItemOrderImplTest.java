@@ -17,7 +17,7 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void applyTest() {
-        RefundApplyBO refundApplyBO = refundApplyBOGenerator(38L, 78L, 1, 100L, "退款构造测试");
+        RefundApplyBO refundApplyBO = refundApplyBOGenerator(155L, 78L, 1, 100L, "退款构造测试");
         RefundItemOrder bean = SpringBeanFactory.getBean(RefundItemOrder.class, refundApplyBO, true);
         show(bean);
         generateRefundId = bean.getRefundId();

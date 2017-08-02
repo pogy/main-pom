@@ -65,6 +65,10 @@ public interface ItemOrder extends Order{
     void addService(Long serviceId);//添加服务
 
     /**
+     * 除商品外的其他钱
+     */
+    Long orderOtherAmount();
+    /**
      * 退服务款.
      * @param id 服务ID
      * @param money 退的费用
