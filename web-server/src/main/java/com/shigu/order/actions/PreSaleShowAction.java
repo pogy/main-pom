@@ -39,6 +39,7 @@ public class PreSaleShowAction {
             RefundOrderVO order=preSaleShowService.selRefundOrderVO(childOrderId);
             model=toModel(model,sub,order);
             model.addAttribute("onlyRefundStateNum",1);
+            model.addAttribute("otherRefundPrice",PriceConvertUtils.priceToString(sub.getOtherRefundPrice()));
         }else{
             AfterSaleStatusVO assvo=afterSaleService.afterSaleStatus(refundId);
             switch (assvo.getAfterSaleStatus().returnGoodsStatus){
@@ -54,7 +55,7 @@ public class PreSaleShowAction {
                     model.addAttribute("refundSuccessTime",afterEnt.getAfterSeleEntDate());
                     break;
                 }
-                case 2:{
+                case 2: case 3: case 4: case 5: {
                     model.addAttribute("onlyRefundStateNum",4);
                     model.addAttribute("refuseReason",assvo.getContent());
                     break;
@@ -66,6 +67,7 @@ public class PreSaleShowAction {
             SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(assvo.getSubOrderId());
             RefundOrderVO order=preSaleShowService.selRefundOrderVO(assvo.getSubOrderId());
             model=toModel(model,sub,order);
+            model.addAttribute("otherRefundPrice",PriceConvertUtils.priceToString(sub.getOtherRefundPrice()));
             AfterSaleInfoVO afterSaleInfo=afterSaleService.afterSaleInfo(refundId);
             model.addAttribute("refundId",afterSaleInfo.getRefundId());
             model.addAttribute("refundAmount",PriceConvertUtils.priceToString(afterSaleInfo.getRefundPrice()));
@@ -79,8 +81,11 @@ public class PreSaleShowAction {
     @ResponseBody
     public JSONObject onlyRefundApply(Long childOrderId,Integer refundCount) throws OrderException {
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(childOrderId);
-        Long refundId=afterSaleService.preRefundApply(childOrderId,refundCount,
-                refundCount*PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice()));
+        Long price=refundCount*PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
+        if(sub.getOtherRefundPrice()!=null){
+            price+=sub.getOtherRefundPrice();
+        }
+        Long refundId=afterSaleService.preRefundApply(childOrderId,refundCount,price);
         JSONObject obj=new JSONObject();
         obj.put("result","success");
         obj.put("refundId",refundId);
