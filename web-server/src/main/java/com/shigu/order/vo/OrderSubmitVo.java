@@ -29,6 +29,12 @@ public class OrderSubmitVo {
     private List<CartVO> products;
 
     private Long userId;
+    /**
+     * 淘宝地址信息
+     */
+    private TbOrderAddressInfoVO tbOrderAddressInfo;
+
+
 
     public OrderSubmitType getSubmitType() {
         return submitType;
@@ -68,5 +74,19 @@ public class OrderSubmitVo {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    /**
+     * 获取 淘宝地址信息
+     */
+    public TbOrderAddressInfoVO getTbOrderAddressInfo() {
+        return this.tbOrderAddressInfo;
+    }
+
+    /**
+     * 设置 淘宝地址信息
+     */
+    public void setTbOrderAddressInfo(TbOrderAddressInfoVO tbOrderAddressInfo) {
+        this.tbOrderAddressInfo = tbOrderAddressInfo;
     }
 }

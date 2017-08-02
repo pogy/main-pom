@@ -15,6 +15,16 @@
     <dependencies>
         <dependency>
             <groupId>sites.main</groupId>
+            <artifactId>main4-order-api</artifactId>
+            <version>${main4-order-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-order-default</artifactId>
+            <version>${main4-order-default.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
             <artifactId>main4-ucenter-default</artifactId>
             <version>${main4-ucenter-api.version}</version>
         </dependency>

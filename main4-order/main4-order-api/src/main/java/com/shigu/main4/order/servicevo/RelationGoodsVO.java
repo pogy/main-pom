@@ -4,6 +4,7 @@ package com.shigu.main4.order.servicevo;
  * Created by zf on 2017/7/21.
  */
 public class RelationGoodsVO {
+    private Long goodsId;
     /**
      * 货号
      */
@@ -59,5 +60,13 @@ public class RelationGoodsVO {
 
     public void setPriceLong(Long priceLong) {
         this.priceLong = priceLong;
+    }
+
+    public Long getGoodsId() {
+        return this.goodsId;
+    }
+
+    public void setGoodsId(Long goodsId) {
+        this.goodsId = goodsId;
     }
 }

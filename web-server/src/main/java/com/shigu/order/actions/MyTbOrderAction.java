@@ -1,14 +1,17 @@
 package com.shigu.order.actions;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.TbOrderBO;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
+import com.shigu.main4.order.exceptions.NotFindSessionException;
 import com.shigu.main4.order.servicevo.TbOrderVO;
 import com.shigu.main4.order.vo.GoodsVO;
 import com.shigu.order.bo.TaobaoOrderBO;
 import com.shigu.order.services.MyTbOrderService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @类编号
@@ -92,4 +97,24 @@ public class MyTbOrderAction {
         }
         return obj;
     }
+
+
+    /**
+     * 解析淘宝订单,返回
+     * @param tbId 子单列表
+     */
+    @RequestMapping("submitTbOrders")
+    @ResponseBody
+    public JSONObject submitTbOrders(Long tbId, HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        try {
+            String code = myTbOrderService.submitTbOrders(tbId,ps.getUserId());
+            return JsonResponseUtil.success().element("code", code);
+        } catch (NotFindSessionException e) {
+            throw new JsonErrException("淘宝授权过期");
+        } catch (NotFindRelationGoodsException e) {
+            throw new JsonErrException("存在未关联的商品");
+        }
+    }
+
 }
