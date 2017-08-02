@@ -46,7 +46,7 @@ public class AfterSaleShowService {
         Long aLong = PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
         Long refundMoney = bo.getRefundCount()*aLong;
         return afterSaleService.returnGoodsApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundCount()
-                ,PriceConvertUtils.priceToString(refundMoney)
+                ,refundMoney
                 , bo.getRefundReason(), bo.getRefundDesc());
     }
 

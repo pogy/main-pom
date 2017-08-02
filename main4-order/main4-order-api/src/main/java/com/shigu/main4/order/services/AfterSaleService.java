@@ -36,7 +36,7 @@ public interface AfterSaleService {
      * @param refundMoney
      * @return
      */
-    Long preRefundApply(Long subOrderId,int refundCount,String refundMoney) throws OrderException;
+    Long preRefundApply(Long subOrderId,int refundCount,Long refundMoney) throws OrderException;
 
     /**
      * 申请退货退款
@@ -48,7 +48,7 @@ public interface AfterSaleService {
      * @param refundDesc:退款说明
      * @return refundId:退换货id
      */
-    Long returnGoodsApply(Long subOrderId,int refundCount,String refundMoney,String refundReason,String refundDesc) throws OrderException;
+    Long returnGoodsApply(Long subOrderId,int refundCount,Long refundMoney,String refundReason,String refundDesc) throws OrderException;
 
     /**
      * 换货申请
