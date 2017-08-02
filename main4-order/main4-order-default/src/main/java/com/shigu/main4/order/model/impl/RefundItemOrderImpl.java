@@ -1,16 +1,14 @@
 package com.shigu.main4.order.model.impl;
 
-import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemRefundLog;
+import com.opentae.data.mall.examples.ItemRefundLogExample;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
-import com.shigu.main4.order.enums.RefundMsgEnum;
-import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -19,17 +17,17 @@ import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.vo.PayedVO;
 import com.shigu.main4.order.vo.RefundProcessVO;
 import com.shigu.main4.order.vo.RefundVO;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -103,7 +101,18 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     public List<RefundProcessVO> refundLogs() {
-        return null;
+        ItemRefundLogExample example = new ItemRefundLogExample();
+        example.createCriteria().andRefundIdEqualTo(refundId);
+        List<RefundProcessVO> collect = itemRefundLogMapper.selectByExample(example).stream().map(o -> {
+            RefundProcessVO vo = new RefundProcessVO();
+            vo.setCreateTime(o.getCreateTime());
+            vo.setFromStatus(o.getFromStatus());
+            vo.setImBuyer(o.getImBuyer());
+            vo.setToStatus(o.getToStatus());
+            vo.setMsg(o.getMsg());
+            return vo;
+        }).collect(Collectors.toList());
+        return collect;
     }
 
     /**
