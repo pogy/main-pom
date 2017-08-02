@@ -257,6 +257,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             address+=","+t.getReceiverPhone();
         }else if (!StringUtils.isEmpty(t.getReceiverMobile())){
             address+=","+t.getReceiverMobile();
+            tbOrderVO.setReceiverPhone(t.getReceiverMobile());
         }
         if (!StringUtils.isEmpty(t.getReceiverAddress())){
             address+=","+t.getReceiverState()+" "+t.getReceiverCity()+" "+t.getReceiverDistrict()+" "+t.getReceiverAddress();
@@ -264,6 +265,19 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         tbOrderVO.setAddress(address);
         if (t.getPayTime()!=null){
             tbOrderVO.setTime(t.getPayTime().toString());
+        }
+        if (!StringUtils.isEmpty(t.getReceiverCity())){
+
+            tbOrderVO.setCity(t.getReceiverCity());
+        }
+        if (!StringUtils.isEmpty(t.getReceiverState())){
+            tbOrderVO.setProv(t.getReceiverState());
+        }
+        if (!StringUtils.isEmpty(t.getReceiverDistrict())){
+            tbOrderVO.setSimpleAddress(t.getReceiverDistrict());
+        }
+        if (!StringUtils.isEmpty(t.getReceiverName())){
+            tbOrderVO.setReceiverName(t.getReceiverName());
         }
 
         ItemOrderExample itemOrderExample=new ItemOrderExample();
@@ -299,6 +313,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
                     vo.setGoodsNo(map.get(o.getNumIid()).getGoodsNo());
                     vo.setXzPrice(map.get(o.getNumIid()).getPiPriceString());
                     vo.setXzPriceLong(map.get(o.getNumIid()).getPiPrice());
+
                 }
                 vo.setTitle(o.getTitle());
                 childOrders.add(vo);
