@@ -3,6 +3,7 @@ package com.shigu.main4.order.services.impl;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
@@ -95,7 +96,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      * @return
      */
     @Override
-    public Long preRefundApply(Long subOrderId, int refundCount, String refundMoney) {
+    public Long preRefundApply(Long subOrderId, int refundCount, String refundMoney) throws OrderException {
         return SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
                 .refundApply(1, refundCount, Double.valueOf(refundMoney).longValue(), null);
     }
@@ -113,7 +114,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      * @create: zf
      */
     @Override
-    public Long returnGoodsApply(Long subOrderId, int refundCount, String refundMoney,String refundReason, String refundDesc) {
+    public Long returnGoodsApply(Long subOrderId, int refundCount, String refundMoney,String refundReason, String refundDesc) throws OrderException {
         return SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
                 .refundApply(2, refundCount, Double.valueOf(refundMoney).longValue(), refundReason+"@_@"+refundDesc);
     }
@@ -128,7 +129,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      * @create: zf
      */
     @Override
-    public Long exchangeApply(Long subOrderId, String refundReason, String refundDesc) {
+    public Long exchangeApply(Long subOrderId, String refundReason, String refundDesc) throws OrderException {
         return SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
                 .refundApply(3, -1, -1L, refundReason+"@_@"+refundDesc);
     }

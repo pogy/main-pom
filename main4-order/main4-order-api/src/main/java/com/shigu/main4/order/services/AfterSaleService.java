@@ -1,5 +1,6 @@
 package com.shigu.main4.order.services;
 
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.servicevo.*;
@@ -35,7 +36,7 @@ public interface AfterSaleService {
      * @param refundMoney
      * @return
      */
-    Long preRefundApply(Long subOrderId,int refundCount,String refundMoney);
+    Long preRefundApply(Long subOrderId,int refundCount,String refundMoney) throws OrderException;
 
     /**
      * 申请退货退款
@@ -47,7 +48,7 @@ public interface AfterSaleService {
      * @param refundDesc:退款说明
      * @return refundId:退换货id
      */
-    Long returnGoodsApply(Long subOrderId,int refundCount,String refundMoney,String refundReason,String refundDesc);
+    Long returnGoodsApply(Long subOrderId,int refundCount,String refundMoney,String refundReason,String refundDesc) throws OrderException;
 
     /**
      * 换货申请
@@ -57,7 +58,7 @@ public interface AfterSaleService {
      * @param refundDesc:换货说明
      * @return refundId:退换货id
      */
-    Long exchangeApply(Long subOrderId, String refundReason, String refundDesc);
+    Long exchangeApply(Long subOrderId, String refundReason, String refundDesc) throws OrderException;
 
     /**
      * 获取售后类型
