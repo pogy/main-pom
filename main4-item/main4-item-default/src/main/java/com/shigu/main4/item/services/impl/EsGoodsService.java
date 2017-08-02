@@ -1,5 +1,6 @@
 package com.shigu.main4.item.services.impl;
 
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguGoodsUnlicenseExample;
 import com.opentae.data.mall.examples.ShiguShopLicenseExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsStyleMapper;
@@ -11,11 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by wxc on 2017/3/3.

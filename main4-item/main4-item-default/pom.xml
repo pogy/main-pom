@@ -64,11 +64,7 @@
             <version>1.7.19</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>xinzuo-mybatis</groupId>
-            <artifactId>xinzuo-mybatis</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -78,11 +74,6 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-jgroupsreplication</artifactId>
             <version>1.7</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.28</version>
         </dependency>
         <dependency>
             <groupId>com.opentae.lib</groupId>
@@ -121,6 +112,28 @@
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
             <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>xinzuo-mybatis</groupId>
+            <artifactId>xinzuo-mybatis</artifactId>
+            <version>1.0.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>opentae-beans</groupId>
+            <artifactId>common</artifactId>
         </dependency>
     </dependencies>
 
