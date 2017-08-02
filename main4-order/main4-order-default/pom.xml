@@ -196,7 +196,8 @@
         <dependency>
             <groupId>com.opentae.tae</groupId>
             <artifactId>opentae_utils_authlogin</artifactId>
-            <version>RELEASE</version>
+            <version>1.0.2_releases</version>
         </dependency>
     </dependencies>
+
 </project>
