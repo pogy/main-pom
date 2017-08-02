@@ -29,15 +29,6 @@ public interface AfterSaleService {
     AfterSaleSimpleOrderVO afterSaleSimpleOrder(Long subOrderId);
 
     /**
-     * 申请退款
-     * @param subOrderId
-     * @param number
-     * @return 退款编号
-     */
-    Long refundApply(Long subOrderId,Integer number);
-
-
-    /**
      * 申请退货退款
      * @create: zf
      * @param subOrderId:订单子单id
