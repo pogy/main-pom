@@ -38,6 +38,12 @@ public class SubAfterSaleSimpleOrderVO {
      * 子单中售后的数量(包含已退和申请中的)
      */
     private Integer refundNum;
+    /**
+     * 可退的其他金额(快递费,服务费),
+     * 除了当前子单外,没有存在未完全退完的子单时,
+     * 返回该值
+     */
+    private Long otherRefundPrice;
 
     /**
      * 获取 子单ID
@@ -149,5 +155,23 @@ public class SubAfterSaleSimpleOrderVO {
      */
     public void setRefundNum(Integer refundNum) {
         this.refundNum = refundNum;
+    }
+
+    /**
+     * 可退的其他金额(快递费,服务费),
+     * 除了当前子单外,没有存在未完全退完的子单时,
+     * 返回该值
+     */
+    public Long getOtherRefundPrice() {
+        return this.otherRefundPrice;
+    }
+
+    /**
+     * 可退的其他金额(快递费,服务费),
+     * 除了当前子单外,没有存在未完全退完的子单时,
+     * 返回该值
+     */
+    public void setOtherRefundPrice(Long otherRefundPrice) {
+        this.otherRefundPrice = otherRefundPrice;
     }
 }
