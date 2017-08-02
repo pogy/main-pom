@@ -218,12 +218,15 @@ var webSite = '${webSite!}';
     <div class="gotoBox">
         
 
-<#assign text>{}</#assign>
+<#assign text>{"href":"${main_host!}order/myOrder.html"}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 
-    <a href="{{{main_host}}}order/myOrder.html"
-        
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
 
 
     class="fmButton
@@ -252,7 +255,11 @@ var webSite = '${webSite!}';
     
 
 
+    <#if $it.href??>
     </a>
+    <#else>
+    </b>
+    </#if>
 
 
 
