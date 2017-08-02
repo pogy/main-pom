@@ -29,6 +29,15 @@ public interface AfterSaleService {
     AfterSaleSimpleOrderVO afterSaleSimpleOrder(Long subOrderId);
 
     /**
+     * 售前退款申请
+     * @param subOrderId
+     * @param refundCount
+     * @param refundMoney
+     * @return
+     */
+    Long preRefundApply(Long subOrderId,int refundCount,String refundMoney);
+
+    /**
      * 申请退货退款
      * @create: zf
      * @param subOrderId:订单子单id
