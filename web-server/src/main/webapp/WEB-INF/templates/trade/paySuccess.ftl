@@ -55,7 +55,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -222,7 +222,7 @@ var webSite = '${webSite!}';
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 
-    <a href="#"
+    <a href="{{{main_host}}}order/myOrder.html"
         
 
 
@@ -263,7 +263,6 @@ var webSite = '${webSite!}';
 
         <a href="http://www.571xz.com/">返回首页</a>
     </div>
-    
 </div>
 
 
