@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ItemOrderSubMapper" >
+
+    <resultMap id="subOrderInfos" type="com.opentae.data.mall.beans.SubOrderInfos">
+        <id property="soid" column="soid"></id>
+        <result property="oid" column="oid"></result>
+        <result property="logisticsId" column="logistics_id"></result>
+        <result property="pid" column="pid"></result>
+        <result property="skuId" column="sku_id"></result>
+        <result property="num" column="num"></result>
+        <result property="distributionNum" column="distribution_num"></result>
+        <result property="shouldPayMoney" column="should_pay_money"></result>
+        <result property="payMoney" column="pay_money"></result>
+        <result property="refundMoney" column="refund_money"></result>
+        <result property="status" column="status"></result>
+        <result property="mark" column="mark"></result>
+        <result property="goodsId" column="goods_id"></result>
+        <result property="picUrl" column="pic_url"></result>
+        <result property="webSite" column="web_site"></result>
+        <result property="title" column="title"></result>
+        <result property="price" column="price"></result>
+        <result property="weight" column="weight"></result>
+        <result property="size" column="size"></result>
+        <result property="color" column="color"></result>
+        <result property="goodsNo" column="goods_no"></result>
+        <collection property="itemOrderRefund" ofType="com.opentae.data.mall.beans.ItemOrderRefund">
+            <id property="refundId" column="refund_id"></id>
+            <result property="oid" column="sub_refund_oid"></result>
+            <result property="soid" column="sub_refund_soid"></result>
+            <result property="type" column="sub_refund_type"></result>
+            <result property="buyerCourier" column="buyer_courier"></result>
+            <result property="status" column="sub_refund_status"></result>
+            <result property="userApply" column="user_apply"></result>
+            <result property="failMsg" column="fail_msg"></result>
+            <result property="refundMoney" column="sub_order_refund_money"></result>
+            <result property="hopeMoney" column="hope_money"></result>
+            <result property="number" column="number"></result>
+            <result property="reason" column="reason"></result>
+            <result property="sellerProposalMoney" column="seller_proposal_money"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selSubOrderAndRefundInfos" resultMap="subOrderInfos">
+        SELECT
+            sub_order.soid,
+            sub_order.oid,
+            sub_order.pid,
+            sub_order.sku_id,
+            sub_order.num,
+            sub_order.distribution_num,
+            sub_order.should_pay_money,
+            sub_order.pay_money,
+            sub_order.refund_money,
+            sub_order.status,
+            sub_order.mark,
+            sub_order.goods_id,
+            sub_order.pic_url,
+            sub_order.web_site,
+            sub_order.title,
+            sub_order.price,
+            sub_order.logistics_id,
+            sub_order.weight,
+            sub_order.size,
+            sub_order.color,
+            sub_order.goods_no,
+            sub_refund.refund_id,
+            sub_refund.oid AS sub_refund_oid,
+            sub_refund.soid AS sub_refund_soid,
+            sub_refund.type AS sub_refund_type,
+            sub_refund.buyer_courier,
+            sub_refund.status AS sub_refund_status,
+            sub_refund.user_apply,
+            sub_refund.fail_msg,
+            sub_refund.refund_money AS sub_order_refund_money,
+            sub_refund.hope_money,
+            sub_refund.number,
+            sub_refund.reason,
+            sub_refund.seller_proposal_money
+        FROM item_order_sub AS sub_order
+        LEFT JOIN item_order_refund AS sub_refund  ON sub_order.soid = sub_refund.soid
+        WHERE sub_order.oid = ${oid}
+    </select>
+
+</mapper>
