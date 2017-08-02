@@ -9,6 +9,7 @@ import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.order.vo.RefundApplyRecordVO;
 import com.shigu.order.vo.RefundOrderVO;
 import com.shigu.order.vo.SubRefundOrderVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 public class PreSaleShowService {
+    @Autowired
     AfterSaleService afterSaleService;
 
     public SubRefundOrderVO selSubRefundOrderVO(Long subOrderId){

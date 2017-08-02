@@ -337,17 +337,23 @@ var webSite = '${webSite!}';
     <li class="opera">
         
         <#if order.mainState == 3>
-            <#if childOrder.tkState == 1>
-            <p class="fcBlue">退款成功 x${childOrder.tkNum!}</p>
+            <#if childOrder.tkState == 2>
+            <p><a class="fcBlue" href="onlyRefund.htm?refundId=${childOrder.sqRefundId!}" target="_blank">退款成功 x${childOrder.tkNum!}</a></p>
             </#if>
             
             <#if childOrder.tkNum != childOrder.num && childOrder.shState == 0>
             <p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
             <#elseif childOrder.shState == 4 || childOrder.shState == 5>
                 <#if childOrder.shState == 4>
-                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
+                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后处理中</a></p>
                 <#else>
-                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.refundId!}" target="_blank">售后处理中</a></p>
+                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后处理中</a></p>
+                </#if>
+            <#elseif childOrder.shState == 6 || childOrder.shState == 7>
+                <#if childOrder.shState == 6>
+                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后申请拒绝</a></p>
+                <#else>
+                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后申请拒绝</a></p>
                 </#if>
             <#elseif childOrder.shState == 2>
             <p class="fcF40">退款完成x${childOrder.shTkNum!}</p>
@@ -355,16 +361,30 @@ var webSite = '${webSite!}';
             <p class="fcF40">换货完成</p>
             </#if>
         <#elseif order.mainState == 4>
-            <#if childOrder.tkState == 1>
-            <p class="fcBlue">退款成功 x${childOrder.tkNum!}</p>
+            <#if childOrder.tkState == 2>
+            <p><a class="fcBlue" href="onlyRefund.htm?refundId=${childOrder.sqRefundId!}" target="_blank">退款成功 x${childOrder.tkNum!}</a></p>
             </#if>
-        
-            <#if childOrder.shState == 1>
-            <p class="fcF40">售后处理中</p>
+            
+            <#if childOrder.shState == 4 || childOrder.shState == 5>
+                <#if childOrder.shState == 4>
+                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后处理中</a></p>
+                <#else>
+                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后处理中</a></p>
+                </#if>
+            <#elseif childOrder.shState == 6 || childOrder.shState == 7>
+                <#if childOrder.shState == 6>
+                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后申请拒绝</a></p>
+                <#else>
+                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后申请拒绝</a></p>
+                </#if>
             <#elseif childOrder.shState == 2>
             <p class="fcF40">退款完成x${childOrder.shTkNum!}</p>
             <#elseif childOrder.shState == 3>
             <p class="fcF40">换货完成</p>
+            </#if>
+            
+            <#if childOrder.tkState == 0 && childOrder.shState == 0>
+            ——
             </#if>
         
         </#if>
