@@ -22,6 +22,4 @@ public interface MemberUserSubMapper extends Mapper<MemberUserSub> {
     List<MemberUserSub> selectUserSubListByUserName(@Param("userId") Long userId, @Param("startRows") int startRows,
                                                     @Param("pageSize") int pageSize);
 
-    /** 生成子账号信息 */
-    int delSubUserById(@Param("subUserId") Long subUserId, @Param("userId") Long userId);
 }
