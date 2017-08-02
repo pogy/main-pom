@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class RefundExpressInfoDecorate extends RefundVoDecorate {
     private ReturnableExpressInfoVO returnableExpressInfoVO;
-    private List<ExpressLogVO> loglist;
+    private List<ExpressLogVO> loglist = new ArrayList<>();
 
     public RefundExpressInfoDecorate(AbstractRefundVo vo, ReturnableExpressInfoVO returnableExpressInfoVO
             ,List<ExpressLogVO> loglist){
@@ -38,16 +38,17 @@ public class RefundExpressInfoDecorate extends RefundVoDecorate {
         vo.setCreateTime(returnableExpressInfoVO.getReturnableExpressTime());
         List<ExpressDetailVO> elist= new ArrayList<>();
         vo.setDetail(elist);
-        for(ExpressLogVO logVO:loglist){
-            ExpressDetailVO vode = new ExpressDetailVO();
-            vode.setDate(logVO.getLogDate());
-            vode.setDesc(logVO.getLogDesc());
-            vode.setTime(logVO.getLogTime());
-            elist.add(vode);
+        if (loglist != null) {
+            for (ExpressLogVO logVO : loglist) {
+                ExpressDetailVO vode = new ExpressDetailVO();
+                vode.setDate(logVO.getLogDate());
+                vode.setDesc(logVO.getLogDesc());
+                vode.setTime(logVO.getLogTime());
+                elist.add(vode);
 
+            }
         }
         map.put("express",vo);
-
         super.addMap(map);
     }
 

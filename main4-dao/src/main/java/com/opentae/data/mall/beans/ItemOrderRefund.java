@@ -2,6 +2,7 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 import java.io.Serializable;
 
 public class ItemOrderRefund implements Serializable {
@@ -13,7 +14,7 @@ public class ItemOrderRefund implements Serializable {
 	private Long refundId;
 
     /**
-     * 1退款，2A类退货，3B类退货
+     * 1退款，2退货，3换货
      */
 	private Integer type;
 
@@ -23,7 +24,7 @@ public class ItemOrderRefund implements Serializable {
 	private String buyerCourier;
 
     /**
-     * 0申请中，1卖家受理，2退款完成，3卖家拒绝退请求，4退货失败，5买家已发件，6卖家已收件，7卖家议价，8买家附议，9买家拒绝附议
+     * 0申请中，1卖家受理，2退款完成，3卖家拒绝退请求，4退货失败，5买家已发件，6卖家已收件，7卖家议价，9买家拒绝附议
      */
 	private Integer status;
 
@@ -71,6 +72,11 @@ public class ItemOrderRefund implements Serializable {
      * 卖家建议金额
      */
 	private Long sellerProposalMoney;
+
+    /**
+     * 用户回寄时间
+     */
+	private Date buyerReturnTime;
 
 	public void setRefundId(Long refundId) {
 		this.refundId = refundId;
@@ -174,6 +180,14 @@ public class ItemOrderRefund implements Serializable {
 
 	public Long getSellerProposalMoney() {
 		return this.sellerProposalMoney;
+	}
+
+	public void setBuyerReturnTime(Date buyerReturnTime) {
+		this.buyerReturnTime = buyerReturnTime;
+	}
+
+	public Date getBuyerReturnTime() {
+		return this.buyerReturnTime;
 	}
 
 }
