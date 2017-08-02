@@ -34,7 +34,7 @@ public class SubRefundOrderVO {
      * 除了当前子单外,没有存在未完全退完的子单时,
      * 返回该值
      */
-    private Long otherRefundPrice;
+    private String otherRefundPrice;
 
     /**
      * 获取 	退换货子单id
@@ -139,7 +139,7 @@ public class SubRefundOrderVO {
      * 除了当前子单外,没有存在未完全退完的子单时,
      * 返回该值
      */
-    public Long getOtherRefundPrice() {
+    public String getOtherRefundPrice() {
         return this.otherRefundPrice;
     }
 
@@ -148,7 +148,7 @@ public class SubRefundOrderVO {
      * 除了当前子单外,没有存在未完全退完的子单时,
      * 返回该值
      */
-    public void setOtherRefundPrice(Long otherRefundPrice) {
+    public void setOtherRefundPrice(String otherRefundPrice) {
         this.otherRefundPrice = otherRefundPrice;
     }
 }
