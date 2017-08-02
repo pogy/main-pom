@@ -5,6 +5,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.*;
+import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.ExpressVo;
 import com.shigu.main4.order.vo.ReturnableAddressVO;
 import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
@@ -14,6 +15,7 @@ import com.shigu.order.decorateUtil.AbstractRefundVo;
 import com.shigu.order.decorateUtil.concreteCompents.OrderExchangeVo;
 import com.shigu.order.decorateUtil.concreteCompents.OrderReturnVo;
 import com.shigu.order.decorateUtil.concreteDetorates.*;
+import com.shigu.order.vo.SubRefundOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -36,10 +38,14 @@ public class AfterSaleShowService {
     private AfterSaleService afterSaleService;
     @Autowired
     private ItemOrderService itemOrderService;
-
-
+    @Autowired
+    PreSaleShowService preSaleShowService;
     public Long applyReturnOrder(AfterSaleBo bo) throws JsonErrException {
-        return afterSaleService.returnGoodsApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundCount(), bo.getRefundMoney()
+        SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(Long.parseLong(bo.getChildOrderId()));
+        Long aLong = PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
+        Long refundMoney = bo.getRefundCount()*aLong;
+        return afterSaleService.returnGoodsApply(Long.parseLong(bo.getChildOrderId()), bo.getRefundCount()
+                ,PriceConvertUtils.priceToString(refundMoney)
                 , bo.getRefundReason(), bo.getRefundDesc());
     }
 

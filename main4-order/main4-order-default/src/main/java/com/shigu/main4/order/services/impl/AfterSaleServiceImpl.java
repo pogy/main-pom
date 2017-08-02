@@ -78,7 +78,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
         AfterSaleSimpleOrderVO vo = new AfterSaleSimpleOrderVO();
         vo.setOrderId(itemOrderVO.getOrderId());
-        vo.setEndDate(DateUtil.dateToString(itemOrderVO.getFinishTime(), DateUtil.patternD));
+        vo.setEndDate(DateUtil.dateToString(itemOrderVO.getCreateTime(), DateUtil.patternD));
         vo.setOrderPrice(itemOrder.subOrdersInfo().stream().mapToLong(o -> o.getProduct().getPrice()).sum());
         vo.setExpressPrice(itemOrder.selLogisticses().get(0).getMoney());
         vo.setServicePrice(itemOrder.selServices().get(0).getMoney());
