@@ -16,9 +16,5 @@
 		limit #{startRows},#{pageSize}
 	</select>
 
-	<!-- 删除子账号信息 -->
-	<delete id="delSubUserById">
-		DELETE FROM member_user_sub WHERE sub_user_id = #{subUserId} AND user_id = #{userId}
-	</delete>
 
 </mapper>

@@ -18,7 +18,4 @@ import java.util.List;
 @Lazy(true)
 public interface ShiguOuterMarketMapper extends Mapper<ShiguOuterMarket> {
 
-    List<ShiguOuterMarket> selOuterMarketListByBo(@Param("website") String website);
-
-    int selOuterMarketCountByBo(@Param("website") String website);
 }

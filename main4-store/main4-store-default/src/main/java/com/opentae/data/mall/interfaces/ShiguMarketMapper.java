@@ -15,5 +15,4 @@ import org.springframework.context.annotation.Scope;
 @Lazy(true)
 public interface ShiguMarketMapper extends Mapper<ShiguMarket> {
 
-
 }
