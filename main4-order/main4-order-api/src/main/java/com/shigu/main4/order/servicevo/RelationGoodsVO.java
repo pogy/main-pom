@@ -4,6 +4,7 @@ package com.shigu.main4.order.servicevo;
  * Created by zf on 2017/7/21.
  */
 public class RelationGoodsVO {
+    private Long goodsId;
     /**
      * 货号
      */
@@ -15,8 +16,6 @@ public class RelationGoodsVO {
     private Long priceLong;
 
     private String webSite;
-    private Long goodsId;
-
 
     public String getWebSite() {
         return webSite;
