@@ -17,6 +17,11 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-item-default</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
             <groupId>xinzuo-mybatis</groupId>
             <artifactId>xinzuo-mybatis</artifactId>
             <version>1.0.2-SNAPSHOT</version>
@@ -68,12 +73,6 @@
             <groupId>com.101tec</groupId>
             <artifactId>zkclient</artifactId>
             <version>0.10</version>
-        </dependency>
-        <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-item-update</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>
