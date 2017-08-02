@@ -372,7 +372,7 @@ var webSite = '${webSite!}';
             <p class="fc9">请输入支付密码</p>
             <input type="password" placeholder="请输入支付密码" name="xzpayPwd">
             <#if notSetPassword??>
-            <span class="recharge notSetPassword"><i></i><em class="fcF40">您还未设置星座宝（余额）支付密码，请尽快设置以防资金被盗！ </em> <a href="#">立即设置</a></span>
+            <span class="recharge notSetPassword"><i></i><em class="fcF40">您还未设置星座宝（余额）支付密码，请尽快设置以防资金被盗！ </em> <a href="${main_host!}member/safeXgPaymm.htm">立即设置</a></span>
             </#if>
         </div>
         
