@@ -86,24 +86,31 @@ public class AfterSaleShowService {
         AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(refundId);
         List<RefundLogVO> rlist = afterSaleService.afterSaleApplication(refundId);
         AbstractRefundVo vo = new OrderReturnVo();
-        AbstractRefundVo vo1 = new OrderSimpleRefundDecorate(vo, afterSaleSimpleOrderVO);//主单信息
-        AbstractRefundVo vo2 = new ReturnStatusInfoDecorate(vo1, afterSaleStatusVO);//退款状态信息
-        AbstractRefundVo vo3 = new RefundSimpleInfoDecorate(vo2, afterSaleInfoVO);  //退款信息编号和钱
-        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist);//申请信息
+        //主单信息修饰
+        AbstractRefundVo vo1 = new OrderSimpleRefundDecorate(vo, afterSaleSimpleOrderVO);
+        //退款状态信息修饰
+        AbstractRefundVo vo2 = new ReturnStatusInfoDecorate(vo1, afterSaleStatusVO);
+        //退款信息编号和钱修饰
+        AbstractRefundVo vo3 = new RefundSimpleInfoDecorate(vo2, afterSaleInfoVO);
+        //申请信息修饰
+        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist);
         AbstractRefundVo von = null;
         switch (afterSaleStatusVO.getAfterSaleStatus()) {
             case RETURN_ENT: {
                 //页面4
                 AfterSaleEntVO afterSaleEntVO = afterSaleService.afterEnt(refundId);
-                von = new RefundEndDecorate(vo4, afterSaleEntVO);//退款完成
+                //退款完成修饰
+                von = new RefundEndDecorate(vo4, afterSaleEntVO);
                 break;
             }
             case AGREE_PROCESS: {
                 //页面3-1
                 ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
                 List<ExpressVo> expressVos = afterSaleService.selectExpress();
-                AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);//退货地址
-                von = new RefundExpressDetorate(vo5, expressVos);//快递列表
+                //退货地址修饰
+                AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
+                //快递列表修饰
+                von = new RefundExpressDetorate(vo5, expressVos);
                 break;
             }
             case EXPRESS_SUBMIT: {
@@ -161,8 +168,10 @@ public class AfterSaleShowService {
         SubAfterSaleSimpleOrderVO subAfterSaleSimpleOrderVO = afterSaleService.subAfterSaleSimpleOrder(childOrderId);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(childOrderId);
         AbstractRefundVo vo = new OrderExchangeVo();
-        AbstractRefundVo vo1 = new SubSimpleRefundDecorate(vo, subAfterSaleSimpleOrderVO);//子单信息
-        AbstractRefundVo vo2 = new OrderSimpleRefundDecorate(vo1, afterSaleSimpleOrderVO);//主单信息
+        //子单信息修饰
+        AbstractRefundVo vo1 = new SubSimpleRefundDecorate(vo, subAfterSaleSimpleOrderVO);
+        //主单信息修饰
+        AbstractRefundVo vo2 = new OrderSimpleRefundDecorate(vo1, afterSaleSimpleOrderVO);
         vo2.doAdd();
         Map<String, Object> viewVo = vo2.getViewVo();
 
@@ -180,12 +189,16 @@ public class AfterSaleShowService {
         AfterSaleStatusVO afterSaleStatusVO = afterSaleService.afterSaleStatus(refundId);
         AfterSaleSimpleOrderVO afterSaleSimpleOrderVO = afterSaleService.afterSaleSimpleOrder(afterSaleStatusVO.getSubOrderId());
         AbstractRefundVo vo = new OrderExchangeVo();
-        AbstractRefundVo vo1 = new OrderSimpleRefundDecorate(vo, afterSaleSimpleOrderVO);//主单信息
+        //主单信息
+        AbstractRefundVo vo1 = new OrderSimpleRefundDecorate(vo, afterSaleSimpleOrderVO);
         AfterSaleInfoVO afterSaleInfoVO = afterSaleService.afterSaleInfo(refundId);
         List<RefundLogVO> rlist = afterSaleService.afterSaleApplication(refundId);
-        AbstractRefundVo vo2 = new ExchangeStatusInfoDecorate(vo1, afterSaleStatusVO);//换货退款状态信息
-        AbstractRefundVo vo3 = new RefundSimpleInfoDecorate(vo2, afterSaleInfoVO);  //退款信息编号和钱
-        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist);//申请信息
+        //换货退款状态信息修饰
+        AbstractRefundVo vo2 = new ExchangeStatusInfoDecorate(vo1, afterSaleStatusVO);
+        //退款信息编号和钱修饰
+        AbstractRefundVo vo3 = new RefundSimpleInfoDecorate(vo2, afterSaleInfoVO);
+        //申请信息修饰
+        AbstractRefundVo vo4 = new RefundLogDecorate(vo3, rlist);
         AbstractRefundVo von = null;
 
         switch (afterSaleStatusVO.getAfterSaleStatus()) {
@@ -207,14 +220,17 @@ public class AfterSaleShowService {
             case AGREE_PROCESS: {
                 ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
                 List<ExpressVo> expressVos = afterSaleService.selectExpress();
-                AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);//退货地址
-                von = new RefundExpressDetorate(vo5, expressVos);//快递列表
+                //退货地址修饰
+                AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
+                //快递列表修饰
+                von = new RefundExpressDetorate(vo5, expressVos);
                 break;
             }
             //3
             case RETURN_ENT: {
                 AfterSaleEntVO afterSaleEntVO = afterSaleService.afterEnt(refundId);
-                von = new ExchangeEndDecorate(vo4, afterSaleEntVO);//退款完成
+                //退款完成修饰
+                von = new ExchangeEndDecorate(vo4, afterSaleEntVO);
                 break;
             }
             default: {
@@ -227,8 +243,10 @@ public class AfterSaleShowService {
         if (express != null && express == 1) {
             ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
             List<ExpressVo> expressVos = afterSaleService.selectExpress();
-            AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);//退货地址
-            von = new RefundExpressDetorate(vo5, expressVos);//快递列表
+            //退货地址修饰
+            AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
+            //快递列表修饰
+            von = new RefundExpressDetorate(vo5, expressVos);
         }
         Map<String, Object> returnmap;
         if (von == null) {
@@ -279,15 +297,19 @@ public class AfterSaleShowService {
     private AbstractRefundVo chooseDecorate(Long refundId, Integer express, AbstractRefundVo vo4) throws Main4Exception, ParseException {
         AbstractRefundVo von;
         if (express == null || express != 1) {
-            ReturnableExpressInfoVO returnableExpressInfoVO = afterSaleService.retrunGoodsExpressInfo(refundId);//退货简要信息
+            //退货简要信息修饰
+            ReturnableExpressInfoVO returnableExpressInfoVO = afterSaleService.retrunGoodsExpressInfo(refundId);
             List<ExpressLogVO> expressLogVOS = itemOrderService.expressLog(Long.parseLong(
                     returnableExpressInfoVO.getExpressCode()));
-            von = new RefundExpressInfoDecorate(vo4, returnableExpressInfoVO, expressLogVOS);//物流信息修饰
+            //物流信息修饰
+            von = new RefundExpressInfoDecorate(vo4, returnableExpressInfoVO, expressLogVOS);
         } else {
             ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
             List<ExpressVo> expressVos = afterSaleService.selectExpress();
-            AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);//退货地址
-            von = new RefundExpressDetorate(vo5, expressVos);//快递列表
+            //退货地址修饰
+            AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
+            //快递列表修饰
+            von = new RefundExpressDetorate(vo5, expressVos);
         }
         return von;
     }
