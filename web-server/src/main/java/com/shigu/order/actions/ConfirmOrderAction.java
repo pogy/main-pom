@@ -103,6 +103,7 @@ public class ConfirmOrderAction {
         model.addAttribute("goodsOrders", vos);
         model.addAttribute("webSite", "hz");//站点
         model.addAttribute("code", bo.getCode());
+        model.addAttribute("tbOrderAddressInfo",orderSubmitVo.getTbOrderAddressInfo());
         return "trade/confirmOrder";
     }
 
