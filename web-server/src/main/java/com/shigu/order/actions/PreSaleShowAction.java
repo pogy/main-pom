@@ -36,7 +36,7 @@ public class PreSaleShowAction {
         if(childOrderId!=null){
             SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(childOrderId);
             RefundOrderVO order=preSaleShowService.selRefundOrderVO(childOrderId);
-            toModel(model,sub,order);
+            model=toModel(model,sub,order);
             model.addAttribute("onlyRefundStateNum",1);
         }else{
             RefundVO refundinfo = SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundinfo();
@@ -64,7 +64,7 @@ public class PreSaleShowAction {
             }
             SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(refundinfo.getSoid());
             RefundOrderVO order=preSaleShowService.selRefundOrderVO(refundinfo.getSoid());
-            toModel(model,sub,order);
+            model=toModel(model,sub,order);
             AfterSaleInfoVO afterSaleInfo=afterSaleService.afterSaleInfo(refundId);
             model.addAttribute("refundId",afterSaleInfo.getRefundId());
             model.addAttribute("refundAmount",PriceConvertUtils.priceToString(afterSaleInfo.getRefundPrice()));
@@ -88,17 +88,19 @@ public class PreSaleShowAction {
     }
 
 
-    private void toModel(Model model,Object... objs){
+    private Model toModel(Model model,Object... objs){
         for(Object obj:objs){
             Class clazz=obj.getClass();
             Field[] fields=clazz.getDeclaredFields();
             for(Field field:fields){
                 try {
+                    field.setAccessible(true);
                     Object o=field.get(obj);
                     model.addAttribute(field.getName(),o);
                 } catch (IllegalAccessException e) {
                 }
             }
         }
+        return model;
     }
 }
