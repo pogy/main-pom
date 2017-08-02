@@ -86,6 +86,20 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         return vo;
     }
 
+    /**
+     * 售前退款申请
+     *
+     * @param subOrderId
+     * @param refundCount
+     * @param refundMoney
+     * @return
+     */
+    @Override
+    public Long preRefundApply(Long subOrderId, int refundCount, String refundMoney) {
+        return SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
+                .refundApply(1, refundCount, Double.valueOf(refundMoney).longValue(), null);
+    }
+
 
     /**
      * 申请退货退款
@@ -100,8 +114,8 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public Long returnGoodsApply(Long subOrderId, int refundCount, String refundMoney,String refundReason, String refundDesc) {
-        SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId);
-        return subItemOrder.refundApply(0, refundCount, Double.valueOf(refundMoney).longValue(), refundReason+"@_@"+refundDesc);
+        return SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
+                .refundApply(2, refundCount, Double.valueOf(refundMoney).longValue(), refundReason+"@_@"+refundDesc);
     }
 
     /**
@@ -116,7 +130,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     @Override
     public Long exchangeApply(Long subOrderId, String refundReason, String refundDesc) {
         return SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
-                .refundApply(4, -1, -1L, refundReason+"@_@"+refundDesc);
+                .refundApply(3, -1, -1L, refundReason+"@_@"+refundDesc);
     }
 
     /**
