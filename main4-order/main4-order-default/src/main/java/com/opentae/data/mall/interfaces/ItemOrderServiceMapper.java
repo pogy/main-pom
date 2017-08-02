@@ -2,7 +2,6 @@ package com.opentae.data.mall.interfaces;
 
 import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
-import com.opentae.data.mall.beans.ItemOrderService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
