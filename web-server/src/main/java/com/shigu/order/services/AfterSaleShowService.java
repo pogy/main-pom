@@ -113,11 +113,11 @@ public class AfterSaleShowService {
             case AGREE_PROCESS: {
                 //页面3-1
                 ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
-                List<ExpressVo> expressVos = afterSaleService.selectExpress();
+//                List<ExpressVo> expressVos = afterSaleService.selectExpress();
                 //退货地址修饰
                 AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
                 //快递列表修饰
-                von = new RefundExpressDetorate(vo5, expressVos);
+                von = new RefundExpressDetorate(vo5, null);
                 break;
             }
             case EXPRESS_SUBMIT: {
@@ -306,10 +306,10 @@ public class AfterSaleShowService {
         if (express == null || express != 1) {
             //退货简要信息修饰
             ReturnableExpressInfoVO returnableExpressInfoVO = afterSaleService.retrunGoodsExpressInfo(refundId);
-            List<ExpressLogVO> expressLogVOS = itemOrderService.expressLog(Long.parseLong(
-                    returnableExpressInfoVO.getExpressCode()));
+          //  List<ExpressLogVO> expressLogVOS = itemOrderService.expressLog(Long.parseLong(
+          //          returnableExpressInfoVO.getExpressCode()));
             //物流信息修饰
-            von = new RefundExpressInfoDecorate(vo4, returnableExpressInfoVO, expressLogVOS);
+            von = new RefundExpressInfoDecorate(vo4, returnableExpressInfoVO, null);
         } else {
             ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
             List<ExpressVo> expressVos = afterSaleService.selectExpress();

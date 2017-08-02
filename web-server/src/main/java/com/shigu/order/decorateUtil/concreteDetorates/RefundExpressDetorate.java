@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class RefundExpressDetorate extends RefundVoDecorate {
     private List<ExpressVo> list;
-
+    private static String express = "1:申通快递,2:圆通快递,3:韵达快递,4:百世汇通,5:EMS,6:其他";
     public RefundExpressDetorate(AbstractRefundVo vo, List<ExpressVo> list){
         super(vo);
         this.list = list;
@@ -29,13 +29,17 @@ public class RefundExpressDetorate extends RefundVoDecorate {
         Map<String,Object> map = new HashMap<>();
         StringBuilder builder =new StringBuilder("");
         if(list == null) list = new ArrayList<>();
+
         for(ExpressVo expressVo:list){
             builder.append(expressVo.getExpressId()).append(":");
             builder.append(expressVo.getExpressName()).append(",");
         }
         if(builder.length()>0){
             builder.delete(builder.length()-1,builder.length());
+        }else{
+            builder.append(express);
         }
+
         map.put("expressList",builder.toString());
         super.addMap(map);
     }
