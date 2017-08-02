@@ -2,6 +2,7 @@ package com.shigu.order.actions;
 
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.services.AfterSaleShowService;
 import com.shigu.tools.JsonResponseUtil;
@@ -157,7 +158,7 @@ public class AfterSaleShowAction {
      */
     @RequestMapping(value = "refundApply", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject applyReturnOrder(AfterSaleBo bo) throws JsonErrException {
+    public JSONObject applyReturnOrder(AfterSaleBo bo) throws JsonErrException, OrderException {
 
 
         if (StringUtils.isEmpty(bo.getChildOrderId())) {
@@ -178,7 +179,7 @@ public class AfterSaleShowAction {
      */
     @RequestMapping(value="exchangeApply",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject exchangeApply(AfterSaleBo bo) throws JsonErrException{
+    public JSONObject exchangeApply(AfterSaleBo bo) throws JsonErrException, OrderException {
         if (StringUtils.isEmpty(bo.getChildOrderId())) {
             return JsonResponseUtil.error("订单id不能空");
         }
