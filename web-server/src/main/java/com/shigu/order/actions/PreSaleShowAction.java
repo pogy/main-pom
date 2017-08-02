@@ -1,5 +1,6 @@
 package com.shigu.order.actions;
 
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.*;
@@ -76,7 +77,7 @@ public class PreSaleShowAction {
 
     @RequestMapping("order/onlyRefundApply")
     @ResponseBody
-    public JSONObject onlyRefundApply(Long childOrderId,Integer refundCount){
+    public JSONObject onlyRefundApply(Long childOrderId,Integer refundCount) throws OrderException {
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(childOrderId);
         Long refundId=afterSaleService.returnGoodsApply(childOrderId,refundCount,
                 PriceConvertUtils.priceToString(refundCount*PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice())),
