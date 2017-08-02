@@ -20,7 +20,6 @@ import java.util.List;
 public interface SpreadEnlistMapper extends Mapper<SpreadEnlist> {
 
     /**
-     *
      * @return
      */
     List<SpreadEnlist> romSelectData(@Param("activityId")Long activityId ,@Param("num")Integer num);
