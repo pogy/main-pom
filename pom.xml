@@ -27,6 +27,8 @@
         <module>main4-tools</module>
         <module>web-server</module>
         <module>main4-order</module>
+        <module>main4-daifa</module>
+        <module>daifa-server</module>
     </modules>
     <packaging>pom</packaging>
 
