@@ -35,9 +35,33 @@ public class TbOrderVO implements Serializable{
      */
     private String profits;
     /**
-     * 详细地址,包含街道
+     * 详细地址,包含省市区街道收货人信息
      */
     private String address;
+    /**
+     * 街道+地址
+     */
+    private String simpleAddress;
+    /**
+     * 省
+     */
+    private String prov;
+    /**
+     * 市
+     */
+    private String city;
+    /**
+     * 区
+     */
+    private String town;
+    /**
+     * 收件人
+     */
+    private String receiverName;
+    /**
+     * 号码
+     */
+    private String receiverPhone;
     /**
      * 是否可下单
      */
@@ -106,14 +130,14 @@ public class TbOrderVO implements Serializable{
     }
 
     /**
-     * 获取 详细地址,包含街道
+     * 获取 详细地址,包含省市区街道收货人信息
      */
     public String getAddress() {
         return this.address;
     }
 
     /**
-     * 设置 详细地址,包含街道
+     * 设置 详细地址,包含省市区街道收货人信息
      */
     public void setAddress(String address) {
         this.address = address;
@@ -145,5 +169,89 @@ public class TbOrderVO implements Serializable{
      */
     public void setChildOrders(List<SubTbOrderVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    /**
+     * 获取 省
+     */
+    public String getProv() {
+        return this.prov;
+    }
+
+    /**
+     * 设置 省
+     */
+    public void setProv(String prov) {
+        this.prov = prov;
+    }
+
+    /**
+     * 获取 市
+     */
+    public String getCity() {
+        return this.city;
+    }
+
+    /**
+     * 设置 市
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     * 获取 区
+     */
+    public String getTown() {
+        return this.town;
+    }
+
+    /**
+     * 设置 区
+     */
+    public void setTown(String town) {
+        this.town = town;
+    }
+
+    /**
+     * 获取 收件人
+     */
+    public String getReceiverName() {
+        return this.receiverName;
+    }
+
+    /**
+     * 设置 收件人
+     */
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    /**
+     * 获取 号码
+     */
+    public String getReceiverPhone() {
+        return this.receiverPhone;
+    }
+
+    /**
+     * 设置 号码
+     */
+    public void setReceiverPhone(String receiverPhone) {
+        this.receiverPhone = receiverPhone;
+    }
+
+    /**
+     * 获取 街道+地址
+     */
+    public String getSimpleAddress() {
+        return this.simpleAddress;
+    }
+
+    /**
+     * 设置 街道+地址
+     */
+    public void setSimpleAddress(String simpleAddress) {
+        this.simpleAddress = simpleAddress;
     }
 }

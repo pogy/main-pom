@@ -1,12 +1,28 @@
 package com.shigu.order.services;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.OrderCity;
+import com.opentae.data.mall.beans.OrderProv;
+import com.opentae.data.mall.beans.OrderTown;
+import com.opentae.data.mall.examples.OrderCityExample;
+import com.opentae.data.mall.examples.OrderProvExample;
+import com.opentae.data.mall.examples.OrderTownExample;
+import com.opentae.data.mall.interfaces.OrderCityMapper;
+import com.opentae.data.mall.interfaces.OrderProvMapper;
+import com.opentae.data.mall.interfaces.OrderTownMapper;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.item.enums.SearchOrderBy;
+import com.shigu.main4.item.services.ItemAddOrUpdateService;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.SearchItem;
 import com.shigu.main4.item.vo.ShiguAggsPager;
+import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.order.bo.TbOrderBO;
+import com.shigu.main4.order.model.impl.ItemProductImpl;
+import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
@@ -15,15 +31,22 @@ import com.shigu.main4.order.servicevo.RelationGoodsVO;
 import com.shigu.main4.order.servicevo.SubTbOrderVO;
 import com.shigu.main4.order.servicevo.TbOrderVO;
 import com.shigu.main4.order.utils.PriceConvertUtils;
-import com.shigu.main4.order.vo.GoodsVO;
 import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.tools.RedisIO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.main4.vo.StoreRelation;
+import com.shigu.order.OrderSubmitType;
+import com.shigu.order.exceptions.OrderException;
+import com.shigu.order.vo.OrderSubmitVo;
+import com.shigu.order.vo.TbOrderAddressInfoVO;
+import com.shigu.zf.utils.SimilarityMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -37,6 +60,19 @@ public class MyTbOrderService {
     ItemSearchService itemSearchService;
     @Autowired
     StoreRelationService storeRelationService;
+    @Autowired
+    ItemAddOrUpdateService itemAddOrUpdateService;
+    @Autowired
+    ConfirmOrderService confirmOrderService;
+    @Autowired
+    private RedisIO redisIO;
+
+
+
+    private static SimilarityMap<OrderProv> similarityProvMap;
+    private static SimilarityMap<OrderCity> similarityCityMap;
+    private static SimilarityMap<OrderTown> similarityTownMap;
+
 
     public ShiguPager<TbOrderVO> myTbOrders(Long userId,Long orderId, Integer page,Integer size, String startTime, String endTime) {
         String sessionKey;
@@ -122,5 +158,112 @@ public class MyTbOrderService {
 
     public void glGoodsJson(Long numIid,Long goodsId) throws NotFindRelationGoodsException {
         taoOrderService.glGoodsJson(numIid,goodsId);
+    }
+
+    public String submitTbOrders(Long tid,Long userId) throws NotFindSessionException, NotFindRelationGoodsException {
+        String sessionKey = taoOrderService.myTbSessionKey(userId);
+        TbOrderVO order=taoOrderService.myTbOrder(tid,TbOrderStatusEnum.WAIT_SELLER_SEND_GOODS,sessionKey);
+        List<CartVO> cartVOS = new ArrayList<>();
+        for(SubTbOrderVO sub:order.getChildOrders()){
+            RelationGoodsVO rgv=taoOrderService.glGoodsJson(sub.getNumiid());
+            SynItem goods=itemAddOrUpdateService.selItemByGoodsId(rgv.getGoodsId(),rgv.getWebSite());
+            ItemProductImpl itemp= SpringBeanFactory.getBean(ItemProductImpl.class,rgv.getGoodsId(),sub.getColor(),sub.getSize() );
+            ItemProductVO info = SpringBeanFactory.getBean(ItemProductImpl.class, itemp.getPid(), itemp.getSkuId()).info();
+            CartVO vo=new CartVO();
+            vo.setNum(sub.getNum());
+            vo.setUserId(userId);
+            vo.setSkuId(itemp.getSkuId());
+            vo.setShopId(goods.getShopId());
+            vo.setMarketId(goods.getMarketId());
+            vo.setMarketName(info.getMarketName());
+            vo.setSelectiveSku(BeanMapper.map(itemp, ItemSkuVO.class));
+            vo.setShopNum(info.getShopNum());
+            vo.setFloor(info.getFloor());
+            vo.setFloorId(goods.getFloorId());
+            vo.setGoodsId(goods.getGoodsId());
+            vo.setGoodsNo(goods.getGoodsNo());
+            vo.setPicUrl(goods.getPicUrl());
+            vo.setPid(itemp.getPid());
+            vo.setPrice(PriceConvertUtils.StringToLong(goods.getPiPriceString()));
+            vo.setTitle(goods.getTitle());
+            vo.setWebSite(goods.getWebSite());
+            vo.setWeight(info.getWeight());
+            cartVOS.add(vo);
+        }
+        String uuid = UUIDGenerator.getUUID();
+
+        OrderSubmitVo submitVo = new OrderSubmitVo();
+        submitVo.setUserId(userId);
+        submitVo.setSubmitType(OrderSubmitType.CART);
+        submitVo.setProducts(cartVOS);
+        submitVo.setOuterOrderNo(order.getTbId()+"");
+        submitVo.setAddress(order.getAddress());
+        //获取淘宝地址缓存信息
+        TbOrderAddressInfoVO addressVO=new TbOrderAddressInfoVO();
+        addressVO.setAllAddressInfo(order.getAddress());
+        addressVO.setId(tid);
+        addressVO.setProv(order.getProv());
+        addressVO.setName(order.getReceiverName());
+        SimilarityMap<OrderProv> provmap = similarityProvMap();
+        SimilarityMap<OrderCity> citymap = similarityCityMap();
+        SimilarityMap<OrderTown> townmap = similarityTownMap();
+        OrderProv prov=provmap.get(order.getProv());
+        OrderCity city=citymap.get(order.getCity());
+        OrderTown town=townmap.get(order.getTown());
+        BuyerAddressVO buyerAddress = new BuyerAddressVO();
+        buyerAddress.setAddress(order.getSimpleAddress());
+        buyerAddress.setCityId(city.getCityId());
+        buyerAddress.setName(order.getReceiverName());
+        buyerAddress.setProvId(prov.getProvId());
+        buyerAddress.setTelephone(order.getReceiverPhone());
+        buyerAddress.setTownId(town.getTownId());
+        buyerAddress.setUserId(userId);
+        buyerAddress.setProvince(prov.getProvName());
+        buyerAddress.setCity(city.getCityName());
+        buyerAddress.setTown(town.getTownName());
+        String addressId = confirmOrderService.saveTmpBuyerAddress(buyerAddress);
+        addressVO.setAddressId(addressId);
+
+        submitVo.setTbOrderAddressInfo(addressVO);
+        redisIO.putTemp(uuid, submitVo, 600);
+        return uuid;
+    }
+
+
+    private static SimilarityMap<OrderProv> similarityProvMap(){
+        if(similarityProvMap==null){
+            similarityProvMap=new SimilarityMap<OrderProv>();
+            OrderProvMapper orderProvMapper=SpringBeanFactory.getBean(OrderProvMapper.class);
+            OrderProvExample example1 = new OrderProvExample();
+            List<OrderProv> provs = orderProvMapper.selectFieldsByExample(example1, FieldUtil.codeFields("prov_id,prov_name"));
+            for (OrderProv p : provs) {
+                similarityProvMap.put(p.getProvName(), p);
+            }
+        }
+        return similarityProvMap;
+    }
+    private static SimilarityMap<OrderCity> similarityCityMap(){
+        if(similarityCityMap==null){
+            similarityCityMap=new SimilarityMap<OrderCity>();
+            OrderCityMapper orderCityMapper=SpringBeanFactory.getBean(OrderCityMapper.class);
+            OrderCityExample example2 = new OrderCityExample();
+            List<OrderCity> citys = orderCityMapper.selectFieldsByExample(example2, FieldUtil.codeFields("city_id,city_name"));
+            for (OrderCity c : citys) {
+                similarityCityMap.put(c.getCityName(), c);
+            }
+        }
+        return similarityCityMap;
+    }
+    private static SimilarityMap<OrderTown> similarityTownMap(){
+        if(similarityTownMap==null){
+            similarityTownMap=new SimilarityMap<OrderTown>();
+            OrderTownMapper orderTownMapper=SpringBeanFactory.getBean(OrderTownMapper.class);
+            OrderTownExample example2 = new OrderTownExample();
+            List<OrderTown> towns = orderTownMapper.selectFieldsByExample(example2, FieldUtil.codeFields("town_id,town_name"));
+            for (OrderTown t : towns) {
+                similarityTownMap.put(t.getTownName(), t);
+            }
+        }
+        return similarityTownMap;
     }
 }
