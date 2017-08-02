@@ -1,6 +1,7 @@
 package com.shigu.main4.order.whx;
 
 import com.shigu.main4.order.BaseTest;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -25,7 +26,7 @@ public class SubItemOrderImplTest extends BaseTest {
     }
 
     @Test
-    public void refundApplyTest() {
+    public void refundApplyTest() throws OrderException {
         subItemOrder.refundApply(1, 1, 1L, "test");
     }
 
