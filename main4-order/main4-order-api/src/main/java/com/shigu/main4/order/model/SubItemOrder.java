@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 
@@ -21,7 +22,7 @@ public interface SubItemOrder extends SubOrder{
      * @param number 退件数
      * @param money 退钱数
      */
-    Long refundApply(Integer type,Integer number,Long money,String reason);
+    Long refundApply(Integer type,Integer number,Long money,String reason) throws OrderException;
 
     /**
      * 退单信息
