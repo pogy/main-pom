@@ -3,8 +3,9 @@ package com.opentae.data.mall.examples;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import com.opentae.core.mybatis.SgExample;
 
-public class MemberUserSubExample {
+public class MemberUserSubExample implements SgExample{
     protected String orderByClause;
     protected boolean distinct;
     protected List<MemberUserSubExample.Criteria> oredCriteria = new ArrayList();
@@ -231,210 +232,6 @@ public class MemberUserSubExample {
             }
         }
 
-        public MemberUserSubExample.Criteria andSubUserIdIsNull() {
-            this.addCriterion("sub_user_id is null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdIsNotNull() {
-            this.addCriterion("sub_user_id is not null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdEqualTo(Long value) {
-            this.addCriterion("sub_user_id =", value, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdNotEqualTo(Long value) {
-            this.addCriterion("sub_user_id <>", value, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdGreaterThan(Long value) {
-            this.addCriterion("sub_user_id >", value, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("sub_user_id >=", value, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdLessThan(Long value) {
-            this.addCriterion("sub_user_id <", value, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("sub_user_id <=", value, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdLike(String value) {
-            this.addCriterion("sub_user_id like", value, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdNotLike(String value) {
-            this.addCriterion("sub_user_id not like", value, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andSubUserIdIn(List<Long> values) {
-            this.addCriterion("sub_user_id in", values, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdNotIn(List<Long> values) {
-            this.addCriterion("sub_user_id not in", values, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdBetween(Long value1, Long value2) {
-            this.addCriterion("sub_user_id between", value1, value2, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("sub_user_id not between", value1, value2, "subUserId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdIsNull() {
-            this.addCriterion("user_id is null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdIsNotNull() {
-            this.addCriterion("user_id is not null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdEqualTo(Long value) {
-            this.addCriterion("user_id =", value, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdNotEqualTo(Long value) {
-            this.addCriterion("user_id <>", value, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdGreaterThan(Long value) {
-            this.addCriterion("user_id >", value, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("user_id >=", value, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdLessThan(Long value) {
-            this.addCriterion("user_id <", value, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("user_id <=", value, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdLike(String value) {
-            this.addCriterion("user_id like", value, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdNotLike(String value) {
-            this.addCriterion("user_id not like", value, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andUserIdIn(List<Long> values) {
-            this.addCriterion("user_id in", values, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdNotIn(List<Long> values) {
-            this.addCriterion("user_id not in", values, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdBetween(Long value1, Long value2) {
-            this.addCriterion("user_id between", value1, value2, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("user_id not between", value1, value2, "userId");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameIsNull() {
-            this.addCriterion("sub_user_name is null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameIsNotNull() {
-            this.addCriterion("sub_user_name is not null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameEqualTo(String value) {
-            this.addCriterion("sub_user_name =", value, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameNotEqualTo(String value) {
-            this.addCriterion("sub_user_name <>", value, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameGreaterThan(String value) {
-            this.addCriterion("sub_user_name >", value, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("sub_user_name >=", value, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameLessThan(String value) {
-            this.addCriterion("sub_user_name <", value, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameLessThanOrEqualTo(String value) {
-            this.addCriterion("sub_user_name <=", value, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameLike(String value) {
-            this.addCriterion("sub_user_name like", value, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameNotLike(String value) {
-            this.addCriterion("sub_user_name not like", value, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andSubUserNameIn(List<String> values) {
-            this.addCriterion("sub_user_name in", values, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameNotIn(List<String> values) {
-            this.addCriterion("sub_user_name not in", values, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameBetween(String value1, String value2) {
-            this.addCriterion("sub_user_name between", value1, value2, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserNameNotBetween(String value1, String value2) {
-            this.addCriterion("sub_user_name not between", value1, value2, "subUserName");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
         public MemberUserSubExample.Criteria andSubUserPasswordIsNull() {
             this.addCriterion("sub_user_password is null");
             return (MemberUserSubExample.Criteria)this;
@@ -500,74 +297,6 @@ public class MemberUserSubExample {
 
         public MemberUserSubExample.Criteria andSubUserPasswordNotBetween(String value1, String value2) {
             this.addCriterion("sub_user_password not between", value1, value2, "subUserPassword");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyIsNull() {
-            this.addCriterion("sub_user_key is null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyIsNotNull() {
-            this.addCriterion("sub_user_key is not null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyEqualTo(String value) {
-            this.addCriterion("sub_user_key =", value, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyNotEqualTo(String value) {
-            this.addCriterion("sub_user_key <>", value, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyGreaterThan(String value) {
-            this.addCriterion("sub_user_key >", value, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyGreaterThanOrEqualTo(String value) {
-            this.addCriterion("sub_user_key >=", value, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyLessThan(String value) {
-            this.addCriterion("sub_user_key <", value, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyLessThanOrEqualTo(String value) {
-            this.addCriterion("sub_user_key <=", value, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyLike(String value) {
-            this.addCriterion("sub_user_key like", value, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyNotLike(String value) {
-            this.addCriterion("sub_user_key not like", value, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andSubUserKeyIn(List<String> values) {
-            this.addCriterion("sub_user_key in", values, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyNotIn(List<String> values) {
-            this.addCriterion("sub_user_key not in", values, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyBetween(String value1, String value2) {
-            this.addCriterion("sub_user_key between", value1, value2, "subUserKey");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andSubUserKeyNotBetween(String value1, String value2) {
-            this.addCriterion("sub_user_key not between", value1, value2, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
@@ -639,71 +368,71 @@ public class MemberUserSubExample {
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsIsNull() {
-            this.addCriterion("logins is null");
+        public MemberUserSubExample.Criteria andCreateTimeIsNull() {
+            this.addCriterion("create_time is null");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsIsNotNull() {
-            this.addCriterion("logins is not null");
+        public MemberUserSubExample.Criteria andCreateTimeIsNotNull() {
+            this.addCriterion("create_time is not null");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsEqualTo(Long value) {
-            this.addCriterion("logins =", value, "logins");
+        public MemberUserSubExample.Criteria andCreateTimeEqualTo(Date value) {
+            this.addCriterion("create_time =", value, "createTime");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsNotEqualTo(Long value) {
-            this.addCriterion("logins <>", value, "logins");
+        public MemberUserSubExample.Criteria andCreateTimeNotEqualTo(Date value) {
+            this.addCriterion("create_time <>", value, "createTime");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsGreaterThan(Long value) {
-            this.addCriterion("logins >", value, "logins");
+        public MemberUserSubExample.Criteria andCreateTimeGreaterThan(Date value) {
+            this.addCriterion("create_time >", value, "createTime");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("logins >=", value, "logins");
+        public MemberUserSubExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            this.addCriterion("create_time >=", value, "createTime");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsLessThan(Long value) {
-            this.addCriterion("logins <", value, "logins");
+        public MemberUserSubExample.Criteria andCreateTimeLessThan(Date value) {
+            this.addCriterion("create_time <", value, "createTime");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsLessThanOrEqualTo(Long value) {
-            this.addCriterion("logins <=", value, "logins");
+        public MemberUserSubExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            this.addCriterion("create_time <=", value, "createTime");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsLike(String value) {
-            this.addCriterion("logins like", value, "logins");
+        public MemberUserSubExample.Criteria andCreateTimeLike(String value) {
+            this.addCriterion("create_time like", value, "createTime");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsNotLike(String value) {
-            this.addCriterion("logins not like", value, "logins");
+        public MemberUserSubExample.Criteria andCreateTimeNotLike(String value) {
+            this.addCriterion("create_time not like", value, "createTime");
             return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andLoginsIn(List<Long> values) {
-            this.addCriterion("logins in", values, "logins");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andLoginsNotIn(List<Long> values) {
-            this.addCriterion("logins not in", values, "logins");
+        }        public MemberUserSubExample.Criteria andCreateTimeIn(List<Date> values) {
+            this.addCriterion("create_time in", values, "createTime");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsBetween(Long value1, Long value2) {
-            this.addCriterion("logins between", value1, value2, "logins");
+        public MemberUserSubExample.Criteria andCreateTimeNotIn(List<Date> values) {
+            this.addCriterion("create_time not in", values, "createTime");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andLoginsNotBetween(Long value1, Long value2) {
-            this.addCriterion("logins not between", value1, value2, "logins");
+        public MemberUserSubExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
+            this.addCriterion("create_time between", value1, value2, "createTime");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            this.addCriterion("create_time not between", value1, value2, "createTime");
             return (MemberUserSubExample.Criteria)this;
         }
 
@@ -717,32 +446,32 @@ public class MemberUserSubExample {
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andUseStatusEqualTo(Long value) {
+        public MemberUserSubExample.Criteria andUseStatusEqualTo(Integer value) {
             this.addCriterion("use_status =", value, "useStatus");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andUseStatusNotEqualTo(Long value) {
+        public MemberUserSubExample.Criteria andUseStatusNotEqualTo(Integer value) {
             this.addCriterion("use_status <>", value, "useStatus");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andUseStatusGreaterThan(Long value) {
+        public MemberUserSubExample.Criteria andUseStatusGreaterThan(Integer value) {
             this.addCriterion("use_status >", value, "useStatus");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andUseStatusGreaterThanOrEqualTo(Long value) {
+        public MemberUserSubExample.Criteria andUseStatusGreaterThanOrEqualTo(Integer value) {
             this.addCriterion("use_status >=", value, "useStatus");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andUseStatusLessThan(Long value) {
+        public MemberUserSubExample.Criteria andUseStatusLessThan(Integer value) {
             this.addCriterion("use_status <", value, "useStatus");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andUseStatusLessThanOrEqualTo(Long value) {
+        public MemberUserSubExample.Criteria andUseStatusLessThanOrEqualTo(Integer value) {
             this.addCriterion("use_status <=", value, "useStatus");
             return (MemberUserSubExample.Criteria)this;
         }
@@ -755,567 +484,159 @@ public class MemberUserSubExample {
         public MemberUserSubExample.Criteria andUseStatusNotLike(String value) {
             this.addCriterion("use_status not like", value, "useStatus");
             return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andUseStatusIn(List<Long> values) {
+        }        public MemberUserSubExample.Criteria andUseStatusIn(List<Integer> values) {
             this.addCriterion("use_status in", values, "useStatus");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andUseStatusNotIn(List<Long> values) {
+        public MemberUserSubExample.Criteria andUseStatusNotIn(List<Integer> values) {
             this.addCriterion("use_status not in", values, "useStatus");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andUseStatusBetween(Long value1, Long value2) {
+        public MemberUserSubExample.Criteria andUseStatusBetween(Integer value1, Integer value2) {
             this.addCriterion("use_status between", value1, value2, "useStatus");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andUseStatusNotBetween(Long value1, Long value2) {
+        public MemberUserSubExample.Criteria andUseStatusNotBetween(Integer value1, Integer value2) {
             this.addCriterion("use_status not between", value1, value2, "useStatus");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1IsNull() {
-            this.addCriterion("remark1 is null");
+        public MemberUserSubExample.Criteria andSubUserKeyIsNull() {
+            this.addCriterion("sub_user_key is null");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1IsNotNull() {
-            this.addCriterion("remark1 is not null");
+        public MemberUserSubExample.Criteria andSubUserKeyIsNotNull() {
+            this.addCriterion("sub_user_key is not null");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1EqualTo(String value) {
-            this.addCriterion("remark1 =", value, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyEqualTo(String value) {
+            this.addCriterion("sub_user_key =", value, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1NotEqualTo(String value) {
-            this.addCriterion("remark1 <>", value, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyNotEqualTo(String value) {
+            this.addCriterion("sub_user_key <>", value, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1GreaterThan(String value) {
-            this.addCriterion("remark1 >", value, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyGreaterThan(String value) {
+            this.addCriterion("sub_user_key >", value, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark1 >=", value, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyGreaterThanOrEqualTo(String value) {
+            this.addCriterion("sub_user_key >=", value, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1LessThan(String value) {
-            this.addCriterion("remark1 <", value, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyLessThan(String value) {
+            this.addCriterion("sub_user_key <", value, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1LessThanOrEqualTo(String value) {
-            this.addCriterion("remark1 <=", value, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyLessThanOrEqualTo(String value) {
+            this.addCriterion("sub_user_key <=", value, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1Like(String value) {
-            this.addCriterion("remark1 like", value, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyLike(String value) {
+            this.addCriterion("sub_user_key like", value, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1NotLike(String value) {
-            this.addCriterion("remark1 not like", value, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyNotLike(String value) {
+            this.addCriterion("sub_user_key not like", value, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andRemark1In(List<String> values) {
-            this.addCriterion("remark1 in", values, "remark1");
+        }        public MemberUserSubExample.Criteria andSubUserKeyIn(List<String> values) {
+            this.addCriterion("sub_user_key in", values, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1NotIn(List<String> values) {
-            this.addCriterion("remark1 not in", values, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyNotIn(List<String> values) {
+            this.addCriterion("sub_user_key not in", values, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1Between(String value1, String value2) {
-            this.addCriterion("remark1 between", value1, value2, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyBetween(String value1, String value2) {
+            this.addCriterion("sub_user_key between", value1, value2, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark1NotBetween(String value1, String value2) {
-            this.addCriterion("remark1 not between", value1, value2, "remark1");
+        public MemberUserSubExample.Criteria andSubUserKeyNotBetween(String value1, String value2) {
+            this.addCriterion("sub_user_key not between", value1, value2, "subUserKey");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2IsNull() {
-            this.addCriterion("remark2 is null");
+        public MemberUserSubExample.Criteria andSubUserNameIsNull() {
+            this.addCriterion("sub_user_name is null");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2IsNotNull() {
-            this.addCriterion("remark2 is not null");
+        public MemberUserSubExample.Criteria andSubUserNameIsNotNull() {
+            this.addCriterion("sub_user_name is not null");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2EqualTo(String value) {
-            this.addCriterion("remark2 =", value, "remark2");
+        public MemberUserSubExample.Criteria andSubUserNameEqualTo(String value) {
+            this.addCriterion("sub_user_name =", value, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2NotEqualTo(String value) {
-            this.addCriterion("remark2 <>", value, "remark2");
+        public MemberUserSubExample.Criteria andSubUserNameNotEqualTo(String value) {
+            this.addCriterion("sub_user_name <>", value, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2GreaterThan(String value) {
-            this.addCriterion("remark2 >", value, "remark2");
+        public MemberUserSubExample.Criteria andSubUserNameGreaterThan(String value) {
+            this.addCriterion("sub_user_name >", value, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark2 >=", value, "remark2");
+        public MemberUserSubExample.Criteria andSubUserNameGreaterThanOrEqualTo(String value) {
+            this.addCriterion("sub_user_name >=", value, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2LessThan(String value) {
-            this.addCriterion("remark2 <", value, "remark2");
+        public MemberUserSubExample.Criteria andSubUserNameLessThan(String value) {
+            this.addCriterion("sub_user_name <", value, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2LessThanOrEqualTo(String value) {
-            this.addCriterion("remark2 <=", value, "remark2");
+        public MemberUserSubExample.Criteria andSubUserNameLessThanOrEqualTo(String value) {
+            this.addCriterion("sub_user_name <=", value, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2Like(String value) {
-            this.addCriterion("remark2 like", value, "remark2");
+        public MemberUserSubExample.Criteria andSubUserNameLike(String value) {
+            this.addCriterion("sub_user_name like", value, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2NotLike(String value) {
-            this.addCriterion("remark2 not like", value, "remark2");
+        public MemberUserSubExample.Criteria andSubUserNameNotLike(String value) {
+            this.addCriterion("sub_user_name not like", value, "subUserName");
             return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andRemark2In(List<String> values) {
-            this.addCriterion("remark2 in", values, "remark2");
+        }        public MemberUserSubExample.Criteria andSubUserNameIn(List<String> values) {
+            this.addCriterion("sub_user_name in", values, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2NotIn(List<String> values) {
-            this.addCriterion("remark2 not in", values, "remark2");
+        public MemberUserSubExample.Criteria andSubUserNameNotIn(List<String> values) {
+            this.addCriterion("sub_user_name not in", values, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2Between(String value1, String value2) {
-            this.addCriterion("remark2 between", value1, value2, "remark2");
+        public MemberUserSubExample.Criteria andSubUserNameBetween(String value1, String value2) {
+            this.addCriterion("sub_user_name between", value1, value2, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andRemark2NotBetween(String value1, String value2) {
-            this.addCriterion("remark2 not between", value1, value2, "remark2");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3IsNull() {
-            this.addCriterion("remark3 is null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3IsNotNull() {
-            this.addCriterion("remark3 is not null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3EqualTo(String value) {
-            this.addCriterion("remark3 =", value, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3NotEqualTo(String value) {
-            this.addCriterion("remark3 <>", value, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3GreaterThan(String value) {
-            this.addCriterion("remark3 >", value, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark3 >=", value, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3LessThan(String value) {
-            this.addCriterion("remark3 <", value, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3LessThanOrEqualTo(String value) {
-            this.addCriterion("remark3 <=", value, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3Like(String value) {
-            this.addCriterion("remark3 like", value, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3NotLike(String value) {
-            this.addCriterion("remark3 not like", value, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andRemark3In(List<String> values) {
-            this.addCriterion("remark3 in", values, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3NotIn(List<String> values) {
-            this.addCriterion("remark3 not in", values, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3Between(String value1, String value2) {
-            this.addCriterion("remark3 between", value1, value2, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark3NotBetween(String value1, String value2) {
-            this.addCriterion("remark3 not between", value1, value2, "remark3");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4IsNull() {
-            this.addCriterion("remark4 is null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4IsNotNull() {
-            this.addCriterion("remark4 is not null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4EqualTo(String value) {
-            this.addCriterion("remark4 =", value, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4NotEqualTo(String value) {
-            this.addCriterion("remark4 <>", value, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4GreaterThan(String value) {
-            this.addCriterion("remark4 >", value, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark4 >=", value, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4LessThan(String value) {
-            this.addCriterion("remark4 <", value, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4LessThanOrEqualTo(String value) {
-            this.addCriterion("remark4 <=", value, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4Like(String value) {
-            this.addCriterion("remark4 like", value, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4NotLike(String value) {
-            this.addCriterion("remark4 not like", value, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andRemark4In(List<String> values) {
-            this.addCriterion("remark4 in", values, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4NotIn(List<String> values) {
-            this.addCriterion("remark4 not in", values, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4Between(String value1, String value2) {
-            this.addCriterion("remark4 between", value1, value2, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark4NotBetween(String value1, String value2) {
-            this.addCriterion("remark4 not between", value1, value2, "remark4");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5IsNull() {
-            this.addCriterion("remark5 is null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5IsNotNull() {
-            this.addCriterion("remark5 is not null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5EqualTo(String value) {
-            this.addCriterion("remark5 =", value, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5NotEqualTo(String value) {
-            this.addCriterion("remark5 <>", value, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5GreaterThan(String value) {
-            this.addCriterion("remark5 >", value, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark5 >=", value, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5LessThan(String value) {
-            this.addCriterion("remark5 <", value, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5LessThanOrEqualTo(String value) {
-            this.addCriterion("remark5 <=", value, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5Like(String value) {
-            this.addCriterion("remark5 like", value, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5NotLike(String value) {
-            this.addCriterion("remark5 not like", value, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andRemark5In(List<String> values) {
-            this.addCriterion("remark5 in", values, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5NotIn(List<String> values) {
-            this.addCriterion("remark5 not in", values, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5Between(String value1, String value2) {
-            this.addCriterion("remark5 between", value1, value2, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark5NotBetween(String value1, String value2) {
-            this.addCriterion("remark5 not between", value1, value2, "remark5");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6IsNull() {
-            this.addCriterion("remark6 is null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6IsNotNull() {
-            this.addCriterion("remark6 is not null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6EqualTo(String value) {
-            this.addCriterion("remark6 =", value, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6NotEqualTo(String value) {
-            this.addCriterion("remark6 <>", value, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6GreaterThan(String value) {
-            this.addCriterion("remark6 >", value, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark6 >=", value, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6LessThan(String value) {
-            this.addCriterion("remark6 <", value, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6LessThanOrEqualTo(String value) {
-            this.addCriterion("remark6 <=", value, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6Like(String value) {
-            this.addCriterion("remark6 like", value, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6NotLike(String value) {
-            this.addCriterion("remark6 not like", value, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andRemark6In(List<String> values) {
-            this.addCriterion("remark6 in", values, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6NotIn(List<String> values) {
-            this.addCriterion("remark6 not in", values, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6Between(String value1, String value2) {
-            this.addCriterion("remark6 between", value1, value2, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark6NotBetween(String value1, String value2) {
-            this.addCriterion("remark6 not between", value1, value2, "remark6");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7IsNull() {
-            this.addCriterion("remark7 is null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7IsNotNull() {
-            this.addCriterion("remark7 is not null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7EqualTo(String value) {
-            this.addCriterion("remark7 =", value, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7NotEqualTo(String value) {
-            this.addCriterion("remark7 <>", value, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7GreaterThan(String value) {
-            this.addCriterion("remark7 >", value, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark7 >=", value, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7LessThan(String value) {
-            this.addCriterion("remark7 <", value, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7LessThanOrEqualTo(String value) {
-            this.addCriterion("remark7 <=", value, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7Like(String value) {
-            this.addCriterion("remark7 like", value, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7NotLike(String value) {
-            this.addCriterion("remark7 not like", value, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andRemark7In(List<String> values) {
-            this.addCriterion("remark7 in", values, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7NotIn(List<String> values) {
-            this.addCriterion("remark7 not in", values, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7Between(String value1, String value2) {
-            this.addCriterion("remark7 between", value1, value2, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark7NotBetween(String value1, String value2) {
-            this.addCriterion("remark7 not between", value1, value2, "remark7");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8IsNull() {
-            this.addCriterion("remark8 is null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8IsNotNull() {
-            this.addCriterion("remark8 is not null");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8EqualTo(String value) {
-            this.addCriterion("remark8 =", value, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8NotEqualTo(String value) {
-            this.addCriterion("remark8 <>", value, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8GreaterThan(String value) {
-            this.addCriterion("remark8 >", value, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark8 >=", value, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8LessThan(String value) {
-            this.addCriterion("remark8 <", value, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8LessThanOrEqualTo(String value) {
-            this.addCriterion("remark8 <=", value, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8Like(String value) {
-            this.addCriterion("remark8 like", value, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8NotLike(String value) {
-            this.addCriterion("remark8 not like", value, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andRemark8In(List<String> values) {
-            this.addCriterion("remark8 in", values, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8NotIn(List<String> values) {
-            this.addCriterion("remark8 not in", values, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8Between(String value1, String value2) {
-            this.addCriterion("remark8 between", value1, value2, "remark8");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andRemark8NotBetween(String value1, String value2) {
-            this.addCriterion("remark8 not between", value1, value2, "remark8");
+        public MemberUserSubExample.Criteria andSubUserNameNotBetween(String value1, String value2) {
+            this.addCriterion("sub_user_name not between", value1, value2, "subUserName");
             return (MemberUserSubExample.Criteria)this;
         }
 
@@ -1387,6 +708,210 @@ public class MemberUserSubExample {
             return (MemberUserSubExample.Criteria)this;
         }
 
+        public MemberUserSubExample.Criteria andUserIdIsNull() {
+            this.addCriterion("user_id is null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdIsNotNull() {
+            this.addCriterion("user_id is not null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdEqualTo(Long value) {
+            this.addCriterion("user_id =", value, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdNotEqualTo(Long value) {
+            this.addCriterion("user_id <>", value, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdGreaterThan(Long value) {
+            this.addCriterion("user_id >", value, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("user_id >=", value, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdLessThan(Long value) {
+            this.addCriterion("user_id <", value, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("user_id <=", value, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdLike(String value) {
+            this.addCriterion("user_id like", value, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdNotLike(String value) {
+            this.addCriterion("user_id not like", value, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }        public MemberUserSubExample.Criteria andUserIdIn(List<Long> values) {
+            this.addCriterion("user_id in", values, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdNotIn(List<Long> values) {
+            this.addCriterion("user_id not in", values, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdBetween(Long value1, Long value2) {
+            this.addCriterion("user_id between", value1, value2, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("user_id not between", value1, value2, "userId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8IsNull() {
+            this.addCriterion("remark8 is null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8IsNotNull() {
+            this.addCriterion("remark8 is not null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8EqualTo(String value) {
+            this.addCriterion("remark8 =", value, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8NotEqualTo(String value) {
+            this.addCriterion("remark8 <>", value, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8GreaterThan(String value) {
+            this.addCriterion("remark8 >", value, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8GreaterThanOrEqualTo(String value) {
+            this.addCriterion("remark8 >=", value, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8LessThan(String value) {
+            this.addCriterion("remark8 <", value, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8LessThanOrEqualTo(String value) {
+            this.addCriterion("remark8 <=", value, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8Like(String value) {
+            this.addCriterion("remark8 like", value, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8NotLike(String value) {
+            this.addCriterion("remark8 not like", value, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }        public MemberUserSubExample.Criteria andRemark8In(List<String> values) {
+            this.addCriterion("remark8 in", values, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8NotIn(List<String> values) {
+            this.addCriterion("remark8 not in", values, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8Between(String value1, String value2) {
+            this.addCriterion("remark8 between", value1, value2, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark8NotBetween(String value1, String value2) {
+            this.addCriterion("remark8 not between", value1, value2, "remark8");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5IsNull() {
+            this.addCriterion("remark5 is null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5IsNotNull() {
+            this.addCriterion("remark5 is not null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5EqualTo(String value) {
+            this.addCriterion("remark5 =", value, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5NotEqualTo(String value) {
+            this.addCriterion("remark5 <>", value, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5GreaterThan(String value) {
+            this.addCriterion("remark5 >", value, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5GreaterThanOrEqualTo(String value) {
+            this.addCriterion("remark5 >=", value, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5LessThan(String value) {
+            this.addCriterion("remark5 <", value, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5LessThanOrEqualTo(String value) {
+            this.addCriterion("remark5 <=", value, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5Like(String value) {
+            this.addCriterion("remark5 like", value, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5NotLike(String value) {
+            this.addCriterion("remark5 not like", value, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }        public MemberUserSubExample.Criteria andRemark5In(List<String> values) {
+            this.addCriterion("remark5 in", values, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5NotIn(List<String> values) {
+            this.addCriterion("remark5 not in", values, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5Between(String value1, String value2) {
+            this.addCriterion("remark5 between", value1, value2, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark5NotBetween(String value1, String value2) {
+            this.addCriterion("remark5 not between", value1, value2, "remark5");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
         public MemberUserSubExample.Criteria andRemark10IsNull() {
             this.addCriterion("remark10 is null");
             return (MemberUserSubExample.Criteria)this;
@@ -1452,6 +977,346 @@ public class MemberUserSubExample {
 
         public MemberUserSubExample.Criteria andRemark10NotBetween(String value1, String value2) {
             this.addCriterion("remark10 not between", value1, value2, "remark10");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4IsNull() {
+            this.addCriterion("remark4 is null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4IsNotNull() {
+            this.addCriterion("remark4 is not null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4EqualTo(String value) {
+            this.addCriterion("remark4 =", value, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4NotEqualTo(String value) {
+            this.addCriterion("remark4 <>", value, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4GreaterThan(String value) {
+            this.addCriterion("remark4 >", value, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4GreaterThanOrEqualTo(String value) {
+            this.addCriterion("remark4 >=", value, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4LessThan(String value) {
+            this.addCriterion("remark4 <", value, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4LessThanOrEqualTo(String value) {
+            this.addCriterion("remark4 <=", value, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4Like(String value) {
+            this.addCriterion("remark4 like", value, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4NotLike(String value) {
+            this.addCriterion("remark4 not like", value, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }        public MemberUserSubExample.Criteria andRemark4In(List<String> values) {
+            this.addCriterion("remark4 in", values, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4NotIn(List<String> values) {
+            this.addCriterion("remark4 not in", values, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4Between(String value1, String value2) {
+            this.addCriterion("remark4 between", value1, value2, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark4NotBetween(String value1, String value2) {
+            this.addCriterion("remark4 not between", value1, value2, "remark4");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdIsNull() {
+            this.addCriterion("sub_user_id is null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdIsNotNull() {
+            this.addCriterion("sub_user_id is not null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdEqualTo(Long value) {
+            this.addCriterion("sub_user_id =", value, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdNotEqualTo(Long value) {
+            this.addCriterion("sub_user_id <>", value, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdGreaterThan(Long value) {
+            this.addCriterion("sub_user_id >", value, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("sub_user_id >=", value, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdLessThan(Long value) {
+            this.addCriterion("sub_user_id <", value, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("sub_user_id <=", value, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdLike(String value) {
+            this.addCriterion("sub_user_id like", value, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdNotLike(String value) {
+            this.addCriterion("sub_user_id not like", value, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }        public MemberUserSubExample.Criteria andSubUserIdIn(List<Long> values) {
+            this.addCriterion("sub_user_id in", values, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdNotIn(List<Long> values) {
+            this.addCriterion("sub_user_id not in", values, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdBetween(Long value1, Long value2) {
+            this.addCriterion("sub_user_id between", value1, value2, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andSubUserIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("sub_user_id not between", value1, value2, "subUserId");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7IsNull() {
+            this.addCriterion("remark7 is null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7IsNotNull() {
+            this.addCriterion("remark7 is not null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7EqualTo(String value) {
+            this.addCriterion("remark7 =", value, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7NotEqualTo(String value) {
+            this.addCriterion("remark7 <>", value, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7GreaterThan(String value) {
+            this.addCriterion("remark7 >", value, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7GreaterThanOrEqualTo(String value) {
+            this.addCriterion("remark7 >=", value, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7LessThan(String value) {
+            this.addCriterion("remark7 <", value, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7LessThanOrEqualTo(String value) {
+            this.addCriterion("remark7 <=", value, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7Like(String value) {
+            this.addCriterion("remark7 like", value, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7NotLike(String value) {
+            this.addCriterion("remark7 not like", value, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }        public MemberUserSubExample.Criteria andRemark7In(List<String> values) {
+            this.addCriterion("remark7 in", values, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7NotIn(List<String> values) {
+            this.addCriterion("remark7 not in", values, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7Between(String value1, String value2) {
+            this.addCriterion("remark7 between", value1, value2, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark7NotBetween(String value1, String value2) {
+            this.addCriterion("remark7 not between", value1, value2, "remark7");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6IsNull() {
+            this.addCriterion("remark6 is null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6IsNotNull() {
+            this.addCriterion("remark6 is not null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6EqualTo(String value) {
+            this.addCriterion("remark6 =", value, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6NotEqualTo(String value) {
+            this.addCriterion("remark6 <>", value, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6GreaterThan(String value) {
+            this.addCriterion("remark6 >", value, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6GreaterThanOrEqualTo(String value) {
+            this.addCriterion("remark6 >=", value, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6LessThan(String value) {
+            this.addCriterion("remark6 <", value, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6LessThanOrEqualTo(String value) {
+            this.addCriterion("remark6 <=", value, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6Like(String value) {
+            this.addCriterion("remark6 like", value, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6NotLike(String value) {
+            this.addCriterion("remark6 not like", value, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }        public MemberUserSubExample.Criteria andRemark6In(List<String> values) {
+            this.addCriterion("remark6 in", values, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6NotIn(List<String> values) {
+            this.addCriterion("remark6 not in", values, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6Between(String value1, String value2) {
+            this.addCriterion("remark6 between", value1, value2, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark6NotBetween(String value1, String value2) {
+            this.addCriterion("remark6 not between", value1, value2, "remark6");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1IsNull() {
+            this.addCriterion("remark1 is null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1IsNotNull() {
+            this.addCriterion("remark1 is not null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1EqualTo(String value) {
+            this.addCriterion("remark1 =", value, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1NotEqualTo(String value) {
+            this.addCriterion("remark1 <>", value, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1GreaterThan(String value) {
+            this.addCriterion("remark1 >", value, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1GreaterThanOrEqualTo(String value) {
+            this.addCriterion("remark1 >=", value, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1LessThan(String value) {
+            this.addCriterion("remark1 <", value, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1LessThanOrEqualTo(String value) {
+            this.addCriterion("remark1 <=", value, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1Like(String value) {
+            this.addCriterion("remark1 like", value, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1NotLike(String value) {
+            this.addCriterion("remark1 not like", value, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }        public MemberUserSubExample.Criteria andRemark1In(List<String> values) {
+            this.addCriterion("remark1 in", values, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1NotIn(List<String> values) {
+            this.addCriterion("remark1 not in", values, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1Between(String value1, String value2) {
+            this.addCriterion("remark1 between", value1, value2, "remark1");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark1NotBetween(String value1, String value2) {
+            this.addCriterion("remark1 not between", value1, value2, "remark1");
             return (MemberUserSubExample.Criteria)this;
         }
 
@@ -1523,71 +1388,207 @@ public class MemberUserSubExample {
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeIsNull() {
-            this.addCriterion("create_time is null");
+        public MemberUserSubExample.Criteria andLoginsIsNull() {
+            this.addCriterion("logins is null");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeIsNotNull() {
-            this.addCriterion("create_time is not null");
+        public MemberUserSubExample.Criteria andLoginsIsNotNull() {
+            this.addCriterion("logins is not null");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeEqualTo(Date value) {
-            this.addCriterion("create_time =", value, "createTime");
+        public MemberUserSubExample.Criteria andLoginsEqualTo(Integer value) {
+            this.addCriterion("logins =", value, "logins");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeNotEqualTo(Date value) {
-            this.addCriterion("create_time <>", value, "createTime");
+        public MemberUserSubExample.Criteria andLoginsNotEqualTo(Integer value) {
+            this.addCriterion("logins <>", value, "logins");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeGreaterThan(Date value) {
-            this.addCriterion("create_time >", value, "createTime");
+        public MemberUserSubExample.Criteria andLoginsGreaterThan(Integer value) {
+            this.addCriterion("logins >", value, "logins");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("create_time >=", value, "createTime");
+        public MemberUserSubExample.Criteria andLoginsGreaterThanOrEqualTo(Integer value) {
+            this.addCriterion("logins >=", value, "logins");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeLessThan(Date value) {
-            this.addCriterion("create_time <", value, "createTime");
+        public MemberUserSubExample.Criteria andLoginsLessThan(Integer value) {
+            this.addCriterion("logins <", value, "logins");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("create_time <=", value, "createTime");
+        public MemberUserSubExample.Criteria andLoginsLessThanOrEqualTo(Integer value) {
+            this.addCriterion("logins <=", value, "logins");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeLike(String value) {
-            this.addCriterion("create_time like", value, "createTime");
+        public MemberUserSubExample.Criteria andLoginsLike(String value) {
+            this.addCriterion("logins like", value, "logins");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeNotLike(String value) {
-            this.addCriterion("create_time not like", value, "createTime");
+        public MemberUserSubExample.Criteria andLoginsNotLike(String value) {
+            this.addCriterion("logins not like", value, "logins");
             return (MemberUserSubExample.Criteria)this;
-        }        public MemberUserSubExample.Criteria andCreateTimeIn(List<Date> values) {
-            this.addCriterion("create_time in", values, "createTime");
-            return (MemberUserSubExample.Criteria)this;
-        }
-
-        public MemberUserSubExample.Criteria andCreateTimeNotIn(List<Date> values) {
-            this.addCriterion("create_time not in", values, "createTime");
+        }        public MemberUserSubExample.Criteria andLoginsIn(List<Integer> values) {
+            this.addCriterion("logins in", values, "logins");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
-            this.addCriterion("create_time between", value1, value2, "createTime");
+        public MemberUserSubExample.Criteria andLoginsNotIn(List<Integer> values) {
+            this.addCriterion("logins not in", values, "logins");
             return (MemberUserSubExample.Criteria)this;
         }
 
-        public MemberUserSubExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("create_time not between", value1, value2, "createTime");
+        public MemberUserSubExample.Criteria andLoginsBetween(Integer value1, Integer value2) {
+            this.addCriterion("logins between", value1, value2, "logins");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andLoginsNotBetween(Integer value1, Integer value2) {
+            this.addCriterion("logins not between", value1, value2, "logins");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3IsNull() {
+            this.addCriterion("remark3 is null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3IsNotNull() {
+            this.addCriterion("remark3 is not null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3EqualTo(String value) {
+            this.addCriterion("remark3 =", value, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3NotEqualTo(String value) {
+            this.addCriterion("remark3 <>", value, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3GreaterThan(String value) {
+            this.addCriterion("remark3 >", value, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3GreaterThanOrEqualTo(String value) {
+            this.addCriterion("remark3 >=", value, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3LessThan(String value) {
+            this.addCriterion("remark3 <", value, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3LessThanOrEqualTo(String value) {
+            this.addCriterion("remark3 <=", value, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3Like(String value) {
+            this.addCriterion("remark3 like", value, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3NotLike(String value) {
+            this.addCriterion("remark3 not like", value, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }        public MemberUserSubExample.Criteria andRemark3In(List<String> values) {
+            this.addCriterion("remark3 in", values, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3NotIn(List<String> values) {
+            this.addCriterion("remark3 not in", values, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3Between(String value1, String value2) {
+            this.addCriterion("remark3 between", value1, value2, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark3NotBetween(String value1, String value2) {
+            this.addCriterion("remark3 not between", value1, value2, "remark3");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2IsNull() {
+            this.addCriterion("remark2 is null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2IsNotNull() {
+            this.addCriterion("remark2 is not null");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2EqualTo(String value) {
+            this.addCriterion("remark2 =", value, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2NotEqualTo(String value) {
+            this.addCriterion("remark2 <>", value, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2GreaterThan(String value) {
+            this.addCriterion("remark2 >", value, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2GreaterThanOrEqualTo(String value) {
+            this.addCriterion("remark2 >=", value, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2LessThan(String value) {
+            this.addCriterion("remark2 <", value, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2LessThanOrEqualTo(String value) {
+            this.addCriterion("remark2 <=", value, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2Like(String value) {
+            this.addCriterion("remark2 like", value, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2NotLike(String value) {
+            this.addCriterion("remark2 not like", value, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }        public MemberUserSubExample.Criteria andRemark2In(List<String> values) {
+            this.addCriterion("remark2 in", values, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2NotIn(List<String> values) {
+            this.addCriterion("remark2 not in", values, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2Between(String value1, String value2) {
+            this.addCriterion("remark2 between", value1, value2, "remark2");
+            return (MemberUserSubExample.Criteria)this;
+        }
+
+        public MemberUserSubExample.Criteria andRemark2NotBetween(String value1, String value2) {
+            this.addCriterion("remark2 not between", value1, value2, "remark2");
             return (MemberUserSubExample.Criteria)this;
         }
     }
