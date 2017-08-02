@@ -18,5 +18,5 @@ import java.util.List;
 @Scope("singleton")
 @Lazy(true)
 public interface ItemOrderSubMapper extends Mapper<ItemOrderSub> {
-    List<SubOrderInfos> selSubOrderAndRefundInfos(@Param("oid") Long oid);
+
 }

@@ -242,7 +242,7 @@ var webSite = '${webSite!}';
     <div class="p1 clearfix">
         <ul class="r1">
             <li><label>地址：</label><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "gz">广州<#elseif webSite == "ss">石狮<#elseif webSite == "wa">辽源</#if>—${shopInfo.marketName!}${shopInfo.floor!}</li>
-            <li><label>电话：</label>${shopInfo.telephone!}</li>
+            <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
             <li><label>开店时间：</label>${shopInfo.openTime!}</li>
         </ul>
@@ -410,7 +410,7 @@ var webSite = '${webSite!}';
     <div class="p1 clearfix">
         <ul class="r1">
             <li><label>地址：</label><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "gz">广州<#elseif webSite == "ss">石狮<#elseif webSite == "wa">辽源</#if>—${shopInfo.marketName!}${shopInfo.floor!}</li>
-            <li><label>电话：</label>${shopInfo.telephone!}</li>
+            <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
             <li><label>开店时间：</label>${shopInfo.openTime!}</li>
         </ul>
@@ -791,7 +791,7 @@ var piPrice = '${goodsInfo.piPrice!}';
     <div class="p1 clearfix">
         <ul class="r1">
             <li><label>地址：</label><#if webSite == "hz">杭州<#elseif webSite == "cs">常熟<#elseif webSite == "gz">广州<#elseif webSite == "ss">石狮<#elseif webSite == "wa">辽源</#if>—${shopInfo.marketName!}${shopInfo.floor!}</li>
-            <li><label>电话：</label>${shopInfo.telephone!}</li>
+            <li><label>电话：</label>${shopInfo.mobile!}</li>
             <li><label>主营：</label>${shopInfo.mainBus!}</li>
             <li><label>开店时间：</label>${shopInfo.openTime!}</li>
         </ul>
@@ -994,7 +994,7 @@ var piPrice = '${goodsInfo.piPrice!}';
                 </li>
         </ul>
         <p class="copyCodeSuccess"><em>宝贝描述复制完成</em></p>
-       <div class="grewLine"></div>
+        <div class="grewLine"></div>
         <div class="contactbox">
             <h3>联系档口</h3>
             <#if shopInfo.imWw??><p class="wangwang"><a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${shopInfo.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank">档口旺旺</a>
