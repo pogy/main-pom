@@ -4,12 +4,14 @@ import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.beans.ShiguGoodsSoldout;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsSoldoutMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
@@ -88,7 +90,13 @@ public class SubItemOrderImpl implements SubItemOrder{
      * @param money
      */
     @Override
-    public Long refundApply(Integer type, Integer number, Long money, String reason) {
+    public Long refundApply(Integer type, Integer number, Long money, String reason) throws OrderException {
+        //限制一下,如果退过了,不能再退
+        ItemOrderRefundExample refundExample=new ItemOrderRefundExample();
+        refundExample.createCriteria().andSoidEqualTo(this.getSubOrderId());
+        if(itemOrderRefundMapper.countByExample(refundExample)>0){
+             throw new OrderException("一个子订单最多退一次");
+        }
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         RefundApplyBO refundApply = new RefundApplyBO();
         refundApply.setSoid(itemOrderSub.getSoid());

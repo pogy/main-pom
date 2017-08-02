@@ -39,13 +39,13 @@ public class PreSaleShowAction {
             model=toModel(model,sub,order);
             model.addAttribute("onlyRefundStateNum",1);
         }else{
-            RefundVO refundinfo = SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundinfo();
-            switch (refundinfo.getRefundState().refundStatus){
+            AfterSaleStatusVO assvo=afterSaleService.afterSaleStatus(refundId);
+            switch (assvo.getAfterSaleStatus().returnGoodsStatus){
                 case 0:case 1:{
                     model.addAttribute("onlyRefundStateNum",2);
                     break;
                 }
-                case 2:{
+                case 6:{
                     model.addAttribute("onlyRefundStateNum",3);
                     AfterSaleEntVO afterEnt=afterSaleService.afterEnt(refundId);
                     model.addAttribute("finalRefundAmount", PriceConvertUtils.priceToString(afterEnt.getPrice()));
@@ -53,17 +53,17 @@ public class PreSaleShowAction {
                     model.addAttribute("refundSuccessTime",afterEnt.getAfterSeleEntDate());
                     break;
                 }
-                case 3:{
+                case 2:{
                     model.addAttribute("onlyRefundStateNum",4);
-                    model.addAttribute("refuseReason",refundinfo.getReason());
+                    model.addAttribute("refuseReason",assvo.getContent());
                     break;
                 }
                 default:{
                     return "trade/noOrderInfo";
                 }
             }
-            SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(refundinfo.getSoid());
-            RefundOrderVO order=preSaleShowService.selRefundOrderVO(refundinfo.getSoid());
+            SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(assvo.getSubOrderId());
+            RefundOrderVO order=preSaleShowService.selRefundOrderVO(assvo.getSubOrderId());
             model=toModel(model,sub,order);
             AfterSaleInfoVO afterSaleInfo=afterSaleService.afterSaleInfo(refundId);
             model.addAttribute("refundId",afterSaleInfo.getRefundId());
