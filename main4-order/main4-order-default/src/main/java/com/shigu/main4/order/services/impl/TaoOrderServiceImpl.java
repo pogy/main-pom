@@ -1,17 +1,8 @@
 package com.shigu.main4.order.services.impl;
 
-import com.opentae.data.mall.beans.ItemOrder;
-import com.opentae.data.mall.beans.MemberStoreTaobaoSession;
-import com.opentae.data.mall.beans.ShiguGoodsTaoRelation;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.ItemOrderExample;
-import com.opentae.data.mall.examples.MemberStoreTaobaoSessionExample;
-import com.opentae.data.mall.examples.ShiguGoodsTaoRelationExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.interfaces.ItemOrderMapper;
-import com.opentae.data.mall.interfaces.MemberStoreTaobaoSessionMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTaoRelationMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.TbOrderBO;
@@ -59,6 +50,12 @@ public class TaoOrderServiceImpl implements TaoOrderService {
     @Autowired
     private ShiguGoodsTaoRelationMapper shiguGoodsTaoRelationMapper;
 
+    @Autowired
+    private MemberUserSubMapper memberUserSubMapper ;
+
+    @Autowired
+    private TaobaoSessionMapMapper taobaoSessionMapMapper;
+
     @Value("${appKey}")
     private String key;
 
@@ -76,14 +73,19 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         if (userId == null) {
             throw new NotFindSessionException("userId为null");
         }
-
-        MemberStoreTaobaoSessionExample example = new MemberStoreTaobaoSessionExample();
-        example.createCriteria().andUserIdEqualTo(userId);
-        List<MemberStoreTaobaoSession> session = memberStoreTaobaoSessionMapper.selectFieldsByExample(example, "taobao_login_session");
-        if (session.size() == 0 || StringUtils.isEmpty(session.get(0).getTaobaoLoginSession())) {
+        MemberUserSubExample example=new MemberUserSubExample();
+        example.createCriteria().andUserIdEqualTo(userId).andAccountTypeEqualTo(3);
+        List<MemberUserSub> session = memberUserSubMapper.selectByExample(example);
+        if (session.size()==0){
+            throw new NotFindSessionException("没有对应的信息");
+        }
+        TaobaoSessionMapExample taobaoSessionMapExample=new TaobaoSessionMapExample();
+        taobaoSessionMapExample.createCriteria().andUserIdEqualTo(Long.parseLong(session.get(0).getSubUserKey())).andAppkeyEqualTo(key);
+        List<TaobaoSessionMap> taobaoSessionMaps = taobaoSessionMapMapper.selectByExample(taobaoSessionMapExample);
+        if (taobaoSessionMaps.size() == 0 ) {
             throw new NotFindSessionException("没有获取到淘宝session");
         }
-        return session.get(0).getTaobaoLoginSession();
+        return taobaoSessionMaps.get(0).getSession();
     }
 
     @Override

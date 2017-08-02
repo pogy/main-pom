@@ -3,17 +3,14 @@ package com.shigu.main4.order.services.impl;
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
-import com.opentae.data.mall.beans.SubOrderInfos;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
-import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.model.ItemOrder;
@@ -313,30 +310,26 @@ public class OrderListServiceImpl implements OrderListService {
         itemOrderSubBO.setOid(orderId);
         ItemOrderRefund itemOrderRefundBO = new ItemOrderRefund();
         itemOrderRefundBO.setOid(orderId);
-        List<SubOrderInfos> subOrderInfos = new ArrayList<>();
+        List<SubOrderAndRefundInfoVO> subOrderInfos = new ArrayList<>();
         List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.select(itemOrderSubBO);
         Map<Long, List<ItemOrderRefund>> oidRefundMap = itemOrderRefundMapper.select(itemOrderRefundBO).stream().collect(Collectors.groupingBy(ItemOrderRefund::getOid));
         itemOrderSubs.forEach(itemOrderSub->{
-            SubOrderInfos subOrderInfo = new SubOrderInfos();
-            subOrderInfo.setItemOrderSub(itemOrderSub);
-            subOrderInfo.setItemOrderRefund(oidRefundMap.get(itemOrderSub.getOid()));
-            if (subOrderInfo.getItemOrderRefund() == null) {
-                subOrderInfo.setItemOrderRefund(new ArrayList<>());
-            }
+            SubOrderAndRefundInfoVO subOrderInfo = new SubOrderAndRefundInfoVO();
+            subOrderInfo.setSubOrder(BeanMapper.map(itemOrderSub,SubOrderBoxingVO.class));
+            List<ItemOrderRefund> itemOrderRefunds = oidRefundMap.get(itemOrderSub.getOid());
+            subOrderInfo.setRefunds(itemOrderRefunds==null?new ArrayList<>(): BeanMapper.mapList(itemOrderRefunds,SubOrderRefundBoxingVO.class));
             subOrderInfos.add(subOrderInfo);
         });
         List<SubOrderInfoVO> subOrderInfoVOS = Lists.newArrayList();
         subOrderInfos.forEach(subOrderInfo->{
-            SubOrderInfoVO vo = BeanMapper.map(subOrderInfo.getItemOrderSub(), SubOrderInfoVO.class);
-            vo.setOrderId(subOrderInfo.getItemOrderSub().getOid());
-            vo.setSubOrderId(subOrderInfo.getItemOrderSub().getSoid());
-            vo.setImgsrc(subOrderInfo.getItemOrderSub().getPicUrl());
-            vo.setShState(AfterSaleStatusEnum.NOT_AFTER_SALE);
+            SubOrderInfoVO vo = BeanMapper.map(subOrderInfo.getSubOrder(), SubOrderInfoVO.class);
+            vo.setOrderId(subOrderInfo.getSubOrder().getOid());
+            vo.setSubOrderId(subOrderInfo.getSubOrder().getSoid());
+            vo.setImgsrc(subOrderInfo.getSubOrder().getPicUrl());
             vo.setShTkNum(0);
             vo.setTkNum(0);
             vo.setRefundNum(0);
-            vo.setTkState(RefundStateEnum.APPLY_REFUND);
-            List<ItemOrderRefund> refunds = subOrderInfo.getItemOrderRefund();
+            List<SubOrderRefundBoxingVO> refunds = subOrderInfo.getRefunds();
             refunds.forEach(refund->{
                 if (refund != null) {
                     vo.setTkState(RefundStateEnum.statusOf(refund.getStatus()));
