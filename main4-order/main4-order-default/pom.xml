@@ -75,5 +75,13 @@
             <artifactId>main4-tools</artifactId>
             <version>${main4-tools.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>opentae-beans</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
     </dependencies>
 </project>
