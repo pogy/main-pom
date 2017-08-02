@@ -282,7 +282,9 @@ public class UserBaseServiceImpl implements UserBaseService {
                 shiguShopMapper.updateByPrimaryKey(shop);
             }
         }
-        memberUserSubMapper.delSubUserById(subUserId, userId);
+        MemberUserSubExample subExample=new MemberUserSubExample();
+        subExample.createCriteria().andSubUserIdEqualTo(subUserId).andUserIdEqualTo(userId);
+        memberUserSubMapper.deleteByExample(subExample);
     }
 
     /**

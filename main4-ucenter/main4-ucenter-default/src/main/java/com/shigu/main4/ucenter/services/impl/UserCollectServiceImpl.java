@@ -168,8 +168,14 @@ public class UserCollectServiceImpl implements UserCollectService {
         if (shiguGoodsIdGenerator == null) {
             return null;
         }
-        ShiguGoodsTiny goods = shiguGoodsTinyMapper.selectGoodsById(shiguGoodsIdGenerator.getWebSite(), itemId);
-        ShiguGoodsExtends sge = shiguGoodsExtendsMapper.selectGoodsExtendsById(shiguGoodsIdGenerator.getWebSite(), itemId);
+        ShiguGoodsTiny goods=new ShiguGoodsTiny();
+        goods.setGoodsId(itemId);
+        goods.setWebSite(shiguGoodsIdGenerator.getWebSite());
+        goods = shiguGoodsTinyMapper.selectByPrimaryKey(goods);
+        ShiguGoodsExtends sge=new ShiguGoodsExtends();
+        sge.setGoodsId(itemId);
+        sge.setWebSite(shiguGoodsIdGenerator.getWebSite());
+        sge = shiguGoodsExtendsMapper.selectByPrimaryKey(sge);
         if (goods == null) {
             return null;
         }
@@ -492,7 +498,11 @@ public class UserCollectServiceImpl implements UserCollectService {
             pageSize = 10;
         }
         int startIndx = (pageNo - 1) * pageSize;
-        List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selGoodsPackageList(userId, startIndx, pageSize);
+        ShiguGoodsDataPackageExample example=new ShiguGoodsDataPackageExample();
+        example.createCriteria().andUserIdEqualTo(userId);
+        example.setStartIndex(startIndx);
+        example.setEndIndex(pageSize);
+        List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selectByConditionList(example);
         if (shiguGoodsDataPackageList.size() == 0) {
             return new ShiguPager<DataPackage>();
         }
@@ -525,8 +535,10 @@ public class UserCollectServiceImpl implements UserCollectService {
                 if (shiguGoodsIdGenerator == null) {
                     continue;
                 }
-                ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById(shiguGoodsIdGenerator.getWebSite(),
-                        goodsId);
+                ShiguGoodsTiny shiguGoodsTiny =new ShiguGoodsTiny();
+                shiguGoodsTiny.setWebSite(shiguGoodsIdGenerator.getWebSite());
+                shiguGoodsTiny.setGoodsId(goodsId);
+                shiguGoodsTiny = shiguGoodsTinyMapper.selectByPrimaryKey(shiguGoodsTiny);
                 PackageItem packageItem = new PackageItem();
                 if (shiguGoodsTiny != null) {
                     packageItem.setId(shiguGoodsTiny.getGoodsId());
@@ -536,8 +548,10 @@ public class UserCollectServiceImpl implements UserCollectService {
                     continue;
                 }
                 // 下架商品区查找
-                ShiguGoodsSoldout shiguGoodsSoldout = shiguGoodsSoldoutMapper.selectGoodsSoldoutById(goodsId,
-                        shiguGoodsIdGenerator.getWebSite());
+                ShiguGoodsSoldout shiguGoodsSoldout = new ShiguGoodsSoldout();
+                shiguGoodsSoldout.setGoodsId(goodsId);
+                shiguGoodsSoldout.setWebSite(shiguGoodsIdGenerator.getWebSite());
+                shiguGoodsSoldout=shiguGoodsSoldoutMapper.selectByPrimaryKey(shiguGoodsSoldout);
                 if (shiguGoodsSoldout != null) {
                     packageItem.setId(shiguGoodsSoldout.getGoodsId());
                     packageItem.setPicUrl(shiguGoodsSoldout.getPicUrl());
@@ -551,7 +565,9 @@ public class UserCollectServiceImpl implements UserCollectService {
             dataPackage.setGoods(packageItemsList);
             dataPackageList.add(dataPackage);
         }
-        int dataPackageInt = shiguGoodsDataPackageMapper.selGoodsPackageCount(userId);
+        ShiguGoodsDataPackageExample packageExample=new ShiguGoodsDataPackageExample();
+        packageExample.createCriteria().andUserIdEqualTo(userId);
+        int dataPackageInt = shiguGoodsDataPackageMapper.countByExample(packageExample);
         ShiguPager<DataPackage> dataPackageShiguPager = new ShiguPager<DataPackage>();
         dataPackageShiguPager.setContent(dataPackageList);
         dataPackageShiguPager.setNumber(pageNo);
@@ -569,7 +585,9 @@ public class UserCollectServiceImpl implements UserCollectService {
         if (packageIds == null || packageIds.size() == 0) {
             logger.error("删除数据包>>入参数据为空");
         }
-        List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selGoodsPackageListByIds(packageIds);
+        ShiguGoodsDataPackageExample packageExample=new ShiguGoodsDataPackageExample();
+        packageExample.createCriteria().andGoodsIdIn(packageIds);
+        List<ShiguGoodsDataPackage> shiguGoodsDataPackageList = shiguGoodsDataPackageMapper.selectByExample(packageExample);
         if (shiguGoodsDataPackageList.size() == 0) {
             return;
         }

@@ -18,12 +18,4 @@ import java.util.List;
 @Lazy(true)
 public interface ShiguGoodsDataPackageMapper extends Mapper<ShiguGoodsDataPackage> {
 
-    /** 数据包查询 */
-    List<ShiguGoodsDataPackage> selGoodsPackageList(@Param("userId") Long userId, @Param("startIndex") int startIndex,
-                                                        @Param("pageSize") int pageSize);
-    /** 数据包查询参数 */
-    int selGoodsPackageCount(@Param("userId") Long userId);
-
-    /** 查询数据包 BY ids */
-    List<ShiguGoodsDataPackage> selGoodsPackageListByIds(@Param("packageIds") List<Long> packageIds);
 }
