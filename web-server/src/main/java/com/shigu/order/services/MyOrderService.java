@@ -56,6 +56,15 @@ public class MyOrderService {
             vo.setOrderId(show.getOrderId());
             vo.setPostPay(PriceConvertUtils.priceToString (show.getPostPrice()));
             vo.setServerPay(PriceConvertUtils.priceToString(show.getServerPrice()));
+            if(show.getPostPrice ()==null){
+                show.setPostPrice (0L);
+            }
+            if(show.getServerPrice ()==null){
+                show.setServerPrice (0L);
+            }
+            if(show.getOrderPrice ()==null){
+                show.setOrderPrice (0L);
+            }
             vo.setTradePay(PriceConvertUtils.priceToString(show.getServerPrice()+show.getOrderPrice()+show.getPostPrice()));
             vo.setTradeTime(DateUtil.dateToString(show.getPayTime(),DateUtil.patternD));
             vo.setWebSite(show.getWebSite());
