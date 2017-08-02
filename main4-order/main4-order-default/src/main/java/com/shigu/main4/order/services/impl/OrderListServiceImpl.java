@@ -331,11 +331,9 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setOrderId(subOrderInfo.getItemOrderSub().getOid());
             vo.setSubOrderId(subOrderInfo.getItemOrderSub().getSoid());
             vo.setImgsrc(subOrderInfo.getItemOrderSub().getPicUrl());
-            vo.setShState(AfterSaleStatusEnum.NOT_AFTER_SALE);
             vo.setShTkNum(0);
             vo.setTkNum(0);
             vo.setRefundNum(0);
-            vo.setTkState(RefundStateEnum.APPLY_REFUND);
             List<ItemOrderRefund> refunds = subOrderInfo.getItemOrderRefund();
             refunds.forEach(refund->{
                 if (refund != null) {
