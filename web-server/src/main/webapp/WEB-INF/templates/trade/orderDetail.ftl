@@ -444,7 +444,7 @@ $(function(){
                 <#elseif orderStateNum == 3>
                     <#if childOrder.shState == 0>
                     <span>已发货</span>
-                    <#elseif childOrder.shState == 1>
+                    <#elseif childOrder.shState == 4 || childOrder.shState == 5>
                     <span>售后处理中</span>
                     <#elseif childOrder.shState == 2>
                     <span class="fcBlue">退款成功
@@ -452,10 +452,14 @@ $(function(){
                     </span>
                     <#elseif childOrder.shState == 3>
                     <span class="fcBlue">换货成功</span>
+                    <#elseif childOrder.shState == 6>
+                    <span class="fcF40">退货已拒绝</span>
+                    <#elseif childOrder.shState == 7>
+                    <span class="fcF40">换货已拒绝</span>
                     </#if>
                 <#elseif orderStateNum == 4>
                     <span>交易完成</span>
-                    <#if childOrder.shState == 1>
+                    <#if childOrder.shState == 4 || childOrder.shState == 5>
                     <br><span class="fcBlue">售后处理中</span>
                     <#elseif childOrder.shState == 2>
                     <br><span class="fcBlue">退款成功
@@ -463,6 +467,10 @@ $(function(){
                     </span>
                     <#elseif childOrder.shState == 3><br>
                     <span class="fcBlue">换货成功</span>
+                    <#elseif childOrder.shState == 6>
+                    <span class="fcF40">退货已拒绝</span>
+                    <#elseif childOrder.shState == 7>
+                    <span class="fcF40">换货已拒绝</span>
                     </#if>
                 <#elseif orderStateNum == 5>
                     <span>交易已取消</span>
