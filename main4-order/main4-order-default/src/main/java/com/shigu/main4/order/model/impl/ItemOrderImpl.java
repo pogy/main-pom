@@ -87,7 +87,7 @@ public class ItemOrderImpl implements ItemOrder {
     @Override
     public List<LogisticsVO> selLogisticses() {
         ItemOrderLogistics logistics = new ItemOrderLogistics();
-        logistics.setOid(oid==null?-1L:oid);
+        logistics.setOid(oid == null ? -1L : oid);
         List<ItemOrderLogistics> select = itemOrderLogisticsMapper.select(logistics);
 
         ItemOrderSub orderSub = new ItemOrderSub();
@@ -96,10 +96,10 @@ public class ItemOrderImpl implements ItemOrder {
 
         List<LogisticsVO> logisticsVOS = BeanMapper.mapList(select, LogisticsVO.class);
         logisticsVOS.forEach(logisticsVO -> {
-                if(longListMap.get(logisticsVO.getId()) != null){
-                    logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList()));
-                }
-            });
+            if (longListMap.get(logisticsVO.getId()) != null) {
+                logisticsVO.setSoids(longListMap.get(logisticsVO.getId()).stream().map(ItemOrderSub::getSoid).collect(Collectors.toList()));
+            }
+        });
         return logisticsVOS;
     }
 
@@ -284,7 +284,7 @@ public class ItemOrderImpl implements ItemOrder {
     public List<OrderServiceVO> selServices() {
         ItemOrderService itemOrderService = new ItemOrderService();
         itemOrderService.setOid(oid);
-        return BeanMapper.mapList(itemOrderServiceMapper.select(itemOrderService),OrderServiceVO.class);
+        return BeanMapper.mapList(itemOrderServiceMapper.select(itemOrderService), OrderServiceVO.class);
     }
 
     @Override
@@ -405,20 +405,24 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public void remove() {
-        // TODO: 17/8/1 需要备份数据
+        com.opentae.data.mall.beans.ItemOrder order = new com.opentae.data.mall.beans.ItemOrder();
+        order.setOid(oid);
+        order.setDisenable(true);
+        itemOrderMapper.updateByPrimaryKeySelective(order);
     }
 
     /**
      * 改状态
+     *
      * @param status
      */
-    private void changeStatus(OrderStatus status){
-        OrderStatusRecord record=new OrderStatusRecord();
+    private void changeStatus(OrderStatus status) {
+        OrderStatusRecord record = new OrderStatusRecord();
         record.setCreateTime(new Date());
         record.setOid(oid);
         record.setStatus(status.status);
         orderStatusRecordMapper.insertSelective(record);
-        com.opentae.data.mall.beans.ItemOrder order=new com.opentae.data.mall.beans.ItemOrder();
+        com.opentae.data.mall.beans.ItemOrder order = new com.opentae.data.mall.beans.ItemOrder();
         order.setOid(oid);
         order.setOrderStatus(status.status);
         itemOrderMapper.updateByPrimaryKeySelective(order);

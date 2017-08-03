@@ -6,10 +6,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.exceptions.OrderException;
-import com.shigu.main4.order.zfenums.RefundStateEnum;
-import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
-import com.shigu.main4.order.zfenums.ShStatusEnum;
-import com.shigu.main4.order.zfenums.UserTypeEnum;
+import com.shigu.main4.order.zfenums.*;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
@@ -62,15 +59,18 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         vo.setSubOrderId(subItemOrderVO.getSoid());
         vo.setPicUrl(product.getPicUrl());
         vo.setPrice(product.getPrice());
-
-        RefundVO refundVO = subItemOrder.refundInfos();
-        vo.setRefundNum(refundVO == null ? 0 : refundVO.getNumber());
+        vo.setRefundNum(0);
+        for (RefundTypeEnum type: RefundTypeEnum.values()) {
+            RefundVO refundVO = subItemOrder.refundInfos(type);
+            if (refundVO != null) {
+                vo.setRefundNum(vo.getRefundNum() + refundVO.getNumber());
+            }
+        }
         vo.setOtherRefundPrice(0L);
 
         Long oid = subItemOrderVO.getOid();
         ItemOrder order = SpringBeanFactory.getBean(ItemOrder.class, oid);
         List<Long> allSubId = order.subOrdersInfo().stream().map(SubItemOrderVO::getSoid).collect(Collectors.toList());
-
         ItemOrderRefund refund = new ItemOrderRefund();
         refund.setOid(oid);
         allSubId.removeAll(itemOrderRefundMapper.select(refund).stream().map(ItemOrderRefund::getSoid).distinct().collect(Collectors.toList()));

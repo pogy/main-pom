@@ -3,6 +3,7 @@ package com.shigu.main4.order.model;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
+import com.shigu.main4.order.zfenums.RefundTypeEnum;
 
 /**
  * 商品子订单
@@ -28,5 +29,5 @@ public interface SubItemOrder extends SubOrder{
      * 退单信息
      * @return
      */
-    RefundVO refundInfos();
+    RefundVO refundInfos(RefundTypeEnum type);
 }
