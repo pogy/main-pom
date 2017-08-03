@@ -322,7 +322,7 @@ var webSite = '${webSite!}';
             </#if>
         </#list>
         </div>
-        <p class="nodot"><a href="expressDetail.htm" target="_blank">查看详情</a></p>
+        <p class="nodot"><a href="expressDetail.htm?orderId=${orderId!}" target="_blank">查看详情</a></p>
     </div>
     <#elseif orderStateNum == 4>
     <div class="orderStatusInfo fl">
