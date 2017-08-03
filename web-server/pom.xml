@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-ucenter-default</artifactId>
+            <artifactId>main4-ucenter-api</artifactId>
             <version>${main4-ucenter-api.version}</version>
         </dependency>
         <dependency>
@@ -25,24 +25,24 @@
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-store-default</artifactId>
+            <artifactId>main4-store-api</artifactId>
             <version>${main4-store-default.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-item-default</artifactId>
+            <artifactId>main4-item-api</artifactId>
             <version>${main4-item-default.version}</version>
         </dependency>
 
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-monitor-default</artifactId>
+            <artifactId>main4-monitor-api</artifactId>
             <version>${main4-monitor-default.version}</version>
         </dependency>
 
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-spread-default</artifactId>
+            <artifactId>main4-spread-api</artifactId>
             <version>${main4-spread-default.version}</version>
         </dependency>
         <dependency>
