@@ -17,32 +17,29 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <context:component-scan base-package="com.opentae.*,com.shigu.*,com.openJar.*,com.common.base.*,com.alibaba.*,com.searchtool.configs" >
-    </context:component-scan>
+    <context:component-scan base-package="com.opentae.*,com.shigu.*,com.alibaba.*,com.searchtool.configs"/>
+
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath:*.properties</value>
+                <value>classpath*:/META-INF/spring/*.properties</value>
             </list>
         </property>
     </bean>
+
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
             <map>
-                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"></entry>
+                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"/>
             </map>
         </property>
     </bean>
 
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
-        <!-- 基本属性 url、user、password -->
-        <!--<property name="url" value="jdbc:mysql://122.224.104.234/test" />-->
-        <!--<property name="username" value="admin" />-->
-        <!--<property name="password" value="killer81682024" />-->
-
         <property name="driverClassName" value="${mysqljdbc.driverClassName}" />
         <property name="url" value="${mysqljdbc.url}" />
         <property name="username" value="${mysqljdbc.username}" />
@@ -69,7 +66,7 @@
 
         <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
         <property name="poolPreparedStatements" value="true" />
-        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="30" />
 
         <!-- 配置监控统计拦截的filters，去掉后监控界面sql无法统计 -->
         <property name="filters" value="stat" />
@@ -78,37 +75,25 @@
     <bean id="tae_mall_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
         <property name="plugins">
             <list>
-                <ref bean="mapperInterceptor"></ref>
+                <ref bean="mapperInterceptor"/>
             </list>
         </property>
-        <property name="dataSource" ref="dataSource"></property>
-        <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:/mybatis-config.xml"/>
         <property name="mapperLocations" value="classpath*:/mall/mybatis/*.xml" />
-        <property name="typeAliasesPackage" value="com.opentae.data.mall"></property>
-    </bean>
-
-    <bean id="txManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+        <property name="typeAliasesPackage" value="com.opentae.data.mall"/>
     </bean>
 
     <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
         <property name= "basePackage"
                   value= "com/opentae/data/mall/interfaces" />
         <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
-        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
-    </bean>
-    <bean id="shopehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-        <property name="configLocation" value="classpath:/main4/cache/shop-cache.xml"/>
+        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
     </bean>
 
-    <bean id="shopcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-        <property name="cacheManager" ref="shopehcacheManager"/>
-        <property name="transactionAware" value="true"/>
+    <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
     </bean>
-    <bean id="openSearch" class="com.shigu.opensearchsdk.OpenSearch">
-        <constructor-arg index="0" value="${accesskey}"/>
-        <constructor-arg index="1" value="${secret}"/>
-        <constructor-arg index="2" value="${host}"/>
-    </bean>
+
+    <import resource="spread.xml"/>
 </beans>
