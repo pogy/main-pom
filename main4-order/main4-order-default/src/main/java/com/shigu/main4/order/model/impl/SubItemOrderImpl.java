@@ -12,6 +12,7 @@ import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.RefundApplyBO;
 import com.shigu.main4.order.exceptions.OrderException;
+import com.shigu.main4.order.zfenums.RefundTypeEnum;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
@@ -116,9 +117,10 @@ public class SubItemOrderImpl implements SubItemOrder{
      * @return
      */
     @Override
-    public RefundVO refundInfos() {
+    public RefundVO refundInfos(RefundTypeEnum type) {
         ItemOrderRefund query = new ItemOrderRefund();
         query.setSoid(subOrderId);
+        query.setType(type.type);
         ItemOrderRefund itemOrderRefund = itemOrderRefundMapper.selectOne(query);
         if (itemOrderRefund == null) {
             return null;

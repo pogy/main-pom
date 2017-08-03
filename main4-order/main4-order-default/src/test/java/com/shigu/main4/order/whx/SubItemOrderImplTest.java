@@ -4,6 +4,7 @@ import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.model.impl.SubItemOrderImpl;
+import com.shigu.main4.order.zfenums.RefundTypeEnum;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +33,6 @@ public class SubItemOrderImplTest extends BaseTest {
 
     @Test
     public void refundInfosTest() {
-        show(subItemOrder.refundInfos());
+        show(subItemOrder.refundInfos(RefundTypeEnum.GOODS_CHANGE));
     }
 }

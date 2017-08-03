@@ -21,10 +21,7 @@ import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
-import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
-import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
-import com.shigu.main4.order.zfenums.RefundStateEnum;
-import com.shigu.main4.order.zfenums.ShStatusEnum;
+import com.shigu.main4.order.zfenums.*;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -316,77 +313,42 @@ public class OrderListServiceImpl implements OrderListService {
      */
     @Override
     public List<SubOrderInfoVO> selectSubList (Long orderId) {
-        ItemOrderSub itemOrderSubBO = new ItemOrderSub();
-        itemOrderSubBO.setOid(orderId);
-        ItemOrderRefund itemOrderRefundBO = new ItemOrderRefund();
-        itemOrderRefundBO.setOid(orderId);
-        List<SubOrderAndRefundInfoVO> subOrderInfos = new ArrayList<>();
-        List<ItemOrderSub> itemOrderSubs = itemOrderSubMapper.select(itemOrderSubBO);
-        Map<Long, List<ItemOrderRefund>> oidRefundMap = itemOrderRefundMapper.select(itemOrderRefundBO).stream().collect(Collectors.groupingBy(ItemOrderRefund::getOid));
-        itemOrderSubs.forEach(itemOrderSub->{
-            SubOrderAndRefundInfoVO subOrderInfo = new SubOrderAndRefundInfoVO();
-            subOrderInfo.setSubOrder(BeanMapper.map(itemOrderSub,SubOrderBoxingVO.class));
-            List<ItemOrderRefund> itemOrderRefunds = oidRefundMap.get(itemOrderSub.getOid());
-            subOrderInfo.setRefunds(itemOrderRefunds==null?new ArrayList<>(): BeanMapper.mapList(itemOrderRefunds,SubOrderRefundBoxingVO.class));
-            subOrderInfos.add(subOrderInfo);
-        });
-        List<SubOrderInfoVO> subOrderInfoVOS = Lists.newArrayList();
-        subOrderInfos.forEach(subOrderInfo->{
-            SubOrderInfoVO vo = BeanMapper.map(subOrderInfo.getSubOrder(), SubOrderInfoVO.class);
-            vo.setOrderId(subOrderInfo.getSubOrder().getOid());
-            vo.setSubOrderId(subOrderInfo.getSubOrder().getSoid());
-            vo.setImgsrc(subOrderInfo.getSubOrder().getPicUrl());
-            vo.setShTkNum(0);
-            vo.setTkNum(0);
-            vo.setRefundNum(0);
-            vo.setShState(AfterSaleStatusEnum.NOT_AFTER_SALE);
-            List<SubOrderRefundBoxingVO> refunds = subOrderInfo.getRefunds();
-            refunds.forEach(refund->{
-                if (refund != null) {
-                    vo.setTkState(RefundStateEnum.statusOf(refund.getStatus()));
-                    if (refund.getType() == 0) {
-                        vo.setShState(AfterSaleStatusEnum.NOT_AFTER_SALE);
-                    }else if (refund.getType() == 1) {
-                        vo.setShState(AfterSaleStatusEnum.HANDLE);
-                        vo.setPreSaleRefundId(refund.getRefundId());
-                        vo.setTkNum(vo.getTkNum()+refund.getNumber());
-                    } else if (refund.getType() == 2 || refund.getType() == 3 ) {
-                        if (refund.getStatus() == 2) {
-                            vo.setShState(AfterSaleStatusEnum.REFUND_ENT);
-                        } else {
-                            vo.setShState(AfterSaleStatusEnum.DISPOSE_FERUND);
-                        }
-                        vo.setShTkNum(vo.getShTkNum()+refund.getNumber());
-                        vo.setAfterSaleRefundId(refund.getRefundId());
-                    }else if (refund.getType() == 4) {
-                        if (refund.getStatus() == 2) {
-                            vo.setShState(AfterSaleStatusEnum.CHANGE_ENT);
-                        } else {
-                            vo.setShState(AfterSaleStatusEnum.DISPOSE_CHANGE);
-                        }
-                        vo.setAfterSaleRefundId(refund.getRefundId());
-                    }
-                    vo.setRefundNum(vo.getRefundNum()+refund.getNumber());
-                }
-            });
-            subOrderInfoVOS.add(vo);
-        });
-
         ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
         List<SubItemOrderVO> subItemOrderVOS = orderModel.subOrdersInfo();
-        subItemOrderVOS.stream().map(o->{
+        return subItemOrderVOS.stream().map(o->{
             SubOrderInfoVO vo = BeanMapper.map(o,SubOrderInfoVO.class);
+            ItemProductVO product = o.getProduct();
             vo.setOrderId(o.getOid());
             vo.setSubOrderId(o.getSoid());
-            vo.setImgsrc(o.getProduct().getPicUrl());
+            vo.setImgsrc(product.getPicUrl());
+            vo.setTitle(product.getTitle());
+            vo.setRefundNum(0);
             SubItemOrder subOrderModel = SpringBeanFactory.getBean(SubItemOrder.class, o.getSoid());
-            //RefundVO refundVO1 = subOrderModel.refundInfos();
-            //RefundVO refundVO2 = subOrderModel.refundInfos();
-            //RefundVO refundVO3 = subOrderModel.refundInfos();
-
+            for (RefundTypeEnum refundType:RefundTypeEnum.values()) {
+                RefundVO refundVO = subOrderModel.refundInfos(refundType);
+                if (refundVO != null) {
+                    switch (refundType) {
+                        case ONLY_REFUND:
+                            vo.setTkNum(refundVO.getNumber());
+                            vo.setPreSaleRefundId(refundVO.getRefundId());
+                            vo.setShState(RefundStateEnum.ENT_REFUND.equals(refundVO.getRefundState())?AfterSaleStatusEnum.REFUND_ENT:AfterSaleStatusEnum.HANDLE);
+                            break;
+                        case GOODS_REFUND:
+                            vo.setShTkNum(refundVO.getNumber());
+                            vo.setAfterSaleRefundId(refundVO.getRefundId());
+                            vo.setShState(RefundStateEnum.ENT_REFUND.equals(refundVO.getRefundState())?AfterSaleStatusEnum.REFUND_ENT:AfterSaleStatusEnum.DISPOSE_FERUND);
+                            break;
+                        case GOODS_CHANGE:
+                            vo.setShTkNum(refundVO.getNumber());
+                            vo.setAfterSaleRefundId(refundVO.getRefundId());
+                            vo.setShState(RefundStateEnum.ENT_REFUND.equals(refundVO.getRefundState())?AfterSaleStatusEnum.CHANGE_ENT:AfterSaleStatusEnum.DISPOSE_CHANGE);
+                            break;
+                    }
+                    vo.setRefundNum(vo.getRefundNum() + refundVO.getNumber());
+                }
+            }
             return vo;
         }).collect(Collectors.toList());
-        return subOrderInfoVOS;
     }
 
     /**
