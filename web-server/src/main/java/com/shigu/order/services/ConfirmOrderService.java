@@ -103,6 +103,7 @@ public class ConfirmOrderService {
         logisticsBO.setCompanyId(bo.getCourierId());
         logisticsBO.setAddressId(bo.getAddressId());
         itemOrderBO.setLogistics(logisticsBO);
+        itemOrderBO.setOuterId(orderSubmitVo.getOuterOrderNo());
 
         //订单子订单信息，将ConfirmBo中 ConfirmSubOrderBO#id与OrderSubmitVo中CartVO#cartId对应，存入ItemOrderBO#subOrders中
         List<SubItemOrderBO> subOrders = Lists.newArrayList();

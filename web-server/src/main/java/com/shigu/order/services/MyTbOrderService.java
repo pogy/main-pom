@@ -26,7 +26,6 @@ import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
-import com.shigu.main4.order.services.TaoOrderService;
 import com.shigu.main4.order.servicevo.RelationGoodsVO;
 import com.shigu.main4.order.servicevo.SubTbOrderVO;
 import com.shigu.main4.order.servicevo.TbOrderVO;
@@ -39,7 +38,9 @@ import com.shigu.order.OrderSubmitType;
 import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.vo.OrderSubmitVo;
 import com.shigu.order.vo.TbOrderAddressInfoVO;
+import com.shigu.order.vo.TinyVO;
 import com.shigu.zf.utils.SimilarityMap;
+import com.taobao.api.security.SecurityBiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -76,6 +77,7 @@ public class MyTbOrderService {
 
     public ShiguPager<TbOrderVO> myTbOrders(Long userId,Long orderId, Integer page,Integer size, String startTime, String endTime) {
         String sessionKey;
+        SecurityBiz.getSeparatorCharMap();
         try {
             sessionKey = taoOrderService.myTbSessionKey(userId);
         } catch (NotFindSessionException e) {
@@ -112,15 +114,18 @@ public class MyTbOrderService {
         for(TbOrderVO vo:vos){
             vo.setCanOrder(true);
             vo.setProfits(null);
+
             Long lr=0l;
             for(SubTbOrderVO subvo:vo.getChildOrders()){
                 if(StringUtils.isEmpty(subvo.getGoodsNo())){
                     try {
-                        RelationGoodsVO rgv=taoOrderService.glGoodsJson(subvo.getNumiid());
-                        subvo.setGoodsNo(rgv.getGoodsNo());
-                        subvo.setXzPrice(rgv.getPrice());
-                        subvo.setWebSite(rgv.getWebSite());
-                        lr+= subvo.getNewTbPriceLong()-rgv.getPriceLong();
+                        TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(subvo.getNumiid());
+                        if (rgv != null) {
+                            subvo.setGoodsNo(rgv.getGoodsNo());
+                            subvo.setXzPrice(rgv.getPiPriceString());
+                            subvo.setWebSite(rgv.getWebSite());
+                            lr+= subvo.getNewTbPriceLong()-rgv.getPiPrice();
+                        }
                     } catch (NotFindRelationGoodsException e) {
                         vo.setCanOrder(false);
                     }
@@ -141,7 +146,7 @@ public class MyTbOrderService {
             GoodsVO g=new GoodsVO();
             g.setTitle(pa.getTitle());
             g.setPrice(pa.getPrice());
-            StoreRelation shop=storeRelationService.selRelationById(pa.getItemId());
+            StoreRelation shop=storeRelationService.selRelationById(pa.getStoreId());
             g.setStoreNum(shop.getStoreNum());
             g.setMarketName(shop.getMarketName());
             g.setImgSrc(pa.getPicUrl());
@@ -156,16 +161,17 @@ public class MyTbOrderService {
         return vo;
     }
 
-    public void glGoodsJson(Long numIid,Long goodsId) throws NotFindRelationGoodsException {
-        taoOrderService.glGoodsJson(numIid,goodsId);
+    public void glGoodsJson(Long numIid,Long goodsId,Long userId) throws NotFindRelationGoodsException {
+        taoOrderService.glGoodsJson(numIid,goodsId,userId);
     }
 
     public String submitTbOrders(Long tid,Long userId) throws NotFindSessionException, NotFindRelationGoodsException {
         String sessionKey = taoOrderService.myTbSessionKey(userId);
         TbOrderVO order=taoOrderService.myTbOrder(tid,TbOrderStatusEnum.WAIT_SELLER_SEND_GOODS,sessionKey);
         List<CartVO> cartVOS = new ArrayList<>();
-        for(SubTbOrderVO sub:order.getChildOrders()){
-            RelationGoodsVO rgv=taoOrderService.glGoodsJson(sub.getNumiid());
+        for(int i=0;i<order.getChildOrders().size();i++){
+            SubTbOrderVO sub=order.getChildOrders().get(i);
+            TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(sub.getNumiid());
             SynItem goods=itemAddOrUpdateService.selItemByGoodsId(rgv.getGoodsId(),rgv.getWebSite());
             ItemProductImpl itemp= SpringBeanFactory.getBean(ItemProductImpl.class,rgv.getGoodsId(),sub.getColor(),sub.getSize() );
             ItemProductVO info = SpringBeanFactory.getBean(ItemProductImpl.class, itemp.getPid(), itemp.getSkuId()).info();
@@ -188,6 +194,7 @@ public class MyTbOrderService {
             vo.setTitle(goods.getTitle());
             vo.setWebSite(goods.getWebSite());
             vo.setWeight(info.getWeight());
+            vo.setCartId(i-goods.getGoodsId());
             cartVOS.add(vo);
         }
         String uuid = UUIDGenerator.getUUID();
@@ -212,15 +219,21 @@ public class MyTbOrderService {
         OrderTown town=townmap.get(order.getTown());
         BuyerAddressVO buyerAddress = new BuyerAddressVO();
         buyerAddress.setAddress(order.getSimpleAddress());
-        buyerAddress.setCityId(city.getCityId());
+        if (city != null) {
+            buyerAddress.setCityId(city.getCityId());
+            buyerAddress.setCity(city.getCityName());
+        }
         buyerAddress.setName(order.getReceiverName());
-        buyerAddress.setProvId(prov.getProvId());
+        if (prov != null) {
+            buyerAddress.setProvId(prov.getProvId());
+            buyerAddress.setProvince(prov.getProvName());
+        }
         buyerAddress.setTelephone(order.getReceiverPhone());
-        buyerAddress.setTownId(town.getTownId());
+        if (town != null) {
+            buyerAddress.setTownId(town.getTownId());
+            buyerAddress.setTown(town.getTownName());
+        }
         buyerAddress.setUserId(userId);
-        buyerAddress.setProvince(prov.getProvName());
-        buyerAddress.setCity(city.getCityName());
-        buyerAddress.setTown(town.getTownName());
         String addressId = confirmOrderService.saveTmpBuyerAddress(buyerAddress);
         addressVO.setAddressId(addressId);
 

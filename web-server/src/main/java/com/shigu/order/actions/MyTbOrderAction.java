@@ -86,10 +86,11 @@ public class MyTbOrderAction {
 
     @RequestMapping("glGoodsJson")
     @ResponseBody
-    public JSONObject glGoodsJson(Long goodsId,Long numiid){
+    public JSONObject glGoodsJson(Long goodsId,Long numiid,HttpSession session){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         JSONObject obj=new JSONObject();
         try {
-            myTbOrderService.glGoodsJson(numiid,goodsId);
+            myTbOrderService.glGoodsJson(numiid,goodsId,ps.getUserId());
             obj.put("result","success");
         } catch (NotFindRelationGoodsException e) {
             obj.put("result","error");

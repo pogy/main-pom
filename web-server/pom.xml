@@ -64,6 +64,12 @@
             <groupId>sites.tb</groupId>
             <artifactId>syn-finder-api</artifactId>
             <version>4.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.taobao</groupId>
+                    <artifactId>taobao-sdk-java-21720662</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--上面那个包,syn里其实有-->
         <dependency>
@@ -313,9 +319,9 @@
         <!--自己放的包-->
         <!--淘宝接口-->
         <dependency>
-            <groupId>com.taobao</groupId>
-            <artifactId>taobao-sdk-java-21720662</artifactId>
-            <version>20160607</version>
+            <groupId>taobao-sdk-java-auto</groupId>
+            <artifactId>taobao-sdk-java-auto</artifactId>
+            <version>1487931282132</version>
         </dependency>
 
         <dependency>

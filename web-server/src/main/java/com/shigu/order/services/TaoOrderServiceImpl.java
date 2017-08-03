@@ -1,18 +1,39 @@
-package com.shigu.main4.order.services.impl;
+package com.shigu.order.services;
 
-import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.examples.*;
-import com.opentae.data.mall.interfaces.*;
+import com.alibaba.fastjson.JSON;
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.ItemOrder;
+import com.opentae.data.mall.beans.MemberUserSub;
+import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
+import com.opentae.data.mall.beans.ShiguGoodsTaoRelation;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.TaobaoSessionMap;
+import com.opentae.data.mall.examples.ItemOrderExample;
+import com.opentae.data.mall.examples.MemberUserSubExample;
+import com.opentae.data.mall.examples.ShiguGoodsTaoRelationExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.TaobaoSessionMapExample;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.opentae.data.mall.interfaces.MemberStoreTaobaoSessionMapper;
+import com.opentae.data.mall.interfaces.MemberUserSubMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTaoRelationMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
+import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.order.bo.TbOrderBO;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
-import com.shigu.main4.order.services.TaoOrderService;
 import com.shigu.main4.order.servicevo.RelationGoodsVO;
 import com.shigu.main4.order.servicevo.SubTbOrderVO;
 import com.shigu.main4.order.servicevo.TbOrderVO;
 import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
+import com.shigu.order.vo.TinyIdMapVO;
+import com.shigu.order.vo.TinyVO;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.SecretException;
@@ -24,6 +45,10 @@ import com.taobao.api.request.TradesSoldGetRequest;
 import com.taobao.api.response.TradeFullinfoGetResponse;
 import com.taobao.api.response.TradesSoldGetResponse;
 import com.taobao.api.security.SecurityClient;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,8 +56,11 @@ import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by zf on 2017/7/21.
@@ -55,6 +83,9 @@ public class TaoOrderServiceImpl implements TaoOrderService {
 
     @Autowired
     private TaobaoSessionMapMapper taobaoSessionMapMapper;
+
+    @Autowired
+    private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
 
     @Value("${appKey}")
     private String key;
@@ -120,7 +151,6 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         pager.setNumber(page);
         req.setPageNo((long) page);
         req.setPageSize((long) size);
-        req.setExtType("service");
         try {
             TradesSoldGetResponse rsp = client.execute(req,sessionKey);
             List<TbOrderVO> tbOrderVOList = new ArrayList<>();
@@ -167,57 +197,35 @@ public class TaoOrderServiceImpl implements TaoOrderService {
     }
 
     @Override
-    public RelationGoodsVO glGoodsJson(Long numiid) throws NotFindRelationGoodsException {
-        if (numiid == null) {
-            throw new NotFindRelationGoodsException("numiid为null");
-        }
-        ShiguGoodsTinyExample shiguGoodsTinyExample = new ShiguGoodsTinyExample();
-        shiguGoodsTinyExample.setWebSite("hz");
-        shiguGoodsTinyExample.createCriteria().andNumIidEqualTo(numiid);
-        List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample);
-        if (shiguGoodsTinies.size() > 0) {
-            return glGoodsJson(numiid, shiguGoodsTinies.get(0).getGoodsId());
-        }
-        return null;
+    public TinyVO selSourceGoodsByNumIid(Long numiid) throws NotFindRelationGoodsException {
+        List<Long> numIids=new ArrayList<>();
+        numIids.add(numiid);
+        List<TinyVO> tinyVOs=selUpedTinys(numIids);
+        return tinyVOs.size()>0?tinyVOs.get(0):null;
     }
 
     @Override
-    public RelationGoodsVO glGoodsJson(Long numiid, Long goodsId) throws NotFindRelationGoodsException {
+    public void glGoodsJson(Long numiid, Long goodsId,Long userId) throws NotFindRelationGoodsException {
         if (numiid == null || goodsId == null) {
             throw new NotFindRelationGoodsException("numiid或goodsid为空");
         }
-        RelationGoodsVO vo = new RelationGoodsVO();
-        ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById("hz", goodsId);
-        if (shiguGoodsTiny != null) {
-            vo.setGoodsNo(shiguGoodsTiny.getGoodsNo());
-            vo.setPrice(shiguGoodsTiny.getPriceString());
-            vo.setPriceLong(shiguGoodsTiny.getPrice());
-            vo.setWebSite("hz");
-            vo.setGoodsId(shiguGoodsTiny.getGoodsId());
+        ShiguGoodsIdGenerator goodsIdObj=shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
+        if (goodsIdObj == null) {
+            throw new NotFindRelationGoodsException("商品ID非法");
         }
-        ShiguGoodsTaoRelationExample shiguGoodsTaoRelationExample = new ShiguGoodsTaoRelationExample();
-        shiguGoodsTaoRelationExample.createCriteria().andNumIidEqualTo(numiid).andGoodsIdEqualTo(goodsId);
-        List<ShiguGoodsTaoRelation> shiguGoodsTaoRelations = shiguGoodsTaoRelationMapper.selectByExample(shiguGoodsTaoRelationExample);
-        if (shiguGoodsTaoRelations.size() == 0) {
-            ShiguGoodsTaoRelation shiguGoodsTaoRelation = new ShiguGoodsTaoRelation();
-            shiguGoodsTaoRelation.setGoodsId(goodsId);
-            shiguGoodsTaoRelation.setNumIid(numiid);
-            shiguGoodsTaoRelation.setWebSite("hz");
+        ShiguGoodsTaoRelation shiguGoodsTaoRelation=new ShiguGoodsTaoRelation();
+        shiguGoodsTaoRelation.setNumIid(numiid);
+        shiguGoodsTaoRelation.setUserId(userId);
+        shiguGoodsTaoRelation.setGoodsId(goodsId);
+        shiguGoodsTaoRelation.setWebSite(goodsIdObj.getWebSite());
+        try {
             shiguGoodsTaoRelationMapper.insertSelective(shiguGoodsTaoRelation);
+        } catch (Exception e) {
+            ShiguGoodsTaoRelationExample relationExample=new ShiguGoodsTaoRelationExample();
+            relationExample.createCriteria().andNumIidEqualTo(numiid);
+            shiguGoodsTaoRelationMapper.updateByExampleSelective(shiguGoodsTaoRelation,relationExample);
         }
-        return vo;
-
     }
-
-
-
-
-
-
-
-
-
-
 
     public  SecurityClient getSecurityClient() {
         if (securityClient == null) {
@@ -251,6 +259,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
     public  TbOrderVO packing(Trade t,String session) throws SecretException {
         decrypt(t, session);
         TbOrderVO tbOrderVO = new TbOrderVO();
+        tbOrderVO.setTbId(t.getTid());
         String address="";
         if (!StringUtils.isEmpty(t.getReceiverName())) {
             address+=t.getReceiverName();
@@ -266,10 +275,9 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         }
         tbOrderVO.setAddress(address);
         if (t.getPayTime()!=null){
-            tbOrderVO.setTime(t.getPayTime().toString());
+            tbOrderVO.setTime(DateUtil.dateToString(t.getPayTime(),"yyyy-MM-dd HH:mm:ss"));
         }
         if (!StringUtils.isEmpty(t.getReceiverCity())){
-
             tbOrderVO.setCity(t.getReceiverCity());
         }
         if (!StringUtils.isEmpty(t.getReceiverState())){
@@ -288,34 +296,28 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         if (itemOrders.size()>0){
             tbOrderVO.setLastTime( new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(itemOrders.get(0).getCreateTime()));
         }
-        ////
-        tbOrderVO.setLastTime(t.getCreated().toString());
         List<SubTbOrderVO> childOrders = new ArrayList<>();
         if (t.getOrders().size() > 0) {
-            List<Long> numIids = BeanMapper.getFieldList(t.getOrders(), "numIid", long.class);
-            ShiguGoodsTinyExample shiguGoodsTinyExample=new ShiguGoodsTinyExample();
-            shiguGoodsTinyExample.setWebSite("hz");
-            shiguGoodsTinyExample.createCriteria().andNumIidIn(numIids);
-            List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(shiguGoodsTinyExample);
-            Map<Long, ShiguGoodsTiny> map = BeanMapper.list2Map(shiguGoodsTinies, "numIid", long.class);
             for (Order o : t.getOrders()) {
                 SubTbOrderVO vo=new SubTbOrderVO();
-                vo.setWebSite("hz");
                 vo.setTbChildOrderId(o.getOid());
                 vo.setImgSrc(o.getPicPath());
                 vo.setNum(o.getNum().intValue());
                 vo.setNumiid(o.getNumIid());
                 vo.setOldTbPrice(o.getTotalFee());
-                vo.setOldTbPriceLong(((long)Double.parseDouble(o.getTotalFee())));
+                Double tbOldPriceLong=Double.parseDouble(o.getTotalFee())*100;
+                vo.setOldTbPriceLong(tbOldPriceLong.longValue());
                 vo.setNewTbPrice(o.getPayment());
-                vo.setNewTbPriceLong(((long)Double.parseDouble(o.getPayment())));
-                vo.setColor(o.getSkuPropertiesName().split(";")[0].split(":")[1]);
-                vo.setSize(o.getSkuPropertiesName().split(";")[1].split(":")[1]);
-                if (map.size()>0){
-                    vo.setGoodsNo(map.get(o.getNumIid()).getGoodsNo());
-                    vo.setXzPrice(map.get(o.getNumIid()).getPiPriceString());
-                    vo.setXzPriceLong(map.get(o.getNumIid()).getPiPrice());
-
+                Double tbNewPriceLong=Double.parseDouble(o.getPayment())*100;
+                vo.setNewTbPriceLong(tbNewPriceLong.longValue());
+                if(o.getSkuPropertiesName()!=null){
+                    String[] propArr=o.getSkuPropertiesName().split(";");
+                    if(propArr[0].contains(":")){
+                        vo.setColor(propArr[0].split(":")[1]);
+                    }
+                    if(propArr.length>1){
+                        vo.setSize(propArr[1].split(":")[1]);
+                    }
                 }
                 vo.setTitle(o.getTitle());
                 childOrders.add(vo);
@@ -324,5 +326,91 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         }
         return tbOrderVO;
     }
+
+    /**
+     * 查询商品关联
+     * @param numIids
+     * @return
+     */
+    private List<TinyVO> selUpedTinys(List<Long> numIids){
+        //1、先匹配item_goods_relation表
+        //2、如果1没匹配到,继续去ES。shigugoodsup_v2匹配
+        //3、把匹配到的结果包装成需要的
+        if(numIids.size()==0){
+            return new ArrayList<>();
+        }
+        List<TinyIdMapVO> tinyIds=selFromRelation(numIids);
+        numIids.removeAll(BeanMapper.getFieldList(tinyIds,"numIid",Long.class));
+        if(numIids.size()>0){
+            tinyIds.addAll(selFromEs(numIids));
+        }
+        //ID对
+        Map<Long,Long> goodsIdAndNumIid=new HashMap<>();
+        Map<String,List<Long>> sitesGoodsMap=new HashMap<>();
+        tinyIds.forEach(id -> {
+            List<Long> ids=sitesGoodsMap.get(id.getWebSite());
+            if (ids == null) {
+                ids = new ArrayList<Long>();
+                sitesGoodsMap.put(id.getWebSite(),ids);
+            }
+            ids.add(id.getGoodsId());
+            goodsIdAndNumIid.put(id.getGoodsId(),id.getNumIid());
+        });
+        Iterator<String> it=sitesGoodsMap.keySet().iterator();
+        List<TinyVO> tinyVOs=new ArrayList<>();
+        while(it.hasNext()){
+            String webSite=it.next();
+            List<Long> goodsIds=sitesGoodsMap.get(webSite);
+            if (goodsIds.size() > 0) {
+                ShiguGoodsTinyExample tinyExample=new ShiguGoodsTinyExample();
+                tinyExample.createCriteria().andGoodsIdIn(goodsIds);
+                tinyExample.setWebSite(webSite);
+                List<ShiguGoodsTiny> shiguGoodsTinies=shiguGoodsTinyMapper.selectFieldsByExample(tinyExample,
+                        FieldUtil.codeFields("goods_id,num_iid,goods_no,pi_price,pi_price_string,web_site"));
+                List<TinyVO> webSiteTinys=BeanMapper.mapList(shiguGoodsTinies,TinyVO.class);
+                webSiteTinys.forEach(t -> {
+                    t.setNumIid(goodsIdAndNumIid.get(t.getGoodsId()));
+                });
+                tinyVOs.addAll(webSiteTinys);
+            }
+        }
+        return tinyVOs;
+    }
+
+    /**
+     * 对手动关联过的数据中查询
+     * @param numIids
+     * @return
+     */
+    private List<TinyIdMapVO> selFromRelation(List<Long> numIids){
+        ShiguGoodsTaoRelationExample taoRelationExample=new ShiguGoodsTaoRelationExample();
+        taoRelationExample.createCriteria().andNumIidIn(numIids);
+        List<ShiguGoodsTaoRelation> taoRelations=shiguGoodsTaoRelationMapper.selectByExample(taoRelationExample);
+        return BeanMapper.mapList(taoRelations,TinyIdMapVO.class);
+    }
+
+    /**
+     * 从用户一键上传过的记录中查询
+     * @param numIids
+     * @return
+     */
+    private List<TinyIdMapVO> selFromEs(List<Long> numIids){
+        SearchResponse response = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup")
+                .setQuery(QueryBuilders.termsQuery("fenNumiid",numIids)).execute().actionGet();
+        SearchHits hits=response.getHits();
+        SearchHit[] hitArr=hits.getHits();
+        List<TinyIdMapVO> results=new ArrayList<>();
+        for(int i=0;i<hitArr.length;i++){
+            SearchHit hit=hitArr[i];
+            ItemUpRecordVO shiguGoodsUp = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
+            TinyIdMapVO tinyIdMapVO=new TinyIdMapVO();
+            tinyIdMapVO.setWebSite(shiguGoodsUp.getWebSite());
+            tinyIdMapVO.setGoodsId(shiguGoodsUp.getSupperGoodsId());
+            tinyIdMapVO.setNumIid(shiguGoodsUp.getFenNumiid());
+            results.add(tinyIdMapVO);
+        }
+        return results;
+    }
+
 
 }
