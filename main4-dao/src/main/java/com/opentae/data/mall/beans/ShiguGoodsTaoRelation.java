@@ -6,11 +6,16 @@ import java.io.Serializable;
 
 public class ShiguGoodsTaoRelation implements Serializable {
     /**
-     * 
+     * 主键
      */
     @Id
     @GeneratedValue(generator = "JDBC")
 	private Long relationId;
+
+    /**
+     * 淘宝numIid
+     */
+	private Long numIid;
 
     /**
      * 商品ID
@@ -18,14 +23,14 @@ public class ShiguGoodsTaoRelation implements Serializable {
 	private Long goodsId;
 
     /**
-     * 淘宝ID
-     */
-	private Long numIid;
-
-    /**
      * 分站
      */
 	private String webSite;
+
+    /**
+     * 用户ID
+     */
+	private Long userId;
 
 	public void setRelationId(Long relationId) {
 		this.relationId = relationId;
@@ -33,14 +38,6 @@ public class ShiguGoodsTaoRelation implements Serializable {
 
 	public Long getRelationId() {
 		return this.relationId;
-	}
-
-	public void setGoodsId(Long goodsId) {
-		this.goodsId = goodsId;
-	}
-
-	public Long getGoodsId() {
-		return this.goodsId;
 	}
 
 	public void setNumIid(Long numIid) {
@@ -51,12 +48,28 @@ public class ShiguGoodsTaoRelation implements Serializable {
 		return this.numIid;
 	}
 
+	public void setGoodsId(Long goodsId) {
+		this.goodsId = goodsId;
+	}
+
+	public Long getGoodsId() {
+		return this.goodsId;
+	}
+
 	public void setWebSite(String webSite) {
 		this.webSite = webSite;
 	}
 
 	public String getWebSite() {
 		return this.webSite;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getUserId() {
+		return this.userId;
 	}
 
 }

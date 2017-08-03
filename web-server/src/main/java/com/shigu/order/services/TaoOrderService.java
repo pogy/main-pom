@@ -1,14 +1,14 @@
-package com.shigu.main4.order.services;
+package com.shigu.order.services;
 
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.TbOrderBO;
-import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
 import com.shigu.main4.order.servicevo.RelationGoodsVO;
-import com.shigu.main4.order.vo.GoodsVO;
 import com.shigu.main4.order.servicevo.TbOrderVO;
+import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
+import com.shigu.order.vo.TinyVO;
 
 /**
  * @类编号
@@ -57,11 +57,11 @@ public interface TaoOrderService {
      * ====================================================================================
      *
      */
-    TbOrderVO myTbOrder(Long tid , TbOrderStatusEnum status,String sessionKey);
+    TbOrderVO myTbOrder(Long tid, TbOrderStatusEnum status, String sessionKey);
 
     /**
      * ====================================================================================
-     * @方法名：glGoodsJson
+     * @方法名：找回源商品
      * @功能： 关联,如果已关联,返回关联的货号,如果未关联,根据numiid查询商品进行管理,成功则返回货号
      * @param:numiid商品ID
      * @return:商家编码 货号
@@ -69,8 +69,7 @@ public interface TaoOrderService {
      * ====================================================================================
      *
      */
-    RelationGoodsVO glGoodsJson(Long numiid) throws NotFindRelationGoodsException;
-
+    TinyVO selSourceGoodsByNumIid(Long numiid) throws NotFindRelationGoodsException;
 
     /**
      * ====================================================================================
@@ -82,6 +81,6 @@ public interface TaoOrderService {
      * ====================================================================================
      * 
      */
-    RelationGoodsVO glGoodsJson(Long numiid,Long goodsId) throws NotFindRelationGoodsException;
+    void glGoodsJson(Long numiid, Long goodsId,Long userId) throws NotFindRelationGoodsException;
 
 }

@@ -232,6 +232,74 @@ public class ShiguGoodsTaoRelationExample implements SgExample{
             }
         }
 
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdIsNull() {
+            this.addCriterion("user_id is null");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdIsNotNull() {
+            this.addCriterion("user_id is not null");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdEqualTo(Long value) {
+            this.addCriterion("user_id =", value, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdNotEqualTo(Long value) {
+            this.addCriterion("user_id <>", value, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdGreaterThan(Long value) {
+            this.addCriterion("user_id >", value, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("user_id >=", value, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdLessThan(Long value) {
+            this.addCriterion("user_id <", value, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("user_id <=", value, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdLike(String value) {
+            this.addCriterion("user_id like", value, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdNotLike(String value) {
+            this.addCriterion("user_id not like", value, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }        public ShiguGoodsTaoRelationExample.Criteria andUserIdIn(List<Long> values) {
+            this.addCriterion("user_id in", values, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdNotIn(List<Long> values) {
+            this.addCriterion("user_id not in", values, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdBetween(Long value1, Long value2) {
+            this.addCriterion("user_id between", value1, value2, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("user_id not between", value1, value2, "userId");
+            return (ShiguGoodsTaoRelationExample.Criteria)this;
+        }
+
         public ShiguGoodsTaoRelationExample.Criteria andGoodsIdIsNull() {
             this.addCriterion("goods_id is null");
             return (ShiguGoodsTaoRelationExample.Criteria)this;
