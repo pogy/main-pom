@@ -15,6 +15,7 @@
     <version>4.1.9-SNAPSHOT</version>
     <!--versions:update-child-modules-->
     <modules>
+
         <module>main4-dao</module>
         <module>main4-common</module>
         <module>main4-session</module>

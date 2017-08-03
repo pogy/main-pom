@@ -100,7 +100,7 @@ COMMENT = '物流'
         }
 
         int i=0;
-        String path = System.getProperty("user.dir") + "\\main4-dao\\src\\main\\java\\com\\opentae\\data\\mall\\beans\\".replace("\\", File.separator) + beanName + ".java";
+        String path = System.getProperty("user.dir") + "\\web-server\\src\\main\\java\\com\\opentae\\data\\mall\\beans\\".replace("\\", File.separator) + beanName + ".java";
         PrintWriter out = new PrintWriter(path);
         out.println(String.format("package com.opentae.data.mall.beans;\n\nimport javax.persistence.GeneratedValue;\nimport javax.persistence.Id;\n" + (typeHasDate ? "import java.util.Date;\n" : "") + "import java.io.Serializable;\n\npublic class %s implements Serializable {", beanName));
         for (Map.Entry<String, String[]> entry : fields.entrySet()) {
