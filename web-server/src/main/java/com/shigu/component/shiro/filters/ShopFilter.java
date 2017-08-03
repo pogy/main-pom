@@ -1,10 +1,7 @@
 package com.shigu.component.shiro.filters;
 
 import com.shigu.component.shiro.enums.RoleEnum;
-import com.shigu.session.main4.PersonalSession;
-import com.shigu.session.main4.names.SessionEnum;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
 import javax.servlet.Filter;
@@ -16,7 +13,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
 
 /**
  * 店铺用户过滤器

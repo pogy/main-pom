@@ -517,7 +517,7 @@ public class MemberAction {
             UserInfoUpdate userInfoUpdate=new UserInfoUpdate();
             userInfoUpdate.setUserId(ps.getUserId());
             userInfoUpdate.setHeadUrl(url);
-            userBaseService.updateUserInfo(userInfoUpdate);
+            memberSimpleService.updateUser(userInfoUpdate);
         } catch (IOException e) {
             throw new JsonErrException("图片数据读取失败");
         } catch (UpdateUserInfoException e) {

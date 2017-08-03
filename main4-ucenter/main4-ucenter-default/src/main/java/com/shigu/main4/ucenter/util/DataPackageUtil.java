@@ -1,4 +1,4 @@
-package com.shigu.component.util;
+package com.shigu.main4.ucenter.util;
 
 import com.shigu.main4.common.util.UUIDGenerator;
 import org.apache.tools.zip.ZipEntry;
@@ -7,7 +7,20 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringBufferInputStream;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
 

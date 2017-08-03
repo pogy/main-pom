@@ -1,6 +1,12 @@
-package com.shigu.component.util;
+package com.shigu.main4.ucenter.util;
 
-import java.io.*;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
@@ -67,7 +73,7 @@ public class FileOperator {
 	 * @return
 	 */
 	public static boolean isExistingFolder(String folderPath) {
-		if(BeanUtil.isNull(folderPath)){
+		if(StringUtils.isEmpty(folderPath)){
 			return false;
 		}
 		return isExistingFolder(new File(folderPath));

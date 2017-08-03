@@ -1,4 +1,4 @@
-package com.shigu.component.util;
+package com.shigu.main4.ucenter.util;
 
 public class UtilCharacter {
   public UtilCharacter() {

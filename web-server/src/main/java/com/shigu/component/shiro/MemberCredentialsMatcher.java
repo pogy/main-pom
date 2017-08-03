@@ -1,9 +1,6 @@
 package com.shigu.component.shiro;
 
-import com.shigu.component.shiro.enums.LoginErrorEnum;
-import com.shigu.component.shiro.exceptions.LoginAuthException;
 import com.shigu.session.main4.PersonalSession;
-import com.shigu.session.main4.Rds3TempUser;
 import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import org.apache.shiro.SecurityUtils;

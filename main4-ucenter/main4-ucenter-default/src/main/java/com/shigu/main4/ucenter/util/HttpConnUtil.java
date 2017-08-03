@@ -1,14 +1,12 @@
-package com.shigu.component.util;
+package com.shigu.main4.ucenter.util;
 
-import org.apache.log4j.Logger;
+import net.sf.json.JSONArray;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Response;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
 import java.util.Map;
-
-import net.sf.json.JSONArray;
 
 /**
  * ==========================================================

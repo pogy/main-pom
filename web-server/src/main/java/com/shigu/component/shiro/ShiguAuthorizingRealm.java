@@ -4,7 +4,6 @@ import com.shigu.component.shiro.enums.CacheEnum;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.component.shiro.enums.UserType;
 import com.shigu.session.main4.PersonalSession;
-import com.shigu.session.main4.SysUserSession;
 import com.shigu.session.main4.names.SessionEnum;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;

@@ -2,7 +2,6 @@ package com.shigu.component.shiro;
 
 import com.shigu.main4.ucenter.services.UserBaseService;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
-import org.apache.shiro.crypto.hash.Sha384Hash;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

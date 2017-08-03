@@ -1,4 +1,4 @@
-package com.shigu.component.encrypt;
+package com.shigu.main4.ucenter.util;
 
 
 import org.apache.shiro.crypto.hash.Sha384Hash;

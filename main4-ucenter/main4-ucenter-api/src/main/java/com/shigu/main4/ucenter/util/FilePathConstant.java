@@ -1,4 +1,4 @@
-package com.shigu.component.config;
+package com.shigu.main4.ucenter.util;
 
 
 /**

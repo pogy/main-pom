@@ -1,14 +1,9 @@
 package com.shigu.component.shiro;
 
 import org.apache.shiro.authz.Permission;
-import org.apache.shiro.authz.permission.WildcardPermission;
-import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

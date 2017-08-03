@@ -2,8 +2,6 @@ package com.shigu.component.shiro.filters;
 
 
 import com.shigu.component.shiro.enums.RoleEnum;
-import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -20,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
