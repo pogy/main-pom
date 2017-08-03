@@ -521,7 +521,7 @@ var webSite = '${webSite!}';
     </div>
     <b class="alterAddress" jbtn="alterAddress">更改地址</b>
 </div>
-<input type="hidden" id="fullAreaInput" name="fullAreaInput" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.address!}"</#if>>
+<input type="hidden" id="fullAreaInput" name="fullAreaInput" <#if tbOrderAddressInfo??>value="${tbOrderAddressInfo.allAddressInfo!}"</#if>>
 
 
 
