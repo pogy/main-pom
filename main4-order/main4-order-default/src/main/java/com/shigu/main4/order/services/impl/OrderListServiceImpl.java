@@ -335,6 +335,9 @@ public class OrderListServiceImpl implements OrderListService {
                     vo.setRefundNum(vo.getRefundNum() + refundVO.getNumber());
                 }
             }
+            if (vo.getShState() == null) {
+                vo.setShState(AfterSaleStatusEnum.NOT_AFTER_SALE);
+            }
             return vo;
         }).collect(Collectors.toList());
     }
