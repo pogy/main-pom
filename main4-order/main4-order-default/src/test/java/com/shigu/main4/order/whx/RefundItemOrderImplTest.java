@@ -60,7 +60,7 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void errorTest() throws RefundException, PayerException {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 72L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 78L);
         //refundItemOrder.error("退件失败");
         //测试重复操作
         refundItemOrder.success();
@@ -68,8 +68,8 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sellerProposalTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 78L);
-        refundItemOrder.sellerProposal(3100L,"测试参数");
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 81L);
+        refundItemOrder.sellerProposal(8800L,"测试参数");
         //测试重复操作
         //refundItemOrder.sellerProposal(200L,"测试参数");
     }
@@ -96,6 +96,6 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sended(){
-        SpringBeanFactory.getBean(ItemOrder.class, 201L).sended("437039539484");
+        SpringBeanFactory.getBean(ItemOrder.class, 205L).sended("437039539484");
     }
 }

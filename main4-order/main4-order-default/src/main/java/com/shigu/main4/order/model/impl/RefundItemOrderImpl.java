@@ -310,6 +310,10 @@ public class RefundItemOrderImpl implements RefundItemOrder {
                 SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
                         .refund(payedVO.getPayId(), money);
                 refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND);
+                ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
+                itemOrderRefund.setRefundId(refundId);
+                itemOrderRefund.setRefundMoney(money);
+                itemOrderRefundMapper.updateByPrimaryKeySelective(itemOrderRefund);
                 return;
             }
         }
