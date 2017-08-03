@@ -145,6 +145,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         if (refundInfo == null) {
             refundInfo = refundinfo();
         }
+        if (refundInfo.getRefundState() == state) {
+            return;
+        }
         ItemRefundLog refundLog = new ItemRefundLog();
         refundLog.setRefundId(refundInfo.getRefundId());
         refundLog.setFromStatus(refundInfo.getRefundState().refundStatus);
@@ -275,11 +278,16 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     }
 
     /**
-     * 退成功
+     * 退货成功
      */
     @Override
     public void success() throws PayerException, RefundException {
         doRefundMoney(true);
+    }
+
+
+    public void changeSuccess() {
+        refundStateChangeAndLog(RefundStateEnum.ENT_REFUND);
     }
 
     /**

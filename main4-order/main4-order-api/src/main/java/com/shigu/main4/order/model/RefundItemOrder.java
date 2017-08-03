@@ -92,6 +92,10 @@ public interface RefundItemOrder {
     void success() throws PayerException, RefundException;
 
     /**
+     * 换货成功
+     */
+    void changeSuccess();
+    /**
      * 退失败
      * @param reason
      */

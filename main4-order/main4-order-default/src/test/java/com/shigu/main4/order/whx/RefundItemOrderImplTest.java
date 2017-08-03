@@ -2,6 +2,8 @@ package com.shigu.main4.order.whx;
 
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.RefundApplyBO;
+import com.shigu.main4.order.exceptions.PayerException;
+import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -50,18 +52,18 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sellerCachedTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 70L);
         refundItemOrder.sellerCached();
         //测试重复操作
-        refundItemOrder.sellerCached();
+//        refundItemOrder.sellerCached();
     }
 
     @Test
-    public void errorTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
-        refundItemOrder.error("退件失败");
+    public void errorTest() throws RefundException, PayerException {
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 70L);
+//        refundItemOrder.error("退件失败");
         //测试重复操作
-        refundItemOrder.error("退件失败");
+        refundItemOrder.changeSuccess();
     }
 
     @Test

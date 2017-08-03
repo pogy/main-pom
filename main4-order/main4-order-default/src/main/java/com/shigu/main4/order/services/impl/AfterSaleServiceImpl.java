@@ -196,8 +196,8 @@ public class AfterSaleServiceImpl implements AfterSaleService{
                 afterSaleStatus = ReturnGoodsStatusEnum.EXPRESS_SUBMIT;
                 break;
             case SELLER_CACHED:
-                //TODO: 该状态没有对应
-                throw new IllegalStateException(String.format("该状态没有对应: state[%s]", RefundStateEnum.BUYER_NOREPRICE));
+                afterSaleStatus = ReturnGoodsStatusEnum.EXPRESS_SUBMIT;
+                break;
             case SELLER_REPRICE:
                 afterSaleStatus = ReturnGoodsStatusEnum.REFUND_MONEY_CHANGED;
                 break;
