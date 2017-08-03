@@ -52,9 +52,6 @@ public class ActivityAction {
     private ActiveDrawServiceImpl activeDrawServiceImpl;
 
     @Autowired
-    private ShopForCdnService shopForCdnService;
-
-    @Autowired
     private ShiguActivityMapper shiguActivityMapper;
 
     @Autowired
