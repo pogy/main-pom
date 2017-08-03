@@ -2,20 +2,16 @@ package com.shigu.main4.order.services.impl;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
-import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
-import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
-import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
-import com.shigu.main4.order.model.SubOrder;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.*;
@@ -315,24 +311,27 @@ public class OrderListServiceImpl implements OrderListService {
                         case ONLY_REFUND:
                             vo.setTkNum(refundVO.getNumber());
                             vo.setPreSaleRefundId(refundVO.getRefundId());
-                            vo.setShState(RefundStateEnum.ENT_REFUND.equals(refundVO.getRefundState())?AfterSaleStatusEnum.REFUND_ENT:AfterSaleStatusEnum.DISPOSE_FERUND);
+                            vo.setTkState(refundVO.getRefundState() == RefundStateEnum.APPLY_REFUND ? 1 : refundVO.getRefundState() == RefundStateEnum.ENT_REFUND ? 2 : 3);
                             break;
                         case GOODS_REFUND:
                             vo.setShTkNum(refundVO.getNumber());
                             vo.setAfterSaleRefundId(refundVO.getRefundId());
-                            vo.setShState(RefundStateEnum.ENT_REFUND.equals(refundVO.getRefundState())?AfterSaleStatusEnum.REFUND_ENT:AfterSaleStatusEnum.DISPOSE_FERUND);
+                            vo.setShState(RefundStateEnum.ENT_REFUND == refundVO.getRefundState() ? 2 : RefundStateEnum.NOT_REFUND == refundVO.getRefundState() ? 6 : 4);
                             break;
                         case GOODS_CHANGE:
                             vo.setShTkNum(refundVO.getNumber());
                             vo.setAfterSaleRefundId(refundVO.getRefundId());
-                            vo.setShState(RefundStateEnum.ENT_REFUND.equals(refundVO.getRefundState())?AfterSaleStatusEnum.CHANGE_ENT:AfterSaleStatusEnum.DISPOSE_CHANGE);
+                            vo.setShState(RefundStateEnum.ENT_REFUND == refundVO.getRefundState() ? 3 : RefundStateEnum.NOT_REFUND == refundVO.getRefundState() ? 7 : 5);
                             break;
                     }
                     vo.setRefundNum(vo.getRefundNum() + refundVO.getNumber());
                 }
             }
             if (vo.getShState() == null) {
-                vo.setShState(AfterSaleStatusEnum.NOT_AFTER_SALE);
+                vo.setShState(0);
+            }
+            if (vo.getTkState() == null) {
+                vo.setTkState(0);
             }
             return vo;
         }).collect(Collectors.toList());

@@ -1,8 +1,5 @@
 package com.shigu.main4.order.servicevo;
 
-import com.shigu.main4.order.zfenums.AfterSaleStatusEnum;
-import com.shigu.main4.order.zfenums.RefundStateEnum;
-
 import java.io.Serializable;
 
 /**
@@ -70,11 +67,11 @@ public class SubOrderInfoVO implements Serializable{
     /**
      * 售前(发货前)退款状态
      */
-    private RefundStateEnum tkState;
+    private Integer tkState;
     /**
-     * 售后状态 0无，1售后处理中，2已退款，3已换货, 4退货中, 5换货中
+     * 售后状态 0无，2已退款，3已换货, 4退款中, 5换货中, 6退款拒绝, 7换货拒绝
      */
-    private AfterSaleStatusEnum shState;
+    private Integer shState;
 
     /**
      * 获取 商品ID
@@ -233,28 +230,28 @@ public class SubOrderInfoVO implements Serializable{
     /**
      * 获取 售前(发货前)退款状态
      */
-    public RefundStateEnum getTkState() {
+    public Integer getTkState() {
         return this.tkState;
     }
 
     /**
      * 设置 售前(发货前)退款状态
      */
-    public void setTkState(RefundStateEnum tkState) {
+    public void setTkState(Integer tkState) {
         this.tkState = tkState;
     }
 
     /**
-     * 获取 售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
+     * 获取 售后状态 0无，2已退款，3已换货, 4退款中, 5换货中, 6退款拒绝, 7换货拒绝
      */
-    public AfterSaleStatusEnum getShState() {
+    public Integer getShState() {
         return this.shState;
     }
 
     /**
-     * 设置 售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
+     * 设置 售后状态 0无，2已退款，3已换货, 4退款中, 5换货中, 6退款拒绝, 7换货拒绝
      */
-    public void setShState(AfterSaleStatusEnum shState) {
+    public void setShState(Integer shState) {
         this.shState = shState;
     }
 

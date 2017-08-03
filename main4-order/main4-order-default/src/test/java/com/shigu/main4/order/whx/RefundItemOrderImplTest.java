@@ -26,7 +26,7 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sellerAgreeTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 70L);
         refundItemOrder.sellerAgree();
         //测试重复操作
 //        refundItemOrder.sellerAgree();
@@ -45,7 +45,7 @@ public class RefundItemOrderImplTest extends BaseTest{
         RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.userSended("885782656452802268");
         //测试重复操作
-        refundItemOrder.userSended("885782656452802268");
+//        refundItemOrder.userSended("885782656452802268");
     }
 
     @Test
@@ -92,6 +92,6 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sended(){
-        SpringBeanFactory.getBean(ItemOrder.class, 177L).sended("437039539484");
+        SpringBeanFactory.getBean(ItemOrder.class, 195L).sended("437039539484");
     }
 }

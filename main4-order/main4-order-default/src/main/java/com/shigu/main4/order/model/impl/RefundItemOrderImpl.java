@@ -199,12 +199,11 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void sellerRefuse(String reason) {
-        RefundVO refundinfo = refundinfo();
-        //填充退款日志信息
-        refundinfo.setFailMsg(reason);
-        ItemOrderRefund refund = BeanMapper.map(refundinfo, ItemOrderRefund.class);
+        ItemOrderRefund refund = new ItemOrderRefund();
+        refund.setRefundId(refundId);
+        refund.setFailMsg(reason);
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
-        refundStateChangeAndLog(refundinfo, RefundStateEnum.SELLER_REFUND);
+        refundStateChangeAndLog(RefundStateEnum.SELLER_REFUND);
     }
 
     /**

@@ -70,12 +70,6 @@
             <version>0.10</version>
         </dependency>
         <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-item-update</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.9.1</version>

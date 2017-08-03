@@ -16,7 +16,6 @@ import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.item.services.impl.EsGoodsService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -61,8 +60,8 @@ public class EsGoodsSyncLocalItemFix {
     @Autowired
     private ShiguShopMapper shiguShopMapper;
 
-    @Autowired
-    private EsGoodsService esGoodsService;
+//    @Autowired
+//    private EsGoodsService esGoodsService;
 
     private ElasticRepository repository = new ElasticRepository();
 
@@ -107,8 +106,8 @@ public class EsGoodsSyncLocalItemFix {
                     ShiguGoodsTiny tiny = JSON.parseObject(hit.getSourceAsString(), ShiguGoodsTiny.class);
                     if (tinyGoodsIds.keySet().contains(tiny.getGoodsId())) {
                         ShiguGoodsTiny goodsTiny = tinyGoodsIds.get(tiny.getGoodsId());
-                        ESGoods esGoods = esGoodsService.createEsGoods(goodsTiny);
-                        insert(webSite, esGoods);
+//                        ESGoods esGoods = esGoodsService.createEsGoods(goodsTiny);
+//                        insert(webSite, esGoods);
                     } else {
                         sebs.add(new SimpleElaBean("goods", webSite, hit.getId()));
                     }
@@ -116,8 +115,8 @@ public class EsGoodsSyncLocalItemFix {
                     ShiguGoodsSoldout soldout = JSON.parseObject(hit.getSourceAsString(), ShiguGoodsSoldout.class);
                     if (soldoutGoodsIds.keySet().contains(soldout.getGoodsId())) {
                         ShiguGoodsSoldout goodsSoldout = soldoutGoodsIds.get(soldout.getGoodsId());
-                        ESGoods esGoods = esGoodsService.createEsGoods(goodsSoldout);
-                        insert(webSite, esGoods);
+//                        ESGoods esGoods = esGoodsService.createEsGoods(goodsSoldout);
+//                        insert(webSite, esGoods);
                     } else {
                         sebs.add(new SimpleElaBean("goods", webSite, soldout.getGoodsId() + ""));
                     }
@@ -130,8 +129,8 @@ public class EsGoodsSyncLocalItemFix {
         logger.debug("出售中缺少" + tinLong.size());
         for (Long aLong : tinLong) {
             ShiguGoodsTiny tiny = tinyGoodsIds.get(aLong);
-            ESGoods esGoods = esGoodsService.createEsGoods(tiny);
-            insert(webSite, esGoods);
+//            ESGoods esGoods = esGoodsService.createEsGoods(tiny);
+//            insert(webSite, esGoods);
         }
 
         ArrayList<Long> soldoutLong = new ArrayList<>(soldoutGoodsIds.keySet());
@@ -139,8 +138,8 @@ public class EsGoodsSyncLocalItemFix {
         logger.debug("下架缺少" + soldoutLong.size());
         for (Long aLong : soldoutLong) {
             ShiguGoodsSoldout soldout = soldoutGoodsIds.get(aLong);
-            ESGoods esGoods = esGoodsService.createEsGoods(soldout);
-            insert(webSite, esGoods);
+//            ESGoods esGoods = esGoodsService.createEsGoods(soldout);
+//            insert(webSite, esGoods);
         }
 
     }

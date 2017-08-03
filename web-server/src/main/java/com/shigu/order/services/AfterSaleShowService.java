@@ -249,11 +249,10 @@ public class AfterSaleShowService {
 
         if (express != null && express == 1) {
             ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
-            List<ExpressVo> expressVos = afterSaleService.selectExpress();
             //退货地址修饰
             AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
             //快递列表修饰
-            von = new RefundExpressDetorate(vo5, expressVos);
+            von = new RefundExpressDetorate(vo5, null);
         }
         Map<String, Object> returnmap;
         if (von == null) {

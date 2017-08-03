@@ -4,6 +4,7 @@ import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.services.ItemOrderService;
@@ -154,44 +155,14 @@ public class MyOrderService {
     }
 
     public static List<SubMyOrderVO> toSubMyOrderVO(List<SubOrderInfoVO> list) {
-        List<SubMyOrderVO> subs = new ArrayList<>();
-        for (SubOrderInfoVO so : list) {
-            SubMyOrderVO sub = new SubMyOrderVO();
+        return list.stream().map(so -> {
+            SubMyOrderVO sub = BeanMapper.map(so, SubMyOrderVO.class);
             sub.setChildOrderId(so.getSubOrderId());
-            sub.setColor(so.getColor());
-            sub.setGoodsId(so.getGoodsId());
-            sub.setGoodsNo(so.getGoodsNo());
-            sub.setImgsrc(so.getImgsrc());
-            sub.setNum(so.getNum());
             sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
             sub.setSqRefundId(so.getPreSaleRefundId());
             sub.setShRefundId(so.getAfterSaleRefundId());
-            sub.setShState(so.getShState().afterSaleStatus);
-            sub.setShTkNum(so.getShTkNum());
-            sub.setSize(so.getSize());
-            sub.setTitle(so.getTitle());
-            sub.setTkNum(so.getTkNum());
-            if (so.getTkState() != null) {
-                switch (so.getTkState().refundStatus) {
-                    case 0:
-                    case 1: {
-                        sub.setTkState(1);
-                        break;
-                    }
-                    case 2: {
-                        sub.setTkState(2);
-                        break;
-                    }
-                    default: {
-                        sub.setTkState(3);
-                    }
-                }
-            } else {
-                sub.setTkState(0);
-            }
-            subs.add(sub);
-        }
-        return subs;
+            return sub;
+        }).collect(Collectors.toList());
     }
 
 }

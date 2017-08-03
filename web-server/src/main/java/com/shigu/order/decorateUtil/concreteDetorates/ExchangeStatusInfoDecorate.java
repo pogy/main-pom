@@ -28,7 +28,7 @@ public class ExchangeStatusInfoDecorate extends RefundVoDecorate {
         Map<String, Object> map = new HashMap<>();
         int exchangeStateNum = 0;
         int exchangeWaitState = 0;
-        map.put("refundId", afterSaleStatusVO.getSubOrderId());
+        map.put("subOrderId", afterSaleStatusVO.getSubOrderId());
         map.put("refuseReason", afterSaleStatusVO.getContent());
         switch (afterSaleStatusVO.getAfterSaleStatus()) {
 
