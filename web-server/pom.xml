@@ -26,24 +26,24 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-store-api</artifactId>
-            <version>${main4-store-default.version}</version>
+            <version>${main4-store-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-item-api</artifactId>
-            <version>${main4-item-default.version}</version>
+            <version>${main4-item-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-monitor-api</artifactId>
-            <version>${main4-monitor-default.version}</version>
+            <version>${main4-monitor-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-spread-api</artifactId>
-            <version>${main4-spread-default.version}</version>
+            <version>${main4-spread-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.tb</groupId>
