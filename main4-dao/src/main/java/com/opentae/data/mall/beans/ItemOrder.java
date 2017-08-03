@@ -74,9 +74,14 @@ public class ItemOrder implements Serializable {
 	private Date finishTime;
 
     /**
-     * 
+     * 淘宝单号
      */
 	private String outerId;
+
+	/**
+	 * 是否删除
+	 */
+	private Boolean disenable;
 
 	public void setOid(Long oid) {
 		this.oid = oid;
@@ -190,4 +195,11 @@ public class ItemOrder implements Serializable {
 		return this.outerId;
 	}
 
+	public Boolean getDisenable() {
+		return disenable;
+	}
+
+	public void setDisenable(Boolean disenable) {
+		this.disenable = disenable;
+	}
 }

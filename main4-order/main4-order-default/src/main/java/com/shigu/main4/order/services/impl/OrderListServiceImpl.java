@@ -98,7 +98,7 @@ public class OrderListServiceImpl implements OrderListService {
      */
     @Override
     public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) throws ParseException {
-        ShiguPager<ShowOrderVO> pager = new ShiguPager<ShowOrderVO>();
+        ShiguPager<ShowOrderVO> pager = new ShiguPager<>();
         pager.setContent(myOrder(bo,userId));
         pager.setNumber(bo.getPage());
         pager.calPages(selCountByBo(bo,userId),bo.getPageSize());
@@ -285,19 +285,7 @@ public class OrderListServiceImpl implements OrderListService {
         vo.setIsTbOrder(!(itemOrderVO.getOuterId() == null || itemOrderVO.getOuterId().isEmpty()));
         vo.setPayTime(itemOrderVO.getCreateTime());
         vo.setSendTime(vo.getOrderCreateTimed());
-        //vo.setTradeTimed(itemOrderVO.getCreateTime());
-        //vo.setTradeTime(simpleDateFormat.format(itemOrderVO.getCreateTime()));
-        //vo.setOrderCreateTime(simpleDateFormat.format(itemOrderVO.getCreateTime()));
-        //vo.setTradePayLong(orderDetailTotalVO.getOrderTotalPriceLong());
-        //vo.setTradePay(orderDetailTotalVO.getOrderTotalPrice());
-        //vo.setIsTbOrder(itemOrderVO.getType().type == 2);
-        //vo.setWebSite(itemOrderVO.getWebSite());
-        //vo.setType(itemOrderVO.getType());
-        //vo.setPayedFee(PriceConvertUtils.priceToString(itemOrderVO.getPayedFee()));
-        //vo.setPayedFeeLong(itemOrderVO.getPayedFee());
-        //vo.setTitle(itemOrderVO.getTitle());
-        //vo.setRefundFeeLong(itemOrderVO.getRefundFee());
-        //vo.setRefundFee(PriceConvertUtils.priceToString(itemOrderVO.getRefundFee()));
+        vo.setIsTbOrder(itemOrderVO.getType().type == 2);
         return vo;
     }
 

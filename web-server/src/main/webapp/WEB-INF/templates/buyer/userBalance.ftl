@@ -59,7 +59,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -309,6 +309,8 @@ var webSite = '${webSite!}';
     
     <input type="hidden" class="tempCode" value="${tempCode!}" />
 </div>
+
+
 
 
 
