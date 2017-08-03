@@ -14,6 +14,7 @@ public class ExpressVO {
     private String name;
     private String id;
     private Long createTime;
+    private String code;
     private List<ExpressDetailVO> detail;
 
     public String getName() {
@@ -46,5 +47,13 @@ public class ExpressVO {
 
     public void setCreateTime(Long createTime) {
         this.createTime = createTime;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

@@ -247,13 +247,6 @@ public class AfterSaleShowService {
 
         }
 
-        if (express != null && express == 1) {
-            ReturnableAddressVO returnableAddressVO = afterSaleService.retrunGoodsAddress(refundId);
-            //退货地址修饰
-            AbstractRefundVo vo5 = new ReturnAddressDecorate(vo4, returnableAddressVO);
-            //快递列表修饰
-            von = new RefundExpressDetorate(vo5, null);
-        }
         Map<String, Object> returnmap;
         if (von == null) {
             von = vo4;
@@ -263,11 +256,11 @@ public class AfterSaleShowService {
         //修改快递特殊处理
         if (!StringUtils.isEmpty(express) && express == 1
                 && (returnmap.get("exchangeStateNum") != null && (Integer) returnmap.get("exchangeStateNum") == 2)
-                && (returnmap.get("exchangeWaitState") != null && (Integer) returnmap.get("exchangeWaitState") == 2)
+                && (returnmap.get("exchangeWaitState") != null && (Integer) returnmap.get("exchangeWaitState") == 3)
                 ) {
             returnmap.put("express", express);
-            returnmap.replace("refundStateNum", 2);
-            returnmap.replace("returnState", 1);
+            returnmap.replace("exchangeStateNum", 2);
+            returnmap.replace("exchangeWaitState", 2);
         }
         return returnmap;
     }

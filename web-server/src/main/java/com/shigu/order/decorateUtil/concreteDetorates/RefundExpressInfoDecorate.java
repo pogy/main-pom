@@ -33,7 +33,8 @@ public class RefundExpressInfoDecorate extends RefundVoDecorate {
     private void setRefundExpressInfo(){
         Map<String,Object> map = new HashMap<>();
         ExpressVO vo = new ExpressVO();
-        vo.setId(returnableExpressInfoVO.getExpressCode());
+//        vo.setId(returnableExpressInfoVO.getExpressCode());
+        vo.setCode(returnableExpressInfoVO.getExpressCode());
         vo.setName(returnableExpressInfoVO.getExpressName());
         vo.setCreateTime(returnableExpressInfoVO.getReturnableExpressTime());
         List<ExpressDetailVO> elist= new ArrayList<>();
