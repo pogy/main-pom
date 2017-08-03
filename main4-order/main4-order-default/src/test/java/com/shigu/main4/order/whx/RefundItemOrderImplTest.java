@@ -2,6 +2,7 @@ package com.shigu.main4.order.whx;
 
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.RefundApplyBO;
+import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.After;
@@ -33,7 +34,7 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sellerRefuseTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 57L);
         refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
         //测试重复操作
 //        refundItemOrder.sellerRefuse("测试退款，卖家拒绝");
@@ -87,5 +88,10 @@ public class RefundItemOrderImplTest extends BaseTest{
         refundApplyBO.setHopeMoney(hopeMoney);
         refundApplyBO.setReason(reason);
         return refundApplyBO;
+    }
+
+    @Test
+    public void sended(){
+        SpringBeanFactory.getBean(ItemOrder.class, 177L).sended("437039539484");
     }
 }

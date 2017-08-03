@@ -218,7 +218,7 @@ var webSite = '${webSite!}';
     <div class="gotoBox">
         
 
-<#assign text>{"href":"${main_host!}order/myOrder.html"}</#assign>
+<#assign text>{"href":"${main_host!}order/myOrder.htm"}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 

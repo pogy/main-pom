@@ -73,8 +73,8 @@ public abstract class PayerServiceAble implements PayerService{
         }
         OrderIdGenerator orderId=orderIdGeneratorMapper.selectByPrimaryKey(apply.getOid());
         if (orderId != null&&orderId.getType()>0) {//商品订单
-            ItemOrder order= SpringBeanFactory.getBean(ItemOrder.class,apply.getOid());
-            order.payed();
+            SpringBeanFactory.getBean(ItemOrder.class,apply.getOid())
+                    .payed();
         }
     }
 
