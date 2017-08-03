@@ -27,10 +27,10 @@
         WHERE a.user_id = #{userId}
         AND b.refund_id > 0
         <if test="shStatus == 1">
-            AND ( b.type BETWEEN 1 AND 3 )
+            AND ( b.type BETWEEN 1 AND 2 )
         </if>
         <if test="shStatus == 2">
-            AND b.type = 4
+            AND b.type = 3
         </if>
     </select>
 

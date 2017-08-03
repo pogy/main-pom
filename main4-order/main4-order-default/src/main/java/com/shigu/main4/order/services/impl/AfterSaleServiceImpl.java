@@ -160,7 +160,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public ShStatusEnum queryAfterSaleType(Long refundId) {
-        return SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundinfo().getType() == 4 ? ShStatusEnum.CHANGE : ShStatusEnum.REFUND;
+        return SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundinfo().getType() == 3 ? ShStatusEnum.CHANGE : ShStatusEnum.REFUND;
     }
 
     /**
