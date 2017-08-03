@@ -195,7 +195,7 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a href="${main_host!}order/myTbOrder.htm" >淘宝订单</a></li>
+            <li><a href="${main_host!}order/myTbOrder.htm" target="_blank">淘宝订单</a></li>
             
         
     
