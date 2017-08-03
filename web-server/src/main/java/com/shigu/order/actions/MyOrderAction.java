@@ -6,7 +6,10 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
+import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.main4.order.servicevo.ShowOrderVO;
+import com.shigu.main4.order.vo.OrderDetailExpressVO;
 import com.shigu.order.services.MyOrderService;
 import com.shigu.order.vo.MyOrderDetailVO;
 import com.shigu.order.vo.MyOrderVO;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * @类编号
@@ -40,6 +44,8 @@ public class MyOrderAction {
     @Autowired
     MyOrderService myOrderService;
 
+    @Autowired
+    ItemOrderService itemOrderService;
 
     /**
      * ====================================================================================
@@ -174,6 +180,22 @@ public class MyOrderAction {
         return "trade/orderDetail";
     }
 
+
+    @RequestMapping("expressDetail")
+    public String expressDetail(HttpSession session, Long orderId, Model model) throws Main4Exception, ParseException {
+        if (orderId == null) {
+            model.addAttribute("msg","订单不能为空");
+            return "trade/noOrderInfo";
+        }
+        ExpressInfoVO expressInfoVO = myOrderService.expressInfo(orderId);
+        model.addAttribute("expressStateDesc", Stream.of("1待揽件","2运输", "3派送", "4签收"));
+        model.addAttribute("expressCurrentState",expressInfoVO.getExpressCurrentState()+1);
+        model.addAttribute("expressAddrInfo",myOrderService.expressAddrInfo(orderId));
+        model.addAttribute("expressDetail",myOrderService.expressDetail(orderId).getDetail());
+        model.addAttribute("expressName",expressInfoVO.getExpressName());
+        model.addAttribute("expressCode",expressInfoVO.getExpressId());
+        return "trade/expressDetail";
+    }
 
 
 }

@@ -18,6 +18,6 @@ public class ItemOrderServiceImplTest extends BaseTest {
 
     @Test
     public void expressInfoTest() throws Main4Exception {
-        show(itemOrderService.expressInfo(2L));
+        show(itemOrderService.expressInfo(143L));
     }
 }

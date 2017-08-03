@@ -115,7 +115,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     @Override
     public Long preRefundApply(Long subOrderId, int refundCount, Long refundMoney) throws OrderException {
         return SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
-                .refundApply(1, refundCount, refundMoney, null);
+                .refundApply(1, refundCount, refundMoney, "发起退款申请");
     }
 
 

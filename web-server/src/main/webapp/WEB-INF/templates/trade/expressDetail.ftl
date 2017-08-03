@@ -53,7 +53,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -191,9 +191,9 @@ var webSite = '${webSite!}';
     <div class="exoressStatus">
         <ul>
             <#list expressStateDesc as desc>
-                <#if desc_index lt expressCurrentState >
+                <#if (desc_index+1) lt expressCurrentState >
                 <li class="step${desc_index+1}-done"></li>
-                <#elseif desc_index == expressCurrentState>
+                <#elseif (desc_index+1) == expressCurrentState>
                 <li class="step${desc_index+1}-current"><span class="pa arrow"></span></li>
                 <#else>
                 <li></li>

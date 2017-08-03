@@ -59,7 +59,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -195,7 +195,7 @@ var webSite = '${webSite!}';
     
         
             
-            <li><a href="${main_host!}order/myTbOrder.htm" >淘宝订单</a></li>
+            <li><a href="${main_host!}order/myTbOrder.htm" target="_blank">淘宝订单</a></li>
             
         
     

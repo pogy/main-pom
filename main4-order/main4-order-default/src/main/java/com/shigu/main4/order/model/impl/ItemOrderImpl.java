@@ -281,7 +281,6 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
-    //todo: 服务信息获取
     public List<OrderServiceVO> selServices() {
         ItemOrderService itemOrderService = new ItemOrderService();
         itemOrderService.setOid(oid);
@@ -290,7 +289,15 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public void sended(String courierNumber) {
+        List<LogisticsVO> logisticsVOS = selLogisticses();
+        if (logisticsVOS.size() == 1) {
+            ItemOrderLogistics logistics = new ItemOrderLogistics();
+            logistics.setId(logisticsVOS.get(0).getId());
+            logistics.setCourierNumber(courierNumber);
+            itemOrderLogisticsMapper.updateByPrimaryKeySelective(logistics);
+        }
 
+        changeStatus(OrderStatus.SELLER_SENDED_GOODS);
     }
 
     @Override

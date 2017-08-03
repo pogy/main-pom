@@ -335,7 +335,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
                         state = 4;
                         break;
                     default:
-                        state = 1;
+                        state = 0;
                         break;
                 }
             }

@@ -53,7 +53,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -218,7 +218,7 @@ var webSite = '${webSite!}';
     <div class="gotoBox">
         
 
-<#assign text>{"href":"${main_host!}order/myOrder.html"}</#assign>
+<#assign text>{"href":"${main_host!}order/myOrder.htm"}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 

@@ -4,8 +4,8 @@ package com.shigu.main4.order.zfenums;
  * Created by zf on 2017/7/17.
  */
 public enum UserTypeEnum {
-    BUYER(0),
-    CUSTOM_SERVICE(1),
+    CUSTOM_SERVICE(0),
+    BUYER(1),
     ;
 
     public final int type;

@@ -82,7 +82,7 @@ public class OrderListServiceImplTest extends BaseTest {
     @Test
     public void selectExpressTest() {
         try {
-            show(orderListService.selectExpress(2L));
+            show(orderListService.selectExpress(143L));
         } catch (Main4Exception e) {
             e.printStackTrace();
         } catch (ParseException e) {
