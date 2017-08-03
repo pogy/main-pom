@@ -53,12 +53,6 @@ public class OrderListServiceImpl implements OrderListService {
     private ItemOrderMapper itemOrderMapper;
 
     @Autowired
-    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
-
-    @Autowired
-    private ItemOrderSubMapper itemOrderSubMapper;
-
-    @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -80,7 +74,6 @@ public class OrderListServiceImpl implements OrderListService {
         for (Long orderId:orderIds) {
             ShowOrderVO vo = BeanMapper.map(selectMyorder(orderId), ShowOrderVO.class);
             vo.setChildOrders(selectSubList(orderId));
-            //todo:ShowOrderDetailVO缺少部分信息
             showOrderVOS.add(vo);
         }
         return showOrderVOS;
@@ -128,10 +121,10 @@ public class OrderListServiceImpl implements OrderListService {
             if (shStatus != null) {
                 switch (shStatus) {
                     case CHANGE:
-                        criteria.andTypeEqualTo(4);
+                        criteria.andTypeEqualTo(3);
                         break;
                     case REFUND:
-                        criteria.andTypeBetween(1,3);
+                        criteria.andTypeBetween(1,2);
                         break;
                 }
             }
