@@ -1,6 +1,7 @@
 package com.shigu.main4.order.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @类编号
@@ -20,9 +21,13 @@ public class OrderDetailExpressDetailVO implements Serializable{
 
     private String date;//快递信息日期
 
-    private String time;//快递信息时间
+    private String week;//周几
 
-    private String desc;//快递信息描述
+    private List<ExpressDetailTimeAndDescVO> detailList;
+
+    //private String time;//快递信息时间
+    //
+    //private String desc;//快递信息描述
 
     public Long getOrderId () {
         return orderId;
@@ -48,19 +53,35 @@ public class OrderDetailExpressDetailVO implements Serializable{
         this.date = date;
     }
 
-    public String getTime () {
-        return time;
+    //public String getTime () {
+    //    return time;
+    //}
+    //
+    //public void setTime (String time) {
+    //    this.time = time;
+    //}
+    //
+    //public String getDesc () {
+    //    return desc;
+    //}
+    //
+    //public void setDesc (String desc) {
+    //    this.desc = desc;
+    //}
+
+    public String getWeek() {
+        return week;
     }
 
-    public void setTime (String time) {
-        this.time = time;
+    public void setWeek(String week) {
+        this.week = week;
     }
 
-    public String getDesc () {
-        return desc;
+    public List<ExpressDetailTimeAndDescVO> getDetailList() {
+        return detailList;
     }
 
-    public void setDesc (String desc) {
-        this.desc = desc;
+    public void setDetailList(List<ExpressDetailTimeAndDescVO> detailList) {
+        this.detailList = detailList;
     }
 }
