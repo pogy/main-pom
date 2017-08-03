@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @类编号
@@ -44,114 +45,106 @@ public class MyOrderService {
     @Autowired
     private ItemOrderMapper itemOrderMapper;
 
-
-    public List<MyOrderVO> myOrder(OrderBO bo, Long userId) throws ParseException {
-        List<ShowOrderVO> list=orderListService.myOrder (bo,userId);
-        List<MyOrderVO> vos=new ArrayList<>();
-
-        for(ShowOrderVO show:list){
-            MyOrderVO vo=new MyOrderVO();
+    public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
+        ShiguPager<MyOrderVO> pager = new ShiguPager<>();
+        ShiguPager<ShowOrderVO> myOrder = orderListService.selectCountMyOrder(bo, userId);
+        pager.setNumber(myOrder.getNumber());
+        pager.calPages(myOrder.getTotalCount(), bo.getPageSize());
+        pager.setContent(myOrder.getContent().stream().map(show -> {
+            MyOrderVO vo = new MyOrderVO();
             vo.setIsTbOrder(show.getIsTbOrder());
             vo.setMainState(show.getMainState().status);
             vo.setOrderId(show.getOrderId());
-            vo.setPostPay(PriceConvertUtils.priceToString (show.getPostPrice()));
+            vo.setPostPay(PriceConvertUtils.priceToString(show.getPostPrice()));
             vo.setServerPay(PriceConvertUtils.priceToString(show.getServerPrice()));
-            if(show.getPostPrice ()==null){
-                show.setPostPrice (0L);
+            if (show.getPostPrice() == null) {
+                show.setPostPrice(0L);
             }
-            if(show.getServerPrice ()==null){
-                show.setServerPrice (0L);
+            if (show.getServerPrice() == null) {
+                show.setServerPrice(0L);
             }
-            if(show.getOrderPrice ()==null){
-                show.setOrderPrice (0L);
+            if (show.getOrderPrice() == null) {
+                show.setOrderPrice(0L);
             }
-            vo.setTradePay(PriceConvertUtils.priceToString(show.getServerPrice()+show.getOrderPrice()+show.getPostPrice()));
-            vo.setTradeTime(DateUtil.dateToString(show.getPayTime(),DateUtil.patternD));
+            vo.setTradePay(PriceConvertUtils.priceToString(show.getServerPrice() + show.getOrderPrice() + show.getPostPrice()));
+            vo.setTradeTime(DateUtil.dateToString(show.getPayTime(), DateUtil.patternD));
             vo.setWebSite(show.getWebSite());
-            List<SubMyOrderVO> subs=toSubMyOrderVO(show.getChildOrders());
+            List<SubMyOrderVO> subs = toSubMyOrderVO(show.getChildOrders());
             vo.setChildOrders(subs);
-            vos.add(vo);
-        }
-        return vos;
+            return vo;
+        }).collect(Collectors.toList()));
+        return pager;
     }
-    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) throws ParseException {
 
-        return orderListService.selectCountMyOrder (bo,userId);
+    public boolean orderBelongTo(Long orderId, Long userId) {
+        ItemOrder iorder = itemOrderMapper.selectByPrimaryKey(orderId);
+        return iorder != null && userId.equals(iorder.getUserId());
     }
-    public boolean orderFlag(Long orderId,Long userId){
-        boolean flag=false;
-        ItemOrder iorder=  itemOrderMapper.selectByPrimaryKey (orderId);
 
-        if(iorder!=null && userId.equals (iorder.getUserId ())){
-            flag=true;
-        }
+    public int removeOrder(Long orderId) {
+        return orderListService.removeOrder(orderId);
+    }
 
-        return flag;
-    }
-    public int removeOrder(Long orderId){
-        return orderListService.removeOrder (orderId);
-    }
-    public int cancelOrder(Long orderId){
-        return orderListService.cancelOrder (orderId);
+    public int cancelOrder(Long orderId) {
+        return orderListService.cancelOrder(orderId);
     }
 
 
     public MyOrderDetailVO orderDetail(Long orderId) throws Main4Exception, ParseException {
-        ShowOrderDetailVO orderVO= orderListService.selectMyorder (orderId);
-        OrderAddrInfoVO addrVo= orderListService.selectOrderAddrInfo( orderId);
-        OrderDetailExpressVO expressVO= orderListService.selectExpress( orderId);
+        ShowOrderDetailVO orderVO = orderListService.selectMyorder(orderId);
+        OrderAddrInfoVO addrVo = orderListService.selectOrderAddrInfo(orderId);
+        OrderDetailExpressVO expressVO = orderListService.selectExpress(orderId);
 
-        List<SubOrderInfoVO> list=orderListService.selectSubList( orderId);
-        List<SubMyOrderVO> subs=toSubMyOrderVO(list);
-        MyOrderDetailVO vo=new MyOrderDetailVO();
-        vo.setChildOrders (subs);
+        List<SubOrderInfoVO> list = orderListService.selectSubList(orderId);
+        List<SubMyOrderVO> subs = toSubMyOrderVO(list);
+        MyOrderDetailVO vo = new MyOrderDetailVO();
+        vo.setChildOrders(subs);
 
-        OrderDetailTotalVO totalVO= orderListService.selectTotal( orderId);
-        totalVO.setServicePrice (PriceConvertUtils.priceToString (totalVO.getServicePriceLong()));
-        totalVO.setOrderTotalPrice (PriceConvertUtils.priceToString (totalVO.getOrderTotalPriceLong()));
-        totalVO.setExpressPrice (PriceConvertUtils.priceToString (totalVO.getExpressPriceLong()));
-        totalVO.setChildOrdersPrice (PriceConvertUtils.priceToString (totalVO.getChildOrdersPriceLong()));
+        OrderDetailTotalVO totalVO = orderListService.selectTotal(orderId);
+        totalVO.setServicePrice(PriceConvertUtils.priceToString(totalVO.getServicePriceLong()));
+        totalVO.setOrderTotalPrice(PriceConvertUtils.priceToString(totalVO.getOrderTotalPriceLong()));
+        totalVO.setExpressPrice(PriceConvertUtils.priceToString(totalVO.getExpressPriceLong()));
+        totalVO.setChildOrdersPrice(PriceConvertUtils.priceToString(totalVO.getChildOrdersPriceLong()));
 
 
-
-        vo.setExpress (expressVO);
-        vo.setOrderAddrInfo (addrVo);
-        vo.setTotal (totalVO);
-        if(orderVO.getOrderCreateTimed ()!=null) {
-            vo.setOrderCreateTime (orderVO.getOrderCreateTimed ().getTime ());
+        vo.setExpress(expressVO);
+        vo.setOrderAddrInfo(addrVo);
+        vo.setTotal(totalVO);
+        if (orderVO.getOrderCreateTimed() != null) {
+            vo.setOrderCreateTime(orderVO.getOrderCreateTimed().getTime());
         }
-        vo.setOrderId (orderId);
-        if(orderVO.getPayTime ()!=null) {
-            vo.setOrderDealTime (DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getPayTime ()));
+        vo.setOrderId(orderId);
+        if (orderVO.getPayTime() != null) {
+            vo.setOrderDealTime(DateParseUtil.parseDate("YYYY-MM-dd HH:mm:ss", orderVO.getPayTime()));
         }
-        vo.setOrderStateNum (orderVO.getMainState ().status);
-        String[] orderStateText={"提交订单", "买家付款", "商品发货", "交易完成"};
-        vo.setOrderStateText (orderStateText);
+        vo.setOrderStateNum(orderVO.getMainState().status);
+        String[] orderStateText = {"提交订单", "买家付款", "商品发货", "交易完成"};
+        vo.setOrderStateText(orderStateText);
         //
 
-        String[] orderStatusTIme=new String[4];
-        if(orderVO.getOrderCreateTimed ()!=null){
-            orderStatusTIme[0]=DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getOrderCreateTimed ());
+        String[] orderStatusTIme = new String[4];
+        if (orderVO.getOrderCreateTimed() != null) {
+            orderStatusTIme[0] = DateParseUtil.parseDate("YYYY-MM-dd HH:mm:ss", orderVO.getOrderCreateTimed());
 
         }
-        if(vo.getOrderDealTime ()!=null){
-            orderStatusTIme[1]=vo.getOrderDealTime ();
+        if (vo.getOrderDealTime() != null) {
+            orderStatusTIme[1] = vo.getOrderDealTime();
         }
-        if(orderVO.getSendTime()!=null){
-            orderStatusTIme[2]=DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getSendTime());
+        if (orderVO.getSendTime() != null) {
+            orderStatusTIme[2] = DateParseUtil.parseDate("YYYY-MM-dd HH:mm:ss", orderVO.getSendTime());
         }
-        if(orderVO.getFinishTimed ()!=null){
-            orderStatusTIme[3]=DateParseUtil.parseDate ("YYYY-MM-dd HH:mm:ss",orderVO.getFinishTimed ());
+        if (orderVO.getFinishTimed() != null) {
+            orderStatusTIme[3] = DateParseUtil.parseDate("YYYY-MM-dd HH:mm:ss", orderVO.getFinishTimed());
         }
 
-        vo.setOrderStateTime (orderStatusTIme);
+        vo.setOrderStateTime(orderStatusTIme);
         return vo;
     }
 
-    public static List<SubMyOrderVO> toSubMyOrderVO(List<SubOrderInfoVO> list){
-        List<SubMyOrderVO> subs=new ArrayList<>();
-        for(SubOrderInfoVO so:list){
-            SubMyOrderVO sub=new SubMyOrderVO();
+    public static List<SubMyOrderVO> toSubMyOrderVO(List<SubOrderInfoVO> list) {
+        List<SubMyOrderVO> subs = new ArrayList<>();
+        for (SubOrderInfoVO so : list) {
+            SubMyOrderVO sub = new SubMyOrderVO();
             sub.setChildOrderId(so.getSubOrderId());
             sub.setColor(so.getColor());
             sub.setGoodsId(so.getGoodsId());
@@ -166,21 +159,22 @@ public class MyOrderService {
             sub.setSize(so.getSize());
             sub.setTitle(so.getTitle());
             sub.setTkNum(so.getTkNum());
-            if(so.getTkState()!=null){
-                switch (so.getTkState().refundStatus){
-                    case 0:case 1:{
+            if (so.getTkState() != null) {
+                switch (so.getTkState().refundStatus) {
+                    case 0:
+                    case 1: {
                         sub.setTkState(1);
                         break;
                     }
-                    case 2:{
+                    case 2: {
                         sub.setTkState(2);
                         break;
                     }
-                    default:{
+                    default: {
                         sub.setTkState(3);
                     }
                 }
-            }else{
+            } else {
                 sub.setTkState(0);
             }
             subs.add(sub);
