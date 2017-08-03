@@ -525,7 +525,7 @@ var webSite = '${webSite!}';
         <li class="num fs14 borderBot">${childOrder.num!}</li>
         <li class="profits fcF40 fs16 borderLe">
             <#if childOrder_index == 0>
-            +${order.profits!}
+            ${order.profits!}
             </#if>
         </li>
         <li class="opera borderLe">
