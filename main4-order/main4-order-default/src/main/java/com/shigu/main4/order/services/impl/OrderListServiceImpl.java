@@ -14,6 +14,8 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.model.ItemOrder;
+import com.shigu.main4.order.model.SubItemOrder;
+import com.shigu.main4.order.model.SubOrder;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.*;
@@ -236,19 +238,27 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setName(expressInfoVO.getExpressName());
             vo.setId(expressId);
             ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
-            List<OrderDetailExpressDetailVO> detailVOS = Lists.newArrayList();
+            List<OrderDetailExpressDetailVO> detailVOS = null;
             if (orderModel.selLogisticses().size()>0) {
-                for (ExpressLogVO expressLogVO:itemOrderService.expressLog(orderModel.selLogisticses().get(0).getId())){
+                List<ExpressLogVO> expressLogVOS = itemOrderService.expressLog(orderModel.selLogisticses().get(0).getId());
+                Map<String, List<ExpressLogVO>> dateExpressMap = expressLogVOS.stream().collect(Collectors.groupingBy(ExpressLogVO::getLogDate));
+                detailVOS = dateExpressMap.keySet().stream().map(date -> {
                     OrderDetailExpressDetailVO detailVO = new OrderDetailExpressDetailVO();
-                    detailVO.setId(expressId);
                     detailVO.setOrderId(orderId);
-                    detailVO.setDate(expressLogVO.getLogDate());
-                    detailVO.setTime(expressLogVO.getLogTime());
-                    detailVO.setDesc(expressLogVO.getLogDesc());
-                    detailVOS.add(detailVO);
-                }
+                    detailVO.setId(expressId);
+                    detailVO.setDate(date);
+                    detailVO.setWeek(dateExpressMap.get(date).get(0).getLogWeek());
+                    detailVO.setDetailList(dateExpressMap.get(date).stream().map(log -> {
+                        ExpressDetailTimeAndDescVO timeAndDescVO = new ExpressDetailTimeAndDescVO();
+                        timeAndDescVO.setTime(log.getLogTime());
+                        timeAndDescVO.setDesc(log.getLogDesc());
+                        return timeAndDescVO;
+                    }).collect(Collectors.toList()));
+                    return detailVO;
+                }).collect(Collectors.toList());
+
             }
-            vo.setDetail(detailVOS);
+            vo.setDetail(detailVOS==null?new ArrayList<>():detailVOS);
         }
         return vo;
     }
@@ -349,6 +359,21 @@ public class OrderListServiceImpl implements OrderListService {
             });
             subOrderInfoVOS.add(vo);
         });
+
+        ItemOrder orderModel = SpringBeanFactory.getBean(ItemOrder.class, orderId);
+        List<SubItemOrderVO> subItemOrderVOS = orderModel.subOrdersInfo();
+        subItemOrderVOS.stream().map(o->{
+            SubOrderInfoVO vo = BeanMapper.map(o,SubOrderInfoVO.class);
+            vo.setOrderId(o.getOid());
+            vo.setSubOrderId(o.getSoid());
+            vo.setImgsrc(o.getProduct().getPicUrl());
+            SubItemOrder subOrderModel = SpringBeanFactory.getBean(SubItemOrder.class, o.getSoid());
+            //RefundVO refundVO1 = subOrderModel.refundInfos();
+            //RefundVO refundVO2 = subOrderModel.refundInfos();
+            //RefundVO refundVO3 = subOrderModel.refundInfos();
+
+            return vo;
+        }).collect(Collectors.toList());
         return subOrderInfoVOS;
     }
 

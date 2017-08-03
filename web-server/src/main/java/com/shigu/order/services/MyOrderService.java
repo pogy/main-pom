@@ -6,11 +6,9 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.bo.OrderBO;
+import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
-import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
-import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
-import com.shigu.main4.order.servicevo.ShowOrderVO;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
+import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
@@ -41,6 +39,9 @@ import java.util.stream.Collectors;
 public class MyOrderService {
     @Autowired
     OrderListService orderListService;
+
+    @Autowired
+    ItemOrderService itemOrderService;
 
     @Autowired
     private ItemOrderMapper itemOrderMapper;
@@ -89,6 +90,17 @@ public class MyOrderService {
         return orderListService.cancelOrder(orderId);
     }
 
+    public OrderDetailExpressVO expressDetail(Long orderId) throws Main4Exception, ParseException {
+        return orderListService.selectExpress(orderId);
+    }
+
+    public OrderAddrInfoVO expressAddrInfo(Long orderId) {
+        return orderListService.selectOrderAddrInfo(orderId);
+    }
+
+    public ExpressInfoVO expressInfo(Long orderId) throws Main4Exception {
+        return itemOrderService.expressInfo(orderId);
+    }
 
     public MyOrderDetailVO orderDetail(Long orderId) throws Main4Exception, ParseException {
         ShowOrderDetailVO orderVO = orderListService.selectMyorder(orderId);
@@ -181,4 +193,5 @@ public class MyOrderService {
         }
         return subs;
     }
+
 }

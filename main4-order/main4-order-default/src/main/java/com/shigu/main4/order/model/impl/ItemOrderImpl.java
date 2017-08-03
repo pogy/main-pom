@@ -281,7 +281,6 @@ public class ItemOrderImpl implements ItemOrder {
     }
 
     @Override
-    //todo: 服务信息获取
     public List<OrderServiceVO> selServices() {
         ItemOrderService itemOrderService = new ItemOrderService();
         itemOrderService.setOid(oid);
