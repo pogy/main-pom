@@ -108,8 +108,6 @@ public class OrderListServiceImpl implements OrderListService {
         Integer startRow = (page - 1) * pageSize;
         ShiguPager<ShowOrderVO> pager = new ShiguPager<>();
         List<ShowOrderVO> showVOS = Lists.newArrayList();
-        ItemOrderExample example = new ItemOrderExample();
-        example.createCriteria().andUserIdEqualTo(userId).andOrderStatusLessThan(5);
         List<Long> oids = itemOrderMapper.selShOidsByUserId(userId,shStatus==null?null:shStatus.shStatus,startRow,pageSize);
         if (oids.size()>0) {
             ItemOrderRefundExample refundExample = new ItemOrderRefundExample();

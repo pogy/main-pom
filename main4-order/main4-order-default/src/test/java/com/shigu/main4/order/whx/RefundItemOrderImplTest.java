@@ -28,7 +28,7 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sellerAgreeTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 70L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 72L);
         refundItemOrder.sellerAgree();
         //测试重复操作
 //        refundItemOrder.sellerAgree();
@@ -52,26 +52,26 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sellerCachedTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 70L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 72L);
         refundItemOrder.sellerCached();
         //测试重复操作
-//        refundItemOrder.sellerCached();
+        //refundItemOrder.sellerCached();
     }
 
     @Test
     public void errorTest() throws RefundException, PayerException {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 70L);
-//        refundItemOrder.error("退件失败");
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 72L);
+        //refundItemOrder.error("退件失败");
         //测试重复操作
-        refundItemOrder.changeSuccess();
+        refundItemOrder.success();
     }
 
     @Test
     public void sellerProposalTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
-        refundItemOrder.sellerProposal(200L,"测试参数");
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 78L);
+        refundItemOrder.sellerProposal(3100L,"测试参数");
         //测试重复操作
-        refundItemOrder.sellerProposal(200L,"测试参数");
+        //refundItemOrder.sellerProposal(200L,"测试参数");
     }
 
     @Test
@@ -92,8 +92,10 @@ public class RefundItemOrderImplTest extends BaseTest{
         return refundApplyBO;
     }
 
+
+
     @Test
     public void sended(){
-        SpringBeanFactory.getBean(ItemOrder.class, 195L).sended("437039539484");
+        SpringBeanFactory.getBean(ItemOrder.class, 201L).sended("437039539484");
     }
 }
