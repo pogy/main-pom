@@ -311,6 +311,8 @@ public class OrderListServiceImpl implements OrderListService {
             vo.setImgsrc(product.getPicUrl());
             vo.setTitle(product.getTitle());
             vo.setRefundNum(0);
+            vo.setTkNum(0);
+            vo.setShTkNum(0);
             SubItemOrder subOrderModel = SpringBeanFactory.getBean(SubItemOrder.class, o.getSoid());
             for (RefundTypeEnum refundType:RefundTypeEnum.values()) {
                 RefundVO refundVO = subOrderModel.refundInfos(refundType);
