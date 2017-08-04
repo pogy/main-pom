@@ -6,8 +6,6 @@ import com.opentae.data.mall.beans.GoodsCountForsearch;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
-import java.util.List;
-
 /**
  * 
  * Created by exampleCreater.
