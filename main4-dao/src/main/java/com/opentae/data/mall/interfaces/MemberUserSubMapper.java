@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 import java.util.List;
 
 /**
- * 
+ *
  * Created by exampleCreater.
  */
 @MyBatisRepository("tae_mall_memberUserSubMapper")
@@ -18,5 +18,10 @@ import java.util.List;
 @Lazy(true)
 public interface MemberUserSubMapper extends Mapper<MemberUserSub> {
 
+    /** 根据分组[username]查询用户子账户信息 */
+    List<MemberUserSub> selectUserSubListByUserName(@Param("userId") Long userId, @Param("startRows") int startRows,
+                                                    @Param("pageSize") int pageSize);
 
+    /** 生成子账号信息 */
+    int delSubUserById(@Param("subUserId") Long subUserId, @Param("userId") Long userId);
 }
