@@ -4,11 +4,13 @@ import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * 数据包关联
  * Created by zhaohongbo on 17/7/31.
  */
+@Service
 public class ItemPicRelationServiceImpl implements ItemPicRelationService{
 
     @Autowired

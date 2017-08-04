@@ -6,8 +6,6 @@ import com.opentae.data.mall.examples.MemberLicenseExample;
 import com.opentae.data.mall.examples.MemberUserExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.interfaces.*;
-import com.shigu.component.shiro.enums.CacheEnum;
-import com.shigu.component.shiro.enums.UserType;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
@@ -20,10 +18,6 @@ import com.shigu.session.main4.enums.LoginFromType;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.session.main4.tool.BeanMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
-import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +41,6 @@ public class UserBaseServiceImpl implements UserBaseService {
     MemberUserMapper memberUserMapper;
     @Resource(name = "tae_mall_memberUserSubMapper")
     MemberUserSubMapper memberUserSubMapper;
-    @Autowired
-    EhCacheManager ehCacheManager;
     @Autowired
     MemberLicenseMapper memberLicenseMapper;
 
@@ -219,17 +211,6 @@ public class UserBaseServiceImpl implements UserBaseService {
         // 1、增量更新表member_user
         int i = memberUserMapper.updateByPrimaryKeySelective(user);
 
-        //2、重取本用户登陆缓存
-        //      a.清除cache名memberuserCache，其中memberuserCache的key为userName_登陆方式标志
-        Session session = SecurityUtils.getSubject().getSession();
-        PersonalSession sessionUser = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-
-        Cache<Object, Object> cache = ehCacheManager.getCache(CacheEnum.MEMBERUSER_CACHE.getValue());
-        cache.remove(sessionUser.getLoginName() + "_" + sessionUser.getLoginFromType().getValue());
-
-        //      b.重取登陆对象，更新session中的session_user对象，
-        PersonalSession ps = selUserForSessionByUserName(sessionUser.getLoginName(), sessionUser.getLoginFromType());
-        session.setAttribute(SessionEnum.LOGIN_SESSION_USER.getValue(), ps);
         return i;
     }
 

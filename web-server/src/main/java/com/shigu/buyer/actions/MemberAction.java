@@ -4,7 +4,6 @@ import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.*;
-import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -36,6 +35,7 @@ import com.shigu.tools.DateParseUtil;
 import com.shigu.tools.EmailUtil;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.XzSdkClient;
+import com.shigu.utils.EncryptUtil;
 import com.utils.publics.Opt3Des;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -517,7 +517,7 @@ public class MemberAction {
             UserInfoUpdate userInfoUpdate=new UserInfoUpdate();
             userInfoUpdate.setUserId(ps.getUserId());
             userInfoUpdate.setHeadUrl(url);
-            userBaseService.updateUserInfo(userInfoUpdate);
+            memberSimpleService.updateUser(userInfoUpdate);
         } catch (IOException e) {
             throw new JsonErrException("图片数据读取失败");
         } catch (UpdateUserInfoException e) {
