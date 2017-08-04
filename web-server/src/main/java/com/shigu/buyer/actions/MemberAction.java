@@ -828,4 +828,15 @@ public class MemberAction {
     public JSONObject jsonUserCentergetUpStore(){
         return JsonResponseUtil.success();
     }
+
+    @RequestMapping("member/userBalance")
+    public String userBalance(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String tempCode = paySdkClientService.tempcode(ps.getUserId());
+        model.addAttribute("tempCode", tempCode);
+        model.addAttribute("webSite", "hz");
+        model.addAttribute("excelUrl", "");
+        return "buyer/userBalance";
+    }
+
 }
