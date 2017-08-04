@@ -88,7 +88,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -990,6 +990,8 @@ var piPrice = '${goodsInfo.piPrice!}';
 
                 <li class="imgDownload" id="picDownload"><b xzclick="imgDownload"><i class="ii"></i><span>图片下载</span></b></li>
                 <li class="copyCode" id="copyCodeBtn">
+                    <script src="http://style.571xz.com/v2/xz/js/clipboard/jquery.zeroclipboard.min.js"></script>
+
                     <b><i class="ii"></i><span>复制详情HTML代码</span></b>
                 </li>
         </ul>
@@ -1037,8 +1039,6 @@ var piPrice = '${goodsInfo.piPrice!}';
 
 
 
-
-<script src="http://style.571xz.com/v2/xz/js/clipboard/ZeroClipboard.js"></script>
 
 
             </div>
