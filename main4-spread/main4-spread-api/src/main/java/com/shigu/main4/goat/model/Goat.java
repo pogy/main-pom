@@ -1,4 +1,4 @@
-package com.shigu.main4.goat.service;
+package com.shigu.main4.goat.model;
 
 import com.shigu.main4.goat.exceptions.GoatException;
 

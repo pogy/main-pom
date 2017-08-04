@@ -42,7 +42,7 @@ import java.util.*;
  * @version domwiki 4.0.0
  * @since domwiki 4.0.0
  */
-@Service
+@Service("userCollectService")
 public class UserCollectServiceImpl implements UserCollectService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserCollectServiceImpl.class);

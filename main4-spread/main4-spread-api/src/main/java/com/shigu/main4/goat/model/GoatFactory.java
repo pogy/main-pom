@@ -1,7 +1,8 @@
-package com.shigu.main4.goat.service;
+package com.shigu.main4.goat.model;
 
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.exceptions.GoatException;
+import com.shigu.main4.goat.model.Goat;
 import com.shigu.main4.goat.vo.GoatLocationVO;
 import com.shigu.main4.goat.vo.GoatVO;
 

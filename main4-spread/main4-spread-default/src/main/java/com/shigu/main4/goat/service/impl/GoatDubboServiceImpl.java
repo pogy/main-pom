@@ -1,15 +1,15 @@
 package com.shigu.main4.goat.service.impl;
 
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.service.ActivityFactory;
+import com.shigu.main4.activity.model.ActivityFactory;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.beans.ItemGoat;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
-import com.shigu.main4.goat.service.Goat;
+import com.shigu.main4.goat.model.Goat;
 import com.shigu.main4.goat.service.GoatDubboService;
-import com.shigu.main4.goat.service.GoatFactory;
+import com.shigu.main4.goat.model.GoatFactory;
 import com.shigu.main4.goat.vo.GoatIntermVO;
 import com.shigu.main4.goat.vo.GoatVO;
 import com.shigu.main4.goat.vo.ItemUpVO;

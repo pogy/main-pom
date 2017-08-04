@@ -19,17 +19,15 @@ import com.shigu.main4.activity.beans.GoatActivity;
 import com.shigu.main4.activity.beans.LedActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.service.Activity;
-import com.shigu.main4.activity.service.ActivityFactory;
+import com.shigu.main4.activity.model.Activity;
+import com.shigu.main4.activity.model.ActivityFactory;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
-import com.shigu.main4.activity.vo.GoatSimpleVO;
 import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**

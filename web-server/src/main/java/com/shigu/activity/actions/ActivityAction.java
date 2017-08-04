@@ -11,7 +11,7 @@ import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
-import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
+import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
@@ -49,7 +49,7 @@ public class ActivityAction {
     private ActivityService activityService;
 
     @Autowired
-    private ActiveDrawServiceImpl activeDrawServiceImpl;
+    private ActiveDrawService activeDrawServiceImpl;
 
     @Autowired
     private ShiguActivityMapper shiguActivityMapper;

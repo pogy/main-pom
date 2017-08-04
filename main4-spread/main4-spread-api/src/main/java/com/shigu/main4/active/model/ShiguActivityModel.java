@@ -1,4 +1,4 @@
-package com.shigu.main4.active.services;
+package com.shigu.main4.active.model;
 
 import com.shigu.main4.active.vo.ShiguActivityApplyVO;
 import com.shigu.main4.active.vo.ShiguActivityVO;
@@ -11,7 +11,7 @@ import java.util.List;
  * 本服务采用多例，使用 spring 管理，\n由 SpringBeanFactory 创建新实例，\n单构造单参数 activityId
  * Created by bugzy on 2017/6/30 0030.
  */
-public interface ShiguActivityService {
+public interface ShiguActivityModel {
 
     /**
      * 当前活动详情

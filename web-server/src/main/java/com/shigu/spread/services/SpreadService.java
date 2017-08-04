@@ -2,11 +2,9 @@ package com.shigu.spread.services;
 
 import com.opentae.data.mall.beans.ItemForList;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.exceptions.GoatException;
-import com.shigu.main4.goat.service.GoatFactory;
-import com.shigu.main4.goat.vo.GoatVO;
+import com.shigu.main4.goat.model.GoatFactory;
 import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.spread.enums.SpreadEnum;
@@ -16,7 +14,6 @@ import com.shigu.spread.vo.ItemSpreadVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

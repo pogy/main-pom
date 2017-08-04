@@ -1,9 +1,9 @@
-package com.shigu.main4.active.services.impl;
+package com.shigu.main4.active.model;
 
 import com.opentae.data.mall.beans.ShiguActivityApply;
 import com.opentae.data.mall.interfaces.ShiguActivityApplyMapper;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
-import com.shigu.main4.active.services.ShiguActivityService;
+import com.shigu.main4.active.model.ShiguActivityModel;
 import com.shigu.main4.active.vo.ShiguActivityApplyVO;
 import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.activity.exceptions.ActivityException;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Service("shiguActivityService")
 @Scope("prototype")
-public class ShiguActivityServiceImpl implements ShiguActivityService {
+public class ShiguActivityServiceImpl implements ShiguActivityModel {
 
     @Autowired
     private ShiguActivityMapper shiguActivityMapper;

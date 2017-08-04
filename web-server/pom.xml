@@ -450,6 +450,18 @@
             <version>2.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-tools</artifactId>
+            <version>${main4-tools.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-api</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>

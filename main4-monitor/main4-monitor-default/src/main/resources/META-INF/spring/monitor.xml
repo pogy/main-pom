@@ -20,15 +20,11 @@
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <bean id="openSearch" class="com.shigu.opensearchsdk.OpenSearch">
-        <constructor-arg index="0" value="${accesskey}"/>
-        <constructor-arg index="1" value="${secret}"/>
-        <constructor-arg index="2" value="${host}"/>
-    </bean>
-
-    <dubbo:service interface="com.shigu.main4.active.process.ShiguActivityProcess" ref="shiguActivityProcess" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.activity.service.ActivityDubboService" ref="activityDubboService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.goat.service.GoatDubboService" ref="goatDubboService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.spread.service.ActiveDrawService" ref="activeDrawService" timeout="20000" />
-
+    <dubbo:service interface="com.shigu.main4.monitor.services.BrowerMonitorService" ref="browerMonitorService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.BulkFromRedisService" ref="bulkFromRedisService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.ItemBrowerFixService" ref="itemBrowerFixService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.ItemBrowerService" ref="itemBrowerService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.ItemUpRecordService" ref="itemUpRecordService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.ShopBrowerService" ref="shopBrowerService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.StarCaculateService" ref="starCaculateService" timeout="20000" />
 </beans>

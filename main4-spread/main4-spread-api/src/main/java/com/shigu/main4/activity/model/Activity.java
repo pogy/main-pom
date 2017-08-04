@@ -1,4 +1,4 @@
-package com.shigu.main4.activity.service;
+package com.shigu.main4.activity.model;
 
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;

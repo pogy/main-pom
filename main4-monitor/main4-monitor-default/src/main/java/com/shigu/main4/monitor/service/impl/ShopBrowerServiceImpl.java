@@ -33,7 +33,7 @@ import java.util.List;
  * @version domwiki 4.0.0
  * @since domwiki 4.0.0
  */
-@Service
+@Service("shopBrowerService")
 public class ShopBrowerServiceImpl implements ShopBrowerService {
     /**
      * 按小时统计店铺流量

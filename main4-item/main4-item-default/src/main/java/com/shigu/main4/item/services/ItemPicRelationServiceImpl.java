@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * 数据包关联
  * Created by zhaohongbo on 17/7/31.
  */
-@Service
+@Service("itemPicRelationService")
 public class ItemPicRelationServiceImpl implements ItemPicRelationService{
 
     @Autowired
