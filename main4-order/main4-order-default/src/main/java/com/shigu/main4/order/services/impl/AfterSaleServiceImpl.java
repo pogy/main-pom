@@ -298,7 +298,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public void chooseExpress(Long refundId, Long expressId, String expressCode) {
-        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCompanyMapper.selectByPrimaryKey(expressId).getExpressName()+":"+expressCode);
+        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCode);
     }
 
     /**
@@ -314,13 +314,8 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
         ReturnableExpressInfoVO vo = new ReturnableExpressInfoVO();
         String[] buyerCourier = refundinfo.getBuyerCourier().split(":");
-        if (buyerCourier.length>1) {
-            vo.setExpressCode(buyerCourier[1]);
-            vo.setExpressName(buyerCourier[0]);
-        } else {
-            vo.setExpressCode(refundinfo.getBuyerCourier());
-            vo.setExpressName("");// TODO：没有保存退货发货的公司
-        }
+        vo.setExpressCode(refundinfo.getBuyerCourier());
+        vo.setExpressName("");// TODO：没有保存退货发货的公司
         vo.setReturnableExpressTime(refundinfo.getBuyerReturnTime()!=null?refundinfo.getBuyerReturnTime().getTime():null);
 //        try {
 //            vo.setExpressDetails(itemOrderService.expressLog("", refundinfo.getBuyerCourier()));
