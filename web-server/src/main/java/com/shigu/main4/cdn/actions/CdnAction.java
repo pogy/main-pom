@@ -802,11 +802,15 @@ public class CdnAction {
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);
             return ;
         }
+        String url;
+        String upflag;
         if(type!=null &&type == 2){
-            String content = "{'result':'success','msg':'成功','sourceHref':'" + goodsFileService.datuUrl(goodsId) + "'}";
-            ResultRetUtil.returnJsonp(callback,content,response);
+            url=goodsFileService.datuUrl(goodsId);
+            upflag="bgimgzip";
+        }else{
+            url = shopsItemService.itemImgzipUrl(goodsId);
+            upflag="imgzip";
         }
-        String url = shopsItemService.itemImgzipUrl(goodsId);
         String content;
         if (StringUtils.isEmpty(url)) {
             content = "{'result':'error','msg':'图片打包失败'}";
@@ -831,7 +835,7 @@ public class CdnAction {
                 record.setSupperImage(img);
                 record.setFenImage(img);
             }
-            record.setFlag("imgzip");
+            record.setFlag(upflag);
             record.setSupperGoodsName(cdnItem.getTitle());
             record.setWebSite(cdnItem.getWebSite());
             record.setDaiTime(DateUtil.dateToString(new Date(),DateUtil.patternD));
