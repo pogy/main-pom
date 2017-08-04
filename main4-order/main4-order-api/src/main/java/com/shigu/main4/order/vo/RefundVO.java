@@ -59,7 +59,7 @@ public class RefundVO {
     private Long soid;
 
     /**
-     * '0未确定,1退款，2A类退货，3B类退货,4换货
+     * '0未确定,1退款，2退货,3换货
      */
     private Integer type;
 

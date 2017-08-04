@@ -1,12 +1,12 @@
 package com.shigu.main4.order.services.impl;
 
 import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.exceptions.OrderException;
-import com.shigu.main4.order.zfenums.*;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
@@ -14,13 +14,13 @@ import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.*;
+import com.shigu.main4.order.zfenums.*;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +42,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
+
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
 
     /**
      * 售后页面的子单简单数据
@@ -295,7 +298,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public void chooseExpress(Long refundId, Long expressId, String expressCode) {
-        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCode);
+        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCompanyMapper.selectByPrimaryKey(expressId).getExpressName()+":"+expressCode);
     }
 
     /**
@@ -310,8 +313,14 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         RefundVO refundinfo = SpringBeanFactory.getBean(RefundItemOrder.class, refundId).refundinfo();
 
         ReturnableExpressInfoVO vo = new ReturnableExpressInfoVO();
-        vo.setExpressCode(refundinfo.getBuyerCourier());
-        vo.setExpressName("");// TODO：没有保存退货发货的公司
+        String[] buyerCourier = refundinfo.getBuyerCourier().split(":");
+        if (buyerCourier.length>1) {
+            vo.setExpressCode(buyerCourier[1]);
+            vo.setExpressName(buyerCourier[0]);
+        } else {
+            vo.setExpressCode(refundinfo.getBuyerCourier());
+            vo.setExpressName("");// TODO：没有保存退货发货的公司
+        }
         vo.setReturnableExpressTime(refundinfo.getBuyerReturnTime()!=null?refundinfo.getBuyerReturnTime().getTime():null);
 //        try {
 //            vo.setExpressDetails(itemOrderService.expressLog("", refundinfo.getBuyerCourier()));
@@ -385,7 +394,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
                 vo.setAfterSeleEntDate(DateUtil.dateToString(refundProcessVO.getCreateTime(), null));
             }
         }
-        if (refundinfo.getType() != 4) {
+        if (refundinfo.getType() != 3) {
             vo.setPrice(refundinfo.getRefundMoney());
             vo.setPriceGoto("原路退回");
         }
