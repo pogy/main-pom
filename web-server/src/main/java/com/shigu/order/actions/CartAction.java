@@ -6,6 +6,8 @@ import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.order.bo.AddCartBO;
 import com.shigu.order.services.CartService;
+import com.shigu.order.vo.CartChildOrderVO;
+import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.CartPageVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 进货车
@@ -145,7 +149,7 @@ public class CartAction {
         int count=0;
         if(ps!=null){
             CartPageVO cart=cartService.selMyCart(ps.getUserId());
-            count=cart.getOrders().size();
+            count= cart.getOrders().stream().map(o->o.getChildOrders().size()).mapToInt(Integer::intValue).sum();
         }
         ResultRetUtil.returnJsonp(callback,"{'result':'success','orderNum':'"+count+"'}",response);
         return null;
