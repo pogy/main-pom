@@ -295,7 +295,7 @@ var webSite = '${webSite!}';
     <p class="button-box clearfix">
         
 
-<#assign text>{"href":"{{{main_host}}}member/iwantToRechargein5.htm"}</#assign>
+<#assign text>{"href":"${main_host!}member/iwantToRechargein5.htm"}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 
@@ -347,7 +347,7 @@ var webSite = '${webSite!}';
 
         
 
-<#assign text>{"href":"{{{main_host}}}member/withdraw5Apply.htm"}</#assign>
+<#assign text>{"href":"${main_host!}member/withdraw5Apply.htm"}</#assign>
 <#assign moduledata2=text?eval />
 <#list [moduledata2] as $it>
 
