@@ -291,8 +291,8 @@ var webSite = '${webSite!}';
         </li>
     
         <li>
-            <a href="http://hz.571xz.com/shopIconCopyright.htm" target="_blank">
-                著作权
+            <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
+                知识产权
                 
                 
             </a>
