@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/search.css?t=1497346957871" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/search.css?t=1502167938140" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/search.js?t=1497346957871"></script>
+    <script src="http://style.571xz.com/searchV5/js/search.js?t=1502167938140"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -216,7 +216,6 @@ var webSite = '${webSite!}';
             <div class="searchBox">
                 
                 <form id="formSearch" action="http://so.571xz.com/${webSite!}search.htm" >
-                
                     
                     
                     <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
@@ -261,6 +260,9 @@ var webSite = '${webSite!}';
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 </#if>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
+                <#if webSite == "hz">
+                <li><a href="http://www.571xz.com/shopIconCopyright.htm">知识产权</a></li>
+                </#if>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>
             </ul>
@@ -380,7 +382,7 @@ var webSite = '${webSite!}';
                 <b jbtn="sortByZh" <#if query.sort?? && query.sort == 'comp'>class="selected"</#if>>综合</b>
                 <b jbtn="sortByXp" <#if query.sort?? && query.sort == 'xp'>class="selected"</#if>>新品</b>
                 <b jbtn="sortByRq" <#if query.sort?? && query.sort == 'popular'>class="selected"</#if>>人气</b>
-
+                
                 
                 
             </div>
@@ -572,7 +574,7 @@ $(function(){
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>

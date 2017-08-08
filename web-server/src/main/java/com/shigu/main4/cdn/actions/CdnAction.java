@@ -216,8 +216,8 @@ public class CdnAction {
             loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
                     SpreadEnum.MAN_XHNZ)));
         }
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
+//        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
+//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
         model.addAttribute("loveGoodslist",loves);
         model.addAttribute("webSite",webSite);
         return "index/hz"+manOrWoman;
@@ -802,11 +802,15 @@ public class CdnAction {
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);
             return ;
         }
+        String url;
+        String upflag;
         if(type!=null &&type == 2){
-            String content = "{'result':'success','msg':'成功','sourceHref':'" + goodsFileService.datuUrl(goodsId) + "'}";
-            ResultRetUtil.returnJsonp(callback,content,response);
+            url=goodsFileService.datuUrl(goodsId);
+            upflag="bgimgzip";
+        }else{
+            url = shopsItemService.itemImgzipUrl(goodsId);
+            upflag="imgzip";
         }
-        String url = shopsItemService.itemImgzipUrl(goodsId);
         String content;
         if (StringUtils.isEmpty(url)) {
             content = "{'result':'error','msg':'图片打包失败'}";
@@ -831,7 +835,7 @@ public class CdnAction {
                 record.setSupperImage(img);
                 record.setFenImage(img);
             }
-            record.setFlag("imgzip");
+            record.setFlag(upflag);
             record.setSupperGoodsName(cdnItem.getTitle());
             record.setWebSite(cdnItem.getWebSite());
             record.setDaiTime(DateUtil.dateToString(new Date(),DateUtil.patternD));
@@ -850,5 +854,16 @@ public class CdnAction {
             content = "{'result':'success','msg':'成功','sourceHref':'" + url + "'}";
         }
         ResultRetUtil.returnJsonp(callback,content,response);
+    }
+
+    /**
+     * 著作权
+     * @param model
+     * @return
+     */
+    @RequestMapping("shopIconCopyright")
+    public String shopIconCopyright(Model model){
+        model.addAttribute("webSite","hz");
+        return "activity/shopIconCopyright";
     }
 }

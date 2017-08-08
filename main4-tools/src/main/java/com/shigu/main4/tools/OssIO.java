@@ -43,20 +43,7 @@ public class OssIO {
      * @param filePath 上传的目录,不能以/开头
      */
     public String uploadFile(File f,String filePath) throws FileNotFoundException {
-        // 创建OSSClient实例
-        OSSClient ossClient = null;
-        try {
-            ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-// 上传文件流
-            InputStream inputStream = new FileInputStream(f);
-            ossClient.putObject(bucketName, filePath, new BufferedInputStream(inputStream));
-// 关闭client
-        } finally {
-            if (ossClient != null) {
-                ossClient.shutdown();
-            }
-        }
-        return domain+filePath;
+        return uploadFile(new FileInputStream(f), filePath);
     }
 
     /**
@@ -226,20 +213,17 @@ public class OssIO {
     public boolean moveFile(String srcFilePath, String dstFilePath) {
         boolean ret = true;
         // 创建OSSClient实例
-        OSSClient ossClient = ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
-                // 拷贝Object
-                CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath );
-                logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
+            // 拷贝Object
+            CopyObjectResult result = ossClient.copyObject(bucketName, srcFilePath, bucketName, dstFilePath );
+            logger.info("ETag: " + result.getETag() + " LastModified: " + result.getLastModified());
             deleteFile(srcFilePath);
         } catch (Exception e) {
             logger.error(e.getMessage());
             ret = false;
-        }
-        finally {
-            if (ossClient != null) {
-                ossClient.shutdown();
-            }
+        } finally {
+            ossClient.shutdown();
         }
         return ret;
     }
@@ -253,7 +237,7 @@ public class OssIO {
     public boolean renameFile(String srcFilePath, String dstFilePath) {
         boolean ret = true;
         // 创建OSSClient实例
-        OSSClient ossClient = ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
             if(srcFilePath.endsWith("/")) {//目录
                 ObjectListing objectListing = ossClient.listObjects(bucketName, srcFilePath);
@@ -272,9 +256,7 @@ public class OssIO {
             logger.error(e.getMessage());
             ret = false;
         } finally {
-            if (ossClient != null) {
-                ossClient.shutdown();
-            }
+            ossClient.shutdown();
         }
         return ret;
     }

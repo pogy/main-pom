@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -43,7 +44,7 @@ import java.util.Map;
  * Created by zlm on 2017/7/25.
  */
 @Service
-public class GoodsFileService {
+public class GoodsFileService extends OssIO {
     @Autowired
     GoodsFileMapper goodsFileMapper;
 
@@ -66,6 +67,15 @@ public class GoodsFileService {
 
     final long DEFAULT_SIZE=1048576;
 
+    @PostConstruct
+    private void init() {
+        super.setAccessKeyId(ossIO.getAccessKeyId());
+        super.setAccessKeySecret(ossIO.getAccessKeySecret());
+        super.setEndpoint(ossIO.getEndpoint());
+        super.setDomain("http://imgzip.571xz.com/");
+        super.setBucketName("imgzip");
+    }
+
     /**
      * web真传认证
      * @param shopId
@@ -73,7 +83,7 @@ public class GoodsFileService {
      * @throws UnsupportedEncodingException
      */
     public Map<String, String> createPostSignInfo(Long shopId) throws UnsupportedEncodingException {
-        return ossIO.createPostSignInfo(getTempDir(shopId));
+        return super.createPostSignInfo(getTempDir(shopId));
     }
 
     /**
@@ -86,7 +96,11 @@ public class GoodsFileService {
         if (license == null) {
             //判断是否电商
             ShiguShopExample example=new ShiguShopExample();
-            example.createCriteria().andShopIdEqualTo(shopId).andMarketIdEqualTo(1087L);
+            List<Long> marketIds=new ArrayList<>();
+            marketIds.add(1087L);
+            marketIds.add(617L);
+            marketIds.add(621L);
+            example.createCriteria().andShopIdEqualTo(shopId).andMarketIdIn(marketIds);
             int much=shiguShopMapper.countByExample(example)>0?3:1;
             return much*DEFAULT_SIZE;
         }
@@ -99,16 +113,16 @@ public class GoodsFileService {
      */
     public GoodsFileVO uploadFile(Long shopId,String fileId) throws JsonErrException {
         //取新文件大小
-        Long newSize=ossIO.getSizeInfo(getTempDir(shopId)+fileId)/1024;
+        Long newSize=super.getSizeInfo(getTempDir(shopId)+fileId)/1024;
         //取已存总大小
-        Long hadSize=ossIO.getSizeInfo(getHomeDir(shopId))/1024;
+        Long hadSize=super.getSizeInfo(getHomeDir(shopId))/1024;
         //取容量
         Long shopSize=shopDataSize(shopId);
         if(newSize+hadSize>shopSize){//超了
             throw new JsonErrException("容量超出,上传失败");
         }
         //迁移
-        ossIO.moveFile(getTempDir(shopId)+fileId, getHomeDir(shopId)+fileId);
+        super.moveFile(getTempDir(shopId)+fileId, getHomeDir(shopId)+fileId);
         GoodsFileVO fileVO=new GoodsFileVO();
         fileVO.setFileId(fileId);
         fileVO.setFileType("picBkg");
@@ -140,7 +154,7 @@ public class GoodsFileService {
      * 获取文件列表
      */
     public List<GoodsFileVO> selFilesByFileId(Long shopId , String fileKey) {
-        List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(parseMyFilePath(shopId,fileKey)), GoodsFileVO.class);
+        List<GoodsFileVO> files = BeanMapper.mapList(super.getFileList(parseMyFilePath(shopId,fileKey)), GoodsFileVO.class);
         List<GoodsFileVO> newFiles = new ArrayList<GoodsFileVO>();
         List<String> fileKeys=BeanMapper.getFieldList(files,"fileId",String.class);//文件ID
         List<String> hasConnected=new ArrayList<>();
@@ -313,7 +327,7 @@ public class GoodsFileService {
         example.createCriteria().andGoodsIdEqualTo(goodsId);
         List<GoodsFile> files=goodsFileMapper.selectByExample(example);
         if(files.size()>0){
-            return ossIO.getDomain()+files.get(0).getFileKey();
+            return super.getDomain()+files.get(0).getFileKey();
         }else{
             return null;
         }
@@ -409,7 +423,7 @@ public class GoodsFileService {
             goodsFileExample.createCriteria().andFileKeyEqualTo(path);
         }
         goodsFileMapper.deleteByExample(goodsFileExample);
-        return ossIO.deleteFile(path);
+        return super.deleteFile(path);
     }
 
     /**
@@ -430,10 +444,10 @@ public class GoodsFileService {
         if(fileKey.contains("/") && !fileType.equalsIgnoreCase("folder")) {
             newFileKey = fileKey.substring(0, fileKey.indexOf("/"))+"/"+ newName;
         }
-        if(ossIO.fileExist(getHomeDir(shopId)+newFileKey)){
+        if(super.fileExist(getHomeDir(shopId)+newFileKey)){
             throw new JsonErrException("存在同名文件");
         }
-        boolean result=ossIO.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newFileKey);
+        boolean result=super.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newFileKey);
         if(result){
             //修改表
             //如果文件夹
@@ -462,10 +476,10 @@ public class GoodsFileService {
         if(fileId.equals(targetFileId)){
             return false;
         }
-        if(ossIO.fileExist(getHomeDir(shopId)+targetFileId)){
+        if(super.fileExist(getHomeDir(shopId)+targetFileId)){
             throw new JsonErrException("目标文件夹下已经存在同名文件");
         }
-        boolean result=ossIO.moveFile(getHomeDir(shopId)+fileId, getHomeDir(shopId)+targetFileId);
+        boolean result=super.moveFile(getHomeDir(shopId)+fileId, getHomeDir(shopId)+targetFileId);
         if(result){
             //修改表
             modifyDataGoodsFile(getHomeDir(shopId)+fileId,getHomeDir(shopId)+targetFileId);
@@ -488,23 +502,23 @@ public class GoodsFileService {
      * @return
      */
     public String createDir(Long shopId, String dir) throws JsonErrException {
-        if(ossIO.fileExist(getHomeDir(shopId)+dir+"/")){
+        if(super.fileExist(getHomeDir(shopId)+dir+"/")){
             throw new JsonErrException("文件夹已经存在");
         }
-        String fildPath=ossIO.createDir(getHomeDir(shopId), dir);
+        String fildPath=super.createDir(getHomeDir(shopId), dir);
         return fildPath.replace(getHomeDir(shopId),"");
     }
 
     public double getSizeInfo(Long shopId) {
-        return div((double)ossIO.getSizeInfo(getHomeDir(shopId)), (double)1024*1024, 3);
+        return div((double)super.getSizeInfo(getHomeDir(shopId)), (double)1024*1024, 3);
     }
 
     public boolean fileExist(String filePath) {
-        return ossIO.fileExist(filePath);
+        return super.fileExist(filePath);
     }
 
     public String zipUrl(Long shopId,String key){
-        return ossIO.getDomain()+getHomeDir(shopId)+key;
+        return super.getDomain()+getHomeDir(shopId)+key;
     }
 
     /**
