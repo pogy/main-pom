@@ -851,4 +851,15 @@ public class CdnAction {
         }
         ResultRetUtil.returnJsonp(callback,content,response);
     }
+
+    /**
+     * 著作权
+     * @param model
+     * @return
+     */
+    @RequestMapping("shopIconCopyright")
+    public String shopIconCopyright(Model model){
+        model.addAttribute("webSite","hz");
+        return "activity/shopIconCopyright";
+    }
 }
