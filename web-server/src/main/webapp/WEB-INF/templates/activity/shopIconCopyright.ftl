@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>商家知识产权展示 - 四季星座网</title>
 
     
     
@@ -87,7 +87,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}order/cart.htm">
+                    <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
