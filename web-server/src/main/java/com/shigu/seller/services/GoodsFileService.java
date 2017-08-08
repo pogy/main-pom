@@ -96,7 +96,11 @@ public class GoodsFileService extends OssIO {
         if (license == null) {
             //判断是否电商
             ShiguShopExample example=new ShiguShopExample();
-            example.createCriteria().andShopIdEqualTo(shopId).andMarketIdEqualTo(1087L);
+            List<Long> marketIds=new ArrayList<>();
+            marketIds.add(1087L);
+            marketIds.add(617L);
+            marketIds.add(621L);
+            example.createCriteria().andShopIdEqualTo(shopId).andMarketIdIn(marketIds);
             int much=shiguShopMapper.countByExample(example)>0?3:1;
             return much*DEFAULT_SIZE;
         }
