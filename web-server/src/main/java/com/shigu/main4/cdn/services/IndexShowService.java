@@ -8,7 +8,7 @@ import com.shigu.main4.cdn.vo.IndexNavVO;
 import com.shigu.main4.cdn.vo.LoveGoodsList;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.exceptions.GoatException;
-import com.shigu.main4.goat.model.GoatFactory;
+import com.shigu.main4.goat.service.GoatDubboService;
 import com.shigu.main4.goat.vo.TextGoatVO;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.search.services.CategoryInSearchService;
@@ -39,7 +39,7 @@ public class IndexShowService {
     private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
 
     @Autowired
-    GoatFactory goatFactory;
+    GoatDubboService goatDubboService;
     /**
      * 类目服务
      */
@@ -111,8 +111,7 @@ public class IndexShowService {
             public List<IndexNavVO> selReal() {
                 List<IndexNavVO> navVOs=new ArrayList<>();
                 try {
-                    GoatLocation location = goatFactory.getALocation(spread.getCode());
-                    List<TextGoatVO> goats = location.selGoats();
+                    List<TextGoatVO> goats = goatDubboService.selGoatsFromLocalCode(spread.getCode());
                     for (TextGoatVO tgv : goats) {
                         navVOs.add(new IndexNavVO(tgv.getHref(), tgv.getText()));
                     }

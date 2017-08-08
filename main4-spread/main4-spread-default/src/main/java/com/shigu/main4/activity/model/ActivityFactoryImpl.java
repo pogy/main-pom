@@ -1,4 +1,4 @@
-package com.shigu.main4.activity.service.impl;
+package com.shigu.main4.activity.model;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;

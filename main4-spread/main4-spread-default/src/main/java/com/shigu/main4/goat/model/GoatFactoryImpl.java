@@ -1,4 +1,4 @@
-package com.shigu.main4.goat.service.impl;
+package com.shigu.main4.goat.model;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -18,8 +18,6 @@ import com.shigu.main4.goat.beans.ItemGoat;
 import com.shigu.main4.goat.beans.TextGoat;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
-import com.shigu.main4.goat.model.Goat;
-import com.shigu.main4.goat.model.GoatFactory;
 import com.shigu.main4.goat.vo.*;
 import com.shigu.main4.tools.RedisIO;
 import org.elasticsearch.action.search.SearchRequestBuilder;

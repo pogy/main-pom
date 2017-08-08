@@ -4,7 +4,7 @@ import com.opentae.data.mall.beans.ItemForList;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.exceptions.GoatException;
-import com.shigu.main4.goat.model.GoatFactory;
+import com.shigu.main4.goat.service.GoatDubboService;
 import com.shigu.main4.goat.vo.ImgGoatVO;
 import com.shigu.main4.goat.vo.ItemGoatVO;
 import com.shigu.spread.enums.SpreadEnum;
@@ -31,7 +31,7 @@ public class SpreadService {
     private static final Logger logger = LoggerFactory.getLogger(SpreadService.class);
 
     @Autowired
-    GoatFactory goatFactory;
+    GoatDubboService goatDubboService;
     
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
@@ -51,10 +51,9 @@ public class SpreadService {
             public List<ItemSpreadVO> selReal() {
                 List<ItemSpreadVO> vos=new ArrayList<>();
                 try {
-                    GoatLocation location=goatFactory.getALocation(spread.getCode());
                     List<Long> goodsIds=new ArrayList<>();
                     Map<Long,ItemSimpleInfo> itemMap=new HashMap<>();
-                    List<ItemGoatVO> goats=location.selGoats();
+                    List<ItemGoatVO> goats=goatDubboService.selGoatsFromLocalCode(spread.getCode());
                     for(ItemGoatVO igv:goats){
                         String tag=igv.getTag1();
 //                        String element=igv.getElement();
@@ -114,8 +113,7 @@ public class SpreadService {
             public List<ImgBannerVO> selReal() {
                 List<ImgBannerVO> vos=new ArrayList<>();
                 try {
-                    GoatLocation location = goatFactory.getALocation(spread.getCode());
-                    List<ImgGoatVO> goats = location.selGoats();
+                    List<ImgGoatVO> goats = goatDubboService.selGoatsFromLocalCode(spread.getCode());
                     for (ImgGoatVO gv : goats) {
                         vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), gv.getText()));
                     }
