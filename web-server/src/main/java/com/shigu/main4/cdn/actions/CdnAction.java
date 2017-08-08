@@ -216,8 +216,8 @@ public class CdnAction {
             loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
                     SpreadEnum.MAN_XHNZ)));
         }
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
+//        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
+//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
         model.addAttribute("loveGoodslist",loves);
         model.addAttribute("webSite",webSite);
         return "index/hz"+manOrWoman;
