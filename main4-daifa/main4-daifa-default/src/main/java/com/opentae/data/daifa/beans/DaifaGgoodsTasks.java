@@ -100,7 +100,7 @@ public class DaifaGgoodsTasks {
 	/**单子是否可用@0不可用,1可用*/
 	private Integer useStatus;
 	/**有货日期*/
-	private String youhuoDate;
+	private java.util.Date youhuoDate;
 	/**礼品类型*/
 	private String giftCode;
 	/**缺货处理协议@1有货先发2缺货不发*/
@@ -860,7 +860,7 @@ public class DaifaGgoodsTasks {
   	*有货日期
  	*自动生成
   	*/
-    public String getYouhuoDate() {
+    public java.util.Date getYouhuoDate() {
         return youhuoDate;
     }
 
@@ -870,7 +870,7 @@ public class DaifaGgoodsTasks {
 	*有货日期
  	*自动生成
   	*/
-    public void setYouhuoDate(String youhuoDate) {
+    public void setYouhuoDate(java.util.Date youhuoDate) {
         this.youhuoDate = youhuoDate;
     }
 	/**

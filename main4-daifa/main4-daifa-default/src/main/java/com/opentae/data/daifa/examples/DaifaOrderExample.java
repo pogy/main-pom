@@ -2213,51 +2213,43 @@ public class DaifaOrderExample extends SgExample<DaifaOrderExample.Criteria> {
             return isNotNull(haveGoodsDate);
         }
 
-        public DaifaOrderExample.Criteria andHaveGoodsDateEqualTo(String value) {
+        public DaifaOrderExample.Criteria andHaveGoodsDateEqualTo(java.util.Date value) {
             return equalTo(haveGoodsDate, value);
         }
 
-        public DaifaOrderExample.Criteria andHaveGoodsDateNotEqualTo(String value) {
+        public DaifaOrderExample.Criteria andHaveGoodsDateNotEqualTo(java.util.Date value) {
             return notEqualTo(haveGoodsDate, value);
         }
 
-        public DaifaOrderExample.Criteria andHaveGoodsDateGreaterThan(String value) {
+        public DaifaOrderExample.Criteria andHaveGoodsDateGreaterThan(java.util.Date value) {
             return greaterThan(haveGoodsDate, value);
         }
 
-        public DaifaOrderExample.Criteria andHaveGoodsDateGreaterThanOrEqualTo(String value) {
+        public DaifaOrderExample.Criteria andHaveGoodsDateGreaterThanOrEqualTo(java.util.Date value) {
             return greaterThanOrEqualTo(haveGoodsDate, value);
         }
 
-        public DaifaOrderExample.Criteria andHaveGoodsDateLessThan(String value) {
+        public DaifaOrderExample.Criteria andHaveGoodsDateLessThan(java.util.Date value) {
             return lessThan(haveGoodsDate, value);
         }
 
-        public DaifaOrderExample.Criteria andHaveGoodsDateLessThanOrEqualTo(String value) {
+        public DaifaOrderExample.Criteria andHaveGoodsDateLessThanOrEqualTo(java.util.Date value) {
             return lessThanOrEqualTo(haveGoodsDate, value);
         }
 
-        public DaifaOrderExample.Criteria andHaveGoodsDateLike(String value) {
-            return like(haveGoodsDate, value);
-        }
-
-        public DaifaOrderExample.Criteria andHaveGoodsDateNotLike(String value) {
-            return notLike(haveGoodsDate, value);
-        }
-
-        public DaifaOrderExample.Criteria andHaveGoodsDateIn(List<String> values) {
+        public DaifaOrderExample.Criteria andHaveGoodsDateIn(List<java.util.Date> values) {
             return in(haveGoodsDate, values);
         }
 
-        public DaifaOrderExample.Criteria andHaveGoodsDateNotIn(List<String> values) {
+        public DaifaOrderExample.Criteria andHaveGoodsDateNotIn(List<java.util.Date> values) {
             return notIn(haveGoodsDate, values);
         }
 
-        public DaifaOrderExample.Criteria andHaveGoodsDateBetween(String value1, String value2) {
+        public DaifaOrderExample.Criteria andHaveGoodsDateBetween(java.util.Date value1, java.util.Date value2) {
             return between(haveGoodsDate, value1, value2);
         }
 
-        public DaifaOrderExample.Criteria andHaveGoodsDateNotBetween(String value1, String value2) {
+        public DaifaOrderExample.Criteria andHaveGoodsDateNotBetween(java.util.Date value1, java.util.Date value2) {
             return notBetween(haveGoodsDate, value1, value2);
         }
         public DaifaOrderExample.Criteria andDelistIsIsNull() {

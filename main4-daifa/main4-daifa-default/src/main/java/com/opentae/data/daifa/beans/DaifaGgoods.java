@@ -99,8 +99,8 @@ public class DaifaGgoods {
 	private String stockoutReason;
 	/**退款原因*/
 	private String refundReason;
-	/**有货日期@YYYYMMdd*/
-	private String youhuoDate;
+	/**有货日期*/
+	private java.util.Date youhuoDate;
 	/**礼品类型*/
 	private String giftCode;
 	/**退款外部ID*/
@@ -855,20 +855,20 @@ public class DaifaGgoods {
 	/**
   	* 
 	*get方法
-  	*有货日期@YYYYMMdd
+  	*有货日期
  	*自动生成
   	*/
-    public String getYouhuoDate() {
+    public java.util.Date getYouhuoDate() {
         return youhuoDate;
     }
 
     /**
   	* 
   	*set方法
-	*有货日期@YYYYMMdd
+	*有货日期
  	*自动生成
   	*/
-    public void setYouhuoDate(String youhuoDate) {
+    public void setYouhuoDate(java.util.Date youhuoDate) {
         this.youhuoDate = youhuoDate;
     }
 	/**

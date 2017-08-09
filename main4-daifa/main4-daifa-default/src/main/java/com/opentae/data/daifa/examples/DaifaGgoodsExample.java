@@ -2138,47 +2138,39 @@ public class DaifaGgoodsExample extends SgExample<DaifaGgoodsExample.Criteria> {
             return equalTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateNotEqualTo(String value) {
+        public DaifaGgoodsExample.Criteria andYouhuoDateNotEqualTo(java.util.Date value) {
             return notEqualTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateGreaterThan(String value) {
+        public DaifaGgoodsExample.Criteria andYouhuoDateGreaterThan(java.util.Date value) {
             return greaterThan(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateGreaterThanOrEqualTo(String value) {
+        public DaifaGgoodsExample.Criteria andYouhuoDateGreaterThanOrEqualTo(java.util.Date value) {
             return greaterThanOrEqualTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateLessThan(String value) {
+        public DaifaGgoodsExample.Criteria andYouhuoDateLessThan(java.util.Date value) {
             return lessThan(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateLessThanOrEqualTo(String value) {
+        public DaifaGgoodsExample.Criteria andYouhuoDateLessThanOrEqualTo(java.util.Date value) {
             return lessThanOrEqualTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateLike(String value) {
-            return like(youhuoDate, value);
-        }
-
-        public DaifaGgoodsExample.Criteria andYouhuoDateNotLike(String value) {
-            return notLike(youhuoDate, value);
-        }
-
-        public DaifaGgoodsExample.Criteria andYouhuoDateIn(List<String> values) {
+        public DaifaGgoodsExample.Criteria andYouhuoDateIn(List<java.util.Date> values) {
             return in(youhuoDate, values);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateNotIn(List<String> values) {
+        public DaifaGgoodsExample.Criteria andYouhuoDateNotIn(List<java.util.Date> values) {
             return notIn(youhuoDate, values);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateBetween(String value1, String value2) {
+        public DaifaGgoodsExample.Criteria andYouhuoDateBetween(java.util.Date value1, java.util.Date value2) {
             return between(youhuoDate, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateNotBetween(String value1, String value2) {
+        public DaifaGgoodsExample.Criteria andYouhuoDateNotBetween(java.util.Date value1, java.util.Date value2) {
             return notBetween(youhuoDate, value1, value2);
         }
         public DaifaGgoodsExample.Criteria andGiftCodeIsNull() {

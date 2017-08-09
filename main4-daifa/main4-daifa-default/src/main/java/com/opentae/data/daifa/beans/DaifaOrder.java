@@ -101,8 +101,8 @@ public class DaifaOrder {
 	private String orderRemark;
 	/**礼品类型*/
 	private String giftCode;
-	/**有货日期@YYYY-MM-dd*/
-	private String haveGoodsDate;
+	/**有货日期*/
+	private java.util.Date haveGoodsDate;
 	/**是否下架@0可售1下架*/
 	private Integer delistIs;
 	/**退款外部ID*/
@@ -898,20 +898,20 @@ public class DaifaOrder {
 	/**
   	* 
 	*get方法
-  	*有货日期@YYYY-MM-dd
+  	*有货日期
  	*自动生成
   	*/
-    public String getHaveGoodsDate() {
+    public java.util.Date getHaveGoodsDate() {
         return haveGoodsDate;
     }
 
     /**
   	* 
   	*set方法
-	*有货日期@YYYY-MM-dd
+	*有货日期
  	*自动生成
   	*/
-    public void setHaveGoodsDate(String haveGoodsDate) {
+    public void setHaveGoodsDate(java.util.Date haveGoodsDate) {
         this.haveGoodsDate = haveGoodsDate;
     }
 	/**
