@@ -15,4 +15,10 @@ public interface CargoManModel {
      * @return 波次号
      */
     String makeTakeWave(List<Long> subOrderIds);
+
+    /**
+     * 马上结束拿货
+     * 未拿到,直接缺货
+     */
+    void finishTakeGoods();
 }

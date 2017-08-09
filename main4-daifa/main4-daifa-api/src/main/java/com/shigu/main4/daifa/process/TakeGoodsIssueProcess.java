@@ -44,36 +44,31 @@ public interface TakeGoodsIssueProcess {
     /**
      * 打印当天所有应该打而未打的标签
      */
-    PrintTagVO printAllTags();
+    List<PrintTagVO> printAllTags();
 
     /**
      * 打印选中的记录(可重复打印)
      * @param issueIds 分配记录ID
      * @return
      */
-    PrintTagVO printTags(List<Long> issueIds);
+    List<PrintTagVO> printTags(List<Long> issueIds);
 
     /**
      * 已拿到
-     * @param issueId
+     * @param subOrderId 子订单ID
      */
-    void complete(Long issueId);
+    void complete(Long subOrderId);
 
     /**
      * 未拿到
-     * @param issueId
+     * @param subOrderId 子订单ID
      */
-    void uncomplete(Long issueId);
+    void uncomplete(Long subOrderId);
 
     /**
-     * 按波次,全部标记未拿
-     * @param waveId
+     * 按人头,全部标记未拿
+     * @param wholeId 拿货员ID
      */
-    void uncompleteAll(String waveId);
+    void uncompleteAll(Long wholeId);
 
-    /**
-     * 按波次,全部标记已拿
-     * @param waveId
-     */
-    void completeAll(String waveId);
 }

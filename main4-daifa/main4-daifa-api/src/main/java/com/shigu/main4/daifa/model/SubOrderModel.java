@@ -11,6 +11,7 @@ import java.util.Date;
 public interface SubOrderModel {
     /**
      * 创建子订单
+     * cdkey
      */
     void init();
 
@@ -40,4 +41,10 @@ public interface SubOrderModel {
      * 缺货
      */
     void noTake();
+
+    /**
+     * 产生cdKey
+     * @return cdKey
+     */
+    String cdkeyCreate();
 }

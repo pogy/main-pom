@@ -11,5 +11,6 @@ public interface TaskWaveModel {
      * 结束本波次
      * 没拿到直接缺货
      */
+    @Deprecated
     void finishAll();
 }
