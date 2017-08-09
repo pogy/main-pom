@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/storenum.css?t=1497346957185" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/storenum.css?t=1502167945831" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/storenum.js?t=1497346957185"></script>
+    <script src="http://style.571xz.com/searchV5/js/storenum.js?t=1502167945831"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -217,7 +217,6 @@ var webSite = '${webSite!}';
                 
                 <form id="formSearch" action="http://www.571xz.com/storenum.htm?webSite=${webSite!}" >
                     <input class="searchWeb" type=hidden name="webSite" value="${webSite!}">
-                
                     
                     
                     <input type="text" class="searchCon" name="keyword" placeholder="输入商品名称" value="<#if query.keyword??>${query.keyword!}</#if>">
@@ -262,6 +261,9 @@ var webSite = '${webSite!}';
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 </#if>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
+                <#if webSite == "hz">
+                <li><a href="http://www.571xz.com/shopIconCopyright.htm">知识产权</a></li>
+                </#if>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>
             </ul>
@@ -488,7 +490,7 @@ var webSite = '${webSite!}';
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>

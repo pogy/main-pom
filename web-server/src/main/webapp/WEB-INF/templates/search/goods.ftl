@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1502255700072" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1502264693454" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1502255700072"></script>
+    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1502264693454"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -568,7 +568,8 @@ $(function(){
            </#if>
        </div>
     </div>
-    
+
+    <#if (goodsGoats?size) gt 0>
     <div class="goodsGoat">
         <h3>掌柜热卖</h3>
         <ul class="clearfix">
@@ -583,6 +584,7 @@ $(function(){
             </#list>
         </ul>
     </div>
+    </#if>
 </div>
 <div class="footer">
     <div class="inner">

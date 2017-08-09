@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/popular.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/popular.css?v=20180809" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/popular.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/popular.js?v=20180809"></script>
 </head>
 <body>
 
@@ -89,7 +89,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -285,6 +285,14 @@ var webSite = '${webSite!}';
         <li>
             <a href="http://daifa.571xz.com/" target="_blank">
                 一件代发
+                
+                
+            </a>
+        </li>
+    
+        <li>
+            <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
+                知识产权
                 
                 
             </a>

@@ -8,6 +8,7 @@ import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.cdn.vo.IndexNavVO;
 import com.shigu.main4.cdn.vo.LoveGoodsList;
+import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.beans.TextGoat;
 import com.shigu.main4.goat.exceptions.GoatException;
@@ -15,13 +16,20 @@ import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.GoatVO;
 import com.shigu.main4.goat.vo.TextGoatVO;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.main4.item.enums.SearchOrderBy;
+import com.shigu.main4.item.services.ItemSearchService;
+import com.shigu.main4.item.vo.SearchItem;
+import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.search.services.CategoryInSearchService;
+import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.vo.CateNav;
+import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.EhCacheForIndexPage;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.RedisForIndexPage;
 import com.shigu.spread.services.SpreadService;
+import com.shigu.spread.vo.ItemSpreadVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +73,12 @@ public class IndexShowService {
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
+
+    @Autowired
+    ItemSearchService itemSearchService;
+
+    @Autowired
+    GoodsSelFromEsService goodsSelFromEsService;
 
     /**
      * 把商品总数数字按个排出
@@ -139,16 +153,108 @@ public class IndexShowService {
      * 猜你喜欢
      * @return
      */
-    public ObjFromCache<LoveGoodsList> loveGoods(final String text, final String webSite, final SpreadEnum spread){
-        return new ObjFromCache<LoveGoodsList>(redisForIndexPage,spread.getCode(),LoveGoodsList.class) {
+    public ObjFromCache<LoveGoodsList> loveGoods(final String text, final String webSite, final List<Long> cids){
+        return new ObjFromCache<LoveGoodsList>(redisForIndexPage,webSite+"_"+text,LoveGoodsList.class) {
             @Override
             public LoveGoodsList selReal() {
-                LoveGoodsList love=new LoveGoodsList();
-                love.setTypeText(text);
-                love.setItems(spreadService.selItemSpreads(webSite,spread).selReal());
-                return love;
+                ShiguAggsPager pager=itemSearchService.searchItem(null,webSite,null,cids,null,null,null,null,
+                        null,null, SearchOrderBy.USER_LOVE,1,5,false);
+                ShiguPager<GoodsInSearch> goodsInSearch=goodsSelFromEsService.addShopInfoToGoods(pager,webSite);
+                List<GoodsInSearch> items=goodsInSearch.getContent();
+                LoveGoodsList loveGoodsList=new LoveGoodsList();
+                loveGoodsList.setTypeText(text);
+                List<ItemSpreadVO> spreadVOs=new ArrayList<>();
+                loveGoodsList.setItems(spreadVOs);
+                if (items != null) {
+                    items.forEach(it -> {
+                        ItemSpreadVO itemSpreadVO=new ItemSpreadVO();
+                        itemSpreadVO.setId(it.getId());
+                        itemSpreadVO.setImgsrc(it.getImgsrc());
+                        itemSpreadVO.setMarketText(it.getFullStoreName());
+                        itemSpreadVO.setPiprice(it.getPiprice());
+                        itemSpreadVO.setStoreId(it.getStoreid().toString());
+                        itemSpreadVO.setStoreNum(it.getStoreNum());
+                        spreadVOs.add(itemSpreadVO);
+                    });
+                }
+                return loveGoodsList;
             }
         };
+    }
+
+    /**
+     * 女上装
+     * @return  cid的list
+     */
+    public List<Long> womanUp(){
+        //上装
+        List<Long> cids=new ArrayList<>();
+        cids.add(50011277L);
+        cids.add(162116L);
+        cids.add(50000697L);
+        cids.add(50008904L);
+        cids.add(50008905L);
+        cids.add(50008898L);
+        cids.add(50008899L);
+        cids.add(50000671L);
+        cids.add(50008901L);
+        cids.add(162103L);
+        cids.add(162104L);
+        cids.add(50013196L);
+        return cids;
+    }
+
+    /**
+     * 女下装
+     * @return
+     */
+    public List<Long> womanBottom(){
+        List<Long> cids=new ArrayList<>();
+        cids.add(162205L);
+        cids.add(1623L);
+        return cids;
+    }
+
+    /**
+     * 男夹克
+     * @return
+     */
+    public List<Long> manJack(){
+        List<Long> cids=new ArrayList<>();
+        cids.add(50010158L);
+        return cids;
+    }
+
+    /**
+     * 男休闲
+     * @return
+     */
+    public List<Long> manFree(){
+        List<Long> cids=new ArrayList<>();
+        cids.add(3035L);
+        return cids;
+    }
+
+    /**
+     * 看鞋的类目
+     * @return
+     */
+    public List<Long> xie(){
+        List<Long> cids=new ArrayList<>();
+        cids.add(50011746L);
+        cids.add(50011744L);
+        cids.add(50011745L);
+        cids.add(50012906L);
+        cids.add(50012907L);
+        cids.add(50011743L);
+        cids.add(50012047L);
+        cids.add(50012042L);
+        cids.add(50012027L);
+        cids.add(50012028L);
+        cids.add(50012033L);
+        cids.add(50012825L);
+        cids.add(50012032L);
+        return cids;
     }
 
 

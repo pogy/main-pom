@@ -98,6 +98,8 @@ public class GoodsSelFromEsService {
                 if (shop != null) {
                     g.setAliww(shop.getImAliww());
                     g.setFullStoreName(shop.getMarket()+" "+shop.getShopNum());
+                    g.setStoreNum(shop.getShopNum());
+                    g.setMarketName(shop.getMarket());
                 }
                 g.setStoreid(si.getStoreId());
                 goods.add(g);

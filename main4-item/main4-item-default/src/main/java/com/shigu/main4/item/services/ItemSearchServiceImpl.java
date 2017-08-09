@@ -183,6 +183,10 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 break;
             case GOODSUP:
                 break;
+            case USER_LOVE:
+                requestBuilder.setRank("rough_user_love", "user_love", 2000);
+                break;
+
         }
 
         if (aggs) {

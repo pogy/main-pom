@@ -13,7 +13,8 @@ public enum SearchOrderBy {
     PRICEUP("价格升序","price_up"),
     PRICEDOWN("价格降序","price_down"),
     POPULAR("人气","popular"),
-    GOODSUP("商品上传量","goods_up");
+    GOODSUP("商品上传量","goods_up"),
+    USER_LOVE("按用户喜欢程度","user_love");
 
     SearchOrderBy(String title, String value) {
         this.title = title;

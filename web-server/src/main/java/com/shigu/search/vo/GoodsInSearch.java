@@ -55,6 +55,14 @@ public class GoodsInSearch implements Serializable{
      * 高亮货号
      */
     private String highLightGoodsNo;
+    /**
+     * 市场名
+     */
+    private String marketName;
+    /**
+     * 档口号
+     */
+    private String storeNum;
 
     public GoodsInSearch() {
     }
@@ -157,5 +165,21 @@ public class GoodsInSearch implements Serializable{
 
     public void setHighLightGoodsNo(String highLightGoodsNo) {
         this.highLightGoodsNo = highLightGoodsNo;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getStoreNum() {
+        return storeNum;
+    }
+
+    public void setStoreNum(String storeNum) {
+        this.storeNum = storeNum;
     }
 }

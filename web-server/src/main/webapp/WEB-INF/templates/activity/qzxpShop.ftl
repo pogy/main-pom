@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/qzxpShop.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/qzxpShop.css?v=20180809" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/qzxpShop.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/qzxpShop.js?v=20180809"></script>
 </head>
 <body>
 
@@ -89,7 +89,7 @@
                 <li class="noDown">
                     <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
-                        <span>购物车</span>
+                        <span>进货车</span>
                         
                         
                     </a>
@@ -291,6 +291,14 @@ var webSite = '${webSite!}';
         </li>
     
         <li>
+            <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
+                知识产权
+                
+                
+            </a>
+        </li>
+    
+        <li>
             <a href="http://zixun.571xz.com/index" target="_blank">
                 资讯
                 
@@ -430,6 +438,8 @@ var webSite = '${webSite!}';
         
     </ul>
 </div>
+
+
 
 
 

@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1497346940633" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1502171368430" rel="stylesheet">
     
   </head>
 <body>
@@ -249,6 +249,9 @@ var webSite = '${webSite!}';
                 <li><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 </#if>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
+                <#if webSite == 'hz'>
+                <li><a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">知识产权</a></li>
+                </#if>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>
             </ul>
@@ -379,7 +382,7 @@ if(this.$wgt){
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -387,6 +390,7 @@ if(this.$wgt){
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
@@ -410,7 +414,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1497346940633"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1502171368430"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

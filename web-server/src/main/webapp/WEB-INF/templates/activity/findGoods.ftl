@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1501042926655" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1502166471753" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1501042926655"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1502166471753"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -252,6 +252,7 @@ var webSite = '${webSite!}';
                     <li><a href="http://so.571xz.com/${webSite!}goods.htm">商品库</a></li>
                     <li><a href="http://so.571xz.com/newgoods.htm?webSite=${webSite!}">今日新品</a></li>
                     <li><a href="http://daifa.571xz.com/">一件代发</a></li>
+                    <li><a href="http://www.571xz.com/shopIconCopyright.htm">知识产权</a></li>
                     <li><a href="http://zixun.571xz.com/index">资讯</a></li>
                 </ul>
             </div>
