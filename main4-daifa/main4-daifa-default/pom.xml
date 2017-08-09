@@ -12,6 +12,13 @@
     <groupId>sites.main</groupId>
     <artifactId>main4-daifa-default</artifactId>
     <version>4.2.0-RELEASE</version>
+    <dependencies>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-daifa-api</artifactId>
+            <version>4.2.0-RELEASE</version>
+        </dependency>
+    </dependencies>
 
 
 </project>
