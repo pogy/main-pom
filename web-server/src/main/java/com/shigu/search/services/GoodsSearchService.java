@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 商品搜索服务
@@ -135,6 +136,21 @@ public class GoodsSearchService {
         List<ItemSpreadVO> list=objFromCache.selObj();
         Collections.shuffle(list);
         return BeanMapper.mapList(list,TjGoods.class);
+    }
+
+    /**
+     * 获取男装商品库底部广告
+     * @param webSite
+     * @return
+     */
+    public List<BottomGoodsGoat> selBottomGoat(String webSite) {
+        List<ItemSpreadVO> list = spreadService.selItemSpreads(webSite, SpreadEnum.MAN_GOODS_BOTTOM).selObj();
+        Collections.shuffle(list);
+        return list.stream().map(o->{
+            BottomGoodsGoat result = BeanMapper.map(o, BottomGoodsGoat.class);
+            result.setFullStoreName(o.getStoreText());
+            return result;
+        }).collect(Collectors.toList());
     }
 
     /**

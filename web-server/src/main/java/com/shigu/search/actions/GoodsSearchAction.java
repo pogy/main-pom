@@ -264,6 +264,7 @@ public class GoodsSearchAction {
         //搜索路径
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
+        model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website));
         if ("kx".equalsIgnoreCase(website)) {
             return "xieSearch/goods";
         } else {

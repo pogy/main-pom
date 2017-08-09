@@ -13,6 +13,8 @@ public class ItemSimpleInfo {
 
     private String shopTitle;
 
+    private String title;
+
     public ItemSimpleInfo() {
     }
 
@@ -21,6 +23,22 @@ public class ItemSimpleInfo {
         this.style = style;
         this.element = element;
         this.shopTitle = shopTitle;
+    }
+
+    public ItemSimpleInfo(Long goodsId, String style, String element, String shopTitle, String title) {
+        this.goodsId = goodsId;
+        this.style = style;
+        this.element = element;
+        this.shopTitle = shopTitle;
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getShopTitle() {
