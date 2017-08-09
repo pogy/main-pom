@@ -544,7 +544,7 @@ $(function(){
         </div>
         
         </#if>
-        
+
     </div>
     <div class="cttrtbox">
        <div class="tjGoodsBox">
@@ -568,7 +568,7 @@ $(function(){
            </#if>
        </div>
     </div>
-    
+
     <div class="goodsGoat">
         <h3>掌柜热卖</h3>
         <ul class="clearfix">
@@ -586,7 +586,7 @@ $(function(){
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:656px;"> 
+        <p class="sitemap" style="width:656px;">
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
