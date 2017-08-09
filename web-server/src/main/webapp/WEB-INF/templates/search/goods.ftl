@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1498964169270" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1502255700072" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1498964169270"></script>
+    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1502255700072"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -260,6 +260,9 @@ var webSite = '${webSite!}';
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 </#if>
                 <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
+                <#if webSite == "hz">
+                <li><a href="http://www.571xz.com/shopIconCopyright.htm">知识产权</a></li>
+                </#if>
                 <li><a href="http://zixun.571xz.com/index" target="_blank">资讯</a></li>
                 </#if>
             </ul>
@@ -541,6 +544,7 @@ $(function(){
         </div>
         
         </#if>
+        
     </div>
     <div class="cttrtbox">
        <div class="tjGoodsBox">
@@ -564,10 +568,25 @@ $(function(){
            </#if>
        </div>
     </div>
+    
+    <div class="goodsGoat">
+        <h3>掌柜热卖</h3>
+        <ul class="clearfix">
+            <#list goodsGoats as goods>
+            <li>
+                <a href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}" target="_blank" class="imgBox">
+                    <img src="${goods.imgsrc!}_220x220.jpg" alt>
+                </a>
+                <a href="http://${webSite!}.571xz.com/item.htm?id=${goods.id!}" target="_blank" class="title" title="${goods.title!}">${goods.title!}</a>
+                <p><span class="price">&yen;45.00</span><a href="http://${webSite!}.571xz.com/shop.htm?id=${goods.storeid!}" target="_blank" class="shopNum" title="${goods.fullStoreName!}">${goods.fullStoreName!}</a></p>
+            </li>
+            </#list>
+        </ul>
+    </div>
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
