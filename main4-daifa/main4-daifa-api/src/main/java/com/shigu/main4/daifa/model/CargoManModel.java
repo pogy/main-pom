@@ -10,15 +10,21 @@ import java.util.List;
  */
 public interface CargoManModel {
     /**
-     * 创建波次
-     * @param subOrderIds 子单集合
-     * @return 波次号
+     * 分配给我
+     * @param waitIssueIds 待分配ID
      */
-    String makeTakeWave(List<Long> subOrderIds);
+    void takeToMe(List<Long> waitIssueIds);
 
     /**
      * 马上结束拿货
      * 未拿到,直接缺货
      */
     void finishTakeGoods();
+
+    /**
+     * 打印标签标记
+     * @param issueIds 分配ID
+     * @return 标签数
+     */
+    int markPrint(List<Long> issueIds);
 }

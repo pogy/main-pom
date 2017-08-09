@@ -12,10 +12,10 @@ public interface TakeGoodsIssueProcess {
     /**
      * 分配拿货任务
      * @param wholeId 拿货人ID
-     * @param subOrderIds 子单ID
+     * @param waitIssueIds 待分配ID
      * @return 波次号
      */
-    String distributionTask(Long wholeId, List<Long> subOrderIds);
+    String distributionTask(Long wholeId, List<Long> waitIssueIds);
 
     /**
      * 按市场分配
@@ -55,20 +55,21 @@ public interface TakeGoodsIssueProcess {
 
     /**
      * 已拿到
-     * @param subOrderId 子订单ID
+     * @param issueId 分配记录IDID
      */
-    void complete(Long subOrderId);
+    void complete(Long issueId);
 
     /**
      * 未拿到
-     * @param subOrderId 子订单ID
+     * @param issueId 分配记录ID
      */
-    void uncomplete(Long subOrderId);
+    void uncomplete(Long issueId);
 
     /**
      * 按人头,全部标记未拿
      * @param wholeId 拿货员ID
+     * @param issueIds 分配记录ID串
      */
-    void uncompleteAll(Long wholeId);
+    void uncompleteAll(Long wholeId,List<Long> issueIds);
 
 }
