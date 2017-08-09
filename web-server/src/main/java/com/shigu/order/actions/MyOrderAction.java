@@ -15,6 +15,7 @@ import com.shigu.order.vo.MyOrderDetailVO;
 import com.shigu.order.vo.MyOrderVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,6 +74,16 @@ public class MyOrderAction {
         model.addAttribute("pageOption", pager.selPageOption(bo.getPageSize()));
         return "buyer/myOrder";
 
+    }
+
+    /**
+     * 验证订单是否可退
+     */
+    @RequestMapping("isCanApplyRefund")
+    @ResponseBody
+    public JSONObject isCanApplyRefund(Long childOrderId){
+        //TODO: 实现查询代发订单可退情况
+        return JsonResponseUtil.success().element("refundState", 1);
     }
 
     /**

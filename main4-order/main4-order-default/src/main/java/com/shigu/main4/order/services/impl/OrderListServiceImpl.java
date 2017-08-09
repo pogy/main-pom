@@ -309,7 +309,7 @@ public class OrderListServiceImpl implements OrderListService {
                         case ONLY_REFUND:
                             vo.setTkNum(refundVO.getNumber());
                             vo.setPreSaleRefundId(refundVO.getRefundId());
-                            vo.setTkState(refundVO.getRefundState() == RefundStateEnum.APPLY_REFUND ? 1 : refundVO.getRefundState() == RefundStateEnum.ENT_REFUND ? 2 : 3);
+                            vo.setTkState(refundVO.getRefundState() == RefundStateEnum.ENT_REFUND ? 1 : 0);//退款只有成功或无
                             break;
                         case GOODS_REFUND:
                             vo.setShTkNum(refundVO.getNumber());
