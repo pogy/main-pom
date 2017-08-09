@@ -207,14 +207,17 @@ public class CdnAction {
 //                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_STYLEBOT:SpreadEnum.MAN_STYLEBOT)));
         //猜喜欢
         List<LoveGoodsList> loves=new ArrayList<>();
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHTX:SpreadEnum.MAN_XHTX)));
+
         if(manOrWoman.equals("Woman")){
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔",webSite,
-                    SpreadEnum.WOMAN_XHNZ)));
+
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("上装",webSite,indexShowService.womanUp())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("下装",webSite,
+                    indexShowService.womanBottom())));
         }else{
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
-                    SpreadEnum.MAN_XHNZ)));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("夹克",webSite,
+                    indexShowService.manJack())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("休闲裤",webSite,
+                    indexShowService.manFree())));
         }
 //        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
 //                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
@@ -363,7 +366,7 @@ public class CdnAction {
 
         //猜喜欢
         List<LoveGoodsList> loves = new ArrayList<>();
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("看鞋",webSite,SpreadEnum.KX_MAN_XH)));
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("看鞋",webSite,indexShowService.xie())));
         model.addAttribute("loveGoodslist",loves);
 
         model.addAttribute("webSite", webSite);
@@ -431,17 +434,16 @@ public class CdnAction {
 //                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_STYLEBOT:SpreadEnum.MAN_STYLEBOT)));
         //猜喜欢
         List<LoveGoodsList> loves=new ArrayList<>();
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XHTX:SpreadEnum.CS_MAN_XHTX)));
         if(manOrWoman.equals("Woman")){
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔",webSite,
-                    SpreadEnum.CS_WOMAN_XHNZ)));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("上装",webSite,indexShowService.womanUp())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("下装",webSite,
+                    indexShowService.womanBottom())));
         }else{
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
-                    SpreadEnum.CS_MAN_XHNZ)));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("夹克",webSite,
+                    indexShowService.manJack())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("休闲裤",webSite,
+                    indexShowService.manFree())));
         }
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XHXZ:SpreadEnum.CS_MAN_XHXZ)));
         model.addAttribute("loveGoodslist",loves);
         model.addAttribute("webSite",webSite);
 
@@ -454,7 +456,7 @@ public class CdnAction {
      * @param fromCache
      */
     private Object selFromCache(ObjFromCache fromCache){
-        Object obj=fromCache.selObj();
+        Object obj=fromCache.selReal();
 //        if(fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
 //            spreadService.createBySync(fromCache);
         return obj;
