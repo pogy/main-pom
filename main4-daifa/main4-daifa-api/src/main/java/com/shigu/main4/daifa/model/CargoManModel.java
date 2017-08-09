@@ -21,10 +21,4 @@ public interface CargoManModel {
      */
     void finishTakeGoods();
 
-    /**
-     * 打印标签标记
-     * @param issueIds 分配ID
-     * @return 标签数
-     */
-    int markPrint(List<Long> issueIds);
 }
