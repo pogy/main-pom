@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/qzxpShop.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/qzxpShop.css?v=20180809" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/qzxpShop.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/qzxpShop.js?v=20180809"></script>
 </head>
 <body>
 
@@ -438,6 +438,8 @@ var webSite = '${webSite!}';
         
     </ul>
 </div>
+
+
 
 
 
