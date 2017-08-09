@@ -26,6 +26,12 @@ public interface SubOrderModel {
     void markDown();
 
     /**
+     * 备注
+     * @param context
+     */
+    void mark(String context);
+
+    /**
      * 已拿到货
      */
     void haveTake();
