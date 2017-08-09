@@ -440,37 +440,39 @@ $(function(){
                 <#if orderStateNum == 1>
                     <span class="fcF40">待付款</span>
                 <#elseif orderStateNum == 2>
+                    <#if childOrder.tkState == 1>
+                    <span class="fcF40">退款成功 x${childOrder.tkNum!}</span>
+                    <#else>
                     <span>待配货</span>
+                    </#if>
                 <#elseif orderStateNum == 3>
                     <#if childOrder.shState == 0>
                     <span>已发货</span>
                     <#elseif childOrder.shState == 4 || childOrder.shState == 5>
                     <span>售后处理中</span>
                     <#elseif childOrder.shState == 2>
-                    <span class="fcBlue">退款成功
-                        <#if childOrder.tkNum gt 0> x${childOrder.tkNum!} </#if>
+                    <span class="fcBlue">退货退款成功 x${childOrder.shTkNum!}
                     </span>
                     <#elseif childOrder.shState == 3>
                     <span class="fcBlue">换货成功</span>
                     <#elseif childOrder.shState == 6>
-                    <span class="fcF40">退货已拒绝</span>
+                    <span class="fcF40">退货申请已拒绝</span>
                     <#elseif childOrder.shState == 7>
-                    <span class="fcF40">换货已拒绝</span>
+                    <span class="fcF40">换货申请已拒绝</span>
                     </#if>
                 <#elseif orderStateNum == 4>
                     <span>交易完成</span>
                     <#if childOrder.shState == 4 || childOrder.shState == 5>
                     <br><span class="fcBlue">售后处理中</span>
                     <#elseif childOrder.shState == 2>
-                    <br><span class="fcBlue">退款成功
-                        <#if childOrder.tkNum gt 0> x${childOrder.tkNum!} </#if>
+                    <br><span class="fcBlue">退货退款成功 x${childOrder.shTkNum!}
                     </span>
                     <#elseif childOrder.shState == 3>
                     <br><span class="fcBlue">换货成功</span>
                     <#elseif childOrder.shState == 6>
-                    <br><span class="fcF40">退货已拒绝</span>
+                    <br><span class="fcF40">退货申请已拒绝</span>
                     <#elseif childOrder.shState == 7>
-                    <br><span class="fcF40">换货已拒绝</span>
+                    <br><span class="fcF40">换货申请已拒绝</span>
                     </#if>
                 <#elseif orderStateNum == 5>
                     <span>交易已取消</span>

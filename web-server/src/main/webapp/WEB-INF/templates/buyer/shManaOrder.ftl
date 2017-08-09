@@ -351,12 +351,12 @@ var webSite = '${webSite!}';
                 </#if>
             <#elseif childOrder.shState == 6 || childOrder.shState == 7>
                 <#if childOrder.shState == 6>
-                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后申请拒绝</a></p>
+                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">退货申请已拒绝</a></p>
                 <#else>
-                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后申请拒绝</a></p>
+                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">换货申请已拒绝</a></p>
                 </#if>
             <#elseif childOrder.shState == 2>
-            <p class="fcF40">退款完成x${childOrder.shTkNum!}</p>
+            <p class="fcF40">退货退款完成x${childOrder.shTkNum!}</p>
             <#elseif childOrder.shState == 3>
             <p class="fcF40">换货完成</p>
             </#if>
@@ -373,12 +373,12 @@ var webSite = '${webSite!}';
                 </#if>
             <#elseif childOrder.shState == 6 || childOrder.shState == 7>
                 <#if childOrder.shState == 6>
-                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后申请拒绝</a></p>
+                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">退货申请已拒绝</a></p>
                 <#else>
-                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后申请拒绝</a></p>
+                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">换货申请已拒绝</a></p>
                 </#if>
             <#elseif childOrder.shState == 2>
-            <p class="fcF40">退款完成x${childOrder.shTkNum!}</p>
+            <p class="fcF40">退货退款完成x${childOrder.shTkNum!}</p>
             <#elseif childOrder.shState == 3>
             <p class="fcF40">换货完成</p>
             </#if>
@@ -402,9 +402,7 @@ var webSite = '${webSite!}';
     </li>
     <li class="orderState">
         <#if childOrder_index == 0>
-            <#if order.mainState == 2>
-            <p>待配货</p>
-            <#elseif order.mainState == 3>
+            <#if order.mainState == 3>
             <p>已发货</p>
             <#elseif order.mainState == 4>
             <p>交易完成</p>
