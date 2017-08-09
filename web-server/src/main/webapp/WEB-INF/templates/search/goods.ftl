@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1502255700072" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/goods.css?t=1502264693454" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1502255700072"></script>
+    <script src="http://style.571xz.com/searchV5/js/goods.js?t=1502264693454"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -544,7 +544,7 @@ $(function(){
         </div>
         
         </#if>
-
+        
     </div>
     <div class="cttrtbox">
        <div class="tjGoodsBox">
@@ -569,6 +569,7 @@ $(function(){
        </div>
     </div>
 
+    <#if (goodsGoats?size) gt 0>
     <div class="goodsGoat">
         <h3>掌柜热卖</h3>
         <ul class="clearfix">
@@ -583,10 +584,11 @@ $(function(){
             </#list>
         </ul>
     </div>
+    </#if>
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:656px;">
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
