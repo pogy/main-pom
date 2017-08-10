@@ -569,7 +569,7 @@ $(function(){
        </div>
     </div>
 
-    <#if (goodsGoats?size) gt 0>
+    <#if goodsGoats!=null && (goodsGoats?size) gt 0>
     <div class="goodsGoat">
         <h3>掌柜热卖</h3>
         <ul class="clearfix">
