@@ -16,6 +16,8 @@
            timeToIdleSeconds="600" timeToLiveSeconds="0" overflowToDisk="true" />
     <cache name="floorCache" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="600" timeToLiveSeconds="0" overflowToDisk="true" />
+    <cache name="marketNavCache" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="0" overflowToDisk="true" />
     <cache name="userStoreListCache" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="600" timeToLiveSeconds="0" overflowToDisk="true" />
     <cache name="webSitesCache" maxElementsInMemory="10000" eternal="false"
@@ -26,6 +28,8 @@
            timeToIdleSeconds="600" timeToLiveSeconds="0" overflowToDisk="true" />
     <cache name="shopBaseCache" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="600" timeToLiveSeconds="0" overflowToDisk="true" />
-    <cache name="shopRecommentsCache" maxElementsInMemory="10000" eternal="false"
+    <cache name="shopRecommetsCache" maxElementsInMemory="10000" eternal="false"
+           timeToIdleSeconds="600" timeToLiveSeconds="0" overflowToDisk="true" />
+    <cache name="domainByShopIdCache" maxElementsInMemory="10000" eternal="false"
            timeToIdleSeconds="600" timeToLiveSeconds="0" overflowToDisk="true" />
 </ehcache>
