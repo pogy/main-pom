@@ -10,10 +10,10 @@
         <!--<property name="username" value="admin" />-->
         <!--<property name="password" value="killer81682024" />-->
 
-        <property name="driverClassName" value="${malljdbc.driverClassName}" />
-        <property name="url" value="${malljdbc.url}" />
-        <property name="username" value="${malljdbc.username}" />
-        <property name="password" value="${malljdbc.password}" />
+        <property name="driverClassName" value="${daifajdbc.driverClassName}" />
+        <property name="url" value="${daifajdbc.url}" />
+        <property name="username" value="${daifajdbc.username}" />
+        <property name="password" value="${daifajdbc.password}" />
 
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="1" />
