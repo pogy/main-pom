@@ -38,6 +38,7 @@
         </property>
     </bean>
 
+
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
         <!--<property name="url" value="jdbc:mysql://122.224.104.234/test" />-->
@@ -83,7 +84,7 @@
             </list>
         </property>
         <property name="dataSource" ref="dataSource"></property>
-        <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
         <property name="mapperLocations" value="classpath*:/mall/mybatis/*.xml" />
         <property name="typeAliasesPackage" value="com.opentae.data.daifa"></property>
     </bean>
@@ -99,4 +100,6 @@
         <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
     </bean>
+    <import resource="classpath:producer.xml"/>
+
 </beans>

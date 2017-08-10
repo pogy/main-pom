@@ -1,7 +1,9 @@
 package com.shigu.main4.daifa.model;
 
 import com.shigu.main4.daifa.bo.DeliveryBO;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ public interface OrderModel {
      * 发货
      * @param delivery
      */
-    void send(DeliveryBO delivery);
+    void send(DeliveryBO delivery) throws DaifaException;
 
     /**
      * 自动退款处理
