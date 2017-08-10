@@ -1,12 +1,13 @@
 package com.shigu.main4.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 店铺申请信息
  * Created by zhaohongbo on 17/3/14.
  */
-public class ShopApply {
+public class ShopApply implements Serializable {
     /**
      * 入驻ID
      */

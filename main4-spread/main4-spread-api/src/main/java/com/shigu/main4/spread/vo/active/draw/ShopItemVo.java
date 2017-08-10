@@ -1,10 +1,12 @@
 package com.shigu.main4.spread.vo.active.draw;
 
+import java.io.Serializable;
+
 /**
  * 发现好店 携带商品
  * Created by bugzy on 2017/5/25 0025.
  */
-public class ShopItemVo {
+public class ShopItemVo  implements Serializable {
 
     private Long id;
     private String imgsrc;

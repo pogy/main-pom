@@ -1,5 +1,6 @@
 package com.shigu.main4.vo.fitment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  * banner 导航区配置
  * Created by Administrator on 2017/4/18 0018.
  */
-public class BannerNav {
+public class BannerNav implements Serializable {
 
     private List<Long> pages = new ArrayList<>();
 
