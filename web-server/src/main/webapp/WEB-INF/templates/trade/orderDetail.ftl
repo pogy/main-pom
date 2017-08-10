@@ -462,12 +462,12 @@ $(function(){
                     </#if>
                     
                     <#if childOrder.tkState == 1>
-                    <span class="fcBlue">退款成功 x${childOrder.tkNum!}</span>
+                    <br><span class="fcBlue">退款成功 x${childOrder.tkNum!}</span>
                     </#if>
                 <#elseif orderStateNum == 4>
                     <span>交易完成</span>
                     <#if childOrder.tkState == 1>
-                    <span class="fcBlue">退款成功 x${childOrder.tkNum!}</span>
+                    <br><span class="fcBlue">退款成功 x${childOrder.tkNum!}</span>
                     </#if>
                     <#if childOrder.shState == 4 || childOrder.shState == 5>
                     <br><span class="fcF40">售后处理中</span>
