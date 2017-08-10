@@ -5,13 +5,13 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.0-RELEASE</version>
+        <version>4.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>sites.main</groupId>
     <artifactId>daifa-server</artifactId>
-    <version>4.2.0-RELEASE</version>
+    <version>4.2.0-SNAPSHOT</version>
 
 
 </project>
