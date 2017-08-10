@@ -569,7 +569,8 @@ $(function(){
        </div>
     </div>
 
-    <#if goodsGoats!=null && (goodsGoats?size) gt 0>
+    <#if goodsGoats??>
+    <#if (goodsGoats?size) gt 0>
     <div class="goodsGoat">
         <h3>掌柜热卖</h3>
         <ul class="clearfix">
@@ -584,6 +585,7 @@ $(function(){
             </#list>
         </ul>
     </div>
+    </#if>
     </#if>
 </div>
 <div class="footer">
