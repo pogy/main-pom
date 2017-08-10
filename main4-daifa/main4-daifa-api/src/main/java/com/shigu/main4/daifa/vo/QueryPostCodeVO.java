@@ -1,9 +1,11 @@
 package com.shigu.main4.daifa.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017-6-7.
  */
-public class QueryPostCodeVO {
+public class QueryPostCodeVO implements Serializable {
 
     private String  jsonData;
     /**

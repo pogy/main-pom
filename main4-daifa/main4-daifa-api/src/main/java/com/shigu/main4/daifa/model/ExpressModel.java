@@ -1,6 +1,7 @@
 package com.shigu.main4.daifa.model;
 
 import com.shigu.main4.daifa.bo.OrderExpressBO;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.vo.ExpressVO;
 
 /**
@@ -26,5 +27,5 @@ public interface ExpressModel {
      * ====================================================================================
      * 
      */
-    ExpressVO callExpress(OrderExpressBO bo);
+    ExpressVO callExpress(OrderExpressBO bo)throws DaifaException;
 }

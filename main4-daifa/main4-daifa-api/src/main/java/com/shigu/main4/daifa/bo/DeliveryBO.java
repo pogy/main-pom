@@ -1,5 +1,6 @@
 package com.shigu.main4.daifa.bo;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * 快递信息
  * Created by zhaohongbo on 17/8/9.
  */
-public class DeliveryBO {
+public class DeliveryBO implements Serializable {
 
     private List<Long> dfOrderIds;
 

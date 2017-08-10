@@ -1,5 +1,6 @@
 package com.shigu.main4.daifa.bo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,21 +14,13 @@ import java.util.List;
  * @since: main-pom
  * @commonents:
  */
-public class OrderExpressBO {
+public class OrderExpressBO implements Serializable {
     private Long tid;//代发交易ID
     private String expressName;//快递名
-
     private String receiverName;//收货人姓名
     private String receiverPhone;//收货人手机号
-
     private String receiverAddress;//收化人地址
 
-    private String sendName;//发件人
-    private String sendPhone;//发件人手机号
-    private String sendProv;//发件人省份
-    private String sendCity;//发件人城市
-    private String sendArea;//发件人区域
-    private String sendAddress;//发件人地址
 
     private List<SubOrderExpressBO> list;//子单BO
 
@@ -73,53 +66,6 @@ public class OrderExpressBO {
         this.receiverAddress = receiverAddress;
     }
 
-    public String getSendName () {
-        return sendName;
-    }
-
-    public void setSendName (String sendName) {
-        this.sendName = sendName;
-    }
-
-    public String getSendPhone () {
-        return sendPhone;
-    }
-
-    public void setSendPhone (String sendPhone) {
-        this.sendPhone = sendPhone;
-    }
-
-    public String getSendProv () {
-        return sendProv;
-    }
-
-    public void setSendProv (String sendProv) {
-        this.sendProv = sendProv;
-    }
-
-    public String getSendCity () {
-        return sendCity;
-    }
-
-    public void setSendCity (String sendCity) {
-        this.sendCity = sendCity;
-    }
-
-    public String getSendArea () {
-        return sendArea;
-    }
-
-    public void setSendArea (String sendArea) {
-        this.sendArea = sendArea;
-    }
-
-    public String getSendAddress () {
-        return sendAddress;
-    }
-
-    public void setSendAddress (String sendAddress) {
-        this.sendAddress = sendAddress;
-    }
 
     public List<SubOrderExpressBO> getList () {
         return list;
