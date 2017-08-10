@@ -60,16 +60,16 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void errorTest() throws RefundException, PayerException {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 87L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 88L);
         //refundItemOrder.error("退件失败");
         //测试重复操作
-        refundItemOrder.success();
+        refundItemOrder.changeSuccess();
     }
 
     @Test
     public void sellerProposalTest() {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 81L);
-        refundItemOrder.sellerProposal(8800L,"测试参数");
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 89L);
+        refundItemOrder.sellerProposal(5200L,"优惠你两块");
         //测试重复操作
         //refundItemOrder.sellerProposal(200L,"测试参数");
     }
@@ -79,7 +79,7 @@ public class RefundItemOrderImplTest extends BaseTest{
         RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, generateRefundId);
         refundItemOrder.buyerNoReprice();
         //测试重复操作
-        refundItemOrder.buyerNoReprice();
+//        refundItemOrder.buyerNoReprice();
     }
 
     private RefundApplyBO refundApplyBOGenerator(Long oid,Long soid,Integer type,Long hopeMoney,String reason) {
@@ -96,6 +96,6 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void sended(){
-        SpringBeanFactory.getBean(ItemOrder.class, 205L).sended("437039539484");
+        SpringBeanFactory.getBean(ItemOrder.class, 235L).sended("437039539484");
     }
 }

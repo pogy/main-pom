@@ -130,8 +130,8 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
     }
 
-    private void refundStateChangeAndLog(RefundStateEnum state) {
-        refundStateChangeAndLog(null, state);
+    private void refundStateChangeAndLog(RefundStateEnum state, String log) {
+        refundStateChangeAndLog(null, state, log);
     }
 
     /**
@@ -139,9 +139,10 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      *
      * @param refundInfo 当前状态信息，可为null, 为null 会自助查询
      * @param state      修改后状态
+     * @param log           记录日志
      */
     @Transactional(rollbackFor = Exception.class)
-    private void refundStateChangeAndLog(RefundVO refundInfo, RefundStateEnum state) {
+    private void refundStateChangeAndLog(RefundVO refundInfo, RefundStateEnum state, String log) {
         if (refundInfo == null) {
             refundInfo = refundinfo();
         }
@@ -152,7 +153,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         refundLog.setRefundId(refundInfo.getRefundId());
         refundLog.setFromStatus(refundInfo.getRefundState().refundStatus);
         refundLog.setToStatus(state.refundStatus);
-        refundLog.setMsg(refundInfo.getFailMsg());
+        refundLog.setMsg(log == null ? state.log : log);
         Boolean imBuyer = state.imBuyer != null ? state.imBuyer
                 : RefundStateEnum.SELLER_REPRICE == refundInfo.getRefundState();
         refundLog.setImBuyer(imBuyer);
@@ -191,7 +192,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void sellerAgree() {
-        refundStateChangeAndLog(RefundStateEnum.DISPOSE_REFUND);
+        refundStateChangeAndLog(RefundStateEnum.DISPOSE_REFUND, null);
     }
 
     /**
@@ -206,7 +207,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         refund.setRefundId(refundId);
         refund.setFailMsg(reason);
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
-        refundStateChangeAndLog(RefundStateEnum.SELLER_REFUND);
+        refundStateChangeAndLog(RefundStateEnum.SELLER_REFUND, reason);
     }
 
     /**
@@ -217,7 +218,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void userSended(String buyerCourier) {
-        refundStateChangeAndLog(RefundStateEnum.BUYER_SEND);
+        refundStateChangeAndLog(RefundStateEnum.BUYER_SEND, null);
         ItemOrderRefund orderRefund = new ItemOrderRefund();
         orderRefund.setRefundId(refundId);
         orderRefund.setBuyerCourier(buyerCourier);
@@ -231,7 +232,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void sellerCached() {
-        refundStateChangeAndLog(RefundStateEnum.SELLER_CACHED);
+        refundStateChangeAndLog(RefundStateEnum.SELLER_CACHED, null);
     }
 
     /**
@@ -247,7 +248,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         refund.setSellerProposalMoney(money);
         refund.setFailMsg(msg);
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
-        refundStateChangeAndLog(RefundStateEnum.SELLER_REPRICE);
+        refundStateChangeAndLog(RefundStateEnum.SELLER_REPRICE, msg);
     }
 
     /**
@@ -264,7 +265,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
     @Override
     @Transactional
     public void buyerNoReprice() {
-        refundStateChangeAndLog(RefundStateEnum.BUYER_NOREPRICE);
+        refundStateChangeAndLog(RefundStateEnum.BUYER_NOREPRICE, null);
     }
 
     /**
@@ -287,7 +288,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
 
     public void changeSuccess() {
-        refundStateChangeAndLog(RefundStateEnum.ENT_REFUND);
+        refundStateChangeAndLog(RefundStateEnum.ENT_REFUND, null);
     }
 
     /**
@@ -309,7 +310,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
             if (payedVO.getMoney() >= money) {
                 SpringBeanFactory.getBean(payedVO.getPayType().getService(), PayerService.class)
                         .refund(payedVO.getPayId(), money);
-                refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND);
+                refundStateChangeAndLog(refundinfo, RefundStateEnum.ENT_REFUND, null);
                 ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
                 itemOrderRefund.setRefundId(refundId);
                 itemOrderRefund.setRefundMoney(money);
@@ -336,7 +337,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
         refund.setRefundId(refundId);
         refund.setFailMsg(reason);
         itemOrderRefundMapper.updateByPrimaryKeySelective(refund);
-        refundStateChangeAndLog(RefundStateEnum.NOT_REFUND);
+        refundStateChangeAndLog(RefundStateEnum.NOT_REFUND, reason);
     }
 
     public Long getRefundId() {
