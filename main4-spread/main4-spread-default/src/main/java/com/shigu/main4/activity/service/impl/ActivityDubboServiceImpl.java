@@ -8,6 +8,7 @@ import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.activity.model.Activity;
 import com.shigu.main4.activity.service.ActivityDubboService;
 import com.shigu.main4.activity.model.ActivityFactory;
+import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
 import com.shigu.main4.activity.vo.GoatActivityWithEnlist;
@@ -66,6 +67,11 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
     }
 
     @Override
+    public ActivityVO selActivityById(Long activityId) throws ActivityException {
+        return activityFactory.selActivityById(activityId);
+    }
+
+    @Override
     public GoatActivityWithEnlist selActivityEnlists(Long activityId, Integer hitType) throws ActivityException {
         Activity activity=activityFactory.selActivityById(activityId);
         GoatActivityWithEnlist gawe=BeanMapper.map(activity,GoatActivityWithEnlist.class);
@@ -93,6 +99,36 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
     public void randomTen(Long activityId, Integer number) throws ActivityException {
         LedActivity activity=activityFactory.selActivityById(activityId);
         activity.randomHit(number);
+    }
+
+    @Override
+    public ActivityTermVO selTermByTime(ActivityType type, Date time) {
+        return activityFactory.selTermByTime(type,time);
+    }
+
+    @Override
+    public ActivityTermVO selNowFinishedTerm(ActivityType type, Date time) {
+        return activityFactory.selNowFinishedTerm(type,time);
+    }
+
+    @Override
+    public Boolean hasJoin(Long activityId, Long userId) throws ActivityException {
+        return activityFactory.selActivityById(activityId).hasJoin(userId);
+    }
+
+    @Override
+    public ActivityEnlistVO activityJoinMsg(Long activityId, Long userId) throws ActivityException {
+        return activityFactory.selActivityById(activityId).joinMsg(userId);
+    }
+
+    @Override
+    public List<ActivityEnlistVO> selEnlist(int hasTrue,Long activityId) throws ActivityException {
+        return activityFactory.selActivityById(activityId).selEnlist(hasTrue);
+    }
+
+    @Override
+    public ActivityTerm selafterTermId(ActivityType type, Long termId) {
+        return activityFactory.selafterTermId(type,termId);
     }
 
 }

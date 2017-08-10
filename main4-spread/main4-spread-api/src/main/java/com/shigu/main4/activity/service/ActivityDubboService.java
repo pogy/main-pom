@@ -1,11 +1,9 @@
 package com.shigu.main4.activity.service;
 
+import com.shigu.main4.activity.beans.ActivityTerm;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.vo.ActivityTermVO;
-import com.shigu.main4.activity.vo.ActivityVO;
-import com.shigu.main4.activity.vo.GoatActivityWithEnlist;
-import com.shigu.main4.activity.vo.GoatSimpleVO;
+import com.shigu.main4.activity.vo.*;
 
 import java.util.Date;
 import java.util.List;
@@ -25,6 +23,8 @@ public interface ActivityDubboService {
 
     <T extends ActivityVO> Long throwActivity(Long termId,T activity);
 
+    ActivityVO selActivityById(Long activityId) throws ActivityException;
+
     GoatActivityWithEnlist selActivityEnlists(Long activityId, Integer hitType) throws ActivityException;
 
     /**
@@ -37,4 +37,21 @@ public interface ActivityDubboService {
     void delActivity(Long termId,Long activityId);
 
     void randomTen(Long activityId,Integer number) throws ActivityException;
+
+    ActivityTermVO selTermByTime(ActivityType type, Date time);
+
+    ActivityTermVO selNowFinishedTerm(ActivityType type, Date time);
+
+    Boolean hasJoin(Long activityId,Long userId) throws ActivityException;
+
+    ActivityEnlistVO activityJoinMsg(Long activityId,Long userId) throws ActivityException;
+
+    List<ActivityEnlistVO> selEnlist(int hasTrue,Long activityId) throws ActivityException;
+
+    /**
+     * 某一期后面一期
+     * @param termId
+     * @return
+     */
+    ActivityTerm selafterTermId(ActivityType type,Long termId);
 }
