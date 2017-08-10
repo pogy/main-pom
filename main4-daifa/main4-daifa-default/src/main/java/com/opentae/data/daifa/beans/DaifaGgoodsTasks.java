@@ -12,7 +12,7 @@ import javax.persistence.Id;
  *@内容摘要：
  *@编码作者：自动生成
  *@完成日期：
- *@Date2017-08-09 04:19:06
+ *@Date2017-08-10 10:21:09
  *@comments:
  *
  *=========================================================
@@ -83,7 +83,7 @@ public class DaifaGgoodsTasks {
 	private Integer printGoodsStatus;
 	/**每天第几次打印@YYYYMMdd_n*/
 	private String printBatch;
-	/**拿货状态@1未拿2已拿3缺货（默认为1）*/
+	/**拿货状态@0未拿1已拿2缺货（默认为1）*/
 	private Integer takeGoodsStatus;
 	/**拿货日期@ YYYYMMDD*/
 	private String takeGoodsDate;
@@ -95,7 +95,7 @@ public class DaifaGgoodsTasks {
 	private String remark;
 	/**是否下架@0可售1下架*/
 	private Integer delistIs;
-	/**是否操作过@1已经操作过*/
+	/**是否操作过拿货完成@1已经操作过*/
 	private Integer operateIs;
 	/**单子是否可用@0不可用,1可用*/
 	private Integer useStatus;
@@ -107,6 +107,8 @@ public class DaifaGgoodsTasks {
 	private Integer aggrement;
 	/**外部退货单号*/
 	private Long refundId;
+	/**是否截单@0未截单,1已截单*/
+	private Integer endStatus;
 	/**备用1*/
 	private String remark1;
 	/**备用2*/
@@ -705,7 +707,7 @@ public class DaifaGgoodsTasks {
 	/**
   	* 
 	*get方法
-  	*拿货状态@1未拿2已拿3缺货（默认为1）
+  	*拿货状态@0未拿1已拿2缺货（默认为1）
  	*自动生成
   	*/
     public Integer getTakeGoodsStatus() {
@@ -715,7 +717,7 @@ public class DaifaGgoodsTasks {
     /**
   	* 
   	*set方法
-	*拿货状态@1未拿2已拿3缺货（默认为1）
+	*拿货状态@0未拿1已拿2缺货（默认为1）
  	*自动生成
   	*/
     public void setTakeGoodsStatus(Integer takeGoodsStatus) {
@@ -819,7 +821,7 @@ public class DaifaGgoodsTasks {
 	/**
   	* 
 	*get方法
-  	*是否操作过@1已经操作过
+  	*是否操作过拿货完成@1已经操作过
  	*自动生成
   	*/
     public Integer getOperateIs() {
@@ -829,7 +831,7 @@ public class DaifaGgoodsTasks {
     /**
   	* 
   	*set方法
-	*是否操作过@1已经操作过
+	*是否操作过拿货完成@1已经操作过
  	*自动生成
   	*/
     public void setOperateIs(Integer operateIs) {
@@ -929,6 +931,25 @@ public class DaifaGgoodsTasks {
   	*/
     public void setRefundId(Long refundId) {
         this.refundId = refundId;
+    }
+	/**
+  	* 
+	*get方法
+  	*是否截单@0未截单,1已截单
+ 	*自动生成
+  	*/
+    public Integer getEndStatus() {
+        return endStatus;
+    }
+
+    /**
+  	* 
+  	*set方法
+	*是否截单@0未截单,1已截单
+ 	*自动生成
+  	*/
+    public void setEndStatus(Integer endStatus) {
+        this.endStatus = endStatus;
     }
 	/**
   	* 

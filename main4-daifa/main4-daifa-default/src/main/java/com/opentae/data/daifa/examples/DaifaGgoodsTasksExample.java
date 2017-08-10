@@ -53,6 +53,7 @@ public class DaifaGgoodsTasksExample extends SgExample<DaifaGgoodsTasksExample.C
     public static EntityColumn giftCode;
     public static EntityColumn aggrement;
     public static EntityColumn refundId;
+    public static EntityColumn endStatus;
     public static EntityColumn remark1;
     public static EntityColumn remark2;
     static {
@@ -104,6 +105,7 @@ public class DaifaGgoodsTasksExample extends SgExample<DaifaGgoodsTasksExample.C
         giftCode = listMap.get("giftCode");
         aggrement = listMap.get("aggrement");
         refundId = listMap.get("refundId");
+        endStatus = listMap.get("endStatus");
         remark1 = listMap.get("remark1");
         remark2 = listMap.get("remark2");
     }
@@ -2120,43 +2122,43 @@ public class DaifaGgoodsTasksExample extends SgExample<DaifaGgoodsTasksExample.C
             return isNotNull(youhuoDate);
         }
 
-        public DaifaGgoodsTasksExample.Criteria andYouhuoDateEqualTo(java.util.Date value) {
+        public DaifaGgoodsTasksExample.Criteria andYouhuoDateEqualTo(Date value) {
             return equalTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsTasksExample.Criteria andYouhuoDateNotEqualTo(java.util.Date value) {
+        public DaifaGgoodsTasksExample.Criteria andYouhuoDateNotEqualTo(Date value) {
             return notEqualTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsTasksExample.Criteria andYouhuoDateGreaterThan(java.util.Date value) {
+        public DaifaGgoodsTasksExample.Criteria andYouhuoDateGreaterThan(Date value) {
             return greaterThan(youhuoDate, value);
         }
 
-        public DaifaGgoodsTasksExample.Criteria andYouhuoDateGreaterThanOrEqualTo(java.util.Date value) {
+        public DaifaGgoodsTasksExample.Criteria andYouhuoDateGreaterThanOrEqualTo(Date value) {
             return greaterThanOrEqualTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsTasksExample.Criteria andYouhuoDateLessThan(java.util.Date value) {
+        public DaifaGgoodsTasksExample.Criteria andYouhuoDateLessThan(Date value) {
             return lessThan(youhuoDate, value);
         }
 
-        public DaifaGgoodsTasksExample.Criteria andYouhuoDateLessThanOrEqualTo(java.util.Date value) {
+        public DaifaGgoodsTasksExample.Criteria andYouhuoDateLessThanOrEqualTo(Date value) {
             return lessThanOrEqualTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsTasksExample.Criteria andYouhuoDateIn(List<java.util.Date> values) {
+        public DaifaGgoodsTasksExample.Criteria andYouhuoDateIn(List<Date> values) {
             return in(youhuoDate, values);
         }
 
-        public DaifaGgoodsTasksExample.Criteria andYouhuoDateNotIn(List<java.util.Date> values) {
+        public DaifaGgoodsTasksExample.Criteria andYouhuoDateNotIn(List<Date> values) {
             return notIn(youhuoDate, values);
         }
 
-        public DaifaGgoodsTasksExample.Criteria andYouhuoDateBetween(java.util.Date value1, java.util.Date value2) {
+        public DaifaGgoodsTasksExample.Criteria andYouhuoDateBetween(Date value1, Date value2) {
             return between(youhuoDate, value1, value2);
         }
 
-        public DaifaGgoodsTasksExample.Criteria andYouhuoDateNotBetween(java.util.Date value1, java.util.Date value2) {
+        public DaifaGgoodsTasksExample.Criteria andYouhuoDateNotBetween(Date value1, Date value2) {
             return notBetween(youhuoDate, value1, value2);
         }
         public DaifaGgoodsTasksExample.Criteria andGiftCodeIsNull() {
@@ -2307,6 +2309,53 @@ public class DaifaGgoodsTasksExample extends SgExample<DaifaGgoodsTasksExample.C
 
         public DaifaGgoodsTasksExample.Criteria andRefundIdNotBetween(Long value1, Long value2) {
             return notBetween(refundId, value1, value2);
+        }
+        public DaifaGgoodsTasksExample.Criteria andEndStatusIsNull() {
+            return isNull(endStatus);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusIsNotNull() {
+            return isNotNull(endStatus);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusEqualTo(Integer value) {
+            return equalTo(endStatus, value);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusNotEqualTo(Integer value) {
+            return notEqualTo(endStatus, value);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusGreaterThan(Integer value) {
+            return greaterThan(endStatus, value);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(endStatus, value);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusLessThan(Integer value) {
+            return lessThan(endStatus, value);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(endStatus, value);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusIn(List<Integer> values) {
+            return in(endStatus, values);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusNotIn(List<Integer> values) {
+            return notIn(endStatus, values);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusBetween(Integer value1, Integer value2) {
+            return between(endStatus, value1, value2);
+        }
+
+        public DaifaGgoodsTasksExample.Criteria andEndStatusNotBetween(Integer value1, Integer value2) {
+            return notBetween(endStatus, value1, value2);
         }
         public DaifaGgoodsTasksExample.Criteria andRemark1IsNull() {
             return isNull(remark1);
