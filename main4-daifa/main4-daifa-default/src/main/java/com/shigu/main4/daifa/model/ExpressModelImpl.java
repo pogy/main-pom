@@ -13,6 +13,7 @@ import com.shigu.main4.daifa.beans.*;
 import com.shigu.main4.daifa.bo.OrderExpressBO;
 import com.shigu.main4.daifa.bo.SubOrderExpressBO;
 import com.shigu.main4.daifa.exception.KdApiException;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.utils.KdConfig;
 import com.shigu.main4.daifa.utils.KdHttpUtil;
 import com.shigu.main4.daifa.vo.ExpressVO;
@@ -69,7 +70,7 @@ public class ExpressModelImpl implements ExpressModel{
      *
      */
     @Override
-    public ExpressVO callExpress (OrderExpressBO bo) {
+    public ExpressVO callExpress (OrderExpressBO bo) throws DaifaException{
 
         ExpressVO vo=null;
         //先查询这个代发交易是否已经有快递鸟的信息了
@@ -78,14 +79,16 @@ public class ExpressModelImpl implements ExpressModel{
              vo=new ExpressVO();
 
             vo=BeanMapper.map (dce,ExpressVO.class);
-
+            vo.setTid (dce.getDfTradeId ());
 
         }else{
             //先用快递ID查询出快递鸟的账户信息
             DaifaPostCustomerExample example=new DaifaPostCustomerExample();
             example.createCriteria ().andDfSellerIdEqualTo (sellerId).andExpressIdEqualTo (expressId);
             List <DaifaPostCustomer> list_dpc=daifaPostCustomerMapper.selectByExample (example);
-
+            if(list_dpc.size ()==0){
+                    throw new DaifaException ("系统无此快递鸟账户");
+            }
             //再用bo里的信息与快递鸟的账户查询快递
             ExpressBean express=new ExpressBean ();
             if(list_dpc.size ()>0){
@@ -125,7 +128,7 @@ public class ExpressModelImpl implements ExpressModel{
                 for (int i = 3; i < adds.length; i++) {
                     readd += adds[i] + " ";
                 }
-                send.setReceiverArea (readd);
+                send.setReceiverAddress (readd);
             }
 
             //发货人信息
@@ -139,7 +142,7 @@ public class ExpressModelImpl implements ExpressModel{
 
             try {
                 QueryPostCodeVO  qvo=getPostCode( send, express);
-                if(qvo.getPostCode ()!=null&&"".equals (qvo.getPostCode ())){
+                if(qvo.getPostCode ()!=null&&!"".equals (qvo.getPostCode ())){
                     //查询出返回的信息保存到数据库中
                     DaifaCallExpress dce1=new DaifaCallExpress();
                     dce1.setCreateTime (new Date());
@@ -158,6 +161,11 @@ public class ExpressModelImpl implements ExpressModel{
                     vo.setMarkDestination (dce1.getMarkDestination ());
                     vo.setExpressId (dce1.getExpressId ());
                     vo.setExpressCode (dce1.getExpressCode ());
+                }else{
+                    JSONObject obj1 = JSONObject.fromObject(qvo.getJsonData ());
+                   // Reason
+                    Object obj_reasion=obj1.get ("Reason");
+                    throw new DaifaException (obj_reasion.toString ());
                 }
 
             } catch (KdApiException e) {
@@ -238,6 +246,7 @@ public class ExpressModelImpl implements ExpressModel{
             throw new KdApiException(KdApiException.KdApiExceptionEnum.SIGN_ERROR);
         }
         String result = KdHttpUtil.sendPost(kdConfig.getEorderserviceReqURL(), params);
+        System.out.println("@@@@@@@@@@@@@@"+result);
         JSONObject obj = JSONObject.fromObject(result);
 
         if (obj.containsKey("Success")) {
@@ -264,6 +273,11 @@ public class ExpressModelImpl implements ExpressModel{
     private QueryPostCodeVO jsonToPostResult(JSONObject obj) {
 
         JSONObject order = obj.getJSONObject("Order");//快递鸟返回订单快递信息
+        if(order==null||order.size ()==0){
+            QueryPostCodeVO pr = new QueryPostCodeVO();
+            pr.setJsonData (obj.toString ());
+            return pr;
+        }
         String postCode = order.getString("LogisticCode");//快递单号
         Object m = order.get("MarkDestination");//大头笔//三段码
         Object oc=order.get("OriginCode");//始发地区域编码
