@@ -22,7 +22,7 @@ import java.util.*;
  * @since domwiki 4.0.0
  */
 @Service
-public class EsGoodsService {
+public class EsGoodsServiceImpl {
 
     @Autowired
     private ShiguTaobaocatMapper shiguTaobaocatMapper;

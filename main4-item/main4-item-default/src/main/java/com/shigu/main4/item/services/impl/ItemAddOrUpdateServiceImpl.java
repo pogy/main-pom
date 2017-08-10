@@ -87,7 +87,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     private SameItemUtil sameItemUtil;
 
     @Autowired
-    private EsGoodsService esGoodsService;
+    private EsGoodsServiceImpl esGoodsServiceImpl;
 
     @Autowired
     private EhCacheCacheManager ehCacheCacheManager;
@@ -178,7 +178,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                             "goods",
                             webSite,
                             tiny.getGoodsId().toString(),
-                            JSON.toJSONStringWithDateFormat(esGoodsService.createEsGoods(tiny), "yyyy-MM-dd HH:mm:ss")
+                            JSON.toJSONStringWithDateFormat(esGoodsServiceImpl.createEsGoods(tiny), "yyyy-MM-dd HH:mm:ss")
                     ));
 
         }
@@ -342,7 +342,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 "goods",
                 webSite,
                 tiny.getGoodsId().toString(),
-                JSON.toJSONStringWithDateFormat(esGoodsService.createEsGoods(soldout), "yyyy-MM-dd HH:mm:ss")
+                JSON.toJSONStringWithDateFormat(esGoodsServiceImpl.createEsGoods(soldout), "yyyy-MM-dd HH:mm:ss")
         ));
         // 设置下架时间
         soldout.setSoldoutTime(new Date());
@@ -643,7 +643,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         shiguPropImgsMapper.insertSelective(shiguPropImgs);
 
         //5.添加es中goods数据
-        ESGoods goods = esGoodsService.createEsGoods(tiny);
+        ESGoods goods = esGoodsServiceImpl.createEsGoods(tiny);
 //        ElasticRepository repository = new ElasticRepository();
         SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
         seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
@@ -692,7 +692,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
                 shiguGoodsTinies = Collections.emptyList();
             }
             for (ShiguGoodsTiny tiny : shiguGoodsTinies) {
-                ESGoods esGoods = esGoodsService.createEsGoods(tiny);
+                ESGoods esGoods = esGoodsServiceImpl.createEsGoods(tiny);
                 if (esGoods != null) {
                     bulk.add(
                             client.prepareUpdate("goods", tiny.getWebSite(), tiny.getGoodsId().toString())
@@ -843,7 +843,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
 //        ElasticRepository repository = new ElasticRepository();
         SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
-        seb.setSource(JSON.toJSONStringWithDateFormat(esGoodsService.createEsGoods(tiny), "yyyy-MM-dd HH:mm:ss"));
+        seb.setSource(JSON.toJSONStringWithDateFormat(esGoodsServiceImpl.createEsGoods(tiny), "yyyy-MM-dd HH:mm:ss"));
 //        repository.insert(seb);
         goodsAddToRedis.addToRedis(seb);
 
@@ -1095,7 +1095,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
             shiguGoodsStyleMapper.insertSelective(style);
         }
 
-        ESGoods goods = esGoodsService.createEsGoods(tiny);
+        ESGoods goods = esGoodsServiceImpl.createEsGoods(tiny);
         SimpleElaBean seb = new SimpleElaBean("goods", tiny.getWebSite(), tiny.getGoodsId().toString());
         seb.setSource(JSON.toJSONStringWithDateFormat(goods, "yyyy-MM-dd HH:mm:ss"));
         new ElasticRepository().insert(seb);
