@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Service("shiguActivityService")
 @Scope("prototype")
-public class ShiguActivityServiceImpl implements ShiguActivityModel {
+public class ShiguActivityModelImpl implements ShiguActivityModel {
 
     @Autowired
     private ShiguActivityMapper shiguActivityMapper;
@@ -34,7 +34,7 @@ public class ShiguActivityServiceImpl implements ShiguActivityModel {
 
     private Long activityId;
 
-    public ShiguActivityServiceImpl(Long activityId) {
+    public ShiguActivityModelImpl(Long activityId) {
         this.activityId = activityId;
     }
 
