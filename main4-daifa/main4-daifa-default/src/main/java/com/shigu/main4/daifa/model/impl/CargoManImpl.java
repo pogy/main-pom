@@ -26,7 +26,8 @@ import java.util.Objects;
 
 /**
  * Created by pc on 2017-08-09.
- *拿货模实现
+ * 拿货模实现
+ *
  * @author lys
  * @version 3.0.0-SNAPSHOT
  * @description
@@ -34,7 +35,7 @@ import java.util.Objects;
  */
 @Repository
 @Scope("prototype")
-public class CargoManImpl implements CargoManModel{
+public class CargoManImpl implements CargoManModel {
     private Long cargoManId;//拿货源Id
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
     private DaifaWorkerMapper daifaWorkerMapper;
@@ -44,59 +45,68 @@ public class CargoManImpl implements CargoManModel{
     private DaifaTradeMapper daifaTradeMapper;
     private DaifaWaitSendMapper daifaWaitSendMapper;
     private DaifaListDealUtil daifaListDealUtil;
-    public CargoManImpl(Long cargoManId){
+
+    public CargoManImpl(Long cargoManId) {
         super();
         this.cargoManId = cargoManId;
     }
+
     @Autowired
     public void setDaifaGgoodsTasksMapper(DaifaGgoodsTasksMapper daifaGgoodsTasksMapper) {
         this.daifaGgoodsTasksMapper = daifaGgoodsTasksMapper;
     }
+
     @Autowired
     public void setDaifaWorkerMapper(DaifaWorkerMapper daifaWorkerMapper) {
         this.daifaWorkerMapper = daifaWorkerMapper;
     }
+
     @Autowired
     public void setDaifaGgoodsMapper(DaifaGgoodsMapper daifaGgoodsMapper) {
         this.daifaGgoodsMapper = daifaGgoodsMapper;
     }
+
     @Autowired
     public void setDaifaOrderMapper(DaifaOrderMapper daifaOrderMapper) {
         this.daifaOrderMapper = daifaOrderMapper;
     }
+
     @Autowired
     public void setDaifaWaitSendOrderMapper(DaifaWaitSendOrderMapper daifaWaitSendOrderMapper) {
         this.daifaWaitSendOrderMapper = daifaWaitSendOrderMapper;
     }
+
     @Autowired
     public void setDaifaTradeMapper(DaifaTradeMapper daifaTradeMapper) {
         this.daifaTradeMapper = daifaTradeMapper;
     }
+
     @Autowired
     public void setDaifaWaitSendMapper(DaifaWaitSendMapper daifaWaitSendMapper) {
         this.daifaWaitSendMapper = daifaWaitSendMapper;
     }
+
     @Autowired
     public void setDaifaListDealUtil(DaifaListDealUtil daifaListDealUtil) {
         this.daifaListDealUtil = daifaListDealUtil;
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class},isolation = Isolation.DEFAULT)
+    @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void takeToMe(List<Long> waitIssueIds) throws DaifaException {
         //查询出待分配任务
-        if(waitIssueIds == null || waitIssueIds.isEmpty()){
+        if (waitIssueIds == null || waitIssueIds.isEmpty()) {
             throw new DaifaException("待分配Id为空");
         }
         //查询拿货人
         DaifaWorker daifaWorker = daifaWorkerMapper.selectFieldsByPrimaryKey(this.cargoManId
                 , FieldUtil.codeFields("daifa_worker_id,daifa_worker,daifa_seller_id"));
-        if(daifaWorker == null){
+        if (daifaWorker == null) {
             throw new DaifaException("系统无此拿货人");
         }
         //拿货拿货code
-         String code=daifaListDealUtil.queryListCode(DaifaListDealTypeEnum.GGOODS_CODE
-                 ,daifaWorker.getDaifaSellerId(),this.cargoManId);
+        String code = daifaListDealUtil.queryListCode(DaifaListDealTypeEnum.GGOODS_CODE
+                , daifaWorker.getDaifaSellerId(), this.cargoManId);
 
 
         DaifaGgoodsTasksExample dgtex = new DaifaGgoodsTasksExample();
@@ -107,15 +117,15 @@ public class CargoManImpl implements CargoManModel{
                 .andEndStatusEqualTo(0);//未结算
         List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectByExample(dgtex);
         List<DaifaGgoods> ggoodsList = new ArrayList<>();
-        for(DaifaGgoodsTasks tasks:daifaGgoodsTasks){
+        for (DaifaGgoodsTasks tasks : daifaGgoodsTasks) {
             DaifaGgoods ggoods = new DaifaGgoods();
-            BeanUtils.copyProperties(tasks,ggoods);
+            BeanUtils.copyProperties(tasks, ggoods);
             ggoodsList.add(ggoods);
             tasks.setAllocatStatus(1);//已分配
             tasks.setAllocatTime(new Date());
             tasks.setOperateIs(1);//已经操作
             tasks.setGoodsCode(code);
-            tasks.setAllocatDate(DateUtil.dateToString(tasks.getAllocatTime(),DateUtil.patternB));
+            tasks.setAllocatDate(DateUtil.dateToString(tasks.getAllocatTime(), DateUtil.patternB));
             ggoods.setCreateTime(tasks.getAllocatTime());
             ggoods.setCreateDate(tasks.getAllocatDate());
             ggoods.setDaifaWorkerId(cargoManId);
@@ -125,18 +135,21 @@ public class CargoManImpl implements CargoManModel{
             daifaGgoodsTasksMapper.updateByPrimaryKeySelective(tasks);
         }
 
+
         //写入已分配表
-        daifaGgoodsMapper.insertListNoId(ggoodsList);
+        if (ggoodsList.size() != 0) {
+            daifaGgoodsMapper.insertListNoId(ggoodsList);
+        }
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class},isolation = Isolation.DEFAULT)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void finishTakeGoods() throws DaifaException {
-                //查询出该处理的s
+        //查询出该处理的s
 
         DaifaWorker daifaWorker = daifaWorkerMapper.selectFieldsByPrimaryKey(this.cargoManId
-                , FieldUtil.codeFields("daifa_worker_id,daifa_worker"));
-        if(daifaWorker == null){
+                , FieldUtil.codeFields("daifa_worker_id,daifa_worker,daifa_seller_id"));
+        if (daifaWorker == null) {
             throw new DaifaException("系统无此拿货人");
         }
         DaifaGgoodsExample dggex = new DaifaGgoodsExample();
@@ -153,7 +166,7 @@ public class CargoManImpl implements CargoManModel{
             if (!Objects.equals(ddgoods.getTakeGoodsStatus(), TakeGoodsEnum.HAS_TAKE.getValue())) {//未拿到货的
                 ddgoods.setTakeGoodsStatus(TakeGoodsEnum.NO_GOODS.getValue());//缺货的
                 DaifaOrder order = daifaOrderMapper.selectFieldsByPrimaryKey(ddgoods.getDfOrderId()
-                        ,FieldUtil.codeFields("DF_ORDER_ID,df_trade_id,stockout_status,order_code"));
+                        , FieldUtil.codeFields("DF_ORDER_ID,df_trade_id,stockout_status,order_code"));
                 order.setTakeGoodsStatus(TakeGoodsEnum.NO_GOODS.getValue());
                 //修改已分配任务为操作过拿货完成s
                 dgtex.clear();
@@ -188,7 +201,7 @@ public class CargoManImpl implements CargoManModel{
                 tasks.setPrintGoodsStatus(1);
                 tasks.setAllocatStatus(3);
                 tasks.setOperateIs(0);
-                tasks.setCreateDate(DateUtil.dateToString(tasks.getCreateTime(),DateUtil.patternB));
+                tasks.setCreateDate(DateUtil.dateToString(tasks.getCreateTime(), DateUtil.patternB));
                 daifaGgoodsTasksMapper.insertSelective(tasks);//插入任务表
                 daifaGgoodsMapper.updateByPrimaryKeySelective(ddgoods);//更新拿货表
                 daifaOrderMapper.updateByPrimaryKeySelective(order);//更新order表
@@ -196,7 +209,7 @@ public class CargoManImpl implements CargoManModel{
             } else {
                 ddgoods.setTakeGoodsStatus(TakeGoodsEnum.HAS_TAKE.getValue());//拿到货
                 DaifaOrder order = daifaOrderMapper.selectFieldsByPrimaryKey(ddgoods.getDfOrderId()
-                        ,FieldUtil.codeFields("DF_ORDER_ID,df_trade_id,stockout_status"));
+                        , FieldUtil.codeFields("DF_ORDER_ID,df_trade_id,stockout_status"));
                 //修改daifaorder 的有货状态
                 order.setTakeGoodsStatus(TakeGoodsEnum.HAS_TAKE.getValue());
                 DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(order.getDfTradeId());
@@ -224,7 +237,7 @@ public class CargoManImpl implements CargoManModel{
                     DaifaWaitSend sendt = new DaifaWaitSend();
                     BeanUtils.copyProperties(trade, sendt);
                     sendt.setCreateTime(new Date());
-                    sendt.setCreateDate(DateUtil.dateToString(sendt.getCreateTime(),DateUtil.patternB));
+                    sendt.setCreateDate(DateUtil.dateToString(sendt.getCreateTime(), DateUtil.patternB));
                     sendt.setSendStatus(1);//待发状态
                     sendt.setSendDate(null);
                     sendt.setSendTime(null);
@@ -236,7 +249,7 @@ public class CargoManImpl implements CargoManModel{
                         sendo.setSellerId(trade.getSellerId());
                         sendo.setDwsId(sendt.getDwsId());
                         sendo.setCreateTime(new Date());
-                        sendo.setCreateDate(DateUtil.dateToString(sendo.getCreateTime(),DateUtil.patternB));
+                        sendo.setCreateDate(DateUtil.dateToString(sendo.getCreateTime(), DateUtil.patternB));
                         sendo.setSendStatus(1);//未发
                         sendo.setInStockFlag(0);
                         sendo.setDaifaWorkerId(ddgoods.getDaifaWorkerId());
