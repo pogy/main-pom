@@ -1,5 +1,6 @@
 package com.shigu.main4.daifa.bo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * @since: main-pom
  * @commonents:
  */
-public class OrderExpressBO {
+public class OrderExpressBO implements Serializable {
     private Long tid;//代发交易ID
     private String expressName;//快递名
     private String receiverName;//收货人姓名

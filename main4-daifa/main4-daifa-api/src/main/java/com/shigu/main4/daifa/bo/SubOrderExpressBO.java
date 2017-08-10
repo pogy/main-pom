@@ -1,5 +1,7 @@
 package com.shigu.main4.daifa.bo;
 
+import java.io.Serializable;
+
 /**
  * @类编号
  * @类名称：SubOrderExpressBO
@@ -11,7 +13,7 @@ package com.shigu.main4.daifa.bo;
  * @since: main-pom
  * @commonents:
  */
-public class SubOrderExpressBO {
+public class SubOrderExpressBO implements Serializable {
 
     private Long orderId;//子订单ID
     private String storeGoodsCode;//商家编码

@@ -1,5 +1,7 @@
 package com.shigu.main4.daifa.vo;
 
+import java.io.Serializable;
+
 /**
  * @类编号
  * @类名称：ExpressVO
@@ -11,7 +13,7 @@ package com.shigu.main4.daifa.vo;
  * @since: main-pom
  * @commonents:
  */
-public class ExpressVO {
+public class ExpressVO implements Serializable {
 
     private Long tid;//代发交易ID
     private Long expressId;//快递ID
