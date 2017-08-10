@@ -3,6 +3,7 @@ package com.shigu.main4.daifa.process;
 import com.shigu.main4.daifa.bo.OrderBO;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单管理
@@ -11,33 +12,38 @@ import java.util.Date;
 public interface OrderManageProcess {
     /**
      * 新进单子
-     * @param order
+     * @param order 订单数据
      */
     void newOrder(OrderBO order);
 
     /**
      * 子单备注
-     * @param subOrderId
-     * @param mark
+     * @param subOrderId 子订单数据
+     * @param mark 备注内容
      */
     void markSubOrder(Long subOrderId,String mark);
 
     /**
      * 设置有货时间
-     * @param subOrderId
-     * @param time
+     * @param subOrderId 子订单数据
+     * @param time 有货时间
      */
     void haveGoodsTime(Long subOrderId,Date time);
 
     /**
      * 标记下架
-     * @param subOrderId
+     * @param subOrderId 子订单数据
      */
     void markDown(Long subOrderId);
 
     /**
      * 订单超时
-     * @param orderId
+     * @param orderId 订单数据
      */
     void orderTimeout(Long orderId);
+
+    /**
+     * 退款自动处理
+     */
+    void autoRefund();
 }

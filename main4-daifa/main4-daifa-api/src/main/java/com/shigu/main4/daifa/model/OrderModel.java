@@ -2,6 +2,8 @@ package com.shigu.main4.daifa.model;
 
 import com.shigu.main4.daifa.bo.DeliveryBO;
 
+import java.util.List;
+
 /**
  * 总单
  * 多例,描述了一个总单的所有操作
@@ -25,4 +27,11 @@ public interface OrderModel {
      * @param delivery
      */
     void send(DeliveryBO delivery);
+
+    /**
+     * 自动退款处理
+     * @param refundId 退单ID
+     * @param subOrderIds 退单包含的子单信息
+     */
+    void autoRefund(Long refundId,List<Long> subOrderIds);
 }
