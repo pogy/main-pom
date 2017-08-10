@@ -1,4 +1,4 @@
-package data.fix;
+/*package data.fix;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-/**
+*//**
  * Created by wxc on 2017/4/2.
  * <p>
  * 此类旨在修复ES上商品与本地数据不同步的情况
@@ -45,7 +45,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author wxc
  * @version main_site4.0 4.0.0
  * @since main_site4.0 4.0.0
- */
+ *//*
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:ac.xml")
 public class EsGoodsSyncLocalItemFix {
@@ -66,11 +66,11 @@ public class EsGoodsSyncLocalItemFix {
 
     private ElasticRepository repository = new ElasticRepository();
 
-    /**
+    *//**
      * ES 商品包含出售中及已下架的商品
      * <p>
      * 功能入口在下面
-     */
+     *//*
     public void syncEs(ShiguShop shop) throws Exception {
 //         = 42450L;
 
@@ -159,13 +159,13 @@ public class EsGoodsSyncLocalItemFix {
 
     private LinkedBlockingQueue<List<ShiguShop>> queue = new LinkedBlockingQueue<>();
 
-    /**
+    *//**
      * 按如下顺序
      * 电商基地、钱塘大厦、星座女装、之江服饰、四季星座、好四季、意法服饰、置地国际、九星服饰、九天国际、新杭派、四季青、中纺服饰、中星外贸
      * (1087,   617,    601,    608,    621,   1462,     642,   655,    1105,   661,    670,    666,    668,    652)
      *
      * @throws Exception
-     */
+     *//*
     @Test
     public void testSyncAll() throws Exception {
 
@@ -227,12 +227,12 @@ public class EsGoodsSyncLocalItemFix {
         }
     }
 
-    /**
+    *//**
      * 同步Es与mysql
      * @throws Exception
-     */
+     *//*
     @Test
     public void syncOne() throws Exception {
         syncEs(shiguShopMapper.selectByPrimaryKey(42407L));
     }
-}
+}*/

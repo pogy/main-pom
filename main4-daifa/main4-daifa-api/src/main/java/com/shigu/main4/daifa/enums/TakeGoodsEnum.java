@@ -5,9 +5,9 @@ package com.shigu.main4.daifa.enums;
  * Created by zhaohongbo on 17/8/9.
  */
 public enum TakeGoodsEnum {
-    DEFAULT(1),//拿货中
-    HAS_TAKE(2),//已拿
-    NO_GOODS(3),//缺货
+    DEFAULT(0),//拿货中
+    HAS_TAKE(1),//已拿
+    NO_GOODS(2),//缺货
     ;
 
     TakeGoodsEnum(Integer value) {

@@ -1,5 +1,7 @@
 package com.shigu.main4.daifa.model;
 
+import com.shigu.main4.daifa.exceptions.DaifaException;
+
 import java.util.List;
 
 /**
@@ -13,12 +15,12 @@ public interface CargoManModel {
      * 分配给我
      * @param waitIssueIds 待分配ID
      */
-    void takeToMe(List<Long> waitIssueIds);
+    void takeToMe(List<Long> waitIssueIds) throws DaifaException;
 
     /**
      * 马上结束拿货
      * 未拿到,直接缺货
      */
-    void finishTakeGoods();
+    void finishTakeGoods() throws DaifaException;
 
 }
