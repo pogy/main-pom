@@ -456,10 +456,10 @@ public class CdnAction {
      * @param fromCache
      */
     private Object selFromCache(ObjFromCache fromCache){
-        Object obj=fromCache.selObj();
+//        Object obj=fromCache.selReal();
 //        if(fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
 //            spreadService.createBySync(fromCache);
-        return obj;
+        return fromCache.selObj();
     }
 
 
