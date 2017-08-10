@@ -12,7 +12,7 @@ import javax.persistence.Id;
  *@内容摘要：
  *@编码作者：自动生成
  *@完成日期：
- *@Date2017-08-09 04:19:16
+ *@Date2017-08-10 11:23:52
  *@comments:
  *
  *=========================================================
@@ -28,9 +28,11 @@ public class DaifaPostCustomer {
 	/**0:无效,1:有效*/
 	private Integer useStatus;
 	/**快递ID,暂定为daifa_seller_post的dsp_id*/
-	private Long postId;
+	private Long expressId;
 	/**快递名*/
-	private String postName;
+	private String express;
+	/**快递公司简称代码*/
+	private String expressCompanyCode;
 	/**是否需要电子面单账户,1:需要,0:不需要*/
 	private Integer isNeedCustomer;
 	/**电子面单账户名*/
@@ -108,8 +110,8 @@ public class DaifaPostCustomer {
   	*快递ID,暂定为daifa_seller_post的dsp_id
  	*自动生成
   	*/
-    public Long getPostId() {
-        return postId;
+    public Long getExpressId() {
+        return expressId;
     }
 
     /**
@@ -118,8 +120,8 @@ public class DaifaPostCustomer {
 	*快递ID,暂定为daifa_seller_post的dsp_id
  	*自动生成
   	*/
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setExpressId(Long expressId) {
+        this.expressId = expressId;
     }
 	/**
   	* 
@@ -127,8 +129,8 @@ public class DaifaPostCustomer {
   	*快递名
  	*自动生成
   	*/
-    public String getPostName() {
-        return postName;
+    public String getExpress() {
+        return express;
     }
 
     /**
@@ -137,8 +139,27 @@ public class DaifaPostCustomer {
 	*快递名
  	*自动生成
   	*/
-    public void setPostName(String postName) {
-        this.postName = postName;
+    public void setExpress(String express) {
+        this.express = express;
+    }
+	/**
+  	* 
+	*get方法
+  	*快递公司简称代码
+ 	*自动生成
+  	*/
+    public String getExpressCompanyCode() {
+        return expressCompanyCode;
+    }
+
+    /**
+  	* 
+  	*set方法
+	*快递公司简称代码
+ 	*自动生成
+  	*/
+    public void setExpressCompanyCode(String expressCompanyCode) {
+        this.expressCompanyCode = expressCompanyCode;
     }
 	/**
   	* 

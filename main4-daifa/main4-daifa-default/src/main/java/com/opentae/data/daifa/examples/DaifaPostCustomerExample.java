@@ -13,8 +13,9 @@ public class DaifaPostCustomerExample extends SgExample<DaifaPostCustomerExample
     public static EntityColumn postCustomerId;
     public static EntityColumn dfSellerId;
     public static EntityColumn useStatus;
-    public static EntityColumn postId;
-    public static EntityColumn postName;
+    public static EntityColumn expressId;
+    public static EntityColumn express;
+    public static EntityColumn expressCompanyCode;
     public static EntityColumn isNeedCustomer;
     public static EntityColumn customerName;
     public static EntityColumn customerPwd;
@@ -30,8 +31,9 @@ public class DaifaPostCustomerExample extends SgExample<DaifaPostCustomerExample
         postCustomerId = listMap.get("postCustomerId");
         dfSellerId = listMap.get("dfSellerId");
         useStatus = listMap.get("useStatus");
-        postId = listMap.get("postId");
-        postName = listMap.get("postName");
+        expressId = listMap.get("expressId");
+        express = listMap.get("express");
+        expressCompanyCode = listMap.get("expressCompanyCode");
         isNeedCustomer = listMap.get("isNeedCustomer");
         customerName = listMap.get("customerName");
         customerPwd = listMap.get("customerPwd");
@@ -200,107 +202,162 @@ public class DaifaPostCustomerExample extends SgExample<DaifaPostCustomerExample
         public DaifaPostCustomerExample.Criteria andUseStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(useStatus, value1, value2);
         }
-        public DaifaPostCustomerExample.Criteria andPostIdIsNull() {
-            return isNull(postId);
+        public DaifaPostCustomerExample.Criteria andExpressIdIsNull() {
+            return isNull(expressId);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdIsNotNull() {
-            return isNotNull(postId);
+        public DaifaPostCustomerExample.Criteria andExpressIdIsNotNull() {
+            return isNotNull(expressId);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdEqualTo(Long value) {
-            return equalTo(postId, value);
+        public DaifaPostCustomerExample.Criteria andExpressIdEqualTo(Long value) {
+            return equalTo(expressId, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdNotEqualTo(Long value) {
-            return notEqualTo(postId, value);
+        public DaifaPostCustomerExample.Criteria andExpressIdNotEqualTo(Long value) {
+            return notEqualTo(expressId, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdGreaterThan(Long value) {
-            return greaterThan(postId, value);
+        public DaifaPostCustomerExample.Criteria andExpressIdGreaterThan(Long value) {
+            return greaterThan(expressId, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(postId, value);
+        public DaifaPostCustomerExample.Criteria andExpressIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(expressId, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdLessThan(Long value) {
-            return lessThan(postId, value);
+        public DaifaPostCustomerExample.Criteria andExpressIdLessThan(Long value) {
+            return lessThan(expressId, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(postId, value);
+        public DaifaPostCustomerExample.Criteria andExpressIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(expressId, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdIn(List<Long> values) {
-            return in(postId, values);
+        public DaifaPostCustomerExample.Criteria andExpressIdIn(List<Long> values) {
+            return in(expressId, values);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdNotIn(List<Long> values) {
-            return notIn(postId, values);
+        public DaifaPostCustomerExample.Criteria andExpressIdNotIn(List<Long> values) {
+            return notIn(expressId, values);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdBetween(Long value1, Long value2) {
-            return between(postId, value1, value2);
+        public DaifaPostCustomerExample.Criteria andExpressIdBetween(Long value1, Long value2) {
+            return between(expressId, value1, value2);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostIdNotBetween(Long value1, Long value2) {
-            return notBetween(postId, value1, value2);
+        public DaifaPostCustomerExample.Criteria andExpressIdNotBetween(Long value1, Long value2) {
+            return notBetween(expressId, value1, value2);
         }
-        public DaifaPostCustomerExample.Criteria andPostNameIsNull() {
-            return isNull(postName);
-        }
-
-        public DaifaPostCustomerExample.Criteria andPostNameIsNotNull() {
-            return isNotNull(postName);
+        public DaifaPostCustomerExample.Criteria andExpressIsNull() {
+            return isNull(express);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameEqualTo(String value) {
-            return equalTo(postName, value);
+        public DaifaPostCustomerExample.Criteria andExpressIsNotNull() {
+            return isNotNull(express);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameNotEqualTo(String value) {
-            return notEqualTo(postName, value);
+        public DaifaPostCustomerExample.Criteria andExpressEqualTo(String value) {
+            return equalTo(express, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameGreaterThan(String value) {
-            return greaterThan(postName, value);
+        public DaifaPostCustomerExample.Criteria andExpressNotEqualTo(String value) {
+            return notEqualTo(express, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(postName, value);
+        public DaifaPostCustomerExample.Criteria andExpressGreaterThan(String value) {
+            return greaterThan(express, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameLessThan(String value) {
-            return lessThan(postName, value);
+        public DaifaPostCustomerExample.Criteria andExpressGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(express, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(postName, value);
+        public DaifaPostCustomerExample.Criteria andExpressLessThan(String value) {
+            return lessThan(express, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameLike(String value) {
-            return like(postName, value);
+        public DaifaPostCustomerExample.Criteria andExpressLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(express, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameNotLike(String value) {
-            return notLike(postName, value);
+        public DaifaPostCustomerExample.Criteria andExpressLike(String value) {
+            return like(express, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameIn(List<String> values) {
-            return in(postName, values);
+        public DaifaPostCustomerExample.Criteria andExpressNotLike(String value) {
+            return notLike(express, value);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameNotIn(List<String> values) {
-            return notIn(postName, values);
+        public DaifaPostCustomerExample.Criteria andExpressIn(List<String> values) {
+            return in(express, values);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameBetween(String value1, String value2) {
-            return between(postName, value1, value2);
+        public DaifaPostCustomerExample.Criteria andExpressNotIn(List<String> values) {
+            return notIn(express, values);
         }
 
-        public DaifaPostCustomerExample.Criteria andPostNameNotBetween(String value1, String value2) {
-            return notBetween(postName, value1, value2);
+        public DaifaPostCustomerExample.Criteria andExpressBetween(String value1, String value2) {
+            return between(express, value1, value2);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressNotBetween(String value1, String value2) {
+            return notBetween(express, value1, value2);
+        }
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeIsNull() {
+            return isNull(expressCompanyCode);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeIsNotNull() {
+            return isNotNull(expressCompanyCode);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeEqualTo(String value) {
+            return equalTo(expressCompanyCode, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeNotEqualTo(String value) {
+            return notEqualTo(expressCompanyCode, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeGreaterThan(String value) {
+            return greaterThan(expressCompanyCode, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(expressCompanyCode, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeLessThan(String value) {
+            return lessThan(expressCompanyCode, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(expressCompanyCode, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeLike(String value) {
+            return like(expressCompanyCode, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeNotLike(String value) {
+            return notLike(expressCompanyCode, value);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeIn(List<String> values) {
+            return in(expressCompanyCode, values);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeNotIn(List<String> values) {
+            return notIn(expressCompanyCode, values);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeBetween(String value1, String value2) {
+            return between(expressCompanyCode, value1, value2);
+        }
+
+        public DaifaPostCustomerExample.Criteria andExpressCompanyCodeNotBetween(String value1, String value2) {
+            return notBetween(expressCompanyCode, value1, value2);
         }
         public DaifaPostCustomerExample.Criteria andIsNeedCustomerIsNull() {
             return isNull(isNeedCustomer);
