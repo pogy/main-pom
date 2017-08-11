@@ -2,6 +2,7 @@ package com.shigu.main4.order.model.impltest;
 
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaGgoodsExample;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
 import com.opentae.data.daifa.interfaces.*;
@@ -445,7 +446,19 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         DaifaWaitSendExample daifaWaitSendExample=new DaifaWaitSendExample();
         daifaWaitSendExample.createCriteria().andDfTradeIdEqualTo(99999L);
         List<DaifaWaitSend> ws=daifaWaitSendMapper.selectByExample(daifaWaitSendExample);
+        assertEquals(ws.size(),0);
+
+        DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+        daifaOrderExample.createCriteria().andDfOrderIdNotEqualTo(oid).andDfTradeIdEqualTo(task.getDfTradeId());
+        List<DaifaOrder> tmporders=daifaOrderMapper.selectByExample(daifaOrderExample);
+        assertEquals(tmporders.size(),1);
+
+        Long oid2=tmporders.get(0).getDfOrderId();
+        SubOrderModelImpl impl2=SpringBeanFactory.getBean(SubOrderModelImpl.class,oid2);
+        impl2.haveTake();
+        ws=daifaWaitSendMapper.selectByExample(daifaWaitSendExample);
         assertEquals(ws.size(),1);
+
         DaifaWaitSend w=ws.get(0);
         assertEquals(w.getBuyerId(),trade.getBuyerId());
         assertEquals(w.getBuyerName(),trade.getBuyerName());
@@ -469,27 +482,8 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         assertEquals(w.getTaobaoUserNick(),trade.getTaobaoUserNick());
         assertEquals(w.getTradeCode(),trade.getTradeCode());
 
-        DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
-        daifaWaitSendOrderExample.createCriteria().andDwsIdEqualTo(w.getDwsId());
-        List<DaifaWaitSendOrder> os=daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
-        assertEquals(os.size(),2);
-        Long oid2=null;
-        for(DaifaWaitSendOrder o:os){
-            if(o.getDfOrderId().longValue()==oid){
-                assertEquals(o.getHasNum(),new Integer(0));
-                assertEquals(o.getTakeGoodsStatus(),new Integer(2));
-            }else{
-                oid2=o.getDfOrderId();
-                assertEquals(o.getHasNum(),new Integer(0));
-                assertEquals(o.getTakeGoodsStatus(),new Integer(0));
-            }
-        }
-        SubOrderModelImpl impl2=SpringBeanFactory.getBean(SubOrderModelImpl.class,oid2);
-        impl2.haveTake();
-        ws=daifaWaitSendMapper.selectByExample(daifaWaitSendExample);
-        assertEquals(ws.size(),1);
         DaifaWaitSendOrderExample daifaWaitSendOrderExample1=new DaifaWaitSendOrderExample();
-        daifaWaitSendOrderExample1.createCriteria().andDwsIdEqualTo(w.getDwsId());
+        daifaWaitSendOrderExample1.createCriteria().andDfTradeIdEqualTo(task.getDfTradeId());
         List<DaifaWaitSendOrder> os1=daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample1);
         assertEquals(os1.size(),2);
         for(DaifaWaitSendOrder o:os1){
@@ -531,6 +525,7 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         t.setBuyerQq("460333383");
         t.setBuyerRemark("aaaa");
         t.setBuyerTelephone("18969041771");
+        t.setBuyerNick("zf");
         t.setBuyerWw("a1234526");
         t.setBuyerWx("18969041771");
         t.setCreateTime(new Date());

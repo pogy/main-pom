@@ -58,13 +58,13 @@ public interface TakeGoodsIssueProcess {
      * 已拿到
      * @param issueId 分配记录IDID
      */
-    void complete(Long issueId);
+    void complete(Long issueId) throws DaifaException;
 
     /**
      * 未拿到
      * @param issueId 分配记录ID
      */
-    void uncomplete(Long issueId);
+    void uncomplete(Long issueId) throws DaifaException;
 
     /**
      * 按人头,全部标记未拿
@@ -72,6 +72,6 @@ public interface TakeGoodsIssueProcess {
      * @param issueIds 分配记录ID串
      * @param idIsCheck  true时issueIds是已拿，其余未拿，false则反过来
      */
-    void uncompleteAll(Long wholeId,List<Long> issueIds,Boolean idIsCheck);
+    void uncompleteAll(Long wholeId,List<Long> issueIds,Boolean idIsCheck) throws DaifaException;
 
 }

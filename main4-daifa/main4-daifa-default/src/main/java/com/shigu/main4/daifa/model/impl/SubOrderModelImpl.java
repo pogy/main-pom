@@ -213,31 +213,33 @@ public class SubOrderModelImpl implements SubOrderModel {
         daifaWaitSend.setDfTradeId(task.getDfTradeId());
         daifaWaitSend=daifaWaitSendMapper.selectOne(daifaWaitSend);
         if(daifaWaitSend==null){
-            DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(task.getDfTradeId());
-            DaifaWaitSend insertWait=BeanMapper.map(trade,DaifaWaitSend.class);
-            insertWait.setCreateDate(date);
-            insertWait.setCreateTime(time);
-            daifaWaitSendMapper.insertSelective(insertWait);
-            DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
-            daifaOrderExample.createCriteria().andDfTradeIdEqualTo(task.getDfTradeId());
-            List<DaifaOrder> orders=daifaOrderMapper.selectByExample(daifaOrderExample);
-            List<DaifaWaitSendOrder> wos=new ArrayList<>();
-            for(DaifaOrder o:orders){
-                DaifaWaitSendOrder wo=BeanMapper.map(o,DaifaWaitSendOrder.class);
-                wo.setCreateDate(date);
-                wo.setCreateTime(time);
-                wo.setDwsId(insertWait.getDwsId());
-                wo.setInStockFlag(0);//入库状态默认
-                wo.setHasNum(status==1&&o.getDfOrderId().longValue()==subOrderId?task.getGoodsNum():0);//设置已拿到数量
-                wo.setDaifaWorkerId(task.getDaifaWorkerId());
-                wo.setDaifaWorker(task.getDaifaWorker());
-                wo.setSendStatus(1);//设置待发货
-                wo.setTakeGoodsStatus(o.getDfOrderId().longValue()==subOrderId?status:0);
-                wo.setSellerId(task.getSellerId());
-                wo.setWebSite(task.getWebSite());
-                wos.add(wo);
+            if(status==1){
+                DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(task.getDfTradeId());
+                DaifaWaitSend insertWait=BeanMapper.map(trade,DaifaWaitSend.class);
+                insertWait.setCreateDate(date);
+                insertWait.setCreateTime(time);
+                daifaWaitSendMapper.insertSelective(insertWait);
+                DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+                daifaOrderExample.createCriteria().andDfTradeIdEqualTo(task.getDfTradeId());
+                List<DaifaOrder> orders=daifaOrderMapper.selectByExample(daifaOrderExample);
+                List<DaifaWaitSendOrder> wos=new ArrayList<>();
+                for(DaifaOrder o:orders){
+                    DaifaWaitSendOrder wo=BeanMapper.map(o,DaifaWaitSendOrder.class);
+                    wo.setCreateDate(date);
+                    wo.setCreateTime(time);
+                    wo.setDwsId(insertWait.getDwsId());
+                    wo.setInStockFlag(0);//入库状态默认
+                    wo.setHasNum(status==1&&o.getDfOrderId().longValue()==subOrderId?task.getGoodsNum():0);//设置已拿到数量
+                    wo.setDaifaWorkerId(task.getDaifaWorkerId());
+                    wo.setDaifaWorker(task.getDaifaWorker());
+                    wo.setSendStatus(1);//设置待发货
+                    wo.setTakeGoodsStatus(o.getDfOrderId().longValue()==subOrderId?status:o.getTakeGoodsStatus());
+                    wo.setSellerId(task.getSellerId());
+                    wo.setWebSite(task.getWebSite());
+                    wos.add(wo);
+                }
+                daifaWaitSendOrderMapper.insertListNoId(wos);
             }
-            daifaWaitSendOrderMapper.insertListNoId(wos);
         }else{
             DaifaWaitSendOrder daifaWaitSendOrder=new DaifaWaitSendOrder();
             daifaWaitSendOrder.setDfOrderId(subOrderId);

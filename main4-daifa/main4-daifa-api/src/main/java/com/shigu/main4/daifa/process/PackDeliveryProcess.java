@@ -1,6 +1,7 @@
 package com.shigu.main4.daifa.process;
 
 
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.vo.PackResultVO;
 
 /**
@@ -13,5 +14,5 @@ public interface PackDeliveryProcess {
      *
      * @param subOrderId
      */
-    PackResultVO packSubOrder(Long subOrderId);
+    PackResultVO packSubOrder(Long subOrderId) throws DaifaException;
 }
