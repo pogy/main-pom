@@ -6,8 +6,6 @@ import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.ExpressModel;
 import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
-
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
