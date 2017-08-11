@@ -12,7 +12,7 @@ import javax.persistence.Id;
  *@内容摘要：
  *@编码作者：自动生成
  *@完成日期：
- *@Date2017-08-09 04:19:38
+ *@Date2017-08-11 01:14:15
  *@comments:
  *
  *=========================================================
@@ -115,6 +115,8 @@ public class DaifaTrade {
 	private java.util.Date payTime;
 	/**收货人QQ*/
 	private String receiverQq;
+	/**买家昵称*/
+	private String buyerNick;
 	 
 	 //*************************get/set*****************************
     	/**
@@ -1009,5 +1011,24 @@ public class DaifaTrade {
   	*/
     public void setReceiverQq(String receiverQq) {
         this.receiverQq = receiverQq;
+    }
+	/**
+  	* 
+	*get方法
+  	*买家昵称
+ 	*自动生成
+  	*/
+    public String getBuyerNick() {
+        return buyerNick;
+    }
+
+    /**
+  	* 
+  	*set方法
+	*买家昵称
+ 	*自动生成
+  	*/
+    public void setBuyerNick(String buyerNick) {
+        this.buyerNick = buyerNick;
     }
 }
