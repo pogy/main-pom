@@ -123,14 +123,21 @@ public class CargoManImpl implements CargoManModel {
             ggoodsList.add(ggoods);
             tasks.setAllocatStatus(1);//已分配
             tasks.setAllocatTime(new Date());
-            tasks.setOperateIs(1);//已经操作
+            tasks.setOperateIs(0);//未操作拿货完成
+            tasks.setUseStatus(0);
             tasks.setGoodsCode(code);
             tasks.setAllocatDate(DateUtil.dateToString(tasks.getAllocatTime(), DateUtil.patternB));
+            tasks.setDaifaWorkerId(daifaWorker.getDaifaWorkerId());
+            tasks.setDaifaWorker(daifaWorker.getDaifaWorker());
             ggoods.setCreateTime(tasks.getAllocatTime());
             ggoods.setCreateDate(tasks.getAllocatDate());
             ggoods.setDaifaWorkerId(cargoManId);
             ggoods.setDaifaWorker(daifaWorker.getDaifaWorker());
             ggoods.setGgoodsCode(code);
+            ggoods.setUseStatus(1);
+            ggoods.setOperateIs(0);
+            ggoods.setDaifaWorkerId(daifaWorker.getDaifaWorkerId());
+            ggoods.setDaifaWorker(daifaWorker.getDaifaWorker());
             //修改任务表
             daifaGgoodsTasksMapper.updateByPrimaryKeySelective(tasks);
         }
@@ -143,7 +150,7 @@ public class CargoManImpl implements CargoManModel {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
+    @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void finishTakeGoods() throws DaifaException {
         //查询出该处理的s
 
@@ -163,17 +170,18 @@ public class CargoManImpl implements CargoManModel {
         DaifaWaitSendOrderExample dfwsoex = new DaifaWaitSendOrderExample();
         for (DaifaGgoods ddgoods : gglist) {
             ddgoods.setUseStatus(0);//变成不可用了
+            ddgoods.setOperateIs(1);
             if (!Objects.equals(ddgoods.getTakeGoodsStatus(), TakeGoodsEnum.HAS_TAKE.getValue())) {//未拿到货的
                 ddgoods.setTakeGoodsStatus(TakeGoodsEnum.NO_GOODS.getValue());//缺货的
                 DaifaOrder order = daifaOrderMapper.selectFieldsByPrimaryKey(ddgoods.getDfOrderId()
-                        , FieldUtil.codeFields("DF_ORDER_ID,df_trade_id,stockout_status,order_code"));
+                        , FieldUtil.codeFields("DF_ORDER_ID,df_trade_id,allocat_status,order_code"));
                 order.setTakeGoodsStatus(TakeGoodsEnum.NO_GOODS.getValue());
                 //修改已分配任务为操作过拿货完成s
                 dgtex.clear();
-                dgtex.createCriteria().andDaifaWorkerIdEqualTo(ddgoods.getDaifaWorkerId()).
-                        andDfOrderIdEqualTo(ddgoods.getDfOrderId()).andAllocatStatusEqualTo(1).andUseStatusEqualTo(1);
+                dgtex.createCriteria().andDaifaWorkerIdEqualTo(ddgoods.getDaifaWorkerId())
+                        .andDfOrderIdEqualTo(ddgoods.getDfOrderId()).andAllocatStatusEqualTo(1).andUseStatusEqualTo(0)
+                        .andOperateIsEqualTo(0);
                 DaifaGgoodsTasks dgtt = new DaifaGgoodsTasks();
-                dgtt.setUseStatus(0);//设置为不可用
                 dgtt.setAllocatStatus(1);//设置为已分配
                 dgtt.setOperateIs(1);
                 daifaGgoodsTasksMapper.updateByExampleSelective(dgtt, dgtex);
@@ -181,7 +189,7 @@ public class CargoManImpl implements CargoManModel {
                 //如果已进入代发货则修改代发货状态s
                 dfwsoex.clear();
                 dfwsoex.createCriteria().andDfOrderIdEqualTo(ddgoods.getDfOrderId());
-                List<DaifaWaitSendOrder> listsn = daifaWaitSendOrderMapper.selectFieldsByExample(dfwsoex, FieldUtil.codeFields("dwso_id,ggoods_status"));
+                List<DaifaWaitSendOrder> listsn = daifaWaitSendOrderMapper.selectFieldsByExample(dfwsoex, FieldUtil.codeFields("dwso_id,take_goods_status"));
                 if (listsn.size() > 0) {
                     DaifaWaitSendOrder ooo = listsn.get(0);
                     ooo.setTakeGoodsStatus(TakeGoodsEnum.NO_GOODS.getValue());//设置为缺货
@@ -199,8 +207,8 @@ public class CargoManImpl implements CargoManModel {
                 tasks.setDaifaWorker(null);
                 tasks.setCreateTime(new Date());
                 tasks.setPrintGoodsStatus(1);
-                tasks.setAllocatStatus(3);
                 tasks.setOperateIs(0);
+                tasks.setTakeGoodsStatus(2);
                 tasks.setCreateDate(DateUtil.dateToString(tasks.getCreateTime(), DateUtil.patternB));
                 daifaGgoodsTasksMapper.insertSelective(tasks);//插入任务表
                 daifaGgoodsMapper.updateByPrimaryKeySelective(ddgoods);//更新拿货表
@@ -209,7 +217,7 @@ public class CargoManImpl implements CargoManModel {
             } else {
                 ddgoods.setTakeGoodsStatus(TakeGoodsEnum.HAS_TAKE.getValue());//拿到货
                 DaifaOrder order = daifaOrderMapper.selectFieldsByPrimaryKey(ddgoods.getDfOrderId()
-                        , FieldUtil.codeFields("DF_ORDER_ID,df_trade_id,stockout_status"));
+                        , FieldUtil.codeFields("DF_ORDER_ID,df_trade_id,allocat_status"));
                 //修改daifaorder 的有货状态
                 order.setTakeGoodsStatus(TakeGoodsEnum.HAS_TAKE.getValue());
                 DaifaTrade trade = daifaTradeMapper.selectByPrimaryKey(order.getDfTradeId());
@@ -226,11 +234,11 @@ public class CargoManImpl implements CargoManModel {
                 List<DaifaWaitSendOrder> sendOrders = daifaWaitSendOrderMapper.selectByExample(dwsoex);
                 //修改已分配任务为操作过拿货完成s
                 dgtex.clear();
-                dgtex.createCriteria().andDaifaWorkerIdEqualTo(ddgoods.getDaifaWorkerId()).
-                        andDfOrderIdEqualTo(ddgoods.getDfOrderId()).andAllocatStatusEqualTo(1).andUseStatusEqualTo(1);
+                dgtex.createCriteria().andDaifaWorkerIdEqualTo(ddgoods.getDaifaWorkerId())
+                        .andDfOrderIdEqualTo(ddgoods.getDfOrderId()).andAllocatStatusEqualTo(1).andUseStatusEqualTo(0)
+                        .andOperateIsEqualTo(0);
                 com.opentae.data.daifa.beans.DaifaGgoodsTasks dgtt = new com.opentae.data.daifa.beans.DaifaGgoodsTasks();
-                dgtt.setUseStatus(0);//不可用
-                dgtt.setAllocatStatus(2);//已分配
+                dgtt.setAllocatStatus(1);//已分配
                 dgtt.setOperateIs(1);//操作过拿货完成
                 //修改已分配任务为操作过拿货完成e
                 if (sends.size() == 0) { //如果不存在插入数据 插入数据插入的数据包裹daifawaitsend 和daifawaitsendorder

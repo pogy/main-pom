@@ -38,8 +38,7 @@
         </property>
     </bean>
 
-
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <bean id="daifa_dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
         <!--<property name="url" value="jdbc:mysql://122.224.104.234/test" />-->
         <!--<property name="username" value="admin" />-->
@@ -77,27 +76,27 @@
         <property name="filters" value="stat" />
     </bean>
 
-    <bean id="tae_mall_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
+    <bean id="tae_daifa_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
         <property name="plugins">
             <list>
                 <ref bean="mapperInterceptor"></ref>
             </list>
         </property>
-        <property name="dataSource" ref="dataSource"></property>
-        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <property name="dataSource" ref="daifa_dataSource"></property>
+        <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
         <property name="mapperLocations" value="classpath*:/mall/mybatis/*.xml" />
         <property name="typeAliasesPackage" value="com.opentae.data.daifa"></property>
     </bean>
 
     <bean id="txManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="daifa_dataSource" />
     </bean>
 
     <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
         <property name= "basePackage"
                   value= "com/opentae/data/daifa/interfaces" />
-        <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
+        <property name= "sqlSessionFactoryBeanName" value="tae_daifa_sqlSessionFactory" />
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
     </bean>
     <import resource="classpath:producer.xml"/>
