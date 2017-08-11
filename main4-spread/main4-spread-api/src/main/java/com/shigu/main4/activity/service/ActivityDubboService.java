@@ -54,4 +54,6 @@ public interface ActivityDubboService {
      * @return
      */
     ActivityTerm selafterTermId(ActivityType type,Long termId);
+
+    void joinActivity(Long activityId,Long userId,Long shopId,String userName,String tel) throws ActivityException;
 }

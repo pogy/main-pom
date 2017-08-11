@@ -165,11 +165,7 @@ public class ADAuctionAction {
         }
         bo.setShopId(ps.getLogshop().getShopId());
         try {
-            ActivityVO activity=selActivityById(bo.getId());
-            if (activity == null) {
-                return "redirect:dtgglist.htm?id="+(bo.getId()!=null?bo.getId():"");
-            }
-            activity.joinActivity(ps.getUserId(),logshop.getShopId(),bo.getLxuser(),bo.getLxtel());
+            activityDubboService.joinActivity(bo.getId(),ps.getUserId(),logshop.getShopId(),bo.getLxuser(),bo.getLxtel());
         } catch (Exception e) {
             model.addAttribute("msg", "很抱歉，该活动已经结束");
 //            return "redirect:/seller/dtggapply.htm?id="+spreadAuctScren.getSpreadPmId();
@@ -192,7 +188,11 @@ public class ADAuctionAction {
                 for(GoatActivityVO vo:activityVOs){
                     ADAuctionResultVO resultVO=new ADAuctionResultVO();
                     resultVO.setTitle(vo.getDescription());
-                    resultVO.setGgList(adAuctionService.selLedWinner(activityFactory.selActivityByVo(vo)));
+                    try {
+                        resultVO.setGgList(adAuctionService.selLedWinner(activityDubboService.selEnlist(1,vo.getActivityId())));
+                    } catch (ActivityException e) {
+
+                    }
                     list.add(resultVO);
                 }
             }

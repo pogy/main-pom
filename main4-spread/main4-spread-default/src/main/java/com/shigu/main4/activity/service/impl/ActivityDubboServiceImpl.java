@@ -131,4 +131,9 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
         return activityFactory.selafterTermId(type,termId);
     }
 
+    @Override
+    public void joinActivity(Long activityId, Long userId, Long shopId,String userName, String tel) throws ActivityException {
+        activityFactory.selActivityById(activityId).joinActivity(userId,shopId,userName,tel);
+    }
+
 }
