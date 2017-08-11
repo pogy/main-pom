@@ -20,6 +20,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -193,6 +194,7 @@ public class SubOrderModelImpl implements SubOrderModel {
         task.setDfOrderId(subOrderId);
         task.setAllocatStatus(1);
         task.setOperateIs(0);
+        task.setAllocatDate(status==1?date:null);
         try {
             task=daifaGgoodsTasksMapper.selectOne(task);
         } catch (Exception e) {
@@ -208,12 +210,19 @@ public class SubOrderModelImpl implements SubOrderModel {
             throw new DaifaException("订单已退款");
         }
 
+
+
         //查询未发表是否存在
         DaifaWaitSend daifaWaitSend=new DaifaWaitSend();
         daifaWaitSend.setDfTradeId(task.getDfTradeId());
         daifaWaitSend=daifaWaitSendMapper.selectOne(daifaWaitSend);
         if(daifaWaitSend==null){
             if(status==1){
+                DaifaGgoodsExample daifaGgoodsExample=new DaifaGgoodsExample();
+                daifaGgoodsExample.createCriteria().andGgoodsCodeEqualTo(goods.getGgoodsCode());
+                List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(daifaGgoodsExample, FieldUtil.codeFields("df_order_id,take_goods_id,take_goods_status"));
+                Map<Long,DaifaGgoods> gmap=BeanMapper.list2Map(gs,"dfOrderId",Long.class);
+
                 DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(task.getDfTradeId());
                 DaifaWaitSend insertWait=BeanMapper.map(trade,DaifaWaitSend.class);
                 insertWait.setCreateDate(date);
@@ -233,7 +242,7 @@ public class SubOrderModelImpl implements SubOrderModel {
                     wo.setDaifaWorkerId(task.getDaifaWorkerId());
                     wo.setDaifaWorker(task.getDaifaWorker());
                     wo.setSendStatus(1);//设置待发货
-                    wo.setTakeGoodsStatus(o.getDfOrderId().longValue()==subOrderId?status:o.getTakeGoodsStatus());
+                    wo.setTakeGoodsStatus(o.getDfOrderId().longValue()==subOrderId?status:gmap.get(o.getDfOrderId()).getTakeGoodsStatus());
                     wo.setSellerId(task.getSellerId());
                     wo.setWebSite(task.getWebSite());
                     wos.add(wo);
@@ -255,7 +264,7 @@ public class SubOrderModelImpl implements SubOrderModel {
         DaifaGgoods updateGgoods=new DaifaGgoods();
         updateGgoods.setUseStatus(0);//设置记录不可用
         updateGgoods.setOperateIs(1);//设置已操作过拿货完成
-        updateGgoods.setTakeGoodsId(updateGgoods.getTakeGoodsId());
+        updateGgoods.setTakeGoodsId(goods.getTakeGoodsId());
         updateGgoods.setTakeGoodsDate(date);
         updateGgoods.setTakeGoodsTime(time);
         updateGgoods.setTakeGoodsStatus(status);//设置拿货状态
