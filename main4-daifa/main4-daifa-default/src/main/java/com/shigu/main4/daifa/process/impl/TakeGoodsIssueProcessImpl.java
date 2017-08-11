@@ -1,5 +1,6 @@
-package com.shigu.main4.daifa.process;
+package com.shigu.main4.daifa.process.impl;
 
+import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.main4.daifa.vo.PrintTagVO;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * @since: main-pom
  * @commonents:
  */
-public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess{
+public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
 
     @Override
     public String distributionTask (Long wholeId, List<Long> waitIssueIds) {

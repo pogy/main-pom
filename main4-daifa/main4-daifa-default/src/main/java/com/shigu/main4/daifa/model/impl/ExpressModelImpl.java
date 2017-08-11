@@ -1,4 +1,4 @@
-package com.shigu.main4.daifa.model;
+package com.shigu.main4.daifa.model.impl;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.gson.Gson;
 import com.opentae.data.daifa.beans.DaifaCallExpress;
@@ -14,6 +14,7 @@ import com.shigu.main4.daifa.bo.OrderExpressBO;
 import com.shigu.main4.daifa.bo.SubOrderExpressBO;
 import com.shigu.main4.daifa.exception.KdApiException;
 import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.model.ExpressModel;
 import com.shigu.main4.daifa.utils.KdConfig;
 import com.shigu.main4.daifa.utils.KdHttpUtil;
 import com.shigu.main4.daifa.vo.ExpressVO;
@@ -38,7 +39,7 @@ import java.util.*;
  */
 @Repository
 @Scope("prototype")
-public class ExpressModelImpl implements ExpressModel{
+public class ExpressModelImpl implements ExpressModel {
 
     @Resource(name = "tae_daifa_daifaCallExpressMapper")
     DaifaCallExpressMapper daifaCallExpressMapper;
