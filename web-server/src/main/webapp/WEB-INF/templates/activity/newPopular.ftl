@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>${activeName!} - 四季星座网</title>
+    <title>秋装新品发布会 - 四季星座网</title>
 
     
     
@@ -319,10 +319,9 @@ var webSite = '${webSite!}';
     </div>
     <div class="goodsListShow layout">
     <div>
-        <#list goodsStyle as item>
-            <div class="styleItem">
+        <div class="styleItem">
     <ul class="clearfix">
-        <#list item.goodsList as goods>
+        <#list goodsList as goods>
             <li class="goodsItem" >
     <a href="http://www.571xz.com/item.htm?id=${goods.goodsId!}" target="_blank" class="imgBox">
         <img src="${goods.imgSrc!}_300x300.jpg" alt="${goods.title!}" >
@@ -340,7 +339,6 @@ var webSite = '${webSite!}';
     
 </div>
 
-        </#list>
     </div>
 </div>
 
