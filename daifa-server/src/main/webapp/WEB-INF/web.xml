@@ -33,36 +33,7 @@
     </filter>
     <filter-mapping>
         <filter-name>PageCachingFilter</filter-name>
-        <url-pattern>/item.htm</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>PageCachingFilter</filter-name>
-        <url-pattern>/shop.htm</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>PageCachingFilter</filter-name>
-        <url-pattern>/newgoods.htm</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>PageCachingFilter</filter-name>
-        <url-pattern>/shopnew.htm</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>PageCachingFilter</filter-name>
-        <url-pattern>/market.htm</url-pattern>
-    </filter-mapping>
-    <!-- 活动系列缓存 -->
-    <filter-mapping>
-        <filter-name>PageCachingFilter</filter-name>
-        <url-pattern>/activity/redbull.htm</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>PageCachingFilter</filter-name>
-        <url-pattern>/activity/apply.htm</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>PageCachingFilter</filter-name>
-        <url-pattern>/activity/popular.htm</url-pattern>
+        <url-pattern>/login.htm</url-pattern>
     </filter-mapping>
 
     <!--编码过滤器-->
