@@ -9,7 +9,7 @@ import com.shigu.main4.daifa.enums.DaifaListDealTypeEnum;
 import com.shigu.main4.daifa.enums.TakeGoodsEnum;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.CargoManModel;
-import com.shigu.main4.daifa.process.DaifaListDealUtil;
+import com.shigu.main4.daifa.process.impl.DaifaListDealUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;

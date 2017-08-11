@@ -63,7 +63,6 @@ public class OrderModelImpl implements OrderModel {
     @Autowired
     private DaifaWaitSendMapper daifaWaitSendMapper;
 
-
     @Autowired
     private Producer producer;
 
