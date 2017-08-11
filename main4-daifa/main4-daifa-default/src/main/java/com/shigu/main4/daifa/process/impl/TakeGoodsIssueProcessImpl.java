@@ -4,8 +4,13 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.daifa.beans.CountTrans;
+import com.opentae.data.daifa.beans.DaifaGgoods;
 import com.opentae.data.daifa.beans.DaifaGgoods;
 import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
+import com.opentae.data.daifa.examples.*;
+import com.opentae.data.daifa.interfaces.CountTransMapper;
+import com.opentae.data.daifa.interfaces.DaifaGgoodsMapper;
 import com.opentae.data.daifa.examples.DaifaGgoodsExample;
 import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
@@ -19,12 +24,14 @@ import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.CargoManModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.daifa.vo.PrintTagVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -42,30 +49,44 @@ import java.util.Map;
  */
 @Service
 public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
-    @Autowired
-    private DaifaGgoodsMapper daifaGgoodsMapper;
-
 
     private final static Integer EZINT = 7; //截取长度
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
+
     @Autowired
     public void setDaifaGgoodsTasksMapper(DaifaGgoodsTasksMapper daifaGgoodsTasksMapper) {
         this.daifaGgoodsTasksMapper = daifaGgoodsTasksMapper;
     }
+
     private MultipleMapper multipleMapper;
+
     @Autowired
     public void setMultipleMapper(MultipleMapper multipleMapper) {
         this.multipleMapper = multipleMapper;
     }
 
+    private CountTransMapper countTransMapper;
+
+    @Autowired
+    public void setCountTransMapper(CountTransMapper countTransMapper) {
+        this.countTransMapper = countTransMapper;
+    }
+
+    private DaifaGgoodsMapper daifaGgoodsMapper;
+
+    @Autowired
+    public void setDaifaGgoodsMapper(DaifaGgoodsMapper daifaGgoodsMapper) {
+        this.daifaGgoodsMapper = daifaGgoodsMapper;
+    }
+
     @Override
-    public String distributionTask (Long wholeId, List<Long> waitIssueIds) throws DaifaException {
+    public String distributionTask(Long wholeId, List<Long> waitIssueIds) throws DaifaException {
         CargoManModel cargoManModel = SpringBeanFactory.getBean(CargoManModel.class, wholeId);
         return cargoManModel.takeToMe(waitIssueIds);
     }
 
     @Override
-    public String distributionTaskWithShop (Long wholeId, Long shopId) throws DaifaException {
+    public String distributionTaskWithShop(Long wholeId, Long shopId) throws DaifaException {
         //先根据shopId查出待分配id
         DaifaGgoodsTasksExample dgtex = new DaifaGgoodsTasksExample();
         dgtex.createCriteria()
@@ -75,12 +96,12 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andEndStatusEqualTo(0);//未结算
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(dgtex, FieldUtil.codeFields("task_id"));
         List<Long> taskIds = new ArrayList<>();
-        ggoodsTasks.forEach(gt-> taskIds.add(gt.getTasksId()));
-        return distributionTask(wholeId,taskIds);
+        ggoodsTasks.forEach(gt -> taskIds.add(gt.getTasksId()));
+        return distributionTask(wholeId, taskIds);
     }
 
     @Override
-    public String distributionTaskWithFloor (Long wholeId, Long floorId) throws DaifaException {
+    public String distributionTaskWithFloor(Long wholeId, Long floorId) throws DaifaException {
 
         //先根据floorid查出待分配id
         DaifaGgoodsTasksExample dgtex = new DaifaGgoodsTasksExample();
@@ -90,15 +111,15 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0);//未结算
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(dgtex
-                ,FieldUtil.codeFields("task_id"));
+                , FieldUtil.codeFields("task_id"));
         List<Long> taskIds = new ArrayList<>();
-        ggoodsTasks.forEach(gt-> taskIds.add(gt.getTasksId()));
-        return distributionTask(wholeId,taskIds);
+        ggoodsTasks.forEach(gt -> taskIds.add(gt.getTasksId()));
+        return distributionTask(wholeId, taskIds);
     }
 
     @Override
-    public String distributionTaskWithMarket (Long wholeId, Long marketId) throws DaifaException {
-          //先根据marketId查出待分配id
+    public String distributionTaskWithMarket(Long wholeId, Long marketId) throws DaifaException {
+        //先根据marketId查出待分配id
         DaifaGgoodsTasksExample dgtex = new DaifaGgoodsTasksExample();
         dgtex.createCriteria()
                 .andUseStatusEqualTo(1)//可用
@@ -106,21 +127,36 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0);//未结算
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(dgtex
-                ,FieldUtil.codeFields("task_id"));
+                , FieldUtil.codeFields("task_id"));
         List<Long> taskIds = new ArrayList<>();
-        ggoodsTasks.forEach(gt-> taskIds.add(gt.getTasksId()));
-        return distributionTask(wholeId,taskIds);
+        ggoodsTasks.forEach(gt -> taskIds.add(gt.getTasksId()));
+        return distributionTask(wholeId, taskIds);
     }
 
     @Override
-    public List<PrintTagVO> printAllTags () {
+    public List<PrintTagVO> printAllTags(Long sellerId) {
+        //查出今天未打印的
 
-        return null;
+
+        String nowDate = DateUtil.dateToString(new Date(), DateUtil.patternB);
+        DaifaGgoodsExample dgex = new DaifaGgoodsExample();
+        dgex.createCriteria()
+                .andUseStatusEqualTo(1)//可用的
+                .andPrintBarcodeStatusEqualTo(1)//未打印
+                .andSellerIdEqualTo(sellerId)
+                .andCreateDateEqualTo(nowDate);
+        List<DaifaGgoods> ggoods = daifaGgoodsMapper.selectFieldsByExample(dgex
+                ,FieldUtil.codeFields("take_goods_id"));
+        List<Long> issueIds = new ArrayList<>();
+        ggoods.forEach(dg->issueIds.add(dg.getTakeGoodsId()));
+
+        return printTags(issueIds);
     }
 
     @Override
-    public List<PrintTagVO> printTags (List<Long> issueIds) {
-        String nowDate= DateUtil.dateToString(new Date(),DateUtil.patternB);
+    public List<PrintTagVO> printTags(List<Long> issueIds) {
+        String nowDate = DateUtil.dateToString(new Date(), DateUtil.patternB);
+        Calendar ca = Calendar.getInstance();
         //先根据ids查询出数据
         DaifaGgoodsExample dgex = new DaifaGgoodsExample();
         DaifaOrderExample doex = new DaifaOrderExample();
@@ -128,46 +164,71 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
 
         MultipleExample multipleExample = MultipleExampleBuilder.from(dgex).join(dtex)
                 .on(dgex.createCriteria().andTakeGoodsIdIn(issueIds)
-                        .equalTo(DaifaGgoodsExample.dfTradeId, DaifaTradeExample.dfTradeId)).join(doex)
-                .on(dgex.createCriteria().equalTo(DaifaGgoodsExample.dfOrderId, DaifaOrderExample.dfOrderId)).build();
+                        .equalTo(DaifaGgoodsExample.dfTradeId, DaifaTradeExample.dfTradeId))
+                .join(doex)
+                .on(doex.createCriteria().equalTo(DaifaOrderExample.dfOrderId, DaifaGgoodsExample.dfOrderId)).build();
         List<GgoodsForPrint> ggoodsForPrints = multipleMapper
                 .selectFieldsByMultipleExample(multipleExample, GgoodsForPrint.class);
 
         List<PrintTagVO> pvos = new ArrayList<>();
 
-//
-//        CountTransExample ctex=new CountTransExample();
-//        ctex.setOrderByClause("id desc");
-//        ctex.setStartIndex(0);
-//        ctex.setEndIndex(1);
-//        ctex.createCriteria().andCreateDateEqualTo(nowDate);
-//        //查询当天有无操作过批次
-//        List<CountTrans> ctlist=countTransMapper.selectByConditionList(ctex);
-//
-//        int startindex=0;
-//        if(ctlist.size()>0){
-//            startindex=ctlist.get(0).getFinalNumber().intValue();
-//        }
-
-
-        ggoodsForPrints.forEach(ggoodsForPrint -> {
-            PrintTagVO vo  = new PrintTagVO();
+        CountTransExample ctex = new CountTransExample();
+        ctex.setOrderByClause("id desc");
+        ctex.setStartIndex(0);
+        ctex.setEndIndex(1);
+        ctex.createCriteria().andCreateDateEqualTo(nowDate);
+        //查询当天有无操作过批次
+        List<CountTrans> ctlist = countTransMapper.selectByConditionList(ctex);
+        int batch = 0;
+        if (ctlist.size() > 0) {
+            batch = ctlist.get(0).getBatch();
+        }
+        List<Long> unPrints = new ArrayList<>();
+        for (GgoodsForPrint ggoodsForPrint : ggoodsForPrints) {
+            PrintTagVO vo = new PrintTagVO();
             vo.setOrderSort(ggoodsForPrint.getBarCodeKeyNum());
             vo.setSpecialStr(ggoodsForPrint.getBarCodeKey());
             vo.setPackages(ggoodsForPrint.getGoodsNum());
             String barcode = ggoodsForPrint.getDfOrderId().toString() + ggoodsForPrint.getDfTradeId().toString()
                     .substring(ggoodsForPrint.getDfTradeId().toString().length() - EZINT);//计算长度
             vo.setBarCode(barcode);
-            vo.setpAndBarCode((int)Double.parseDouble(ggoodsForPrint.getSinglePiPrice())+"N"+barcode);
+            vo.setpAndBarCode((int) Double.parseDouble(ggoodsForPrint.getSinglePiPrice()) + "N" + barcode);
             vo.setBuyerNick(ggoodsForPrint.getBuyerNick());
             vo.setReceiverName(ggoodsForPrint.getRecieverName());
 
+            if (ggoodsForPrint.getPrintBarcodeStatus() != null && ggoodsForPrint.getPrintBarcodeStatus() == 1) {
+                vo.setDateIncBatch(ca.get(Calendar.MONTH) + 1 + "." + ca.get(Calendar.DAY_OF_MONTH) + "-"
+                        + (batch + 1));
+                unPrints.add(ggoodsForPrint.getTakeGoodsId());
+            } else {
+                vo.setDateIncBatch(batchDBconvert(ggoodsForPrint.getPrintBatch()));
+            }
+            int subDays = Integer.parseInt(nowDate) - Integer.parseInt(DateUtil
+                    .dateToString(ggoodsForPrint.getCreateTime(), DateUtil.patternB));
+            vo.setRemarks(subDays + "");
 
+            String market = ggoodsForPrint.getStoreGoodsCode().split("_")[0];
+            vo.setGoodsSku(market + "-" + ggoodsForPrint.getStoreNum() + "-" + ggoodsForPrint.getGoodsCode()
+                    + "-" + ggoodsForPrint.getPropStr());
+            vo.setPostName(Pingyin.getPinYinHeadChar(ggoodsForPrint.getExpressName()).toUpperCase());
+        }
 
+        if (unPrints.size() > 0) {
+            DaifaGgoodsExample dgexF = new DaifaGgoodsExample();
+            dgexF.createCriteria().andTakeGoodsIdIn(unPrints);
+            DaifaGgoods ggoods = new DaifaGgoods();
+            ggoods.setPrintBarcodeStatus(2);//已打印
+            ggoods.setPrintBatch(nowDate + "-" + (batch + 1));
+            daifaGgoodsMapper.updateByExampleSelective(ggoods, dgexF);//更新未打印
+            //插入打印表
+            CountTrans ct = new CountTrans();
+            ct.setBatch(batch + 1);
+            ct.setCreateDate(nowDate);
+            ct.setCreateTime(new Date());
+            ct.setUseSituation("d7打印条码");
+            countTransMapper.insertSelective(ct);
 
-
-        });
-
+        }
 
         return pvos;
     }
@@ -258,4 +319,23 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             }
         }
     }
+
+    /**
+     * 数据库批次转化到页面显示
+     *
+     * @param dbstr 数据库显示batch
+     * @return 页面显示batch
+     */
+    private String batchDBconvert(String dbstr) {
+        String[] bas = dbstr.split("_");
+        Calendar ca = Calendar.getInstance();
+        Date date = DateUtil.stringToDate(bas[0], DateUtil.patternB);
+        assert (date) != null;
+        ca.setTime(date);
+
+        return ca.get(Calendar.MONTH) + 1 + "." + ca.get(Calendar.DAY_OF_MONTH) + "-"
+                + bas[1];
+    }
+
+
 }

@@ -19,6 +19,8 @@ public class GgoodsForPrint implements Serializable{
     private static final long serialVersionUID = 4094549609371998769L;
     @Column("daifa_ggoods.create_date")
     private String createDate;//创建时间 2017-10-11
+    @Column("daifa_ggoods.task_goods_id")
+    private Long takeGoodsId;//daifaggoods主键
     @Column("daifa_ggoods.goods_code")
     private String goodsCode;//货号
     @Column("daifa_ggoods.store_goods_code")
@@ -33,6 +35,10 @@ public class GgoodsForPrint implements Serializable{
     private Long dfTradeId;//订单id
     @Column("daifa_ggoods.df_trade_id")
     private Long dfOrderId;//子弹id
+    @Column("daifa_ggoods.print_barcode_status")
+    private Integer printBarcodeStatus;//打印拿货码打印状态 1未打印2已打印
+    @Column("daifa_ggoods.print_batch")
+    private String printBatch;//打印批次
     @Column("daifa_order.bar_code_key_num")
     private String barCodeKeyNum;//子弹编号
     @Column("daifa_trade.receiver_name")
@@ -45,6 +51,8 @@ public class GgoodsForPrint implements Serializable{
     private String buyerNick;//买家昵称
     @Column("daifa_trade.goods_num")
     private Integer goodsNum;//商品数
+    @Column("daifa_trade.express_name")
+    private String expressName;
 
     public void setCreateDate(String createDate) {
         this.createDate = createDate;
@@ -156,5 +164,37 @@ public class GgoodsForPrint implements Serializable{
 
     public void setGoodsNum(Integer goodsNum) {
         this.goodsNum = goodsNum;
+    }
+
+    public Integer getPrintBarcodeStatus() {
+        return printBarcodeStatus;
+    }
+
+    public void setPrintBarcodeStatus(Integer printBarcodeStatus) {
+        this.printBarcodeStatus = printBarcodeStatus;
+    }
+
+    public Long getTakeGoodsId() {
+        return takeGoodsId;
+    }
+
+    public void setTakeGoodsId(Long takeGoodsId) {
+        this.takeGoodsId = takeGoodsId;
+    }
+
+    public String getPrintBatch() {
+        return printBatch;
+    }
+
+    public void setPrintBatch(String printBatch) {
+        this.printBatch = printBatch;
+    }
+
+    public String getExpressName() {
+        return expressName;
+    }
+
+    public void setExpressName(String expressName) {
+        this.expressName = expressName;
     }
 }

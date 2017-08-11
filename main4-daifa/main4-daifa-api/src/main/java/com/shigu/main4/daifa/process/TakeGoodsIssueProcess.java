@@ -43,9 +43,11 @@ public interface TakeGoodsIssueProcess {
     String distributionTaskWithMarket(Long wholeId,Long marketId) throws DaifaException;
 
     /**
-     * 打印当天所有应该打而未打的标签
+     * 打印全部条码
+     * @param sellerId 代发机构id
+     * @return list
      */
-    List<PrintTagVO> printAllTags();
+    List<PrintTagVO> printAllTags(Long sellerId);
 
     /**
      * 打印选中的记录(可重复打印)
