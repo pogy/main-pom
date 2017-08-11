@@ -132,6 +132,20 @@
             <artifactId>main4-tools</artifactId>
             <version>${main4-tools.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-client</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
 
 
