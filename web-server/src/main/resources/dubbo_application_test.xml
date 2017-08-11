@@ -41,4 +41,5 @@
     <dubbo:reference interface="com.shigu.main4.item.services.ItemCatService" id="itemCatService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.item.services.ItemAddOrUpdateService" id="itemAddOrUpdateService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.monitor.services.ShopBrowerService" id="shopBrowerService" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.activity.service.ActivityDubboService" id="activityDubboService" timeout="10000"/>
 </beans>
