@@ -28,6 +28,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -35,7 +36,7 @@ import java.util.*;
  * Created by zhaohongbo on 17/5/4.
  */
 @Service("activityFactory")
-public class ActivityFactoryImpl implements ActivityFactory {
+public class ActivityFactoryImpl implements ActivityFactory,Serializable {
     @Autowired
     SpreadActivityMapper spreadActivityMapper;
 

@@ -68,7 +68,10 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
 
     @Override
     public ActivityVO selActivityById(Long activityId) throws ActivityException {
-        return activityFactory.selActivityById(activityId);
+        System.out.println("112112121");
+        ActivityVO activityVO=BeanMapper.map(activityFactory.selActivityById(activityId),ActivityVO.class);
+        System.out.println(activityVO);
+        return activityVO;
     }
 
     @Override
@@ -103,12 +106,12 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
 
     @Override
     public ActivityTermVO selTermByTime(ActivityType type, Date time) {
-        return activityFactory.selTermByTime(type,time);
+        return BeanMapper.map(activityFactory.selTermByTime(type,time),ActivityTermVO.class);
     }
 
     @Override
     public ActivityTermVO selNowFinishedTerm(ActivityType type, Date time) {
-        return activityFactory.selNowFinishedTerm(type,time);
+        return BeanMapper.map(activityFactory.selNowFinishedTerm(type,time),ActivityTermVO.class);
     }
 
     @Override
@@ -127,8 +130,8 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
     }
 
     @Override
-    public ActivityTerm selafterTermId(ActivityType type, Long termId) {
-        return activityFactory.selafterTermId(type,termId);
+    public ActivityTermVO selafterTermId(ActivityType type, Long termId) {
+        return BeanMapper.map(activityFactory.selafterTermId(type,termId),ActivityTermVO.class);
     }
 
     @Override

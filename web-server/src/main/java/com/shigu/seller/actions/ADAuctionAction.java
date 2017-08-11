@@ -75,7 +75,7 @@ public class ADAuctionAction {
         if (logshop.getShopId() != 35992 && logshop.getMarketId() != 1087 && logshop.getMarketId() != 613) {
              return ftlDir+"/dtggapplyNull";
         }
-        ActivityVO activityVO=activityDubboService.selActivityById(id);
+        ActivityVO activityVO=selActivityById(id);
         if (activityVO == null) {
             return "redirect:dtgglist.htm?id="+(id!=null?id:"");
         }
@@ -103,21 +103,18 @@ public class ADAuctionAction {
         return ftlDir+"/dtggapply";
     }
 
-//    private Activity selActivityById(Long id) throws ActivityException {
-//        Activity activity;
-//        if (id == null||id==1001L) {
-//            //活动是否还在进行中
-//            ActivityTerm term=activityFactory.selTermByTime(ActivityType.GOAT_LED,new Date());
-//            if(term==null){//已经结束
-//                return null;
-//            }
-//            LedActivityVO ledActivityVO= (LedActivityVO) term.selActivitys().get(0);
-//            activity=activityFactory.selActivityByVo(ledActivityVO);
-//        }else{
-//            activity=activityFactory.selActivityById(id);
-//        }
-//        return activity;
-//    }
+    private ActivityVO selActivityById(Long id) throws ActivityException {
+        if (id == null||id==1001L) {
+            //活动是否还在进行中
+            ActivityTermVO term=activityDubboService.selTermByTime(ActivityType.GOAT_LED,new Date());
+            if(term==null){//已经结束
+                return null;
+            }
+            return activityDubboService.selActivityInTerm(term.getTermId()).get(0);
+        }else{
+            return activityDubboService.selActivityById(id);
+        }
+    }
 
     /**
      * 本期列表
@@ -139,7 +136,7 @@ public class ADAuctionAction {
             model.addAttribute("ggList", adAuctionService.selLedWinner(activityDubboService.selEnlist(1,activityVO.getActivityId())));
         }
         if (term != null) {
-            ActivityTerm nextTerm = activityDubboService.selafterTermId(term.getActivityType(), term.getTermId());
+            ActivityTermVO nextTerm = activityDubboService.selafterTermId(term.getActivityType(), term.getTermId());
             if (nextTerm != null) {
                 model.addAttribute("nexttimeText", DateUtil.dateToString(nextTerm.getStartTime(), "yyyy-MM-dd HH:mm:ss"));
             } else {
