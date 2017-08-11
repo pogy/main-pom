@@ -1,4 +1,4 @@
-package com.shigu.main4.daifa.process.impl;
+package com.shigu.main4.daifa.utils;
 
 import com.opentae.data.daifa.beans.DaifaListDeal;
 import com.opentae.data.daifa.beans.DaifaWorker;

@@ -78,7 +78,6 @@ public class ExpressModelImpl implements ExpressModel {
         DaifaCallExpress dce= daifaCallExpressMapper.selectByPrimaryKey (bo.getTid ());
         if(dce!=null){
              vo=new ExpressVO();
-
             vo=BeanMapper.map (dce,ExpressVO.class);
             vo.setTid (dce.getDfTradeId ());
 
@@ -88,7 +87,7 @@ public class ExpressModelImpl implements ExpressModel {
             example.createCriteria ().andDfSellerIdEqualTo (sellerId).andExpressIdEqualTo (expressId);
             List <DaifaPostCustomer> list_dpc=daifaPostCustomerMapper.selectByExample (example);
             if(list_dpc.size ()==0){
-                    throw new DaifaException ("系统无此快递鸟账户");
+                throw new DaifaException ("系统无此快递鸟账户");
             }
             //再用bo里的信息与快递鸟的账户查询快递
             ExpressBean express=new ExpressBean ();

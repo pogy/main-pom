@@ -15,7 +15,7 @@ public interface CargoManModel {
      * 分配给我
      * @param waitIssueIds 待分配ID
      */
-    void takeToMe(List<Long> waitIssueIds) throws DaifaException;
+    String takeToMe(List<Long> waitIssueIds) throws DaifaException;
 
     /**
      * 马上结束拿货
