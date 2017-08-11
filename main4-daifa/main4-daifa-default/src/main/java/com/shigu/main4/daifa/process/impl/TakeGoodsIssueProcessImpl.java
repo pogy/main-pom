@@ -174,7 +174,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
 
     @Override
     public void complete (Long issueId) throws DaifaException {
-        DaifaGgoods g=daifaGgoodsMapper.selectFieldsByPrimaryKey(issueId, FieldUtil.codeFields("take_goods_id,df_order_id"));
+        DaifaGgoods g=daifaGgoodsMapper.selectFieldsByPrimaryKey(issueId, FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
         if(g==null){
             throw new DaifaException("未找到分配信息");
         }
@@ -191,7 +191,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
 
     @Override
     public void uncomplete (Long issueId) throws DaifaException {
-        DaifaGgoods g=daifaGgoodsMapper.selectFieldsByPrimaryKey(issueId, FieldUtil.codeFields("take_goods_id,df_order_id"));
+        DaifaGgoods g=daifaGgoodsMapper.selectFieldsByPrimaryKey(issueId, FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
         if(g==null){
             throw new DaifaException("未找到分配信息");
         }
@@ -211,8 +211,8 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         String date=DateUtil.dateToString(new Date(),DateUtil.patternB);
         DaifaGgoodsExample ge=new DaifaGgoodsExample();
         ge.createCriteria().andDaifaWorkerIdEqualTo(wholeId);
-        List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(ge,FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_time"));
-        Map<Long,DaifaGgoods> gmap= BeanMapper.list2Map(gs,"take_goods_id",Long.class);
+        List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(ge,FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
+        Map<Long,DaifaGgoods> gmap= BeanMapper.list2Map(gs,"takeGoodsId",Long.class);
         //校验是否存在不可操作数据
         for(Long id:issueIds){
             DaifaGgoods g=gmap.get(id);

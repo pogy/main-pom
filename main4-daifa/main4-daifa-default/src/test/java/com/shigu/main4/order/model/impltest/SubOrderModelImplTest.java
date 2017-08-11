@@ -72,7 +72,7 @@ public class SubOrderModelImplTest extends BaseSpringTest {
             }
         }
 
-        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 1L);
+        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 2L);
         bean.takeToMe(tids);
         DaifaGgoods daifaGgoods=new DaifaGgoods();
         daifaGgoods.setDfOrderId(oid);
@@ -105,7 +105,7 @@ public class SubOrderModelImplTest extends BaseSpringTest {
             }
         }
 
-        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 1L);
+        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 2L);
         bean.takeToMe(tids);
 
         DaifaGgoods daifaGgoods=new DaifaGgoods();
@@ -150,7 +150,9 @@ public class SubOrderModelImplTest extends BaseSpringTest {
                 oid=t.getDfOrderId();
             }
         }
-        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 1L);
+        boolean b=false;
+
+        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 2L);
         bean.takeToMe(tids);
 
         System.out.println("拿货完成,制造缺货状态");
@@ -159,8 +161,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.haveTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("重新分配");
         ts=daifaGgoodsTasksMapper.select(daifaGgoodsTasks);
         assertNotEquals(ts.size(),0);
@@ -184,8 +188,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.haveTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("创建时间改回,同时修改有效状态,制造测试条件");
         g.setCreateDate(date);
         g.setUseStatus(0);
@@ -193,8 +199,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.haveTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("有效状态改回,同时修改操作状态,制造测试条件");
         g.setUseStatus(1);
         g.setOperateIs(1);
@@ -202,8 +210,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.haveTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("操作状态改回");
         g.setOperateIs(0);
         daifaGgoodsMapper.updateByPrimaryKeySelective(g);
@@ -217,22 +227,26 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         System.out.println("临时修改分配时间,创造测试条件");
         DaifaGgoodsTasks t=new DaifaGgoodsTasks();
         t.setTasksId(task.getTasksId());
-        t.setTakeGoodsDate("20170809");
+        t.setAllocatDate("20170809");
         daifaGgoodsTasksMapper.updateByPrimaryKeySelective(t);
         try {
             impl.haveTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("分配时间改回,同时修改操作状态");
-        t.setTakeGoodsDate(date);
+        t.setAllocatDate(date);
         t.setOperateIs(1);
         daifaGgoodsTasksMapper.updateByPrimaryKeySelective(t);
         try {
             impl.haveTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("操作状态改回,同时修改分配状态");
         t.setOperateIs(0);
         t.setAllocatStatus(0);
@@ -240,8 +254,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.haveTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("分配状态改回,同时修改退款状态");
         t.setAllocatStatus(1);
         t.setReturnStatus(2);
@@ -249,8 +265,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.haveTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("退款状态改回,同时修改截单状态");
         t.setReturnStatus(0);
         t.setEndStatus(1);
@@ -258,8 +276,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.haveTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("截单状态改回");
         t.setEndStatus(0);
         daifaGgoodsTasksMapper.updateByPrimaryKeySelective(t);
@@ -327,9 +347,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         }
     }
 
-    @Test
-    @Transactional
+//    @Test
+//    @Transactional
     public void noTake_test() throws DaifaException {
+        boolean b=false;
         String date=DateUtil.dateToString(new Date(),DateUtil.patternB);
         DaifaTrade trade=insertTrade(99999L);
         DaifaGgoodsTasks daifaGgoodsTasks=new DaifaGgoodsTasks();
@@ -344,7 +365,7 @@ public class SubOrderModelImplTest extends BaseSpringTest {
                 oid=t.getDfOrderId();
             }
         }
-        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 1L);
+        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 2L);
         bean.takeToMe(tids);
 
         System.out.println("拿货完成,制造缺货状态");
@@ -353,8 +374,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.noTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("重新分配");
         ts=daifaGgoodsTasksMapper.select(daifaGgoodsTasks);
         assertNotEquals(ts.size(),0);
@@ -379,8 +402,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.noTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("有效状态改回,同时修改操作状态,制造测试条件");
         g.setUseStatus(1);
         g.setOperateIs(1);
@@ -388,8 +413,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.noTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("操作状态改回");
         g.setOperateIs(0);
         daifaGgoodsMapper.updateByPrimaryKeySelective(g);
@@ -408,8 +435,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.noTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("操作状态改回,同时修改分配状态");
         t.setOperateIs(0);
         t.setAllocatStatus(0);
@@ -417,8 +446,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.noTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("分配状态改回,同时修改退款状态");
         t.setAllocatStatus(1);
         t.setReturnStatus(2);
@@ -426,8 +457,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.noTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("退款状态改回,同时修改截单状态");
         t.setReturnStatus(0);
         t.setEndStatus(1);
@@ -435,8 +468,10 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         try {
             impl.noTake();
         } catch (DaifaException e) {
-            assertTrue(true);
+            b=true;
         }
+        assertTrue(b);
+        b=false;
         System.out.println("截单状态改回");
         t.setEndStatus(0);
         daifaGgoodsTasksMapper.updateByPrimaryKeySelective(t);
@@ -546,7 +581,7 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         t.setReceiverPhone("18969041771");
         t.setReceiverQq("460333383");
         t.setReceiverState("浙江省");
-        t.setSellerId(99999999L);
+        t.setSellerId(999999999L);
         t.setSellerName("星帮");
         t.setSendStatus(0);
         t.setServicesFee("2.00");
@@ -594,7 +629,7 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         bo.setTitle("港风文艺1 秋季男青少年圆领卫衣宽松韩版学生休闲百搭 Y509 P45");
         bo.setTotalFee("51.00");
         bo.setTotalServiceFee("1.00");
-        bo.setSellerId(99999999L);
+        bo.setSellerId(999999999L);
         bo.setWebSite("hz");
         SubOrderModelImpl impl=SpringBeanFactory.getBean(SubOrderModelImpl.class,bo);
 

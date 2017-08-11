@@ -136,6 +136,9 @@ public class CargoManImpl implements CargoManModel {
             ggoods.setGgoodsCode(code);
             ggoods.setUseStatus(1);
             ggoods.setOperateIs(0);
+            ggoods.setTakeGoodsStatus(0);
+            ggoods.setTakeGoodsTime(null);
+            ggoods.setTakeGoodsDate(null);
             ggoods.setDaifaWorkerId(daifaWorker.getDaifaWorkerId());
             ggoods.setDaifaWorker(daifaWorker.getDaifaWorker());
             //修改任务表
