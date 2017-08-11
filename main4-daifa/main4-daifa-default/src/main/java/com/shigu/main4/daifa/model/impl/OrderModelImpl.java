@@ -106,8 +106,7 @@ public class OrderModelImpl implements OrderModel {
             DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
             daifaGgoodsTasksExample.createCriteria().andDfTradeIdEqualTo(tid)
                     .andReturnStatusEqualTo(0).andUseStatusEqualTo(1)
-                    .andEndStatusEqualTo(0).andAllocatStatusEqualTo(0)
-                    .andOperateIsEqualTo(0);
+                    .andEndStatusEqualTo(0).andAllocatStatusEqualTo(0);
             DaifaGgoodsTasks daifaGgoodsTask = new DaifaGgoodsTasks();
             daifaGgoodsTask.setEndStatus(1);
             List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,"df_order_id");
