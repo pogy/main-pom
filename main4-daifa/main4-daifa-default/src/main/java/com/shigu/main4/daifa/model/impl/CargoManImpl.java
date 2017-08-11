@@ -9,7 +9,7 @@ import com.shigu.main4.daifa.enums.DaifaListDealTypeEnum;
 import com.shigu.main4.daifa.enums.TakeGoodsEnum;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.CargoManModel;
-import com.shigu.main4.daifa.process.impl.DaifaListDealUtil;
+import com.shigu.main4.daifa.utils.DaifaListDealUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -93,7 +93,7 @@ public class CargoManImpl implements CargoManModel {
 
     @Override
     @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
-    public void takeToMe(List<Long> waitIssueIds) throws DaifaException {
+    public String takeToMe(List<Long> waitIssueIds) throws DaifaException {
         //查询出待分配任务
         if (waitIssueIds == null || waitIssueIds.isEmpty()) {
             throw new DaifaException("待分配Id为空");
@@ -146,11 +146,13 @@ public class CargoManImpl implements CargoManModel {
         //写入已分配表
         if (ggoodsList.size() != 0) {
             daifaGgoodsMapper.insertListNoId(ggoodsList);
+            return code;
         }
+        return null;
     }
 
     @Override
-    @Transactional(rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void finishTakeGoods() throws DaifaException {
         //查询出该处理的s
 

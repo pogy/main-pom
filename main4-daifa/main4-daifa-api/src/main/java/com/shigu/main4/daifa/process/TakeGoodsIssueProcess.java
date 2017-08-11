@@ -1,5 +1,6 @@
 package com.shigu.main4.daifa.process;
 
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.vo.PrintTagVO;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface TakeGoodsIssueProcess {
      * @param waitIssueIds 待分配ID
      * @return 波次号
      */
-    String distributionTask(Long wholeId, List<Long> waitIssueIds);
+    String distributionTask(Long wholeId, List<Long> waitIssueIds) throws DaifaException;
 
     /**
      * 按市场分配
@@ -23,7 +24,7 @@ public interface TakeGoodsIssueProcess {
      * @param shopId 店铺ID
      * @return 波次号
      */
-    String distributionTaskWithShop(Long wholeId,Long shopId);
+    String distributionTaskWithShop(Long wholeId,Long shopId) throws DaifaException;
 
     /**
      * 按楼层分配
@@ -31,7 +32,7 @@ public interface TakeGoodsIssueProcess {
      * @param floorId 楼层ID
      * @return 波次号
      */
-    String distributionTaskWithFloor(Long wholeId,Long floorId);
+    String distributionTaskWithFloor(Long wholeId,Long floorId) throws DaifaException;
 
     /**
      * 按市场分配
@@ -39,7 +40,7 @@ public interface TakeGoodsIssueProcess {
      * @param marketId 市场ID
      * @return 波次号
      */
-    String distributionTaskWithMarket(Long wholeId,Long marketId);
+    String distributionTaskWithMarket(Long wholeId,Long marketId) throws DaifaException;
 
     /**
      * 打印当天所有应该打而未打的标签
@@ -49,7 +50,7 @@ public interface TakeGoodsIssueProcess {
     /**
      * 打印选中的记录(可重复打印)
      * @param issueIds 分配记录ID
-     * @return
+     * @return list
      */
     List<PrintTagVO> printTags(List<Long> issueIds);
 
