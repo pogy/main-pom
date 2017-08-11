@@ -51,6 +51,7 @@ public class NewPopularService {
         }
         Map<String, String> goodsIdShStatusMap = shiguTemps.stream().collect(Collectors.toMap(ShiguTemp::getKey1, ShiguTemp::getKey3));
         ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
+        example.setWebSite("hz");
         example.createCriteria().andWebSiteEqualTo("hz").andGoodsIdIn(goodsIdShStatusMap.keySet().stream().map(o->{return Long.valueOf(o);}).collect(Collectors.toList()));
         return shiguGoodsTinyMapper.selectByExample(example).stream().map(o -> {
             PopularGoodsVO vo = new PopularGoodsVO();
