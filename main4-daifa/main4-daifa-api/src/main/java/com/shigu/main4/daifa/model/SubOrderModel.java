@@ -1,5 +1,7 @@
 package com.shigu.main4.daifa.model;
 
+import com.shigu.main4.daifa.exceptions.DaifaException;
+
 import java.util.Date;
 
 /**
@@ -30,17 +32,17 @@ public interface SubOrderModel {
      * 备注
      * @param context
      */
-    void mark(String context);
+    void mark(String context) throws  DaifaException;
 
     /**
-     * 已拿到货
+     * 已拿到货(该方法会校验分配时间,必须是今天分配的数据)
      */
-    void haveTake();
+    void haveTake() throws DaifaException;
 
     /**
-     * 缺货
+     * 缺货(该方法不校验分配时间,只要是已分配的,都可以被这里设置缺货)
      */
-    void noTake();
+    void noTake() throws DaifaException;
 
     /**
      * 产生cdKey
