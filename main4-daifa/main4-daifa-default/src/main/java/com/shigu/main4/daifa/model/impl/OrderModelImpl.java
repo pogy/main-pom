@@ -127,7 +127,7 @@ public class OrderModelImpl implements OrderModel {
             sendMessage(DaifaSendMqEnum.cutOff.getMessageTag()+tid, DaifaSendMqEnum.cutOff.getMessageKey(), message);
         }
         trade.setTradeStatus(10);
-
+        daifaTradeMapper.updateByPrimaryKeySelective(trade);
     }
 
     /**
