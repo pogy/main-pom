@@ -57,6 +57,7 @@ public class DaifaTradeExample extends SgExample<DaifaTradeExample.Criteria> {
     public static EntityColumn payStatus;
     public static EntityColumn payTime;
     public static EntityColumn receiverQq;
+    public static EntityColumn buyerNick;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -110,6 +111,7 @@ public class DaifaTradeExample extends SgExample<DaifaTradeExample.Criteria> {
         payStatus = listMap.get("payStatus");
         payTime = listMap.get("payTime");
         receiverQq = listMap.get("receiverQq");
+        buyerNick = listMap.get("buyerNick");
     }
 
     public DaifaTradeExample() {
@@ -2579,6 +2581,61 @@ public class DaifaTradeExample extends SgExample<DaifaTradeExample.Criteria> {
 
         public DaifaTradeExample.Criteria andReceiverQqNotBetween(String value1, String value2) {
             return notBetween(receiverQq, value1, value2);
+        }
+        public DaifaTradeExample.Criteria andBuyerNickIsNull() {
+            return isNull(buyerNick);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickIsNotNull() {
+            return isNotNull(buyerNick);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickEqualTo(String value) {
+            return equalTo(buyerNick, value);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickNotEqualTo(String value) {
+            return notEqualTo(buyerNick, value);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickGreaterThan(String value) {
+            return greaterThan(buyerNick, value);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(buyerNick, value);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickLessThan(String value) {
+            return lessThan(buyerNick, value);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(buyerNick, value);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickLike(String value) {
+            return like(buyerNick, value);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickNotLike(String value) {
+            return notLike(buyerNick, value);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickIn(List<String> values) {
+            return in(buyerNick, values);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickNotIn(List<String> values) {
+            return notIn(buyerNick, values);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickBetween(String value1, String value2) {
+            return between(buyerNick, value1, value2);
+        }
+
+        public DaifaTradeExample.Criteria andBuyerNickNotBetween(String value1, String value2) {
+            return notBetween(buyerNick, value1, value2);
         }
     }
 }
