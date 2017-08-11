@@ -110,7 +110,7 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setReceiverName(logisticsBO.getName());
         daifaTrade.setReceiverPhone(logisticsBO.getTelephone());
         daifaTrade.setReceiverState(logisticsBO.getProv());
-        daifaTrade.setReceiverAddress(logisticsBO.getCity()+" "+logisticsBO.getTown()+" "+logisticsBO.getAddress());
+        daifaTrade.setReceiverAddress(logisticsBO.getProv()+" "+logisticsBO.getCity()+" "+logisticsBO.getTown()+" "+logisticsBO.getAddress());
         daifaTrade.setDaifaType(orderBO.getType());
         daifaTrade.setExpressId(logisticsBO.getCompanyId());
         daifaTrade.setExpressName(logisticsBO.getCompany());
