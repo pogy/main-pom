@@ -6,6 +6,8 @@ import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.ExpressModel;
 import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -13,6 +15,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @类编号
@@ -31,8 +35,16 @@ public class ExpressModelImplTest{
 
     @Test
     public void callExpress_test() throws DaifaException {
-        ExpressModel bean = SpringBeanFactory.getBean(ExpressModel.class, 69l,999999990L);
-       // bean.takeToMe(Collections.singletonList(1L));
+
+
+
+
+
+
+
+
+
+
         OrderExpressBO bo=new OrderExpressBO();
         bo.setExpressName ("韵达快递");
         bo.setReceiverName ("顾邹阳");
@@ -61,14 +73,55 @@ public class ExpressModelImplTest{
         bo3.setPropStr ("白色:XL");
         list.add (bo3);
         bo.setList (list);
+
+        //=========================================没有快递鸟账户开始====================================
+        ExpressModel bean = SpringBeanFactory.getBean(ExpressModel.class, 69l,9999999999L);
         try {
             bean.callExpress (bo);
             ExpressVO vo= bean.callExpress (bo);//再次调用也就是不在调用快递鸟直接从数据库里返回
-            System.out.println (vo.getExpressCode ());
         }catch(DaifaException e){
-            e.printStackTrace ();
+            System.out.println("11111@@@"+e.getMessage ());
+            assertTrue(true);
         }
+        //=========================================没有快递鸟账户结束=====================================
+        //=========================================没有快递鸟账户不对开始==================================
+        bean = SpringBeanFactory.getBean(ExpressModel.class, 66l,999999990L);
+        try {
+            bean.callExpress (bo);
+            ExpressVO vo= bean.callExpress (bo);//再次调用也就是不在调用快递鸟直接从数据库里返回
+           // System.out.println (vo.getExpressCode ());
+        }catch(DaifaException e){
+            System.out.println("222222@@@"+e.getMessage ());
+            assertTrue(true);
+            // assertTrue (true);
+        }
+        //=========================================没有快递鸟账户不对结束==================================
+        //=========================================调用快递鸟账户开始======================================
+        bean = SpringBeanFactory.getBean(ExpressModel.class, 69l,999999990L);
+        try {
 
+            bean.callExpress (bo);
+            ExpressVO vo= bean.callExpress (bo);
+            System.out.println ("3￥￥￥￥333333@@@"+vo.getExpressCode ());
+        }catch(DaifaException e){
+            System.out.println("33333333@@@"+e.getMessage ());
+            assertTrue(true);
+            // assertTrue (true);
+        }
+        //=========================================调用快递鸟账户结束======================================
+        //=========================================再次调用打印不调用快递直接查询数据库开始===================
+
+        try {
+
+            bean.callExpress (bo);
+            ExpressVO vo= bean.callExpress (bo);
+            System.out.println ("4￥￥￥￥444444@@@"+vo.getExpressCode ());
+        }catch(DaifaException e){
+            System.out.println("4444444@@@"+e.getMessage ());
+            assertTrue(true);
+            // assertTrue (true);
+        }
+        //=========================================再次调用打印不调用快递直接查询数据库结束====================
 
     }
 }
