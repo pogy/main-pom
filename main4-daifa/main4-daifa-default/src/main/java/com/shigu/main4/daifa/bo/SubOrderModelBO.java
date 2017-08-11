@@ -115,6 +115,8 @@ public class SubOrderModelBO {
     private String barCodeKeyNum;
     private String webSite;
 
+    private Long sellerId;
+
     public String getWebSite() {
         return webSite;
     }
@@ -122,8 +124,6 @@ public class SubOrderModelBO {
     public void setWebSite(String webSite) {
         this.webSite = webSite;
     }
-
-    private Long sellerId;
 
     public Long getSellerId() {
         return sellerId;

@@ -146,6 +146,14 @@
             <artifactId>fastjson</artifactId>
             <version>RELEASE</version>
         </dependency>
+
+        <!--暂时用-->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
     </dependencies>
 
 

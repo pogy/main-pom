@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * Path com.shigu.main4.spring-database.model.impltest.BaseDaifaTest
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/*.xml")
+@ContextConfiguration(locations = "classpath:/test.xml")
 public class BaseDaifaTest {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseDaifaTest.class);

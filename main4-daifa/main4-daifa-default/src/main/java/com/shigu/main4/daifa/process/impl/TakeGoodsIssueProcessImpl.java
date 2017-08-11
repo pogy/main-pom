@@ -22,6 +22,8 @@ import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.main4.daifa.vo.PrintTagVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,7 +42,8 @@ import java.util.Map;
  * @since: main-pom
  * @commonents:
  */
-@Service
+@Repository
+@Scope("prototype")
 public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     @Autowired
     private DaifaGgoodsMapper daifaGgoodsMapper;
