@@ -37,7 +37,7 @@ public class NewPopularService {
      * 获取秋装新品发布会0811数据
      * 在shigu_temp表中flag=new_autumn_0811的记录上存储数据
      * key1 存储对应商品id
-     * key2 存储本次活动商品编号，shopId
+     * key2 存储shopId
      * key3 存储商品对应权益
      *
      * @return
