@@ -37,20 +37,12 @@ public class ExpressModelImplTest{
     public void callExpress_test() throws DaifaException {
 
 
-
-
-
-
-
-
-
-
         OrderExpressBO bo=new OrderExpressBO();
         bo.setExpressName ("韵达快递");
         bo.setReceiverName ("顾邹阳");
         bo.setReceiverPhone ("18857193391");
         bo.setReceiverAddress ("浙江省 杭州市 滨江区 西兴街道物联网街芯图大厦1102室");
-        bo.setTid (53456788999928L);
+        bo.setTid (53456788999929L);
         //子单商品
         List<SubOrderExpressBO> list=new ArrayList<> ();
 
@@ -89,7 +81,7 @@ public class ExpressModelImplTest{
         try {
             bean.callExpress (bo);
             ExpressVO vo= bean.callExpress (bo);//再次调用也就是不在调用快递鸟直接从数据库里返回
-           // System.out.println (vo.getExpressCode ());
+            System.out.println ("2￥￥￥￥22222@@@"+vo.getExpressCode ());
         }catch(DaifaException e){
             System.out.println("222222@@@"+e.getMessage ());
             assertTrue(true);
