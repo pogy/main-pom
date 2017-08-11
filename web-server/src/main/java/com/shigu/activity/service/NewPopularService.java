@@ -36,9 +36,9 @@ public class NewPopularService {
     /**
      * 获取秋装新品发布会0811数据
      * 在shigu_temp表中flag=new_autumn_0811的记录上存储数据
-     * key1存储对应商品id
-     * key2存储shopId
-     * key3存储商品对应权益
+     * key1 存储对应商品id
+     * key2 存储本次活动商品编号，shopId
+     * key3 存储商品对应权益
      *
      * @return
      */
@@ -52,7 +52,13 @@ public class NewPopularService {
         Map<String, String> goodsIdShStatusMap = shiguTemps.stream().collect(Collectors.toMap(ShiguTemp::getKey1, ShiguTemp::getKey3));
         ShiguGoodsTinyExample example = new ShiguGoodsTinyExample();
         example.setWebSite("hz");
-        example.createCriteria().andWebSiteEqualTo("hz").andGoodsIdIn(goodsIdShStatusMap.keySet().stream().map(o->{return Long.valueOf(o);}).collect(Collectors.toList()));
+        ArrayList<Long> goodsIds = new ArrayList<>(100);
+        for (String goodsId : goodsIdShStatusMap.keySet()) {
+            if (goodsId != null) {
+                goodsIds.add(Long.valueOf(goodsId));
+            }
+        }
+        example.createCriteria().andWebSiteEqualTo("hz").andGoodsIdIn(goodsIds);
         return shiguGoodsTinyMapper.selectByExample(example).stream().map(o -> {
             PopularGoodsVO vo = new PopularGoodsVO();
             vo.setGoodsId(o.getGoodsId());
