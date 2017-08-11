@@ -12,7 +12,8 @@ public class DeliveryBO implements Serializable {
 
     private List<Long> dfOrderIds;
 
-
+    //
+    private Long sendID;
     /**交易Id*/
     private Long dfTradeId;
     /**代发ID不能为空*/
