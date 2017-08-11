@@ -70,7 +70,8 @@ public interface TakeGoodsIssueProcess {
      * 按人头,全部标记未拿
      * @param wholeId 拿货员ID
      * @param issueIds 分配记录ID串
+     * @param idIsCheck  true时issueIds是已拿，其余未拿，false则反过来
      */
-    void uncompleteAll(Long wholeId,List<Long> issueIds);
+    void uncompleteAll(Long wholeId,List<Long> issueIds,Boolean idIsCheck);
 
 }
