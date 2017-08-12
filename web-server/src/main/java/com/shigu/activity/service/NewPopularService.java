@@ -89,19 +89,26 @@ public class NewPopularService {
         Map<Long, ShiguGoodsTiny> tinyMap = shiguGoodsTinies.stream().collect(Collectors.toMap(ShiguGoodsTiny::getGoodsId, o -> {
             return o;
         }));
-        return shiguTemps.stream().map(obj -> {
-            PopularGoodsVO vo = new PopularGoodsVO();
-            ShiguGoodsTiny o = tinyMap.get(Long.valueOf(obj.getKey1()));
-            vo.setGoodsId(o.getGoodsId());
-            vo.setImgSrc(o.getPicUrl());
-            vo.setShopId(o.getStoreId());
-            vo.setShopNum(o.getStoreNum()==null?shopIdNumMap.get(o.getStoreId()):o.getStoreNum());
-            vo.setMarketName(marketIdNameMap.get(o.getParentMarketId()));
-            vo.setTitle(o.getTitle());
-            String shStatus = goodsIdShStatusMap.get(o.getGoodsId().toString());
-            vo.setShStatus(shStatus == null ? 0 : new Integer(shStatus));
-            vo.setPiPriceString(o.getPiPriceString());
-            return vo;
-        }).collect(Collectors.toList());
+        List<List<ShiguTemp>> lists = shiguTemps.stream().collect(Collectors.groupingBy(ShiguTemp::getKey2)).values().stream().collect(Collectors.toList());
+        Collections.shuffle(lists);
+        ArrayList<PopularGoodsVO> popularGoodsVOS = new ArrayList<>(100);
+        for (List<ShiguTemp> list : lists) {
+            for (ShiguTemp obj : list) {
+                PopularGoodsVO vo = new PopularGoodsVO();
+                ShiguGoodsTiny o = tinyMap.get(Long.valueOf(obj.getKey1()));
+                vo.setGoodsId(o.getGoodsId());
+                vo.setImgSrc(o.getPicUrl());
+                vo.setShopId(o.getStoreId());
+                vo.setShopNum(o.getStoreNum()==null?shopIdNumMap.get(o.getStoreId()):o.getStoreNum());
+                vo.setMarketName(marketIdNameMap.get(o.getParentMarketId()));
+                vo.setTitle(o.getTitle());
+                String shStatus = goodsIdShStatusMap.get(o.getGoodsId().toString());
+                vo.setShStatus(shStatus == null ? 0 : new Integer(shStatus));
+                vo.setPiPriceString(o.getPiPriceString());
+                popularGoodsVOS.add(vo);
+            }
+
+        }
+        return popularGoodsVOS;
     }
 }
