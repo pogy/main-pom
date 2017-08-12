@@ -71,7 +71,7 @@ public class OrderModelImplTest extends BaseSpringTest{
         s2.setFloor("2F");
         s2.setShopId(41700L);
         s2.setShopNum("A268");
-
+            //批发价
         s2.setSinglePay("78.00");
 
         s2.setSoid(145556L);
@@ -95,7 +95,7 @@ public class OrderModelImplTest extends BaseSpringTest{
         logisticsBO.setCompanyId(68L);
         bo.setType(1);
         ServiceBO serviceBO=new ServiceBO();
-        serviceBO.setMoney(981);
+        serviceBO.setMoney(5);
        bo.setOid(46846123L);
        List<LogisticsBO> logisticsBOS=new ArrayList<>();
        logisticsBOS.add(logisticsBO);
