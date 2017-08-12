@@ -339,7 +339,8 @@ public class GoodsFileService extends OssIO {
         example.createCriteria().andGoodsIdEqualTo(goodsId);
         List<GoodsFile> files = goodsFileMapper.selectByExample(example);
         if (files.size() > 0) {
-            return super.getDomain() + files.get(0).getFileKey();
+            GoodsFile goodsFile=files.get(0);
+            return goodsFile.getType()==1?super.getDomain() + files.get(0).getFileKey():files.get(0).getFileKey();
         } else {
             return null;
         }

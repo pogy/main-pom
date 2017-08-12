@@ -804,15 +804,9 @@ public class CdnAction {
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);
             return ;
         }
-        String url;
-        String upflag;
-        if(type!=null &&type == 2){
-            url=goodsFileService.datuUrl(goodsId);
-            upflag="bgimgzip";
-        }else{
-            url = shopsItemService.itemImgzipUrl(goodsId);
-            upflag="imgzip";
-        }
+        String upflag="imgzip";
+        String bigUrl=goodsFileService.datuUrl(goodsId);
+        String url = shopsItemService.itemImgzipUrl(goodsId);
         String content;
         if (StringUtils.isEmpty(url)) {
             content = "{'result':'error','msg':'图片打包失败'}";
@@ -853,7 +847,11 @@ public class CdnAction {
                 record.setSupperQq(storeRelation.getImQq());
             }
             itemUpRecordService.addItemUpRecord(record);
-            content = "{'result':'success','msg':'成功','sourceHref':'" + url + "'}";
+            content = "{'result':'success','msg':'成功','sourceHref':'" + url + "'";
+            if(StringUtils.isNotEmpty(bigUrl)){
+                content+=",'bigPicSource':'"+bigUrl+"'";
+            }
+            content+="}";
         }
         ResultRetUtil.returnJsonp(callback,content,response);
     }
