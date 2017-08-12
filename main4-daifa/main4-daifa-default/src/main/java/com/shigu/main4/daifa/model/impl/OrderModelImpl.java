@@ -141,7 +141,8 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
                     subOrderModelBO.setWebSite(bo.getWebSite());
                     subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
-                    subOrderModelBO.setSingleServicesFee(serviceBOMap.get(bo.getSoid()).getMoney().toString());
+                    Double serviceFee = Double.parseDouble(serviceBOMap.get(bo.getSoid()).getMoney()) / Double.valueOf(bo.getNum());
+                    subOrderModelBO.setSingleServicesFee(serviceFee.toString());
 
                     SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
                     goodsFee+=Double.parseDouble(bo.getSinglePay());
