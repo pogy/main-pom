@@ -1,10 +1,7 @@
 package com.shigu.activity.service;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguMarket;
-import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.beans.ShiguTemp;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
@@ -14,6 +11,7 @@ import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.activity.tempvo.PopularGoodsVO;
+import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +54,7 @@ public class NewPopularService {
     public List<PopularGoodsVO> selNewPopularGoodsList() {
         ShiguTempExample shiguTempExample = new ShiguTempExample();
         shiguTempExample.createCriteria().andFlagEqualTo("new_autumn_0811");
+        shiguTempExample.setOrderByClause("key2+0 asc,key4+0 asc");
         List<ShiguTemp> shiguTemps = shiguTempMapper.selectByExample(shiguTempExample);
         if (shiguTemps.size() == 0) {
             return Collections.EMPTY_LIST;
@@ -74,35 +73,47 @@ public class NewPopularService {
                 goodsIds.add(Long.valueOf(goodsId));
             }
         }
+        if (goodsIds.size()==0) {
+            return new ArrayList<>();
+        }
+
         example.createCriteria().andWebSiteEqualTo("hz").andGoodsIdIn(goodsIds);
         List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(example);
-        //处理goods_tiny中一些记录没有parentMarketName信息
-        ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
-        shiguMarketExample.createCriteria().andMarketIdIn(shiguGoodsTinies.stream().map(ShiguGoodsTiny::getParentMarketId).collect(Collectors.toList()));
-        Map<Long, String> marketIdNameMap = shiguMarketMapper.selectFieldsByExample(shiguMarketExample, FieldUtil.codeFields("market_id,market_name"))
-                .stream().collect(Collectors.toMap(ShiguMarket::getMarketId, ShiguMarket::getMarketName));
-        //处理goods_tiny中一些记录没有shopNum信息
-        ShiguShopExample shiguShopExample = new ShiguShopExample();
-        shiguShopExample.createCriteria().andShopIdIn(shiguGoodsTinies.stream().map(ShiguGoodsTiny::getStoreId).collect(Collectors.toList()));
-        Map<Long, String> shopIdNumMap = shiguShopMapper.selectFieldsByExample(shiguShopExample, FieldUtil.codeFields("shop_id,shop_num")).stream().collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getShopNum));
+        Map<Long,ShiguGoodsTiny> tinyMap= BeanMapper.list2Map(shiguGoodsTinies,"goodsId",Long.class);
+        //得到店铺市场信息
+        List<ShopNumAndMarket> markets=shiguShopMapper.selShopNumAndMarkets(shiguGoodsTinies.stream().map(ShiguGoodsTiny::getStoreId).collect(Collectors.toList()));
+        Map<Long,ShopNumAndMarket> marketMap=BeanMapper.list2Map(markets,"shopId",Long.class);
 
-        Map<Long, List<PopularGoodsVO>> map = shiguGoodsTinies.stream().map(o -> {
+        List<PopularGoodsVO> results=new ArrayList<>();
+        //为了做整行随机
+        Set<String> shopSet=new HashSet<>();
+        Map<String,List<PopularGoodsVO>> lineMap=new HashMap<>();
+        shiguTemps.forEach(o ->{
+            ShiguGoodsTiny tiny=tinyMap.get(Long.valueOf(o.getKey1()));
+            ShopNumAndMarket store=marketMap.get(Long.valueOf(o.getKey2()));
             PopularGoodsVO vo = new PopularGoodsVO();
-            vo.setGoodsId(o.getGoodsId());
-            vo.setImgSrc(o.getPicUrl());
-            vo.setShopId(o.getStoreId());
-            vo.setShopNum(o.getStoreNum() == null ? shopIdNumMap.get(o.getStoreId()) : o.getStoreNum());
-            vo.setMarketName(marketIdNameMap.get(o.getParentMarketId()));
-            vo.setTitle(o.getTitle());
-            String shStatus = goodsIdShStatusMap.get(o.getGoodsId().toString());
+            vo.setGoodsId(tiny.getGoodsId());
+            vo.setImgSrc(tiny.getPicUrl());
+            vo.setShopId(tiny.getStoreId());
+            vo.setShopNum(store.getShopNum());
+            vo.setMarketName(store.getMarket());
+            vo.setTitle(tiny.getTitle());
+            String shStatus = goodsIdShStatusMap.get(tiny.getGoodsId().toString());
             vo.setShStatus(shStatus == null ? 0 : new Integer(shStatus));
-            vo.setPiPriceString(o.getPiPriceString());
-            return vo;
-        }).collect(Collectors.groupingBy(PopularGoodsVO::getShopId));
-        ArrayList<PopularGoodsVO> list = new ArrayList<>(100);
-        for (List<PopularGoodsVO> popularGoodsVOS : map.values()) {
-            list.addAll(popularGoodsVOS);
-        }
-        return list;
+            vo.setPiPriceString(tiny.getPiPriceString());
+            List<PopularGoodsVO> line=lineMap.get(o.getKey2());
+            if (line == null) {
+                line=new ArrayList<>();
+                lineMap.put(o.getKey2(),line);
+                shopSet.add(o.getKey2());
+            }
+            line.add(vo);
+        });
+        List<String> shopList=new ArrayList<>(shopSet);
+        Collections.shuffle(shopList);
+        shopList.forEach(shopId ->{
+            results.addAll(lineMap.get(shopId));
+        });
+        return results;
     }
 }
