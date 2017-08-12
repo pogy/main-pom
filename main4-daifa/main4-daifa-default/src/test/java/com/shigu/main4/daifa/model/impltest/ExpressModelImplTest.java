@@ -6,6 +6,7 @@ import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.ExpressModel;
 import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.test.BaseSpringTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,9 +28,8 @@ import static org.junit.Assert.assertTrue;
  * @since: main-pom
  * @commonents:
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/test.xml")
-public class ExpressModelImplTest{
+
+public class ExpressModelImplTest extends BaseSpringTest {
 
     @Test
     public void callExpress_test() throws DaifaException {
@@ -40,7 +40,7 @@ public class ExpressModelImplTest{
         bo.setReceiverName ("顾邹阳");
         bo.setReceiverPhone ("18857193391");
         bo.setReceiverAddress ("浙江省 杭州市 滨江区 西兴街道物联网街芯图大厦1102室");
-        bo.setTid (53456788999929L);
+        bo.setTid (53456788999930L);
         //子单商品
         List<SubOrderExpressBO> list=new ArrayList<> ();
 
@@ -69,8 +69,12 @@ public class ExpressModelImplTest{
         try {
             bean.callExpress (bo);
             ExpressVO vo= bean.callExpress (bo);//再次调用也就是不在调用快递鸟直接从数据库里返回
+            show("@@@@111111@@@");
+            show(vo);
+
         }catch(DaifaException e){
-            System.out.println("11111@@@"+e.getMessage ());
+           // System.out.println("11111@@@"+e.getMessage ());
+            show("11111@@@"+e.getMessage ());
             assertTrue(true);
         }
         //=========================================没有快递鸟账户结束=====================================
@@ -79,7 +83,9 @@ public class ExpressModelImplTest{
         try {
             bean.callExpress (bo);
             ExpressVO vo= bean.callExpress (bo);//再次调用也就是不在调用快递鸟直接从数据库里返回
-            System.out.println ("2￥￥￥￥22222@@@"+vo.getExpressCode ());
+            show("@@@@22222@@@");
+            show(vo);
+
         }catch(DaifaException e){
             System.out.println("222222@@@"+e.getMessage ());
             assertTrue(true);
@@ -92,7 +98,9 @@ public class ExpressModelImplTest{
 
             bean.callExpress (bo);
             ExpressVO vo= bean.callExpress (bo);
-            System.out.println ("3￥￥￥￥333333@@@"+vo.getExpressCode ());
+            show("@@@@3333333@@@");
+            show(vo);
+            //System.out.println ("3￥￥￥￥333333@@@"+vo.getExpressCode ());
         }catch(DaifaException e){
             System.out.println("33333333@@@"+e.getMessage ());
             assertTrue(true);
@@ -105,7 +113,9 @@ public class ExpressModelImplTest{
 
             bean.callExpress (bo);
             ExpressVO vo= bean.callExpress (bo);
-            System.out.println ("4￥￥￥￥444444@@@"+vo.getExpressCode ());
+            show("@@@@44444444@@@");
+            show(vo);
+           // System.out.println ("4￥￥￥￥444444@@@"+vo.getExpressCode ());
         }catch(DaifaException e){
             System.out.println("4444444@@@"+e.getMessage ());
             assertTrue(true);
