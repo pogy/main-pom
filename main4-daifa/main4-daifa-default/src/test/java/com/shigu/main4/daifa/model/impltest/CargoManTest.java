@@ -1,4 +1,4 @@
-package com.shigu.main4.order.model.impltest;
+package com.shigu.main4.daifa.model.impltest;
 
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.CargoManModel;
