@@ -58,7 +58,7 @@ public class OrderModelImplTest extends BaseSpringTest{
         subOrderBO.setWebSite("hz");
 
 
-        SubOrderBO s2=new SubOrderBO();
+        /*SubOrderBO s2=new SubOrderBO();
         s2.setGoodsId(21076838L);
         s2.setTitle("秋季夹克韩版男士外套潮男装青少年牛仔夹克学生A268-JK121-P78");
         s2.setPicUrl("https://img.alicdn.com/bao/uploaded/i1/1600266804/TB2oEeuawL8F1JjSsphXXXknVXa_!!1600266804.jpg");
@@ -79,12 +79,12 @@ public class OrderModelImplTest extends BaseSpringTest{
         soidps.add(26L);
         soidps.add(27L);
         s2.setSoidps(soidps1);
-        s2.setWebSite("hz");
+        s2.setWebSite("hz");*/
 
 //        s2.setNum(3);
 
         LogisticsBO logisticsBO =new LogisticsBO();
-        logisticsBO.setMoney("12");
+        logisticsBO.setMoney(12.00);
         logisticsBO.setAddress("浙江省 杭州市 滨江区 芯图大厦11楼");
         logisticsBO.setCity("杭州市");
         logisticsBO.setProv("浙江省");
@@ -95,18 +95,22 @@ public class OrderModelImplTest extends BaseSpringTest{
         logisticsBO.setCompanyId(68L);
         bo.setType(1);
         ServiceBO serviceBO=new ServiceBO();
-        serviceBO.setMoney(5);
+        serviceBO.setMoney("5");
+        serviceBO.setSoid(1234654L);
        bo.setOid(46846123L);
        List<LogisticsBO> logisticsBOS=new ArrayList<>();
        logisticsBOS.add(logisticsBO);
        List<SubOrderBO> subOrderBOS=new ArrayList<>();
-       subOrderBOS.add(s2);
        subOrderBOS.add(subOrderBO);
        List<ServiceBO>serviceBOS=new ArrayList<>();
        serviceBOS.add(serviceBO);
        bo.setLogistics(logisticsBOS);
        bo.setSubOrders(subOrderBOS);
        bo.setServices(serviceBOS);
+       BuyerBO buyerBO=new BuyerBO();
+       buyerBO.setNickInMarket("小红");
+       buyerBO.setPhone("13523656891");
+        bo.setBuyerBO(buyerBO);
         orderModel = SpringBeanFactory.getBean(OrderModel.class,bo);
 //        orderModel = SpringBeanFactory.getBean(OrderModel.class,2L);
         show(orderModel);

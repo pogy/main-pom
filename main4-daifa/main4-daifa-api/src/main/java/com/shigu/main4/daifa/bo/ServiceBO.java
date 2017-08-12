@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class ServiceBO implements Serializable {
     private Long id;//    服务ID
-    private Integer money;//   服务费
+    private String money;//   服务费
     private String name;//   服务名称
     private Long soid;//    子订单ID
 
@@ -20,11 +20,11 @@ public class ServiceBO implements Serializable {
         this.id = id;
     }
 
-    public Integer getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(Integer money) {
+    public void setMoney(String money) {
         this.money = money;
     }
 

@@ -13,6 +13,16 @@ public class OrderBO implements Serializable {
     private String mark;//  备注
     private Integer aggrement;// 协议1有货先发，2缺货不发
     private Long senderId;// 代发机构ID
+    private BuyerBO buyerBO;//卖家信息
+
+    public BuyerBO getBuyerBO() {
+        return buyerBO;
+    }
+
+    public void setBuyerBO(BuyerBO buyerBO) {
+        this.buyerBO = buyerBO;
+    }
+
     private List<SubOrderBO>subOrders;//   子订单
 
     private List<ServiceBO>services;//    服务
@@ -20,10 +30,6 @@ public class OrderBO implements Serializable {
     private  List<PackageBO>packages;//   包材
 
     private List<LogisticsBO>logistics;//   物流
-    private String buyer;//       买家
-    private String aliWw;//    旺旺
-    private String phone;//    手机号
-    private String nickInMarket;//    市场内昵称
 
     public Long getOid() {
         return oid;
@@ -97,35 +103,4 @@ public class OrderBO implements Serializable {
         this.logistics = logistics;
     }
 
-    public String getBuyer() {
-        return buyer;
-    }
-
-    public void setBuyer(String buyer) {
-        this.buyer = buyer;
-    }
-
-    public String getAliWw() {
-        return aliWw;
-    }
-
-    public void setAliWw(String aliWw) {
-        this.aliWw = aliWw;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getNickInMarket() {
-        return nickInMarket;
-    }
-
-    public void setNickInMarket(String nickInMarket) {
-        this.nickInMarket = nickInMarket;
-    }
 }

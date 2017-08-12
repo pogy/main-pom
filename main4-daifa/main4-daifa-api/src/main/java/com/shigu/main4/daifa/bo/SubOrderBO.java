@@ -26,6 +26,15 @@ public class SubOrderBO implements Serializable{
     private String floor;//              下单时刻的楼层
     private String size;//        尺码
     private String color;//        颜色
+    private String serviceFee;//服务费
+
+    public String getServiceFee() {
+        return serviceFee;
+    }
+
+    public void setServiceFee(String serviceFee) {
+        this.serviceFee = serviceFee;
+    }
 
     public List<Long> getSoidps() {
         return soidps;
