@@ -33,7 +33,7 @@ public class GgoodsForPrint implements Serializable{
     private String storeNum;//档口号
     @Column("daifa_ggoods.df_trade_id")
     private Long dfTradeId;//订单id
-    @Column("daifa_ggoods.df_trade_id")
+    @Column("daifa_ggoods.df_order_id")
     private Long dfOrderId;//子弹id
     @Column("daifa_ggoods.print_barcode_status")
     private Integer printBarcodeStatus;//打印拿货码打印状态 1未打印2已打印
