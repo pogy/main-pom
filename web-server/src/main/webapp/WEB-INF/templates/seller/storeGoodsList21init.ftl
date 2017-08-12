@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1501227517880" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1502520550081" rel="stylesheet">
     
   </head>
 <body>
@@ -278,6 +278,7 @@ var webSite = '${webSite!}';
                 </li>
                 <li class="price">批发价(元)</li>
                 <li class="lowestPrice">最低零售价(元)</li>
+                <li class="bigPicCorrelate">大图关联</li>
                 <li class="upcount">上货量</li>
                 <li class="control">操作</li>
             </ul>
@@ -285,7 +286,7 @@ var webSite = '${webSite!}';
                 <li>
                     <button class="tbGoods someTbGoods">批量同步商品</button>
                     <button class="tbGoods allTbGoods" data-id="${session_user_redis__.logshop.shopId!}">同步整店商品</button>
-                    
+                    <a href="http://zixun.571xz.com/detail?id=618" class="bigPicPro" target="_blank">大图设置教程</a>
                     
                     
                 </li>
@@ -314,6 +315,18 @@ var webSite = '${webSite!}';
                 </li>
                 <li class="lowestPrice">
                     <p class="p3"><span>${item.price3!}</span><b class="penIcon" jbtn="lowPrice"></b></p>
+                </li>
+                <li class="bigPicCorrelate">
+                    
+                    <p>
+                        <#if item.setCorrelateType == 1>
+                        <span>未设置</span>
+                        <#elseif item.setCorrelateType == 2>
+                        <span>已设置</span>
+                        </#if>
+                        
+                        <b class="penIcon" jbtn="setBigPicBtn" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${linkHrefPassword!}"></b>
+                    </p>
                 </li>
                 <li class="upcount">${item.count!}</li>
                 <li class="control">
@@ -367,6 +380,7 @@ var allStyleCate = '${allStyleCate!}';
         
         
         
+        
     </div>
     
 </div>
@@ -402,7 +416,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1501227517880"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1502520550081"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

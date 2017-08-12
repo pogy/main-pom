@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座，四季星座网，代拿商品，网店货源，一键代发，一键上传，${vo.cdnItem.title!}">
     
-    <link href="http://style.571xz.com/shopItemCopy/css/itemv1.css?t=1502328830970" rel="stylesheet">
+    <link href="http://style.571xz.com/shopItemCopy/css/item.css?t=1502518986303" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/shopItemCopy/js/itemv1.js?t=1502328830970"></script>
+    <script src="http://style.571xz.com/shopItemCopy/js/item.js?t=1502518986303"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -497,10 +497,12 @@ var goodsId = '${vo.itemId!}';
                       <td colspan="2">
                         <div  id="j_upload_btns"></div>
                         <div>
-                            <button class="addPro imgDownload" xzclick="showDownloadWindow" data-goodsid="${vo.itemId!}">
-                                <span>图片下载</span>
+                            <button class="addPro imgDownload <#if hasYt == true>hasYt</#if>" xzclick="showDownloadWindow" data-goodsid="${vo.itemId!}" data-psw="${extractPsw!}">
                                 <#if hasYt == true>
+                                <span>精修大图下载</span>
                                 <i class="originalPicIcon"></i>
+                                <#else>
+                                <span>图片下载</span>
                                 </#if>
                             </button>
                             <script>/*============ shopItemCopy/item#showDownloadWindow BEGIN ============*/
