@@ -20,18 +20,8 @@
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-order-default</artifactId>
-            <version>${main4-order-default.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-ucenter-default</artifactId>
+            <artifactId>main4-ucenter-api</artifactId>
             <version>${main4-ucenter-api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-dao</artifactId>
-            <version>${main4-dao.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
@@ -40,25 +30,25 @@
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-store-default</artifactId>
-            <version>${main4-store-default.version}</version>
+            <artifactId>main4-store-api</artifactId>
+            <version>${main4-store-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-item-default</artifactId>
-            <version>${main4-item-default.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-monitor-default</artifactId>
-            <version>${main4-monitor-default.version}</version>
+            <artifactId>main4-item-api</artifactId>
+            <version>${main4-item-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-spread-default</artifactId>
-            <version>${main4-spread-default.version}</version>
+            <artifactId>main4-monitor-api</artifactId>
+            <version>${main4-monitor-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-spread-api</artifactId>
+            <version>${main4-spread-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.tb</groupId>
@@ -146,7 +136,7 @@
         <dependency>
             <groupId>xinzuo-mybatis</groupId>
             <artifactId>xinzuo-mybatis</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>1.0.3.RO-SNAPSHOT</version>
         </dependency>
 
         <!--mysql部分-->
@@ -170,6 +160,30 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-web</artifactId>
             <version>2.0.4</version>
+        </dependency>
+
+        <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-spring</artifactId>
+        <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-ehcache</artifactId>
+        <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-quartz</artifactId>
+        <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+        <groupId>com.shiro</groupId>
+        <artifactId>shiro-freemarker-tags</artifactId>
+        <version>0.1</version>
         </dependency>
 
         <!--freemarker-->
@@ -446,6 +460,25 @@
             <artifactId>productai-java-sdk</artifactId>
             <version>2.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-tools</artifactId>
+            <version>${main4-tools.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-api</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-client</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>

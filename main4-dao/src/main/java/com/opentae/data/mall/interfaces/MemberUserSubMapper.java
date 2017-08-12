@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 import java.util.List;
 
 /**
- * 
+ *
  * Created by exampleCreater.
  */
 @MyBatisRepository("tae_mall_memberUserSubMapper")

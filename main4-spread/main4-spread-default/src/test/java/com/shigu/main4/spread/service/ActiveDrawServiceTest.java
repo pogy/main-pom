@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
  * Created by zhaohongbo on 17/6/6.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/store_test.xml")
+@ContextConfiguration(locations = "classpath:store_test.xml")
 public class ActiveDrawServiceTest {
 
     @Autowired

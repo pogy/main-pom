@@ -21,6 +21,12 @@
             <artifactId>main4-common</artifactId>
             <version>${main4-common.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>${shiro.version}</version>
+        </dependency>
+
     </dependencies>
 
 

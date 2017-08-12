@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShopFitmentAreaMapper" >
+    <select id="countAreaNome" resultType="int">
+        select count(1) from shop_fitment_area a,shop_fitment_area b
+        where a.page_id=b.page_id and a.page_id is not null and a.area_id=${areaId} and b.area_id != a.area_id
+    </select>
+</mapper>

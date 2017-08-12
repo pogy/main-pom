@@ -1,6 +1,8 @@
 package com.shigu.main4.spread.service;
 
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.spread.bo.ActiveDrawRecordBO;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
@@ -37,6 +39,14 @@ public interface ActiveDrawService {
      * @return
      */
     List<ActiveDrawPemVo> selDrawPemList();
+
+    ActiveDrawPemVo selNowDrawPem(Date startTime);
+
+    List<ActiveDrawRecordUserVo> selDrawNowUserRecord(Long userId);
+
+    ActiveDrawRecordUserVo selUserDrawList(String drawCode) throws Main4Exception;
+
+    void receUserWard(String tqcode, Long userId) throws Main4Exception;
 
     /**
      * 活动抽奖商品数据
@@ -81,6 +91,8 @@ public interface ActiveDrawService {
      * @return
      */
     List<ActiveDrawShopVo> selShopList(Long pemId, boolean back);
+
+    List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type);
 
     /**
      * 修改店铺
@@ -148,5 +160,9 @@ public interface ActiveDrawService {
      * @return
      */
     Map<Long,Long> newNumIids(String nick, List<Long> goodsId, Date fromTime, Date endTime);
+
+    void addActiveDrawRecord(ActiveDrawRecordBO activeDrawRecord);
+
+    String shiguTempSigup(String flag, Long userId, Long shopId);
 
 }

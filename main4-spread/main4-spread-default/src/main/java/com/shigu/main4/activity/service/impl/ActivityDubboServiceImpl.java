@@ -2,18 +2,16 @@ package com.shigu.main4.activity.service.impl;
 
 import com.shigu.main4.activity.beans.ActivityEnlist;
 import com.shigu.main4.activity.beans.ActivityTerm;
-import com.shigu.main4.activity.beans.GoatActivity;
 import com.shigu.main4.activity.beans.LedActivity;
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.service.Activity;
+import com.shigu.main4.activity.model.Activity;
 import com.shigu.main4.activity.service.ActivityDubboService;
-import com.shigu.main4.activity.service.ActivityFactory;
+import com.shigu.main4.activity.model.ActivityFactory;
 import com.shigu.main4.activity.vo.ActivityEnlistVO;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
 import com.shigu.main4.activity.vo.GoatActivityWithEnlist;
-import com.shigu.main4.activity.vo.GoatSimpleVO;
 import com.shigu.main4.common.util.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +67,14 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
     }
 
     @Override
+    public ActivityVO selActivityById(Long activityId) throws ActivityException {
+        System.out.println("112112121");
+        ActivityVO activityVO=BeanMapper.map(activityFactory.selActivityById(activityId),ActivityVO.class);
+        System.out.println(activityVO);
+        return activityVO;
+    }
+
+    @Override
     public GoatActivityWithEnlist selActivityEnlists(Long activityId, Integer hitType) throws ActivityException {
         Activity activity=activityFactory.selActivityById(activityId);
         GoatActivityWithEnlist gawe=BeanMapper.map(activity,GoatActivityWithEnlist.class);
@@ -96,6 +102,41 @@ public class ActivityDubboServiceImpl implements ActivityDubboService{
     public void randomTen(Long activityId, Integer number) throws ActivityException {
         LedActivity activity=activityFactory.selActivityById(activityId);
         activity.randomHit(number);
+    }
+
+    @Override
+    public ActivityTermVO selTermByTime(ActivityType type, Date time) {
+        return BeanMapper.map(activityFactory.selTermByTime(type,time),ActivityTermVO.class);
+    }
+
+    @Override
+    public ActivityTermVO selNowFinishedTerm(ActivityType type, Date time) {
+        return BeanMapper.map(activityFactory.selNowFinishedTerm(type,time),ActivityTermVO.class);
+    }
+
+    @Override
+    public Boolean hasJoin(Long activityId, Long userId) throws ActivityException {
+        return activityFactory.selActivityById(activityId).hasJoin(userId);
+    }
+
+    @Override
+    public ActivityEnlistVO activityJoinMsg(Long activityId, Long userId) throws ActivityException {
+        return activityFactory.selActivityById(activityId).joinMsg(userId);
+    }
+
+    @Override
+    public List<ActivityEnlistVO> selEnlist(int hasTrue,Long activityId) throws ActivityException {
+        return activityFactory.selActivityById(activityId).selEnlist(hasTrue);
+    }
+
+    @Override
+    public ActivityTermVO selafterTermId(ActivityType type, Long termId) {
+        return BeanMapper.map(activityFactory.selafterTermId(type,termId),ActivityTermVO.class);
+    }
+
+    @Override
+    public void joinActivity(Long activityId, Long userId, Long shopId,String userName, String tel) throws ActivityException {
+        activityFactory.selActivityById(activityId).joinActivity(userId,shopId,userName,tel);
     }
 
 }

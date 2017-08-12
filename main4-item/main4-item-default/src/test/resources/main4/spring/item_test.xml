@@ -97,5 +97,18 @@
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
     </bean>
 
-    <import resource="item.xml" />
+    <bean id="itemehcacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:/main4/cache/item-cache.xml"/>
+    </bean>
+
+    <bean id="itemcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager" ref="itemehcacheManager"/>
+        <property name="transactionAware" value="true"/>
+    </bean>
+
+    <bean id="openSearch" class="com.shigu.opensearchsdk.OpenSearch">
+        <constructor-arg index="0" value="${accesskey}"/>
+        <constructor-arg index="1" value="${secret}"/>
+        <constructor-arg index="2" value="${host}"/>
+    </bean>
 </beans>

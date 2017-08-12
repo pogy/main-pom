@@ -305,7 +305,10 @@ public class ItemUpRecordServiceImpl implements ItemUpRecordService{
                 }
 
                 Long goodsId = shiguGoodsUp.getSupperGoodsId();
-                ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById(shiguGoodsUp.getWebSite(), goodsId);
+                ShiguGoodsTiny queryGoodsTiny = new ShiguGoodsTiny();
+                queryGoodsTiny.setGoodsId(goodsId);
+                queryGoodsTiny.setWebSite(shiguGoodsUp.getWebSite());
+                ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectOne(queryGoodsTiny);
                 if(shiguGoodsTiny != null){
                     onekeyRecoreVO.setLiprice(shiguGoodsTiny.getPriceString());
                     onekeyRecoreVO.setPiprice(shiguGoodsTiny.getPiPriceString());

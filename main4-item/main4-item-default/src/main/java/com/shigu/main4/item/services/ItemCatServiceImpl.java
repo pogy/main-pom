@@ -21,7 +21,7 @@ import java.util.List;
  * 类目服务
  * Created by zhaohongbo on 17/3/15.
  */
-@Service
+@Service("itemCatService")
 public class ItemCatServiceImpl implements ItemCatService{
 
     @Resource(name = "tae_mall_shiguStoreUsercatMapper")

@@ -198,6 +198,13 @@
             <artifactId>opentae_utils_authlogin</artifactId>
             <version>1.0.2_releases</version>
         </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>opentae-beans</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
     </dependencies>
-
 </project>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.MemberUserSubMapper" >
+
+	<!-- 根据分组用户名查询子账户 -->
+	<select id="selectUserSubListByUserName" resultType="com.opentae.data.mall.beans.MemberUserSub">
+		SELECT
+			m.*
+		FROM
+			member_user_sub m
+		WHERE
+		<if test="userId!=null">
+			m.user_id = #{userId}
+		</if>
+		GROUP BY m.sub_user_name
+		limit #{startRows},#{pageSize}
+	</select>
+
+	<!-- 删除子账号信息 -->
+	<delete id="delSubUserById">
+		DELETE FROM member_user_sub WHERE sub_user_id = #{subUserId} AND user_id = #{userId}
+	</delete>
+
+</mapper>
