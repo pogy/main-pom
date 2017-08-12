@@ -32,7 +32,6 @@ import java.util.UUID;
 public class XzPayerServiceImpl extends PayerServiceAble {
     private static final Logger logger = LoggerFactory.getLogger(XzPayerServiceImpl.class);
 
-    public static final String OUTER_ID_PRE="payorder_";
     @Autowired
     private XzSdkClient xzSdkClient;
 

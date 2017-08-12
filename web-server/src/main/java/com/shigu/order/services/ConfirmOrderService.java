@@ -12,8 +12,8 @@ import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
-import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.model.LogisticsTemplate;
+import com.shigu.main4.order.process.ItemCartProcess;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
@@ -59,6 +59,9 @@ public class ConfirmOrderService {
 
     @Autowired
     private ItemOrderSenderMapper itemOrderSenderMapper;
+
+    @Autowired
+    private ItemCartProcess itemCartProcess;
 
 
     /**
@@ -156,10 +159,9 @@ public class ConfirmOrderService {
      */
     private void rmCartProductByOrder(ItemOrderBO itemOrderBO) throws JsonErrException {
         //根据用户获取购物车对象
-        Cart cart = SpringBeanFactory.getBean(ItemCartImpl.class, itemOrderBO.getUserId());
         for (SubItemOrderBO subItemOrderBO: itemOrderBO.getSubOrders()) {
             ItemProductVO productVO = subItemOrderBO.getProductVO();
-            cart.rmProductByNum(productVO.getPid(), productVO.getSelectiveSku().getSkuId(), subItemOrderBO.getNum());
+            itemCartProcess.rmProductByNum(itemOrderBO.getUserId(), productVO.getPid(), productVO.getSelectiveSku().getSkuId(), subItemOrderBO.getNum());
         }
     }
 

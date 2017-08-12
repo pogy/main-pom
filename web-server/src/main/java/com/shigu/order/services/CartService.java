@@ -2,24 +2,19 @@ package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ShiguShopExample;
-import com.opentae.data.mall.examples.ShiguStoreCollectExample;
-import com.opentae.data.mall.interfaces.ItemCartMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
-import com.shigu.main4.newcdn.vo.CdnCollectShopVO;
 import com.shigu.main4.order.exceptions.CartException;
-import com.shigu.main4.order.model.ItemProduct;
+import com.shigu.main4.order.process.ItemCartProcess;
+import com.shigu.main4.order.process.ItemProductProcess;
 import com.shigu.main4.order.vo.CartVO;
-import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.ItemSkuVO;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.OrderSubmitType;
-import com.shigu.order.bo.AddCartBO;
 import com.shigu.order.bo.AddCartPropBO;
 import com.shigu.order.vo.CartChildOrderVO;
 import com.shigu.order.vo.CartOrderVO;
@@ -30,7 +25,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 进货车服务
@@ -45,10 +43,13 @@ public class CartService {
     private ShiguShopMapper shiguShopMapper;
 
     @Autowired
-    private ItemCartMapper itemCartMapper;
+    private ShowForCdnService showForCdnService;
 
     @Autowired
-    private ShowForCdnService showForCdnService;
+    private ItemCartProcess itemCartProcess;
+
+    @Autowired
+    private ItemProductProcess itemProductProcess;
 
     @Autowired
     private RedisIO redisIO;
@@ -69,9 +70,8 @@ public class CartService {
      * @return 页面数据
      */
     public CartPageVO selMyCart(Long userId) {
-        ItemCartImpl itemCart = SpringBeanFactory.getBean(ItemCartImpl.class, userId);
-        CartPageVO vo = packCartProductVo(itemCart.listProduct());
-        vo.setGoodsCount(itemCart.productNumbers());
+        CartPageVO vo = packCartProductVo(itemCartProcess.someOneCart(userId));
+        vo.setGoodsCount(itemCartProcess.productNumbers(userId));
         return vo;
     }
 
@@ -82,7 +82,7 @@ public class CartService {
     public CartPageVO packCartProductVo(List<CartVO> vos) {
         CartPageVO vo = new CartPageVO();
         Map<Long, List<CartVO>> groupByShop = BeanMapper.groupBy(vos, "shopId", Long.class);
-        vo.setOrders(new ArrayList<CartOrderVO>(groupByShop.size()));
+        vo.setOrders(new ArrayList<>(groupByShop.size()));
         if (!groupByShop.isEmpty()) {
             Map<Long, ShiguShop> shopMap = selShopIn(new ArrayList<>(groupByShop.keySet()));
 
@@ -101,7 +101,7 @@ public class CartService {
                     orderVO.setMarketName(shiguShop.getParentMarketName());
                 }
                 List<CartVO> productVOS = entry.getValue();
-                orderVO.setChildOrders(new ArrayList<CartChildOrderVO>(productVOS.size()));
+                orderVO.setChildOrders(new ArrayList<>(productVOS.size()));
                 for (CartVO productVO : productVOS) {
                     CartChildOrderVO childOrderVO = new CartChildOrderVO();
                     orderVO.getChildOrders().add(childOrderVO);
@@ -144,7 +144,7 @@ public class CartService {
             throw new JsonErrException("进货车商品编号缺失");
         }
         try {
-            getCartByUser(userId).modifyProductNumber(cid, num);
+            itemCartProcess.modProductNumber(userId, cid, num);
         } catch (CartException e) {
             throw new JsonErrException(e.getMessage());
         }
@@ -160,13 +160,8 @@ public class CartService {
         if (cids.isEmpty()) {
             throw new JsonErrException("请选择商品");
         }
-        List<CartVO> cartVOS = getCartByUser(userId).listProduct();
-        for (Iterator<CartVO> iterator = cartVOS.iterator(); iterator.hasNext(); ) {
-            CartVO cartVO = iterator.next();
-            if (!cids.contains(cartVO.getCartId())) {
-                iterator.remove();
-            }
-        }
+        List<CartVO> cartVOS = itemCartProcess.someOneCart(userId);
+        cartVOS.removeIf(cartVO -> !cids.contains(cartVO.getCartId()));
 
         String uuid = UUIDGenerator.getUUID();
 
@@ -188,11 +183,7 @@ public class CartService {
         if (null == cid) {
             return;
         }
-        getCartByUser(userId).rmProduct(cid);
-    }
-
-    private ItemCartImpl getCartByUser(Long userId) {
-        return SpringBeanFactory.getBean(ItemCartImpl.class, userId);
+        itemCartProcess.rmProduct(userId, cid);
     }
 
     /**
@@ -204,7 +195,7 @@ public class CartService {
     public void removeAllOrders(Long userId, List<Long> cids) {
         if (cids != null) {
             for (Long cid : cids) {
-                getCartByUser(userId).rmProduct(cid);
+                itemCartProcess.rmProduct(userId, cid);
             }
         }
     }
@@ -219,7 +210,7 @@ public class CartService {
      */
     public void editChildOrderSKu(Long userId, Long cid, String color, String size) throws JsonErrException {
         try {
-            getCartByUser(userId).modifyProductSku(cid, color, size);
+            itemCartProcess.modifyProductSku(userId, cid, color, size);
         } catch (CartException e) {
             throw new JsonErrException(e.getMessage());
         }
@@ -233,11 +224,12 @@ public class CartService {
      * @param skus
      */
     public void addCartOrder(Long userId, Long goodsId, List<AddCartPropBO> skus){
-        ItemCartImpl itemCart = SpringBeanFactory.getBean(ItemCartImpl.class, userId);
         for(AddCartPropBO sku:skus){
-            ItemProductImpl itemp=SpringBeanFactory.getBean(ItemProductImpl.class,goodsId,sku.getColor(),sku.getSize() );
-            ItemProductVO vo=itemp.info();
-            itemCart.addProduct(vo,sku.getCount());
+            itemCartProcess.addProduct(
+                    userId,
+                    itemProductProcess.generateProduct(goodsId, sku.getColor(), sku.getSize()),
+                    sku.getCount()
+            );
         }
     }
 }

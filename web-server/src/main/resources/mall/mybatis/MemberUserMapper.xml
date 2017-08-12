@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.MemberUserMapper" >
+
+    <!-- 用户id 查询星座宝余额 -->
+    <select id="userBalance" parameterType="java.lang.Long" resultType="long">
+        SELECT a.money
+        FROM pay_site2.pay_xzb a, pay_site2.pay_account b
+        WHERE b.xz_user_id=#{userId}
+        AND b.account_id=a.account_id
+    </select>
+</mapper>
