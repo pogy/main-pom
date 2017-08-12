@@ -1,10 +1,15 @@
 package com.opentae.data.daifa.interfaces;
 
 import com.opentae.data.daifa.beans.TsysRole;
+import com.opentae.data.daifa.examples.TsysRoleExample;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.Lazy;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.core.mybatis.config.MyBatisRepository;
+
+import java.util.List;
+
 /**
  *==========================================================
  *TODO ->这里需要配置 主要是这个类的描述信息
@@ -22,6 +27,10 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 @MyBatisRepository("tae_daifa_tsysRoleMapper")
 @Scope("singleton")
 @Lazy(true)
-public interface TsysRoleMapper extends Mapper<TsysRole>{
+public interface TsysRoleMapper extends Mapper<TsysRole> {
+    List<TsysRole> selectUserRoleTreeByExample (TsysRoleExample example);
 
+    List<TsysRole> selRoleNamesByuserIds (@Param("userIds") String userIds);
+
+    List<TsysRole> selRoleBySellerId (@Param("createUserId") Long createUserId);
 }
