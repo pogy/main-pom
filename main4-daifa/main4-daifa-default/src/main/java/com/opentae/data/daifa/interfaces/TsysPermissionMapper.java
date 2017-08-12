@@ -1,10 +1,16 @@
 package com.opentae.data.daifa.interfaces;
 
 import com.opentae.data.daifa.beans.TsysPermission;
+import com.opentae.data.daifa.beans.TsysRole;
+import com.opentae.data.daifa.examples.TsysPermissionExample;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.Lazy;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.core.mybatis.config.MyBatisRepository;
+
+import java.util.List;
+
 /**
  *==========================================================
  *TODO ->这里需要配置 主要是这个类的描述信息
@@ -23,5 +29,7 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 @Scope("singleton")
 @Lazy(true)
 public interface TsysPermissionMapper extends Mapper<TsysPermission>{
+    List<TsysRole> selectRolePermissionTreeByExample(TsysPermissionExample example);
 
+    List<TsysPermission> selPermissiontagsByroleTag(@Param("roleTag")String roleTag);
 }

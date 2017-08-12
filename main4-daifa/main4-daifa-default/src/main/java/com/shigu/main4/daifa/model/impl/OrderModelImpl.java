@@ -11,10 +11,13 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.daifa.bo.*;
 import com.shigu.main4.daifa.config.MQConfig;
+import com.shigu.main4.daifa.enums.DaifaListDealTypeEnum;
 import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
+import com.shigu.main4.daifa.utils.CdkeyUtil;
+import com.shigu.main4.daifa.utils.DaifaListDealUtil;
 import com.shigu.main4.daifa.utils.PinyinUtil;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.log4j.Logger;
@@ -36,8 +39,6 @@ import java.util.*;
 @Repository
 @Scope("prototype")
 public class OrderModelImpl implements OrderModel {
-
-
 
     private OrderBO orderBO;
 
@@ -69,6 +70,9 @@ public class OrderModelImpl implements OrderModel {
 
     @Autowired
     private DaifaWaitSendMapper daifaWaitSendMapper;
+
+    @Autowired
+    private DaifaListDealUtil daifaListDealUtil;
 
 
     @Autowired
@@ -107,39 +111,41 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setTradeCode(orderBO.getOid().toString());
         int num=0;
         Double goodsFee= 0.00;
-
+        Map<Long, ServiceBO> serviceBOMap = BeanMapper.list2Map(orderBO.getServices(), "soid", Long.class);
         for (SubOrderBO bo:subOrders){
             subOrderModelBO.setOrderCode(bo.getSoid().toString());
             num+=bo.getNum();
-            if (bo.getSubOrderPBOS().size()>0){
-                for (SubOrderPBO subOrderPBO:bo.getSubOrderPBOS()){
-                    subOrderModelBO.setOrderPartitionId(subOrderPBO.getSoidp().toString());
-                    subOrderModelBO.setMarketId(subOrderPBO.getMarketId());
-                    subOrderModelBO.setMarketName(subOrderPBO.getMarketName());
-                    subOrderModelBO.setFloorId(subOrderPBO.getFloorId());
-                    subOrderModelBO.setFloorName(subOrderPBO.getFloor());
-                    subOrderModelBO.setStoreId(subOrderPBO.getShopId());
-                    subOrderModelBO.setStoreNum(subOrderPBO.getShopNum());
-                    subOrderModelBO.setGoodsId(subOrderPBO.getGoodsId());
-                    subOrderModelBO.setGoodsCode(subOrderPBO.getGoodsNo());
-                    subOrderModelBO.setTitle(subOrderPBO.getTitle());
-                    subOrderModelBO.setPicPath(subOrderPBO.getPicUrl());
-                    subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadChar(subOrderPBO.getMarketName())+"_"+subOrderPBO.getShopNum()+"_"+subOrderPBO.getGoodsNo());
+            if (bo.getSoidps().size()>0){
+                for (Long soidp :bo.getSoidps()){
+                    subOrderModelBO.setOrderPartitionId(soidp.toString());
+                    subOrderModelBO.setMarketId(bo.getMarketId());
+                    subOrderModelBO.setMarketName(bo.getMarketName());
+                    subOrderModelBO.setFloorId(bo.getFloorId());
+                    subOrderModelBO.setFloorName(bo.getFloor());
+                    subOrderModelBO.setStoreId(bo.getShopId());
+                    subOrderModelBO.setStoreNum(bo.getShopNum());
+                    subOrderModelBO.setGoodsId(bo.getGoodsId());
+                    subOrderModelBO.setGoodsCode(bo.getGoodsNo());
+                    subOrderModelBO.setTitle(bo.getTitle());
+                    subOrderModelBO.setPicPath(bo.getPicUrl());
+                    subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadChar(bo.getMarketName())+"_"+bo.getShopNum()+"_"+bo.getGoodsNo());
                     subOrderModelBO.setOrderDiscountFee("0");
-                    subOrderModelBO.setPropStr(subOrderPBO.getColor()+":"+subOrderPBO.getSize());
+                    subOrderModelBO.setPropStr(bo.getColor()+":"+bo.getSize());
                     subOrderModelBO.setGoodsNum(1);
-                    subOrderModelBO.setSinglePiPrice(subOrderPBO.getSinglePay());
-                    subOrderModelBO.setSinglePay(subOrderPBO.getSinglePay());
+                    subOrderModelBO.setSinglePiPrice(bo.getSinglePay());
+                    subOrderModelBO.setSinglePay(bo.getSinglePay());
                     subOrderModelBO.setSellerId(orderBO.getSenderId());
-                    subOrderModelBO.setTotalFee(subOrderPBO.getSinglePay());
+                    subOrderModelBO.setTotalFee(bo.getSinglePay());
                     subOrderModelBO.setOrderStatus(Long.valueOf(1));
                     subOrderModelBO.setAggrement(1);
                     subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
-                    subOrderModelBO.setWebSite(subOrderPBO.getWebSite());
+                    subOrderModelBO.setWebSite(bo.getWebSite());
                     subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
-                    subOrderModelBO.setOrderPartitionId(subOrderPBO.getSoidp().toString());
+                    Double serviceFee = Double.parseDouble(serviceBOMap.get(bo.getSoid()).getMoney()) / Double.valueOf(bo.getNum());
+                    subOrderModelBO.setSingleServicesFee(serviceFee.toString());
+
                     SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
-                    goodsFee+=Double.parseDouble(subOrderPBO.getSinglePay());
+                    goodsFee+=Double.parseDouble(bo.getSinglePay());
                 }
 
             }
@@ -154,25 +160,25 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setExpressId(logisticsBO.getCompanyId());
         daifaTrade.setExpressName(logisticsBO.getCompany());
         daifaTrade.setTradeStatus(1);
-
+        daifaTrade.setBuyerNick(orderBO.getBuyerBO().getNickInMarket());
         daifaTrade.setGoodsFee(goodsFee.toString());
 
-        daifaTrade.setExpressFee(logisticsBO.getMoney());
+        daifaTrade.setExpressFee(logisticsBO.getMoney().toString());
         List<ServiceBO> services = orderBO.getServices();
         Double serviceFee=0.0;
         for (ServiceBO bo:services){
-            serviceFee+=bo.getMoney();
+            serviceFee+=Double.parseDouble(bo.getMoney());
         }
         daifaTrade.setServicesFee(serviceFee.toString());
         daifaTrade.setTradeDiscountFee("0");
-        daifaTrade.setTotalFee(Double.toString(serviceFee+goodsFee+Double.parseDouble(logisticsBO.getMoney())));
-        daifaTrade.setMoney(Double.toString(serviceFee+goodsFee+Double.parseDouble(logisticsBO.getMoney())));
+        daifaTrade.setTotalFee(Double.toString(serviceFee+goodsFee+logisticsBO.getMoney()));
+        daifaTrade.setMoney(Double.toString(serviceFee+goodsFee+logisticsBO.getMoney()));
 
-        daifaTrade.setRealPayMoney(Double.toString(serviceFee+goodsFee+Double.parseDouble(logisticsBO.getMoney())));
+        daifaTrade.setRealPayMoney(Double.toString(serviceFee+goodsFee+logisticsBO.getMoney()));
 
         daifaTrade.setCreateTime(new Date());
         daifaTrade.setLastDoTime(new Date());
-
+        daifaTrade.setBarCodeKey(daifaListDealUtil.queryListCode(DaifaListDealTypeEnum.TRADE_SORT,orderBO.getSenderId(),null));
         daifaTradeMapper.insertSelective(daifaTrade);
         this.tid=daifaTrade.getDfTradeId();
     }
@@ -202,8 +208,6 @@ public class OrderModelImpl implements OrderModel {
                 daifaGgoodsTasksMapper.updateByExampleSelective(daifaGgoodsTask, daifaGgoodsTasksExample);
                 dfOrderIds= BeanMapper.getFieldList(daifaGgoodsTasks, "dfOrderId", Long.class);
             }
-            //更新主单状态为交易关闭 ，然后发推送消息
-            trade.setTradeStatus(10);
             daifaTradeMapper.updateByPrimaryKeySelective(trade);
             JSONObject jsonObject=new JSONObject();
             Map<String,Object>map=new HashMap<>();
@@ -280,10 +284,11 @@ public class OrderModelImpl implements OrderModel {
 
 
             //查询子单信息填充已发货子单信息
-            DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
-            daifaOrderExample.createCriteria().andDfOrderIdIn(delivery.getDfOrderIds());
-            List<DaifaOrder> daifaOrders = daifaOrderMapper.selectByExample(daifaOrderExample);
-            List<DaifaSendOrder> daifaSendOrders = BeanMapper.mapList(daifaOrders, DaifaSendOrder.class);
+            DaifaWaitSendOrderExample daifaWaitSendOrderExample1=new DaifaWaitSendOrderExample();
+            daifaWaitSendOrderExample1.createCriteria().andDfOrderIdIn(delivery.getDfOrderIds());
+            List<DaifaWaitSendOrder> daifaWaitSendOrders1 = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample1);
+
+            List<DaifaSendOrder> daifaSendOrders = BeanMapper.mapList(daifaWaitSendOrders1, DaifaSendOrder.class);
 
             //查询已发货表得到sendId，把已发货子单信息插入已发货子表
             DaifaSendExample daifaSendExample=new DaifaSendExample();
@@ -292,9 +297,9 @@ public class OrderModelImpl implements OrderModel {
             for (DaifaSendOrder d:daifaSendOrders){
                 d.setCreateDate(DateUtil.dateToString(new Date(),DateUtil.patternB));
                 d.setCreateTime(new Date());
-                d.setWebSite("hz");
                 d.setTakeGoodsStatus(1);
                 d.setSendStatus(2);
+
                 if (sends.size()>0){
                     d.setSendId(sends.get(0).getSendId());
                 }

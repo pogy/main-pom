@@ -23,5 +23,5 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 @Scope("singleton")
 @Lazy(true)
 public interface TsysRolePermissionMapper extends Mapper<TsysRolePermission>{
-
+    Long selLastModifyByRoleTag(String roleTag);
 }

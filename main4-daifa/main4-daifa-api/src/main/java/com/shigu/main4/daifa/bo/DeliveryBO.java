@@ -330,6 +330,14 @@ public class DeliveryBO implements Serializable {
     }
 
     public void setDfOrderIds(List<Long> dfOrderIds) {
+
         this.dfOrderIds = dfOrderIds;
+    }
+    public Long getSendID() {
+        return sendID;
+    }
+
+    public void setSendID(Long sendID) {
+        this.sendID = sendID;
     }
 }

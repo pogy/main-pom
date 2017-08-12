@@ -47,8 +47,7 @@ public class DaifaListDealUtil {
     public String queryListCode(DaifaListDealTypeEnum type, Long seller_id, Long user_id){
 
 
-        DaifaWorker worker=daifaWorkerMapper.selectByPrimaryKey(user_id);
-        Long accountId = worker.getAccountId();
+
         String date= DateUtil.dateToString(new Date(),DateUtil.patternB);
         String listCode;
         switch(type){
@@ -103,6 +102,8 @@ public class DaifaListDealUtil {
                 break;
             }
             default:{
+                DaifaWorker worker=daifaWorkerMapper.selectByPrimaryKey(user_id);
+                Long accountId = worker.getAccountId();
                 listCode=defaultDeal(type,seller_id,user_id,accountId,date);
                 break;
             }

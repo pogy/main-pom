@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
-    <bean id="mall_dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <bean id="daifa_dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
         <!--<property name="url" value="jdbc:mysql://122.224.104.234/test" />-->
         <!--<property name="username" value="admin" />-->
@@ -42,26 +42,27 @@
         <property name="filters" value="stat" />
     </bean>
 
-    <bean id="tae_mall_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
+    <bean id="tae_daifa_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
 
         <property name="plugins">
             <list>
                 <ref bean="mapperInterceptor"></ref>
             </list>
         </property>
-        <property name="dataSource" ref="mall_dataSource"></property>
+        <property name="dataSource" ref="daifa_dataSource"></property>
         <!--<property name="configLocation" value="classpath:mybatis-config.xml"></property>-->
-        <property name="mapperLocations" value="classpath*:/mall/mybatis/*.xml" />
-        <property name="typeAliasesPackage" value="com.opentae.data.mall"></property>
+        <property name="mapperLocations" value="classpath*:/com/opentae/data/daifa/mapper/*.xml" />
+        <property name="typeAliasesPackage" value="com.opentae.data.daifa"></property>
     </bean>
-    <bean id="mall_tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
-        <property name="dataSource" ref="mall_dataSource"></property>
+    <bean id="diafa_tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+        <property name="dataSource" ref="daifa_dataSource"></property>
     </bean>
-    <tx:annotation-driven transaction-manager="mall_tx" />
+    <tx:annotation-driven transaction-manager="diafa_tx" />
     <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
         <property name= "basePackage"
-                  value= "com/opentae/data/mall/interfaces" />
-        <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
+                  value= "com/opentae/data/daifa/interfaces" />
+        <property name= "sqlSessionFactoryBeanName" value="tae_daifa_sqlSessionFactory" />
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
     </bean>
+
 </beans>
