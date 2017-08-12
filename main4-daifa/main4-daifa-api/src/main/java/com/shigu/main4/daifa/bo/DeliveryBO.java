@@ -14,6 +14,9 @@ public class DeliveryBO implements Serializable {
 
     //
     private Long sendID;
+
+
+
     /**交易Id*/
     private Long dfTradeId;
     /**代发ID不能为空*/
@@ -330,6 +333,14 @@ public class DeliveryBO implements Serializable {
     }
 
     public void setDfOrderIds(List<Long> dfOrderIds) {
+
         this.dfOrderIds = dfOrderIds;
+    }
+    public Long getSendID() {
+        return sendID;
+    }
+
+    public void setSendID(Long sendID) {
+        this.sendID = sendID;
     }
 }

@@ -37,8 +37,6 @@ import java.util.*;
 @Scope("prototype")
 public class OrderModelImpl implements OrderModel {
 
-
-
     private OrderBO orderBO;
 
     private Long tid;
@@ -111,35 +109,35 @@ public class OrderModelImpl implements OrderModel {
         for (SubOrderBO bo:subOrders){
             subOrderModelBO.setOrderCode(bo.getSoid().toString());
             num+=bo.getNum();
-            if (bo.getSubOrderPBOS().size()>0){
-                for (SubOrderPBO subOrderPBO:bo.getSubOrderPBOS()){
-                    subOrderModelBO.setOrderPartitionId(subOrderPBO.getSoidp().toString());
-                    subOrderModelBO.setMarketId(subOrderPBO.getMarketId());
-                    subOrderModelBO.setMarketName(subOrderPBO.getMarketName());
-                    subOrderModelBO.setFloorId(subOrderPBO.getFloorId());
-                    subOrderModelBO.setFloorName(subOrderPBO.getFloor());
-                    subOrderModelBO.setStoreId(subOrderPBO.getShopId());
-                    subOrderModelBO.setStoreNum(subOrderPBO.getShopNum());
-                    subOrderModelBO.setGoodsId(subOrderPBO.getGoodsId());
-                    subOrderModelBO.setGoodsCode(subOrderPBO.getGoodsNo());
-                    subOrderModelBO.setTitle(subOrderPBO.getTitle());
-                    subOrderModelBO.setPicPath(subOrderPBO.getPicUrl());
-                    subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadChar(subOrderPBO.getMarketName())+"_"+subOrderPBO.getShopNum()+"_"+subOrderPBO.getGoodsNo());
+            if (bo.getSoidps().size()>0){
+                for (Long soidp :bo.getSoidps()){
+                    subOrderModelBO.setOrderPartitionId(soidp.toString());
+                    subOrderModelBO.setMarketId(bo.getMarketId());
+                    subOrderModelBO.setMarketName(bo.getMarketName());
+                    subOrderModelBO.setFloorId(bo.getFloorId());
+                    subOrderModelBO.setFloorName(bo.getFloor());
+                    subOrderModelBO.setStoreId(bo.getShopId());
+                    subOrderModelBO.setStoreNum(bo.getShopNum());
+                    subOrderModelBO.setGoodsId(bo.getGoodsId());
+                    subOrderModelBO.setGoodsCode(bo.getGoodsNo());
+                    subOrderModelBO.setTitle(bo.getTitle());
+                    subOrderModelBO.setPicPath(bo.getPicUrl());
+                    subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadChar(bo.getMarketName())+"_"+bo.getShopNum()+"_"+bo.getGoodsNo());
                     subOrderModelBO.setOrderDiscountFee("0");
-                    subOrderModelBO.setPropStr(subOrderPBO.getColor()+":"+subOrderPBO.getSize());
+                    subOrderModelBO.setPropStr(bo.getColor()+":"+bo.getSize());
                     subOrderModelBO.setGoodsNum(1);
-                    subOrderModelBO.setSinglePiPrice(subOrderPBO.getSinglePay());
-                    subOrderModelBO.setSinglePay(subOrderPBO.getSinglePay());
+                    subOrderModelBO.setSinglePiPrice(bo.getSinglePay());
+                    subOrderModelBO.setSinglePay(bo.getSinglePay());
                     subOrderModelBO.setSellerId(orderBO.getSenderId());
-                    subOrderModelBO.setTotalFee(subOrderPBO.getSinglePay());
+                    subOrderModelBO.setTotalFee(bo.getSinglePay());
                     subOrderModelBO.setOrderStatus(Long.valueOf(1));
                     subOrderModelBO.setAggrement(1);
                     subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
-                    subOrderModelBO.setWebSite(subOrderPBO.getWebSite());
+                    subOrderModelBO.setWebSite(bo.getWebSite());
                     subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
-                    subOrderModelBO.setOrderPartitionId(subOrderPBO.getSoidp().toString());
+
                     SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
-                    goodsFee+=Double.parseDouble(subOrderPBO.getSinglePay());
+                    goodsFee+=Double.parseDouble(bo.getSinglePay());
                 }
 
             }
@@ -202,8 +200,6 @@ public class OrderModelImpl implements OrderModel {
                 daifaGgoodsTasksMapper.updateByExampleSelective(daifaGgoodsTask, daifaGgoodsTasksExample);
                 dfOrderIds= BeanMapper.getFieldList(daifaGgoodsTasks, "dfOrderId", Long.class);
             }
-            //更新主单状态为交易关闭 ，然后发推送消息
-            trade.setTradeStatus(10);
             daifaTradeMapper.updateByPrimaryKeySelective(trade);
             JSONObject jsonObject=new JSONObject();
             Map<String,Object>map=new HashMap<>();

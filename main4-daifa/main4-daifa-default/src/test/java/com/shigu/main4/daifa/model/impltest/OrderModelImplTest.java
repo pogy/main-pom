@@ -11,6 +11,7 @@ import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.impl.OrderModelImpl;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.shigu.test.BaseSpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,12 +25,10 @@ import java.util.List;
  * Created by jmb on 2017/8/10.
  * Path com.shigu.main4.spring-database.model.impltest.OrderModelImplTest
  */
-public class OrderModelImplTest extends BaseDaifaTest{
+public class OrderModelImplTest extends BaseSpringTest{
 
     OrderModel orderModel;
 
-    @Autowired
-    DaifaTradeMapper daifaTradeMapper;
     @Test
     public void testinit(){
         OrderBO bo=new OrderBO();
@@ -37,24 +36,26 @@ public class OrderModelImplTest extends BaseDaifaTest{
         SubOrderBO subOrderBO=new SubOrderBO();
         subOrderBO.setSoid(1234654L);
         subOrderBO.setNum(3);
-        List<SubOrderPBO> subOrderPBOS=new ArrayList<>();
-        SubOrderPBO s=new SubOrderPBO();
-        s.setColor("red");
-        s.setFloor("2F");
-        s.setFloorId(623L);
-        s.setGoodsId(165752L);
-        s.setGoodsNo("140");
-        s.setMarketId(621L);
-        s.setMarketName("四季星座");
-        s.setPicUrl("https://img.alicdn.com/bao/uploaded/i4/18874038534868392/T1_s5bFitcXXXXXXXX_!!0-item_pic.jpg");
-        s.setSize("XL");
-        s.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
-        s.setSinglePay("275.00");
-        s.setShopId(16887L);
-        s.setSoidp(25L);
-        s.setWebSite("hz");
-        s.setShopNum("140");
-        SubOrderPBO s2=new SubOrderPBO();
+        subOrderBO.setColor("red");
+        subOrderBO.setFloor("2F");
+        subOrderBO.setFloorId(623L);
+        subOrderBO.setGoodsId(165752L);
+        subOrderBO.setGoodsNo("140");
+        subOrderBO.setMarketId(621L);
+        subOrderBO.setMarketName("四季星座");
+        subOrderBO.setPicUrl("https://img.alicdn.com/bao/uploaded/i4/18874038534868392/T1_s5bFitcXXXXXXXX_!!0-item_pic.jpg");
+        subOrderBO.setSize("XL");
+        subOrderBO.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
+        subOrderBO.setSinglePay("275.00");
+        subOrderBO.setShopId(16887L);
+        List<Long>soidps= new ArrayList<>();
+        soidps.add(25L);
+        soidps.add(24L);
+        soidps.add(23L);
+        subOrderBO.setSoidps(soidps);
+        subOrderBO.setWebSite("hz");
+        subOrderBO.setShopNum("140");
+        /*SubOrderBO s2=new SubOrderBO();
         s2.setColor("red");
         s2.setFloor("2F");
         s2.setFloorId(623L);
@@ -67,29 +68,16 @@ public class OrderModelImplTest extends BaseDaifaTest{
         s2.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
         s2.setSinglePay("275.00");
         s2.setShopId(16887L);
-        s2.setSoidp(26L);
+        s2.setSoid(145556L);
+        List<Long>soidps1= new ArrayList<>();
+        soidps.add(26L);
+        soidps.add(27L);
+        soidps.add(28L);
+        s2.setSoidps(soidps1);
         s2.setWebSite("hz");
-        s2.setShopNum("140");
-        SubOrderPBO s1=new SubOrderPBO();
-        s1.setColor("黑");
-        s1.setFloor("其他市场");
-        s1.setFloorId(675L);
-        s1.setGoodsId(166130L);
-        s1.setGoodsNo("DS30-121503");
-        s1.setMarketId(674L);
-        s1.setMarketName("周边市场");
-        s1.setPicUrl("http://img04.taobaocdn.com/bao/uploaded/i4/T1ZIR7FpxnXXXXXXXX_!!0-item_pic.jpg");
-        s1.setSize("M");
-        s1.setTitle("DSOOG夏季男装V领男士短袖T恤潮纯棉修身简约个性男t DS30-121503");
-        s1.setSinglePay("49.00");
-        s1.setShopId(16800L);
-        s1.setSoidp(24L);
-        s1.setWebSite("hz");
-        s1.setShopNum("搭尚分销");
-        subOrderPBOS.add(s2);
-        subOrderPBOS.add(s1);
-        subOrderPBOS.add(s);
-        subOrderBO.setSubOrderPBOS(subOrderPBOS);
+        s2.setShopNum("140");*/
+//        s2.setNum(3);
+
         LogisticsBO logisticsBO =new LogisticsBO();
         logisticsBO.setMoney("12");
         logisticsBO.setAddress("浙江省 杭州市 滨江区 芯图大厦11楼");
@@ -107,29 +95,7 @@ public class OrderModelImplTest extends BaseDaifaTest{
        List<LogisticsBO> logisticsBOS=new ArrayList<>();
        logisticsBOS.add(logisticsBO);
        List<SubOrderBO> subOrderBOS=new ArrayList<>();
-       SubOrderBO subOrderBO1=new SubOrderBO();
-       subOrderBO1.setNum(1);
-       subOrderBO1.setSoid(4567855583L);
-       List<SubOrderPBO>subOrderPBOS1=new ArrayList<>();
-       SubOrderPBO subOrderPBO23=new SubOrderPBO();
-        subOrderPBO23.setColor("蓝色");
-        subOrderPBO23.setFloor("13F");
-        subOrderPBO23.setFloorId(634L);
-        subOrderPBO23.setGoodsId(168663L);
-        subOrderPBO23.setGoodsNo("5935 P65");
-        subOrderPBO23.setMarketId(621L);
-        subOrderPBO23.setMarketName("四季星座");
-        subOrderPBO23.setPicUrl("https://img.alicdn.com/bao/uploaded/i1/T1uN2tXbVqXXbSPWk0_034233.jpg");
-        subOrderPBO23.setSize("L");
-        subOrderPBO23.setTitle("2016新品 多拉链大翻领 男士修身休闲卫衣 5935 P30");
-        subOrderPBO23.setSinglePay("6.00");
-        subOrderPBO23.setShopId(16418L);
-        subOrderPBO23.setSoidp(23L);
-        subOrderPBO23.setWebSite("hz");
-        subOrderPBO23.setShopNum("1399");
-        subOrderPBOS1.add(subOrderPBO23);
-       subOrderBO1.setSubOrderPBOS(subOrderPBOS1);
-        subOrderBOS.add(subOrderBO1);
+//       subOrderBOS.add(s2);
        subOrderBOS.add(subOrderBO);
        List<ServiceBO>serviceBOS=new ArrayList<>();
        serviceBOS.add(serviceBO);
@@ -201,6 +167,6 @@ public class OrderModelImplTest extends BaseDaifaTest{
         daifaTrade.setMoney("fasdf");
         daifaTrade.setRealPayMoney("asdjkfh");
         daifaTrade.setTradeCode("46543");
-        daifaTradeMapper.insertSelective(daifaTrade);
+//        daifaTradeMapper.insertSelective(daifaTrade);
     }
 }
