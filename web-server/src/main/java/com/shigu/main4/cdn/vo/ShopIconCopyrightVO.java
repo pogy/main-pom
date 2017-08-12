@@ -9,7 +9,7 @@ public class ShopIconCopyrightVO {
 
     private Long shopId;//店铺ID
 
-    private String name;//店铺名，市场加档口
+    private String shopName;//店铺名，市场加档口
 
     public String getImgSrc() {
         return imgSrc;
@@ -27,11 +27,11 @@ public class ShopIconCopyrightVO {
         this.shopId = shopId;
     }
 
-    public String getName() {
-        return name;
+    public String getShopName() {
+        return shopName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 }

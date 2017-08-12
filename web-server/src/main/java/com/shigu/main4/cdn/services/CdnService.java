@@ -268,7 +268,7 @@ public class CdnService {
             vo.setImgSrc(cr.getKey1());
             Long shopId=Long.valueOf(cr.getKey2());
             vo.setShopId(shopId);
-            vo.setName(shopMap.get(shopId).getMarket()+" "+shopMap.get(shopId).getShopNum());
+            vo.setShopName(shopMap.get(shopId).getMarket()+" "+shopMap.get(shopId).getShopNum());
             content.add(vo);
         });
         return pager;
