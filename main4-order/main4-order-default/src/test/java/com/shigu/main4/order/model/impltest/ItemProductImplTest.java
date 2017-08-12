@@ -54,8 +54,8 @@ public class ItemProductImplTest extends BaseTest {
     private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
     @Test
     public void selWeight() throws Exception {
-        ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById("hz", 20477519L);
-        show(getProduct().selWeight());
+//        ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById("hz", 20477519L);
+//        show(getProduct().selWeight());
     }
 
 }

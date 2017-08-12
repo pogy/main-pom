@@ -1,711 +1,400 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ShiguActivityApprove;
 
-public class ShiguActivityApproveExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<ShiguActivityApproveExample.Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class ShiguActivityApproveExample extends SgExample<ShiguActivityApproveExample.Criteria> {
+    public static final Class<ShiguActivityApprove> beanClass = ShiguActivityApprove.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn activityId;
+    public static EntityColumn item;
+    public static EntityColumn phone;
+    public static EntityColumn cateId;
+    public static EntityColumn shopId;
+    public static EntityColumn userId;
+    public static EntityColumn approveId;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        activityId = listMap.get("activityId");
+        item = listMap.get("item");
+        phone = listMap.get("phone");
+        cateId = listMap.get("cateId");
+        shopId = listMap.get("shopId");
+        userId = listMap.get("userId");
+        approveId = listMap.get("approveId");
+        }
 
     public ShiguActivityApproveExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<ShiguActivityApproveExample.Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(ShiguActivityApproveExample.Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public ShiguActivityApproveExample.Criteria or() {
-        ShiguActivityApproveExample.Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public ShiguActivityApproveExample.Criteria createCriteria() {
-        ShiguActivityApproveExample.Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
+    @Override
     protected ShiguActivityApproveExample.Criteria createCriteriaInternal() {
-        ShiguActivityApproveExample.Criteria criteria = new ShiguActivityApproveExample.Criteria();
-        return criteria;
+        return new ShiguActivityApproveExample.Criteria(this);
     }
 
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends ShiguActivityApproveExample.GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<ShiguActivityApproveExample.Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<ShiguActivityApproveExample.Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<ShiguActivityApproveExample.Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new ShiguActivityApproveExample.Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new ShiguActivityApproveExample.Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new ShiguActivityApproveExample.Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdIsNull() {
-            this.addCriterion("shop_id is null");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdIsNotNull() {
-            this.addCriterion("shop_id is not null");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdEqualTo(Long value) {
-            this.addCriterion("shop_id =", value, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdNotEqualTo(Long value) {
-            this.addCriterion("shop_id <>", value, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdGreaterThan(Long value) {
-            this.addCriterion("shop_id >", value, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("shop_id >=", value, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdLessThan(Long value) {
-            this.addCriterion("shop_id <", value, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("shop_id <=", value, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdLike(String value) {
-            this.addCriterion("shop_id like", value, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdNotLike(String value) {
-            this.addCriterion("shop_id not like", value, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }        public ShiguActivityApproveExample.Criteria andShopIdIn(List<Long> values) {
-            this.addCriterion("shop_id in", values, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdNotIn(List<Long> values) {
-            this.addCriterion("shop_id not in", values, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdBetween(Long value1, Long value2) {
-            this.addCriterion("shop_id between", value1, value2, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andShopIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("shop_id not between", value1, value2, "shopId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemIsNull() {
-            this.addCriterion("item is null");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemIsNotNull() {
-            this.addCriterion("item is not null");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemEqualTo(String value) {
-            this.addCriterion("item =", value, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemNotEqualTo(String value) {
-            this.addCriterion("item <>", value, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemGreaterThan(String value) {
-            this.addCriterion("item >", value, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemGreaterThanOrEqualTo(String value) {
-            this.addCriterion("item >=", value, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemLessThan(String value) {
-            this.addCriterion("item <", value, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemLessThanOrEqualTo(String value) {
-            this.addCriterion("item <=", value, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemLike(String value) {
-            this.addCriterion("item like", value, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemNotLike(String value) {
-            this.addCriterion("item not like", value, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }        public ShiguActivityApproveExample.Criteria andItemIn(List<String> values) {
-            this.addCriterion("item in", values, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemNotIn(List<String> values) {
-            this.addCriterion("item not in", values, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemBetween(String value1, String value2) {
-            this.addCriterion("item between", value1, value2, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andItemNotBetween(String value1, String value2) {
-            this.addCriterion("item not between", value1, value2, "item");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdIsNull() {
-            this.addCriterion("user_id is null");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdIsNotNull() {
-            this.addCriterion("user_id is not null");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdEqualTo(Long value) {
-            this.addCriterion("user_id =", value, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdNotEqualTo(Long value) {
-            this.addCriterion("user_id <>", value, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdGreaterThan(Long value) {
-            this.addCriterion("user_id >", value, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("user_id >=", value, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdLessThan(Long value) {
-            this.addCriterion("user_id <", value, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("user_id <=", value, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdLike(String value) {
-            this.addCriterion("user_id like", value, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdNotLike(String value) {
-            this.addCriterion("user_id not like", value, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }        public ShiguActivityApproveExample.Criteria andUserIdIn(List<Long> values) {
-            this.addCriterion("user_id in", values, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdNotIn(List<Long> values) {
-            this.addCriterion("user_id not in", values, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdBetween(Long value1, Long value2) {
-            this.addCriterion("user_id between", value1, value2, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("user_id not between", value1, value2, "userId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneIsNull() {
-            this.addCriterion("phone is null");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneIsNotNull() {
-            this.addCriterion("phone is not null");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneEqualTo(String value) {
-            this.addCriterion("phone =", value, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneNotEqualTo(String value) {
-            this.addCriterion("phone <>", value, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneGreaterThan(String value) {
-            this.addCriterion("phone >", value, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneGreaterThanOrEqualTo(String value) {
-            this.addCriterion("phone >=", value, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneLessThan(String value) {
-            this.addCriterion("phone <", value, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneLessThanOrEqualTo(String value) {
-            this.addCriterion("phone <=", value, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneLike(String value) {
-            this.addCriterion("phone like", value, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneNotLike(String value) {
-            this.addCriterion("phone not like", value, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }        public ShiguActivityApproveExample.Criteria andPhoneIn(List<String> values) {
-            this.addCriterion("phone in", values, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneNotIn(List<String> values) {
-            this.addCriterion("phone not in", values, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneBetween(String value1, String value2) {
-            this.addCriterion("phone between", value1, value2, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andPhoneNotBetween(String value1, String value2) {
-            this.addCriterion("phone not between", value1, value2, "phone");
-            return (ShiguActivityApproveExample.Criteria)this;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdIsNull() {
-            this.addCriterion("activity_id is null");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return isNull(activityId);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdIsNotNull() {
-            this.addCriterion("activity_id is not null");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return isNotNull(activityId);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdEqualTo(Long value) {
-            this.addCriterion("activity_id =", value, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return equalTo(activityId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdNotEqualTo(Long value) {
-            this.addCriterion("activity_id <>", value, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return notEqualTo(activityId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdGreaterThan(Long value) {
-            this.addCriterion("activity_id >", value, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return greaterThan(activityId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("activity_id >=", value, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return greaterThanOrEqualTo(activityId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdLessThan(Long value) {
-            this.addCriterion("activity_id <", value, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return lessThan(activityId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("activity_id <=", value, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return lessThanOrEqualTo(activityId, value);
         }
 
-        public ShiguActivityApproveExample.Criteria andActivityIdLike(String value) {
-            this.addCriterion("activity_id like", value, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andActivityIdNotLike(String value) {
-            this.addCriterion("activity_id not like", value, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }        public ShiguActivityApproveExample.Criteria andActivityIdIn(List<Long> values) {
-            this.addCriterion("activity_id in", values, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
+        public ShiguActivityApproveExample.Criteria andActivityIdIn(List<Long> values) {
+            return in(activityId, values);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdNotIn(List<Long> values) {
-            this.addCriterion("activity_id not in", values, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return notIn(activityId, values);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdBetween(Long value1, Long value2) {
-            this.addCriterion("activity_id between", value1, value2, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return between(activityId, value1, value2);
         }
 
         public ShiguActivityApproveExample.Criteria andActivityIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("activity_id not between", value1, value2, "activityId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return notBetween(activityId, value1, value2);
+        }
+        public ShiguActivityApproveExample.Criteria andItemIsNull() {
+            return isNull(item);
         }
 
+        public ShiguActivityApproveExample.Criteria andItemIsNotNull() {
+            return isNotNull(item);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemEqualTo(String value) {
+            return equalTo(item, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemNotEqualTo(String value) {
+            return notEqualTo(item, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemGreaterThan(String value) {
+            return greaterThan(item, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(item, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemLessThan(String value) {
+            return lessThan(item, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(item, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemLike(String value) {
+            return like(item, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemNotLike(String value) {
+            return notLike(item, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemIn(List<String> values) {
+            return in(item, values);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemNotIn(List<String> values) {
+            return notIn(item, values);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemBetween(String value1, String value2) {
+            return between(item, value1, value2);
+        }
+
+        public ShiguActivityApproveExample.Criteria andItemNotBetween(String value1, String value2) {
+            return notBetween(item, value1, value2);
+        }
+        public ShiguActivityApproveExample.Criteria andPhoneIsNull() {
+            return isNull(phone);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneIsNotNull() {
+            return isNotNull(phone);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneEqualTo(String value) {
+            return equalTo(phone, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneNotEqualTo(String value) {
+            return notEqualTo(phone, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneGreaterThan(String value) {
+            return greaterThan(phone, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(phone, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneLessThan(String value) {
+            return lessThan(phone, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(phone, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneLike(String value) {
+            return like(phone, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneNotLike(String value) {
+            return notLike(phone, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneIn(List<String> values) {
+            return in(phone, values);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneNotIn(List<String> values) {
+            return notIn(phone, values);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneBetween(String value1, String value2) {
+            return between(phone, value1, value2);
+        }
+
+        public ShiguActivityApproveExample.Criteria andPhoneNotBetween(String value1, String value2) {
+            return notBetween(phone, value1, value2);
+        }
         public ShiguActivityApproveExample.Criteria andCateIdIsNull() {
-            this.addCriterion("cate_id is null");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return isNull(cateId);
         }
 
         public ShiguActivityApproveExample.Criteria andCateIdIsNotNull() {
-            this.addCriterion("cate_id is not null");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return isNotNull(cateId);
         }
 
         public ShiguActivityApproveExample.Criteria andCateIdEqualTo(Long value) {
-            this.addCriterion("cate_id =", value, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return equalTo(cateId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andCateIdNotEqualTo(Long value) {
-            this.addCriterion("cate_id <>", value, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return notEqualTo(cateId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andCateIdGreaterThan(Long value) {
-            this.addCriterion("cate_id >", value, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return greaterThan(cateId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andCateIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("cate_id >=", value, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return greaterThanOrEqualTo(cateId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andCateIdLessThan(Long value) {
-            this.addCriterion("cate_id <", value, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return lessThan(cateId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andCateIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("cate_id <=", value, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return lessThanOrEqualTo(cateId, value);
         }
 
-        public ShiguActivityApproveExample.Criteria andCateIdLike(String value) {
-            this.addCriterion("cate_id like", value, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andCateIdNotLike(String value) {
-            this.addCriterion("cate_id not like", value, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }        public ShiguActivityApproveExample.Criteria andCateIdIn(List<Long> values) {
-            this.addCriterion("cate_id in", values, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
+        public ShiguActivityApproveExample.Criteria andCateIdIn(List<Long> values) {
+            return in(cateId, values);
         }
 
         public ShiguActivityApproveExample.Criteria andCateIdNotIn(List<Long> values) {
-            this.addCriterion("cate_id not in", values, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return notIn(cateId, values);
         }
 
         public ShiguActivityApproveExample.Criteria andCateIdBetween(Long value1, Long value2) {
-            this.addCriterion("cate_id between", value1, value2, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return between(cateId, value1, value2);
         }
 
         public ShiguActivityApproveExample.Criteria andCateIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("cate_id not between", value1, value2, "cateId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return notBetween(cateId, value1, value2);
+        }
+        public ShiguActivityApproveExample.Criteria andShopIdIsNull() {
+            return isNull(shopId);
         }
 
+        public ShiguActivityApproveExample.Criteria andShopIdIsNotNull() {
+            return isNotNull(shopId);
+        }
+
+        public ShiguActivityApproveExample.Criteria andShopIdEqualTo(Long value) {
+            return equalTo(shopId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andShopIdNotEqualTo(Long value) {
+            return notEqualTo(shopId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andShopIdGreaterThan(Long value) {
+            return greaterThan(shopId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andShopIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(shopId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andShopIdLessThan(Long value) {
+            return lessThan(shopId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andShopIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(shopId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andShopIdIn(List<Long> values) {
+            return in(shopId, values);
+        }
+
+        public ShiguActivityApproveExample.Criteria andShopIdNotIn(List<Long> values) {
+            return notIn(shopId, values);
+        }
+
+        public ShiguActivityApproveExample.Criteria andShopIdBetween(Long value1, Long value2) {
+            return between(shopId, value1, value2);
+        }
+
+        public ShiguActivityApproveExample.Criteria andShopIdNotBetween(Long value1, Long value2) {
+            return notBetween(shopId, value1, value2);
+        }
+        public ShiguActivityApproveExample.Criteria andUserIdIsNull() {
+            return isNull(userId);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdIsNotNull() {
+            return isNotNull(userId);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdEqualTo(Long value) {
+            return equalTo(userId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdNotEqualTo(Long value) {
+            return notEqualTo(userId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdGreaterThan(Long value) {
+            return greaterThan(userId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(userId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdLessThan(Long value) {
+            return lessThan(userId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(userId, value);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdIn(List<Long> values) {
+            return in(userId, values);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdNotIn(List<Long> values) {
+            return notIn(userId, values);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdBetween(Long value1, Long value2) {
+            return between(userId, value1, value2);
+        }
+
+        public ShiguActivityApproveExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(userId, value1, value2);
+        }
         public ShiguActivityApproveExample.Criteria andApproveIdIsNull() {
-            this.addCriterion("approve_id is null");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return isNull(approveId);
         }
 
         public ShiguActivityApproveExample.Criteria andApproveIdIsNotNull() {
-            this.addCriterion("approve_id is not null");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return isNotNull(approveId);
         }
 
         public ShiguActivityApproveExample.Criteria andApproveIdEqualTo(Long value) {
-            this.addCriterion("approve_id =", value, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return equalTo(approveId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andApproveIdNotEqualTo(Long value) {
-            this.addCriterion("approve_id <>", value, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return notEqualTo(approveId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andApproveIdGreaterThan(Long value) {
-            this.addCriterion("approve_id >", value, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return greaterThan(approveId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andApproveIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("approve_id >=", value, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return greaterThanOrEqualTo(approveId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andApproveIdLessThan(Long value) {
-            this.addCriterion("approve_id <", value, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return lessThan(approveId, value);
         }
 
         public ShiguActivityApproveExample.Criteria andApproveIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("approve_id <=", value, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return lessThanOrEqualTo(approveId, value);
         }
 
-        public ShiguActivityApproveExample.Criteria andApproveIdLike(String value) {
-            this.addCriterion("approve_id like", value, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }
-
-        public ShiguActivityApproveExample.Criteria andApproveIdNotLike(String value) {
-            this.addCriterion("approve_id not like", value, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
-        }        public ShiguActivityApproveExample.Criteria andApproveIdIn(List<Long> values) {
-            this.addCriterion("approve_id in", values, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
+        public ShiguActivityApproveExample.Criteria andApproveIdIn(List<Long> values) {
+            return in(approveId, values);
         }
 
         public ShiguActivityApproveExample.Criteria andApproveIdNotIn(List<Long> values) {
-            this.addCriterion("approve_id not in", values, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return notIn(approveId, values);
         }
 
         public ShiguActivityApproveExample.Criteria andApproveIdBetween(Long value1, Long value2) {
-            this.addCriterion("approve_id between", value1, value2, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return between(approveId, value1, value2);
         }
 
         public ShiguActivityApproveExample.Criteria andApproveIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("approve_id not between", value1, value2, "approveId");
-            return (ShiguActivityApproveExample.Criteria)this;
+            return notBetween(approveId, value1, value2);
         }
     }
 }
