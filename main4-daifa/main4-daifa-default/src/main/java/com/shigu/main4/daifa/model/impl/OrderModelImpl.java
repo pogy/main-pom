@@ -110,10 +110,10 @@ public class OrderModelImpl implements OrderModel {
 
         for (SubOrderBO bo:subOrders){
             subOrderModelBO.setOrderCode(bo.getSoid().toString());
-            num+=bo.getNum();
             if (bo.getSubOrderPBOS().size()>0){
                 Double allFee=0.00;
                 for (SubOrderPBO subOrderPBO:bo.getSubOrderPBOS()){
+                    num+=subOrderPBO.getNumber();
                     Double totalFee =Double.parseDouble(subOrderPBO.getSinglePay())*subOrderPBO.getNumber();
                     subOrderModelBO.setOrderPartitionId(subOrderPBO.getSoidp().toString());
                     subOrderModelBO.setMarketId(subOrderPBO.getMarketId());
@@ -129,7 +129,7 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadChar(subOrderPBO.getMarketName())+"_"+subOrderPBO.getShopNum()+"_"+subOrderPBO.getGoodsNo());
                     subOrderModelBO.setOrderDiscountFee("0");
                     subOrderModelBO.setPropStr(subOrderPBO.getColor()+":"+subOrderPBO.getSize());
-                    subOrderModelBO.setGoodsNum(bo.getNum());
+                    subOrderModelBO.setGoodsNum(subOrderPBO.getNumber());
                     subOrderModelBO.setSinglePiPrice(subOrderPBO.getSinglePay());
                     subOrderModelBO.setSinglePay(subOrderPBO.getSinglePay());
                     subOrderModelBO.setSellerId(orderBO.getSenderId());
