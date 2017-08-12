@@ -78,6 +78,8 @@ public class ItemOrder implements Serializable {
      */
 	private String outerId;
 
+	private Boolean disenable;
+
 	public void setOid(Long oid) {
 		this.oid = oid;
 	}
@@ -190,4 +192,11 @@ public class ItemOrder implements Serializable {
 		return this.outerId;
 	}
 
+	public Boolean getDisenable() {
+		return disenable;
+	}
+
+	public void setDisenable(Boolean disenable) {
+		this.disenable = disenable;
+	}
 }
