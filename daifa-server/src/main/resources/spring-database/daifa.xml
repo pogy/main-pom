@@ -2,14 +2,18 @@
 <beans
         xmlns="http://www.springframework.org/schema/beans"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
         xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <bean id="mall_dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
-        <property name="driverClassName" value="${mysqljdbc.driverClassName}" />
-        <property name="url" value="${mysqljdbc.url}" />
-        <property name="username" value="${mysqljdbc.username}" />
-        <property name="password" value="${mysqljdbc.password}" />
+        <!--<property name="url" value="jdbc:mysql://122.224.104.234/test" />-->
+        <!--<property name="username" value="admin" />-->
+        <!--<property name="password" value="killer81682024" />-->
+
+        <property name="driverClassName" value="${daifajdbc.driverClassName}" />
+        <property name="url" value="${daifajdbc.url}" />
+        <property name="username" value="${daifajdbc.username}" />
+        <property name="password" value="${daifajdbc.password}" />
 
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="1" />
@@ -39,26 +43,25 @@
     </bean>
 
     <bean id="tae_mall_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
+
         <property name="plugins">
             <list>
-                <ref bean="mapperInterceptor"/>
+                <ref bean="mapperInterceptor"></ref>
             </list>
         </property>
-        <property name="dataSource" ref="dataSource"/>
-        <property name="configLocation" value="classpath:/mybatis-config.xml"/>
-        <property name="mapperLocations" value="classpath*:/mall/mybatis/*.xml" />
-        <property name="typeAliasesPackage" value="com.opentae.data.mall"/>
+        <property name="dataSource" ref="mall_dataSource"></property>
+        <!--<property name="configLocation" value="classpath:mybatis-config.xml"></property>-->
+        <property name="mapperLocations" value="classpath*:/com/opentae/data/daifa/mapper/*.xml" />
+        <property name="typeAliasesPackage" value="com.opentae.data.mall"></property>
     </bean>
-
-    <bean id="main_tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+    <bean id="mall_tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+        <property name="dataSource" ref="mall_dataSource"></property>
     </bean>
-    <!-- enable transaction annotation support -->
-    <tx:annotation-driven transaction-manager="main_tx" />
-
+    <tx:annotation-driven transaction-manager="mall_tx" />
     <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
-        <property name= "basePackage" value= "com/opentae/data/mall/interfaces" />
+        <property name= "basePackage"
+                  value= "com/opentae/data/mall/interfaces" />
         <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
-        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
+        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
     </bean>
 </beans>

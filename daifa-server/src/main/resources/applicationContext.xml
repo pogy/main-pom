@@ -32,7 +32,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <!--
     <bean id="HttpConsumer" class="com.shigu.daili.utils.HttpConsumer" init-method="init"/>
     -->
-    <import resource="spring-database/mall.xml"/>
+    <import resource="spring-database/daifa.xml"/>
     <!--<import resource="spring-database/manager.xml"/>-->
     <bean id="druid-stat-interceptor"
           class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor">
