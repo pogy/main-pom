@@ -2,75 +2,81 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 import java.io.Serializable;
 
 public class ItemOrderRefund implements Serializable {
-    /**
-     * 退货ID
-     */
-    @Id
-    @GeneratedValue(generator = "JDBC")
+	/**
+	 * 退货ID
+	 */
+	@Id
+	@GeneratedValue(generator = "JDBC")
 	private Long refundId;
 
-    /**
-     * 
-     */
+	/**
+	 * 1退款，2退货，3换货
+	 */
 	private Integer type;
 
-    /**
-     * 用户回寄单号
-     */
+	/**
+	 * 用户回寄单号
+	 */
 	private String buyerCourier;
 
-    /**
-     * 0申请中，1卖家受理，2退款完成，3卖家拒绝退请求，4退货失败，5买家已发件，6卖家已收件，7卖家议价，8买家附议，9买家拒绝附议
-     */
+	/**
+	 * 0申请中，1卖家受理，2退款完成，3卖家拒绝退请求，4退货失败，5买家已发件，6卖家已收件，7卖家议价，9买家拒绝附议
+	 */
 	private Integer status;
 
-    /**
-     * true用户申请，false非用户申请
-     */
+	/**
+	 * true用户申请，false非用户申请
+	 */
 	private Boolean userApply;
 
-    /**
-     * 退失败原因
-     */
+	/**
+	 * 退失败原因
+	 */
 	private String failMsg;
 
-    /**
-     * 已退金额
-     */
+	/**
+	 * 已退金额
+	 */
 	private Long refundMoney;
 
-    /**
-     * 预期退金额
-     */
+	/**
+	 * 预期退金额
+	 */
 	private Long hopeMoney;
 
-    /**
-     * 退件数
-     */
+	/**
+	 * 退件数
+	 */
 	private Integer number;
 
-    /**
-     * 主单ID
-     */
+	/**
+	 * 主单ID
+	 */
 	private Long oid;
 
-    /**
-     * 子订单号
-     */
+	/**
+	 * 子订单号
+	 */
 	private Long soid;
 
-    /**
-     * 退单原因
-     */
+	/**
+	 * 退单原因
+	 */
 	private String reason;
 
-    /**
-     * 卖家建议金额
-     */
+	/**
+	 * 卖家建议金额
+	 */
 	private Long sellerProposalMoney;
+
+	/**
+	 * 用户回寄时间
+	 */
+	private Date buyerReturnTime;
 
 	public void setRefundId(Long refundId) {
 		this.refundId = refundId;
@@ -174,6 +180,14 @@ public class ItemOrderRefund implements Serializable {
 
 	public Long getSellerProposalMoney() {
 		return this.sellerProposalMoney;
+	}
+
+	public void setBuyerReturnTime(Date buyerReturnTime) {
+		this.buyerReturnTime = buyerReturnTime;
+	}
+
+	public Date getBuyerReturnTime() {
+		return this.buyerReturnTime;
 	}
 
 }
