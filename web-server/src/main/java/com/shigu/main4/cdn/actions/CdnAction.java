@@ -797,6 +797,11 @@ public class CdnAction {
         }
     }
 
+    @RequestMapping("smallpic")
+    public String smallPic(Long id){
+        return "redirect:"+shopsItemService.itemImgzipUrl(id);
+    }
+
     @RequestMapping("downloadImg")
     public void downloadImg(HttpServletResponse response, String callback, Long goodsId,Integer type, HttpSession session) throws IOException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -807,7 +812,7 @@ public class CdnAction {
         }
         String upflag="imgzip";
         DatuVO bigVo=goodsFileService.datuUrl(goodsId);
-        String url = shopsItemService.itemImgzipUrl(goodsId);
+        String url = "smallpic.htm?id="+goodsId;//shopsItemService.itemImgzipUrl(goodsId);
 //        String url="11";
         String content;
         if (StringUtils.isEmpty(url)) {
