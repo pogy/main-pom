@@ -214,6 +214,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             vo.setGoodsSku(market + "-" + ggoodsForPrint.getStoreNum() + "-" + ggoodsForPrint.getGoodsCode()
                     + "-" + ggoodsForPrint.getPropStr());
             vo.setPostName(Pingyin.getPinYinHeadChar(ggoodsForPrint.getExpressName()).toUpperCase());
+            pvos.add(vo);
         }
 
         if (unPrints.size() > 0) {
