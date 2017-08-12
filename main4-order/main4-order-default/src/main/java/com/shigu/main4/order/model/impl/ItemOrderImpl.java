@@ -6,11 +6,9 @@ import com.opentae.data.mall.examples.OrderPayExample;
 import com.opentae.data.mall.examples.OrderPayRelationshipExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.common.util.NumberUtils;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
-import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -19,6 +17,7 @@ import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.model.Sender;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
+import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -53,9 +52,6 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Autowired
     private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
-
-    @Autowired
-    private ItemOrderSenderMapper itemOrderSenderMapper;
 
     @Autowired
     private OrderConstantService orderConstantService;

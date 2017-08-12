@@ -1,11 +1,7 @@
 package com.shigu.trade.services;
 
-import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.PayerService;
-import com.shigu.main4.order.vo.PayApplyVO;
-import com.shigu.main4.tools.AmountUtils;
-import com.shigu.trade.bo.ScanPayBo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,9 +30,9 @@ public class AliPayService {
         String outTradeNo = paramsMapAli.get("out_trade_no");
         String totalAmount = paramsMapAli.get("total_amount");
         String buyerId = paramsMapAli.get("buyer_id");
-        String totalFee = AmountUtils.changeY2F(totalAmount);
+        Long totalFee = ((Double) (Double.valueOf(totalAmount.replaceAll("[$￥,]", "")) * 100.0)).longValue();
 
-        payerService.paySure(Long.valueOf(outTradeNo), "", buyerId, Long.valueOf(totalFee));
+        payerService.paySure(Long.valueOf(outTradeNo), "", buyerId, totalFee);
     }
 
     public String getPublicKey() {

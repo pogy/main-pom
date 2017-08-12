@@ -5,8 +5,6 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.AlipayResponse;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.alipay.api.request.AlipayTradeRefundRequest;
-import com.alipay.api.response.AlipayTradePagePayResponse;
-import com.openJar.requests.sgpay.RefundRequest;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
 import com.shigu.main4.common.util.BeanMapper;
@@ -17,16 +15,11 @@ import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.able.PayerServiceAble;
 import com.shigu.main4.order.vo.PayApplyVO;
-import com.shigu.main4.tools.AmountUtils;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 支付宝支付
@@ -61,7 +54,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + apply.getApplyId() + "\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                "    \"total_amount\":" + AmountUtils.changeF2Y(money) + "," +
+                "    \"total_amount\":" + String.format("%,.2f", money * .01) + "," +
                 "    \"subject\":\"" + title + "\"" +
                 "  }");//填充业务参数
         String form = "";
@@ -112,7 +105,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent("{" +
                 "    \"out_trade_no\":\"" + orderPayApply.getApplyId() + "\"," +
-                "    \"refund_amount\":" + AmountUtils.changeF2Y(money)  + "," +
+                "    \"refund_amount\":" + String.format("$,.2f", money * .01)  + "," +
                 "    \"refund_reason\":\"正常退款\"," +
                 "    \"out_request_no\":\"" + UUIDGenerator.getUUID() + "\"" +
                 "  }");
