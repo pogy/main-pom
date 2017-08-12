@@ -39,8 +39,6 @@ public class AfterSaleShowService {
     @Autowired
     private AfterSaleService afterSaleService;
     @Autowired
-    private ItemOrderService itemOrderService;
-    @Autowired
     PreSaleShowService preSaleShowService;
     public Long applyReturnOrder(AfterSaleBo bo) throws JsonErrException, OrderException {
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(Long.parseLong(bo.getChildOrderId()));

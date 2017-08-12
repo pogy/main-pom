@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-@Service
+@Service("afterSaleService")
 public class AfterSaleServiceImpl implements AfterSaleService{
 
     private static final Logger logger = LoggerFactory.getLogger(AfterSaleServiceImpl.class);

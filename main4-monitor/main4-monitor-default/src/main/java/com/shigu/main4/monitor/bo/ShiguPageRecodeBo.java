@@ -10,7 +10,7 @@ import java.util.Date;
  *
  *
  */
-public class ShiguPageRecodeBo {
+public class ShiguPageRecodeBo implements java.io.Serializable {
 
     private Long id;
 

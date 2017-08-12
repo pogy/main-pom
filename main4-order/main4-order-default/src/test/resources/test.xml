@@ -22,8 +22,7 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan base-package="com.opentae.*,com.shigu.*" >
-    </context:component-scan>
+    <context:component-scan base-package="com.opentae.*,com.shigu.*" />
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -35,7 +34,7 @@
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
             <map>
-                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"></entry>
+                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"/>
             </map>
         </property>
     </bean>
@@ -81,13 +80,13 @@
     <bean id="tae_mall_sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
         <property name="plugins">
             <list>
-                <ref bean="mapperInterceptor"></ref>
+                <ref bean="mapperInterceptor"/>
             </list>
         </property>
-        <property name="dataSource" ref="dataSource"></property>
-        <property name="configLocation" value="classpath:/mybatis-config.xml"></property>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:/mybatis-config.xml"/>
         <property name="mapperLocations" value="classpath*:/mall/mybatis/*.xml" />
-        <property name="typeAliasesPackage" value="com.opentae.data.mall"></property>
+        <property name="typeAliasesPackage" value="com.opentae.data.mall"/>
     </bean>
 
     <bean id="txManager"
@@ -99,7 +98,7 @@
         <property name= "basePackage"
                   value= "com/opentae/data/mall/interfaces" />
         <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
-        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
+        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
     </bean>
 
     <tx:annotation-driven transaction-manager="txManager"/>

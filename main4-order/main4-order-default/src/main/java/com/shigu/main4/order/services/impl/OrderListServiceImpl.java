@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  * @since: main-pom
  * @commonents:
  */
-@Service
+@Service("orderListService")
 public class OrderListServiceImpl implements OrderListService {
 
 
