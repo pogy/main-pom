@@ -2,12 +2,13 @@ package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by zf on 2017/7/27.
  */
-public class ShowOrderDetailVO {
+public class ShowOrderDetailVO implements Serializable{
     private Long orderId;
     /**
      * 订单创建时间 日期型

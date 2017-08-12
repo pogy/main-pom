@@ -1,9 +1,11 @@
 package com.shigu.main4.order.servicevo;
 
+import java.io.Serializable;
+
 /**
  * Created by zhaohongbo on 17/7/14.
  */
-public class ExpressInfoVO {
+public class ExpressInfoVO implements Serializable{
     /**
      * 物流当前状态,为0,1,2,3； 0待揽件, 1运输, 2派送, 3签收
      * TODO:物流平台返回状态为2-在途中,3-签收,4-问题件

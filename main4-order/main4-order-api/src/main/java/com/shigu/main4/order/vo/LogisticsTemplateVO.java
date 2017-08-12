@@ -1,10 +1,12 @@
 package com.shigu.main4.order.vo;
 
+import java.io.Serializable;
+
 /**
  * 物流模板
  * Created by zhaohongbo on 17/7/19.
  */
-public class LogisticsTemplateVO {
+public class LogisticsTemplateVO implements Serializable{
     /**
      * 快递模板ID
      */

@@ -2,10 +2,12 @@ package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.zfenums.ReturnGoodsStatusEnum;
 
+import java.io.Serializable;
+
 /**
  * Created by zf on 2017/7/26.
  */
-public class AfterSaleStatusVO {
+public class AfterSaleStatusVO implements Serializable{
     /**
      * 子单ID
      */

@@ -1,10 +1,12 @@
 package com.shigu.main4.order.vo;
 
+import java.io.Serializable;
+
 /**
  * 订单服务信息
  * Created by zhaohongbo on 17/7/26.
  */
-public class OrderServiceVO {
+public class OrderServiceVO implements Serializable{
     /**
      * 付总金额
      */

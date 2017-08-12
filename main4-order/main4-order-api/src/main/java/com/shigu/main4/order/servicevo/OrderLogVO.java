@@ -2,13 +2,14 @@ package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 订单日志
  * Created by zhaohongbo on 17/7/14.
  */
-public class OrderLogVO {
+public class OrderLogVO implements Serializable{
     /**
      * 订单状态,为1,2,3,4,5; 1待付款，2待配货，3已发货，4交易完成，5取消订单
      */

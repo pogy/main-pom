@@ -1,10 +1,12 @@
 package com.shigu.main4.order.vo;
 
+import java.io.Serializable;
+
 /**
  * 目的地价格规则
  * Created by bugzy on 2017/7/18 0018.
  */
-public class BournRuleInfoVO {
+public class BournRuleInfoVO implements Serializable{
 
     private Long ruleId;
 

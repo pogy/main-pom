@@ -2,12 +2,13 @@ package com.shigu.main4.order.bo;
 
 import com.shigu.main4.order.zfenums.TbOrderStatusEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by zf on 2017/7/17.
  */
-public class TbOrderBO {
+public class TbOrderBO implements Serializable{
     /**
      * 开始时间
      */

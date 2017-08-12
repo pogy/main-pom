@@ -1,9 +1,11 @@
 package com.shigu.main4.order.servicevo;
 
+import java.io.Serializable;
+
 /**
  * Created by zhaohongbo on 17/7/14.
  */
-public class ExpressLogVO {
+public class ExpressLogVO implements Serializable{
 
     /**
      * 日期@ yyyy-MM-dd

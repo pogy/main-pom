@@ -3,10 +3,13 @@ package com.shigu.main4.order.vo;
 /**
  * Created by jmb on 2017/7/20.
  */
+
+import java.io.Serializable;
+
 /**
  * 单条跟踪信息
  */
-public class SingleMsgVO {
+public class SingleMsgVO implements Serializable{
     //此条信息的时间
     String AcceptTime;
 

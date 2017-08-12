@@ -2,13 +2,14 @@ package com.shigu.main4.order.vo;
 
 import com.shigu.main4.order.zfenums.RefundStateEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 退单信息
  * Created by zhaohongbo on 17/7/20.
  */
-public class RefundVO {
+public class RefundVO implements Serializable{
     /**
      * 退单ID
      */

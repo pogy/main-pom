@@ -2,13 +2,14 @@ package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.zfenums.UserTypeEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 退款日志
  * Created by zhaohongbo on 17/7/14.
  */
-public class RefundLogVO {
+public class RefundLogVO implements Serializable{
     /**
      * 用户类型: 0平台客服，1普通用户
      */

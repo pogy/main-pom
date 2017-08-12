@@ -1,10 +1,12 @@
 package com.shigu.main4.order.vo;
 
+import java.io.Serializable;
+
 /**
  * 产品父类
  * Created by zhaohongbo on 17/6/9.
  */
-public class ProductVO {
+public class ProductVO implements Serializable{
 
     private Long price;
 

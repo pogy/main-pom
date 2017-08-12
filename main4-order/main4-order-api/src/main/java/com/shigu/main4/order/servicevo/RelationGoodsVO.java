@@ -1,9 +1,11 @@
 package com.shigu.main4.order.servicevo;
 
+import java.io.Serializable;
+
 /**
  * Created by zf on 2017/7/21.
  */
-public class RelationGoodsVO {
+public class RelationGoodsVO implements Serializable{
     private Long goodsId;
     /**
      * 货号

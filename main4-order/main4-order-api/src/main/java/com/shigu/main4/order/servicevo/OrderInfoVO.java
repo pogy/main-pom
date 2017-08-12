@@ -2,12 +2,13 @@ package com.shigu.main4.order.servicevo;
 
 import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by zhaohongbo on 17/7/14.
  */
-public class OrderInfoVO {
+public class OrderInfoVO implements Serializable{
     /**
      * 主单ID
      */

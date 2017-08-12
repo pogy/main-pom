@@ -1,10 +1,12 @@
 package com.shigu.main4.order.servicevo;
 
+import java.io.Serializable;
+
 /**
  * Created by zf on 2017/7/26.
  * 售后主单简要数据
  */
-public class AfterSaleSimpleOrderVO {
+public class AfterSaleSimpleOrderVO implements Serializable{
     /**
      * 订单号
      */

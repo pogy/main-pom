@@ -1,10 +1,12 @@
 package com.shigu.main4.order.bo;
 
+import java.io.Serializable;
+
 /**
  * 退货申请
  * Created by zhaohongbo on 17/7/20.
  */
-public class RefundApplyBO {
+public class RefundApplyBO implements Serializable{
     /**
      * 主订单号
      */

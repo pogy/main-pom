@@ -1,10 +1,12 @@
 package com.shigu.main4.order.servicevo;
 
+import java.io.Serializable;
+
 /**
  * Created by zf on 2017/7/26.
  * 售后结束(钱款去向?)
  */
-public class AfterSaleEntVO {
+public class AfterSaleEntVO implements Serializable{
     /**
      * 结束时间
      */

@@ -1,12 +1,13 @@
 package com.shigu.main4.order.vo;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by jmb on 2017/7/20.
  */
-public class ExpressResultVO {
+public class ExpressResultVO implements Serializable{
     /**
      *快递鸟的appid
      */

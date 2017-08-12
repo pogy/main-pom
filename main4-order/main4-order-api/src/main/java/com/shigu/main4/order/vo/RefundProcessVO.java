@@ -1,12 +1,13 @@
 package com.shigu.main4.order.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 退货过程
  * Created by zhaohongbo on 17/7/26.
  */
-public class RefundProcessVO {
+public class RefundProcessVO implements Serializable{
 
     private Date createTime;
 

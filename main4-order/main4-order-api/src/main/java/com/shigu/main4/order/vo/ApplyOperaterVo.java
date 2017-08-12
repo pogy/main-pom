@@ -1,5 +1,7 @@
 package com.shigu.main4.order.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by pc on 2017-07-25.
  * 申请退货 申请记录操作用户及其操作
@@ -8,7 +10,7 @@ package com.shigu.main4.order.vo;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class ApplyOperaterVo {
+public class ApplyOperaterVo implements Serializable{
     private Integer userType;//用户类型0平台客服1普通用户
     private String userNickname;//用户昵称
     private String userHeadimg;//用户头像地址

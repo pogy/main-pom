@@ -2,12 +2,13 @@ package com.shigu.main4.order.bo;
 
 import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by zf on 2017/7/17.
  */
-public class OrderBO {
+public class OrderBO implements Serializable{
     /**
      * 订单状态 null全部订单，1待付款，2已付款，3已发货，4交易完成，5交易取消
      */

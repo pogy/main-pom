@@ -1,5 +1,6 @@
 package com.shigu.main4.order.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class LogisticsShipVo {
+public class LogisticsShipVo implements Serializable{
     private String postName;
     private String postCode;
     private List<LogisticsShipDetail> detail;
