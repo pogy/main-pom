@@ -864,8 +864,11 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("shopIconCopyright")
-    public String shopIconCopyright(Model model){
+    public String shopIconCopyright(Integer page,Model model){
         model.addAttribute("webSite","hz");
+        ShiguPager<ShopIconCopyrightVO> pager=cdnService.shopCopyrights(page,100);
+        model.addAttribute("pageOption",pager.selPageOption(100));
+        model.addAttribute("copyrightList",pager.getContent());
         return "activity/shopIconCopyright";
     }
 }
