@@ -4,7 +4,6 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemCidWeightExample;
 import com.opentae.data.mall.examples.ItemProductSkuExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.ItemProduct;
@@ -187,7 +186,10 @@ public class ItemProductImpl implements ItemProduct {
     public Long selWeight() {
         com.opentae.data.mall.beans.ItemProduct itemProduct = itemProductMapper.selectByPrimaryKey(pid);
         if (itemProduct.getWeight() == 0) {
-            ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById("hz", itemProduct.getGoodsId());
+            ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
+            shiguGoodsTiny.setWebSite("hz");
+            shiguGoodsTiny.setGoodsId(itemProduct.getGoodsId());
+            shiguGoodsTiny = shiguGoodsTinyMapper.selectByPrimaryKey(shiguGoodsTiny);
             ItemCidWeightExample itemCidWeightExample = new ItemCidWeightExample();
             if (shiguGoodsTiny != null) {
 
