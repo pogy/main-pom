@@ -14,7 +14,6 @@ import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.Cart;
 import com.shigu.main4.order.model.LogisticsTemplate;
-import com.shigu.main4.order.model.impl.ItemCartImpl;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;

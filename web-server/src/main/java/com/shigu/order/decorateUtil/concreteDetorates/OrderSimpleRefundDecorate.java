@@ -1,9 +1,10 @@
 package com.shigu.order.decorateUtil.concreteDetorates;
 
 import com.shigu.main4.order.servicevo.AfterSaleSimpleOrderVO;
-import com.shigu.main4.order.utils.PriceConvertUtils;
+
 import com.shigu.order.decorateUtil.AbstractRefundVo;
 import com.shigu.order.decorateUtil.RefundVoDecorate;
+import com.shigu.zf.utils.PriceConvertUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class OrderSimpleRefundDecorate extends RefundVoDecorate {
 
         map.put("orderId",afterSaleSimpleOrderVO.getOrderId());
         map.put("orderDealTime",afterSaleSimpleOrderVO.getEndDate());
-        map.put("orderGoodsPrice",PriceConvertUtils.priceToString(afterSaleSimpleOrderVO.getOrderPrice()));
+        map.put("orderGoodsPrice", PriceConvertUtils.priceToString(afterSaleSimpleOrderVO.getOrderPrice()));
         map.put("orderExpressPrice",PriceConvertUtils.priceToString(afterSaleSimpleOrderVO.getExpressPrice()));
         map.put("orderServicePrice",PriceConvertUtils.priceToString(afterSaleSimpleOrderVO.getServicePrice()));
         map.put("orderTotalPrice",PriceConvertUtils.priceToString(afterSaleSimpleOrderVO.getTotalPrice()));
