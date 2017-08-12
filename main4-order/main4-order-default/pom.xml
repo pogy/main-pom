@@ -5,7 +5,7 @@
     <parent>
         <artifactId>main4-order</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.1.8-SNAPSHOT</version>
+        <version>4.1.9-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -181,7 +181,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-common</artifactId>
-            <version>4.1.8-SNAPSHOT</version>
+            <version>${main4-common.version}</version>
         </dependency>
         <!--<dependency>
             <groupId>com.taobao</groupId>
