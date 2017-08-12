@@ -36,6 +36,7 @@ public class OrderModelImplTest extends BaseDaifaTest{
         bo.setSenderId(16546L);
         SubOrderBO subOrderBO=new SubOrderBO();
         subOrderBO.setSoid(1234654L);
+        subOrderBO.setNum(3);
         List<SubOrderPBO> subOrderPBOS=new ArrayList<>();
         SubOrderPBO s=new SubOrderPBO();
         s.setColor("red");
@@ -45,7 +46,6 @@ public class OrderModelImplTest extends BaseDaifaTest{
         s.setGoodsNo("140");
         s.setMarketId(621L);
         s.setMarketName("四季星座");
-        s.setNumber(2);
         s.setPicUrl("https://img.alicdn.com/bao/uploaded/i4/18874038534868392/T1_s5bFitcXXXXXXXX_!!0-item_pic.jpg");
         s.setSize("XL");
         s.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
@@ -54,6 +54,22 @@ public class OrderModelImplTest extends BaseDaifaTest{
         s.setSoidp(25L);
         s.setWebSite("hz");
         s.setShopNum("140");
+        SubOrderPBO s2=new SubOrderPBO();
+        s2.setColor("red");
+        s2.setFloor("2F");
+        s2.setFloorId(623L);
+        s2.setGoodsId(165752L);
+        s2.setGoodsNo("140");
+        s2.setMarketId(621L);
+        s2.setMarketName("四季星座");
+        s2.setPicUrl("https://img.alicdn.com/bao/uploaded/i4/18874038534868392/T1_s5bFitcXXXXXXXX_!!0-item_pic.jpg");
+        s2.setSize("XL");
+        s2.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
+        s2.setSinglePay("275.00");
+        s2.setShopId(16887L);
+        s2.setSoidp(26L);
+        s2.setWebSite("hz");
+        s2.setShopNum("140");
         SubOrderPBO s1=new SubOrderPBO();
         s1.setColor("黑");
         s1.setFloor("其他市场");
@@ -62,7 +78,6 @@ public class OrderModelImplTest extends BaseDaifaTest{
         s1.setGoodsNo("DS30-121503");
         s1.setMarketId(674L);
         s1.setMarketName("周边市场");
-        s1.setNumber(3);
         s1.setPicUrl("http://img04.taobaocdn.com/bao/uploaded/i4/T1ZIR7FpxnXXXXXXXX_!!0-item_pic.jpg");
         s1.setSize("M");
         s1.setTitle("DSOOG夏季男装V领男士短袖T恤潮纯棉修身简约个性男t DS30-121503");
@@ -71,6 +86,7 @@ public class OrderModelImplTest extends BaseDaifaTest{
         s1.setSoidp(24L);
         s1.setWebSite("hz");
         s1.setShopNum("搭尚分销");
+        subOrderPBOS.add(s2);
         subOrderPBOS.add(s1);
         subOrderPBOS.add(s);
         subOrderBO.setSubOrderPBOS(subOrderPBOS);
@@ -92,6 +108,7 @@ public class OrderModelImplTest extends BaseDaifaTest{
        logisticsBOS.add(logisticsBO);
        List<SubOrderBO> subOrderBOS=new ArrayList<>();
        SubOrderBO subOrderBO1=new SubOrderBO();
+       subOrderBO1.setNum(1);
        subOrderBO1.setSoid(4567855583L);
        List<SubOrderPBO>subOrderPBOS1=new ArrayList<>();
        SubOrderPBO subOrderPBO23=new SubOrderPBO();
@@ -102,7 +119,6 @@ public class OrderModelImplTest extends BaseDaifaTest{
         subOrderPBO23.setGoodsNo("5935 P65");
         subOrderPBO23.setMarketId(621L);
         subOrderPBO23.setMarketName("四季星座");
-        subOrderPBO23.setNumber(3);
         subOrderPBO23.setPicUrl("https://img.alicdn.com/bao/uploaded/i1/T1uN2tXbVqXXbSPWk0_034233.jpg");
         subOrderPBO23.setSize("L");
         subOrderPBO23.setTitle("2016新品 多拉链大翻领 男士修身休闲卫衣 5935 P30");

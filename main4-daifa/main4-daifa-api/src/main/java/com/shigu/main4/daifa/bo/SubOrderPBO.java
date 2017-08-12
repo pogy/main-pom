@@ -25,15 +25,7 @@ public class SubOrderPBO implements Serializable{
     private String size;//        尺码
     private String color;//        颜色
 
-    private Integer number;
 
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
 
     public Long getSoidp() {
         return soidp;

@@ -10,6 +10,7 @@ import java.util.List;
 public class SubOrderBO implements Serializable{
     private Long soid;//      子订单ID
     private List<SubOrderPBO> subOrderPBOS;//   按件拆分ID
+    private int num;//       子订单中件数
 
     public Long getSoid() {
         return soid;
@@ -27,5 +28,11 @@ public class SubOrderBO implements Serializable{
         this.subOrderPBOS = subOrderPBOS;
     }
 
+    public int getNum() {
+        return num;
+    }
 
+    public void setNum(int num) {
+        this.num = num;
+    }
 }
