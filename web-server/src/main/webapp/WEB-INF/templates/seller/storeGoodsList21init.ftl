@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1502520550081" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/storeGoodsList21init.css?t=1502534767150" rel="stylesheet">
     
   </head>
 <body>
@@ -286,7 +286,7 @@ var webSite = '${webSite!}';
                 <li>
                     <button class="tbGoods someTbGoods">批量同步商品</button>
                     <button class="tbGoods allTbGoods" data-id="${session_user_redis__.logshop.shopId!}">同步整店商品</button>
-                    <a href="http://zixun.571xz.com/detail?id=618" class="bigPicPro" target="_blank">大图设置教程</a>
+                    <a href="http://zixun.571xz.com/detail?id=619" class="bigPicPro" target="_blank">大图设置教程</a>
                     
                     
                 </li>
@@ -325,7 +325,7 @@ var webSite = '${webSite!}';
                         <span>已设置</span>
                         </#if>
                         
-                        <b class="penIcon" jbtn="setBigPicBtn" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${linkHrefPassword!}"></b>
+                        <b class="penIcon" jbtn="setBigPicBtn" data-type="${item.bigPicType!}" data-link="${item.linkHref!}" data-psw="${item.linkHrefPassword!}"></b>
                     </p>
                 </li>
                 <li class="upcount">${item.count!}</li>
@@ -416,7 +416,7 @@ var allStyleCate = '${allStyleCate!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1502520550081"></script>
+<script src="http://style.571xz.com/gys5/js/storeGoodsList21init.js?t=1502534767150"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
