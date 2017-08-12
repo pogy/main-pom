@@ -3,24 +3,16 @@ package com.shigu.trade.actions;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.shigu.main4.order.exceptions.PayerException;
-import com.shigu.main4.order.model.able.PayerServiceAble;
-import com.shigu.trade.bo.ScanPayBo;
 import com.shigu.trade.services.AliPayService;
-import com.shigu.trade.services.WxPayService;
-import com.tencent.common.Signature;
-import com.tencent.common.XMLParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 

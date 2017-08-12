@@ -1,11 +1,7 @@
 package com.shigu.component.shiro;
 
-import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * 公有密码验证器
