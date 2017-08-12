@@ -276,10 +276,11 @@ public class OrderModelImpl implements OrderModel {
 
 
             //查询子单信息填充已发货子单信息
-            DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
-            daifaOrderExample.createCriteria().andDfOrderIdIn(delivery.getDfOrderIds());
-            List<DaifaOrder> daifaOrders = daifaOrderMapper.selectByExample(daifaOrderExample);
-            List<DaifaSendOrder> daifaSendOrders = BeanMapper.mapList(daifaOrders, DaifaSendOrder.class);
+            DaifaWaitSendOrderExample daifaWaitSendOrderExample1=new DaifaWaitSendOrderExample();
+            daifaWaitSendOrderExample1.createCriteria().andDfOrderIdIn(delivery.getDfOrderIds());
+            List<DaifaWaitSendOrder> daifaWaitSendOrders1 = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample1);
+
+            List<DaifaSendOrder> daifaSendOrders = BeanMapper.mapList(daifaWaitSendOrders1, DaifaSendOrder.class);
 
             //查询已发货表得到sendId，把已发货子单信息插入已发货子表
             DaifaSendExample daifaSendExample=new DaifaSendExample();
@@ -288,9 +289,9 @@ public class OrderModelImpl implements OrderModel {
             for (DaifaSendOrder d:daifaSendOrders){
                 d.setCreateDate(DateUtil.dateToString(new Date(),DateUtil.patternB));
                 d.setCreateTime(new Date());
-                d.setWebSite("hz");
                 d.setTakeGoodsStatus(1);
                 d.setSendStatus(2);
+
                 if (sends.size()>0){
                     d.setSendId(sends.get(0).getSendId());
                 }
