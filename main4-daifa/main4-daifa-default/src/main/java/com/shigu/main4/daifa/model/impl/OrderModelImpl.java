@@ -126,7 +126,7 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setGoodsCode(subOrderPBO.getGoodsNo());
                     subOrderModelBO.setTitle(subOrderPBO.getTitle());
                     subOrderModelBO.setPicPath(subOrderPBO.getPicUrl());
-                    subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadChar(subOrderPBO.getMarketName()));
+                    subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadChar(subOrderPBO.getMarketName())+"_"+subOrderPBO.getShopNum()+"_"+subOrderPBO.getGoodsNo());
                     subOrderModelBO.setOrderDiscountFee("0");
                     subOrderModelBO.setPropStr(subOrderPBO.getColor()+":"+subOrderPBO.getSize());
                     subOrderModelBO.setGoodsNum(bo.getNum());

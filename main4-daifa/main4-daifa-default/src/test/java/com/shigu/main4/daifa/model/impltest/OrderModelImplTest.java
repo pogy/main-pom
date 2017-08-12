@@ -46,7 +46,7 @@ public class OrderModelImplTest extends BaseDaifaTest{
         s.setGoodsId(4564321L);
         s.setGoodsNo("sddfgd");
         s.setMarketId(456461L);
-        s.setMarketName("gsldfhj");
+        s.setMarketName("电商基地");
         s.setNumber(2);
         s.setPicUrl("sdfgj");
         s.setSize("dfjgl");
@@ -63,7 +63,7 @@ public class OrderModelImplTest extends BaseDaifaTest{
         s1.setGoodsId(4564321L);
         s1.setGoodsNo("sddfgd");
         s1.setMarketId(456461L);
-        s1.setMarketName("gsldfhj");
+        s1.setMarketName("电商基地");
         s1.setNumber(3);
         s1.setPicUrl("sdfgj");
         s1.setSize("dfjgl");
