@@ -554,8 +554,10 @@ public class GoodsFileService extends OssIO {
         GoodsFile goodsFile = new GoodsFile();
         goodsFile.setGoodsId(goodsId);
         goodsFileMapper.delete(goodsFile);
-        goodsFile.setNeedPwd(bo.getPsw() != null);
-        goodsFile.setPasswd(bo.getPsw());
+        goodsFile.setNeedPwd(bo.getPsw() != null && !bo.getPsw().isEmpty());
+        if (goodsFile.getNeedPwd()) {
+            goodsFile.setPasswd(bo.getPsw());
+        }
         goodsFile.setFileKey(bo.getLink());
         goodsFile.setType(2);
         goodsFileMapper.insert(goodsFile);
