@@ -1,4 +1,4 @@
-package com.shigu.main4.order.model.impltest;
+package com.shigu.main4.daifa.model.impltest;
 
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.CargoManModel;
@@ -14,7 +14,7 @@ import java.util.Collections;
  * Created by zhaohongbo on 17/6/1.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:/test.xml")
+@ContextConfiguration(locations = "classpath:/spring-database/test.xml")
 public class CargoManTest {
 
 

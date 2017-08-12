@@ -14,7 +14,7 @@ import java.util.Date;
  * Created by bugzy on 2017/8/1 0001.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:test.xml","classpath:mall.xml"})
+@ContextConfiguration(locations = "classpath:ac.xml")
 public class BaseSpringTest {
 
     protected static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

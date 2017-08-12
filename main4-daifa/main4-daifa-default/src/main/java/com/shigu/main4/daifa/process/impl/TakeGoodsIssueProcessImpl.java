@@ -161,15 +161,15 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         String nowDate = DateUtil.dateToString(new Date(), DateUtil.patternB);
         Calendar ca = Calendar.getInstance();
         //先根据ids查询出数据
-        DaifaGgoodsExample dgex = new DaifaGgoodsExample();
-        DaifaOrderExample doex = new DaifaOrderExample();
-        DaifaTradeExample dtex = new DaifaTradeExample();
+        DaifaGgoodsExample daifaGgoodsExample = new DaifaGgoodsExample();
+        DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
+        DaifaTradeExample daifaTradeExample = new DaifaTradeExample();
 
-        MultipleExample multipleExample = MultipleExampleBuilder.from(dgex).join(dtex)
-                .on(dgex.createCriteria().andTakeGoodsIdIn(issueIds)
+        MultipleExample multipleExample = MultipleExampleBuilder.from(daifaGgoodsExample).join(daifaTradeExample)
+                .on(daifaGgoodsExample.createCriteria().andTakeGoodsIdIn(issueIds)
                         .equalTo(DaifaGgoodsExample.dfTradeId, DaifaTradeExample.dfTradeId))
-                .join(doex)
-                .on(doex.createCriteria().equalTo(DaifaOrderExample.dfOrderId, DaifaGgoodsExample.dfOrderId)).build();
+                .join(daifaOrderExample)
+                .on(daifaOrderExample.createCriteria().equalTo(DaifaOrderExample.dfOrderId, DaifaGgoodsExample.dfOrderId)).build();
         List<GgoodsForPrint> ggoodsForPrints = multipleMapper
                 .selectFieldsByMultipleExample(multipleExample, GgoodsForPrint.class);
 
@@ -291,6 +291,14 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             }
             if(!g.getCreateDate().equals(date)){
                 throw new DaifaException("存在不是今天的分配数据");
+            }
+        }
+        //清理不可操作的数据
+        List<Long> keys=new ArrayList<>(gmap.keySet());
+        for(Long id:keys){
+            DaifaGgoods g=gmap.get(id);
+            if(g.getOperateIs()==1||g.getUseStatus()==0||!g.getCreateDate().equals(date)){
+                gmap.remove(id);
             }
         }
         //根据idIsCheck对相应的数据进行已拿操作

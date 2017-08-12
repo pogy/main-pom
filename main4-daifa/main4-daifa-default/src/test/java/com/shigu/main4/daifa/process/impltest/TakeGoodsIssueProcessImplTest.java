@@ -1,6 +1,7 @@
 package com.shigu.main4.daifa.process.impltest;
 
 import com.opentae.data.daifa.beans.*;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
 import com.opentae.data.daifa.interfaces.*;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -171,8 +173,14 @@ public class TakeGoodsIssueProcessImplTest extends BaseSpringTest{
                 assertEquals(o.getTakeGoodsStatus(),new Integer(0));
             }
         }
-        SubOrderModelImpl impl2=SpringBeanFactory.getBean(SubOrderModelImpl.class,oid2);
-        impl2.noTake();
+
+
+        goods=new DaifaGgoods();
+        goods.setDfOrderId(gs.get(1).getDfOrderId());
+        goods.setUseStatus(1);
+        goods.setOperateIs(0);
+        goods=daifaGgoodsMapper.selectOne(goods);
+        takeGoodsIssueProcess.uncomplete(goods.getTakeGoodsId());
         ws=daifaWaitSendMapper.selectByExample(daifaWaitSendExample);
         assertEquals(ws.size(),1);
         DaifaWaitSendOrderExample daifaWaitSendOrderExample1=new DaifaWaitSendOrderExample();
@@ -188,9 +196,304 @@ public class TakeGoodsIssueProcessImplTest extends BaseSpringTest{
                 assertEquals(o.getTakeGoodsStatus(),new Integer(1));
             }
         }
-
-
     }
+//    @Test
+//    @Transactional
+    public void uncomplete_test() throws DaifaException {
+        boolean b=false;
+        String date= DateUtil.dateToString(new Date(),DateUtil.patternB);
+        try {
+            takeGoodsIssueProcess.uncomplete(0L);
+        } catch (DaifaException e) {
+            assertEquals(e.getMessage(),"未找到分配信息");
+            b=true;
+        }
+        assertTrue(b);
+        b=false;
+        Long tid=99999L;
+        DaifaTrade trade=insertTrade(tid);
+        DaifaGgoodsTasks daifaGgoodsTasks=new DaifaGgoodsTasks();
+        daifaGgoodsTasks.setDfTradeId(99999L);
+        List<DaifaGgoodsTasks> ts=daifaGgoodsTasksMapper.select(daifaGgoodsTasks);
+        assertNotEquals(ts.size(),0);
+        List<Long> tids=new ArrayList<>();
+
+        for(DaifaGgoodsTasks t:ts){
+            if(t.getAllocatStatus()==0){
+                tids.add(t.getTasksId());
+            }
+        }
+        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 2L);
+        bean.takeToMe(tids);
+        DaifaGgoods daifaGgoods=new DaifaGgoods();
+        daifaGgoods.setDfTradeId(99999L);
+        List<DaifaGgoods> gs=daifaGgoodsMapper.select(daifaGgoods);
+        assertEquals(gs.size(),2);
+
+        System.out.println("拿货完成,制造缺货状态");
+        bean.finishTakeGoods();
+        try {
+            takeGoodsIssueProcess.uncomplete(gs.get(0).getTakeGoodsId());
+        } catch (DaifaException e) {
+            assertEquals(e.getMessage(),"无效的数据,该ID已操作过拿货完成");
+            b=true;
+        }
+        assertTrue(b);
+        b=false;
+        System.out.println("重新分配");
+        ts=daifaGgoodsTasksMapper.select(daifaGgoodsTasks);
+        assertNotEquals(ts.size(),0);
+        tids=new ArrayList<>();
+        for(DaifaGgoodsTasks t:ts){
+            if(t.getAllocatStatus()==0){
+                tids.add(t.getTasksId());
+            }
+        }
+        bean.takeToMe(tids);
+        DaifaGgoods goods=new DaifaGgoods();
+        goods.setDfOrderId(gs.get(0).getDfOrderId());
+        goods.setUseStatus(1);
+        goods.setOperateIs(0);
+        goods=daifaGgoodsMapper.selectOne(goods);
+        System.out.println("临时修改创建时间,制造测试条件");
+        DaifaGgoods g=new DaifaGgoods();
+        g.setTakeGoodsId(goods.getTakeGoodsId());
+        g.setCreateDate("20170809");
+        daifaGgoodsMapper.updateByPrimaryKeySelective(g);
+        try {
+            takeGoodsIssueProcess.uncomplete(goods.getTakeGoodsId());
+        } catch (DaifaException e) {
+            assertEquals(e.getMessage(),"不是今天的分配数据");
+            b=true;
+        }
+        assertTrue(b);
+        b=false;
+        System.out.println("创建时间改回,同时修改有效状态,制造测试条件");
+        g.setCreateDate(date);
+        g.setUseStatus(0);
+        daifaGgoodsMapper.updateByPrimaryKeySelective(g);
+        try {
+            takeGoodsIssueProcess.uncomplete(goods.getTakeGoodsId());
+        } catch (DaifaException e) {
+            assertEquals(e.getMessage(),"无效的数据,该ID已操作过拿货完成");
+            b=true;
+        }
+        assertTrue(b);
+        b=false;
+        System.out.println("恢复数据");
+        g.setUseStatus(1);
+        daifaGgoodsMapper.updateByPrimaryKeySelective(g);
+
+        System.out.println("开始校验数据");
+        takeGoodsIssueProcess.uncomplete(goods.getTakeGoodsId());
+        DaifaWaitSendExample daifaWaitSendExample=new DaifaWaitSendExample();
+        daifaWaitSendExample.createCriteria().andDfTradeIdEqualTo(99999L);
+        List<DaifaWaitSend> ws=daifaWaitSendMapper.selectByExample(daifaWaitSendExample);
+        assertEquals(ws.size(),0);
+        DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+        daifaOrderExample.createCriteria().andDfOrderIdNotEqualTo(goods.getDfOrderId()).andDfTradeIdEqualTo(goods.getDfTradeId());
+        List<DaifaOrder> tmporders=daifaOrderMapper.selectByExample(daifaOrderExample);
+        assertEquals(tmporders.size(),1);
+
+        Long oid2=tmporders.get(0).getDfOrderId();
+
+
+        DaifaGgoods goods2=new DaifaGgoods();
+        goods2.setDfOrderId(oid2);
+        goods2.setUseStatus(1);
+        goods2.setOperateIs(0);
+        goods2=daifaGgoodsMapper.selectOne(goods2);
+        takeGoodsIssueProcess.complete(goods2.getTakeGoodsId());
+        ws=daifaWaitSendMapper.selectByExample(daifaWaitSendExample);
+        assertEquals(ws.size(),1);
+
+        DaifaWaitSend w=ws.get(0);
+        assertEquals(w.getBuyerId(),trade.getBuyerId());
+        assertEquals(w.getBuyerName(),trade.getBuyerName());
+        assertEquals(w.getBuyerQq(),trade.getBuyerQq());
+        assertEquals(w.getBuyerRemark(),trade.getBuyerRemark());
+        assertEquals(w.getBuyerTelephone(),trade.getBuyerTelephone());
+        assertEquals(w.getBuyerWw(),trade.getBuyerWw());
+        assertEquals(w.getExpressFee(),trade.getExpressFee());
+        assertEquals(w.getExpressName(),trade.getExpressName());
+        assertEquals(w.getExpressId(),trade.getExpressId());
+        assertEquals(w.getMoney(),trade.getMoney());
+        assertEquals(w.getReceiverAddress(),trade.getReceiverAddress());
+        assertEquals(w.getReceiverName(),trade.getReceiverName());
+        assertEquals(w.getReceiverPhone(),trade.getReceiverPhone());
+        assertEquals(w.getReceiverQq(),trade.getReceiverQq());
+        assertEquals(w.getReceiverState(),trade.getReceiverState());
+        assertEquals(w.getSellerId(),trade.getSellerId());
+        assertEquals(w.getSendStatus(),new Integer(0));
+        assertEquals(w.getStockStatus(),new Integer(0));
+        assertEquals(w.getTaobaoTid(),trade.getTaobaoTid());
+        assertEquals(w.getTaobaoUserNick(),trade.getTaobaoUserNick());
+        assertEquals(w.getTradeCode(),trade.getTradeCode());
+
+        DaifaWaitSendOrderExample daifaWaitSendOrderExample1=new DaifaWaitSendOrderExample();
+        daifaWaitSendOrderExample1.createCriteria().andDfTradeIdEqualTo(goods.getDfTradeId());
+        List<DaifaWaitSendOrder> os1=daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample1);
+        assertEquals(os1.size(),2);
+        for(DaifaWaitSendOrder o:os1){
+            if(o.getDfOrderId().longValue()==oid2){
+                assertEquals(o.getHasNum(),o.getGoodsNum());
+                assertEquals(o.getTakeGoodsStatus(),new Integer(1));
+            }else{
+                assertEquals(o.getHasNum(),new Integer(0));
+                assertEquals(o.getTakeGoodsStatus(),new Integer(2));
+            }
+        }
+
+
+        DaifaGgoodsTasks task2=new DaifaGgoodsTasks();
+        task2.setDfOrderId(goods.getDfOrderId());
+        task2.setAllocatStatus(0);
+        task2.setOperateIs(0);
+        task2.setTakeGoodsStatus(2);
+        task2=daifaGgoodsTasksMapper.selectOne(task2);
+        for(Long tsid:tids){
+            assertNotEquals(task2.getTasksId(),tsid);
+        }
+        assertEquals(task2.getAllocatStatus(),new Integer(0));
+        assertEquals(task2.getPrintBarcodeStatus(),new Integer(1));
+        assertEquals(task2.getPrintGoodsStatus(),new Integer(1));
+        assertEquals(task2.getPrintBatch(),null);
+        assertEquals(task2.getAllocatTime(),null);
+        assertEquals(task2.getAllocatDate(),null);
+        assertEquals(task2.getTakeGoodsStatus(),new Integer(2));
+    }
+
+    @Test
+    @Transactional
+    public void uncompleteAll_test() throws DaifaException {
+        boolean b=false;
+        String date= DateUtil.dateToString(new Date(),DateUtil.patternB);
+        try {
+            takeGoodsIssueProcess.uncompleteAll(2L, Collections.singletonList(1L),true);
+        } catch (DaifaException e) {
+            assertEquals(e.getMessage(),"存在非该拿货员的分配数据");
+            b=true;
+        }
+        assertTrue(b);
+        b=false;
+        Long tid=99999L;
+        DaifaTrade trade=insertTrade(tid);
+        DaifaGgoodsTasks daifaGgoodsTasks=new DaifaGgoodsTasks();
+        daifaGgoodsTasks.setDfTradeId(99999L);
+        List<DaifaGgoodsTasks> ts=daifaGgoodsTasksMapper.select(daifaGgoodsTasks);
+        assertNotEquals(ts.size(),0);
+        List<Long> tids=new ArrayList<>();
+        for(DaifaGgoodsTasks t:ts){
+            if(t.getAllocatStatus()==0){
+                tids.add(t.getTasksId());
+            }
+        }
+        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 2L);
+        bean.takeToMe(tids);
+        DaifaGgoods daifaGgoods=new DaifaGgoods();
+        daifaGgoods.setDfTradeId(99999L);
+        List<DaifaGgoods> gs=daifaGgoodsMapper.select(daifaGgoods);
+        assertEquals(gs.size(),2);
+        System.out.println("拿货完成,制造缺货状态");
+        bean.finishTakeGoods();
+        try {
+            takeGoodsIssueProcess.uncompleteAll(2L,Collections.singletonList(gs.get(0).getTakeGoodsId()),true);
+        } catch (DaifaException e) {
+            assertEquals(e.getMessage(),"存在已拿货完成的分配数据");
+            b=true;
+        }
+        assertTrue(b);
+        b=false;
+        System.out.println("重新分配");
+        ts=daifaGgoodsTasksMapper.select(daifaGgoodsTasks);
+        assertNotEquals(ts.size(),0);
+        tids=new ArrayList<>();
+        for(DaifaGgoodsTasks t:ts){
+            if(t.getAllocatStatus()==0){
+                tids.add(t.getTasksId());
+            }
+        }
+        bean.takeToMe(tids);
+        DaifaGgoods goods=new DaifaGgoods();
+        goods.setDfOrderId(gs.get(0).getDfOrderId());
+        goods.setUseStatus(1);
+        goods.setOperateIs(0);
+        goods=daifaGgoodsMapper.selectOne(goods);
+        System.out.println("临时修改创建时间,制造测试条件");
+        DaifaGgoods g=new DaifaGgoods();
+        g.setTakeGoodsId(goods.getTakeGoodsId());
+        g.setCreateDate("20170809");
+        daifaGgoodsMapper.updateByPrimaryKeySelective(g);
+        try {
+            takeGoodsIssueProcess.uncompleteAll(2L,Collections.singletonList(goods.getTakeGoodsId()),true);
+        } catch (DaifaException e) {
+            assertEquals(e.getMessage(),"存在不是今天的分配数据");
+            b=true;
+        }
+        assertTrue(b);
+        b=false;
+        System.out.println("创建时间改回,同时修改有效状态,制造测试条件");
+        g.setCreateDate(date);
+        g.setUseStatus(0);
+        daifaGgoodsMapper.updateByPrimaryKeySelective(g);
+        try {
+            takeGoodsIssueProcess.uncompleteAll(2L,Collections.singletonList(goods.getTakeGoodsId()),true);
+        } catch (DaifaException e) {
+            assertEquals(e.getMessage(),"存在无效的分配数据");
+            b=true;
+        }
+        assertTrue(b);
+        b=false;
+        System.out.println("恢复数据");
+        g.setUseStatus(1);
+        daifaGgoodsMapper.updateByPrimaryKeySelective(g);
+
+        takeGoodsIssueProcess.uncompleteAll(2L,Collections.singletonList(goods.getTakeGoodsId()),true);
+
+        DaifaWaitSendExample daifaWaitSendExample=new DaifaWaitSendExample();
+        daifaWaitSendExample.createCriteria().andDfTradeIdEqualTo(99999L);
+        List<DaifaWaitSend> ws=daifaWaitSendMapper.selectByExample(daifaWaitSendExample);
+        assertEquals(ws.size(),1);
+
+
+        DaifaWaitSend w=ws.get(0);
+        assertEquals(w.getBuyerId(),trade.getBuyerId());
+        assertEquals(w.getBuyerName(),trade.getBuyerName());
+        assertEquals(w.getBuyerQq(),trade.getBuyerQq());
+        assertEquals(w.getBuyerRemark(),trade.getBuyerRemark());
+        assertEquals(w.getBuyerTelephone(),trade.getBuyerTelephone());
+        assertEquals(w.getBuyerWw(),trade.getBuyerWw());
+        assertEquals(w.getExpressFee(),trade.getExpressFee());
+        assertEquals(w.getExpressName(),trade.getExpressName());
+        assertEquals(w.getExpressId(),trade.getExpressId());
+        assertEquals(w.getMoney(),trade.getMoney());
+        assertEquals(w.getReceiverAddress(),trade.getReceiverAddress());
+        assertEquals(w.getReceiverName(),trade.getReceiverName());
+        assertEquals(w.getReceiverPhone(),trade.getReceiverPhone());
+        assertEquals(w.getReceiverQq(),trade.getReceiverQq());
+        assertEquals(w.getReceiverState(),trade.getReceiverState());
+        assertEquals(w.getSellerId(),trade.getSellerId());
+        assertEquals(w.getSendStatus(),new Integer(0));
+        assertEquals(w.getStockStatus(),new Integer(0));
+        assertEquals(w.getTaobaoTid(),trade.getTaobaoTid());
+        assertEquals(w.getTaobaoUserNick(),trade.getTaobaoUserNick());
+        assertEquals(w.getTradeCode(),trade.getTradeCode());
+
+        DaifaWaitSendOrderExample daifaWaitSendOrderExample1=new DaifaWaitSendOrderExample();
+        daifaWaitSendOrderExample1.createCriteria().andDfTradeIdEqualTo(goods.getDfTradeId());
+        List<DaifaWaitSendOrder> os1=daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample1);
+        assertEquals(os1.size(),2);
+        for(DaifaWaitSendOrder o:os1){
+            if(o.getDfOrderId().longValue()== os1.get(0).getDfOrderId()){
+                assertEquals(o.getHasNum(),o.getGoodsNum());
+                assertEquals(o.getTakeGoodsStatus(),new Integer(1));
+            }else{
+                assertEquals(o.getHasNum(),new Integer(0));
+                assertEquals(o.getTakeGoodsStatus(),new Integer(2));
+            }
+        }
+    }
+
 
 
 
@@ -311,8 +614,8 @@ public class TakeGoodsIssueProcessImplTest extends BaseSpringTest{
         assertEquals(task.getAllocatTime(),null);
         assertEquals(task.getEndStatus(),new Integer(0));
         assertEquals(task.getGgoodsCode(),null);
-        assertEquals(task.getPrintBarcodeStatus(),new Integer(0));
-        assertEquals(task.getPrintGoodsStatus(),new Integer(0));
+        assertEquals(task.getPrintBarcodeStatus(),new Integer(1));
+        assertEquals(task.getPrintGoodsStatus(),new Integer(1));
         assertEquals(task.getPrintBatch(),null);
         assertEquals(task.getReturnStatus(),new Integer(0));
         return impl.getSubOrderId();
