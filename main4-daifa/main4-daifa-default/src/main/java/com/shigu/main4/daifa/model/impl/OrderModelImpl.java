@@ -232,7 +232,6 @@ public class OrderModelImpl implements OrderModel {
         if (delivery.getMarkDestination() == null || delivery.getDfTradeId() == null || delivery.getExpressCode() == null) {
             throw new DaifaException("主单id，三段码，快递单号都不能为空");
         }
-
         DaifaTrade trade = new DaifaTrade();
         trade.setTradeStatus(3);
         trade.setSendTime(new Date());
