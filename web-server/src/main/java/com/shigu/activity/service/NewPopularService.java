@@ -99,7 +99,7 @@ public class NewPopularService {
             vo.setPiPriceString(o.getPiPriceString());
             return vo;
         }).collect(Collectors.groupingBy(PopularGoodsVO::getShopId));
-        ArrayList<PopularGoodsVO> list = new ArrayList<>();
+        ArrayList<PopularGoodsVO> list = new ArrayList<>(100);
         for (List<PopularGoodsVO> popularGoodsVOS : map.values()) {
             list.addAll(popularGoodsVOS);
         }
