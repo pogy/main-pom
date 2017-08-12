@@ -91,7 +91,7 @@ public class NewPopularService {
             vo.setImgSrc(o.getPicUrl());
             vo.setShopId(o.getStoreId());
             vo.setShopNum(o.getStoreNum()==null?shopIdNumMap.get(o.getStoreId()):o.getStoreNum());
-            vo.setMarketName(o.getParentMarketName()==null?marketIdNameMap.get(o.getParentMarketId()):o.getParentMarketName());
+            vo.setMarketName(marketIdNameMap.get(o.getParentMarketId()));
             vo.setTitle(o.getTitle());
             String shStatus = goodsIdShStatusMap.get(o.getGoodsId().toString());
             vo.setShStatus(shStatus == null ? 0 : new Integer(shStatus));
