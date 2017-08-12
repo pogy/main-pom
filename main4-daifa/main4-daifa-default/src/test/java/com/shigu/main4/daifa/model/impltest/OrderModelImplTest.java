@@ -115,17 +115,17 @@ public class OrderModelImplTest extends BaseSpringTest{
     @Transactional
     public void testsend() throws DaifaException {
         DeliveryBO bo=new DeliveryBO();
-        bo.setMarkDestination("标记已死");
-        bo.setExpressCode("12345646");
-        bo.setPackageName("天堂");
-        bo.setSellerId(13245L);
-        bo.setDfTradeId(2L);
-        bo.setReceiverState("asdf");
-        bo.setReceiverName("adsffdsg");
-        bo.setReceiverPhone("dfgdsfg");
-        bo.setExpressId(325423L);
-        bo.setExpressName("adsfjkh");
-        bo.setReceiverAddress("sdgf");
+        bo.setMarkDestination("桂林670 001 Q15");
+        bo.setExpressCode("3335868078327");
+        bo.setPackageName("桂林中转包");
+        bo.setSellerId(999999990L);
+        bo.setDfTradeId(62017081200035L);
+        bo.setReceiverState("广西状族自治区");
+        bo.setReceiverName("王春");
+        bo.setReceiverPhone("18376225167");
+        bo.setExpressId(68L);
+        bo.setExpressName("申通快递");
+        bo.setReceiverAddress("广西状族自治区 桂林市 七星区 东二环路半塘尾口飞扬画室");
         bo.setCreateDate(DateUtil.dateToString(new Date(),DateUtil.patternB));
         bo.setCreateTime(new Date());
         List<Long> ids=new ArrayList<>();
