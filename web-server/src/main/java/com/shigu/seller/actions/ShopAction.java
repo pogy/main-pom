@@ -2,10 +2,12 @@ package com.shigu.seller.actions;
 
 import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.GoatLicense;
+import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.GoatLicenseExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.GoatLicenseMapper;
+import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
@@ -174,6 +176,10 @@ public class ShopAction {
 
     @Autowired
     GoatShopService goatShopService;
+
+    @Autowired
+    GoodsFileService goodsFileService;
+
 
     /**
      * 当前登陆的session
@@ -468,9 +474,19 @@ public class ShopAction {
                     ,shopSession.getShopId(),bo.getPage(),bo.getPageSize());
             model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
             List<OnsaleItem> list=pager.getContent();
+            List<Long> goodIds = BeanMapper.getFieldList(list, "itemId", Long.class);
+            Map<Long, GoodsFile> goodsIdFileMap = BeanMapper.list2Map(goodsFileService.selGoodsFileInfo(goodIds), "goodsId", Long.class);
             List<OnsaleItemVO> goodsList=new ArrayList<>();
             for(OnsaleItem oi:list){
-                goodsList.add(new OnsaleItemVO(oi));
+                OnsaleItemVO vo = new OnsaleItemVO(oi);
+                GoodsFile fileInfo = goodsIdFileMap.get(vo.getId());
+                vo.setSetCorrelateType(fileInfo==null?1:2);
+                vo.setBigPicType(fileInfo==null?2:fileInfo.getNeedPwd()?2:1);
+                if (fileInfo != null) {
+                    vo.setLinkHref(fileInfo.getFileKey());
+                    vo.setLinkHrefPassword(fileInfo.getPasswd());
+                }
+                goodsList.add(vo);
             }
             model.addAttribute("goodslist",goodsList);
         } catch (ItemException e) {
