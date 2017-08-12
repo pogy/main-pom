@@ -101,8 +101,8 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
         memberUserSub.setSubUserPassword(encryptPwd);
         memberUserSub.setSubUserKey(UUID.randomUUID().toString().replace("-",""));
         memberUserSub.setAccountType(LoginFromType.PHONE.getAccountType());
-        memberUserSub.setLogins(0);
-        memberUserSub.setUseStatus(1);
+        memberUserSub.setLogins(0L);
+        memberUserSub.setUseStatus(1L);
         result = memberUserSubMapper.insertSelective(memberUserSub);
         if(result == 0){
             logger.error("注册新用户>>失败>>执行插入数据库用户子表失败>>memberUserSub:" + JSON.toJSONString(memberUserSub));
@@ -265,8 +265,8 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
             memberUserSub.setUserId(userId);
             memberUserSub.setSubUserKey(tempUser.getSubUserKey());
             memberUserSub.setAccountType(tempUser.getLoginFromType().getAccountType());
-            memberUserSub.setLogins(0);
-            memberUserSub.setUseStatus(1);
+            memberUserSub.setLogins(0L);
+            memberUserSub.setUseStatus(1L);
             result = memberUserSubMapper.insertSelective(memberUserSub);
             if (result == 0) {
                 throw new Main4Exception("绑定第三方账号失败");
