@@ -96,9 +96,9 @@ public class SubOrderModelImpl implements SubOrderModel {
         insertTasks.setAllocatTime(null);
         insertTasks.setEndStatus(0);//设置待截单
         insertTasks.setGgoodsCode(null);//重置分配批号
-        insertTasks.setPrintBarcodeStatus(0);//重置导出状态
+        insertTasks.setPrintBarcodeStatus(1);//重置导出状态
         insertTasks.setPrintBatch(null);
-        insertTasks.setPrintGoodsStatus(0);//重置打印状态
+        insertTasks.setPrintGoodsStatus(1);//重置打印状态
         insertTasks.setReturnStatus(0);
         insertTasks.setWebSite(subOrderBO.getWebSite());
         insertTasks.setSellerId(subOrderBO.getSellerId());
@@ -301,9 +301,9 @@ public class SubOrderModelImpl implements SubOrderModel {
             insertTasks.setAllocatTime(null);
             insertTasks.setEndStatus(0);//设置待截单
             insertTasks.setGgoodsCode(null);//重置分配批号
-            insertTasks.setPrintBarcodeStatus(0);//重置导出状态
+            insertTasks.setPrintBarcodeStatus(1);//重置导出状态
             insertTasks.setPrintBatch(null);
-            insertTasks.setPrintGoodsStatus(0);//重置打印状态
+            insertTasks.setPrintGoodsStatus(1);//重置打印状态
             daifaGgoodsTasksMapper.insertSelective(insertTasks);
         }
         order.setDfOrderId(subOrderId);

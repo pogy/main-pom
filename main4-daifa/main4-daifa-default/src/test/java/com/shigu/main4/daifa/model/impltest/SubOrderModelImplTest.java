@@ -540,8 +540,8 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         task2=daifaGgoodsTasksMapper.selectOne(task2);
         assertNotEquals(task2.getTasksId(),task.getTasksId());
         assertEquals(task2.getAllocatStatus(),new Integer(0));
-        assertEquals(task2.getPrintBarcodeStatus(),new Integer(0));
-        assertEquals(task2.getPrintGoodsStatus(),new Integer(0));
+        assertEquals(task2.getPrintBarcodeStatus(),new Integer(1));
+        assertEquals(task2.getPrintGoodsStatus(),new Integer(1));
         assertEquals(task2.getPrintBatch(),null);
         assertEquals(task2.getAllocatTime(),null);
         assertEquals(task2.getAllocatDate(),null);
@@ -667,8 +667,8 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         assertEquals(task.getAllocatTime(),null);
         assertEquals(task.getEndStatus(),new Integer(0));
         assertEquals(task.getGgoodsCode(),null);
-        assertEquals(task.getPrintBarcodeStatus(),new Integer(0));
-        assertEquals(task.getPrintGoodsStatus(),new Integer(0));
+        assertEquals(task.getPrintBarcodeStatus(),new Integer(1));
+        assertEquals(task.getPrintGoodsStatus(),new Integer(1));
         assertEquals(task.getPrintBatch(),null);
         assertEquals(task.getReturnStatus(),new Integer(0));
         return impl.getSubOrderId();

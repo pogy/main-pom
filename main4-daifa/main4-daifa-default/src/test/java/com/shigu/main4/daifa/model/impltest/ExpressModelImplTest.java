@@ -28,7 +28,6 @@ import static org.junit.Assert.assertTrue;
  * @since: main-pom
  * @commonents:
  */
-
 public class ExpressModelImplTest extends BaseSpringTest {
 
     @Test

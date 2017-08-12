@@ -19,7 +19,7 @@ public class GgoodsForPrint implements Serializable{
     private static final long serialVersionUID = 4094549609371998769L;
     @Column("daifa_ggoods.create_date")
     private String createDate;//创建时间 2017-10-11
-    @Column("daifa_ggoods.task_goods_id")
+    @Column("daifa_ggoods.take_goods_id")
     private Long takeGoodsId;//daifaggoods主键
     @Column("daifa_ggoods.goods_code")
     private String goodsCode;//货号
