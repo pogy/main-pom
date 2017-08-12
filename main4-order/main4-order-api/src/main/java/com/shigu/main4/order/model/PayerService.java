@@ -9,6 +9,7 @@ import com.shigu.main4.order.vo.PayApplyVO;
  * Created by zhaohongbo on 17/6/9.
  */
 public interface PayerService {
+    String OUTER_ID_PRE="payorder_";
     PayApplyVO payApply(Long oid, Long money, String title) throws PayApplyException;
     void refund(Long payId,Long money) throws PayerException;
     void paySure(Long applyId,String outerPid,String outerPuser,Long payMoney) throws PayerException;

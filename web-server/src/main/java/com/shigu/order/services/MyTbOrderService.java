@@ -23,6 +23,7 @@ import com.shigu.main4.item.vo.SynItem;
 import com.shigu.main4.order.bo.TbOrderBO;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
+import com.shigu.main4.order.process.ItemProductProcess;
 import com.shigu.main4.order.servicevo.SubTbOrderVO;
 import com.shigu.main4.order.servicevo.TbOrderVO;
 import com.shigu.main4.order.vo.*;
@@ -60,7 +61,10 @@ public class MyTbOrderService {
     @Autowired
     ItemAddOrUpdateService itemAddOrUpdateService;
     @Autowired
-    ConfirmOrderService confirmOrderService;
+    private ConfirmOrderService confirmOrderService;
+
+    @Autowired
+    private ItemProductProcess itemProductProcess;
     @Autowired
     private RedisIO redisIO;
 
@@ -169,23 +173,22 @@ public class MyTbOrderService {
             SubTbOrderVO sub=order.getChildOrders().get(i);
             TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(sub.getNumiid());
             SynItem goods=itemAddOrUpdateService.selItemByGoodsId(rgv.getGoodsId(),rgv.getWebSite());
-            ItemProductImpl itemp= SpringBeanFactory.getBean(ItemProductImpl.class,rgv.getGoodsId(),sub.getColor(),sub.getSize() );
-            ItemProductVO info = SpringBeanFactory.getBean(ItemProductImpl.class, itemp.getPid(), itemp.getSkuId()).info();
+            ItemProductVO info = itemProductProcess.generateProduct(rgv.getGoodsId(), sub.getColor(), sub.getSize());
             CartVO vo=new CartVO();
             vo.setNum(sub.getNum());
             vo.setUserId(userId);
-            vo.setSkuId(itemp.getSkuId());
+            vo.setSkuId(info.getSelectiveSku().getSkuId());
             vo.setShopId(goods.getShopId());
             vo.setMarketId(goods.getMarketId());
             vo.setMarketName(info.getMarketName());
-            vo.setSelectiveSku(BeanMapper.map(itemp, ItemSkuVO.class));
+            vo.setSelectiveSku(BeanMapper.map(info, ItemSkuVO.class));
             vo.setShopNum(info.getShopNum());
             vo.setFloor(info.getFloor());
             vo.setFloorId(goods.getFloorId());
             vo.setGoodsId(goods.getGoodsId());
             vo.setGoodsNo(goods.getGoodsNo());
             vo.setPicUrl(goods.getPicUrl());
-            vo.setPid(itemp.getPid());
+            vo.setPid(info.getPid());
             vo.setPrice(PriceConvertUtils.StringToLong(goods.getPiPriceString()));
             vo.setTitle(goods.getTitle());
             vo.setWebSite(goods.getWebSite());

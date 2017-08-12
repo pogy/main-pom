@@ -13,7 +13,6 @@ import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.PayerService;
-
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -143,7 +142,7 @@ public class PayModeService {
     }
 
     public void payxz(PayApplyVO payApplyVO, Long userId) throws JsonErrException {
-        String outerId = XzPayerServiceImpl.OUTER_ID_PRE + payApplyVO.getApplyId();
+        String outerId = PayerService.OUTER_ID_PRE + payApplyVO.getApplyId();
         paySdkClientService.xzpay(userId, payApplyVO.getMoney(), outerId);
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
         try {

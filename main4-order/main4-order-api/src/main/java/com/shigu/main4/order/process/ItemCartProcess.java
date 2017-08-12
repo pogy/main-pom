@@ -41,4 +41,13 @@ public interface ItemCartProcess {
      * @param count 数量
      */
     void addProduct(Long userId, ItemProductVO vo, Integer count);
+
+    /**
+     * 清除某用户进货车中某商品的某数量
+     * @param userId 用户
+     * @param pid 产品id
+     * @param skuId skuid
+     * @param num 数量
+     */
+    void rmProductByNum(Long userId, Long pid, Long skuId, Integer num);
 }
