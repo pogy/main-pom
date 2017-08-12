@@ -4,35 +4,28 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
-import com.opentae.data.mall.beans.ItemOrder;
-import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.examples.BuyerAddressExample;
+import com.opentae.data.mall.examples.LogisticsTemplateExample;
+import com.opentae.data.mall.examples.OrderStatusRecordExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.common.util.NumberUtils;
 import com.shigu.main4.order.bo.*;
-import com.shigu.main4.order.zfenums.*;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
-import com.shigu.main4.order.model.*;
 import com.shigu.main4.order.model.LogisticsTemplate;
-import com.shigu.main4.order.model.impl.SubItemOrderImpl;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
-import com.shigu.main4.order.servicevo.OrderInfoVO;
 import com.shigu.main4.order.servicevo.OrderLogVO;
-import com.shigu.main4.order.servicevo.RefundInfoVO;
-import com.shigu.main4.order.servicevo.RefundLogVO;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.utils.KdniaoUtil;
-import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
+import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -220,8 +213,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             return logisticsTemplate.calculate(
                     provId,
                     companyId,
-                    NumberUtils.sum(BeanMapper.getFieldList(pids, "num", Integer.class)).intValue(),
-                    NumberUtils.sum(BeanMapper.getFieldList(pids, "weight", Integer.class)).longValue()
+                    pids.stream().mapToInt(PidNumBO::getNum).sum(),
+                    pids.stream().mapToLong(PidNumBO::getWeight).sum()
             );
         } catch (LogisticsRuleException e) {
             throw new OrderException(e.getMessage());
