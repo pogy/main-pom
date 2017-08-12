@@ -1,9 +1,14 @@
 package com.shigu.activity.service;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.ShiguMarket;
 import com.opentae.data.mall.beans.ShiguTemp;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.activity.tempvo.PopularGoodsVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +34,9 @@ public class NewPopularService {
 
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+
+    @Autowired
+    ShiguMarketMapper shiguMarketMapper;
 
     /**
      * 获取秋装新品发布会0811数据
@@ -61,13 +69,19 @@ public class NewPopularService {
             }
         }
         example.createCriteria().andWebSiteEqualTo("hz").andGoodsIdIn(goodsIds);
-        return shiguGoodsTinyMapper.selectByExample(example).stream().map(o -> {
+        List<ShiguGoodsTiny> shiguGoodsTinies = shiguGoodsTinyMapper.selectByExample(example);
+        //处理goods_tiny中一些记录没有parentMarketName信息
+        ShiguMarketExample shiguMarketExample = new ShiguMarketExample();
+        shiguMarketExample.createCriteria().andMarketIdIn(shiguGoodsTinies.stream().map(ShiguGoodsTiny::getParentMarketId).collect(Collectors.toList()));
+        Map<Long, String> marketIdNameMap = shiguMarketMapper.selectFieldsByExample(shiguMarketExample, FieldUtil.codeFields("market_id,market_name"))
+                .stream().collect(Collectors.toMap(ShiguMarket::getMarketId, ShiguMarket::getMarketName));
+        return shiguGoodsTinies.stream().map(o -> {
             PopularGoodsVO vo = new PopularGoodsVO();
             vo.setGoodsId(o.getGoodsId());
             vo.setImgSrc(o.getPicUrl());
             vo.setShopId(o.getStoreId());
             vo.setShopNum(o.getStoreNum());
-            vo.setMarketName(o.getParentMarketName());
+            vo.setMarketName(o.getParentMarketName()==null?marketIdNameMap.get(o.getParentMarketId()):o.getParentMarketName());
             vo.setTitle(o.getTitle());
             vo.setPiPriceString(o.getPiPriceString());
             String shStatus = goodsIdShStatusMap.get(o.getGoodsId().toString());
