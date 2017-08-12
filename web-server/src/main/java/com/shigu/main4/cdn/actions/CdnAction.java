@@ -807,8 +807,8 @@ public class CdnAction {
         }
         String upflag="imgzip";
         DatuVO bigVo=goodsFileService.datuUrl(goodsId);
-//        String url = shopsItemService.itemImgzipUrl(goodsId);
-        String url="11";
+        String url = shopsItemService.itemImgzipUrl(goodsId);
+//        String url="11";
         String content;
         if (StringUtils.isEmpty(url)) {
             content = "{'result':'error','msg':'图片打包失败'}";
