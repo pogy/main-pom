@@ -3,10 +3,18 @@ package com.shigu.main4.daifa.process.impl;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.interfaces.*;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.daifa.bo.DeliveryBO;
+import com.shigu.main4.daifa.bo.OrderExpressBO;
+import com.shigu.main4.daifa.bo.SubOrderExpressBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.model.ExpressModel;
+import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.process.PackDeliveryProcess;
+import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.daifa.vo.PackResultVO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,11 +74,33 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         }
 
         //发货
-//        OrderModel orderModel= SpringBeanFactory.getBean(OrderModel.class,order.getDfTradeId());
-//        orderModel.send();
+        DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(order.getDfTradeId());
+        OrderExpressBO exbo=new OrderExpressBO();
+        exbo.setExpressName(trade.getExpressName());
+        exbo.setReceiverAddress(trade.getReceiverAddress());
+        exbo.setReceiverName(trade.getReceiverName());
+        exbo.setReceiverPhone(trade.getReceiverMobile()==null?trade.getReceiverPhone():trade.getReceiverMobile());
+        exbo.setTid(trade.getDfTradeId());
+        List<SubOrderExpressBO> list=new ArrayList<>();
+        for(DaifaOrder o:orders){
+            SubOrderExpressBO so=new SubOrderExpressBO();
+            so.setGoodsNum(o.getGoodsNum());
+            so.setOrderId(o.getDfOrderId());
+            so.setPropStr(o.getPropStr());
+            so.setStoreGoodsCode(o.getStoreGoodsCode());
+            list.add(so);
+        }
+        exbo.setList(list);
+        ExpressModel expressModel=SpringBeanFactory.getBean(ExpressModel.class,trade.getExpressId(),trade.getSellerId());
+        ExpressVO exvo=expressModel.callExpress(exbo);
+        DeliveryBO bo= BeanMapper.map(trade,DeliveryBO.class);
+        bo.setExpressCode(exvo.getExpressCode());
+        bo.setMarkDestination(exvo.getMarkDestination());
+        bo.setPackageName(exvo.getPackageName());
+        OrderModel orderModel= SpringBeanFactory.getBean(OrderModel.class,order.getDfTradeId());
+        orderModel.send(bo);
 
         //获取信息
-        DaifaTrade trade=daifaTradeMapper.selectFieldsByPrimaryKey(order.getDfTradeId(), FieldUtil.codeFields("df_trade_id,bar_code_key"));
         DaifaSend send=new DaifaSend();
         send.setDfTradeId(order.getDfTradeId());
         send=daifaSendMapper.selectOne(send);

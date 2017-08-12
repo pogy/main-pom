@@ -7,6 +7,7 @@ import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.daifa.beans.DaifaWaitSendOrder;
 
 import java.util.*;
+
 public class DaifaWaitSendOrderExample extends SgExample<DaifaWaitSendOrderExample.Criteria> {
     public static final Class<DaifaWaitSendOrder> beanClass = DaifaWaitSendOrder.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
@@ -124,8 +125,8 @@ public class DaifaWaitSendOrderExample extends SgExample<DaifaWaitSendOrderExamp
     }
 
     @Override
-    protected DaifaWaitSendOrderExample.Criteria createCriteriaInternal() {
-        return new DaifaWaitSendOrderExample.Criteria(this);
+    protected Criteria createCriteriaInternal() {
+        return new Criteria(this);
     }
 
     public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
@@ -133,2436 +134,2548 @@ public class DaifaWaitSendOrderExample extends SgExample<DaifaWaitSendOrderExamp
             super(example);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdIsNull() {
+        public Criteria andDwsoIdIsNull() {
             return isNull(dwsoId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdIsNotNull() {
+        public Criteria andDwsoIdIsNotNull() {
             return isNotNull(dwsoId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdEqualTo(Long value) {
+        public Criteria andDwsoIdEqualTo(Long value) {
             return equalTo(dwsoId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdNotEqualTo(Long value) {
+        public Criteria andDwsoIdNotEqualTo(Long value) {
             return notEqualTo(dwsoId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdGreaterThan(Long value) {
+        public Criteria andDwsoIdGreaterThan(Long value) {
             return greaterThan(dwsoId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andDwsoIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(dwsoId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdLessThan(Long value) {
+        public Criteria andDwsoIdLessThan(Long value) {
             return lessThan(dwsoId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdLessThanOrEqualTo(Long value) {
+        public Criteria andDwsoIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(dwsoId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdIn(List<Long> values) {
+        public Criteria andDwsoIdLike(String value) {
+            return like(dwsoId, value);
+        }
+
+        public Criteria andDwsoIdNotLike(String value) {
+            return notLike(dwsoId, value);
+        }
+
+        public Criteria andDwsoIdIn(List<Long> values) {
             return in(dwsoId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdNotIn(List<Long> values) {
+        public Criteria andDwsoIdNotIn(List<Long> values) {
             return notIn(dwsoId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdBetween(Long value1, Long value2) {
+        public Criteria andDwsoIdBetween(Long value1, Long value2) {
             return between(dwsoId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsoIdNotBetween(Long value1, Long value2) {
+        public Criteria andDwsoIdNotBetween(Long value1, Long value2) {
             return notBetween(dwsoId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andDwsIdIsNull() {
+        public Criteria andDwsIdIsNull() {
             return isNull(dwsId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdIsNotNull() {
+        public Criteria andDwsIdIsNotNull() {
             return isNotNull(dwsId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdEqualTo(Long value) {
+        public Criteria andDwsIdEqualTo(Long value) {
             return equalTo(dwsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdNotEqualTo(Long value) {
+        public Criteria andDwsIdNotEqualTo(Long value) {
             return notEqualTo(dwsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdGreaterThan(Long value) {
+        public Criteria andDwsIdGreaterThan(Long value) {
             return greaterThan(dwsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andDwsIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(dwsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdLessThan(Long value) {
+        public Criteria andDwsIdLessThan(Long value) {
             return lessThan(dwsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdLessThanOrEqualTo(Long value) {
+        public Criteria andDwsIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(dwsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdIn(List<Long> values) {
+        public Criteria andDwsIdLike(String value) {
+            return like(dwsId, value);
+        }
+
+        public Criteria andDwsIdNotLike(String value) {
+            return notLike(dwsId, value);
+        }
+
+        public Criteria andDwsIdIn(List<Long> values) {
             return in(dwsId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdNotIn(List<Long> values) {
+        public Criteria andDwsIdNotIn(List<Long> values) {
             return notIn(dwsId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdBetween(Long value1, Long value2) {
+        public Criteria andDwsIdBetween(Long value1, Long value2) {
             return between(dwsId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDwsIdNotBetween(Long value1, Long value2) {
+        public Criteria andDwsIdNotBetween(Long value1, Long value2) {
             return notBetween(dwsId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeIsNull() {
+        public Criteria andGgoodsCodeIsNull() {
             return isNull(ggoodsCode);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeIsNotNull() {
+        public Criteria andGgoodsCodeIsNotNull() {
             return isNotNull(ggoodsCode);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeEqualTo(String value) {
+        public Criteria andGgoodsCodeEqualTo(String value) {
             return equalTo(ggoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeNotEqualTo(String value) {
+        public Criteria andGgoodsCodeNotEqualTo(String value) {
             return notEqualTo(ggoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeGreaterThan(String value) {
+        public Criteria andGgoodsCodeGreaterThan(String value) {
             return greaterThan(ggoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeGreaterThanOrEqualTo(String value) {
+        public Criteria andGgoodsCodeGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(ggoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeLessThan(String value) {
+        public Criteria andGgoodsCodeLessThan(String value) {
             return lessThan(ggoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeLessThanOrEqualTo(String value) {
+        public Criteria andGgoodsCodeLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(ggoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeLike(String value) {
+        public Criteria andGgoodsCodeLike(String value) {
             return like(ggoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeNotLike(String value) {
+        public Criteria andGgoodsCodeNotLike(String value) {
             return notLike(ggoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeIn(List<String> values) {
+        public Criteria andGgoodsCodeIn(List<String> values) {
             return in(ggoodsCode, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeNotIn(List<String> values) {
+        public Criteria andGgoodsCodeNotIn(List<String> values) {
             return notIn(ggoodsCode, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeBetween(String value1, String value2) {
+        public Criteria andGgoodsCodeBetween(String value1, String value2) {
             return between(ggoodsCode, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGgoodsCodeNotBetween(String value1, String value2) {
+        public Criteria andGgoodsCodeNotBetween(String value1, String value2) {
             return notBetween(ggoodsCode, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdIsNull() {
+        public Criteria andDfTradeIdIsNull() {
             return isNull(dfTradeId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdIsNotNull() {
+        public Criteria andDfTradeIdIsNotNull() {
             return isNotNull(dfTradeId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdEqualTo(Long value) {
+        public Criteria andDfTradeIdEqualTo(Long value) {
             return equalTo(dfTradeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdNotEqualTo(Long value) {
+        public Criteria andDfTradeIdNotEqualTo(Long value) {
             return notEqualTo(dfTradeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdGreaterThan(Long value) {
+        public Criteria andDfTradeIdGreaterThan(Long value) {
             return greaterThan(dfTradeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andDfTradeIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(dfTradeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdLessThan(Long value) {
+        public Criteria andDfTradeIdLessThan(Long value) {
             return lessThan(dfTradeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdLessThanOrEqualTo(Long value) {
+        public Criteria andDfTradeIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(dfTradeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdIn(List<Long> values) {
+        public Criteria andDfTradeIdLike(String value) {
+            return like(dfTradeId, value);
+        }
+
+        public Criteria andDfTradeIdNotLike(String value) {
+            return notLike(dfTradeId, value);
+        }
+
+        public Criteria andDfTradeIdIn(List<Long> values) {
             return in(dfTradeId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdNotIn(List<Long> values) {
+        public Criteria andDfTradeIdNotIn(List<Long> values) {
             return notIn(dfTradeId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdBetween(Long value1, Long value2) {
+        public Criteria andDfTradeIdBetween(Long value1, Long value2) {
             return between(dfTradeId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfTradeIdNotBetween(Long value1, Long value2) {
+        public Criteria andDfTradeIdNotBetween(Long value1, Long value2) {
             return notBetween(dfTradeId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdIsNull() {
+        public Criteria andDfOrderIdIsNull() {
             return isNull(dfOrderId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdIsNotNull() {
+        public Criteria andDfOrderIdIsNotNull() {
             return isNotNull(dfOrderId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdEqualTo(Long value) {
+        public Criteria andDfOrderIdEqualTo(Long value) {
             return equalTo(dfOrderId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdNotEqualTo(Long value) {
+        public Criteria andDfOrderIdNotEqualTo(Long value) {
             return notEqualTo(dfOrderId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdGreaterThan(Long value) {
+        public Criteria andDfOrderIdGreaterThan(Long value) {
             return greaterThan(dfOrderId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andDfOrderIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(dfOrderId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdLessThan(Long value) {
+        public Criteria andDfOrderIdLessThan(Long value) {
             return lessThan(dfOrderId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdLessThanOrEqualTo(Long value) {
+        public Criteria andDfOrderIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(dfOrderId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdIn(List<Long> values) {
+        public Criteria andDfOrderIdLike(String value) {
+            return like(dfOrderId, value);
+        }
+
+        public Criteria andDfOrderIdNotLike(String value) {
+            return notLike(dfOrderId, value);
+        }
+
+        public Criteria andDfOrderIdIn(List<Long> values) {
             return in(dfOrderId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdNotIn(List<Long> values) {
+        public Criteria andDfOrderIdNotIn(List<Long> values) {
             return notIn(dfOrderId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdBetween(Long value1, Long value2) {
+        public Criteria andDfOrderIdBetween(Long value1, Long value2) {
             return between(dfOrderId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDfOrderIdNotBetween(Long value1, Long value2) {
+        public Criteria andDfOrderIdNotBetween(Long value1, Long value2) {
             return notBetween(dfOrderId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeIsNull() {
+        public Criteria andOrderCodeIsNull() {
             return isNull(orderCode);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeIsNotNull() {
+        public Criteria andOrderCodeIsNotNull() {
             return isNotNull(orderCode);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeEqualTo(String value) {
+        public Criteria andOrderCodeEqualTo(String value) {
             return equalTo(orderCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeNotEqualTo(String value) {
+        public Criteria andOrderCodeNotEqualTo(String value) {
             return notEqualTo(orderCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeGreaterThan(String value) {
+        public Criteria andOrderCodeGreaterThan(String value) {
             return greaterThan(orderCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeGreaterThanOrEqualTo(String value) {
+        public Criteria andOrderCodeGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(orderCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeLessThan(String value) {
+        public Criteria andOrderCodeLessThan(String value) {
             return lessThan(orderCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeLessThanOrEqualTo(String value) {
+        public Criteria andOrderCodeLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(orderCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeLike(String value) {
+        public Criteria andOrderCodeLike(String value) {
             return like(orderCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeNotLike(String value) {
+        public Criteria andOrderCodeNotLike(String value) {
             return notLike(orderCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeIn(List<String> values) {
+        public Criteria andOrderCodeIn(List<String> values) {
             return in(orderCode, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeNotIn(List<String> values) {
+        public Criteria andOrderCodeNotIn(List<String> values) {
             return notIn(orderCode, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeBetween(String value1, String value2) {
+        public Criteria andOrderCodeBetween(String value1, String value2) {
             return between(orderCode, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andOrderCodeNotBetween(String value1, String value2) {
+        public Criteria andOrderCodeNotBetween(String value1, String value2) {
             return notBetween(orderCode, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andSellerIdIsNull() {
+        public Criteria andSellerIdIsNull() {
             return isNull(sellerId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdIsNotNull() {
+        public Criteria andSellerIdIsNotNull() {
             return isNotNull(sellerId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdEqualTo(Long value) {
+        public Criteria andSellerIdEqualTo(Long value) {
             return equalTo(sellerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdNotEqualTo(Long value) {
+        public Criteria andSellerIdNotEqualTo(Long value) {
             return notEqualTo(sellerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdGreaterThan(Long value) {
+        public Criteria andSellerIdGreaterThan(Long value) {
             return greaterThan(sellerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andSellerIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(sellerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdLessThan(Long value) {
+        public Criteria andSellerIdLessThan(Long value) {
             return lessThan(sellerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdLessThanOrEqualTo(Long value) {
+        public Criteria andSellerIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(sellerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdIn(List<Long> values) {
+        public Criteria andSellerIdLike(String value) {
+            return like(sellerId, value);
+        }
+
+        public Criteria andSellerIdNotLike(String value) {
+            return notLike(sellerId, value);
+        }
+
+        public Criteria andSellerIdIn(List<Long> values) {
             return in(sellerId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdNotIn(List<Long> values) {
+        public Criteria andSellerIdNotIn(List<Long> values) {
             return notIn(sellerId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdBetween(Long value1, Long value2) {
+        public Criteria andSellerIdBetween(Long value1, Long value2) {
             return between(sellerId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSellerIdNotBetween(Long value1, Long value2) {
+        public Criteria andSellerIdNotBetween(Long value1, Long value2) {
             return notBetween(sellerId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andSendStatusIsNull() {
+        public Criteria andSendStatusIsNull() {
             return isNull(sendStatus);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusIsNotNull() {
+        public Criteria andSendStatusIsNotNull() {
             return isNotNull(sendStatus);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusEqualTo(Integer value) {
+        public Criteria andSendStatusEqualTo(Integer value) {
             return equalTo(sendStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusNotEqualTo(Integer value) {
+        public Criteria andSendStatusNotEqualTo(Integer value) {
             return notEqualTo(sendStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusGreaterThan(Integer value) {
+        public Criteria andSendStatusGreaterThan(Integer value) {
             return greaterThan(sendStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andSendStatusGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(sendStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusLessThan(Integer value) {
+        public Criteria andSendStatusLessThan(Integer value) {
             return lessThan(sendStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andSendStatusLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(sendStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusIn(List<Integer> values) {
+        public Criteria andSendStatusIn(List<Integer> values) {
             return in(sendStatus, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusNotIn(List<Integer> values) {
+        public Criteria andSendStatusNotIn(List<Integer> values) {
             return notIn(sendStatus, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusBetween(Integer value1, Integer value2) {
+        public Criteria andSendStatusBetween(Integer value1, Integer value2) {
             return between(sendStatus, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSendStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andSendStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(sendStatus, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andStockStatusIsNull() {
+        public Criteria andStockStatusIsNull() {
             return isNull(stockStatus);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusIsNotNull() {
+        public Criteria andStockStatusIsNotNull() {
             return isNotNull(stockStatus);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusEqualTo(Integer value) {
+        public Criteria andStockStatusEqualTo(Integer value) {
             return equalTo(stockStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusNotEqualTo(Integer value) {
+        public Criteria andStockStatusNotEqualTo(Integer value) {
             return notEqualTo(stockStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusGreaterThan(Integer value) {
+        public Criteria andStockStatusGreaterThan(Integer value) {
             return greaterThan(stockStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andStockStatusGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(stockStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusLessThan(Integer value) {
+        public Criteria andStockStatusLessThan(Integer value) {
             return lessThan(stockStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andStockStatusLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(stockStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusIn(List<Integer> values) {
+        public Criteria andStockStatusIn(List<Integer> values) {
             return in(stockStatus, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusNotIn(List<Integer> values) {
+        public Criteria andStockStatusNotIn(List<Integer> values) {
             return notIn(stockStatus, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusBetween(Integer value1, Integer value2) {
+        public Criteria andStockStatusBetween(Integer value1, Integer value2) {
             return between(stockStatus, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andStockStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(stockStatus, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusIsNull() {
+        public Criteria andTakeGoodsStatusIsNull() {
             return isNull(takeGoodsStatus);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusIsNotNull() {
+        public Criteria andTakeGoodsStatusIsNotNull() {
             return isNotNull(takeGoodsStatus);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusEqualTo(Integer value) {
+        public Criteria andTakeGoodsStatusEqualTo(Integer value) {
             return equalTo(takeGoodsStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusNotEqualTo(Integer value) {
+        public Criteria andTakeGoodsStatusNotEqualTo(Integer value) {
             return notEqualTo(takeGoodsStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusGreaterThan(Integer value) {
+        public Criteria andTakeGoodsStatusGreaterThan(Integer value) {
             return greaterThan(takeGoodsStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andTakeGoodsStatusGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(takeGoodsStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusLessThan(Integer value) {
+        public Criteria andTakeGoodsStatusLessThan(Integer value) {
             return lessThan(takeGoodsStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andTakeGoodsStatusLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(takeGoodsStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusIn(List<Integer> values) {
+        public Criteria andTakeGoodsStatusIn(List<Integer> values) {
             return in(takeGoodsStatus, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusNotIn(List<Integer> values) {
+        public Criteria andTakeGoodsStatusNotIn(List<Integer> values) {
             return notIn(takeGoodsStatus, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusBetween(Integer value1, Integer value2) {
+        public Criteria andTakeGoodsStatusBetween(Integer value1, Integer value2) {
             return between(takeGoodsStatus, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTakeGoodsStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andTakeGoodsStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(takeGoodsStatus, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusIsNull() {
+        public Criteria andRefundStatusIsNull() {
             return isNull(refundStatus);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusIsNotNull() {
+        public Criteria andRefundStatusIsNotNull() {
             return isNotNull(refundStatus);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusEqualTo(Integer value) {
+        public Criteria andRefundStatusEqualTo(Integer value) {
             return equalTo(refundStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusNotEqualTo(Integer value) {
+        public Criteria andRefundStatusNotEqualTo(Integer value) {
             return notEqualTo(refundStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusGreaterThan(Integer value) {
+        public Criteria andRefundStatusGreaterThan(Integer value) {
             return greaterThan(refundStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andRefundStatusGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(refundStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusLessThan(Integer value) {
+        public Criteria andRefundStatusLessThan(Integer value) {
             return lessThan(refundStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andRefundStatusLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(refundStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusIn(List<Integer> values) {
+        public Criteria andRefundStatusIn(List<Integer> values) {
             return in(refundStatus, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusNotIn(List<Integer> values) {
+        public Criteria andRefundStatusNotIn(List<Integer> values) {
             return notIn(refundStatus, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusBetween(Integer value1, Integer value2) {
+        public Criteria andRefundStatusBetween(Integer value1, Integer value2) {
             return between(refundStatus, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andRefundStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(refundStatus, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andRefundDateIsNull() {
+        public Criteria andRefundDateIsNull() {
             return isNull(refundDate);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateIsNotNull() {
+        public Criteria andRefundDateIsNotNull() {
             return isNotNull(refundDate);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateEqualTo(String value) {
+        public Criteria andRefundDateEqualTo(String value) {
             return equalTo(refundDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateNotEqualTo(String value) {
+        public Criteria andRefundDateNotEqualTo(String value) {
             return notEqualTo(refundDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateGreaterThan(String value) {
+        public Criteria andRefundDateGreaterThan(String value) {
             return greaterThan(refundDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateGreaterThanOrEqualTo(String value) {
+        public Criteria andRefundDateGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(refundDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateLessThan(String value) {
+        public Criteria andRefundDateLessThan(String value) {
             return lessThan(refundDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateLessThanOrEqualTo(String value) {
+        public Criteria andRefundDateLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(refundDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateLike(String value) {
+        public Criteria andRefundDateLike(String value) {
             return like(refundDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateNotLike(String value) {
+        public Criteria andRefundDateNotLike(String value) {
             return notLike(refundDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateIn(List<String> values) {
+        public Criteria andRefundDateIn(List<String> values) {
             return in(refundDate, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateNotIn(List<String> values) {
+        public Criteria andRefundDateNotIn(List<String> values) {
             return notIn(refundDate, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateBetween(String value1, String value2) {
+        public Criteria andRefundDateBetween(String value1, String value2) {
             return between(refundDate, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundDateNotBetween(String value1, String value2) {
+        public Criteria andRefundDateNotBetween(String value1, String value2) {
             return notBetween(refundDate, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeIsNull() {
+        public Criteria andRefundTimeIsNull() {
             return isNull(refundTime);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeIsNotNull() {
+        public Criteria andRefundTimeIsNotNull() {
             return isNotNull(refundTime);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeEqualTo(Date value) {
+        public Criteria andRefundTimeEqualTo(Date value) {
             return equalTo(refundTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeNotEqualTo(Date value) {
+        public Criteria andRefundTimeNotEqualTo(Date value) {
             return notEqualTo(refundTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeGreaterThan(Date value) {
+        public Criteria andRefundTimeGreaterThan(Date value) {
             return greaterThan(refundTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeGreaterThanOrEqualTo(Date value) {
+        public Criteria andRefundTimeGreaterThanOrEqualTo(Date value) {
             return greaterThanOrEqualTo(refundTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeLessThan(Date value) {
+        public Criteria andRefundTimeLessThan(Date value) {
             return lessThan(refundTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeLessThanOrEqualTo(Date value) {
+        public Criteria andRefundTimeLessThanOrEqualTo(Date value) {
             return lessThanOrEqualTo(refundTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeIn(List<Date> values) {
+        public Criteria andRefundTimeIn(List<Date> values) {
             return in(refundTime, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeNotIn(List<Date> values) {
+        public Criteria andRefundTimeNotIn(List<Date> values) {
             return notIn(refundTime, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeBetween(Date value1, Date value2) {
+        public Criteria andRefundTimeBetween(Date value1, Date value2) {
             return between(refundTime, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundTimeNotBetween(Date value1, Date value2) {
+        public Criteria andRefundTimeNotBetween(Date value1, Date value2) {
             return notBetween(refundTime, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andCreateDateIsNull() {
+        public Criteria andCreateDateIsNull() {
             return isNull(createDate);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateIsNotNull() {
+        public Criteria andCreateDateIsNotNull() {
             return isNotNull(createDate);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateEqualTo(String value) {
+        public Criteria andCreateDateEqualTo(String value) {
             return equalTo(createDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateNotEqualTo(String value) {
+        public Criteria andCreateDateNotEqualTo(String value) {
             return notEqualTo(createDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateGreaterThan(String value) {
+        public Criteria andCreateDateGreaterThan(String value) {
             return greaterThan(createDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateGreaterThanOrEqualTo(String value) {
+        public Criteria andCreateDateGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(createDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateLessThan(String value) {
+        public Criteria andCreateDateLessThan(String value) {
             return lessThan(createDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateLessThanOrEqualTo(String value) {
+        public Criteria andCreateDateLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(createDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateLike(String value) {
+        public Criteria andCreateDateLike(String value) {
             return like(createDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateNotLike(String value) {
+        public Criteria andCreateDateNotLike(String value) {
             return notLike(createDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateIn(List<String> values) {
+        public Criteria andCreateDateIn(List<String> values) {
             return in(createDate, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateNotIn(List<String> values) {
+        public Criteria andCreateDateNotIn(List<String> values) {
             return notIn(createDate, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateBetween(String value1, String value2) {
+        public Criteria andCreateDateBetween(String value1, String value2) {
             return between(createDate, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateDateNotBetween(String value1, String value2) {
+        public Criteria andCreateDateNotBetween(String value1, String value2) {
             return notBetween(createDate, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeIsNull() {
+        public Criteria andCreateTimeIsNull() {
             return isNull(createTime);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeIsNotNull() {
+        public Criteria andCreateTimeIsNotNull() {
             return isNotNull(createTime);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeEqualTo(Date value) {
+        public Criteria andCreateTimeEqualTo(Date value) {
             return equalTo(createTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeNotEqualTo(Date value) {
+        public Criteria andCreateTimeNotEqualTo(Date value) {
             return notEqualTo(createTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeGreaterThan(Date value) {
+        public Criteria andCreateTimeGreaterThan(Date value) {
             return greaterThan(createTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
             return greaterThanOrEqualTo(createTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeLessThan(Date value) {
+        public Criteria andCreateTimeLessThan(Date value) {
             return lessThan(createTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
             return lessThanOrEqualTo(createTime, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeIn(List<Date> values) {
+        public Criteria andCreateTimeIn(List<Date> values) {
             return in(createTime, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeNotIn(List<Date> values) {
+        public Criteria andCreateTimeNotIn(List<Date> values) {
             return notIn(createTime, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
             return between(createTime, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
             return notBetween(createTime, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andMarketIdIsNull() {
+        public Criteria andMarketIdIsNull() {
             return isNull(marketId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdIsNotNull() {
+        public Criteria andMarketIdIsNotNull() {
             return isNotNull(marketId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdEqualTo(Long value) {
+        public Criteria andMarketIdEqualTo(Long value) {
             return equalTo(marketId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdNotEqualTo(Long value) {
+        public Criteria andMarketIdNotEqualTo(Long value) {
             return notEqualTo(marketId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdGreaterThan(Long value) {
+        public Criteria andMarketIdGreaterThan(Long value) {
             return greaterThan(marketId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(marketId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdLessThan(Long value) {
+        public Criteria andMarketIdLessThan(Long value) {
             return lessThan(marketId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdLessThanOrEqualTo(Long value) {
+        public Criteria andMarketIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(marketId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdIn(List<Long> values) {
+        public Criteria andMarketIdLike(String value) {
+            return like(marketId, value);
+        }
+
+        public Criteria andMarketIdNotLike(String value) {
+            return notLike(marketId, value);
+        }
+
+        public Criteria andMarketIdIn(List<Long> values) {
             return in(marketId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdNotIn(List<Long> values) {
+        public Criteria andMarketIdNotIn(List<Long> values) {
             return notIn(marketId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdBetween(Long value1, Long value2) {
+        public Criteria andMarketIdBetween(Long value1, Long value2) {
             return between(marketId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketIdNotBetween(Long value1, Long value2) {
+        public Criteria andMarketIdNotBetween(Long value1, Long value2) {
             return notBetween(marketId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andMarketNameIsNull() {
+        public Criteria andMarketNameIsNull() {
             return isNull(marketName);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameIsNotNull() {
+        public Criteria andMarketNameIsNotNull() {
             return isNotNull(marketName);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameEqualTo(String value) {
+        public Criteria andMarketNameEqualTo(String value) {
             return equalTo(marketName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameNotEqualTo(String value) {
+        public Criteria andMarketNameNotEqualTo(String value) {
             return notEqualTo(marketName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameGreaterThan(String value) {
+        public Criteria andMarketNameGreaterThan(String value) {
             return greaterThan(marketName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameGreaterThanOrEqualTo(String value) {
+        public Criteria andMarketNameGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(marketName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameLessThan(String value) {
+        public Criteria andMarketNameLessThan(String value) {
             return lessThan(marketName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameLessThanOrEqualTo(String value) {
+        public Criteria andMarketNameLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(marketName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameLike(String value) {
+        public Criteria andMarketNameLike(String value) {
             return like(marketName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameNotLike(String value) {
+        public Criteria andMarketNameNotLike(String value) {
             return notLike(marketName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameIn(List<String> values) {
+        public Criteria andMarketNameIn(List<String> values) {
             return in(marketName, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameNotIn(List<String> values) {
+        public Criteria andMarketNameNotIn(List<String> values) {
             return notIn(marketName, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameBetween(String value1, String value2) {
+        public Criteria andMarketNameBetween(String value1, String value2) {
             return between(marketName, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andMarketNameNotBetween(String value1, String value2) {
+        public Criteria andMarketNameNotBetween(String value1, String value2) {
             return notBetween(marketName, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andFloorIdIsNull() {
+        public Criteria andFloorIdIsNull() {
             return isNull(floorId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdIsNotNull() {
+        public Criteria andFloorIdIsNotNull() {
             return isNotNull(floorId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdEqualTo(Long value) {
+        public Criteria andFloorIdEqualTo(Long value) {
             return equalTo(floorId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdNotEqualTo(Long value) {
+        public Criteria andFloorIdNotEqualTo(Long value) {
             return notEqualTo(floorId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdGreaterThan(Long value) {
+        public Criteria andFloorIdGreaterThan(Long value) {
             return greaterThan(floorId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andFloorIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(floorId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdLessThan(Long value) {
+        public Criteria andFloorIdLessThan(Long value) {
             return lessThan(floorId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdLessThanOrEqualTo(Long value) {
+        public Criteria andFloorIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(floorId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdIn(List<Long> values) {
+        public Criteria andFloorIdLike(String value) {
+            return like(floorId, value);
+        }
+
+        public Criteria andFloorIdNotLike(String value) {
+            return notLike(floorId, value);
+        }
+
+        public Criteria andFloorIdIn(List<Long> values) {
             return in(floorId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdNotIn(List<Long> values) {
+        public Criteria andFloorIdNotIn(List<Long> values) {
             return notIn(floorId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdBetween(Long value1, Long value2) {
+        public Criteria andFloorIdBetween(Long value1, Long value2) {
             return between(floorId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorIdNotBetween(Long value1, Long value2) {
+        public Criteria andFloorIdNotBetween(Long value1, Long value2) {
             return notBetween(floorId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andFloorNameIsNull() {
+        public Criteria andFloorNameIsNull() {
             return isNull(floorName);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameIsNotNull() {
+        public Criteria andFloorNameIsNotNull() {
             return isNotNull(floorName);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameEqualTo(String value) {
+        public Criteria andFloorNameEqualTo(String value) {
             return equalTo(floorName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameNotEqualTo(String value) {
+        public Criteria andFloorNameNotEqualTo(String value) {
             return notEqualTo(floorName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameGreaterThan(String value) {
+        public Criteria andFloorNameGreaterThan(String value) {
             return greaterThan(floorName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameGreaterThanOrEqualTo(String value) {
+        public Criteria andFloorNameGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(floorName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameLessThan(String value) {
+        public Criteria andFloorNameLessThan(String value) {
             return lessThan(floorName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameLessThanOrEqualTo(String value) {
+        public Criteria andFloorNameLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(floorName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameLike(String value) {
+        public Criteria andFloorNameLike(String value) {
             return like(floorName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameNotLike(String value) {
+        public Criteria andFloorNameNotLike(String value) {
             return notLike(floorName, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameIn(List<String> values) {
+        public Criteria andFloorNameIn(List<String> values) {
             return in(floorName, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameNotIn(List<String> values) {
+        public Criteria andFloorNameNotIn(List<String> values) {
             return notIn(floorName, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameBetween(String value1, String value2) {
+        public Criteria andFloorNameBetween(String value1, String value2) {
             return between(floorName, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andFloorNameNotBetween(String value1, String value2) {
+        public Criteria andFloorNameNotBetween(String value1, String value2) {
             return notBetween(floorName, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andStoreIdIsNull() {
+        public Criteria andStoreIdIsNull() {
             return isNull(storeId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdIsNotNull() {
+        public Criteria andStoreIdIsNotNull() {
             return isNotNull(storeId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdEqualTo(Long value) {
+        public Criteria andStoreIdEqualTo(Long value) {
             return equalTo(storeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdNotEqualTo(Long value) {
+        public Criteria andStoreIdNotEqualTo(Long value) {
             return notEqualTo(storeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdGreaterThan(Long value) {
+        public Criteria andStoreIdGreaterThan(Long value) {
             return greaterThan(storeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andStoreIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(storeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdLessThan(Long value) {
+        public Criteria andStoreIdLessThan(Long value) {
             return lessThan(storeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdLessThanOrEqualTo(Long value) {
+        public Criteria andStoreIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(storeId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdIn(List<Long> values) {
+        public Criteria andStoreIdLike(String value) {
+            return like(storeId, value);
+        }
+
+        public Criteria andStoreIdNotLike(String value) {
+            return notLike(storeId, value);
+        }
+
+        public Criteria andStoreIdIn(List<Long> values) {
             return in(storeId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdNotIn(List<Long> values) {
+        public Criteria andStoreIdNotIn(List<Long> values) {
             return notIn(storeId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdBetween(Long value1, Long value2) {
+        public Criteria andStoreIdBetween(Long value1, Long value2) {
             return between(storeId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreIdNotBetween(Long value1, Long value2) {
+        public Criteria andStoreIdNotBetween(Long value1, Long value2) {
             return notBetween(storeId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andStoreNumIsNull() {
+        public Criteria andStoreNumIsNull() {
             return isNull(storeNum);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumIsNotNull() {
+        public Criteria andStoreNumIsNotNull() {
             return isNotNull(storeNum);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumEqualTo(String value) {
+        public Criteria andStoreNumEqualTo(String value) {
             return equalTo(storeNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumNotEqualTo(String value) {
+        public Criteria andStoreNumNotEqualTo(String value) {
             return notEqualTo(storeNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumGreaterThan(String value) {
+        public Criteria andStoreNumGreaterThan(String value) {
             return greaterThan(storeNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumGreaterThanOrEqualTo(String value) {
+        public Criteria andStoreNumGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(storeNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumLessThan(String value) {
+        public Criteria andStoreNumLessThan(String value) {
             return lessThan(storeNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumLessThanOrEqualTo(String value) {
+        public Criteria andStoreNumLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(storeNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumLike(String value) {
+        public Criteria andStoreNumLike(String value) {
             return like(storeNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumNotLike(String value) {
+        public Criteria andStoreNumNotLike(String value) {
             return notLike(storeNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumIn(List<String> values) {
+        public Criteria andStoreNumIn(List<String> values) {
             return in(storeNum, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumNotIn(List<String> values) {
+        public Criteria andStoreNumNotIn(List<String> values) {
             return notIn(storeNum, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumBetween(String value1, String value2) {
+        public Criteria andStoreNumBetween(String value1, String value2) {
             return between(storeNum, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreNumNotBetween(String value1, String value2) {
+        public Criteria andStoreNumNotBetween(String value1, String value2) {
             return notBetween(storeNum, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdIsNull() {
+        public Criteria andGoodsIdIsNull() {
             return isNull(goodsId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdIsNotNull() {
+        public Criteria andGoodsIdIsNotNull() {
             return isNotNull(goodsId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdEqualTo(Long value) {
+        public Criteria andGoodsIdEqualTo(Long value) {
             return equalTo(goodsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdNotEqualTo(Long value) {
+        public Criteria andGoodsIdNotEqualTo(Long value) {
             return notEqualTo(goodsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdGreaterThan(Long value) {
+        public Criteria andGoodsIdGreaterThan(Long value) {
             return greaterThan(goodsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(goodsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdLessThan(Long value) {
+        public Criteria andGoodsIdLessThan(Long value) {
             return lessThan(goodsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdLessThanOrEqualTo(Long value) {
+        public Criteria andGoodsIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(goodsId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdIn(List<Long> values) {
+        public Criteria andGoodsIdLike(String value) {
+            return like(goodsId, value);
+        }
+
+        public Criteria andGoodsIdNotLike(String value) {
+            return notLike(goodsId, value);
+        }
+
+        public Criteria andGoodsIdIn(List<Long> values) {
             return in(goodsId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdNotIn(List<Long> values) {
+        public Criteria andGoodsIdNotIn(List<Long> values) {
             return notIn(goodsId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdBetween(Long value1, Long value2) {
+        public Criteria andGoodsIdBetween(Long value1, Long value2) {
             return between(goodsId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
+        public Criteria andGoodsIdNotBetween(Long value1, Long value2) {
             return notBetween(goodsId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeIsNull() {
+        public Criteria andGoodsCodeIsNull() {
             return isNull(goodsCode);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeIsNotNull() {
+        public Criteria andGoodsCodeIsNotNull() {
             return isNotNull(goodsCode);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeEqualTo(String value) {
+        public Criteria andGoodsCodeEqualTo(String value) {
             return equalTo(goodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeNotEqualTo(String value) {
+        public Criteria andGoodsCodeNotEqualTo(String value) {
             return notEqualTo(goodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeGreaterThan(String value) {
+        public Criteria andGoodsCodeGreaterThan(String value) {
             return greaterThan(goodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeGreaterThanOrEqualTo(String value) {
+        public Criteria andGoodsCodeGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(goodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeLessThan(String value) {
+        public Criteria andGoodsCodeLessThan(String value) {
             return lessThan(goodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeLessThanOrEqualTo(String value) {
+        public Criteria andGoodsCodeLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(goodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeLike(String value) {
+        public Criteria andGoodsCodeLike(String value) {
             return like(goodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeNotLike(String value) {
+        public Criteria andGoodsCodeNotLike(String value) {
             return notLike(goodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeIn(List<String> values) {
+        public Criteria andGoodsCodeIn(List<String> values) {
             return in(goodsCode, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeNotIn(List<String> values) {
+        public Criteria andGoodsCodeNotIn(List<String> values) {
             return notIn(goodsCode, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeBetween(String value1, String value2) {
+        public Criteria andGoodsCodeBetween(String value1, String value2) {
             return between(goodsCode, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsCodeNotBetween(String value1, String value2) {
+        public Criteria andGoodsCodeNotBetween(String value1, String value2) {
             return notBetween(goodsCode, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeIsNull() {
+        public Criteria andStoreGoodsCodeIsNull() {
             return isNull(storeGoodsCode);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeIsNotNull() {
+        public Criteria andStoreGoodsCodeIsNotNull() {
             return isNotNull(storeGoodsCode);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeEqualTo(String value) {
+        public Criteria andStoreGoodsCodeEqualTo(String value) {
             return equalTo(storeGoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeNotEqualTo(String value) {
+        public Criteria andStoreGoodsCodeNotEqualTo(String value) {
             return notEqualTo(storeGoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeGreaterThan(String value) {
+        public Criteria andStoreGoodsCodeGreaterThan(String value) {
             return greaterThan(storeGoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeGreaterThanOrEqualTo(String value) {
+        public Criteria andStoreGoodsCodeGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(storeGoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeLessThan(String value) {
+        public Criteria andStoreGoodsCodeLessThan(String value) {
             return lessThan(storeGoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeLessThanOrEqualTo(String value) {
+        public Criteria andStoreGoodsCodeLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(storeGoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeLike(String value) {
+        public Criteria andStoreGoodsCodeLike(String value) {
             return like(storeGoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeNotLike(String value) {
+        public Criteria andStoreGoodsCodeNotLike(String value) {
             return notLike(storeGoodsCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeIn(List<String> values) {
+        public Criteria andStoreGoodsCodeIn(List<String> values) {
             return in(storeGoodsCode, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeNotIn(List<String> values) {
+        public Criteria andStoreGoodsCodeNotIn(List<String> values) {
             return notIn(storeGoodsCode, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeBetween(String value1, String value2) {
+        public Criteria andStoreGoodsCodeBetween(String value1, String value2) {
             return between(storeGoodsCode, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStoreGoodsCodeNotBetween(String value1, String value2) {
+        public Criteria andStoreGoodsCodeNotBetween(String value1, String value2) {
             return notBetween(storeGoodsCode, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andTitleIsNull() {
+        public Criteria andTitleIsNull() {
             return isNull(title);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleIsNotNull() {
+        public Criteria andTitleIsNotNull() {
             return isNotNull(title);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleEqualTo(String value) {
+        public Criteria andTitleEqualTo(String value) {
             return equalTo(title, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleNotEqualTo(String value) {
+        public Criteria andTitleNotEqualTo(String value) {
             return notEqualTo(title, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleGreaterThan(String value) {
+        public Criteria andTitleGreaterThan(String value) {
             return greaterThan(title, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleGreaterThanOrEqualTo(String value) {
+        public Criteria andTitleGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(title, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleLessThan(String value) {
+        public Criteria andTitleLessThan(String value) {
             return lessThan(title, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleLessThanOrEqualTo(String value) {
+        public Criteria andTitleLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(title, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleLike(String value) {
+        public Criteria andTitleLike(String value) {
             return like(title, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleNotLike(String value) {
+        public Criteria andTitleNotLike(String value) {
             return notLike(title, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleIn(List<String> values) {
+        public Criteria andTitleIn(List<String> values) {
             return in(title, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleNotIn(List<String> values) {
+        public Criteria andTitleNotIn(List<String> values) {
             return notIn(title, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleBetween(String value1, String value2) {
+        public Criteria andTitleBetween(String value1, String value2) {
             return between(title, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andTitleNotBetween(String value1, String value2) {
+        public Criteria andTitleNotBetween(String value1, String value2) {
             return notBetween(title, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andWebSiteIsNull() {
+        public Criteria andWebSiteIsNull() {
             return isNull(webSite);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteIsNotNull() {
+        public Criteria andWebSiteIsNotNull() {
             return isNotNull(webSite);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteEqualTo(String value) {
+        public Criteria andWebSiteEqualTo(String value) {
             return equalTo(webSite, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteNotEqualTo(String value) {
+        public Criteria andWebSiteNotEqualTo(String value) {
             return notEqualTo(webSite, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteGreaterThan(String value) {
+        public Criteria andWebSiteGreaterThan(String value) {
             return greaterThan(webSite, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+        public Criteria andWebSiteGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(webSite, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteLessThan(String value) {
+        public Criteria andWebSiteLessThan(String value) {
             return lessThan(webSite, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+        public Criteria andWebSiteLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(webSite, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteLike(String value) {
+        public Criteria andWebSiteLike(String value) {
             return like(webSite, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteNotLike(String value) {
+        public Criteria andWebSiteNotLike(String value) {
             return notLike(webSite, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteIn(List<String> values) {
+        public Criteria andWebSiteIn(List<String> values) {
             return in(webSite, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteNotIn(List<String> values) {
+        public Criteria andWebSiteNotIn(List<String> values) {
             return notIn(webSite, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteBetween(String value1, String value2) {
+        public Criteria andWebSiteBetween(String value1, String value2) {
             return between(webSite, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+        public Criteria andWebSiteNotBetween(String value1, String value2) {
             return notBetween(webSite, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andPropStrIsNull() {
+        public Criteria andPropStrIsNull() {
             return isNull(propStr);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrIsNotNull() {
+        public Criteria andPropStrIsNotNull() {
             return isNotNull(propStr);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrEqualTo(String value) {
+        public Criteria andPropStrEqualTo(String value) {
             return equalTo(propStr, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrNotEqualTo(String value) {
+        public Criteria andPropStrNotEqualTo(String value) {
             return notEqualTo(propStr, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrGreaterThan(String value) {
+        public Criteria andPropStrGreaterThan(String value) {
             return greaterThan(propStr, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrGreaterThanOrEqualTo(String value) {
+        public Criteria andPropStrGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(propStr, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrLessThan(String value) {
+        public Criteria andPropStrLessThan(String value) {
             return lessThan(propStr, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrLessThanOrEqualTo(String value) {
+        public Criteria andPropStrLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(propStr, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrLike(String value) {
+        public Criteria andPropStrLike(String value) {
             return like(propStr, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrNotLike(String value) {
+        public Criteria andPropStrNotLike(String value) {
             return notLike(propStr, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrIn(List<String> values) {
+        public Criteria andPropStrIn(List<String> values) {
             return in(propStr, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrNotIn(List<String> values) {
+        public Criteria andPropStrNotIn(List<String> values) {
             return notIn(propStr, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrBetween(String value1, String value2) {
+        public Criteria andPropStrBetween(String value1, String value2) {
             return between(propStr, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPropStrNotBetween(String value1, String value2) {
+        public Criteria andPropStrNotBetween(String value1, String value2) {
             return notBetween(propStr, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andPicPathIsNull() {
+        public Criteria andPicPathIsNull() {
             return isNull(picPath);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathIsNotNull() {
+        public Criteria andPicPathIsNotNull() {
             return isNotNull(picPath);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathEqualTo(String value) {
+        public Criteria andPicPathEqualTo(String value) {
             return equalTo(picPath, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathNotEqualTo(String value) {
+        public Criteria andPicPathNotEqualTo(String value) {
             return notEqualTo(picPath, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathGreaterThan(String value) {
+        public Criteria andPicPathGreaterThan(String value) {
             return greaterThan(picPath, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathGreaterThanOrEqualTo(String value) {
+        public Criteria andPicPathGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(picPath, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathLessThan(String value) {
+        public Criteria andPicPathLessThan(String value) {
             return lessThan(picPath, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathLessThanOrEqualTo(String value) {
+        public Criteria andPicPathLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(picPath, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathLike(String value) {
+        public Criteria andPicPathLike(String value) {
             return like(picPath, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathNotLike(String value) {
+        public Criteria andPicPathNotLike(String value) {
             return notLike(picPath, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathIn(List<String> values) {
+        public Criteria andPicPathIn(List<String> values) {
             return in(picPath, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathNotIn(List<String> values) {
+        public Criteria andPicPathNotIn(List<String> values) {
             return notIn(picPath, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathBetween(String value1, String value2) {
+        public Criteria andPicPathBetween(String value1, String value2) {
             return between(picPath, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPicPathNotBetween(String value1, String value2) {
+        public Criteria andPicPathNotBetween(String value1, String value2) {
             return notBetween(picPath, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceIsNull() {
+        public Criteria andSinglePiPriceIsNull() {
             return isNull(singlePiPrice);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceIsNotNull() {
+        public Criteria andSinglePiPriceIsNotNull() {
             return isNotNull(singlePiPrice);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceEqualTo(String value) {
+        public Criteria andSinglePiPriceEqualTo(String value) {
             return equalTo(singlePiPrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceNotEqualTo(String value) {
+        public Criteria andSinglePiPriceNotEqualTo(String value) {
             return notEqualTo(singlePiPrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceGreaterThan(String value) {
+        public Criteria andSinglePiPriceGreaterThan(String value) {
             return greaterThan(singlePiPrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceGreaterThanOrEqualTo(String value) {
+        public Criteria andSinglePiPriceGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(singlePiPrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceLessThan(String value) {
+        public Criteria andSinglePiPriceLessThan(String value) {
             return lessThan(singlePiPrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceLessThanOrEqualTo(String value) {
+        public Criteria andSinglePiPriceLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(singlePiPrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceLike(String value) {
+        public Criteria andSinglePiPriceLike(String value) {
             return like(singlePiPrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceNotLike(String value) {
+        public Criteria andSinglePiPriceNotLike(String value) {
             return notLike(singlePiPrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceIn(List<String> values) {
+        public Criteria andSinglePiPriceIn(List<String> values) {
             return in(singlePiPrice, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceNotIn(List<String> values) {
+        public Criteria andSinglePiPriceNotIn(List<String> values) {
             return notIn(singlePiPrice, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceBetween(String value1, String value2) {
+        public Criteria andSinglePiPriceBetween(String value1, String value2) {
             return between(singlePiPrice, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePiPriceNotBetween(String value1, String value2) {
+        public Criteria andSinglePiPriceNotBetween(String value1, String value2) {
             return notBetween(singlePiPrice, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceIsNull() {
+        public Criteria andSinglePriceIsNull() {
             return isNull(singlePrice);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceIsNotNull() {
+        public Criteria andSinglePriceIsNotNull() {
             return isNotNull(singlePrice);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceEqualTo(String value) {
+        public Criteria andSinglePriceEqualTo(String value) {
             return equalTo(singlePrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceNotEqualTo(String value) {
+        public Criteria andSinglePriceNotEqualTo(String value) {
             return notEqualTo(singlePrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceGreaterThan(String value) {
+        public Criteria andSinglePriceGreaterThan(String value) {
             return greaterThan(singlePrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceGreaterThanOrEqualTo(String value) {
+        public Criteria andSinglePriceGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(singlePrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceLessThan(String value) {
+        public Criteria andSinglePriceLessThan(String value) {
             return lessThan(singlePrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceLessThanOrEqualTo(String value) {
+        public Criteria andSinglePriceLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(singlePrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceLike(String value) {
+        public Criteria andSinglePriceLike(String value) {
             return like(singlePrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceNotLike(String value) {
+        public Criteria andSinglePriceNotLike(String value) {
             return notLike(singlePrice, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceIn(List<String> values) {
+        public Criteria andSinglePriceIn(List<String> values) {
             return in(singlePrice, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceNotIn(List<String> values) {
+        public Criteria andSinglePriceNotIn(List<String> values) {
             return notIn(singlePrice, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceBetween(String value1, String value2) {
+        public Criteria andSinglePriceBetween(String value1, String value2) {
             return between(singlePrice, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andSinglePriceNotBetween(String value1, String value2) {
+        public Criteria andSinglePriceNotBetween(String value1, String value2) {
             return notBetween(singlePrice, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumIsNull() {
+        public Criteria andGoodsNumIsNull() {
             return isNull(goodsNum);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumIsNotNull() {
+        public Criteria andGoodsNumIsNotNull() {
             return isNotNull(goodsNum);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumEqualTo(Integer value) {
+        public Criteria andGoodsNumEqualTo(Integer value) {
             return equalTo(goodsNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumNotEqualTo(Integer value) {
+        public Criteria andGoodsNumNotEqualTo(Integer value) {
             return notEqualTo(goodsNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumGreaterThan(Integer value) {
+        public Criteria andGoodsNumGreaterThan(Integer value) {
             return greaterThan(goodsNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andGoodsNumGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(goodsNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumLessThan(Integer value) {
+        public Criteria andGoodsNumLessThan(Integer value) {
             return lessThan(goodsNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumLessThanOrEqualTo(Integer value) {
+        public Criteria andGoodsNumLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(goodsNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumIn(List<Integer> values) {
+        public Criteria andGoodsNumIn(List<Integer> values) {
             return in(goodsNum, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumNotIn(List<Integer> values) {
+        public Criteria andGoodsNumNotIn(List<Integer> values) {
             return notIn(goodsNum, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumBetween(Integer value1, Integer value2) {
+        public Criteria andGoodsNumBetween(Integer value1, Integer value2) {
             return between(goodsNum, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andGoodsNumNotBetween(Integer value1, Integer value2) {
             return notBetween(goodsNum, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagIsNull() {
+        public Criteria andInStockFlagIsNull() {
             return isNull(inStockFlag);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagIsNotNull() {
+        public Criteria andInStockFlagIsNotNull() {
             return isNotNull(inStockFlag);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagEqualTo(Integer value) {
+        public Criteria andInStockFlagEqualTo(Integer value) {
             return equalTo(inStockFlag, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagNotEqualTo(Integer value) {
+        public Criteria andInStockFlagNotEqualTo(Integer value) {
             return notEqualTo(inStockFlag, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagGreaterThan(Integer value) {
+        public Criteria andInStockFlagGreaterThan(Integer value) {
             return greaterThan(inStockFlag, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagGreaterThanOrEqualTo(Integer value) {
+        public Criteria andInStockFlagGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(inStockFlag, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagLessThan(Integer value) {
+        public Criteria andInStockFlagLessThan(Integer value) {
             return lessThan(inStockFlag, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagLessThanOrEqualTo(Integer value) {
+        public Criteria andInStockFlagLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(inStockFlag, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagIn(List<Integer> values) {
+        public Criteria andInStockFlagIn(List<Integer> values) {
             return in(inStockFlag, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagNotIn(List<Integer> values) {
+        public Criteria andInStockFlagNotIn(List<Integer> values) {
             return notIn(inStockFlag, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagBetween(Integer value1, Integer value2) {
+        public Criteria andInStockFlagBetween(Integer value1, Integer value2) {
             return between(inStockFlag, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andInStockFlagNotBetween(Integer value1, Integer value2) {
+        public Criteria andInStockFlagNotBetween(Integer value1, Integer value2) {
             return notBetween(inStockFlag, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andCdkeyIsNull() {
+        public Criteria andCdkeyIsNull() {
             return isNull(cdkey);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyIsNotNull() {
+        public Criteria andCdkeyIsNotNull() {
             return isNotNull(cdkey);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyEqualTo(String value) {
+        public Criteria andCdkeyEqualTo(String value) {
             return equalTo(cdkey, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyNotEqualTo(String value) {
+        public Criteria andCdkeyNotEqualTo(String value) {
             return notEqualTo(cdkey, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyGreaterThan(String value) {
+        public Criteria andCdkeyGreaterThan(String value) {
             return greaterThan(cdkey, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyGreaterThanOrEqualTo(String value) {
+        public Criteria andCdkeyGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(cdkey, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyLessThan(String value) {
+        public Criteria andCdkeyLessThan(String value) {
             return lessThan(cdkey, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyLessThanOrEqualTo(String value) {
+        public Criteria andCdkeyLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(cdkey, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyLike(String value) {
+        public Criteria andCdkeyLike(String value) {
             return like(cdkey, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyNotLike(String value) {
+        public Criteria andCdkeyNotLike(String value) {
             return notLike(cdkey, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyIn(List<String> values) {
+        public Criteria andCdkeyIn(List<String> values) {
             return in(cdkey, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyNotIn(List<String> values) {
+        public Criteria andCdkeyNotIn(List<String> values) {
             return notIn(cdkey, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyBetween(String value1, String value2) {
+        public Criteria andCdkeyBetween(String value1, String value2) {
             return between(cdkey, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCdkeyNotBetween(String value1, String value2) {
+        public Criteria andCdkeyNotBetween(String value1, String value2) {
             return notBetween(cdkey, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andRemarkIsNull() {
+        public Criteria andRemarkIsNull() {
             return isNull(remark);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkIsNotNull() {
+        public Criteria andRemarkIsNotNull() {
             return isNotNull(remark);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkEqualTo(String value) {
+        public Criteria andRemarkEqualTo(String value) {
             return equalTo(remark, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkNotEqualTo(String value) {
+        public Criteria andRemarkNotEqualTo(String value) {
             return notEqualTo(remark, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkGreaterThan(String value) {
+        public Criteria andRemarkGreaterThan(String value) {
             return greaterThan(remark, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkGreaterThanOrEqualTo(String value) {
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(remark, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkLessThan(String value) {
+        public Criteria andRemarkLessThan(String value) {
             return lessThan(remark, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkLessThanOrEqualTo(String value) {
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(remark, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkLike(String value) {
+        public Criteria andRemarkLike(String value) {
             return like(remark, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkNotLike(String value) {
+        public Criteria andRemarkNotLike(String value) {
             return notLike(remark, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkIn(List<String> values) {
+        public Criteria andRemarkIn(List<String> values) {
             return in(remark, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkNotIn(List<String> values) {
+        public Criteria andRemarkNotIn(List<String> values) {
             return notIn(remark, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkBetween(String value1, String value2) {
+        public Criteria andRemarkBetween(String value1, String value2) {
             return between(remark, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemarkNotBetween(String value1, String value2) {
+        public Criteria andRemarkNotBetween(String value1, String value2) {
             return notBetween(remark, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdIsNull() {
+        public Criteria andDaifaWorkerIdIsNull() {
             return isNull(daifaWorkerId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdIsNotNull() {
+        public Criteria andDaifaWorkerIdIsNotNull() {
             return isNotNull(daifaWorkerId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdEqualTo(Long value) {
+        public Criteria andDaifaWorkerIdEqualTo(Long value) {
             return equalTo(daifaWorkerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdNotEqualTo(Long value) {
+        public Criteria andDaifaWorkerIdNotEqualTo(Long value) {
             return notEqualTo(daifaWorkerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdGreaterThan(Long value) {
+        public Criteria andDaifaWorkerIdGreaterThan(Long value) {
             return greaterThan(daifaWorkerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andDaifaWorkerIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(daifaWorkerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdLessThan(Long value) {
+        public Criteria andDaifaWorkerIdLessThan(Long value) {
             return lessThan(daifaWorkerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdLessThanOrEqualTo(Long value) {
+        public Criteria andDaifaWorkerIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(daifaWorkerId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdIn(List<Long> values) {
+        public Criteria andDaifaWorkerIdLike(String value) {
+            return like(daifaWorkerId, value);
+        }
+
+        public Criteria andDaifaWorkerIdNotLike(String value) {
+            return notLike(daifaWorkerId, value);
+        }
+
+        public Criteria andDaifaWorkerIdIn(List<Long> values) {
             return in(daifaWorkerId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdNotIn(List<Long> values) {
+        public Criteria andDaifaWorkerIdNotIn(List<Long> values) {
             return notIn(daifaWorkerId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdBetween(Long value1, Long value2) {
+        public Criteria andDaifaWorkerIdBetween(Long value1, Long value2) {
             return between(daifaWorkerId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIdNotBetween(Long value1, Long value2) {
+        public Criteria andDaifaWorkerIdNotBetween(Long value1, Long value2) {
             return notBetween(daifaWorkerId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIsNull() {
+        public Criteria andDaifaWorkerIsNull() {
             return isNull(daifaWorker);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIsNotNull() {
+        public Criteria andDaifaWorkerIsNotNull() {
             return isNotNull(daifaWorker);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerEqualTo(String value) {
+        public Criteria andDaifaWorkerEqualTo(String value) {
             return equalTo(daifaWorker, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerNotEqualTo(String value) {
+        public Criteria andDaifaWorkerNotEqualTo(String value) {
             return notEqualTo(daifaWorker, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerGreaterThan(String value) {
+        public Criteria andDaifaWorkerGreaterThan(String value) {
             return greaterThan(daifaWorker, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerGreaterThanOrEqualTo(String value) {
+        public Criteria andDaifaWorkerGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(daifaWorker, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerLessThan(String value) {
+        public Criteria andDaifaWorkerLessThan(String value) {
             return lessThan(daifaWorker, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerLessThanOrEqualTo(String value) {
+        public Criteria andDaifaWorkerLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(daifaWorker, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerLike(String value) {
+        public Criteria andDaifaWorkerLike(String value) {
             return like(daifaWorker, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerNotLike(String value) {
+        public Criteria andDaifaWorkerNotLike(String value) {
             return notLike(daifaWorker, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerIn(List<String> values) {
+        public Criteria andDaifaWorkerIn(List<String> values) {
             return in(daifaWorker, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerNotIn(List<String> values) {
+        public Criteria andDaifaWorkerNotIn(List<String> values) {
             return notIn(daifaWorker, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerBetween(String value1, String value2) {
+        public Criteria andDaifaWorkerBetween(String value1, String value2) {
             return between(daifaWorker, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andDaifaWorkerNotBetween(String value1, String value2) {
+        public Criteria andDaifaWorkerNotBetween(String value1, String value2) {
             return notBetween(daifaWorker, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateIsNull() {
+        public Criteria andLastScanDateIsNull() {
             return isNull(lastScanDate);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateIsNotNull() {
+        public Criteria andLastScanDateIsNotNull() {
             return isNotNull(lastScanDate);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateEqualTo(String value) {
+        public Criteria andLastScanDateEqualTo(String value) {
             return equalTo(lastScanDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateNotEqualTo(String value) {
+        public Criteria andLastScanDateNotEqualTo(String value) {
             return notEqualTo(lastScanDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateGreaterThan(String value) {
+        public Criteria andLastScanDateGreaterThan(String value) {
             return greaterThan(lastScanDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateGreaterThanOrEqualTo(String value) {
+        public Criteria andLastScanDateGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(lastScanDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateLessThan(String value) {
+        public Criteria andLastScanDateLessThan(String value) {
             return lessThan(lastScanDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateLessThanOrEqualTo(String value) {
+        public Criteria andLastScanDateLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(lastScanDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateLike(String value) {
+        public Criteria andLastScanDateLike(String value) {
             return like(lastScanDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateNotLike(String value) {
+        public Criteria andLastScanDateNotLike(String value) {
             return notLike(lastScanDate, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateIn(List<String> values) {
+        public Criteria andLastScanDateIn(List<String> values) {
             return in(lastScanDate, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateNotIn(List<String> values) {
+        public Criteria andLastScanDateNotIn(List<String> values) {
             return notIn(lastScanDate, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateBetween(String value1, String value2) {
+        public Criteria andLastScanDateBetween(String value1, String value2) {
             return between(lastScanDate, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andLastScanDateNotBetween(String value1, String value2) {
+        public Criteria andLastScanDateNotBetween(String value1, String value2) {
             return notBetween(lastScanDate, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeIsNull() {
+        public Criteria andGiftCodeIsNull() {
             return isNull(giftCode);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeIsNotNull() {
+        public Criteria andGiftCodeIsNotNull() {
             return isNotNull(giftCode);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeEqualTo(String value) {
+        public Criteria andGiftCodeEqualTo(String value) {
             return equalTo(giftCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeNotEqualTo(String value) {
+        public Criteria andGiftCodeNotEqualTo(String value) {
             return notEqualTo(giftCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeGreaterThan(String value) {
+        public Criteria andGiftCodeGreaterThan(String value) {
             return greaterThan(giftCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeGreaterThanOrEqualTo(String value) {
+        public Criteria andGiftCodeGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(giftCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeLessThan(String value) {
+        public Criteria andGiftCodeLessThan(String value) {
             return lessThan(giftCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeLessThanOrEqualTo(String value) {
+        public Criteria andGiftCodeLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(giftCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeLike(String value) {
+        public Criteria andGiftCodeLike(String value) {
             return like(giftCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeNotLike(String value) {
+        public Criteria andGiftCodeNotLike(String value) {
             return notLike(giftCode, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeIn(List<String> values) {
+        public Criteria andGiftCodeIn(List<String> values) {
             return in(giftCode, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeNotIn(List<String> values) {
+        public Criteria andGiftCodeNotIn(List<String> values) {
             return notIn(giftCode, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeBetween(String value1, String value2) {
+        public Criteria andGiftCodeBetween(String value1, String value2) {
             return between(giftCode, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGiftCodeNotBetween(String value1, String value2) {
+        public Criteria andGiftCodeNotBetween(String value1, String value2) {
             return notBetween(giftCode, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andRefundIdIsNull() {
+        public Criteria andRefundIdIsNull() {
             return isNull(refundId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdIsNotNull() {
+        public Criteria andRefundIdIsNotNull() {
             return isNotNull(refundId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdEqualTo(Long value) {
+        public Criteria andRefundIdEqualTo(Long value) {
             return equalTo(refundId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdNotEqualTo(Long value) {
+        public Criteria andRefundIdNotEqualTo(Long value) {
             return notEqualTo(refundId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdGreaterThan(Long value) {
+        public Criteria andRefundIdGreaterThan(Long value) {
             return greaterThan(refundId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andRefundIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(refundId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdLessThan(Long value) {
+        public Criteria andRefundIdLessThan(Long value) {
             return lessThan(refundId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdLessThanOrEqualTo(Long value) {
+        public Criteria andRefundIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(refundId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdIn(List<Long> values) {
+        public Criteria andRefundIdLike(String value) {
+            return like(refundId, value);
+        }
+
+        public Criteria andRefundIdNotLike(String value) {
+            return notLike(refundId, value);
+        }
+
+        public Criteria andRefundIdIn(List<Long> values) {
             return in(refundId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdNotIn(List<Long> values) {
+        public Criteria andRefundIdNotIn(List<Long> values) {
             return notIn(refundId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdBetween(Long value1, Long value2) {
+        public Criteria andRefundIdBetween(Long value1, Long value2) {
             return between(refundId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRefundIdNotBetween(Long value1, Long value2) {
+        public Criteria andRefundIdNotBetween(Long value1, Long value2) {
             return notBetween(refundId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andRemark1IsNull() {
+        public Criteria andRemark1IsNull() {
             return isNull(remark1);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1IsNotNull() {
+        public Criteria andRemark1IsNotNull() {
             return isNotNull(remark1);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1EqualTo(String value) {
+        public Criteria andRemark1EqualTo(String value) {
             return equalTo(remark1, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1NotEqualTo(String value) {
+        public Criteria andRemark1NotEqualTo(String value) {
             return notEqualTo(remark1, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1GreaterThan(String value) {
+        public Criteria andRemark1GreaterThan(String value) {
             return greaterThan(remark1, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1GreaterThanOrEqualTo(String value) {
+        public Criteria andRemark1GreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(remark1, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1LessThan(String value) {
+        public Criteria andRemark1LessThan(String value) {
             return lessThan(remark1, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1LessThanOrEqualTo(String value) {
+        public Criteria andRemark1LessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(remark1, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1Like(String value) {
+        public Criteria andRemark1Like(String value) {
             return like(remark1, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1NotLike(String value) {
+        public Criteria andRemark1NotLike(String value) {
             return notLike(remark1, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1In(List<String> values) {
+        public Criteria andRemark1In(List<String> values) {
             return in(remark1, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1NotIn(List<String> values) {
+        public Criteria andRemark1NotIn(List<String> values) {
             return notIn(remark1, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1Between(String value1, String value2) {
+        public Criteria andRemark1Between(String value1, String value2) {
             return between(remark1, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark1NotBetween(String value1, String value2) {
+        public Criteria andRemark1NotBetween(String value1, String value2) {
             return notBetween(remark1, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andRemark2IsNull() {
+        public Criteria andRemark2IsNull() {
             return isNull(remark2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2IsNotNull() {
+        public Criteria andRemark2IsNotNull() {
             return isNotNull(remark2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2EqualTo(String value) {
+        public Criteria andRemark2EqualTo(String value) {
             return equalTo(remark2, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2NotEqualTo(String value) {
+        public Criteria andRemark2NotEqualTo(String value) {
             return notEqualTo(remark2, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2GreaterThan(String value) {
+        public Criteria andRemark2GreaterThan(String value) {
             return greaterThan(remark2, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2GreaterThanOrEqualTo(String value) {
+        public Criteria andRemark2GreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(remark2, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2LessThan(String value) {
+        public Criteria andRemark2LessThan(String value) {
             return lessThan(remark2, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2LessThanOrEqualTo(String value) {
+        public Criteria andRemark2LessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(remark2, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2Like(String value) {
+        public Criteria andRemark2Like(String value) {
             return like(remark2, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2NotLike(String value) {
+        public Criteria andRemark2NotLike(String value) {
             return notLike(remark2, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2In(List<String> values) {
+        public Criteria andRemark2In(List<String> values) {
             return in(remark2, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2NotIn(List<String> values) {
+        public Criteria andRemark2NotIn(List<String> values) {
             return notIn(remark2, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2Between(String value1, String value2) {
+        public Criteria andRemark2Between(String value1, String value2) {
             return between(remark2, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andRemark2NotBetween(String value1, String value2) {
+        public Criteria andRemark2NotBetween(String value1, String value2) {
             return notBetween(remark2, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andAggrementIsNull() {
+        public Criteria andAggrementIsNull() {
             return isNull(aggrement);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementIsNotNull() {
+        public Criteria andAggrementIsNotNull() {
             return isNotNull(aggrement);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementEqualTo(Integer value) {
+        public Criteria andAggrementEqualTo(Integer value) {
             return equalTo(aggrement, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementNotEqualTo(Integer value) {
+        public Criteria andAggrementNotEqualTo(Integer value) {
             return notEqualTo(aggrement, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementGreaterThan(Integer value) {
+        public Criteria andAggrementGreaterThan(Integer value) {
             return greaterThan(aggrement, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementGreaterThanOrEqualTo(Integer value) {
+        public Criteria andAggrementGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(aggrement, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementLessThan(Integer value) {
+        public Criteria andAggrementLessThan(Integer value) {
             return lessThan(aggrement, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementLessThanOrEqualTo(Integer value) {
+        public Criteria andAggrementLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(aggrement, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementIn(List<Integer> values) {
+        public Criteria andAggrementIn(List<Integer> values) {
             return in(aggrement, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementNotIn(List<Integer> values) {
+        public Criteria andAggrementNotIn(List<Integer> values) {
             return notIn(aggrement, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementBetween(Integer value1, Integer value2) {
+        public Criteria andAggrementBetween(Integer value1, Integer value2) {
             return between(aggrement, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andAggrementNotBetween(Integer value1, Integer value2) {
+        public Criteria andAggrementNotBetween(Integer value1, Integer value2) {
             return notBetween(aggrement, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andCidIsNull() {
+        public Criteria andCidIsNull() {
             return isNull(cid);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidIsNotNull() {
+        public Criteria andCidIsNotNull() {
             return isNotNull(cid);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidEqualTo(Long value) {
+        public Criteria andCidEqualTo(Long value) {
             return equalTo(cid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidNotEqualTo(Long value) {
+        public Criteria andCidNotEqualTo(Long value) {
             return notEqualTo(cid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidGreaterThan(Long value) {
+        public Criteria andCidGreaterThan(Long value) {
             return greaterThan(cid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidGreaterThanOrEqualTo(Long value) {
+        public Criteria andCidGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(cid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidLessThan(Long value) {
+        public Criteria andCidLessThan(Long value) {
             return lessThan(cid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidLessThanOrEqualTo(Long value) {
+        public Criteria andCidLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(cid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidIn(List<Long> values) {
+        public Criteria andCidLike(String value) {
+            return like(cid, value);
+        }
+
+        public Criteria andCidNotLike(String value) {
+            return notLike(cid, value);
+        }
+
+        public Criteria andCidIn(List<Long> values) {
             return in(cid, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidNotIn(List<Long> values) {
+        public Criteria andCidNotIn(List<Long> values) {
             return notIn(cid, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidBetween(Long value1, Long value2) {
+        public Criteria andCidBetween(Long value1, Long value2) {
             return between(cid, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andCidNotBetween(Long value1, Long value2) {
+        public Criteria andCidNotBetween(Long value1, Long value2) {
             return notBetween(cid, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidIsNull() {
+        public Criteria andGoodsNummiidIsNull() {
             return isNull(goodsNummiid);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidIsNotNull() {
+        public Criteria andGoodsNummiidIsNotNull() {
             return isNotNull(goodsNummiid);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidEqualTo(Long value) {
+        public Criteria andGoodsNummiidEqualTo(Long value) {
             return equalTo(goodsNummiid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidNotEqualTo(Long value) {
+        public Criteria andGoodsNummiidNotEqualTo(Long value) {
             return notEqualTo(goodsNummiid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidGreaterThan(Long value) {
+        public Criteria andGoodsNummiidGreaterThan(Long value) {
             return greaterThan(goodsNummiid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidGreaterThanOrEqualTo(Long value) {
+        public Criteria andGoodsNummiidGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(goodsNummiid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidLessThan(Long value) {
+        public Criteria andGoodsNummiidLessThan(Long value) {
             return lessThan(goodsNummiid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidLessThanOrEqualTo(Long value) {
+        public Criteria andGoodsNummiidLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(goodsNummiid, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidIn(List<Long> values) {
+        public Criteria andGoodsNummiidLike(String value) {
+            return like(goodsNummiid, value);
+        }
+
+        public Criteria andGoodsNummiidNotLike(String value) {
+            return notLike(goodsNummiid, value);
+        }
+
+        public Criteria andGoodsNummiidIn(List<Long> values) {
             return in(goodsNummiid, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidNotIn(List<Long> values) {
+        public Criteria andGoodsNummiidNotIn(List<Long> values) {
             return notIn(goodsNummiid, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidBetween(Long value1, Long value2) {
+        public Criteria andGoodsNummiidBetween(Long value1, Long value2) {
             return between(goodsNummiid, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andGoodsNummiidNotBetween(Long value1, Long value2) {
+        public Criteria andGoodsNummiidNotBetween(Long value1, Long value2) {
             return notBetween(goodsNummiid, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andHasNumIsNull() {
+        public Criteria andHasNumIsNull() {
             return isNull(hasNum);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumIsNotNull() {
+        public Criteria andHasNumIsNotNull() {
             return isNotNull(hasNum);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumEqualTo(Integer value) {
+        public Criteria andHasNumEqualTo(Integer value) {
             return equalTo(hasNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumNotEqualTo(Integer value) {
+        public Criteria andHasNumNotEqualTo(Integer value) {
             return notEqualTo(hasNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumGreaterThan(Integer value) {
+        public Criteria andHasNumGreaterThan(Integer value) {
             return greaterThan(hasNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andHasNumGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(hasNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumLessThan(Integer value) {
+        public Criteria andHasNumLessThan(Integer value) {
             return lessThan(hasNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumLessThanOrEqualTo(Integer value) {
+        public Criteria andHasNumLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(hasNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumIn(List<Integer> values) {
+        public Criteria andHasNumIn(List<Integer> values) {
             return in(hasNum, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumNotIn(List<Integer> values) {
+        public Criteria andHasNumNotIn(List<Integer> values) {
             return notIn(hasNum, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumBetween(Integer value1, Integer value2) {
+        public Criteria andHasNumBetween(Integer value1, Integer value2) {
             return between(hasNum, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andHasNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andHasNumNotBetween(Integer value1, Integer value2) {
             return notBetween(hasNum, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andStockNumIsNull() {
+        public Criteria andStockNumIsNull() {
             return isNull(stockNum);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumIsNotNull() {
+        public Criteria andStockNumIsNotNull() {
             return isNotNull(stockNum);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumEqualTo(Integer value) {
+        public Criteria andStockNumEqualTo(Integer value) {
             return equalTo(stockNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumNotEqualTo(Integer value) {
+        public Criteria andStockNumNotEqualTo(Integer value) {
             return notEqualTo(stockNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumGreaterThan(Integer value) {
+        public Criteria andStockNumGreaterThan(Integer value) {
             return greaterThan(stockNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andStockNumGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(stockNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumLessThan(Integer value) {
+        public Criteria andStockNumLessThan(Integer value) {
             return lessThan(stockNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumLessThanOrEqualTo(Integer value) {
+        public Criteria andStockNumLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(stockNum, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumIn(List<Integer> values) {
+        public Criteria andStockNumIn(List<Integer> values) {
             return in(stockNum, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumNotIn(List<Integer> values) {
+        public Criteria andStockNumNotIn(List<Integer> values) {
             return notIn(stockNum, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumBetween(Integer value1, Integer value2) {
+        public Criteria andStockNumBetween(Integer value1, Integer value2) {
             return between(stockNum, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andStockNumNotBetween(Integer value1, Integer value2) {
             return notBetween(stockNum, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andStockIdIsNull() {
+        public Criteria andStockIdIsNull() {
             return isNull(stockId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdIsNotNull() {
+        public Criteria andStockIdIsNotNull() {
             return isNotNull(stockId);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdEqualTo(Long value) {
+        public Criteria andStockIdEqualTo(Long value) {
             return equalTo(stockId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdNotEqualTo(Long value) {
+        public Criteria andStockIdNotEqualTo(Long value) {
             return notEqualTo(stockId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdGreaterThan(Long value) {
+        public Criteria andStockIdGreaterThan(Long value) {
             return greaterThan(stockId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andStockIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(stockId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdLessThan(Long value) {
+        public Criteria andStockIdLessThan(Long value) {
             return lessThan(stockId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdLessThanOrEqualTo(Long value) {
+        public Criteria andStockIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(stockId, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdIn(List<Long> values) {
+        public Criteria andStockIdLike(String value) {
+            return like(stockId, value);
+        }
+
+        public Criteria andStockIdNotLike(String value) {
+            return notLike(stockId, value);
+        }
+
+        public Criteria andStockIdIn(List<Long> values) {
             return in(stockId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdNotIn(List<Long> values) {
+        public Criteria andStockIdNotIn(List<Long> values) {
             return notIn(stockId, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdBetween(Long value1, Long value2) {
+        public Criteria andStockIdBetween(Long value1, Long value2) {
             return between(stockId, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andStockIdNotBetween(Long value1, Long value2) {
+        public Criteria andStockIdNotBetween(Long value1, Long value2) {
             return notBetween(stockId, value1, value2);
         }
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusIsNull() {
+        public Criteria andPrintAddrStatusIsNull() {
             return isNull(printAddrStatus);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusIsNotNull() {
+        public Criteria andPrintAddrStatusIsNotNull() {
             return isNotNull(printAddrStatus);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusEqualTo(Integer value) {
+        public Criteria andPrintAddrStatusEqualTo(Integer value) {
             return equalTo(printAddrStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusNotEqualTo(Integer value) {
+        public Criteria andPrintAddrStatusNotEqualTo(Integer value) {
             return notEqualTo(printAddrStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusGreaterThan(Integer value) {
+        public Criteria andPrintAddrStatusGreaterThan(Integer value) {
             return greaterThan(printAddrStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPrintAddrStatusGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(printAddrStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusLessThan(Integer value) {
+        public Criteria andPrintAddrStatusLessThan(Integer value) {
             return lessThan(printAddrStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andPrintAddrStatusLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(printAddrStatus, value);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusIn(List<Integer> values) {
+        public Criteria andPrintAddrStatusIn(List<Integer> values) {
             return in(printAddrStatus, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusNotIn(List<Integer> values) {
+        public Criteria andPrintAddrStatusNotIn(List<Integer> values) {
             return notIn(printAddrStatus, values);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusBetween(Integer value1, Integer value2) {
+        public Criteria andPrintAddrStatusBetween(Integer value1, Integer value2) {
             return between(printAddrStatus, value1, value2);
         }
 
-        public DaifaWaitSendOrderExample.Criteria andPrintAddrStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andPrintAddrStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(printAddrStatus, value1, value2);
         }
     }

@@ -7,6 +7,7 @@ import com.opentae.core.mybatis.mapperhelper.EntityHelper;
 import com.opentae.data.daifa.beans.DaifaGgoods;
 
 import java.util.*;
+
 public class DaifaGgoodsExample extends SgExample<DaifaGgoodsExample.Criteria> {
     public static final Class<DaifaGgoods> beanClass = DaifaGgoods.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
@@ -116,8 +117,8 @@ public class DaifaGgoodsExample extends SgExample<DaifaGgoodsExample.Criteria> {
     }
 
     @Override
-    protected DaifaGgoodsExample.Criteria createCriteriaInternal() {
-        return new DaifaGgoodsExample.Criteria(this);
+    protected Criteria createCriteriaInternal() {
+        return new Criteria(this);
     }
 
     public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
@@ -125,2264 +126,2352 @@ public class DaifaGgoodsExample extends SgExample<DaifaGgoodsExample.Criteria> {
             super(example);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdIsNull() {
+        public Criteria andTakeGoodsIdIsNull() {
             return isNull(takeGoodsId);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdIsNotNull() {
+        public Criteria andTakeGoodsIdIsNotNull() {
             return isNotNull(takeGoodsId);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdEqualTo(Long value) {
+        public Criteria andTakeGoodsIdEqualTo(Long value) {
             return equalTo(takeGoodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdNotEqualTo(Long value) {
+        public Criteria andTakeGoodsIdNotEqualTo(Long value) {
             return notEqualTo(takeGoodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdGreaterThan(Long value) {
+        public Criteria andTakeGoodsIdGreaterThan(Long value) {
             return greaterThan(takeGoodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andTakeGoodsIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(takeGoodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdLessThan(Long value) {
+        public Criteria andTakeGoodsIdLessThan(Long value) {
             return lessThan(takeGoodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdLessThanOrEqualTo(Long value) {
+        public Criteria andTakeGoodsIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(takeGoodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdIn(List<Long> values) {
+        public Criteria andTakeGoodsIdLike(String value) {
+            return like(takeGoodsId, value);
+        }
+
+        public Criteria andTakeGoodsIdNotLike(String value) {
+            return notLike(takeGoodsId, value);
+        }
+
+        public Criteria andTakeGoodsIdIn(List<Long> values) {
             return in(takeGoodsId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdNotIn(List<Long> values) {
+        public Criteria andTakeGoodsIdNotIn(List<Long> values) {
             return notIn(takeGoodsId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdBetween(Long value1, Long value2) {
+        public Criteria andTakeGoodsIdBetween(Long value1, Long value2) {
             return between(takeGoodsId, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsIdNotBetween(Long value1, Long value2) {
+        public Criteria andTakeGoodsIdNotBetween(Long value1, Long value2) {
             return notBetween(takeGoodsId, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andGgoodsCodeIsNull() {
+        public Criteria andGgoodsCodeIsNull() {
             return isNull(ggoodsCode);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeIsNotNull() {
+        public Criteria andGgoodsCodeIsNotNull() {
             return isNotNull(ggoodsCode);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeEqualTo(String value) {
+        public Criteria andGgoodsCodeEqualTo(String value) {
             return equalTo(ggoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeNotEqualTo(String value) {
+        public Criteria andGgoodsCodeNotEqualTo(String value) {
             return notEqualTo(ggoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeGreaterThan(String value) {
+        public Criteria andGgoodsCodeGreaterThan(String value) {
             return greaterThan(ggoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeGreaterThanOrEqualTo(String value) {
+        public Criteria andGgoodsCodeGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(ggoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeLessThan(String value) {
+        public Criteria andGgoodsCodeLessThan(String value) {
             return lessThan(ggoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeLessThanOrEqualTo(String value) {
+        public Criteria andGgoodsCodeLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(ggoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeLike(String value) {
+        public Criteria andGgoodsCodeLike(String value) {
             return like(ggoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeNotLike(String value) {
+        public Criteria andGgoodsCodeNotLike(String value) {
             return notLike(ggoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeIn(List<String> values) {
+        public Criteria andGgoodsCodeIn(List<String> values) {
             return in(ggoodsCode, values);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeNotIn(List<String> values) {
+        public Criteria andGgoodsCodeNotIn(List<String> values) {
             return notIn(ggoodsCode, values);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeBetween(String value1, String value2) {
+        public Criteria andGgoodsCodeBetween(String value1, String value2) {
             return between(ggoodsCode, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andGgoodsCodeNotBetween(String value1, String value2) {
+        public Criteria andGgoodsCodeNotBetween(String value1, String value2) {
             return notBetween(ggoodsCode, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andSellerIdIsNull() {
+        public Criteria andSellerIdIsNull() {
             return isNull(sellerId);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdIsNotNull() {
+        public Criteria andSellerIdIsNotNull() {
             return isNotNull(sellerId);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdEqualTo(Long value) {
+        public Criteria andSellerIdEqualTo(Long value) {
             return equalTo(sellerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdNotEqualTo(Long value) {
+        public Criteria andSellerIdNotEqualTo(Long value) {
             return notEqualTo(sellerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdGreaterThan(Long value) {
+        public Criteria andSellerIdGreaterThan(Long value) {
             return greaterThan(sellerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andSellerIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(sellerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdLessThan(Long value) {
+        public Criteria andSellerIdLessThan(Long value) {
             return lessThan(sellerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdLessThanOrEqualTo(Long value) {
+        public Criteria andSellerIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(sellerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdIn(List<Long> values) {
+        public Criteria andSellerIdLike(String value) {
+            return like(sellerId, value);
+        }
+
+        public Criteria andSellerIdNotLike(String value) {
+            return notLike(sellerId, value);
+        }
+
+        public Criteria andSellerIdIn(List<Long> values) {
             return in(sellerId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdNotIn(List<Long> values) {
+        public Criteria andSellerIdNotIn(List<Long> values) {
             return notIn(sellerId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdBetween(Long value1, Long value2) {
+        public Criteria andSellerIdBetween(Long value1, Long value2) {
             return between(sellerId, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andSellerIdNotBetween(Long value1, Long value2) {
+        public Criteria andSellerIdNotBetween(Long value1, Long value2) {
             return notBetween(sellerId, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdIsNull() {
+        public Criteria andDaifaWorkerIdIsNull() {
             return isNull(daifaWorkerId);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdIsNotNull() {
+        public Criteria andDaifaWorkerIdIsNotNull() {
             return isNotNull(daifaWorkerId);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdEqualTo(Long value) {
+        public Criteria andDaifaWorkerIdEqualTo(Long value) {
             return equalTo(daifaWorkerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdNotEqualTo(Long value) {
+        public Criteria andDaifaWorkerIdNotEqualTo(Long value) {
             return notEqualTo(daifaWorkerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdGreaterThan(Long value) {
+        public Criteria andDaifaWorkerIdGreaterThan(Long value) {
             return greaterThan(daifaWorkerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andDaifaWorkerIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(daifaWorkerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdLessThan(Long value) {
+        public Criteria andDaifaWorkerIdLessThan(Long value) {
             return lessThan(daifaWorkerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdLessThanOrEqualTo(Long value) {
+        public Criteria andDaifaWorkerIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(daifaWorkerId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdIn(List<Long> values) {
+        public Criteria andDaifaWorkerIdLike(String value) {
+            return like(daifaWorkerId, value);
+        }
+
+        public Criteria andDaifaWorkerIdNotLike(String value) {
+            return notLike(daifaWorkerId, value);
+        }
+
+        public Criteria andDaifaWorkerIdIn(List<Long> values) {
             return in(daifaWorkerId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdNotIn(List<Long> values) {
+        public Criteria andDaifaWorkerIdNotIn(List<Long> values) {
             return notIn(daifaWorkerId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdBetween(Long value1, Long value2) {
+        public Criteria andDaifaWorkerIdBetween(Long value1, Long value2) {
             return between(daifaWorkerId, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIdNotBetween(Long value1, Long value2) {
+        public Criteria andDaifaWorkerIdNotBetween(Long value1, Long value2) {
             return notBetween(daifaWorkerId, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIsNull() {
+        public Criteria andDaifaWorkerIsNull() {
             return isNull(daifaWorker);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIsNotNull() {
+        public Criteria andDaifaWorkerIsNotNull() {
             return isNotNull(daifaWorker);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerEqualTo(String value) {
+        public Criteria andDaifaWorkerEqualTo(String value) {
             return equalTo(daifaWorker, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerNotEqualTo(String value) {
+        public Criteria andDaifaWorkerNotEqualTo(String value) {
             return notEqualTo(daifaWorker, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerGreaterThan(String value) {
+        public Criteria andDaifaWorkerGreaterThan(String value) {
             return greaterThan(daifaWorker, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerGreaterThanOrEqualTo(String value) {
+        public Criteria andDaifaWorkerGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(daifaWorker, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerLessThan(String value) {
+        public Criteria andDaifaWorkerLessThan(String value) {
             return lessThan(daifaWorker, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerLessThanOrEqualTo(String value) {
+        public Criteria andDaifaWorkerLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(daifaWorker, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerLike(String value) {
+        public Criteria andDaifaWorkerLike(String value) {
             return like(daifaWorker, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerNotLike(String value) {
+        public Criteria andDaifaWorkerNotLike(String value) {
             return notLike(daifaWorker, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerIn(List<String> values) {
+        public Criteria andDaifaWorkerIn(List<String> values) {
             return in(daifaWorker, values);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerNotIn(List<String> values) {
+        public Criteria andDaifaWorkerNotIn(List<String> values) {
             return notIn(daifaWorker, values);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerBetween(String value1, String value2) {
+        public Criteria andDaifaWorkerBetween(String value1, String value2) {
             return between(daifaWorker, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andDaifaWorkerNotBetween(String value1, String value2) {
+        public Criteria andDaifaWorkerNotBetween(String value1, String value2) {
             return notBetween(daifaWorker, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andCreateDateIsNull() {
+        public Criteria andCreateDateIsNull() {
             return isNull(createDate);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateIsNotNull() {
+        public Criteria andCreateDateIsNotNull() {
             return isNotNull(createDate);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateEqualTo(String value) {
+        public Criteria andCreateDateEqualTo(String value) {
             return equalTo(createDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateNotEqualTo(String value) {
+        public Criteria andCreateDateNotEqualTo(String value) {
             return notEqualTo(createDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateGreaterThan(String value) {
+        public Criteria andCreateDateGreaterThan(String value) {
             return greaterThan(createDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateGreaterThanOrEqualTo(String value) {
+        public Criteria andCreateDateGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(createDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateLessThan(String value) {
+        public Criteria andCreateDateLessThan(String value) {
             return lessThan(createDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateLessThanOrEqualTo(String value) {
+        public Criteria andCreateDateLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(createDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateLike(String value) {
+        public Criteria andCreateDateLike(String value) {
             return like(createDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateNotLike(String value) {
+        public Criteria andCreateDateNotLike(String value) {
             return notLike(createDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateIn(List<String> values) {
+        public Criteria andCreateDateIn(List<String> values) {
             return in(createDate, values);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateNotIn(List<String> values) {
+        public Criteria andCreateDateNotIn(List<String> values) {
             return notIn(createDate, values);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateBetween(String value1, String value2) {
+        public Criteria andCreateDateBetween(String value1, String value2) {
             return between(createDate, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateDateNotBetween(String value1, String value2) {
+        public Criteria andCreateDateNotBetween(String value1, String value2) {
             return notBetween(createDate, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andCreateTimeIsNull() {
+        public Criteria andCreateTimeIsNull() {
             return isNull(createTime);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeIsNotNull() {
+        public Criteria andCreateTimeIsNotNull() {
             return isNotNull(createTime);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeEqualTo(Date value) {
+        public Criteria andCreateTimeEqualTo(Date value) {
             return equalTo(createTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeNotEqualTo(Date value) {
+        public Criteria andCreateTimeNotEqualTo(Date value) {
             return notEqualTo(createTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeGreaterThan(Date value) {
+        public Criteria andCreateTimeGreaterThan(Date value) {
             return greaterThan(createTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
             return greaterThanOrEqualTo(createTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeLessThan(Date value) {
+        public Criteria andCreateTimeLessThan(Date value) {
             return lessThan(createTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
             return lessThanOrEqualTo(createTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeIn(List<Date> values) {
+        public Criteria andCreateTimeIn(List<Date> values) {
             return in(createTime, values);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeNotIn(List<Date> values) {
+        public Criteria andCreateTimeNotIn(List<Date> values) {
             return notIn(createTime, values);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
             return between(createTime, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
             return notBetween(createTime, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateIsNull() {
+        public Criteria andTakeGoodsDateIsNull() {
             return isNull(takeGoodsDate);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateIsNotNull() {
+        public Criteria andTakeGoodsDateIsNotNull() {
             return isNotNull(takeGoodsDate);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateEqualTo(String value) {
+        public Criteria andTakeGoodsDateEqualTo(String value) {
             return equalTo(takeGoodsDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateNotEqualTo(String value) {
+        public Criteria andTakeGoodsDateNotEqualTo(String value) {
             return notEqualTo(takeGoodsDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateGreaterThan(String value) {
+        public Criteria andTakeGoodsDateGreaterThan(String value) {
             return greaterThan(takeGoodsDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateGreaterThanOrEqualTo(String value) {
+        public Criteria andTakeGoodsDateGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(takeGoodsDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateLessThan(String value) {
+        public Criteria andTakeGoodsDateLessThan(String value) {
             return lessThan(takeGoodsDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateLessThanOrEqualTo(String value) {
+        public Criteria andTakeGoodsDateLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(takeGoodsDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateLike(String value) {
+        public Criteria andTakeGoodsDateLike(String value) {
             return like(takeGoodsDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateNotLike(String value) {
+        public Criteria andTakeGoodsDateNotLike(String value) {
             return notLike(takeGoodsDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateIn(List<String> values) {
+        public Criteria andTakeGoodsDateIn(List<String> values) {
             return in(takeGoodsDate, values);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateNotIn(List<String> values) {
+        public Criteria andTakeGoodsDateNotIn(List<String> values) {
             return notIn(takeGoodsDate, values);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateBetween(String value1, String value2) {
+        public Criteria andTakeGoodsDateBetween(String value1, String value2) {
             return between(takeGoodsDate, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsDateNotBetween(String value1, String value2) {
+        public Criteria andTakeGoodsDateNotBetween(String value1, String value2) {
             return notBetween(takeGoodsDate, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeIsNull() {
+        public Criteria andTakeGoodsTimeIsNull() {
             return isNull(takeGoodsTime);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeIsNotNull() {
+        public Criteria andTakeGoodsTimeIsNotNull() {
             return isNotNull(takeGoodsTime);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeEqualTo(Date value) {
+        public Criteria andTakeGoodsTimeEqualTo(Date value) {
             return equalTo(takeGoodsTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeNotEqualTo(Date value) {
+        public Criteria andTakeGoodsTimeNotEqualTo(Date value) {
             return notEqualTo(takeGoodsTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeGreaterThan(Date value) {
+        public Criteria andTakeGoodsTimeGreaterThan(Date value) {
             return greaterThan(takeGoodsTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeGreaterThanOrEqualTo(Date value) {
+        public Criteria andTakeGoodsTimeGreaterThanOrEqualTo(Date value) {
             return greaterThanOrEqualTo(takeGoodsTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeLessThan(Date value) {
+        public Criteria andTakeGoodsTimeLessThan(Date value) {
             return lessThan(takeGoodsTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeLessThanOrEqualTo(Date value) {
+        public Criteria andTakeGoodsTimeLessThanOrEqualTo(Date value) {
             return lessThanOrEqualTo(takeGoodsTime, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeIn(List<Date> values) {
+        public Criteria andTakeGoodsTimeIn(List<Date> values) {
             return in(takeGoodsTime, values);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeNotIn(List<Date> values) {
+        public Criteria andTakeGoodsTimeNotIn(List<Date> values) {
             return notIn(takeGoodsTime, values);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeBetween(Date value1, Date value2) {
+        public Criteria andTakeGoodsTimeBetween(Date value1, Date value2) {
             return between(takeGoodsTime, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsTimeNotBetween(Date value1, Date value2) {
+        public Criteria andTakeGoodsTimeNotBetween(Date value1, Date value2) {
             return notBetween(takeGoodsTime, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andDfTradeIdIsNull() {
+        public Criteria andDfTradeIdIsNull() {
             return isNull(dfTradeId);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdIsNotNull() {
+        public Criteria andDfTradeIdIsNotNull() {
             return isNotNull(dfTradeId);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdEqualTo(Long value) {
+        public Criteria andDfTradeIdEqualTo(Long value) {
             return equalTo(dfTradeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdNotEqualTo(Long value) {
+        public Criteria andDfTradeIdNotEqualTo(Long value) {
             return notEqualTo(dfTradeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdGreaterThan(Long value) {
+        public Criteria andDfTradeIdGreaterThan(Long value) {
             return greaterThan(dfTradeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andDfTradeIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(dfTradeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdLessThan(Long value) {
+        public Criteria andDfTradeIdLessThan(Long value) {
             return lessThan(dfTradeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdLessThanOrEqualTo(Long value) {
+        public Criteria andDfTradeIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(dfTradeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdIn(List<Long> values) {
+        public Criteria andDfTradeIdLike(String value) {
+            return like(dfTradeId, value);
+        }
+
+        public Criteria andDfTradeIdNotLike(String value) {
+            return notLike(dfTradeId, value);
+        }
+
+        public Criteria andDfTradeIdIn(List<Long> values) {
             return in(dfTradeId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdNotIn(List<Long> values) {
+        public Criteria andDfTradeIdNotIn(List<Long> values) {
             return notIn(dfTradeId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdBetween(Long value1, Long value2) {
+        public Criteria andDfTradeIdBetween(Long value1, Long value2) {
             return between(dfTradeId, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andDfTradeIdNotBetween(Long value1, Long value2) {
+        public Criteria andDfTradeIdNotBetween(Long value1, Long value2) {
             return notBetween(dfTradeId, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andDfOrderIdIsNull() {
+        public Criteria andDfOrderIdIsNull() {
             return isNull(dfOrderId);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdIsNotNull() {
+        public Criteria andDfOrderIdIsNotNull() {
             return isNotNull(dfOrderId);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdEqualTo(Long value) {
+        public Criteria andDfOrderIdEqualTo(Long value) {
             return equalTo(dfOrderId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdNotEqualTo(Long value) {
+        public Criteria andDfOrderIdNotEqualTo(Long value) {
             return notEqualTo(dfOrderId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdGreaterThan(Long value) {
+        public Criteria andDfOrderIdGreaterThan(Long value) {
             return greaterThan(dfOrderId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andDfOrderIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(dfOrderId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdLessThan(Long value) {
+        public Criteria andDfOrderIdLessThan(Long value) {
             return lessThan(dfOrderId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdLessThanOrEqualTo(Long value) {
+        public Criteria andDfOrderIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(dfOrderId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdIn(List<Long> values) {
+        public Criteria andDfOrderIdLike(String value) {
+            return like(dfOrderId, value);
+        }
+
+        public Criteria andDfOrderIdNotLike(String value) {
+            return notLike(dfOrderId, value);
+        }
+
+        public Criteria andDfOrderIdIn(List<Long> values) {
             return in(dfOrderId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdNotIn(List<Long> values) {
+        public Criteria andDfOrderIdNotIn(List<Long> values) {
             return notIn(dfOrderId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdBetween(Long value1, Long value2) {
+        public Criteria andDfOrderIdBetween(Long value1, Long value2) {
             return between(dfOrderId, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andDfOrderIdNotBetween(Long value1, Long value2) {
+        public Criteria andDfOrderIdNotBetween(Long value1, Long value2) {
             return notBetween(dfOrderId, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andMarketIdIsNull() {
+        public Criteria andMarketIdIsNull() {
             return isNull(marketId);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdIsNotNull() {
+        public Criteria andMarketIdIsNotNull() {
             return isNotNull(marketId);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdEqualTo(Long value) {
+        public Criteria andMarketIdEqualTo(Long value) {
             return equalTo(marketId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdNotEqualTo(Long value) {
+        public Criteria andMarketIdNotEqualTo(Long value) {
             return notEqualTo(marketId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdGreaterThan(Long value) {
+        public Criteria andMarketIdGreaterThan(Long value) {
             return greaterThan(marketId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(marketId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdLessThan(Long value) {
+        public Criteria andMarketIdLessThan(Long value) {
             return lessThan(marketId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdLessThanOrEqualTo(Long value) {
+        public Criteria andMarketIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(marketId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdIn(List<Long> values) {
+        public Criteria andMarketIdLike(String value) {
+            return like(marketId, value);
+        }
+
+        public Criteria andMarketIdNotLike(String value) {
+            return notLike(marketId, value);
+        }
+
+        public Criteria andMarketIdIn(List<Long> values) {
             return in(marketId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdNotIn(List<Long> values) {
+        public Criteria andMarketIdNotIn(List<Long> values) {
             return notIn(marketId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdBetween(Long value1, Long value2) {
+        public Criteria andMarketIdBetween(Long value1, Long value2) {
             return between(marketId, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketIdNotBetween(Long value1, Long value2) {
+        public Criteria andMarketIdNotBetween(Long value1, Long value2) {
             return notBetween(marketId, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andMarketNameIsNull() {
+        public Criteria andMarketNameIsNull() {
             return isNull(marketName);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameIsNotNull() {
+        public Criteria andMarketNameIsNotNull() {
             return isNotNull(marketName);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameEqualTo(String value) {
+        public Criteria andMarketNameEqualTo(String value) {
             return equalTo(marketName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameNotEqualTo(String value) {
+        public Criteria andMarketNameNotEqualTo(String value) {
             return notEqualTo(marketName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameGreaterThan(String value) {
+        public Criteria andMarketNameGreaterThan(String value) {
             return greaterThan(marketName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameGreaterThanOrEqualTo(String value) {
+        public Criteria andMarketNameGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(marketName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameLessThan(String value) {
+        public Criteria andMarketNameLessThan(String value) {
             return lessThan(marketName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameLessThanOrEqualTo(String value) {
+        public Criteria andMarketNameLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(marketName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameLike(String value) {
+        public Criteria andMarketNameLike(String value) {
             return like(marketName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameNotLike(String value) {
+        public Criteria andMarketNameNotLike(String value) {
             return notLike(marketName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameIn(List<String> values) {
+        public Criteria andMarketNameIn(List<String> values) {
             return in(marketName, values);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameNotIn(List<String> values) {
+        public Criteria andMarketNameNotIn(List<String> values) {
             return notIn(marketName, values);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameBetween(String value1, String value2) {
+        public Criteria andMarketNameBetween(String value1, String value2) {
             return between(marketName, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andMarketNameNotBetween(String value1, String value2) {
+        public Criteria andMarketNameNotBetween(String value1, String value2) {
             return notBetween(marketName, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andFloorIdIsNull() {
+        public Criteria andFloorIdIsNull() {
             return isNull(floorId);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdIsNotNull() {
+        public Criteria andFloorIdIsNotNull() {
             return isNotNull(floorId);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdEqualTo(Long value) {
+        public Criteria andFloorIdEqualTo(Long value) {
             return equalTo(floorId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdNotEqualTo(Long value) {
+        public Criteria andFloorIdNotEqualTo(Long value) {
             return notEqualTo(floorId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdGreaterThan(Long value) {
+        public Criteria andFloorIdGreaterThan(Long value) {
             return greaterThan(floorId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andFloorIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(floorId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdLessThan(Long value) {
+        public Criteria andFloorIdLessThan(Long value) {
             return lessThan(floorId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdLessThanOrEqualTo(Long value) {
+        public Criteria andFloorIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(floorId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdIn(List<Long> values) {
+        public Criteria andFloorIdLike(String value) {
+            return like(floorId, value);
+        }
+
+        public Criteria andFloorIdNotLike(String value) {
+            return notLike(floorId, value);
+        }
+
+        public Criteria andFloorIdIn(List<Long> values) {
             return in(floorId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdNotIn(List<Long> values) {
+        public Criteria andFloorIdNotIn(List<Long> values) {
             return notIn(floorId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdBetween(Long value1, Long value2) {
+        public Criteria andFloorIdBetween(Long value1, Long value2) {
             return between(floorId, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorIdNotBetween(Long value1, Long value2) {
+        public Criteria andFloorIdNotBetween(Long value1, Long value2) {
             return notBetween(floorId, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andFloorNameIsNull() {
+        public Criteria andFloorNameIsNull() {
             return isNull(floorName);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameIsNotNull() {
+        public Criteria andFloorNameIsNotNull() {
             return isNotNull(floorName);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameEqualTo(String value) {
+        public Criteria andFloorNameEqualTo(String value) {
             return equalTo(floorName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameNotEqualTo(String value) {
+        public Criteria andFloorNameNotEqualTo(String value) {
             return notEqualTo(floorName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameGreaterThan(String value) {
+        public Criteria andFloorNameGreaterThan(String value) {
             return greaterThan(floorName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameGreaterThanOrEqualTo(String value) {
+        public Criteria andFloorNameGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(floorName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameLessThan(String value) {
+        public Criteria andFloorNameLessThan(String value) {
             return lessThan(floorName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameLessThanOrEqualTo(String value) {
+        public Criteria andFloorNameLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(floorName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameLike(String value) {
+        public Criteria andFloorNameLike(String value) {
             return like(floorName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameNotLike(String value) {
+        public Criteria andFloorNameNotLike(String value) {
             return notLike(floorName, value);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameIn(List<String> values) {
+        public Criteria andFloorNameIn(List<String> values) {
             return in(floorName, values);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameNotIn(List<String> values) {
+        public Criteria andFloorNameNotIn(List<String> values) {
             return notIn(floorName, values);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameBetween(String value1, String value2) {
+        public Criteria andFloorNameBetween(String value1, String value2) {
             return between(floorName, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andFloorNameNotBetween(String value1, String value2) {
+        public Criteria andFloorNameNotBetween(String value1, String value2) {
             return notBetween(floorName, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andStoreIdIsNull() {
+        public Criteria andStoreIdIsNull() {
             return isNull(storeId);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdIsNotNull() {
+        public Criteria andStoreIdIsNotNull() {
             return isNotNull(storeId);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdEqualTo(Long value) {
+        public Criteria andStoreIdEqualTo(Long value) {
             return equalTo(storeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdNotEqualTo(Long value) {
+        public Criteria andStoreIdNotEqualTo(Long value) {
             return notEqualTo(storeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdGreaterThan(Long value) {
+        public Criteria andStoreIdGreaterThan(Long value) {
             return greaterThan(storeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andStoreIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(storeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdLessThan(Long value) {
+        public Criteria andStoreIdLessThan(Long value) {
             return lessThan(storeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdLessThanOrEqualTo(Long value) {
+        public Criteria andStoreIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(storeId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdIn(List<Long> values) {
+        public Criteria andStoreIdLike(String value) {
+            return like(storeId, value);
+        }
+
+        public Criteria andStoreIdNotLike(String value) {
+            return notLike(storeId, value);
+        }
+
+        public Criteria andStoreIdIn(List<Long> values) {
             return in(storeId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdNotIn(List<Long> values) {
+        public Criteria andStoreIdNotIn(List<Long> values) {
             return notIn(storeId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdBetween(Long value1, Long value2) {
+        public Criteria andStoreIdBetween(Long value1, Long value2) {
             return between(storeId, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreIdNotBetween(Long value1, Long value2) {
+        public Criteria andStoreIdNotBetween(Long value1, Long value2) {
             return notBetween(storeId, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andStoreNumIsNull() {
+        public Criteria andStoreNumIsNull() {
             return isNull(storeNum);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumIsNotNull() {
+        public Criteria andStoreNumIsNotNull() {
             return isNotNull(storeNum);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumEqualTo(String value) {
+        public Criteria andStoreNumEqualTo(String value) {
             return equalTo(storeNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumNotEqualTo(String value) {
+        public Criteria andStoreNumNotEqualTo(String value) {
             return notEqualTo(storeNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumGreaterThan(String value) {
+        public Criteria andStoreNumGreaterThan(String value) {
             return greaterThan(storeNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumGreaterThanOrEqualTo(String value) {
+        public Criteria andStoreNumGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(storeNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumLessThan(String value) {
+        public Criteria andStoreNumLessThan(String value) {
             return lessThan(storeNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumLessThanOrEqualTo(String value) {
+        public Criteria andStoreNumLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(storeNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumLike(String value) {
+        public Criteria andStoreNumLike(String value) {
             return like(storeNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumNotLike(String value) {
+        public Criteria andStoreNumNotLike(String value) {
             return notLike(storeNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumIn(List<String> values) {
+        public Criteria andStoreNumIn(List<String> values) {
             return in(storeNum, values);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumNotIn(List<String> values) {
+        public Criteria andStoreNumNotIn(List<String> values) {
             return notIn(storeNum, values);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumBetween(String value1, String value2) {
+        public Criteria andStoreNumBetween(String value1, String value2) {
             return between(storeNum, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreNumNotBetween(String value1, String value2) {
+        public Criteria andStoreNumNotBetween(String value1, String value2) {
             return notBetween(storeNum, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andGoodsIdIsNull() {
+        public Criteria andGoodsIdIsNull() {
             return isNull(goodsId);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdIsNotNull() {
+        public Criteria andGoodsIdIsNotNull() {
             return isNotNull(goodsId);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdEqualTo(Long value) {
+        public Criteria andGoodsIdEqualTo(Long value) {
             return equalTo(goodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdNotEqualTo(Long value) {
+        public Criteria andGoodsIdNotEqualTo(Long value) {
             return notEqualTo(goodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdGreaterThan(Long value) {
+        public Criteria andGoodsIdGreaterThan(Long value) {
             return greaterThan(goodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(goodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdLessThan(Long value) {
+        public Criteria andGoodsIdLessThan(Long value) {
             return lessThan(goodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdLessThanOrEqualTo(Long value) {
+        public Criteria andGoodsIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(goodsId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdIn(List<Long> values) {
+        public Criteria andGoodsIdLike(String value) {
+            return like(goodsId, value);
+        }
+
+        public Criteria andGoodsIdNotLike(String value) {
+            return notLike(goodsId, value);
+        }
+
+        public Criteria andGoodsIdIn(List<Long> values) {
             return in(goodsId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdNotIn(List<Long> values) {
+        public Criteria andGoodsIdNotIn(List<Long> values) {
             return notIn(goodsId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdBetween(Long value1, Long value2) {
+        public Criteria andGoodsIdBetween(Long value1, Long value2) {
             return between(goodsId, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
+        public Criteria andGoodsIdNotBetween(Long value1, Long value2) {
             return notBetween(goodsId, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andGoodsCodeIsNull() {
+        public Criteria andGoodsCodeIsNull() {
             return isNull(goodsCode);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeIsNotNull() {
+        public Criteria andGoodsCodeIsNotNull() {
             return isNotNull(goodsCode);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeEqualTo(String value) {
+        public Criteria andGoodsCodeEqualTo(String value) {
             return equalTo(goodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeNotEqualTo(String value) {
+        public Criteria andGoodsCodeNotEqualTo(String value) {
             return notEqualTo(goodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeGreaterThan(String value) {
+        public Criteria andGoodsCodeGreaterThan(String value) {
             return greaterThan(goodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeGreaterThanOrEqualTo(String value) {
+        public Criteria andGoodsCodeGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(goodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeLessThan(String value) {
+        public Criteria andGoodsCodeLessThan(String value) {
             return lessThan(goodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeLessThanOrEqualTo(String value) {
+        public Criteria andGoodsCodeLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(goodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeLike(String value) {
+        public Criteria andGoodsCodeLike(String value) {
             return like(goodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeNotLike(String value) {
+        public Criteria andGoodsCodeNotLike(String value) {
             return notLike(goodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeIn(List<String> values) {
+        public Criteria andGoodsCodeIn(List<String> values) {
             return in(goodsCode, values);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeNotIn(List<String> values) {
+        public Criteria andGoodsCodeNotIn(List<String> values) {
             return notIn(goodsCode, values);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeBetween(String value1, String value2) {
+        public Criteria andGoodsCodeBetween(String value1, String value2) {
             return between(goodsCode, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsCodeNotBetween(String value1, String value2) {
+        public Criteria andGoodsCodeNotBetween(String value1, String value2) {
             return notBetween(goodsCode, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeIsNull() {
+        public Criteria andStoreGoodsCodeIsNull() {
             return isNull(storeGoodsCode);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeIsNotNull() {
+        public Criteria andStoreGoodsCodeIsNotNull() {
             return isNotNull(storeGoodsCode);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeEqualTo(String value) {
+        public Criteria andStoreGoodsCodeEqualTo(String value) {
             return equalTo(storeGoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeNotEqualTo(String value) {
+        public Criteria andStoreGoodsCodeNotEqualTo(String value) {
             return notEqualTo(storeGoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeGreaterThan(String value) {
+        public Criteria andStoreGoodsCodeGreaterThan(String value) {
             return greaterThan(storeGoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeGreaterThanOrEqualTo(String value) {
+        public Criteria andStoreGoodsCodeGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(storeGoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeLessThan(String value) {
+        public Criteria andStoreGoodsCodeLessThan(String value) {
             return lessThan(storeGoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeLessThanOrEqualTo(String value) {
+        public Criteria andStoreGoodsCodeLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(storeGoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeLike(String value) {
+        public Criteria andStoreGoodsCodeLike(String value) {
             return like(storeGoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeNotLike(String value) {
+        public Criteria andStoreGoodsCodeNotLike(String value) {
             return notLike(storeGoodsCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeIn(List<String> values) {
+        public Criteria andStoreGoodsCodeIn(List<String> values) {
             return in(storeGoodsCode, values);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeNotIn(List<String> values) {
+        public Criteria andStoreGoodsCodeNotIn(List<String> values) {
             return notIn(storeGoodsCode, values);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeBetween(String value1, String value2) {
+        public Criteria andStoreGoodsCodeBetween(String value1, String value2) {
             return between(storeGoodsCode, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andStoreGoodsCodeNotBetween(String value1, String value2) {
+        public Criteria andStoreGoodsCodeNotBetween(String value1, String value2) {
             return notBetween(storeGoodsCode, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andTitleIsNull() {
+        public Criteria andTitleIsNull() {
             return isNull(title);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleIsNotNull() {
+        public Criteria andTitleIsNotNull() {
             return isNotNull(title);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleEqualTo(String value) {
+        public Criteria andTitleEqualTo(String value) {
             return equalTo(title, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleNotEqualTo(String value) {
+        public Criteria andTitleNotEqualTo(String value) {
             return notEqualTo(title, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleGreaterThan(String value) {
+        public Criteria andTitleGreaterThan(String value) {
             return greaterThan(title, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleGreaterThanOrEqualTo(String value) {
+        public Criteria andTitleGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(title, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleLessThan(String value) {
+        public Criteria andTitleLessThan(String value) {
             return lessThan(title, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleLessThanOrEqualTo(String value) {
+        public Criteria andTitleLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(title, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleLike(String value) {
+        public Criteria andTitleLike(String value) {
             return like(title, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleNotLike(String value) {
+        public Criteria andTitleNotLike(String value) {
             return notLike(title, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleIn(List<String> values) {
+        public Criteria andTitleIn(List<String> values) {
             return in(title, values);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleNotIn(List<String> values) {
+        public Criteria andTitleNotIn(List<String> values) {
             return notIn(title, values);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleBetween(String value1, String value2) {
+        public Criteria andTitleBetween(String value1, String value2) {
             return between(title, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andTitleNotBetween(String value1, String value2) {
+        public Criteria andTitleNotBetween(String value1, String value2) {
             return notBetween(title, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andWebSiteIsNull() {
+        public Criteria andWebSiteIsNull() {
             return isNull(webSite);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteIsNotNull() {
+        public Criteria andWebSiteIsNotNull() {
             return isNotNull(webSite);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteEqualTo(String value) {
+        public Criteria andWebSiteEqualTo(String value) {
             return equalTo(webSite, value);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteNotEqualTo(String value) {
+        public Criteria andWebSiteNotEqualTo(String value) {
             return notEqualTo(webSite, value);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteGreaterThan(String value) {
+        public Criteria andWebSiteGreaterThan(String value) {
             return greaterThan(webSite, value);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+        public Criteria andWebSiteGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(webSite, value);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteLessThan(String value) {
+        public Criteria andWebSiteLessThan(String value) {
             return lessThan(webSite, value);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+        public Criteria andWebSiteLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(webSite, value);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteLike(String value) {
+        public Criteria andWebSiteLike(String value) {
             return like(webSite, value);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteNotLike(String value) {
+        public Criteria andWebSiteNotLike(String value) {
             return notLike(webSite, value);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteIn(List<String> values) {
+        public Criteria andWebSiteIn(List<String> values) {
             return in(webSite, values);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteNotIn(List<String> values) {
+        public Criteria andWebSiteNotIn(List<String> values) {
             return notIn(webSite, values);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteBetween(String value1, String value2) {
+        public Criteria andWebSiteBetween(String value1, String value2) {
             return between(webSite, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+        public Criteria andWebSiteNotBetween(String value1, String value2) {
             return notBetween(webSite, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andPropStrIsNull() {
+        public Criteria andPropStrIsNull() {
             return isNull(propStr);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrIsNotNull() {
+        public Criteria andPropStrIsNotNull() {
             return isNotNull(propStr);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrEqualTo(String value) {
+        public Criteria andPropStrEqualTo(String value) {
             return equalTo(propStr, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrNotEqualTo(String value) {
+        public Criteria andPropStrNotEqualTo(String value) {
             return notEqualTo(propStr, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrGreaterThan(String value) {
+        public Criteria andPropStrGreaterThan(String value) {
             return greaterThan(propStr, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrGreaterThanOrEqualTo(String value) {
+        public Criteria andPropStrGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(propStr, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrLessThan(String value) {
+        public Criteria andPropStrLessThan(String value) {
             return lessThan(propStr, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrLessThanOrEqualTo(String value) {
+        public Criteria andPropStrLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(propStr, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrLike(String value) {
+        public Criteria andPropStrLike(String value) {
             return like(propStr, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrNotLike(String value) {
+        public Criteria andPropStrNotLike(String value) {
             return notLike(propStr, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrIn(List<String> values) {
+        public Criteria andPropStrIn(List<String> values) {
             return in(propStr, values);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrNotIn(List<String> values) {
+        public Criteria andPropStrNotIn(List<String> values) {
             return notIn(propStr, values);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrBetween(String value1, String value2) {
+        public Criteria andPropStrBetween(String value1, String value2) {
             return between(propStr, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andPropStrNotBetween(String value1, String value2) {
+        public Criteria andPropStrNotBetween(String value1, String value2) {
             return notBetween(propStr, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andPicPathIsNull() {
+        public Criteria andPicPathIsNull() {
             return isNull(picPath);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathIsNotNull() {
+        public Criteria andPicPathIsNotNull() {
             return isNotNull(picPath);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathEqualTo(String value) {
+        public Criteria andPicPathEqualTo(String value) {
             return equalTo(picPath, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathNotEqualTo(String value) {
+        public Criteria andPicPathNotEqualTo(String value) {
             return notEqualTo(picPath, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathGreaterThan(String value) {
+        public Criteria andPicPathGreaterThan(String value) {
             return greaterThan(picPath, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathGreaterThanOrEqualTo(String value) {
+        public Criteria andPicPathGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(picPath, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathLessThan(String value) {
+        public Criteria andPicPathLessThan(String value) {
             return lessThan(picPath, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathLessThanOrEqualTo(String value) {
+        public Criteria andPicPathLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(picPath, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathLike(String value) {
+        public Criteria andPicPathLike(String value) {
             return like(picPath, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathNotLike(String value) {
+        public Criteria andPicPathNotLike(String value) {
             return notLike(picPath, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathIn(List<String> values) {
+        public Criteria andPicPathIn(List<String> values) {
             return in(picPath, values);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathNotIn(List<String> values) {
+        public Criteria andPicPathNotIn(List<String> values) {
             return notIn(picPath, values);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathBetween(String value1, String value2) {
+        public Criteria andPicPathBetween(String value1, String value2) {
             return between(picPath, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andPicPathNotBetween(String value1, String value2) {
+        public Criteria andPicPathNotBetween(String value1, String value2) {
             return notBetween(picPath, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andSinglePiPriceIsNull() {
+        public Criteria andSinglePiPriceIsNull() {
             return isNull(singlePiPrice);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceIsNotNull() {
+        public Criteria andSinglePiPriceIsNotNull() {
             return isNotNull(singlePiPrice);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceEqualTo(String value) {
+        public Criteria andSinglePiPriceEqualTo(String value) {
             return equalTo(singlePiPrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceNotEqualTo(String value) {
+        public Criteria andSinglePiPriceNotEqualTo(String value) {
             return notEqualTo(singlePiPrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceGreaterThan(String value) {
+        public Criteria andSinglePiPriceGreaterThan(String value) {
             return greaterThan(singlePiPrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceGreaterThanOrEqualTo(String value) {
+        public Criteria andSinglePiPriceGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(singlePiPrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceLessThan(String value) {
+        public Criteria andSinglePiPriceLessThan(String value) {
             return lessThan(singlePiPrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceLessThanOrEqualTo(String value) {
+        public Criteria andSinglePiPriceLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(singlePiPrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceLike(String value) {
+        public Criteria andSinglePiPriceLike(String value) {
             return like(singlePiPrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceNotLike(String value) {
+        public Criteria andSinglePiPriceNotLike(String value) {
             return notLike(singlePiPrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceIn(List<String> values) {
+        public Criteria andSinglePiPriceIn(List<String> values) {
             return in(singlePiPrice, values);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceNotIn(List<String> values) {
+        public Criteria andSinglePiPriceNotIn(List<String> values) {
             return notIn(singlePiPrice, values);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceBetween(String value1, String value2) {
+        public Criteria andSinglePiPriceBetween(String value1, String value2) {
             return between(singlePiPrice, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePiPriceNotBetween(String value1, String value2) {
+        public Criteria andSinglePiPriceNotBetween(String value1, String value2) {
             return notBetween(singlePiPrice, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andSinglePriceIsNull() {
+        public Criteria andSinglePriceIsNull() {
             return isNull(singlePrice);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceIsNotNull() {
+        public Criteria andSinglePriceIsNotNull() {
             return isNotNull(singlePrice);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceEqualTo(String value) {
+        public Criteria andSinglePriceEqualTo(String value) {
             return equalTo(singlePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceNotEqualTo(String value) {
+        public Criteria andSinglePriceNotEqualTo(String value) {
             return notEqualTo(singlePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceGreaterThan(String value) {
+        public Criteria andSinglePriceGreaterThan(String value) {
             return greaterThan(singlePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceGreaterThanOrEqualTo(String value) {
+        public Criteria andSinglePriceGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(singlePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceLessThan(String value) {
+        public Criteria andSinglePriceLessThan(String value) {
             return lessThan(singlePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceLessThanOrEqualTo(String value) {
+        public Criteria andSinglePriceLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(singlePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceLike(String value) {
+        public Criteria andSinglePriceLike(String value) {
             return like(singlePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceNotLike(String value) {
+        public Criteria andSinglePriceNotLike(String value) {
             return notLike(singlePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceIn(List<String> values) {
+        public Criteria andSinglePriceIn(List<String> values) {
             return in(singlePrice, values);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceNotIn(List<String> values) {
+        public Criteria andSinglePriceNotIn(List<String> values) {
             return notIn(singlePrice, values);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceBetween(String value1, String value2) {
+        public Criteria andSinglePriceBetween(String value1, String value2) {
             return between(singlePrice, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andSinglePriceNotBetween(String value1, String value2) {
+        public Criteria andSinglePriceNotBetween(String value1, String value2) {
             return notBetween(singlePrice, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andRealTakePriceIsNull() {
+        public Criteria andRealTakePriceIsNull() {
             return isNull(realTakePrice);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceIsNotNull() {
+        public Criteria andRealTakePriceIsNotNull() {
             return isNotNull(realTakePrice);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceEqualTo(String value) {
+        public Criteria andRealTakePriceEqualTo(String value) {
             return equalTo(realTakePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceNotEqualTo(String value) {
+        public Criteria andRealTakePriceNotEqualTo(String value) {
             return notEqualTo(realTakePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceGreaterThan(String value) {
+        public Criteria andRealTakePriceGreaterThan(String value) {
             return greaterThan(realTakePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceGreaterThanOrEqualTo(String value) {
+        public Criteria andRealTakePriceGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(realTakePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceLessThan(String value) {
+        public Criteria andRealTakePriceLessThan(String value) {
             return lessThan(realTakePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceLessThanOrEqualTo(String value) {
+        public Criteria andRealTakePriceLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(realTakePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceLike(String value) {
+        public Criteria andRealTakePriceLike(String value) {
             return like(realTakePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceNotLike(String value) {
+        public Criteria andRealTakePriceNotLike(String value) {
             return notLike(realTakePrice, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceIn(List<String> values) {
+        public Criteria andRealTakePriceIn(List<String> values) {
             return in(realTakePrice, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceNotIn(List<String> values) {
+        public Criteria andRealTakePriceNotIn(List<String> values) {
             return notIn(realTakePrice, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceBetween(String value1, String value2) {
+        public Criteria andRealTakePriceBetween(String value1, String value2) {
             return between(realTakePrice, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andRealTakePriceNotBetween(String value1, String value2) {
+        public Criteria andRealTakePriceNotBetween(String value1, String value2) {
             return notBetween(realTakePrice, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andGoodsNumIsNull() {
+        public Criteria andGoodsNumIsNull() {
             return isNull(goodsNum);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumIsNotNull() {
+        public Criteria andGoodsNumIsNotNull() {
             return isNotNull(goodsNum);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumEqualTo(Integer value) {
+        public Criteria andGoodsNumEqualTo(Integer value) {
             return equalTo(goodsNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumNotEqualTo(Integer value) {
+        public Criteria andGoodsNumNotEqualTo(Integer value) {
             return notEqualTo(goodsNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumGreaterThan(Integer value) {
+        public Criteria andGoodsNumGreaterThan(Integer value) {
             return greaterThan(goodsNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumGreaterThanOrEqualTo(Integer value) {
+        public Criteria andGoodsNumGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(goodsNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumLessThan(Integer value) {
+        public Criteria andGoodsNumLessThan(Integer value) {
             return lessThan(goodsNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumLessThanOrEqualTo(Integer value) {
+        public Criteria andGoodsNumLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(goodsNum, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumIn(List<Integer> values) {
+        public Criteria andGoodsNumIn(List<Integer> values) {
             return in(goodsNum, values);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumNotIn(List<Integer> values) {
+        public Criteria andGoodsNumNotIn(List<Integer> values) {
             return notIn(goodsNum, values);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumBetween(Integer value1, Integer value2) {
+        public Criteria andGoodsNumBetween(Integer value1, Integer value2) {
             return between(goodsNum, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andGoodsNumNotBetween(Integer value1, Integer value2) {
+        public Criteria andGoodsNumNotBetween(Integer value1, Integer value2) {
             return notBetween(goodsNum, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusIsNull() {
+        public Criteria andTakeGoodsStatusIsNull() {
             return isNull(takeGoodsStatus);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusIsNotNull() {
+        public Criteria andTakeGoodsStatusIsNotNull() {
             return isNotNull(takeGoodsStatus);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusEqualTo(Integer value) {
+        public Criteria andTakeGoodsStatusEqualTo(Integer value) {
             return equalTo(takeGoodsStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusNotEqualTo(Integer value) {
+        public Criteria andTakeGoodsStatusNotEqualTo(Integer value) {
             return notEqualTo(takeGoodsStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusGreaterThan(Integer value) {
+        public Criteria andTakeGoodsStatusGreaterThan(Integer value) {
             return greaterThan(takeGoodsStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andTakeGoodsStatusGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(takeGoodsStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusLessThan(Integer value) {
+        public Criteria andTakeGoodsStatusLessThan(Integer value) {
             return lessThan(takeGoodsStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andTakeGoodsStatusLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(takeGoodsStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusIn(List<Integer> values) {
+        public Criteria andTakeGoodsStatusIn(List<Integer> values) {
             return in(takeGoodsStatus, values);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusNotIn(List<Integer> values) {
+        public Criteria andTakeGoodsStatusNotIn(List<Integer> values) {
             return notIn(takeGoodsStatus, values);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusBetween(Integer value1, Integer value2) {
+        public Criteria andTakeGoodsStatusBetween(Integer value1, Integer value2) {
             return between(takeGoodsStatus, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andTakeGoodsStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andTakeGoodsStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(takeGoodsStatus, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andReturnStatusIsNull() {
+        public Criteria andReturnStatusIsNull() {
             return isNull(returnStatus);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusIsNotNull() {
+        public Criteria andReturnStatusIsNotNull() {
             return isNotNull(returnStatus);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusEqualTo(Integer value) {
+        public Criteria andReturnStatusEqualTo(Integer value) {
             return equalTo(returnStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusNotEqualTo(Integer value) {
+        public Criteria andReturnStatusNotEqualTo(Integer value) {
             return notEqualTo(returnStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusGreaterThan(Integer value) {
+        public Criteria andReturnStatusGreaterThan(Integer value) {
             return greaterThan(returnStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andReturnStatusGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(returnStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusLessThan(Integer value) {
+        public Criteria andReturnStatusLessThan(Integer value) {
             return lessThan(returnStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andReturnStatusLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(returnStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusIn(List<Integer> values) {
+        public Criteria andReturnStatusIn(List<Integer> values) {
             return in(returnStatus, values);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusNotIn(List<Integer> values) {
+        public Criteria andReturnStatusNotIn(List<Integer> values) {
             return notIn(returnStatus, values);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusBetween(Integer value1, Integer value2) {
+        public Criteria andReturnStatusBetween(Integer value1, Integer value2) {
             return between(returnStatus, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andReturnStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andReturnStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(returnStatus, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andUseStatusIsNull() {
+        public Criteria andUseStatusIsNull() {
             return isNull(useStatus);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusIsNotNull() {
+        public Criteria andUseStatusIsNotNull() {
             return isNotNull(useStatus);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusEqualTo(Integer value) {
+        public Criteria andUseStatusEqualTo(Integer value) {
             return equalTo(useStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusNotEqualTo(Integer value) {
+        public Criteria andUseStatusNotEqualTo(Integer value) {
             return notEqualTo(useStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusGreaterThan(Integer value) {
+        public Criteria andUseStatusGreaterThan(Integer value) {
             return greaterThan(useStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andUseStatusGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(useStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusLessThan(Integer value) {
+        public Criteria andUseStatusLessThan(Integer value) {
             return lessThan(useStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andUseStatusLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(useStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusIn(List<Integer> values) {
+        public Criteria andUseStatusIn(List<Integer> values) {
             return in(useStatus, values);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusNotIn(List<Integer> values) {
+        public Criteria andUseStatusNotIn(List<Integer> values) {
             return notIn(useStatus, values);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusBetween(Integer value1, Integer value2) {
+        public Criteria andUseStatusBetween(Integer value1, Integer value2) {
             return between(useStatus, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andUseStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andUseStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(useStatus, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andPrintBatchIsNull() {
+        public Criteria andPrintBatchIsNull() {
             return isNull(printBatch);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchIsNotNull() {
+        public Criteria andPrintBatchIsNotNull() {
             return isNotNull(printBatch);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchEqualTo(String value) {
+        public Criteria andPrintBatchEqualTo(String value) {
             return equalTo(printBatch, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchNotEqualTo(String value) {
+        public Criteria andPrintBatchNotEqualTo(String value) {
             return notEqualTo(printBatch, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchGreaterThan(String value) {
+        public Criteria andPrintBatchGreaterThan(String value) {
             return greaterThan(printBatch, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchGreaterThanOrEqualTo(String value) {
+        public Criteria andPrintBatchGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(printBatch, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchLessThan(String value) {
+        public Criteria andPrintBatchLessThan(String value) {
             return lessThan(printBatch, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchLessThanOrEqualTo(String value) {
+        public Criteria andPrintBatchLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(printBatch, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchLike(String value) {
+        public Criteria andPrintBatchLike(String value) {
             return like(printBatch, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchNotLike(String value) {
+        public Criteria andPrintBatchNotLike(String value) {
             return notLike(printBatch, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchIn(List<String> values) {
+        public Criteria andPrintBatchIn(List<String> values) {
             return in(printBatch, values);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchNotIn(List<String> values) {
+        public Criteria andPrintBatchNotIn(List<String> values) {
             return notIn(printBatch, values);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchBetween(String value1, String value2) {
+        public Criteria andPrintBatchBetween(String value1, String value2) {
             return between(printBatch, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBatchNotBetween(String value1, String value2) {
+        public Criteria andPrintBatchNotBetween(String value1, String value2) {
             return notBetween(printBatch, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusIsNull() {
+        public Criteria andPrintBarcodeStatusIsNull() {
             return isNull(printBarcodeStatus);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusIsNotNull() {
+        public Criteria andPrintBarcodeStatusIsNotNull() {
             return isNotNull(printBarcodeStatus);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusEqualTo(Integer value) {
+        public Criteria andPrintBarcodeStatusEqualTo(Integer value) {
             return equalTo(printBarcodeStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusNotEqualTo(Integer value) {
+        public Criteria andPrintBarcodeStatusNotEqualTo(Integer value) {
             return notEqualTo(printBarcodeStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusGreaterThan(Integer value) {
+        public Criteria andPrintBarcodeStatusGreaterThan(Integer value) {
             return greaterThan(printBarcodeStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusGreaterThanOrEqualTo(Integer value) {
+        public Criteria andPrintBarcodeStatusGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(printBarcodeStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusLessThan(Integer value) {
+        public Criteria andPrintBarcodeStatusLessThan(Integer value) {
             return lessThan(printBarcodeStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusLessThanOrEqualTo(Integer value) {
+        public Criteria andPrintBarcodeStatusLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(printBarcodeStatus, value);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusIn(List<Integer> values) {
+        public Criteria andPrintBarcodeStatusIn(List<Integer> values) {
             return in(printBarcodeStatus, values);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusNotIn(List<Integer> values) {
+        public Criteria andPrintBarcodeStatusNotIn(List<Integer> values) {
             return notIn(printBarcodeStatus, values);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusBetween(Integer value1, Integer value2) {
+        public Criteria andPrintBarcodeStatusBetween(Integer value1, Integer value2) {
             return between(printBarcodeStatus, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andPrintBarcodeStatusNotBetween(Integer value1, Integer value2) {
+        public Criteria andPrintBarcodeStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(printBarcodeStatus, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andCdkeyIsNull() {
+        public Criteria andCdkeyIsNull() {
             return isNull(cdkey);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyIsNotNull() {
+        public Criteria andCdkeyIsNotNull() {
             return isNotNull(cdkey);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyEqualTo(String value) {
+        public Criteria andCdkeyEqualTo(String value) {
             return equalTo(cdkey, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyNotEqualTo(String value) {
+        public Criteria andCdkeyNotEqualTo(String value) {
             return notEqualTo(cdkey, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyGreaterThan(String value) {
+        public Criteria andCdkeyGreaterThan(String value) {
             return greaterThan(cdkey, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyGreaterThanOrEqualTo(String value) {
+        public Criteria andCdkeyGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(cdkey, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyLessThan(String value) {
+        public Criteria andCdkeyLessThan(String value) {
             return lessThan(cdkey, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyLessThanOrEqualTo(String value) {
+        public Criteria andCdkeyLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(cdkey, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyLike(String value) {
+        public Criteria andCdkeyLike(String value) {
             return like(cdkey, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyNotLike(String value) {
+        public Criteria andCdkeyNotLike(String value) {
             return notLike(cdkey, value);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyIn(List<String> values) {
+        public Criteria andCdkeyIn(List<String> values) {
             return in(cdkey, values);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyNotIn(List<String> values) {
+        public Criteria andCdkeyNotIn(List<String> values) {
             return notIn(cdkey, values);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyBetween(String value1, String value2) {
+        public Criteria andCdkeyBetween(String value1, String value2) {
             return between(cdkey, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andCdkeyNotBetween(String value1, String value2) {
+        public Criteria andCdkeyNotBetween(String value1, String value2) {
             return notBetween(cdkey, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andRemarkIsNull() {
+        public Criteria andRemarkIsNull() {
             return isNull(remark);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkIsNotNull() {
+        public Criteria andRemarkIsNotNull() {
             return isNotNull(remark);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkEqualTo(String value) {
+        public Criteria andRemarkEqualTo(String value) {
             return equalTo(remark, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkNotEqualTo(String value) {
+        public Criteria andRemarkNotEqualTo(String value) {
             return notEqualTo(remark, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkGreaterThan(String value) {
+        public Criteria andRemarkGreaterThan(String value) {
             return greaterThan(remark, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkGreaterThanOrEqualTo(String value) {
+        public Criteria andRemarkGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(remark, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkLessThan(String value) {
+        public Criteria andRemarkLessThan(String value) {
             return lessThan(remark, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkLessThanOrEqualTo(String value) {
+        public Criteria andRemarkLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(remark, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkLike(String value) {
+        public Criteria andRemarkLike(String value) {
             return like(remark, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkNotLike(String value) {
+        public Criteria andRemarkNotLike(String value) {
             return notLike(remark, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkIn(List<String> values) {
+        public Criteria andRemarkIn(List<String> values) {
             return in(remark, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkNotIn(List<String> values) {
+        public Criteria andRemarkNotIn(List<String> values) {
             return notIn(remark, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkBetween(String value1, String value2) {
+        public Criteria andRemarkBetween(String value1, String value2) {
             return between(remark, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andRemarkNotBetween(String value1, String value2) {
+        public Criteria andRemarkNotBetween(String value1, String value2) {
             return notBetween(remark, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andDelistIsIsNull() {
+        public Criteria andDelistIsIsNull() {
             return isNull(delistIs);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsIsNotNull() {
+        public Criteria andDelistIsIsNotNull() {
             return isNotNull(delistIs);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsEqualTo(Integer value) {
+        public Criteria andDelistIsEqualTo(Integer value) {
             return equalTo(delistIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsNotEqualTo(Integer value) {
+        public Criteria andDelistIsNotEqualTo(Integer value) {
             return notEqualTo(delistIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsGreaterThan(Integer value) {
+        public Criteria andDelistIsGreaterThan(Integer value) {
             return greaterThan(delistIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsGreaterThanOrEqualTo(Integer value) {
+        public Criteria andDelistIsGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(delistIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsLessThan(Integer value) {
+        public Criteria andDelistIsLessThan(Integer value) {
             return lessThan(delistIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsLessThanOrEqualTo(Integer value) {
+        public Criteria andDelistIsLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(delistIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsIn(List<Integer> values) {
+        public Criteria andDelistIsIn(List<Integer> values) {
             return in(delistIs, values);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsNotIn(List<Integer> values) {
+        public Criteria andDelistIsNotIn(List<Integer> values) {
             return notIn(delistIs, values);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsBetween(Integer value1, Integer value2) {
+        public Criteria andDelistIsBetween(Integer value1, Integer value2) {
             return between(delistIs, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andDelistIsNotBetween(Integer value1, Integer value2) {
+        public Criteria andDelistIsNotBetween(Integer value1, Integer value2) {
             return notBetween(delistIs, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andOperateIsIsNull() {
+        public Criteria andOperateIsIsNull() {
             return isNull(operateIs);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsIsNotNull() {
+        public Criteria andOperateIsIsNotNull() {
             return isNotNull(operateIs);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsEqualTo(Integer value) {
+        public Criteria andOperateIsEqualTo(Integer value) {
             return equalTo(operateIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsNotEqualTo(Integer value) {
+        public Criteria andOperateIsNotEqualTo(Integer value) {
             return notEqualTo(operateIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsGreaterThan(Integer value) {
+        public Criteria andOperateIsGreaterThan(Integer value) {
             return greaterThan(operateIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsGreaterThanOrEqualTo(Integer value) {
+        public Criteria andOperateIsGreaterThanOrEqualTo(Integer value) {
             return greaterThanOrEqualTo(operateIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsLessThan(Integer value) {
+        public Criteria andOperateIsLessThan(Integer value) {
             return lessThan(operateIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsLessThanOrEqualTo(Integer value) {
+        public Criteria andOperateIsLessThanOrEqualTo(Integer value) {
             return lessThanOrEqualTo(operateIs, value);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsIn(List<Integer> values) {
+        public Criteria andOperateIsIn(List<Integer> values) {
             return in(operateIs, values);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsNotIn(List<Integer> values) {
+        public Criteria andOperateIsNotIn(List<Integer> values) {
             return notIn(operateIs, values);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsBetween(Integer value1, Integer value2) {
+        public Criteria andOperateIsBetween(Integer value1, Integer value2) {
             return between(operateIs, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andOperateIsNotBetween(Integer value1, Integer value2) {
+        public Criteria andOperateIsNotBetween(Integer value1, Integer value2) {
             return notBetween(operateIs, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andStockoutReasonIsNull() {
+        public Criteria andStockoutReasonIsNull() {
             return isNull(stockoutReason);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonIsNotNull() {
+        public Criteria andStockoutReasonIsNotNull() {
             return isNotNull(stockoutReason);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonEqualTo(String value) {
+        public Criteria andStockoutReasonEqualTo(String value) {
             return equalTo(stockoutReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonNotEqualTo(String value) {
+        public Criteria andStockoutReasonNotEqualTo(String value) {
             return notEqualTo(stockoutReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonGreaterThan(String value) {
+        public Criteria andStockoutReasonGreaterThan(String value) {
             return greaterThan(stockoutReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonGreaterThanOrEqualTo(String value) {
+        public Criteria andStockoutReasonGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(stockoutReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonLessThan(String value) {
+        public Criteria andStockoutReasonLessThan(String value) {
             return lessThan(stockoutReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonLessThanOrEqualTo(String value) {
+        public Criteria andStockoutReasonLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(stockoutReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonLike(String value) {
+        public Criteria andStockoutReasonLike(String value) {
             return like(stockoutReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonNotLike(String value) {
+        public Criteria andStockoutReasonNotLike(String value) {
             return notLike(stockoutReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonIn(List<String> values) {
+        public Criteria andStockoutReasonIn(List<String> values) {
             return in(stockoutReason, values);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonNotIn(List<String> values) {
+        public Criteria andStockoutReasonNotIn(List<String> values) {
             return notIn(stockoutReason, values);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonBetween(String value1, String value2) {
+        public Criteria andStockoutReasonBetween(String value1, String value2) {
             return between(stockoutReason, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andStockoutReasonNotBetween(String value1, String value2) {
+        public Criteria andStockoutReasonNotBetween(String value1, String value2) {
             return notBetween(stockoutReason, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andRefundReasonIsNull() {
+        public Criteria andRefundReasonIsNull() {
             return isNull(refundReason);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonIsNotNull() {
+        public Criteria andRefundReasonIsNotNull() {
             return isNotNull(refundReason);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonEqualTo(String value) {
+        public Criteria andRefundReasonEqualTo(String value) {
             return equalTo(refundReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonNotEqualTo(String value) {
+        public Criteria andRefundReasonNotEqualTo(String value) {
             return notEqualTo(refundReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonGreaterThan(String value) {
+        public Criteria andRefundReasonGreaterThan(String value) {
             return greaterThan(refundReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonGreaterThanOrEqualTo(String value) {
+        public Criteria andRefundReasonGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(refundReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonLessThan(String value) {
+        public Criteria andRefundReasonLessThan(String value) {
             return lessThan(refundReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonLessThanOrEqualTo(String value) {
+        public Criteria andRefundReasonLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(refundReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonLike(String value) {
+        public Criteria andRefundReasonLike(String value) {
             return like(refundReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonNotLike(String value) {
+        public Criteria andRefundReasonNotLike(String value) {
             return notLike(refundReason, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonIn(List<String> values) {
+        public Criteria andRefundReasonIn(List<String> values) {
             return in(refundReason, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonNotIn(List<String> values) {
+        public Criteria andRefundReasonNotIn(List<String> values) {
             return notIn(refundReason, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonBetween(String value1, String value2) {
+        public Criteria andRefundReasonBetween(String value1, String value2) {
             return between(refundReason, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundReasonNotBetween(String value1, String value2) {
+        public Criteria andRefundReasonNotBetween(String value1, String value2) {
             return notBetween(refundReason, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andYouhuoDateIsNull() {
+        public Criteria andYouhuoDateIsNull() {
             return isNull(youhuoDate);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateIsNotNull() {
+        public Criteria andYouhuoDateIsNotNull() {
             return isNotNull(youhuoDate);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateEqualTo(String value) {
+        public Criteria andYouhuoDateEqualTo(String value) {
             return equalTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateNotEqualTo(java.util.Date value) {
+        public Criteria andYouhuoDateNotEqualTo(String value) {
             return notEqualTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateGreaterThan(java.util.Date value) {
+        public Criteria andYouhuoDateGreaterThan(String value) {
             return greaterThan(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateGreaterThanOrEqualTo(java.util.Date value) {
+        public Criteria andYouhuoDateGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateLessThan(java.util.Date value) {
+        public Criteria andYouhuoDateLessThan(String value) {
             return lessThan(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateLessThanOrEqualTo(java.util.Date value) {
+        public Criteria andYouhuoDateLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(youhuoDate, value);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateIn(List<java.util.Date> values) {
+        public Criteria andYouhuoDateLike(String value) {
+            return like(youhuoDate, value);
+        }
+
+        public Criteria andYouhuoDateNotLike(String value) {
+            return notLike(youhuoDate, value);
+        }
+
+        public Criteria andYouhuoDateIn(List<String> values) {
             return in(youhuoDate, values);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateNotIn(List<java.util.Date> values) {
+        public Criteria andYouhuoDateNotIn(List<String> values) {
             return notIn(youhuoDate, values);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateBetween(java.util.Date value1, java.util.Date value2) {
+        public Criteria andYouhuoDateBetween(String value1, String value2) {
             return between(youhuoDate, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andYouhuoDateNotBetween(java.util.Date value1, java.util.Date value2) {
+        public Criteria andYouhuoDateNotBetween(String value1, String value2) {
             return notBetween(youhuoDate, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andGiftCodeIsNull() {
+        public Criteria andGiftCodeIsNull() {
             return isNull(giftCode);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeIsNotNull() {
+        public Criteria andGiftCodeIsNotNull() {
             return isNotNull(giftCode);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeEqualTo(String value) {
+        public Criteria andGiftCodeEqualTo(String value) {
             return equalTo(giftCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeNotEqualTo(String value) {
+        public Criteria andGiftCodeNotEqualTo(String value) {
             return notEqualTo(giftCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeGreaterThan(String value) {
+        public Criteria andGiftCodeGreaterThan(String value) {
             return greaterThan(giftCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeGreaterThanOrEqualTo(String value) {
+        public Criteria andGiftCodeGreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(giftCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeLessThan(String value) {
+        public Criteria andGiftCodeLessThan(String value) {
             return lessThan(giftCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeLessThanOrEqualTo(String value) {
+        public Criteria andGiftCodeLessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(giftCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeLike(String value) {
+        public Criteria andGiftCodeLike(String value) {
             return like(giftCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeNotLike(String value) {
+        public Criteria andGiftCodeNotLike(String value) {
             return notLike(giftCode, value);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeIn(List<String> values) {
+        public Criteria andGiftCodeIn(List<String> values) {
             return in(giftCode, values);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeNotIn(List<String> values) {
+        public Criteria andGiftCodeNotIn(List<String> values) {
             return notIn(giftCode, values);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeBetween(String value1, String value2) {
+        public Criteria andGiftCodeBetween(String value1, String value2) {
             return between(giftCode, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andGiftCodeNotBetween(String value1, String value2) {
+        public Criteria andGiftCodeNotBetween(String value1, String value2) {
             return notBetween(giftCode, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andRefundIdIsNull() {
+        public Criteria andRefundIdIsNull() {
             return isNull(refundId);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdIsNotNull() {
+        public Criteria andRefundIdIsNotNull() {
             return isNotNull(refundId);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdEqualTo(Long value) {
+        public Criteria andRefundIdEqualTo(Long value) {
             return equalTo(refundId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdNotEqualTo(Long value) {
+        public Criteria andRefundIdNotEqualTo(Long value) {
             return notEqualTo(refundId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdGreaterThan(Long value) {
+        public Criteria andRefundIdGreaterThan(Long value) {
             return greaterThan(refundId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andRefundIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(refundId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdLessThan(Long value) {
+        public Criteria andRefundIdLessThan(Long value) {
             return lessThan(refundId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdLessThanOrEqualTo(Long value) {
+        public Criteria andRefundIdLessThanOrEqualTo(Long value) {
             return lessThanOrEqualTo(refundId, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdIn(List<Long> values) {
+        public Criteria andRefundIdLike(String value) {
+            return like(refundId, value);
+        }
+
+        public Criteria andRefundIdNotLike(String value) {
+            return notLike(refundId, value);
+        }
+
+        public Criteria andRefundIdIn(List<Long> values) {
             return in(refundId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdNotIn(List<Long> values) {
+        public Criteria andRefundIdNotIn(List<Long> values) {
             return notIn(refundId, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdBetween(Long value1, Long value2) {
+        public Criteria andRefundIdBetween(Long value1, Long value2) {
             return between(refundId, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andRefundIdNotBetween(Long value1, Long value2) {
+        public Criteria andRefundIdNotBetween(Long value1, Long value2) {
             return notBetween(refundId, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andRemark1IsNull() {
+        public Criteria andRemark1IsNull() {
             return isNull(remark1);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1IsNotNull() {
+        public Criteria andRemark1IsNotNull() {
             return isNotNull(remark1);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1EqualTo(String value) {
+        public Criteria andRemark1EqualTo(String value) {
             return equalTo(remark1, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1NotEqualTo(String value) {
+        public Criteria andRemark1NotEqualTo(String value) {
             return notEqualTo(remark1, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1GreaterThan(String value) {
+        public Criteria andRemark1GreaterThan(String value) {
             return greaterThan(remark1, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1GreaterThanOrEqualTo(String value) {
+        public Criteria andRemark1GreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(remark1, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1LessThan(String value) {
+        public Criteria andRemark1LessThan(String value) {
             return lessThan(remark1, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1LessThanOrEqualTo(String value) {
+        public Criteria andRemark1LessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(remark1, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1Like(String value) {
+        public Criteria andRemark1Like(String value) {
             return like(remark1, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1NotLike(String value) {
+        public Criteria andRemark1NotLike(String value) {
             return notLike(remark1, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1In(List<String> values) {
+        public Criteria andRemark1In(List<String> values) {
             return in(remark1, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1NotIn(List<String> values) {
+        public Criteria andRemark1NotIn(List<String> values) {
             return notIn(remark1, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1Between(String value1, String value2) {
+        public Criteria andRemark1Between(String value1, String value2) {
             return between(remark1, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark1NotBetween(String value1, String value2) {
+        public Criteria andRemark1NotBetween(String value1, String value2) {
             return notBetween(remark1, value1, value2);
         }
-        public DaifaGgoodsExample.Criteria andRemark2IsNull() {
+        public Criteria andRemark2IsNull() {
             return isNull(remark2);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2IsNotNull() {
+        public Criteria andRemark2IsNotNull() {
             return isNotNull(remark2);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2EqualTo(String value) {
+        public Criteria andRemark2EqualTo(String value) {
             return equalTo(remark2, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2NotEqualTo(String value) {
+        public Criteria andRemark2NotEqualTo(String value) {
             return notEqualTo(remark2, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2GreaterThan(String value) {
+        public Criteria andRemark2GreaterThan(String value) {
             return greaterThan(remark2, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2GreaterThanOrEqualTo(String value) {
+        public Criteria andRemark2GreaterThanOrEqualTo(String value) {
             return greaterThanOrEqualTo(remark2, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2LessThan(String value) {
+        public Criteria andRemark2LessThan(String value) {
             return lessThan(remark2, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2LessThanOrEqualTo(String value) {
+        public Criteria andRemark2LessThanOrEqualTo(String value) {
             return lessThanOrEqualTo(remark2, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2Like(String value) {
+        public Criteria andRemark2Like(String value) {
             return like(remark2, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2NotLike(String value) {
+        public Criteria andRemark2NotLike(String value) {
             return notLike(remark2, value);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2In(List<String> values) {
+        public Criteria andRemark2In(List<String> values) {
             return in(remark2, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2NotIn(List<String> values) {
+        public Criteria andRemark2NotIn(List<String> values) {
             return notIn(remark2, values);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2Between(String value1, String value2) {
+        public Criteria andRemark2Between(String value1, String value2) {
             return between(remark2, value1, value2);
         }
 
-        public DaifaGgoodsExample.Criteria andRemark2NotBetween(String value1, String value2) {
+        public Criteria andRemark2NotBetween(String value1, String value2) {
             return notBetween(remark2, value1, value2);
         }
     }
