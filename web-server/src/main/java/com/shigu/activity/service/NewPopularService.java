@@ -3,12 +3,15 @@ package com.shigu.activity.service;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguMarket;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.ShiguTemp;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguMarketExample;
+import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguMarketMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.activity.tempvo.PopularGoodsVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +40,9 @@ public class NewPopularService {
 
     @Autowired
     ShiguMarketMapper shiguMarketMapper;
+
+    @Autowired
+    ShiguShopMapper shiguShopMapper;
 
     /**
      * 获取秋装新品发布会0811数据
@@ -75,17 +81,21 @@ public class NewPopularService {
         shiguMarketExample.createCriteria().andMarketIdIn(shiguGoodsTinies.stream().map(ShiguGoodsTiny::getParentMarketId).collect(Collectors.toList()));
         Map<Long, String> marketIdNameMap = shiguMarketMapper.selectFieldsByExample(shiguMarketExample, FieldUtil.codeFields("market_id,market_name"))
                 .stream().collect(Collectors.toMap(ShiguMarket::getMarketId, ShiguMarket::getMarketName));
+        //处理goods_tiny中一些记录没有shopNum信息
+        ShiguShopExample shiguShopExample = new ShiguShopExample();
+        shiguShopExample.createCriteria().andShopIdIn(shiguGoodsTinies.stream().map(ShiguGoodsTiny::getStoreId).collect(Collectors.toList()));
+        Map<Long, String> shopIdNumMap = shiguShopMapper.selectFieldsByExample(shiguShopExample, FieldUtil.codeFields("shop_id,shop_num")).stream().collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getShopNum));
         return shiguGoodsTinies.stream().map(o -> {
             PopularGoodsVO vo = new PopularGoodsVO();
             vo.setGoodsId(o.getGoodsId());
             vo.setImgSrc(o.getPicUrl());
             vo.setShopId(o.getStoreId());
-            vo.setShopNum(o.getStoreNum());
+            vo.setShopNum(o.getStoreNum()==null?shopIdNumMap.get(o.getStoreId()):o.getStoreNum());
             vo.setMarketName(o.getParentMarketName()==null?marketIdNameMap.get(o.getParentMarketId()):o.getParentMarketName());
             vo.setTitle(o.getTitle());
-            vo.setPiPriceString(o.getPiPriceString());
             String shStatus = goodsIdShStatusMap.get(o.getGoodsId().toString());
             vo.setShStatus(shStatus == null ? 0 : new Integer(shStatus));
+            vo.setPiPriceString(o.getPiPriceString());
             return vo;
         }).collect(Collectors.toList());
     }
