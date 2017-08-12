@@ -50,9 +50,12 @@ public class ItemProductImplTest extends BaseTest {
 
         assertEquals(primaryKey.getPrice(), modPrice);
     }
+    @Autowired
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
     @Test
     public void selWeight() throws Exception {
-        show(getProduct().selWeight());
+//        ShiguGoodsTiny shiguGoodsTiny = shiguGoodsTinyMapper.selectGoodsById("hz", 20477519L);
+//        show(getProduct().selWeight());
     }
 
 }

@@ -136,7 +136,7 @@
         <dependency>
             <groupId>xinzuo-mybatis</groupId>
             <artifactId>xinzuo-mybatis</artifactId>
-            <version>1.0.3.RO-SNAPSHOT</version>
+            <version>1.0.3-SNAPSHOT</version>
         </dependency>
 
         <!--mysql部分-->
