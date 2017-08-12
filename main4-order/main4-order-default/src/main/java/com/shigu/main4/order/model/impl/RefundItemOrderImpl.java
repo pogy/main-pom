@@ -142,7 +142,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      * @param log           记录日志
      */
     @Transactional(rollbackFor = Exception.class)
-    private void refundStateChangeAndLog(RefundVO refundInfo, RefundStateEnum state, String log) {
+    public void refundStateChangeAndLog(RefundVO refundInfo, RefundStateEnum state, String log) {
         if (refundInfo == null) {
             refundInfo = refundinfo();
         }
@@ -299,7 +299,7 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      * @throws RefundException 诉求金额不满足
      */
     @Transactional(rollbackFor = Exception.class)
-    private void doRefundMoney(boolean buyerWin) throws PayerException, RefundException {
+    public void doRefundMoney(boolean buyerWin) throws PayerException, RefundException {
         RefundVO refundinfo = refundinfo();
 
         // 买家赢 使用 hopeMoney, 卖家赢使用 sellerProposalMoney

@@ -20,49 +20,14 @@
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <context:component-scan base-package="com.opentae.*,com.shigu.*,com.alibaba.*,com.searchtool.configs"/>
+    <context:component-scan base-package="com.opentae.*,com.shigu.*"/>
+
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
                 <value>classpath*:/META-INF/spring/*.properties</value>
             </list>
-        </property>
-    </bean>
-
-    <bean id="producer" class="com.aliyun.openservices.ons.api.bean.ProducerBean" init-method="start" destroy-method="shutdown">
-        <!-- Spring接入方式支持Java SDK支持的所有配置项 -->
-        <property name="properties" > <!--生产者配置信息-->
-            <props>
-                <prop key="ProducerId">PID_ONEKEY</prop> <!--请替换XXX-->
-                <prop key="AccessKey">YsqgyCrBUiYFIdRE</prop>
-                <prop key="SecretKey">KdV0QWhwUbftdfLpOoED1cIq1bHPyA</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="consumer" class="com.aliyun.openservices.ons.api.bean.ConsumerBean" init-method="start" destroy-method="shutdown">
-        <property name="properties" > <!--消费者配置信息-->
-            <props>
-                <prop key="ConsumerId">CID_ONEKEY</prop> <!--请替换XXX-->
-                <prop key="AccessKey">YsqgyCrBUiYFIdRE</prop>
-                <prop key="SecretKey">KdV0QWhwUbftdfLpOoED1cIq1bHPyA</prop>
-                <!--将消费者线程数固定为50个
-                <prop key="ConsumeThreadNums">50</prop>
-                -->
-            </props>
-        </property>
-        <property name="subscriptionTable">
-            <map>
-                <entry value-ref="itemUpMessageListener">
-                    <key>
-                        <bean class="com.aliyun.openservices.ons.api.bean.Subscription">
-                            <property name="topic" value="ONEKEY_UPLOAD"/>
-                            <property name="expression" value="*"/><!--expression即Tag，可以设置成具体的Tag，如 taga||tagb||tagc，也可设置成*。 *仅代表订阅所有Tag，不支持通配-->
-                        </bean>
-                    </key>
-                </entry>
-            </map>
         </property>
     </bean>
 
@@ -129,5 +94,5 @@
     <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
-    <import resource="monitor.xml"/>
+    <import resource="order.xml"/>
 </beans>
