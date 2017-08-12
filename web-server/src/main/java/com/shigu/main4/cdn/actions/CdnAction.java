@@ -798,8 +798,9 @@ public class CdnAction {
     }
 
     @RequestMapping("smallpic")
-    public String smallPic(Long id){
-        return "redirect:"+shopsItemService.itemImgzipUrl(id);
+    @ResponseBody
+    public JSONObject smallPic(Long id){
+        return JsonResponseUtil.success().element("pic", shopsItemService.itemImgzipUrl(id));
     }
 
     @RequestMapping("downloadImg")
