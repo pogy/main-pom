@@ -35,27 +35,30 @@ public class OrderModelImplTest extends BaseSpringTest{
         bo.setSenderId(16546L);
         SubOrderBO subOrderBO=new SubOrderBO();
         subOrderBO.setSoid(1234654L);
-        subOrderBO.setNum(3);
-        subOrderBO.setColor("red");
-        subOrderBO.setFloor("2F");
-        subOrderBO.setFloorId(623L);
-        subOrderBO.setGoodsId(165752L);
-        subOrderBO.setGoodsNo("140");
-        subOrderBO.setMarketId(621L);
-        subOrderBO.setMarketName("四季星座");
-        subOrderBO.setPicUrl("https://img.alicdn.com/bao/uploaded/i4/18874038534868392/T1_s5bFitcXXXXXXXX_!!0-item_pic.jpg");
-        subOrderBO.setSize("XL");
-        subOrderBO.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
-        subOrderBO.setSinglePay("275.00");
-        subOrderBO.setShopId(16887L);
         List<Long>soidps= new ArrayList<>();
         soidps.add(25L);
         soidps.add(24L);
         soidps.add(23L);
         subOrderBO.setSoidps(soidps);
-        subOrderBO.setWebSite("hz");
+
+        subOrderBO.setNum(3);
+        subOrderBO.setGoodsId(165752L);
+        subOrderBO.setGoodsNo("140");
+        subOrderBO.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
+        subOrderBO.setPicUrl("https://img.alicdn.com/bao/uploaded/i4/18874038534868392/T1_s5bFitcXXXXXXXX_!!0-item_pic.jpg");
+        subOrderBO.setMarketId(613L);
+        subOrderBO.setMarketName("精品男装");
+        subOrderBO.setFloorId(614L);
+        subOrderBO.setFloor("1F");
+        subOrderBO.setShopId(16887L);
         subOrderBO.setShopNum("140");
-        /*SubOrderBO s2=new SubOrderBO();
+        subOrderBO.setColor("红色");
+        subOrderBO.setSize("XL");
+        subOrderBO.setSinglePay("275.00");
+        subOrderBO.setWebSite("hz");
+
+
+        SubOrderBO s2=new SubOrderBO();
         s2.setColor("red");
         s2.setFloor("2F");
         s2.setFloorId(623L);
@@ -75,7 +78,7 @@ public class OrderModelImplTest extends BaseSpringTest{
         soidps.add(28L);
         s2.setSoidps(soidps1);
         s2.setWebSite("hz");
-        s2.setShopNum("140");*/
+        s2.setShopNum("140");
 //        s2.setNum(3);
 
         LogisticsBO logisticsBO =new LogisticsBO();
