@@ -95,7 +95,7 @@ public class OrderModelImplTest extends BaseSpringTest{
         logisticsBO.setCompanyId(68L);
         bo.setType(1);
         ServiceBO serviceBO=new ServiceBO();
-        serviceBO.setMoney("5");
+        serviceBO.setMoney("6");
         serviceBO.setSoid(1234654L);
        bo.setOid(46846123L);
        List<LogisticsBO> logisticsBOS=new ArrayList<>();
