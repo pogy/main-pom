@@ -56,6 +56,7 @@ public class NewPopularService {
     public List<PopularGoodsVO> selNewPopularGoodsList() {
         ShiguTempExample shiguTempExample = new ShiguTempExample();
         shiguTempExample.createCriteria().andFlagEqualTo("new_autumn_0811");
+        shiguTempExample.setOrderByClause(" key4 + 0 asc");
         List<ShiguTemp> shiguTemps = shiguTempMapper.selectByExample(shiguTempExample);
         if (shiguTemps.size() == 0) {
             return Collections.EMPTY_LIST;
@@ -85,24 +86,22 @@ public class NewPopularService {
         ShiguShopExample shiguShopExample = new ShiguShopExample();
         shiguShopExample.createCriteria().andShopIdIn(shiguGoodsTinies.stream().map(ShiguGoodsTiny::getStoreId).collect(Collectors.toList()));
         Map<Long, String> shopIdNumMap = shiguShopMapper.selectFieldsByExample(shiguShopExample, FieldUtil.codeFields("shop_id,shop_num")).stream().collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getShopNum));
-
-        Map<Long, List<PopularGoodsVO>> map = shiguGoodsTinies.stream().map(o -> {
+        Map<Long, ShiguGoodsTiny> tinyMap = shiguGoodsTinies.stream().collect(Collectors.toMap(ShiguGoodsTiny::getGoodsId, o -> {
+            return o;
+        }));
+        return shiguTemps.stream().map(obj -> {
             PopularGoodsVO vo = new PopularGoodsVO();
+            ShiguGoodsTiny o = tinyMap.get(Long.valueOf(obj.getKey1()));
             vo.setGoodsId(o.getGoodsId());
             vo.setImgSrc(o.getPicUrl());
             vo.setShopId(o.getStoreId());
-            vo.setShopNum(o.getStoreNum() == null ? shopIdNumMap.get(o.getStoreId()) : o.getStoreNum());
+            vo.setShopNum(o.getStoreNum()==null?shopIdNumMap.get(o.getStoreId()):o.getStoreNum());
             vo.setMarketName(marketIdNameMap.get(o.getParentMarketId()));
             vo.setTitle(o.getTitle());
             String shStatus = goodsIdShStatusMap.get(o.getGoodsId().toString());
             vo.setShStatus(shStatus == null ? 0 : new Integer(shStatus));
             vo.setPiPriceString(o.getPiPriceString());
             return vo;
-        }).collect(Collectors.groupingBy(PopularGoodsVO::getShopId));
-        ArrayList<PopularGoodsVO> list = new ArrayList<>(100);
-        for (List<PopularGoodsVO> popularGoodsVOS : map.values()) {
-            list.addAll(popularGoodsVOS);
-        }
-        return list;
+        }).collect(Collectors.toList());
     }
 }
