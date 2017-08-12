@@ -44,6 +44,7 @@ import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.AreaVO;
 import com.shigu.seller.vo.ContainerVO;
+import com.shigu.seller.vo.DatuVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
@@ -805,7 +806,7 @@ public class CdnAction {
             return ;
         }
         String upflag="imgzip";
-        String bigUrl=goodsFileService.datuUrl(goodsId);
+        DatuVO bigVo=goodsFileService.datuUrl(goodsId);
         String url = shopsItemService.itemImgzipUrl(goodsId);
         String content;
         if (StringUtils.isEmpty(url)) {
@@ -848,8 +849,11 @@ public class CdnAction {
             }
             itemUpRecordService.addItemUpRecord(record);
             content = "{'result':'success','msg':'成功','sourceHref':'" + url + "'";
-            if(StringUtils.isNotEmpty(bigUrl)){
-                content+=",'bigPicSource':'"+bigUrl+"'";
+            if(bigVo!=null){
+                content+=",'bigPicSource':'"+bigVo.getUrl()+"'";
+                if(StringUtils.isNotEmpty(bigVo.getPwd())){//是否有密码
+                    content+=",'extractPsw':'"+bigVo.getPwd()+"'";
+                }
             }
             content+="}";
         }

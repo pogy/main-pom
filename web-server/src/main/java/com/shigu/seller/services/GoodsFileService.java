@@ -21,6 +21,7 @@ import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopLicense;
 import com.shigu.seller.bo.BigPicOuterLinkBO;
+import com.shigu.seller.vo.DatuVO;
 import com.shigu.seller.vo.FileSizeVO;
 import com.shigu.seller.vo.GoodsFileSearchVO;
 import com.shigu.seller.vo.GoodsFileVO;
@@ -334,13 +335,16 @@ public class GoodsFileService extends OssIO {
      * @param goodsId
      * @return
      */
-    public String datuUrl(Long goodsId) {
+    public DatuVO datuUrl(Long goodsId) {
         GoodsFileExample example = new GoodsFileExample();
         example.createCriteria().andGoodsIdEqualTo(goodsId);
         List<GoodsFile> files = goodsFileMapper.selectByExample(example);
         if (files.size() > 0) {
             GoodsFile goodsFile=files.get(0);
-            return goodsFile.getType()==1?super.getDomain() + files.get(0).getFileKey():files.get(0).getFileKey();
+            DatuVO vo=new DatuVO();
+            vo.setUrl(goodsFile.getType()==1?super.getDomain() + files.get(0).getFileKey():files.get(0).getFileKey());
+            vo.setPwd(goodsFile.getPasswd());
+            return vo;
         } else {
             return null;
         }
