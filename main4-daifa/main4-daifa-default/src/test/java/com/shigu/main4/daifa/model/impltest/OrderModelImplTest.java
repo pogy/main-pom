@@ -46,10 +46,10 @@ public class OrderModelImplTest extends BaseSpringTest{
         subOrderBO.setGoodsNo("140");
         subOrderBO.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
         subOrderBO.setPicUrl("https://img.alicdn.com/bao/uploaded/i4/18874038534868392/T1_s5bFitcXXXXXXXX_!!0-item_pic.jpg");
-        subOrderBO.setMarketId(613L);
-        subOrderBO.setMarketName("精品男装");
-        subOrderBO.setFloorId(614L);
-        subOrderBO.setFloor("1F");
+        subOrderBO.setMarketId(1087L);
+        subOrderBO.setMarketName("电商基地");
+        subOrderBO.setFloorId(1089L);
+        subOrderBO.setFloor("2F");
         subOrderBO.setShopId(16887L);
         subOrderBO.setShopNum("140");
         subOrderBO.setColor("红色");
@@ -59,26 +59,28 @@ public class OrderModelImplTest extends BaseSpringTest{
 
 
         SubOrderBO s2=new SubOrderBO();
-        s2.setColor("red");
-        s2.setFloor("2F");
-        s2.setFloorId(623L);
-        s2.setGoodsId(165752L);
-        s2.setGoodsNo("140");
+        s2.setGoodsId(21076838L);
+        s2.setTitle("秋季夹克韩版男士外套潮男装青少年牛仔夹克学生A268-JK121-P78");
+        s2.setPicUrl("https://img.alicdn.com/bao/uploaded/i1/1600266804/TB2oEeuawL8F1JjSsphXXXknVXa_!!1600266804.jpg");
+        s2.setSize("L");
+        s2.setColor("白色");
+        s2.setGoodsNo("A268-JK121");
         s2.setMarketId(621L);
         s2.setMarketName("四季星座");
-        s2.setPicUrl("https://img.alicdn.com/bao/uploaded/i4/18874038534868392/T1_s5bFitcXXXXXXXX_!!0-item_pic.jpg");
-        s2.setSize("XL");
-        s2.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
-        s2.setSinglePay("275.00");
-        s2.setShopId(16887L);
+        s2.setFloorId(623L);
+        s2.setFloor("2F");
+        s2.setShopId(41700L);
+        s2.setShopNum("A268");
+
+        s2.setSinglePay("78.00");
+
         s2.setSoid(145556L);
         List<Long>soidps1= new ArrayList<>();
         soidps.add(26L);
         soidps.add(27L);
-        soidps.add(28L);
         s2.setSoidps(soidps1);
         s2.setWebSite("hz");
-        s2.setShopNum("140");
+
 //        s2.setNum(3);
 
         LogisticsBO logisticsBO =new LogisticsBO();
@@ -89,16 +91,16 @@ public class OrderModelImplTest extends BaseSpringTest{
         logisticsBO.setName("Mark");
         logisticsBO.setTelephone("13154862568");
         logisticsBO.setTown("滨江区");
-        logisticsBO.setCompany("韵达");
-        logisticsBO.setCompanyId(6L);
+        logisticsBO.setCompany("申通快递");
+        logisticsBO.setCompanyId(68L);
         bo.setType(1);
         ServiceBO serviceBO=new ServiceBO();
-        serviceBO.setMoney(10);
+        serviceBO.setMoney(981);
        bo.setOid(46846123L);
        List<LogisticsBO> logisticsBOS=new ArrayList<>();
        logisticsBOS.add(logisticsBO);
        List<SubOrderBO> subOrderBOS=new ArrayList<>();
-//       subOrderBOS.add(s2);
+       subOrderBOS.add(s2);
        subOrderBOS.add(subOrderBO);
        List<ServiceBO>serviceBOS=new ArrayList<>();
        serviceBOS.add(serviceBO);
