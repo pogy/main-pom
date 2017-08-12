@@ -52,10 +52,9 @@ public class OrderModelImplTest extends BaseSpringTest{
         soidps.add(25L);
         soidps.add(24L);
         soidps.add(23L);
-        subOrderBO.setSoidps(soidps);
-        subOrderBO.setWebSite("hz");
-        subOrderBO.setShopNum("140");
-        /*SubOrderBO s2=new SubOrderBO();
+        SubOrderBO s2=new SubOrderBO();
+        s2.setNum(3);
+        s2.setSoid(145556L);
         s2.setColor("red");
         s2.setFloor("2F");
         s2.setFloorId(623L);
@@ -68,15 +67,17 @@ public class OrderModelImplTest extends BaseSpringTest{
         s2.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
         s2.setSinglePay("275.00");
         s2.setShopId(16887L);
-        s2.setSoid(145556L);
-        List<Long>soidps1= new ArrayList<>();
-        soidps.add(26L);
-        soidps.add(27L);
-        soidps.add(28L);
-        s2.setSoidps(soidps1);
+        List<Long>soidpss1= new ArrayList<>();
+        soidpss1.add(26L);
+        soidpss1.add(27L);
+        soidpss1.add(28L);
+        s2.setSoidps(soidpss1);
         s2.setWebSite("hz");
-        s2.setShopNum("140");*/
-//        s2.setNum(3);
+        s2.setShopNum("140");
+        subOrderBO.setSoidps(soidps);
+        subOrderBO.setWebSite("hz");
+        subOrderBO.setShopNum("140");
+
 
         LogisticsBO logisticsBO =new LogisticsBO();
         logisticsBO.setMoney("12");
@@ -95,7 +96,7 @@ public class OrderModelImplTest extends BaseSpringTest{
        List<LogisticsBO> logisticsBOS=new ArrayList<>();
        logisticsBOS.add(logisticsBO);
        List<SubOrderBO> subOrderBOS=new ArrayList<>();
-//       subOrderBOS.add(s2);
+       subOrderBOS.add(s2);
        subOrderBOS.add(subOrderBO);
        List<ServiceBO>serviceBOS=new ArrayList<>();
        serviceBOS.add(serviceBO);
