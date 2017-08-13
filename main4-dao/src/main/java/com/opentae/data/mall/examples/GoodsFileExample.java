@@ -300,6 +300,74 @@ public class GoodsFileExample implements SgExample{
             return (GoodsFileExample.Criteria)this;
         }
 
+        public GoodsFileExample.Criteria andPasswdIsNull() {
+            this.addCriterion("passwd is null");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdIsNotNull() {
+            this.addCriterion("passwd is not null");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdEqualTo(String value) {
+            this.addCriterion("passwd =", value, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdNotEqualTo(String value) {
+            this.addCriterion("passwd <>", value, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdGreaterThan(String value) {
+            this.addCriterion("passwd >", value, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdGreaterThanOrEqualTo(String value) {
+            this.addCriterion("passwd >=", value, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdLessThan(String value) {
+            this.addCriterion("passwd <", value, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdLessThanOrEqualTo(String value) {
+            this.addCriterion("passwd <=", value, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdLike(String value) {
+            this.addCriterion("passwd like", value, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdNotLike(String value) {
+            this.addCriterion("passwd not like", value, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }        public GoodsFileExample.Criteria andPasswdIn(List<String> values) {
+            this.addCriterion("passwd in", values, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdNotIn(List<String> values) {
+            this.addCriterion("passwd not in", values, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdBetween(String value1, String value2) {
+            this.addCriterion("passwd between", value1, value2, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andPasswdNotBetween(String value1, String value2) {
+            this.addCriterion("passwd not between", value1, value2, "passwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
         public GoodsFileExample.Criteria andGoodsIdIsNull() {
             this.addCriterion("goods_id is null");
             return (GoodsFileExample.Criteria)this;
@@ -368,6 +436,74 @@ public class GoodsFileExample implements SgExample{
             return (GoodsFileExample.Criteria)this;
         }
 
+        public GoodsFileExample.Criteria andNeedPwdIsNull() {
+            this.addCriterion("need_pwd is null");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdIsNotNull() {
+            this.addCriterion("need_pwd is not null");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdEqualTo(Boolean value) {
+            this.addCriterion("need_pwd =", value, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdNotEqualTo(Boolean value) {
+            this.addCriterion("need_pwd <>", value, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdGreaterThan(Boolean value) {
+            this.addCriterion("need_pwd >", value, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdGreaterThanOrEqualTo(Boolean value) {
+            this.addCriterion("need_pwd >=", value, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdLessThan(Boolean value) {
+            this.addCriterion("need_pwd <", value, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdLessThanOrEqualTo(Boolean value) {
+            this.addCriterion("need_pwd <=", value, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdLike(String value) {
+            this.addCriterion("need_pwd like", value, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdNotLike(String value) {
+            this.addCriterion("need_pwd not like", value, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }        public GoodsFileExample.Criteria andNeedPwdIn(List<Boolean> values) {
+            this.addCriterion("need_pwd in", values, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdNotIn(List<Boolean> values) {
+            this.addCriterion("need_pwd not in", values, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdBetween(Boolean value1, Boolean value2) {
+            this.addCriterion("need_pwd between", value1, value2, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andNeedPwdNotBetween(Boolean value1, Boolean value2) {
+            this.addCriterion("need_pwd not between", value1, value2, "needPwd");
+            return (GoodsFileExample.Criteria)this;
+        }
+
         public GoodsFileExample.Criteria andIdIsNull() {
             this.addCriterion("id is null");
             return (GoodsFileExample.Criteria)this;
@@ -433,6 +569,74 @@ public class GoodsFileExample implements SgExample{
 
         public GoodsFileExample.Criteria andIdNotBetween(Long value1, Long value2) {
             this.addCriterion("id not between", value1, value2, "id");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeIsNull() {
+            this.addCriterion("type is null");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeIsNotNull() {
+            this.addCriterion("type is not null");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeEqualTo(Integer value) {
+            this.addCriterion("type =", value, "type");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeNotEqualTo(Integer value) {
+            this.addCriterion("type <>", value, "type");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeGreaterThan(Integer value) {
+            this.addCriterion("type >", value, "type");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            this.addCriterion("type >=", value, "type");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeLessThan(Integer value) {
+            this.addCriterion("type <", value, "type");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            this.addCriterion("type <=", value, "type");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeLike(String value) {
+            this.addCriterion("type like", value, "type");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeNotLike(String value) {
+            this.addCriterion("type not like", value, "type");
+            return (GoodsFileExample.Criteria)this;
+        }        public GoodsFileExample.Criteria andTypeIn(List<Integer> values) {
+            this.addCriterion("type in", values, "type");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeNotIn(List<Integer> values) {
+            this.addCriterion("type not in", values, "type");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            this.addCriterion("type between", value1, value2, "type");
+            return (GoodsFileExample.Criteria)this;
+        }
+
+        public GoodsFileExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            this.addCriterion("type not between", value1, value2, "type");
             return (GoodsFileExample.Criteria)this;
         }
     }

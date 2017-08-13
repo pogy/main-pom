@@ -5,6 +5,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.seller.bo.BigPicOuterLinkBO;
 import com.shigu.seller.bo.OnsaleItemBO;
 import com.shigu.seller.services.GoodsFileService;
 
@@ -135,6 +136,19 @@ public class GoodsFileAction {
 
         ShopSession shop=logshop(session);
         goodsFileService.saveGoodsFile(fileId,shop.getShopId(), goodsIds,shop.getWebSite());
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 更新商品关联大图外链
+     * @param bo
+     * @return
+     */
+    @RequestMapping("seller/setBigPicJson")
+    @ResponseBody
+    public JSONObject saveGoodsFileOuter(BigPicOuterLinkBO bo,HttpSession session) throws JsonErrException {
+        ShopSession shop = logshop(session);
+        goodsFileService.saveOrUpdateOuterLink(bo,shop);
         return JsonResponseUtil.success();
     }
 
