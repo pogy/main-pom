@@ -46,6 +46,6 @@
         <property name="mailpwd" value="${xz_mailpwd}"/>
         <property name="smtpauth" value="${xz_smtpauth}"/>
         <property name="smtptimeout" value="${xz_smtptimeout}"/>
-
     </bean>
+    <dubbo:service interface="com.shigu.main4.order.services.LogisticsService" ref="logisticsService" timeout="20000" />
 </beans>

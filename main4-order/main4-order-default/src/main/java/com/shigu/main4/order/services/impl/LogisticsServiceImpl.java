@@ -16,7 +16,7 @@ import java.util.List;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-@Service
+@Service("logisticsService")
 public class LogisticsServiceImpl implements LogisticsService {
 
 
