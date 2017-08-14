@@ -30,7 +30,7 @@ public class OrderModelImplTest extends BaseSpringTest{
     OrderModel orderModel;
 
     @Test
-    public void testinit(){
+    public void testinit(){//OK
 
         Long oidinit=50000000L;
         Long soidp=50L;
