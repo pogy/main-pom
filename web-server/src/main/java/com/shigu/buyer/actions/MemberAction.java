@@ -4,7 +4,6 @@ import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.*;
-import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -19,6 +18,7 @@ import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
+import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.*;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
@@ -517,7 +517,7 @@ public class MemberAction {
             UserInfoUpdate userInfoUpdate=new UserInfoUpdate();
             userInfoUpdate.setUserId(ps.getUserId());
             userInfoUpdate.setHeadUrl(url);
-            userBaseService.updateUserInfo(userInfoUpdate);
+            memberSimpleService.updateUser(userInfoUpdate);
         } catch (IOException e) {
             throw new JsonErrException("图片数据读取失败");
         } catch (UpdateUserInfoException e) {
@@ -828,4 +828,15 @@ public class MemberAction {
     public JSONObject jsonUserCentergetUpStore(){
         return JsonResponseUtil.success();
     }
+
+    @RequestMapping("member/userBalance")
+    public String userBalance(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String tempCode = paySdkClientService.tempcode(ps.getUserId());
+        model.addAttribute("tempCode", tempCode);
+        model.addAttribute("webSite", "hz");
+        model.addAttribute("excelUrl", "");
+        return "buyer/userBalance";
+    }
+
 }

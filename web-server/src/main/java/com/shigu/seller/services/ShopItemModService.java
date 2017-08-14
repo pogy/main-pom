@@ -32,8 +32,6 @@ import java.util.*;
 public class ShopItemModService {
 
     private static final Logger logger = Logger.getLogger(ShopItemModService.class);
-    @Autowired
-    ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
 
     @Autowired
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;

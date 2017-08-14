@@ -109,11 +109,10 @@ public abstract class Jobs <E> {
 
         @Override
         public void run() {
-            E take;
             while (true) {
                 free = true;
                 try {
-                    take = queue.take();
+                    E take = queue.take();
                     free = false;
                     doWork(take);
                 } catch (Exception e) {

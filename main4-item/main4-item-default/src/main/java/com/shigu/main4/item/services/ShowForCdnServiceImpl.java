@@ -25,7 +25,7 @@ import java.util.*;
  * 分站点显示用服务
  * Created by zhaohongbo on 17/2/16.
  */
-@Service
+@Service("showForCdnService")
 public class ShowForCdnServiceImpl extends ItemServiceImpl implements ShowForCdnService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShowForCdnServiceImpl.class);

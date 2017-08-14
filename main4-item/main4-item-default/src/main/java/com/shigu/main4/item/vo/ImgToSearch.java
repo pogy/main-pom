@@ -4,7 +4,7 @@ package com.shigu.main4.item.vo;
  * 往图搜的对象
  * Created by zhaohongbo on 17/4/27.
  */
-public class ImgToSearch {
+public class ImgToSearch implements java.io.Serializable {
 
     private Long goodsId;
 

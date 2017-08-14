@@ -2,6 +2,7 @@ package com.shigu.main4.item.vo;
 
 import com.shigu.main4.common.tools.ShiguPager;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  * @version main_site4.0 4.0.0
  * @since main_site4.0 4.0.0
  */
-public class ShiguAggsPager extends ShiguPager<SearchItem> {
+public class ShiguAggsPager extends ShiguPager<SearchItem>  implements Serializable {
     private static final long serialVersionUID = 1755168562363930854L;
 
     private List<AggsCount> markets;

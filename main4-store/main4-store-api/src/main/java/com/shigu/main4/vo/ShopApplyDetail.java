@@ -2,13 +2,14 @@ package com.shigu.main4.vo;
 
 import com.shigu.main4.common.vo.ShiguTags;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 开店申请详细信息
  * Created by zhaohongbo on 17/3/14.
  */
-public class ShopApplyDetail {
+public class ShopApplyDetail implements Serializable {
     /**
      * 入驻ID
      */

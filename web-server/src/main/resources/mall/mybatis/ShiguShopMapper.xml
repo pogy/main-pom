@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ShiguShopMapper" >
+
+
+
+	<!-- 商戶COUNT -->
+	<select id="selectShopCountByBo" resultType="int">
+		SELECT
+		count(s.shop_id)
+		FROM
+		shigu_shop s left join  member_user u on s.user_id = u.user_id
+		inner join shigu_market m on m.market_id = s.floor_id
+		left join taobao_session_map mp on mp.nick = s.tb_nick
+		WHERE
+		1 = 1
+		<if test="website!=null and website!=''">
+			AND s.web_site = #{website}
+		</if>
+		<if test="userName!=null and userName!=''">
+			AND u.user_name = #{userName}
+		</if>
+		<if test="userId!=null">
+			AND s.user_id = #{userId}
+		</if>
+		<if test="marketId!=null">
+			AND s.market_id = #{marketId}
+		</if>
+		<if test="floorId!=null">
+			AND s.floor_id = #{floorId}
+		</if>
+		<if test="shopId!=null">
+			AND s.shop_id = #{shopId}
+		</if>
+		<if test="taobaoUrl!=null and taobaoUrl!=''">
+			AND s.taobao_url = #{taobaoUrl}
+		</if>
+		<if test="shopName!=null and shopName!=''">
+			AND s.shop_name = #{shopName}
+		</if>
+		<if test="shopNum!=null and shopNum!=''">
+			AND s.shop_num = #{shopNum}
+		</if>
+	</select>
+
+
+	<select id="selShopNumAndMarkets" resultType="com.opentae.data.mall.beans.ShopNumAndMarket">
+		select a.shop_num as shopNum,a.shop_id as shopId,b.market_name as market from shigu_shop a,shigu_market b
+		where a.market_id=b.market_id and a.shop_id in
+		<foreach collection="shopIdList" item="item" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+
+
+
+</mapper>

@@ -7,7 +7,7 @@ import com.opentae.data.mall.interfaces.ShiguActivityApplyMapper;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.active.enums.ApplyStatus;
-import com.shigu.main4.active.services.ShiguActivityService;
+import com.shigu.main4.active.process.ShiguActivityProcess;
 import com.shigu.main4.active.vo.ShiguActivityApplyVO;
 import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -15,7 +15,6 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.storeservices.ShopForCdnService;
-import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.seller.vo.*;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +42,9 @@ public class ActivityService {
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
+
+    @Autowired
+    private ShiguActivityProcess shiguActivityProcess;
 
     @Autowired
     private ShiguActivityApproveMapper shiguActivityApproveMapper;
@@ -161,7 +163,7 @@ public class ActivityService {
         List<ApplyItemVO> list = new ArrayList<>();
 
         List<Long> itemIds;
-        ShiguActivityApplyVO applyVO = activity(actid).someOneApply(userId);
+        ShiguActivityApplyVO applyVO = shiguActivityProcess.someOneApply(actid,userId);
         if (applyVO != null && !(itemIds = applyVO.getItemIds()).isEmpty()) {
             List<ItemShowBlock> items = shopForCdnService.searchItemOnsale(itemIds, "hz", 1, 5).getContent();
             Map<Long, ShopNumAndMarket> marketMap = BeanMapper.list2Map(
@@ -225,14 +227,10 @@ public class ActivityService {
             }
         }
         try {
-            activity(actid).apply(vo);
+            shiguActivityProcess.apply(actid,vo);
         } catch (Exception e) {
             throw new JsonErrException("申请出错.");
         }
-    }
-
-    private ShiguActivityService activity( Long actid) {
-        return SpringBeanFactory.getBean(ShiguActivityService.class, actid);
     }
 
     /**
@@ -241,17 +239,16 @@ public class ActivityService {
      * @return
      */
     public ShiguActivityVO activityInfo(Long id){
-        return activity(id).info();
+        return shiguActivityProcess.info(id);
     }
 
     public List<GfGoodsStyleVO> gfShow(Long id) throws Main4Exception {
         List<GfGoodsStyleVO> fGoodsStyleList = new ArrayList<>();
         List<Long> itemIds = new ArrayList<>();
-        ShiguActivityService activityService = activity(id);
-        for (ShiguActivityApplyVO vo : activityService.luckyDogs()) {
+        for (ShiguActivityApplyVO vo : shiguActivityProcess.luckyDogs(id)) {
             itemIds.addAll(vo.getItemIds());
         }
-        String services = activityService.info().getServices();
+        String services = shiguActivityProcess.info(id).getServices();
         int sum = 0;
         try {
             if (StringUtils.isNotEmpty(services))

@@ -2,7 +2,7 @@ package com.shigu.main4.activity.beans;
 
 import com.shigu.main4.activity.enums.ActivityType;
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.service.Activity;
+import com.shigu.main4.activity.model.Activity;
 import com.shigu.main4.activity.vo.ActivityTermVO;
 import com.shigu.main4.activity.vo.ActivityVO;
 

@@ -1,18 +1,19 @@
 package com.shigu.main4.goat.service.impl;
 
 import com.shigu.main4.activity.exceptions.ActivityException;
-import com.shigu.main4.activity.service.ActivityFactory;
+import com.shigu.main4.activity.model.ActivityFactory;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.beans.ItemGoat;
 import com.shigu.main4.goat.enums.GoatType;
 import com.shigu.main4.goat.exceptions.GoatException;
-import com.shigu.main4.goat.service.Goat;
+import com.shigu.main4.goat.model.Goat;
 import com.shigu.main4.goat.service.GoatDubboService;
-import com.shigu.main4.goat.service.GoatFactory;
+import com.shigu.main4.goat.model.GoatFactory;
 import com.shigu.main4.goat.vo.GoatIntermVO;
 import com.shigu.main4.goat.vo.GoatVO;
 import com.shigu.main4.goat.vo.ItemUpVO;
+import com.shigu.main4.goat.vo.TextGoatVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,6 +67,12 @@ public class GoatDubboServiceImpl implements GoatDubboService {
         prep.setGoats(location.selPrepareGoats());
         result.add(prep);
         return result;
+    }
+
+    @Override
+    public <T extends GoatVO> List<T> selGoatsFromLocalCode(String localCode) throws GoatException {
+        GoatLocation location = goatFactory.getALocation(localCode);
+        return location.selGoats();
     }
 
 

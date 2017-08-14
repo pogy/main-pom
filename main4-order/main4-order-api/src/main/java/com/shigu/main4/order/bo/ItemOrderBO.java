@@ -31,6 +31,10 @@ public class ItemOrderBO implements Serializable{
      * 包材
      */
     private List<PackageBO> packages;
+    /**
+     * 第3方ID
+     */
+    private String outerId;
 
     public Long getUserId() {
         return userId;
@@ -102,5 +106,13 @@ public class ItemOrderBO implements Serializable{
 
     public void setPackages(List<PackageBO> packages) {
         this.packages = packages;
+    }
+
+    public String getOuterId() {
+        return outerId;
+    }
+
+    public void setOuterId(String outerId) {
+        this.outerId = outerId;
     }
 }

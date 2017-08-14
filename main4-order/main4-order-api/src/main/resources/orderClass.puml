@@ -33,6 +33,8 @@ void refundService(Long id,Long money);//退服务
 void sendPart(Long logisticsId,List<Long> soids,String courierNumber);//部分发货
 
 void sended(String courierNumber);//全单发货
+
+SenderVO selSender();//发件单位
 }
 
 interface RechangeOrder{

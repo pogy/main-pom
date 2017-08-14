@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  * @version main_site4.0 4.0.0
  * @since main_site4.0 4.0.0
  */
-@Service
+@Service("itemSearchService")
 public class ItemSearchServiceImpl implements ItemSearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(ItemSearchServiceImpl.class);

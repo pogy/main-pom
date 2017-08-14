@@ -15,13 +15,13 @@
     <dependencies>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-ucenter-default</artifactId>
-            <version>${main4-ucenter-api.version}</version>
+            <artifactId>main4-order-api</artifactId>
+            <version>${main4-order-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-dao</artifactId>
-            <version>${main4-dao.version}</version>
+            <artifactId>main4-ucenter-api</artifactId>
+            <version>${main4-ucenter-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
@@ -30,30 +30,36 @@
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-store-default</artifactId>
-            <version>${main4-store-default.version}</version>
+            <artifactId>main4-store-api</artifactId>
+            <version>${main4-store-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-item-default</artifactId>
-            <version>${main4-item-default.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-monitor-default</artifactId>
-            <version>${main4-monitor-default.version}</version>
+            <artifactId>main4-item-api</artifactId>
+            <version>${main4-item-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>sites.main</groupId>
-            <artifactId>main4-spread-default</artifactId>
-            <version>${main4-spread-default.version}</version>
+            <artifactId>main4-monitor-api</artifactId>
+            <version>${main4-monitor-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-spread-api</artifactId>
+            <version>${main4-spread-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.tb</groupId>
             <artifactId>syn-finder-api</artifactId>
             <version>4.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.taobao</groupId>
+                    <artifactId>taobao-sdk-java-21720662</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--上面那个包,syn里其实有-->
         <dependency>
@@ -130,7 +136,7 @@
         <dependency>
             <groupId>xinzuo-mybatis</groupId>
             <artifactId>xinzuo-mybatis</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>1.0.3-SNAPSHOT</version>
         </dependency>
 
         <!--mysql部分-->
@@ -154,6 +160,30 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-web</artifactId>
             <version>2.0.4</version>
+        </dependency>
+
+        <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-spring</artifactId>
+        <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-ehcache</artifactId>
+        <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-quartz</artifactId>
+        <version>${shiro.version}</version>
+        </dependency>
+
+        <dependency>
+        <groupId>com.shiro</groupId>
+        <artifactId>shiro-freemarker-tags</artifactId>
+        <version>0.1</version>
         </dependency>
 
         <!--freemarker-->
@@ -303,11 +333,16 @@
         <!--自己放的包-->
         <!--淘宝接口-->
         <dependency>
-            <groupId>com.taobao</groupId>
-            <artifactId>taobao-sdk-java-21720662</artifactId>
-            <version>20160607</version>
+            <groupId>taobao-sdk-java-auto</groupId>
+            <artifactId>taobao-sdk-java-auto</artifactId>
+            <version>1487931282132</version>
         </dependency>
-
+        <!-- 支付宝接口 -->
+        <dependency>
+            <groupId>com.alipay.api</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>20170615110434</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -358,6 +393,11 @@
             <groupId>com.openJar</groupId>
             <artifactId>open_base_pc</artifactId>
             <version>2.0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tencent</groupId>
+            <artifactId>wxpay-scanpay-java-sdk</artifactId>
+            <version>1.0.6-SNAPSHOT</version>
         </dependency>
 <!--查淘宝店内信息-->
         <!--支付的对接-->
@@ -430,6 +470,25 @@
             <artifactId>productai-java-sdk</artifactId>
             <version>2.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-tools</artifactId>
+            <version>${main4-tools.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-api</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.aliyun.openservices</groupId>
+            <artifactId>ons-client</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>
