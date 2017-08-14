@@ -143,6 +143,12 @@ public class CargoManImpl implements CargoManModel {
             ggoods.setDaifaWorker(daifaWorker.getDaifaWorker());
             //修改任务表
             daifaGgoodsTasksMapper.updateByPrimaryKeySelective(tasks);
+            //修改子订单表状态
+            DaifaOrder order=new DaifaOrder ();
+            order.setDfOrderId (tasks.getDfOrderId ());
+            order.setOrderStatus (2L);
+            order.setAllocatStatus (1);
+            daifaOrderMapper.updateByPrimaryKeySelective (order);
         }
 
 

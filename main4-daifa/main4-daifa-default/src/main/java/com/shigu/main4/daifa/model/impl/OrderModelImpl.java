@@ -19,6 +19,7 @@ import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.utils.CdkeyUtil;
 import com.shigu.main4.daifa.utils.DaifaListDealUtil;
 import com.shigu.main4.daifa.utils.PinyinUtil;
+import com.shigu.main4.daifa.utils.PriceConvertUtils;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,10 +114,15 @@ public class OrderModelImpl implements OrderModel {
         Double goodsFee= 0.00;
         Map<Long, ServiceBO> serviceBOMap = BeanMapper.list2Map(orderBO.getServices(), "soid", Long.class);
         for (SubOrderBO bo:subOrders){
-            subOrderModelBO.setOrderCode(bo.getSoid().toString());
             num+=bo.getNum();
+        }
+        int i=0;
+        for (SubOrderBO bo:subOrders){
+            subOrderModelBO.setOrderCode(bo.getSoid().toString());
+
             if (bo.getSoidps().size()>0){
                 for (Long soidp :bo.getSoidps()){
+                    i++;
                     subOrderModelBO.setOrderPartitionId(soidp.toString());
                     subOrderModelBO.setMarketId(bo.getMarketId());
                     subOrderModelBO.setMarketName(bo.getMarketName());
@@ -128,8 +134,8 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setGoodsCode(bo.getGoodsNo());
                     subOrderModelBO.setTitle(bo.getTitle());
                     subOrderModelBO.setPicPath(bo.getPicUrl());
-                    subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadChar(bo.getMarketName())+"_"+bo.getShopNum()+"_"+bo.getGoodsNo());
-                    subOrderModelBO.setOrderDiscountFee("0");
+                    subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadCharToLowerCase(bo.getMarketName())+"_"+bo.getShopNum()+"_"+bo.getGoodsNo());
+                    subOrderModelBO.setOrderDiscountFee("0.00");
                     subOrderModelBO.setPropStr(bo.getColor()+":"+bo.getSize());
                     subOrderModelBO.setGoodsNum(1);
                     subOrderModelBO.setSinglePiPrice(bo.getSinglePay());
@@ -141,8 +147,10 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
                     subOrderModelBO.setWebSite(bo.getWebSite());
                     subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
+                    subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
                     Double serviceFee = Double.parseDouble(serviceBOMap.get(bo.getSoid()).getMoney()) / Double.valueOf(bo.getNum());
-                    subOrderModelBO.setSingleServicesFee(serviceFee.toString());
+                    subOrderModelBO.setSingleServicesFee(PriceConvertUtils.doublePriceToString (serviceFee));
+                    subOrderModelBO.setTotalServiceFee (PriceConvertUtils.doublePriceToString (serviceFee));
 
                     SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
                     goodsFee+=Double.parseDouble(bo.getSinglePay());
@@ -161,20 +169,21 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setExpressName(logisticsBO.getCompany());
         daifaTrade.setTradeStatus(1);
         daifaTrade.setBuyerNick(orderBO.getBuyerBO().getNickInMarket());
-        daifaTrade.setGoodsFee(goodsFee.toString());
+        daifaTrade.setGoodsFee(PriceConvertUtils.doublePriceToString (goodsFee));
+        daifaTrade.setBuyerRemark (orderBO.getBuyRemark ());
 
-        daifaTrade.setExpressFee(logisticsBO.getMoney().toString());
+        daifaTrade.setExpressFee(PriceConvertUtils.doublePriceToString (logisticsBO.getMoney()));
         List<ServiceBO> services = orderBO.getServices();
-        Double serviceFee=0.0;
+        Double serviceFee=0.00;
         for (ServiceBO bo:services){
             serviceFee+=Double.parseDouble(bo.getMoney());
         }
-        daifaTrade.setServicesFee(serviceFee.toString());
-        daifaTrade.setTradeDiscountFee("0");
-        daifaTrade.setTotalFee(Double.toString(serviceFee+goodsFee+logisticsBO.getMoney()));
-        daifaTrade.setMoney(Double.toString(serviceFee+goodsFee+logisticsBO.getMoney()));
-
-        daifaTrade.setRealPayMoney(Double.toString(serviceFee+goodsFee+logisticsBO.getMoney()));
+        daifaTrade.setServicesFee(PriceConvertUtils.doublePriceToString (serviceFee));
+        daifaTrade.setTradeDiscountFee("0.00");
+        daifaTrade.setTotalFee(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
+        daifaTrade.setMoney(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
+        daifaTrade.setSendStatus (1);
+        daifaTrade.setRealPayMoney(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
 
         daifaTrade.setCreateTime(new Date());
         daifaTrade.setLastDoTime(new Date());

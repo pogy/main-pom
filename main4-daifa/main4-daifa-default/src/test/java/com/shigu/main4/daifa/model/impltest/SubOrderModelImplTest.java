@@ -119,7 +119,7 @@ public class SubOrderModelImplTest extends BaseSpringTest {
 
 //    @Test
 //    @Transactional
-    public void mark_test() throws DaifaException {
+    public void mark_test() throws DaifaException {//备注
         Long oid=insert(999999L,"1-1");
 
         SubOrderModelImpl impl=SpringBeanFactory.getBean(SubOrderModelImpl.class,oid);
