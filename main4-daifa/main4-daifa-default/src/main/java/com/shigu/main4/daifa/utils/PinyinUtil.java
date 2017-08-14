@@ -73,6 +73,28 @@ public class PinyinUtil {
         }
         return convert.toUpperCase();
     }
+    /**
+     * 汉字转简拼
+     * @param str
+     * @return String
+     */
+    public static String getPinYinHeadCharToLowerCase(String str) {
+        String convert = "";
+        if (str== null || str.length()==0) {
+            return convert;
+        }
+        for (int j = 0; j < str.length(); j++) {
+            char word = str.charAt(j);
+            // 提取汉字的首字母
+            String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
+            if (pinyinArray != null) {
+                convert += pinyinArray[0].charAt(0);
+            } else {
+                convert += word;
+            }
+        }
+        return convert.toLowerCase ();
+    }
 
     public static void main(String[] arg0) throws Exception{
         String str ="哗啦啦 Chian";
