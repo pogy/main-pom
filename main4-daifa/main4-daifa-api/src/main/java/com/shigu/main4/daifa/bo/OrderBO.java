@@ -14,6 +14,7 @@ public class OrderBO implements Serializable {
     private Integer aggrement;// 协议1有货先发，2缺货不发
     private Long senderId;// 代发机构ID
     private BuyerBO buyerBO;//卖家信息
+    private String buyRemark;//卖家留言
 
     public BuyerBO getBuyerBO() {
         return buyerBO;
@@ -97,6 +98,14 @@ public class OrderBO implements Serializable {
 
     public List<LogisticsBO> getLogistics() {
         return logistics;
+    }
+
+    public String getBuyRemark () {
+        return buyRemark;
+    }
+
+    public void setBuyRemark (String buyRemark) {
+        this.buyRemark = buyRemark;
     }
 
     public void setLogistics(List<LogisticsBO> logistics) {
