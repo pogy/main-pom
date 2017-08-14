@@ -1,371 +1,139 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.OrderIdGenerator;
 
-public class OrderIdGeneratorExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class OrderIdGeneratorExample extends SgExample<OrderIdGeneratorExample.Criteria> {
+    public static final Class<OrderIdGenerator> beanClass = OrderIdGenerator.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn oid;
+    public static EntityColumn type;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        oid = listMap.get("oid");
+        type = listMap.get("type");
+        }
 
     public OrderIdGeneratorExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected OrderIdGeneratorExample.Criteria createCriteriaInternal() {
+        return new OrderIdGeneratorExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
+        public OrderIdGeneratorExample.Criteria andOidIsNull() {
+            return isNull(oid);
         }
 
-        public Object getValue() {
-            return this.value;
+        public OrderIdGeneratorExample.Criteria andOidIsNotNull() {
+            return isNotNull(oid);
         }
 
-        public Object getSecondValue() {
-            return this.secondValue;
+        public OrderIdGeneratorExample.Criteria andOidEqualTo(Long value) {
+            return equalTo(oid, value);
         }
 
-        public boolean isNoValue() {
-            return this.noValue;
+        public OrderIdGeneratorExample.Criteria andOidNotEqualTo(Long value) {
+            return notEqualTo(oid, value);
         }
 
-        public boolean isSingleValue() {
-            return this.singleValue;
+        public OrderIdGeneratorExample.Criteria andOidGreaterThan(Long value) {
+            return greaterThan(oid, value);
         }
 
-        public boolean isBetweenValue() {
-            return this.betweenValue;
+        public OrderIdGeneratorExample.Criteria andOidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(oid, value);
         }
 
-        public boolean isListValue() {
-            return this.listValue;
+        public OrderIdGeneratorExample.Criteria andOidLessThan(Long value) {
+            return lessThan(oid, value);
         }
 
-        public String getTypeHandler() {
-            return this.typeHandler;
+        public OrderIdGeneratorExample.Criteria andOidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(oid, value);
         }
 
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
+        public OrderIdGeneratorExample.Criteria andOidIn(List<Long> values) {
+            return in(oid, values);
         }
 
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
+        public OrderIdGeneratorExample.Criteria andOidNotIn(List<Long> values) {
+            return notIn(oid, values);
         }
 
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
+        public OrderIdGeneratorExample.Criteria andOidBetween(Long value1, Long value2) {
+            return between(oid, value1, value2);
         }
 
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
+        public OrderIdGeneratorExample.Criteria andOidNotBetween(Long value1, Long value2) {
+            return notBetween(oid, value1, value2);
+        }
+        public OrderIdGeneratorExample.Criteria andTypeIsNull() {
+            return isNull(type);
         }
 
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
+        public OrderIdGeneratorExample.Criteria andTypeIsNotNull() {
+            return isNotNull(type);
         }
 
-        public boolean isValid() {
-            return this.criteria.size() > 0;
+        public OrderIdGeneratorExample.Criteria andTypeEqualTo(Integer value) {
+            return equalTo(type, value);
         }
 
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
+        public OrderIdGeneratorExample.Criteria andTypeNotEqualTo(Integer value) {
+            return notEqualTo(type, value);
         }
 
-        public List<Criterion> getCriteria() {
-            return this.criteria;
+        public OrderIdGeneratorExample.Criteria andTypeGreaterThan(Integer value) {
+            return greaterThan(type, value);
         }
 
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
+        public OrderIdGeneratorExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(type, value);
         }
 
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
+        public OrderIdGeneratorExample.Criteria andTypeLessThan(Integer value) {
+            return lessThan(type, value);
         }
 
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
+        public OrderIdGeneratorExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(type, value);
         }
 
-        public Criteria andOidIsNull() {
-            this.addCriterion("oid is null");
-            return (Criteria)this;
+        public OrderIdGeneratorExample.Criteria andTypeIn(List<Integer> values) {
+            return in(type, values);
         }
 
-        public Criteria andOidIsNotNull() {
-            this.addCriterion("oid is not null");
-            return (Criteria)this;
+        public OrderIdGeneratorExample.Criteria andTypeNotIn(List<Integer> values) {
+            return notIn(type, values);
         }
 
-        public Criteria andOidEqualTo(Long value) {
-            this.addCriterion("oid =", value, "oid");
-            return (Criteria)this;
+        public OrderIdGeneratorExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            return between(type, value1, value2);
         }
 
-        public Criteria andOidNotEqualTo(Long value) {
-            this.addCriterion("oid <>", value, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andOidGreaterThan(Long value) {
-            this.addCriterion("oid >", value, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andOidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("oid >=", value, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andOidLessThan(Long value) {
-            this.addCriterion("oid <", value, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andOidLessThanOrEqualTo(Long value) {
-            this.addCriterion("oid <=", value, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andOidLike(String value) {
-            this.addCriterion("oid like", value, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andOidNotLike(String value) {
-            this.addCriterion("oid not like", value, "oid");
-            return (Criteria)this;
-        }        public Criteria andOidIn(List<Long> values) {
-            this.addCriterion("oid in", values, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andOidNotIn(List<Long> values) {
-            this.addCriterion("oid not in", values, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andOidBetween(Long value1, Long value2) {
-            this.addCriterion("oid between", value1, value2, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andOidNotBetween(Long value1, Long value2) {
-            this.addCriterion("oid not between", value1, value2, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeIsNull() {
-            this.addCriterion("type is null");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeIsNotNull() {
-            this.addCriterion("type is not null");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeEqualTo(Integer value) {
-            this.addCriterion("type =", value, "type");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeNotEqualTo(Integer value) {
-            this.addCriterion("type <>", value, "type");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeGreaterThan(Integer value) {
-            this.addCriterion("type >", value, "type");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("type >=", value, "type");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeLessThan(Integer value) {
-            this.addCriterion("type <", value, "type");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            this.addCriterion("type <=", value, "type");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeLike(String value) {
-            this.addCriterion("type like", value, "type");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeNotLike(String value) {
-            this.addCriterion("type not like", value, "type");
-            return (Criteria)this;
-        }        public Criteria andTypeIn(List<Integer> values) {
-            this.addCriterion("type in", values, "type");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeNotIn(List<Integer> values) {
-            this.addCriterion("type not in", values, "type");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            this.addCriterion("type between", value1, value2, "type");
-            return (Criteria)this;
-        }
-
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("type not between", value1, value2, "type");
-            return (Criteria)this;
+        public OrderIdGeneratorExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(type, value1, value2);
         }
     }
 }

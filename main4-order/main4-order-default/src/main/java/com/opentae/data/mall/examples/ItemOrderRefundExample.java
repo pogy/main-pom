@@ -1,1119 +1,751 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ItemOrderRefund;
 
-public class ItemOrderRefundExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class ItemOrderRefundExample extends SgExample<ItemOrderRefundExample.Criteria> {
+    public static final Class<ItemOrderRefund> beanClass = ItemOrderRefund.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn reason;
+    public static EntityColumn soid;
+    public static EntityColumn refundMoney;
+    public static EntityColumn sellerProposalMoney;
+    public static EntityColumn oid;
+    public static EntityColumn type;
+    public static EntityColumn buyerReturnTime;
+    public static EntityColumn buyerCourier;
+    public static EntityColumn hopeMoney;
+    public static EntityColumn number;
+    public static EntityColumn userApply;
+    public static EntityColumn failMsg;
+    public static EntityColumn refundId;
+    public static EntityColumn status;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        reason = listMap.get("reason");
+        soid = listMap.get("soid");
+        refundMoney = listMap.get("refundMoney");
+        sellerProposalMoney = listMap.get("sellerProposalMoney");
+        oid = listMap.get("oid");
+        type = listMap.get("type");
+        buyerReturnTime = listMap.get("buyerReturnTime");
+        buyerCourier = listMap.get("buyerCourier");
+        hopeMoney = listMap.get("hopeMoney");
+        number = listMap.get("number");
+        userApply = listMap.get("userApply");
+        failMsg = listMap.get("failMsg");
+        refundId = listMap.get("refundId");
+        status = listMap.get("status");
+        }
 
     public ItemOrderRefundExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected ItemOrderRefundExample.Criteria createCriteriaInternal() {
+        return new ItemOrderRefundExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        public String getTypeHandler() {
-            return this.typeHandler;
+        public ItemOrderRefundExample.Criteria andReasonIsNull() {
+            return isNull(reason);
         }
 
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
+        public ItemOrderRefundExample.Criteria andReasonIsNotNull() {
+            return isNotNull(reason);
         }
 
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
+        public ItemOrderRefundExample.Criteria andReasonEqualTo(String value) {
+            return equalTo(reason, value);
         }
 
-        public List<Criterion> getCriteria() {
-            return this.criteria;
+        public ItemOrderRefundExample.Criteria andReasonNotEqualTo(String value) {
+            return notEqualTo(reason, value);
         }
 
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
+        public ItemOrderRefundExample.Criteria andReasonGreaterThan(String value) {
+            return greaterThan(reason, value);
         }
 
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
+        public ItemOrderRefundExample.Criteria andReasonGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(reason, value);
         }
 
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
+        public ItemOrderRefundExample.Criteria andReasonLessThan(String value) {
+            return lessThan(reason, value);
         }
 
-        public Criteria andReasonIsNull() {
-            this.addCriterion("reason is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andReasonLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(reason, value);
         }
 
-        public Criteria andReasonIsNotNull() {
-            this.addCriterion("reason is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andReasonLike(String value) {
+            return like(reason, value);
         }
 
-        public Criteria andReasonEqualTo(String value) {
-            this.addCriterion("reason =", value, "reason");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andReasonNotLike(String value) {
+            return notLike(reason, value);
         }
 
-        public Criteria andReasonNotEqualTo(String value) {
-            this.addCriterion("reason <>", value, "reason");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andReasonIn(List<String> values) {
+            return in(reason, values);
         }
 
-        public Criteria andReasonGreaterThan(String value) {
-            this.addCriterion("reason >", value, "reason");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andReasonNotIn(List<String> values) {
+            return notIn(reason, values);
         }
 
-        public Criteria andReasonGreaterThanOrEqualTo(String value) {
-            this.addCriterion("reason >=", value, "reason");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andReasonBetween(String value1, String value2) {
+            return between(reason, value1, value2);
         }
 
-        public Criteria andReasonLessThan(String value) {
-            this.addCriterion("reason <", value, "reason");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andReasonNotBetween(String value1, String value2) {
+            return notBetween(reason, value1, value2);
         }
-
-        public Criteria andReasonLessThanOrEqualTo(String value) {
-            this.addCriterion("reason <=", value, "reason");
-            return (Criteria)this;
-        }
-
-        public Criteria andReasonLike(String value) {
-            this.addCriterion("reason like", value, "reason");
-            return (Criteria)this;
-        }
-
-        public Criteria andReasonNotLike(String value) {
-            this.addCriterion("reason not like", value, "reason");
-            return (Criteria)this;
-        }        public Criteria andReasonIn(List<String> values) {
-            this.addCriterion("reason in", values, "reason");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidIsNull() {
+            return isNull(soid);
         }
 
-        public Criteria andReasonNotIn(List<String> values) {
-            this.addCriterion("reason not in", values, "reason");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidIsNotNull() {
+            return isNotNull(soid);
         }
 
-        public Criteria andReasonBetween(String value1, String value2) {
-            this.addCriterion("reason between", value1, value2, "reason");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidEqualTo(Long value) {
+            return equalTo(soid, value);
         }
 
-        public Criteria andReasonNotBetween(String value1, String value2) {
-            this.addCriterion("reason not between", value1, value2, "reason");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidNotEqualTo(Long value) {
+            return notEqualTo(soid, value);
         }
 
-        public Criteria andSoidIsNull() {
-            this.addCriterion("soid is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidGreaterThan(Long value) {
+            return greaterThan(soid, value);
         }
 
-        public Criteria andSoidIsNotNull() {
-            this.addCriterion("soid is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(soid, value);
         }
 
-        public Criteria andSoidEqualTo(Long value) {
-            this.addCriterion("soid =", value, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidLessThan(Long value) {
+            return lessThan(soid, value);
         }
 
-        public Criteria andSoidNotEqualTo(Long value) {
-            this.addCriterion("soid <>", value, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(soid, value);
         }
 
-        public Criteria andSoidGreaterThan(Long value) {
-            this.addCriterion("soid >", value, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidIn(List<Long> values) {
+            return in(soid, values);
         }
 
-        public Criteria andSoidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("soid >=", value, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidNotIn(List<Long> values) {
+            return notIn(soid, values);
         }
 
-        public Criteria andSoidLessThan(Long value) {
-            this.addCriterion("soid <", value, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidBetween(Long value1, Long value2) {
+            return between(soid, value1, value2);
         }
 
-        public Criteria andSoidLessThanOrEqualTo(Long value) {
-            this.addCriterion("soid <=", value, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSoidNotBetween(Long value1, Long value2) {
+            return notBetween(soid, value1, value2);
         }
-
-        public Criteria andSoidLike(String value) {
-            this.addCriterion("soid like", value, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyIsNull() {
+            return isNull(refundMoney);
         }
 
-        public Criteria andSoidNotLike(String value) {
-            this.addCriterion("soid not like", value, "soid");
-            return (Criteria)this;
-        }        public Criteria andSoidIn(List<Long> values) {
-            this.addCriterion("soid in", values, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyIsNotNull() {
+            return isNotNull(refundMoney);
         }
 
-        public Criteria andSoidNotIn(List<Long> values) {
-            this.addCriterion("soid not in", values, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyEqualTo(Long value) {
+            return equalTo(refundMoney, value);
         }
 
-        public Criteria andSoidBetween(Long value1, Long value2) {
-            this.addCriterion("soid between", value1, value2, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyNotEqualTo(Long value) {
+            return notEqualTo(refundMoney, value);
         }
 
-        public Criteria andSoidNotBetween(Long value1, Long value2) {
-            this.addCriterion("soid not between", value1, value2, "soid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyGreaterThan(Long value) {
+            return greaterThan(refundMoney, value);
         }
 
-        public Criteria andSellerProposalMoneyIsNull() {
-            this.addCriterion("seller_proposal_money is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(refundMoney, value);
         }
 
-        public Criteria andSellerProposalMoneyIsNotNull() {
-            this.addCriterion("seller_proposal_money is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyLessThan(Long value) {
+            return lessThan(refundMoney, value);
         }
 
-        public Criteria andSellerProposalMoneyEqualTo(Long value) {
-            this.addCriterion("seller_proposal_money =", value, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(refundMoney, value);
         }
 
-        public Criteria andSellerProposalMoneyNotEqualTo(Long value) {
-            this.addCriterion("seller_proposal_money <>", value, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyIn(List<Long> values) {
+            return in(refundMoney, values);
         }
 
-        public Criteria andSellerProposalMoneyGreaterThan(Long value) {
-            this.addCriterion("seller_proposal_money >", value, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyNotIn(List<Long> values) {
+            return notIn(refundMoney, values);
         }
 
-        public Criteria andSellerProposalMoneyGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("seller_proposal_money >=", value, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyBetween(Long value1, Long value2) {
+            return between(refundMoney, value1, value2);
         }
 
-        public Criteria andSellerProposalMoneyLessThan(Long value) {
-            this.addCriterion("seller_proposal_money <", value, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
+            return notBetween(refundMoney, value1, value2);
         }
-
-        public Criteria andSellerProposalMoneyLessThanOrEqualTo(Long value) {
-            this.addCriterion("seller_proposal_money <=", value, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyIsNull() {
+            return isNull(sellerProposalMoney);
         }
 
-        public Criteria andSellerProposalMoneyLike(String value) {
-            this.addCriterion("seller_proposal_money like", value, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyIsNotNull() {
+            return isNotNull(sellerProposalMoney);
         }
 
-        public Criteria andSellerProposalMoneyNotLike(String value) {
-            this.addCriterion("seller_proposal_money not like", value, "sellerProposalMoney");
-            return (Criteria)this;
-        }        public Criteria andSellerProposalMoneyIn(List<Long> values) {
-            this.addCriterion("seller_proposal_money in", values, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyEqualTo(Long value) {
+            return equalTo(sellerProposalMoney, value);
         }
 
-        public Criteria andSellerProposalMoneyNotIn(List<Long> values) {
-            this.addCriterion("seller_proposal_money not in", values, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyNotEqualTo(Long value) {
+            return notEqualTo(sellerProposalMoney, value);
         }
 
-        public Criteria andSellerProposalMoneyBetween(Long value1, Long value2) {
-            this.addCriterion("seller_proposal_money between", value1, value2, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyGreaterThan(Long value) {
+            return greaterThan(sellerProposalMoney, value);
         }
 
-        public Criteria andSellerProposalMoneyNotBetween(Long value1, Long value2) {
-            this.addCriterion("seller_proposal_money not between", value1, value2, "sellerProposalMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(sellerProposalMoney, value);
         }
 
-        public Criteria andUserApplyIsNull() {
-            this.addCriterion("user_apply is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyLessThan(Long value) {
+            return lessThan(sellerProposalMoney, value);
         }
 
-        public Criteria andUserApplyIsNotNull() {
-            this.addCriterion("user_apply is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(sellerProposalMoney, value);
         }
 
-        public Criteria andUserApplyEqualTo(Boolean value) {
-            this.addCriterion("user_apply =", value, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyIn(List<Long> values) {
+            return in(sellerProposalMoney, values);
         }
 
-        public Criteria andUserApplyNotEqualTo(Boolean value) {
-            this.addCriterion("user_apply <>", value, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyNotIn(List<Long> values) {
+            return notIn(sellerProposalMoney, values);
         }
 
-        public Criteria andUserApplyGreaterThan(Boolean value) {
-            this.addCriterion("user_apply >", value, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyBetween(Long value1, Long value2) {
+            return between(sellerProposalMoney, value1, value2);
         }
 
-        public Criteria andUserApplyGreaterThanOrEqualTo(Boolean value) {
-            this.addCriterion("user_apply >=", value, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andSellerProposalMoneyNotBetween(Long value1, Long value2) {
+            return notBetween(sellerProposalMoney, value1, value2);
         }
-
-        public Criteria andUserApplyLessThan(Boolean value) {
-            this.addCriterion("user_apply <", value, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidIsNull() {
+            return isNull(oid);
         }
 
-        public Criteria andUserApplyLessThanOrEqualTo(Boolean value) {
-            this.addCriterion("user_apply <=", value, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidIsNotNull() {
+            return isNotNull(oid);
         }
 
-        public Criteria andUserApplyLike(String value) {
-            this.addCriterion("user_apply like", value, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidEqualTo(Long value) {
+            return equalTo(oid, value);
         }
 
-        public Criteria andUserApplyNotLike(String value) {
-            this.addCriterion("user_apply not like", value, "userApply");
-            return (Criteria)this;
-        }        public Criteria andUserApplyIn(List<Boolean> values) {
-            this.addCriterion("user_apply in", values, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidNotEqualTo(Long value) {
+            return notEqualTo(oid, value);
         }
 
-        public Criteria andUserApplyNotIn(List<Boolean> values) {
-            this.addCriterion("user_apply not in", values, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidGreaterThan(Long value) {
+            return greaterThan(oid, value);
         }
 
-        public Criteria andUserApplyBetween(Boolean value1, Boolean value2) {
-            this.addCriterion("user_apply between", value1, value2, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(oid, value);
         }
 
-        public Criteria andUserApplyNotBetween(Boolean value1, Boolean value2) {
-            this.addCriterion("user_apply not between", value1, value2, "userApply");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidLessThan(Long value) {
+            return lessThan(oid, value);
         }
 
-        public Criteria andOidIsNull() {
-            this.addCriterion("oid is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(oid, value);
         }
 
-        public Criteria andOidIsNotNull() {
-            this.addCriterion("oid is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidIn(List<Long> values) {
+            return in(oid, values);
         }
 
-        public Criteria andOidEqualTo(Long value) {
-            this.addCriterion("oid =", value, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidNotIn(List<Long> values) {
+            return notIn(oid, values);
         }
 
-        public Criteria andOidNotEqualTo(Long value) {
-            this.addCriterion("oid <>", value, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidBetween(Long value1, Long value2) {
+            return between(oid, value1, value2);
         }
 
-        public Criteria andOidGreaterThan(Long value) {
-            this.addCriterion("oid >", value, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andOidNotBetween(Long value1, Long value2) {
+            return notBetween(oid, value1, value2);
         }
-
-        public Criteria andOidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("oid >=", value, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeIsNull() {
+            return isNull(type);
         }
 
-        public Criteria andOidLessThan(Long value) {
-            this.addCriterion("oid <", value, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeIsNotNull() {
+            return isNotNull(type);
         }
 
-        public Criteria andOidLessThanOrEqualTo(Long value) {
-            this.addCriterion("oid <=", value, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeEqualTo(Integer value) {
+            return equalTo(type, value);
         }
 
-        public Criteria andOidLike(String value) {
-            this.addCriterion("oid like", value, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeNotEqualTo(Integer value) {
+            return notEqualTo(type, value);
         }
 
-        public Criteria andOidNotLike(String value) {
-            this.addCriterion("oid not like", value, "oid");
-            return (Criteria)this;
-        }        public Criteria andOidIn(List<Long> values) {
-            this.addCriterion("oid in", values, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeGreaterThan(Integer value) {
+            return greaterThan(type, value);
         }
 
-        public Criteria andOidNotIn(List<Long> values) {
-            this.addCriterion("oid not in", values, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(type, value);
         }
 
-        public Criteria andOidBetween(Long value1, Long value2) {
-            this.addCriterion("oid between", value1, value2, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeLessThan(Integer value) {
+            return lessThan(type, value);
         }
 
-        public Criteria andOidNotBetween(Long value1, Long value2) {
-            this.addCriterion("oid not between", value1, value2, "oid");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(type, value);
         }
 
-        public Criteria andTypeIsNull() {
-            this.addCriterion("type is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeIn(List<Integer> values) {
+            return in(type, values);
         }
 
-        public Criteria andTypeIsNotNull() {
-            this.addCriterion("type is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeNotIn(List<Integer> values) {
+            return notIn(type, values);
         }
 
-        public Criteria andTypeEqualTo(Integer value) {
-            this.addCriterion("type =", value, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            return between(type, value1, value2);
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
-            this.addCriterion("type <>", value, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(type, value1, value2);
         }
-
-        public Criteria andTypeGreaterThan(Integer value) {
-            this.addCriterion("type >", value, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeIsNull() {
+            return isNull(buyerReturnTime);
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("type >=", value, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeIsNotNull() {
+            return isNotNull(buyerReturnTime);
         }
 
-        public Criteria andTypeLessThan(Integer value) {
-            this.addCriterion("type <", value, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeEqualTo(Date value) {
+            return equalTo(buyerReturnTime, value);
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            this.addCriterion("type <=", value, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeNotEqualTo(Date value) {
+            return notEqualTo(buyerReturnTime, value);
         }
 
-        public Criteria andTypeLike(String value) {
-            this.addCriterion("type like", value, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeGreaterThan(Date value) {
+            return greaterThan(buyerReturnTime, value);
         }
 
-        public Criteria andTypeNotLike(String value) {
-            this.addCriterion("type not like", value, "type");
-            return (Criteria)this;
-        }        public Criteria andTypeIn(List<Integer> values) {
-            this.addCriterion("type in", values, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(buyerReturnTime, value);
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
-            this.addCriterion("type not in", values, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeLessThan(Date value) {
+            return lessThan(buyerReturnTime, value);
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            this.addCriterion("type between", value1, value2, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(buyerReturnTime, value);
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("type not between", value1, value2, "type");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeIn(List<Date> values) {
+            return in(buyerReturnTime, values);
         }
 
-        public Criteria andBuyerCourierIsNull() {
-            this.addCriterion("buyer_courier is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeNotIn(List<Date> values) {
+            return notIn(buyerReturnTime, values);
         }
 
-        public Criteria andBuyerCourierIsNotNull() {
-            this.addCriterion("buyer_courier is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeBetween(Date value1, Date value2) {
+            return between(buyerReturnTime, value1, value2);
         }
 
-        public Criteria andBuyerCourierEqualTo(String value) {
-            this.addCriterion("buyer_courier =", value, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerReturnTimeNotBetween(Date value1, Date value2) {
+            return notBetween(buyerReturnTime, value1, value2);
         }
-
-        public Criteria andBuyerCourierNotEqualTo(String value) {
-            this.addCriterion("buyer_courier <>", value, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierIsNull() {
+            return isNull(buyerCourier);
         }
 
-        public Criteria andBuyerCourierGreaterThan(String value) {
-            this.addCriterion("buyer_courier >", value, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierIsNotNull() {
+            return isNotNull(buyerCourier);
         }
 
-        public Criteria andBuyerCourierGreaterThanOrEqualTo(String value) {
-            this.addCriterion("buyer_courier >=", value, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierEqualTo(String value) {
+            return equalTo(buyerCourier, value);
         }
 
-        public Criteria andBuyerCourierLessThan(String value) {
-            this.addCriterion("buyer_courier <", value, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierNotEqualTo(String value) {
+            return notEqualTo(buyerCourier, value);
         }
 
-        public Criteria andBuyerCourierLessThanOrEqualTo(String value) {
-            this.addCriterion("buyer_courier <=", value, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierGreaterThan(String value) {
+            return greaterThan(buyerCourier, value);
         }
 
-        public Criteria andBuyerCourierLike(String value) {
-            this.addCriterion("buyer_courier like", value, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(buyerCourier, value);
         }
 
-        public Criteria andBuyerCourierNotLike(String value) {
-            this.addCriterion("buyer_courier not like", value, "buyerCourier");
-            return (Criteria)this;
-        }        public Criteria andBuyerCourierIn(List<String> values) {
-            this.addCriterion("buyer_courier in", values, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierLessThan(String value) {
+            return lessThan(buyerCourier, value);
         }
 
-        public Criteria andBuyerCourierNotIn(List<String> values) {
-            this.addCriterion("buyer_courier not in", values, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(buyerCourier, value);
         }
 
-        public Criteria andBuyerCourierBetween(String value1, String value2) {
-            this.addCriterion("buyer_courier between", value1, value2, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierLike(String value) {
+            return like(buyerCourier, value);
         }
 
-        public Criteria andBuyerCourierNotBetween(String value1, String value2) {
-            this.addCriterion("buyer_courier not between", value1, value2, "buyerCourier");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierNotLike(String value) {
+            return notLike(buyerCourier, value);
         }
 
-        public Criteria andRefundIdIsNull() {
-            this.addCriterion("refund_id is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierIn(List<String> values) {
+            return in(buyerCourier, values);
         }
 
-        public Criteria andRefundIdIsNotNull() {
-            this.addCriterion("refund_id is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierNotIn(List<String> values) {
+            return notIn(buyerCourier, values);
         }
 
-        public Criteria andRefundIdEqualTo(Long value) {
-            this.addCriterion("refund_id =", value, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierBetween(String value1, String value2) {
+            return between(buyerCourier, value1, value2);
         }
 
-        public Criteria andRefundIdNotEqualTo(Long value) {
-            this.addCriterion("refund_id <>", value, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andBuyerCourierNotBetween(String value1, String value2) {
+            return notBetween(buyerCourier, value1, value2);
         }
-
-        public Criteria andRefundIdGreaterThan(Long value) {
-            this.addCriterion("refund_id >", value, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyIsNull() {
+            return isNull(hopeMoney);
         }
 
-        public Criteria andRefundIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("refund_id >=", value, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyIsNotNull() {
+            return isNotNull(hopeMoney);
         }
 
-        public Criteria andRefundIdLessThan(Long value) {
-            this.addCriterion("refund_id <", value, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyEqualTo(Long value) {
+            return equalTo(hopeMoney, value);
         }
 
-        public Criteria andRefundIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("refund_id <=", value, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyNotEqualTo(Long value) {
+            return notEqualTo(hopeMoney, value);
         }
 
-        public Criteria andRefundIdLike(String value) {
-            this.addCriterion("refund_id like", value, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyGreaterThan(Long value) {
+            return greaterThan(hopeMoney, value);
         }
 
-        public Criteria andRefundIdNotLike(String value) {
-            this.addCriterion("refund_id not like", value, "refundId");
-            return (Criteria)this;
-        }        public Criteria andRefundIdIn(List<Long> values) {
-            this.addCriterion("refund_id in", values, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(hopeMoney, value);
         }
 
-        public Criteria andRefundIdNotIn(List<Long> values) {
-            this.addCriterion("refund_id not in", values, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyLessThan(Long value) {
+            return lessThan(hopeMoney, value);
         }
 
-        public Criteria andRefundIdBetween(Long value1, Long value2) {
-            this.addCriterion("refund_id between", value1, value2, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(hopeMoney, value);
         }
 
-        public Criteria andRefundIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("refund_id not between", value1, value2, "refundId");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyIn(List<Long> values) {
+            return in(hopeMoney, values);
         }
 
-        public Criteria andNumberIsNull() {
-            this.addCriterion("number is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyNotIn(List<Long> values) {
+            return notIn(hopeMoney, values);
         }
 
-        public Criteria andNumberIsNotNull() {
-            this.addCriterion("number is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyBetween(Long value1, Long value2) {
+            return between(hopeMoney, value1, value2);
         }
 
-        public Criteria andNumberEqualTo(Integer value) {
-            this.addCriterion("number =", value, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andHopeMoneyNotBetween(Long value1, Long value2) {
+            return notBetween(hopeMoney, value1, value2);
         }
-
-        public Criteria andNumberNotEqualTo(Integer value) {
-            this.addCriterion("number <>", value, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberIsNull() {
+            return isNull(number);
         }
 
-        public Criteria andNumberGreaterThan(Integer value) {
-            this.addCriterion("number >", value, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberIsNotNull() {
+            return isNotNull(number);
         }
 
-        public Criteria andNumberGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("number >=", value, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberEqualTo(Integer value) {
+            return equalTo(number, value);
         }
 
-        public Criteria andNumberLessThan(Integer value) {
-            this.addCriterion("number <", value, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberNotEqualTo(Integer value) {
+            return notEqualTo(number, value);
         }
 
-        public Criteria andNumberLessThanOrEqualTo(Integer value) {
-            this.addCriterion("number <=", value, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberGreaterThan(Integer value) {
+            return greaterThan(number, value);
         }
 
-        public Criteria andNumberLike(String value) {
-            this.addCriterion("number like", value, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(number, value);
         }
 
-        public Criteria andNumberNotLike(String value) {
-            this.addCriterion("number not like", value, "number");
-            return (Criteria)this;
-        }        public Criteria andNumberIn(List<Integer> values) {
-            this.addCriterion("number in", values, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberLessThan(Integer value) {
+            return lessThan(number, value);
         }
 
-        public Criteria andNumberNotIn(List<Integer> values) {
-            this.addCriterion("number not in", values, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(number, value);
         }
 
-        public Criteria andNumberBetween(Integer value1, Integer value2) {
-            this.addCriterion("number between", value1, value2, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberIn(List<Integer> values) {
+            return in(number, values);
         }
 
-        public Criteria andNumberNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("number not between", value1, value2, "number");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberNotIn(List<Integer> values) {
+            return notIn(number, values);
         }
 
-        public Criteria andHopeMoneyIsNull() {
-            this.addCriterion("hope_money is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberBetween(Integer value1, Integer value2) {
+            return between(number, value1, value2);
         }
 
-        public Criteria andHopeMoneyIsNotNull() {
-            this.addCriterion("hope_money is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andNumberNotBetween(Integer value1, Integer value2) {
+            return notBetween(number, value1, value2);
         }
-
-        public Criteria andHopeMoneyEqualTo(Long value) {
-            this.addCriterion("hope_money =", value, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyIsNull() {
+            return isNull(userApply);
         }
 
-        public Criteria andHopeMoneyNotEqualTo(Long value) {
-            this.addCriterion("hope_money <>", value, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyIsNotNull() {
+            return isNotNull(userApply);
         }
 
-        public Criteria andHopeMoneyGreaterThan(Long value) {
-            this.addCriterion("hope_money >", value, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyEqualTo(Boolean value) {
+            return equalTo(userApply, value);
         }
 
-        public Criteria andHopeMoneyGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("hope_money >=", value, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyNotEqualTo(Boolean value) {
+            return notEqualTo(userApply, value);
         }
 
-        public Criteria andHopeMoneyLessThan(Long value) {
-            this.addCriterion("hope_money <", value, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyGreaterThan(Boolean value) {
+            return greaterThan(userApply, value);
         }
 
-        public Criteria andHopeMoneyLessThanOrEqualTo(Long value) {
-            this.addCriterion("hope_money <=", value, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyGreaterThanOrEqualTo(Boolean value) {
+            return greaterThanOrEqualTo(userApply, value);
         }
 
-        public Criteria andHopeMoneyLike(String value) {
-            this.addCriterion("hope_money like", value, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyLessThan(Boolean value) {
+            return lessThan(userApply, value);
         }
 
-        public Criteria andHopeMoneyNotLike(String value) {
-            this.addCriterion("hope_money not like", value, "hopeMoney");
-            return (Criteria)this;
-        }        public Criteria andHopeMoneyIn(List<Long> values) {
-            this.addCriterion("hope_money in", values, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyLessThanOrEqualTo(Boolean value) {
+            return lessThanOrEqualTo(userApply, value);
         }
 
-        public Criteria andHopeMoneyNotIn(List<Long> values) {
-            this.addCriterion("hope_money not in", values, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyIn(List<Boolean> values) {
+            return in(userApply, values);
         }
 
-        public Criteria andHopeMoneyBetween(Long value1, Long value2) {
-            this.addCriterion("hope_money between", value1, value2, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyNotIn(List<Boolean> values) {
+            return notIn(userApply, values);
         }
 
-        public Criteria andHopeMoneyNotBetween(Long value1, Long value2) {
-            this.addCriterion("hope_money not between", value1, value2, "hopeMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyBetween(Boolean value1, Boolean value2) {
+            return between(userApply, value1, value2);
         }
 
-        public Criteria andRefundMoneyIsNull() {
-            this.addCriterion("refund_money is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andUserApplyNotBetween(Boolean value1, Boolean value2) {
+            return notBetween(userApply, value1, value2);
         }
-
-        public Criteria andRefundMoneyIsNotNull() {
-            this.addCriterion("refund_money is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgIsNull() {
+            return isNull(failMsg);
         }
 
-        public Criteria andRefundMoneyEqualTo(Long value) {
-            this.addCriterion("refund_money =", value, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgIsNotNull() {
+            return isNotNull(failMsg);
         }
 
-        public Criteria andRefundMoneyNotEqualTo(Long value) {
-            this.addCriterion("refund_money <>", value, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgEqualTo(String value) {
+            return equalTo(failMsg, value);
         }
 
-        public Criteria andRefundMoneyGreaterThan(Long value) {
-            this.addCriterion("refund_money >", value, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgNotEqualTo(String value) {
+            return notEqualTo(failMsg, value);
         }
 
-        public Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("refund_money >=", value, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgGreaterThan(String value) {
+            return greaterThan(failMsg, value);
         }
 
-        public Criteria andRefundMoneyLessThan(Long value) {
-            this.addCriterion("refund_money <", value, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(failMsg, value);
         }
 
-        public Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
-            this.addCriterion("refund_money <=", value, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgLessThan(String value) {
+            return lessThan(failMsg, value);
         }
 
-        public Criteria andRefundMoneyLike(String value) {
-            this.addCriterion("refund_money like", value, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(failMsg, value);
         }
 
-        public Criteria andRefundMoneyNotLike(String value) {
-            this.addCriterion("refund_money not like", value, "refundMoney");
-            return (Criteria)this;
-        }        public Criteria andRefundMoneyIn(List<Long> values) {
-            this.addCriterion("refund_money in", values, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgLike(String value) {
+            return like(failMsg, value);
         }
 
-        public Criteria andRefundMoneyNotIn(List<Long> values) {
-            this.addCriterion("refund_money not in", values, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgNotLike(String value) {
+            return notLike(failMsg, value);
         }
 
-        public Criteria andRefundMoneyBetween(Long value1, Long value2) {
-            this.addCriterion("refund_money between", value1, value2, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgIn(List<String> values) {
+            return in(failMsg, values);
         }
 
-        public Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
-            this.addCriterion("refund_money not between", value1, value2, "refundMoney");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgNotIn(List<String> values) {
+            return notIn(failMsg, values);
         }
 
-        public Criteria andStatusIsNull() {
-            this.addCriterion("status is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgBetween(String value1, String value2) {
+            return between(failMsg, value1, value2);
         }
 
-        public Criteria andStatusIsNotNull() {
-            this.addCriterion("status is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andFailMsgNotBetween(String value1, String value2) {
+            return notBetween(failMsg, value1, value2);
         }
-
-        public Criteria andStatusEqualTo(Integer value) {
-            this.addCriterion("status =", value, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdIsNull() {
+            return isNull(refundId);
         }
 
-        public Criteria andStatusNotEqualTo(Integer value) {
-            this.addCriterion("status <>", value, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdIsNotNull() {
+            return isNotNull(refundId);
         }
 
-        public Criteria andStatusGreaterThan(Integer value) {
-            this.addCriterion("status >", value, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdEqualTo(Long value) {
+            return equalTo(refundId, value);
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("status >=", value, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdNotEqualTo(Long value) {
+            return notEqualTo(refundId, value);
         }
 
-        public Criteria andStatusLessThan(Integer value) {
-            this.addCriterion("status <", value, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdGreaterThan(Long value) {
+            return greaterThan(refundId, value);
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Integer value) {
-            this.addCriterion("status <=", value, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(refundId, value);
         }
 
-        public Criteria andStatusLike(String value) {
-            this.addCriterion("status like", value, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdLessThan(Long value) {
+            return lessThan(refundId, value);
         }
 
-        public Criteria andStatusNotLike(String value) {
-            this.addCriterion("status not like", value, "status");
-            return (Criteria)this;
-        }        public Criteria andStatusIn(List<Integer> values) {
-            this.addCriterion("status in", values, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(refundId, value);
         }
 
-        public Criteria andStatusNotIn(List<Integer> values) {
-            this.addCriterion("status not in", values, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdIn(List<Long> values) {
+            return in(refundId, values);
         }
 
-        public Criteria andStatusBetween(Integer value1, Integer value2) {
-            this.addCriterion("status between", value1, value2, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdNotIn(List<Long> values) {
+            return notIn(refundId, values);
         }
 
-        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("status not between", value1, value2, "status");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdBetween(Long value1, Long value2) {
+            return between(refundId, value1, value2);
         }
 
-        public Criteria andFailMsgIsNull() {
-            this.addCriterion("fail_msg is null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andRefundIdNotBetween(Long value1, Long value2) {
+            return notBetween(refundId, value1, value2);
         }
-
-        public Criteria andFailMsgIsNotNull() {
-            this.addCriterion("fail_msg is not null");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusIsNull() {
+            return isNull(status);
         }
 
-        public Criteria andFailMsgEqualTo(String value) {
-            this.addCriterion("fail_msg =", value, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusIsNotNull() {
+            return isNotNull(status);
         }
 
-        public Criteria andFailMsgNotEqualTo(String value) {
-            this.addCriterion("fail_msg <>", value, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusEqualTo(Integer value) {
+            return equalTo(status, value);
         }
 
-        public Criteria andFailMsgGreaterThan(String value) {
-            this.addCriterion("fail_msg >", value, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusNotEqualTo(Integer value) {
+            return notEqualTo(status, value);
         }
 
-        public Criteria andFailMsgGreaterThanOrEqualTo(String value) {
-            this.addCriterion("fail_msg >=", value, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusGreaterThan(Integer value) {
+            return greaterThan(status, value);
         }
 
-        public Criteria andFailMsgLessThan(String value) {
-            this.addCriterion("fail_msg <", value, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(status, value);
         }
 
-        public Criteria andFailMsgLessThanOrEqualTo(String value) {
-            this.addCriterion("fail_msg <=", value, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusLessThan(Integer value) {
+            return lessThan(status, value);
         }
 
-        public Criteria andFailMsgLike(String value) {
-            this.addCriterion("fail_msg like", value, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(status, value);
         }
 
-        public Criteria andFailMsgNotLike(String value) {
-            this.addCriterion("fail_msg not like", value, "failMsg");
-            return (Criteria)this;
-        }        public Criteria andFailMsgIn(List<String> values) {
-            this.addCriterion("fail_msg in", values, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusIn(List<Integer> values) {
+            return in(status, values);
         }
 
-        public Criteria andFailMsgNotIn(List<String> values) {
-            this.addCriterion("fail_msg not in", values, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusNotIn(List<Integer> values) {
+            return notIn(status, values);
         }
 
-        public Criteria andFailMsgBetween(String value1, String value2) {
-            this.addCriterion("fail_msg between", value1, value2, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusBetween(Integer value1, Integer value2) {
+            return between(status, value1, value2);
         }
 
-        public Criteria andFailMsgNotBetween(String value1, String value2) {
-            this.addCriterion("fail_msg not between", value1, value2, "failMsg");
-            return (Criteria)this;
+        public ItemOrderRefundExample.Criteria andStatusNotBetween(Integer value1, Integer value2) {
+            return notBetween(status, value1, value2);
         }
     }
 }

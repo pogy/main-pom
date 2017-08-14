@@ -1,711 +1,408 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.GoatOneLocation;
 
-public class GoatOneLocationExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<GoatOneLocationExample.Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class GoatOneLocationExample extends SgExample<GoatOneLocationExample.Criteria> {
+    public static final Class<GoatOneLocation> beanClass = GoatOneLocation.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn webSite;
+    public static EntityColumn disEnabled;
+    public static EntityColumn createTime;
+    public static EntityColumn goatType;
+    public static EntityColumn description;
+    public static EntityColumn localCode;
+    public static EntityColumn localId;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        webSite = listMap.get("webSite");
+        disEnabled = listMap.get("disEnabled");
+        createTime = listMap.get("createTime");
+        goatType = listMap.get("goatType");
+        description = listMap.get("description");
+        localCode = listMap.get("localCode");
+        localId = listMap.get("localId");
+        }
 
     public GoatOneLocationExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<GoatOneLocationExample.Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(GoatOneLocationExample.Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public GoatOneLocationExample.Criteria or() {
-        GoatOneLocationExample.Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public GoatOneLocationExample.Criteria createCriteria() {
-        GoatOneLocationExample.Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
+    @Override
     protected GoatOneLocationExample.Criteria createCriteriaInternal() {
-        GoatOneLocationExample.Criteria criteria = new GoatOneLocationExample.Criteria();
-        return criteria;
+        return new GoatOneLocationExample.Criteria(this);
     }
 
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GoatOneLocationExample.GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<GoatOneLocationExample.Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<GoatOneLocationExample.Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<GoatOneLocationExample.Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new GoatOneLocationExample.Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new GoatOneLocationExample.Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new GoatOneLocationExample.Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledIsNull() {
-            this.addCriterion("dis_enabled is null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledIsNotNull() {
-            this.addCriterion("dis_enabled is not null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledEqualTo(Boolean value) {
-            this.addCriterion("dis_enabled =", value, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledNotEqualTo(Boolean value) {
-            this.addCriterion("dis_enabled <>", value, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledGreaterThan(Boolean value) {
-            this.addCriterion("dis_enabled >", value, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledGreaterThanOrEqualTo(Boolean value) {
-            this.addCriterion("dis_enabled >=", value, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledLessThan(Boolean value) {
-            this.addCriterion("dis_enabled <", value, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledLessThanOrEqualTo(Boolean value) {
-            this.addCriterion("dis_enabled <=", value, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledLike(String value) {
-            this.addCriterion("dis_enabled like", value, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledNotLike(String value) {
-            this.addCriterion("dis_enabled not like", value, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }        public GoatOneLocationExample.Criteria andDisEnabledIn(List<Boolean> values) {
-            this.addCriterion("dis_enabled in", values, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledNotIn(List<Boolean> values) {
-            this.addCriterion("dis_enabled not in", values, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledBetween(Boolean value1, Boolean value2) {
-            this.addCriterion("dis_enabled between", value1, value2, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDisEnabledNotBetween(Boolean value1, Boolean value2) {
-            this.addCriterion("dis_enabled not between", value1, value2, "disEnabled");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdIsNull() {
-            this.addCriterion("local_id is null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdIsNotNull() {
-            this.addCriterion("local_id is not null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdEqualTo(Long value) {
-            this.addCriterion("local_id =", value, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdNotEqualTo(Long value) {
-            this.addCriterion("local_id <>", value, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdGreaterThan(Long value) {
-            this.addCriterion("local_id >", value, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("local_id >=", value, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdLessThan(Long value) {
-            this.addCriterion("local_id <", value, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("local_id <=", value, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdLike(String value) {
-            this.addCriterion("local_id like", value, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdNotLike(String value) {
-            this.addCriterion("local_id not like", value, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }        public GoatOneLocationExample.Criteria andLocalIdIn(List<Long> values) {
-            this.addCriterion("local_id in", values, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdNotIn(List<Long> values) {
-            this.addCriterion("local_id not in", values, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdBetween(Long value1, Long value2) {
-            this.addCriterion("local_id between", value1, value2, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("local_id not between", value1, value2, "localId");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeIsNull() {
-            this.addCriterion("create_time is null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeIsNotNull() {
-            this.addCriterion("create_time is not null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeEqualTo(Date value) {
-            this.addCriterion("create_time =", value, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeNotEqualTo(Date value) {
-            this.addCriterion("create_time <>", value, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeGreaterThan(Date value) {
-            this.addCriterion("create_time >", value, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("create_time >=", value, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeLessThan(Date value) {
-            this.addCriterion("create_time <", value, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("create_time <=", value, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeLike(String value) {
-            this.addCriterion("create_time like", value, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeNotLike(String value) {
-            this.addCriterion("create_time not like", value, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }        public GoatOneLocationExample.Criteria andCreateTimeIn(List<Date> values) {
-            this.addCriterion("create_time in", values, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeNotIn(List<Date> values) {
-            this.addCriterion("create_time not in", values, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
-            this.addCriterion("create_time between", value1, value2, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("create_time not between", value1, value2, "createTime");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeIsNull() {
-            this.addCriterion("goat_type is null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeIsNotNull() {
-            this.addCriterion("goat_type is not null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeEqualTo(Integer value) {
-            this.addCriterion("goat_type =", value, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeNotEqualTo(Integer value) {
-            this.addCriterion("goat_type <>", value, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeGreaterThan(Integer value) {
-            this.addCriterion("goat_type >", value, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("goat_type >=", value, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeLessThan(Integer value) {
-            this.addCriterion("goat_type <", value, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeLessThanOrEqualTo(Integer value) {
-            this.addCriterion("goat_type <=", value, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeLike(String value) {
-            this.addCriterion("goat_type like", value, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeNotLike(String value) {
-            this.addCriterion("goat_type not like", value, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }        public GoatOneLocationExample.Criteria andGoatTypeIn(List<Integer> values) {
-            this.addCriterion("goat_type in", values, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeNotIn(List<Integer> values) {
-            this.addCriterion("goat_type not in", values, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeBetween(Integer value1, Integer value2) {
-            this.addCriterion("goat_type between", value1, value2, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andGoatTypeNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("goat_type not between", value1, value2, "goatType");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionIsNull() {
-            this.addCriterion("description is null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionIsNotNull() {
-            this.addCriterion("description is not null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionEqualTo(String value) {
-            this.addCriterion("description =", value, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionNotEqualTo(String value) {
-            this.addCriterion("description <>", value, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionGreaterThan(String value) {
-            this.addCriterion("description >", value, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionGreaterThanOrEqualTo(String value) {
-            this.addCriterion("description >=", value, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionLessThan(String value) {
-            this.addCriterion("description <", value, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionLessThanOrEqualTo(String value) {
-            this.addCriterion("description <=", value, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionLike(String value) {
-            this.addCriterion("description like", value, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionNotLike(String value) {
-            this.addCriterion("description not like", value, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }        public GoatOneLocationExample.Criteria andDescriptionIn(List<String> values) {
-            this.addCriterion("description in", values, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionNotIn(List<String> values) {
-            this.addCriterion("description not in", values, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionBetween(String value1, String value2) {
-            this.addCriterion("description between", value1, value2, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andDescriptionNotBetween(String value1, String value2) {
-            this.addCriterion("description not between", value1, value2, "description");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeIsNull() {
-            this.addCriterion("local_code is null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeIsNotNull() {
-            this.addCriterion("local_code is not null");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeEqualTo(String value) {
-            this.addCriterion("local_code =", value, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeNotEqualTo(String value) {
-            this.addCriterion("local_code <>", value, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeGreaterThan(String value) {
-            this.addCriterion("local_code >", value, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("local_code >=", value, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeLessThan(String value) {
-            this.addCriterion("local_code <", value, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeLessThanOrEqualTo(String value) {
-            this.addCriterion("local_code <=", value, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeLike(String value) {
-            this.addCriterion("local_code like", value, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeNotLike(String value) {
-            this.addCriterion("local_code not like", value, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }        public GoatOneLocationExample.Criteria andLocalCodeIn(List<String> values) {
-            this.addCriterion("local_code in", values, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeNotIn(List<String> values) {
-            this.addCriterion("local_code not in", values, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeBetween(String value1, String value2) {
-            this.addCriterion("local_code between", value1, value2, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
-        }
-
-        public GoatOneLocationExample.Criteria andLocalCodeNotBetween(String value1, String value2) {
-            this.addCriterion("local_code not between", value1, value2, "localCode");
-            return (GoatOneLocationExample.Criteria)this;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteIsNull() {
-            this.addCriterion("web_site is null");
-            return (GoatOneLocationExample.Criteria)this;
+            return isNull(webSite);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteIsNotNull() {
-            this.addCriterion("web_site is not null");
-            return (GoatOneLocationExample.Criteria)this;
+            return isNotNull(webSite);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteEqualTo(String value) {
-            this.addCriterion("web_site =", value, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return equalTo(webSite, value);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteNotEqualTo(String value) {
-            this.addCriterion("web_site <>", value, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return notEqualTo(webSite, value);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteGreaterThan(String value) {
-            this.addCriterion("web_site >", value, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return greaterThan(webSite, value);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
-            this.addCriterion("web_site >=", value, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return greaterThanOrEqualTo(webSite, value);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteLessThan(String value) {
-            this.addCriterion("web_site <", value, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return lessThan(webSite, value);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
-            this.addCriterion("web_site <=", value, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return lessThanOrEqualTo(webSite, value);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteLike(String value) {
-            this.addCriterion("web_site like", value, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return like(webSite, value);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteNotLike(String value) {
-            this.addCriterion("web_site not like", value, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
-        }        public GoatOneLocationExample.Criteria andWebSiteIn(List<String> values) {
-            this.addCriterion("web_site in", values, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return notLike(webSite, value);
+        }
+
+        public GoatOneLocationExample.Criteria andWebSiteIn(List<String> values) {
+            return in(webSite, values);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteNotIn(List<String> values) {
-            this.addCriterion("web_site not in", values, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return notIn(webSite, values);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteBetween(String value1, String value2) {
-            this.addCriterion("web_site between", value1, value2, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return between(webSite, value1, value2);
         }
 
         public GoatOneLocationExample.Criteria andWebSiteNotBetween(String value1, String value2) {
-            this.addCriterion("web_site not between", value1, value2, "webSite");
-            return (GoatOneLocationExample.Criteria)this;
+            return notBetween(webSite, value1, value2);
+        }
+        public GoatOneLocationExample.Criteria andDisEnabledIsNull() {
+            return isNull(disEnabled);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledIsNotNull() {
+            return isNotNull(disEnabled);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledEqualTo(Boolean value) {
+            return equalTo(disEnabled, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledNotEqualTo(Boolean value) {
+            return notEqualTo(disEnabled, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledGreaterThan(Boolean value) {
+            return greaterThan(disEnabled, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledGreaterThanOrEqualTo(Boolean value) {
+            return greaterThanOrEqualTo(disEnabled, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledLessThan(Boolean value) {
+            return lessThan(disEnabled, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledLessThanOrEqualTo(Boolean value) {
+            return lessThanOrEqualTo(disEnabled, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledIn(List<Boolean> values) {
+            return in(disEnabled, values);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledNotIn(List<Boolean> values) {
+            return notIn(disEnabled, values);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledBetween(Boolean value1, Boolean value2) {
+            return between(disEnabled, value1, value2);
+        }
+
+        public GoatOneLocationExample.Criteria andDisEnabledNotBetween(Boolean value1, Boolean value2) {
+            return notBetween(disEnabled, value1, value2);
+        }
+        public GoatOneLocationExample.Criteria andCreateTimeIsNull() {
+            return isNull(createTime);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeIsNotNull() {
+            return isNotNull(createTime);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeEqualTo(Date value) {
+            return equalTo(createTime, value);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeNotEqualTo(Date value) {
+            return notEqualTo(createTime, value);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeGreaterThan(Date value) {
+            return greaterThan(createTime, value);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(createTime, value);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeLessThan(Date value) {
+            return lessThan(createTime, value);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(createTime, value);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeIn(List<Date> values) {
+            return in(createTime, values);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeNotIn(List<Date> values) {
+            return notIn(createTime, values);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
+            return between(createTime, value1, value2);
+        }
+
+        public GoatOneLocationExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            return notBetween(createTime, value1, value2);
+        }
+        public GoatOneLocationExample.Criteria andGoatTypeIsNull() {
+            return isNull(goatType);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeIsNotNull() {
+            return isNotNull(goatType);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeEqualTo(Integer value) {
+            return equalTo(goatType, value);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeNotEqualTo(Integer value) {
+            return notEqualTo(goatType, value);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeGreaterThan(Integer value) {
+            return greaterThan(goatType, value);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(goatType, value);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeLessThan(Integer value) {
+            return lessThan(goatType, value);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(goatType, value);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeIn(List<Integer> values) {
+            return in(goatType, values);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeNotIn(List<Integer> values) {
+            return notIn(goatType, values);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeBetween(Integer value1, Integer value2) {
+            return between(goatType, value1, value2);
+        }
+
+        public GoatOneLocationExample.Criteria andGoatTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(goatType, value1, value2);
+        }
+        public GoatOneLocationExample.Criteria andDescriptionIsNull() {
+            return isNull(description);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionIsNotNull() {
+            return isNotNull(description);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionEqualTo(String value) {
+            return equalTo(description, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionNotEqualTo(String value) {
+            return notEqualTo(description, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionGreaterThan(String value) {
+            return greaterThan(description, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(description, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionLessThan(String value) {
+            return lessThan(description, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(description, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionLike(String value) {
+            return like(description, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionNotLike(String value) {
+            return notLike(description, value);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionIn(List<String> values) {
+            return in(description, values);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionNotIn(List<String> values) {
+            return notIn(description, values);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionBetween(String value1, String value2) {
+            return between(description, value1, value2);
+        }
+
+        public GoatOneLocationExample.Criteria andDescriptionNotBetween(String value1, String value2) {
+            return notBetween(description, value1, value2);
+        }
+        public GoatOneLocationExample.Criteria andLocalCodeIsNull() {
+            return isNull(localCode);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeIsNotNull() {
+            return isNotNull(localCode);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeEqualTo(String value) {
+            return equalTo(localCode, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeNotEqualTo(String value) {
+            return notEqualTo(localCode, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeGreaterThan(String value) {
+            return greaterThan(localCode, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(localCode, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeLessThan(String value) {
+            return lessThan(localCode, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(localCode, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeLike(String value) {
+            return like(localCode, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeNotLike(String value) {
+            return notLike(localCode, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeIn(List<String> values) {
+            return in(localCode, values);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeNotIn(List<String> values) {
+            return notIn(localCode, values);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeBetween(String value1, String value2) {
+            return between(localCode, value1, value2);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalCodeNotBetween(String value1, String value2) {
+            return notBetween(localCode, value1, value2);
+        }
+        public GoatOneLocationExample.Criteria andLocalIdIsNull() {
+            return isNull(localId);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdIsNotNull() {
+            return isNotNull(localId);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdEqualTo(Long value) {
+            return equalTo(localId, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdNotEqualTo(Long value) {
+            return notEqualTo(localId, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdGreaterThan(Long value) {
+            return greaterThan(localId, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(localId, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdLessThan(Long value) {
+            return lessThan(localId, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(localId, value);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdIn(List<Long> values) {
+            return in(localId, values);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdNotIn(List<Long> values) {
+            return notIn(localId, values);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdBetween(Long value1, Long value2) {
+            return between(localId, value1, value2);
+        }
+
+        public GoatOneLocationExample.Criteria andLocalIdNotBetween(Long value1, Long value2) {
+            return notBetween(localId, value1, value2);
         }
     }
 }

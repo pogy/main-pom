@@ -1,1051 +1,685 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.BuyerAddress;
 
-public class BuyerAddressExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class BuyerAddressExample extends SgExample<BuyerAddressExample.Criteria> {
+    public static final Class<BuyerAddress> beanClass = BuyerAddress.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn zipCode;
+    public static EntityColumn townName;
+    public static EntityColumn address;
+    public static EntityColumn provName;
+    public static EntityColumn cityName;
+    public static EntityColumn name;
+    public static EntityColumn telephone;
+    public static EntityColumn cityId;
+    public static EntityColumn townId;
+    public static EntityColumn provId;
+    public static EntityColumn userId;
+    public static EntityColumn addressId;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        zipCode = listMap.get("zipCode");
+        townName = listMap.get("townName");
+        address = listMap.get("address");
+        provName = listMap.get("provName");
+        cityName = listMap.get("cityName");
+        name = listMap.get("name");
+        telephone = listMap.get("telephone");
+        cityId = listMap.get("cityId");
+        townId = listMap.get("townId");
+        provId = listMap.get("provId");
+        userId = listMap.get("userId");
+        addressId = listMap.get("addressId");
+        }
 
     public BuyerAddressExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected BuyerAddressExample.Criteria createCriteriaInternal() {
+        return new BuyerAddressExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
+        public BuyerAddressExample.Criteria andZipCodeIsNull() {
+            return isNull(zipCode);
         }
 
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
+        public BuyerAddressExample.Criteria andZipCodeIsNotNull() {
+            return isNotNull(zipCode);
         }
 
-        public Criteria andCityNameIsNull() {
-            this.addCriterion("city_name is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeEqualTo(String value) {
+            return equalTo(zipCode, value);
         }
 
-        public Criteria andCityNameIsNotNull() {
-            this.addCriterion("city_name is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeNotEqualTo(String value) {
+            return notEqualTo(zipCode, value);
         }
 
-        public Criteria andCityNameEqualTo(String value) {
-            this.addCriterion("city_name =", value, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeGreaterThan(String value) {
+            return greaterThan(zipCode, value);
         }
 
-        public Criteria andCityNameNotEqualTo(String value) {
-            this.addCriterion("city_name <>", value, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(zipCode, value);
         }
 
-        public Criteria andCityNameGreaterThan(String value) {
-            this.addCriterion("city_name >", value, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeLessThan(String value) {
+            return lessThan(zipCode, value);
         }
 
-        public Criteria andCityNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("city_name >=", value, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(zipCode, value);
         }
 
-        public Criteria andCityNameLessThan(String value) {
-            this.addCriterion("city_name <", value, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeLike(String value) {
+            return like(zipCode, value);
         }
 
-        public Criteria andCityNameLessThanOrEqualTo(String value) {
-            this.addCriterion("city_name <=", value, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeNotLike(String value) {
+            return notLike(zipCode, value);
         }
 
-        public Criteria andCityNameLike(String value) {
-            this.addCriterion("city_name like", value, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeIn(List<String> values) {
+            return in(zipCode, values);
         }
 
-        public Criteria andCityNameNotLike(String value) {
-            this.addCriterion("city_name not like", value, "cityName");
-            return (Criteria)this;
-        }        public Criteria andCityNameIn(List<String> values) {
-            this.addCriterion("city_name in", values, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeNotIn(List<String> values) {
+            return notIn(zipCode, values);
         }
 
-        public Criteria andCityNameNotIn(List<String> values) {
-            this.addCriterion("city_name not in", values, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeBetween(String value1, String value2) {
+            return between(zipCode, value1, value2);
         }
 
-        public Criteria andCityNameBetween(String value1, String value2) {
-            this.addCriterion("city_name between", value1, value2, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andZipCodeNotBetween(String value1, String value2) {
+            return notBetween(zipCode, value1, value2);
         }
-
-        public Criteria andCityNameNotBetween(String value1, String value2) {
-            this.addCriterion("city_name not between", value1, value2, "cityName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameIsNull() {
+            return isNull(townName);
         }
 
-        public Criteria andAddressIsNull() {
-            this.addCriterion("address is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameIsNotNull() {
+            return isNotNull(townName);
         }
 
-        public Criteria andAddressIsNotNull() {
-            this.addCriterion("address is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameEqualTo(String value) {
+            return equalTo(townName, value);
         }
 
-        public Criteria andAddressEqualTo(String value) {
-            this.addCriterion("address =", value, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameNotEqualTo(String value) {
+            return notEqualTo(townName, value);
         }
 
-        public Criteria andAddressNotEqualTo(String value) {
-            this.addCriterion("address <>", value, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameGreaterThan(String value) {
+            return greaterThan(townName, value);
         }
 
-        public Criteria andAddressGreaterThan(String value) {
-            this.addCriterion("address >", value, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(townName, value);
         }
 
-        public Criteria andAddressGreaterThanOrEqualTo(String value) {
-            this.addCriterion("address >=", value, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameLessThan(String value) {
+            return lessThan(townName, value);
         }
 
-        public Criteria andAddressLessThan(String value) {
-            this.addCriterion("address <", value, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(townName, value);
         }
 
-        public Criteria andAddressLessThanOrEqualTo(String value) {
-            this.addCriterion("address <=", value, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameLike(String value) {
+            return like(townName, value);
         }
 
-        public Criteria andAddressLike(String value) {
-            this.addCriterion("address like", value, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameNotLike(String value) {
+            return notLike(townName, value);
         }
 
-        public Criteria andAddressNotLike(String value) {
-            this.addCriterion("address not like", value, "address");
-            return (Criteria)this;
-        }        public Criteria andAddressIn(List<String> values) {
-            this.addCriterion("address in", values, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameIn(List<String> values) {
+            return in(townName, values);
         }
 
-        public Criteria andAddressNotIn(List<String> values) {
-            this.addCriterion("address not in", values, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameNotIn(List<String> values) {
+            return notIn(townName, values);
         }
 
-        public Criteria andAddressBetween(String value1, String value2) {
-            this.addCriterion("address between", value1, value2, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameBetween(String value1, String value2) {
+            return between(townName, value1, value2);
         }
 
-        public Criteria andAddressNotBetween(String value1, String value2) {
-            this.addCriterion("address not between", value1, value2, "address");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownNameNotBetween(String value1, String value2) {
+            return notBetween(townName, value1, value2);
         }
-
-        public Criteria andProvIdIsNull() {
-            this.addCriterion("prov_id is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIsNull() {
+            return isNull(address);
         }
 
-        public Criteria andProvIdIsNotNull() {
-            this.addCriterion("prov_id is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIsNotNull() {
+            return isNotNull(address);
         }
 
-        public Criteria andProvIdEqualTo(Long value) {
-            this.addCriterion("prov_id =", value, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressEqualTo(String value) {
+            return equalTo(address, value);
         }
 
-        public Criteria andProvIdNotEqualTo(Long value) {
-            this.addCriterion("prov_id <>", value, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressNotEqualTo(String value) {
+            return notEqualTo(address, value);
         }
 
-        public Criteria andProvIdGreaterThan(Long value) {
-            this.addCriterion("prov_id >", value, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressGreaterThan(String value) {
+            return greaterThan(address, value);
         }
 
-        public Criteria andProvIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("prov_id >=", value, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(address, value);
         }
 
-        public Criteria andProvIdLessThan(Long value) {
-            this.addCriterion("prov_id <", value, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressLessThan(String value) {
+            return lessThan(address, value);
         }
 
-        public Criteria andProvIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("prov_id <=", value, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(address, value);
         }
 
-        public Criteria andProvIdLike(String value) {
-            this.addCriterion("prov_id like", value, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressLike(String value) {
+            return like(address, value);
         }
 
-        public Criteria andProvIdNotLike(String value) {
-            this.addCriterion("prov_id not like", value, "provId");
-            return (Criteria)this;
-        }        public Criteria andProvIdIn(List<Long> values) {
-            this.addCriterion("prov_id in", values, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressNotLike(String value) {
+            return notLike(address, value);
         }
 
-        public Criteria andProvIdNotIn(List<Long> values) {
-            this.addCriterion("prov_id not in", values, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIn(List<String> values) {
+            return in(address, values);
         }
 
-        public Criteria andProvIdBetween(Long value1, Long value2) {
-            this.addCriterion("prov_id between", value1, value2, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressNotIn(List<String> values) {
+            return notIn(address, values);
         }
 
-        public Criteria andProvIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("prov_id not between", value1, value2, "provId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressBetween(String value1, String value2) {
+            return between(address, value1, value2);
         }
 
-        public Criteria andTownIdIsNull() {
-            this.addCriterion("town_id is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressNotBetween(String value1, String value2) {
+            return notBetween(address, value1, value2);
         }
-
-        public Criteria andTownIdIsNotNull() {
-            this.addCriterion("town_id is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameIsNull() {
+            return isNull(provName);
         }
 
-        public Criteria andTownIdEqualTo(Long value) {
-            this.addCriterion("town_id =", value, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameIsNotNull() {
+            return isNotNull(provName);
         }
 
-        public Criteria andTownIdNotEqualTo(Long value) {
-            this.addCriterion("town_id <>", value, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameEqualTo(String value) {
+            return equalTo(provName, value);
         }
 
-        public Criteria andTownIdGreaterThan(Long value) {
-            this.addCriterion("town_id >", value, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameNotEqualTo(String value) {
+            return notEqualTo(provName, value);
         }
 
-        public Criteria andTownIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("town_id >=", value, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameGreaterThan(String value) {
+            return greaterThan(provName, value);
         }
 
-        public Criteria andTownIdLessThan(Long value) {
-            this.addCriterion("town_id <", value, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(provName, value);
         }
 
-        public Criteria andTownIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("town_id <=", value, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameLessThan(String value) {
+            return lessThan(provName, value);
         }
 
-        public Criteria andTownIdLike(String value) {
-            this.addCriterion("town_id like", value, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(provName, value);
         }
 
-        public Criteria andTownIdNotLike(String value) {
-            this.addCriterion("town_id not like", value, "townId");
-            return (Criteria)this;
-        }        public Criteria andTownIdIn(List<Long> values) {
-            this.addCriterion("town_id in", values, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameLike(String value) {
+            return like(provName, value);
         }
 
-        public Criteria andTownIdNotIn(List<Long> values) {
-            this.addCriterion("town_id not in", values, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameNotLike(String value) {
+            return notLike(provName, value);
         }
 
-        public Criteria andTownIdBetween(Long value1, Long value2) {
-            this.addCriterion("town_id between", value1, value2, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameIn(List<String> values) {
+            return in(provName, values);
         }
 
-        public Criteria andTownIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("town_id not between", value1, value2, "townId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameNotIn(List<String> values) {
+            return notIn(provName, values);
         }
 
-        public Criteria andUserIdIsNull() {
-            this.addCriterion("user_id is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameBetween(String value1, String value2) {
+            return between(provName, value1, value2);
         }
 
-        public Criteria andUserIdIsNotNull() {
-            this.addCriterion("user_id is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvNameNotBetween(String value1, String value2) {
+            return notBetween(provName, value1, value2);
         }
-
-        public Criteria andUserIdEqualTo(Long value) {
-            this.addCriterion("user_id =", value, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameIsNull() {
+            return isNull(cityName);
         }
 
-        public Criteria andUserIdNotEqualTo(Long value) {
-            this.addCriterion("user_id <>", value, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameIsNotNull() {
+            return isNotNull(cityName);
         }
 
-        public Criteria andUserIdGreaterThan(Long value) {
-            this.addCriterion("user_id >", value, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameEqualTo(String value) {
+            return equalTo(cityName, value);
         }
 
-        public Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("user_id >=", value, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameNotEqualTo(String value) {
+            return notEqualTo(cityName, value);
         }
 
-        public Criteria andUserIdLessThan(Long value) {
-            this.addCriterion("user_id <", value, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameGreaterThan(String value) {
+            return greaterThan(cityName, value);
         }
 
-        public Criteria andUserIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("user_id <=", value, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(cityName, value);
         }
 
-        public Criteria andUserIdLike(String value) {
-            this.addCriterion("user_id like", value, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameLessThan(String value) {
+            return lessThan(cityName, value);
         }
 
-        public Criteria andUserIdNotLike(String value) {
-            this.addCriterion("user_id not like", value, "userId");
-            return (Criteria)this;
-        }        public Criteria andUserIdIn(List<Long> values) {
-            this.addCriterion("user_id in", values, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(cityName, value);
         }
 
-        public Criteria andUserIdNotIn(List<Long> values) {
-            this.addCriterion("user_id not in", values, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameLike(String value) {
+            return like(cityName, value);
         }
 
-        public Criteria andUserIdBetween(Long value1, Long value2) {
-            this.addCriterion("user_id between", value1, value2, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameNotLike(String value) {
+            return notLike(cityName, value);
         }
 
-        public Criteria andUserIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("user_id not between", value1, value2, "userId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameIn(List<String> values) {
+            return in(cityName, values);
         }
 
-        public Criteria andProvNameIsNull() {
-            this.addCriterion("prov_name is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameNotIn(List<String> values) {
+            return notIn(cityName, values);
         }
 
-        public Criteria andProvNameIsNotNull() {
-            this.addCriterion("prov_name is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameBetween(String value1, String value2) {
+            return between(cityName, value1, value2);
         }
 
-        public Criteria andProvNameEqualTo(String value) {
-            this.addCriterion("prov_name =", value, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityNameNotBetween(String value1, String value2) {
+            return notBetween(cityName, value1, value2);
         }
-
-        public Criteria andProvNameNotEqualTo(String value) {
-            this.addCriterion("prov_name <>", value, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameIsNull() {
+            return isNull(name);
         }
 
-        public Criteria andProvNameGreaterThan(String value) {
-            this.addCriterion("prov_name >", value, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameIsNotNull() {
+            return isNotNull(name);
         }
 
-        public Criteria andProvNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("prov_name >=", value, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameEqualTo(String value) {
+            return equalTo(name, value);
         }
 
-        public Criteria andProvNameLessThan(String value) {
-            this.addCriterion("prov_name <", value, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameNotEqualTo(String value) {
+            return notEqualTo(name, value);
         }
 
-        public Criteria andProvNameLessThanOrEqualTo(String value) {
-            this.addCriterion("prov_name <=", value, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameGreaterThan(String value) {
+            return greaterThan(name, value);
         }
 
-        public Criteria andProvNameLike(String value) {
-            this.addCriterion("prov_name like", value, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(name, value);
         }
 
-        public Criteria andProvNameNotLike(String value) {
-            this.addCriterion("prov_name not like", value, "provName");
-            return (Criteria)this;
-        }        public Criteria andProvNameIn(List<String> values) {
-            this.addCriterion("prov_name in", values, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameLessThan(String value) {
+            return lessThan(name, value);
         }
 
-        public Criteria andProvNameNotIn(List<String> values) {
-            this.addCriterion("prov_name not in", values, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(name, value);
         }
 
-        public Criteria andProvNameBetween(String value1, String value2) {
-            this.addCriterion("prov_name between", value1, value2, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameLike(String value) {
+            return like(name, value);
         }
 
-        public Criteria andProvNameNotBetween(String value1, String value2) {
-            this.addCriterion("prov_name not between", value1, value2, "provName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameNotLike(String value) {
+            return notLike(name, value);
         }
 
-        public Criteria andTownNameIsNull() {
-            this.addCriterion("town_name is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameIn(List<String> values) {
+            return in(name, values);
         }
 
-        public Criteria andTownNameIsNotNull() {
-            this.addCriterion("town_name is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameNotIn(List<String> values) {
+            return notIn(name, values);
         }
 
-        public Criteria andTownNameEqualTo(String value) {
-            this.addCriterion("town_name =", value, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameBetween(String value1, String value2) {
+            return between(name, value1, value2);
         }
 
-        public Criteria andTownNameNotEqualTo(String value) {
-            this.addCriterion("town_name <>", value, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andNameNotBetween(String value1, String value2) {
+            return notBetween(name, value1, value2);
         }
-
-        public Criteria andTownNameGreaterThan(String value) {
-            this.addCriterion("town_name >", value, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneIsNull() {
+            return isNull(telephone);
         }
 
-        public Criteria andTownNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("town_name >=", value, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneIsNotNull() {
+            return isNotNull(telephone);
         }
 
-        public Criteria andTownNameLessThan(String value) {
-            this.addCriterion("town_name <", value, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneEqualTo(String value) {
+            return equalTo(telephone, value);
         }
 
-        public Criteria andTownNameLessThanOrEqualTo(String value) {
-            this.addCriterion("town_name <=", value, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneNotEqualTo(String value) {
+            return notEqualTo(telephone, value);
         }
 
-        public Criteria andTownNameLike(String value) {
-            this.addCriterion("town_name like", value, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneGreaterThan(String value) {
+            return greaterThan(telephone, value);
         }
 
-        public Criteria andTownNameNotLike(String value) {
-            this.addCriterion("town_name not like", value, "townName");
-            return (Criteria)this;
-        }        public Criteria andTownNameIn(List<String> values) {
-            this.addCriterion("town_name in", values, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(telephone, value);
         }
 
-        public Criteria andTownNameNotIn(List<String> values) {
-            this.addCriterion("town_name not in", values, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneLessThan(String value) {
+            return lessThan(telephone, value);
         }
 
-        public Criteria andTownNameBetween(String value1, String value2) {
-            this.addCriterion("town_name between", value1, value2, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(telephone, value);
         }
 
-        public Criteria andTownNameNotBetween(String value1, String value2) {
-            this.addCriterion("town_name not between", value1, value2, "townName");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneLike(String value) {
+            return like(telephone, value);
         }
 
-        public Criteria andAddressIdIsNull() {
-            this.addCriterion("address_id is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneNotLike(String value) {
+            return notLike(telephone, value);
         }
 
-        public Criteria andAddressIdIsNotNull() {
-            this.addCriterion("address_id is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneIn(List<String> values) {
+            return in(telephone, values);
         }
 
-        public Criteria andAddressIdEqualTo(Long value) {
-            this.addCriterion("address_id =", value, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneNotIn(List<String> values) {
+            return notIn(telephone, values);
         }
 
-        public Criteria andAddressIdNotEqualTo(Long value) {
-            this.addCriterion("address_id <>", value, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneBetween(String value1, String value2) {
+            return between(telephone, value1, value2);
         }
 
-        public Criteria andAddressIdGreaterThan(Long value) {
-            this.addCriterion("address_id >", value, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTelephoneNotBetween(String value1, String value2) {
+            return notBetween(telephone, value1, value2);
         }
-
-        public Criteria andAddressIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("address_id >=", value, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdIsNull() {
+            return isNull(cityId);
         }
 
-        public Criteria andAddressIdLessThan(Long value) {
-            this.addCriterion("address_id <", value, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdIsNotNull() {
+            return isNotNull(cityId);
         }
 
-        public Criteria andAddressIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("address_id <=", value, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdEqualTo(Long value) {
+            return equalTo(cityId, value);
         }
 
-        public Criteria andAddressIdLike(String value) {
-            this.addCriterion("address_id like", value, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdNotEqualTo(Long value) {
+            return notEqualTo(cityId, value);
         }
 
-        public Criteria andAddressIdNotLike(String value) {
-            this.addCriterion("address_id not like", value, "addressId");
-            return (Criteria)this;
-        }        public Criteria andAddressIdIn(List<Long> values) {
-            this.addCriterion("address_id in", values, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdGreaterThan(Long value) {
+            return greaterThan(cityId, value);
         }
 
-        public Criteria andAddressIdNotIn(List<Long> values) {
-            this.addCriterion("address_id not in", values, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(cityId, value);
         }
 
-        public Criteria andAddressIdBetween(Long value1, Long value2) {
-            this.addCriterion("address_id between", value1, value2, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdLessThan(Long value) {
+            return lessThan(cityId, value);
         }
 
-        public Criteria andAddressIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("address_id not between", value1, value2, "addressId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(cityId, value);
         }
 
-        public Criteria andNameIsNull() {
-            this.addCriterion("name is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdIn(List<Long> values) {
+            return in(cityId, values);
         }
 
-        public Criteria andNameIsNotNull() {
-            this.addCriterion("name is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdNotIn(List<Long> values) {
+            return notIn(cityId, values);
         }
 
-        public Criteria andNameEqualTo(String value) {
-            this.addCriterion("name =", value, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdBetween(Long value1, Long value2) {
+            return between(cityId, value1, value2);
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            this.addCriterion("name <>", value, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andCityIdNotBetween(Long value1, Long value2) {
+            return notBetween(cityId, value1, value2);
         }
-
-        public Criteria andNameGreaterThan(String value) {
-            this.addCriterion("name >", value, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdIsNull() {
+            return isNull(townId);
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("name >=", value, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdIsNotNull() {
+            return isNotNull(townId);
         }
 
-        public Criteria andNameLessThan(String value) {
-            this.addCriterion("name <", value, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdEqualTo(Long value) {
+            return equalTo(townId, value);
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            this.addCriterion("name <=", value, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdNotEqualTo(Long value) {
+            return notEqualTo(townId, value);
         }
 
-        public Criteria andNameLike(String value) {
-            this.addCriterion("name like", value, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdGreaterThan(Long value) {
+            return greaterThan(townId, value);
         }
 
-        public Criteria andNameNotLike(String value) {
-            this.addCriterion("name not like", value, "name");
-            return (Criteria)this;
-        }        public Criteria andNameIn(List<String> values) {
-            this.addCriterion("name in", values, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(townId, value);
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            this.addCriterion("name not in", values, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdLessThan(Long value) {
+            return lessThan(townId, value);
         }
 
-        public Criteria andNameBetween(String value1, String value2) {
-            this.addCriterion("name between", value1, value2, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(townId, value);
         }
 
-        public Criteria andNameNotBetween(String value1, String value2) {
-            this.addCriterion("name not between", value1, value2, "name");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdIn(List<Long> values) {
+            return in(townId, values);
         }
 
-        public Criteria andTelephoneIsNull() {
-            this.addCriterion("telephone is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdNotIn(List<Long> values) {
+            return notIn(townId, values);
         }
 
-        public Criteria andTelephoneIsNotNull() {
-            this.addCriterion("telephone is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdBetween(Long value1, Long value2) {
+            return between(townId, value1, value2);
         }
 
-        public Criteria andTelephoneEqualTo(String value) {
-            this.addCriterion("telephone =", value, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andTownIdNotBetween(Long value1, Long value2) {
+            return notBetween(townId, value1, value2);
         }
-
-        public Criteria andTelephoneNotEqualTo(String value) {
-            this.addCriterion("telephone <>", value, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdIsNull() {
+            return isNull(provId);
         }
 
-        public Criteria andTelephoneGreaterThan(String value) {
-            this.addCriterion("telephone >", value, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdIsNotNull() {
+            return isNotNull(provId);
         }
 
-        public Criteria andTelephoneGreaterThanOrEqualTo(String value) {
-            this.addCriterion("telephone >=", value, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdEqualTo(Long value) {
+            return equalTo(provId, value);
         }
 
-        public Criteria andTelephoneLessThan(String value) {
-            this.addCriterion("telephone <", value, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdNotEqualTo(Long value) {
+            return notEqualTo(provId, value);
         }
 
-        public Criteria andTelephoneLessThanOrEqualTo(String value) {
-            this.addCriterion("telephone <=", value, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdGreaterThan(Long value) {
+            return greaterThan(provId, value);
         }
 
-        public Criteria andTelephoneLike(String value) {
-            this.addCriterion("telephone like", value, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(provId, value);
         }
 
-        public Criteria andTelephoneNotLike(String value) {
-            this.addCriterion("telephone not like", value, "telephone");
-            return (Criteria)this;
-        }        public Criteria andTelephoneIn(List<String> values) {
-            this.addCriterion("telephone in", values, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdLessThan(Long value) {
+            return lessThan(provId, value);
         }
 
-        public Criteria andTelephoneNotIn(List<String> values) {
-            this.addCriterion("telephone not in", values, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(provId, value);
         }
 
-        public Criteria andTelephoneBetween(String value1, String value2) {
-            this.addCriterion("telephone between", value1, value2, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdIn(List<Long> values) {
+            return in(provId, values);
         }
 
-        public Criteria andTelephoneNotBetween(String value1, String value2) {
-            this.addCriterion("telephone not between", value1, value2, "telephone");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdNotIn(List<Long> values) {
+            return notIn(provId, values);
         }
 
-        public Criteria andZipCodeIsNull() {
-            this.addCriterion("zip_code is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdBetween(Long value1, Long value2) {
+            return between(provId, value1, value2);
         }
 
-        public Criteria andZipCodeIsNotNull() {
-            this.addCriterion("zip_code is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andProvIdNotBetween(Long value1, Long value2) {
+            return notBetween(provId, value1, value2);
         }
-
-        public Criteria andZipCodeEqualTo(String value) {
-            this.addCriterion("zip_code =", value, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdIsNull() {
+            return isNull(userId);
         }
 
-        public Criteria andZipCodeNotEqualTo(String value) {
-            this.addCriterion("zip_code <>", value, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdIsNotNull() {
+            return isNotNull(userId);
         }
 
-        public Criteria andZipCodeGreaterThan(String value) {
-            this.addCriterion("zip_code >", value, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdEqualTo(Long value) {
+            return equalTo(userId, value);
         }
 
-        public Criteria andZipCodeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("zip_code >=", value, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdNotEqualTo(Long value) {
+            return notEqualTo(userId, value);
         }
 
-        public Criteria andZipCodeLessThan(String value) {
-            this.addCriterion("zip_code <", value, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdGreaterThan(Long value) {
+            return greaterThan(userId, value);
         }
 
-        public Criteria andZipCodeLessThanOrEqualTo(String value) {
-            this.addCriterion("zip_code <=", value, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(userId, value);
         }
 
-        public Criteria andZipCodeLike(String value) {
-            this.addCriterion("zip_code like", value, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdLessThan(Long value) {
+            return lessThan(userId, value);
         }
 
-        public Criteria andZipCodeNotLike(String value) {
-            this.addCriterion("zip_code not like", value, "zipCode");
-            return (Criteria)this;
-        }        public Criteria andZipCodeIn(List<String> values) {
-            this.addCriterion("zip_code in", values, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(userId, value);
         }
 
-        public Criteria andZipCodeNotIn(List<String> values) {
-            this.addCriterion("zip_code not in", values, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdIn(List<Long> values) {
+            return in(userId, values);
         }
 
-        public Criteria andZipCodeBetween(String value1, String value2) {
-            this.addCriterion("zip_code between", value1, value2, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdNotIn(List<Long> values) {
+            return notIn(userId, values);
         }
 
-        public Criteria andZipCodeNotBetween(String value1, String value2) {
-            this.addCriterion("zip_code not between", value1, value2, "zipCode");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdBetween(Long value1, Long value2) {
+            return between(userId, value1, value2);
         }
 
-        public Criteria andCityIdIsNull() {
-            this.addCriterion("city_id is null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(userId, value1, value2);
         }
-
-        public Criteria andCityIdIsNotNull() {
-            this.addCriterion("city_id is not null");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdIsNull() {
+            return isNull(addressId);
         }
 
-        public Criteria andCityIdEqualTo(Long value) {
-            this.addCriterion("city_id =", value, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdIsNotNull() {
+            return isNotNull(addressId);
         }
 
-        public Criteria andCityIdNotEqualTo(Long value) {
-            this.addCriterion("city_id <>", value, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdEqualTo(Long value) {
+            return equalTo(addressId, value);
         }
 
-        public Criteria andCityIdGreaterThan(Long value) {
-            this.addCriterion("city_id >", value, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdNotEqualTo(Long value) {
+            return notEqualTo(addressId, value);
         }
 
-        public Criteria andCityIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("city_id >=", value, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdGreaterThan(Long value) {
+            return greaterThan(addressId, value);
         }
 
-        public Criteria andCityIdLessThan(Long value) {
-            this.addCriterion("city_id <", value, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(addressId, value);
         }
 
-        public Criteria andCityIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("city_id <=", value, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdLessThan(Long value) {
+            return lessThan(addressId, value);
         }
 
-        public Criteria andCityIdLike(String value) {
-            this.addCriterion("city_id like", value, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(addressId, value);
         }
 
-        public Criteria andCityIdNotLike(String value) {
-            this.addCriterion("city_id not like", value, "cityId");
-            return (Criteria)this;
-        }        public Criteria andCityIdIn(List<Long> values) {
-            this.addCriterion("city_id in", values, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdIn(List<Long> values) {
+            return in(addressId, values);
         }
 
-        public Criteria andCityIdNotIn(List<Long> values) {
-            this.addCriterion("city_id not in", values, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdNotIn(List<Long> values) {
+            return notIn(addressId, values);
         }
 
-        public Criteria andCityIdBetween(Long value1, Long value2) {
-            this.addCriterion("city_id between", value1, value2, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdBetween(Long value1, Long value2) {
+            return between(addressId, value1, value2);
         }
 
-        public Criteria andCityIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("city_id not between", value1, value2, "cityId");
-            return (Criteria)this;
+        public BuyerAddressExample.Criteria andAddressIdNotBetween(Long value1, Long value2) {
+            return notBetween(addressId, value1, value2);
         }
     }
 }

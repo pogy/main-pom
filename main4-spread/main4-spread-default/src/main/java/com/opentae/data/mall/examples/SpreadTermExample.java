@@ -1,507 +1,237 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.SpreadTerm;
 
-public class SpreadTermExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<SpreadTermExample.Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class SpreadTermExample extends SgExample<SpreadTermExample.Criteria> {
+    public static final Class<SpreadTerm> beanClass = SpreadTerm.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn termId;
+    public static EntityColumn startTime;
+    public static EntityColumn endTime;
+    public static EntityColumn type;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        termId = listMap.get("termId");
+        startTime = listMap.get("startTime");
+        endTime = listMap.get("endTime");
+        type = listMap.get("type");
+        }
 
     public SpreadTermExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<SpreadTermExample.Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(SpreadTermExample.Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public SpreadTermExample.Criteria or() {
-        SpreadTermExample.Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public SpreadTermExample.Criteria createCriteria() {
-        SpreadTermExample.Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
+    @Override
     protected SpreadTermExample.Criteria createCriteriaInternal() {
-        SpreadTermExample.Criteria criteria = new SpreadTermExample.Criteria();
-        return criteria;
+        return new SpreadTermExample.Criteria(this);
     }
 
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends SpreadTermExample.GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<SpreadTermExample.Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<SpreadTermExample.Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<SpreadTermExample.Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new SpreadTermExample.Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new SpreadTermExample.Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new SpreadTermExample.Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public SpreadTermExample.Criteria andStartTimeIsNull() {
-            this.addCriterion("start_time is null");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeIsNotNull() {
-            this.addCriterion("start_time is not null");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeEqualTo(Date value) {
-            this.addCriterion("start_time =", value, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeNotEqualTo(Date value) {
-            this.addCriterion("start_time <>", value, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeGreaterThan(Date value) {
-            this.addCriterion("start_time >", value, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("start_time >=", value, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeLessThan(Date value) {
-            this.addCriterion("start_time <", value, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("start_time <=", value, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeLike(String value) {
-            this.addCriterion("start_time like", value, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeNotLike(String value) {
-            this.addCriterion("start_time not like", value, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }        public SpreadTermExample.Criteria andStartTimeIn(List<Date> values) {
-            this.addCriterion("start_time in", values, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeNotIn(List<Date> values) {
-            this.addCriterion("start_time not in", values, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeBetween(Date value1, Date value2) {
-            this.addCriterion("start_time between", value1, value2, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andStartTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("start_time not between", value1, value2, "startTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeIsNull() {
-            this.addCriterion("end_time is null");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeIsNotNull() {
-            this.addCriterion("end_time is not null");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeEqualTo(Date value) {
-            this.addCriterion("end_time =", value, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeNotEqualTo(Date value) {
-            this.addCriterion("end_time <>", value, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeGreaterThan(Date value) {
-            this.addCriterion("end_time >", value, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("end_time >=", value, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeLessThan(Date value) {
-            this.addCriterion("end_time <", value, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("end_time <=", value, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeLike(String value) {
-            this.addCriterion("end_time like", value, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeNotLike(String value) {
-            this.addCriterion("end_time not like", value, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }        public SpreadTermExample.Criteria andEndTimeIn(List<Date> values) {
-            this.addCriterion("end_time in", values, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeNotIn(List<Date> values) {
-            this.addCriterion("end_time not in", values, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeBetween(Date value1, Date value2) {
-            this.addCriterion("end_time between", value1, value2, "endTime");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andEndTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("end_time not between", value1, value2, "endTime");
-            return (SpreadTermExample.Criteria)this;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
         public SpreadTermExample.Criteria andTermIdIsNull() {
-            this.addCriterion("term_id is null");
-            return (SpreadTermExample.Criteria)this;
+            return isNull(termId);
         }
 
         public SpreadTermExample.Criteria andTermIdIsNotNull() {
-            this.addCriterion("term_id is not null");
-            return (SpreadTermExample.Criteria)this;
+            return isNotNull(termId);
         }
 
         public SpreadTermExample.Criteria andTermIdEqualTo(Long value) {
-            this.addCriterion("term_id =", value, "termId");
-            return (SpreadTermExample.Criteria)this;
+            return equalTo(termId, value);
         }
 
         public SpreadTermExample.Criteria andTermIdNotEqualTo(Long value) {
-            this.addCriterion("term_id <>", value, "termId");
-            return (SpreadTermExample.Criteria)this;
+            return notEqualTo(termId, value);
         }
 
         public SpreadTermExample.Criteria andTermIdGreaterThan(Long value) {
-            this.addCriterion("term_id >", value, "termId");
-            return (SpreadTermExample.Criteria)this;
+            return greaterThan(termId, value);
         }
 
         public SpreadTermExample.Criteria andTermIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("term_id >=", value, "termId");
-            return (SpreadTermExample.Criteria)this;
+            return greaterThanOrEqualTo(termId, value);
         }
 
         public SpreadTermExample.Criteria andTermIdLessThan(Long value) {
-            this.addCriterion("term_id <", value, "termId");
-            return (SpreadTermExample.Criteria)this;
+            return lessThan(termId, value);
         }
 
         public SpreadTermExample.Criteria andTermIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("term_id <=", value, "termId");
-            return (SpreadTermExample.Criteria)this;
+            return lessThanOrEqualTo(termId, value);
         }
 
-        public SpreadTermExample.Criteria andTermIdLike(String value) {
-            this.addCriterion("term_id like", value, "termId");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andTermIdNotLike(String value) {
-            this.addCriterion("term_id not like", value, "termId");
-            return (SpreadTermExample.Criteria)this;
-        }        public SpreadTermExample.Criteria andTermIdIn(List<Long> values) {
-            this.addCriterion("term_id in", values, "termId");
-            return (SpreadTermExample.Criteria)this;
+        public SpreadTermExample.Criteria andTermIdIn(List<Long> values) {
+            return in(termId, values);
         }
 
         public SpreadTermExample.Criteria andTermIdNotIn(List<Long> values) {
-            this.addCriterion("term_id not in", values, "termId");
-            return (SpreadTermExample.Criteria)this;
+            return notIn(termId, values);
         }
 
         public SpreadTermExample.Criteria andTermIdBetween(Long value1, Long value2) {
-            this.addCriterion("term_id between", value1, value2, "termId");
-            return (SpreadTermExample.Criteria)this;
+            return between(termId, value1, value2);
         }
 
         public SpreadTermExample.Criteria andTermIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("term_id not between", value1, value2, "termId");
-            return (SpreadTermExample.Criteria)this;
+            return notBetween(termId, value1, value2);
+        }
+        public SpreadTermExample.Criteria andStartTimeIsNull() {
+            return isNull(startTime);
         }
 
+        public SpreadTermExample.Criteria andStartTimeIsNotNull() {
+            return isNotNull(startTime);
+        }
+
+        public SpreadTermExample.Criteria andStartTimeEqualTo(Date value) {
+            return equalTo(startTime, value);
+        }
+
+        public SpreadTermExample.Criteria andStartTimeNotEqualTo(Date value) {
+            return notEqualTo(startTime, value);
+        }
+
+        public SpreadTermExample.Criteria andStartTimeGreaterThan(Date value) {
+            return greaterThan(startTime, value);
+        }
+
+        public SpreadTermExample.Criteria andStartTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(startTime, value);
+        }
+
+        public SpreadTermExample.Criteria andStartTimeLessThan(Date value) {
+            return lessThan(startTime, value);
+        }
+
+        public SpreadTermExample.Criteria andStartTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(startTime, value);
+        }
+
+        public SpreadTermExample.Criteria andStartTimeIn(List<Date> values) {
+            return in(startTime, values);
+        }
+
+        public SpreadTermExample.Criteria andStartTimeNotIn(List<Date> values) {
+            return notIn(startTime, values);
+        }
+
+        public SpreadTermExample.Criteria andStartTimeBetween(Date value1, Date value2) {
+            return between(startTime, value1, value2);
+        }
+
+        public SpreadTermExample.Criteria andStartTimeNotBetween(Date value1, Date value2) {
+            return notBetween(startTime, value1, value2);
+        }
+        public SpreadTermExample.Criteria andEndTimeIsNull() {
+            return isNull(endTime);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeIsNotNull() {
+            return isNotNull(endTime);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeEqualTo(Date value) {
+            return equalTo(endTime, value);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeNotEqualTo(Date value) {
+            return notEqualTo(endTime, value);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeGreaterThan(Date value) {
+            return greaterThan(endTime, value);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(endTime, value);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeLessThan(Date value) {
+            return lessThan(endTime, value);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(endTime, value);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeIn(List<Date> values) {
+            return in(endTime, values);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeNotIn(List<Date> values) {
+            return notIn(endTime, values);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeBetween(Date value1, Date value2) {
+            return between(endTime, value1, value2);
+        }
+
+        public SpreadTermExample.Criteria andEndTimeNotBetween(Date value1, Date value2) {
+            return notBetween(endTime, value1, value2);
+        }
         public SpreadTermExample.Criteria andTypeIsNull() {
-            this.addCriterion("type is null");
-            return (SpreadTermExample.Criteria)this;
+            return isNull(type);
         }
 
         public SpreadTermExample.Criteria andTypeIsNotNull() {
-            this.addCriterion("type is not null");
-            return (SpreadTermExample.Criteria)this;
+            return isNotNull(type);
         }
 
         public SpreadTermExample.Criteria andTypeEqualTo(Integer value) {
-            this.addCriterion("type =", value, "type");
-            return (SpreadTermExample.Criteria)this;
+            return equalTo(type, value);
         }
 
         public SpreadTermExample.Criteria andTypeNotEqualTo(Integer value) {
-            this.addCriterion("type <>", value, "type");
-            return (SpreadTermExample.Criteria)this;
+            return notEqualTo(type, value);
         }
 
         public SpreadTermExample.Criteria andTypeGreaterThan(Integer value) {
-            this.addCriterion("type >", value, "type");
-            return (SpreadTermExample.Criteria)this;
+            return greaterThan(type, value);
         }
 
         public SpreadTermExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("type >=", value, "type");
-            return (SpreadTermExample.Criteria)this;
+            return greaterThanOrEqualTo(type, value);
         }
 
         public SpreadTermExample.Criteria andTypeLessThan(Integer value) {
-            this.addCriterion("type <", value, "type");
-            return (SpreadTermExample.Criteria)this;
+            return lessThan(type, value);
         }
 
         public SpreadTermExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
-            this.addCriterion("type <=", value, "type");
-            return (SpreadTermExample.Criteria)this;
+            return lessThanOrEqualTo(type, value);
         }
 
-        public SpreadTermExample.Criteria andTypeLike(String value) {
-            this.addCriterion("type like", value, "type");
-            return (SpreadTermExample.Criteria)this;
-        }
-
-        public SpreadTermExample.Criteria andTypeNotLike(String value) {
-            this.addCriterion("type not like", value, "type");
-            return (SpreadTermExample.Criteria)this;
-        }        public SpreadTermExample.Criteria andTypeIn(List<Integer> values) {
-            this.addCriterion("type in", values, "type");
-            return (SpreadTermExample.Criteria)this;
+        public SpreadTermExample.Criteria andTypeIn(List<Integer> values) {
+            return in(type, values);
         }
 
         public SpreadTermExample.Criteria andTypeNotIn(List<Integer> values) {
-            this.addCriterion("type not in", values, "type");
-            return (SpreadTermExample.Criteria)this;
+            return notIn(type, values);
         }
 
         public SpreadTermExample.Criteria andTypeBetween(Integer value1, Integer value2) {
-            this.addCriterion("type between", value1, value2, "type");
-            return (SpreadTermExample.Criteria)this;
+            return between(type, value1, value2);
         }
 
         public SpreadTermExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("type not between", value1, value2, "type");
-            return (SpreadTermExample.Criteria)this;
+            return notBetween(type, value1, value2);
         }
     }
 }

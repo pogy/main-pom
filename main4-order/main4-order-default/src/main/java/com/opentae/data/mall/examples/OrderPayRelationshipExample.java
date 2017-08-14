@@ -1,439 +1,188 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.OrderPayRelationship;
 
-public class OrderPayRelationshipExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class OrderPayRelationshipExample extends SgExample<OrderPayRelationshipExample.Criteria> {
+    public static final Class<OrderPayRelationship> beanClass = OrderPayRelationship.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn oid;
+    public static EntityColumn payId;
+    public static EntityColumn rid;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        oid = listMap.get("oid");
+        payId = listMap.get("payId");
+        rid = listMap.get("rid");
+        }
 
     public OrderPayRelationshipExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected OrderPayRelationshipExample.Criteria createCriteriaInternal() {
+        return new OrderPayRelationshipExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
+        public OrderPayRelationshipExample.Criteria andOidIsNull() {
+            return isNull(oid);
         }
 
-        public Object getValue() {
-            return this.value;
+        public OrderPayRelationshipExample.Criteria andOidIsNotNull() {
+            return isNotNull(oid);
         }
 
-        public Object getSecondValue() {
-            return this.secondValue;
+        public OrderPayRelationshipExample.Criteria andOidEqualTo(Long value) {
+            return equalTo(oid, value);
         }
 
-        public boolean isNoValue() {
-            return this.noValue;
+        public OrderPayRelationshipExample.Criteria andOidNotEqualTo(Long value) {
+            return notEqualTo(oid, value);
         }
 
-        public boolean isSingleValue() {
-            return this.singleValue;
+        public OrderPayRelationshipExample.Criteria andOidGreaterThan(Long value) {
+            return greaterThan(oid, value);
         }
 
-        public boolean isBetweenValue() {
-            return this.betweenValue;
+        public OrderPayRelationshipExample.Criteria andOidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(oid, value);
         }
 
-        public boolean isListValue() {
-            return this.listValue;
+        public OrderPayRelationshipExample.Criteria andOidLessThan(Long value) {
+            return lessThan(oid, value);
         }
 
-        public String getTypeHandler() {
-            return this.typeHandler;
+        public OrderPayRelationshipExample.Criteria andOidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(oid, value);
         }
 
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
+        public OrderPayRelationshipExample.Criteria andOidIn(List<Long> values) {
+            return in(oid, values);
         }
 
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
+        public OrderPayRelationshipExample.Criteria andOidNotIn(List<Long> values) {
+            return notIn(oid, values);
         }
 
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
+        public OrderPayRelationshipExample.Criteria andOidBetween(Long value1, Long value2) {
+            return between(oid, value1, value2);
         }
 
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
+        public OrderPayRelationshipExample.Criteria andOidNotBetween(Long value1, Long value2) {
+            return notBetween(oid, value1, value2);
+        }
+        public OrderPayRelationshipExample.Criteria andPayIdIsNull() {
+            return isNull(payId);
         }
 
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
+        public OrderPayRelationshipExample.Criteria andPayIdIsNotNull() {
+            return isNotNull(payId);
         }
 
-        public boolean isValid() {
-            return this.criteria.size() > 0;
+        public OrderPayRelationshipExample.Criteria andPayIdEqualTo(Long value) {
+            return equalTo(payId, value);
         }
 
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
+        public OrderPayRelationshipExample.Criteria andPayIdNotEqualTo(Long value) {
+            return notEqualTo(payId, value);
         }
 
-        public List<Criterion> getCriteria() {
-            return this.criteria;
+        public OrderPayRelationshipExample.Criteria andPayIdGreaterThan(Long value) {
+            return greaterThan(payId, value);
         }
 
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
+        public OrderPayRelationshipExample.Criteria andPayIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(payId, value);
         }
 
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
+        public OrderPayRelationshipExample.Criteria andPayIdLessThan(Long value) {
+            return lessThan(payId, value);
         }
 
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
+        public OrderPayRelationshipExample.Criteria andPayIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(payId, value);
         }
 
-        public Criteria andOidIsNull() {
-            this.addCriterion("oid is null");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andPayIdIn(List<Long> values) {
+            return in(payId, values);
         }
 
-        public Criteria andOidIsNotNull() {
-            this.addCriterion("oid is not null");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andPayIdNotIn(List<Long> values) {
+            return notIn(payId, values);
         }
 
-        public Criteria andOidEqualTo(Long value) {
-            this.addCriterion("oid =", value, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andPayIdBetween(Long value1, Long value2) {
+            return between(payId, value1, value2);
         }
 
-        public Criteria andOidNotEqualTo(Long value) {
-            this.addCriterion("oid <>", value, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andPayIdNotBetween(Long value1, Long value2) {
+            return notBetween(payId, value1, value2);
+        }
+        public OrderPayRelationshipExample.Criteria andRidIsNull() {
+            return isNull(rid);
         }
 
-        public Criteria andOidGreaterThan(Long value) {
-            this.addCriterion("oid >", value, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidIsNotNull() {
+            return isNotNull(rid);
         }
 
-        public Criteria andOidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("oid >=", value, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidEqualTo(Long value) {
+            return equalTo(rid, value);
         }
 
-        public Criteria andOidLessThan(Long value) {
-            this.addCriterion("oid <", value, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidNotEqualTo(Long value) {
+            return notEqualTo(rid, value);
         }
 
-        public Criteria andOidLessThanOrEqualTo(Long value) {
-            this.addCriterion("oid <=", value, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidGreaterThan(Long value) {
+            return greaterThan(rid, value);
         }
 
-        public Criteria andOidLike(String value) {
-            this.addCriterion("oid like", value, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(rid, value);
         }
 
-        public Criteria andOidNotLike(String value) {
-            this.addCriterion("oid not like", value, "oid");
-            return (Criteria)this;
-        }        public Criteria andOidIn(List<Long> values) {
-            this.addCriterion("oid in", values, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidLessThan(Long value) {
+            return lessThan(rid, value);
         }
 
-        public Criteria andOidNotIn(List<Long> values) {
-            this.addCriterion("oid not in", values, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(rid, value);
         }
 
-        public Criteria andOidBetween(Long value1, Long value2) {
-            this.addCriterion("oid between", value1, value2, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidIn(List<Long> values) {
+            return in(rid, values);
         }
 
-        public Criteria andOidNotBetween(Long value1, Long value2) {
-            this.addCriterion("oid not between", value1, value2, "oid");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidNotIn(List<Long> values) {
+            return notIn(rid, values);
         }
 
-        public Criteria andRidIsNull() {
-            this.addCriterion("rid is null");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidBetween(Long value1, Long value2) {
+            return between(rid, value1, value2);
         }
 
-        public Criteria andRidIsNotNull() {
-            this.addCriterion("rid is not null");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidEqualTo(Long value) {
-            this.addCriterion("rid =", value, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidNotEqualTo(Long value) {
-            this.addCriterion("rid <>", value, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidGreaterThan(Long value) {
-            this.addCriterion("rid >", value, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("rid >=", value, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidLessThan(Long value) {
-            this.addCriterion("rid <", value, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidLessThanOrEqualTo(Long value) {
-            this.addCriterion("rid <=", value, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidLike(String value) {
-            this.addCriterion("rid like", value, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidNotLike(String value) {
-            this.addCriterion("rid not like", value, "rid");
-            return (Criteria)this;
-        }        public Criteria andRidIn(List<Long> values) {
-            this.addCriterion("rid in", values, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidNotIn(List<Long> values) {
-            this.addCriterion("rid not in", values, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidBetween(Long value1, Long value2) {
-            this.addCriterion("rid between", value1, value2, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andRidNotBetween(Long value1, Long value2) {
-            this.addCriterion("rid not between", value1, value2, "rid");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdIsNull() {
-            this.addCriterion("pay_id is null");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdIsNotNull() {
-            this.addCriterion("pay_id is not null");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdEqualTo(Long value) {
-            this.addCriterion("pay_id =", value, "payId");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdNotEqualTo(Long value) {
-            this.addCriterion("pay_id <>", value, "payId");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdGreaterThan(Long value) {
-            this.addCriterion("pay_id >", value, "payId");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("pay_id >=", value, "payId");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdLessThan(Long value) {
-            this.addCriterion("pay_id <", value, "payId");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("pay_id <=", value, "payId");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdLike(String value) {
-            this.addCriterion("pay_id like", value, "payId");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdNotLike(String value) {
-            this.addCriterion("pay_id not like", value, "payId");
-            return (Criteria)this;
-        }        public Criteria andPayIdIn(List<Long> values) {
-            this.addCriterion("pay_id in", values, "payId");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdNotIn(List<Long> values) {
-            this.addCriterion("pay_id not in", values, "payId");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdBetween(Long value1, Long value2) {
-            this.addCriterion("pay_id between", value1, value2, "payId");
-            return (Criteria)this;
-        }
-
-        public Criteria andPayIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("pay_id not between", value1, value2, "payId");
-            return (Criteria)this;
+        public OrderPayRelationshipExample.Criteria andRidNotBetween(Long value1, Long value2) {
+            return notBetween(rid, value1, value2);
         }
     }
 }

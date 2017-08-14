@@ -128,10 +128,12 @@
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
+            <version>${mybatis-spring.version}</version>
         </dependency>
         <dependency>
             <groupId>xinzuo-mybatis</groupId>
@@ -143,10 +145,12 @@
         <dependency>
             <groupId>com.opentae.central</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
         </dependency>
 
         <!--shiro权限管理-->
@@ -218,10 +222,12 @@
         <dependency>
             <groupId>opentae-beans</groupId>
             <artifactId>common</artifactId>
+            <version>${opentae-common.version}</version>
         </dependency>
         <dependency>
             <groupId>com.opentae.central</groupId>
             <artifactId>persistence-api</artifactId>
+            <version>${persistence.version}</version>
         </dependency>
         <dependency>
             <groupId>opentae-program</groupId>
@@ -231,6 +237,7 @@
         <dependency>
             <groupId>com.opentae.lib</groupId>
             <artifactId>ezmorph</artifactId>
+            <version>${ezmorph.version}</version>
         </dependency>
         <dependency>
             <groupId>com.opentae.lib</groupId>
@@ -256,10 +263,12 @@
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
+            <version>${commons-lang.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-collections</groupId>
@@ -269,10 +278,12 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
+            <version>${commons-fileupload.version}</version>
         </dependency>
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
+            <version>${javassist.version}</version>
         </dependency>
         <dependency>
             <groupId>com.opentae.lib</groupId>

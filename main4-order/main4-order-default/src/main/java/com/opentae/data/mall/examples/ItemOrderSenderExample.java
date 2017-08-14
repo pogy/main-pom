@@ -1,779 +1,481 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ItemOrderSender;
 
-public class ItemOrderSenderExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class ItemOrderSenderExample extends SgExample<ItemOrderSenderExample.Criteria> {
+    public static final Class<ItemOrderSender> beanClass = ItemOrderSender.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn webSite;
+    public static EntityColumn senderId;
+    public static EntityColumn senderName;
+    public static EntityColumn address;
+    public static EntityColumn name;
+    public static EntityColumn topic;
+    public static EntityColumn telephone;
+    public static EntityColumn type;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        webSite = listMap.get("webSite");
+        senderId = listMap.get("senderId");
+        senderName = listMap.get("senderName");
+        address = listMap.get("address");
+        name = listMap.get("name");
+        topic = listMap.get("topic");
+        telephone = listMap.get("telephone");
+        type = listMap.get("type");
+        }
 
     public ItemOrderSenderExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected ItemOrderSenderExample.Criteria createCriteriaInternal() {
+        return new ItemOrderSenderExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        public boolean isListValue() {
-            return this.listValue;
+        public ItemOrderSenderExample.Criteria andWebSiteIsNull() {
+            return isNull(webSite);
         }
 
-        public String getTypeHandler() {
-            return this.typeHandler;
+        public ItemOrderSenderExample.Criteria andWebSiteIsNotNull() {
+            return isNotNull(webSite);
         }
 
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
+        public ItemOrderSenderExample.Criteria andWebSiteEqualTo(String value) {
+            return equalTo(webSite, value);
         }
 
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
+        public ItemOrderSenderExample.Criteria andWebSiteNotEqualTo(String value) {
+            return notEqualTo(webSite, value);
         }
 
-        public Criteria andAddressIsNull() {
-            this.addCriterion("address is null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andWebSiteGreaterThan(String value) {
+            return greaterThan(webSite, value);
         }
 
-        public Criteria andAddressIsNotNull() {
-            this.addCriterion("address is not null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(webSite, value);
         }
 
-        public Criteria andAddressEqualTo(String value) {
-            this.addCriterion("address =", value, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andWebSiteLessThan(String value) {
+            return lessThan(webSite, value);
         }
 
-        public Criteria andAddressNotEqualTo(String value) {
-            this.addCriterion("address <>", value, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(webSite, value);
         }
 
-        public Criteria andAddressGreaterThan(String value) {
-            this.addCriterion("address >", value, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andWebSiteLike(String value) {
+            return like(webSite, value);
         }
 
-        public Criteria andAddressGreaterThanOrEqualTo(String value) {
-            this.addCriterion("address >=", value, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andWebSiteNotLike(String value) {
+            return notLike(webSite, value);
         }
 
-        public Criteria andAddressLessThan(String value) {
-            this.addCriterion("address <", value, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andWebSiteIn(List<String> values) {
+            return in(webSite, values);
         }
 
-        public Criteria andAddressLessThanOrEqualTo(String value) {
-            this.addCriterion("address <=", value, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andWebSiteNotIn(List<String> values) {
+            return notIn(webSite, values);
         }
 
-        public Criteria andAddressLike(String value) {
-            this.addCriterion("address like", value, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andWebSiteBetween(String value1, String value2) {
+            return between(webSite, value1, value2);
         }
 
-        public Criteria andAddressNotLike(String value) {
-            this.addCriterion("address not like", value, "address");
-            return (Criteria)this;
-        }        public Criteria andAddressIn(List<String> values) {
-            this.addCriterion("address in", values, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+            return notBetween(webSite, value1, value2);
         }
-
-        public Criteria andAddressNotIn(List<String> values) {
-            this.addCriterion("address not in", values, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdIsNull() {
+            return isNull(senderId);
         }
 
-        public Criteria andAddressBetween(String value1, String value2) {
-            this.addCriterion("address between", value1, value2, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdIsNotNull() {
+            return isNotNull(senderId);
         }
 
-        public Criteria andAddressNotBetween(String value1, String value2) {
-            this.addCriterion("address not between", value1, value2, "address");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdEqualTo(Long value) {
+            return equalTo(senderId, value);
         }
 
-        public Criteria andNameIsNull() {
-            this.addCriterion("name is null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdNotEqualTo(Long value) {
+            return notEqualTo(senderId, value);
         }
 
-        public Criteria andNameIsNotNull() {
-            this.addCriterion("name is not null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdGreaterThan(Long value) {
+            return greaterThan(senderId, value);
         }
 
-        public Criteria andNameEqualTo(String value) {
-            this.addCriterion("name =", value, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(senderId, value);
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            this.addCriterion("name <>", value, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdLessThan(Long value) {
+            return lessThan(senderId, value);
         }
 
-        public Criteria andNameGreaterThan(String value) {
-            this.addCriterion("name >", value, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(senderId, value);
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("name >=", value, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdIn(List<Long> values) {
+            return in(senderId, values);
         }
 
-        public Criteria andNameLessThan(String value) {
-            this.addCriterion("name <", value, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdNotIn(List<Long> values) {
+            return notIn(senderId, values);
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            this.addCriterion("name <=", value, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdBetween(Long value1, Long value2) {
+            return between(senderId, value1, value2);
         }
 
-        public Criteria andNameLike(String value) {
-            this.addCriterion("name like", value, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderIdNotBetween(Long value1, Long value2) {
+            return notBetween(senderId, value1, value2);
         }
-
-        public Criteria andNameNotLike(String value) {
-            this.addCriterion("name not like", value, "name");
-            return (Criteria)this;
-        }        public Criteria andNameIn(List<String> values) {
-            this.addCriterion("name in", values, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameIsNull() {
+            return isNull(senderName);
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            this.addCriterion("name not in", values, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameIsNotNull() {
+            return isNotNull(senderName);
         }
 
-        public Criteria andNameBetween(String value1, String value2) {
-            this.addCriterion("name between", value1, value2, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameEqualTo(String value) {
+            return equalTo(senderName, value);
         }
 
-        public Criteria andNameNotBetween(String value1, String value2) {
-            this.addCriterion("name not between", value1, value2, "name");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameNotEqualTo(String value) {
+            return notEqualTo(senderName, value);
         }
 
-        public Criteria andTopicIsNull() {
-            this.addCriterion("topic is null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameGreaterThan(String value) {
+            return greaterThan(senderName, value);
         }
 
-        public Criteria andTopicIsNotNull() {
-            this.addCriterion("topic is not null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(senderName, value);
         }
 
-        public Criteria andTopicEqualTo(String value) {
-            this.addCriterion("topic =", value, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameLessThan(String value) {
+            return lessThan(senderName, value);
         }
 
-        public Criteria andTopicNotEqualTo(String value) {
-            this.addCriterion("topic <>", value, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(senderName, value);
         }
 
-        public Criteria andTopicGreaterThan(String value) {
-            this.addCriterion("topic >", value, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameLike(String value) {
+            return like(senderName, value);
         }
 
-        public Criteria andTopicGreaterThanOrEqualTo(String value) {
-            this.addCriterion("topic >=", value, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameNotLike(String value) {
+            return notLike(senderName, value);
         }
 
-        public Criteria andTopicLessThan(String value) {
-            this.addCriterion("topic <", value, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameIn(List<String> values) {
+            return in(senderName, values);
         }
 
-        public Criteria andTopicLessThanOrEqualTo(String value) {
-            this.addCriterion("topic <=", value, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameNotIn(List<String> values) {
+            return notIn(senderName, values);
         }
 
-        public Criteria andTopicLike(String value) {
-            this.addCriterion("topic like", value, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameBetween(String value1, String value2) {
+            return between(senderName, value1, value2);
         }
 
-        public Criteria andTopicNotLike(String value) {
-            this.addCriterion("topic not like", value, "topic");
-            return (Criteria)this;
-        }        public Criteria andTopicIn(List<String> values) {
-            this.addCriterion("topic in", values, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andSenderNameNotBetween(String value1, String value2) {
+            return notBetween(senderName, value1, value2);
         }
-
-        public Criteria andTopicNotIn(List<String> values) {
-            this.addCriterion("topic not in", values, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressIsNull() {
+            return isNull(address);
         }
 
-        public Criteria andTopicBetween(String value1, String value2) {
-            this.addCriterion("topic between", value1, value2, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressIsNotNull() {
+            return isNotNull(address);
         }
 
-        public Criteria andTopicNotBetween(String value1, String value2) {
-            this.addCriterion("topic not between", value1, value2, "topic");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressEqualTo(String value) {
+            return equalTo(address, value);
         }
 
-        public Criteria andSenderNameIsNull() {
-            this.addCriterion("sender_name is null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressNotEqualTo(String value) {
+            return notEqualTo(address, value);
         }
 
-        public Criteria andSenderNameIsNotNull() {
-            this.addCriterion("sender_name is not null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressGreaterThan(String value) {
+            return greaterThan(address, value);
         }
 
-        public Criteria andSenderNameEqualTo(String value) {
-            this.addCriterion("sender_name =", value, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(address, value);
         }
 
-        public Criteria andSenderNameNotEqualTo(String value) {
-            this.addCriterion("sender_name <>", value, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressLessThan(String value) {
+            return lessThan(address, value);
         }
 
-        public Criteria andSenderNameGreaterThan(String value) {
-            this.addCriterion("sender_name >", value, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(address, value);
         }
 
-        public Criteria andSenderNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("sender_name >=", value, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressLike(String value) {
+            return like(address, value);
         }
 
-        public Criteria andSenderNameLessThan(String value) {
-            this.addCriterion("sender_name <", value, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressNotLike(String value) {
+            return notLike(address, value);
         }
 
-        public Criteria andSenderNameLessThanOrEqualTo(String value) {
-            this.addCriterion("sender_name <=", value, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressIn(List<String> values) {
+            return in(address, values);
         }
 
-        public Criteria andSenderNameLike(String value) {
-            this.addCriterion("sender_name like", value, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressNotIn(List<String> values) {
+            return notIn(address, values);
         }
 
-        public Criteria andSenderNameNotLike(String value) {
-            this.addCriterion("sender_name not like", value, "senderName");
-            return (Criteria)this;
-        }        public Criteria andSenderNameIn(List<String> values) {
-            this.addCriterion("sender_name in", values, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressBetween(String value1, String value2) {
+            return between(address, value1, value2);
         }
 
-        public Criteria andSenderNameNotIn(List<String> values) {
-            this.addCriterion("sender_name not in", values, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andAddressNotBetween(String value1, String value2) {
+            return notBetween(address, value1, value2);
         }
-
-        public Criteria andSenderNameBetween(String value1, String value2) {
-            this.addCriterion("sender_name between", value1, value2, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameIsNull() {
+            return isNull(name);
         }
 
-        public Criteria andSenderNameNotBetween(String value1, String value2) {
-            this.addCriterion("sender_name not between", value1, value2, "senderName");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameIsNotNull() {
+            return isNotNull(name);
         }
 
-        public Criteria andTelephoneIsNull() {
-            this.addCriterion("telephone is null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameEqualTo(String value) {
+            return equalTo(name, value);
         }
 
-        public Criteria andTelephoneIsNotNull() {
-            this.addCriterion("telephone is not null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameNotEqualTo(String value) {
+            return notEqualTo(name, value);
         }
 
-        public Criteria andTelephoneEqualTo(String value) {
-            this.addCriterion("telephone =", value, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameGreaterThan(String value) {
+            return greaterThan(name, value);
         }
 
-        public Criteria andTelephoneNotEqualTo(String value) {
-            this.addCriterion("telephone <>", value, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(name, value);
         }
 
-        public Criteria andTelephoneGreaterThan(String value) {
-            this.addCriterion("telephone >", value, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameLessThan(String value) {
+            return lessThan(name, value);
         }
 
-        public Criteria andTelephoneGreaterThanOrEqualTo(String value) {
-            this.addCriterion("telephone >=", value, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(name, value);
         }
 
-        public Criteria andTelephoneLessThan(String value) {
-            this.addCriterion("telephone <", value, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameLike(String value) {
+            return like(name, value);
         }
 
-        public Criteria andTelephoneLessThanOrEqualTo(String value) {
-            this.addCriterion("telephone <=", value, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameNotLike(String value) {
+            return notLike(name, value);
         }
 
-        public Criteria andTelephoneLike(String value) {
-            this.addCriterion("telephone like", value, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameIn(List<String> values) {
+            return in(name, values);
         }
 
-        public Criteria andTelephoneNotLike(String value) {
-            this.addCriterion("telephone not like", value, "telephone");
-            return (Criteria)this;
-        }        public Criteria andTelephoneIn(List<String> values) {
-            this.addCriterion("telephone in", values, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameNotIn(List<String> values) {
+            return notIn(name, values);
         }
 
-        public Criteria andTelephoneNotIn(List<String> values) {
-            this.addCriterion("telephone not in", values, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameBetween(String value1, String value2) {
+            return between(name, value1, value2);
         }
 
-        public Criteria andTelephoneBetween(String value1, String value2) {
-            this.addCriterion("telephone between", value1, value2, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andNameNotBetween(String value1, String value2) {
+            return notBetween(name, value1, value2);
         }
-
-        public Criteria andTelephoneNotBetween(String value1, String value2) {
-            this.addCriterion("telephone not between", value1, value2, "telephone");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicIsNull() {
+            return isNull(topic);
         }
 
-        public Criteria andTypeIsNull() {
-            this.addCriterion("type is null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicIsNotNull() {
+            return isNotNull(topic);
         }
 
-        public Criteria andTypeIsNotNull() {
-            this.addCriterion("type is not null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicEqualTo(String value) {
+            return equalTo(topic, value);
         }
 
-        public Criteria andTypeEqualTo(Integer value) {
-            this.addCriterion("type =", value, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicNotEqualTo(String value) {
+            return notEqualTo(topic, value);
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
-            this.addCriterion("type <>", value, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicGreaterThan(String value) {
+            return greaterThan(topic, value);
         }
 
-        public Criteria andTypeGreaterThan(Integer value) {
-            this.addCriterion("type >", value, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(topic, value);
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("type >=", value, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicLessThan(String value) {
+            return lessThan(topic, value);
         }
 
-        public Criteria andTypeLessThan(Integer value) {
-            this.addCriterion("type <", value, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(topic, value);
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            this.addCriterion("type <=", value, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicLike(String value) {
+            return like(topic, value);
         }
 
-        public Criteria andTypeLike(String value) {
-            this.addCriterion("type like", value, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicNotLike(String value) {
+            return notLike(topic, value);
         }
 
-        public Criteria andTypeNotLike(String value) {
-            this.addCriterion("type not like", value, "type");
-            return (Criteria)this;
-        }        public Criteria andTypeIn(List<Integer> values) {
-            this.addCriterion("type in", values, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicIn(List<String> values) {
+            return in(topic, values);
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
-            this.addCriterion("type not in", values, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicNotIn(List<String> values) {
+            return notIn(topic, values);
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            this.addCriterion("type between", value1, value2, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicBetween(String value1, String value2) {
+            return between(topic, value1, value2);
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("type not between", value1, value2, "type");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTopicNotBetween(String value1, String value2) {
+            return notBetween(topic, value1, value2);
         }
-
-        public Criteria andSenderIdIsNull() {
-            this.addCriterion("sender_id is null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneIsNull() {
+            return isNull(telephone);
         }
 
-        public Criteria andSenderIdIsNotNull() {
-            this.addCriterion("sender_id is not null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneIsNotNull() {
+            return isNotNull(telephone);
         }
 
-        public Criteria andSenderIdEqualTo(Long value) {
-            this.addCriterion("sender_id =", value, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneEqualTo(String value) {
+            return equalTo(telephone, value);
         }
 
-        public Criteria andSenderIdNotEqualTo(Long value) {
-            this.addCriterion("sender_id <>", value, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneNotEqualTo(String value) {
+            return notEqualTo(telephone, value);
         }
 
-        public Criteria andSenderIdGreaterThan(Long value) {
-            this.addCriterion("sender_id >", value, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneGreaterThan(String value) {
+            return greaterThan(telephone, value);
         }
 
-        public Criteria andSenderIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("sender_id >=", value, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(telephone, value);
         }
 
-        public Criteria andSenderIdLessThan(Long value) {
-            this.addCriterion("sender_id <", value, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneLessThan(String value) {
+            return lessThan(telephone, value);
         }
 
-        public Criteria andSenderIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("sender_id <=", value, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(telephone, value);
         }
 
-        public Criteria andSenderIdLike(String value) {
-            this.addCriterion("sender_id like", value, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneLike(String value) {
+            return like(telephone, value);
         }
 
-        public Criteria andSenderIdNotLike(String value) {
-            this.addCriterion("sender_id not like", value, "senderId");
-            return (Criteria)this;
-        }        public Criteria andSenderIdIn(List<Long> values) {
-            this.addCriterion("sender_id in", values, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneNotLike(String value) {
+            return notLike(telephone, value);
         }
 
-        public Criteria andSenderIdNotIn(List<Long> values) {
-            this.addCriterion("sender_id not in", values, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneIn(List<String> values) {
+            return in(telephone, values);
         }
 
-        public Criteria andSenderIdBetween(Long value1, Long value2) {
-            this.addCriterion("sender_id between", value1, value2, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneNotIn(List<String> values) {
+            return notIn(telephone, values);
         }
 
-        public Criteria andSenderIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("sender_id not between", value1, value2, "senderId");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneBetween(String value1, String value2) {
+            return between(telephone, value1, value2);
         }
 
-        public Criteria andWebSiteIsNull() {
-            this.addCriterion("web_site is null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTelephoneNotBetween(String value1, String value2) {
+            return notBetween(telephone, value1, value2);
         }
-
-        public Criteria andWebSiteIsNotNull() {
-            this.addCriterion("web_site is not null");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeIsNull() {
+            return isNull(type);
         }
 
-        public Criteria andWebSiteEqualTo(String value) {
-            this.addCriterion("web_site =", value, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeIsNotNull() {
+            return isNotNull(type);
         }
 
-        public Criteria andWebSiteNotEqualTo(String value) {
-            this.addCriterion("web_site <>", value, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeEqualTo(Integer value) {
+            return equalTo(type, value);
         }
 
-        public Criteria andWebSiteGreaterThan(String value) {
-            this.addCriterion("web_site >", value, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeNotEqualTo(Integer value) {
+            return notEqualTo(type, value);
         }
 
-        public Criteria andWebSiteGreaterThanOrEqualTo(String value) {
-            this.addCriterion("web_site >=", value, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeGreaterThan(Integer value) {
+            return greaterThan(type, value);
         }
 
-        public Criteria andWebSiteLessThan(String value) {
-            this.addCriterion("web_site <", value, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(type, value);
         }
 
-        public Criteria andWebSiteLessThanOrEqualTo(String value) {
-            this.addCriterion("web_site <=", value, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeLessThan(Integer value) {
+            return lessThan(type, value);
         }
 
-        public Criteria andWebSiteLike(String value) {
-            this.addCriterion("web_site like", value, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(type, value);
         }
 
-        public Criteria andWebSiteNotLike(String value) {
-            this.addCriterion("web_site not like", value, "webSite");
-            return (Criteria)this;
-        }        public Criteria andWebSiteIn(List<String> values) {
-            this.addCriterion("web_site in", values, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeIn(List<Integer> values) {
+            return in(type, values);
         }
 
-        public Criteria andWebSiteNotIn(List<String> values) {
-            this.addCriterion("web_site not in", values, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeNotIn(List<Integer> values) {
+            return notIn(type, values);
         }
 
-        public Criteria andWebSiteBetween(String value1, String value2) {
-            this.addCriterion("web_site between", value1, value2, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            return between(type, value1, value2);
         }
 
-        public Criteria andWebSiteNotBetween(String value1, String value2) {
-            this.addCriterion("web_site not between", value1, value2, "webSite");
-            return (Criteria)this;
+        public ItemOrderSenderExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(type, value1, value2);
         }
     }
 }
