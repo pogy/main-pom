@@ -27,7 +27,7 @@ import java.util.Date;
  * @date 2017/2/20 11:15
  *
  */
-@Service("storeRelationService4Impl")
+@Service("storeRelationService")
 public class StoreRelationService4Impl extends ShopServiceImpl implements StoreRelationService{
 
     @Resource(name = "tae_mall_shiguShopMapper")

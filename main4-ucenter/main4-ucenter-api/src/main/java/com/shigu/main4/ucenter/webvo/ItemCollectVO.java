@@ -1,6 +1,8 @@
 package com.shigu.main4.ucenter.webvo;
 
 
+import java.io.Serializable;
+
 /**
  * 新版我的数据VO
  *
@@ -8,7 +10,7 @@ package com.shigu.main4.ucenter.webvo;
  * @date 2017/01/13 10:32
  *
  */
-public class ItemCollectVO {
+public class ItemCollectVO implements Serializable{
 
     /** 商品ID */
     private Long id;

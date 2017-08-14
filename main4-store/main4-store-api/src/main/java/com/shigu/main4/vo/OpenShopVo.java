@@ -3,12 +3,14 @@ package com.shigu.main4.vo;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.shigu.opensearchsdk.anno.FetchApp;
 
+import java.io.Serializable;
+
 /**
  * 开放搜索商户数据
  * Created by bugzy on 2017/5/31 0031.
  */
 @FetchApp("shop_search_ol")
-public class OpenShopVo {
+public class OpenShopVo implements Serializable {
 
     @JSONField(name = "shop_id")
     private Long shopId;

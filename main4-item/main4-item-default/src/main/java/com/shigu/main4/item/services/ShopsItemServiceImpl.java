@@ -43,7 +43,7 @@ import java.util.List;
  * @version domwiki 4.0.0
  * @since domwiki 4.0.0
  */
-@Service
+@Service("shopsItemService")
 public class ShopsItemServiceImpl implements ShopsItemService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShopsItemServiceImpl.class);

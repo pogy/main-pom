@@ -27,8 +27,11 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request,
 			HttpServletResponse response, Object arg2, Exception ex) {
-		if(ex instanceof JsonErrException){//json类型的问题
-			Map<String,Object> otherFields=((JsonErrException) ex).getErrorMap();
+		if(request.getServletPath().endsWith(".json")){//json类型的问题
+			Map<String,Object> otherFields = null;
+			if (ex instanceof JsonErrException) {
+				otherFields = ((JsonErrException) ex).getErrorMap();
+			}
 			JSONObject jsonObj=JSONObject.fromObject("{'result':'error'}");
 			if(otherFields!=null){
 				if(!otherFields.containsKey("msg")){

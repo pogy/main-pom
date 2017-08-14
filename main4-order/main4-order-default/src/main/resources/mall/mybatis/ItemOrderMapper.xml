@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ItemOrderMapper">
+
+
+    <select id="selShOidsByUserId" resultType="java.lang.Long">
+        SELECT
+        DISTINCT a.oid
+        FROM item_order AS a
+        LEFT JOIN item_order_refund AS b ON a.oid = b.oid
+        WHERE a.user_id = #{userId}
+        AND b.refund_id > 0
+        <if test="shStatus == 1">
+            AND (b.type BETWEEN 1 AND 3)
+        </if>
+        <if test="shStatus == 2">
+            AND b.type = 4
+        </if>
+        ORDER BY a.create_time DESC
+        LIMIT #{startRow},#{pageSize}
+    </select>
+
+    <select id="selShOrderCount" resultType="int">
+        SELECT
+        COUNT(DISTINCT a.oid)
+        FROM item_order AS a
+        LEFT JOIN item_order_refund AS b ON a.oid = b.oid
+        WHERE a.user_id = #{userId}
+        AND b.refund_id > 0
+        <if test="shStatus == 1">
+            AND ( b.type BETWEEN 1 AND 3 )
+        </if>
+        <if test="shStatus == 2">
+            AND b.type = 4
+        </if>
+    </select>
+
+
+    <select id="selOidsByBo" resultType="long">
+        SELECT
+        DISTINCT a.oid
+        FROM item_order AS a
+        LEFT JOIN item_order_sub AS b ON a.oid=b.oid
+        LEFT JOIN item_order_logistics AS c ON a.oid=c.oid
+        WHERE a.user_id = #{userId}
+        <if test="orderId != null"> AND a.oid = #{orderId} </if>
+        <if test="status != null"> AND a.order_status = #{status}</if>
+        <if test="st != null"> AND a.create_time &gt;= #{st} </if>
+        <if test="et != null"> AND a.create_time &lt;= #{et} </if>
+        <if test="goodsNo != null"> AND b.goods_no LIKE concat(concat('%',#{goodsNo}),'%')</if>
+        <if test="receiver != null"> AND c.name = #{receiver}</if>
+        <if test="telephone != null"> AND c.telephone = #{telephone}</if>
+        ORDER BY a.create_time DESC
+        LIMIT #{startRow},#{pageSize}
+    </select>
+
+    <select id="selOidsCountByBo" resultType="int">
+        SELECT
+        COUNT(DISTINCT a.oid)
+        FROM item_order AS a
+        LEFT JOIN item_order_sub AS b ON a.oid=b.oid
+        LEFT JOIN item_order_logistics AS c ON a.oid=c.oid
+        WHERE a.user_id = #{userId}
+        <if test="orderId != null"> AND a.oid = #{orderId} </if>
+        <if test="status != null"> AND a.order_status = #{status}</if>
+        <if test="st != null"> AND a.create_time &gt;= #{st} </if>
+        <if test="et != null"> AND a.create_time &lt;= #{et} </if>
+        <if test="goodsNo != null"> AND b.goods_no LIKE concat(concat('%',#{goodsNo}),'%')</if>
+        <if test="receiver != null"> AND c.name = #{receiver}</if>
+        <if test="telephone != null"> AND c.telephone = #{telephone}</if>
+    </select>
+
+</mapper>

@@ -49,8 +49,7 @@ import java.util.Map;
  * @since: main-pom
  * @commonents:
  */
-@Repository
-@Scope("prototype")
+@Service("takeGoodsIssueProcess")
 public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
 
     private final static Integer EZINT = 7; //截取长度

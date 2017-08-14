@@ -12,7 +12,7 @@ import java.util.Date;
  * 批量bulk到Es
  * Created by zhaohongbo on 17/4/15.
  */
-@Service
+@Service("bulkFromRedisService")
 public class BulkFromRedisServiceImpl implements BulkFromRedisService {
 
     /**

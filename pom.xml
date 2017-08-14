@@ -48,6 +48,9 @@
         <main4-store-default.version>${project.version}</main4-store-default.version>
         <main4-item-default.version>${project.version}</main4-item-default.version>
         <main4-monitor-default.version>${project.version}</main4-monitor-default.version>
+        <main4-order-api.version>${project.version}</main4-order-api.version>
+        <main4-order-default.version>${project.version}</main4-order-default.version>
+
 
         <spring.version>4.3.9.RELEASE</spring.version>
         <syn-finder-api.version>4.0.0-SNAPSHOT</syn-finder-api.version>

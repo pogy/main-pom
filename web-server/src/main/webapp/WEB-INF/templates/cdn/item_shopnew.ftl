@@ -1,5 +1,5 @@
 <#if newGoodsList??>
-<div class="newGoods layout">
+<div class="newGoods">
     <h3>店铺新品</h3>
     <#list newGoodsList as goods>
         <div class="goodsitem">

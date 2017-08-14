@@ -14,7 +14,9 @@ import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
+import com.shigu.main4.spread.bo.ActiveDrawRecordBO;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.tools.RedisIO;
@@ -156,24 +158,7 @@ public class ActiveDrawListener implements MessageListener {
      * @param activeDrawRecord
      */
     public void addActiveDrawRecord(ActiveDrawRecord activeDrawRecord){
-        if(activeDrawRecord == null || activeDrawRecord.getPemId() == null ||
-                activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
-            return;
-        }
-        ActiveDrawRecord drawRecord = new ActiveDrawRecord();
-        drawRecord.setPemId(activeDrawRecord.getPemId());
-        drawRecord.setUserId(activeDrawRecord.getUserId());
-        activeDrawRecord.setEnabled(false);
-        activeDrawRecord.setReceivesYes(false);
-        activeDrawRecord.setCreateTime(new Date());
-        activeDrawRecord.setModifyTime(new Date());
-        drawRecord.setWard(activeDrawRecord.getWard());
-        int count = activeDrawRecordMapper.selectCount(drawRecord);
-        if(count > 0){
-            // 已经新增数据
-            return;
-        }
-        activeDrawRecordMapper.insertSelective(activeDrawRecord);
+        activeDrawServiceImpl.addActiveDrawRecord(BeanMapper.map(activeDrawRecord, ActiveDrawRecordBO.class));
     }
 
 
@@ -258,23 +243,7 @@ public class ActiveDrawListener implements MessageListener {
     @Autowired
     private ShiguTempMapper shiguTempMapper;
     public String signUp(String flag, Long userId, Long shopId){
-        if (userId==null||shopId==null){
-            return "您还没有店铺";
-        }
-        ShiguTempExample shiguTempExample =new ShiguTempExample();
-        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
-        List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
-        if (temps.size()>0){
-            return "您已经报过名了";
-        }
-        ShiguTemp shiguTemp=new ShiguTemp();
-        shiguTemp.setFlag(flag);
-        shiguTemp.setKey1(userId.toString());
-        shiguTemp.setKey2(shopId.toString());
-        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        shiguTemp.setKey3(dateFormat.format(new Date()));
-        shiguTempMapper.insertSelective(shiguTemp);
-        return "true";
+        return activeDrawServiceImpl.shiguTempSigup(flag,userId,shopId);
     }
     public boolean checkSignUp(Long userId,Long shopId) {
         ShiguTempExample shiguTempExample=new ShiguTempExample();

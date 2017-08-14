@@ -10,12 +10,12 @@ import java.util.List;
  * 来自商品库的，单天符合要求的商品
  * Created by zhaohongbo on 16/1/26.
  */
-public class ItemKus {
+public class ItemKus implements java.io.Serializable {
 
     public ItemKus() {
-        aitems=new ArrayList<ShiguGoodsTiny>();
-        bitems=new ArrayList<ShiguGoodsTiny>();
-        undefineds=new ArrayList<ShiguGoodsTiny>();
+        aitems=new ArrayList<>();
+        bitems=new ArrayList<>();
+        undefineds=new ArrayList<>();
     }
 
     /**

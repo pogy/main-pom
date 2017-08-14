@@ -1,26 +1,14 @@
 package com.shigu.main4.monitor.test;
 
-import com.alibaba.fastjson.JSON;
-import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguPropImgs;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.searchtool.domain.SimpleElaBean;
 import com.searchtool.mappers.ElasticRepository;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.monitor.bo.PageInfoBO;
 import com.shigu.main4.monitor.bo.ShiguPageRecodeBo;
 import com.shigu.main4.monitor.service.impl.BrowerMonitorServiceImpl;
-import com.shigu.main4.monitor.services.BrowerMonitorService;
-import com.shigu.main4.monitor.vo.BrowerRecord;
-import com.shigu.main4.monitor.vo.BrowerRecordVo;
 import com.shigu.main4.monitor.vo.ClientMsg;
-import org.apache.commons.lang3.time.DateUtils;
-import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.junit.Test;
@@ -30,9 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.annotation.Resource;
-import java.util.*;
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
