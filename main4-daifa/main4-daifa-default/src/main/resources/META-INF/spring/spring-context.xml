@@ -17,8 +17,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:component-scan base-package="com.opentae.*,com.shigu.*,com.alibaba.*"/>
 
@@ -33,7 +33,7 @@
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
             <map>
-                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper,com.opentae.core.mybatis.mapper.MultipleMapper"/>
+                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"/>
             </map>
         </property>
     </bean>
@@ -80,23 +80,27 @@
 
         <property name="plugins">
             <list>
-                <ref bean="mapperInterceptor"></ref>
+                <ref bean="mapperInterceptor"/>
             </list>
         </property>
-        <property name="dataSource" ref="daifa_dataSource"></property>
+        <property name="dataSource" ref="daifa_dataSource"/>
         <!--<property name="configLocation" value="classpath:mybatis-config.xml"></property>-->
         <property name="mapperLocations" value="classpath*:/com/opentae/data/daifa/mapper/*.xml" />
-        <property name="typeAliasesPackage" value="com.opentae.data.daifa"></property>
+        <property name="typeAliasesPackage" value="com.opentae.data.daifa"/>
     </bean>
     <bean id="diafa_tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
-        <property name="dataSource" ref="daifa_dataSource"></property>
+        <property name="dataSource" ref="daifa_dataSource"/>
     </bean>
     <tx:annotation-driven transaction-manager="diafa_tx" />
     <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
-        <property name= "basePackage"
-                  value= "com/opentae/data/daifa/interfaces" />
+        <property name= "basePackage" value= "com/opentae/data/daifa/interfaces" />
         <property name= "sqlSessionFactoryBeanName" value="tae_daifa_sqlSessionFactory" />
-        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"></property>
+        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
+    </bean>
+    <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
+        <property name= "basePackage" value= "com/opentae/core/mybatis/mapper" />
+        <property name= "sqlSessionFactoryBeanName" value="tae_daifa_sqlSessionFactory" />
+        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
     </bean>
     <import resource="daifa.xml"/>
 </beans>
