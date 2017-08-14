@@ -481,7 +481,7 @@ public class ShopAction {
                 OnsaleItemVO vo = new OnsaleItemVO(oi);
                 GoodsFile fileInfo = goodsIdFileMap.get(vo.getId());
                 vo.setSetCorrelateType(fileInfo==null?1:2);
-                vo.setBigPicType(fileInfo==null?1:fileInfo.getNeedPwd()?1:2);
+                vo.setBigPicType(fileInfo==null?2:fileInfo.getNeedPwd()?1:2);
                 if (fileInfo != null) {
                     vo.setLinkHref(fileInfo.getFileKey());
                     vo.setLinkHrefPassword(fileInfo.getPasswd());
