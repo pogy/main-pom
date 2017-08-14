@@ -44,8 +44,8 @@ public class DaifaAdminRegularFilter implements Filter {
 		if (object == null) {
 
 				HttpServletResponse res = (HttpServletResponse) response;
-				res.sendRedirect(basePath + "/login.htm");
-
+				res.sendRedirect(basePath + "/init/login.htm");
+				return ;
 		}else{
 			chain.doFilter(request, response);
 			return;
