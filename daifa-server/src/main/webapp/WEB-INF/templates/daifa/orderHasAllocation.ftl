@@ -265,7 +265,7 @@
     </div>
     <div id="orderContainer">
     <#list childOrders as childOrder>
-    <div class="childOrderItem" data-id="${childOrder.childOrderId!}">
+    <div class="childOrderItem" data-id="${childOrder.childOrderId!}" data-takeGoodsId="${childOrder.takeGoodsId!}">
     <ul class="clearfix">
         <li class="checkBox">
 
