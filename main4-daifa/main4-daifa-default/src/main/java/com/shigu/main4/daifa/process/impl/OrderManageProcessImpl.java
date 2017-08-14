@@ -5,9 +5,11 @@ import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.tools.SpringBeanFactory;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Service("orderManageProcess")
 public class OrderManageProcessImpl implements OrderManageProcess {
 
 

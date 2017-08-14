@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Service
+@Service("packDeliveryProcess")
 public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     @Autowired
     private DaifaOrderMapper daifaOrderMapper;
