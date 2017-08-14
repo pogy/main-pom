@@ -79,7 +79,7 @@ public class SubOrderModelImpl implements SubOrderModel {
         order.setLastDoTime(order.getCreateTime());
         order.setDelistIs(0);
         order.setCdkey(cdkeyCreate());
-        order.setAllocatStatus(1);
+        order.setAllocatStatus(0);
         daifaOrderMapper.insertSelective(order);
         this.subOrderId=order.getDfOrderId();
         DaifaGgoodsTasks insertTasks=BeanMapper.map(order,DaifaGgoodsTasks.class);
