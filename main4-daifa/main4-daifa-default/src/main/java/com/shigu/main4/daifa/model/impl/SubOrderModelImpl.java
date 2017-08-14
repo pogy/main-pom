@@ -265,29 +265,26 @@ public class SubOrderModelImpl implements SubOrderModel {
         updateGgoods.setUseStatus(0);//设置记录不可用
         updateGgoods.setOperateIs(1);//设置已操作过拿货完成
         updateGgoods.setTakeGoodsId(goods.getTakeGoodsId());
-        updateGgoods.setTakeGoodsDate(date);
-        updateGgoods.setTakeGoodsTime(time);
         updateGgoods.setTakeGoodsStatus(status);//设置拿货状态
-        daifaGgoodsMapper.updateByPrimaryKeySelective(updateGgoods);
 
         DaifaGgoodsTasks updateTask=new DaifaGgoodsTasks();
         updateTask.setTasksId(task.getTasksId());
         updateTask.setOperateIs(1);//设置已操作过拿货完成
         updateTask.setUseStatus(0);
         updateTask.setTakeGoodsStatus(status);//设置拿货状态
-        updateTask.setTakeGoodsDate(date);
-        daifaGgoodsTasksMapper.updateByPrimaryKeySelective(updateTask);
+
+
 
         DaifaOrder order=new DaifaOrder();
+        order.setDfOrderId(subOrderId);
+        order.setTakeGoodsStatus(status);//设置拿货状态
         if(status==2){
             DaifaOrder tmpOrder=daifaOrderMapper.selectFieldsByPrimaryKey(subOrderId, FieldUtil.codeFields("df_order_id,create_time"));
             Integer day1=new Integer(DateUtil.dateToString(tmpOrder.getCreateTime(),DateUtil.patternB));
             Integer day2=new Integer(date);
             order.setStockoutCycleStatus(day1-day2>1?2:1);
 
-
             DaifaGgoodsTasks insertTasks=BeanMapper.map(task,DaifaGgoodsTasks.class);
-            insertTasks.setTakeGoodsDate(null);//重置分配时间
             insertTasks.setTakeGoodsStatus(2);//设置缺货
             insertTasks.setTasksId(null);//清空id
             insertTasks.setOperateIs(0);//重置操作状态
@@ -305,10 +302,15 @@ public class SubOrderModelImpl implements SubOrderModel {
             insertTasks.setPrintBatch(null);
             insertTasks.setPrintGoodsStatus(1);//重置打印状态
             daifaGgoodsTasksMapper.insertSelective(insertTasks);
+        }else{
+            updateGgoods.setTakeGoodsDate(date);
+            updateGgoods.setTakeGoodsTime(time);
+            updateTask.setTakeGoodsDate(date);
+            order.setTakeGoodsDate(time);
         }
-        order.setDfOrderId(subOrderId);
-        order.setTakeGoodsDate(time);
-        order.setTakeGoodsStatus(status);//设置拿货状态
+
+        daifaGgoodsMapper.updateByPrimaryKeySelective(updateGgoods);
+        daifaGgoodsTasksMapper.updateByPrimaryKeySelective(updateTask);
         daifaOrderMapper.updateByPrimaryKeySelective(order);
     }
 }

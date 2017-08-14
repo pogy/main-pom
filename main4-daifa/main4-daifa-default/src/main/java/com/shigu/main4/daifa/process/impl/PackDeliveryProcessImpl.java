@@ -14,6 +14,7 @@ import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.process.PackDeliveryProcess;
 import com.shigu.main4.daifa.vo.ExpressVO;
 import com.shigu.main4.daifa.vo.PackResultVO;
+import com.shigu.main4.daifa.vo.PrintExpressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,16 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     @Override
     public PackResultVO packSubOrder(Long subOrderId) throws DaifaException {
         DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(subOrderId);
+        DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(order.getDfTradeId());
+        if(trade.getSendStatus()==2){
+            DaifaSend send=new DaifaSend();
+            send.setDfTradeId(order.getDfTradeId());
+            send=daifaSendMapper.selectOne(send);
+            PackResultVO print = new PackResultVO();
+            print.setSendId(send.getSendId());
+            print.setGoodsInfo(order.getStoreGoodsCode()+"\t"+order.getPropStr());
+            return print;
+        }
         if(order==null){
             throw new DaifaException("此条码对应的订单编号不存在");
         }
@@ -74,7 +85,6 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         }
 
         //发货
-        DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(order.getDfTradeId());
         OrderExpressBO exbo=new OrderExpressBO();
         exbo.setExpressName(trade.getExpressName());
         exbo.setReceiverAddress(trade.getReceiverAddress());
@@ -92,7 +102,12 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         }
         exbo.setList(list);
         ExpressModel expressModel=SpringBeanFactory.getBean(ExpressModel.class,trade.getExpressId(),trade.getSellerId());
-        ExpressVO exvo=expressModel.callExpress(exbo);
+        ExpressVO exvo= null;
+        try {
+            exvo = expressModel.callExpress(exbo);
+        } catch (DaifaException e) {
+            throw new DaifaException("订单全部拿到货,快递单打印失败("+trade.getExpressName()+","+e.getMessage()+")");
+        }
         DeliveryBO bo= BeanMapper.map(trade,DeliveryBO.class);
         bo.setExpressCode(exvo.getExpressCode());
         bo.setMarkDestination(exvo.getMarkDestination());
@@ -104,6 +119,17 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         DaifaSend send=new DaifaSend();
         send.setDfTradeId(order.getDfTradeId());
         send=daifaSendMapper.selectOne(send);
+        PackResultVO print = new PackResultVO();
+        print.setSendId(send.getSendId());
+        print.setGoodsInfo(order.getStoreGoodsCode()+"\t"+order.getPropStr());
+
+        return print;
+    }
+
+    @Override
+    public PrintExpressVO printExpress(Long sendId) {
+        DaifaSend send=daifaSendMapper.selectByPrimaryKey(sendId);
+        DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(send.getDfTradeId());
         DaifaSendOrder tmpSo=new DaifaSendOrder();
         tmpSo.setSendId(send.getSendId());
         List<DaifaSendOrder> sendOrders=daifaSendOrderMapper.select(tmpSo);
@@ -111,7 +137,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         DaifaSeller seller=daifaSellerMapper.selectByPrimaryKey(send.getSellerId());
 
         Map<String,Integer> skumap=new HashMap<>();
-        PackResultVO print = new PackResultVO();
+        PrintExpressVO print=new PrintExpressVO();
         print.setDfTradeId(send.getDfTradeId().toString());
         print.setPostCode(send.getExpressCode());
         print.setReceiverName(send.getReceiverName());
@@ -145,7 +171,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         print.setSendNum(orderSize>=1?goodsnum:null);
 
         DaifaSend senduex=new DaifaSend();
-        senduex.setPrintStatus(2);
+        senduex.setPrintStatus(1);
         senduex.setSendId(send.getSendId());
         daifaSendMapper.updateByPrimaryKeySelective(senduex);
         return print;

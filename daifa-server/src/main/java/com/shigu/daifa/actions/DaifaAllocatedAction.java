@@ -1,10 +1,14 @@
 package com.shigu.daifa.actions;
 
 import com.opentae.data.daifa.beans.DaifaWorker;
+import com.shigu.component.shiro.AuthorityUser;
+import com.shigu.config.DaifaSessionConfig;
+import com.shigu.daifa.bo.PrintGoodsTagBO;
 import com.shigu.daifa.bo.SelectDaifaGgoodsListBo;
 import com.shigu.daifa.services.DaifaAllocatedService;
 import com.shigu.daifa.vo.DaifaAllocatedVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
+import com.shigu.daifa.vo.PrintGoodsTagVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
@@ -30,11 +34,11 @@ public class DaifaAllocatedAction {
      * @param model
      * @return
      */
-    @RequestMapping("admin/orderHasAllocation")
+    @RequestMapping("daifa/orderHasAllocation")
     public String selectDaifaGgoodsList(SelectDaifaGgoodsListBo bo, Model model) {
         Session session = SecurityUtils.getSubject().getSession();
-        DaifaWorker daifaUser = (DaifaWorker) session.getAttribute("");
-        if (bo.getPage() != null) {
+        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        if (bo.getPage() == null) {
             bo.setPage(1);
         }
         ShiguPager<DaifaAllocatedVO> pager= daifaAllocatedService.selectDaifaGgoodsList(daifaUser.getDaifaWorkerId(), bo.getOrderId(), bo.getChildOrderId(),
@@ -43,8 +47,8 @@ public class DaifaAllocatedAction {
         model.addAttribute("pageOption",pager.getTotalCount()+","+10+bo.getPage());
         model.addAttribute("childOrders",pager.getContent());
         model.addAttribute("userIcon","");
-        model.addAttribute("userName",daifaUser.getDaifaWorker());
-        return "admin/orderHasAllocation";
+        model.addAttribute("userName",daifaUser.getDaifaUserName());
+        return "daifa/orderHasAllocation";
     }
 
     /**
@@ -54,11 +58,11 @@ public class DaifaAllocatedAction {
      * @return
      * @throws DaifaException
      */
-    @RequestMapping("admin/setIsGetGoodsJson")
+    @RequestMapping("daifa/setIsGetGoodsJson")
     @ResponseBody
     public JSONObject setIsGetGoodsJson(Integer type,Long takeGoodsId) throws DaifaException {
         Session session = SecurityUtils.getSubject().getSession();
-        DaifaWorker daifaUser = (DaifaWorker) session.getAttribute("");
+        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         daifaAllocatedService.takeGoods(daifaUser.getDaifaWorkerId(),takeGoodsId,type);
         return JsonResponseUtil.success();
     }
@@ -67,11 +71,11 @@ public class DaifaAllocatedAction {
      * 代发人员列表
      * @return
      */
-    @RequestMapping("admin/getUserList")
+    @RequestMapping("daifa/getUserList")
     @ResponseBody
     public JSONObject workerList(){
         Session session = SecurityUtils.getSubject().getSession();
-        DaifaWorker daifaUser = (DaifaWorker) session.getAttribute("");
+        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId=daifaUser.getDaifaSellerId();
         List<DaifaWorkerVO> vos=daifaAllocatedService.selWorkerList(sellerId);
         JSONObject obj=JsonResponseUtil.success();
@@ -79,6 +83,21 @@ public class DaifaAllocatedAction {
         return obj;
     }
 
+    /**
+     * 打印全部商品标签接口
+     * @param bo
+     * @return
+     */
+    @RequestMapping("daifa/printGoodsTabJson")
+    @ResponseBody
+    public JSONObject printGoodsTabJson(PrintGoodsTagBO bo){
+        Session session = SecurityUtils.getSubject().getSession();
+        AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION)    ;
+        Long sellerId=daifaUser.getDaifaSellerId();
 
-
+        List<PrintGoodsTagVO> vos=daifaAllocatedService.printGoodsTab(sellerId,bo.getType()==1?null:bo.getIds());
+        JSONObject obj=JsonResponseUtil.success();
+        obj.put("tabList",vos);
+        return obj;
+    }
 }

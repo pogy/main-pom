@@ -2,6 +2,7 @@ package com.shigu.daifa.services;
 
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoods;
 import com.opentae.data.daifa.beans.DaifaWorker;
 import com.opentae.data.daifa.custom.beans.DaifaGgoodsJoinOrder;
@@ -14,11 +15,14 @@ import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
 import com.opentae.data.daifa.interfaces.DaifaWorkerMapper;
 import com.shigu.daifa.vo.DaifaAllocatedVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
+import com.shigu.daifa.vo.PrintGoodsTagVO;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.daifa.vo.PrintTagVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,8 +62,6 @@ public class DaifaAllocatedService {
         Integer count = daifaGgoodsMapper.countByExample(daifaGgoodsExample);
         List<DaifaAllocatedVO> vos = new ArrayList<>();
         if (count > 0) {
-            daifaGgoodsExample.setStartIndex((page - 1) * size);
-            daifaGgoodsExample.setEndIndex(size);
             DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
             DaifaTradeExample daifaTradeExample = new DaifaTradeExample();
             MultipleExample example = MultipleExampleBuilder.from(daifaGgoodsExample)
@@ -68,6 +70,8 @@ public class DaifaAllocatedService {
                     .join(daifaTradeExample)
                     .on(daifaOrderExample.createCriteria().equalTo(DaifaOrderExample.dfTradeId, DaifaTradeExample.dfTradeId))
                     .build();
+            example.setStartIndex((page - 1) * size);
+            example.setEndIndex(size);
             List<DaifaGgoodsJoinOrder> ggoodsForPrints = daifaMultipleMapper
                     .selectFieldsByMultipleExample(example, DaifaGgoodsJoinOrder.class);
             for (DaifaGgoodsJoinOrder g : ggoodsForPrints) {
@@ -134,6 +138,29 @@ public class DaifaAllocatedService {
             vo.setName(w.getDaifaWorker());
             vos.add(vo);
         }
+        return vos;
+    }
+
+    public List<PrintGoodsTagVO> printGoodsTab(Long sellerId,List<Long> ids){
+        List<PrintTagVO> printTagVOS=new ArrayList<>();
+        if(ids==null){
+            printTagVOS=takeGoodsIssueProcess.printAllTags(sellerId);
+        }else{
+            DaifaGgoodsExample example=new DaifaGgoodsExample();
+            example.createCriteria().andSellerIdEqualTo(sellerId).andTakeGoodsIdIn(ids);
+            List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id"));
+            ids.clear();
+            gs.forEach(daifaGgoods -> {
+                ids.add(daifaGgoods.getTakeGoodsId());
+            });
+            printTagVOS=takeGoodsIssueProcess.printTags(ids);
+        }
+        List<PrintGoodsTagVO> vos=new ArrayList<>();
+        printTagVOS.forEach(printTagVO -> {
+            PrintGoodsTagVO vo= BeanMapper.map(printTagVO,PrintGoodsTagVO.class);
+            vo.setStockoutDay(printTagVO.getRemarks());
+            vos.add(vo);
+        });
         return vos;
     }
 }

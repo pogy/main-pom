@@ -169,7 +169,7 @@ public class ExpressModelImpl implements ExpressModel {
                 }
 
             } catch (KdApiException e) {
-                e.printStackTrace ();
+                throw new DaifaException (e.getMsg());
             }
 
         }
