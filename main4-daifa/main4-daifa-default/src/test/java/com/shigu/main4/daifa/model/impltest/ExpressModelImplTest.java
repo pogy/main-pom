@@ -31,7 +31,7 @@ import static org.junit.Assert.assertTrue;
 public class ExpressModelImplTest extends BaseSpringTest {
 
     @Test
-    public void callExpress_test() throws DaifaException {
+    public void callExpress_test() throws DaifaException {//OK
 
 
         OrderExpressBO bo=new OrderExpressBO();

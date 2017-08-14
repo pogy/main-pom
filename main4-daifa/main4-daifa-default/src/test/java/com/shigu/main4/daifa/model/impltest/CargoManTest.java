@@ -26,16 +26,15 @@ public class CargoManTest extends BaseSpringTest {
         CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 3l);
 
         List<Long> list=new ArrayList<> ();
-        list.add(9855L);
-        list.add(9854L);
-        list.add(9853L);
-        list.add(9852L);
+        list.add(9856L);
+        list.add(9857L);
+
         bean.takeToMe(list);
 
     }
     @Test
-    public void finishTakeGoods_test() throws DaifaException {
-        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 1l);
+    public void finishTakeGoods_test() throws DaifaException {//OK
+        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 3l);
         bean.finishTakeGoods();
     }
 }

@@ -82,11 +82,11 @@ public class SubOrderModelImplTest extends BaseSpringTest {
             assertEquals(sdf.format(g.getYouhuoDate()),sdf.format(d));
         }
     }
-//    @Test
+    @Test
 //    @Transactional
-    public void markDown_test() throws DaifaException {
-        Long oid=insert(999999L,"1-1");
-
+    public void markDown_test() throws DaifaException {//OK  40626//下架调完要再调用一次缺货
+        //Long oid=insert(999999L,"1-1");
+        Long oid=40626L;
         SubOrderModelImpl impl=SpringBeanFactory.getBean(SubOrderModelImpl.class,oid);
         impl.markDown();
 
@@ -105,7 +105,7 @@ public class SubOrderModelImplTest extends BaseSpringTest {
             }
         }
 
-        CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 2L);
+        /*CargoManModel bean = SpringBeanFactory.getBean(CargoManModel.class, 2L);
         bean.takeToMe(tids);
 
         DaifaGgoods daifaGgoods=new DaifaGgoods();
@@ -114,22 +114,24 @@ public class SubOrderModelImplTest extends BaseSpringTest {
         assertNotEquals(gs.size(),0);
         for(DaifaGgoods g:gs){
             assertEquals(g.getDelistIs(),new Integer(1));
-        }
+        }*/
     }
 
-//    @Test
+    @Test
 //    @Transactional
-    public void mark_test() throws DaifaException {//备注
-        Long oid=insert(999999L,"1-1");
+    public void mark_test() throws DaifaException {//备注//OK
+        //Long oid=insert(999999L,"1-1");
+        Long oid=40630L;
+
 
         SubOrderModelImpl impl=SpringBeanFactory.getBean(SubOrderModelImpl.class,oid);
-        impl.mark("123123");
+        impl.mark("子订代发单备注");
 
         DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(oid);
-        assertEquals(order.getOrderRemark(),"123123");
-        impl.mark("123123");
+        assertEquals(order.getOrderRemark(),"子订代发单备注");
+        impl.mark("子订代发单备注");
         order=daifaOrderMapper.selectByPrimaryKey(oid);
-        assertEquals(order.getOrderRemark(),"123123@_@123123");
+        assertEquals(order.getOrderRemark(),"子订代发单备注@_@子订代发单备注");
 
     }
 
