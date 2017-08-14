@@ -5,14 +5,14 @@ import com.aliyun.openservices.ons.api.OnExceptionContext;
 import com.aliyun.openservices.ons.api.SendCallback;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
-import com.shigu.main4.order.mq.msg.BaseMessage;
-import com.shigu.main4.order.mq.msg.CourierMessage;
-import com.shigu.main4.order.mq.msg.OrderMessage;
-import com.shigu.main4.order.mq.msg.RefundMessage;
+import com.shigu.main4.order.mq.msg.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * 订单消息生产
@@ -51,27 +51,38 @@ public class OrderMessageProducter {
         sendAsync(OrderMQTag.order_push, BaseMessage.success(order.getOid().toString(), "订单创建", order));
     }
 
-    public void orderRefundNoItem() {
+    public void orderRefundNoItem(Long refundId, Long subOrderId) {
         RefundMessage refund = new RefundMessage();
-//        refund.setRefundId();
+        refund.setRefundId(refundId);
+        ArrayList<SubOrderMessage> soids = new ArrayList<>();
+        SubOrderMessage subOrder = new SubOrderMessage();
+        subOrder.setSoid(subOrderId);
+        subOrder.setSoidps(Arrays.asList(subOrderId));
+        soids.add(subOrder);
+        refund.setSuborders(soids);
+
         sendAsync(OrderMQTag.order_refund_noitem, BaseMessage.success(refund.getRefundId().toString(), "仅退款", refund));
     }
 
-    public void orderRefundHasItem() {
+    public void orderRefundHasItem(Long refundId) {
         RefundMessage refund = new RefundMessage();
-//        refund.setRefundId();
+        refund.setRefundId(refundId);
         sendAsync(OrderMQTag.order_refund_hasitem, BaseMessage.success(refund.getRefundId().toString(), "退货退款", refund));
     }
 
-    public void refundCourierNumber() {
+    public void refundCourierNumber(Long refundId, String company, String courierNumber) {
         CourierMessage courier = new CourierMessage();
-//        courier.setRefundId();
+        courier.setRefundId(refundId);
+        courier.setCompany(company);
+        courier.setCourierNumber(courierNumber);
         sendAsync(OrderMQTag.refund_courier_number, BaseMessage.success(courier.getRefundId().toString(), "填写快递单", courier));
     }
 
-    public void refundCourierNumberModify() {
+    public void refundCourierNumberModify(Long refundId, String company, String courierNumber) {
         CourierMessage courier = new CourierMessage();
-//        courier.setRefundId();
+        courier.setRefundId(refundId);
+        courier.setCompany(company);
+        courier.setCourierNumber(courierNumber);
         sendAsync(OrderMQTag.refund_courier_number_modify, BaseMessage.success(courier.getRefundId().toString(), "填写快递单", courier));
     }
 

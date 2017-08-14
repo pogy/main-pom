@@ -13,12 +13,12 @@ public class SubOrderMessage {
      */
     private Long soid;
 
+    private List<Long> soidps;
+
     /**
      * 单价，单件 退款，仅在退货中使用
      */
     private Long singleMoney;
-
-    private List<Long> soidps;
 
     public Long getSoid() {
         return soid;
