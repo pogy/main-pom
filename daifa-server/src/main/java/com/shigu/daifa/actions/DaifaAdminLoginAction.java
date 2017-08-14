@@ -40,7 +40,7 @@ public class DaifaAdminLoginAction {
      * ====================================================================================
      *
      */
-    @RequestMapping("init/dalfaLogin")
+    @RequestMapping("init/daifaLogin")
     public String login(HttpServletRequest request, Model model){
 
        // Session session = SecurityUtils.getSubject().getSession();
@@ -67,7 +67,7 @@ public class DaifaAdminLoginAction {
 
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated()){//如果已经登陆，去登陆页面
-            return "redirect:/daifa/daifaIndex.htm";
+            return "redirect:/daifa/orderAll.htm";
         }else if(bo.getUsername()!=null&&bo.getPassword()!=null){
             CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                     bo.getUsername(), bo.getPassword(), false, request.getRemoteAddr(), "");
@@ -75,7 +75,7 @@ public class DaifaAdminLoginAction {
             try {
                 currentUser.login(token);
                 //登陆成功
-                return "redirect:/daifa/daifaIndex.htm";
+                return "redirect:/daifa/orderAll.htm";
             } catch (AuthenticationException e) {
                 //登陆失败
                 token.clear();
