@@ -174,7 +174,7 @@ public class OrderModelImpl implements OrderModel {
 
         daifaTrade.setExpressFee(PriceConvertUtils.doublePriceToString (logisticsBO.getMoney()));
         List<ServiceBO> services = orderBO.getServices();
-        Double serviceFee=0.0;
+        Double serviceFee=0.00;
         for (ServiceBO bo:services){
             serviceFee+=Double.parseDouble(bo.getMoney());
         }
@@ -182,7 +182,7 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setTradeDiscountFee("0.00");
         daifaTrade.setTotalFee(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
         daifaTrade.setMoney(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
-
+        daifaTrade.setSendStatus (1);
         daifaTrade.setRealPayMoney(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
 
         daifaTrade.setCreateTime(new Date());
