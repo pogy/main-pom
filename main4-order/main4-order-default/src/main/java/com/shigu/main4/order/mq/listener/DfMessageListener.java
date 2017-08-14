@@ -1,4 +1,4 @@
-package com.shigu.main4.order.mq;
+package com.shigu.main4.order.mq.listener;
 
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
