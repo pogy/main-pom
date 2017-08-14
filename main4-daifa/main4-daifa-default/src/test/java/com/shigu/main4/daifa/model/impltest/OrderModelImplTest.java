@@ -32,106 +32,116 @@ public class OrderModelImplTest extends BaseSpringTest{
     @Test
     public void testinit(){
 
-        ServiceBO serviceBO=new ServiceBO();
-        serviceBO.setMoney("3.00");
-        serviceBO.setSoid(1234671L);
-
-        ServiceBO sO2=new ServiceBO();
-        sO2.setMoney("1.00");
-        sO2.setSoid(1234672L);
-
-        List<ServiceBO>serviceBOS=new ArrayList<>();
-       serviceBOS.add(serviceBO);
-       serviceBOS.add (sO2);
+        Long oidinit=50000000L;
+        Long soidp=50L;
+        for(int i=0;i<10;i++) {
+            Long oid=oidinit+1;
+            soidp+=10;
 
 
-        OrderBO bo=new OrderBO();
-        bo.setSenderId(999999990L);
-        bo.setBuyRemark ("买家备注");
-        SubOrderBO subOrderBO=new SubOrderBO();
-        subOrderBO.setSoid(1234671L);
-        List<Long>soidps= new ArrayList<>();
-        soidps.add(30L);
-        soidps.add(31L);
-        soidps.add(32L);
-        subOrderBO.setSoidps(soidps);
+            ServiceBO serviceBO = new ServiceBO ();
+            serviceBO.setMoney ("3.00");
 
-        subOrderBO.setNum(3);
-        subOrderBO.setGoodsId(9311536L);
-        subOrderBO.setGoodsNo("C04");
-        subOrderBO.setTitle("2016秋季新款 青年男士韩版修身纯色长袖衬衫潮C04P30");
-        subOrderBO.setPicUrl("https://img.alicdn.com/bao/uploaded/i2/889300233/TB2jXldaXrB11BjSspjXXciYpXa_!!889300233.jpg");
-        subOrderBO.setMarketId(621L);
-        subOrderBO.setMarketName("四季星座网");
-        subOrderBO.setFloorId(630L);
-        subOrderBO.setFloor("9F");
-        subOrderBO.setShopId(40680L);
-        subOrderBO.setShopNum("900B");
-        subOrderBO.setColor("白色");
-        subOrderBO.setSize("4XL");
-        subOrderBO.setSinglePay("30.00");
-        subOrderBO.setWebSite("hz");
+            serviceBO.setSoid (oid+100);
+
+            ServiceBO sO2 = new ServiceBO ();
+            sO2.setMoney ("1.00");
+            sO2.setSoid (oid+101);
+
+            List<ServiceBO> serviceBOS = new ArrayList<> ();
+            serviceBOS.add (serviceBO);
+            serviceBOS.add (sO2);
 
 
+            OrderBO bo = new OrderBO ();
+            bo.setOid (oid);
+            bo.setSenderId (999999990L);
+            bo.setBuyRemark ("买家备注");
+            SubOrderBO subOrderBO = new SubOrderBO ();
+            subOrderBO.setSoid (oid+100);
+            List<Long> soidps = new ArrayList<> ();
+            soidps.add (soidp);
+            soidps.add (soidp+1);
+            soidps.add (soidp+2);
+            subOrderBO.setSoidps (soidps);
+
+            subOrderBO.setNum (3);
+            subOrderBO.setGoodsId (9311536L);
+            subOrderBO.setGoodsNo ("C04");
+            subOrderBO.setTitle ("2016秋季新款 青年男士韩版修身纯色长袖衬衫潮C04P30");
+            subOrderBO.setPicUrl ("https://img.alicdn.com/bao/uploaded/i2/889300233/TB2jXldaXrB11BjSspjXXciYpXa_!!889300233.jpg");
+            subOrderBO.setMarketId (621L);
+            subOrderBO.setMarketName ("四季星座网");
+            subOrderBO.setFloorId (630L);
+            subOrderBO.setFloor ("9F");
+            subOrderBO.setShopId (40680L);
+            subOrderBO.setShopNum ("900B");
+            subOrderBO.setColor ("白色");
+            subOrderBO.setSize ("4XL");
+            subOrderBO.setSinglePay ("30.00");
+            subOrderBO.setWebSite ("hz");
 
 
-        SubOrderBO s2=new SubOrderBO();
-        s2.setSoid(1234672L);
-        s2.setNum (1);
-        s2.setGoodsId(21076838L);
-        s2.setGoodsNo("A268-JK121");
-        s2.setTitle("秋季夹克韩版男士外套潮男装青少年牛仔夹克学生A268-JK121-P78");
-        s2.setPicUrl("https://img.alicdn.com/bao/uploaded/i1/1600266804/TB2oEeuawL8F1JjSsphXXXknVXa_!!1600266804.jpg");
-        s2.setSize("L");
-        s2.setColor("白色");
+            SubOrderBO s2 = new SubOrderBO ();
+            s2.setSoid (oid+101);
+            s2.setNum (1);
+            s2.setGoodsId (21076838L);
+            s2.setGoodsNo ("A268-JK121");
+            s2.setTitle ("秋季夹克韩版男士外套潮男装青少年牛仔夹克学生A268-JK121-P78");
+            s2.setPicUrl ("https://img.alicdn.com/bao/uploaded/i1/1600266804/TB2oEeuawL8F1JjSsphXXXknVXa_!!1600266804.jpg");
+            s2.setSize ("L");
+            s2.setColor ("白色");
 
-        s2.setMarketId(1087L);
-        s2.setMarketName("电商基地");
-        s2.setFloorId(1089L);
-        s2.setFloor("2F");
-        s2.setShopId(41700L);
-        s2.setShopNum("A268");
+            s2.setMarketId (1087L);
+            s2.setMarketName ("电商基地");
+            s2.setFloorId (1089L);
+            s2.setFloor ("2F");
+            s2.setShopId (41700L);
+            s2.setShopNum ("A268");
             //批发价
-        s2.setSinglePay("78.00");
+            s2.setSinglePay ("78.00");
 
 
-        List<Long>soidps1= new ArrayList<>();
-        soidps1.add(33L);
+            List<Long> soidps1 = new ArrayList<> ();
+            soidps1.add (soidp+3);
 
-        s2.setSoidps(soidps1);
-        s2.setWebSite("hz");
-
-
-        LogisticsBO logisticsBO =new LogisticsBO();
-        logisticsBO.setMoney(12.00);
-        logisticsBO.setAddress("芯图大厦11楼");
-        logisticsBO.setCity("杭州市");
-        logisticsBO.setProv("浙江省");
-        logisticsBO.setName("Mark");
-        logisticsBO.setTelephone("13154862568");
-        logisticsBO.setTown("滨江区");
-        logisticsBO.setCompany("申通快递");
-        logisticsBO.setCompanyId(68L);
-        bo.setType(1);
-
-       bo.setOid(46846123L);
-       List<LogisticsBO> logisticsBOS=new ArrayList<>();
-       logisticsBOS.add(logisticsBO);
-       List<SubOrderBO> subOrderBOS=new ArrayList<>();
-       subOrderBOS.add(subOrderBO);
-        subOrderBOS.add (s2);
+            s2.setSoidps (soidps1);
+            s2.setWebSite ("hz");
 
 
-       bo.setLogistics(logisticsBOS);
-       bo.setSubOrders(subOrderBOS);
-       bo.setServices(serviceBOS);
-       BuyerBO buyerBO=new BuyerBO();
-       buyerBO.setNickInMarket("小红");
-       buyerBO.setPhone("13523656891");
-        bo.setBuyerBO(buyerBO);
-        orderModel = SpringBeanFactory.getBean(OrderModel.class,bo);
+            LogisticsBO logisticsBO = new LogisticsBO ();
+            logisticsBO.setMoney (12.00);
+            logisticsBO.setAddress ("芯图大厦11楼");
+            logisticsBO.setCity ("杭州市");
+            logisticsBO.setProv ("浙江省");
+            logisticsBO.setName ("Mark");
+            logisticsBO.setTelephone ("13154862568");
+            logisticsBO.setTown ("滨江区");
+            logisticsBO.setCompany ("申通快递");
+            logisticsBO.setCompanyId (68L);
+            bo.setType (1);
+
+
+            List<LogisticsBO> logisticsBOS = new ArrayList<> ();
+            logisticsBOS.add (logisticsBO);
+            List<SubOrderBO> subOrderBOS = new ArrayList<> ();
+            subOrderBOS.add (subOrderBO);
+            subOrderBOS.add (s2);
+
+
+            bo.setLogistics (logisticsBOS);
+            bo.setSubOrders (subOrderBOS);
+            bo.setServices (serviceBOS);
+            BuyerBO buyerBO = new BuyerBO ();
+            buyerBO.setNickInMarket ("小红");
+            buyerBO.setPhone ("13523656891");
+            bo.setBuyerBO (buyerBO);
+            orderModel = SpringBeanFactory.getBean (OrderModel.class, bo);
 //        orderModel = SpringBeanFactory.getBean(OrderModel.class,2L);
-        show(orderModel);
+            show (orderModel);
+
+        }
+
     }
     @Test
     public void testtimeOut(){
