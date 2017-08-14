@@ -34,11 +34,11 @@ public class OrderModelImplTest extends BaseSpringTest{
 
         ServiceBO serviceBO=new ServiceBO();
         serviceBO.setMoney("3.00");
-        serviceBO.setSoid(1234654L);
+        serviceBO.setSoid(1234671L);
 
         ServiceBO sO2=new ServiceBO();
-        sO2.setMoney("2.00");
-        sO2.setSoid(145556L);
+        sO2.setMoney("1.00");
+        sO2.setSoid(1234672L);
 
         List<ServiceBO>serviceBOS=new ArrayList<>();
        serviceBOS.add(serviceBO);
@@ -49,35 +49,35 @@ public class OrderModelImplTest extends BaseSpringTest{
         bo.setSenderId(999999990L);
         bo.setBuyRemark ("买家备注");
         SubOrderBO subOrderBO=new SubOrderBO();
-        subOrderBO.setSoid(1234654L);
+        subOrderBO.setSoid(1234671L);
         List<Long>soidps= new ArrayList<>();
-        soidps.add(25L);
-        soidps.add(24L);
-        soidps.add(23L);
+        soidps.add(30L);
+        soidps.add(31L);
+        soidps.add(32L);
         subOrderBO.setSoidps(soidps);
 
         subOrderBO.setNum(3);
-        subOrderBO.setGoodsId(165752L);
-        subOrderBO.setGoodsNo("140");
-        subOrderBO.setTitle("精品140 秋装新款大牌时尚休闲运动套装 黑底  W06-P275");
-        subOrderBO.setPicUrl("https://img.alicdn.com/bao/uploaded/i4/18874038534868392/T1_s5bFitcXXXXXXXX_!!0-item_pic.jpg");
-        subOrderBO.setMarketId(1087L);
-        subOrderBO.setMarketName("电商基地");
-        subOrderBO.setFloorId(1089L);
-        subOrderBO.setFloor("2F");
-        subOrderBO.setShopId(16887L);
-        subOrderBO.setShopNum("140");
-        subOrderBO.setColor("红色");
-        subOrderBO.setSize("XL");
-        subOrderBO.setSinglePay("275.00");
+        subOrderBO.setGoodsId(9311536L);
+        subOrderBO.setGoodsNo("C04");
+        subOrderBO.setTitle("2016秋季新款 青年男士韩版修身纯色长袖衬衫潮C04P30");
+        subOrderBO.setPicUrl("https://img.alicdn.com/bao/uploaded/i2/889300233/TB2jXldaXrB11BjSspjXXciYpXa_!!889300233.jpg");
+        subOrderBO.setMarketId(621L);
+        subOrderBO.setMarketName("四季星座网");
+        subOrderBO.setFloorId(630L);
+        subOrderBO.setFloor("9F");
+        subOrderBO.setShopId(40680L);
+        subOrderBO.setShopNum("900B");
+        subOrderBO.setColor("白色");
+        subOrderBO.setSize("4XL");
+        subOrderBO.setSinglePay("30.00");
         subOrderBO.setWebSite("hz");
 
 
 
 
         SubOrderBO s2=new SubOrderBO();
-        s2.setSoid(145556L);
-        s2.setNum (2);
+        s2.setSoid(1234672L);
+        s2.setNum (1);
         s2.setGoodsId(21076838L);
         s2.setGoodsNo("A268-JK121");
         s2.setTitle("秋季夹克韩版男士外套潮男装青少年牛仔夹克学生A268-JK121-P78");
@@ -96,8 +96,8 @@ public class OrderModelImplTest extends BaseSpringTest{
 
 
         List<Long>soidps1= new ArrayList<>();
-        soidps1.add(26L);
-        soidps1.add(27L);
+        soidps1.add(33L);
+
         s2.setSoidps(soidps1);
         s2.setWebSite("hz");
 
