@@ -1,19 +1,21 @@
+
 <!doctype html>
-<html>
+<html lang="zh-CN">
+<#include "/common/host_config.ftl">
 <head>
     <meta charset="utf-8" />
     <title>代发管理系统登录</title>
 
     <link href="http://static.571xz.com:86/hhh2016/??global.css" rel="stylesheet" />
-    <link href="fonts/iconfont.css" rel="stylesheet" />
-    <link href="css/login.css" rel="stylesheet" />
+    <link href="${daifa_host}fonts/iconfont.css" rel="stylesheet" />
+    <link href="${daifa_host}css/login.css" rel="stylesheet" />
 
 
     <script type="text/javascript" src="http://hz.571xz.com/jquery2015/js2015index/jquery.min.js"></script>
 </head>
 <body>
 <div class="qjbg">
-    <form action="init/login.htm" method="post">
+    <form action="${daifa_host}init/login.htm" method="post">
     <div class="login_wk">
         <div class="login_nk">
             <div class="logoTop c_hidden">
@@ -45,8 +47,8 @@
     </div>
     </form>
 </div>
-<script type="text/javascript" src="js/login.js"></script>
-<script src="js/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="${daifa_host}js/login.js"></script>
+
 <script>
     var username_key='admin_user_name';
     var pass_key='admin_pwd';
