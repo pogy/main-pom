@@ -1,575 +1,302 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.OrderConstant;
 
-public class OrderConstantExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class OrderConstantExample extends SgExample<OrderConstantExample.Criteria> {
+    public static final Class<OrderConstant> beanClass = OrderConstant.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn senderId;
+    public static EntityColumn name;
+    public static EntityColumn context;
+    public static EntityColumn id;
+    public static EntityColumn type;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        senderId = listMap.get("senderId");
+        name = listMap.get("name");
+        context = listMap.get("context");
+        id = listMap.get("id");
+        type = listMap.get("type");
+        }
 
     public OrderConstantExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected OrderConstantExample.Criteria createCriteriaInternal() {
+        return new OrderConstantExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
+        public OrderConstantExample.Criteria andSenderIdIsNull() {
+            return isNull(senderId);
         }
 
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public Criteria andNameIsNull() {
-            this.addCriterion("name is null");
-            return (Criteria)this;
-        }
-
-        public Criteria andNameIsNotNull() {
-            this.addCriterion("name is not null");
-            return (Criteria)this;
-        }
-
-        public Criteria andNameEqualTo(String value) {
-            this.addCriterion("name =", value, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdIsNotNull() {
+            return isNotNull(senderId);
         }
 
-        public Criteria andNameNotEqualTo(String value) {
-            this.addCriterion("name <>", value, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdEqualTo(Long value) {
+            return equalTo(senderId, value);
         }
 
-        public Criteria andNameGreaterThan(String value) {
-            this.addCriterion("name >", value, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdNotEqualTo(Long value) {
+            return notEqualTo(senderId, value);
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("name >=", value, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdGreaterThan(Long value) {
+            return greaterThan(senderId, value);
         }
 
-        public Criteria andNameLessThan(String value) {
-            this.addCriterion("name <", value, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(senderId, value);
         }
 
-        public Criteria andNameLessThanOrEqualTo(String value) {
-            this.addCriterion("name <=", value, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdLessThan(Long value) {
+            return lessThan(senderId, value);
         }
 
-        public Criteria andNameLike(String value) {
-            this.addCriterion("name like", value, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(senderId, value);
         }
 
-        public Criteria andNameNotLike(String value) {
-            this.addCriterion("name not like", value, "name");
-            return (Criteria)this;
-        }        public Criteria andNameIn(List<String> values) {
-            this.addCriterion("name in", values, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdIn(List<Long> values) {
+            return in(senderId, values);
         }
 
-        public Criteria andNameNotIn(List<String> values) {
-            this.addCriterion("name not in", values, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdNotIn(List<Long> values) {
+            return notIn(senderId, values);
         }
 
-        public Criteria andNameBetween(String value1, String value2) {
-            this.addCriterion("name between", value1, value2, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdBetween(Long value1, Long value2) {
+            return between(senderId, value1, value2);
         }
 
-        public Criteria andNameNotBetween(String value1, String value2) {
-            this.addCriterion("name not between", value1, value2, "name");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andSenderIdNotBetween(Long value1, Long value2) {
+            return notBetween(senderId, value1, value2);
         }
-
-        public Criteria andContextIsNull() {
-            this.addCriterion("context is null");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameIsNull() {
+            return isNull(name);
         }
 
-        public Criteria andContextIsNotNull() {
-            this.addCriterion("context is not null");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameIsNotNull() {
+            return isNotNull(name);
         }
 
-        public Criteria andContextEqualTo(String value) {
-            this.addCriterion("context =", value, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameEqualTo(String value) {
+            return equalTo(name, value);
         }
 
-        public Criteria andContextNotEqualTo(String value) {
-            this.addCriterion("context <>", value, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameNotEqualTo(String value) {
+            return notEqualTo(name, value);
         }
 
-        public Criteria andContextGreaterThan(String value) {
-            this.addCriterion("context >", value, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameGreaterThan(String value) {
+            return greaterThan(name, value);
         }
 
-        public Criteria andContextGreaterThanOrEqualTo(String value) {
-            this.addCriterion("context >=", value, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(name, value);
         }
 
-        public Criteria andContextLessThan(String value) {
-            this.addCriterion("context <", value, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameLessThan(String value) {
+            return lessThan(name, value);
         }
 
-        public Criteria andContextLessThanOrEqualTo(String value) {
-            this.addCriterion("context <=", value, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(name, value);
         }
 
-        public Criteria andContextLike(String value) {
-            this.addCriterion("context like", value, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameLike(String value) {
+            return like(name, value);
         }
 
-        public Criteria andContextNotLike(String value) {
-            this.addCriterion("context not like", value, "context");
-            return (Criteria)this;
-        }        public Criteria andContextIn(List<String> values) {
-            this.addCriterion("context in", values, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameNotLike(String value) {
+            return notLike(name, value);
         }
 
-        public Criteria andContextNotIn(List<String> values) {
-            this.addCriterion("context not in", values, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameIn(List<String> values) {
+            return in(name, values);
         }
 
-        public Criteria andContextBetween(String value1, String value2) {
-            this.addCriterion("context between", value1, value2, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameNotIn(List<String> values) {
+            return notIn(name, values);
         }
 
-        public Criteria andContextNotBetween(String value1, String value2) {
-            this.addCriterion("context not between", value1, value2, "context");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameBetween(String value1, String value2) {
+            return between(name, value1, value2);
         }
 
-        public Criteria andIdIsNull() {
-            this.addCriterion("id is null");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andNameNotBetween(String value1, String value2) {
+            return notBetween(name, value1, value2);
         }
-
-        public Criteria andIdIsNotNull() {
-            this.addCriterion("id is not null");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextIsNull() {
+            return isNull(context);
         }
 
-        public Criteria andIdEqualTo(Long value) {
-            this.addCriterion("id =", value, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextIsNotNull() {
+            return isNotNull(context);
         }
 
-        public Criteria andIdNotEqualTo(Long value) {
-            this.addCriterion("id <>", value, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextEqualTo(String value) {
+            return equalTo(context, value);
         }
 
-        public Criteria andIdGreaterThan(Long value) {
-            this.addCriterion("id >", value, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextNotEqualTo(String value) {
+            return notEqualTo(context, value);
         }
 
-        public Criteria andIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("id >=", value, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextGreaterThan(String value) {
+            return greaterThan(context, value);
         }
 
-        public Criteria andIdLessThan(Long value) {
-            this.addCriterion("id <", value, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(context, value);
         }
 
-        public Criteria andIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("id <=", value, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextLessThan(String value) {
+            return lessThan(context, value);
         }
 
-        public Criteria andIdLike(String value) {
-            this.addCriterion("id like", value, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(context, value);
         }
 
-        public Criteria andIdNotLike(String value) {
-            this.addCriterion("id not like", value, "id");
-            return (Criteria)this;
-        }        public Criteria andIdIn(List<Long> values) {
-            this.addCriterion("id in", values, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextLike(String value) {
+            return like(context, value);
         }
 
-        public Criteria andIdNotIn(List<Long> values) {
-            this.addCriterion("id not in", values, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextNotLike(String value) {
+            return notLike(context, value);
         }
 
-        public Criteria andIdBetween(Long value1, Long value2) {
-            this.addCriterion("id between", value1, value2, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextIn(List<String> values) {
+            return in(context, values);
         }
 
-        public Criteria andIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("id not between", value1, value2, "id");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextNotIn(List<String> values) {
+            return notIn(context, values);
         }
 
-        public Criteria andTypeIsNull() {
-            this.addCriterion("type is null");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextBetween(String value1, String value2) {
+            return between(context, value1, value2);
         }
 
-        public Criteria andTypeIsNotNull() {
-            this.addCriterion("type is not null");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andContextNotBetween(String value1, String value2) {
+            return notBetween(context, value1, value2);
         }
-
-        public Criteria andTypeEqualTo(Integer value) {
-            this.addCriterion("type =", value, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdIsNull() {
+            return isNull(id);
         }
 
-        public Criteria andTypeNotEqualTo(Integer value) {
-            this.addCriterion("type <>", value, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdIsNotNull() {
+            return isNotNull(id);
         }
 
-        public Criteria andTypeGreaterThan(Integer value) {
-            this.addCriterion("type >", value, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdEqualTo(Long value) {
+            return equalTo(id, value);
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("type >=", value, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdNotEqualTo(Long value) {
+            return notEqualTo(id, value);
         }
 
-        public Criteria andTypeLessThan(Integer value) {
-            this.addCriterion("type <", value, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdGreaterThan(Long value) {
+            return greaterThan(id, value);
         }
 
-        public Criteria andTypeLessThanOrEqualTo(Integer value) {
-            this.addCriterion("type <=", value, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(id, value);
         }
 
-        public Criteria andTypeLike(String value) {
-            this.addCriterion("type like", value, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdLessThan(Long value) {
+            return lessThan(id, value);
         }
 
-        public Criteria andTypeNotLike(String value) {
-            this.addCriterion("type not like", value, "type");
-            return (Criteria)this;
-        }        public Criteria andTypeIn(List<Integer> values) {
-            this.addCriterion("type in", values, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(id, value);
         }
 
-        public Criteria andTypeNotIn(List<Integer> values) {
-            this.addCriterion("type not in", values, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdIn(List<Long> values) {
+            return in(id, values);
         }
 
-        public Criteria andTypeBetween(Integer value1, Integer value2) {
-            this.addCriterion("type between", value1, value2, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdNotIn(List<Long> values) {
+            return notIn(id, values);
         }
 
-        public Criteria andTypeNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("type not between", value1, value2, "type");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdBetween(Long value1, Long value2) {
+            return between(id, value1, value2);
         }
 
-        public Criteria andSenderIdIsNull() {
-            this.addCriterion("sender_id is null");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andIdNotBetween(Long value1, Long value2) {
+            return notBetween(id, value1, value2);
         }
-
-        public Criteria andSenderIdIsNotNull() {
-            this.addCriterion("sender_id is not null");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeIsNull() {
+            return isNull(type);
         }
 
-        public Criteria andSenderIdEqualTo(Long value) {
-            this.addCriterion("sender_id =", value, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeIsNotNull() {
+            return isNotNull(type);
         }
 
-        public Criteria andSenderIdNotEqualTo(Long value) {
-            this.addCriterion("sender_id <>", value, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeEqualTo(Integer value) {
+            return equalTo(type, value);
         }
 
-        public Criteria andSenderIdGreaterThan(Long value) {
-            this.addCriterion("sender_id >", value, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeNotEqualTo(Integer value) {
+            return notEqualTo(type, value);
         }
 
-        public Criteria andSenderIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("sender_id >=", value, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeGreaterThan(Integer value) {
+            return greaterThan(type, value);
         }
 
-        public Criteria andSenderIdLessThan(Long value) {
-            this.addCriterion("sender_id <", value, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(type, value);
         }
 
-        public Criteria andSenderIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("sender_id <=", value, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeLessThan(Integer value) {
+            return lessThan(type, value);
         }
 
-        public Criteria andSenderIdLike(String value) {
-            this.addCriterion("sender_id like", value, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(type, value);
         }
 
-        public Criteria andSenderIdNotLike(String value) {
-            this.addCriterion("sender_id not like", value, "senderId");
-            return (Criteria)this;
-        }        public Criteria andSenderIdIn(List<Long> values) {
-            this.addCriterion("sender_id in", values, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeIn(List<Integer> values) {
+            return in(type, values);
         }
 
-        public Criteria andSenderIdNotIn(List<Long> values) {
-            this.addCriterion("sender_id not in", values, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeNotIn(List<Integer> values) {
+            return notIn(type, values);
         }
 
-        public Criteria andSenderIdBetween(Long value1, Long value2) {
-            this.addCriterion("sender_id between", value1, value2, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeBetween(Integer value1, Integer value2) {
+            return between(type, value1, value2);
         }
 
-        public Criteria andSenderIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("sender_id not between", value1, value2, "senderId");
-            return (Criteria)this;
+        public OrderConstantExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(type, value1, value2);
         }
     }
 }

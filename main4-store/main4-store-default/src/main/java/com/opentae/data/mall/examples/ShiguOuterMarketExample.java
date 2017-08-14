@@ -1,643 +1,416 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ShiguOuterMarket;
 
-public class ShiguOuterMarketExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<ShiguOuterMarketExample.Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class ShiguOuterMarketExample extends SgExample<ShiguOuterMarketExample.Criteria> {
+    public static final Class<ShiguOuterMarket> beanClass = ShiguOuterMarket.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn webSite;
+    public static EntityColumn marketName;
+    public static EntityColumn pointMarketName;
+    public static EntityColumn outerFloorIds;
+    public static EntityColumn sortOrder;
+    public static EntityColumn ruleId;
+    public static EntityColumn marketId;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        webSite = listMap.get("webSite");
+        marketName = listMap.get("marketName");
+        pointMarketName = listMap.get("pointMarketName");
+        outerFloorIds = listMap.get("outerFloorIds");
+        sortOrder = listMap.get("sortOrder");
+        ruleId = listMap.get("ruleId");
+        marketId = listMap.get("marketId");
+        }
 
     public ShiguOuterMarketExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<ShiguOuterMarketExample.Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(ShiguOuterMarketExample.Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public ShiguOuterMarketExample.Criteria or() {
-        ShiguOuterMarketExample.Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public ShiguOuterMarketExample.Criteria createCriteria() {
-        ShiguOuterMarketExample.Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
+    @Override
     protected ShiguOuterMarketExample.Criteria createCriteriaInternal() {
-        ShiguOuterMarketExample.Criteria criteria = new ShiguOuterMarketExample.Criteria();
-        return criteria;
+        return new ShiguOuterMarketExample.Criteria(this);
     }
 
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends ShiguOuterMarketExample.GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<ShiguOuterMarketExample.Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<ShiguOuterMarketExample.Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<ShiguOuterMarketExample.Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new ShiguOuterMarketExample.Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new ShiguOuterMarketExample.Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new ShiguOuterMarketExample.Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdIsNull() {
-            this.addCriterion("rule_id is null");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdIsNotNull() {
-            this.addCriterion("rule_id is not null");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdEqualTo(Long value) {
-            this.addCriterion("rule_id =", value, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdNotEqualTo(Long value) {
-            this.addCriterion("rule_id <>", value, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdGreaterThan(Long value) {
-            this.addCriterion("rule_id >", value, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("rule_id >=", value, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdLessThan(Long value) {
-            this.addCriterion("rule_id <", value, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("rule_id <=", value, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdLike(String value) {
-            this.addCriterion("rule_id like", value, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdNotLike(String value) {
-            this.addCriterion("rule_id not like", value, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }        public ShiguOuterMarketExample.Criteria andRuleIdIn(List<Long> values) {
-            this.addCriterion("rule_id in", values, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdNotIn(List<Long> values) {
-            this.addCriterion("rule_id not in", values, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdBetween(Long value1, Long value2) {
-            this.addCriterion("rule_id between", value1, value2, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andRuleIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("rule_id not between", value1, value2, "ruleId");
-            return (ShiguOuterMarketExample.Criteria)this;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteIsNull() {
-            this.addCriterion("web_site is null");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return isNull(webSite);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteIsNotNull() {
-            this.addCriterion("web_site is not null");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return isNotNull(webSite);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteEqualTo(String value) {
-            this.addCriterion("web_site =", value, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return equalTo(webSite, value);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteNotEqualTo(String value) {
-            this.addCriterion("web_site <>", value, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notEqualTo(webSite, value);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteGreaterThan(String value) {
-            this.addCriterion("web_site >", value, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return greaterThan(webSite, value);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
-            this.addCriterion("web_site >=", value, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return greaterThanOrEqualTo(webSite, value);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteLessThan(String value) {
-            this.addCriterion("web_site <", value, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return lessThan(webSite, value);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
-            this.addCriterion("web_site <=", value, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return lessThanOrEqualTo(webSite, value);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteLike(String value) {
-            this.addCriterion("web_site like", value, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return like(webSite, value);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteNotLike(String value) {
-            this.addCriterion("web_site not like", value, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }        public ShiguOuterMarketExample.Criteria andWebSiteIn(List<String> values) {
-            this.addCriterion("web_site in", values, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notLike(webSite, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andWebSiteIn(List<String> values) {
+            return in(webSite, values);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteNotIn(List<String> values) {
-            this.addCriterion("web_site not in", values, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notIn(webSite, values);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteBetween(String value1, String value2) {
-            this.addCriterion("web_site between", value1, value2, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return between(webSite, value1, value2);
         }
 
         public ShiguOuterMarketExample.Criteria andWebSiteNotBetween(String value1, String value2) {
-            this.addCriterion("web_site not between", value1, value2, "webSite");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notBetween(webSite, value1, value2);
         }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdIsNull() {
-            this.addCriterion("market_id is null");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdIsNotNull() {
-            this.addCriterion("market_id is not null");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdEqualTo(Long value) {
-            this.addCriterion("market_id =", value, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdNotEqualTo(Long value) {
-            this.addCriterion("market_id <>", value, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdGreaterThan(Long value) {
-            this.addCriterion("market_id >", value, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("market_id >=", value, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdLessThan(Long value) {
-            this.addCriterion("market_id <", value, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("market_id <=", value, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdLike(String value) {
-            this.addCriterion("market_id like", value, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdNotLike(String value) {
-            this.addCriterion("market_id not like", value, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }        public ShiguOuterMarketExample.Criteria andMarketIdIn(List<Long> values) {
-            this.addCriterion("market_id in", values, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdNotIn(List<Long> values) {
-            this.addCriterion("market_id not in", values, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdBetween(Long value1, Long value2) {
-            this.addCriterion("market_id between", value1, value2, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andMarketIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("market_id not between", value1, value2, "marketId");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderIsNull() {
-            this.addCriterion("sort_order is null");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderIsNotNull() {
-            this.addCriterion("sort_order is not null");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderEqualTo(int value) {
-            this.addCriterion("sort_order =", value, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderNotEqualTo(int value) {
-            this.addCriterion("sort_order <>", value, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderGreaterThan(int value) {
-            this.addCriterion("sort_order >", value, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderGreaterThanOrEqualTo(int value) {
-            this.addCriterion("sort_order >=", value, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderLessThan(int value) {
-            this.addCriterion("sort_order <", value, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderLessThanOrEqualTo(int value) {
-            this.addCriterion("sort_order <=", value, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderLike(String value) {
-            this.addCriterion("sort_order like", value, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderNotLike(String value) {
-            this.addCriterion("sort_order not like", value, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }        public ShiguOuterMarketExample.Criteria andSortOrderIn(List<Integer> values) {
-            this.addCriterion("sort_order in", values, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderNotIn(List<Integer> values) {
-            this.addCriterion("sort_order not in", values, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderBetween(int value1, int value2) {
-            this.addCriterion("sort_order between", value1, value2, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
-        public ShiguOuterMarketExample.Criteria andSortOrderNotBetween(int value1, int value2) {
-            this.addCriterion("sort_order not between", value1, value2, "sortOrder");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }
-
         public ShiguOuterMarketExample.Criteria andMarketNameIsNull() {
-            this.addCriterion("market_name is null");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return isNull(marketName);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameIsNotNull() {
-            this.addCriterion("market_name is not null");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return isNotNull(marketName);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameEqualTo(String value) {
-            this.addCriterion("market_name =", value, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return equalTo(marketName, value);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameNotEqualTo(String value) {
-            this.addCriterion("market_name <>", value, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notEqualTo(marketName, value);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameGreaterThan(String value) {
-            this.addCriterion("market_name >", value, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return greaterThan(marketName, value);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("market_name >=", value, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return greaterThanOrEqualTo(marketName, value);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameLessThan(String value) {
-            this.addCriterion("market_name <", value, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return lessThan(marketName, value);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameLessThanOrEqualTo(String value) {
-            this.addCriterion("market_name <=", value, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return lessThanOrEqualTo(marketName, value);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameLike(String value) {
-            this.addCriterion("market_name like", value, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return like(marketName, value);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameNotLike(String value) {
-            this.addCriterion("market_name not like", value, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }        public ShiguOuterMarketExample.Criteria andMarketNameIn(List<String> values) {
-            this.addCriterion("market_name in", values, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notLike(marketName, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketNameIn(List<String> values) {
+            return in(marketName, values);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameNotIn(List<String> values) {
-            this.addCriterion("market_name not in", values, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notIn(marketName, values);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameBetween(String value1, String value2) {
-            this.addCriterion("market_name between", value1, value2, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return between(marketName, value1, value2);
         }
 
         public ShiguOuterMarketExample.Criteria andMarketNameNotBetween(String value1, String value2) {
-            this.addCriterion("market_name not between", value1, value2, "marketName");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notBetween(marketName, value1, value2);
+        }
+        public ShiguOuterMarketExample.Criteria andPointMarketNameIsNull() {
+            return isNull(pointMarketName);
         }
 
+        public ShiguOuterMarketExample.Criteria andPointMarketNameIsNotNull() {
+            return isNotNull(pointMarketName);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameEqualTo(String value) {
+            return equalTo(pointMarketName, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameNotEqualTo(String value) {
+            return notEqualTo(pointMarketName, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameGreaterThan(String value) {
+            return greaterThan(pointMarketName, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(pointMarketName, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameLessThan(String value) {
+            return lessThan(pointMarketName, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(pointMarketName, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameLike(String value) {
+            return like(pointMarketName, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameNotLike(String value) {
+            return notLike(pointMarketName, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameIn(List<String> values) {
+            return in(pointMarketName, values);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameNotIn(List<String> values) {
+            return notIn(pointMarketName, values);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameBetween(String value1, String value2) {
+            return between(pointMarketName, value1, value2);
+        }
+
+        public ShiguOuterMarketExample.Criteria andPointMarketNameNotBetween(String value1, String value2) {
+            return notBetween(pointMarketName, value1, value2);
+        }
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsIsNull() {
-            this.addCriterion("outer_floor_ids is null");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return isNull(outerFloorIds);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsIsNotNull() {
-            this.addCriterion("outer_floor_ids is not null");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return isNotNull(outerFloorIds);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsEqualTo(String value) {
-            this.addCriterion("outer_floor_ids =", value, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return equalTo(outerFloorIds, value);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsNotEqualTo(String value) {
-            this.addCriterion("outer_floor_ids <>", value, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notEqualTo(outerFloorIds, value);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsGreaterThan(String value) {
-            this.addCriterion("outer_floor_ids >", value, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return greaterThan(outerFloorIds, value);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsGreaterThanOrEqualTo(String value) {
-            this.addCriterion("outer_floor_ids >=", value, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return greaterThanOrEqualTo(outerFloorIds, value);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsLessThan(String value) {
-            this.addCriterion("outer_floor_ids <", value, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return lessThan(outerFloorIds, value);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsLessThanOrEqualTo(String value) {
-            this.addCriterion("outer_floor_ids <=", value, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return lessThanOrEqualTo(outerFloorIds, value);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsLike(String value) {
-            this.addCriterion("outer_floor_ids like", value, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return like(outerFloorIds, value);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsNotLike(String value) {
-            this.addCriterion("outer_floor_ids not like", value, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
-        }        public ShiguOuterMarketExample.Criteria andOuterFloorIdsIn(List<String> values) {
-            this.addCriterion("outer_floor_ids in", values, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notLike(outerFloorIds, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andOuterFloorIdsIn(List<String> values) {
+            return in(outerFloorIds, values);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsNotIn(List<String> values) {
-            this.addCriterion("outer_floor_ids not in", values, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notIn(outerFloorIds, values);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsBetween(String value1, String value2) {
-            this.addCriterion("outer_floor_ids between", value1, value2, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return between(outerFloorIds, value1, value2);
         }
 
         public ShiguOuterMarketExample.Criteria andOuterFloorIdsNotBetween(String value1, String value2) {
-            this.addCriterion("outer_floor_ids not between", value1, value2, "outerFloorIds");
-            return (ShiguOuterMarketExample.Criteria)this;
+            return notBetween(outerFloorIds, value1, value2);
+        }
+        public ShiguOuterMarketExample.Criteria andSortOrderIsNull() {
+            return isNull(sortOrder);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderIsNotNull() {
+            return isNotNull(sortOrder);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderEqualTo(Integer value) {
+            return equalTo(sortOrder, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderNotEqualTo(Integer value) {
+            return notEqualTo(sortOrder, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderGreaterThan(Integer value) {
+            return greaterThan(sortOrder, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(sortOrder, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderLessThan(Integer value) {
+            return lessThan(sortOrder, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(sortOrder, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderIn(List<Integer> values) {
+            return in(sortOrder, values);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderNotIn(List<Integer> values) {
+            return notIn(sortOrder, values);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderBetween(Integer value1, Integer value2) {
+            return between(sortOrder, value1, value2);
+        }
+
+        public ShiguOuterMarketExample.Criteria andSortOrderNotBetween(Integer value1, Integer value2) {
+            return notBetween(sortOrder, value1, value2);
+        }
+        public ShiguOuterMarketExample.Criteria andRuleIdIsNull() {
+            return isNull(ruleId);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdIsNotNull() {
+            return isNotNull(ruleId);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdEqualTo(Long value) {
+            return equalTo(ruleId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdNotEqualTo(Long value) {
+            return notEqualTo(ruleId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdGreaterThan(Long value) {
+            return greaterThan(ruleId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(ruleId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdLessThan(Long value) {
+            return lessThan(ruleId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(ruleId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdIn(List<Long> values) {
+            return in(ruleId, values);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdNotIn(List<Long> values) {
+            return notIn(ruleId, values);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdBetween(Long value1, Long value2) {
+            return between(ruleId, value1, value2);
+        }
+
+        public ShiguOuterMarketExample.Criteria andRuleIdNotBetween(Long value1, Long value2) {
+            return notBetween(ruleId, value1, value2);
+        }
+        public ShiguOuterMarketExample.Criteria andMarketIdIsNull() {
+            return isNull(marketId);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdIsNotNull() {
+            return isNotNull(marketId);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdEqualTo(Long value) {
+            return equalTo(marketId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdNotEqualTo(Long value) {
+            return notEqualTo(marketId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdGreaterThan(Long value) {
+            return greaterThan(marketId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(marketId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdLessThan(Long value) {
+            return lessThan(marketId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(marketId, value);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdIn(List<Long> values) {
+            return in(marketId, values);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdNotIn(List<Long> values) {
+            return notIn(marketId, values);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdBetween(Long value1, Long value2) {
+            return between(marketId, value1, value2);
+        }
+
+        public ShiguOuterMarketExample.Criteria andMarketIdNotBetween(Long value1, Long value2) {
+            return notBetween(marketId, value1, value2);
         }
     }
 }

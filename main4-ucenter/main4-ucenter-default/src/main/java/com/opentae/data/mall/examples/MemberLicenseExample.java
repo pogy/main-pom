@@ -1,575 +1,294 @@
 package com.opentae.data.mall.examples;
 
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.MemberLicense;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MemberLicenseExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class MemberLicenseExample extends SgExample<MemberLicenseExample.Criteria> {
+    public static final Class<MemberLicense> beanClass = MemberLicense.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn userLicenseId;
+    public static EntityColumn licenseType;
+    public static EntityColumn context;
+    public static EntityColumn userId;
+    public static EntityColumn licenseFailure;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        userLicenseId = listMap.get("userLicenseId");
+        licenseType = listMap.get("licenseType");
+        context = listMap.get("context");
+        userId = listMap.get("userId");
+        licenseFailure = listMap.get("licenseFailure");
+        }
 
     public MemberLicenseExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected MemberLicenseExample.Criteria createCriteriaInternal() {
+        return new MemberLicenseExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<Criterion> getCriteria() {
-            return this.criteria;
+        public MemberLicenseExample.Criteria andUserLicenseIdIsNull() {
+            return isNull(userLicenseId);
         }
 
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
+        public MemberLicenseExample.Criteria andUserLicenseIdIsNotNull() {
+            return isNotNull(userLicenseId);
         }
 
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
+        public MemberLicenseExample.Criteria andUserLicenseIdEqualTo(Long value) {
+            return equalTo(userLicenseId, value);
         }
 
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
+        public MemberLicenseExample.Criteria andUserLicenseIdNotEqualTo(Long value) {
+            return notEqualTo(userLicenseId, value);
         }
 
-        public Criteria andUserLicenseIdIsNull() {
-            this.addCriterion("user_license_id is null");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserLicenseIdGreaterThan(Long value) {
+            return greaterThan(userLicenseId, value);
         }
 
-        public Criteria andUserLicenseIdIsNotNull() {
-            this.addCriterion("user_license_id is not null");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserLicenseIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(userLicenseId, value);
         }
 
-        public Criteria andUserLicenseIdEqualTo(Long value) {
-            this.addCriterion("user_license_id =", value, "userLicenseId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserLicenseIdLessThan(Long value) {
+            return lessThan(userLicenseId, value);
         }
 
-        public Criteria andUserLicenseIdNotEqualTo(Long value) {
-            this.addCriterion("user_license_id <>", value, "userLicenseId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserLicenseIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(userLicenseId, value);
         }
 
-        public Criteria andUserLicenseIdGreaterThan(Long value) {
-            this.addCriterion("user_license_id >", value, "userLicenseId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserLicenseIdIn(List<Long> values) {
+            return in(userLicenseId, values);
         }
 
-        public Criteria andUserLicenseIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("user_license_id >=", value, "userLicenseId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserLicenseIdNotIn(List<Long> values) {
+            return notIn(userLicenseId, values);
         }
 
-        public Criteria andUserLicenseIdLessThan(Long value) {
-            this.addCriterion("user_license_id <", value, "userLicenseId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserLicenseIdBetween(Long value1, Long value2) {
+            return between(userLicenseId, value1, value2);
         }
 
-        public Criteria andUserLicenseIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("user_license_id <=", value, "userLicenseId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserLicenseIdNotBetween(Long value1, Long value2) {
+            return notBetween(userLicenseId, value1, value2);
         }
-
-        public Criteria andUserLicenseIdLike(String value) {
-            this.addCriterion("user_license_id like", value, "userLicenseId");
-            return (Criteria)this;
-        }
-
-        public Criteria andUserLicenseIdNotLike(String value) {
-            this.addCriterion("user_license_id not like", value, "userLicenseId");
-            return (Criteria)this;
-        }        public Criteria andUserLicenseIdIn(List<Long> values) {
-            this.addCriterion("user_license_id in", values, "userLicenseId");
-            return (Criteria)this;
-        }
-
-        public Criteria andUserLicenseIdNotIn(List<Long> values) {
-            this.addCriterion("user_license_id not in", values, "userLicenseId");
-            return (Criteria)this;
-        }
-
-        public Criteria andUserLicenseIdBetween(Long value1, Long value2) {
-            this.addCriterion("user_license_id between", value1, value2, "userLicenseId");
-            return (Criteria)this;
-        }
-
-        public Criteria andUserLicenseIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("user_license_id not between", value1, value2, "userLicenseId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeIsNull() {
+            return isNull(licenseType);
         }
 
-        public Criteria andUserIdIsNull() {
-            this.addCriterion("user_id is null");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeIsNotNull() {
+            return isNotNull(licenseType);
         }
 
-        public Criteria andUserIdIsNotNull() {
-            this.addCriterion("user_id is not null");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeEqualTo(Integer value) {
+            return equalTo(licenseType, value);
         }
 
-        public Criteria andUserIdEqualTo(Long value) {
-            this.addCriterion("user_id =", value, "userId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeNotEqualTo(Integer value) {
+            return notEqualTo(licenseType, value);
         }
 
-        public Criteria andUserIdNotEqualTo(Long value) {
-            this.addCriterion("user_id <>", value, "userId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeGreaterThan(Integer value) {
+            return greaterThan(licenseType, value);
         }
 
-        public Criteria andUserIdGreaterThan(Long value) {
-            this.addCriterion("user_id >", value, "userId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(licenseType, value);
         }
 
-        public Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("user_id >=", value, "userId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeLessThan(Integer value) {
+            return lessThan(licenseType, value);
         }
 
-        public Criteria andUserIdLessThan(Long value) {
-            this.addCriterion("user_id <", value, "userId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(licenseType, value);
         }
 
-        public Criteria andUserIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("user_id <=", value, "userId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeIn(List<Integer> values) {
+            return in(licenseType, values);
         }
 
-        public Criteria andUserIdLike(String value) {
-            this.addCriterion("user_id like", value, "userId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeNotIn(List<Integer> values) {
+            return notIn(licenseType, values);
         }
 
-        public Criteria andUserIdNotLike(String value) {
-            this.addCriterion("user_id not like", value, "userId");
-            return (Criteria)this;
-        }        public Criteria andUserIdIn(List<Long> values) {
-            this.addCriterion("user_id in", values, "userId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeBetween(Integer value1, Integer value2) {
+            return between(licenseType, value1, value2);
         }
 
-        public Criteria andUserIdNotIn(List<Long> values) {
-            this.addCriterion("user_id not in", values, "userId");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseTypeNotBetween(Integer value1, Integer value2) {
+            return notBetween(licenseType, value1, value2);
         }
-
-        public Criteria andUserIdBetween(Long value1, Long value2) {
-            this.addCriterion("user_id between", value1, value2, "userId");
-            return (Criteria)this;
-        }
-
-        public Criteria andUserIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("user_id not between", value1, value2, "userId");
-            return (Criteria)this;
-        }
-
-        public Criteria andLicenseTypeIsNull() {
-            this.addCriterion("license_type is null");
-            return (Criteria)this;
-        }
-
-        public Criteria andLicenseTypeIsNotNull() {
-            this.addCriterion("license_type is not null");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextIsNull() {
+            return isNull(context);
         }
 
-        public Criteria andLicenseTypeEqualTo(Integer value) {
-            this.addCriterion("license_type =", value, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextIsNotNull() {
+            return isNotNull(context);
         }
 
-        public Criteria andLicenseTypeNotEqualTo(Integer value) {
-            this.addCriterion("license_type <>", value, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextEqualTo(String value) {
+            return equalTo(context, value);
         }
 
-        public Criteria andLicenseTypeGreaterThan(Integer value) {
-            this.addCriterion("license_type >", value, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextNotEqualTo(String value) {
+            return notEqualTo(context, value);
         }
 
-        public Criteria andLicenseTypeGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("license_type >=", value, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextGreaterThan(String value) {
+            return greaterThan(context, value);
         }
 
-        public Criteria andLicenseTypeLessThan(Integer value) {
-            this.addCriterion("license_type <", value, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(context, value);
         }
 
-        public Criteria andLicenseTypeLessThanOrEqualTo(Integer value) {
-            this.addCriterion("license_type <=", value, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextLessThan(String value) {
+            return lessThan(context, value);
         }
 
-        public Criteria andLicenseTypeLike(String value) {
-            this.addCriterion("license_type like", value, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(context, value);
         }
 
-        public Criteria andLicenseTypeNotLike(String value) {
-            this.addCriterion("license_type not like", value, "licenseType");
-            return (Criteria)this;
-        }        public Criteria andLicenseTypeIn(List<Integer> values) {
-            this.addCriterion("license_type in", values, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextLike(String value) {
+            return like(context, value);
         }
 
-        public Criteria andLicenseTypeNotIn(List<Integer> values) {
-            this.addCriterion("license_type not in", values, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextNotLike(String value) {
+            return notLike(context, value);
         }
 
-        public Criteria andLicenseTypeBetween(Integer value1, Integer value2) {
-            this.addCriterion("license_type between", value1, value2, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextIn(List<String> values) {
+            return in(context, values);
         }
 
-        public Criteria andLicenseTypeNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("license_type not between", value1, value2, "licenseType");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextNotIn(List<String> values) {
+            return notIn(context, values);
         }
 
-        public Criteria andContextIsNull() {
-            this.addCriterion("context is null");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextBetween(String value1, String value2) {
+            return between(context, value1, value2);
         }
 
-        public Criteria andContextIsNotNull() {
-            this.addCriterion("context is not null");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andContextNotBetween(String value1, String value2) {
+            return notBetween(context, value1, value2);
         }
-
-        public Criteria andContextEqualTo(String value) {
-            this.addCriterion("context =", value, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdIsNull() {
+            return isNull(userId);
         }
 
-        public Criteria andContextNotEqualTo(String value) {
-            this.addCriterion("context <>", value, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdIsNotNull() {
+            return isNotNull(userId);
         }
 
-        public Criteria andContextGreaterThan(String value) {
-            this.addCriterion("context >", value, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdEqualTo(Long value) {
+            return equalTo(userId, value);
         }
 
-        public Criteria andContextGreaterThanOrEqualTo(String value) {
-            this.addCriterion("context >=", value, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdNotEqualTo(Long value) {
+            return notEqualTo(userId, value);
         }
 
-        public Criteria andContextLessThan(String value) {
-            this.addCriterion("context <", value, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdGreaterThan(Long value) {
+            return greaterThan(userId, value);
         }
 
-        public Criteria andContextLessThanOrEqualTo(String value) {
-            this.addCriterion("context <=", value, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(userId, value);
         }
 
-        public Criteria andContextLike(String value) {
-            this.addCriterion("context like", value, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdLessThan(Long value) {
+            return lessThan(userId, value);
         }
 
-        public Criteria andContextNotLike(String value) {
-            this.addCriterion("context not like", value, "context");
-            return (Criteria)this;
-        }        public Criteria andContextIn(List<String> values) {
-            this.addCriterion("context in", values, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(userId, value);
         }
 
-        public Criteria andContextNotIn(List<String> values) {
-            this.addCriterion("context not in", values, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdIn(List<Long> values) {
+            return in(userId, values);
         }
 
-        public Criteria andContextBetween(String value1, String value2) {
-            this.addCriterion("context between", value1, value2, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdNotIn(List<Long> values) {
+            return notIn(userId, values);
         }
 
-        public Criteria andContextNotBetween(String value1, String value2) {
-            this.addCriterion("context not between", value1, value2, "context");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdBetween(Long value1, Long value2) {
+            return between(userId, value1, value2);
         }
 
-        public Criteria andLicenseFailureIsNull() {
-            this.addCriterion("license_failure is null");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(userId, value1, value2);
         }
-
-        public Criteria andLicenseFailureIsNotNull() {
-            this.addCriterion("license_failure is not null");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureIsNull() {
+            return isNull(licenseFailure);
         }
 
-        public Criteria andLicenseFailureEqualTo(Integer value) {
-            this.addCriterion("license_failure =", value, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureIsNotNull() {
+            return isNotNull(licenseFailure);
         }
 
-        public Criteria andLicenseFailureNotEqualTo(Integer value) {
-            this.addCriterion("license_failure <>", value, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureEqualTo(Integer value) {
+            return equalTo(licenseFailure, value);
         }
 
-        public Criteria andLicenseFailureGreaterThan(Integer value) {
-            this.addCriterion("license_failure >", value, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureNotEqualTo(Integer value) {
+            return notEqualTo(licenseFailure, value);
         }
 
-        public Criteria andLicenseFailureGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("license_failure >=", value, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureGreaterThan(Integer value) {
+            return greaterThan(licenseFailure, value);
         }
 
-        public Criteria andLicenseFailureLessThan(Integer value) {
-            this.addCriterion("license_failure <", value, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(licenseFailure, value);
         }
 
-        public Criteria andLicenseFailureLessThanOrEqualTo(Integer value) {
-            this.addCriterion("license_failure <=", value, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureLessThan(Integer value) {
+            return lessThan(licenseFailure, value);
         }
 
-        public Criteria andLicenseFailureLike(String value) {
-            this.addCriterion("license_failure like", value, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(licenseFailure, value);
         }
 
-        public Criteria andLicenseFailureNotLike(String value) {
-            this.addCriterion("license_failure not like", value, "licenseFailure");
-            return (Criteria)this;
-        }        public Criteria andLicenseFailureIn(List<Integer> values) {
-            this.addCriterion("license_failure in", values, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureIn(List<Integer> values) {
+            return in(licenseFailure, values);
         }
 
-        public Criteria andLicenseFailureNotIn(List<Integer> values) {
-            this.addCriterion("license_failure not in", values, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureNotIn(List<Integer> values) {
+            return notIn(licenseFailure, values);
         }
 
-        public Criteria andLicenseFailureBetween(Integer value1, Integer value2) {
-            this.addCriterion("license_failure between", value1, value2, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureBetween(Integer value1, Integer value2) {
+            return between(licenseFailure, value1, value2);
         }
 
-        public Criteria andLicenseFailureNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("license_failure not between", value1, value2, "licenseFailure");
-            return (Criteria)this;
+        public MemberLicenseExample.Criteria andLicenseFailureNotBetween(Integer value1, Integer value2) {
+            return notBetween(licenseFailure, value1, value2);
         }
     }
 }

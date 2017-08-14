@@ -1,915 +1,595 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ExpressCompany;
 
-public class ExpressCompanyExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class ExpressCompanyExample extends SgExample<ExpressCompanyExample.Criteria> {
+    public static final Class<ExpressCompany> beanClass = ExpressCompany.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn expressName;
+    public static EntityColumn enName;
+    public static EntityColumn remark5;
+    public static EntityColumn remark4;
+    public static EntityColumn expressCompanyId;
+    public static EntityColumn shortName;
+    public static EntityColumn remark1;
+    public static EntityColumn remark3;
+    public static EntityColumn useStatus;
+    public static EntityColumn remark2;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        expressName = listMap.get("expressName");
+        enName = listMap.get("enName");
+        remark5 = listMap.get("remark5");
+        remark4 = listMap.get("remark4");
+        expressCompanyId = listMap.get("expressCompanyId");
+        shortName = listMap.get("shortName");
+        remark1 = listMap.get("remark1");
+        remark3 = listMap.get("remark3");
+        useStatus = listMap.get("useStatus");
+        remark2 = listMap.get("remark2");
+        }
 
     public ExpressCompanyExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected ExpressCompanyExample.Criteria createCriteriaInternal() {
+        return new ExpressCompanyExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
-    }
 
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
+        public ExpressCompanyExample.Criteria andExpressNameIsNull() {
+            return isNull(expressName);
         }
 
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
+        public ExpressCompanyExample.Criteria andExpressNameIsNotNull() {
+            return isNotNull(expressName);
         }
 
-        public List<Criterion> getCriteria() {
-            return this.criteria;
+        public ExpressCompanyExample.Criteria andExpressNameEqualTo(String value) {
+            return equalTo(expressName, value);
         }
 
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
+        public ExpressCompanyExample.Criteria andExpressNameNotEqualTo(String value) {
+            return notEqualTo(expressName, value);
         }
 
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
+        public ExpressCompanyExample.Criteria andExpressNameGreaterThan(String value) {
+            return greaterThan(expressName, value);
         }
 
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
+        public ExpressCompanyExample.Criteria andExpressNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(expressName, value);
         }
 
-        public Criteria andRemark5IsNull() {
-            this.addCriterion("remark5 is null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressNameLessThan(String value) {
+            return lessThan(expressName, value);
         }
 
-        public Criteria andRemark5IsNotNull() {
-            this.addCriterion("remark5 is not null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(expressName, value);
         }
 
-        public Criteria andRemark5EqualTo(String value) {
-            this.addCriterion("remark5 =", value, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressNameLike(String value) {
+            return like(expressName, value);
         }
 
-        public Criteria andRemark5NotEqualTo(String value) {
-            this.addCriterion("remark5 <>", value, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressNameNotLike(String value) {
+            return notLike(expressName, value);
         }
 
-        public Criteria andRemark5GreaterThan(String value) {
-            this.addCriterion("remark5 >", value, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressNameIn(List<String> values) {
+            return in(expressName, values);
         }
 
-        public Criteria andRemark5GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark5 >=", value, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressNameNotIn(List<String> values) {
+            return notIn(expressName, values);
         }
 
-        public Criteria andRemark5LessThan(String value) {
-            this.addCriterion("remark5 <", value, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressNameBetween(String value1, String value2) {
+            return between(expressName, value1, value2);
         }
 
-        public Criteria andRemark5LessThanOrEqualTo(String value) {
-            this.addCriterion("remark5 <=", value, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressNameNotBetween(String value1, String value2) {
+            return notBetween(expressName, value1, value2);
         }
-
-        public Criteria andRemark5Like(String value) {
-            this.addCriterion("remark5 like", value, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameIsNull() {
+            return isNull(enName);
         }
 
-        public Criteria andRemark5NotLike(String value) {
-            this.addCriterion("remark5 not like", value, "remark5");
-            return (Criteria)this;
-        }        public Criteria andRemark5In(List<String> values) {
-            this.addCriterion("remark5 in", values, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameIsNotNull() {
+            return isNotNull(enName);
         }
 
-        public Criteria andRemark5NotIn(List<String> values) {
-            this.addCriterion("remark5 not in", values, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameEqualTo(String value) {
+            return equalTo(enName, value);
         }
 
-        public Criteria andRemark5Between(String value1, String value2) {
-            this.addCriterion("remark5 between", value1, value2, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameNotEqualTo(String value) {
+            return notEqualTo(enName, value);
         }
 
-        public Criteria andRemark5NotBetween(String value1, String value2) {
-            this.addCriterion("remark5 not between", value1, value2, "remark5");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameGreaterThan(String value) {
+            return greaterThan(enName, value);
         }
 
-        public Criteria andExpressNameIsNull() {
-            this.addCriterion("express_name is null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(enName, value);
         }
 
-        public Criteria andExpressNameIsNotNull() {
-            this.addCriterion("express_name is not null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameLessThan(String value) {
+            return lessThan(enName, value);
         }
 
-        public Criteria andExpressNameEqualTo(String value) {
-            this.addCriterion("express_name =", value, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(enName, value);
         }
 
-        public Criteria andExpressNameNotEqualTo(String value) {
-            this.addCriterion("express_name <>", value, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameLike(String value) {
+            return like(enName, value);
         }
 
-        public Criteria andExpressNameGreaterThan(String value) {
-            this.addCriterion("express_name >", value, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameNotLike(String value) {
+            return notLike(enName, value);
         }
 
-        public Criteria andExpressNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("express_name >=", value, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameIn(List<String> values) {
+            return in(enName, values);
         }
 
-        public Criteria andExpressNameLessThan(String value) {
-            this.addCriterion("express_name <", value, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameNotIn(List<String> values) {
+            return notIn(enName, values);
         }
 
-        public Criteria andExpressNameLessThanOrEqualTo(String value) {
-            this.addCriterion("express_name <=", value, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameBetween(String value1, String value2) {
+            return between(enName, value1, value2);
         }
 
-        public Criteria andExpressNameLike(String value) {
-            this.addCriterion("express_name like", value, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andEnNameNotBetween(String value1, String value2) {
+            return notBetween(enName, value1, value2);
         }
-
-        public Criteria andExpressNameNotLike(String value) {
-            this.addCriterion("express_name not like", value, "expressName");
-            return (Criteria)this;
-        }        public Criteria andExpressNameIn(List<String> values) {
-            this.addCriterion("express_name in", values, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5IsNull() {
+            return isNull(remark5);
         }
 
-        public Criteria andExpressNameNotIn(List<String> values) {
-            this.addCriterion("express_name not in", values, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5IsNotNull() {
+            return isNotNull(remark5);
         }
 
-        public Criteria andExpressNameBetween(String value1, String value2) {
-            this.addCriterion("express_name between", value1, value2, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5EqualTo(String value) {
+            return equalTo(remark5, value);
         }
 
-        public Criteria andExpressNameNotBetween(String value1, String value2) {
-            this.addCriterion("express_name not between", value1, value2, "expressName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5NotEqualTo(String value) {
+            return notEqualTo(remark5, value);
         }
 
-        public Criteria andEnNameIsNull() {
-            this.addCriterion("en_name is null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5GreaterThan(String value) {
+            return greaterThan(remark5, value);
         }
 
-        public Criteria andEnNameIsNotNull() {
-            this.addCriterion("en_name is not null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark5, value);
         }
 
-        public Criteria andEnNameEqualTo(String value) {
-            this.addCriterion("en_name =", value, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5LessThan(String value) {
+            return lessThan(remark5, value);
         }
 
-        public Criteria andEnNameNotEqualTo(String value) {
-            this.addCriterion("en_name <>", value, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark5, value);
         }
 
-        public Criteria andEnNameGreaterThan(String value) {
-            this.addCriterion("en_name >", value, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5Like(String value) {
+            return like(remark5, value);
         }
 
-        public Criteria andEnNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("en_name >=", value, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5NotLike(String value) {
+            return notLike(remark5, value);
         }
 
-        public Criteria andEnNameLessThan(String value) {
-            this.addCriterion("en_name <", value, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5In(List<String> values) {
+            return in(remark5, values);
         }
 
-        public Criteria andEnNameLessThanOrEqualTo(String value) {
-            this.addCriterion("en_name <=", value, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5NotIn(List<String> values) {
+            return notIn(remark5, values);
         }
 
-        public Criteria andEnNameLike(String value) {
-            this.addCriterion("en_name like", value, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5Between(String value1, String value2) {
+            return between(remark5, value1, value2);
         }
 
-        public Criteria andEnNameNotLike(String value) {
-            this.addCriterion("en_name not like", value, "enName");
-            return (Criteria)this;
-        }        public Criteria andEnNameIn(List<String> values) {
-            this.addCriterion("en_name in", values, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark5NotBetween(String value1, String value2) {
+            return notBetween(remark5, value1, value2);
         }
-
-        public Criteria andEnNameNotIn(List<String> values) {
-            this.addCriterion("en_name not in", values, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4IsNull() {
+            return isNull(remark4);
         }
 
-        public Criteria andEnNameBetween(String value1, String value2) {
-            this.addCriterion("en_name between", value1, value2, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4IsNotNull() {
+            return isNotNull(remark4);
         }
 
-        public Criteria andEnNameNotBetween(String value1, String value2) {
-            this.addCriterion("en_name not between", value1, value2, "enName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4EqualTo(String value) {
+            return equalTo(remark4, value);
         }
 
-        public Criteria andUseStatusIsNull() {
-            this.addCriterion("use_status is null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4NotEqualTo(String value) {
+            return notEqualTo(remark4, value);
         }
 
-        public Criteria andUseStatusIsNotNull() {
-            this.addCriterion("use_status is not null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4GreaterThan(String value) {
+            return greaterThan(remark4, value);
         }
 
-        public Criteria andUseStatusEqualTo(Integer value) {
-            this.addCriterion("use_status =", value, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark4, value);
         }
 
-        public Criteria andUseStatusNotEqualTo(Integer value) {
-            this.addCriterion("use_status <>", value, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4LessThan(String value) {
+            return lessThan(remark4, value);
         }
 
-        public Criteria andUseStatusGreaterThan(Integer value) {
-            this.addCriterion("use_status >", value, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark4, value);
         }
 
-        public Criteria andUseStatusGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("use_status >=", value, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4Like(String value) {
+            return like(remark4, value);
         }
 
-        public Criteria andUseStatusLessThan(Integer value) {
-            this.addCriterion("use_status <", value, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4NotLike(String value) {
+            return notLike(remark4, value);
         }
 
-        public Criteria andUseStatusLessThanOrEqualTo(Integer value) {
-            this.addCriterion("use_status <=", value, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4In(List<String> values) {
+            return in(remark4, values);
         }
 
-        public Criteria andUseStatusLike(String value) {
-            this.addCriterion("use_status like", value, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4NotIn(List<String> values) {
+            return notIn(remark4, values);
         }
 
-        public Criteria andUseStatusNotLike(String value) {
-            this.addCriterion("use_status not like", value, "useStatus");
-            return (Criteria)this;
-        }        public Criteria andUseStatusIn(List<Integer> values) {
-            this.addCriterion("use_status in", values, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4Between(String value1, String value2) {
+            return between(remark4, value1, value2);
         }
 
-        public Criteria andUseStatusNotIn(List<Integer> values) {
-            this.addCriterion("use_status not in", values, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark4NotBetween(String value1, String value2) {
+            return notBetween(remark4, value1, value2);
         }
-
-        public Criteria andUseStatusBetween(Integer value1, Integer value2) {
-            this.addCriterion("use_status between", value1, value2, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdIsNull() {
+            return isNull(expressCompanyId);
         }
 
-        public Criteria andUseStatusNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("use_status not between", value1, value2, "useStatus");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdIsNotNull() {
+            return isNotNull(expressCompanyId);
         }
 
-        public Criteria andRemark4IsNull() {
-            this.addCriterion("remark4 is null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdEqualTo(Long value) {
+            return equalTo(expressCompanyId, value);
         }
 
-        public Criteria andRemark4IsNotNull() {
-            this.addCriterion("remark4 is not null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdNotEqualTo(Long value) {
+            return notEqualTo(expressCompanyId, value);
         }
 
-        public Criteria andRemark4EqualTo(String value) {
-            this.addCriterion("remark4 =", value, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdGreaterThan(Long value) {
+            return greaterThan(expressCompanyId, value);
         }
 
-        public Criteria andRemark4NotEqualTo(String value) {
-            this.addCriterion("remark4 <>", value, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(expressCompanyId, value);
         }
 
-        public Criteria andRemark4GreaterThan(String value) {
-            this.addCriterion("remark4 >", value, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdLessThan(Long value) {
+            return lessThan(expressCompanyId, value);
         }
 
-        public Criteria andRemark4GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark4 >=", value, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(expressCompanyId, value);
         }
 
-        public Criteria andRemark4LessThan(String value) {
-            this.addCriterion("remark4 <", value, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdIn(List<Long> values) {
+            return in(expressCompanyId, values);
         }
 
-        public Criteria andRemark4LessThanOrEqualTo(String value) {
-            this.addCriterion("remark4 <=", value, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdNotIn(List<Long> values) {
+            return notIn(expressCompanyId, values);
         }
 
-        public Criteria andRemark4Like(String value) {
-            this.addCriterion("remark4 like", value, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdBetween(Long value1, Long value2) {
+            return between(expressCompanyId, value1, value2);
         }
 
-        public Criteria andRemark4NotLike(String value) {
-            this.addCriterion("remark4 not like", value, "remark4");
-            return (Criteria)this;
-        }        public Criteria andRemark4In(List<String> values) {
-            this.addCriterion("remark4 in", values, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andExpressCompanyIdNotBetween(Long value1, Long value2) {
+            return notBetween(expressCompanyId, value1, value2);
         }
-
-        public Criteria andRemark4NotIn(List<String> values) {
-            this.addCriterion("remark4 not in", values, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameIsNull() {
+            return isNull(shortName);
         }
 
-        public Criteria andRemark4Between(String value1, String value2) {
-            this.addCriterion("remark4 between", value1, value2, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameIsNotNull() {
+            return isNotNull(shortName);
         }
 
-        public Criteria andRemark4NotBetween(String value1, String value2) {
-            this.addCriterion("remark4 not between", value1, value2, "remark4");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameEqualTo(String value) {
+            return equalTo(shortName, value);
         }
 
-        public Criteria andExpressCompanyIdIsNull() {
-            this.addCriterion("express_company_id is null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameNotEqualTo(String value) {
+            return notEqualTo(shortName, value);
         }
 
-        public Criteria andExpressCompanyIdIsNotNull() {
-            this.addCriterion("express_company_id is not null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameGreaterThan(String value) {
+            return greaterThan(shortName, value);
         }
 
-        public Criteria andExpressCompanyIdEqualTo(Long value) {
-            this.addCriterion("express_company_id =", value, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(shortName, value);
         }
 
-        public Criteria andExpressCompanyIdNotEqualTo(Long value) {
-            this.addCriterion("express_company_id <>", value, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameLessThan(String value) {
+            return lessThan(shortName, value);
         }
 
-        public Criteria andExpressCompanyIdGreaterThan(Long value) {
-            this.addCriterion("express_company_id >", value, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(shortName, value);
         }
 
-        public Criteria andExpressCompanyIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("express_company_id >=", value, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameLike(String value) {
+            return like(shortName, value);
         }
 
-        public Criteria andExpressCompanyIdLessThan(Long value) {
-            this.addCriterion("express_company_id <", value, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameNotLike(String value) {
+            return notLike(shortName, value);
         }
 
-        public Criteria andExpressCompanyIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("express_company_id <=", value, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameIn(List<String> values) {
+            return in(shortName, values);
         }
 
-        public Criteria andExpressCompanyIdLike(String value) {
-            this.addCriterion("express_company_id like", value, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameNotIn(List<String> values) {
+            return notIn(shortName, values);
         }
 
-        public Criteria andExpressCompanyIdNotLike(String value) {
-            this.addCriterion("express_company_id not like", value, "expressCompanyId");
-            return (Criteria)this;
-        }        public Criteria andExpressCompanyIdIn(List<Long> values) {
-            this.addCriterion("express_company_id in", values, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameBetween(String value1, String value2) {
+            return between(shortName, value1, value2);
         }
 
-        public Criteria andExpressCompanyIdNotIn(List<Long> values) {
-            this.addCriterion("express_company_id not in", values, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andShortNameNotBetween(String value1, String value2) {
+            return notBetween(shortName, value1, value2);
         }
-
-        public Criteria andExpressCompanyIdBetween(Long value1, Long value2) {
-            this.addCriterion("express_company_id between", value1, value2, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1IsNull() {
+            return isNull(remark1);
         }
 
-        public Criteria andExpressCompanyIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("express_company_id not between", value1, value2, "expressCompanyId");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1IsNotNull() {
+            return isNotNull(remark1);
         }
 
-        public Criteria andShortNameIsNull() {
-            this.addCriterion("short_name is null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1EqualTo(String value) {
+            return equalTo(remark1, value);
         }
 
-        public Criteria andShortNameIsNotNull() {
-            this.addCriterion("short_name is not null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1NotEqualTo(String value) {
+            return notEqualTo(remark1, value);
         }
 
-        public Criteria andShortNameEqualTo(String value) {
-            this.addCriterion("short_name =", value, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1GreaterThan(String value) {
+            return greaterThan(remark1, value);
         }
 
-        public Criteria andShortNameNotEqualTo(String value) {
-            this.addCriterion("short_name <>", value, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark1, value);
         }
 
-        public Criteria andShortNameGreaterThan(String value) {
-            this.addCriterion("short_name >", value, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1LessThan(String value) {
+            return lessThan(remark1, value);
         }
 
-        public Criteria andShortNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("short_name >=", value, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark1, value);
         }
 
-        public Criteria andShortNameLessThan(String value) {
-            this.addCriterion("short_name <", value, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1Like(String value) {
+            return like(remark1, value);
         }
 
-        public Criteria andShortNameLessThanOrEqualTo(String value) {
-            this.addCriterion("short_name <=", value, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1NotLike(String value) {
+            return notLike(remark1, value);
         }
 
-        public Criteria andShortNameLike(String value) {
-            this.addCriterion("short_name like", value, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1In(List<String> values) {
+            return in(remark1, values);
         }
 
-        public Criteria andShortNameNotLike(String value) {
-            this.addCriterion("short_name not like", value, "shortName");
-            return (Criteria)this;
-        }        public Criteria andShortNameIn(List<String> values) {
-            this.addCriterion("short_name in", values, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1NotIn(List<String> values) {
+            return notIn(remark1, values);
         }
 
-        public Criteria andShortNameNotIn(List<String> values) {
-            this.addCriterion("short_name not in", values, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1Between(String value1, String value2) {
+            return between(remark1, value1, value2);
         }
 
-        public Criteria andShortNameBetween(String value1, String value2) {
-            this.addCriterion("short_name between", value1, value2, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark1NotBetween(String value1, String value2) {
+            return notBetween(remark1, value1, value2);
         }
-
-        public Criteria andShortNameNotBetween(String value1, String value2) {
-            this.addCriterion("short_name not between", value1, value2, "shortName");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3IsNull() {
+            return isNull(remark3);
         }
 
-        public Criteria andRemark1IsNull() {
-            this.addCriterion("remark1 is null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3IsNotNull() {
+            return isNotNull(remark3);
         }
 
-        public Criteria andRemark1IsNotNull() {
-            this.addCriterion("remark1 is not null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3EqualTo(String value) {
+            return equalTo(remark3, value);
         }
 
-        public Criteria andRemark1EqualTo(String value) {
-            this.addCriterion("remark1 =", value, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3NotEqualTo(String value) {
+            return notEqualTo(remark3, value);
         }
 
-        public Criteria andRemark1NotEqualTo(String value) {
-            this.addCriterion("remark1 <>", value, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3GreaterThan(String value) {
+            return greaterThan(remark3, value);
         }
 
-        public Criteria andRemark1GreaterThan(String value) {
-            this.addCriterion("remark1 >", value, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark3, value);
         }
 
-        public Criteria andRemark1GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark1 >=", value, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3LessThan(String value) {
+            return lessThan(remark3, value);
         }
 
-        public Criteria andRemark1LessThan(String value) {
-            this.addCriterion("remark1 <", value, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark3, value);
         }
 
-        public Criteria andRemark1LessThanOrEqualTo(String value) {
-            this.addCriterion("remark1 <=", value, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3Like(String value) {
+            return like(remark3, value);
         }
 
-        public Criteria andRemark1Like(String value) {
-            this.addCriterion("remark1 like", value, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3NotLike(String value) {
+            return notLike(remark3, value);
         }
 
-        public Criteria andRemark1NotLike(String value) {
-            this.addCriterion("remark1 not like", value, "remark1");
-            return (Criteria)this;
-        }        public Criteria andRemark1In(List<String> values) {
-            this.addCriterion("remark1 in", values, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3In(List<String> values) {
+            return in(remark3, values);
         }
 
-        public Criteria andRemark1NotIn(List<String> values) {
-            this.addCriterion("remark1 not in", values, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3NotIn(List<String> values) {
+            return notIn(remark3, values);
         }
 
-        public Criteria andRemark1Between(String value1, String value2) {
-            this.addCriterion("remark1 between", value1, value2, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3Between(String value1, String value2) {
+            return between(remark3, value1, value2);
         }
 
-        public Criteria andRemark1NotBetween(String value1, String value2) {
-            this.addCriterion("remark1 not between", value1, value2, "remark1");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark3NotBetween(String value1, String value2) {
+            return notBetween(remark3, value1, value2);
         }
-
-        public Criteria andRemark3IsNull() {
-            this.addCriterion("remark3 is null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusIsNull() {
+            return isNull(useStatus);
         }
 
-        public Criteria andRemark3IsNotNull() {
-            this.addCriterion("remark3 is not null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusIsNotNull() {
+            return isNotNull(useStatus);
         }
 
-        public Criteria andRemark3EqualTo(String value) {
-            this.addCriterion("remark3 =", value, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusEqualTo(Integer value) {
+            return equalTo(useStatus, value);
         }
 
-        public Criteria andRemark3NotEqualTo(String value) {
-            this.addCriterion("remark3 <>", value, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusNotEqualTo(Integer value) {
+            return notEqualTo(useStatus, value);
         }
 
-        public Criteria andRemark3GreaterThan(String value) {
-            this.addCriterion("remark3 >", value, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusGreaterThan(Integer value) {
+            return greaterThan(useStatus, value);
         }
 
-        public Criteria andRemark3GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark3 >=", value, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(useStatus, value);
         }
 
-        public Criteria andRemark3LessThan(String value) {
-            this.addCriterion("remark3 <", value, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusLessThan(Integer value) {
+            return lessThan(useStatus, value);
         }
 
-        public Criteria andRemark3LessThanOrEqualTo(String value) {
-            this.addCriterion("remark3 <=", value, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(useStatus, value);
         }
 
-        public Criteria andRemark3Like(String value) {
-            this.addCriterion("remark3 like", value, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusIn(List<Integer> values) {
+            return in(useStatus, values);
         }
 
-        public Criteria andRemark3NotLike(String value) {
-            this.addCriterion("remark3 not like", value, "remark3");
-            return (Criteria)this;
-        }        public Criteria andRemark3In(List<String> values) {
-            this.addCriterion("remark3 in", values, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusNotIn(List<Integer> values) {
+            return notIn(useStatus, values);
         }
 
-        public Criteria andRemark3NotIn(List<String> values) {
-            this.addCriterion("remark3 not in", values, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusBetween(Integer value1, Integer value2) {
+            return between(useStatus, value1, value2);
         }
 
-        public Criteria andRemark3Between(String value1, String value2) {
-            this.addCriterion("remark3 between", value1, value2, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andUseStatusNotBetween(Integer value1, Integer value2) {
+            return notBetween(useStatus, value1, value2);
         }
-
-        public Criteria andRemark3NotBetween(String value1, String value2) {
-            this.addCriterion("remark3 not between", value1, value2, "remark3");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2IsNull() {
+            return isNull(remark2);
         }
 
-        public Criteria andRemark2IsNull() {
-            this.addCriterion("remark2 is null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2IsNotNull() {
+            return isNotNull(remark2);
         }
 
-        public Criteria andRemark2IsNotNull() {
-            this.addCriterion("remark2 is not null");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2EqualTo(String value) {
+            return equalTo(remark2, value);
         }
 
-        public Criteria andRemark2EqualTo(String value) {
-            this.addCriterion("remark2 =", value, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2NotEqualTo(String value) {
+            return notEqualTo(remark2, value);
         }
 
-        public Criteria andRemark2NotEqualTo(String value) {
-            this.addCriterion("remark2 <>", value, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2GreaterThan(String value) {
+            return greaterThan(remark2, value);
         }
 
-        public Criteria andRemark2GreaterThan(String value) {
-            this.addCriterion("remark2 >", value, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark2, value);
         }
 
-        public Criteria andRemark2GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark2 >=", value, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2LessThan(String value) {
+            return lessThan(remark2, value);
         }
 
-        public Criteria andRemark2LessThan(String value) {
-            this.addCriterion("remark2 <", value, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark2, value);
         }
 
-        public Criteria andRemark2LessThanOrEqualTo(String value) {
-            this.addCriterion("remark2 <=", value, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2Like(String value) {
+            return like(remark2, value);
         }
 
-        public Criteria andRemark2Like(String value) {
-            this.addCriterion("remark2 like", value, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2NotLike(String value) {
+            return notLike(remark2, value);
         }
 
-        public Criteria andRemark2NotLike(String value) {
-            this.addCriterion("remark2 not like", value, "remark2");
-            return (Criteria)this;
-        }        public Criteria andRemark2In(List<String> values) {
-            this.addCriterion("remark2 in", values, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2In(List<String> values) {
+            return in(remark2, values);
         }
 
-        public Criteria andRemark2NotIn(List<String> values) {
-            this.addCriterion("remark2 not in", values, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2NotIn(List<String> values) {
+            return notIn(remark2, values);
         }
 
-        public Criteria andRemark2Between(String value1, String value2) {
-            this.addCriterion("remark2 between", value1, value2, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2Between(String value1, String value2) {
+            return between(remark2, value1, value2);
         }
 
-        public Criteria andRemark2NotBetween(String value1, String value2) {
-            this.addCriterion("remark2 not between", value1, value2, "remark2");
-            return (Criteria)this;
+        public ExpressCompanyExample.Criteria andRemark2NotBetween(String value1, String value2) {
+            return notBetween(remark2, value1, value2);
         }
     }
 }

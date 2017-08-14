@@ -1,575 +1,294 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ActiveDrawPem;
 
-public class ActiveDrawPemExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<ActiveDrawPemExample.Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class ActiveDrawPemExample extends SgExample<ActiveDrawPemExample.Criteria> {
+    public static final Class<ActiveDrawPem> beanClass = ActiveDrawPem.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn createTime;
+    public static EntityColumn startTime;
+    public static EntityColumn term;
+    public static EntityColumn id;
+    public static EntityColumn info;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        createTime = listMap.get("createTime");
+        startTime = listMap.get("startTime");
+        term = listMap.get("term");
+        id = listMap.get("id");
+        info = listMap.get("info");
+        }
 
     public ActiveDrawPemExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<ActiveDrawPemExample.Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(ActiveDrawPemExample.Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public ActiveDrawPemExample.Criteria or() {
-        ActiveDrawPemExample.Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public ActiveDrawPemExample.Criteria createCriteria() {
-        ActiveDrawPemExample.Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
+    @Override
     protected ActiveDrawPemExample.Criteria createCriteriaInternal() {
-        ActiveDrawPemExample.Criteria criteria = new ActiveDrawPemExample.Criteria();
-        return criteria;
+        return new ActiveDrawPemExample.Criteria(this);
     }
 
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends ActiveDrawPemExample.GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<ActiveDrawPemExample.Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<ActiveDrawPemExample.Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<ActiveDrawPemExample.Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new ActiveDrawPemExample.Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new ActiveDrawPemExample.Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new ActiveDrawPemExample.Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeIsNull() {
-            this.addCriterion("start_time is null");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeIsNotNull() {
-            this.addCriterion("start_time is not null");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeEqualTo(Date value) {
-            this.addCriterion("start_time =", value, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeNotEqualTo(Date value) {
-            this.addCriterion("start_time <>", value, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeGreaterThan(Date value) {
-            this.addCriterion("start_time >", value, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("start_time >=", value, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeLessThan(Date value) {
-            this.addCriterion("start_time <", value, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("start_time <=", value, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeLike(String value) {
-            this.addCriterion("start_time like", value, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeNotLike(String value) {
-            this.addCriterion("start_time not like", value, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }        public ActiveDrawPemExample.Criteria andStartTimeIn(List<Date> values) {
-            this.addCriterion("start_time in", values, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeNotIn(List<Date> values) {
-            this.addCriterion("start_time not in", values, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeBetween(Date value1, Date value2) {
-            this.addCriterion("start_time between", value1, value2, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andStartTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("start_time not between", value1, value2, "startTime");
-            return (ActiveDrawPemExample.Criteria)this;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeIsNull() {
-            this.addCriterion("create_time is null");
-            return (ActiveDrawPemExample.Criteria)this;
+            return isNull(createTime);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeIsNotNull() {
-            this.addCriterion("create_time is not null");
-            return (ActiveDrawPemExample.Criteria)this;
+            return isNotNull(createTime);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeEqualTo(Date value) {
-            this.addCriterion("create_time =", value, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
+            return equalTo(createTime, value);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeNotEqualTo(Date value) {
-            this.addCriterion("create_time <>", value, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notEqualTo(createTime, value);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeGreaterThan(Date value) {
-            this.addCriterion("create_time >", value, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
+            return greaterThan(createTime, value);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("create_time >=", value, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
+            return greaterThanOrEqualTo(createTime, value);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeLessThan(Date value) {
-            this.addCriterion("create_time <", value, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
+            return lessThan(createTime, value);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("create_time <=", value, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
+            return lessThanOrEqualTo(createTime, value);
         }
 
-        public ActiveDrawPemExample.Criteria andCreateTimeLike(String value) {
-            this.addCriterion("create_time like", value, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andCreateTimeNotLike(String value) {
-            this.addCriterion("create_time not like", value, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
-        }        public ActiveDrawPemExample.Criteria andCreateTimeIn(List<Date> values) {
-            this.addCriterion("create_time in", values, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
+        public ActiveDrawPemExample.Criteria andCreateTimeIn(List<Date> values) {
+            return in(createTime, values);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeNotIn(List<Date> values) {
-            this.addCriterion("create_time not in", values, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notIn(createTime, values);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
-            this.addCriterion("create_time between", value1, value2, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
+            return between(createTime, value1, value2);
         }
 
         public ActiveDrawPemExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("create_time not between", value1, value2, "createTime");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notBetween(createTime, value1, value2);
+        }
+        public ActiveDrawPemExample.Criteria andStartTimeIsNull() {
+            return isNull(startTime);
         }
 
+        public ActiveDrawPemExample.Criteria andStartTimeIsNotNull() {
+            return isNotNull(startTime);
+        }
+
+        public ActiveDrawPemExample.Criteria andStartTimeEqualTo(Date value) {
+            return equalTo(startTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andStartTimeNotEqualTo(Date value) {
+            return notEqualTo(startTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andStartTimeGreaterThan(Date value) {
+            return greaterThan(startTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andStartTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(startTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andStartTimeLessThan(Date value) {
+            return lessThan(startTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andStartTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(startTime, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andStartTimeIn(List<Date> values) {
+            return in(startTime, values);
+        }
+
+        public ActiveDrawPemExample.Criteria andStartTimeNotIn(List<Date> values) {
+            return notIn(startTime, values);
+        }
+
+        public ActiveDrawPemExample.Criteria andStartTimeBetween(Date value1, Date value2) {
+            return between(startTime, value1, value2);
+        }
+
+        public ActiveDrawPemExample.Criteria andStartTimeNotBetween(Date value1, Date value2) {
+            return notBetween(startTime, value1, value2);
+        }
         public ActiveDrawPemExample.Criteria andTermIsNull() {
-            this.addCriterion("term is null");
-            return (ActiveDrawPemExample.Criteria)this;
+            return isNull(term);
         }
 
         public ActiveDrawPemExample.Criteria andTermIsNotNull() {
-            this.addCriterion("term is not null");
-            return (ActiveDrawPemExample.Criteria)this;
+            return isNotNull(term);
         }
 
         public ActiveDrawPemExample.Criteria andTermEqualTo(Integer value) {
-            this.addCriterion("term =", value, "term");
-            return (ActiveDrawPemExample.Criteria)this;
+            return equalTo(term, value);
         }
 
         public ActiveDrawPemExample.Criteria andTermNotEqualTo(Integer value) {
-            this.addCriterion("term <>", value, "term");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notEqualTo(term, value);
         }
 
         public ActiveDrawPemExample.Criteria andTermGreaterThan(Integer value) {
-            this.addCriterion("term >", value, "term");
-            return (ActiveDrawPemExample.Criteria)this;
+            return greaterThan(term, value);
         }
 
         public ActiveDrawPemExample.Criteria andTermGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("term >=", value, "term");
-            return (ActiveDrawPemExample.Criteria)this;
+            return greaterThanOrEqualTo(term, value);
         }
 
         public ActiveDrawPemExample.Criteria andTermLessThan(Integer value) {
-            this.addCriterion("term <", value, "term");
-            return (ActiveDrawPemExample.Criteria)this;
+            return lessThan(term, value);
         }
 
         public ActiveDrawPemExample.Criteria andTermLessThanOrEqualTo(Integer value) {
-            this.addCriterion("term <=", value, "term");
-            return (ActiveDrawPemExample.Criteria)this;
+            return lessThanOrEqualTo(term, value);
         }
 
-        public ActiveDrawPemExample.Criteria andTermLike(String value) {
-            this.addCriterion("term like", value, "term");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andTermNotLike(String value) {
-            this.addCriterion("term not like", value, "term");
-            return (ActiveDrawPemExample.Criteria)this;
-        }        public ActiveDrawPemExample.Criteria andTermIn(List<Integer> values) {
-            this.addCriterion("term in", values, "term");
-            return (ActiveDrawPemExample.Criteria)this;
+        public ActiveDrawPemExample.Criteria andTermIn(List<Integer> values) {
+            return in(term, values);
         }
 
         public ActiveDrawPemExample.Criteria andTermNotIn(List<Integer> values) {
-            this.addCriterion("term not in", values, "term");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notIn(term, values);
         }
 
         public ActiveDrawPemExample.Criteria andTermBetween(Integer value1, Integer value2) {
-            this.addCriterion("term between", value1, value2, "term");
-            return (ActiveDrawPemExample.Criteria)this;
+            return between(term, value1, value2);
         }
 
         public ActiveDrawPemExample.Criteria andTermNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("term not between", value1, value2, "term");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notBetween(term, value1, value2);
         }
-
         public ActiveDrawPemExample.Criteria andIdIsNull() {
-            this.addCriterion("id is null");
-            return (ActiveDrawPemExample.Criteria)this;
+            return isNull(id);
         }
 
         public ActiveDrawPemExample.Criteria andIdIsNotNull() {
-            this.addCriterion("id is not null");
-            return (ActiveDrawPemExample.Criteria)this;
+            return isNotNull(id);
         }
 
         public ActiveDrawPemExample.Criteria andIdEqualTo(Long value) {
-            this.addCriterion("id =", value, "id");
-            return (ActiveDrawPemExample.Criteria)this;
+            return equalTo(id, value);
         }
 
         public ActiveDrawPemExample.Criteria andIdNotEqualTo(Long value) {
-            this.addCriterion("id <>", value, "id");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notEqualTo(id, value);
         }
 
         public ActiveDrawPemExample.Criteria andIdGreaterThan(Long value) {
-            this.addCriterion("id >", value, "id");
-            return (ActiveDrawPemExample.Criteria)this;
+            return greaterThan(id, value);
         }
 
         public ActiveDrawPemExample.Criteria andIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("id >=", value, "id");
-            return (ActiveDrawPemExample.Criteria)this;
+            return greaterThanOrEqualTo(id, value);
         }
 
         public ActiveDrawPemExample.Criteria andIdLessThan(Long value) {
-            this.addCriterion("id <", value, "id");
-            return (ActiveDrawPemExample.Criteria)this;
+            return lessThan(id, value);
         }
 
         public ActiveDrawPemExample.Criteria andIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("id <=", value, "id");
-            return (ActiveDrawPemExample.Criteria)this;
+            return lessThanOrEqualTo(id, value);
         }
 
-        public ActiveDrawPemExample.Criteria andIdLike(String value) {
-            this.addCriterion("id like", value, "id");
-            return (ActiveDrawPemExample.Criteria)this;
-        }
-
-        public ActiveDrawPemExample.Criteria andIdNotLike(String value) {
-            this.addCriterion("id not like", value, "id");
-            return (ActiveDrawPemExample.Criteria)this;
-        }        public ActiveDrawPemExample.Criteria andIdIn(List<Long> values) {
-            this.addCriterion("id in", values, "id");
-            return (ActiveDrawPemExample.Criteria)this;
+        public ActiveDrawPemExample.Criteria andIdIn(List<Long> values) {
+            return in(id, values);
         }
 
         public ActiveDrawPemExample.Criteria andIdNotIn(List<Long> values) {
-            this.addCriterion("id not in", values, "id");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notIn(id, values);
         }
 
         public ActiveDrawPemExample.Criteria andIdBetween(Long value1, Long value2) {
-            this.addCriterion("id between", value1, value2, "id");
-            return (ActiveDrawPemExample.Criteria)this;
+            return between(id, value1, value2);
         }
 
         public ActiveDrawPemExample.Criteria andIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("id not between", value1, value2, "id");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notBetween(id, value1, value2);
         }
-
         public ActiveDrawPemExample.Criteria andInfoIsNull() {
-            this.addCriterion("info is null");
-            return (ActiveDrawPemExample.Criteria)this;
+            return isNull(info);
         }
 
         public ActiveDrawPemExample.Criteria andInfoIsNotNull() {
-            this.addCriterion("info is not null");
-            return (ActiveDrawPemExample.Criteria)this;
+            return isNotNull(info);
         }
 
         public ActiveDrawPemExample.Criteria andInfoEqualTo(String value) {
-            this.addCriterion("info =", value, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return equalTo(info, value);
         }
 
         public ActiveDrawPemExample.Criteria andInfoNotEqualTo(String value) {
-            this.addCriterion("info <>", value, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notEqualTo(info, value);
         }
 
         public ActiveDrawPemExample.Criteria andInfoGreaterThan(String value) {
-            this.addCriterion("info >", value, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return greaterThan(info, value);
         }
 
         public ActiveDrawPemExample.Criteria andInfoGreaterThanOrEqualTo(String value) {
-            this.addCriterion("info >=", value, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return greaterThanOrEqualTo(info, value);
         }
 
         public ActiveDrawPemExample.Criteria andInfoLessThan(String value) {
-            this.addCriterion("info <", value, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return lessThan(info, value);
         }
 
         public ActiveDrawPemExample.Criteria andInfoLessThanOrEqualTo(String value) {
-            this.addCriterion("info <=", value, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return lessThanOrEqualTo(info, value);
         }
 
         public ActiveDrawPemExample.Criteria andInfoLike(String value) {
-            this.addCriterion("info like", value, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return like(info, value);
         }
 
         public ActiveDrawPemExample.Criteria andInfoNotLike(String value) {
-            this.addCriterion("info not like", value, "info");
-            return (ActiveDrawPemExample.Criteria)this;
-        }        public ActiveDrawPemExample.Criteria andInfoIn(List<String> values) {
-            this.addCriterion("info in", values, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notLike(info, value);
+        }
+
+        public ActiveDrawPemExample.Criteria andInfoIn(List<String> values) {
+            return in(info, values);
         }
 
         public ActiveDrawPemExample.Criteria andInfoNotIn(List<String> values) {
-            this.addCriterion("info not in", values, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notIn(info, values);
         }
 
         public ActiveDrawPemExample.Criteria andInfoBetween(String value1, String value2) {
-            this.addCriterion("info between", value1, value2, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return between(info, value1, value2);
         }
 
         public ActiveDrawPemExample.Criteria andInfoNotBetween(String value1, String value2) {
-            this.addCriterion("info not between", value1, value2, "info");
-            return (ActiveDrawPemExample.Criteria)this;
+            return notBetween(info, value1, value2);
         }
     }
 }

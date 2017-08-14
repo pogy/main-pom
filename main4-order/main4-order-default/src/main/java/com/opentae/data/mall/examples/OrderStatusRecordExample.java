@@ -1,507 +1,237 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.OrderStatusRecord;
 
-public class OrderStatusRecordExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class OrderStatusRecordExample extends SgExample<OrderStatusRecordExample.Criteria> {
+    public static final Class<OrderStatusRecord> beanClass = OrderStatusRecord.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn statusId;
+    public static EntityColumn createTime;
+    public static EntityColumn oid;
+    public static EntityColumn status;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        statusId = listMap.get("statusId");
+        createTime = listMap.get("createTime");
+        oid = listMap.get("oid");
+        status = listMap.get("status");
+        }
 
     public OrderStatusRecordExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected OrderStatusRecordExample.Criteria createCriteriaInternal() {
+        return new OrderStatusRecordExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<Criterion> getCriteria() {
-            return this.criteria;
+        public OrderStatusRecordExample.Criteria andStatusIdIsNull() {
+            return isNull(statusId);
         }
 
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
+        public OrderStatusRecordExample.Criteria andStatusIdIsNotNull() {
+            return isNotNull(statusId);
         }
 
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
+        public OrderStatusRecordExample.Criteria andStatusIdEqualTo(Long value) {
+            return equalTo(statusId, value);
         }
 
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
+        public OrderStatusRecordExample.Criteria andStatusIdNotEqualTo(Long value) {
+            return notEqualTo(statusId, value);
         }
 
-        public Criteria andStatusIdIsNull() {
-            this.addCriterion("status_id is null");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIdGreaterThan(Long value) {
+            return greaterThan(statusId, value);
         }
 
-        public Criteria andStatusIdIsNotNull() {
-            this.addCriterion("status_id is not null");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(statusId, value);
         }
 
-        public Criteria andStatusIdEqualTo(Long value) {
-            this.addCriterion("status_id =", value, "statusId");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIdLessThan(Long value) {
+            return lessThan(statusId, value);
         }
 
-        public Criteria andStatusIdNotEqualTo(Long value) {
-            this.addCriterion("status_id <>", value, "statusId");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(statusId, value);
         }
 
-        public Criteria andStatusIdGreaterThan(Long value) {
-            this.addCriterion("status_id >", value, "statusId");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIdIn(List<Long> values) {
+            return in(statusId, values);
         }
 
-        public Criteria andStatusIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("status_id >=", value, "statusId");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIdNotIn(List<Long> values) {
+            return notIn(statusId, values);
         }
 
-        public Criteria andStatusIdLessThan(Long value) {
-            this.addCriterion("status_id <", value, "statusId");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIdBetween(Long value1, Long value2) {
+            return between(statusId, value1, value2);
         }
 
-        public Criteria andStatusIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("status_id <=", value, "statusId");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIdNotBetween(Long value1, Long value2) {
+            return notBetween(statusId, value1, value2);
         }
-
-        public Criteria andStatusIdLike(String value) {
-            this.addCriterion("status_id like", value, "statusId");
-            return (Criteria)this;
-        }
-
-        public Criteria andStatusIdNotLike(String value) {
-            this.addCriterion("status_id not like", value, "statusId");
-            return (Criteria)this;
-        }        public Criteria andStatusIdIn(List<Long> values) {
-            this.addCriterion("status_id in", values, "statusId");
-            return (Criteria)this;
-        }
-
-        public Criteria andStatusIdNotIn(List<Long> values) {
-            this.addCriterion("status_id not in", values, "statusId");
-            return (Criteria)this;
-        }
-
-        public Criteria andStatusIdBetween(Long value1, Long value2) {
-            this.addCriterion("status_id between", value1, value2, "statusId");
-            return (Criteria)this;
-        }
-
-        public Criteria andStatusIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("status_id not between", value1, value2, "statusId");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeIsNull() {
+            return isNull(createTime);
         }
 
-        public Criteria andCreateTimeIsNull() {
-            this.addCriterion("create_time is null");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeIsNotNull() {
+            return isNotNull(createTime);
         }
 
-        public Criteria andCreateTimeIsNotNull() {
-            this.addCriterion("create_time is not null");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeEqualTo(Date value) {
+            return equalTo(createTime, value);
         }
 
-        public Criteria andCreateTimeEqualTo(Date value) {
-            this.addCriterion("create_time =", value, "createTime");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeNotEqualTo(Date value) {
+            return notEqualTo(createTime, value);
         }
 
-        public Criteria andCreateTimeNotEqualTo(Date value) {
-            this.addCriterion("create_time <>", value, "createTime");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeGreaterThan(Date value) {
+            return greaterThan(createTime, value);
         }
 
-        public Criteria andCreateTimeGreaterThan(Date value) {
-            this.addCriterion("create_time >", value, "createTime");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(createTime, value);
         }
 
-        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("create_time >=", value, "createTime");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeLessThan(Date value) {
+            return lessThan(createTime, value);
         }
 
-        public Criteria andCreateTimeLessThan(Date value) {
-            this.addCriterion("create_time <", value, "createTime");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(createTime, value);
         }
 
-        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("create_time <=", value, "createTime");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeIn(List<Date> values) {
+            return in(createTime, values);
         }
 
-        public Criteria andCreateTimeLike(String value) {
-            this.addCriterion("create_time like", value, "createTime");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeNotIn(List<Date> values) {
+            return notIn(createTime, values);
         }
 
-        public Criteria andCreateTimeNotLike(String value) {
-            this.addCriterion("create_time not like", value, "createTime");
-            return (Criteria)this;
-        }        public Criteria andCreateTimeIn(List<Date> values) {
-            this.addCriterion("create_time in", values, "createTime");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
+            return between(createTime, value1, value2);
         }
 
-        public Criteria andCreateTimeNotIn(List<Date> values) {
-            this.addCriterion("create_time not in", values, "createTime");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            return notBetween(createTime, value1, value2);
         }
-
-        public Criteria andCreateTimeBetween(Date value1, Date value2) {
-            this.addCriterion("create_time between", value1, value2, "createTime");
-            return (Criteria)this;
-        }
-
-        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("create_time not between", value1, value2, "createTime");
-            return (Criteria)this;
-        }
-
-        public Criteria andOidIsNull() {
-            this.addCriterion("oid is null");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidIsNull() {
+            return isNull(oid);
         }
 
-        public Criteria andOidIsNotNull() {
-            this.addCriterion("oid is not null");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidIsNotNull() {
+            return isNotNull(oid);
         }
 
-        public Criteria andOidEqualTo(Long value) {
-            this.addCriterion("oid =", value, "oid");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidEqualTo(Long value) {
+            return equalTo(oid, value);
         }
 
-        public Criteria andOidNotEqualTo(Long value) {
-            this.addCriterion("oid <>", value, "oid");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidNotEqualTo(Long value) {
+            return notEqualTo(oid, value);
         }
 
-        public Criteria andOidGreaterThan(Long value) {
-            this.addCriterion("oid >", value, "oid");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidGreaterThan(Long value) {
+            return greaterThan(oid, value);
         }
 
-        public Criteria andOidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("oid >=", value, "oid");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(oid, value);
         }
 
-        public Criteria andOidLessThan(Long value) {
-            this.addCriterion("oid <", value, "oid");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidLessThan(Long value) {
+            return lessThan(oid, value);
         }
 
-        public Criteria andOidLessThanOrEqualTo(Long value) {
-            this.addCriterion("oid <=", value, "oid");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(oid, value);
         }
 
-        public Criteria andOidLike(String value) {
-            this.addCriterion("oid like", value, "oid");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidIn(List<Long> values) {
+            return in(oid, values);
         }
 
-        public Criteria andOidNotLike(String value) {
-            this.addCriterion("oid not like", value, "oid");
-            return (Criteria)this;
-        }        public Criteria andOidIn(List<Long> values) {
-            this.addCriterion("oid in", values, "oid");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidNotIn(List<Long> values) {
+            return notIn(oid, values);
         }
 
-        public Criteria andOidNotIn(List<Long> values) {
-            this.addCriterion("oid not in", values, "oid");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidBetween(Long value1, Long value2) {
+            return between(oid, value1, value2);
         }
 
-        public Criteria andOidBetween(Long value1, Long value2) {
-            this.addCriterion("oid between", value1, value2, "oid");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andOidNotBetween(Long value1, Long value2) {
+            return notBetween(oid, value1, value2);
         }
-
-        public Criteria andOidNotBetween(Long value1, Long value2) {
-            this.addCriterion("oid not between", value1, value2, "oid");
-            return (Criteria)this;
-        }
-
-        public Criteria andStatusIsNull() {
-            this.addCriterion("status is null");
-            return (Criteria)this;
-        }
-
-        public Criteria andStatusIsNotNull() {
-            this.addCriterion("status is not null");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIsNull() {
+            return isNull(status);
         }
 
-        public Criteria andStatusEqualTo(Integer value) {
-            this.addCriterion("status =", value, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIsNotNull() {
+            return isNotNull(status);
         }
 
-        public Criteria andStatusNotEqualTo(Integer value) {
-            this.addCriterion("status <>", value, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusEqualTo(Integer value) {
+            return equalTo(status, value);
         }
 
-        public Criteria andStatusGreaterThan(Integer value) {
-            this.addCriterion("status >", value, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusNotEqualTo(Integer value) {
+            return notEqualTo(status, value);
         }
 
-        public Criteria andStatusGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("status >=", value, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusGreaterThan(Integer value) {
+            return greaterThan(status, value);
         }
 
-        public Criteria andStatusLessThan(Integer value) {
-            this.addCriterion("status <", value, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(status, value);
         }
 
-        public Criteria andStatusLessThanOrEqualTo(Integer value) {
-            this.addCriterion("status <=", value, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusLessThan(Integer value) {
+            return lessThan(status, value);
         }
 
-        public Criteria andStatusLike(String value) {
-            this.addCriterion("status like", value, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(status, value);
         }
 
-        public Criteria andStatusNotLike(String value) {
-            this.addCriterion("status not like", value, "status");
-            return (Criteria)this;
-        }        public Criteria andStatusIn(List<Integer> values) {
-            this.addCriterion("status in", values, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusIn(List<Integer> values) {
+            return in(status, values);
         }
 
-        public Criteria andStatusNotIn(List<Integer> values) {
-            this.addCriterion("status not in", values, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusNotIn(List<Integer> values) {
+            return notIn(status, values);
         }
 
-        public Criteria andStatusBetween(Integer value1, Integer value2) {
-            this.addCriterion("status between", value1, value2, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusBetween(Integer value1, Integer value2) {
+            return between(status, value1, value2);
         }
 
-        public Criteria andStatusNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("status not between", value1, value2, "status");
-            return (Criteria)this;
+        public OrderStatusRecordExample.Criteria andStatusNotBetween(Integer value1, Integer value2) {
+            return notBetween(status, value1, value2);
         }
     }
 }
