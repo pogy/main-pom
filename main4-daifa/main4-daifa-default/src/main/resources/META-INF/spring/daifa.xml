@@ -22,4 +22,41 @@
     <dubbo:service interface="com.shigu.main4.daifa.process.OrderManageProcess" ref="orderManageProcess" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.daifa.process.PackDeliveryProcess" ref="packDeliveryProcess" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" ref="takeGoodsIssueProcess" timeout="20000" />
+
+    <bean id="tae_producer" class="com.aliyun.openservices.ons.api.bean.ProducerBean" init-method="start" destroy-method="shutdown">
+        <!-- Spring接入方式支持Java SDK支持的所有配置项 -->
+        <property name="properties" > <!--生产者配置信息-->
+            <props>
+                <prop key="ProducerId">PID_SDF_TEST</prop>
+                <prop key="AccessKey">YsqgyCrBUiYFIdRE</prop>
+                <prop key="SecretKey">KdV0QWhwUbftdfLpOoED1cIq1bHPyA</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--发现好货的消息-->
+    <bean id="consumerDaifa" class="com.aliyun.openservices.ons.api.bean.ConsumerBean" init-method="start" destroy-method="shutdown">
+        <property name="properties" > <!--消费者配置信息-->
+            <props>
+                <prop key="ConsumerId">CID_SDF</prop> <!--请替换XXX-->
+                <prop key="AccessKey">YsqgyCrBUiYFIdRE</prop>
+                <prop key="SecretKey">KdV0QWhwUbftdfLpOoED1cIq1bHPyA</prop>
+                <!--将消费者线程数固定为50个
+                <prop key="ConsumeThreadNums">50</prop>
+                -->
+            </props>
+        </property>
+        <property name="subscriptionTable">
+            <map>
+                <entry value-ref="refundListener">
+                    <key>
+                        <bean class="com.aliyun.openservices.ons.api.bean.Subscription">
+                            <property name="topic" value="SHIGU_TRADE_TEST"/>
+                            <property name="expression" value="*"/><!--expression即Tag，可以设置成具体的Tag，如 taga||tagb||tagc，也可设置成*。 *仅代表订阅所有Tag，不支持通配-->
+                        </bean>
+                    </key>
+                </entry>
+            </map>
+        </property>
+    </bean>
 </beans>

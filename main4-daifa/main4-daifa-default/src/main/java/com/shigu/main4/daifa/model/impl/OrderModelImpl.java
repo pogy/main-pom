@@ -13,6 +13,7 @@ import com.shigu.main4.daifa.bo.*;
 import com.shigu.main4.daifa.config.MQConfig;
 import com.shigu.main4.daifa.enums.DaifaListDealTypeEnum;
 import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
+import com.shigu.main4.daifa.enums.SubOrderStatus;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
@@ -327,7 +328,13 @@ public class OrderModelImpl implements OrderModel {
      */
     @Override
     @Transactional(propagation=Propagation.REQUIRED,rollbackFor ={Exception.class,RuntimeException.class})
-    public void autoRefund(Long refundId, List<Long> subOrderIds) {
+    public void autoRefund(Long refundId, List<Long> subOrderIds) throws DaifaException {
+        //检测是否可以自动退款
+        DaifaOrderExample orderExample=new DaifaOrderExample();
+        orderExample.createCriteria().andDfOrderIdIn(subOrderIds).andOrderStatusNotEqualTo((long)SubOrderStatus.PAYED.getValue());
+        if(daifaOrderMapper.countByExample(orderExample)>0){//有单子处在不可退状态
+            throw new DaifaException("有部分子单已发或已拿");
+        }
         //更新子单状态为已退款
         DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
         daifaOrderExample.createCriteria().andDfOrderIdIn(subOrderIds);

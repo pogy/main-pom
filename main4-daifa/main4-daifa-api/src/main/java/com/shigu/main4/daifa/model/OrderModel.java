@@ -35,5 +35,5 @@ public interface OrderModel {
      * @param refundId 退单ID
      * @param subOrderIds 退单包含的子单信息
      */
-    void autoRefund(Long refundId,List<Long> subOrderIds);
+    void autoRefund(Long refundId,List<Long> subOrderIds) throws DaifaException;
 }
