@@ -1,13 +1,32 @@
 <!doctype html>
-<html lang="zh-CN">
-<#include "/common/host_config.ftl">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title></title>
+
+    
+    
+    
+    
+<#include "/common/host_config.ftl">
+
+
+
+
+
+    
     <link href="http://style.571xz.com/v2/dfgl/css/scanBarCode.css" rel="stylesheet">
+    
+
+    
+
+    
+
+    
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
+    
     <script src="http://style.571xz.com/v2/dfgl/js/scanBarCode.js"></script>
 </head>
 <body>
@@ -17,7 +36,7 @@
         <#if userIcon??>
         <img src="${userIcon!}">
         <#else>
-        <img src="${daifa_host!}/css/img/headImg.jpg">
+        <img src="http://style.571xz.com/v2/dfgl/css/img/headImg.jpg">
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="#" class="fcF40 fs16">退出</a>

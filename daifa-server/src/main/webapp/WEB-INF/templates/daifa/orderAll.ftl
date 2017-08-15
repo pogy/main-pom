@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
-<#include "/common/host_config.ftl">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,6 +10,12 @@
     
     
     
+<#include "/common/host_config.ftl">
+
+
+
+
+
     
     <link href="http://style.571xz.com/v2/dfgl/css/orderAll.css" rel="stylesheet">
     
@@ -37,7 +42,7 @@
         <#if userIcon??>
         <img src="${userIcon!}">
         <#else>
-        <img src="${daifa_host!}/css/img/headImg.jpg">
+        <img src="http://style.571xz.com/v2/dfgl/css/img/headImg.jpg">
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="#" class="fcF40 fs16">退出</a>
@@ -251,7 +256,7 @@
             <div class="leftConBox fl">
                 <span>订单编号：${order.orderId!}</span>
                 <span>时间：${order.tradeTime!}</span>
-                <span>阿里旺旺：<a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${order.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank" class="fcBlue">${order.imWw!}</a></span>
+                
             </div>
             <div class="rightConBox fr">
                 <span class="fl">${order.receiverName!}（${order.receiverPhone!}）</span>

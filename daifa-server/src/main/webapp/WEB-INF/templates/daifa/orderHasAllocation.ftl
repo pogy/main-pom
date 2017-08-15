@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
-<#include "/common/host_config.ftl">
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,6 +10,12 @@
     
     
     
+<#include "/common/host_config.ftl">
+
+
+
+
+
     
     <link href="http://style.571xz.com/v2/dfgl/css/orderHasAllocation.css" rel="stylesheet">
     
@@ -37,7 +42,7 @@
         <#if userIcon??>
         <img src="${userIcon!}">
         <#else>
-        <img src="${daifa_host!}/css/img/headImg.jpg">
+        <img src="http://style.571xz.com/v2/dfgl/css/img/headImg.jpg">
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="#" class="fcF40 fs16">退出</a>
