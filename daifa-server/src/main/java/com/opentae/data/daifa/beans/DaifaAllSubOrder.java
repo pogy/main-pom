@@ -43,7 +43,7 @@ public class DaifaAllSubOrder implements Serializable{
     @Column("daifa_order.have_goods_date")
     private String haveGoodsTime;//有货时间
     @Column("daifa_order.delist_is")
-    private Boolean isNoSale;//是否下架true不卖了下架 false还在卖 注：该处为是否标记下架
+    private Boolean noSaleIs;//是否下架true不卖了下架 false还在卖 注：该处为是否标记下架
     @Column("daifa_order.return_goods_status")
     private Integer returnGoodsStatus;//退货状态@1等待退货2已退货3退货失败
     @Column("daifa_order.change_status")
@@ -158,12 +158,12 @@ public class DaifaAllSubOrder implements Serializable{
         this.haveGoodsTime = haveGoodsTime;
     }
 
-    public Boolean getNoSale() {
-        return isNoSale;
+    public Boolean getNoSaleIs () {
+        return noSaleIs;
     }
 
-    public void setNoSale(Boolean noSale) {
-        isNoSale = noSale;
+    public void setNoSaleIs (Boolean noSaleIs) {
+        this.noSaleIs = noSaleIs;
     }
 
     public Integer getReturnGoodsStatus() {
