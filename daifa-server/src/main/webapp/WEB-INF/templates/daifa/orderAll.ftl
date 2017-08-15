@@ -18,21 +18,8 @@
 
     
     <link href="http://style.571xz.com/v2/dfgl/css/orderAll.css" rel="stylesheet">
-    
-
-    
-
-    
-
-    
-        
-    
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-    
-        
             <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
-        
-    
     <script src="http://style.571xz.com/v2/dfgl/js/orderAll.js"></script>
 </head>
 <body>
@@ -58,10 +45,9 @@
     <ul>
         
             <li>
-                
+<@shiro.hasPermission name="df:admin">
                 <a class="current"  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
-                
-                
+</@shiro.hasPermission>
             </li>
         
             <li>
