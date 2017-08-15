@@ -380,7 +380,7 @@ public class GoodsFileService extends OssIO {
                 gf.setNeedPwd(false);
                 gf.setPasswd(null);
                 goodsFileMapper.insertSelective(gf);
-                updateGoodsCountForSearch(id,false);
+                updateGoodsCountForSearch(id,webSite,false);
             } catch (Exception e) {
             }
         }
@@ -401,7 +401,7 @@ public class GoodsFileService extends OssIO {
         example.createCriteria().andFileKeyEqualTo(getHomeDir(shopId) + fileId).andGoodsIdEqualTo(goodsId);
         int delnum = goodsFileMapper.deleteByExample(example);
         if (delnum>0) {
-            updateGoodsCountForSearch(goodsId,false);
+            updateGoodsCountForSearch(goodsId,webSite,false);
         }
         return delnum;
     }
@@ -411,12 +411,18 @@ public class GoodsFileService extends OssIO {
      * @param goodsId
      * @param hadBigzip
      */
-    private void updateGoodsCountForSearch(Long goodsId,Boolean hadBigzip){
+    private void updateGoodsCountForSearch(Long goodsId,String webSite,Boolean hadBigzip){
         GoodsCountForsearchExample countForsearchExample=new GoodsCountForsearchExample();
         countForsearchExample.createCriteria().andGoodsIdEqualTo(goodsId);
         GoodsCountForsearch countForsearch=new GoodsCountForsearch();
         countForsearch.setHadBigzip(hadBigzip?1:0);
-        goodsCountForsearchMapper.updateByExampleSelective(countForsearch,countForsearchExample);
+        countForsearch.setWebSite(webSite);
+        countForsearch.setGoodsId(goodsId);
+        try {
+            goodsCountForsearchMapper.insertSelective(countForsearch);
+        } catch (Exception e) {
+            goodsCountForsearchMapper.updateByExampleSelective(countForsearch,countForsearchExample);
+        }
     }
 
     /**
@@ -549,7 +555,7 @@ public class GoodsFileService extends OssIO {
             throw new JsonErrException("无法关联商品到链接");
         }
         if (bo.getIsChecked() == null || !bo.getIsChecked()) {
-            saveOrUpdateOuterLinkSingle(bo, bo.getGoodsId());
+            saveOrUpdateOuterLinkSingle(bo,shop.getWebSite(), bo.getGoodsId());
         } else {
             ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
             shiguGoodsTiny.setWebSite(shop.getWebSite());
@@ -563,14 +569,14 @@ public class GoodsFileService extends OssIO {
             List<ShiguGoodsTiny> select = shiguGoodsTinyMapper.select(shiguGoodsTiny);
             if (select.size() > 0) {
                 for (Long aLong : select.stream().map(ShiguGoodsTiny::getGoodsId).collect(Collectors.toList())) {
-                    saveOrUpdateOuterLinkSingle(bo, aLong);
+                    saveOrUpdateOuterLinkSingle(bo,shop.getWebSite(), aLong);
                 }
             }
         }
 
     }
 
-    private void saveOrUpdateOuterLinkSingle(BigPicOuterLinkBO bo, Long goodsId) {
+    private void saveOrUpdateOuterLinkSingle(BigPicOuterLinkBO bo,String webSite, Long goodsId) {
         GoodsFile goodsFile = new GoodsFile();
         goodsFile.setGoodsId(goodsId);
         goodsFileMapper.delete(goodsFile);
@@ -581,7 +587,7 @@ public class GoodsFileService extends OssIO {
         goodsFile.setFileKey(bo.getLink());
         goodsFile.setType(2);
         goodsFileMapper.insertSelective(goodsFile);
-        updateGoodsCountForSearch(goodsId,true);
+        updateGoodsCountForSearch(goodsId,webSite,true);
     }
 
     private void modifyDataGoodsFile(String from, String to) {
