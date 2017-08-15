@@ -138,7 +138,7 @@
         <dependency>
             <groupId>xinzuo-mybatis</groupId>
             <artifactId>xinzuo-mybatis</artifactId>
-            <version>1.0.3-RELEASE</version>
+            <version>${xinzuo-mybatis.version}</version>
         </dependency>
 
         <!--mysql部分-->
@@ -420,6 +420,10 @@
                 <exclusion>
                     <groupId>data-mall</groupId>
                     <artifactId>shigu_store_id_generator</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>data-mall</groupId>
+                    <artifactId>xinzuo_mybatis</artifactId>
                 </exclusion>
                 <!--<exclusion>-->
                     <!--<groupId>com.openJar</groupId>-->

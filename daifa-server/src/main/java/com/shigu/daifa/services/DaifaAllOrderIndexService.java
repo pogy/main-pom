@@ -198,7 +198,7 @@ public class DaifaAllOrderIndexService {
         if(!StringUtils.hasText(timeStr)){
             return JsonResponseUtil.error("时间不能空");
         }
-        orderManageProcess.haveGoodsTime(childOrderId,DateUtil.stringToDate(timeStr,DateUtil.patternB));
+        orderManageProcess.haveGoodsTime(childOrderId,DateUtil.stringToDate(timeStr,DateUtil.patternD));
         return JsonResponseUtil.success("设置成功");
     }
 
