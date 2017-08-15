@@ -380,11 +380,7 @@ public class GoodsFileService extends OssIO {
                 gf.setNeedPwd(false);
                 gf.setPasswd(null);
                 goodsFileMapper.insertSelective(gf);
-                GoodsCountForsearchExample countForsearchExample=new GoodsCountForsearchExample();
-                countForsearchExample.createCriteria().andGoodsIdEqualTo(id);
-                GoodsCountForsearch countForsearch=new GoodsCountForsearch();
-                countForsearch.setHadBigzip(1);
-                goodsCountForsearchMapper.updateByExampleSelective(countForsearch,countForsearchExample);
+                updateGoodsCountForSearch(id,false);
             } catch (Exception e) {
             }
         }
@@ -405,13 +401,22 @@ public class GoodsFileService extends OssIO {
         example.createCriteria().andFileKeyEqualTo(getHomeDir(shopId) + fileId).andGoodsIdEqualTo(goodsId);
         int delnum = goodsFileMapper.deleteByExample(example);
         if (delnum>0) {
-            GoodsCountForsearchExample countForsearchExample=new GoodsCountForsearchExample();
-            countForsearchExample.createCriteria().andGoodsIdEqualTo(goodsId);
-            GoodsCountForsearch countForsearch=new GoodsCountForsearch();
-            countForsearch.setHadBigzip(1);
-            goodsCountForsearchMapper.updateByExampleSelective(countForsearch,countForsearchExample);
+            updateGoodsCountForSearch(goodsId,false);
         }
         return delnum;
+    }
+
+    /**
+     * 修改商品统计中的数量
+     * @param goodsId
+     * @param hadBigzip
+     */
+    private void updateGoodsCountForSearch(Long goodsId,Boolean hadBigzip){
+        GoodsCountForsearchExample countForsearchExample=new GoodsCountForsearchExample();
+        countForsearchExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        GoodsCountForsearch countForsearch=new GoodsCountForsearch();
+        countForsearch.setHadBigzip(hadBigzip?1:0);
+        goodsCountForsearchMapper.updateByExampleSelective(countForsearch,countForsearchExample);
     }
 
     /**
@@ -575,7 +580,8 @@ public class GoodsFileService extends OssIO {
         }
         goodsFile.setFileKey(bo.getLink());
         goodsFile.setType(2);
-        goodsFileMapper.insert(goodsFile);
+        goodsFileMapper.insertSelective(goodsFile);
+        updateGoodsCountForSearch(goodsId,true);
     }
 
     private void modifyDataGoodsFile(String from, String to) {
