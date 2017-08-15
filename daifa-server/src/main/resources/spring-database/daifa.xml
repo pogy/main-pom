@@ -50,8 +50,9 @@
             </list>
         </property>
         <property name="dataSource" ref="daifa_dataSource"></property>
-        <!--<property name="configLocation" value="classpath:mybatis-config.xml"></property>-->
-        <property name="mapperLocations" value="classpath*:/com/opentae/data/daifa/mapper/*.xml" />
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!--<property name="mapperLocations" value="classpath*:/com/opentae/data/daifa/mapper/*.xml" />-->
+        <property name="mapperLocations" value="classpath*:/daifa/mybatis/*.xml" />
         <property name="typeAliasesPackage" value="com.opentae.data.daifa"></property>
     </bean>
     <bean id="daifa_tx" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
