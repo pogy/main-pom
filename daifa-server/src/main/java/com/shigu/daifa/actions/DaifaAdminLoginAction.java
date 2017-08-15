@@ -67,7 +67,7 @@ public class DaifaAdminLoginAction {
 
         Subject currentUser = SecurityUtils.getSubject();
         if (currentUser.isAuthenticated()){//如果已经登陆，去登陆页面
-            return "redirect:/daifa/orderAll.htm?orderId=065&page=1";
+            return "redirect:/daifa/orderAll.htm";
         }else if(bo.getUsername()!=null&&bo.getPassword()!=null){
             CaptchaUsernamePasswordToken token = new CaptchaUsernamePasswordToken(
                     bo.getUsername(), bo.getPassword(), false, request.getRemoteAddr(), "");
@@ -75,7 +75,7 @@ public class DaifaAdminLoginAction {
             try {
                 currentUser.login(token);
                 //登陆成功
-                return "redirect:/daifa/orderAll.htm?orderId=065&page=1";
+                return "redirect:/daifa/orderAll.htm";
             } catch (AuthenticationException e) {
                 //登陆失败
                 token.clear();
