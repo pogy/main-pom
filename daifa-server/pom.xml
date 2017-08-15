@@ -341,10 +341,6 @@
             <version>0.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-tools</artifactId>
-            <version>${main4-tools.version}</version>
-        </dependency>
+
     </dependencies>
 </project>
