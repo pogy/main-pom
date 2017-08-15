@@ -1,6 +1,15 @@
 package com.shigu.main4.daifa.process.impl;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
+import com.opentae.data.daifa.beans.DaifaTrade;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
+import com.opentae.data.daifa.examples.DaifaTradeExample;
+import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
+import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.main4.daifa.bo.OrderBO;
+import com.shigu.main4.daifa.enums.DaifaTradeStatus;
+import com.shigu.main4.daifa.enums.SubOrderStatus;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.OrderManageProcess;
@@ -20,6 +29,9 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     @Autowired
     DaifaTradeMapper daifaTradeMapper;
 
+    @Autowired
+    DaifaOrderMapper daifaOrderMapper;
+
     @Override
     public void newOrder(OrderBO order) {
         SpringBeanFactory.getBean(OrderModel.class,order);
@@ -31,8 +43,9 @@ public class OrderManageProcessImpl implements OrderManageProcess {
      * @param mark 备注内容
      */
     @Override
-    public void markSubOrder(Long subOrderId, String mark) {
-        SubOrderModel subOrderModel;
+    public void markSubOrder(Long subOrderId, String mark) throws DaifaException {
+        SubOrderModel subOrderModel=SpringBeanFactory.getBean(SubOrderModel.class,subOrderId);
+        subOrderModel.mark(mark);
     }
 
     /**
@@ -42,7 +55,8 @@ public class OrderManageProcessImpl implements OrderManageProcess {
      */
     @Override
     public void haveGoodsTime(Long subOrderId, Date time) {
-
+        SubOrderModel subOrderModel=SpringBeanFactory.getBean(SubOrderModel.class,subOrderId);
+        subOrderModel.haveGoodsTime(time);
     }
 
     /**
@@ -51,7 +65,8 @@ public class OrderManageProcessImpl implements OrderManageProcess {
      */
     @Override
     public void markDown(Long subOrderId) {
-
+        SubOrderModel subOrderModel=SpringBeanFactory.getBean(SubOrderModel.class,subOrderId);
+        subOrderModel.markDown();
     }
 
     @Override
@@ -71,7 +86,10 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     }
 
     @Override
-    public void autoRefund() {
-
+    public boolean tryRefund(String outerSubOrderId, Integer num) {
+        DaifaOrderExample orderExample=new DaifaOrderExample();
+        orderExample.createCriteria().andOrderCodeEqualTo(outerSubOrderId).andOrderStatusNotEqualTo((long) SubOrderStatus.PAYED.getValue());
+        return daifaOrderMapper.countByExample(orderExample)>num;
     }
+
 }

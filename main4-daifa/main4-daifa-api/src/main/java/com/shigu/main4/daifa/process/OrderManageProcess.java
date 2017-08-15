@@ -42,4 +42,12 @@ public interface OrderManageProcess {
      */
     void orderTimeout();
 
+    /**
+     * 尝试退款
+     * @param outerSubOrderId 外部子订单号
+     * @param num 要退的件数
+     * @return true 为可退
+     */
+    boolean tryRefund(String outerSubOrderId,Integer num);
+
 }
