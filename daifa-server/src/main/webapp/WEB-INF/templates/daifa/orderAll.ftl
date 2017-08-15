@@ -336,8 +336,8 @@
             <p>${childOrder.haveGoodsTime!} 有货</p>
             </#if>
             <p><b class="fcBlue" jbtn="setTime">设置有货时间</b></p>
-            ===${childOrder.isNoSale!}===
-            <#if childOrder.isNoSale == true>
+            ===${childOrder.noSaleIs!}===
+            <#if childOrder.noSaleIs == true>
             <p><span class="fcF40">已标记下架</span></p>
             <#else>
             <p><b class="fcBlue" jbtn="noSale">标记下架</b></p>
