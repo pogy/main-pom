@@ -50,13 +50,13 @@
                 <entry key="template_exception_handler" value="html_debug"/>
             </map>
         </property>
-        <!--<property name="freemarkerVariables">-->
-            <!--<map>-->
-                <!--<entry key="shiro" value-ref="shiroTags"/>-->
-            <!--</map>-->
-        <!--</property>-->
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="shiro" value-ref="shiroTags"/>
+            </map>
+        </property>
     </bean>
-
+    <bean id="shiroTags" class="com.jagregory.shiro.freemarker.ShiroTags"/>
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
         <property name="messageConverters" ref="messageConverters">
         </property>
