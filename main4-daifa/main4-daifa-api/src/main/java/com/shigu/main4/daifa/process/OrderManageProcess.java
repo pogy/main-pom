@@ -39,12 +39,15 @@ public interface OrderManageProcess {
 
     /**
      * 订单超时
-     * @param orderId 订单数据
      */
-    void orderTimeout(Long orderId);
+    void orderTimeout();
 
     /**
-     * 退款自动处理
+     * 尝试退款
+     * @param outerSubOrderId 外部子订单号
+     * @param num 要退的件数
+     * @return true 为可退
      */
-    void autoRefund();
+    boolean tryRefund(String outerSubOrderId,Integer num);
+
 }
