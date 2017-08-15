@@ -1,5 +1,6 @@
 package com.shigu.main4.order.services.impl;
 
+import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
@@ -12,7 +13,6 @@ import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.services.AfterSaleService;
-import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.*;
@@ -43,6 +43,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     @Autowired
     private OrderMessageProducter orderMessageProducter;
+
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
 
     /**
      * 售后页面的子单简单数据
@@ -137,11 +140,11 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public Long returnGoodsApply(Long subOrderId, int refundCount, Long refundMoney,String refundReason, String refundDesc) throws OrderException {
-        Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
-                .refundApply(2, refundCount, refundMoney, refundReason + "," + refundDesc);
+        SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId);
+        Long refundId = subItemOrder.refundApply(2, refundCount, refundMoney, refundReason + "," + refundDesc);
 
         // TODO: 退货退款消息推送
-        orderMessageProducter.orderRefundHasItem(refundId);
+        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, refundMoney, refundReason + "," + refundDesc);
         return refundId;
     }
 
@@ -157,10 +160,10 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     @Override
     public Long exchangeApply(Long subOrderId, String refundReason, String refundDesc) throws OrderException {
         Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
-                .refundApply(3, -1, -1L, refundReason + "@_@" + refundDesc);
+                .refundApply(3, -1, -1L, refundReason + "," + refundDesc);
 
-        // TODO: 退货退款消息推送
-        orderMessageProducter.orderRefundHasItem(refundId);
+        // TODO: 换货消息推送
+        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, 0L, refundReason + "," + refundDesc);
         return refundId;
     }
 
@@ -308,9 +311,34 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public void chooseExpress(Long refundId, Long expressId, String expressCode) {
-        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCode);
+        modExpress(refundId, expressId, expressCode, false);
     }
 
+    private void modExpress(Long refundId, Long expressId, String expressCode, boolean modify) {
+        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCode);
+        orderMessageProducter.refundCourierNumberModify(refundId, selCompanyById(expressId), expressCode, modify);
+    }
+
+    private String selCompanyById(Long expressId) {
+        ExpressCompany expressCompany = expressCompanyMapper.selectByPrimaryKey(expressId);
+        return expressCompany == null ? "" : expressCompany.getExpressName();
+    }
+
+    /**
+     * ====================================================================================
+     * 修改快递公司
+     *
+     * @param refundId
+     * @param expressId
+     * @param expressCode
+     * @create: zf
+     * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
+     * @return:
+     */
+    @Override
+    public void modifyExpress(Long refundId, Long expressId, String expressCode) {
+        modExpress(refundId, expressId, expressCode, true);
+    }
     /**
      * 获取已填写的快递信息
      *
@@ -333,22 +361,6 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 //            throw new Main4Exception(e.getMessage());
 //        }
         return vo;
-    }
-
-    /**
-     * ====================================================================================
-     * 修改快递公司
-     *
-     * @param refundId
-     * @param expressId
-     * @param expressCode
-     * @create: zf
-     * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
-     * @return:
-     */
-    @Override
-    public void modifyExpress(Long refundId, Long expressId, String expressCode) {
-        chooseExpress(refundId, expressId, expressCode);
     }
 
     /**

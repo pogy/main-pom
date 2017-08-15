@@ -5,7 +5,13 @@ import com.aliyun.openservices.ons.api.OnExceptionContext;
 import com.aliyun.openservices.ons.api.SendCallback;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
+import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.mq.msg.*;
+import com.shigu.main4.order.vo.ItemOrderVO;
+import com.shigu.main4.order.vo.ItemProductVO;
+import com.shigu.main4.order.vo.LogisticsVO;
+import com.shigu.main4.order.vo.OrderServiceVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 订单消息生产
@@ -23,7 +31,7 @@ public class OrderMessageProducter {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderMessageProducter.class);
 
-    public static final String TOPIC = "PID_SORDER_TEST";
+    public static final String TOPIC = "SHIGU_TRADE_TEST";
 
     public enum OrderMQTag {
         order_push("oid_"),
@@ -44,10 +52,50 @@ public class OrderMessageProducter {
 
     /**
      * 订单推送
+     * @param itemOrder
      */
-    public void orderPush() {
+    public void orderPush(ItemOrder itemOrder) {
         OrderMessage order = new OrderMessage();
-//        order.setOid();
+        ItemOrderVO itemOrderVO = itemOrder.orderInfo();
+
+        order.setOid(itemOrderVO.getOrderId());
+        order.setAggrement(1);
+        order.setSenderId(itemOrderVO.getSenderId());
+        order.setType(itemOrderVO.getType().type);
+        order.setSubOrders(itemOrder.subOrdersInfo().stream().map(subItemOrderVO -> {
+            ItemProductVO product = subItemOrderVO.getProduct();
+            SubOrderInfoMessage subOrder = BeanMapper.map(subItemOrderVO, SubOrderInfoMessage.class);
+            subOrder.setTitle(product.getTitle());
+            subOrder.setSinglePay(product.getPrice());
+            subOrder.setPicUrl(product.getPicUrl());
+            subOrder.setWebSite(product.getWebSite());
+            subOrder.setWeight(product.getWeight());
+            subOrder.setMarketId(product.getMarketId());
+            subOrder.setMarketName(product.getMarketName());
+            subOrder.setFloorId(product.getFloorId());
+            subOrder.setFloor(product.getFloor());
+            subOrder.setShopId(product.getShopId());
+            subOrder.setShopNum(product.getShopNum());
+            //TODO: subOrder.setSoidps();
+            return subOrder;
+        }).collect(Collectors.toList()));
+
+        List<ServiceMessage> services = new ArrayList<>();
+        for (OrderServiceVO serviceVO : itemOrder.selServices()) {
+            for (SubOrderInfoMessage orderInfoMessage : order.getSubOrders()) {
+                ServiceMessage serviceMessage = BeanMapper.map(serviceVO, ServiceMessage.class);
+                serviceMessage.setSoid(orderInfoMessage.getSoid());
+                serviceMessage.setId(serviceVO.getServiceId());
+                services.add(serviceMessage);
+            }
+        }
+        order.setServices(services);
+
+        List<LogisticMessage> logistics = new ArrayList<>();
+        for (LogisticsVO logisticsVO : itemOrder.selLogisticses()) {
+            LogisticMessage message = BeanMapper.map(logisticsVO, LogisticMessage.class);
+        }
+        order.setLogistics(logistics);
         sendAsync(OrderMQTag.order_push, BaseMessage.success(order.getOid().toString(), "订单创建", order));
     }
 
@@ -64,26 +112,38 @@ public class OrderMessageProducter {
         sendAsync(OrderMQTag.order_refund_noitem, BaseMessage.success(refund.getRefundId().toString(), "仅退款", refund));
     }
 
-    public void orderRefundHasItem(Long refundId) {
+    public void orderRefundHasItem(Long refundId, Long subOrderId, Long money, String reason) {
         RefundMessage refund = new RefundMessage();
         refund.setRefundId(refundId);
+        refund.setMoney(money);
+        refund.setReason(reason);
+
+        ArrayList<SubOrderMessage> soids = new ArrayList<>();
+        SubOrderMessage subOrder = new SubOrderMessage();
+        subOrder.setSoid(subOrderId);
+        subOrder.setSoidps(Arrays.asList(subOrderId));
+        subOrder.setSingleMoney(money);
+        soids.add(subOrder);
+        refund.setSuborders(soids);
+
         sendAsync(OrderMQTag.order_refund_hasitem, BaseMessage.success(refund.getRefundId().toString(), "退货退款", refund));
     }
 
-    public void refundCourierNumber(Long refundId, String company, String courierNumber) {
+    public void refundCourierNumberModify(Long refundId, String company, String courierNumber, boolean modify) {
         CourierMessage courier = new CourierMessage();
         courier.setRefundId(refundId);
         courier.setCompany(company);
         courier.setCourierNumber(courierNumber);
-        sendAsync(OrderMQTag.refund_courier_number, BaseMessage.success(courier.getRefundId().toString(), "填写快递单", courier));
-    }
-
-    public void refundCourierNumberModify(Long refundId, String company, String courierNumber) {
-        CourierMessage courier = new CourierMessage();
-        courier.setRefundId(refundId);
-        courier.setCompany(company);
-        courier.setCourierNumber(courierNumber);
-        sendAsync(OrderMQTag.refund_courier_number_modify, BaseMessage.success(courier.getRefundId().toString(), "填写快递单", courier));
+        OrderMQTag tag;
+        String msg;
+        if (modify) {
+            tag = OrderMQTag.refund_courier_number_modify;
+            msg = "快递单修改";
+        } else {
+            tag = OrderMQTag.refund_courier_number;
+            msg = "填写快递单";
+        }
+        sendAsync(tag, BaseMessage.success(courier.getRefundId().toString(), msg, courier));
     }
 
     public void error(OrderMQTag tag, String key, String msg) {

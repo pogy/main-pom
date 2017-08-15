@@ -1,10 +1,5 @@
 package com.shigu.main4.order.mq.msg;
 
-import com.alipay.api.domain.OrderLogisticsInfo;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
-import com.shigu.main4.order.vo.MetarialVO;
-import com.shigu.main4.order.vo.OrderServiceVO;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -42,22 +37,22 @@ public class OrderMessage implements Serializable {
     /**
      * 子单信息
      */
-    private List<SubOrderInfoVO> subOrders;
+    private List<SubOrderInfoMessage> subOrders;
 
     /**
      * 服务信息
      */
-    private List<OrderServiceVO> services;
+    private List<ServiceMessage> services;
 
     /**
      * 包材信息
      */
-    private List<MetarialVO> packages;
+    private List<PackageMessage> packages;
 
     /**
      * 物流信息
      */
-    private List<OrderLogisticsInfo> logistics;
+    private List<LogisticMessage> logistics;
 
     private Buyer buyer;
 
@@ -101,35 +96,35 @@ public class OrderMessage implements Serializable {
         this.senderId = senderId;
     }
 
-    public List<SubOrderInfoVO> getSubOrders() {
+    public List<SubOrderInfoMessage> getSubOrders() {
         return subOrders;
     }
 
-    public void setSubOrders(List<SubOrderInfoVO> subOrders) {
+    public void setSubOrders(List<SubOrderInfoMessage> subOrders) {
         this.subOrders = subOrders;
     }
 
-    public List<OrderServiceVO> getServices() {
+    public List<ServiceMessage> getServices() {
         return services;
     }
 
-    public void setServices(List<OrderServiceVO> services) {
+    public void setServices(List<ServiceMessage> services) {
         this.services = services;
     }
 
-    public List<MetarialVO> getPackages() {
+    public List<PackageMessage> getPackages() {
         return packages;
     }
 
-    public void setPackages(List<MetarialVO> packages) {
+    public void setPackages(List<PackageMessage> packages) {
         this.packages = packages;
     }
 
-    public List<OrderLogisticsInfo> getLogistics() {
+    public List<LogisticMessage> getLogistics() {
         return logistics;
     }
 
-    public void setLogistics(List<OrderLogisticsInfo> logistics) {
+    public void setLogistics(List<LogisticMessage> logistics) {
         this.logistics = logistics;
     }
 

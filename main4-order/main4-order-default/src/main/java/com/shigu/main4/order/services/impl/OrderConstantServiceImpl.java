@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 订单常量资源管理 实现
@@ -94,6 +95,8 @@ public class OrderConstantServiceImpl implements OrderConstantService {
         for (OrderConstant constant : orderConstantMapper.select(new OrderConstant())) {
             OrderConstantType.typeOf(constant.getType()).put(constant.getSenderId(), constant);
         }
+
+        initAddress();
     }
 
     /**
@@ -185,6 +188,28 @@ public class OrderConstantServiceImpl implements OrderConstantService {
         return OrderConstantType.LOGISTICS.get(senderId, id);
     }
 
+
+    private Map<Long, List<OrderTown>> cityGroup;
+    private Map<Long, List<OrderCity>> provGroup;
+    private Map<Long, OrderProv> provMap;
+    private Map<Long, OrderCity> cityMap;
+    private Map<Long, OrderTown> townMap;
+
+    public void initAddress() {
+        List<CityVO> orderCities = orderCityMapper.select(new OrderCity()).stream().map(c -> {
+            CityVO vo = new CityVO();
+            vo.setCityId(c.getCityId());
+            vo.setCity(c.getCityName());
+            return vo;
+        }).collect(Collectors.toList());
+        List<OrderTown> orderTowns = orderTownMapper.select(new OrderTown());
+        provMap = orderProvMapper.select(new OrderProv()).stream().collect(Collectors.toMap(OrderProv::getProvId, p -> p));
+        cityMap = orderCities.stream().collect(Collectors.toMap(OrderCity::getCityId, c -> c));
+        townMap = orderTowns.stream().collect(Collectors.toMap(OrderTown::getTownId, t -> t));
+
+        cityGroup = orderTowns.stream().collect(Collectors.groupingBy(OrderTown::getCityId));
+        provGroup = orderCities.stream().collect(Collectors.groupingBy(OrderCity::getProvId));
+    }
     /**
      * 查询所有省份
      *

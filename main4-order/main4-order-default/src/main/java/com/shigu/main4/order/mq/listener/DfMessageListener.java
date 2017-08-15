@@ -4,6 +4,8 @@ import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,8 +14,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DfMessageListener implements MessageListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(DfMessageListener.class);
     @Override
     public Action consume(Message message, ConsumeContext consumeContext) {
-        return null;
+        String body = new String(message.getBody());
+        logger.info(body);
+        return Action.ReconsumeLater;
     }
 }

@@ -11,6 +11,8 @@ public class OrderServiceVO implements Serializable{
      * 付总金额
      */
     private Long money;
+
+    private Long serviceId;
     /**
      * 数量
      */
@@ -34,6 +36,14 @@ public class OrderServiceVO implements Serializable{
 
     public void setMoney(Long money) {
         this.money = money;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
     }
 
     public Integer getNum() {

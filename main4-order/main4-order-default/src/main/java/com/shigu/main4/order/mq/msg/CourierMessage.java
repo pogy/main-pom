@@ -1,10 +1,12 @@
 package com.shigu.main4.order.mq.msg;
 
+import java.io.Serializable;
+
 /**
  * 退货快递单信息
  * Created by bugzy on 2017/8/14 0014.
  */
-public class CourierMessage {
+public class CourierMessage implements Serializable {
 
     private Long refundId;
     private String company;

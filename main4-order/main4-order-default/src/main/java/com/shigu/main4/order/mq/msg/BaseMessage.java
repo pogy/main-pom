@@ -3,12 +3,13 @@ package com.shigu.main4.order.mq.msg;
 import com.alibaba.fastjson.JSON;
 
 import javax.persistence.Transient;
+import java.io.Serializable;
 
 /**
  * 消息基础
  * Created by bugzy on 2017/8/14 0014.
  */
-public class BaseMessage<D> {
+public class BaseMessage<D> implements Serializable {
     private boolean status;
     @Transient
     private transient String key;
@@ -20,6 +21,7 @@ public class BaseMessage<D> {
 
     private BaseMessage(boolean status, String key, String msg, D data) {
         this.status = status;
+        this.key = key;
         this.msg = msg;
         this.data = data;
     }

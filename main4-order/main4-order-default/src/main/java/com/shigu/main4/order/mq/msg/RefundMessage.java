@@ -1,12 +1,13 @@
 package com.shigu.main4.order.mq.msg;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 退款信息
  * Created by bugzy on 2017/8/14 0014.
  */
-public class RefundMessage {
+public class RefundMessage implements Serializable {
 
     private Long refundId;
     private List<SubOrderMessage> suborders;
