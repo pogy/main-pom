@@ -297,9 +297,9 @@
         </li>
         <li class="orderState">
             <#if order.tradeState == 1>
-                <#if childOrder.allotState == 1>
+                <#if childOrder.allotState == 0>
                 <p class="fc3">未分配</p>
-                <#else>
+                <#elseif childOrder.allotState == 1>
                 <p>已分配</p>
                 </#if>
                 
