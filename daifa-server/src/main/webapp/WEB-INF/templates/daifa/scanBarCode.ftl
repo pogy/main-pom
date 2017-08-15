@@ -27,7 +27,7 @@
 <div class="pageHeader yahei">
     <h1 class="fl">代发后台管理</h1>
     <div class="xbUser fr">
-        <#if (userIcon?size) gt 0>
+        <#if userIcon??>
         <img src="${userIcon!}">
         <#else>
         <img src="${$stylepath!}${$projectid!}/css/img/headImg.jpg">
