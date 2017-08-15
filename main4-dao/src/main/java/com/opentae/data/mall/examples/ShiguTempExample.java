@@ -232,207 +232,71 @@ public class ShiguTempExample implements SgExample{
             }
         }
 
-        public ShiguTempExample.Criteria andIdIsNull() {
-            this.addCriterion("id is null");
+        public ShiguTempExample.Criteria andKey1IsNull() {
+            this.addCriterion("key1 is null");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdIsNotNull() {
-            this.addCriterion("id is not null");
+        public ShiguTempExample.Criteria andKey1IsNotNull() {
+            this.addCriterion("key1 is not null");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdEqualTo(Long value) {
-            this.addCriterion("id =", value, "id");
+        public ShiguTempExample.Criteria andKey1EqualTo(String value) {
+            this.addCriterion("key1 =", value, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdNotEqualTo(Long value) {
-            this.addCriterion("id <>", value, "id");
+        public ShiguTempExample.Criteria andKey1NotEqualTo(String value) {
+            this.addCriterion("key1 <>", value, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdGreaterThan(Long value) {
-            this.addCriterion("id >", value, "id");
+        public ShiguTempExample.Criteria andKey1GreaterThan(String value) {
+            this.addCriterion("key1 >", value, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("id >=", value, "id");
+        public ShiguTempExample.Criteria andKey1GreaterThanOrEqualTo(String value) {
+            this.addCriterion("key1 >=", value, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdLessThan(Long value) {
-            this.addCriterion("id <", value, "id");
+        public ShiguTempExample.Criteria andKey1LessThan(String value) {
+            this.addCriterion("key1 <", value, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("id <=", value, "id");
+        public ShiguTempExample.Criteria andKey1LessThanOrEqualTo(String value) {
+            this.addCriterion("key1 <=", value, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdLike(String value) {
-            this.addCriterion("id like", value, "id");
+        public ShiguTempExample.Criteria andKey1Like(String value) {
+            this.addCriterion("key1 like", value, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdNotLike(String value) {
-            this.addCriterion("id not like", value, "id");
+        public ShiguTempExample.Criteria andKey1NotLike(String value) {
+            this.addCriterion("key1 not like", value, "key1");
             return (ShiguTempExample.Criteria)this;
-        }        public ShiguTempExample.Criteria andIdIn(List<Long> values) {
-            this.addCriterion("id in", values, "id");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andIdNotIn(List<Long> values) {
-            this.addCriterion("id not in", values, "id");
+        }        public ShiguTempExample.Criteria andKey1In(List<String> values) {
+            this.addCriterion("key1 in", values, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdBetween(Long value1, Long value2) {
-            this.addCriterion("id between", value1, value2, "id");
+        public ShiguTempExample.Criteria andKey1NotIn(List<String> values) {
+            this.addCriterion("key1 not in", values, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("id not between", value1, value2, "id");
+        public ShiguTempExample.Criteria andKey1Between(String value1, String value2) {
+            this.addCriterion("key1 between", value1, value2, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey3IsNull() {
-            this.addCriterion("key3 is null");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3IsNotNull() {
-            this.addCriterion("key3 is not null");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3EqualTo(String value) {
-            this.addCriterion("key3 =", value, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3NotEqualTo(String value) {
-            this.addCriterion("key3 <>", value, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3GreaterThan(String value) {
-            this.addCriterion("key3 >", value, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3GreaterThanOrEqualTo(String value) {
-            this.addCriterion("key3 >=", value, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3LessThan(String value) {
-            this.addCriterion("key3 <", value, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3LessThanOrEqualTo(String value) {
-            this.addCriterion("key3 <=", value, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3Like(String value) {
-            this.addCriterion("key3 like", value, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3NotLike(String value) {
-            this.addCriterion("key3 not like", value, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }        public ShiguTempExample.Criteria andKey3In(List<String> values) {
-            this.addCriterion("key3 in", values, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3NotIn(List<String> values) {
-            this.addCriterion("key3 not in", values, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3Between(String value1, String value2) {
-            this.addCriterion("key3 between", value1, value2, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey3NotBetween(String value1, String value2) {
-            this.addCriterion("key3 not between", value1, value2, "key3");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagIsNull() {
-            this.addCriterion("flag is null");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagIsNotNull() {
-            this.addCriterion("flag is not null");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagEqualTo(String value) {
-            this.addCriterion("flag =", value, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagNotEqualTo(String value) {
-            this.addCriterion("flag <>", value, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagGreaterThan(String value) {
-            this.addCriterion("flag >", value, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagGreaterThanOrEqualTo(String value) {
-            this.addCriterion("flag >=", value, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagLessThan(String value) {
-            this.addCriterion("flag <", value, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagLessThanOrEqualTo(String value) {
-            this.addCriterion("flag <=", value, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagLike(String value) {
-            this.addCriterion("flag like", value, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagNotLike(String value) {
-            this.addCriterion("flag not like", value, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }        public ShiguTempExample.Criteria andFlagIn(List<String> values) {
-            this.addCriterion("flag in", values, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagNotIn(List<String> values) {
-            this.addCriterion("flag not in", values, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagBetween(String value1, String value2) {
-            this.addCriterion("flag between", value1, value2, "flag");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andFlagNotBetween(String value1, String value2) {
-            this.addCriterion("flag not between", value1, value2, "flag");
+        public ShiguTempExample.Criteria andKey1NotBetween(String value1, String value2) {
+            this.addCriterion("key1 not between", value1, value2, "key1");
             return (ShiguTempExample.Criteria)this;
         }
 
@@ -504,71 +368,275 @@ public class ShiguTempExample implements SgExample{
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1IsNull() {
-            this.addCriterion("key1 is null");
+        public ShiguTempExample.Criteria andFlagIsNull() {
+            this.addCriterion("flag is null");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1IsNotNull() {
-            this.addCriterion("key1 is not null");
+        public ShiguTempExample.Criteria andFlagIsNotNull() {
+            this.addCriterion("flag is not null");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1EqualTo(String value) {
-            this.addCriterion("key1 =", value, "key1");
+        public ShiguTempExample.Criteria andFlagEqualTo(String value) {
+            this.addCriterion("flag =", value, "flag");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1NotEqualTo(String value) {
-            this.addCriterion("key1 <>", value, "key1");
+        public ShiguTempExample.Criteria andFlagNotEqualTo(String value) {
+            this.addCriterion("flag <>", value, "flag");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1GreaterThan(String value) {
-            this.addCriterion("key1 >", value, "key1");
+        public ShiguTempExample.Criteria andFlagGreaterThan(String value) {
+            this.addCriterion("flag >", value, "flag");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1GreaterThanOrEqualTo(String value) {
-            this.addCriterion("key1 >=", value, "key1");
+        public ShiguTempExample.Criteria andFlagGreaterThanOrEqualTo(String value) {
+            this.addCriterion("flag >=", value, "flag");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1LessThan(String value) {
-            this.addCriterion("key1 <", value, "key1");
+        public ShiguTempExample.Criteria andFlagLessThan(String value) {
+            this.addCriterion("flag <", value, "flag");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1LessThanOrEqualTo(String value) {
-            this.addCriterion("key1 <=", value, "key1");
+        public ShiguTempExample.Criteria andFlagLessThanOrEqualTo(String value) {
+            this.addCriterion("flag <=", value, "flag");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1Like(String value) {
-            this.addCriterion("key1 like", value, "key1");
+        public ShiguTempExample.Criteria andFlagLike(String value) {
+            this.addCriterion("flag like", value, "flag");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1NotLike(String value) {
-            this.addCriterion("key1 not like", value, "key1");
+        public ShiguTempExample.Criteria andFlagNotLike(String value) {
+            this.addCriterion("flag not like", value, "flag");
             return (ShiguTempExample.Criteria)this;
-        }        public ShiguTempExample.Criteria andKey1In(List<String> values) {
-            this.addCriterion("key1 in", values, "key1");
-            return (ShiguTempExample.Criteria)this;
-        }
-
-        public ShiguTempExample.Criteria andKey1NotIn(List<String> values) {
-            this.addCriterion("key1 not in", values, "key1");
+        }        public ShiguTempExample.Criteria andFlagIn(List<String> values) {
+            this.addCriterion("flag in", values, "flag");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1Between(String value1, String value2) {
-            this.addCriterion("key1 between", value1, value2, "key1");
+        public ShiguTempExample.Criteria andFlagNotIn(List<String> values) {
+            this.addCriterion("flag not in", values, "flag");
             return (ShiguTempExample.Criteria)this;
         }
 
-        public ShiguTempExample.Criteria andKey1NotBetween(String value1, String value2) {
-            this.addCriterion("key1 not between", value1, value2, "key1");
+        public ShiguTempExample.Criteria andFlagBetween(String value1, String value2) {
+            this.addCriterion("flag between", value1, value2, "flag");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andFlagNotBetween(String value1, String value2) {
+            this.addCriterion("flag not between", value1, value2, "flag");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3IsNull() {
+            this.addCriterion("key3 is null");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3IsNotNull() {
+            this.addCriterion("key3 is not null");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3EqualTo(String value) {
+            this.addCriterion("key3 =", value, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3NotEqualTo(String value) {
+            this.addCriterion("key3 <>", value, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3GreaterThan(String value) {
+            this.addCriterion("key3 >", value, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3GreaterThanOrEqualTo(String value) {
+            this.addCriterion("key3 >=", value, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3LessThan(String value) {
+            this.addCriterion("key3 <", value, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3LessThanOrEqualTo(String value) {
+            this.addCriterion("key3 <=", value, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3Like(String value) {
+            this.addCriterion("key3 like", value, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3NotLike(String value) {
+            this.addCriterion("key3 not like", value, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }        public ShiguTempExample.Criteria andKey3In(List<String> values) {
+            this.addCriterion("key3 in", values, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3NotIn(List<String> values) {
+            this.addCriterion("key3 not in", values, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3Between(String value1, String value2) {
+            this.addCriterion("key3 between", value1, value2, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey3NotBetween(String value1, String value2) {
+            this.addCriterion("key3 not between", value1, value2, "key3");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4IsNull() {
+            this.addCriterion("key4 is null");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4IsNotNull() {
+            this.addCriterion("key4 is not null");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4EqualTo(String value) {
+            this.addCriterion("key4 =", value, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4NotEqualTo(String value) {
+            this.addCriterion("key4 <>", value, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4GreaterThan(String value) {
+            this.addCriterion("key4 >", value, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4GreaterThanOrEqualTo(String value) {
+            this.addCriterion("key4 >=", value, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4LessThan(String value) {
+            this.addCriterion("key4 <", value, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4LessThanOrEqualTo(String value) {
+            this.addCriterion("key4 <=", value, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4Like(String value) {
+            this.addCriterion("key4 like", value, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4NotLike(String value) {
+            this.addCriterion("key4 not like", value, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }        public ShiguTempExample.Criteria andKey4In(List<String> values) {
+            this.addCriterion("key4 in", values, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4NotIn(List<String> values) {
+            this.addCriterion("key4 not in", values, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4Between(String value1, String value2) {
+            this.addCriterion("key4 between", value1, value2, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andKey4NotBetween(String value1, String value2) {
+            this.addCriterion("key4 not between", value1, value2, "key4");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdIsNull() {
+            this.addCriterion("id is null");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdIsNotNull() {
+            this.addCriterion("id is not null");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdEqualTo(Long value) {
+            this.addCriterion("id =", value, "id");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdNotEqualTo(Long value) {
+            this.addCriterion("id <>", value, "id");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdGreaterThan(Long value) {
+            this.addCriterion("id >", value, "id");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdGreaterThanOrEqualTo(Long value) {
+            this.addCriterion("id >=", value, "id");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdLessThan(Long value) {
+            this.addCriterion("id <", value, "id");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdLessThanOrEqualTo(Long value) {
+            this.addCriterion("id <=", value, "id");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdLike(String value) {
+            this.addCriterion("id like", value, "id");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdNotLike(String value) {
+            this.addCriterion("id not like", value, "id");
+            return (ShiguTempExample.Criteria)this;
+        }        public ShiguTempExample.Criteria andIdIn(List<Long> values) {
+            this.addCriterion("id in", values, "id");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdNotIn(List<Long> values) {
+            this.addCriterion("id not in", values, "id");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdBetween(Long value1, Long value2) {
+            this.addCriterion("id between", value1, value2, "id");
+            return (ShiguTempExample.Criteria)this;
+        }
+
+        public ShiguTempExample.Criteria andIdNotBetween(Long value1, Long value2) {
+            this.addCriterion("id not between", value1, value2, "id");
             return (ShiguTempExample.Criteria)this;
         }
     }

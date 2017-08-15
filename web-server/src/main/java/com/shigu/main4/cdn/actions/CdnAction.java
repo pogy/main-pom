@@ -44,6 +44,7 @@ import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.AreaVO;
 import com.shigu.seller.vo.ContainerVO;
+import com.shigu.seller.vo.DatuVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
@@ -456,10 +457,10 @@ public class CdnAction {
      * @param fromCache
      */
     private Object selFromCache(ObjFromCache fromCache){
-        Object obj=fromCache.selObj();
+//        Object obj=fromCache.selReal();
 //        if(fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
 //            spreadService.createBySync(fromCache);
-        return obj;
+        return fromCache.selObj();
     }
 
 
@@ -796,6 +797,12 @@ public class CdnAction {
         }
     }
 
+    @RequestMapping("smallpic")
+    @ResponseBody
+    public JSONObject smallPic(Long id){
+        return JsonResponseUtil.success().element("pic", shopsItemService.itemImgzipUrl(id));
+    }
+
     @RequestMapping("downloadImg")
     public void downloadImg(HttpServletResponse response, String callback, Long goodsId,Integer type, HttpSession session) throws IOException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -804,15 +811,10 @@ public class CdnAction {
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);
             return ;
         }
-        String url;
-        String upflag;
-        if(type!=null &&type == 2){
-            url=goodsFileService.datuUrl(goodsId);
-            upflag="bgimgzip";
-        }else{
-            url = shopsItemService.itemImgzipUrl(goodsId);
-            upflag="imgzip";
-        }
+        String upflag="imgzip";
+        DatuVO bigVo=goodsFileService.datuUrl(goodsId);
+        String url = "smallpic.htm?id="+goodsId;//shopsItemService.itemImgzipUrl(goodsId);
+//        String url="11";
         String content;
         if (StringUtils.isEmpty(url)) {
             content = "{'result':'error','msg':'图片打包失败'}";
@@ -853,7 +855,14 @@ public class CdnAction {
                 record.setSupperQq(storeRelation.getImQq());
             }
             itemUpRecordService.addItemUpRecord(record);
-            content = "{'result':'success','msg':'成功','sourceHref':'" + url + "'}";
+            content = "{'result':'success','msg':'成功','sourceHref':'" + url + "'";
+            if(bigVo!=null){
+                content+=",'bigPicSource':'"+bigVo.getUrl()+"'";
+                if(StringUtils.isNotEmpty(bigVo.getPwd())){//是否有密码
+                    content+=",'extractPsw':'"+bigVo.getPwd()+"'";
+                }
+            }
+            content+="}";
         }
         ResultRetUtil.returnJsonp(callback,content,response);
     }
@@ -864,8 +873,11 @@ public class CdnAction {
      * @return
      */
     @RequestMapping("shopIconCopyright")
-    public String shopIconCopyright(Model model){
+    public String shopIconCopyright(Integer page,Model model){
         model.addAttribute("webSite","hz");
+        ShiguPager<ShopIconCopyrightVO> pager=cdnService.shopCopyrights(page,100);
+        model.addAttribute("pageOption",pager.selPageOption(100));
+        model.addAttribute("copyrightList",pager.getContent());
         return "activity/shopIconCopyright";
     }
 }

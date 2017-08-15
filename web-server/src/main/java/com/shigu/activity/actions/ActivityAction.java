@@ -5,6 +5,7 @@ import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.shigu.activity.service.ActiveDrawListener;
+import com.shigu.activity.service.NewPopularService;
 import com.shigu.activity.vo.ActiveDrawStyleVo;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
@@ -59,6 +60,12 @@ public class ActivityAction {
 
     @Autowired
     private RedisIO redisIO;
+
+    /**
+     * 秋装新品发布会0811临时使用
+     */
+    @Autowired
+    private NewPopularService newPopularService;
 
     /**
      * 发现好货
@@ -371,4 +378,17 @@ public class ActivityAction {
         model.addAttribute("webSite","hz");
         return "activity/qzxpShop";
     }
+
+    /**
+     * 秋装新品发布会0811临时使用，仅杭州
+     * @param model
+     * @return
+     */
+    @RequestMapping("activity/newPopular")
+    public String newPopular(Model model){
+        model.addAttribute("webSite","hz");
+        model.addAttribute("goodsList", newPopularService.selNewPopularGoodsList());
+        return "activity/newPopular";
+    }
+
 }

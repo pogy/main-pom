@@ -32,6 +32,11 @@ public class ShiguTemp implements Serializable {
      */
 	private String key3;
 
+    /**
+     * 
+     */
+	private String key4;
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -70,6 +75,14 @@ public class ShiguTemp implements Serializable {
 
 	public String getKey3() {
 		return this.key3;
+	}
+
+	public void setKey4(String key4) {
+		this.key4 = key4;
+	}
+
+	public String getKey4() {
+		return this.key4;
 	}
 
 }

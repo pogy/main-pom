@@ -1,18 +1,20 @@
 package com.shigu.main4.cdn.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.vo.CatPolyFormatVO;
+import com.shigu.main4.cdn.vo.ShopIconCopyrightVO;
 import com.shigu.main4.cdn.vo.ShopShowVO;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -31,11 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * cdn服务
@@ -70,6 +68,9 @@ public class CdnService {
 
     @Autowired
     ShopDesignService shopDesignService;
+
+    @Autowired
+    ShiguTempMapper shiguTempMapper;
 
     /**
      * banner部分的html
@@ -227,5 +228,49 @@ public class CdnService {
             blocks.add(isb);
         }
         return blocks;
+    }
+
+    /**
+     * 店铺权益信息获取
+     * @param page 页数
+     * @param size 每页条数
+     * @return
+     */
+    public ShiguPager<ShopIconCopyrightVO> shopCopyrights(Integer page,Integer size){
+        final String FLAG="shop_copyright";//shigu_temp表中的flag，key1=图片链接，key2=店铺ID
+        if (page == null) {
+            page=1;
+        }
+        if (size == null) {
+            size=100;
+        }
+        ShiguTempExample example=new ShiguTempExample();
+        example.createCriteria().andFlagEqualTo(FLAG);
+        example.setStartIndex((page-1)*size);
+        example.setEndIndex(size);
+        List<ShiguTemp> copyrights=shiguTempMapper.selectByExample(example);
+        List<Long> shopIds=new ArrayList<>();
+        for(ShiguTemp temp:copyrights){
+            shopIds.add(Long.valueOf(temp.getKey2()));
+        }
+        final Map<Long,ShopNumAndMarket> shopMap=new HashMap<>();
+        if (shopIds.size()>0) {
+            List<ShopNumAndMarket> shops = shiguShopMapper.selShopNumAndMarkets(shopIds);
+            shopMap.putAll(BeanMapper.list2Map(shops,"shopId",Long.class));
+        }
+        ShiguPager<ShopIconCopyrightVO> pager=new ShiguPager<>();
+        pager.setNumber(page);
+        pager.setTotalCount(shiguTempMapper.countByExample(example));
+        List<ShopIconCopyrightVO> content=new ArrayList<>();
+        pager.setContent(content);
+        copyrights.forEach(cr ->{
+            ShopIconCopyrightVO vo=new ShopIconCopyrightVO();
+            vo.setImgSrc(cr.getKey1());
+            Long shopId=Long.valueOf(cr.getKey2());
+            vo.setShopId(shopId);
+            vo.setShopName(shopMap.get(shopId).getMarket()+" "+shopMap.get(shopId).getShopNum());
+            content.add(vo);
+        });
+        return pager;
     }
 }
