@@ -14,7 +14,6 @@ import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.opentae.data.daifa.interfaces.DaifaWorkerMapper;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
-import com.shigu.daifa.actions.beans.MarketBean;
 import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.vo.AllSubOrderVO;
 import com.shigu.daifa.vo.DaifaAllOrderVO;
@@ -159,7 +158,7 @@ public class DaifaAllOrderIndexService {
                     }
 
                     for (AllSubOrderVO allSubOrderVO : vo.getChildOrders()) {
-                        allSubOrderVO.setNoSale(true);
+                        allSubOrderVO.setNoSaleIs(true);
                         if (allSubOrderVO.getChildOrderId().equals(daifaAllSubOrder.getChildOrderId())) {
                             allSubOrderVO.setAfterSaleState(afterSaleState);
                         }
