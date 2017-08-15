@@ -1,13 +1,6 @@
 package com.shigu.main4.daifa.process.impl;
 
-import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.daifa.beans.DaifaTrade;
-import com.opentae.data.daifa.examples.DaifaTradeExample;
-import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
-import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.daifa.bo.OrderBO;
-import com.shigu.main4.daifa.enums.DaifaTradeStatus;
-import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.OrderManageProcess;
@@ -32,27 +25,35 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         SpringBeanFactory.getBean(OrderModel.class,order);
     }
 
+    /**
+     * 备注
+     * @param subOrderId 子订单数据
+     * @param mark 备注内容
+     */
     @Override
-    public void markSubOrder(Long subOrderId, String mark) throws DaifaException {
-        SubOrderModel subOrderModel=SpringBeanFactory.getBean(SubOrderModel.class,subOrderId);
-        subOrderModel.mark(mark);
-    }
-
-    @Override
-    public void haveGoodsTime(Long subOrderId, Date time) {
-        SubOrderModel subOrderModel=SpringBeanFactory.getBean(SubOrderModel.class,subOrderId);
-        subOrderModel.haveGoodsTime(time);
-    }
-
-    @Override
-    public void markDown(Long subOrderId) {
-        SubOrderModel subOrderModel=SpringBeanFactory.getBean(SubOrderModel.class,subOrderId);
-        subOrderModel.markDown();
+    public void markSubOrder(Long subOrderId, String mark) {
+        SubOrderModel subOrderModel;
     }
 
     /**
-     * 查出3日内超时
+     * 设置有货时间
+      * @param subOrderId 子订单数据
+     * @param time 有货时间
      */
+    @Override
+    public void haveGoodsTime(Long subOrderId, Date time) {
+
+    }
+
+    /**
+     * 标记下架
+     * @param subOrderId 子订单数据
+     */
+    @Override
+    public void markDown(Long subOrderId) {
+
+    }
+
     @Override
     public void orderTimeout() {
         //查出超时的单子
@@ -69,4 +70,8 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         });
     }
 
+    @Override
+    public void autoRefund() {
+
+    }
 }

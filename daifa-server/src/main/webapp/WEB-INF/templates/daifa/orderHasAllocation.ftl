@@ -10,6 +10,12 @@
     
     
     
+<#include "/common/host_config.ftl">
+
+
+
+
+
     
     <link href="http://style.571xz.com/v2/dfgl/css/orderHasAllocation.css" rel="stylesheet">
     
@@ -33,10 +39,10 @@
 <div class="pageHeader yahei">
     <h1 class="fl">代发后台管理</h1>
     <div class="xbUser fr">
-        <#if (userIcon?size) gt 0>
+        <#if userIcon??>
         <img src="${userIcon!}">
         <#else>
-        <img src="${$stylepath!}${$projectid!}/css/img/headImg.jpg">
+        <img src="http://style.571xz.com/v2/dfgl/css/img/headImg.jpg">
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="#" class="fcF40 fs16">退出</a>

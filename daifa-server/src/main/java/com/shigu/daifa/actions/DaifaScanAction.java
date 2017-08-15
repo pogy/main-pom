@@ -31,9 +31,9 @@ public class DaifaScanAction {
         model.addAttribute("userName",daifaUser.getDaifaUserName());
         return "daifa/scanBarCode";
     }
-    @RequestMapping("daifa/scanBarCode")
+    @RequestMapping("daifa/doScanBarCode")
     @ResponseBody
-    public JSONObject scanBarCode(String barCode) throws DaifaException {
+    public JSONObject doScanBarCode(String barCode) throws DaifaException {
         Long dfOrderId= null;
         try {
             String barcode = barCode.substring(0,barCode.length()-7);

@@ -10,6 +10,12 @@
     
     
     
+<#include "/common/host_config.ftl">
+
+
+
+
+
     
     <link href="http://style.571xz.com/v2/dfgl/css/orderAll.css" rel="stylesheet">
     
@@ -33,10 +39,10 @@
 <div class="pageHeader yahei">
     <h1 class="fl">代发后台管理</h1>
     <div class="xbUser fr">
-        <#if (userIcon?size) gt 0>
+        <#if userIcon??>
         <img src="${userIcon!}">
         <#else>
-        <img src="${$stylepath!}${$projectid!}/css/img/headImg.jpg">
+        <img src="http://style.571xz.com/v2/dfgl/css/img/headImg.jpg">
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="#" class="fcF40 fs16">退出</a>
@@ -250,7 +256,7 @@
             <div class="leftConBox fl">
                 <span>订单编号：${order.orderId!}</span>
                 <span>时间：${order.tradeTime!}</span>
-                <span>阿里旺旺：<a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${order.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank" class="fcBlue">${order.imWw!}</a></span>
+                
             </div>
             <div class="rightConBox fr">
                 <span class="fl">${order.receiverName!}（${order.receiverPhone!}）</span>

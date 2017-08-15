@@ -74,6 +74,7 @@ public class DaifaAdminLoginAction {
             token.setRememberMe(true);
             try {
                 currentUser.login(token);
+
                 //登陆成功
                 return "redirect:/daifa/orderAll.htm";
             } catch (AuthenticationException e) {

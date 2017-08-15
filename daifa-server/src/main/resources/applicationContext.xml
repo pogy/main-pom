@@ -25,7 +25,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
     <bean id="mapperInterceptor" class="com.opentae.core.mybatis.mapperhelper.MapperInterceptor">
         <property name="properties">
             <map>
-                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper"/>
+                <entry key="mappers" value="com.opentae.core.mybatis.mapper.Mapper,com.opentae.core.mybatis.mapper.MultipleMapper"/>
             </map>
         </property>
     </bean>

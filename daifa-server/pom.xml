@@ -29,7 +29,7 @@
         <dependency>
             <groupId>xinzuo-mybatis</groupId>
             <artifactId>xinzuo-mybatis</artifactId>
-            <version>1.0.3.RO-SNAPSHOT</version>
+            <version>1.0.3-RELEASE</version>
         </dependency>
 
         <!--mysql部分-->
@@ -340,5 +340,7 @@
             <artifactId>zkclient</artifactId>
             <version>0.1</version>
         </dependency>
+
+
     </dependencies>
 </project>
