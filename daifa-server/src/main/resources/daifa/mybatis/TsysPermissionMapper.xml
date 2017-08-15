@@ -95,7 +95,7 @@
 				t1.permission_comment,
 				t1.parent_pid
 		</sql>
-    <select id="selectRolePermissionTreeByExample" resultMap="BaseResultMap" parameterType="com.opentae.data.daifa.beans.TsysPermissionExample" >
+    <select id="selectRolePermissionTreeByExample" resultMap="BaseResultMap" parameterType="com.opentae.data.daifa.examples.TsysPermissionExample" >
         select distinct  a.permission_id,a.permission_comment,a.permission_tag,
         <if test="endIndex != null" >
             c.role_id as create_user_id
