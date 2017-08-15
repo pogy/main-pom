@@ -81,7 +81,7 @@
     </where>
   </sql>
 
-    <select id="selDaifaGoodsGroupByShop" resultType="com.opentae.data.daifa.beans.DaifaGgoodsTasks">
+    <select id="selDaifaGoodsGroupByShop" resultType="com.opentae.data.daifa.beans.GgoodsByStore">
 
         select  market_id marketId,market_name marketName,floor_id floorId,floor_name floorName,store_id storeId,
         store_num storeNum, sum(goods_num) goodsNum

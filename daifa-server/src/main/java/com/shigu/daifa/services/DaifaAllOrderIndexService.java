@@ -93,7 +93,7 @@ public class DaifaAllOrderIndexService {
         dtex.setEndIndex(rows);
 
         MultipleExample multipleExample = MultipleExampleBuilder.from(dtex).leftJoin(doex)
-                .on(ce.equalTo(DaifaTradeExample.dfTradeId, DaifaOrderExample.dfTradeId)).build();
+                .on(new DaifaTradeExample().createCriteria().equalTo(DaifaTradeExample.dfTradeId, DaifaOrderExample.dfTradeId)).build();
         List<DaifaAllOrder> daifaAllOrders = daifaMultipleMapper.selectFieldsByMultipleExample(multipleExample, DaifaAllOrder.class);
         List<DaifaAllOrderVO> daifaAllOrderVOS = new ArrayList<>();
         for (DaifaAllOrder daifaAllOrder : daifaAllOrders) {
