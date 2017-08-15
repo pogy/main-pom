@@ -23,17 +23,17 @@ public class DaifaScanAction {
     @Autowired
     PackDeliveryProcess packDeliveryProcess;
 
-    @RequestMapping("daifa/scanBarCode.htm")
-    public String scanBarCodeinit(Model model){
+    @RequestMapping("daifa/scanBarCode")
+    public String scanBarCode(Model model){
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         model.addAttribute("userIcon","");
         model.addAttribute("userName",daifaUser.getDaifaUserName());
         return "daifa/scanBarCode";
     }
-    @RequestMapping("daifa/scanBarCode.json")
+    @RequestMapping("daifa/doScanBarCode")
     @ResponseBody
-    public JSONObject scanBarCode(String barCode) throws DaifaException {
+    public JSONObject doScanBarCode(String barCode) throws DaifaException {
         Long dfOrderId= null;
         try {
             String barcode = barCode.substring(0,barCode.length()-7);
