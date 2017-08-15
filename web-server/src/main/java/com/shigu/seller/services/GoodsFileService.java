@@ -2,12 +2,11 @@ package com.shigu.seller.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
+import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
-import com.opentae.data.mall.examples.GoodsFileExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
@@ -66,6 +65,9 @@ public class GoodsFileService extends OssIO {
 
     @Autowired
     ShiguShopMapper shiguShopMapper;
+
+    @Autowired
+    GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     final String ROOT_PATH = "udf/";
 
@@ -378,6 +380,11 @@ public class GoodsFileService extends OssIO {
                 gf.setNeedPwd(false);
                 gf.setPasswd(null);
                 goodsFileMapper.insertSelective(gf);
+                GoodsCountForsearchExample countForsearchExample=new GoodsCountForsearchExample();
+                countForsearchExample.createCriteria().andGoodsIdEqualTo(id);
+                GoodsCountForsearch countForsearch=new GoodsCountForsearch();
+                countForsearch.setHadBigzip(1);
+                goodsCountForsearchMapper.updateByExampleSelective(countForsearch,countForsearchExample);
             } catch (Exception e) {
             }
         }
@@ -396,7 +403,15 @@ public class GoodsFileService extends OssIO {
         }
         GoodsFileExample example = new GoodsFileExample();
         example.createCriteria().andFileKeyEqualTo(getHomeDir(shopId) + fileId).andGoodsIdEqualTo(goodsId);
-        return goodsFileMapper.deleteByExample(example);
+        int delnum = goodsFileMapper.deleteByExample(example);
+        if (delnum>0) {
+            GoodsCountForsearchExample countForsearchExample=new GoodsCountForsearchExample();
+            countForsearchExample.createCriteria().andGoodsIdEqualTo(goodsId);
+            GoodsCountForsearch countForsearch=new GoodsCountForsearch();
+            countForsearch.setHadBigzip(1);
+            goodsCountForsearchMapper.updateByExampleSelective(countForsearch,countForsearchExample);
+        }
+        return delnum;
     }
 
     /**

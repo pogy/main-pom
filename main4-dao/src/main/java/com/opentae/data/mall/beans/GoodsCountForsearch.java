@@ -57,6 +57,10 @@ public class GoodsCountForsearch implements Serializable {
 	 * 上次更新时间
 	 */
 	private Date flowFixedTime;
+	/**
+	 * 是否有大图，0没有，1有
+	 */
+	private Integer hadBigzip;
 
 	public void setSearchId(Long searchId) {
 		this.searchId = searchId;
@@ -136,5 +140,13 @@ public class GoodsCountForsearch implements Serializable {
 
 	public void setFlowFixedTime(Date flowFixedTime) {
 		this.flowFixedTime = flowFixedTime;
+	}
+
+	public Integer getHadBigzip() {
+		return hadBigzip;
+	}
+
+	public void setHadBigzip(Integer hadBigzip) {
+		this.hadBigzip = hadBigzip;
 	}
 }

@@ -911,5 +911,73 @@ public class GoodsCountForsearchExample implements SgExample{
             this.addCriterion("flow_fixed_time not between", value1, value2, "flowFixedTime");
             return (GoodsCountForsearchExample.Criteria)this;
         }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipIsNull() {
+            this.addCriterion("had_bigzip is null");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipIsNotNull() {
+            this.addCriterion("had_bigzip is not null");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipEqualTo(Integer value) {
+            this.addCriterion("had_bigzip =", value, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipNotEqualTo(Integer value) {
+            this.addCriterion("had_bigzip <>", value, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipGreaterThan(Integer value) {
+            this.addCriterion("had_bigzip >", value, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipGreaterThanOrEqualTo(Integer value) {
+            this.addCriterion("had_bigzip >=", value, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipLessThan(Integer value) {
+            this.addCriterion("had_bigzip <", value, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipLessThanOrEqualTo(Integer value) {
+            this.addCriterion("had_bigzip <=", value, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipLike(String value) {
+            this.addCriterion("had_bigzip like", value, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipNotLike(String value) {
+            this.addCriterion("had_bigzip not like", value, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }        public GoodsCountForsearchExample.Criteria andHadBigzipIn(List<Integer> values) {
+            this.addCriterion("had_bigzip in", values, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipNotIn(List<Integer> values) {
+            this.addCriterion("had_bigzip not in", values, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipBetween(Integer value1, Integer value2) {
+            this.addCriterion("had_bigzip between", value1, value2, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
+
+        public GoodsCountForsearchExample.Criteria andHadBigzipNotBetween(Integer value1, Integer value2) {
+            this.addCriterion("had_bigzip not between", value1, value2, "hadBigzip");
+            return (GoodsCountForsearchExample.Criteria)this;
+        }
     }
 }
