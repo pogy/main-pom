@@ -1,5 +1,6 @@
 package com.shigu.daifa.services;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
 import com.opentae.data.daifa.beans.GgoodsByStore;
 import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
@@ -10,15 +11,16 @@ import com.shigu.daifa.actions.beans.MarketBean;
 import com.shigu.daifa.bo.OrderAllocateBO;
 import com.shigu.daifa.vo.OrderAllocateVO;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Created by pc on 2017-08-15.
@@ -30,13 +32,19 @@ import java.util.TreeMap;
  */
 @Service
 public class DaifaAllocateService {
-
-    private static TreeMap<MarketBean, TreeMap<MarketBean, TreeMap<MarketBean, MarketBean>>> treeTree;//市场楼层档口，只有获取市场列表时更新
+    private static List<GgoodsByStore> allocateHouse;
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
 
     @Autowired
     public void setDaifaGgoodsTasksMapper(DaifaGgoodsTasksMapper daifaGgoodsTasksMapper) {
         this.daifaGgoodsTasksMapper = daifaGgoodsTasksMapper;
+    }
+
+    private TakeGoodsIssueProcess takeGoodsIssueProcess;
+
+    @Autowired
+    public void setTakeGoodsIssueProcess(TakeGoodsIssueProcess takeGoodsIssueProcess) {
+        this.takeGoodsIssueProcess = takeGoodsIssueProcess;
     }
 
     public List<OrderAllocateVO> orderAllcoation(OrderAllocateBO bo) {
@@ -88,49 +96,149 @@ public class DaifaAllocateService {
      * @return json
      */
     public JSONObject getMarketList() {
-        if (treeTree == null) {
-            treeTree = new TreeMap<>();
+        //生成可分配档口
+        makeMarket();
+
+        TreeMap<MarketBean, MarketBean> marketMap = new TreeMap<>();
+        for (GgoodsByStore ggoodsByStore : allocateHouse) {
+            MarketBean key = new MarketBean();
+            key.setName(ggoodsByStore.getMarketName());
+            key.setId(ggoodsByStore.getMarketId());
+            key.setOrderNumber(ggoodsByStore.getGoodsNum());
+            key.setType(0);//市场
+            MarketBean bean = marketMap.get(key);
+            if (bean == null) {
+                marketMap.put(key, key);
+            } else {
+                bean.setOrderNumber(bean.getOrderNumber() + key.getOrderNumber());
+            }
+
         }
-
-
-        return null;
+        List<MarketBean> marketBeanList = new ArrayList<>(marketMap.keySet());
+        return JsonResponseUtil.success().element("marketList", marketBeanList);
     }
 
     private void makeMarket() {
         AuthorityUser user = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         Long sellerId = user.getDaifaSellerId();
+        allocateHouse = daifaGgoodsTasksMapper.selDaifaGoodsGroupByShop(sellerId);
 
 
-        TreeMap<MarketBean, TreeMap<MarketBean, TreeMap<MarketBean, MarketBean>>> treeTree;//市场楼层档口，只有获取市场列表时更新
-        treeTree = new TreeMap<>();
+    }
 
-
-        List<GgoodsByStore> ggoodsByStores = daifaGgoodsTasksMapper.selDaifaGoodsGroupByShop(sellerId);
-
-        TreeMap<MarketBean, TreeMap<MarketBean, MarketBean>> floorMap = new TreeMap<>();
-        for (GgoodsByStore ggoodsByStore : ggoodsByStores) {
-            MarketBean floorkey = new MarketBean();
-            floorkey.setId(ggoodsByStore.getFloorId());
-            floorkey.setType(1);//楼层
-            floorkey.setName(ggoodsByStore.getFloorName());
-            TreeMap<MarketBean, MarketBean> storeMap = floorMap.get(floorkey);
-            if (storeMap == null) {
-                storeMap = new TreeMap<>();
-                floorMap.put(floorkey,storeMap);
-            }else{
-                //更新key
-                MarketBean marketBean = floorMap.ceilingKey(floorkey);
-                marketBean.setNum(marketBean.getNum()+floorkey.getNum());
-                //floorMap.ceilingKey()
-            }
-            MarketBean store = new MarketBean();
-            store.setName(ggoodsByStore.getStoreNum());
-            store.setId(ggoodsByStore.getStoreId());
-            store.setType(2);
-            store.setNum(ggoodsByStore.getGoodsNum());
-            storeMap.put(store, store);
+    public static void main(String[] args) {
+        TreeMap<MarketBean, MarketBean> map = new TreeMap<>();
+        MarketBean bean = new MarketBean();
+        bean.setId(10L);
+        bean.setType(1);
+        bean.setName("我的");
+        map.put(bean, bean);
+        MarketBean bean1 = new MarketBean();
+        bean1.setId(10L);
+        bean1.setType(1);
+        MarketBean bean2 = map.ceilingKey(bean1);
+        bean2.setName("卧槽");
+        Iterator<Map.Entry<MarketBean, MarketBean>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<MarketBean, MarketBean> next = iterator.next();
+            System.out.println(next.getKey().getName());
         }
 
+    }
 
+    public JSONObject getFloorList(Long marketId) {
+        if (allocateHouse == null) {
+            makeMarket();
+        }
+        TreeMap<MarketBean, MarketBean> floorMap = new TreeMap<>();
+        for (GgoodsByStore ggoodsByStore : allocateHouse) {
+            if (ggoodsByStore.getMarketId().longValue() == marketId) {
+                MarketBean key = new MarketBean();
+                key.setType(1);
+                key.setId(ggoodsByStore.getFloorId());
+                key.setName(ggoodsByStore.getFloorName());
+                key.setOrderNumber(ggoodsByStore.getGoodsNum());
+                MarketBean floorBean = floorMap.get(key);
+                if (floorBean == null) {
+                    floorMap.put(key, key);
+                } else {
+                    floorBean.setOrderNumber(floorBean.getOrderNumber() + key.getOrderNumber());
+                }
+            }
+        }
+        List<MarketBean> floorList = new ArrayList<>(floorMap.keySet());
+        return JsonResponseUtil.success().element("floorList", floorList);
+    }
+
+    public JSONObject getShopList(Long floorId) {
+        if (allocateHouse == null) {
+            makeMarket();
+        }
+        TreeMap<MarketBean, MarketBean> storeMap = new TreeMap<>();
+        for (GgoodsByStore ggoodsByStore : allocateHouse) {
+            if (ggoodsByStore.getFloorId().longValue() == floorId) {
+                MarketBean key = new MarketBean();
+                key.setType(2);
+                key.setId(ggoodsByStore.getStoreId());
+                key.setName(ggoodsByStore.getStoreNum());
+                key.setOrderNumber(ggoodsByStore.getGoodsNum());
+                MarketBean floorBean = storeMap.get(key);
+                if (floorBean == null) {
+                    storeMap.put(key, key);
+                } else {
+                    floorBean.setOrderNumber(floorBean.getOrderNumber() + key.getOrderNumber());
+                }
+            }
+        }
+        List<MarketBean> storeList = new ArrayList<>(storeMap.keySet());
+        return JsonResponseUtil.success().element("shopList", storeList);
+    }
+
+    public JSONObject submitAllocation(Long userId, String type, String ids) throws DaifaException {
+        String[] idsArray = ids.split(",");
+        switch (type) {
+            case "market": {
+
+                for (String s : idsArray) {
+                    takeGoodsIssueProcess.distributionTaskWithMarket(userId, Long.parseLong(s));
+                }
+                break;
+            }
+            case "floor": {
+                for (String s : idsArray) {
+                    takeGoodsIssueProcess.distributionTaskWithFloor(userId,Long.parseLong(s));
+                }
+                break;
+            }
+            case "shop":{
+                for (String s : idsArray) {
+                    takeGoodsIssueProcess.distributionTaskWithShop(userId,Long.parseLong(s));
+                }
+                break;
+            }
+            case "childOrder":{
+                List<Long> childOrderIds = new ArrayList<>();
+                List<Long> tasksId = new ArrayList<>();
+                for (String s : idsArray) {
+                    childOrderIds.add(Long.parseLong(s));
+                }
+                DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
+                daifaGgoodsTasksExample.createCriteria()
+                        .andDfOrderIdIn(childOrderIds)//子弹
+                        .andUseStatusEqualTo(1)//可用
+                        .andAllocatStatusEqualTo(0);//未分配
+                List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample
+                        , FieldUtil.codeFields("tasks_id"));
+                for (DaifaGgoodsTasks ggoodsTask : ggoodsTasks) {
+                    tasksId.add(ggoodsTask.getTasksId());
+                }
+                takeGoodsIssueProcess.distributionTask(userId,tasksId);
+                break;
+            }
+            default:{
+                break;
+            }
+        }
+        return JsonResponseUtil.success("分配成功");
     }
 }

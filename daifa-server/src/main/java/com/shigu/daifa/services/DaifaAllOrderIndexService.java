@@ -93,7 +93,7 @@ public class DaifaAllOrderIndexService {
         dtex.setEndIndex(rows);
 
         MultipleExample multipleExample = MultipleExampleBuilder.from(dtex).leftJoin(doex)
-                .on(ce.equalTo(DaifaTradeExample.dfTradeId, DaifaOrderExample.dfTradeId)).build();
+                .on(new DaifaTradeExample().createCriteria().equalTo(DaifaTradeExample.dfTradeId, DaifaOrderExample.dfTradeId)).build();
         List<DaifaAllOrder> daifaAllOrders = daifaMultipleMapper.selectFieldsByMultipleExample(multipleExample, DaifaAllOrder.class);
         List<DaifaAllOrderVO> daifaAllOrderVOS = new ArrayList<>();
         for (DaifaAllOrder daifaAllOrder : daifaAllOrders) {
@@ -198,7 +198,7 @@ public class DaifaAllOrderIndexService {
         if(!StringUtils.hasText(timeStr)){
             return JsonResponseUtil.error("时间不能空");
         }
-        orderManageProcess.haveGoodsTime(childOrderId,DateUtil.stringToDate(timeStr,DateUtil.patternB));
+        orderManageProcess.haveGoodsTime(childOrderId,DateUtil.stringToDate(timeStr,DateUtil.patternD));
         return JsonResponseUtil.success("设置成功");
     }
 
