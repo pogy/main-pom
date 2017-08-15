@@ -14,7 +14,6 @@ import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.opentae.data.daifa.interfaces.DaifaWorkerMapper;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
-import com.shigu.daifa.actions.beans.MarketBean;
 import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.vo.AllSubOrderVO;
 import com.shigu.daifa.vo.DaifaAllOrderVO;
@@ -29,11 +28,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeMap;
 
 /**
  * Created by pc on 2017-08-14.
@@ -159,7 +156,7 @@ public class DaifaAllOrderIndexService {
                     }
 
                     for (AllSubOrderVO allSubOrderVO : vo.getChildOrders()) {
-                        allSubOrderVO.setNoSale(true);
+                        allSubOrderVO.setNoSaleIs(true);
                         if (allSubOrderVO.getChildOrderId().equals(daifaAllSubOrder.getChildOrderId())) {
                             allSubOrderVO.setAfterSaleState(afterSaleState);
                         }

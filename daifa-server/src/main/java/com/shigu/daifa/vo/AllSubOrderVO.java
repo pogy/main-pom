@@ -27,7 +27,7 @@ public class AllSubOrderVO implements Serializable{
     private Integer allotState;//分配状态 1待分配2已分配
     private Integer takeGoodsState;//拿货状态 0拿货中 1已拿到 2缺货
     private String haveGoodsTime;//有货时间
-    private Boolean isNoSale;//是否下架true不卖了下架 false还在卖 注：该处为是否标记下架
+    private Boolean noSaleIs;//是否下架true不卖了下架 false还在卖 注：该处为是否标记下架
     private Integer afterSaleState;//售后子单状态 1已拿货 2申请退款 3已受理退款
     // 4退款完成 5拒绝退款 6申请换货 7换货中 8换货完成 9拒绝换货
 
@@ -140,12 +140,12 @@ public class AllSubOrderVO implements Serializable{
         this.haveGoodsTime = haveGoodsTime;
     }
 
-    public Boolean getNoSale() {
-        return isNoSale;
+    public Boolean getNoSaleIs () {
+        return noSaleIs;
     }
 
-    public void setNoSale(Boolean noSale) {
-        isNoSale = noSale;
+    public void setNoSaleIs (Boolean noSaleIs) {
+        this.noSaleIs = noSaleIs;
     }
 
     public Integer getAfterSaleState() {
