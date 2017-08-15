@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1502769157109" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=v1" rel="stylesheet">
     
   </head>
 <body>
@@ -325,7 +325,7 @@ var tHref = '${tHref!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1502769157109"></script>
+<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=v1"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
