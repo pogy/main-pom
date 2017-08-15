@@ -5,6 +5,7 @@ import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.shigu.activity.service.ActiveDrawListener;
+import com.shigu.activity.service.DrawQualification;
 import com.shigu.activity.service.NewPopularService;
 import com.shigu.activity.vo.ActiveDrawStyleVo;
 import com.shigu.component.common.globality.constant.SystemConStant;
@@ -13,15 +14,13 @@ import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
-import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
+import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.seller.services.ActivityService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +65,9 @@ public class ActivityAction {
      */
     @Autowired
     private NewPopularService newPopularService;
+
+    @Autowired
+    private DrawQualification newAutumnDrawQualification;
 
     /**
      * 发现好货
@@ -391,4 +393,22 @@ public class ActivityAction {
         return "activity/newPopular";
     }
 
+    @RequestMapping("activity/lottery")
+    public String lottery(Model model,HttpSession session) {
+        model.addAttribute("webSite","hz");
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        DrawVerifyVO qualification = newAutumnDrawQualification.hasDrawQualification(ps.getUserId());
+        int lotteryNum = qualification.getOpportunityFrequency() - qualification.getUsedFrequency();
+        model.addAttribute("lettoryNumber", lotteryNum);
+        return "activity/lottery";
+    }
+
+    @RequestMapping("activity/getAwards")
+    @ResponseBody
+    public JSONObject getAwards(HttpSession session) {
+        Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
+        DrawResult drawResult = newAutumnDrawQualification.tryHitDraw(userId);
+        int awards = drawResult.getRank() == null ? 6 : drawResult.getRank() == 0 ? 5 : drawResult.getRank();
+        return JsonResponseUtil.success().element("awards",awards);
+    }
 }
