@@ -9,8 +9,8 @@ import net.sf.json.JSONObject;
 public class JsonResponseUtil {
     /**
      * 成功消息
-     * @param msg
-     * @return
+     * @param msg 成功信息
+     * @return json
      */
     public static JSONObject success(String msg){
         return JSONObject.fromObject("{'result':'success','msg':'"+msg+"'}");
@@ -18,9 +18,18 @@ public class JsonResponseUtil {
 
     /**
      * 成功消息
-     * @return
+     * @return 返回json
      */
     public static JSONObject success(){
         return JSONObject.fromObject("{'result':'success'}");
+    }
+
+    /**
+     * 失败消息
+     * @param msg 错误信息
+     * @return 返回值
+     */
+    public static JSONObject error(String msg){
+        return JSONObject.fromObject("{'result':'error','msg':'"+msg+"'}");
     }
 }

@@ -1,6 +1,7 @@
 package com.shigu.main4.daifa.process;
 
 import com.shigu.main4.daifa.bo.OrderBO;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,7 @@ public interface OrderManageProcess {
      * @param subOrderId 子订单数据
      * @param mark 备注内容
      */
-    void markSubOrder(Long subOrderId,String mark);
+    void markSubOrder(Long subOrderId,String mark) throws DaifaException;
 
     /**
      * 设置有货时间
