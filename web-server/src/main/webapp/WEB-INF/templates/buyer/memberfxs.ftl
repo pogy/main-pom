@@ -13,8 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    
-    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1498814565678" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/memberfxs.css?t=1502769157109" rel="stylesheet">
     
   </head>
 <body>
@@ -280,10 +279,23 @@ var tHref = '${tHref!}';
 
 </script>
     </div>
+    <div class="xzQrcode">
+        <b class="closeIcon" id="qrcodeClose"></b>
+        <ul>
+            <li>
+                <h3>四季星座网公众号</h3>
+                <img src="http://style.571xz.com/fxs2/css/img/xz.jpg">
+            </li>
+            <li>
+                <h3>公司微信二维码</h3>
+                <img src="http://style.571xz.com/fxs2/css/img/sg.jpg">
+            </li>
+        </ul>
+    </div>
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap" style="width:656px;"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -313,7 +325,7 @@ var tHref = '${tHref!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1498814565678"></script>
+<script src="http://style.571xz.com/fxs2/js/memberfxs.js?t=1502769157109"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
