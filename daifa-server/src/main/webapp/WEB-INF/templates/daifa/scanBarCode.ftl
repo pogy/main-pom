@@ -10,6 +10,12 @@
     
     
     
+<#include "/common/host_config.ftl">
+
+
+
+
+
     
     <link href="http://style.571xz.com/v2/dfgl/css/scanBarCode.css" rel="stylesheet">
     
@@ -30,7 +36,7 @@
         <#if userIcon??>
         <img src="${userIcon!}">
         <#else>
-        <img src="${$stylepath!}${$projectid!}/css/img/headImg.jpg">
+        <img src="http://style.571xz.com/v2/dfgl/css/img/headImg.jpg">
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="#" class="fcF40 fs16">退出</a>

@@ -10,6 +10,12 @@
     
     
     
+<#include "/common/host_config.ftl">
+
+
+
+
+
     
     <link href="http://style.571xz.com/v2/dfgl/css/orderHasAllocation.css" rel="stylesheet">
     
@@ -36,7 +42,7 @@
         <#if userIcon??>
         <img src="${userIcon!}">
         <#else>
-        <img src="${$stylepath!}${$projectid!}/css/img/headImg.jpg">
+        <img src="http://style.571xz.com/v2/dfgl/css/img/headImg.jpg">
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="#" class="fcF40 fs16">退出</a>
@@ -380,7 +386,7 @@
             <p>${childOrder.haveGoodsTime!} 有货</p>
             </#if>
             <p><b class="fcBlue" jbtn='setTime'>设置有货时间</b></p>
-            <#if childOrder.isNoSale == true>
+            <#if childOrder.noSaleIs == true>
             <p><span class="fcF40">已标记下架</span></p>
             <#else>
             <p><b class="fcBlue" jbtn="noSale">标记下架</b></p>

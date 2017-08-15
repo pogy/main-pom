@@ -2,7 +2,6 @@ package com.shigu.daifa.services;
 
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
-import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaAllOrder;
 import com.opentae.data.daifa.beans.DaifaAllSubOrder;
@@ -19,12 +18,9 @@ import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.vo.AllSubOrderVO;
 import com.shigu.daifa.vo.DaifaAllOrderVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
-import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.OrderManageProcess;
-import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.shiro.SecurityUtils;
@@ -32,8 +28,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by pc on 2017-08-14.
@@ -45,6 +42,8 @@ import java.util.*;
  */
 @Service
 public class DaifaAllOrderIndexService {
+
+
     private DaifaTradeMapper daifaTradeMapper;
     @Autowired
     public void setDaifaTradeMapper(DaifaTradeMapper daifaTradeMapper) {
@@ -74,11 +73,11 @@ public class DaifaAllOrderIndexService {
         DaifaOrderExample doex = new DaifaOrderExample();
         DaifaTradeExample.Criteria ce = dtex.createCriteria();
         if (StringUtils.hasText(bo.getEndTime())) {
-            Date endDate = DateUtil.stringToDate(bo.getEndTime(), DateUtil.patternB);
+            Date endDate = DateUtil.stringToDate(bo.getEndTime());
             ce.andCreateTimeLessThanOrEqualTo(endDate);
         }
         if (StringUtils.hasText(bo.getStartTime())) {
-            Date startDate = DateUtil.stringToDate(bo.getStartTime(), DateUtil.patternB);
+            Date startDate = DateUtil.stringToDate(bo.getStartTime());
             ce.andCreateTimeGreaterThanOrEqualTo(startDate);
         }
         if (StringUtils.hasText(bo.getOrderId())) {
@@ -157,7 +156,7 @@ public class DaifaAllOrderIndexService {
                     }
 
                     for (AllSubOrderVO allSubOrderVO : vo.getChildOrders()) {
-                        allSubOrderVO.setNoSale(true);
+                        allSubOrderVO.setNoSaleIs(true);
                         if (allSubOrderVO.getChildOrderId().equals(daifaAllSubOrder.getChildOrderId())) {
                             allSubOrderVO.setAfterSaleState(afterSaleState);
                         }

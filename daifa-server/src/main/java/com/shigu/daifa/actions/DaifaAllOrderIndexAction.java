@@ -53,7 +53,7 @@ public class DaifaAllOrderIndexAction {
         model.addAttribute("orders",allOrders);
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pageOption);
-        model.addAttribute("userName",auth.getUserName());
+        model.addAttribute("userName",auth.getDaifaUserName ());
         return "daifa/orderAll";
     }
 

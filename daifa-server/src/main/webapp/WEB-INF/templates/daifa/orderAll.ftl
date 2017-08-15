@@ -10,6 +10,12 @@
     
     
     
+<#include "/common/host_config.ftl">
+
+
+
+
+
     
     <link href="http://style.571xz.com/v2/dfgl/css/orderAll.css" rel="stylesheet">
     
@@ -36,7 +42,7 @@
         <#if userIcon??>
         <img src="${userIcon!}">
         <#else>
-        <img src="${$stylepath!}${$projectid!}/css/img/headImg.jpg">
+        <img src="http://style.571xz.com/v2/dfgl/css/img/headImg.jpg">
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
         <a href="#" class="fcF40 fs16">退出</a>
@@ -250,7 +256,7 @@
             <div class="leftConBox fl">
                 <span>订单编号：${order.orderId!}</span>
                 <span>时间：${order.tradeTime!}</span>
-                <span>阿里旺旺：<a href="http://www.taobao.com/webww/ww.php?ver=3&touid=${order.imWw!}&siteid=cntaobao&status=1&charset=utf-8" target="_blank" class="fcBlue">${order.imWw!}</a></span>
+                
             </div>
             <div class="rightConBox fr">
                 <span class="fl">${order.receiverName!}（${order.receiverPhone!}）</span>
@@ -291,9 +297,9 @@
         </li>
         <li class="orderState">
             <#if order.tradeState == 1>
-                <#if childOrder.allotState == 1>
+                <#if childOrder.allotState == 0>
                 <p class="fc3">未分配</p>
-                <#else>
+                <#elseif childOrder.allotState == 1>
                 <p>已分配</p>
                 </#if>
                 
@@ -330,7 +336,7 @@
             <p>${childOrder.haveGoodsTime!} 有货</p>
             </#if>
             <p><b class="fcBlue" jbtn="setTime">设置有货时间</b></p>
-            <#if childOrder.isNoSale == true>
+            <#if childOrder.noSaleIs == true>
             <p><span class="fcF40">已标记下架</span></p>
             <#else>
             <p><b class="fcBlue" jbtn="noSale">标记下架</b></p>
