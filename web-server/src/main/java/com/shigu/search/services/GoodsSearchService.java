@@ -7,6 +7,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.main4.item.enums.SearchCheckd;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.AggsCount;
@@ -242,7 +243,13 @@ public class GoodsSearchService {
                 end = DateUtil.stringToDate(bo.getEt(),"yyyy.MM.dd");
             }
         }
+        List<SearchCheckd> checkds=null;
+        if(bo.getBpic()!=null&&bo.getBpic()==1){
+            checkds=new ArrayList<>();
+            checkds.add(SearchCheckd.BIGZIP);
+        }
         ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),bo.getWebSite(),bo.getMid(),
+                checkds,//大图
                 cids.size()==0?null:cids,
                 shouldShopId.size()==0?null:shouldShopId,null,
                 bo.getSp(),bo.getEp(),start,end,orderBy,bo.getPage(),bo.getRows(), needaggs

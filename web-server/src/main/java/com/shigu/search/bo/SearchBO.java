@@ -51,6 +51,10 @@ public class SearchBO extends PageInSearchBO implements Serializable{
      * 筛选关键字
      */
     private String keyword;
+    /**
+     * 当值为1时，开启大图筛选
+     */
+    private Integer bpic;
 
     public String getWebSite() {
         return webSite;
@@ -138,5 +142,13 @@ public class SearchBO extends PageInSearchBO implements Serializable{
 
     public void setEt(String et) {
         this.et = et;
+    }
+
+    public Integer getBpic() {
+        return bpic;
+    }
+
+    public void setBpic(Integer bpic) {
+        this.bpic = bpic;
     }
 }
