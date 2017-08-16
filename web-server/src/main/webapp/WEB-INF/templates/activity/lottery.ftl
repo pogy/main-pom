@@ -87,7 +87,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}order/cart.htm">
+                    <a href="${main_host!}carts.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -317,7 +317,7 @@ var webSite = '${webSite!}';
 <div class="rotateContainer">
     <div class="layout pr">
         <div class="title"></div>
-        <a href="buyer/awardInfo.htm" class="toMyAward pa yahei">查看我的奖品</a></a>
+        <a href="http://www.571xz.com/member/awardInfo.htm" class="toMyAward pa yahei">查看我的奖品</a></a>
         <div class="rotateBox pr">
             <div class="rotateBg pa"></div>
             <div class="lotteryStar pa"><img src="http://style.571xz.com/v2/qzhd/css/img/lottery/rotate.png" id="lotteryBtn"><img src="http://style.571xz.com/v2/qzhd/css/img/lottery/go.png" class="go" id="goBtn"><p class="yahei fs14 pa">还有<span id="lettoryNum">${lettoryNumber!}</span>次机会</p></div>
