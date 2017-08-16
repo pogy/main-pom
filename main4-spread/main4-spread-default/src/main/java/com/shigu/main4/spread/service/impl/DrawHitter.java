@@ -40,11 +40,11 @@ public class DrawHitter {
     private final PrizeStrategy prizeStrategy;
 
     /**
-     * 返回所中奖项信息，没中奖则返回信息rank=0,prizeName="NO-PRIZE"
+     * 返回所中奖项信息奖池信息，没中奖则返回null
      * @param prizePool
      * @return
      */
-    public DrawResult tryHitDraw(List<DrawPrizePool> prizePool) {
+    public DrawPrizePool tryHitDraw(List<DrawPrizePool> prizePool) {
         Collections.sort(prizePool,new  DrawPrizePool.Comparator());
         //抽奖点数
         int hitResult = new Random().nextInt(maxDrawNum)+1;
@@ -55,7 +55,9 @@ public class DrawHitter {
             if (hitResult<=currentNum) {
                 //奖项有剩余，成功中奖
                 if (pool.getCurrentPrizeNum()>0) {
-                    return new DrawResult(hitResult,pool.getRank(),pool.getPrizeGood());
+                    pool.setHitResult(hitResult);
+                    return pool;
+                    //return new DrawResult(hitResult,pool.getRank(),pool.getPrizeGood());
                 }
                 //本奖项没有剩余，奖项降级
                 if (PrizeStrategy.PRIZE_DOWN.equals(prizeStrategy)) {
@@ -63,11 +65,13 @@ public class DrawHitter {
                 }
                 //奖项没有剩余，不中奖
                 if (PrizeStrategy.PRIZE_CANCLE.equals(prizeStrategy)) {
-                    return new DrawResult(hitResult,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
+                    return null;
+                    //return new DrawResult(hitResult,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
                 }
             }
         }
-        return new DrawResult(hitResult,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
+        return null;
+        //return new DrawResult(hitResult,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
 
     }
 

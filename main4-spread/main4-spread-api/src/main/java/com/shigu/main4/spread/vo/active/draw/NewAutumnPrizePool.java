@@ -13,12 +13,13 @@ import java.util.Date;
 public class NewAutumnPrizePool extends DrawPrizePool {
     /**
      * 秋装新品发布会抽奖奖池数据存在shigu_temp表中
-     * key2：目前剩余可抽取奖品数量 currentPrizeNum
-     * key3：已被抽中奖品数量 distributedNum
-     * key4：奖池下次投放奖品奖品更新数量 throwNum
-     * key5：奖池下次投放奖品时间 nextThrowInTime
-     * key6：奖池投放奖品周期（小时） updatePeriod
-     * key1：剩余各种不变的信息，以json格式存储：
+     * flag:PRIZE_POOL_FLAG = "new_autumn_0811_prize_pool";
+     * key1：目前剩余可抽取奖品数量 currentPrizeNum
+     * key2：已被抽中奖品数量 distributedNum
+     * key3：奖池下次投放奖品奖品更新数量 throwNum
+     * key4：奖池下次投放奖品时间 nextThrowInTime
+     * key5：奖池投放奖品周期（小时） updatePeriod
+     * key6：剩余各种不变的信息，以json格式存储：
      * 几等奖->rank:"rank"
      * 中奖率->hitProbability:"hitProbability"
      * 奖品->prizeGood:"prizeGood"
@@ -27,6 +28,8 @@ public class NewAutumnPrizePool extends DrawPrizePool {
      * 活动类型->activeType:"activeType"
      * 活动展示期次->term:"term"
      * 活动期次->pemId:"pemId"
+     * 抽奖起始时间->startTime:"startTime"
+     * 抽奖截止时间->deadline:"deadline"
      */
 
     public static final String PRIZE_POOL_FLAG = "new_autumn_0811_prize_pool";

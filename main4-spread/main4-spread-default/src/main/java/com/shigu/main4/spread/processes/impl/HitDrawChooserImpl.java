@@ -9,6 +9,9 @@ import com.shigu.main4.spread.vo.active.draw.DrawVerifyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,8 +25,13 @@ import java.util.List;
 @Component
 public class HitDrawChooserImpl implements HitDrawChooser{
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
     public DrawResult tryHitDraw(ActivityDrawEnum drawEnum, DrawVerifyVO drawVerifyVO) {
+        //不在抽奖活动期间，无法抽奖
+        if (!verifyTime(drawEnum)) {
+            return null;
+        }
         //选择对应的抽奖活动
         if (drawEnum != null) {
             HitDrawModel hitDrawModel = SpringBeanFactory.getBeanByName(drawEnum.drawModelName, HitDrawModel.class);
@@ -35,6 +43,10 @@ public class HitDrawChooserImpl implements HitDrawChooser{
 
     @Override
     public void updateQualification(Long userId,Integer upNum, ActivityDrawEnum drawEnum) {
+        //不在活动期间
+        if (!verifyTime(drawEnum)) {
+            return;
+        }
         if (drawEnum != null) {
             HitDrawModel hitDrawModel = SpringBeanFactory.getBeanByName(drawEnum.drawModelName, HitDrawModel.class);
             hitDrawModel.triggerUpdateQualification(userId,upNum);
@@ -53,4 +65,20 @@ public class HitDrawChooserImpl implements HitDrawChooser{
         return hitDrawModel.tryHitDraw(drawVerifyVO,prizePools);
     }
 
+    private boolean verifyTime(ActivityDrawEnum drawEnum) {
+        Date deadline = null;
+        Date startTime = null;
+        try {
+            deadline = sdf.parse(drawEnum.deadline);
+            startTime = sdf.parse(drawEnum.startTime);
+        } catch (ParseException e) {
+            return false;
+        }
+        Date now = new Date();
+        //在抽奖活动时间内，可以进行抽奖
+        if (now.after(startTime)&&now.before(deadline)){
+            return true;
+        }
+        return false;
+    }
 }

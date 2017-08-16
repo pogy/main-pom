@@ -1,5 +1,7 @@
 package com.shigu.main4.spread.vo.active.draw;
 
+import java.util.Date;
+
 /**
  * 类名：DrawPrizePool
  * 类路径：com.shigu.main4.spread.vo.active.draw.DrawPrizePool
@@ -49,6 +51,18 @@ public class DrawPrizePool {
      * 奖品
      */
     private String prizeGood;
+    /**
+     * 抽奖结果点数，在每次抽奖时填入
+     */
+    private Integer hitResult;
+    /**
+     * 抽奖起始时间
+     */
+    private Date startTime;
+    /**
+     * 抽奖截止时间
+     */
+    private Date deadline;
 
     public Integer getActiveType() {
         return activeType;
@@ -128,6 +142,30 @@ public class DrawPrizePool {
 
     public void setActiveName(String activeName) {
         this.activeName = activeName;
+    }
+
+    public Integer getHitResult() {
+        return hitResult;
+    }
+
+    public void setHitResult(Integer hitResult) {
+        this.hitResult = hitResult;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
 
     public static class Comparator implements java.util.Comparator{

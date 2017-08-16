@@ -45,7 +45,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
      *
      * @param drawMsg   抽奖人信息
      * @param prizePool 奖池信息
-     * @return 抽奖结果
+     * @return 抽奖结果 没有抽奖资格则返回null
      */
     @Override
     public DrawResult tryHitDraw(DrawVerifyVO drawMsg, List<DrawPrizePool> prizePool) {
@@ -55,7 +55,13 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
         int usedFrequency = msg.getUsedFrequency() == null ? 0 : msg.getUsedFrequency();
         //有抽奖资格：已抽奖次数小于可抽奖次数，并且没中过奖
         if (usedFrequency++ < msg.getOpportunityFrequency() && (hasWard == null || NO_PRIZE.equals(hasWard))) {
-            DrawResult drawResult = new DrawHitter(1000, DrawHitter.PrizeStrategy.PRIZE_CANCLE).tryHitDraw(prizePool);
+            NewAutumnPrizePool resultPool = (NewAutumnPrizePool) new DrawHitter(1000, DrawHitter.PrizeStrategy.PRIZE_CANCLE).tryHitDraw(prizePool);
+            DrawResult drawResult = null;
+            if (resultPool != null) {
+                drawResult = new DrawResult(resultPool.getHitResult(),resultPool.getRank(),resultPool.getPrizeGood());
+            } else {
+                drawResult = new DrawResult(resultPool.getHitResult(),HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
+            }
             ShiguTemp temp = new ShiguTemp();
             temp.setId(msg.getDrawVerifyId());
             temp.setKey2(String.valueOf(usedFrequency));
@@ -72,8 +78,14 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
                 activeDrawRecord.setDrawCode(StringUtil.str10To37Str());
                 activeDrawRecord.setReceivesYes(false);
                 activeDrawRecordMapper.insert(activeDrawRecord);
+                ShiguTemp updatePool = new ShiguTemp();
+                updatePool.setId(resultPool.getId());
+                updatePool.setKey1(resultPool.getCurrentPrizeNum()-1+"");
+                updatePool.setKey2(resultPool.getDistributedNum()+1+"");
+                shiguTempMapper.updateByPrimaryKeySelective(updatePool);
             }
             shiguTempMapper.updateByPrimaryKeySelective(temp);
+            return drawResult;
         }
         //没有抽奖资格
         return null;
@@ -86,8 +98,8 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
         ShiguTempExample example = new ShiguTempExample();
         example.createCriteria().andFlagEqualTo(NewAutumnPrizePool.PRIZE_POOL_FLAG);
         return shiguTempMapper.selectByExample(example).stream().map(o -> {
-            //在temp表key1中的奖池记录中，在key1存放常量信息
-            JSONObject constantMsg = JSON.parseObject(o.getKey1());
+            //在temp表key1中的奖池记录中，在key6存放常量信息
+            JSONObject constantMsg = JSON.parseObject(o.getKey6());
             NewAutumnPrizePool vo = new NewAutumnPrizePool();
             //主键
             vo.setId(o.getId());
@@ -96,6 +108,10 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
             vo.setPemId(newAutumn.pemId);
             vo.setActiveType(newAutumn.type);
             vo.setActiveName(newAutumn.activeName);
+            //起始时间
+            vo.setStartTime(constantMsg.getDate("startTime"));
+            //截止时间
+            vo.setDeadline(constantMsg.getDate("deadline"));
             //常量信息
             //奖品总数
             vo.setFullNumber(constantMsg.getInteger("fullNumber"));
@@ -107,16 +123,16 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
             vo.setPrizeGood(constantMsg.getString("prizeGood"));
             //变量信息
             //当前剩余可发奖品数量
-            vo.setCurrentPrizeNum(Integer.valueOf(o.getKey2()));
+            vo.setCurrentPrizeNum(Integer.valueOf(o.getKey1()));
             //已被抽中奖品数量
-            vo.setDistributedNum(Integer.valueOf(o.getKey3()));
+            vo.setDistributedNum(Integer.valueOf(o.getKey2()));
             //下次奖池投放奖品数量
-            vo.setThrowNum(Integer.valueOf(o.getKey4()));
+            vo.setThrowNum(Integer.valueOf(o.getKey3()));
             //奖池更新周期
-            vo.setUpdatePeriod(Integer.valueOf(o.getKey6()));
+            vo.setUpdatePeriod(Integer.valueOf(o.getKey5()));
             //下次奖池投放奖品时间
             try {
-                vo.setNextThrowInTime(sdf.parse(o.getKey5()));
+                vo.setNextThrowInTime(sdf.parse(o.getKey4()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -146,6 +162,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
         //没有抽奖记录，插入抽奖记录
         //设置可抽奖次数
         shiguTemp.setKey3(String.valueOf(opportunityNum));
+        //设置上款量
         shiguTemp.setKey4(upNum.toString());
         //设置已抽奖次数
         shiguTemp.setKey2(String.valueOf(0));
@@ -159,12 +176,12 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
         example.createCriteria().andFlagEqualTo(NewAutumnPrizePool.PRIZE_POOL_FLAG);
         for (ShiguTemp pool : shiguTempMapper.selectByExample(example)) {
             try {
-                Date updateTime = sdf.parse(pool.getKey5());
+                Date updateTime = sdf.parse(pool.getKey4());
                 if (updateTime.before(new Date())) {
                     //奖池奖品投放
-                    pool.setKey2(String.valueOf(Integer.valueOf(pool.getKey2()) + Integer.valueOf(pool.getKey4())));
+                    pool.setKey1(String.valueOf(Integer.valueOf(pool.getKey1()) + Integer.valueOf(pool.getKey3())));
                     //更新下次奖品投放时间
-                    pool.setKey5(sdf.format(new Date(Integer.valueOf(pool.getKey6()) * 60 * 60 * 1000 + updateTime.getTime())));
+                    pool.setKey4(sdf.format(new Date(Integer.valueOf(pool.getKey5()) * 60 * 60 * 1000 + updateTime.getTime())));
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
