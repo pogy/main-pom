@@ -421,7 +421,7 @@ public class ActivityAction {
             DrawResult drawResult = newAutumnDrawQualification.tryHitDraw(userId);
             awards = drawResult == null || drawResult.getRank() == null ? 6 : drawResult.getRank() == 0 ? 5 : drawResult.getRank();
         } catch (JsonErrException e){
-            if ("不在抽奖时间内".equals(e.getMessage())) {
+            if ("没有抽奖资格".equals(e.getMessage())) {
                 awards=6;
             } else {
                 throw e;
