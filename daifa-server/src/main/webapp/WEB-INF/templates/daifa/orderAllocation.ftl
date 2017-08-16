@@ -534,7 +534,7 @@
             <li class="goodsInfo">商品信息</li>
             <li class="price">价格（元）</li>
             <li class="goodsNum">数量</li>
-            <li class="dffs">发货方式</li>
+            <li class="dffs">代发方式</li>
         </ul>
     </div>
     <div id="orderContainer">
