@@ -1,9 +1,9 @@
 package com.shigu.resolver;
 
 import com.opentae.common.beans.LogUtil;
-import com.shigu.main4.common.exceptions.JsonErrException;
-import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
@@ -12,56 +12,81 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
+
 
 /**
  * 异常拦截
- *
+ * 
  * @author wxc
  * @date 2016年6月15日 上午11:21:14
  */
 public class ExceptionResolver extends SimpleMappingExceptionResolver {
 
-    private static final Logger log = LogUtil.getLog(ExceptionResolver.class);
+	private static final Logger log = LogUtil.getLog(ExceptionResolver.class);
 
-    @Override
-    protected ModelAndView doResolveException(HttpServletRequest request,
-                                              HttpServletResponse response, Object arg2, Exception ex) {
-        if(ex instanceof JsonErrException){//json类型的问题
-            Map<String,Object> otherFields=((JsonErrException) ex).getErrorMap();
-            JSONObject jsonObj=JSONObject.fromObject("{'result':'error'}");
-            if(otherFields!=null){
-                if(!otherFields.containsKey("msg")){
-                    jsonObj.element("msg",ex.getMessage());
-                }
-                jsonObj.accumulateAll(otherFields);
-            }else{
-                jsonObj.element("msg",ex.getMessage());
-            }
-            String jsonString = jsonObj.toString();
-            response.setCharacterEncoding("UTF-8");
-            if (request.getParameter("callback") != null) {
-                response.setContentType("application/x-javascript");//jsonp异常响应处理
-                jsonString = request.getParameter("callback") + "(" + jsonString + ");";
-            } else {
-                response.setContentType("application/json");//修复post异常信息未被解析为json
-            }
-            try {
-                PrintWriter writer = response.getWriter();
-                writer.print(jsonString);
-                writer.flush();
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }else if(ex instanceof Main4Exception){//页面已知的错误
-            request.setAttribute("errMsg",ex.getMessage());
-        }else{//页面未知的错误
-            request.setAttribute("errMsg","系统异常");
-            ex.printStackTrace();
-        }
-        //记录异常日志...
-        return getModelAndView("500", ex, request);
-    }
+	@Override
+	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object arg2, Exception ex) {
+
+		String requestUrl = request.getRequestURI();
+
+		// 接口异常处理
+
+		//html端.json异常处理
+		if(requestUrl.endsWith(".json")){
+			return htmlJsonErrorHandle(request, response, ex);
+		}
+
+		// 程序其他异常
+		return systemErrorHandle(request, response, arg2, ex);
+	}
+
+	private static boolean isAjaxRequest(HttpServletRequest request) {
+		String requestedWith = request.getHeader("X-Requested-With");
+		return StringUtils.equals(requestedWith, "XMLHttpRequest");
+	}
+
+	public ModelAndView systemErrorHandle(HttpServletRequest request, HttpServletResponse response, Object arg2, Exception ex) {
+		logger.error("错误:"+ex,ex);
+		ModelAndView model = new ModelAndView();
+		model.addObject("msg", "系统异常");
+		model.setViewName("500");
+		if(ex instanceof DaifaException) {
+			model.addObject("msg", ex.getMessage());
+
+		}
+		return model;
+	}
+	public ModelAndView htmlJsonErrorHandle(HttpServletRequest request, HttpServletResponse response,Exception ex){
+
+		ModelAndView view=new ModelAndView();
+		logger.error("ajax错误:"+ex,ex);
+		JSONObject obj=new JSONObject();
+
+
+		obj.put("result","error");
+		obj.put("msg","系统异常");
+		if(ex instanceof DaifaException){
+			obj.put("msg",ex.getMessage());
+		}
+		String jsonString=obj.toString();
+		if (request.getParameter("callback") != null) {
+			response.setContentType("application/x-javascript");
+			response.setCharacterEncoding("UTF-8");
+			jsonString = request.getParameter("callback") + "(" + jsonString + ");";
+		}
+		try {
+			response.setContentType("application/json;charset=utf-8");
+			PrintWriter writer = response.getWriter();
+
+			writer.print(jsonString);
+			writer.flush();
+			writer.close();
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return view;
+
+	}
 }
