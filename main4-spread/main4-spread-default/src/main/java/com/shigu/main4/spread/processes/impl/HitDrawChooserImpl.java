@@ -30,7 +30,8 @@ public class HitDrawChooserImpl implements HitDrawChooser{
     @Override
     public DrawResult tryHitDraw(ActivityDrawEnum drawEnum, DrawVerifyVO drawVerifyVO) throws JsonErrException {
         //不在抽奖活动期间，无法抽奖
-        if (!verifyTime(drawEnum)) {
+        boolean verifyTime = verifyTime(drawEnum);
+        if (!verifyTime) {
             throw new JsonErrException("不在抽奖时间内");
         }
         //选择对应的抽奖活动
