@@ -43,7 +43,7 @@ public class DaifaAllocateAction {
     public String orderAllocation(OrderAllocateBO bo,Model model){
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        List<OrderAllocateVO> orderAllocateVOList = daifaAllocateService.orderAllcoation(bo);
+        List<OrderAllocateVO> orderAllocateVOList = daifaAllocateService.orderAllcoation(bo,auth.getDaifaSellerId());
         model.addAttribute("childOrders",orderAllocateVOList);
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",bo.getCount()+",10,"+bo.getPage());

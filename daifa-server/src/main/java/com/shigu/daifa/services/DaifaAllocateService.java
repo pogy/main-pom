@@ -47,12 +47,10 @@ public class DaifaAllocateService {
         this.takeGoodsIssueProcess = takeGoodsIssueProcess;
     }
 
-    public List<OrderAllocateVO> orderAllcoation(OrderAllocateBO bo) {
-        AuthorityUser user = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        Long daifaSellerId = user.getDaifaSellerId();
+    public List<OrderAllocateVO> orderAllcoation(OrderAllocateBO bo, Long sellerId) {
         DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
         DaifaGgoodsTasksExample.Criteria criteria = daifaGgoodsTasksExample.createCriteria();
-        criteria.andUseStatusEqualTo(1).andAllocatStatusEqualTo(0).andSellerIdEqualTo(daifaSellerId);//可用的未分配的
+        criteria.andUseStatusEqualTo(1).andAllocatStatusEqualTo(0).andSellerIdEqualTo(sellerId);//可用的未分配的
         if (!StringUtils.isEmpty(bo.getChildOrderId())) {
             criteria.andDfOrderIdEqualTo(bo.getChildOrderId());
         }

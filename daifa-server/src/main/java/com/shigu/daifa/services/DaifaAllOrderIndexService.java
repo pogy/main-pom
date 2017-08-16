@@ -68,9 +68,8 @@ public class DaifaAllOrderIndexService {
         this.orderManageProcess = orderManageProcess;
     }
 
-    public List<DaifaAllOrderVO> allOrderPage(AllOrderBO bo) {
-        AuthorityUser user = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
-        Long sellerId = user.getDaifaSellerId();
+    public List<DaifaAllOrderVO> allOrderPage(AllOrderBO bo,Long sellerId) {
+
 
         DaifaTradeExample dtex = new DaifaTradeExample();
         DaifaOrderExample doex = new DaifaOrderExample();

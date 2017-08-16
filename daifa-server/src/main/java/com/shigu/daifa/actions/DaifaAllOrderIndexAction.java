@@ -44,9 +44,10 @@ public class DaifaAllOrderIndexAction {
 
     @RequestMapping("daifa/orderAll")
     public String allOrderPage(AllOrderBO bo,Model model){
-        List<DaifaAllOrderVO> allOrders =  daifaAllOrderIndexService.allOrderPage(bo);
-        Session session = SecurityUtils.getSubject().getSession();
+         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        List<DaifaAllOrderVO> allOrders =  daifaAllOrderIndexService.allOrderPage(bo,auth.getDaifaSellerId());
+
 
 
         String pageOption = bo.getCount()+","+"10"+","+bo.getPage();
