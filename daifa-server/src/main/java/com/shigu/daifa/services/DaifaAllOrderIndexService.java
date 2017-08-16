@@ -198,7 +198,7 @@ public class DaifaAllOrderIndexService {
         return workerVOS;
     }
 
-    public JSONObject setTimeJson(Long childOrderId, String timeStr) {
+    public JSONObject setTimeJson(Long childOrderId, String timeStr) throws DaifaException {
         if(!StringUtils.hasText(timeStr)){
             return JsonResponseUtil.error("时间不能空");
         }
@@ -206,7 +206,7 @@ public class DaifaAllOrderIndexService {
         return JsonResponseUtil.success("设置成功");
     }
 
-    public JSONObject setTallyJson(Long userId,Long childOrderId) {
+    public JSONObject setTallyJson(Long userId,Long childOrderId) throws DaifaException {
         orderManageProcess.markDown(childOrderId);
         return JsonResponseUtil.success("标记下架成功");
     }

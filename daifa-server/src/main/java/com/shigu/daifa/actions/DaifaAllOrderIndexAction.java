@@ -77,14 +77,14 @@ public class DaifaAllOrderIndexAction {
      */
     @RequestMapping(value = "daifa/setTimeJson",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject setTimeJson(@RequestParam(value = "childOrderId") Long childOrderId,String timeStr){
+    public JSONObject setTimeJson(@RequestParam(value = "childOrderId") Long childOrderId,String timeStr) throws DaifaException {
 
         return daifaAllOrderIndexService.setTimeJson(childOrderId,timeStr);
     }
 
     @RequestMapping(value = "daifa/setTallyJson",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject setTallyJson(Long userId,@RequestParam("childOrderId") Long childOrderId){
+    public JSONObject setTallyJson(Long userId,@RequestParam("childOrderId") Long childOrderId) throws DaifaException {
 
         return daifaAllOrderIndexService.setTallyJson(userId,childOrderId);
     }
