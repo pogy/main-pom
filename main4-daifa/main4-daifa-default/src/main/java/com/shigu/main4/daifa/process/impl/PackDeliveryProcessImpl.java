@@ -94,12 +94,14 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         exbo.setReceiverPhone(trade.getReceiverMobile()==null?trade.getReceiverPhone():trade.getReceiverMobile());
         exbo.setTid(trade.getDfTradeId());
         List<SubOrderExpressBO> list=new ArrayList<>();
+        List<Long> oids=new ArrayList<>();
         for(DaifaOrder o:orders){
             SubOrderExpressBO so=new SubOrderExpressBO();
             so.setGoodsNum(o.getGoodsNum());
             so.setOrderId(o.getDfOrderId());
             so.setPropStr(o.getPropStr());
             so.setStoreGoodsCode(o.getStoreGoodsCode());
+            oids.add(o.getDfOrderId());
             list.add(so);
         }
         exbo.setList(list);
@@ -114,6 +116,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         bo.setExpressCode(exvo.getExpressCode());
         bo.setMarkDestination(exvo.getMarkDestination());
         bo.setPackageName(exvo.getPackageName());
+        bo.setDfOrderIds(oids);
         OrderModel orderModel= SpringBeanFactory.getBean(OrderModel.class,order.getDfTradeId());
         orderModel.send(bo);
 
