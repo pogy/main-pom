@@ -6,6 +6,10 @@ public class DaifaAllocatedVO {
      */
     private Long childOrderId;
     /**
+     * 已分配ID
+     */
+    private Long takeGoodsId;
+    /**
      * 商品图片
      */
     private String imgSrc;
@@ -156,5 +160,19 @@ public class DaifaAllocatedVO {
 
     public void setNoSaleIs (Boolean noSaleIs) {
         this.noSaleIs = noSaleIs;
+    }
+
+    /**
+     * 获取 已分配ID
+     */
+    public Long getTakeGoodsId() {
+        return this.takeGoodsId;
+    }
+
+    /**
+     * 设置 已分配ID
+     */
+    public void setTakeGoodsId(Long takeGoodsId) {
+        this.takeGoodsId = takeGoodsId;
     }
 }
