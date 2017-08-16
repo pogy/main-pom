@@ -112,7 +112,7 @@ public class DaifaAllocatedService {
         g.setDaifaWorkerId(workerId);
         g.setTakeGoodsId(takeGoodsId);
         g=daifaGgoodsMapper.selectOne(g);
-        if (g != null) {
+        if (g == null) {
             throw new DaifaException("不是分配给该拿货员的商品");
         }
         switch (takeType){
