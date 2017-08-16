@@ -105,7 +105,7 @@ public class DaifaAllocatedService {
     }
 
     public void takeGoods(Long workerId,Long takeGoodsId,Integer takeType) throws DaifaException {
-        if (takeType != null) {
+        if (takeType == null) {
             throw new DaifaException("类型为空");
         }
         DaifaGgoods g=new DaifaGgoods();
