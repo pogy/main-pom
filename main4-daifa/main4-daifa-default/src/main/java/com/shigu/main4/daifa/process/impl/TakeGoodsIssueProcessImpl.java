@@ -98,7 +98,8 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andEndStatusEqualTo(0)//未结算
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
                         "format(youhuo_date,'%y%m%d')-create_date<=0 or format(now(),'%y%m%d')-create_date>0,true)))");
-        List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(dgtex, FieldUtil.codeFields("task_id"));
+        List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper
+                .selectFieldsByExample(dgtex, FieldUtil.codeFields("tasks_id"));
         List<Long> taskIds = new ArrayList<>();
         ggoodsTasks.forEach(gt -> taskIds.add(gt.getTasksId()));
         return distributionTask(wholeId, taskIds);

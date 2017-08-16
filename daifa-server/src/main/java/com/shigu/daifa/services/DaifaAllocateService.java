@@ -156,17 +156,25 @@ public class DaifaAllocateService {
     }
 
     public static void main(String[] args) {
+
+
         TreeMap<MarketBean, MarketBean> map = new TreeMap<>();
         MarketBean bean = new MarketBean();
-        bean.setId(10L);
-        bean.setType(1);
+        bean.setId(999L);
+        bean.setType(2);
         bean.setName("我的");
+        System.out.println(bean.hashCode());
         map.put(bean, bean);
-        MarketBean bean1 = new MarketBean();
-        bean1.setId(10L);
-        bean1.setType(1);
-        MarketBean bean2 = map.ceilingKey(bean1);
+        MarketBean bean2 = new MarketBean();
+        bean2.setId(621L);
+        bean2.setType(2);
         bean2.setName("卧槽");
+        System.out.println(bean2.equals(bean) );
+
+        MarketBean marketBean = map.get(bean2);
+        System.out.println(marketBean.getName());
+//        MarketBean bean2 = map.ceilingKey(bean);
+//        bean2.setName("卧槽");
         Iterator<Map.Entry<MarketBean, MarketBean>> iterator = map.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<MarketBean, MarketBean> next = iterator.next();

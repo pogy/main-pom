@@ -68,9 +68,6 @@ public class MarketBean implements Comparable<MarketBean>{
 
     @Override
     public int compareTo( MarketBean o) {
-        if(this.id >o.getId()){
-            return 1;
-        }
-        return 0;
+        return (int)(this.id - o.getId());
     }
 }
