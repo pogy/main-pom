@@ -21,7 +21,7 @@ public class NewAutumnDrawVerifyVO extends DrawVerifyVO {
     /**
      * 秋装活动上款记录标记
      */
-    public static final String[] UPLOAD_FLAG = {"new_autumn_0811", "new_autumn_0811_closed"};
+    public static final String[] UPLOAD_FLAG = {"new_autumn_0811"};
     /**
      * 秋装活动抽奖记录标记
      */

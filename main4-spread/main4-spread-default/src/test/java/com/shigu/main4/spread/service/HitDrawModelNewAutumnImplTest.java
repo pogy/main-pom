@@ -40,17 +40,23 @@ public class HitDrawModelNewAutumnImplTest {
      */
     @Test
     public void initPool() {
-        //System.out.println(generateConstant(ActivityDrawEnum.NEW_AUTUMN,1,1,50,"一等奖"));
-        //JSONObject poolConstant = new JSONObject();
-        ShiguTemp rank1 = generateNewAutumnPrizePool(generateConstant(ActivityDrawEnum.NEW_AUTUMN, 1, 1, 50, "一等奖"),
+        ShiguTemp rank1 = generateNewAutumnPrizePool(generateConstant(ActivityDrawEnum.NEW_AUTUMN, 1, 1, 20, "一等奖"),
                 0, 0, 1, "2017-08-22 00:00:00", 240);
         shiguTempMapper.insertSelective(rank1);
-
+        ShiguTemp rank2 = generateNewAutumnPrizePool(generateConstant(ActivityDrawEnum.NEW_AUTUMN, 2, 5, 50, "二等奖"),
+                1, 0, 1, "2017-08-19 00:00:00", 48);
+        shiguTempMapper.insertSelective(rank2);
+        ShiguTemp rank3 = generateNewAutumnPrizePool(generateConstant(ActivityDrawEnum.NEW_AUTUMN, 3, 120, 100, "三等奖"),
+                12, 0, 12, "2017-08-18 00:00:00", 24);
+        shiguTempMapper.insertSelective(rank3);
+        ShiguTemp rank4 = generateNewAutumnPrizePool(generateConstant(ActivityDrawEnum.NEW_AUTUMN, 4, 250, 150, "参与奖"),
+                25, 0, 250, "2017-08-18 00:00:00", 24);
+        shiguTempMapper.insertSelective(rank4);
     }
 
     /**
      *
-     * @param constant 奖池常量信息
+     * @param constant 秋装奖池常量信息
      * @param currentPrizeNum 当前可抽奖品数量
      * @param distributedNum 已被抽中奖品数量
      * @param throwNum 奖品下次投放数量
@@ -71,6 +77,15 @@ public class HitDrawModelNewAutumnImplTest {
         return pool;
     }
 
+    /**
+     * 秋装奖池常量信息
+     * @param activityDrawEnum
+     * @param rank
+     * @param totalNum
+     * @param hitProbability
+     * @param prizeGood
+     * @return
+     */
     private JSONObject generateConstant(ActivityDrawEnum activityDrawEnum, int rank, int totalNum,int hitProbability,String prizeGood) {
         JSONObject poolConstant = new JSONObject();
         poolConstant.put("activeName",activityDrawEnum.activeName);

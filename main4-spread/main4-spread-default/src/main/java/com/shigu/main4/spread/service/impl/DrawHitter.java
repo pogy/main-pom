@@ -65,12 +65,16 @@ public class DrawHitter {
                 }
                 //奖项没有剩余，不中奖
                 if (PrizeStrategy.PRIZE_CANCLE.equals(prizeStrategy)) {
-                    return null;
+                    DrawPrizePool notHitted = new DrawPrizePool();
+                    notHitted.setHitResult(hitResult);
+                    return notHitted;
                     //return new DrawResult(hitResult,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
                 }
             }
         }
-        return null;
+        DrawPrizePool notHitted = new DrawPrizePool();
+        notHitted.setHitResult(hitResult);
+        return notHitted;
         //return new DrawResult(hitResult,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
 
     }
