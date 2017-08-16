@@ -57,7 +57,7 @@ public class DaifaAllocateService {
             criteria.andDfOrderIdEqualTo(bo.getChildOrderId());
         }
         if (!StringUtils.isEmpty(bo.getOrderId())) {
-            criteria.andDfOrderIdLike("%" + bo.getOrderId());
+            criteria.andDfTradeIdLike("%" + bo.getOrderId());
         }
         if (StringUtils.hasText(bo.getStartTime())) {
             criteria.andCreateTimeGreaterThanOrEqualTo(DateUtil.stringToDate(bo.getStartTime()));
