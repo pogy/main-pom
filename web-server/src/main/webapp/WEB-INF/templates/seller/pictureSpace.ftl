@@ -17,7 +17,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/gysV1/css/pictureSpace.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/gysV1/css/pictureSpace.css?v=20170808" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
             <script src="http://style.571xz.com/v2/gysV1/plupload2.1.2/plupload.full.min.js"></script>
         
     
-    <script src="http://style.571xz.com/v2/gysV1/js/pictureSpace.js"></script>
+    <script src="http://style.571xz.com/v2/gysV1/js/pictureSpace.js?v=20170808"></script>
 </head>
 <body>
 
@@ -336,7 +336,7 @@ var shopId = '${session_user_redis__.logshop.shopId!}';
 
 <div class="content shadowBox">
    <div class="headTitle fc6">
-    <h2 class="fs16 fwb yahei">图片空间</h2><span class="fcF40">*四季星座网免费赠送各档口 1G ( 1024M ) 空间容量!</span>
+    <h2 class="fs16 fwb yahei">图片空间</h2>
 </div>
 
 

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>main4-item</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.1.9-SNAPSHOT</version>
+        <version>4.2.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -95,6 +95,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -117,6 +118,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
         </dependency>
 
         <dependency>
@@ -165,10 +167,12 @@
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-spring</artifactId>
+            <version>${mybatis-spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -178,11 +182,12 @@
         <dependency>
             <groupId>xinzuo-mybatis</groupId>
             <artifactId>xinzuo-mybatis</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
+            <version>${xinzuo-mybatis.version}</version>
         </dependency>
         <dependency>
             <groupId>opentae-beans</groupId>
             <artifactId>common</artifactId>
+            <version>${opentae-common.version}</version>
         </dependency>
 
         <dependency>
@@ -227,6 +232,12 @@
             <groupId>com.aliyun</groupId>
             <artifactId>opensearch</artifactId>
             <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>${javassist.version}</version>
         </dependency>
     </dependencies>
 

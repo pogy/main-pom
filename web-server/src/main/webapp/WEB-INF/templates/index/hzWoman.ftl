@@ -6,10 +6,10 @@
     <title>[四季星座网]杭州站-四季星座网-四季星座论坛-四季青服装货源，四季青市场，网店代理货源，网上服装进货，男装淘宝货源，女装淘宝货源，网络货源,网店货源导航,淘宝店货源,实体网络进货,杭州网店之家,杭州专业网店货源,杭州网店货源</title>
     <meta name="keywords" content="四季星座,四季星座网,四季星座论坛,网店代理货源,开淘宝店货源,淘宝货源,服装批发市场,杭州网店之家,杭州四季青服装批发市场,杭州四季青服装批发市场地址,外贸服装进货渠道,服装进货渠道">
     <meta name="description" content="四季星座网杭州的服装杭州女装货源批发网,市场包含了四季星座,星座女装电子商务楼,之江服装电子商务楼,四季青,意法服饰城,新杭派,四季星座男装等,是网络卖家网络货源平台,网店货源,女装货源,杭州女装货源,淘宝货源,实体店网络进货渠道,星座论坛 ,四季星座论坛，网店货源,实体店网络进货优选渠道!">
-    <link href="http://style.571xz.com/indexV5/css/hzWoman.css?t=1499752698433" rel="stylesheet">
+    <link href="http://style.571xz.com/indexV6/css/hzWoman.css?t=1502172022290" rel="stylesheet">
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/indexV5/js/jquery.cookie.js"></script>
-<script>/*============ indexV5/page#layoutHeader BEGIN ============*/
+    <script src="http://style.571xz.com/indexV6/js/jquery.cookie.js"></script>
+<script>/*============ indexV6/page#layoutHeader BEGIN ============*/
 
 '${test!}'
         var hreflocation=window.location.href;
@@ -30,11 +30,11 @@
               }) ;
           }
 
-/*============ indexV5/page#layoutHeader END ============*/
+/*============ indexV6/page#layoutHeader END ============*/
 
 
-</script>    <script src="http://style.571xz.com/indexV5/js/temp/ekoo.min.js"></script>
-    <script src="http://style.571xz.com/indexV5/js/hzWoman.js?t=1499752698433"></script>
+</script>    <script src="http://style.571xz.com/indexV6/js/temp/ekoo.min.js"></script>
+    <script src="http://style.571xz.com/indexV6/js/hzWoman.js?t=1502172022290"></script>
   </head>
 <body class="pageWoman">
 <#include "/common/host_config.ftl">
@@ -313,13 +313,21 @@ var webSite = '${webSite!}';
                         </ul>
                     </div>
                 </div>
-                <div class="list" data-menuid="manCate">
-                    <h3 class="mtitle"><em>女装分类</em><i class="iconfont"></i></h3>
+                <div class="list" data-menuid="manCoat">
+                    <h3 class="mtitle"><em>女装上衣</em><i class="iconfont"></i></h3>
                     <div class="mlist">
                         <ul class="clearfix">
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;cid=50000671">T恤</a></li>
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;cid=162104">衬衫</a></li>
+                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;cid=162116">蕾丝衫/雪纺衫</a></li>
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;cid=50000697">针织衫</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="list" data-menuid="manPants">
+                    <h3 class="mtitle"><em>女装裤子/裙子</em><i class="iconfont"></i></h3>
+                    <div class="mlist">
+                        <ul class="clearfix">
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;cid=162205">牛仔裤</a></li>
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;cid=50010850">连衣裙</a></li>
                             <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=长裙">长裙</a></li>
@@ -347,17 +355,6 @@ var webSite = '${webSite!}';
                         </ul>
                     </div>
                 </div>
-                <div class="list" data-menuid="elementCate">
-                    <h3 class="mtitle"><em>流行元素</em><i class="iconfont"></i></h3>
-                    <div class="mlist">
-                        <ul class="clearfix">
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=刺绣">刺绣</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=流苏">流苏</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=条纹">条纹</a></li>
-                            <li><a target="_blank" href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=羊绒">羊绒</a></li>
-                        </ul>
-                    </div>
-                </div>
                 
                 
             </div>
@@ -378,11 +375,9 @@ var webSite = '${webSite!}';
                         </div>
                     
                     </div>
-                    <div class="innerbox w320c0 manCate" data-width="w320c0">
-                    
-                        
-                        <div class="itemsbox">
-                            <h4>上衣</h4>
+                    <div class="innerbox w320c0 manCoat" data-width="w320c0">
+                        <div class="itemConTop">
+                            <h4 class="itemTitle">女装上衣</h4>
                             <ul class="itemlist clearfix">
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;cid=50000671" target="_blank">T恤</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;cid=162104" target="_blank">衬衫</a></li>
@@ -402,6 +397,11 @@ var webSite = '${webSite!}';
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;cid=50008899" target="_blank">羽绒服</a></li>
                             </ul>
                         </div>
+                    
+                    </div>
+                    <div class="innerbox w320c0 manPants" data-width="w320c0">
+                    
+                        
                         <div class="itemsbox">
                             <h4>裙子</h4>
                             <ul class="itemlist clearfix">
@@ -487,32 +487,9 @@ var webSite = '${webSite!}';
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=甜美" target="_blank">甜美</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=简约" target="_blank">简约</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=学院" target="_blank">学院</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=街" target="_blank">街头</a></li>
+                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=街头" target="_blank">街头</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=小香风" target="_blank">小香风</a></li>
                                 <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=波西米亚" target="_blank">波西米亚</a></li>
-                            </ul>
-                        </div>
-                    
-                    </div>
-                    <div class="innerbox w240c2 elementCate" data-width="w240c2">
-                        <div class="itemConTop">
-                            <h4 class="itemTitle">流行元素</h4>
-                            <ul class="itemlist clearfix">
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=刺绣" target="_blank">刺绣</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=蕾丝" target="_blank">蕾丝</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=流苏" target="_blank">流苏</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=条纹" target="_blank">条纹</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=格子" target="_blank">格子</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=波点" target="_blank">波点</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=印花" target="_blank">印花</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=拼接" target="_blank">拼接</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=牛仔" target="_blank">牛仔</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=破洞" target="_blank">破洞</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=蝶结" target="_blank">蝴蝶结</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=系带" target="_blank">系带</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=喇叭袖" target="_blank">喇叭袖</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=高腰" target="_blank">高腰</a></li>
-                                <li><a href="http://so.571xz.com/${webSite!}goods.htm?pid=16&amp;keyword=蝙蝠袖" target="_blank">蝙蝠袖</a></li>
                             </ul>
                         </div>
                     
@@ -549,6 +526,10 @@ var webSite = '${webSite!}';
 一件代发                    </a>
                 </li>
                 <li>
+                    <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
+知识产权                    </a>
+                </li>
+                <li>
                     <a href="http://zixun.571xz.com/index" target="_blank">
 资讯                    </a>
                 </li>
@@ -580,7 +561,9 @@ var webSite = '${webSite!}';
         <div class="topStoread">
             <ul class="clearfix">
                 <#list topStoread as item>
+                <#if item_index lt 2>
                 <li><a href="${item.href!}" target="_blank"><img src="${item.imgsrc!}"></a></li>
+                </#if>
                 </#list>
             </ul>
         </div>
@@ -609,7 +592,7 @@ var webSite = '${webSite!}';
                 
                 <div class="p1 clearfix">
                     <div class="userIcon">
-                        <img src="http://style.571xz.com/indexV5/css/img/touxiang.png">
+                        <img src="http://style.571xz.com/indexV6/css/img/touxiang.png">
                     </div>
                     <div class="wellcom">
                         <p class="s1">Hi，欢迎来到</p>
@@ -639,7 +622,7 @@ var webSite = '${webSite!}';
             </div>
             
         </div>
-        <script>/*============ indexV5/page#topRtbox BEGIN ============*/
+        <script>/*============ indexV6/page#topRtbox BEGIN ============*/
 
 ${test!}
 var isgys = false;
@@ -650,7 +633,7 @@ if(session_shopId != ""){
     isgys = false;
 }
 
-/*============ indexV5/page#topRtbox END ============*/
+/*============ indexV6/page#topRtbox END ============*/
 
 
 </script>
@@ -901,7 +884,7 @@ if(session_shopId != ""){
 <div class="sideNavbar" id="sideNavbar">
     
 </div>
-<script>/*============ indexV5/hzWoman#main BEGIN ============*/
+<script>/*============ indexV6/hzWoman#main BEGIN ============*/
 
 '${hacker!}';
 $(".imgBox img").lazyload({
@@ -909,7 +892,7 @@ $(".imgBox img").lazyload({
     threshold: 400 // 提前开始加载
 });
 
-/*============ indexV5/hzWoman#main END ============*/
+/*============ indexV6/hzWoman#main END ============*/
 
 
 </script>

@@ -1,575 +1,286 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.GoodsupNoreal;
 
-public class GoodsupNorealExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<GoodsupNorealExample.Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class GoodsupNorealExample extends SgExample<GoodsupNorealExample.Criteria> {
+    public static final Class<GoodsupNoreal> beanClass = GoodsupNoreal.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn norealId;
+    public static EntityColumn addNum;
+    public static EntityColumn activeNum;
+    public static EntityColumn itemId;
+    public static EntityColumn realNum;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        norealId = listMap.get("norealId");
+        addNum = listMap.get("addNum");
+        activeNum = listMap.get("activeNum");
+        itemId = listMap.get("itemId");
+        realNum = listMap.get("realNum");
+        }
 
     public GoodsupNorealExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<GoodsupNorealExample.Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(GoodsupNorealExample.Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public GoodsupNorealExample.Criteria or() {
-        GoodsupNorealExample.Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public GoodsupNorealExample.Criteria createCriteria() {
-        GoodsupNorealExample.Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
+    @Override
     protected GoodsupNorealExample.Criteria createCriteriaInternal() {
-        GoodsupNorealExample.Criteria criteria = new GoodsupNorealExample.Criteria();
-        return criteria;
+        return new GoodsupNorealExample.Criteria(this);
     }
 
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GoodsupNorealExample.GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<GoodsupNorealExample.Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<GoodsupNorealExample.Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<GoodsupNorealExample.Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new GoodsupNorealExample.Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new GoodsupNorealExample.Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new GoodsupNorealExample.Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumIsNull() {
-            this.addCriterion("active_num is null");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumIsNotNull() {
-            this.addCriterion("active_num is not null");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumEqualTo(Integer value) {
-            this.addCriterion("active_num =", value, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumNotEqualTo(Integer value) {
-            this.addCriterion("active_num <>", value, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumGreaterThan(Integer value) {
-            this.addCriterion("active_num >", value, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("active_num >=", value, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumLessThan(Integer value) {
-            this.addCriterion("active_num <", value, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumLessThanOrEqualTo(Integer value) {
-            this.addCriterion("active_num <=", value, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumLike(String value) {
-            this.addCriterion("active_num like", value, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumNotLike(String value) {
-            this.addCriterion("active_num not like", value, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }        public GoodsupNorealExample.Criteria andActiveNumIn(List<Integer> values) {
-            this.addCriterion("active_num in", values, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumNotIn(List<Integer> values) {
-            this.addCriterion("active_num not in", values, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumBetween(Integer value1, Integer value2) {
-            this.addCriterion("active_num between", value1, value2, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andActiveNumNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("active_num not between", value1, value2, "activeNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdIsNull() {
-            this.addCriterion("item_id is null");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdIsNotNull() {
-            this.addCriterion("item_id is not null");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdEqualTo(Long value) {
-            this.addCriterion("item_id =", value, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdNotEqualTo(Long value) {
-            this.addCriterion("item_id <>", value, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdGreaterThan(Long value) {
-            this.addCriterion("item_id >", value, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("item_id >=", value, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdLessThan(Long value) {
-            this.addCriterion("item_id <", value, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("item_id <=", value, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdLike(String value) {
-            this.addCriterion("item_id like", value, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdNotLike(String value) {
-            this.addCriterion("item_id not like", value, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }        public GoodsupNorealExample.Criteria andItemIdIn(List<Long> values) {
-            this.addCriterion("item_id in", values, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdNotIn(List<Long> values) {
-            this.addCriterion("item_id not in", values, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdBetween(Long value1, Long value2) {
-            this.addCriterion("item_id between", value1, value2, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andItemIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("item_id not between", value1, value2, "itemId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumIsNull() {
-            this.addCriterion("real_num is null");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumIsNotNull() {
-            this.addCriterion("real_num is not null");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumEqualTo(Integer value) {
-            this.addCriterion("real_num =", value, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumNotEqualTo(Integer value) {
-            this.addCriterion("real_num <>", value, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumGreaterThan(Integer value) {
-            this.addCriterion("real_num >", value, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("real_num >=", value, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumLessThan(Integer value) {
-            this.addCriterion("real_num <", value, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumLessThanOrEqualTo(Integer value) {
-            this.addCriterion("real_num <=", value, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumLike(String value) {
-            this.addCriterion("real_num like", value, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumNotLike(String value) {
-            this.addCriterion("real_num not like", value, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }        public GoodsupNorealExample.Criteria andRealNumIn(List<Integer> values) {
-            this.addCriterion("real_num in", values, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumNotIn(List<Integer> values) {
-            this.addCriterion("real_num not in", values, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumBetween(Integer value1, Integer value2) {
-            this.addCriterion("real_num between", value1, value2, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andRealNumNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("real_num not between", value1, value2, "realNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumIsNull() {
-            this.addCriterion("add_num is null");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumIsNotNull() {
-            this.addCriterion("add_num is not null");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumEqualTo(Integer value) {
-            this.addCriterion("add_num =", value, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumNotEqualTo(Integer value) {
-            this.addCriterion("add_num <>", value, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumGreaterThan(Integer value) {
-            this.addCriterion("add_num >", value, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("add_num >=", value, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumLessThan(Integer value) {
-            this.addCriterion("add_num <", value, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumLessThanOrEqualTo(Integer value) {
-            this.addCriterion("add_num <=", value, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumLike(String value) {
-            this.addCriterion("add_num like", value, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumNotLike(String value) {
-            this.addCriterion("add_num not like", value, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }        public GoodsupNorealExample.Criteria andAddNumIn(List<Integer> values) {
-            this.addCriterion("add_num in", values, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumNotIn(List<Integer> values) {
-            this.addCriterion("add_num not in", values, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumBetween(Integer value1, Integer value2) {
-            this.addCriterion("add_num between", value1, value2, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andAddNumNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("add_num not between", value1, value2, "addNum");
-            return (GoodsupNorealExample.Criteria)this;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdIsNull() {
-            this.addCriterion("noreal_id is null");
-            return (GoodsupNorealExample.Criteria)this;
+            return isNull(norealId);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdIsNotNull() {
-            this.addCriterion("noreal_id is not null");
-            return (GoodsupNorealExample.Criteria)this;
+            return isNotNull(norealId);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdEqualTo(Long value) {
-            this.addCriterion("noreal_id =", value, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
+            return equalTo(norealId, value);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdNotEqualTo(Long value) {
-            this.addCriterion("noreal_id <>", value, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
+            return notEqualTo(norealId, value);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdGreaterThan(Long value) {
-            this.addCriterion("noreal_id >", value, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
+            return greaterThan(norealId, value);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("noreal_id >=", value, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
+            return greaterThanOrEqualTo(norealId, value);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdLessThan(Long value) {
-            this.addCriterion("noreal_id <", value, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
+            return lessThan(norealId, value);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("noreal_id <=", value, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
+            return lessThanOrEqualTo(norealId, value);
         }
 
-        public GoodsupNorealExample.Criteria andNorealIdLike(String value) {
-            this.addCriterion("noreal_id like", value, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
-        }
-
-        public GoodsupNorealExample.Criteria andNorealIdNotLike(String value) {
-            this.addCriterion("noreal_id not like", value, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
-        }        public GoodsupNorealExample.Criteria andNorealIdIn(List<Long> values) {
-            this.addCriterion("noreal_id in", values, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
+        public GoodsupNorealExample.Criteria andNorealIdIn(List<Long> values) {
+            return in(norealId, values);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdNotIn(List<Long> values) {
-            this.addCriterion("noreal_id not in", values, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
+            return notIn(norealId, values);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdBetween(Long value1, Long value2) {
-            this.addCriterion("noreal_id between", value1, value2, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
+            return between(norealId, value1, value2);
         }
 
         public GoodsupNorealExample.Criteria andNorealIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("noreal_id not between", value1, value2, "norealId");
-            return (GoodsupNorealExample.Criteria)this;
+            return notBetween(norealId, value1, value2);
+        }
+        public GoodsupNorealExample.Criteria andAddNumIsNull() {
+            return isNull(addNum);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumIsNotNull() {
+            return isNotNull(addNum);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumEqualTo(Integer value) {
+            return equalTo(addNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumNotEqualTo(Integer value) {
+            return notEqualTo(addNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumGreaterThan(Integer value) {
+            return greaterThan(addNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(addNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumLessThan(Integer value) {
+            return lessThan(addNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(addNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumIn(List<Integer> values) {
+            return in(addNum, values);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumNotIn(List<Integer> values) {
+            return notIn(addNum, values);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumBetween(Integer value1, Integer value2) {
+            return between(addNum, value1, value2);
+        }
+
+        public GoodsupNorealExample.Criteria andAddNumNotBetween(Integer value1, Integer value2) {
+            return notBetween(addNum, value1, value2);
+        }
+        public GoodsupNorealExample.Criteria andActiveNumIsNull() {
+            return isNull(activeNum);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumIsNotNull() {
+            return isNotNull(activeNum);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumEqualTo(Integer value) {
+            return equalTo(activeNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumNotEqualTo(Integer value) {
+            return notEqualTo(activeNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumGreaterThan(Integer value) {
+            return greaterThan(activeNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(activeNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumLessThan(Integer value) {
+            return lessThan(activeNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(activeNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumIn(List<Integer> values) {
+            return in(activeNum, values);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumNotIn(List<Integer> values) {
+            return notIn(activeNum, values);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumBetween(Integer value1, Integer value2) {
+            return between(activeNum, value1, value2);
+        }
+
+        public GoodsupNorealExample.Criteria andActiveNumNotBetween(Integer value1, Integer value2) {
+            return notBetween(activeNum, value1, value2);
+        }
+        public GoodsupNorealExample.Criteria andItemIdIsNull() {
+            return isNull(itemId);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdIsNotNull() {
+            return isNotNull(itemId);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdEqualTo(Long value) {
+            return equalTo(itemId, value);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdNotEqualTo(Long value) {
+            return notEqualTo(itemId, value);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdGreaterThan(Long value) {
+            return greaterThan(itemId, value);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(itemId, value);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdLessThan(Long value) {
+            return lessThan(itemId, value);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(itemId, value);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdIn(List<Long> values) {
+            return in(itemId, values);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdNotIn(List<Long> values) {
+            return notIn(itemId, values);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdBetween(Long value1, Long value2) {
+            return between(itemId, value1, value2);
+        }
+
+        public GoodsupNorealExample.Criteria andItemIdNotBetween(Long value1, Long value2) {
+            return notBetween(itemId, value1, value2);
+        }
+        public GoodsupNorealExample.Criteria andRealNumIsNull() {
+            return isNull(realNum);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumIsNotNull() {
+            return isNotNull(realNum);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumEqualTo(Integer value) {
+            return equalTo(realNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumNotEqualTo(Integer value) {
+            return notEqualTo(realNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumGreaterThan(Integer value) {
+            return greaterThan(realNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(realNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumLessThan(Integer value) {
+            return lessThan(realNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(realNum, value);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumIn(List<Integer> values) {
+            return in(realNum, values);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumNotIn(List<Integer> values) {
+            return notIn(realNum, values);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumBetween(Integer value1, Integer value2) {
+            return between(realNum, value1, value2);
+        }
+
+        public GoodsupNorealExample.Criteria andRealNumNotBetween(Integer value1, Integer value2) {
+            return notBetween(realNum, value1, value2);
         }
     }
 }

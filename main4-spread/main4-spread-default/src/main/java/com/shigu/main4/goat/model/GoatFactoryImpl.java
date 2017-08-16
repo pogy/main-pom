@@ -433,13 +433,19 @@ public class GoatFactoryImpl implements GoatFactory {
         return t;
     }
 
+    private void rmCache(String code){
+        final String INDEX_PAGE_REDIS_PRE="index_page_redis_pre_";
+        //清除缓存,vo.getCode可能没值,需要通过goatId得到
+        redisIO.del( INDEX_PAGE_REDIS_PRE + code);
+    }
+
     /**
      * 发布广告
      *
      * @param vo
      */
     private <T extends GoatVO> void publishCommon(T vo) {
-        final String INDEX_PAGE_REDIS_PRE="index_page_redis_pre_";
+
         GoatItemDataExample example=new GoatItemDataExample();
         example.createCriteria().andStatusEqualTo(1).andGoatIdEqualTo(vo.getGoatId());
         GoatItemData gid=new GoatItemData();
@@ -447,10 +453,9 @@ public class GoatFactoryImpl implements GoatFactory {
         goatItemDataMapper.updateByExampleSelective(gid,example);
         gid=serializeGoat(vo);
         goatItemDataMapper.insertSelective(gid);
-        //清除缓存,vo.getCode可能没值,需要通过goatId得到
         try {
             T gvo=selGoatById(vo.getGoatId());
-            redisIO.del( INDEX_PAGE_REDIS_PRE + gvo.getCode());
+            rmCache(gvo.getCode());
         } catch (GoatException e) {
             logger.error("上线清日志失败",e);
         }
@@ -530,5 +535,7 @@ public class GoatFactoryImpl implements GoatFactory {
             goi2.setSort(goat.getSort());
             goatOneItemMapper.updateByPrimaryKeySelective(goi2);
         }
+        GoatOneLocation location=goatOneLocationMapper.selectByPrimaryKey(goat.getLocalId());
+        rmCache(location.getLocalCode());
     }
 }

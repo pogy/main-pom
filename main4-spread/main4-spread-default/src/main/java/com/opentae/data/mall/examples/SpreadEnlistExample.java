@@ -1,779 +1,449 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.SpreadEnlist;
 
-public class SpreadEnlistExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<SpreadEnlistExample.Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class SpreadEnlistExample extends SgExample<SpreadEnlistExample.Criteria> {
+    public static final Class<SpreadEnlist> beanClass = SpreadEnlist.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn activityId;
+    public static EntityColumn createTime;
+    public static EntityColumn name;
+    public static EntityColumn telephone;
+    public static EntityColumn shopId;
+    public static EntityColumn draw;
+    public static EntityColumn userId;
+    public static EntityColumn enlistId;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        activityId = listMap.get("activityId");
+        createTime = listMap.get("createTime");
+        name = listMap.get("name");
+        telephone = listMap.get("telephone");
+        shopId = listMap.get("shopId");
+        draw = listMap.get("draw");
+        userId = listMap.get("userId");
+        enlistId = listMap.get("enlistId");
+        }
 
     public SpreadEnlistExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<SpreadEnlistExample.Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(SpreadEnlistExample.Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public SpreadEnlistExample.Criteria or() {
-        SpreadEnlistExample.Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public SpreadEnlistExample.Criteria createCriteria() {
-        SpreadEnlistExample.Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
+    @Override
     protected SpreadEnlistExample.Criteria createCriteriaInternal() {
-        SpreadEnlistExample.Criteria criteria = new SpreadEnlistExample.Criteria();
-        return criteria;
+        return new SpreadEnlistExample.Criteria(this);
     }
 
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends SpreadEnlistExample.GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<SpreadEnlistExample.Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<SpreadEnlistExample.Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<SpreadEnlistExample.Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new SpreadEnlistExample.Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new SpreadEnlistExample.Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new SpreadEnlistExample.Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdIsNull() {
-            this.addCriterion("shop_id is null");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdIsNotNull() {
-            this.addCriterion("shop_id is not null");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdEqualTo(Long value) {
-            this.addCriterion("shop_id =", value, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdNotEqualTo(Long value) {
-            this.addCriterion("shop_id <>", value, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdGreaterThan(Long value) {
-            this.addCriterion("shop_id >", value, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("shop_id >=", value, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdLessThan(Long value) {
-            this.addCriterion("shop_id <", value, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("shop_id <=", value, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdLike(String value) {
-            this.addCriterion("shop_id like", value, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdNotLike(String value) {
-            this.addCriterion("shop_id not like", value, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }        public SpreadEnlistExample.Criteria andShopIdIn(List<Long> values) {
-            this.addCriterion("shop_id in", values, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdNotIn(List<Long> values) {
-            this.addCriterion("shop_id not in", values, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdBetween(Long value1, Long value2) {
-            this.addCriterion("shop_id between", value1, value2, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andShopIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("shop_id not between", value1, value2, "shopId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeIsNull() {
-            this.addCriterion("create_time is null");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeIsNotNull() {
-            this.addCriterion("create_time is not null");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeEqualTo(Date value) {
-            this.addCriterion("create_time =", value, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeNotEqualTo(Date value) {
-            this.addCriterion("create_time <>", value, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeGreaterThan(Date value) {
-            this.addCriterion("create_time >", value, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("create_time >=", value, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeLessThan(Date value) {
-            this.addCriterion("create_time <", value, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("create_time <=", value, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeLike(String value) {
-            this.addCriterion("create_time like", value, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeNotLike(String value) {
-            this.addCriterion("create_time not like", value, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }        public SpreadEnlistExample.Criteria andCreateTimeIn(List<Date> values) {
-            this.addCriterion("create_time in", values, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeNotIn(List<Date> values) {
-            this.addCriterion("create_time not in", values, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
-            this.addCriterion("create_time between", value1, value2, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("create_time not between", value1, value2, "createTime");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdIsNull() {
-            this.addCriterion("user_id is null");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdIsNotNull() {
-            this.addCriterion("user_id is not null");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdEqualTo(Long value) {
-            this.addCriterion("user_id =", value, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdNotEqualTo(Long value) {
-            this.addCriterion("user_id <>", value, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdGreaterThan(Long value) {
-            this.addCriterion("user_id >", value, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("user_id >=", value, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdLessThan(Long value) {
-            this.addCriterion("user_id <", value, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("user_id <=", value, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdLike(String value) {
-            this.addCriterion("user_id like", value, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdNotLike(String value) {
-            this.addCriterion("user_id not like", value, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }        public SpreadEnlistExample.Criteria andUserIdIn(List<Long> values) {
-            this.addCriterion("user_id in", values, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdNotIn(List<Long> values) {
-            this.addCriterion("user_id not in", values, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdBetween(Long value1, Long value2) {
-            this.addCriterion("user_id between", value1, value2, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("user_id not between", value1, value2, "userId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameIsNull() {
-            this.addCriterion("name is null");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameIsNotNull() {
-            this.addCriterion("name is not null");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameEqualTo(String value) {
-            this.addCriterion("name =", value, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameNotEqualTo(String value) {
-            this.addCriterion("name <>", value, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameGreaterThan(String value) {
-            this.addCriterion("name >", value, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("name >=", value, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameLessThan(String value) {
-            this.addCriterion("name <", value, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameLessThanOrEqualTo(String value) {
-            this.addCriterion("name <=", value, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameLike(String value) {
-            this.addCriterion("name like", value, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameNotLike(String value) {
-            this.addCriterion("name not like", value, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }        public SpreadEnlistExample.Criteria andNameIn(List<String> values) {
-            this.addCriterion("name in", values, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameNotIn(List<String> values) {
-            this.addCriterion("name not in", values, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameBetween(String value1, String value2) {
-            this.addCriterion("name between", value1, value2, "name");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andNameNotBetween(String value1, String value2) {
-            this.addCriterion("name not between", value1, value2, "name");
-            return (SpreadEnlistExample.Criteria)this;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdIsNull() {
-            this.addCriterion("activity_id is null");
-            return (SpreadEnlistExample.Criteria)this;
+            return isNull(activityId);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdIsNotNull() {
-            this.addCriterion("activity_id is not null");
-            return (SpreadEnlistExample.Criteria)this;
+            return isNotNull(activityId);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdEqualTo(Long value) {
-            this.addCriterion("activity_id =", value, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
+            return equalTo(activityId, value);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdNotEqualTo(Long value) {
-            this.addCriterion("activity_id <>", value, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
+            return notEqualTo(activityId, value);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdGreaterThan(Long value) {
-            this.addCriterion("activity_id >", value, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
+            return greaterThan(activityId, value);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("activity_id >=", value, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
+            return greaterThanOrEqualTo(activityId, value);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdLessThan(Long value) {
-            this.addCriterion("activity_id <", value, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
+            return lessThan(activityId, value);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("activity_id <=", value, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
+            return lessThanOrEqualTo(activityId, value);
         }
 
-        public SpreadEnlistExample.Criteria andActivityIdLike(String value) {
-            this.addCriterion("activity_id like", value, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andActivityIdNotLike(String value) {
-            this.addCriterion("activity_id not like", value, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
-        }        public SpreadEnlistExample.Criteria andActivityIdIn(List<Long> values) {
-            this.addCriterion("activity_id in", values, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andActivityIdIn(List<Long> values) {
+            return in(activityId, values);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdNotIn(List<Long> values) {
-            this.addCriterion("activity_id not in", values, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
+            return notIn(activityId, values);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdBetween(Long value1, Long value2) {
-            this.addCriterion("activity_id between", value1, value2, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
+            return between(activityId, value1, value2);
         }
 
         public SpreadEnlistExample.Criteria andActivityIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("activity_id not between", value1, value2, "activityId");
-            return (SpreadEnlistExample.Criteria)this;
+            return notBetween(activityId, value1, value2);
+        }
+        public SpreadEnlistExample.Criteria andCreateTimeIsNull() {
+            return isNull(createTime);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdIsNull() {
-            this.addCriterion("enlist_id is null");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeIsNotNull() {
+            return isNotNull(createTime);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdIsNotNull() {
-            this.addCriterion("enlist_id is not null");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeEqualTo(Date value) {
+            return equalTo(createTime, value);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdEqualTo(Long value) {
-            this.addCriterion("enlist_id =", value, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeNotEqualTo(Date value) {
+            return notEqualTo(createTime, value);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdNotEqualTo(Long value) {
-            this.addCriterion("enlist_id <>", value, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeGreaterThan(Date value) {
+            return greaterThan(createTime, value);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdGreaterThan(Long value) {
-            this.addCriterion("enlist_id >", value, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(createTime, value);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("enlist_id >=", value, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeLessThan(Date value) {
+            return lessThan(createTime, value);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdLessThan(Long value) {
-            this.addCriterion("enlist_id <", value, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(createTime, value);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("enlist_id <=", value, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeIn(List<Date> values) {
+            return in(createTime, values);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdLike(String value) {
-            this.addCriterion("enlist_id like", value, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeNotIn(List<Date> values) {
+            return notIn(createTime, values);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdNotLike(String value) {
-            this.addCriterion("enlist_id not like", value, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
-        }        public SpreadEnlistExample.Criteria andEnlistIdIn(List<Long> values) {
-            this.addCriterion("enlist_id in", values, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeBetween(Date value1, Date value2) {
+            return between(createTime, value1, value2);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdNotIn(List<Long> values) {
-            this.addCriterion("enlist_id not in", values, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            return notBetween(createTime, value1, value2);
+        }
+        public SpreadEnlistExample.Criteria andNameIsNull() {
+            return isNull(name);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdBetween(Long value1, Long value2) {
-            this.addCriterion("enlist_id between", value1, value2, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andNameIsNotNull() {
+            return isNotNull(name);
         }
 
-        public SpreadEnlistExample.Criteria andEnlistIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("enlist_id not between", value1, value2, "enlistId");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andNameEqualTo(String value) {
+            return equalTo(name, value);
         }
 
+        public SpreadEnlistExample.Criteria andNameNotEqualTo(String value) {
+            return notEqualTo(name, value);
+        }
+
+        public SpreadEnlistExample.Criteria andNameGreaterThan(String value) {
+            return greaterThan(name, value);
+        }
+
+        public SpreadEnlistExample.Criteria andNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(name, value);
+        }
+
+        public SpreadEnlistExample.Criteria andNameLessThan(String value) {
+            return lessThan(name, value);
+        }
+
+        public SpreadEnlistExample.Criteria andNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(name, value);
+        }
+
+        public SpreadEnlistExample.Criteria andNameLike(String value) {
+            return like(name, value);
+        }
+
+        public SpreadEnlistExample.Criteria andNameNotLike(String value) {
+            return notLike(name, value);
+        }
+
+        public SpreadEnlistExample.Criteria andNameIn(List<String> values) {
+            return in(name, values);
+        }
+
+        public SpreadEnlistExample.Criteria andNameNotIn(List<String> values) {
+            return notIn(name, values);
+        }
+
+        public SpreadEnlistExample.Criteria andNameBetween(String value1, String value2) {
+            return between(name, value1, value2);
+        }
+
+        public SpreadEnlistExample.Criteria andNameNotBetween(String value1, String value2) {
+            return notBetween(name, value1, value2);
+        }
         public SpreadEnlistExample.Criteria andTelephoneIsNull() {
-            this.addCriterion("telephone is null");
-            return (SpreadEnlistExample.Criteria)this;
+            return isNull(telephone);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneIsNotNull() {
-            this.addCriterion("telephone is not null");
-            return (SpreadEnlistExample.Criteria)this;
+            return isNotNull(telephone);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneEqualTo(String value) {
-            this.addCriterion("telephone =", value, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return equalTo(telephone, value);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneNotEqualTo(String value) {
-            this.addCriterion("telephone <>", value, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return notEqualTo(telephone, value);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneGreaterThan(String value) {
-            this.addCriterion("telephone >", value, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return greaterThan(telephone, value);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneGreaterThanOrEqualTo(String value) {
-            this.addCriterion("telephone >=", value, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return greaterThanOrEqualTo(telephone, value);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneLessThan(String value) {
-            this.addCriterion("telephone <", value, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return lessThan(telephone, value);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneLessThanOrEqualTo(String value) {
-            this.addCriterion("telephone <=", value, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return lessThanOrEqualTo(telephone, value);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneLike(String value) {
-            this.addCriterion("telephone like", value, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return like(telephone, value);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneNotLike(String value) {
-            this.addCriterion("telephone not like", value, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
-        }        public SpreadEnlistExample.Criteria andTelephoneIn(List<String> values) {
-            this.addCriterion("telephone in", values, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return notLike(telephone, value);
+        }
+
+        public SpreadEnlistExample.Criteria andTelephoneIn(List<String> values) {
+            return in(telephone, values);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneNotIn(List<String> values) {
-            this.addCriterion("telephone not in", values, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return notIn(telephone, values);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneBetween(String value1, String value2) {
-            this.addCriterion("telephone between", value1, value2, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return between(telephone, value1, value2);
         }
 
         public SpreadEnlistExample.Criteria andTelephoneNotBetween(String value1, String value2) {
-            this.addCriterion("telephone not between", value1, value2, "telephone");
-            return (SpreadEnlistExample.Criteria)this;
+            return notBetween(telephone, value1, value2);
+        }
+        public SpreadEnlistExample.Criteria andShopIdIsNull() {
+            return isNull(shopId);
         }
 
+        public SpreadEnlistExample.Criteria andShopIdIsNotNull() {
+            return isNotNull(shopId);
+        }
+
+        public SpreadEnlistExample.Criteria andShopIdEqualTo(Long value) {
+            return equalTo(shopId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andShopIdNotEqualTo(Long value) {
+            return notEqualTo(shopId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andShopIdGreaterThan(Long value) {
+            return greaterThan(shopId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andShopIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(shopId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andShopIdLessThan(Long value) {
+            return lessThan(shopId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andShopIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(shopId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andShopIdIn(List<Long> values) {
+            return in(shopId, values);
+        }
+
+        public SpreadEnlistExample.Criteria andShopIdNotIn(List<Long> values) {
+            return notIn(shopId, values);
+        }
+
+        public SpreadEnlistExample.Criteria andShopIdBetween(Long value1, Long value2) {
+            return between(shopId, value1, value2);
+        }
+
+        public SpreadEnlistExample.Criteria andShopIdNotBetween(Long value1, Long value2) {
+            return notBetween(shopId, value1, value2);
+        }
         public SpreadEnlistExample.Criteria andDrawIsNull() {
-            this.addCriterion("draw is null");
-            return (SpreadEnlistExample.Criteria)this;
+            return isNull(draw);
         }
 
         public SpreadEnlistExample.Criteria andDrawIsNotNull() {
-            this.addCriterion("draw is not null");
-            return (SpreadEnlistExample.Criteria)this;
+            return isNotNull(draw);
         }
 
         public SpreadEnlistExample.Criteria andDrawEqualTo(Integer value) {
-            this.addCriterion("draw =", value, "draw");
-            return (SpreadEnlistExample.Criteria)this;
+            return equalTo(draw, value);
         }
 
         public SpreadEnlistExample.Criteria andDrawNotEqualTo(Integer value) {
-            this.addCriterion("draw <>", value, "draw");
-            return (SpreadEnlistExample.Criteria)this;
+            return notEqualTo(draw, value);
         }
 
         public SpreadEnlistExample.Criteria andDrawGreaterThan(Integer value) {
-            this.addCriterion("draw >", value, "draw");
-            return (SpreadEnlistExample.Criteria)this;
+            return greaterThan(draw, value);
         }
 
         public SpreadEnlistExample.Criteria andDrawGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("draw >=", value, "draw");
-            return (SpreadEnlistExample.Criteria)this;
+            return greaterThanOrEqualTo(draw, value);
         }
 
         public SpreadEnlistExample.Criteria andDrawLessThan(Integer value) {
-            this.addCriterion("draw <", value, "draw");
-            return (SpreadEnlistExample.Criteria)this;
+            return lessThan(draw, value);
         }
 
         public SpreadEnlistExample.Criteria andDrawLessThanOrEqualTo(Integer value) {
-            this.addCriterion("draw <=", value, "draw");
-            return (SpreadEnlistExample.Criteria)this;
+            return lessThanOrEqualTo(draw, value);
         }
 
-        public SpreadEnlistExample.Criteria andDrawLike(String value) {
-            this.addCriterion("draw like", value, "draw");
-            return (SpreadEnlistExample.Criteria)this;
-        }
-
-        public SpreadEnlistExample.Criteria andDrawNotLike(String value) {
-            this.addCriterion("draw not like", value, "draw");
-            return (SpreadEnlistExample.Criteria)this;
-        }        public SpreadEnlistExample.Criteria andDrawIn(List<Integer> values) {
-            this.addCriterion("draw in", values, "draw");
-            return (SpreadEnlistExample.Criteria)this;
+        public SpreadEnlistExample.Criteria andDrawIn(List<Integer> values) {
+            return in(draw, values);
         }
 
         public SpreadEnlistExample.Criteria andDrawNotIn(List<Integer> values) {
-            this.addCriterion("draw not in", values, "draw");
-            return (SpreadEnlistExample.Criteria)this;
+            return notIn(draw, values);
         }
 
         public SpreadEnlistExample.Criteria andDrawBetween(Integer value1, Integer value2) {
-            this.addCriterion("draw between", value1, value2, "draw");
-            return (SpreadEnlistExample.Criteria)this;
+            return between(draw, value1, value2);
         }
 
         public SpreadEnlistExample.Criteria andDrawNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("draw not between", value1, value2, "draw");
-            return (SpreadEnlistExample.Criteria)this;
+            return notBetween(draw, value1, value2);
+        }
+        public SpreadEnlistExample.Criteria andUserIdIsNull() {
+            return isNull(userId);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdIsNotNull() {
+            return isNotNull(userId);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdEqualTo(Long value) {
+            return equalTo(userId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdNotEqualTo(Long value) {
+            return notEqualTo(userId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdGreaterThan(Long value) {
+            return greaterThan(userId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(userId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdLessThan(Long value) {
+            return lessThan(userId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(userId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdIn(List<Long> values) {
+            return in(userId, values);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdNotIn(List<Long> values) {
+            return notIn(userId, values);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdBetween(Long value1, Long value2) {
+            return between(userId, value1, value2);
+        }
+
+        public SpreadEnlistExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(userId, value1, value2);
+        }
+        public SpreadEnlistExample.Criteria andEnlistIdIsNull() {
+            return isNull(enlistId);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdIsNotNull() {
+            return isNotNull(enlistId);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdEqualTo(Long value) {
+            return equalTo(enlistId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdNotEqualTo(Long value) {
+            return notEqualTo(enlistId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdGreaterThan(Long value) {
+            return greaterThan(enlistId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(enlistId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdLessThan(Long value) {
+            return lessThan(enlistId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(enlistId, value);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdIn(List<Long> values) {
+            return in(enlistId, values);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdNotIn(List<Long> values) {
+            return notIn(enlistId, values);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdBetween(Long value1, Long value2) {
+            return between(enlistId, value1, value2);
+        }
+
+        public SpreadEnlistExample.Criteria andEnlistIdNotBetween(Long value1, Long value2) {
+            return notBetween(enlistId, value1, value2);
         }
     }
 }

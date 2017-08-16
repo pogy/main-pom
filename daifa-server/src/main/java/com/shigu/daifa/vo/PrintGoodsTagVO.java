@@ -1,0 +1,94 @@
+package com.shigu.daifa.vo;
+
+public class PrintGoodsTagVO {
+    private String dateIncBatch;//日期加批次
+    private String barCode;//条形码内容
+    private String goodsSku;//商品sku
+    private String stockoutDay;//备注:缺货天数
+    private String orderSort;//子单编号
+    private String receiverName;//收货人姓名
+    private String buyerName;//买家昵称
+    private String pAndBarCode;//批发价和条形码内容
+    private String postName;//快递名称
+    private String buyerNick;//下单人昵称
+
+    public String getDateIncBatch() {
+        return this.dateIncBatch;
+    }
+
+    public void setDateIncBatch(String dateIncBatch) {
+        this.dateIncBatch = dateIncBatch;
+    }
+
+    public String getBarCode() {
+        return this.barCode;
+    }
+
+    public void setBarCode(String barCode) {
+        this.barCode = barCode;
+    }
+
+    public String getGoodsSku() {
+        return this.goodsSku;
+    }
+
+    public void setGoodsSku(String goodsSku) {
+        this.goodsSku = goodsSku;
+    }
+
+    public String getStockoutDay() {
+        return this.stockoutDay;
+    }
+
+    public void setStockoutDay(String stockoutDay) {
+        this.stockoutDay = stockoutDay;
+    }
+
+    public String getOrderSort() {
+        return this.orderSort;
+    }
+
+    public void setOrderSort(String orderSort) {
+        this.orderSort = orderSort;
+    }
+
+    public String getReceiverName() {
+        return this.receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public String getBuyerName() {
+        return this.buyerName;
+    }
+
+    public void setBuyerName(String buyerName) {
+        this.buyerName = buyerName;
+    }
+
+    public String getPAndBarCode() {
+        return this.pAndBarCode;
+    }
+
+    public void setPAndBarCode(String pAndBarCode) {
+        this.pAndBarCode = pAndBarCode;
+    }
+
+    public String getPostName() {
+        return this.postName;
+    }
+
+    public void setPostName(String postName) {
+        this.postName = postName;
+    }
+
+    public String getBuyerNick() {
+        return this.buyerNick;
+    }
+
+    public void setBuyerNick(String buyerNick) {
+        this.buyerNick = buyerNick;
+    }
+}

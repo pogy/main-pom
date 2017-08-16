@@ -1,439 +1,188 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ItemCidWeight;
 
-public class ItemCidWeightExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class ItemCidWeightExample extends SgExample<ItemCidWeightExample.Criteria> {
+    public static final Class<ItemCidWeight> beanClass = ItemCidWeight.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn cwId;
+    public static EntityColumn weight;
+    public static EntityColumn cid;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        cwId = listMap.get("cwId");
+        weight = listMap.get("weight");
+        cid = listMap.get("cid");
+        }
 
     public ItemCidWeightExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected ItemCidWeightExample.Criteria createCriteriaInternal() {
+        return new ItemCidWeightExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
+        public ItemCidWeightExample.Criteria andCwIdIsNull() {
+            return isNull(cwId);
         }
 
-        public Object getValue() {
-            return this.value;
+        public ItemCidWeightExample.Criteria andCwIdIsNotNull() {
+            return isNotNull(cwId);
         }
 
-        public Object getSecondValue() {
-            return this.secondValue;
+        public ItemCidWeightExample.Criteria andCwIdEqualTo(Long value) {
+            return equalTo(cwId, value);
         }
 
-        public boolean isNoValue() {
-            return this.noValue;
+        public ItemCidWeightExample.Criteria andCwIdNotEqualTo(Long value) {
+            return notEqualTo(cwId, value);
         }
 
-        public boolean isSingleValue() {
-            return this.singleValue;
+        public ItemCidWeightExample.Criteria andCwIdGreaterThan(Long value) {
+            return greaterThan(cwId, value);
         }
 
-        public boolean isBetweenValue() {
-            return this.betweenValue;
+        public ItemCidWeightExample.Criteria andCwIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(cwId, value);
         }
 
-        public boolean isListValue() {
-            return this.listValue;
+        public ItemCidWeightExample.Criteria andCwIdLessThan(Long value) {
+            return lessThan(cwId, value);
         }
 
-        public String getTypeHandler() {
-            return this.typeHandler;
+        public ItemCidWeightExample.Criteria andCwIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(cwId, value);
         }
 
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
+        public ItemCidWeightExample.Criteria andCwIdIn(List<Long> values) {
+            return in(cwId, values);
         }
 
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
+        public ItemCidWeightExample.Criteria andCwIdNotIn(List<Long> values) {
+            return notIn(cwId, values);
         }
 
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
+        public ItemCidWeightExample.Criteria andCwIdBetween(Long value1, Long value2) {
+            return between(cwId, value1, value2);
         }
 
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
+        public ItemCidWeightExample.Criteria andCwIdNotBetween(Long value1, Long value2) {
+            return notBetween(cwId, value1, value2);
+        }
+        public ItemCidWeightExample.Criteria andWeightIsNull() {
+            return isNull(weight);
         }
 
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
+        public ItemCidWeightExample.Criteria andWeightIsNotNull() {
+            return isNotNull(weight);
         }
 
-        public boolean isValid() {
-            return this.criteria.size() > 0;
+        public ItemCidWeightExample.Criteria andWeightEqualTo(Long value) {
+            return equalTo(weight, value);
         }
 
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
+        public ItemCidWeightExample.Criteria andWeightNotEqualTo(Long value) {
+            return notEqualTo(weight, value);
         }
 
-        public List<Criterion> getCriteria() {
-            return this.criteria;
+        public ItemCidWeightExample.Criteria andWeightGreaterThan(Long value) {
+            return greaterThan(weight, value);
         }
 
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
+        public ItemCidWeightExample.Criteria andWeightGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(weight, value);
         }
 
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
+        public ItemCidWeightExample.Criteria andWeightLessThan(Long value) {
+            return lessThan(weight, value);
         }
 
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
+        public ItemCidWeightExample.Criteria andWeightLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(weight, value);
         }
 
-        public Criteria andWeightIsNull() {
-            this.addCriterion("weight is null");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andWeightIn(List<Long> values) {
+            return in(weight, values);
         }
 
-        public Criteria andWeightIsNotNull() {
-            this.addCriterion("weight is not null");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andWeightNotIn(List<Long> values) {
+            return notIn(weight, values);
         }
 
-        public Criteria andWeightEqualTo(Long value) {
-            this.addCriterion("weight =", value, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andWeightBetween(Long value1, Long value2) {
+            return between(weight, value1, value2);
         }
 
-        public Criteria andWeightNotEqualTo(Long value) {
-            this.addCriterion("weight <>", value, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andWeightNotBetween(Long value1, Long value2) {
+            return notBetween(weight, value1, value2);
+        }
+        public ItemCidWeightExample.Criteria andCidIsNull() {
+            return isNull(cid);
         }
 
-        public Criteria andWeightGreaterThan(Long value) {
-            this.addCriterion("weight >", value, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidIsNotNull() {
+            return isNotNull(cid);
         }
 
-        public Criteria andWeightGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("weight >=", value, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidEqualTo(Long value) {
+            return equalTo(cid, value);
         }
 
-        public Criteria andWeightLessThan(Long value) {
-            this.addCriterion("weight <", value, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidNotEqualTo(Long value) {
+            return notEqualTo(cid, value);
         }
 
-        public Criteria andWeightLessThanOrEqualTo(Long value) {
-            this.addCriterion("weight <=", value, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidGreaterThan(Long value) {
+            return greaterThan(cid, value);
         }
 
-        public Criteria andWeightLike(String value) {
-            this.addCriterion("weight like", value, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(cid, value);
         }
 
-        public Criteria andWeightNotLike(String value) {
-            this.addCriterion("weight not like", value, "weight");
-            return (Criteria)this;
-        }        public Criteria andWeightIn(List<Long> values) {
-            this.addCriterion("weight in", values, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidLessThan(Long value) {
+            return lessThan(cid, value);
         }
 
-        public Criteria andWeightNotIn(List<Long> values) {
-            this.addCriterion("weight not in", values, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(cid, value);
         }
 
-        public Criteria andWeightBetween(Long value1, Long value2) {
-            this.addCriterion("weight between", value1, value2, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidIn(List<Long> values) {
+            return in(cid, values);
         }
 
-        public Criteria andWeightNotBetween(Long value1, Long value2) {
-            this.addCriterion("weight not between", value1, value2, "weight");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidNotIn(List<Long> values) {
+            return notIn(cid, values);
         }
 
-        public Criteria andCwIdIsNull() {
-            this.addCriterion("cw_id is null");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidBetween(Long value1, Long value2) {
+            return between(cid, value1, value2);
         }
 
-        public Criteria andCwIdIsNotNull() {
-            this.addCriterion("cw_id is not null");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdEqualTo(Long value) {
-            this.addCriterion("cw_id =", value, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdNotEqualTo(Long value) {
-            this.addCriterion("cw_id <>", value, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdGreaterThan(Long value) {
-            this.addCriterion("cw_id >", value, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("cw_id >=", value, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdLessThan(Long value) {
-            this.addCriterion("cw_id <", value, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("cw_id <=", value, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdLike(String value) {
-            this.addCriterion("cw_id like", value, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdNotLike(String value) {
-            this.addCriterion("cw_id not like", value, "cwId");
-            return (Criteria)this;
-        }        public Criteria andCwIdIn(List<Long> values) {
-            this.addCriterion("cw_id in", values, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdNotIn(List<Long> values) {
-            this.addCriterion("cw_id not in", values, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdBetween(Long value1, Long value2) {
-            this.addCriterion("cw_id between", value1, value2, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCwIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("cw_id not between", value1, value2, "cwId");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidIsNull() {
-            this.addCriterion("cid is null");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidIsNotNull() {
-            this.addCriterion("cid is not null");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidEqualTo(Long value) {
-            this.addCriterion("cid =", value, "cid");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidNotEqualTo(Long value) {
-            this.addCriterion("cid <>", value, "cid");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidGreaterThan(Long value) {
-            this.addCriterion("cid >", value, "cid");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("cid >=", value, "cid");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidLessThan(Long value) {
-            this.addCriterion("cid <", value, "cid");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidLessThanOrEqualTo(Long value) {
-            this.addCriterion("cid <=", value, "cid");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidLike(String value) {
-            this.addCriterion("cid like", value, "cid");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidNotLike(String value) {
-            this.addCriterion("cid not like", value, "cid");
-            return (Criteria)this;
-        }        public Criteria andCidIn(List<Long> values) {
-            this.addCriterion("cid in", values, "cid");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidNotIn(List<Long> values) {
-            this.addCriterion("cid not in", values, "cid");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidBetween(Long value1, Long value2) {
-            this.addCriterion("cid between", value1, value2, "cid");
-            return (Criteria)this;
-        }
-
-        public Criteria andCidNotBetween(Long value1, Long value2) {
-            this.addCriterion("cid not between", value1, value2, "cid");
-            return (Criteria)this;
+        public ItemCidWeightExample.Criteria andCidNotBetween(Long value1, Long value2) {
+            return notBetween(cid, value1, value2);
         }
     }
 }

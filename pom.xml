@@ -2,17 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>opentae_program</artifactId>
-        <groupId>opentae-program</groupId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>sites.main</groupId>
     <artifactId>main-pom</artifactId>
-    <version>4.1.9-SNAPSHOT</version>
+    <version>4.2.0-SNAPSHOT</version>
     <!--versions:update-child-modules-->
     <modules>
         <module>main4-dao</module>
@@ -27,6 +21,8 @@
         <module>main4-tools</module>
         <module>web-server</module>
         <module>main4-order</module>
+        <module>main4-daifa</module>
+        <module>daifa-server</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -59,15 +55,22 @@
         <fastjson.version>1.2.28</fastjson.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <mybatis.version>3.3.0</mybatis.version>
+        <mybatis-spring.version>1.2.2</mybatis-spring.version>
+        <mysql-connector-java.version>5.1.31</mysql-connector-java.version>
+        <druid.version>1.0.15</druid.version>
+        <opentae-common.version>1.0.0-SNAPSHOT</opentae-common.version>
+        <persistence.version>1.0.2</persistence.version>
+        <ezmorph.version>1.0.6</ezmorph.version>
+        <commons-lang.version>2.6</commons-lang.version>
+        <commons-lang3.version>3.3.4</commons-lang3.version>
+        <commons-fileupload.version>1.3.1</commons-fileupload.version>
+        <javassist.version>3.19.0-GA</javassist.version>
+        <xinzuo-mybatis.version>1.0.4-SNAPSHOT</xinzuo-mybatis.version>
+        <xinzuo-mybatis-RO.version>1.0.4-SNAPSHOT</xinzuo-mybatis-RO.version>
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>opensearch</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
-        </dependency>
 
         <!--测试用-->
         <dependency>
@@ -129,7 +132,7 @@
     <repositories>
         <repository>
             <id>nexus</id>
-            <url>http://571xz.iok.la:8882/nexus/content/groups/public/</url>
+            <url>http://open.571xz.com:8882/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -141,7 +144,7 @@
     <pluginRepositories>
         <pluginRepository>
             <id>nexus</id>
-            <url>http://571xz.iok.la:8882/nexus/content/groups/public/</url>
+            <url>http://open.571xz.com:8882/nexus/content/groups/public/</url>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
@@ -156,12 +159,12 @@
         <repository>
             <id>releases</id>
             <name>Nexus Release Repository</name>
-            <url>http://571xz.iok.la:8882/nexus/content/repositories/releases/</url>
+            <url>http://open.571xz.com:8882/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Nexus Snapshot Repository</name>
-            <url>http://571xz.iok.la:8882/nexus/content/repositories/snapshots/</url>
+            <url>http://open.571xz.com:8882/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>

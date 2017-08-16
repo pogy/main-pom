@@ -1,575 +1,367 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ShiguOuterFloor;
 
-public class ShiguOuterFloorExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<ShiguOuterFloorExample.Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class ShiguOuterFloorExample extends SgExample<ShiguOuterFloorExample.Criteria> {
+    public static final Class<ShiguOuterFloor> beanClass = ShiguOuterFloor.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn addedShop;
+    public static EntityColumn showName;
+    public static EntityColumn outerFloorId;
+    public static EntityColumn floorNames;
+    public static EntityColumn sortOrder;
+    public static EntityColumn floorIds;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        addedShop = listMap.get("addedShop");
+        showName = listMap.get("showName");
+        outerFloorId = listMap.get("outerFloorId");
+        floorNames = listMap.get("floorNames");
+        sortOrder = listMap.get("sortOrder");
+        floorIds = listMap.get("floorIds");
+        }
 
     public ShiguOuterFloorExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<ShiguOuterFloorExample.Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(ShiguOuterFloorExample.Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public ShiguOuterFloorExample.Criteria or() {
-        ShiguOuterFloorExample.Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public ShiguOuterFloorExample.Criteria createCriteria() {
-        ShiguOuterFloorExample.Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
+    @Override
     protected ShiguOuterFloorExample.Criteria createCriteriaInternal() {
-        ShiguOuterFloorExample.Criteria criteria = new ShiguOuterFloorExample.Criteria();
-        return criteria;
+        return new ShiguOuterFloorExample.Criteria(this);
     }
 
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends ShiguOuterFloorExample.GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<ShiguOuterFloorExample.Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<ShiguOuterFloorExample.Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<ShiguOuterFloorExample.Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new ShiguOuterFloorExample.Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new ShiguOuterFloorExample.Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new ShiguOuterFloorExample.Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdIsNull() {
-            this.addCriterion("outer_floor_id is null");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdIsNotNull() {
-            this.addCriterion("outer_floor_id is not null");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdEqualTo(Long value) {
-            this.addCriterion("outer_floor_id =", value, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdNotEqualTo(Long value) {
-            this.addCriterion("outer_floor_id <>", value, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdGreaterThan(Long value) {
-            this.addCriterion("outer_floor_id >", value, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("outer_floor_id >=", value, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdLessThan(Long value) {
-            this.addCriterion("outer_floor_id <", value, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("outer_floor_id <=", value, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdLike(String value) {
-            this.addCriterion("outer_floor_id like", value, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdNotLike(String value) {
-            this.addCriterion("outer_floor_id not like", value, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }        public ShiguOuterFloorExample.Criteria andOuterFloorIdIn(List<Long> values) {
-            this.addCriterion("outer_floor_id in", values, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdNotIn(List<Long> values) {
-            this.addCriterion("outer_floor_id not in", values, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdBetween(Long value1, Long value2) {
-            this.addCriterion("outer_floor_id between", value1, value2, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andOuterFloorIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("outer_floor_id not between", value1, value2, "outerFloorId");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsIsNull() {
-            this.addCriterion("floor_ids is null");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsIsNotNull() {
-            this.addCriterion("floor_ids is not null");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsEqualTo(String value) {
-            this.addCriterion("floor_ids =", value, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsNotEqualTo(String value) {
-            this.addCriterion("floor_ids <>", value, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsGreaterThan(String value) {
-            this.addCriterion("floor_ids >", value, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsGreaterThanOrEqualTo(String value) {
-            this.addCriterion("floor_ids >=", value, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsLessThan(String value) {
-            this.addCriterion("floor_ids <", value, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsLessThanOrEqualTo(String value) {
-            this.addCriterion("floor_ids <=", value, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsLike(String value) {
-            this.addCriterion("floor_ids like", value, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsNotLike(String value) {
-            this.addCriterion("floor_ids not like", value, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }        public ShiguOuterFloorExample.Criteria andFloorIdsIn(List<String> values) {
-            this.addCriterion("floor_ids in", values, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsNotIn(List<String> values) {
-            this.addCriterion("floor_ids not in", values, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsBetween(String value1, String value2) {
-            this.addCriterion("floor_ids between", value1, value2, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andFloorIdsNotBetween(String value1, String value2) {
-            this.addCriterion("floor_ids not between", value1, value2, "floorIds");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameIsNull() {
-            this.addCriterion("show_name is null");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameIsNotNull() {
-            this.addCriterion("show_name is not null");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameEqualTo(String value) {
-            this.addCriterion("show_name =", value, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameNotEqualTo(String value) {
-            this.addCriterion("show_name <>", value, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameGreaterThan(String value) {
-            this.addCriterion("show_name >", value, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("show_name >=", value, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameLessThan(String value) {
-            this.addCriterion("show_name <", value, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameLessThanOrEqualTo(String value) {
-            this.addCriterion("show_name <=", value, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameLike(String value) {
-            this.addCriterion("show_name like", value, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameNotLike(String value) {
-            this.addCriterion("show_name not like", value, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }        public ShiguOuterFloorExample.Criteria andShowNameIn(List<String> values) {
-            this.addCriterion("show_name in", values, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameNotIn(List<String> values) {
-            this.addCriterion("show_name not in", values, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameBetween(String value1, String value2) {
-            this.addCriterion("show_name between", value1, value2, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andShowNameNotBetween(String value1, String value2) {
-            this.addCriterion("show_name not between", value1, value2, "showName");
-            return (ShiguOuterFloorExample.Criteria)this;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopIsNull() {
-            this.addCriterion("added_shop is null");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return isNull(addedShop);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopIsNotNull() {
-            this.addCriterion("added_shop is not null");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return isNotNull(addedShop);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopEqualTo(String value) {
-            this.addCriterion("added_shop =", value, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return equalTo(addedShop, value);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopNotEqualTo(String value) {
-            this.addCriterion("added_shop <>", value, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return notEqualTo(addedShop, value);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopGreaterThan(String value) {
-            this.addCriterion("added_shop >", value, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return greaterThan(addedShop, value);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopGreaterThanOrEqualTo(String value) {
-            this.addCriterion("added_shop >=", value, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return greaterThanOrEqualTo(addedShop, value);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopLessThan(String value) {
-            this.addCriterion("added_shop <", value, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return lessThan(addedShop, value);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopLessThanOrEqualTo(String value) {
-            this.addCriterion("added_shop <=", value, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return lessThanOrEqualTo(addedShop, value);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopLike(String value) {
-            this.addCriterion("added_shop like", value, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return like(addedShop, value);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopNotLike(String value) {
-            this.addCriterion("added_shop not like", value, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }        public ShiguOuterFloorExample.Criteria andAddedShopIn(List<String> values) {
-            this.addCriterion("added_shop in", values, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return notLike(addedShop, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andAddedShopIn(List<String> values) {
+            return in(addedShop, values);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopNotIn(List<String> values) {
-            this.addCriterion("added_shop not in", values, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return notIn(addedShop, values);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopBetween(String value1, String value2) {
-            this.addCriterion("added_shop between", value1, value2, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return between(addedShop, value1, value2);
         }
 
         public ShiguOuterFloorExample.Criteria andAddedShopNotBetween(String value1, String value2) {
-            this.addCriterion("added_shop not between", value1, value2, "addedShop");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return notBetween(addedShop, value1, value2);
+        }
+        public ShiguOuterFloorExample.Criteria andShowNameIsNull() {
+            return isNull(showName);
         }
 
+        public ShiguOuterFloorExample.Criteria andShowNameIsNotNull() {
+            return isNotNull(showName);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameEqualTo(String value) {
+            return equalTo(showName, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameNotEqualTo(String value) {
+            return notEqualTo(showName, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameGreaterThan(String value) {
+            return greaterThan(showName, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(showName, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameLessThan(String value) {
+            return lessThan(showName, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(showName, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameLike(String value) {
+            return like(showName, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameNotLike(String value) {
+            return notLike(showName, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameIn(List<String> values) {
+            return in(showName, values);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameNotIn(List<String> values) {
+            return notIn(showName, values);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameBetween(String value1, String value2) {
+            return between(showName, value1, value2);
+        }
+
+        public ShiguOuterFloorExample.Criteria andShowNameNotBetween(String value1, String value2) {
+            return notBetween(showName, value1, value2);
+        }
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdIsNull() {
+            return isNull(outerFloorId);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdIsNotNull() {
+            return isNotNull(outerFloorId);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdEqualTo(Long value) {
+            return equalTo(outerFloorId, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdNotEqualTo(Long value) {
+            return notEqualTo(outerFloorId, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdGreaterThan(Long value) {
+            return greaterThan(outerFloorId, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(outerFloorId, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdLessThan(Long value) {
+            return lessThan(outerFloorId, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(outerFloorId, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdIn(List<Long> values) {
+            return in(outerFloorId, values);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdNotIn(List<Long> values) {
+            return notIn(outerFloorId, values);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdBetween(Long value1, Long value2) {
+            return between(outerFloorId, value1, value2);
+        }
+
+        public ShiguOuterFloorExample.Criteria andOuterFloorIdNotBetween(Long value1, Long value2) {
+            return notBetween(outerFloorId, value1, value2);
+        }
+        public ShiguOuterFloorExample.Criteria andFloorNamesIsNull() {
+            return isNull(floorNames);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesIsNotNull() {
+            return isNotNull(floorNames);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesEqualTo(String value) {
+            return equalTo(floorNames, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesNotEqualTo(String value) {
+            return notEqualTo(floorNames, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesGreaterThan(String value) {
+            return greaterThan(floorNames, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(floorNames, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesLessThan(String value) {
+            return lessThan(floorNames, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(floorNames, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesLike(String value) {
+            return like(floorNames, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesNotLike(String value) {
+            return notLike(floorNames, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesIn(List<String> values) {
+            return in(floorNames, values);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesNotIn(List<String> values) {
+            return notIn(floorNames, values);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesBetween(String value1, String value2) {
+            return between(floorNames, value1, value2);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorNamesNotBetween(String value1, String value2) {
+            return notBetween(floorNames, value1, value2);
+        }
         public ShiguOuterFloorExample.Criteria andSortOrderIsNull() {
-            this.addCriterion("sort_order is null");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return isNull(sortOrder);
         }
 
         public ShiguOuterFloorExample.Criteria andSortOrderIsNotNull() {
-            this.addCriterion("sort_order is not null");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return isNotNull(sortOrder);
         }
 
         public ShiguOuterFloorExample.Criteria andSortOrderEqualTo(Integer value) {
-            this.addCriterion("sort_order =", value, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return equalTo(sortOrder, value);
         }
 
         public ShiguOuterFloorExample.Criteria andSortOrderNotEqualTo(Integer value) {
-            this.addCriterion("sort_order <>", value, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return notEqualTo(sortOrder, value);
         }
 
         public ShiguOuterFloorExample.Criteria andSortOrderGreaterThan(Integer value) {
-            this.addCriterion("sort_order >", value, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return greaterThan(sortOrder, value);
         }
 
         public ShiguOuterFloorExample.Criteria andSortOrderGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("sort_order >=", value, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return greaterThanOrEqualTo(sortOrder, value);
         }
 
         public ShiguOuterFloorExample.Criteria andSortOrderLessThan(Integer value) {
-            this.addCriterion("sort_order <", value, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return lessThan(sortOrder, value);
         }
 
         public ShiguOuterFloorExample.Criteria andSortOrderLessThanOrEqualTo(Integer value) {
-            this.addCriterion("sort_order <=", value, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return lessThanOrEqualTo(sortOrder, value);
         }
 
-        public ShiguOuterFloorExample.Criteria andSortOrderLike(String value) {
-            this.addCriterion("sort_order like", value, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }
-
-        public ShiguOuterFloorExample.Criteria andSortOrderNotLike(String value) {
-            this.addCriterion("sort_order not like", value, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
-        }        public ShiguOuterFloorExample.Criteria andSortOrderIn(List<Integer> values) {
-            this.addCriterion("sort_order in", values, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
+        public ShiguOuterFloorExample.Criteria andSortOrderIn(List<Integer> values) {
+            return in(sortOrder, values);
         }
 
         public ShiguOuterFloorExample.Criteria andSortOrderNotIn(List<Integer> values) {
-            this.addCriterion("sort_order not in", values, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return notIn(sortOrder, values);
         }
 
         public ShiguOuterFloorExample.Criteria andSortOrderBetween(Integer value1, Integer value2) {
-            this.addCriterion("sort_order between", value1, value2, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return between(sortOrder, value1, value2);
         }
 
         public ShiguOuterFloorExample.Criteria andSortOrderNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("sort_order not between", value1, value2, "sortOrder");
-            return (ShiguOuterFloorExample.Criteria)this;
+            return notBetween(sortOrder, value1, value2);
+        }
+        public ShiguOuterFloorExample.Criteria andFloorIdsIsNull() {
+            return isNull(floorIds);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsIsNotNull() {
+            return isNotNull(floorIds);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsEqualTo(String value) {
+            return equalTo(floorIds, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsNotEqualTo(String value) {
+            return notEqualTo(floorIds, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsGreaterThan(String value) {
+            return greaterThan(floorIds, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(floorIds, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsLessThan(String value) {
+            return lessThan(floorIds, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(floorIds, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsLike(String value) {
+            return like(floorIds, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsNotLike(String value) {
+            return notLike(floorIds, value);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsIn(List<String> values) {
+            return in(floorIds, values);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsNotIn(List<String> values) {
+            return notIn(floorIds, values);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsBetween(String value1, String value2) {
+            return between(floorIds, value1, value2);
+        }
+
+        public ShiguOuterFloorExample.Criteria andFloorIdsNotBetween(String value1, String value2) {
+            return notBetween(floorIds, value1, value2);
         }
     }
 }

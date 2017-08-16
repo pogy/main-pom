@@ -1,6356 +1,4811 @@
 package com.opentae.data.mall.examples;
 
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-public class ShiguGoodsTinyExample implements SgExample {
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class ShiguGoodsTinyExample extends SgExample<ShiguGoodsTinyExample.Criteria> {
+    public static final Class<ShiguGoodsTiny> beanClass = ShiguGoodsTiny.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn validThru;
+    public static EntityColumn freightPayer;
+    public static EntityColumn numIid;
+    public static EntityColumn num;
+    public static EntityColumn modeFirstTypeId;
+    public static EntityColumn type;
+    public static EntityColumn expressFee;
+    public static EntityColumn imAliww;
+    public static EntityColumn piPriceString;
+    public static EntityColumn picUrl;
+    public static EntityColumn modeSecondTypeId;
+    public static EntityColumn priceRole;
+    public static EntityColumn price;
+    public static EntityColumn modified;
+    public static EntityColumn modeTopType;
+    public static EntityColumn isModPrice;
+    public static EntityColumn isEfficacious;
+    public static EntityColumn isModGoodsno;
+    public static EntityColumn isModTitle;
+    public static EntityColumn notNumberTradableGoods;
+    public static EntityColumn isDataPackage;
+    public static EntityColumn modeSecondType;
+    public static EntityColumn isSetMode;
+    public static EntityColumn created;
+    public static EntityColumn isTaobaoSynchronization;
+    public static EntityColumn modeFirstType;
+    public static EntityColumn isFenxiao;
+    public static EntityColumn goodsLevel;
+    public static EntityColumn market;
+    public static EntityColumn goodsServices;
+    public static EntityColumn remark9;
+    public static EntityColumn emsFee;
+    public static EntityColumn remark8;
+    public static EntityColumn sortOrder;
+    public static EntityColumn remark10;
+    public static EntityColumn remark5;
+    public static EntityColumn isLightningConsignment;
+    public static EntityColumn isSale;
+    public static EntityColumn remark4;
+    public static EntityColumn isAdminSetPiPrice;
+    public static EntityColumn remark7;
+    public static EntityColumn detailUrl;
+    public static EntityColumn remark6;
+    public static EntityColumn storeNum;
+    public static EntityColumn remark1;
+    public static EntityColumn remark3;
+    public static EntityColumn cid;
+    public static EntityColumn listTime;
+    public static EntityColumn remark2;
+    public static EntityColumn priceString;
+    public static EntityColumn city;
+    public static EntityColumn goodsId;
+    public static EntityColumn titleIndex;
+    public static EntityColumn upDataPackageName;
+    public static EntityColumn title;
+    public static EntityColumn hasShowcase;
+    public static EntityColumn isDown;
+    public static EntityColumn loadDate;
+    public static EntityColumn isXinpin;
+    public static EntityColumn marketId;
+    public static EntityColumn nick;
+    public static EntityColumn webSite;
+    public static EntityColumn isAkeyToUpload;
+    public static EntityColumn piPrice;
+    public static EntityColumn numberTradableGoods;
+    public static EntityColumn isTrade;
+    public static EntityColumn prov;
+    public static EntityColumn goodsNo;
+    public static EntityColumn inStoreSortOrder;
+    public static EntityColumn soldOutTime;
+    public static EntityColumn upDataPackageUrl;
+    public static EntityColumn modeTopTypeId;
+    public static EntityColumn isUserSetPiPrice;
+    public static EntityColumn cidAll;
+    public static EntityColumn hasDiscount;
+    public static EntityColumn parentMarketId;
+    public static EntityColumn delistTime;
+    public static EntityColumn postFee;
+    public static EntityColumn storeId;
+    public static EntityColumn isStandard;
+    public static EntityColumn isClosed;
+    public static EntityColumn goodsStatus;
+    public static EntityColumn isExcelImp;
+    public static EntityColumn stuffStatus;
+    public static EntityColumn parentMarketName;
+    public static EntityColumn lastModifyTime;
+    public static EntityColumn relationLevelId;
+    public static EntityColumn clicks;
+    public static EntityColumn outerId;
+    public static EntityColumn isShowcase;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        validThru = listMap.get("validThru");
+        freightPayer = listMap.get("freightPayer");
+        numIid = listMap.get("numIid");
+        num = listMap.get("num");
+        modeFirstTypeId = listMap.get("modeFirstTypeId");
+        type = listMap.get("type");
+        expressFee = listMap.get("expressFee");
+        imAliww = listMap.get("imAliww");
+        piPriceString = listMap.get("piPriceString");
+        picUrl = listMap.get("picUrl");
+        modeSecondTypeId = listMap.get("modeSecondTypeId");
+        priceRole = listMap.get("priceRole");
+        price = listMap.get("price");
+        modified = listMap.get("modified");
+        modeTopType = listMap.get("modeTopType");
+        isModPrice = listMap.get("isModPrice");
+        isEfficacious = listMap.get("isEfficacious");
+        isModGoodsno = listMap.get("isModGoodsno");
+        isModTitle = listMap.get("isModTitle");
+        notNumberTradableGoods = listMap.get("notNumberTradableGoods");
+        isDataPackage = listMap.get("isDataPackage");
+        modeSecondType = listMap.get("modeSecondType");
+        isSetMode = listMap.get("isSetMode");
+        created = listMap.get("created");
+        isTaobaoSynchronization = listMap.get("isTaobaoSynchronization");
+        modeFirstType = listMap.get("modeFirstType");
+        isFenxiao = listMap.get("isFenxiao");
+        goodsLevel = listMap.get("goodsLevel");
+        market = listMap.get("market");
+        goodsServices = listMap.get("goodsServices");
+        remark9 = listMap.get("remark9");
+        emsFee = listMap.get("emsFee");
+        remark8 = listMap.get("remark8");
+        sortOrder = listMap.get("sortOrder");
+        remark10 = listMap.get("remark10");
+        remark5 = listMap.get("remark5");
+        isLightningConsignment = listMap.get("isLightningConsignment");
+        isSale = listMap.get("isSale");
+        remark4 = listMap.get("remark4");
+        isAdminSetPiPrice = listMap.get("isAdminSetPiPrice");
+        remark7 = listMap.get("remark7");
+        detailUrl = listMap.get("detailUrl");
+        remark6 = listMap.get("remark6");
+        storeNum = listMap.get("storeNum");
+        remark1 = listMap.get("remark1");
+        remark3 = listMap.get("remark3");
+        cid = listMap.get("cid");
+        listTime = listMap.get("listTime");
+        remark2 = listMap.get("remark2");
+        priceString = listMap.get("priceString");
+        city = listMap.get("city");
+        goodsId = listMap.get("goodsId");
+        titleIndex = listMap.get("titleIndex");
+        upDataPackageName = listMap.get("upDataPackageName");
+        title = listMap.get("title");
+        hasShowcase = listMap.get("hasShowcase");
+        isDown = listMap.get("isDown");
+        loadDate = listMap.get("loadDate");
+        isXinpin = listMap.get("isXinpin");
+        marketId = listMap.get("marketId");
+        nick = listMap.get("nick");
+        webSite = listMap.get("webSite");
+        isAkeyToUpload = listMap.get("isAkeyToUpload");
+        piPrice = listMap.get("piPrice");
+        numberTradableGoods = listMap.get("numberTradableGoods");
+        isTrade = listMap.get("isTrade");
+        prov = listMap.get("prov");
+        goodsNo = listMap.get("goodsNo");
+        inStoreSortOrder = listMap.get("inStoreSortOrder");
+        soldOutTime = listMap.get("soldOutTime");
+        upDataPackageUrl = listMap.get("upDataPackageUrl");
+        modeTopTypeId = listMap.get("modeTopTypeId");
+        isUserSetPiPrice = listMap.get("isUserSetPiPrice");
+        cidAll = listMap.get("cidAll");
+        hasDiscount = listMap.get("hasDiscount");
+        parentMarketId = listMap.get("parentMarketId");
+        delistTime = listMap.get("delistTime");
+        postFee = listMap.get("postFee");
+        storeId = listMap.get("storeId");
+        isStandard = listMap.get("isStandard");
+        isClosed = listMap.get("isClosed");
+        goodsStatus = listMap.get("goodsStatus");
+        isExcelImp = listMap.get("isExcelImp");
+        stuffStatus = listMap.get("stuffStatus");
+        parentMarketName = listMap.get("parentMarketName");
+        lastModifyTime = listMap.get("lastModifyTime");
+        relationLevelId = listMap.get("relationLevelId");
+        clicks = listMap.get("clicks");
+        outerId = listMap.get("outerId");
+        isShowcase = listMap.get("isShowcase");
+        }
 
     public ShiguGoodsTinyExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected ShiguGoodsTinyExample.Criteria createCriteriaInternal() {
+        return new ShiguGoodsTinyExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<Criterion> getCriteria() {
-            return this.criteria;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
+        public ShiguGoodsTinyExample.Criteria andValidThruIsNull() {
+            return isNull(validThru);
         }
 
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
+        public ShiguGoodsTinyExample.Criteria andValidThruIsNotNull() {
+            return isNotNull(validThru);
         }
 
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
+        public ShiguGoodsTinyExample.Criteria andValidThruEqualTo(Long value) {
+            return equalTo(validThru, value);
         }
 
-        public Criteria andGoodsIdIsNull() {
-            this.addCriterion("goods_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andValidThruNotEqualTo(Long value) {
+            return notEqualTo(validThru, value);
         }
 
-        public Criteria andGoodsIdIsNotNull() {
-            this.addCriterion("goods_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andValidThruGreaterThan(Long value) {
+            return greaterThan(validThru, value);
         }
 
-        public Criteria andGoodsIdEqualTo(Long value) {
-            this.addCriterion("goods_id =", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andValidThruGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(validThru, value);
         }
 
-        public Criteria andGoodsIdNotEqualTo(Long value) {
-            this.addCriterion("goods_id <>", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andValidThruLessThan(Long value) {
+            return lessThan(validThru, value);
         }
 
-        public Criteria andGoodsIdGreaterThan(Long value) {
-            this.addCriterion("goods_id >", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andValidThruLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(validThru, value);
         }
 
-        public Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("goods_id >=", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andValidThruIn(List<Long> values) {
+            return in(validThru, values);
         }
 
-        public Criteria andGoodsIdLessThan(Long value) {
-            this.addCriterion("goods_id <", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andValidThruNotIn(List<Long> values) {
+            return notIn(validThru, values);
         }
 
-        public Criteria andGoodsIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("goods_id <=", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andValidThruBetween(Long value1, Long value2) {
+            return between(validThru, value1, value2);
         }
 
-        public Criteria andGoodsIdLike(String value) {
-            this.addCriterion("goods_id like", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andValidThruNotBetween(Long value1, Long value2) {
+            return notBetween(validThru, value1, value2);
         }
-
-        public Criteria andGoodsIdNotLike(String value) {
-            this.addCriterion("goods_id not like", value, "goodsId");
-            return (Criteria)this;
-        }        public Criteria andGoodsIdIn(List<Long> values) {
-            this.addCriterion("goods_id in", values, "goodsId");
-            return (Criteria)this;
-        }
-
-        public Criteria andGoodsIdNotIn(List<Long> values) {
-            this.addCriterion("goods_id not in", values, "goodsId");
-            return (Criteria)this;
-        }
-
-        public Criteria andGoodsIdBetween(Long value1, Long value2) {
-            this.addCriterion("goods_id between", value1, value2, "goodsId");
-            return (Criteria)this;
-        }
-
-        public Criteria andGoodsIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("goods_id not between", value1, value2, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerIsNull() {
+            return isNull(freightPayer);
         }
 
-        public Criteria andNumIidIsNull() {
-            this.addCriterion("num_iid is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerIsNotNull() {
+            return isNotNull(freightPayer);
         }
 
-        public Criteria andNumIidIsNotNull() {
-            this.addCriterion("num_iid is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerEqualTo(String value) {
+            return equalTo(freightPayer, value);
         }
 
-        public Criteria andNumIidEqualTo(Long value) {
-            this.addCriterion("num_iid =", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerNotEqualTo(String value) {
+            return notEqualTo(freightPayer, value);
         }
 
-        public Criteria andNumIidNotEqualTo(Long value) {
-            this.addCriterion("num_iid <>", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerGreaterThan(String value) {
+            return greaterThan(freightPayer, value);
         }
 
-        public Criteria andNumIidGreaterThan(Long value) {
-            this.addCriterion("num_iid >", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(freightPayer, value);
         }
 
-        public Criteria andNumIidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("num_iid >=", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerLessThan(String value) {
+            return lessThan(freightPayer, value);
         }
 
-        public Criteria andNumIidLessThan(Long value) {
-            this.addCriterion("num_iid <", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(freightPayer, value);
         }
 
-        public Criteria andNumIidLessThanOrEqualTo(Long value) {
-            this.addCriterion("num_iid <=", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerLike(String value) {
+            return like(freightPayer, value);
         }
 
-        public Criteria andNumIidLike(String value) {
-            this.addCriterion("num_iid like", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerNotLike(String value) {
+            return notLike(freightPayer, value);
         }
 
-        public Criteria andNumIidNotLike(String value) {
-            this.addCriterion("num_iid not like", value, "numIid");
-            return (Criteria)this;
-        }        public Criteria andNumIidIn(List<Long> values) {
-            this.addCriterion("num_iid in", values, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerIn(List<String> values) {
+            return in(freightPayer, values);
         }
 
-        public Criteria andNumIidNotIn(List<Long> values) {
-            this.addCriterion("num_iid not in", values, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerNotIn(List<String> values) {
+            return notIn(freightPayer, values);
         }
 
-        public Criteria andNumIidBetween(Long value1, Long value2) {
-            this.addCriterion("num_iid between", value1, value2, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerBetween(String value1, String value2) {
+            return between(freightPayer, value1, value2);
         }
 
-        public Criteria andNumIidNotBetween(Long value1, Long value2) {
-            this.addCriterion("num_iid not between", value1, value2, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andFreightPayerNotBetween(String value1, String value2) {
+            return notBetween(freightPayer, value1, value2);
         }
-
-        public Criteria andDetailUrlIsNull() {
-            this.addCriterion("detail_url is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidIsNull() {
+            return isNull(numIid);
         }
 
-        public Criteria andDetailUrlIsNotNull() {
-            this.addCriterion("detail_url is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidIsNotNull() {
+            return isNotNull(numIid);
         }
 
-        public Criteria andDetailUrlEqualTo(String value) {
-            this.addCriterion("detail_url =", value, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidEqualTo(Long value) {
+            return equalTo(numIid, value);
         }
 
-        public Criteria andDetailUrlNotEqualTo(String value) {
-            this.addCriterion("detail_url <>", value, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidNotEqualTo(Long value) {
+            return notEqualTo(numIid, value);
         }
 
-        public Criteria andDetailUrlGreaterThan(String value) {
-            this.addCriterion("detail_url >", value, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidGreaterThan(Long value) {
+            return greaterThan(numIid, value);
         }
 
-        public Criteria andDetailUrlGreaterThanOrEqualTo(String value) {
-            this.addCriterion("detail_url >=", value, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(numIid, value);
         }
 
-        public Criteria andDetailUrlLessThan(String value) {
-            this.addCriterion("detail_url <", value, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidLessThan(Long value) {
+            return lessThan(numIid, value);
         }
 
-        public Criteria andDetailUrlLessThanOrEqualTo(String value) {
-            this.addCriterion("detail_url <=", value, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(numIid, value);
         }
 
-        public Criteria andDetailUrlLike(String value) {
-            this.addCriterion("detail_url like", value, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidIn(List<Long> values) {
+            return in(numIid, values);
         }
 
-        public Criteria andDetailUrlNotLike(String value) {
-            this.addCriterion("detail_url not like", value, "detailUrl");
-            return (Criteria)this;
-        }        public Criteria andDetailUrlIn(List<String> values) {
-            this.addCriterion("detail_url in", values, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidNotIn(List<Long> values) {
+            return notIn(numIid, values);
         }
 
-        public Criteria andDetailUrlNotIn(List<String> values) {
-            this.addCriterion("detail_url not in", values, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidBetween(Long value1, Long value2) {
+            return between(numIid, value1, value2);
         }
 
-        public Criteria andDetailUrlBetween(String value1, String value2) {
-            this.addCriterion("detail_url between", value1, value2, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIidNotBetween(Long value1, Long value2) {
+            return notBetween(numIid, value1, value2);
         }
-
-        public Criteria andDetailUrlNotBetween(String value1, String value2) {
-            this.addCriterion("detail_url not between", value1, value2, "detailUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIsNull() {
+            return isNull(num);
         }
 
-        public Criteria andTitleIsNull() {
-            this.addCriterion("title is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIsNotNull() {
+            return isNotNull(num);
         }
 
-        public Criteria andTitleIsNotNull() {
-            this.addCriterion("title is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumEqualTo(Long value) {
+            return equalTo(num, value);
         }
 
-        public Criteria andTitleEqualTo(String value) {
-            this.addCriterion("title =", value, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumNotEqualTo(Long value) {
+            return notEqualTo(num, value);
         }
 
-        public Criteria andTitleNotEqualTo(String value) {
-            this.addCriterion("title <>", value, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumGreaterThan(Long value) {
+            return greaterThan(num, value);
         }
 
-        public Criteria andTitleGreaterThan(String value) {
-            this.addCriterion("title >", value, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(num, value);
         }
 
-        public Criteria andTitleGreaterThanOrEqualTo(String value) {
-            this.addCriterion("title >=", value, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumLessThan(Long value) {
+            return lessThan(num, value);
         }
 
-        public Criteria andTitleLessThan(String value) {
-            this.addCriterion("title <", value, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(num, value);
         }
 
-        public Criteria andTitleLessThanOrEqualTo(String value) {
-            this.addCriterion("title <=", value, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumIn(List<Long> values) {
+            return in(num, values);
         }
 
-        public Criteria andTitleLike(String value) {
-            this.addCriterion("title like", value, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumNotIn(List<Long> values) {
+            return notIn(num, values);
         }
 
-        public Criteria andTitleNotLike(String value) {
-            this.addCriterion("title not like", value, "title");
-            return (Criteria)this;
-        }        public Criteria andTitleIn(List<String> values) {
-            this.addCriterion("title in", values, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumBetween(Long value1, Long value2) {
+            return between(num, value1, value2);
         }
 
-        public Criteria andTitleNotIn(List<String> values) {
-            this.addCriterion("title not in", values, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumNotBetween(Long value1, Long value2) {
+            return notBetween(num, value1, value2);
         }
-
-        public Criteria andTitleBetween(String value1, String value2) {
-            this.addCriterion("title between", value1, value2, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdIsNull() {
+            return isNull(modeFirstTypeId);
         }
 
-        public Criteria andTitleNotBetween(String value1, String value2) {
-            this.addCriterion("title not between", value1, value2, "title");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdIsNotNull() {
+            return isNotNull(modeFirstTypeId);
         }
 
-        public Criteria andNickIsNull() {
-            this.addCriterion("nick is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdEqualTo(Long value) {
+            return equalTo(modeFirstTypeId, value);
         }
 
-        public Criteria andNickIsNotNull() {
-            this.addCriterion("nick is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdNotEqualTo(Long value) {
+            return notEqualTo(modeFirstTypeId, value);
         }
 
-        public Criteria andNickEqualTo(String value) {
-            this.addCriterion("nick =", value, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdGreaterThan(Long value) {
+            return greaterThan(modeFirstTypeId, value);
         }
 
-        public Criteria andNickNotEqualTo(String value) {
-            this.addCriterion("nick <>", value, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(modeFirstTypeId, value);
         }
 
-        public Criteria andNickGreaterThan(String value) {
-            this.addCriterion("nick >", value, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdLessThan(Long value) {
+            return lessThan(modeFirstTypeId, value);
         }
 
-        public Criteria andNickGreaterThanOrEqualTo(String value) {
-            this.addCriterion("nick >=", value, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(modeFirstTypeId, value);
         }
 
-        public Criteria andNickLessThan(String value) {
-            this.addCriterion("nick <", value, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdIn(List<Long> values) {
+            return in(modeFirstTypeId, values);
         }
 
-        public Criteria andNickLessThanOrEqualTo(String value) {
-            this.addCriterion("nick <=", value, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdNotIn(List<Long> values) {
+            return notIn(modeFirstTypeId, values);
         }
 
-        public Criteria andNickLike(String value) {
-            this.addCriterion("nick like", value, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdBetween(Long value1, Long value2) {
+            return between(modeFirstTypeId, value1, value2);
         }
 
-        public Criteria andNickNotLike(String value) {
-            this.addCriterion("nick not like", value, "nick");
-            return (Criteria)this;
-        }        public Criteria andNickIn(List<String> values) {
-            this.addCriterion("nick in", values, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIdNotBetween(Long value1, Long value2) {
+            return notBetween(modeFirstTypeId, value1, value2);
         }
-
-        public Criteria andNickNotIn(List<String> values) {
-            this.addCriterion("nick not in", values, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeIsNull() {
+            return isNull(type);
         }
 
-        public Criteria andNickBetween(String value1, String value2) {
-            this.addCriterion("nick between", value1, value2, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeIsNotNull() {
+            return isNotNull(type);
         }
 
-        public Criteria andNickNotBetween(String value1, String value2) {
-            this.addCriterion("nick not between", value1, value2, "nick");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeEqualTo(String value) {
+            return equalTo(type, value);
         }
 
-        public Criteria andTypeIsNull() {
-            this.addCriterion("type is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeNotEqualTo(String value) {
+            return notEqualTo(type, value);
         }
 
-        public Criteria andTypeIsNotNull() {
-            this.addCriterion("type is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeGreaterThan(String value) {
+            return greaterThan(type, value);
         }
 
-        public Criteria andTypeEqualTo(String value) {
-            this.addCriterion("type =", value, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(type, value);
         }
 
-        public Criteria andTypeNotEqualTo(String value) {
-            this.addCriterion("type <>", value, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeLessThan(String value) {
+            return lessThan(type, value);
         }
 
-        public Criteria andTypeGreaterThan(String value) {
-            this.addCriterion("type >", value, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(type, value);
         }
 
-        public Criteria andTypeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("type >=", value, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeLike(String value) {
+            return like(type, value);
         }
 
-        public Criteria andTypeLessThan(String value) {
-            this.addCriterion("type <", value, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeNotLike(String value) {
+            return notLike(type, value);
         }
 
-        public Criteria andTypeLessThanOrEqualTo(String value) {
-            this.addCriterion("type <=", value, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeIn(List<String> values) {
+            return in(type, values);
         }
 
-        public Criteria andTypeLike(String value) {
-            this.addCriterion("type like", value, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeNotIn(List<String> values) {
+            return notIn(type, values);
         }
 
-        public Criteria andTypeNotLike(String value) {
-            this.addCriterion("type not like", value, "type");
-            return (Criteria)this;
-        }        public Criteria andTypeIn(List<String> values) {
-            this.addCriterion("type in", values, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeBetween(String value1, String value2) {
+            return between(type, value1, value2);
         }
 
-        public Criteria andTypeNotIn(List<String> values) {
-            this.addCriterion("type not in", values, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTypeNotBetween(String value1, String value2) {
+            return notBetween(type, value1, value2);
         }
-
-        public Criteria andTypeBetween(String value1, String value2) {
-            this.addCriterion("type between", value1, value2, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeIsNull() {
+            return isNull(expressFee);
         }
 
-        public Criteria andTypeNotBetween(String value1, String value2) {
-            this.addCriterion("type not between", value1, value2, "type");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeIsNotNull() {
+            return isNotNull(expressFee);
         }
 
-        public Criteria andCreatedIsNull() {
-            this.addCriterion("created is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeEqualTo(String value) {
+            return equalTo(expressFee, value);
         }
 
-        public Criteria andCreatedIsNotNull() {
-            this.addCriterion("created is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeNotEqualTo(String value) {
+            return notEqualTo(expressFee, value);
         }
 
-        public Criteria andCreatedEqualTo(Date value) {
-            this.addCriterion("created =", value, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeGreaterThan(String value) {
+            return greaterThan(expressFee, value);
         }
 
-        public Criteria andCreatedNotEqualTo(Date value) {
-            this.addCriterion("created <>", value, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(expressFee, value);
         }
 
-        public Criteria andCreatedGreaterThan(Date value) {
-            this.addCriterion("created >", value, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeLessThan(String value) {
+            return lessThan(expressFee, value);
         }
 
-        public Criteria andCreatedGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("created >=", value, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(expressFee, value);
         }
 
-        public Criteria andCreatedLessThan(Date value) {
-            this.addCriterion("created <", value, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeLike(String value) {
+            return like(expressFee, value);
         }
 
-        public Criteria andCreatedLessThanOrEqualTo(Date value) {
-            this.addCriterion("created <=", value, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeNotLike(String value) {
+            return notLike(expressFee, value);
         }
 
-        public Criteria andCreatedLike(String value) {
-            this.addCriterion("created like", value, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeIn(List<String> values) {
+            return in(expressFee, values);
         }
 
-        public Criteria andCreatedNotLike(String value) {
-            this.addCriterion("created not like", value, "created");
-            return (Criteria)this;
-        }        public Criteria andCreatedIn(List<Date> values) {
-            this.addCriterion("created in", values, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeNotIn(List<String> values) {
+            return notIn(expressFee, values);
         }
 
-        public Criteria andCreatedNotIn(List<Date> values) {
-            this.addCriterion("created not in", values, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeBetween(String value1, String value2) {
+            return between(expressFee, value1, value2);
         }
 
-        public Criteria andCreatedBetween(Date value1, Date value2) {
-            this.addCriterion("created between", value1, value2, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andExpressFeeNotBetween(String value1, String value2) {
+            return notBetween(expressFee, value1, value2);
         }
-
-        public Criteria andCreatedNotBetween(Date value1, Date value2) {
-            this.addCriterion("created not between", value1, value2, "created");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwIsNull() {
+            return isNull(imAliww);
         }
 
-        public Criteria andIsLightningConsignmentIsNull() {
-            this.addCriterion("is_lightning_consignment is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwIsNotNull() {
+            return isNotNull(imAliww);
         }
 
-        public Criteria andIsLightningConsignmentIsNotNull() {
-            this.addCriterion("is_lightning_consignment is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwEqualTo(String value) {
+            return equalTo(imAliww, value);
         }
 
-        public Criteria andIsLightningConsignmentEqualTo(String value) {
-            this.addCriterion("is_lightning_consignment =", value, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwNotEqualTo(String value) {
+            return notEqualTo(imAliww, value);
         }
 
-        public Criteria andIsLightningConsignmentNotEqualTo(String value) {
-            this.addCriterion("is_lightning_consignment <>", value, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwGreaterThan(String value) {
+            return greaterThan(imAliww, value);
         }
 
-        public Criteria andIsLightningConsignmentGreaterThan(String value) {
-            this.addCriterion("is_lightning_consignment >", value, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(imAliww, value);
         }
 
-        public Criteria andIsLightningConsignmentGreaterThanOrEqualTo(String value) {
-            this.addCriterion("is_lightning_consignment >=", value, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwLessThan(String value) {
+            return lessThan(imAliww, value);
         }
 
-        public Criteria andIsLightningConsignmentLessThan(String value) {
-            this.addCriterion("is_lightning_consignment <", value, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(imAliww, value);
         }
 
-        public Criteria andIsLightningConsignmentLessThanOrEqualTo(String value) {
-            this.addCriterion("is_lightning_consignment <=", value, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwLike(String value) {
+            return like(imAliww, value);
         }
 
-        public Criteria andIsLightningConsignmentLike(String value) {
-            this.addCriterion("is_lightning_consignment like", value, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwNotLike(String value) {
+            return notLike(imAliww, value);
         }
 
-        public Criteria andIsLightningConsignmentNotLike(String value) {
-            this.addCriterion("is_lightning_consignment not like", value, "isLightningConsignment");
-            return (Criteria)this;
-        }        public Criteria andIsLightningConsignmentIn(List<String> values) {
-            this.addCriterion("is_lightning_consignment in", values, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwIn(List<String> values) {
+            return in(imAliww, values);
         }
 
-        public Criteria andIsLightningConsignmentNotIn(List<String> values) {
-            this.addCriterion("is_lightning_consignment not in", values, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwNotIn(List<String> values) {
+            return notIn(imAliww, values);
         }
 
-        public Criteria andIsLightningConsignmentBetween(String value1, String value2) {
-            this.addCriterion("is_lightning_consignment between", value1, value2, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwBetween(String value1, String value2) {
+            return between(imAliww, value1, value2);
         }
 
-        public Criteria andIsLightningConsignmentNotBetween(String value1, String value2) {
-            this.addCriterion("is_lightning_consignment not between", value1, value2, "isLightningConsignment");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andImAliwwNotBetween(String value1, String value2) {
+            return notBetween(imAliww, value1, value2);
         }
-
-        public Criteria andIsFenxiaoIsNull() {
-            this.addCriterion("is_fenxiao is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringIsNull() {
+            return isNull(piPriceString);
         }
 
-        public Criteria andIsFenxiaoIsNotNull() {
-            this.addCriterion("is_fenxiao is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringIsNotNull() {
+            return isNotNull(piPriceString);
         }
 
-        public Criteria andIsFenxiaoEqualTo(Long value) {
-            this.addCriterion("is_fenxiao =", value, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringEqualTo(String value) {
+            return equalTo(piPriceString, value);
         }
 
-        public Criteria andIsFenxiaoNotEqualTo(Long value) {
-            this.addCriterion("is_fenxiao <>", value, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringNotEqualTo(String value) {
+            return notEqualTo(piPriceString, value);
         }
 
-        public Criteria andIsFenxiaoGreaterThan(Long value) {
-            this.addCriterion("is_fenxiao >", value, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringGreaterThan(String value) {
+            return greaterThan(piPriceString, value);
         }
 
-        public Criteria andIsFenxiaoGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("is_fenxiao >=", value, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(piPriceString, value);
         }
 
-        public Criteria andIsFenxiaoLessThan(Long value) {
-            this.addCriterion("is_fenxiao <", value, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringLessThan(String value) {
+            return lessThan(piPriceString, value);
         }
 
-        public Criteria andIsFenxiaoLessThanOrEqualTo(Long value) {
-            this.addCriterion("is_fenxiao <=", value, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(piPriceString, value);
         }
 
-        public Criteria andIsFenxiaoLike(String value) {
-            this.addCriterion("is_fenxiao like", value, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringLike(String value) {
+            return like(piPriceString, value);
         }
 
-        public Criteria andIsFenxiaoNotLike(String value) {
-            this.addCriterion("is_fenxiao not like", value, "isFenxiao");
-            return (Criteria)this;
-        }        public Criteria andIsFenxiaoIn(List<Long> values) {
-            this.addCriterion("is_fenxiao in", values, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringNotLike(String value) {
+            return notLike(piPriceString, value);
         }
 
-        public Criteria andIsFenxiaoNotIn(List<Long> values) {
-            this.addCriterion("is_fenxiao not in", values, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringIn(List<String> values) {
+            return in(piPriceString, values);
         }
 
-        public Criteria andIsFenxiaoBetween(Long value1, Long value2) {
-            this.addCriterion("is_fenxiao between", value1, value2, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringNotIn(List<String> values) {
+            return notIn(piPriceString, values);
         }
 
-        public Criteria andIsFenxiaoNotBetween(Long value1, Long value2) {
-            this.addCriterion("is_fenxiao not between", value1, value2, "isFenxiao");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringBetween(String value1, String value2) {
+            return between(piPriceString, value1, value2);
         }
 
-        public Criteria andIsSaleIsNull() {
-            this.addCriterion("is_sale is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceStringNotBetween(String value1, String value2) {
+            return notBetween(piPriceString, value1, value2);
         }
-
-        public Criteria andIsSaleIsNotNull() {
-            this.addCriterion("is_sale is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlIsNull() {
+            return isNull(picUrl);
         }
 
-        public Criteria andIsSaleEqualTo(Long value) {
-            this.addCriterion("is_sale =", value, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlIsNotNull() {
+            return isNotNull(picUrl);
         }
 
-        public Criteria andIsSaleNotEqualTo(Long value) {
-            this.addCriterion("is_sale <>", value, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlEqualTo(String value) {
+            return equalTo(picUrl, value);
         }
 
-        public Criteria andIsSaleGreaterThan(Long value) {
-            this.addCriterion("is_sale >", value, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlNotEqualTo(String value) {
+            return notEqualTo(picUrl, value);
         }
 
-        public Criteria andIsSaleGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("is_sale >=", value, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlGreaterThan(String value) {
+            return greaterThan(picUrl, value);
         }
 
-        public Criteria andIsSaleLessThan(Long value) {
-            this.addCriterion("is_sale <", value, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(picUrl, value);
         }
 
-        public Criteria andIsSaleLessThanOrEqualTo(Long value) {
-            this.addCriterion("is_sale <=", value, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlLessThan(String value) {
+            return lessThan(picUrl, value);
         }
 
-        public Criteria andIsSaleLike(String value) {
-            this.addCriterion("is_sale like", value, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(picUrl, value);
         }
 
-        public Criteria andIsSaleNotLike(String value) {
-            this.addCriterion("is_sale not like", value, "isSale");
-            return (Criteria)this;
-        }        public Criteria andIsSaleIn(List<Long> values) {
-            this.addCriterion("is_sale in", values, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlLike(String value) {
+            return like(picUrl, value);
         }
 
-        public Criteria andIsSaleNotIn(List<Long> values) {
-            this.addCriterion("is_sale not in", values, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlNotLike(String value) {
+            return notLike(picUrl, value);
         }
 
-        public Criteria andIsSaleBetween(Long value1, Long value2) {
-            this.addCriterion("is_sale between", value1, value2, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlIn(List<String> values) {
+            return in(picUrl, values);
         }
 
-        public Criteria andIsSaleNotBetween(Long value1, Long value2) {
-            this.addCriterion("is_sale not between", value1, value2, "isSale");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlNotIn(List<String> values) {
+            return notIn(picUrl, values);
         }
 
-        public Criteria andIsXinpinIsNull() {
-            this.addCriterion("is_xinpin is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlBetween(String value1, String value2) {
+            return between(picUrl, value1, value2);
         }
 
-        public Criteria andIsXinpinIsNotNull() {
-            this.addCriterion("is_xinpin is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPicUrlNotBetween(String value1, String value2) {
+            return notBetween(picUrl, value1, value2);
         }
-
-        public Criteria andIsXinpinEqualTo(String value) {
-            this.addCriterion("is_xinpin =", value, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdIsNull() {
+            return isNull(modeSecondTypeId);
         }
 
-        public Criteria andIsXinpinNotEqualTo(String value) {
-            this.addCriterion("is_xinpin <>", value, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdIsNotNull() {
+            return isNotNull(modeSecondTypeId);
         }
 
-        public Criteria andIsXinpinGreaterThan(String value) {
-            this.addCriterion("is_xinpin >", value, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdEqualTo(Long value) {
+            return equalTo(modeSecondTypeId, value);
         }
 
-        public Criteria andIsXinpinGreaterThanOrEqualTo(String value) {
-            this.addCriterion("is_xinpin >=", value, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdNotEqualTo(Long value) {
+            return notEqualTo(modeSecondTypeId, value);
         }
 
-        public Criteria andIsXinpinLessThan(String value) {
-            this.addCriterion("is_xinpin <", value, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdGreaterThan(Long value) {
+            return greaterThan(modeSecondTypeId, value);
         }
 
-        public Criteria andIsXinpinLessThanOrEqualTo(String value) {
-            this.addCriterion("is_xinpin <=", value, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(modeSecondTypeId, value);
         }
 
-        public Criteria andIsXinpinLike(String value) {
-            this.addCriterion("is_xinpin like", value, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdLessThan(Long value) {
+            return lessThan(modeSecondTypeId, value);
         }
 
-        public Criteria andIsXinpinNotLike(String value) {
-            this.addCriterion("is_xinpin not like", value, "isXinpin");
-            return (Criteria)this;
-        }        public Criteria andIsXinpinIn(List<String> values) {
-            this.addCriterion("is_xinpin in", values, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(modeSecondTypeId, value);
         }
 
-        public Criteria andIsXinpinNotIn(List<String> values) {
-            this.addCriterion("is_xinpin not in", values, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdIn(List<Long> values) {
+            return in(modeSecondTypeId, values);
         }
 
-        public Criteria andIsXinpinBetween(String value1, String value2) {
-            this.addCriterion("is_xinpin between", value1, value2, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdNotIn(List<Long> values) {
+            return notIn(modeSecondTypeId, values);
         }
 
-        public Criteria andIsXinpinNotBetween(String value1, String value2) {
-            this.addCriterion("is_xinpin not between", value1, value2, "isXinpin");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdBetween(Long value1, Long value2) {
+            return between(modeSecondTypeId, value1, value2);
         }
 
-        public Criteria andValidThruIsNull() {
-            this.addCriterion("valid_thru is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIdNotBetween(Long value1, Long value2) {
+            return notBetween(modeSecondTypeId, value1, value2);
         }
-
-        public Criteria andValidThruIsNotNull() {
-            this.addCriterion("valid_thru is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleIsNull() {
+            return isNull(priceRole);
         }
 
-        public Criteria andValidThruEqualTo(Long value) {
-            this.addCriterion("valid_thru =", value, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleIsNotNull() {
+            return isNotNull(priceRole);
         }
 
-        public Criteria andValidThruNotEqualTo(Long value) {
-            this.addCriterion("valid_thru <>", value, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleEqualTo(String value) {
+            return equalTo(priceRole, value);
         }
 
-        public Criteria andValidThruGreaterThan(Long value) {
-            this.addCriterion("valid_thru >", value, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleNotEqualTo(String value) {
+            return notEqualTo(priceRole, value);
         }
 
-        public Criteria andValidThruGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("valid_thru >=", value, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleGreaterThan(String value) {
+            return greaterThan(priceRole, value);
         }
 
-        public Criteria andValidThruLessThan(Long value) {
-            this.addCriterion("valid_thru <", value, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(priceRole, value);
         }
 
-        public Criteria andValidThruLessThanOrEqualTo(Long value) {
-            this.addCriterion("valid_thru <=", value, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleLessThan(String value) {
+            return lessThan(priceRole, value);
         }
 
-        public Criteria andValidThruLike(String value) {
-            this.addCriterion("valid_thru like", value, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(priceRole, value);
         }
 
-        public Criteria andValidThruNotLike(String value) {
-            this.addCriterion("valid_thru not like", value, "validThru");
-            return (Criteria)this;
-        }        public Criteria andValidThruIn(List<Long> values) {
-            this.addCriterion("valid_thru in", values, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleLike(String value) {
+            return like(priceRole, value);
         }
 
-        public Criteria andValidThruNotIn(List<Long> values) {
-            this.addCriterion("valid_thru not in", values, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleNotLike(String value) {
+            return notLike(priceRole, value);
         }
 
-        public Criteria andValidThruBetween(Long value1, Long value2) {
-            this.addCriterion("valid_thru between", value1, value2, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleIn(List<String> values) {
+            return in(priceRole, values);
         }
 
-        public Criteria andValidThruNotBetween(Long value1, Long value2) {
-            this.addCriterion("valid_thru not between", value1, value2, "validThru");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleNotIn(List<String> values) {
+            return notIn(priceRole, values);
         }
 
-        public Criteria andOuterIdIsNull() {
-            this.addCriterion("outer_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleBetween(String value1, String value2) {
+            return between(priceRole, value1, value2);
         }
 
-        public Criteria andOuterIdIsNotNull() {
-            this.addCriterion("outer_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceRoleNotBetween(String value1, String value2) {
+            return notBetween(priceRole, value1, value2);
         }
-
-        public Criteria andOuterIdEqualTo(String value) {
-            this.addCriterion("outer_id =", value, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceIsNull() {
+            return isNull(price);
         }
 
-        public Criteria andOuterIdNotEqualTo(String value) {
-            this.addCriterion("outer_id <>", value, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceIsNotNull() {
+            return isNotNull(price);
         }
 
-        public Criteria andOuterIdGreaterThan(String value) {
-            this.addCriterion("outer_id >", value, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceEqualTo(Long value) {
+            return equalTo(price, value);
         }
 
-        public Criteria andOuterIdGreaterThanOrEqualTo(String value) {
-            this.addCriterion("outer_id >=", value, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceNotEqualTo(Long value) {
+            return notEqualTo(price, value);
         }
 
-        public Criteria andOuterIdLessThan(String value) {
-            this.addCriterion("outer_id <", value, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceGreaterThan(Long value) {
+            return greaterThan(price, value);
         }
 
-        public Criteria andOuterIdLessThanOrEqualTo(String value) {
-            this.addCriterion("outer_id <=", value, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(price, value);
         }
 
-        public Criteria andOuterIdLike(String value) {
-            this.addCriterion("outer_id like", value, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceLessThan(Long value) {
+            return lessThan(price, value);
         }
 
-        public Criteria andOuterIdNotLike(String value) {
-            this.addCriterion("outer_id not like", value, "outerId");
-            return (Criteria)this;
-        }        public Criteria andOuterIdIn(List<String> values) {
-            this.addCriterion("outer_id in", values, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(price, value);
         }
 
-        public Criteria andOuterIdNotIn(List<String> values) {
-            this.addCriterion("outer_id not in", values, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceIn(List<Long> values) {
+            return in(price, values);
         }
 
-        public Criteria andOuterIdBetween(String value1, String value2) {
-            this.addCriterion("outer_id between", value1, value2, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceNotIn(List<Long> values) {
+            return notIn(price, values);
         }
 
-        public Criteria andOuterIdNotBetween(String value1, String value2) {
-            this.addCriterion("outer_id not between", value1, value2, "outerId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceBetween(Long value1, Long value2) {
+            return between(price, value1, value2);
         }
 
-        public Criteria andCidIsNull() {
-            this.addCriterion("cid is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceNotBetween(Long value1, Long value2) {
+            return notBetween(price, value1, value2);
         }
-
-        public Criteria andCidIsNotNull() {
-            this.addCriterion("cid is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedIsNull() {
+            return isNull(modified);
         }
 
-        public Criteria andCidEqualTo(Long value) {
-            this.addCriterion("cid =", value, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedIsNotNull() {
+            return isNotNull(modified);
         }
 
-        public Criteria andCidNotEqualTo(Long value) {
-            this.addCriterion("cid <>", value, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedEqualTo(Date value) {
+            return equalTo(modified, value);
         }
 
-        public Criteria andCidGreaterThan(Long value) {
-            this.addCriterion("cid >", value, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedNotEqualTo(Date value) {
+            return notEqualTo(modified, value);
         }
 
-        public Criteria andCidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("cid >=", value, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedGreaterThan(Date value) {
+            return greaterThan(modified, value);
         }
 
-        public Criteria andCidLessThan(Long value) {
-            this.addCriterion("cid <", value, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(modified, value);
         }
 
-        public Criteria andCidLessThanOrEqualTo(Long value) {
-            this.addCriterion("cid <=", value, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedLessThan(Date value) {
+            return lessThan(modified, value);
         }
 
-        public Criteria andCidLike(String value) {
-            this.addCriterion("cid like", value, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(modified, value);
         }
 
-        public Criteria andCidNotLike(String value) {
-            this.addCriterion("cid not like", value, "cid");
-            return (Criteria)this;
-        }        public Criteria andCidIn(List<Long> values) {
-            this.addCriterion("cid in", values, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedIn(List<Date> values) {
+            return in(modified, values);
         }
 
-        public Criteria andCidNotIn(List<Long> values) {
-            this.addCriterion("cid not in", values, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedNotIn(List<Date> values) {
+            return notIn(modified, values);
         }
 
-        public Criteria andCidBetween(Long value1, Long value2) {
-            this.addCriterion("cid between", value1, value2, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedBetween(Date value1, Date value2) {
+            return between(modified, value1, value2);
         }
 
-        public Criteria andCidNotBetween(Long value1, Long value2) {
-            this.addCriterion("cid not between", value1, value2, "cid");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModifiedNotBetween(Date value1, Date value2) {
+            return notBetween(modified, value1, value2);
         }
-
-        public Criteria andCidAllIsNull() {
-            this.addCriterion("cid_all is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIsNull() {
+            return isNull(modeTopType);
         }
 
-        public Criteria andCidAllIsNotNull() {
-            this.addCriterion("cid_all is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIsNotNull() {
+            return isNotNull(modeTopType);
         }
 
-        public Criteria andCidAllEqualTo(String value) {
-            this.addCriterion("cid_all =", value, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeEqualTo(String value) {
+            return equalTo(modeTopType, value);
         }
 
-        public Criteria andCidAllNotEqualTo(String value) {
-            this.addCriterion("cid_all <>", value, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeNotEqualTo(String value) {
+            return notEqualTo(modeTopType, value);
         }
 
-        public Criteria andCidAllGreaterThan(String value) {
-            this.addCriterion("cid_all >", value, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeGreaterThan(String value) {
+            return greaterThan(modeTopType, value);
         }
 
-        public Criteria andCidAllGreaterThanOrEqualTo(String value) {
-            this.addCriterion("cid_all >=", value, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(modeTopType, value);
         }
 
-        public Criteria andCidAllLessThan(String value) {
-            this.addCriterion("cid_all <", value, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeLessThan(String value) {
+            return lessThan(modeTopType, value);
         }
 
-        public Criteria andCidAllLessThanOrEqualTo(String value) {
-            this.addCriterion("cid_all <=", value, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(modeTopType, value);
         }
 
-        public Criteria andCidAllLike(String value) {
-            this.addCriterion("cid_all like", value, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeLike(String value) {
+            return like(modeTopType, value);
         }
 
-        public Criteria andCidAllNotLike(String value) {
-            this.addCriterion("cid_all not like", value, "cidAll");
-            return (Criteria)this;
-        }        public Criteria andCidAllIn(List<String> values) {
-            this.addCriterion("cid_all in", values, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeNotLike(String value) {
+            return notLike(modeTopType, value);
         }
 
-        public Criteria andCidAllNotIn(List<String> values) {
-            this.addCriterion("cid_all not in", values, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIn(List<String> values) {
+            return in(modeTopType, values);
         }
 
-        public Criteria andCidAllBetween(String value1, String value2) {
-            this.addCriterion("cid_all between", value1, value2, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeNotIn(List<String> values) {
+            return notIn(modeTopType, values);
         }
 
-        public Criteria andCidAllNotBetween(String value1, String value2) {
-            this.addCriterion("cid_all not between", value1, value2, "cidAll");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeBetween(String value1, String value2) {
+            return between(modeTopType, value1, value2);
         }
 
-        public Criteria andPicUrlIsNull() {
-            this.addCriterion("pic_url is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeNotBetween(String value1, String value2) {
+            return notBetween(modeTopType, value1, value2);
         }
-
-        public Criteria andPicUrlIsNotNull() {
-            this.addCriterion("pic_url is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceIsNull() {
+            return isNull(isModPrice);
         }
 
-        public Criteria andPicUrlEqualTo(String value) {
-            this.addCriterion("pic_url =", value, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceIsNotNull() {
+            return isNotNull(isModPrice);
         }
 
-        public Criteria andPicUrlNotEqualTo(String value) {
-            this.addCriterion("pic_url <>", value, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceEqualTo(Integer value) {
+            return equalTo(isModPrice, value);
         }
 
-        public Criteria andPicUrlGreaterThan(String value) {
-            this.addCriterion("pic_url >", value, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceNotEqualTo(Integer value) {
+            return notEqualTo(isModPrice, value);
         }
 
-        public Criteria andPicUrlGreaterThanOrEqualTo(String value) {
-            this.addCriterion("pic_url >=", value, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceGreaterThan(Integer value) {
+            return greaterThan(isModPrice, value);
         }
 
-        public Criteria andPicUrlLessThan(String value) {
-            this.addCriterion("pic_url <", value, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isModPrice, value);
         }
 
-        public Criteria andPicUrlLessThanOrEqualTo(String value) {
-            this.addCriterion("pic_url <=", value, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceLessThan(Integer value) {
+            return lessThan(isModPrice, value);
         }
 
-        public Criteria andPicUrlLike(String value) {
-            this.addCriterion("pic_url like", value, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isModPrice, value);
         }
 
-        public Criteria andPicUrlNotLike(String value) {
-            this.addCriterion("pic_url not like", value, "picUrl");
-            return (Criteria)this;
-        }        public Criteria andPicUrlIn(List<String> values) {
-            this.addCriterion("pic_url in", values, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceIn(List<Integer> values) {
+            return in(isModPrice, values);
         }
 
-        public Criteria andPicUrlNotIn(List<String> values) {
-            this.addCriterion("pic_url not in", values, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceNotIn(List<Integer> values) {
+            return notIn(isModPrice, values);
         }
 
-        public Criteria andPicUrlBetween(String value1, String value2) {
-            this.addCriterion("pic_url between", value1, value2, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceBetween(Integer value1, Integer value2) {
+            return between(isModPrice, value1, value2);
         }
 
-        public Criteria andPicUrlNotBetween(String value1, String value2) {
-            this.addCriterion("pic_url not between", value1, value2, "picUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModPriceNotBetween(Integer value1, Integer value2) {
+            return notBetween(isModPrice, value1, value2);
         }
-
-        public Criteria andNumIsNull() {
-            this.addCriterion("num is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousIsNull() {
+            return isNull(isEfficacious);
         }
 
-        public Criteria andNumIsNotNull() {
-            this.addCriterion("num is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousIsNotNull() {
+            return isNotNull(isEfficacious);
         }
 
-        public Criteria andNumEqualTo(Long value) {
-            this.addCriterion("num =", value, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousEqualTo(Long value) {
+            return equalTo(isEfficacious, value);
         }
 
-        public Criteria andNumNotEqualTo(Long value) {
-            this.addCriterion("num <>", value, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousNotEqualTo(Long value) {
+            return notEqualTo(isEfficacious, value);
         }
 
-        public Criteria andNumGreaterThan(Long value) {
-            this.addCriterion("num >", value, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousGreaterThan(Long value) {
+            return greaterThan(isEfficacious, value);
         }
 
-        public Criteria andNumGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("num >=", value, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(isEfficacious, value);
         }
 
-        public Criteria andNumLessThan(Long value) {
-            this.addCriterion("num <", value, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousLessThan(Long value) {
+            return lessThan(isEfficacious, value);
         }
 
-        public Criteria andNumLessThanOrEqualTo(Long value) {
-            this.addCriterion("num <=", value, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(isEfficacious, value);
         }
 
-        public Criteria andNumLike(String value) {
-            this.addCriterion("num like", value, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousIn(List<Long> values) {
+            return in(isEfficacious, values);
         }
 
-        public Criteria andNumNotLike(String value) {
-            this.addCriterion("num not like", value, "num");
-            return (Criteria)this;
-        }        public Criteria andNumIn(List<Long> values) {
-            this.addCriterion("num in", values, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousNotIn(List<Long> values) {
+            return notIn(isEfficacious, values);
         }
 
-        public Criteria andNumNotIn(List<Long> values) {
-            this.addCriterion("num not in", values, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousBetween(Long value1, Long value2) {
+            return between(isEfficacious, value1, value2);
         }
 
-        public Criteria andNumBetween(Long value1, Long value2) {
-            this.addCriterion("num between", value1, value2, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsEfficaciousNotBetween(Long value1, Long value2) {
+            return notBetween(isEfficacious, value1, value2);
         }
-
-        public Criteria andNumNotBetween(Long value1, Long value2) {
-            this.addCriterion("num not between", value1, value2, "num");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoIsNull() {
+            return isNull(isModGoodsno);
         }
 
-        public Criteria andSoldOutTimeIsNull() {
-            this.addCriterion("sold_out_time is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoIsNotNull() {
+            return isNotNull(isModGoodsno);
         }
 
-        public Criteria andSoldOutTimeIsNotNull() {
-            this.addCriterion("sold_out_time is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoEqualTo(Integer value) {
+            return equalTo(isModGoodsno, value);
         }
 
-        public Criteria andSoldOutTimeEqualTo(Date value) {
-            this.addCriterion("sold_out_time =", value, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoNotEqualTo(Integer value) {
+            return notEqualTo(isModGoodsno, value);
         }
 
-        public Criteria andSoldOutTimeNotEqualTo(Date value) {
-            this.addCriterion("sold_out_time <>", value, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoGreaterThan(Integer value) {
+            return greaterThan(isModGoodsno, value);
         }
 
-        public Criteria andSoldOutTimeGreaterThan(Date value) {
-            this.addCriterion("sold_out_time >", value, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isModGoodsno, value);
         }
 
-        public Criteria andSoldOutTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("sold_out_time >=", value, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoLessThan(Integer value) {
+            return lessThan(isModGoodsno, value);
         }
 
-        public Criteria andSoldOutTimeLessThan(Date value) {
-            this.addCriterion("sold_out_time <", value, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isModGoodsno, value);
         }
 
-        public Criteria andSoldOutTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("sold_out_time <=", value, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoIn(List<Integer> values) {
+            return in(isModGoodsno, values);
         }
 
-        public Criteria andSoldOutTimeLike(String value) {
-            this.addCriterion("sold_out_time like", value, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoNotIn(List<Integer> values) {
+            return notIn(isModGoodsno, values);
         }
 
-        public Criteria andSoldOutTimeNotLike(String value) {
-            this.addCriterion("sold_out_time not like", value, "soldOutTime");
-            return (Criteria)this;
-        }        public Criteria andSoldOutTimeIn(List<Date> values) {
-            this.addCriterion("sold_out_time in", values, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoBetween(Integer value1, Integer value2) {
+            return between(isModGoodsno, value1, value2);
         }
 
-        public Criteria andSoldOutTimeNotIn(List<Date> values) {
-            this.addCriterion("sold_out_time not in", values, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModGoodsnoNotBetween(Integer value1, Integer value2) {
+            return notBetween(isModGoodsno, value1, value2);
         }
-
-        public Criteria andSoldOutTimeBetween(Date value1, Date value2) {
-            this.addCriterion("sold_out_time between", value1, value2, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleIsNull() {
+            return isNull(isModTitle);
         }
 
-        public Criteria andSoldOutTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("sold_out_time not between", value1, value2, "soldOutTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleIsNotNull() {
+            return isNotNull(isModTitle);
         }
 
-        public Criteria andListTimeIsNull() {
-            this.addCriterion("list_time is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleEqualTo(Integer value) {
+            return equalTo(isModTitle, value);
         }
 
-        public Criteria andListTimeIsNotNull() {
-            this.addCriterion("list_time is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleNotEqualTo(Integer value) {
+            return notEqualTo(isModTitle, value);
         }
 
-        public Criteria andListTimeEqualTo(Date value) {
-            this.addCriterion("list_time =", value, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleGreaterThan(Integer value) {
+            return greaterThan(isModTitle, value);
         }
 
-        public Criteria andListTimeNotEqualTo(Date value) {
-            this.addCriterion("list_time <>", value, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isModTitle, value);
         }
 
-        public Criteria andListTimeGreaterThan(Date value) {
-            this.addCriterion("list_time >", value, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleLessThan(Integer value) {
+            return lessThan(isModTitle, value);
         }
 
-        public Criteria andListTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("list_time >=", value, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isModTitle, value);
         }
 
-        public Criteria andListTimeLessThan(Date value) {
-            this.addCriterion("list_time <", value, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleIn(List<Integer> values) {
+            return in(isModTitle, values);
         }
 
-        public Criteria andListTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("list_time <=", value, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleNotIn(List<Integer> values) {
+            return notIn(isModTitle, values);
         }
 
-        public Criteria andListTimeLike(String value) {
-            this.addCriterion("list_time like", value, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleBetween(Integer value1, Integer value2) {
+            return between(isModTitle, value1, value2);
         }
 
-        public Criteria andListTimeNotLike(String value) {
-            this.addCriterion("list_time not like", value, "listTime");
-            return (Criteria)this;
-        }        public Criteria andListTimeIn(List<Date> values) {
-            this.addCriterion("list_time in", values, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsModTitleNotBetween(Integer value1, Integer value2) {
+            return notBetween(isModTitle, value1, value2);
         }
-
-        public Criteria andListTimeNotIn(List<Date> values) {
-            this.addCriterion("list_time not in", values, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsIsNull() {
+            return isNull(notNumberTradableGoods);
         }
 
-        public Criteria andListTimeBetween(Date value1, Date value2) {
-            this.addCriterion("list_time between", value1, value2, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsIsNotNull() {
+            return isNotNull(notNumberTradableGoods);
         }
 
-        public Criteria andListTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("list_time not between", value1, value2, "listTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsEqualTo(Long value) {
+            return equalTo(notNumberTradableGoods, value);
         }
 
-        public Criteria andDelistTimeIsNull() {
-            this.addCriterion("delist_time is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsNotEqualTo(Long value) {
+            return notEqualTo(notNumberTradableGoods, value);
         }
 
-        public Criteria andDelistTimeIsNotNull() {
-            this.addCriterion("delist_time is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsGreaterThan(Long value) {
+            return greaterThan(notNumberTradableGoods, value);
         }
 
-        public Criteria andDelistTimeEqualTo(Date value) {
-            this.addCriterion("delist_time =", value, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(notNumberTradableGoods, value);
         }
 
-        public Criteria andDelistTimeNotEqualTo(Date value) {
-            this.addCriterion("delist_time <>", value, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsLessThan(Long value) {
+            return lessThan(notNumberTradableGoods, value);
         }
 
-        public Criteria andDelistTimeGreaterThan(Date value) {
-            this.addCriterion("delist_time >", value, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(notNumberTradableGoods, value);
         }
 
-        public Criteria andDelistTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("delist_time >=", value, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsIn(List<Long> values) {
+            return in(notNumberTradableGoods, values);
         }
 
-        public Criteria andDelistTimeLessThan(Date value) {
-            this.addCriterion("delist_time <", value, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsNotIn(List<Long> values) {
+            return notIn(notNumberTradableGoods, values);
         }
 
-        public Criteria andDelistTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("delist_time <=", value, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsBetween(Long value1, Long value2) {
+            return between(notNumberTradableGoods, value1, value2);
         }
 
-        public Criteria andDelistTimeLike(String value) {
-            this.addCriterion("delist_time like", value, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNotNumberTradableGoodsNotBetween(Long value1, Long value2) {
+            return notBetween(notNumberTradableGoods, value1, value2);
         }
-
-        public Criteria andDelistTimeNotLike(String value) {
-            this.addCriterion("delist_time not like", value, "delistTime");
-            return (Criteria)this;
-        }        public Criteria andDelistTimeIn(List<Date> values) {
-            this.addCriterion("delist_time in", values, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageIsNull() {
+            return isNull(isDataPackage);
         }
 
-        public Criteria andDelistTimeNotIn(List<Date> values) {
-            this.addCriterion("delist_time not in", values, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageIsNotNull() {
+            return isNotNull(isDataPackage);
         }
 
-        public Criteria andDelistTimeBetween(Date value1, Date value2) {
-            this.addCriterion("delist_time between", value1, value2, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageEqualTo(Integer value) {
+            return equalTo(isDataPackage, value);
         }
 
-        public Criteria andDelistTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("delist_time not between", value1, value2, "delistTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageNotEqualTo(Integer value) {
+            return notEqualTo(isDataPackage, value);
         }
 
-        public Criteria andStuffStatusIsNull() {
-            this.addCriterion("stuff_status is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageGreaterThan(Integer value) {
+            return greaterThan(isDataPackage, value);
         }
 
-        public Criteria andStuffStatusIsNotNull() {
-            this.addCriterion("stuff_status is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isDataPackage, value);
         }
 
-        public Criteria andStuffStatusEqualTo(String value) {
-            this.addCriterion("stuff_status =", value, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageLessThan(Integer value) {
+            return lessThan(isDataPackage, value);
         }
 
-        public Criteria andStuffStatusNotEqualTo(String value) {
-            this.addCriterion("stuff_status <>", value, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isDataPackage, value);
         }
 
-        public Criteria andStuffStatusGreaterThan(String value) {
-            this.addCriterion("stuff_status >", value, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageIn(List<Integer> values) {
+            return in(isDataPackage, values);
         }
 
-        public Criteria andStuffStatusGreaterThanOrEqualTo(String value) {
-            this.addCriterion("stuff_status >=", value, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageNotIn(List<Integer> values) {
+            return notIn(isDataPackage, values);
         }
 
-        public Criteria andStuffStatusLessThan(String value) {
-            this.addCriterion("stuff_status <", value, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageBetween(Integer value1, Integer value2) {
+            return between(isDataPackage, value1, value2);
         }
 
-        public Criteria andStuffStatusLessThanOrEqualTo(String value) {
-            this.addCriterion("stuff_status <=", value, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDataPackageNotBetween(Integer value1, Integer value2) {
+            return notBetween(isDataPackage, value1, value2);
         }
-
-        public Criteria andStuffStatusLike(String value) {
-            this.addCriterion("stuff_status like", value, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIsNull() {
+            return isNull(modeSecondType);
         }
 
-        public Criteria andStuffStatusNotLike(String value) {
-            this.addCriterion("stuff_status not like", value, "stuffStatus");
-            return (Criteria)this;
-        }        public Criteria andStuffStatusIn(List<String> values) {
-            this.addCriterion("stuff_status in", values, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIsNotNull() {
+            return isNotNull(modeSecondType);
         }
 
-        public Criteria andStuffStatusNotIn(List<String> values) {
-            this.addCriterion("stuff_status not in", values, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeEqualTo(String value) {
+            return equalTo(modeSecondType, value);
         }
 
-        public Criteria andStuffStatusBetween(String value1, String value2) {
-            this.addCriterion("stuff_status between", value1, value2, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeNotEqualTo(String value) {
+            return notEqualTo(modeSecondType, value);
         }
 
-        public Criteria andStuffStatusNotBetween(String value1, String value2) {
-            this.addCriterion("stuff_status not between", value1, value2, "stuffStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeGreaterThan(String value) {
+            return greaterThan(modeSecondType, value);
         }
 
-        public Criteria andCityIsNull() {
-            this.addCriterion("city is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(modeSecondType, value);
         }
 
-        public Criteria andCityIsNotNull() {
-            this.addCriterion("city is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeLessThan(String value) {
+            return lessThan(modeSecondType, value);
         }
 
-        public Criteria andCityEqualTo(String value) {
-            this.addCriterion("city =", value, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(modeSecondType, value);
         }
 
-        public Criteria andCityNotEqualTo(String value) {
-            this.addCriterion("city <>", value, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeLike(String value) {
+            return like(modeSecondType, value);
         }
 
-        public Criteria andCityGreaterThan(String value) {
-            this.addCriterion("city >", value, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeNotLike(String value) {
+            return notLike(modeSecondType, value);
         }
 
-        public Criteria andCityGreaterThanOrEqualTo(String value) {
-            this.addCriterion("city >=", value, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeIn(List<String> values) {
+            return in(modeSecondType, values);
         }
 
-        public Criteria andCityLessThan(String value) {
-            this.addCriterion("city <", value, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeNotIn(List<String> values) {
+            return notIn(modeSecondType, values);
         }
 
-        public Criteria andCityLessThanOrEqualTo(String value) {
-            this.addCriterion("city <=", value, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeBetween(String value1, String value2) {
+            return between(modeSecondType, value1, value2);
         }
 
-        public Criteria andCityLike(String value) {
-            this.addCriterion("city like", value, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeSecondTypeNotBetween(String value1, String value2) {
+            return notBetween(modeSecondType, value1, value2);
         }
-
-        public Criteria andCityNotLike(String value) {
-            this.addCriterion("city not like", value, "city");
-            return (Criteria)this;
-        }        public Criteria andCityIn(List<String> values) {
-            this.addCriterion("city in", values, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeIsNull() {
+            return isNull(isSetMode);
         }
 
-        public Criteria andCityNotIn(List<String> values) {
-            this.addCriterion("city not in", values, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeIsNotNull() {
+            return isNotNull(isSetMode);
         }
 
-        public Criteria andCityBetween(String value1, String value2) {
-            this.addCriterion("city between", value1, value2, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeEqualTo(Integer value) {
+            return equalTo(isSetMode, value);
         }
 
-        public Criteria andCityNotBetween(String value1, String value2) {
-            this.addCriterion("city not between", value1, value2, "city");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeNotEqualTo(Integer value) {
+            return notEqualTo(isSetMode, value);
         }
 
-        public Criteria andProvIsNull() {
-            this.addCriterion("prov is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeGreaterThan(Integer value) {
+            return greaterThan(isSetMode, value);
         }
 
-        public Criteria andProvIsNotNull() {
-            this.addCriterion("prov is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isSetMode, value);
         }
 
-        public Criteria andProvEqualTo(String value) {
-            this.addCriterion("prov =", value, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeLessThan(Integer value) {
+            return lessThan(isSetMode, value);
         }
 
-        public Criteria andProvNotEqualTo(String value) {
-            this.addCriterion("prov <>", value, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isSetMode, value);
         }
 
-        public Criteria andProvGreaterThan(String value) {
-            this.addCriterion("prov >", value, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeIn(List<Integer> values) {
+            return in(isSetMode, values);
         }
 
-        public Criteria andProvGreaterThanOrEqualTo(String value) {
-            this.addCriterion("prov >=", value, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeNotIn(List<Integer> values) {
+            return notIn(isSetMode, values);
         }
 
-        public Criteria andProvLessThan(String value) {
-            this.addCriterion("prov <", value, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeBetween(Integer value1, Integer value2) {
+            return between(isSetMode, value1, value2);
         }
 
-        public Criteria andProvLessThanOrEqualTo(String value) {
-            this.addCriterion("prov <=", value, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSetModeNotBetween(Integer value1, Integer value2) {
+            return notBetween(isSetMode, value1, value2);
         }
-
-        public Criteria andProvLike(String value) {
-            this.addCriterion("prov like", value, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedIsNull() {
+            return isNull(created);
         }
 
-        public Criteria andProvNotLike(String value) {
-            this.addCriterion("prov not like", value, "prov");
-            return (Criteria)this;
-        }        public Criteria andProvIn(List<String> values) {
-            this.addCriterion("prov in", values, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedIsNotNull() {
+            return isNotNull(created);
         }
 
-        public Criteria andProvNotIn(List<String> values) {
-            this.addCriterion("prov not in", values, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedEqualTo(Date value) {
+            return equalTo(created, value);
         }
 
-        public Criteria andProvBetween(String value1, String value2) {
-            this.addCriterion("prov between", value1, value2, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedNotEqualTo(Date value) {
+            return notEqualTo(created, value);
         }
 
-        public Criteria andProvNotBetween(String value1, String value2) {
-            this.addCriterion("prov not between", value1, value2, "prov");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedGreaterThan(Date value) {
+            return greaterThan(created, value);
         }
 
-        public Criteria andPriceStringIsNull() {
-            this.addCriterion("price_string is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(created, value);
         }
 
-        public Criteria andPriceStringIsNotNull() {
-            this.addCriterion("price_string is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedLessThan(Date value) {
+            return lessThan(created, value);
         }
 
-        public Criteria andPriceStringEqualTo(String value) {
-            this.addCriterion("price_string =", value, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(created, value);
         }
 
-        public Criteria andPriceStringNotEqualTo(String value) {
-            this.addCriterion("price_string <>", value, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedIn(List<Date> values) {
+            return in(created, values);
         }
 
-        public Criteria andPriceStringGreaterThan(String value) {
-            this.addCriterion("price_string >", value, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedNotIn(List<Date> values) {
+            return notIn(created, values);
         }
 
-        public Criteria andPriceStringGreaterThanOrEqualTo(String value) {
-            this.addCriterion("price_string >=", value, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedBetween(Date value1, Date value2) {
+            return between(created, value1, value2);
         }
 
-        public Criteria andPriceStringLessThan(String value) {
-            this.addCriterion("price_string <", value, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCreatedNotBetween(Date value1, Date value2) {
+            return notBetween(created, value1, value2);
         }
-
-        public Criteria andPriceStringLessThanOrEqualTo(String value) {
-            this.addCriterion("price_string <=", value, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationIsNull() {
+            return isNull(isTaobaoSynchronization);
         }
 
-        public Criteria andPriceStringLike(String value) {
-            this.addCriterion("price_string like", value, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationIsNotNull() {
+            return isNotNull(isTaobaoSynchronization);
         }
 
-        public Criteria andPriceStringNotLike(String value) {
-            this.addCriterion("price_string not like", value, "priceString");
-            return (Criteria)this;
-        }        public Criteria andPriceStringIn(List<String> values) {
-            this.addCriterion("price_string in", values, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationEqualTo(Long value) {
+            return equalTo(isTaobaoSynchronization, value);
         }
 
-        public Criteria andPriceStringNotIn(List<String> values) {
-            this.addCriterion("price_string not in", values, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationNotEqualTo(Long value) {
+            return notEqualTo(isTaobaoSynchronization, value);
         }
 
-        public Criteria andPriceStringBetween(String value1, String value2) {
-            this.addCriterion("price_string between", value1, value2, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationGreaterThan(Long value) {
+            return greaterThan(isTaobaoSynchronization, value);
         }
 
-        public Criteria andPriceStringNotBetween(String value1, String value2) {
-            this.addCriterion("price_string not between", value1, value2, "priceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(isTaobaoSynchronization, value);
         }
 
-        public Criteria andPriceIsNull() {
-            this.addCriterion("price is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationLessThan(Long value) {
+            return lessThan(isTaobaoSynchronization, value);
         }
 
-        public Criteria andPriceIsNotNull() {
-            this.addCriterion("price is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(isTaobaoSynchronization, value);
         }
 
-        public Criteria andPriceEqualTo(Long value) {
-            this.addCriterion("price =", value, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationIn(List<Long> values) {
+            return in(isTaobaoSynchronization, values);
         }
 
-        public Criteria andPriceNotEqualTo(Long value) {
-            this.addCriterion("price <>", value, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationNotIn(List<Long> values) {
+            return notIn(isTaobaoSynchronization, values);
         }
 
-        public Criteria andPriceGreaterThan(Long value) {
-            this.addCriterion("price >", value, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationBetween(Long value1, Long value2) {
+            return between(isTaobaoSynchronization, value1, value2);
         }
 
-        public Criteria andPriceGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("price >=", value, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTaobaoSynchronizationNotBetween(Long value1, Long value2) {
+            return notBetween(isTaobaoSynchronization, value1, value2);
         }
-
-        public Criteria andPriceLessThan(Long value) {
-            this.addCriterion("price <", value, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIsNull() {
+            return isNull(modeFirstType);
         }
 
-        public Criteria andPriceLessThanOrEqualTo(Long value) {
-            this.addCriterion("price <=", value, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIsNotNull() {
+            return isNotNull(modeFirstType);
         }
 
-        public Criteria andPriceLike(String value) {
-            this.addCriterion("price like", value, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeEqualTo(String value) {
+            return equalTo(modeFirstType, value);
         }
 
-        public Criteria andPriceNotLike(String value) {
-            this.addCriterion("price not like", value, "price");
-            return (Criteria)this;
-        }        public Criteria andPriceIn(List<Long> values) {
-            this.addCriterion("price in", values, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeNotEqualTo(String value) {
+            return notEqualTo(modeFirstType, value);
         }
 
-        public Criteria andPriceNotIn(List<Long> values) {
-            this.addCriterion("price not in", values, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeGreaterThan(String value) {
+            return greaterThan(modeFirstType, value);
         }
 
-        public Criteria andPriceBetween(Long value1, Long value2) {
-            this.addCriterion("price between", value1, value2, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(modeFirstType, value);
         }
 
-        public Criteria andPriceNotBetween(Long value1, Long value2) {
-            this.addCriterion("price not between", value1, value2, "price");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeLessThan(String value) {
+            return lessThan(modeFirstType, value);
         }
 
-        public Criteria andPiPriceIsNull() {
-            this.addCriterion("pi_price is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(modeFirstType, value);
         }
 
-        public Criteria andPiPriceIsNotNull() {
-            this.addCriterion("pi_price is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeLike(String value) {
+            return like(modeFirstType, value);
         }
 
-        public Criteria andPiPriceEqualTo(Long value) {
-            this.addCriterion("pi_price =", value, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeNotLike(String value) {
+            return notLike(modeFirstType, value);
         }
 
-        public Criteria andPiPriceNotEqualTo(Long value) {
-            this.addCriterion("pi_price <>", value, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeIn(List<String> values) {
+            return in(modeFirstType, values);
         }
 
-        public Criteria andPiPriceGreaterThan(Long value) {
-            this.addCriterion("pi_price >", value, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeNotIn(List<String> values) {
+            return notIn(modeFirstType, values);
         }
 
-        public Criteria andPiPriceGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("pi_price >=", value, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeBetween(String value1, String value2) {
+            return between(modeFirstType, value1, value2);
         }
 
-        public Criteria andPiPriceLessThan(Long value) {
-            this.addCriterion("pi_price <", value, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeFirstTypeNotBetween(String value1, String value2) {
+            return notBetween(modeFirstType, value1, value2);
         }
-
-        public Criteria andPiPriceLessThanOrEqualTo(Long value) {
-            this.addCriterion("pi_price <=", value, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoIsNull() {
+            return isNull(isFenxiao);
         }
 
-        public Criteria andPiPriceLike(String value) {
-            this.addCriterion("pi_price like", value, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoIsNotNull() {
+            return isNotNull(isFenxiao);
         }
 
-        public Criteria andPiPriceNotLike(String value) {
-            this.addCriterion("pi_price not like", value, "piPrice");
-            return (Criteria)this;
-        }        public Criteria andPiPriceIn(List<Long> values) {
-            this.addCriterion("pi_price in", values, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoEqualTo(Long value) {
+            return equalTo(isFenxiao, value);
         }
 
-        public Criteria andPiPriceNotIn(List<Long> values) {
-            this.addCriterion("pi_price not in", values, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoNotEqualTo(Long value) {
+            return notEqualTo(isFenxiao, value);
         }
 
-        public Criteria andPiPriceBetween(Long value1, Long value2) {
-            this.addCriterion("pi_price between", value1, value2, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoGreaterThan(Long value) {
+            return greaterThan(isFenxiao, value);
         }
 
-        public Criteria andPiPriceNotBetween(Long value1, Long value2) {
-            this.addCriterion("pi_price not between", value1, value2, "piPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(isFenxiao, value);
         }
 
-        public Criteria andPiPriceStringIsNull() {
-            this.addCriterion("pi_price_string is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoLessThan(Long value) {
+            return lessThan(isFenxiao, value);
         }
 
-        public Criteria andPiPriceStringIsNotNull() {
-            this.addCriterion("pi_price_string is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(isFenxiao, value);
         }
 
-        public Criteria andPiPriceStringEqualTo(String value) {
-            this.addCriterion("pi_price_string =", value, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoIn(List<Long> values) {
+            return in(isFenxiao, values);
         }
 
-        public Criteria andPiPriceStringNotEqualTo(String value) {
-            this.addCriterion("pi_price_string <>", value, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoNotIn(List<Long> values) {
+            return notIn(isFenxiao, values);
         }
 
-        public Criteria andPiPriceStringGreaterThan(String value) {
-            this.addCriterion("pi_price_string >", value, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoBetween(Long value1, Long value2) {
+            return between(isFenxiao, value1, value2);
         }
 
-        public Criteria andPiPriceStringGreaterThanOrEqualTo(String value) {
-            this.addCriterion("pi_price_string >=", value, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsFenxiaoNotBetween(Long value1, Long value2) {
+            return notBetween(isFenxiao, value1, value2);
         }
-
-        public Criteria andPiPriceStringLessThan(String value) {
-            this.addCriterion("pi_price_string <", value, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelIsNull() {
+            return isNull(goodsLevel);
         }
 
-        public Criteria andPiPriceStringLessThanOrEqualTo(String value) {
-            this.addCriterion("pi_price_string <=", value, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelIsNotNull() {
+            return isNotNull(goodsLevel);
         }
 
-        public Criteria andPiPriceStringLike(String value) {
-            this.addCriterion("pi_price_string like", value, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelEqualTo(String value) {
+            return equalTo(goodsLevel, value);
         }
 
-        public Criteria andPiPriceStringNotLike(String value) {
-            this.addCriterion("pi_price_string not like", value, "piPriceString");
-            return (Criteria)this;
-        }        public Criteria andPiPriceStringIn(List<String> values) {
-            this.addCriterion("pi_price_string in", values, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelNotEqualTo(String value) {
+            return notEqualTo(goodsLevel, value);
         }
 
-        public Criteria andPiPriceStringNotIn(List<String> values) {
-            this.addCriterion("pi_price_string not in", values, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelGreaterThan(String value) {
+            return greaterThan(goodsLevel, value);
         }
 
-        public Criteria andPiPriceStringBetween(String value1, String value2) {
-            this.addCriterion("pi_price_string between", value1, value2, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(goodsLevel, value);
         }
 
-        public Criteria andPiPriceStringNotBetween(String value1, String value2) {
-            this.addCriterion("pi_price_string not between", value1, value2, "piPriceString");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelLessThan(String value) {
+            return lessThan(goodsLevel, value);
         }
 
-        public Criteria andPriceRoleIsNull() {
-            this.addCriterion("price_role is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(goodsLevel, value);
         }
 
-        public Criteria andPriceRoleIsNotNull() {
-            this.addCriterion("price_role is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelLike(String value) {
+            return like(goodsLevel, value);
         }
 
-        public Criteria andPriceRoleEqualTo(String value) {
-            this.addCriterion("price_role =", value, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelNotLike(String value) {
+            return notLike(goodsLevel, value);
         }
 
-        public Criteria andPriceRoleNotEqualTo(String value) {
-            this.addCriterion("price_role <>", value, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelIn(List<String> values) {
+            return in(goodsLevel, values);
         }
 
-        public Criteria andPriceRoleGreaterThan(String value) {
-            this.addCriterion("price_role >", value, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelNotIn(List<String> values) {
+            return notIn(goodsLevel, values);
         }
 
-        public Criteria andPriceRoleGreaterThanOrEqualTo(String value) {
-            this.addCriterion("price_role >=", value, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelBetween(String value1, String value2) {
+            return between(goodsLevel, value1, value2);
         }
 
-        public Criteria andPriceRoleLessThan(String value) {
-            this.addCriterion("price_role <", value, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsLevelNotBetween(String value1, String value2) {
+            return notBetween(goodsLevel, value1, value2);
         }
-
-        public Criteria andPriceRoleLessThanOrEqualTo(String value) {
-            this.addCriterion("price_role <=", value, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIsNull() {
+            return isNull(market);
         }
 
-        public Criteria andPriceRoleLike(String value) {
-            this.addCriterion("price_role like", value, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIsNotNull() {
+            return isNotNull(market);
         }
 
-        public Criteria andPriceRoleNotLike(String value) {
-            this.addCriterion("price_role not like", value, "priceRole");
-            return (Criteria)this;
-        }        public Criteria andPriceRoleIn(List<String> values) {
-            this.addCriterion("price_role in", values, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketEqualTo(String value) {
+            return equalTo(market, value);
         }
 
-        public Criteria andPriceRoleNotIn(List<String> values) {
-            this.addCriterion("price_role not in", values, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketNotEqualTo(String value) {
+            return notEqualTo(market, value);
         }
 
-        public Criteria andPriceRoleBetween(String value1, String value2) {
-            this.addCriterion("price_role between", value1, value2, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketGreaterThan(String value) {
+            return greaterThan(market, value);
         }
 
-        public Criteria andPriceRoleNotBetween(String value1, String value2) {
-            this.addCriterion("price_role not between", value1, value2, "priceRole");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(market, value);
         }
 
-        public Criteria andPostFeeIsNull() {
-            this.addCriterion("post_fee is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketLessThan(String value) {
+            return lessThan(market, value);
         }
 
-        public Criteria andPostFeeIsNotNull() {
-            this.addCriterion("post_fee is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(market, value);
         }
 
-        public Criteria andPostFeeEqualTo(String value) {
-            this.addCriterion("post_fee =", value, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketLike(String value) {
+            return like(market, value);
         }
 
-        public Criteria andPostFeeNotEqualTo(String value) {
-            this.addCriterion("post_fee <>", value, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketNotLike(String value) {
+            return notLike(market, value);
         }
 
-        public Criteria andPostFeeGreaterThan(String value) {
-            this.addCriterion("post_fee >", value, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIn(List<String> values) {
+            return in(market, values);
         }
 
-        public Criteria andPostFeeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("post_fee >=", value, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketNotIn(List<String> values) {
+            return notIn(market, values);
         }
 
-        public Criteria andPostFeeLessThan(String value) {
-            this.addCriterion("post_fee <", value, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketBetween(String value1, String value2) {
+            return between(market, value1, value2);
         }
 
-        public Criteria andPostFeeLessThanOrEqualTo(String value) {
-            this.addCriterion("post_fee <=", value, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketNotBetween(String value1, String value2) {
+            return notBetween(market, value1, value2);
         }
-
-        public Criteria andPostFeeLike(String value) {
-            this.addCriterion("post_fee like", value, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesIsNull() {
+            return isNull(goodsServices);
         }
 
-        public Criteria andPostFeeNotLike(String value) {
-            this.addCriterion("post_fee not like", value, "postFee");
-            return (Criteria)this;
-        }        public Criteria andPostFeeIn(List<String> values) {
-            this.addCriterion("post_fee in", values, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesIsNotNull() {
+            return isNotNull(goodsServices);
         }
 
-        public Criteria andPostFeeNotIn(List<String> values) {
-            this.addCriterion("post_fee not in", values, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesEqualTo(String value) {
+            return equalTo(goodsServices, value);
         }
 
-        public Criteria andPostFeeBetween(String value1, String value2) {
-            this.addCriterion("post_fee between", value1, value2, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesNotEqualTo(String value) {
+            return notEqualTo(goodsServices, value);
         }
 
-        public Criteria andPostFeeNotBetween(String value1, String value2) {
-            this.addCriterion("post_fee not between", value1, value2, "postFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesGreaterThan(String value) {
+            return greaterThan(goodsServices, value);
         }
 
-        public Criteria andExpressFeeIsNull() {
-            this.addCriterion("express_fee is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(goodsServices, value);
         }
 
-        public Criteria andExpressFeeIsNotNull() {
-            this.addCriterion("express_fee is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesLessThan(String value) {
+            return lessThan(goodsServices, value);
         }
 
-        public Criteria andExpressFeeEqualTo(String value) {
-            this.addCriterion("express_fee =", value, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(goodsServices, value);
         }
 
-        public Criteria andExpressFeeNotEqualTo(String value) {
-            this.addCriterion("express_fee <>", value, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesLike(String value) {
+            return like(goodsServices, value);
         }
 
-        public Criteria andExpressFeeGreaterThan(String value) {
-            this.addCriterion("express_fee >", value, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesNotLike(String value) {
+            return notLike(goodsServices, value);
         }
 
-        public Criteria andExpressFeeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("express_fee >=", value, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesIn(List<String> values) {
+            return in(goodsServices, values);
         }
 
-        public Criteria andExpressFeeLessThan(String value) {
-            this.addCriterion("express_fee <", value, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesNotIn(List<String> values) {
+            return notIn(goodsServices, values);
         }
 
-        public Criteria andExpressFeeLessThanOrEqualTo(String value) {
-            this.addCriterion("express_fee <=", value, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesBetween(String value1, String value2) {
+            return between(goodsServices, value1, value2);
         }
 
-        public Criteria andExpressFeeLike(String value) {
-            this.addCriterion("express_fee like", value, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsServicesNotBetween(String value1, String value2) {
+            return notBetween(goodsServices, value1, value2);
         }
-
-        public Criteria andExpressFeeNotLike(String value) {
-            this.addCriterion("express_fee not like", value, "expressFee");
-            return (Criteria)this;
-        }        public Criteria andExpressFeeIn(List<String> values) {
-            this.addCriterion("express_fee in", values, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9IsNull() {
+            return isNull(remark9);
         }
 
-        public Criteria andExpressFeeNotIn(List<String> values) {
-            this.addCriterion("express_fee not in", values, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9IsNotNull() {
+            return isNotNull(remark9);
         }
 
-        public Criteria andExpressFeeBetween(String value1, String value2) {
-            this.addCriterion("express_fee between", value1, value2, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9EqualTo(String value) {
+            return equalTo(remark9, value);
         }
 
-        public Criteria andExpressFeeNotBetween(String value1, String value2) {
-            this.addCriterion("express_fee not between", value1, value2, "expressFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9NotEqualTo(String value) {
+            return notEqualTo(remark9, value);
         }
 
-        public Criteria andEmsFeeIsNull() {
-            this.addCriterion("ems_fee is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9GreaterThan(String value) {
+            return greaterThan(remark9, value);
         }
 
-        public Criteria andEmsFeeIsNotNull() {
-            this.addCriterion("ems_fee is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark9, value);
         }
 
-        public Criteria andEmsFeeEqualTo(String value) {
-            this.addCriterion("ems_fee =", value, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9LessThan(String value) {
+            return lessThan(remark9, value);
         }
 
-        public Criteria andEmsFeeNotEqualTo(String value) {
-            this.addCriterion("ems_fee <>", value, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark9, value);
         }
 
-        public Criteria andEmsFeeGreaterThan(String value) {
-            this.addCriterion("ems_fee >", value, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9Like(String value) {
+            return like(remark9, value);
         }
 
-        public Criteria andEmsFeeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("ems_fee >=", value, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9NotLike(String value) {
+            return notLike(remark9, value);
         }
 
-        public Criteria andEmsFeeLessThan(String value) {
-            this.addCriterion("ems_fee <", value, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9In(List<String> values) {
+            return in(remark9, values);
         }
 
-        public Criteria andEmsFeeLessThanOrEqualTo(String value) {
-            this.addCriterion("ems_fee <=", value, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9NotIn(List<String> values) {
+            return notIn(remark9, values);
         }
 
-        public Criteria andEmsFeeLike(String value) {
-            this.addCriterion("ems_fee like", value, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9Between(String value1, String value2) {
+            return between(remark9, value1, value2);
         }
 
-        public Criteria andEmsFeeNotLike(String value) {
-            this.addCriterion("ems_fee not like", value, "emsFee");
-            return (Criteria)this;
-        }        public Criteria andEmsFeeIn(List<String> values) {
-            this.addCriterion("ems_fee in", values, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark9NotBetween(String value1, String value2) {
+            return notBetween(remark9, value1, value2);
         }
-
-        public Criteria andEmsFeeNotIn(List<String> values) {
-            this.addCriterion("ems_fee not in", values, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeIsNull() {
+            return isNull(emsFee);
         }
 
-        public Criteria andEmsFeeBetween(String value1, String value2) {
-            this.addCriterion("ems_fee between", value1, value2, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeIsNotNull() {
+            return isNotNull(emsFee);
         }
 
-        public Criteria andEmsFeeNotBetween(String value1, String value2) {
-            this.addCriterion("ems_fee not between", value1, value2, "emsFee");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeEqualTo(String value) {
+            return equalTo(emsFee, value);
         }
 
-        public Criteria andHasDiscountIsNull() {
-            this.addCriterion("has_discount is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeNotEqualTo(String value) {
+            return notEqualTo(emsFee, value);
         }
 
-        public Criteria andHasDiscountIsNotNull() {
-            this.addCriterion("has_discount is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeGreaterThan(String value) {
+            return greaterThan(emsFee, value);
         }
 
-        public Criteria andHasDiscountEqualTo(String value) {
-            this.addCriterion("has_discount =", value, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(emsFee, value);
         }
 
-        public Criteria andHasDiscountNotEqualTo(String value) {
-            this.addCriterion("has_discount <>", value, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeLessThan(String value) {
+            return lessThan(emsFee, value);
         }
 
-        public Criteria andHasDiscountGreaterThan(String value) {
-            this.addCriterion("has_discount >", value, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(emsFee, value);
         }
 
-        public Criteria andHasDiscountGreaterThanOrEqualTo(String value) {
-            this.addCriterion("has_discount >=", value, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeLike(String value) {
+            return like(emsFee, value);
         }
 
-        public Criteria andHasDiscountLessThan(String value) {
-            this.addCriterion("has_discount <", value, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeNotLike(String value) {
+            return notLike(emsFee, value);
         }
 
-        public Criteria andHasDiscountLessThanOrEqualTo(String value) {
-            this.addCriterion("has_discount <=", value, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeIn(List<String> values) {
+            return in(emsFee, values);
         }
 
-        public Criteria andHasDiscountLike(String value) {
-            this.addCriterion("has_discount like", value, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeNotIn(List<String> values) {
+            return notIn(emsFee, values);
         }
 
-        public Criteria andHasDiscountNotLike(String value) {
-            this.addCriterion("has_discount not like", value, "hasDiscount");
-            return (Criteria)this;
-        }        public Criteria andHasDiscountIn(List<String> values) {
-            this.addCriterion("has_discount in", values, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeBetween(String value1, String value2) {
+            return between(emsFee, value1, value2);
         }
 
-        public Criteria andHasDiscountNotIn(List<String> values) {
-            this.addCriterion("has_discount not in", values, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andEmsFeeNotBetween(String value1, String value2) {
+            return notBetween(emsFee, value1, value2);
         }
-
-        public Criteria andHasDiscountBetween(String value1, String value2) {
-            this.addCriterion("has_discount between", value1, value2, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8IsNull() {
+            return isNull(remark8);
         }
 
-        public Criteria andHasDiscountNotBetween(String value1, String value2) {
-            this.addCriterion("has_discount not between", value1, value2, "hasDiscount");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8IsNotNull() {
+            return isNotNull(remark8);
         }
 
-        public Criteria andFreightPayerIsNull() {
-            this.addCriterion("freight_payer is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8EqualTo(String value) {
+            return equalTo(remark8, value);
         }
 
-        public Criteria andFreightPayerIsNotNull() {
-            this.addCriterion("freight_payer is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8NotEqualTo(String value) {
+            return notEqualTo(remark8, value);
         }
 
-        public Criteria andFreightPayerEqualTo(String value) {
-            this.addCriterion("freight_payer =", value, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8GreaterThan(String value) {
+            return greaterThan(remark8, value);
         }
 
-        public Criteria andFreightPayerNotEqualTo(String value) {
-            this.addCriterion("freight_payer <>", value, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark8, value);
         }
 
-        public Criteria andFreightPayerGreaterThan(String value) {
-            this.addCriterion("freight_payer >", value, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8LessThan(String value) {
+            return lessThan(remark8, value);
         }
 
-        public Criteria andFreightPayerGreaterThanOrEqualTo(String value) {
-            this.addCriterion("freight_payer >=", value, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark8, value);
         }
 
-        public Criteria andFreightPayerLessThan(String value) {
-            this.addCriterion("freight_payer <", value, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8Like(String value) {
+            return like(remark8, value);
         }
 
-        public Criteria andFreightPayerLessThanOrEqualTo(String value) {
-            this.addCriterion("freight_payer <=", value, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8NotLike(String value) {
+            return notLike(remark8, value);
         }
 
-        public Criteria andFreightPayerLike(String value) {
-            this.addCriterion("freight_payer like", value, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8In(List<String> values) {
+            return in(remark8, values);
         }
 
-        public Criteria andFreightPayerNotLike(String value) {
-            this.addCriterion("freight_payer not like", value, "freightPayer");
-            return (Criteria)this;
-        }        public Criteria andFreightPayerIn(List<String> values) {
-            this.addCriterion("freight_payer in", values, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8NotIn(List<String> values) {
+            return notIn(remark8, values);
         }
 
-        public Criteria andFreightPayerNotIn(List<String> values) {
-            this.addCriterion("freight_payer not in", values, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8Between(String value1, String value2) {
+            return between(remark8, value1, value2);
         }
 
-        public Criteria andFreightPayerBetween(String value1, String value2) {
-            this.addCriterion("freight_payer between", value1, value2, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark8NotBetween(String value1, String value2) {
+            return notBetween(remark8, value1, value2);
         }
-
-        public Criteria andFreightPayerNotBetween(String value1, String value2) {
-            this.addCriterion("freight_payer not between", value1, value2, "freightPayer");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderIsNull() {
+            return isNull(sortOrder);
         }
 
-        public Criteria andHasShowcaseIsNull() {
-            this.addCriterion("has_showcase is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderIsNotNull() {
+            return isNotNull(sortOrder);
         }
 
-        public Criteria andHasShowcaseIsNotNull() {
-            this.addCriterion("has_showcase is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderEqualTo(Long value) {
+            return equalTo(sortOrder, value);
         }
 
-        public Criteria andHasShowcaseEqualTo(String value) {
-            this.addCriterion("has_showcase =", value, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderNotEqualTo(Long value) {
+            return notEqualTo(sortOrder, value);
         }
 
-        public Criteria andHasShowcaseNotEqualTo(String value) {
-            this.addCriterion("has_showcase <>", value, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderGreaterThan(Long value) {
+            return greaterThan(sortOrder, value);
         }
 
-        public Criteria andHasShowcaseGreaterThan(String value) {
-            this.addCriterion("has_showcase >", value, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(sortOrder, value);
         }
 
-        public Criteria andHasShowcaseGreaterThanOrEqualTo(String value) {
-            this.addCriterion("has_showcase >=", value, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderLessThan(Long value) {
+            return lessThan(sortOrder, value);
         }
 
-        public Criteria andHasShowcaseLessThan(String value) {
-            this.addCriterion("has_showcase <", value, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(sortOrder, value);
         }
 
-        public Criteria andHasShowcaseLessThanOrEqualTo(String value) {
-            this.addCriterion("has_showcase <=", value, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderIn(List<Long> values) {
+            return in(sortOrder, values);
         }
 
-        public Criteria andHasShowcaseLike(String value) {
-            this.addCriterion("has_showcase like", value, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderNotIn(List<Long> values) {
+            return notIn(sortOrder, values);
         }
 
-        public Criteria andHasShowcaseNotLike(String value) {
-            this.addCriterion("has_showcase not like", value, "hasShowcase");
-            return (Criteria)this;
-        }        public Criteria andHasShowcaseIn(List<String> values) {
-            this.addCriterion("has_showcase in", values, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderBetween(Long value1, Long value2) {
+            return between(sortOrder, value1, value2);
         }
 
-        public Criteria andHasShowcaseNotIn(List<String> values) {
-            this.addCriterion("has_showcase not in", values, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSortOrderNotBetween(Long value1, Long value2) {
+            return notBetween(sortOrder, value1, value2);
         }
-
-        public Criteria andHasShowcaseBetween(String value1, String value2) {
-            this.addCriterion("has_showcase between", value1, value2, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10IsNull() {
+            return isNull(remark10);
         }
 
-        public Criteria andHasShowcaseNotBetween(String value1, String value2) {
-            this.addCriterion("has_showcase not between", value1, value2, "hasShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10IsNotNull() {
+            return isNotNull(remark10);
         }
 
-        public Criteria andModifiedIsNull() {
-            this.addCriterion("modified is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10EqualTo(String value) {
+            return equalTo(remark10, value);
         }
 
-        public Criteria andModifiedIsNotNull() {
-            this.addCriterion("modified is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10NotEqualTo(String value) {
+            return notEqualTo(remark10, value);
         }
 
-        public Criteria andModifiedEqualTo(Date value) {
-            this.addCriterion("modified =", value, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10GreaterThan(String value) {
+            return greaterThan(remark10, value);
         }
 
-        public Criteria andModifiedNotEqualTo(Date value) {
-            this.addCriterion("modified <>", value, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark10, value);
         }
 
-        public Criteria andModifiedGreaterThan(Date value) {
-            this.addCriterion("modified >", value, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10LessThan(String value) {
+            return lessThan(remark10, value);
         }
 
-        public Criteria andModifiedGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("modified >=", value, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark10, value);
         }
 
-        public Criteria andModifiedLessThan(Date value) {
-            this.addCriterion("modified <", value, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10Like(String value) {
+            return like(remark10, value);
         }
 
-        public Criteria andModifiedLessThanOrEqualTo(Date value) {
-            this.addCriterion("modified <=", value, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10NotLike(String value) {
+            return notLike(remark10, value);
         }
 
-        public Criteria andModifiedLike(String value) {
-            this.addCriterion("modified like", value, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10In(List<String> values) {
+            return in(remark10, values);
         }
 
-        public Criteria andModifiedNotLike(String value) {
-            this.addCriterion("modified not like", value, "modified");
-            return (Criteria)this;
-        }        public Criteria andModifiedIn(List<Date> values) {
-            this.addCriterion("modified in", values, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10NotIn(List<String> values) {
+            return notIn(remark10, values);
         }
 
-        public Criteria andModifiedNotIn(List<Date> values) {
-            this.addCriterion("modified not in", values, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10Between(String value1, String value2) {
+            return between(remark10, value1, value2);
         }
 
-        public Criteria andModifiedBetween(Date value1, Date value2) {
-            this.addCriterion("modified between", value1, value2, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark10NotBetween(String value1, String value2) {
+            return notBetween(remark10, value1, value2);
         }
-
-        public Criteria andModifiedNotBetween(Date value1, Date value2) {
-            this.addCriterion("modified not between", value1, value2, "modified");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5IsNull() {
+            return isNull(remark5);
         }
 
-        public Criteria andMarketIdIsNull() {
-            this.addCriterion("market_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5IsNotNull() {
+            return isNotNull(remark5);
         }
 
-        public Criteria andMarketIdIsNotNull() {
-            this.addCriterion("market_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5EqualTo(String value) {
+            return equalTo(remark5, value);
         }
 
-        public Criteria andMarketIdEqualTo(Long value) {
-            this.addCriterion("market_id =", value, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5NotEqualTo(String value) {
+            return notEqualTo(remark5, value);
         }
 
-        public Criteria andMarketIdNotEqualTo(Long value) {
-            this.addCriterion("market_id <>", value, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5GreaterThan(String value) {
+            return greaterThan(remark5, value);
         }
 
-        public Criteria andMarketIdGreaterThan(Long value) {
-            this.addCriterion("market_id >", value, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark5, value);
         }
 
-        public Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("market_id >=", value, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5LessThan(String value) {
+            return lessThan(remark5, value);
         }
 
-        public Criteria andMarketIdLessThan(Long value) {
-            this.addCriterion("market_id <", value, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark5, value);
         }
 
-        public Criteria andMarketIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("market_id <=", value, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5Like(String value) {
+            return like(remark5, value);
         }
 
-        public Criteria andMarketIdLike(String value) {
-            this.addCriterion("market_id like", value, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5NotLike(String value) {
+            return notLike(remark5, value);
         }
 
-        public Criteria andMarketIdNotLike(String value) {
-            this.addCriterion("market_id not like", value, "marketId");
-            return (Criteria)this;
-        }        public Criteria andMarketIdIn(List<Long> values) {
-            this.addCriterion("market_id in", values, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5In(List<String> values) {
+            return in(remark5, values);
         }
 
-        public Criteria andMarketIdNotIn(List<Long> values) {
-            this.addCriterion("market_id not in", values, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5NotIn(List<String> values) {
+            return notIn(remark5, values);
         }
 
-        public Criteria andMarketIdBetween(Long value1, Long value2) {
-            this.addCriterion("market_id between", value1, value2, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5Between(String value1, String value2) {
+            return between(remark5, value1, value2);
         }
 
-        public Criteria andMarketIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("market_id not between", value1, value2, "marketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark5NotBetween(String value1, String value2) {
+            return notBetween(remark5, value1, value2);
         }
-
-        public Criteria andMarketIsNull() {
-            this.addCriterion("market is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentIsNull() {
+            return isNull(isLightningConsignment);
         }
 
-        public Criteria andMarketIsNotNull() {
-            this.addCriterion("market is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentIsNotNull() {
+            return isNotNull(isLightningConsignment);
         }
 
-        public Criteria andMarketEqualTo(String value) {
-            this.addCriterion("market =", value, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentEqualTo(String value) {
+            return equalTo(isLightningConsignment, value);
         }
 
-        public Criteria andMarketNotEqualTo(String value) {
-            this.addCriterion("market <>", value, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentNotEqualTo(String value) {
+            return notEqualTo(isLightningConsignment, value);
         }
 
-        public Criteria andMarketGreaterThan(String value) {
-            this.addCriterion("market >", value, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentGreaterThan(String value) {
+            return greaterThan(isLightningConsignment, value);
         }
 
-        public Criteria andMarketGreaterThanOrEqualTo(String value) {
-            this.addCriterion("market >=", value, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(isLightningConsignment, value);
         }
 
-        public Criteria andMarketLessThan(String value) {
-            this.addCriterion("market <", value, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentLessThan(String value) {
+            return lessThan(isLightningConsignment, value);
         }
 
-        public Criteria andMarketLessThanOrEqualTo(String value) {
-            this.addCriterion("market <=", value, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(isLightningConsignment, value);
         }
 
-        public Criteria andMarketLike(String value) {
-            this.addCriterion("market like", value, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentLike(String value) {
+            return like(isLightningConsignment, value);
         }
 
-        public Criteria andMarketNotLike(String value) {
-            this.addCriterion("market not like", value, "market");
-            return (Criteria)this;
-        }        public Criteria andMarketIn(List<String> values) {
-            this.addCriterion("market in", values, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentNotLike(String value) {
+            return notLike(isLightningConsignment, value);
         }
 
-        public Criteria andMarketNotIn(List<String> values) {
-            this.addCriterion("market not in", values, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentIn(List<String> values) {
+            return in(isLightningConsignment, values);
         }
 
-        public Criteria andMarketBetween(String value1, String value2) {
-            this.addCriterion("market between", value1, value2, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentNotIn(List<String> values) {
+            return notIn(isLightningConsignment, values);
         }
 
-        public Criteria andMarketNotBetween(String value1, String value2) {
-            this.addCriterion("market not between", value1, value2, "market");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentBetween(String value1, String value2) {
+            return between(isLightningConsignment, value1, value2);
         }
 
-        public Criteria andParentMarketIdIsNull() {
-            this.addCriterion("parent_market_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsLightningConsignmentNotBetween(String value1, String value2) {
+            return notBetween(isLightningConsignment, value1, value2);
         }
-
-        public Criteria andParentMarketIdIsNotNull() {
-            this.addCriterion("parent_market_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleIsNull() {
+            return isNull(isSale);
         }
 
-        public Criteria andParentMarketIdEqualTo(Long value) {
-            this.addCriterion("parent_market_id =", value, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleIsNotNull() {
+            return isNotNull(isSale);
         }
 
-        public Criteria andParentMarketIdNotEqualTo(Long value) {
-            this.addCriterion("parent_market_id <>", value, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleEqualTo(Long value) {
+            return equalTo(isSale, value);
         }
 
-        public Criteria andParentMarketIdGreaterThan(Long value) {
-            this.addCriterion("parent_market_id >", value, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleNotEqualTo(Long value) {
+            return notEqualTo(isSale, value);
         }
 
-        public Criteria andParentMarketIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("parent_market_id >=", value, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleGreaterThan(Long value) {
+            return greaterThan(isSale, value);
         }
 
-        public Criteria andParentMarketIdLessThan(Long value) {
-            this.addCriterion("parent_market_id <", value, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(isSale, value);
         }
 
-        public Criteria andParentMarketIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("parent_market_id <=", value, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleLessThan(Long value) {
+            return lessThan(isSale, value);
         }
 
-        public Criteria andParentMarketIdLike(String value) {
-            this.addCriterion("parent_market_id like", value, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(isSale, value);
         }
 
-        public Criteria andParentMarketIdNotLike(String value) {
-            this.addCriterion("parent_market_id not like", value, "parentMarketId");
-            return (Criteria)this;
-        }        public Criteria andParentMarketIdIn(List<Long> values) {
-            this.addCriterion("parent_market_id in", values, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleIn(List<Long> values) {
+            return in(isSale, values);
         }
 
-        public Criteria andParentMarketIdNotIn(List<Long> values) {
-            this.addCriterion("parent_market_id not in", values, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleNotIn(List<Long> values) {
+            return notIn(isSale, values);
         }
 
-        public Criteria andParentMarketIdBetween(Long value1, Long value2) {
-            this.addCriterion("parent_market_id between", value1, value2, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleBetween(Long value1, Long value2) {
+            return between(isSale, value1, value2);
         }
 
-        public Criteria andParentMarketIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("parent_market_id not between", value1, value2, "parentMarketId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsSaleNotBetween(Long value1, Long value2) {
+            return notBetween(isSale, value1, value2);
         }
-
-        public Criteria andParentMarketNameIsNull() {
-            this.addCriterion("parent_market_name is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4IsNull() {
+            return isNull(remark4);
         }
 
-        public Criteria andParentMarketNameIsNotNull() {
-            this.addCriterion("parent_market_name is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4IsNotNull() {
+            return isNotNull(remark4);
         }
 
-        public Criteria andParentMarketNameEqualTo(String value) {
-            this.addCriterion("parent_market_name =", value, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4EqualTo(String value) {
+            return equalTo(remark4, value);
         }
 
-        public Criteria andParentMarketNameNotEqualTo(String value) {
-            this.addCriterion("parent_market_name <>", value, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4NotEqualTo(String value) {
+            return notEqualTo(remark4, value);
         }
 
-        public Criteria andParentMarketNameGreaterThan(String value) {
-            this.addCriterion("parent_market_name >", value, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4GreaterThan(String value) {
+            return greaterThan(remark4, value);
         }
 
-        public Criteria andParentMarketNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("parent_market_name >=", value, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark4, value);
         }
 
-        public Criteria andParentMarketNameLessThan(String value) {
-            this.addCriterion("parent_market_name <", value, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4LessThan(String value) {
+            return lessThan(remark4, value);
         }
 
-        public Criteria andParentMarketNameLessThanOrEqualTo(String value) {
-            this.addCriterion("parent_market_name <=", value, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark4, value);
         }
 
-        public Criteria andParentMarketNameLike(String value) {
-            this.addCriterion("parent_market_name like", value, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4Like(String value) {
+            return like(remark4, value);
         }
 
-        public Criteria andParentMarketNameNotLike(String value) {
-            this.addCriterion("parent_market_name not like", value, "parentMarketName");
-            return (Criteria)this;
-        }        public Criteria andParentMarketNameIn(List<String> values) {
-            this.addCriterion("parent_market_name in", values, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4NotLike(String value) {
+            return notLike(remark4, value);
         }
 
-        public Criteria andParentMarketNameNotIn(List<String> values) {
-            this.addCriterion("parent_market_name not in", values, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4In(List<String> values) {
+            return in(remark4, values);
         }
 
-        public Criteria andParentMarketNameBetween(String value1, String value2) {
-            this.addCriterion("parent_market_name between", value1, value2, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4NotIn(List<String> values) {
+            return notIn(remark4, values);
         }
 
-        public Criteria andParentMarketNameNotBetween(String value1, String value2) {
-            this.addCriterion("parent_market_name not between", value1, value2, "parentMarketName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4Between(String value1, String value2) {
+            return between(remark4, value1, value2);
         }
 
-        public Criteria andStoreNumIsNull() {
-            this.addCriterion("store_num is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark4NotBetween(String value1, String value2) {
+            return notBetween(remark4, value1, value2);
         }
-
-        public Criteria andStoreNumIsNotNull() {
-            this.addCriterion("store_num is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceIsNull() {
+            return isNull(isAdminSetPiPrice);
         }
 
-        public Criteria andStoreNumEqualTo(String value) {
-            this.addCriterion("store_num =", value, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceIsNotNull() {
+            return isNotNull(isAdminSetPiPrice);
         }
 
-        public Criteria andStoreNumNotEqualTo(String value) {
-            this.addCriterion("store_num <>", value, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceEqualTo(Integer value) {
+            return equalTo(isAdminSetPiPrice, value);
         }
 
-        public Criteria andStoreNumGreaterThan(String value) {
-            this.addCriterion("store_num >", value, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceNotEqualTo(Integer value) {
+            return notEqualTo(isAdminSetPiPrice, value);
         }
 
-        public Criteria andStoreNumGreaterThanOrEqualTo(String value) {
-            this.addCriterion("store_num >=", value, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceGreaterThan(Integer value) {
+            return greaterThan(isAdminSetPiPrice, value);
         }
 
-        public Criteria andStoreNumLessThan(String value) {
-            this.addCriterion("store_num <", value, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isAdminSetPiPrice, value);
         }
 
-        public Criteria andStoreNumLessThanOrEqualTo(String value) {
-            this.addCriterion("store_num <=", value, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceLessThan(Integer value) {
+            return lessThan(isAdminSetPiPrice, value);
         }
 
-        public Criteria andStoreNumLike(String value) {
-            this.addCriterion("store_num like", value, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isAdminSetPiPrice, value);
         }
 
-        public Criteria andStoreNumNotLike(String value) {
-            this.addCriterion("store_num not like", value, "storeNum");
-            return (Criteria)this;
-        }        public Criteria andStoreNumIn(List<String> values) {
-            this.addCriterion("store_num in", values, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceIn(List<Integer> values) {
+            return in(isAdminSetPiPrice, values);
         }
 
-        public Criteria andStoreNumNotIn(List<String> values) {
-            this.addCriterion("store_num not in", values, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceNotIn(List<Integer> values) {
+            return notIn(isAdminSetPiPrice, values);
         }
 
-        public Criteria andStoreNumBetween(String value1, String value2) {
-            this.addCriterion("store_num between", value1, value2, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceBetween(Integer value1, Integer value2) {
+            return between(isAdminSetPiPrice, value1, value2);
         }
 
-        public Criteria andStoreNumNotBetween(String value1, String value2) {
-            this.addCriterion("store_num not between", value1, value2, "storeNum");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAdminSetPiPriceNotBetween(Integer value1, Integer value2) {
+            return notBetween(isAdminSetPiPrice, value1, value2);
         }
-
-        public Criteria andIsTaobaoSynchronizationIsNull() {
-            this.addCriterion("is_taobao_synchronization is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7IsNull() {
+            return isNull(remark7);
         }
 
-        public Criteria andIsTaobaoSynchronizationIsNotNull() {
-            this.addCriterion("is_taobao_synchronization is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7IsNotNull() {
+            return isNotNull(remark7);
         }
 
-        public Criteria andIsTaobaoSynchronizationEqualTo(Long value) {
-            this.addCriterion("is_taobao_synchronization =", value, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7EqualTo(String value) {
+            return equalTo(remark7, value);
         }
 
-        public Criteria andIsTaobaoSynchronizationNotEqualTo(Long value) {
-            this.addCriterion("is_taobao_synchronization <>", value, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7NotEqualTo(String value) {
+            return notEqualTo(remark7, value);
         }
 
-        public Criteria andIsTaobaoSynchronizationGreaterThan(Long value) {
-            this.addCriterion("is_taobao_synchronization >", value, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7GreaterThan(String value) {
+            return greaterThan(remark7, value);
         }
 
-        public Criteria andIsTaobaoSynchronizationGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("is_taobao_synchronization >=", value, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark7, value);
         }
 
-        public Criteria andIsTaobaoSynchronizationLessThan(Long value) {
-            this.addCriterion("is_taobao_synchronization <", value, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7LessThan(String value) {
+            return lessThan(remark7, value);
         }
 
-        public Criteria andIsTaobaoSynchronizationLessThanOrEqualTo(Long value) {
-            this.addCriterion("is_taobao_synchronization <=", value, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark7, value);
         }
 
-        public Criteria andIsTaobaoSynchronizationLike(String value) {
-            this.addCriterion("is_taobao_synchronization like", value, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7Like(String value) {
+            return like(remark7, value);
         }
 
-        public Criteria andIsTaobaoSynchronizationNotLike(String value) {
-            this.addCriterion("is_taobao_synchronization not like", value, "isTaobaoSynchronization");
-            return (Criteria)this;
-        }        public Criteria andIsTaobaoSynchronizationIn(List<Long> values) {
-            this.addCriterion("is_taobao_synchronization in", values, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7NotLike(String value) {
+            return notLike(remark7, value);
         }
 
-        public Criteria andIsTaobaoSynchronizationNotIn(List<Long> values) {
-            this.addCriterion("is_taobao_synchronization not in", values, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7In(List<String> values) {
+            return in(remark7, values);
         }
 
-        public Criteria andIsTaobaoSynchronizationBetween(Long value1, Long value2) {
-            this.addCriterion("is_taobao_synchronization between", value1, value2, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7NotIn(List<String> values) {
+            return notIn(remark7, values);
         }
 
-        public Criteria andIsTaobaoSynchronizationNotBetween(Long value1, Long value2) {
-            this.addCriterion("is_taobao_synchronization not between", value1, value2, "isTaobaoSynchronization");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7Between(String value1, String value2) {
+            return between(remark7, value1, value2);
         }
 
-        public Criteria andIsAkeyToUploadIsNull() {
-            this.addCriterion("is_akey_to_upload is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark7NotBetween(String value1, String value2) {
+            return notBetween(remark7, value1, value2);
         }
-
-        public Criteria andIsAkeyToUploadIsNotNull() {
-            this.addCriterion("is_akey_to_upload is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlIsNull() {
+            return isNull(detailUrl);
         }
 
-        public Criteria andIsAkeyToUploadEqualTo(Long value) {
-            this.addCriterion("is_akey_to_upload =", value, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlIsNotNull() {
+            return isNotNull(detailUrl);
         }
 
-        public Criteria andIsAkeyToUploadNotEqualTo(Long value) {
-            this.addCriterion("is_akey_to_upload <>", value, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlEqualTo(String value) {
+            return equalTo(detailUrl, value);
         }
 
-        public Criteria andIsAkeyToUploadGreaterThan(Long value) {
-            this.addCriterion("is_akey_to_upload >", value, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlNotEqualTo(String value) {
+            return notEqualTo(detailUrl, value);
         }
 
-        public Criteria andIsAkeyToUploadGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("is_akey_to_upload >=", value, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlGreaterThan(String value) {
+            return greaterThan(detailUrl, value);
         }
 
-        public Criteria andIsAkeyToUploadLessThan(Long value) {
-            this.addCriterion("is_akey_to_upload <", value, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(detailUrl, value);
         }
 
-        public Criteria andIsAkeyToUploadLessThanOrEqualTo(Long value) {
-            this.addCriterion("is_akey_to_upload <=", value, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlLessThan(String value) {
+            return lessThan(detailUrl, value);
         }
 
-        public Criteria andIsAkeyToUploadLike(String value) {
-            this.addCriterion("is_akey_to_upload like", value, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(detailUrl, value);
         }
 
-        public Criteria andIsAkeyToUploadNotLike(String value) {
-            this.addCriterion("is_akey_to_upload not like", value, "isAkeyToUpload");
-            return (Criteria)this;
-        }        public Criteria andIsAkeyToUploadIn(List<Long> values) {
-            this.addCriterion("is_akey_to_upload in", values, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlLike(String value) {
+            return like(detailUrl, value);
         }
 
-        public Criteria andIsAkeyToUploadNotIn(List<Long> values) {
-            this.addCriterion("is_akey_to_upload not in", values, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlNotLike(String value) {
+            return notLike(detailUrl, value);
         }
 
-        public Criteria andIsAkeyToUploadBetween(Long value1, Long value2) {
-            this.addCriterion("is_akey_to_upload between", value1, value2, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlIn(List<String> values) {
+            return in(detailUrl, values);
         }
 
-        public Criteria andIsAkeyToUploadNotBetween(Long value1, Long value2) {
-            this.addCriterion("is_akey_to_upload not between", value1, value2, "isAkeyToUpload");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlNotIn(List<String> values) {
+            return notIn(detailUrl, values);
         }
 
-        public Criteria andIsTradeIsNull() {
-            this.addCriterion("is_trade is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlBetween(String value1, String value2) {
+            return between(detailUrl, value1, value2);
         }
 
-        public Criteria andIsTradeIsNotNull() {
-            this.addCriterion("is_trade is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDetailUrlNotBetween(String value1, String value2) {
+            return notBetween(detailUrl, value1, value2);
         }
-
-        public Criteria andIsTradeEqualTo(Long value) {
-            this.addCriterion("is_trade =", value, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6IsNull() {
+            return isNull(remark6);
         }
 
-        public Criteria andIsTradeNotEqualTo(Long value) {
-            this.addCriterion("is_trade <>", value, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6IsNotNull() {
+            return isNotNull(remark6);
         }
 
-        public Criteria andIsTradeGreaterThan(Long value) {
-            this.addCriterion("is_trade >", value, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6EqualTo(String value) {
+            return equalTo(remark6, value);
         }
 
-        public Criteria andIsTradeGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("is_trade >=", value, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6NotEqualTo(String value) {
+            return notEqualTo(remark6, value);
         }
 
-        public Criteria andIsTradeLessThan(Long value) {
-            this.addCriterion("is_trade <", value, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6GreaterThan(String value) {
+            return greaterThan(remark6, value);
         }
 
-        public Criteria andIsTradeLessThanOrEqualTo(Long value) {
-            this.addCriterion("is_trade <=", value, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark6, value);
         }
 
-        public Criteria andIsTradeLike(String value) {
-            this.addCriterion("is_trade like", value, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6LessThan(String value) {
+            return lessThan(remark6, value);
         }
 
-        public Criteria andIsTradeNotLike(String value) {
-            this.addCriterion("is_trade not like", value, "isTrade");
-            return (Criteria)this;
-        }        public Criteria andIsTradeIn(List<Long> values) {
-            this.addCriterion("is_trade in", values, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark6, value);
         }
 
-        public Criteria andIsTradeNotIn(List<Long> values) {
-            this.addCriterion("is_trade not in", values, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6Like(String value) {
+            return like(remark6, value);
         }
 
-        public Criteria andIsTradeBetween(Long value1, Long value2) {
-            this.addCriterion("is_trade between", value1, value2, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6NotLike(String value) {
+            return notLike(remark6, value);
         }
 
-        public Criteria andIsTradeNotBetween(Long value1, Long value2) {
-            this.addCriterion("is_trade not between", value1, value2, "isTrade");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6In(List<String> values) {
+            return in(remark6, values);
         }
 
-        public Criteria andIsEfficaciousIsNull() {
-            this.addCriterion("is_efficacious is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6NotIn(List<String> values) {
+            return notIn(remark6, values);
         }
 
-        public Criteria andIsEfficaciousIsNotNull() {
-            this.addCriterion("is_efficacious is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6Between(String value1, String value2) {
+            return between(remark6, value1, value2);
         }
 
-        public Criteria andIsEfficaciousEqualTo(Long value) {
-            this.addCriterion("is_efficacious =", value, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark6NotBetween(String value1, String value2) {
+            return notBetween(remark6, value1, value2);
         }
-
-        public Criteria andIsEfficaciousNotEqualTo(Long value) {
-            this.addCriterion("is_efficacious <>", value, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumIsNull() {
+            return isNull(storeNum);
         }
 
-        public Criteria andIsEfficaciousGreaterThan(Long value) {
-            this.addCriterion("is_efficacious >", value, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumIsNotNull() {
+            return isNotNull(storeNum);
         }
 
-        public Criteria andIsEfficaciousGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("is_efficacious >=", value, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumEqualTo(String value) {
+            return equalTo(storeNum, value);
         }
 
-        public Criteria andIsEfficaciousLessThan(Long value) {
-            this.addCriterion("is_efficacious <", value, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumNotEqualTo(String value) {
+            return notEqualTo(storeNum, value);
         }
 
-        public Criteria andIsEfficaciousLessThanOrEqualTo(Long value) {
-            this.addCriterion("is_efficacious <=", value, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumGreaterThan(String value) {
+            return greaterThan(storeNum, value);
         }
 
-        public Criteria andIsEfficaciousLike(String value) {
-            this.addCriterion("is_efficacious like", value, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(storeNum, value);
         }
 
-        public Criteria andIsEfficaciousNotLike(String value) {
-            this.addCriterion("is_efficacious not like", value, "isEfficacious");
-            return (Criteria)this;
-        }        public Criteria andIsEfficaciousIn(List<Long> values) {
-            this.addCriterion("is_efficacious in", values, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumLessThan(String value) {
+            return lessThan(storeNum, value);
         }
 
-        public Criteria andIsEfficaciousNotIn(List<Long> values) {
-            this.addCriterion("is_efficacious not in", values, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(storeNum, value);
         }
 
-        public Criteria andIsEfficaciousBetween(Long value1, Long value2) {
-            this.addCriterion("is_efficacious between", value1, value2, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumLike(String value) {
+            return like(storeNum, value);
         }
 
-        public Criteria andIsEfficaciousNotBetween(Long value1, Long value2) {
-            this.addCriterion("is_efficacious not between", value1, value2, "isEfficacious");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumNotLike(String value) {
+            return notLike(storeNum, value);
         }
 
-        public Criteria andIsDownIsNull() {
-            this.addCriterion("is_down is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumIn(List<String> values) {
+            return in(storeNum, values);
         }
 
-        public Criteria andIsDownIsNotNull() {
-            this.addCriterion("is_down is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumNotIn(List<String> values) {
+            return notIn(storeNum, values);
         }
 
-        public Criteria andIsDownEqualTo(Long value) {
-            this.addCriterion("is_down =", value, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumBetween(String value1, String value2) {
+            return between(storeNum, value1, value2);
         }
 
-        public Criteria andIsDownNotEqualTo(Long value) {
-            this.addCriterion("is_down <>", value, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreNumNotBetween(String value1, String value2) {
+            return notBetween(storeNum, value1, value2);
         }
-
-        public Criteria andIsDownGreaterThan(Long value) {
-            this.addCriterion("is_down >", value, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1IsNull() {
+            return isNull(remark1);
         }
 
-        public Criteria andIsDownGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("is_down >=", value, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1IsNotNull() {
+            return isNotNull(remark1);
         }
 
-        public Criteria andIsDownLessThan(Long value) {
-            this.addCriterion("is_down <", value, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1EqualTo(String value) {
+            return equalTo(remark1, value);
         }
 
-        public Criteria andIsDownLessThanOrEqualTo(Long value) {
-            this.addCriterion("is_down <=", value, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1NotEqualTo(String value) {
+            return notEqualTo(remark1, value);
         }
 
-        public Criteria andIsDownLike(String value) {
-            this.addCriterion("is_down like", value, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1GreaterThan(String value) {
+            return greaterThan(remark1, value);
         }
 
-        public Criteria andIsDownNotLike(String value) {
-            this.addCriterion("is_down not like", value, "isDown");
-            return (Criteria)this;
-        }        public Criteria andIsDownIn(List<Long> values) {
-            this.addCriterion("is_down in", values, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark1, value);
         }
 
-        public Criteria andIsDownNotIn(List<Long> values) {
-            this.addCriterion("is_down not in", values, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1LessThan(String value) {
+            return lessThan(remark1, value);
         }
 
-        public Criteria andIsDownBetween(Long value1, Long value2) {
-            this.addCriterion("is_down between", value1, value2, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark1, value);
         }
 
-        public Criteria andIsDownNotBetween(Long value1, Long value2) {
-            this.addCriterion("is_down not between", value1, value2, "isDown");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1Like(String value) {
+            return like(remark1, value);
         }
 
-        public Criteria andStoreIdIsNull() {
-            this.addCriterion("store_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1NotLike(String value) {
+            return notLike(remark1, value);
         }
 
-        public Criteria andStoreIdIsNotNull() {
-            this.addCriterion("store_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1In(List<String> values) {
+            return in(remark1, values);
         }
 
-        public Criteria andStoreIdEqualTo(Long value) {
-            this.addCriterion("store_id =", value, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1NotIn(List<String> values) {
+            return notIn(remark1, values);
         }
 
-        public Criteria andStoreIdNotEqualTo(Long value) {
-            this.addCriterion("store_id <>", value, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1Between(String value1, String value2) {
+            return between(remark1, value1, value2);
         }
 
-        public Criteria andStoreIdGreaterThan(Long value) {
-            this.addCriterion("store_id >", value, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark1NotBetween(String value1, String value2) {
+            return notBetween(remark1, value1, value2);
         }
-
-        public Criteria andStoreIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("store_id >=", value, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3IsNull() {
+            return isNull(remark3);
         }
 
-        public Criteria andStoreIdLessThan(Long value) {
-            this.addCriterion("store_id <", value, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3IsNotNull() {
+            return isNotNull(remark3);
         }
 
-        public Criteria andStoreIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("store_id <=", value, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3EqualTo(String value) {
+            return equalTo(remark3, value);
         }
 
-        public Criteria andStoreIdLike(String value) {
-            this.addCriterion("store_id like", value, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3NotEqualTo(String value) {
+            return notEqualTo(remark3, value);
         }
 
-        public Criteria andStoreIdNotLike(String value) {
-            this.addCriterion("store_id not like", value, "storeId");
-            return (Criteria)this;
-        }        public Criteria andStoreIdIn(List<Long> values) {
-            this.addCriterion("store_id in", values, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3GreaterThan(String value) {
+            return greaterThan(remark3, value);
         }
 
-        public Criteria andStoreIdNotIn(List<Long> values) {
-            this.addCriterion("store_id not in", values, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark3, value);
         }
 
-        public Criteria andStoreIdBetween(Long value1, Long value2) {
-            this.addCriterion("store_id between", value1, value2, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3LessThan(String value) {
+            return lessThan(remark3, value);
         }
 
-        public Criteria andStoreIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("store_id not between", value1, value2, "storeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark3, value);
         }
 
-        public Criteria andClicksIsNull() {
-            this.addCriterion("clicks is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3Like(String value) {
+            return like(remark3, value);
         }
 
-        public Criteria andClicksIsNotNull() {
-            this.addCriterion("clicks is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3NotLike(String value) {
+            return notLike(remark3, value);
         }
 
-        public Criteria andClicksEqualTo(Long value) {
-            this.addCriterion("clicks =", value, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3In(List<String> values) {
+            return in(remark3, values);
         }
 
-        public Criteria andClicksNotEqualTo(Long value) {
-            this.addCriterion("clicks <>", value, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3NotIn(List<String> values) {
+            return notIn(remark3, values);
         }
 
-        public Criteria andClicksGreaterThan(Long value) {
-            this.addCriterion("clicks >", value, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3Between(String value1, String value2) {
+            return between(remark3, value1, value2);
         }
 
-        public Criteria andClicksGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("clicks >=", value, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark3NotBetween(String value1, String value2) {
+            return notBetween(remark3, value1, value2);
         }
-
-        public Criteria andClicksLessThan(Long value) {
-            this.addCriterion("clicks <", value, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidIsNull() {
+            return isNull(cid);
         }
 
-        public Criteria andClicksLessThanOrEqualTo(Long value) {
-            this.addCriterion("clicks <=", value, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidIsNotNull() {
+            return isNotNull(cid);
         }
 
-        public Criteria andClicksLike(String value) {
-            this.addCriterion("clicks like", value, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidEqualTo(Long value) {
+            return equalTo(cid, value);
         }
 
-        public Criteria andClicksNotLike(String value) {
-            this.addCriterion("clicks not like", value, "clicks");
-            return (Criteria)this;
-        }        public Criteria andClicksIn(List<Long> values) {
-            this.addCriterion("clicks in", values, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidNotEqualTo(Long value) {
+            return notEqualTo(cid, value);
         }
 
-        public Criteria andClicksNotIn(List<Long> values) {
-            this.addCriterion("clicks not in", values, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidGreaterThan(Long value) {
+            return greaterThan(cid, value);
         }
 
-        public Criteria andClicksBetween(Long value1, Long value2) {
-            this.addCriterion("clicks between", value1, value2, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(cid, value);
         }
 
-        public Criteria andClicksNotBetween(Long value1, Long value2) {
-            this.addCriterion("clicks not between", value1, value2, "clicks");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidLessThan(Long value) {
+            return lessThan(cid, value);
         }
 
-        public Criteria andIsClosedIsNull() {
-            this.addCriterion("is_closed is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(cid, value);
         }
 
-        public Criteria andIsClosedIsNotNull() {
-            this.addCriterion("is_closed is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidIn(List<Long> values) {
+            return in(cid, values);
         }
 
-        public Criteria andIsClosedEqualTo(Long value) {
-            this.addCriterion("is_closed =", value, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidNotIn(List<Long> values) {
+            return notIn(cid, values);
         }
 
-        public Criteria andIsClosedNotEqualTo(Long value) {
-            this.addCriterion("is_closed <>", value, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidBetween(Long value1, Long value2) {
+            return between(cid, value1, value2);
         }
 
-        public Criteria andIsClosedGreaterThan(Long value) {
-            this.addCriterion("is_closed >", value, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidNotBetween(Long value1, Long value2) {
+            return notBetween(cid, value1, value2);
         }
-
-        public Criteria andIsClosedGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("is_closed >=", value, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeIsNull() {
+            return isNull(listTime);
         }
 
-        public Criteria andIsClosedLessThan(Long value) {
-            this.addCriterion("is_closed <", value, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeIsNotNull() {
+            return isNotNull(listTime);
         }
 
-        public Criteria andIsClosedLessThanOrEqualTo(Long value) {
-            this.addCriterion("is_closed <=", value, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeEqualTo(Date value) {
+            return equalTo(listTime, value);
         }
 
-        public Criteria andIsClosedLike(String value) {
-            this.addCriterion("is_closed like", value, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeNotEqualTo(Date value) {
+            return notEqualTo(listTime, value);
         }
 
-        public Criteria andIsClosedNotLike(String value) {
-            this.addCriterion("is_closed not like", value, "isClosed");
-            return (Criteria)this;
-        }        public Criteria andIsClosedIn(List<Long> values) {
-            this.addCriterion("is_closed in", values, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeGreaterThan(Date value) {
+            return greaterThan(listTime, value);
         }
 
-        public Criteria andIsClosedNotIn(List<Long> values) {
-            this.addCriterion("is_closed not in", values, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(listTime, value);
         }
 
-        public Criteria andIsClosedBetween(Long value1, Long value2) {
-            this.addCriterion("is_closed between", value1, value2, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeLessThan(Date value) {
+            return lessThan(listTime, value);
         }
 
-        public Criteria andIsClosedNotBetween(Long value1, Long value2) {
-            this.addCriterion("is_closed not between", value1, value2, "isClosed");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(listTime, value);
         }
 
-        public Criteria andGoodsStatusIsNull() {
-            this.addCriterion("goods_status is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeIn(List<Date> values) {
+            return in(listTime, values);
         }
 
-        public Criteria andGoodsStatusIsNotNull() {
-            this.addCriterion("goods_status is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeNotIn(List<Date> values) {
+            return notIn(listTime, values);
         }
 
-        public Criteria andGoodsStatusEqualTo(Integer value) {
-            this.addCriterion("goods_status =", value, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeBetween(Date value1, Date value2) {
+            return between(listTime, value1, value2);
         }
 
-        public Criteria andGoodsStatusNotEqualTo(Integer value) {
-            this.addCriterion("goods_status <>", value, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andListTimeNotBetween(Date value1, Date value2) {
+            return notBetween(listTime, value1, value2);
         }
-
-        public Criteria andGoodsStatusGreaterThan(Integer value) {
-            this.addCriterion("goods_status >", value, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2IsNull() {
+            return isNull(remark2);
         }
 
-        public Criteria andGoodsStatusGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("goods_status >=", value, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2IsNotNull() {
+            return isNotNull(remark2);
         }
 
-        public Criteria andGoodsStatusLessThan(Integer value) {
-            this.addCriterion("goods_status <", value, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2EqualTo(String value) {
+            return equalTo(remark2, value);
         }
 
-        public Criteria andGoodsStatusLessThanOrEqualTo(Integer value) {
-            this.addCriterion("goods_status <=", value, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2NotEqualTo(String value) {
+            return notEqualTo(remark2, value);
         }
 
-        public Criteria andGoodsStatusLike(String value) {
-            this.addCriterion("goods_status like", value, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2GreaterThan(String value) {
+            return greaterThan(remark2, value);
         }
 
-        public Criteria andGoodsStatusNotLike(String value) {
-            this.addCriterion("goods_status not like", value, "goodsStatus");
-            return (Criteria)this;
-        }        public Criteria andGoodsStatusIn(List<Integer> values) {
-            this.addCriterion("goods_status in", values, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark2, value);
         }
 
-        public Criteria andGoodsStatusNotIn(List<Integer> values) {
-            this.addCriterion("goods_status not in", values, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2LessThan(String value) {
+            return lessThan(remark2, value);
         }
 
-        public Criteria andGoodsStatusBetween(Integer value1, Integer value2) {
-            this.addCriterion("goods_status between", value1, value2, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark2, value);
         }
 
-        public Criteria andGoodsStatusNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("goods_status not between", value1, value2, "goodsStatus");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2Like(String value) {
+            return like(remark2, value);
         }
 
-        public Criteria andGoodsNoIsNull() {
-            this.addCriterion("goods_no is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2NotLike(String value) {
+            return notLike(remark2, value);
         }
 
-        public Criteria andGoodsNoIsNotNull() {
-            this.addCriterion("goods_no is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2In(List<String> values) {
+            return in(remark2, values);
         }
 
-        public Criteria andGoodsNoEqualTo(String value) {
-            this.addCriterion("goods_no =", value, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2NotIn(List<String> values) {
+            return notIn(remark2, values);
         }
 
-        public Criteria andGoodsNoNotEqualTo(String value) {
-            this.addCriterion("goods_no <>", value, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2Between(String value1, String value2) {
+            return between(remark2, value1, value2);
         }
 
-        public Criteria andGoodsNoGreaterThan(String value) {
-            this.addCriterion("goods_no >", value, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRemark2NotBetween(String value1, String value2) {
+            return notBetween(remark2, value1, value2);
         }
-
-        public Criteria andGoodsNoGreaterThanOrEqualTo(String value) {
-            this.addCriterion("goods_no >=", value, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringIsNull() {
+            return isNull(priceString);
         }
 
-        public Criteria andGoodsNoLessThan(String value) {
-            this.addCriterion("goods_no <", value, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringIsNotNull() {
+            return isNotNull(priceString);
         }
 
-        public Criteria andGoodsNoLessThanOrEqualTo(String value) {
-            this.addCriterion("goods_no <=", value, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringEqualTo(String value) {
+            return equalTo(priceString, value);
         }
 
-        public Criteria andGoodsNoLike(String value) {
-            this.addCriterion("goods_no like", value, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringNotEqualTo(String value) {
+            return notEqualTo(priceString, value);
         }
 
-        public Criteria andGoodsNoNotLike(String value) {
-            this.addCriterion("goods_no not like", value, "goodsNo");
-            return (Criteria)this;
-        }        public Criteria andGoodsNoIn(List<String> values) {
-            this.addCriterion("goods_no in", values, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringGreaterThan(String value) {
+            return greaterThan(priceString, value);
         }
 
-        public Criteria andGoodsNoNotIn(List<String> values) {
-            this.addCriterion("goods_no not in", values, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(priceString, value);
         }
 
-        public Criteria andGoodsNoBetween(String value1, String value2) {
-            this.addCriterion("goods_no between", value1, value2, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringLessThan(String value) {
+            return lessThan(priceString, value);
         }
 
-        public Criteria andGoodsNoNotBetween(String value1, String value2) {
-            this.addCriterion("goods_no not between", value1, value2, "goodsNo");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(priceString, value);
         }
 
-        public Criteria andSortOrderIsNull() {
-            this.addCriterion("sort_order is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringLike(String value) {
+            return like(priceString, value);
         }
 
-        public Criteria andSortOrderIsNotNull() {
-            this.addCriterion("sort_order is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringNotLike(String value) {
+            return notLike(priceString, value);
         }
 
-        public Criteria andSortOrderEqualTo(Long value) {
-            this.addCriterion("sort_order =", value, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringIn(List<String> values) {
+            return in(priceString, values);
         }
 
-        public Criteria andSortOrderNotEqualTo(Long value) {
-            this.addCriterion("sort_order <>", value, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringNotIn(List<String> values) {
+            return notIn(priceString, values);
         }
 
-        public Criteria andSortOrderGreaterThan(Long value) {
-            this.addCriterion("sort_order >", value, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringBetween(String value1, String value2) {
+            return between(priceString, value1, value2);
         }
 
-        public Criteria andSortOrderGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("sort_order >=", value, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPriceStringNotBetween(String value1, String value2) {
+            return notBetween(priceString, value1, value2);
         }
-
-        public Criteria andSortOrderLessThan(Long value) {
-            this.addCriterion("sort_order <", value, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityIsNull() {
+            return isNull(city);
         }
 
-        public Criteria andSortOrderLessThanOrEqualTo(Long value) {
-            this.addCriterion("sort_order <=", value, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityIsNotNull() {
+            return isNotNull(city);
         }
 
-        public Criteria andSortOrderLike(String value) {
-            this.addCriterion("sort_order like", value, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityEqualTo(String value) {
+            return equalTo(city, value);
         }
 
-        public Criteria andSortOrderNotLike(String value) {
-            this.addCriterion("sort_order not like", value, "sortOrder");
-            return (Criteria)this;
-        }        public Criteria andSortOrderIn(List<Long> values) {
-            this.addCriterion("sort_order in", values, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityNotEqualTo(String value) {
+            return notEqualTo(city, value);
         }
 
-        public Criteria andSortOrderNotIn(List<Long> values) {
-            this.addCriterion("sort_order not in", values, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityGreaterThan(String value) {
+            return greaterThan(city, value);
         }
 
-        public Criteria andSortOrderBetween(Long value1, Long value2) {
-            this.addCriterion("sort_order between", value1, value2, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(city, value);
         }
 
-        public Criteria andSortOrderNotBetween(Long value1, Long value2) {
-            this.addCriterion("sort_order not between", value1, value2, "sortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityLessThan(String value) {
+            return lessThan(city, value);
         }
 
-        public Criteria andInStoreSortOrderIsNull() {
-            this.addCriterion("in_store_sort_order is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(city, value);
         }
 
-        public Criteria andInStoreSortOrderIsNotNull() {
-            this.addCriterion("in_store_sort_order is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityLike(String value) {
+            return like(city, value);
         }
 
-        public Criteria andInStoreSortOrderEqualTo(Long value) {
-            this.addCriterion("in_store_sort_order =", value, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityNotLike(String value) {
+            return notLike(city, value);
         }
 
-        public Criteria andInStoreSortOrderNotEqualTo(Long value) {
-            this.addCriterion("in_store_sort_order <>", value, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityIn(List<String> values) {
+            return in(city, values);
         }
 
-        public Criteria andInStoreSortOrderGreaterThan(Long value) {
-            this.addCriterion("in_store_sort_order >", value, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityNotIn(List<String> values) {
+            return notIn(city, values);
         }
 
-        public Criteria andInStoreSortOrderGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("in_store_sort_order >=", value, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityBetween(String value1, String value2) {
+            return between(city, value1, value2);
         }
 
-        public Criteria andInStoreSortOrderLessThan(Long value) {
-            this.addCriterion("in_store_sort_order <", value, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCityNotBetween(String value1, String value2) {
+            return notBetween(city, value1, value2);
         }
-
-        public Criteria andInStoreSortOrderLessThanOrEqualTo(Long value) {
-            this.addCriterion("in_store_sort_order <=", value, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdIsNull() {
+            return isNull(goodsId);
         }
 
-        public Criteria andInStoreSortOrderLike(String value) {
-            this.addCriterion("in_store_sort_order like", value, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdIsNotNull() {
+            return isNotNull(goodsId);
         }
 
-        public Criteria andInStoreSortOrderNotLike(String value) {
-            this.addCriterion("in_store_sort_order not like", value, "inStoreSortOrder");
-            return (Criteria)this;
-        }        public Criteria andInStoreSortOrderIn(List<Long> values) {
-            this.addCriterion("in_store_sort_order in", values, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdEqualTo(Long value) {
+            return equalTo(goodsId, value);
         }
 
-        public Criteria andInStoreSortOrderNotIn(List<Long> values) {
-            this.addCriterion("in_store_sort_order not in", values, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdNotEqualTo(Long value) {
+            return notEqualTo(goodsId, value);
         }
 
-        public Criteria andInStoreSortOrderBetween(Long value1, Long value2) {
-            this.addCriterion("in_store_sort_order between", value1, value2, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdGreaterThan(Long value) {
+            return greaterThan(goodsId, value);
         }
 
-        public Criteria andInStoreSortOrderNotBetween(Long value1, Long value2) {
-            this.addCriterion("in_store_sort_order not between", value1, value2, "inStoreSortOrder");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(goodsId, value);
         }
 
-        public Criteria andNumberTradableGoodsIsNull() {
-            this.addCriterion("number_tradable_goods is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdLessThan(Long value) {
+            return lessThan(goodsId, value);
         }
 
-        public Criteria andNumberTradableGoodsIsNotNull() {
-            this.addCriterion("number_tradable_goods is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(goodsId, value);
         }
 
-        public Criteria andNumberTradableGoodsEqualTo(Long value) {
-            this.addCriterion("number_tradable_goods =", value, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdIn(List<Long> values) {
+            return in(goodsId, values);
         }
 
-        public Criteria andNumberTradableGoodsNotEqualTo(Long value) {
-            this.addCriterion("number_tradable_goods <>", value, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdNotIn(List<Long> values) {
+            return notIn(goodsId, values);
         }
 
-        public Criteria andNumberTradableGoodsGreaterThan(Long value) {
-            this.addCriterion("number_tradable_goods >", value, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdBetween(Long value1, Long value2) {
+            return between(goodsId, value1, value2);
         }
 
-        public Criteria andNumberTradableGoodsGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("number_tradable_goods >=", value, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
+            return notBetween(goodsId, value1, value2);
         }
-
-        public Criteria andNumberTradableGoodsLessThan(Long value) {
-            this.addCriterion("number_tradable_goods <", value, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexIsNull() {
+            return isNull(titleIndex);
         }
 
-        public Criteria andNumberTradableGoodsLessThanOrEqualTo(Long value) {
-            this.addCriterion("number_tradable_goods <=", value, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexIsNotNull() {
+            return isNotNull(titleIndex);
         }
 
-        public Criteria andNumberTradableGoodsLike(String value) {
-            this.addCriterion("number_tradable_goods like", value, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexEqualTo(String value) {
+            return equalTo(titleIndex, value);
         }
 
-        public Criteria andNumberTradableGoodsNotLike(String value) {
-            this.addCriterion("number_tradable_goods not like", value, "numberTradableGoods");
-            return (Criteria)this;
-        }        public Criteria andNumberTradableGoodsIn(List<Long> values) {
-            this.addCriterion("number_tradable_goods in", values, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexNotEqualTo(String value) {
+            return notEqualTo(titleIndex, value);
         }
 
-        public Criteria andNumberTradableGoodsNotIn(List<Long> values) {
-            this.addCriterion("number_tradable_goods not in", values, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexGreaterThan(String value) {
+            return greaterThan(titleIndex, value);
         }
 
-        public Criteria andNumberTradableGoodsBetween(Long value1, Long value2) {
-            this.addCriterion("number_tradable_goods between", value1, value2, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(titleIndex, value);
         }
 
-        public Criteria andNumberTradableGoodsNotBetween(Long value1, Long value2) {
-            this.addCriterion("number_tradable_goods not between", value1, value2, "numberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexLessThan(String value) {
+            return lessThan(titleIndex, value);
         }
 
-        public Criteria andNotNumberTradableGoodsIsNull() {
-            this.addCriterion("not_number_tradable_goods is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(titleIndex, value);
         }
 
-        public Criteria andNotNumberTradableGoodsIsNotNull() {
-            this.addCriterion("not_number_tradable_goods is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexLike(String value) {
+            return like(titleIndex, value);
         }
 
-        public Criteria andNotNumberTradableGoodsEqualTo(Long value) {
-            this.addCriterion("not_number_tradable_goods =", value, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexNotLike(String value) {
+            return notLike(titleIndex, value);
         }
 
-        public Criteria andNotNumberTradableGoodsNotEqualTo(Long value) {
-            this.addCriterion("not_number_tradable_goods <>", value, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexIn(List<String> values) {
+            return in(titleIndex, values);
         }
 
-        public Criteria andNotNumberTradableGoodsGreaterThan(Long value) {
-            this.addCriterion("not_number_tradable_goods >", value, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexNotIn(List<String> values) {
+            return notIn(titleIndex, values);
         }
 
-        public Criteria andNotNumberTradableGoodsGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("not_number_tradable_goods >=", value, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexBetween(String value1, String value2) {
+            return between(titleIndex, value1, value2);
         }
 
-        public Criteria andNotNumberTradableGoodsLessThan(Long value) {
-            this.addCriterion("not_number_tradable_goods <", value, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIndexNotBetween(String value1, String value2) {
+            return notBetween(titleIndex, value1, value2);
         }
-
-        public Criteria andNotNumberTradableGoodsLessThanOrEqualTo(Long value) {
-            this.addCriterion("not_number_tradable_goods <=", value, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameIsNull() {
+            return isNull(upDataPackageName);
         }
 
-        public Criteria andNotNumberTradableGoodsLike(String value) {
-            this.addCriterion("not_number_tradable_goods like", value, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameIsNotNull() {
+            return isNotNull(upDataPackageName);
         }
 
-        public Criteria andNotNumberTradableGoodsNotLike(String value) {
-            this.addCriterion("not_number_tradable_goods not like", value, "notNumberTradableGoods");
-            return (Criteria)this;
-        }        public Criteria andNotNumberTradableGoodsIn(List<Long> values) {
-            this.addCriterion("not_number_tradable_goods in", values, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameEqualTo(String value) {
+            return equalTo(upDataPackageName, value);
         }
 
-        public Criteria andNotNumberTradableGoodsNotIn(List<Long> values) {
-            this.addCriterion("not_number_tradable_goods not in", values, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameNotEqualTo(String value) {
+            return notEqualTo(upDataPackageName, value);
         }
 
-        public Criteria andNotNumberTradableGoodsBetween(Long value1, Long value2) {
-            this.addCriterion("not_number_tradable_goods between", value1, value2, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameGreaterThan(String value) {
+            return greaterThan(upDataPackageName, value);
         }
 
-        public Criteria andNotNumberTradableGoodsNotBetween(Long value1, Long value2) {
-            this.addCriterion("not_number_tradable_goods not between", value1, value2, "notNumberTradableGoods");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(upDataPackageName, value);
         }
 
-        public Criteria andWebSiteIsNull() {
-            this.addCriterion("web_site is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameLessThan(String value) {
+            return lessThan(upDataPackageName, value);
         }
 
-        public Criteria andWebSiteIsNotNull() {
-            this.addCriterion("web_site is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(upDataPackageName, value);
         }
 
-        public Criteria andWebSiteEqualTo(String value) {
-            this.addCriterion("web_site =", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameLike(String value) {
+            return like(upDataPackageName, value);
         }
 
-        public Criteria andWebSiteNotEqualTo(String value) {
-            this.addCriterion("web_site <>", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameNotLike(String value) {
+            return notLike(upDataPackageName, value);
         }
 
-        public Criteria andWebSiteGreaterThan(String value) {
-            this.addCriterion("web_site >", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameIn(List<String> values) {
+            return in(upDataPackageName, values);
         }
 
-        public Criteria andWebSiteGreaterThanOrEqualTo(String value) {
-            this.addCriterion("web_site >=", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameNotIn(List<String> values) {
+            return notIn(upDataPackageName, values);
         }
 
-        public Criteria andWebSiteLessThan(String value) {
-            this.addCriterion("web_site <", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameBetween(String value1, String value2) {
+            return between(upDataPackageName, value1, value2);
         }
 
-        public Criteria andWebSiteLessThanOrEqualTo(String value) {
-            this.addCriterion("web_site <=", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageNameNotBetween(String value1, String value2) {
+            return notBetween(upDataPackageName, value1, value2);
         }
-
-        public Criteria andWebSiteLike(String value) {
-            this.addCriterion("web_site like", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIsNull() {
+            return isNull(title);
         }
 
-        public Criteria andWebSiteNotLike(String value) {
-            this.addCriterion("web_site not like", value, "webSite");
-            return (Criteria)this;
-        }        public Criteria andWebSiteIn(List<String> values) {
-            this.addCriterion("web_site in", values, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIsNotNull() {
+            return isNotNull(title);
         }
 
-        public Criteria andWebSiteNotIn(List<String> values) {
-            this.addCriterion("web_site not in", values, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleEqualTo(String value) {
+            return equalTo(title, value);
         }
 
-        public Criteria andWebSiteBetween(String value1, String value2) {
-            this.addCriterion("web_site between", value1, value2, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleNotEqualTo(String value) {
+            return notEqualTo(title, value);
         }
 
-        public Criteria andWebSiteNotBetween(String value1, String value2) {
-            this.addCriterion("web_site not between", value1, value2, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleGreaterThan(String value) {
+            return greaterThan(title, value);
         }
 
-        public Criteria andRemark10IsNull() {
-            this.addCriterion("remark10 is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(title, value);
         }
 
-        public Criteria andRemark10IsNotNull() {
-            this.addCriterion("remark10 is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleLessThan(String value) {
+            return lessThan(title, value);
         }
 
-        public Criteria andRemark10EqualTo(String value) {
-            this.addCriterion("remark10 =", value, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(title, value);
         }
 
-        public Criteria andRemark10NotEqualTo(String value) {
-            this.addCriterion("remark10 <>", value, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleLike(String value) {
+            return like(title, value);
         }
 
-        public Criteria andRemark10GreaterThan(String value) {
-            this.addCriterion("remark10 >", value, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleNotLike(String value) {
+            return notLike(title, value);
         }
 
-        public Criteria andRemark10GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark10 >=", value, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleIn(List<String> values) {
+            return in(title, values);
         }
 
-        public Criteria andRemark10LessThan(String value) {
-            this.addCriterion("remark10 <", value, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleNotIn(List<String> values) {
+            return notIn(title, values);
         }
 
-        public Criteria andRemark10LessThanOrEqualTo(String value) {
-            this.addCriterion("remark10 <=", value, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleBetween(String value1, String value2) {
+            return between(title, value1, value2);
         }
 
-        public Criteria andRemark10Like(String value) {
-            this.addCriterion("remark10 like", value, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andTitleNotBetween(String value1, String value2) {
+            return notBetween(title, value1, value2);
         }
-
-        public Criteria andRemark10NotLike(String value) {
-            this.addCriterion("remark10 not like", value, "remark10");
-            return (Criteria)this;
-        }        public Criteria andRemark10In(List<String> values) {
-            this.addCriterion("remark10 in", values, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseIsNull() {
+            return isNull(hasShowcase);
         }
 
-        public Criteria andRemark10NotIn(List<String> values) {
-            this.addCriterion("remark10 not in", values, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseIsNotNull() {
+            return isNotNull(hasShowcase);
         }
 
-        public Criteria andRemark10Between(String value1, String value2) {
-            this.addCriterion("remark10 between", value1, value2, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseEqualTo(String value) {
+            return equalTo(hasShowcase, value);
         }
 
-        public Criteria andRemark10NotBetween(String value1, String value2) {
-            this.addCriterion("remark10 not between", value1, value2, "remark10");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseNotEqualTo(String value) {
+            return notEqualTo(hasShowcase, value);
         }
 
-        public Criteria andRemark9IsNull() {
-            this.addCriterion("remark9 is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseGreaterThan(String value) {
+            return greaterThan(hasShowcase, value);
         }
 
-        public Criteria andRemark9IsNotNull() {
-            this.addCriterion("remark9 is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(hasShowcase, value);
         }
 
-        public Criteria andRemark9EqualTo(String value) {
-            this.addCriterion("remark9 =", value, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseLessThan(String value) {
+            return lessThan(hasShowcase, value);
         }
 
-        public Criteria andRemark9NotEqualTo(String value) {
-            this.addCriterion("remark9 <>", value, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(hasShowcase, value);
         }
 
-        public Criteria andRemark9GreaterThan(String value) {
-            this.addCriterion("remark9 >", value, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseLike(String value) {
+            return like(hasShowcase, value);
         }
 
-        public Criteria andRemark9GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark9 >=", value, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseNotLike(String value) {
+            return notLike(hasShowcase, value);
         }
 
-        public Criteria andRemark9LessThan(String value) {
-            this.addCriterion("remark9 <", value, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseIn(List<String> values) {
+            return in(hasShowcase, values);
         }
 
-        public Criteria andRemark9LessThanOrEqualTo(String value) {
-            this.addCriterion("remark9 <=", value, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseNotIn(List<String> values) {
+            return notIn(hasShowcase, values);
         }
 
-        public Criteria andRemark9Like(String value) {
-            this.addCriterion("remark9 like", value, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseBetween(String value1, String value2) {
+            return between(hasShowcase, value1, value2);
         }
 
-        public Criteria andRemark9NotLike(String value) {
-            this.addCriterion("remark9 not like", value, "remark9");
-            return (Criteria)this;
-        }        public Criteria andRemark9In(List<String> values) {
-            this.addCriterion("remark9 in", values, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasShowcaseNotBetween(String value1, String value2) {
+            return notBetween(hasShowcase, value1, value2);
         }
-
-        public Criteria andRemark9NotIn(List<String> values) {
-            this.addCriterion("remark9 not in", values, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownIsNull() {
+            return isNull(isDown);
         }
 
-        public Criteria andRemark9Between(String value1, String value2) {
-            this.addCriterion("remark9 between", value1, value2, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownIsNotNull() {
+            return isNotNull(isDown);
         }
 
-        public Criteria andRemark9NotBetween(String value1, String value2) {
-            this.addCriterion("remark9 not between", value1, value2, "remark9");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownEqualTo(Long value) {
+            return equalTo(isDown, value);
         }
 
-        public Criteria andRemark8IsNull() {
-            this.addCriterion("remark8 is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownNotEqualTo(Long value) {
+            return notEqualTo(isDown, value);
         }
 
-        public Criteria andRemark8IsNotNull() {
-            this.addCriterion("remark8 is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownGreaterThan(Long value) {
+            return greaterThan(isDown, value);
         }
 
-        public Criteria andRemark8EqualTo(String value) {
-            this.addCriterion("remark8 =", value, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(isDown, value);
         }
 
-        public Criteria andRemark8NotEqualTo(String value) {
-            this.addCriterion("remark8 <>", value, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownLessThan(Long value) {
+            return lessThan(isDown, value);
         }
 
-        public Criteria andRemark8GreaterThan(String value) {
-            this.addCriterion("remark8 >", value, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(isDown, value);
         }
 
-        public Criteria andRemark8GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark8 >=", value, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownIn(List<Long> values) {
+            return in(isDown, values);
         }
 
-        public Criteria andRemark8LessThan(String value) {
-            this.addCriterion("remark8 <", value, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownNotIn(List<Long> values) {
+            return notIn(isDown, values);
         }
 
-        public Criteria andRemark8LessThanOrEqualTo(String value) {
-            this.addCriterion("remark8 <=", value, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownBetween(Long value1, Long value2) {
+            return between(isDown, value1, value2);
         }
 
-        public Criteria andRemark8Like(String value) {
-            this.addCriterion("remark8 like", value, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsDownNotBetween(Long value1, Long value2) {
+            return notBetween(isDown, value1, value2);
         }
-
-        public Criteria andRemark8NotLike(String value) {
-            this.addCriterion("remark8 not like", value, "remark8");
-            return (Criteria)this;
-        }        public Criteria andRemark8In(List<String> values) {
-            this.addCriterion("remark8 in", values, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateIsNull() {
+            return isNull(loadDate);
         }
 
-        public Criteria andRemark8NotIn(List<String> values) {
-            this.addCriterion("remark8 not in", values, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateIsNotNull() {
+            return isNotNull(loadDate);
         }
 
-        public Criteria andRemark8Between(String value1, String value2) {
-            this.addCriterion("remark8 between", value1, value2, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateEqualTo(Date value) {
+            return equalTo(loadDate, value);
         }
 
-        public Criteria andRemark8NotBetween(String value1, String value2) {
-            this.addCriterion("remark8 not between", value1, value2, "remark8");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateNotEqualTo(Date value) {
+            return notEqualTo(loadDate, value);
         }
 
-        public Criteria andRemark7IsNull() {
-            this.addCriterion("remark7 is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateGreaterThan(Date value) {
+            return greaterThan(loadDate, value);
         }
 
-        public Criteria andRemark7IsNotNull() {
-            this.addCriterion("remark7 is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(loadDate, value);
         }
 
-        public Criteria andRemark7EqualTo(String value) {
-            this.addCriterion("remark7 =", value, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateLessThan(Date value) {
+            return lessThan(loadDate, value);
         }
 
-        public Criteria andRemark7NotEqualTo(String value) {
-            this.addCriterion("remark7 <>", value, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(loadDate, value);
         }
 
-        public Criteria andRemark7GreaterThan(String value) {
-            this.addCriterion("remark7 >", value, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateIn(List<Date> values) {
+            return in(loadDate, values);
         }
 
-        public Criteria andRemark7GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark7 >=", value, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateNotIn(List<Date> values) {
+            return notIn(loadDate, values);
         }
 
-        public Criteria andRemark7LessThan(String value) {
-            this.addCriterion("remark7 <", value, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateBetween(Date value1, Date value2) {
+            return between(loadDate, value1, value2);
         }
 
-        public Criteria andRemark7LessThanOrEqualTo(String value) {
-            this.addCriterion("remark7 <=", value, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLoadDateNotBetween(Date value1, Date value2) {
+            return notBetween(loadDate, value1, value2);
         }
-
-        public Criteria andRemark7Like(String value) {
-            this.addCriterion("remark7 like", value, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinIsNull() {
+            return isNull(isXinpin);
         }
 
-        public Criteria andRemark7NotLike(String value) {
-            this.addCriterion("remark7 not like", value, "remark7");
-            return (Criteria)this;
-        }        public Criteria andRemark7In(List<String> values) {
-            this.addCriterion("remark7 in", values, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinIsNotNull() {
+            return isNotNull(isXinpin);
         }
 
-        public Criteria andRemark7NotIn(List<String> values) {
-            this.addCriterion("remark7 not in", values, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinEqualTo(String value) {
+            return equalTo(isXinpin, value);
         }
 
-        public Criteria andRemark7Between(String value1, String value2) {
-            this.addCriterion("remark7 between", value1, value2, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinNotEqualTo(String value) {
+            return notEqualTo(isXinpin, value);
         }
 
-        public Criteria andRemark7NotBetween(String value1, String value2) {
-            this.addCriterion("remark7 not between", value1, value2, "remark7");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinGreaterThan(String value) {
+            return greaterThan(isXinpin, value);
         }
 
-        public Criteria andRemark6IsNull() {
-            this.addCriterion("remark6 is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(isXinpin, value);
         }
 
-        public Criteria andRemark6IsNotNull() {
-            this.addCriterion("remark6 is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinLessThan(String value) {
+            return lessThan(isXinpin, value);
         }
 
-        public Criteria andRemark6EqualTo(String value) {
-            this.addCriterion("remark6 =", value, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(isXinpin, value);
         }
 
-        public Criteria andRemark6NotEqualTo(String value) {
-            this.addCriterion("remark6 <>", value, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinLike(String value) {
+            return like(isXinpin, value);
         }
 
-        public Criteria andRemark6GreaterThan(String value) {
-            this.addCriterion("remark6 >", value, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinNotLike(String value) {
+            return notLike(isXinpin, value);
         }
 
-        public Criteria andRemark6GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark6 >=", value, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinIn(List<String> values) {
+            return in(isXinpin, values);
         }
 
-        public Criteria andRemark6LessThan(String value) {
-            this.addCriterion("remark6 <", value, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinNotIn(List<String> values) {
+            return notIn(isXinpin, values);
         }
 
-        public Criteria andRemark6LessThanOrEqualTo(String value) {
-            this.addCriterion("remark6 <=", value, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinBetween(String value1, String value2) {
+            return between(isXinpin, value1, value2);
         }
 
-        public Criteria andRemark6Like(String value) {
-            this.addCriterion("remark6 like", value, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsXinpinNotBetween(String value1, String value2) {
+            return notBetween(isXinpin, value1, value2);
         }
-
-        public Criteria andRemark6NotLike(String value) {
-            this.addCriterion("remark6 not like", value, "remark6");
-            return (Criteria)this;
-        }        public Criteria andRemark6In(List<String> values) {
-            this.addCriterion("remark6 in", values, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdIsNull() {
+            return isNull(marketId);
         }
 
-        public Criteria andRemark6NotIn(List<String> values) {
-            this.addCriterion("remark6 not in", values, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdIsNotNull() {
+            return isNotNull(marketId);
         }
 
-        public Criteria andRemark6Between(String value1, String value2) {
-            this.addCriterion("remark6 between", value1, value2, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdEqualTo(Long value) {
+            return equalTo(marketId, value);
         }
 
-        public Criteria andRemark6NotBetween(String value1, String value2) {
-            this.addCriterion("remark6 not between", value1, value2, "remark6");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdNotEqualTo(Long value) {
+            return notEqualTo(marketId, value);
         }
 
-        public Criteria andRemark5IsNull() {
-            this.addCriterion("remark5 is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdGreaterThan(Long value) {
+            return greaterThan(marketId, value);
         }
 
-        public Criteria andRemark5IsNotNull() {
-            this.addCriterion("remark5 is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(marketId, value);
         }
 
-        public Criteria andRemark5EqualTo(String value) {
-            this.addCriterion("remark5 =", value, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdLessThan(Long value) {
+            return lessThan(marketId, value);
         }
 
-        public Criteria andRemark5NotEqualTo(String value) {
-            this.addCriterion("remark5 <>", value, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(marketId, value);
         }
 
-        public Criteria andRemark5GreaterThan(String value) {
-            this.addCriterion("remark5 >", value, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdIn(List<Long> values) {
+            return in(marketId, values);
         }
 
-        public Criteria andRemark5GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark5 >=", value, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdNotIn(List<Long> values) {
+            return notIn(marketId, values);
         }
 
-        public Criteria andRemark5LessThan(String value) {
-            this.addCriterion("remark5 <", value, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdBetween(Long value1, Long value2) {
+            return between(marketId, value1, value2);
         }
 
-        public Criteria andRemark5LessThanOrEqualTo(String value) {
-            this.addCriterion("remark5 <=", value, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andMarketIdNotBetween(Long value1, Long value2) {
+            return notBetween(marketId, value1, value2);
         }
-
-        public Criteria andRemark5Like(String value) {
-            this.addCriterion("remark5 like", value, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickIsNull() {
+            return isNull(nick);
         }
 
-        public Criteria andRemark5NotLike(String value) {
-            this.addCriterion("remark5 not like", value, "remark5");
-            return (Criteria)this;
-        }        public Criteria andRemark5In(List<String> values) {
-            this.addCriterion("remark5 in", values, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickIsNotNull() {
+            return isNotNull(nick);
         }
 
-        public Criteria andRemark5NotIn(List<String> values) {
-            this.addCriterion("remark5 not in", values, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickEqualTo(String value) {
+            return equalTo(nick, value);
         }
 
-        public Criteria andRemark5Between(String value1, String value2) {
-            this.addCriterion("remark5 between", value1, value2, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickNotEqualTo(String value) {
+            return notEqualTo(nick, value);
         }
 
-        public Criteria andRemark5NotBetween(String value1, String value2) {
-            this.addCriterion("remark5 not between", value1, value2, "remark5");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickGreaterThan(String value) {
+            return greaterThan(nick, value);
         }
 
-        public Criteria andRemark4IsNull() {
-            this.addCriterion("remark4 is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(nick, value);
         }
 
-        public Criteria andRemark4IsNotNull() {
-            this.addCriterion("remark4 is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickLessThan(String value) {
+            return lessThan(nick, value);
         }
 
-        public Criteria andRemark4EqualTo(String value) {
-            this.addCriterion("remark4 =", value, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(nick, value);
         }
 
-        public Criteria andRemark4NotEqualTo(String value) {
-            this.addCriterion("remark4 <>", value, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickLike(String value) {
+            return like(nick, value);
         }
 
-        public Criteria andRemark4GreaterThan(String value) {
-            this.addCriterion("remark4 >", value, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickNotLike(String value) {
+            return notLike(nick, value);
         }
 
-        public Criteria andRemark4GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark4 >=", value, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickIn(List<String> values) {
+            return in(nick, values);
         }
 
-        public Criteria andRemark4LessThan(String value) {
-            this.addCriterion("remark4 <", value, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickNotIn(List<String> values) {
+            return notIn(nick, values);
         }
 
-        public Criteria andRemark4LessThanOrEqualTo(String value) {
-            this.addCriterion("remark4 <=", value, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickBetween(String value1, String value2) {
+            return between(nick, value1, value2);
         }
 
-        public Criteria andRemark4Like(String value) {
-            this.addCriterion("remark4 like", value, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNickNotBetween(String value1, String value2) {
+            return notBetween(nick, value1, value2);
         }
-
-        public Criteria andRemark4NotLike(String value) {
-            this.addCriterion("remark4 not like", value, "remark4");
-            return (Criteria)this;
-        }        public Criteria andRemark4In(List<String> values) {
-            this.addCriterion("remark4 in", values, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteIsNull() {
+            return isNull(webSite);
         }
 
-        public Criteria andRemark4NotIn(List<String> values) {
-            this.addCriterion("remark4 not in", values, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteIsNotNull() {
+            return isNotNull(webSite);
         }
 
-        public Criteria andRemark4Between(String value1, String value2) {
-            this.addCriterion("remark4 between", value1, value2, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteEqualTo(String value) {
+            return equalTo(webSite, value);
         }
 
-        public Criteria andRemark4NotBetween(String value1, String value2) {
-            this.addCriterion("remark4 not between", value1, value2, "remark4");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteNotEqualTo(String value) {
+            return notEqualTo(webSite, value);
         }
 
-        public Criteria andRemark3IsNull() {
-            this.addCriterion("remark3 is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteGreaterThan(String value) {
+            return greaterThan(webSite, value);
         }
 
-        public Criteria andRemark3IsNotNull() {
-            this.addCriterion("remark3 is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(webSite, value);
         }
 
-        public Criteria andRemark3EqualTo(String value) {
-            this.addCriterion("remark3 =", value, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteLessThan(String value) {
+            return lessThan(webSite, value);
         }
 
-        public Criteria andRemark3NotEqualTo(String value) {
-            this.addCriterion("remark3 <>", value, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(webSite, value);
         }
 
-        public Criteria andRemark3GreaterThan(String value) {
-            this.addCriterion("remark3 >", value, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteLike(String value) {
+            return like(webSite, value);
         }
 
-        public Criteria andRemark3GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark3 >=", value, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteNotLike(String value) {
+            return notLike(webSite, value);
         }
 
-        public Criteria andRemark3LessThan(String value) {
-            this.addCriterion("remark3 <", value, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteIn(List<String> values) {
+            return in(webSite, values);
         }
 
-        public Criteria andRemark3LessThanOrEqualTo(String value) {
-            this.addCriterion("remark3 <=", value, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteNotIn(List<String> values) {
+            return notIn(webSite, values);
         }
 
-        public Criteria andRemark3Like(String value) {
-            this.addCriterion("remark3 like", value, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteBetween(String value1, String value2) {
+            return between(webSite, value1, value2);
         }
 
-        public Criteria andRemark3NotLike(String value) {
-            this.addCriterion("remark3 not like", value, "remark3");
-            return (Criteria)this;
-        }        public Criteria andRemark3In(List<String> values) {
-            this.addCriterion("remark3 in", values, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+            return notBetween(webSite, value1, value2);
         }
-
-        public Criteria andRemark3NotIn(List<String> values) {
-            this.addCriterion("remark3 not in", values, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadIsNull() {
+            return isNull(isAkeyToUpload);
         }
 
-        public Criteria andRemark3Between(String value1, String value2) {
-            this.addCriterion("remark3 between", value1, value2, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadIsNotNull() {
+            return isNotNull(isAkeyToUpload);
         }
 
-        public Criteria andRemark3NotBetween(String value1, String value2) {
-            this.addCriterion("remark3 not between", value1, value2, "remark3");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadEqualTo(Long value) {
+            return equalTo(isAkeyToUpload, value);
         }
 
-        public Criteria andRemark1IsNull() {
-            this.addCriterion("remark1 is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadNotEqualTo(Long value) {
+            return notEqualTo(isAkeyToUpload, value);
         }
 
-        public Criteria andRemark1IsNotNull() {
-            this.addCriterion("remark1 is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadGreaterThan(Long value) {
+            return greaterThan(isAkeyToUpload, value);
         }
 
-        public Criteria andRemark1EqualTo(String value) {
-            this.addCriterion("remark1 =", value, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(isAkeyToUpload, value);
         }
 
-        public Criteria andRemark1NotEqualTo(String value) {
-            this.addCriterion("remark1 <>", value, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadLessThan(Long value) {
+            return lessThan(isAkeyToUpload, value);
         }
 
-        public Criteria andRemark1GreaterThan(String value) {
-            this.addCriterion("remark1 >", value, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(isAkeyToUpload, value);
         }
 
-        public Criteria andRemark1GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark1 >=", value, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadIn(List<Long> values) {
+            return in(isAkeyToUpload, values);
         }
 
-        public Criteria andRemark1LessThan(String value) {
-            this.addCriterion("remark1 <", value, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadNotIn(List<Long> values) {
+            return notIn(isAkeyToUpload, values);
         }
 
-        public Criteria andRemark1LessThanOrEqualTo(String value) {
-            this.addCriterion("remark1 <=", value, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadBetween(Long value1, Long value2) {
+            return between(isAkeyToUpload, value1, value2);
         }
 
-        public Criteria andRemark1Like(String value) {
-            this.addCriterion("remark1 like", value, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsAkeyToUploadNotBetween(Long value1, Long value2) {
+            return notBetween(isAkeyToUpload, value1, value2);
         }
-
-        public Criteria andRemark1NotLike(String value) {
-            this.addCriterion("remark1 not like", value, "remark1");
-            return (Criteria)this;
-        }        public Criteria andRemark1In(List<String> values) {
-            this.addCriterion("remark1 in", values, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceIsNull() {
+            return isNull(piPrice);
         }
 
-        public Criteria andRemark1NotIn(List<String> values) {
-            this.addCriterion("remark1 not in", values, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceIsNotNull() {
+            return isNotNull(piPrice);
         }
 
-        public Criteria andRemark1Between(String value1, String value2) {
-            this.addCriterion("remark1 between", value1, value2, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceEqualTo(Long value) {
+            return equalTo(piPrice, value);
         }
 
-        public Criteria andRemark1NotBetween(String value1, String value2) {
-            this.addCriterion("remark1 not between", value1, value2, "remark1");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceNotEqualTo(Long value) {
+            return notEqualTo(piPrice, value);
         }
 
-        public Criteria andRemark2IsNull() {
-            this.addCriterion("remark2 is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceGreaterThan(Long value) {
+            return greaterThan(piPrice, value);
         }
 
-        public Criteria andRemark2IsNotNull() {
-            this.addCriterion("remark2 is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(piPrice, value);
         }
 
-        public Criteria andRemark2EqualTo(String value) {
-            this.addCriterion("remark2 =", value, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceLessThan(Long value) {
+            return lessThan(piPrice, value);
         }
 
-        public Criteria andRemark2NotEqualTo(String value) {
-            this.addCriterion("remark2 <>", value, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(piPrice, value);
         }
 
-        public Criteria andRemark2GreaterThan(String value) {
-            this.addCriterion("remark2 >", value, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceIn(List<Long> values) {
+            return in(piPrice, values);
         }
 
-        public Criteria andRemark2GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark2 >=", value, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceNotIn(List<Long> values) {
+            return notIn(piPrice, values);
         }
 
-        public Criteria andRemark2LessThan(String value) {
-            this.addCriterion("remark2 <", value, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceBetween(Long value1, Long value2) {
+            return between(piPrice, value1, value2);
         }
 
-        public Criteria andRemark2LessThanOrEqualTo(String value) {
-            this.addCriterion("remark2 <=", value, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPiPriceNotBetween(Long value1, Long value2) {
+            return notBetween(piPrice, value1, value2);
         }
-
-        public Criteria andRemark2Like(String value) {
-            this.addCriterion("remark2 like", value, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsIsNull() {
+            return isNull(numberTradableGoods);
         }
 
-        public Criteria andRemark2NotLike(String value) {
-            this.addCriterion("remark2 not like", value, "remark2");
-            return (Criteria)this;
-        }        public Criteria andRemark2In(List<String> values) {
-            this.addCriterion("remark2 in", values, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsIsNotNull() {
+            return isNotNull(numberTradableGoods);
         }
 
-        public Criteria andRemark2NotIn(List<String> values) {
-            this.addCriterion("remark2 not in", values, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsEqualTo(Long value) {
+            return equalTo(numberTradableGoods, value);
         }
 
-        public Criteria andRemark2Between(String value1, String value2) {
-            this.addCriterion("remark2 between", value1, value2, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsNotEqualTo(Long value) {
+            return notEqualTo(numberTradableGoods, value);
         }
 
-        public Criteria andRemark2NotBetween(String value1, String value2) {
-            this.addCriterion("remark2 not between", value1, value2, "remark2");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsGreaterThan(Long value) {
+            return greaterThan(numberTradableGoods, value);
         }
 
-        public Criteria andLoadDateIsNull() {
-            this.addCriterion("load_date is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(numberTradableGoods, value);
         }
 
-        public Criteria andLoadDateIsNotNull() {
-            this.addCriterion("load_date is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsLessThan(Long value) {
+            return lessThan(numberTradableGoods, value);
         }
 
-        public Criteria andLoadDateEqualTo(Date value) {
-            this.addCriterion("load_date =", value, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(numberTradableGoods, value);
         }
 
-        public Criteria andLoadDateNotEqualTo(Date value) {
-            this.addCriterion("load_date <>", value, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsIn(List<Long> values) {
+            return in(numberTradableGoods, values);
         }
 
-        public Criteria andLoadDateGreaterThan(Date value) {
-            this.addCriterion("load_date >", value, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsNotIn(List<Long> values) {
+            return notIn(numberTradableGoods, values);
         }
 
-        public Criteria andLoadDateGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("load_date >=", value, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsBetween(Long value1, Long value2) {
+            return between(numberTradableGoods, value1, value2);
         }
 
-        public Criteria andLoadDateLessThan(Date value) {
-            this.addCriterion("load_date <", value, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andNumberTradableGoodsNotBetween(Long value1, Long value2) {
+            return notBetween(numberTradableGoods, value1, value2);
         }
-
-        public Criteria andLoadDateLessThanOrEqualTo(Date value) {
-            this.addCriterion("load_date <=", value, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeIsNull() {
+            return isNull(isTrade);
         }
 
-        public Criteria andLoadDateLike(String value) {
-            this.addCriterion("load_date like", value, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeIsNotNull() {
+            return isNotNull(isTrade);
         }
 
-        public Criteria andLoadDateNotLike(String value) {
-            this.addCriterion("load_date not like", value, "loadDate");
-            return (Criteria)this;
-        }        public Criteria andLoadDateIn(List<Date> values) {
-            this.addCriterion("load_date in", values, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeEqualTo(Long value) {
+            return equalTo(isTrade, value);
         }
 
-        public Criteria andLoadDateNotIn(List<Date> values) {
-            this.addCriterion("load_date not in", values, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeNotEqualTo(Long value) {
+            return notEqualTo(isTrade, value);
         }
 
-        public Criteria andLoadDateBetween(Date value1, Date value2) {
-            this.addCriterion("load_date between", value1, value2, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeGreaterThan(Long value) {
+            return greaterThan(isTrade, value);
         }
 
-        public Criteria andLoadDateNotBetween(Date value1, Date value2) {
-            this.addCriterion("load_date not between", value1, value2, "loadDate");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(isTrade, value);
         }
 
-        public Criteria andImAliwwIsNull() {
-            this.addCriterion("im_aliww is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeLessThan(Long value) {
+            return lessThan(isTrade, value);
         }
 
-        public Criteria andImAliwwIsNotNull() {
-            this.addCriterion("im_aliww is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(isTrade, value);
         }
 
-        public Criteria andImAliwwEqualTo(String value) {
-            this.addCriterion("im_aliww =", value, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeIn(List<Long> values) {
+            return in(isTrade, values);
         }
 
-        public Criteria andImAliwwNotEqualTo(String value) {
-            this.addCriterion("im_aliww <>", value, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeNotIn(List<Long> values) {
+            return notIn(isTrade, values);
         }
 
-        public Criteria andImAliwwGreaterThan(String value) {
-            this.addCriterion("im_aliww >", value, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeBetween(Long value1, Long value2) {
+            return between(isTrade, value1, value2);
         }
 
-        public Criteria andImAliwwGreaterThanOrEqualTo(String value) {
-            this.addCriterion("im_aliww >=", value, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsTradeNotBetween(Long value1, Long value2) {
+            return notBetween(isTrade, value1, value2);
         }
-
-        public Criteria andImAliwwLessThan(String value) {
-            this.addCriterion("im_aliww <", value, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvIsNull() {
+            return isNull(prov);
         }
 
-        public Criteria andImAliwwLessThanOrEqualTo(String value) {
-            this.addCriterion("im_aliww <=", value, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvIsNotNull() {
+            return isNotNull(prov);
         }
 
-        public Criteria andImAliwwLike(String value) {
-            this.addCriterion("im_aliww like", value, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvEqualTo(String value) {
+            return equalTo(prov, value);
         }
 
-        public Criteria andImAliwwNotLike(String value) {
-            this.addCriterion("im_aliww not like", value, "imAliww");
-            return (Criteria)this;
-        }        public Criteria andImAliwwIn(List<String> values) {
-            this.addCriterion("im_aliww in", values, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvNotEqualTo(String value) {
+            return notEqualTo(prov, value);
         }
 
-        public Criteria andImAliwwNotIn(List<String> values) {
-            this.addCriterion("im_aliww not in", values, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvGreaterThan(String value) {
+            return greaterThan(prov, value);
         }
 
-        public Criteria andImAliwwBetween(String value1, String value2) {
-            this.addCriterion("im_aliww between", value1, value2, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(prov, value);
         }
 
-        public Criteria andImAliwwNotBetween(String value1, String value2) {
-            this.addCriterion("im_aliww not between", value1, value2, "imAliww");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvLessThan(String value) {
+            return lessThan(prov, value);
         }
 
-        public Criteria andGoodsServicesIsNull() {
-            this.addCriterion("goods_services is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(prov, value);
         }
 
-        public Criteria andGoodsServicesIsNotNull() {
-            this.addCriterion("goods_services is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvLike(String value) {
+            return like(prov, value);
         }
 
-        public Criteria andGoodsServicesEqualTo(String value) {
-            this.addCriterion("goods_services =", value, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvNotLike(String value) {
+            return notLike(prov, value);
         }
 
-        public Criteria andGoodsServicesNotEqualTo(String value) {
-            this.addCriterion("goods_services <>", value, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvIn(List<String> values) {
+            return in(prov, values);
         }
 
-        public Criteria andGoodsServicesGreaterThan(String value) {
-            this.addCriterion("goods_services >", value, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvNotIn(List<String> values) {
+            return notIn(prov, values);
         }
 
-        public Criteria andGoodsServicesGreaterThanOrEqualTo(String value) {
-            this.addCriterion("goods_services >=", value, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvBetween(String value1, String value2) {
+            return between(prov, value1, value2);
         }
 
-        public Criteria andGoodsServicesLessThan(String value) {
-            this.addCriterion("goods_services <", value, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andProvNotBetween(String value1, String value2) {
+            return notBetween(prov, value1, value2);
         }
-
-        public Criteria andGoodsServicesLessThanOrEqualTo(String value) {
-            this.addCriterion("goods_services <=", value, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoIsNull() {
+            return isNull(goodsNo);
         }
 
-        public Criteria andGoodsServicesLike(String value) {
-            this.addCriterion("goods_services like", value, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoIsNotNull() {
+            return isNotNull(goodsNo);
         }
 
-        public Criteria andGoodsServicesNotLike(String value) {
-            this.addCriterion("goods_services not like", value, "goodsServices");
-            return (Criteria)this;
-        }        public Criteria andGoodsServicesIn(List<String> values) {
-            this.addCriterion("goods_services in", values, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoEqualTo(String value) {
+            return equalTo(goodsNo, value);
         }
 
-        public Criteria andGoodsServicesNotIn(List<String> values) {
-            this.addCriterion("goods_services not in", values, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoNotEqualTo(String value) {
+            return notEqualTo(goodsNo, value);
         }
 
-        public Criteria andGoodsServicesBetween(String value1, String value2) {
-            this.addCriterion("goods_services between", value1, value2, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoGreaterThan(String value) {
+            return greaterThan(goodsNo, value);
         }
 
-        public Criteria andGoodsServicesNotBetween(String value1, String value2) {
-            this.addCriterion("goods_services not between", value1, value2, "goodsServices");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(goodsNo, value);
         }
 
-        public Criteria andIsShowcaseIsNull() {
-            this.addCriterion("is_showcase is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoLessThan(String value) {
+            return lessThan(goodsNo, value);
         }
 
-        public Criteria andIsShowcaseIsNotNull() {
-            this.addCriterion("is_showcase is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(goodsNo, value);
         }
 
-        public Criteria andIsShowcaseEqualTo(Integer value) {
-            this.addCriterion("is_showcase =", value, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoLike(String value) {
+            return like(goodsNo, value);
         }
 
-        public Criteria andIsShowcaseNotEqualTo(Integer value) {
-            this.addCriterion("is_showcase <>", value, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoNotLike(String value) {
+            return notLike(goodsNo, value);
         }
 
-        public Criteria andIsShowcaseGreaterThan(Integer value) {
-            this.addCriterion("is_showcase >", value, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoIn(List<String> values) {
+            return in(goodsNo, values);
         }
 
-        public Criteria andIsShowcaseGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_showcase >=", value, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoNotIn(List<String> values) {
+            return notIn(goodsNo, values);
         }
 
-        public Criteria andIsShowcaseLessThan(Integer value) {
-            this.addCriterion("is_showcase <", value, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoBetween(String value1, String value2) {
+            return between(goodsNo, value1, value2);
         }
 
-        public Criteria andIsShowcaseLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_showcase <=", value, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsNoNotBetween(String value1, String value2) {
+            return notBetween(goodsNo, value1, value2);
         }
-
-        public Criteria andIsShowcaseLike(String value) {
-            this.addCriterion("is_showcase like", value, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderIsNull() {
+            return isNull(inStoreSortOrder);
         }
 
-        public Criteria andIsShowcaseNotLike(String value) {
-            this.addCriterion("is_showcase not like", value, "isShowcase");
-            return (Criteria)this;
-        }        public Criteria andIsShowcaseIn(List<Integer> values) {
-            this.addCriterion("is_showcase in", values, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderIsNotNull() {
+            return isNotNull(inStoreSortOrder);
         }
 
-        public Criteria andIsShowcaseNotIn(List<Integer> values) {
-            this.addCriterion("is_showcase not in", values, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderEqualTo(Long value) {
+            return equalTo(inStoreSortOrder, value);
         }
 
-        public Criteria andIsShowcaseBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_showcase between", value1, value2, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderNotEqualTo(Long value) {
+            return notEqualTo(inStoreSortOrder, value);
         }
 
-        public Criteria andIsShowcaseNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_showcase not between", value1, value2, "isShowcase");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderGreaterThan(Long value) {
+            return greaterThan(inStoreSortOrder, value);
         }
 
-        public Criteria andIsStandardIsNull() {
-            this.addCriterion("is_standard is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(inStoreSortOrder, value);
         }
 
-        public Criteria andIsStandardIsNotNull() {
-            this.addCriterion("is_standard is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderLessThan(Long value) {
+            return lessThan(inStoreSortOrder, value);
         }
 
-        public Criteria andIsStandardEqualTo(Integer value) {
-            this.addCriterion("is_standard =", value, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(inStoreSortOrder, value);
         }
 
-        public Criteria andIsStandardNotEqualTo(Integer value) {
-            this.addCriterion("is_standard <>", value, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderIn(List<Long> values) {
+            return in(inStoreSortOrder, values);
         }
 
-        public Criteria andIsStandardGreaterThan(Integer value) {
-            this.addCriterion("is_standard >", value, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderNotIn(List<Long> values) {
+            return notIn(inStoreSortOrder, values);
         }
 
-        public Criteria andIsStandardGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_standard >=", value, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderBetween(Long value1, Long value2) {
+            return between(inStoreSortOrder, value1, value2);
         }
 
-        public Criteria andIsStandardLessThan(Integer value) {
-            this.addCriterion("is_standard <", value, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andInStoreSortOrderNotBetween(Long value1, Long value2) {
+            return notBetween(inStoreSortOrder, value1, value2);
         }
-
-        public Criteria andIsStandardLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_standard <=", value, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeIsNull() {
+            return isNull(soldOutTime);
         }
 
-        public Criteria andIsStandardLike(String value) {
-            this.addCriterion("is_standard like", value, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeIsNotNull() {
+            return isNotNull(soldOutTime);
         }
 
-        public Criteria andIsStandardNotLike(String value) {
-            this.addCriterion("is_standard not like", value, "isStandard");
-            return (Criteria)this;
-        }        public Criteria andIsStandardIn(List<Integer> values) {
-            this.addCriterion("is_standard in", values, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeEqualTo(Date value) {
+            return equalTo(soldOutTime, value);
         }
 
-        public Criteria andIsStandardNotIn(List<Integer> values) {
-            this.addCriterion("is_standard not in", values, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeNotEqualTo(Date value) {
+            return notEqualTo(soldOutTime, value);
         }
 
-        public Criteria andIsStandardBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_standard between", value1, value2, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeGreaterThan(Date value) {
+            return greaterThan(soldOutTime, value);
         }
 
-        public Criteria andIsStandardNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_standard not between", value1, value2, "isStandard");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(soldOutTime, value);
         }
 
-        public Criteria andTitleIndexIsNull() {
-            this.addCriterion("title_index is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeLessThan(Date value) {
+            return lessThan(soldOutTime, value);
         }
 
-        public Criteria andTitleIndexIsNotNull() {
-            this.addCriterion("title_index is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(soldOutTime, value);
         }
 
-        public Criteria andTitleIndexEqualTo(String value) {
-            this.addCriterion("title_index =", value, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeIn(List<Date> values) {
+            return in(soldOutTime, values);
         }
 
-        public Criteria andTitleIndexNotEqualTo(String value) {
-            this.addCriterion("title_index <>", value, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeNotIn(List<Date> values) {
+            return notIn(soldOutTime, values);
         }
 
-        public Criteria andTitleIndexGreaterThan(String value) {
-            this.addCriterion("title_index >", value, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeBetween(Date value1, Date value2) {
+            return between(soldOutTime, value1, value2);
         }
 
-        public Criteria andTitleIndexGreaterThanOrEqualTo(String value) {
-            this.addCriterion("title_index >=", value, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andSoldOutTimeNotBetween(Date value1, Date value2) {
+            return notBetween(soldOutTime, value1, value2);
         }
-
-        public Criteria andTitleIndexLessThan(String value) {
-            this.addCriterion("title_index <", value, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlIsNull() {
+            return isNull(upDataPackageUrl);
         }
 
-        public Criteria andTitleIndexLessThanOrEqualTo(String value) {
-            this.addCriterion("title_index <=", value, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlIsNotNull() {
+            return isNotNull(upDataPackageUrl);
         }
 
-        public Criteria andTitleIndexLike(String value) {
-            this.addCriterion("title_index like", value, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlEqualTo(String value) {
+            return equalTo(upDataPackageUrl, value);
         }
 
-        public Criteria andTitleIndexNotLike(String value) {
-            this.addCriterion("title_index not like", value, "titleIndex");
-            return (Criteria)this;
-        }        public Criteria andTitleIndexIn(List<String> values) {
-            this.addCriterion("title_index in", values, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlNotEqualTo(String value) {
+            return notEqualTo(upDataPackageUrl, value);
         }
 
-        public Criteria andTitleIndexNotIn(List<String> values) {
-            this.addCriterion("title_index not in", values, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlGreaterThan(String value) {
+            return greaterThan(upDataPackageUrl, value);
         }
 
-        public Criteria andTitleIndexBetween(String value1, String value2) {
-            this.addCriterion("title_index between", value1, value2, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(upDataPackageUrl, value);
         }
 
-        public Criteria andTitleIndexNotBetween(String value1, String value2) {
-            this.addCriterion("title_index not between", value1, value2, "titleIndex");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlLessThan(String value) {
+            return lessThan(upDataPackageUrl, value);
         }
 
-        public Criteria andIsAdminSetPiPriceIsNull() {
-            this.addCriterion("is_admin_set_pi_price is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(upDataPackageUrl, value);
         }
 
-        public Criteria andIsAdminSetPiPriceIsNotNull() {
-            this.addCriterion("is_admin_set_pi_price is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlLike(String value) {
+            return like(upDataPackageUrl, value);
         }
 
-        public Criteria andIsAdminSetPiPriceEqualTo(Integer value) {
-            this.addCriterion("is_admin_set_pi_price =", value, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlNotLike(String value) {
+            return notLike(upDataPackageUrl, value);
         }
 
-        public Criteria andIsAdminSetPiPriceNotEqualTo(Integer value) {
-            this.addCriterion("is_admin_set_pi_price <>", value, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlIn(List<String> values) {
+            return in(upDataPackageUrl, values);
         }
 
-        public Criteria andIsAdminSetPiPriceGreaterThan(Integer value) {
-            this.addCriterion("is_admin_set_pi_price >", value, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlNotIn(List<String> values) {
+            return notIn(upDataPackageUrl, values);
         }
 
-        public Criteria andIsAdminSetPiPriceGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_admin_set_pi_price >=", value, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlBetween(String value1, String value2) {
+            return between(upDataPackageUrl, value1, value2);
         }
 
-        public Criteria andIsAdminSetPiPriceLessThan(Integer value) {
-            this.addCriterion("is_admin_set_pi_price <", value, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andUpDataPackageUrlNotBetween(String value1, String value2) {
+            return notBetween(upDataPackageUrl, value1, value2);
         }
-
-        public Criteria andIsAdminSetPiPriceLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_admin_set_pi_price <=", value, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdIsNull() {
+            return isNull(modeTopTypeId);
         }
 
-        public Criteria andIsAdminSetPiPriceLike(String value) {
-            this.addCriterion("is_admin_set_pi_price like", value, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdIsNotNull() {
+            return isNotNull(modeTopTypeId);
         }
 
-        public Criteria andIsAdminSetPiPriceNotLike(String value) {
-            this.addCriterion("is_admin_set_pi_price not like", value, "isAdminSetPiPrice");
-            return (Criteria)this;
-        }        public Criteria andIsAdminSetPiPriceIn(List<Integer> values) {
-            this.addCriterion("is_admin_set_pi_price in", values, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdEqualTo(Long value) {
+            return equalTo(modeTopTypeId, value);
         }
 
-        public Criteria andIsAdminSetPiPriceNotIn(List<Integer> values) {
-            this.addCriterion("is_admin_set_pi_price not in", values, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdNotEqualTo(Long value) {
+            return notEqualTo(modeTopTypeId, value);
         }
 
-        public Criteria andIsAdminSetPiPriceBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_admin_set_pi_price between", value1, value2, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdGreaterThan(Long value) {
+            return greaterThan(modeTopTypeId, value);
         }
 
-        public Criteria andIsAdminSetPiPriceNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_admin_set_pi_price not between", value1, value2, "isAdminSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(modeTopTypeId, value);
         }
 
-        public Criteria andIsUserSetPiPriceIsNull() {
-            this.addCriterion("is_user_set_pi_price is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdLessThan(Long value) {
+            return lessThan(modeTopTypeId, value);
         }
 
-        public Criteria andIsUserSetPiPriceIsNotNull() {
-            this.addCriterion("is_user_set_pi_price is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(modeTopTypeId, value);
         }
 
-        public Criteria andIsUserSetPiPriceEqualTo(Integer value) {
-            this.addCriterion("is_user_set_pi_price =", value, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdIn(List<Long> values) {
+            return in(modeTopTypeId, values);
         }
 
-        public Criteria andIsUserSetPiPriceNotEqualTo(Integer value) {
-            this.addCriterion("is_user_set_pi_price <>", value, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdNotIn(List<Long> values) {
+            return notIn(modeTopTypeId, values);
         }
 
-        public Criteria andIsUserSetPiPriceGreaterThan(Integer value) {
-            this.addCriterion("is_user_set_pi_price >", value, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdBetween(Long value1, Long value2) {
+            return between(modeTopTypeId, value1, value2);
         }
 
-        public Criteria andIsUserSetPiPriceGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_user_set_pi_price >=", value, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andModeTopTypeIdNotBetween(Long value1, Long value2) {
+            return notBetween(modeTopTypeId, value1, value2);
         }
-
-        public Criteria andIsUserSetPiPriceLessThan(Integer value) {
-            this.addCriterion("is_user_set_pi_price <", value, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceIsNull() {
+            return isNull(isUserSetPiPrice);
         }
 
-        public Criteria andIsUserSetPiPriceLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_user_set_pi_price <=", value, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceIsNotNull() {
+            return isNotNull(isUserSetPiPrice);
         }
 
-        public Criteria andIsUserSetPiPriceLike(String value) {
-            this.addCriterion("is_user_set_pi_price like", value, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceEqualTo(Integer value) {
+            return equalTo(isUserSetPiPrice, value);
         }
 
-        public Criteria andIsUserSetPiPriceNotLike(String value) {
-            this.addCriterion("is_user_set_pi_price not like", value, "isUserSetPiPrice");
-            return (Criteria)this;
-        }        public Criteria andIsUserSetPiPriceIn(List<Integer> values) {
-            this.addCriterion("is_user_set_pi_price in", values, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceNotEqualTo(Integer value) {
+            return notEqualTo(isUserSetPiPrice, value);
         }
 
-        public Criteria andIsUserSetPiPriceNotIn(List<Integer> values) {
-            this.addCriterion("is_user_set_pi_price not in", values, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceGreaterThan(Integer value) {
+            return greaterThan(isUserSetPiPrice, value);
         }
 
-        public Criteria andIsUserSetPiPriceBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_user_set_pi_price between", value1, value2, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isUserSetPiPrice, value);
         }
 
-        public Criteria andIsUserSetPiPriceNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_user_set_pi_price not between", value1, value2, "isUserSetPiPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceLessThan(Integer value) {
+            return lessThan(isUserSetPiPrice, value);
         }
 
-        public Criteria andIsExcelImpIsNull() {
-            this.addCriterion("is_excel_imp is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isUserSetPiPrice, value);
         }
 
-        public Criteria andIsExcelImpIsNotNull() {
-            this.addCriterion("is_excel_imp is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceIn(List<Integer> values) {
+            return in(isUserSetPiPrice, values);
         }
 
-        public Criteria andIsExcelImpEqualTo(Integer value) {
-            this.addCriterion("is_excel_imp =", value, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceNotIn(List<Integer> values) {
+            return notIn(isUserSetPiPrice, values);
         }
 
-        public Criteria andIsExcelImpNotEqualTo(Integer value) {
-            this.addCriterion("is_excel_imp <>", value, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceBetween(Integer value1, Integer value2) {
+            return between(isUserSetPiPrice, value1, value2);
         }
 
-        public Criteria andIsExcelImpGreaterThan(Integer value) {
-            this.addCriterion("is_excel_imp >", value, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsUserSetPiPriceNotBetween(Integer value1, Integer value2) {
+            return notBetween(isUserSetPiPrice, value1, value2);
         }
-
-        public Criteria andIsExcelImpGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_excel_imp >=", value, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllIsNull() {
+            return isNull(cidAll);
         }
 
-        public Criteria andIsExcelImpLessThan(Integer value) {
-            this.addCriterion("is_excel_imp <", value, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllIsNotNull() {
+            return isNotNull(cidAll);
         }
 
-        public Criteria andIsExcelImpLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_excel_imp <=", value, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllEqualTo(String value) {
+            return equalTo(cidAll, value);
         }
 
-        public Criteria andIsExcelImpLike(String value) {
-            this.addCriterion("is_excel_imp like", value, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllNotEqualTo(String value) {
+            return notEqualTo(cidAll, value);
         }
 
-        public Criteria andIsExcelImpNotLike(String value) {
-            this.addCriterion("is_excel_imp not like", value, "isExcelImp");
-            return (Criteria)this;
-        }        public Criteria andIsExcelImpIn(List<Integer> values) {
-            this.addCriterion("is_excel_imp in", values, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllGreaterThan(String value) {
+            return greaterThan(cidAll, value);
         }
 
-        public Criteria andIsExcelImpNotIn(List<Integer> values) {
-            this.addCriterion("is_excel_imp not in", values, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(cidAll, value);
         }
 
-        public Criteria andIsExcelImpBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_excel_imp between", value1, value2, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllLessThan(String value) {
+            return lessThan(cidAll, value);
         }
 
-        public Criteria andIsExcelImpNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_excel_imp not between", value1, value2, "isExcelImp");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(cidAll, value);
         }
 
-        public Criteria andUpDataPackageNameIsNull() {
-            this.addCriterion("up_data_package_name is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllLike(String value) {
+            return like(cidAll, value);
         }
 
-        public Criteria andUpDataPackageNameIsNotNull() {
-            this.addCriterion("up_data_package_name is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllNotLike(String value) {
+            return notLike(cidAll, value);
         }
 
-        public Criteria andUpDataPackageNameEqualTo(String value) {
-            this.addCriterion("up_data_package_name =", value, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllIn(List<String> values) {
+            return in(cidAll, values);
         }
 
-        public Criteria andUpDataPackageNameNotEqualTo(String value) {
-            this.addCriterion("up_data_package_name <>", value, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllNotIn(List<String> values) {
+            return notIn(cidAll, values);
         }
 
-        public Criteria andUpDataPackageNameGreaterThan(String value) {
-            this.addCriterion("up_data_package_name >", value, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllBetween(String value1, String value2) {
+            return between(cidAll, value1, value2);
         }
 
-        public Criteria andUpDataPackageNameGreaterThanOrEqualTo(String value) {
-            this.addCriterion("up_data_package_name >=", value, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andCidAllNotBetween(String value1, String value2) {
+            return notBetween(cidAll, value1, value2);
         }
-
-        public Criteria andUpDataPackageNameLessThan(String value) {
-            this.addCriterion("up_data_package_name <", value, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountIsNull() {
+            return isNull(hasDiscount);
         }
 
-        public Criteria andUpDataPackageNameLessThanOrEqualTo(String value) {
-            this.addCriterion("up_data_package_name <=", value, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountIsNotNull() {
+            return isNotNull(hasDiscount);
         }
 
-        public Criteria andUpDataPackageNameLike(String value) {
-            this.addCriterion("up_data_package_name like", value, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountEqualTo(String value) {
+            return equalTo(hasDiscount, value);
         }
 
-        public Criteria andUpDataPackageNameNotLike(String value) {
-            this.addCriterion("up_data_package_name not like", value, "upDataPackageName");
-            return (Criteria)this;
-        }        public Criteria andUpDataPackageNameIn(List<String> values) {
-            this.addCriterion("up_data_package_name in", values, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountNotEqualTo(String value) {
+            return notEqualTo(hasDiscount, value);
         }
 
-        public Criteria andUpDataPackageNameNotIn(List<String> values) {
-            this.addCriterion("up_data_package_name not in", values, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountGreaterThan(String value) {
+            return greaterThan(hasDiscount, value);
         }
 
-        public Criteria andUpDataPackageNameBetween(String value1, String value2) {
-            this.addCriterion("up_data_package_name between", value1, value2, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(hasDiscount, value);
         }
 
-        public Criteria andUpDataPackageNameNotBetween(String value1, String value2) {
-            this.addCriterion("up_data_package_name not between", value1, value2, "upDataPackageName");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountLessThan(String value) {
+            return lessThan(hasDiscount, value);
         }
 
-        public Criteria andUpDataPackageUrlIsNull() {
-            this.addCriterion("up_data_package_url is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(hasDiscount, value);
         }
 
-        public Criteria andUpDataPackageUrlIsNotNull() {
-            this.addCriterion("up_data_package_url is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountLike(String value) {
+            return like(hasDiscount, value);
         }
 
-        public Criteria andUpDataPackageUrlEqualTo(String value) {
-            this.addCriterion("up_data_package_url =", value, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountNotLike(String value) {
+            return notLike(hasDiscount, value);
         }
 
-        public Criteria andUpDataPackageUrlNotEqualTo(String value) {
-            this.addCriterion("up_data_package_url <>", value, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountIn(List<String> values) {
+            return in(hasDiscount, values);
         }
 
-        public Criteria andUpDataPackageUrlGreaterThan(String value) {
-            this.addCriterion("up_data_package_url >", value, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountNotIn(List<String> values) {
+            return notIn(hasDiscount, values);
         }
 
-        public Criteria andUpDataPackageUrlGreaterThanOrEqualTo(String value) {
-            this.addCriterion("up_data_package_url >=", value, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountBetween(String value1, String value2) {
+            return between(hasDiscount, value1, value2);
         }
 
-        public Criteria andUpDataPackageUrlLessThan(String value) {
-            this.addCriterion("up_data_package_url <", value, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andHasDiscountNotBetween(String value1, String value2) {
+            return notBetween(hasDiscount, value1, value2);
         }
-
-        public Criteria andUpDataPackageUrlLessThanOrEqualTo(String value) {
-            this.addCriterion("up_data_package_url <=", value, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdIsNull() {
+            return isNull(parentMarketId);
         }
 
-        public Criteria andUpDataPackageUrlLike(String value) {
-            this.addCriterion("up_data_package_url like", value, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdIsNotNull() {
+            return isNotNull(parentMarketId);
         }
 
-        public Criteria andUpDataPackageUrlNotLike(String value) {
-            this.addCriterion("up_data_package_url not like", value, "upDataPackageUrl");
-            return (Criteria)this;
-        }        public Criteria andUpDataPackageUrlIn(List<String> values) {
-            this.addCriterion("up_data_package_url in", values, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdEqualTo(Long value) {
+            return equalTo(parentMarketId, value);
         }
 
-        public Criteria andUpDataPackageUrlNotIn(List<String> values) {
-            this.addCriterion("up_data_package_url not in", values, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdNotEqualTo(Long value) {
+            return notEqualTo(parentMarketId, value);
         }
 
-        public Criteria andUpDataPackageUrlBetween(String value1, String value2) {
-            this.addCriterion("up_data_package_url between", value1, value2, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdGreaterThan(Long value) {
+            return greaterThan(parentMarketId, value);
         }
 
-        public Criteria andUpDataPackageUrlNotBetween(String value1, String value2) {
-            this.addCriterion("up_data_package_url not between", value1, value2, "upDataPackageUrl");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(parentMarketId, value);
         }
 
-        public Criteria andIsDataPackageIsNull() {
-            this.addCriterion("is_data_package is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdLessThan(Long value) {
+            return lessThan(parentMarketId, value);
         }
 
-        public Criteria andIsDataPackageIsNotNull() {
-            this.addCriterion("is_data_package is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(parentMarketId, value);
         }
 
-        public Criteria andIsDataPackageEqualTo(Integer value) {
-            this.addCriterion("is_data_package =", value, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdIn(List<Long> values) {
+            return in(parentMarketId, values);
         }
 
-        public Criteria andIsDataPackageNotEqualTo(Integer value) {
-            this.addCriterion("is_data_package <>", value, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdNotIn(List<Long> values) {
+            return notIn(parentMarketId, values);
         }
 
-        public Criteria andIsDataPackageGreaterThan(Integer value) {
-            this.addCriterion("is_data_package >", value, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdBetween(Long value1, Long value2) {
+            return between(parentMarketId, value1, value2);
         }
 
-        public Criteria andIsDataPackageGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_data_package >=", value, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketIdNotBetween(Long value1, Long value2) {
+            return notBetween(parentMarketId, value1, value2);
         }
-
-        public Criteria andIsDataPackageLessThan(Integer value) {
-            this.addCriterion("is_data_package <", value, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeIsNull() {
+            return isNull(delistTime);
         }
 
-        public Criteria andIsDataPackageLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_data_package <=", value, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeIsNotNull() {
+            return isNotNull(delistTime);
         }
 
-        public Criteria andIsDataPackageLike(String value) {
-            this.addCriterion("is_data_package like", value, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeEqualTo(Date value) {
+            return equalTo(delistTime, value);
         }
 
-        public Criteria andIsDataPackageNotLike(String value) {
-            this.addCriterion("is_data_package not like", value, "isDataPackage");
-            return (Criteria)this;
-        }        public Criteria andIsDataPackageIn(List<Integer> values) {
-            this.addCriterion("is_data_package in", values, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeNotEqualTo(Date value) {
+            return notEqualTo(delistTime, value);
         }
 
-        public Criteria andIsDataPackageNotIn(List<Integer> values) {
-            this.addCriterion("is_data_package not in", values, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeGreaterThan(Date value) {
+            return greaterThan(delistTime, value);
         }
 
-        public Criteria andIsDataPackageBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_data_package between", value1, value2, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(delistTime, value);
         }
 
-        public Criteria andIsDataPackageNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_data_package not between", value1, value2, "isDataPackage");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeLessThan(Date value) {
+            return lessThan(delistTime, value);
         }
 
-        public Criteria andIsSetModeIsNull() {
-            this.addCriterion("is_set_mode is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(delistTime, value);
         }
 
-        public Criteria andIsSetModeIsNotNull() {
-            this.addCriterion("is_set_mode is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeIn(List<Date> values) {
+            return in(delistTime, values);
         }
 
-        public Criteria andIsSetModeEqualTo(Integer value) {
-            this.addCriterion("is_set_mode =", value, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeNotIn(List<Date> values) {
+            return notIn(delistTime, values);
         }
 
-        public Criteria andIsSetModeNotEqualTo(Integer value) {
-            this.addCriterion("is_set_mode <>", value, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeBetween(Date value1, Date value2) {
+            return between(delistTime, value1, value2);
         }
 
-        public Criteria andIsSetModeGreaterThan(Integer value) {
-            this.addCriterion("is_set_mode >", value, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andDelistTimeNotBetween(Date value1, Date value2) {
+            return notBetween(delistTime, value1, value2);
         }
-
-        public Criteria andIsSetModeGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_set_mode >=", value, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeIsNull() {
+            return isNull(postFee);
         }
 
-        public Criteria andIsSetModeLessThan(Integer value) {
-            this.addCriterion("is_set_mode <", value, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeIsNotNull() {
+            return isNotNull(postFee);
         }
 
-        public Criteria andIsSetModeLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_set_mode <=", value, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeEqualTo(String value) {
+            return equalTo(postFee, value);
         }
 
-        public Criteria andIsSetModeLike(String value) {
-            this.addCriterion("is_set_mode like", value, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeNotEqualTo(String value) {
+            return notEqualTo(postFee, value);
         }
 
-        public Criteria andIsSetModeNotLike(String value) {
-            this.addCriterion("is_set_mode not like", value, "isSetMode");
-            return (Criteria)this;
-        }        public Criteria andIsSetModeIn(List<Integer> values) {
-            this.addCriterion("is_set_mode in", values, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeGreaterThan(String value) {
+            return greaterThan(postFee, value);
         }
 
-        public Criteria andIsSetModeNotIn(List<Integer> values) {
-            this.addCriterion("is_set_mode not in", values, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(postFee, value);
         }
 
-        public Criteria andIsSetModeBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_set_mode between", value1, value2, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeLessThan(String value) {
+            return lessThan(postFee, value);
         }
 
-        public Criteria andIsSetModeNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_set_mode not between", value1, value2, "isSetMode");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(postFee, value);
         }
 
-        public Criteria andModeTopTypeIdIsNull() {
-            this.addCriterion("mode_top_type_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeLike(String value) {
+            return like(postFee, value);
         }
 
-        public Criteria andModeTopTypeIdIsNotNull() {
-            this.addCriterion("mode_top_type_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeNotLike(String value) {
+            return notLike(postFee, value);
         }
 
-        public Criteria andModeTopTypeIdEqualTo(Long value) {
-            this.addCriterion("mode_top_type_id =", value, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeIn(List<String> values) {
+            return in(postFee, values);
         }
 
-        public Criteria andModeTopTypeIdNotEqualTo(Long value) {
-            this.addCriterion("mode_top_type_id <>", value, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeNotIn(List<String> values) {
+            return notIn(postFee, values);
         }
 
-        public Criteria andModeTopTypeIdGreaterThan(Long value) {
-            this.addCriterion("mode_top_type_id >", value, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeBetween(String value1, String value2) {
+            return between(postFee, value1, value2);
         }
 
-        public Criteria andModeTopTypeIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("mode_top_type_id >=", value, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andPostFeeNotBetween(String value1, String value2) {
+            return notBetween(postFee, value1, value2);
         }
-
-        public Criteria andModeTopTypeIdLessThan(Long value) {
-            this.addCriterion("mode_top_type_id <", value, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdIsNull() {
+            return isNull(storeId);
         }
 
-        public Criteria andModeTopTypeIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("mode_top_type_id <=", value, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdIsNotNull() {
+            return isNotNull(storeId);
         }
 
-        public Criteria andModeTopTypeIdLike(String value) {
-            this.addCriterion("mode_top_type_id like", value, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdEqualTo(Long value) {
+            return equalTo(storeId, value);
         }
 
-        public Criteria andModeTopTypeIdNotLike(String value) {
-            this.addCriterion("mode_top_type_id not like", value, "modeTopTypeId");
-            return (Criteria)this;
-        }        public Criteria andModeTopTypeIdIn(List<Long> values) {
-            this.addCriterion("mode_top_type_id in", values, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdNotEqualTo(Long value) {
+            return notEqualTo(storeId, value);
         }
 
-        public Criteria andModeTopTypeIdNotIn(List<Long> values) {
-            this.addCriterion("mode_top_type_id not in", values, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdGreaterThan(Long value) {
+            return greaterThan(storeId, value);
         }
 
-        public Criteria andModeTopTypeIdBetween(Long value1, Long value2) {
-            this.addCriterion("mode_top_type_id between", value1, value2, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(storeId, value);
         }
 
-        public Criteria andModeTopTypeIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("mode_top_type_id not between", value1, value2, "modeTopTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdLessThan(Long value) {
+            return lessThan(storeId, value);
         }
 
-        public Criteria andModeTopTypeIsNull() {
-            this.addCriterion("mode_top_type is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(storeId, value);
         }
 
-        public Criteria andModeTopTypeIsNotNull() {
-            this.addCriterion("mode_top_type is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdIn(List<Long> values) {
+            return in(storeId, values);
         }
 
-        public Criteria andModeTopTypeEqualTo(String value) {
-            this.addCriterion("mode_top_type =", value, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdNotIn(List<Long> values) {
+            return notIn(storeId, values);
         }
 
-        public Criteria andModeTopTypeNotEqualTo(String value) {
-            this.addCriterion("mode_top_type <>", value, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdBetween(Long value1, Long value2) {
+            return between(storeId, value1, value2);
         }
 
-        public Criteria andModeTopTypeGreaterThan(String value) {
-            this.addCriterion("mode_top_type >", value, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStoreIdNotBetween(Long value1, Long value2) {
+            return notBetween(storeId, value1, value2);
         }
-
-        public Criteria andModeTopTypeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("mode_top_type >=", value, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardIsNull() {
+            return isNull(isStandard);
         }
 
-        public Criteria andModeTopTypeLessThan(String value) {
-            this.addCriterion("mode_top_type <", value, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardIsNotNull() {
+            return isNotNull(isStandard);
         }
 
-        public Criteria andModeTopTypeLessThanOrEqualTo(String value) {
-            this.addCriterion("mode_top_type <=", value, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardEqualTo(Integer value) {
+            return equalTo(isStandard, value);
         }
 
-        public Criteria andModeTopTypeLike(String value) {
-            this.addCriterion("mode_top_type like", value, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardNotEqualTo(Integer value) {
+            return notEqualTo(isStandard, value);
         }
 
-        public Criteria andModeTopTypeNotLike(String value) {
-            this.addCriterion("mode_top_type not like", value, "modeTopType");
-            return (Criteria)this;
-        }        public Criteria andModeTopTypeIn(List<String> values) {
-            this.addCriterion("mode_top_type in", values, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardGreaterThan(Integer value) {
+            return greaterThan(isStandard, value);
         }
 
-        public Criteria andModeTopTypeNotIn(List<String> values) {
-            this.addCriterion("mode_top_type not in", values, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isStandard, value);
         }
 
-        public Criteria andModeTopTypeBetween(String value1, String value2) {
-            this.addCriterion("mode_top_type between", value1, value2, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardLessThan(Integer value) {
+            return lessThan(isStandard, value);
         }
 
-        public Criteria andModeTopTypeNotBetween(String value1, String value2) {
-            this.addCriterion("mode_top_type not between", value1, value2, "modeTopType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isStandard, value);
         }
 
-        public Criteria andModeFirstTypeIdIsNull() {
-            this.addCriterion("mode_first_type_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardIn(List<Integer> values) {
+            return in(isStandard, values);
         }
 
-        public Criteria andModeFirstTypeIdIsNotNull() {
-            this.addCriterion("mode_first_type_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardNotIn(List<Integer> values) {
+            return notIn(isStandard, values);
         }
 
-        public Criteria andModeFirstTypeIdEqualTo(Long value) {
-            this.addCriterion("mode_first_type_id =", value, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardBetween(Integer value1, Integer value2) {
+            return between(isStandard, value1, value2);
         }
 
-        public Criteria andModeFirstTypeIdNotEqualTo(Long value) {
-            this.addCriterion("mode_first_type_id <>", value, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsStandardNotBetween(Integer value1, Integer value2) {
+            return notBetween(isStandard, value1, value2);
         }
-
-        public Criteria andModeFirstTypeIdGreaterThan(Long value) {
-            this.addCriterion("mode_first_type_id >", value, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedIsNull() {
+            return isNull(isClosed);
         }
 
-        public Criteria andModeFirstTypeIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("mode_first_type_id >=", value, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedIsNotNull() {
+            return isNotNull(isClosed);
         }
 
-        public Criteria andModeFirstTypeIdLessThan(Long value) {
-            this.addCriterion("mode_first_type_id <", value, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedEqualTo(Long value) {
+            return equalTo(isClosed, value);
         }
 
-        public Criteria andModeFirstTypeIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("mode_first_type_id <=", value, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedNotEqualTo(Long value) {
+            return notEqualTo(isClosed, value);
         }
 
-        public Criteria andModeFirstTypeIdLike(String value) {
-            this.addCriterion("mode_first_type_id like", value, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedGreaterThan(Long value) {
+            return greaterThan(isClosed, value);
         }
 
-        public Criteria andModeFirstTypeIdNotLike(String value) {
-            this.addCriterion("mode_first_type_id not like", value, "modeFirstTypeId");
-            return (Criteria)this;
-        }        public Criteria andModeFirstTypeIdIn(List<Long> values) {
-            this.addCriterion("mode_first_type_id in", values, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(isClosed, value);
         }
 
-        public Criteria andModeFirstTypeIdNotIn(List<Long> values) {
-            this.addCriterion("mode_first_type_id not in", values, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedLessThan(Long value) {
+            return lessThan(isClosed, value);
         }
 
-        public Criteria andModeFirstTypeIdBetween(Long value1, Long value2) {
-            this.addCriterion("mode_first_type_id between", value1, value2, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(isClosed, value);
         }
 
-        public Criteria andModeFirstTypeIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("mode_first_type_id not between", value1, value2, "modeFirstTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedIn(List<Long> values) {
+            return in(isClosed, values);
         }
 
-        public Criteria andModeFirstTypeIsNull() {
-            this.addCriterion("mode_first_type is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedNotIn(List<Long> values) {
+            return notIn(isClosed, values);
         }
 
-        public Criteria andModeFirstTypeIsNotNull() {
-            this.addCriterion("mode_first_type is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedBetween(Long value1, Long value2) {
+            return between(isClosed, value1, value2);
         }
 
-        public Criteria andModeFirstTypeEqualTo(String value) {
-            this.addCriterion("mode_first_type =", value, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsClosedNotBetween(Long value1, Long value2) {
+            return notBetween(isClosed, value1, value2);
         }
-
-        public Criteria andModeFirstTypeNotEqualTo(String value) {
-            this.addCriterion("mode_first_type <>", value, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusIsNull() {
+            return isNull(goodsStatus);
         }
 
-        public Criteria andModeFirstTypeGreaterThan(String value) {
-            this.addCriterion("mode_first_type >", value, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusIsNotNull() {
+            return isNotNull(goodsStatus);
         }
 
-        public Criteria andModeFirstTypeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("mode_first_type >=", value, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusEqualTo(Integer value) {
+            return equalTo(goodsStatus, value);
         }
 
-        public Criteria andModeFirstTypeLessThan(String value) {
-            this.addCriterion("mode_first_type <", value, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusNotEqualTo(Integer value) {
+            return notEqualTo(goodsStatus, value);
         }
 
-        public Criteria andModeFirstTypeLessThanOrEqualTo(String value) {
-            this.addCriterion("mode_first_type <=", value, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusGreaterThan(Integer value) {
+            return greaterThan(goodsStatus, value);
         }
 
-        public Criteria andModeFirstTypeLike(String value) {
-            this.addCriterion("mode_first_type like", value, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(goodsStatus, value);
         }
 
-        public Criteria andModeFirstTypeNotLike(String value) {
-            this.addCriterion("mode_first_type not like", value, "modeFirstType");
-            return (Criteria)this;
-        }        public Criteria andModeFirstTypeIn(List<String> values) {
-            this.addCriterion("mode_first_type in", values, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusLessThan(Integer value) {
+            return lessThan(goodsStatus, value);
         }
 
-        public Criteria andModeFirstTypeNotIn(List<String> values) {
-            this.addCriterion("mode_first_type not in", values, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(goodsStatus, value);
         }
 
-        public Criteria andModeFirstTypeBetween(String value1, String value2) {
-            this.addCriterion("mode_first_type between", value1, value2, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusIn(List<Integer> values) {
+            return in(goodsStatus, values);
         }
 
-        public Criteria andModeFirstTypeNotBetween(String value1, String value2) {
-            this.addCriterion("mode_first_type not between", value1, value2, "modeFirstType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusNotIn(List<Integer> values) {
+            return notIn(goodsStatus, values);
         }
 
-        public Criteria andModeSecondTypeIdIsNull() {
-            this.addCriterion("mode_second_type_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusBetween(Integer value1, Integer value2) {
+            return between(goodsStatus, value1, value2);
         }
 
-        public Criteria andModeSecondTypeIdIsNotNull() {
-            this.addCriterion("mode_second_type_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andGoodsStatusNotBetween(Integer value1, Integer value2) {
+            return notBetween(goodsStatus, value1, value2);
         }
-
-        public Criteria andModeSecondTypeIdEqualTo(Long value) {
-            this.addCriterion("mode_second_type_id =", value, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpIsNull() {
+            return isNull(isExcelImp);
         }
 
-        public Criteria andModeSecondTypeIdNotEqualTo(Long value) {
-            this.addCriterion("mode_second_type_id <>", value, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpIsNotNull() {
+            return isNotNull(isExcelImp);
         }
 
-        public Criteria andModeSecondTypeIdGreaterThan(Long value) {
-            this.addCriterion("mode_second_type_id >", value, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpEqualTo(Integer value) {
+            return equalTo(isExcelImp, value);
         }
 
-        public Criteria andModeSecondTypeIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("mode_second_type_id >=", value, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpNotEqualTo(Integer value) {
+            return notEqualTo(isExcelImp, value);
         }
 
-        public Criteria andModeSecondTypeIdLessThan(Long value) {
-            this.addCriterion("mode_second_type_id <", value, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpGreaterThan(Integer value) {
+            return greaterThan(isExcelImp, value);
         }
 
-        public Criteria andModeSecondTypeIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("mode_second_type_id <=", value, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isExcelImp, value);
         }
 
-        public Criteria andModeSecondTypeIdLike(String value) {
-            this.addCriterion("mode_second_type_id like", value, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpLessThan(Integer value) {
+            return lessThan(isExcelImp, value);
         }
 
-        public Criteria andModeSecondTypeIdNotLike(String value) {
-            this.addCriterion("mode_second_type_id not like", value, "modeSecondTypeId");
-            return (Criteria)this;
-        }        public Criteria andModeSecondTypeIdIn(List<Long> values) {
-            this.addCriterion("mode_second_type_id in", values, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isExcelImp, value);
         }
 
-        public Criteria andModeSecondTypeIdNotIn(List<Long> values) {
-            this.addCriterion("mode_second_type_id not in", values, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpIn(List<Integer> values) {
+            return in(isExcelImp, values);
         }
 
-        public Criteria andModeSecondTypeIdBetween(Long value1, Long value2) {
-            this.addCriterion("mode_second_type_id between", value1, value2, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpNotIn(List<Integer> values) {
+            return notIn(isExcelImp, values);
         }
 
-        public Criteria andModeSecondTypeIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("mode_second_type_id not between", value1, value2, "modeSecondTypeId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpBetween(Integer value1, Integer value2) {
+            return between(isExcelImp, value1, value2);
         }
 
-        public Criteria andModeSecondTypeIsNull() {
-            this.addCriterion("mode_second_type is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsExcelImpNotBetween(Integer value1, Integer value2) {
+            return notBetween(isExcelImp, value1, value2);
         }
-
-        public Criteria andModeSecondTypeIsNotNull() {
-            this.addCriterion("mode_second_type is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusIsNull() {
+            return isNull(stuffStatus);
         }
 
-        public Criteria andModeSecondTypeEqualTo(String value) {
-            this.addCriterion("mode_second_type =", value, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusIsNotNull() {
+            return isNotNull(stuffStatus);
         }
 
-        public Criteria andModeSecondTypeNotEqualTo(String value) {
-            this.addCriterion("mode_second_type <>", value, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusEqualTo(String value) {
+            return equalTo(stuffStatus, value);
         }
 
-        public Criteria andModeSecondTypeGreaterThan(String value) {
-            this.addCriterion("mode_second_type >", value, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusNotEqualTo(String value) {
+            return notEqualTo(stuffStatus, value);
         }
 
-        public Criteria andModeSecondTypeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("mode_second_type >=", value, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusGreaterThan(String value) {
+            return greaterThan(stuffStatus, value);
         }
 
-        public Criteria andModeSecondTypeLessThan(String value) {
-            this.addCriterion("mode_second_type <", value, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(stuffStatus, value);
         }
 
-        public Criteria andModeSecondTypeLessThanOrEqualTo(String value) {
-            this.addCriterion("mode_second_type <=", value, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusLessThan(String value) {
+            return lessThan(stuffStatus, value);
         }
 
-        public Criteria andModeSecondTypeLike(String value) {
-            this.addCriterion("mode_second_type like", value, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(stuffStatus, value);
         }
 
-        public Criteria andModeSecondTypeNotLike(String value) {
-            this.addCriterion("mode_second_type not like", value, "modeSecondType");
-            return (Criteria)this;
-        }        public Criteria andModeSecondTypeIn(List<String> values) {
-            this.addCriterion("mode_second_type in", values, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusLike(String value) {
+            return like(stuffStatus, value);
         }
 
-        public Criteria andModeSecondTypeNotIn(List<String> values) {
-            this.addCriterion("mode_second_type not in", values, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusNotLike(String value) {
+            return notLike(stuffStatus, value);
         }
 
-        public Criteria andModeSecondTypeBetween(String value1, String value2) {
-            this.addCriterion("mode_second_type between", value1, value2, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusIn(List<String> values) {
+            return in(stuffStatus, values);
         }
 
-        public Criteria andModeSecondTypeNotBetween(String value1, String value2) {
-            this.addCriterion("mode_second_type not between", value1, value2, "modeSecondType");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusNotIn(List<String> values) {
+            return notIn(stuffStatus, values);
         }
 
-        public Criteria andLastModifyTimeIsNull() {
-            this.addCriterion("last_modify_time is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusBetween(String value1, String value2) {
+            return between(stuffStatus, value1, value2);
         }
 
-        public Criteria andLastModifyTimeIsNotNull() {
-            this.addCriterion("last_modify_time is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andStuffStatusNotBetween(String value1, String value2) {
+            return notBetween(stuffStatus, value1, value2);
         }
-
-        public Criteria andLastModifyTimeEqualTo(Date value) {
-            this.addCriterion("last_modify_time =", value, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameIsNull() {
+            return isNull(parentMarketName);
         }
 
-        public Criteria andLastModifyTimeNotEqualTo(Date value) {
-            this.addCriterion("last_modify_time <>", value, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameIsNotNull() {
+            return isNotNull(parentMarketName);
         }
 
-        public Criteria andLastModifyTimeGreaterThan(Date value) {
-            this.addCriterion("last_modify_time >", value, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameEqualTo(String value) {
+            return equalTo(parentMarketName, value);
         }
 
-        public Criteria andLastModifyTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("last_modify_time >=", value, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameNotEqualTo(String value) {
+            return notEqualTo(parentMarketName, value);
         }
 
-        public Criteria andLastModifyTimeLessThan(Date value) {
-            this.addCriterion("last_modify_time <", value, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameGreaterThan(String value) {
+            return greaterThan(parentMarketName, value);
         }
 
-        public Criteria andLastModifyTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("last_modify_time <=", value, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(parentMarketName, value);
         }
 
-        public Criteria andLastModifyTimeLike(String value) {
-            this.addCriterion("last_modify_time like", value, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameLessThan(String value) {
+            return lessThan(parentMarketName, value);
         }
 
-        public Criteria andLastModifyTimeNotLike(String value) {
-            this.addCriterion("last_modify_time not like", value, "lastModifyTime");
-            return (Criteria)this;
-        }        public Criteria andLastModifyTimeIn(List<Date> values) {
-            this.addCriterion("last_modify_time in", values, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(parentMarketName, value);
         }
 
-        public Criteria andLastModifyTimeNotIn(List<Date> values) {
-            this.addCriterion("last_modify_time not in", values, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameLike(String value) {
+            return like(parentMarketName, value);
         }
 
-        public Criteria andLastModifyTimeBetween(Date value1, Date value2) {
-            this.addCriterion("last_modify_time between", value1, value2, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameNotLike(String value) {
+            return notLike(parentMarketName, value);
         }
 
-        public Criteria andLastModifyTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("last_modify_time not between", value1, value2, "lastModifyTime");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameIn(List<String> values) {
+            return in(parentMarketName, values);
         }
 
-        public Criteria andIsModTitleIsNull() {
-            this.addCriterion("is_mod_title is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameNotIn(List<String> values) {
+            return notIn(parentMarketName, values);
         }
 
-        public Criteria andIsModTitleIsNotNull() {
-            this.addCriterion("is_mod_title is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameBetween(String value1, String value2) {
+            return between(parentMarketName, value1, value2);
         }
 
-        public Criteria andIsModTitleEqualTo(Integer value) {
-            this.addCriterion("is_mod_title =", value, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andParentMarketNameNotBetween(String value1, String value2) {
+            return notBetween(parentMarketName, value1, value2);
         }
-
-        public Criteria andIsModTitleNotEqualTo(Integer value) {
-            this.addCriterion("is_mod_title <>", value, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeIsNull() {
+            return isNull(lastModifyTime);
         }
 
-        public Criteria andIsModTitleGreaterThan(Integer value) {
-            this.addCriterion("is_mod_title >", value, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeIsNotNull() {
+            return isNotNull(lastModifyTime);
         }
 
-        public Criteria andIsModTitleGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_mod_title >=", value, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeEqualTo(Date value) {
+            return equalTo(lastModifyTime, value);
         }
 
-        public Criteria andIsModTitleLessThan(Integer value) {
-            this.addCriterion("is_mod_title <", value, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeNotEqualTo(Date value) {
+            return notEqualTo(lastModifyTime, value);
         }
 
-        public Criteria andIsModTitleLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_mod_title <=", value, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeGreaterThan(Date value) {
+            return greaterThan(lastModifyTime, value);
         }
 
-        public Criteria andIsModTitleLike(String value) {
-            this.addCriterion("is_mod_title like", value, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(lastModifyTime, value);
         }
 
-        public Criteria andIsModTitleNotLike(String value) {
-            this.addCriterion("is_mod_title not like", value, "isModTitle");
-            return (Criteria)this;
-        }        public Criteria andIsModTitleIn(List<Integer> values) {
-            this.addCriterion("is_mod_title in", values, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeLessThan(Date value) {
+            return lessThan(lastModifyTime, value);
         }
 
-        public Criteria andIsModTitleNotIn(List<Integer> values) {
-            this.addCriterion("is_mod_title not in", values, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(lastModifyTime, value);
         }
 
-        public Criteria andIsModTitleBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_mod_title between", value1, value2, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeIn(List<Date> values) {
+            return in(lastModifyTime, values);
         }
 
-        public Criteria andIsModTitleNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_mod_title not between", value1, value2, "isModTitle");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeNotIn(List<Date> values) {
+            return notIn(lastModifyTime, values);
         }
 
-        public Criteria andIsModPriceIsNull() {
-            this.addCriterion("is_mod_price is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeBetween(Date value1, Date value2) {
+            return between(lastModifyTime, value1, value2);
         }
 
-        public Criteria andIsModPriceIsNotNull() {
-            this.addCriterion("is_mod_price is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andLastModifyTimeNotBetween(Date value1, Date value2) {
+            return notBetween(lastModifyTime, value1, value2);
         }
-
-        public Criteria andIsModPriceEqualTo(Integer value) {
-            this.addCriterion("is_mod_price =", value, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdIsNull() {
+            return isNull(relationLevelId);
         }
 
-        public Criteria andIsModPriceNotEqualTo(Integer value) {
-            this.addCriterion("is_mod_price <>", value, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdIsNotNull() {
+            return isNotNull(relationLevelId);
         }
 
-        public Criteria andIsModPriceGreaterThan(Integer value) {
-            this.addCriterion("is_mod_price >", value, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdEqualTo(Long value) {
+            return equalTo(relationLevelId, value);
         }
 
-        public Criteria andIsModPriceGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_mod_price >=", value, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdNotEqualTo(Long value) {
+            return notEqualTo(relationLevelId, value);
         }
 
-        public Criteria andIsModPriceLessThan(Integer value) {
-            this.addCriterion("is_mod_price <", value, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdGreaterThan(Long value) {
+            return greaterThan(relationLevelId, value);
         }
 
-        public Criteria andIsModPriceLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_mod_price <=", value, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(relationLevelId, value);
         }
 
-        public Criteria andIsModPriceLike(String value) {
-            this.addCriterion("is_mod_price like", value, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdLessThan(Long value) {
+            return lessThan(relationLevelId, value);
         }
 
-        public Criteria andIsModPriceNotLike(String value) {
-            this.addCriterion("is_mod_price not like", value, "isModPrice");
-            return (Criteria)this;
-        }        public Criteria andIsModPriceIn(List<Integer> values) {
-            this.addCriterion("is_mod_price in", values, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(relationLevelId, value);
         }
 
-        public Criteria andIsModPriceNotIn(List<Integer> values) {
-            this.addCriterion("is_mod_price not in", values, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdIn(List<Long> values) {
+            return in(relationLevelId, values);
         }
 
-        public Criteria andIsModPriceBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_mod_price between", value1, value2, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdNotIn(List<Long> values) {
+            return notIn(relationLevelId, values);
         }
 
-        public Criteria andIsModPriceNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_mod_price not between", value1, value2, "isModPrice");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdBetween(Long value1, Long value2) {
+            return between(relationLevelId, value1, value2);
         }
 
-        public Criteria andIsModGoodsnoIsNull() {
-            this.addCriterion("is_mod_goodsno is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andRelationLevelIdNotBetween(Long value1, Long value2) {
+            return notBetween(relationLevelId, value1, value2);
         }
-
-        public Criteria andIsModGoodsnoIsNotNull() {
-            this.addCriterion("is_mod_goodsno is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksIsNull() {
+            return isNull(clicks);
         }
 
-        public Criteria andIsModGoodsnoEqualTo(Integer value) {
-            this.addCriterion("is_mod_goodsno =", value, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksIsNotNull() {
+            return isNotNull(clicks);
         }
 
-        public Criteria andIsModGoodsnoNotEqualTo(Integer value) {
-            this.addCriterion("is_mod_goodsno <>", value, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksEqualTo(Long value) {
+            return equalTo(clicks, value);
         }
 
-        public Criteria andIsModGoodsnoGreaterThan(Integer value) {
-            this.addCriterion("is_mod_goodsno >", value, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksNotEqualTo(Long value) {
+            return notEqualTo(clicks, value);
         }
 
-        public Criteria andIsModGoodsnoGreaterThanOrEqualTo(Integer value) {
-            this.addCriterion("is_mod_goodsno >=", value, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksGreaterThan(Long value) {
+            return greaterThan(clicks, value);
         }
 
-        public Criteria andIsModGoodsnoLessThan(Integer value) {
-            this.addCriterion("is_mod_goodsno <", value, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(clicks, value);
         }
 
-        public Criteria andIsModGoodsnoLessThanOrEqualTo(Integer value) {
-            this.addCriterion("is_mod_goodsno <=", value, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksLessThan(Long value) {
+            return lessThan(clicks, value);
         }
 
-        public Criteria andIsModGoodsnoLike(String value) {
-            this.addCriterion("is_mod_goodsno like", value, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(clicks, value);
         }
 
-        public Criteria andIsModGoodsnoNotLike(String value) {
-            this.addCriterion("is_mod_goodsno not like", value, "isModGoodsno");
-            return (Criteria)this;
-        }        public Criteria andIsModGoodsnoIn(List<Integer> values) {
-            this.addCriterion("is_mod_goodsno in", values, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksIn(List<Long> values) {
+            return in(clicks, values);
         }
 
-        public Criteria andIsModGoodsnoNotIn(List<Integer> values) {
-            this.addCriterion("is_mod_goodsno not in", values, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksNotIn(List<Long> values) {
+            return notIn(clicks, values);
         }
 
-        public Criteria andIsModGoodsnoBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_mod_goodsno between", value1, value2, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksBetween(Long value1, Long value2) {
+            return between(clicks, value1, value2);
         }
 
-        public Criteria andIsModGoodsnoNotBetween(Integer value1, Integer value2) {
-            this.addCriterion("is_mod_goodsno not between", value1, value2, "isModGoodsno");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andClicksNotBetween(Long value1, Long value2) {
+            return notBetween(clicks, value1, value2);
         }
-
-        public Criteria andGoodsLevelIsNull() {
-            this.addCriterion("goods_level is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdIsNull() {
+            return isNull(outerId);
         }
 
-        public Criteria andGoodsLevelIsNotNull() {
-            this.addCriterion("goods_level is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdIsNotNull() {
+            return isNotNull(outerId);
         }
 
-        public Criteria andGoodsLevelEqualTo(String value) {
-            this.addCriterion("goods_level =", value, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdEqualTo(String value) {
+            return equalTo(outerId, value);
         }
 
-        public Criteria andGoodsLevelNotEqualTo(String value) {
-            this.addCriterion("goods_level <>", value, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdNotEqualTo(String value) {
+            return notEqualTo(outerId, value);
         }
 
-        public Criteria andGoodsLevelGreaterThan(String value) {
-            this.addCriterion("goods_level >", value, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdGreaterThan(String value) {
+            return greaterThan(outerId, value);
         }
 
-        public Criteria andGoodsLevelGreaterThanOrEqualTo(String value) {
-            this.addCriterion("goods_level >=", value, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(outerId, value);
         }
 
-        public Criteria andGoodsLevelLessThan(String value) {
-            this.addCriterion("goods_level <", value, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdLessThan(String value) {
+            return lessThan(outerId, value);
         }
 
-        public Criteria andGoodsLevelLessThanOrEqualTo(String value) {
-            this.addCriterion("goods_level <=", value, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(outerId, value);
         }
 
-        public Criteria andGoodsLevelLike(String value) {
-            this.addCriterion("goods_level like", value, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdLike(String value) {
+            return like(outerId, value);
         }
 
-        public Criteria andGoodsLevelNotLike(String value) {
-            this.addCriterion("goods_level not like", value, "goodsLevel");
-            return (Criteria)this;
-        }        public Criteria andGoodsLevelIn(List<String> values) {
-            this.addCriterion("goods_level in", values, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdNotLike(String value) {
+            return notLike(outerId, value);
         }
 
-        public Criteria andGoodsLevelNotIn(List<String> values) {
-            this.addCriterion("goods_level not in", values, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdIn(List<String> values) {
+            return in(outerId, values);
         }
 
-        public Criteria andGoodsLevelBetween(String value1, String value2) {
-            this.addCriterion("goods_level between", value1, value2, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdNotIn(List<String> values) {
+            return notIn(outerId, values);
         }
 
-        public Criteria andGoodsLevelNotBetween(String value1, String value2) {
-            this.addCriterion("goods_level not between", value1, value2, "goodsLevel");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdBetween(String value1, String value2) {
+            return between(outerId, value1, value2);
         }
 
-        public Criteria andRelationLevelIdIsNull() {
-            this.addCriterion("relation_level_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andOuterIdNotBetween(String value1, String value2) {
+            return notBetween(outerId, value1, value2);
         }
-
-        public Criteria andRelationLevelIdIsNotNull() {
-            this.addCriterion("relation_level_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseIsNull() {
+            return isNull(isShowcase);
         }
 
-        public Criteria andRelationLevelIdEqualTo(Long value) {
-            this.addCriterion("relation_level_id =", value, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseIsNotNull() {
+            return isNotNull(isShowcase);
         }
 
-        public Criteria andRelationLevelIdNotEqualTo(Long value) {
-            this.addCriterion("relation_level_id <>", value, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseEqualTo(Integer value) {
+            return equalTo(isShowcase, value);
         }
 
-        public Criteria andRelationLevelIdGreaterThan(Long value) {
-            this.addCriterion("relation_level_id >", value, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseNotEqualTo(Integer value) {
+            return notEqualTo(isShowcase, value);
         }
 
-        public Criteria andRelationLevelIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("relation_level_id >=", value, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseGreaterThan(Integer value) {
+            return greaterThan(isShowcase, value);
         }
 
-        public Criteria andRelationLevelIdLessThan(Long value) {
-            this.addCriterion("relation_level_id <", value, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isShowcase, value);
         }
 
-        public Criteria andRelationLevelIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("relation_level_id <=", value, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseLessThan(Integer value) {
+            return lessThan(isShowcase, value);
         }
 
-        public Criteria andRelationLevelIdLike(String value) {
-            this.addCriterion("relation_level_id like", value, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isShowcase, value);
         }
 
-        public Criteria andRelationLevelIdNotLike(String value) {
-            this.addCriterion("relation_level_id not like", value, "relationLevelId");
-            return (Criteria)this;
-        }        public Criteria andRelationLevelIdIn(List<Long> values) {
-            this.addCriterion("relation_level_id in", values, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseIn(List<Integer> values) {
+            return in(isShowcase, values);
         }
 
-        public Criteria andRelationLevelIdNotIn(List<Long> values) {
-            this.addCriterion("relation_level_id not in", values, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseNotIn(List<Integer> values) {
+            return notIn(isShowcase, values);
         }
 
-        public Criteria andRelationLevelIdBetween(Long value1, Long value2) {
-            this.addCriterion("relation_level_id between", value1, value2, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseBetween(Integer value1, Integer value2) {
+            return between(isShowcase, value1, value2);
         }
 
-        public Criteria andRelationLevelIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("relation_level_id not between", value1, value2, "relationLevelId");
-            return (Criteria)this;
+        public ShiguGoodsTinyExample.Criteria andIsShowcaseNotBetween(Integer value1, Integer value2) {
+            return notBetween(isShowcase, value1, value2);
         }
     }
 }

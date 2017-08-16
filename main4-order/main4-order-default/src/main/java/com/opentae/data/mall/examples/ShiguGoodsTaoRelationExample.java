@@ -1,507 +1,245 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.ShiguGoodsTaoRelation;
 
-public class ShiguGoodsTaoRelationExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class ShiguGoodsTaoRelationExample extends SgExample<ShiguGoodsTaoRelationExample.Criteria> {
+    public static final Class<ShiguGoodsTaoRelation> beanClass = ShiguGoodsTaoRelation.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn webSite;
+    public static EntityColumn goodsId;
+    public static EntityColumn numIid;
+    public static EntityColumn relationId;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        webSite = listMap.get("webSite");
+        goodsId = listMap.get("goodsId");
+        numIid = listMap.get("numIid");
+        relationId = listMap.get("relationId");
+        }
 
     public ShiguGoodsTaoRelationExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    @Override
+    protected ShiguGoodsTaoRelationExample.Criteria createCriteriaInternal() {
+        return new ShiguGoodsTaoRelationExample.Criteria(this);
     }
 
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public Criteria or() {
-        Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public Criteria createCriteria() {
-        Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
-    protected Criteria createCriteriaInternal() {
-        Criteria criteria = new Criteria();
-        return criteria;
-    }
-
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteIsNull() {
+            return isNull(webSite);
         }
 
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public Criteria andGoodsIdIsNull() {
-            this.addCriterion("goods_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteIsNotNull() {
+            return isNotNull(webSite);
         }
 
-        public Criteria andGoodsIdIsNotNull() {
-            this.addCriterion("goods_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteEqualTo(String value) {
+            return equalTo(webSite, value);
         }
 
-        public Criteria andGoodsIdEqualTo(Long value) {
-            this.addCriterion("goods_id =", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteNotEqualTo(String value) {
+            return notEqualTo(webSite, value);
         }
 
-        public Criteria andGoodsIdNotEqualTo(Long value) {
-            this.addCriterion("goods_id <>", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteGreaterThan(String value) {
+            return greaterThan(webSite, value);
         }
 
-        public Criteria andGoodsIdGreaterThan(Long value) {
-            this.addCriterion("goods_id >", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(webSite, value);
         }
 
-        public Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("goods_id >=", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteLessThan(String value) {
+            return lessThan(webSite, value);
         }
 
-        public Criteria andGoodsIdLessThan(Long value) {
-            this.addCriterion("goods_id <", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(webSite, value);
         }
 
-        public Criteria andGoodsIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("goods_id <=", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteLike(String value) {
+            return like(webSite, value);
         }
 
-        public Criteria andGoodsIdLike(String value) {
-            this.addCriterion("goods_id like", value, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteNotLike(String value) {
+            return notLike(webSite, value);
         }
 
-        public Criteria andGoodsIdNotLike(String value) {
-            this.addCriterion("goods_id not like", value, "goodsId");
-            return (Criteria)this;
-        }        public Criteria andGoodsIdIn(List<Long> values) {
-            this.addCriterion("goods_id in", values, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteIn(List<String> values) {
+            return in(webSite, values);
         }
 
-        public Criteria andGoodsIdNotIn(List<Long> values) {
-            this.addCriterion("goods_id not in", values, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteNotIn(List<String> values) {
+            return notIn(webSite, values);
         }
 
-        public Criteria andGoodsIdBetween(Long value1, Long value2) {
-            this.addCriterion("goods_id between", value1, value2, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteBetween(String value1, String value2) {
+            return between(webSite, value1, value2);
         }
 
-        public Criteria andGoodsIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("goods_id not between", value1, value2, "goodsId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andWebSiteNotBetween(String value1, String value2) {
+            return notBetween(webSite, value1, value2);
         }
-
-        public Criteria andNumIidIsNull() {
-            this.addCriterion("num_iid is null");
-            return (Criteria)this;
-        }
-
-        public Criteria andNumIidIsNotNull() {
-            this.addCriterion("num_iid is not null");
-            return (Criteria)this;
-        }
-
-        public Criteria andNumIidEqualTo(Long value) {
-            this.addCriterion("num_iid =", value, "numIid");
-            return (Criteria)this;
-        }
-
-        public Criteria andNumIidNotEqualTo(Long value) {
-            this.addCriterion("num_iid <>", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdIsNull() {
+            return isNull(goodsId);
         }
 
-        public Criteria andNumIidGreaterThan(Long value) {
-            this.addCriterion("num_iid >", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdIsNotNull() {
+            return isNotNull(goodsId);
         }
 
-        public Criteria andNumIidGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("num_iid >=", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdEqualTo(Long value) {
+            return equalTo(goodsId, value);
         }
 
-        public Criteria andNumIidLessThan(Long value) {
-            this.addCriterion("num_iid <", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdNotEqualTo(Long value) {
+            return notEqualTo(goodsId, value);
         }
 
-        public Criteria andNumIidLessThanOrEqualTo(Long value) {
-            this.addCriterion("num_iid <=", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdGreaterThan(Long value) {
+            return greaterThan(goodsId, value);
         }
 
-        public Criteria andNumIidLike(String value) {
-            this.addCriterion("num_iid like", value, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(goodsId, value);
         }
 
-        public Criteria andNumIidNotLike(String value) {
-            this.addCriterion("num_iid not like", value, "numIid");
-            return (Criteria)this;
-        }        public Criteria andNumIidIn(List<Long> values) {
-            this.addCriterion("num_iid in", values, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdLessThan(Long value) {
+            return lessThan(goodsId, value);
         }
 
-        public Criteria andNumIidNotIn(List<Long> values) {
-            this.addCriterion("num_iid not in", values, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(goodsId, value);
         }
 
-        public Criteria andNumIidBetween(Long value1, Long value2) {
-            this.addCriterion("num_iid between", value1, value2, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdIn(List<Long> values) {
+            return in(goodsId, values);
         }
 
-        public Criteria andNumIidNotBetween(Long value1, Long value2) {
-            this.addCriterion("num_iid not between", value1, value2, "numIid");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdNotIn(List<Long> values) {
+            return notIn(goodsId, values);
         }
 
-        public Criteria andWebSiteIsNull() {
-            this.addCriterion("web_site is null");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdBetween(Long value1, Long value2) {
+            return between(goodsId, value1, value2);
         }
 
-        public Criteria andWebSiteIsNotNull() {
-            this.addCriterion("web_site is not null");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andGoodsIdNotBetween(Long value1, Long value2) {
+            return notBetween(goodsId, value1, value2);
         }
-
-        public Criteria andWebSiteEqualTo(String value) {
-            this.addCriterion("web_site =", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidIsNull() {
+            return isNull(numIid);
         }
 
-        public Criteria andWebSiteNotEqualTo(String value) {
-            this.addCriterion("web_site <>", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidIsNotNull() {
+            return isNotNull(numIid);
         }
 
-        public Criteria andWebSiteGreaterThan(String value) {
-            this.addCriterion("web_site >", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidEqualTo(Long value) {
+            return equalTo(numIid, value);
         }
 
-        public Criteria andWebSiteGreaterThanOrEqualTo(String value) {
-            this.addCriterion("web_site >=", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidNotEqualTo(Long value) {
+            return notEqualTo(numIid, value);
         }
 
-        public Criteria andWebSiteLessThan(String value) {
-            this.addCriterion("web_site <", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidGreaterThan(Long value) {
+            return greaterThan(numIid, value);
         }
 
-        public Criteria andWebSiteLessThanOrEqualTo(String value) {
-            this.addCriterion("web_site <=", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(numIid, value);
         }
 
-        public Criteria andWebSiteLike(String value) {
-            this.addCriterion("web_site like", value, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidLessThan(Long value) {
+            return lessThan(numIid, value);
         }
 
-        public Criteria andWebSiteNotLike(String value) {
-            this.addCriterion("web_site not like", value, "webSite");
-            return (Criteria)this;
-        }        public Criteria andWebSiteIn(List<String> values) {
-            this.addCriterion("web_site in", values, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(numIid, value);
         }
 
-        public Criteria andWebSiteNotIn(List<String> values) {
-            this.addCriterion("web_site not in", values, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidIn(List<Long> values) {
+            return in(numIid, values);
         }
 
-        public Criteria andWebSiteBetween(String value1, String value2) {
-            this.addCriterion("web_site between", value1, value2, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidNotIn(List<Long> values) {
+            return notIn(numIid, values);
         }
 
-        public Criteria andWebSiteNotBetween(String value1, String value2) {
-            this.addCriterion("web_site not between", value1, value2, "webSite");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidBetween(Long value1, Long value2) {
+            return between(numIid, value1, value2);
         }
 
-        public Criteria andRelationIdIsNull() {
-            this.addCriterion("relation_id is null");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andNumIidNotBetween(Long value1, Long value2) {
+            return notBetween(numIid, value1, value2);
         }
-
-        public Criteria andRelationIdIsNotNull() {
-            this.addCriterion("relation_id is not null");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdIsNull() {
+            return isNull(relationId);
         }
 
-        public Criteria andRelationIdEqualTo(Long value) {
-            this.addCriterion("relation_id =", value, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdIsNotNull() {
+            return isNotNull(relationId);
         }
 
-        public Criteria andRelationIdNotEqualTo(Long value) {
-            this.addCriterion("relation_id <>", value, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdEqualTo(Long value) {
+            return equalTo(relationId, value);
         }
 
-        public Criteria andRelationIdGreaterThan(Long value) {
-            this.addCriterion("relation_id >", value, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdNotEqualTo(Long value) {
+            return notEqualTo(relationId, value);
         }
 
-        public Criteria andRelationIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("relation_id >=", value, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdGreaterThan(Long value) {
+            return greaterThan(relationId, value);
         }
 
-        public Criteria andRelationIdLessThan(Long value) {
-            this.addCriterion("relation_id <", value, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(relationId, value);
         }
 
-        public Criteria andRelationIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("relation_id <=", value, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdLessThan(Long value) {
+            return lessThan(relationId, value);
         }
 
-        public Criteria andRelationIdLike(String value) {
-            this.addCriterion("relation_id like", value, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(relationId, value);
         }
 
-        public Criteria andRelationIdNotLike(String value) {
-            this.addCriterion("relation_id not like", value, "relationId");
-            return (Criteria)this;
-        }        public Criteria andRelationIdIn(List<Long> values) {
-            this.addCriterion("relation_id in", values, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdIn(List<Long> values) {
+            return in(relationId, values);
         }
 
-        public Criteria andRelationIdNotIn(List<Long> values) {
-            this.addCriterion("relation_id not in", values, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdNotIn(List<Long> values) {
+            return notIn(relationId, values);
         }
 
-        public Criteria andRelationIdBetween(Long value1, Long value2) {
-            this.addCriterion("relation_id between", value1, value2, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdBetween(Long value1, Long value2) {
+            return between(relationId, value1, value2);
         }
 
-        public Criteria andRelationIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("relation_id not between", value1, value2, "relationId");
-            return (Criteria)this;
+        public ShiguGoodsTaoRelationExample.Criteria andRelationIdNotBetween(Long value1, Long value2) {
+            return notBetween(relationId, value1, value2);
         }
     }
 }

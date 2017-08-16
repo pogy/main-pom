@@ -1,2207 +1,1606 @@
 package com.opentae.data.mall.examples;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import com.opentae.core.mybatis.SgExample;
+import com.opentae.core.mybatis.example.EntityColumn;
+import com.opentae.core.mybatis.example.EntityTable;
+import com.opentae.core.mybatis.mapperhelper.EntityHelper;
+import com.opentae.data.mall.beans.TaobaoSessionMap;
 
-public class TaobaoSessionMapExample implements SgExample{
-    protected String orderByClause;
-    protected boolean distinct;
-    protected List<TaobaoSessionMapExample.Criteria> oredCriteria = new ArrayList();
+import java.util.*;
+public class TaobaoSessionMapExample extends SgExample<TaobaoSessionMapExample.Criteria> {
+    public static final Class<TaobaoSessionMap> beanClass = TaobaoSessionMap.class;
+    public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn session;
+    public static EntityColumn w1ExpiresIn;
+    public static EntityColumn remark;
+    public static EntityColumn secret;
+    public static EntityColumn nick;
+    public static EntityColumn expiresIn;
+    public static EntityColumn subTaobaoUserNick;
+    public static EntityColumn tsmId;
+    public static EntityColumn r2ExpiresIn;
+    public static EntityColumn shopId;
+    public static EntityColumn w2ExpiresIn;
+    public static EntityColumn freshTime;
+    public static EntityColumn reExpiresIn;
+    public static EntityColumn userId;
+    public static EntityColumn remark9;
+    public static EntityColumn remark8;
+    public static EntityColumn r1ExpiresIn;
+    public static EntityColumn remark10;
+    public static EntityColumn remark5;
+    public static EntityColumn remark4;
+    public static EntityColumn appkey;
+    public static EntityColumn remark7;
+    public static EntityColumn remark6;
+    public static EntityColumn tokenType;
+    public static EntityColumn subTaobaoUserId;
+    public static EntityColumn remark1;
+    public static EntityColumn remark3;
+    public static EntityColumn refreshToken;
+    public static EntityColumn remark2;
+    static {
+        Set<EntityColumn> columns = entityTable.getEntityClassColumns();
+        Map<String, EntityColumn> listMap = new HashMap<>();
+        for (EntityColumn column : columns) {
+            listMap.put(column.getProperty(), column);
+        }
+        session = listMap.get("session");
+        w1ExpiresIn = listMap.get("w1ExpiresIn");
+        remark = listMap.get("remark");
+        secret = listMap.get("secret");
+        nick = listMap.get("nick");
+        expiresIn = listMap.get("expiresIn");
+        subTaobaoUserNick = listMap.get("subTaobaoUserNick");
+        tsmId = listMap.get("tsmId");
+        r2ExpiresIn = listMap.get("r2ExpiresIn");
+        shopId = listMap.get("shopId");
+        w2ExpiresIn = listMap.get("w2ExpiresIn");
+        freshTime = listMap.get("freshTime");
+        reExpiresIn = listMap.get("reExpiresIn");
+        userId = listMap.get("userId");
+        remark9 = listMap.get("remark9");
+        remark8 = listMap.get("remark8");
+        r1ExpiresIn = listMap.get("r1ExpiresIn");
+        remark10 = listMap.get("remark10");
+        remark5 = listMap.get("remark5");
+        remark4 = listMap.get("remark4");
+        appkey = listMap.get("appkey");
+        remark7 = listMap.get("remark7");
+        remark6 = listMap.get("remark6");
+        tokenType = listMap.get("tokenType");
+        subTaobaoUserId = listMap.get("subTaobaoUserId");
+        remark1 = listMap.get("remark1");
+        remark3 = listMap.get("remark3");
+        refreshToken = listMap.get("refreshToken");
+        remark2 = listMap.get("remark2");
+        }
 
     public TaobaoSessionMapExample() {
+        this.setTableAlias(entityTable.getName());
     }
 
-    private Integer startIndex;
-    private Integer endIndex;
-    private String fields;
-    protected String sqlStirng;
-    private String webSite;
-
-    public String getWebSite() {
-        return this.webSite;
+    @Override
+    public EntityTable getEntityTable() {
+        return entityTable;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
-
-    public String getSqlStirng() {
-        return this.sqlStirng;
-    }
-
-    public void setSqlStirng(String sqlStirng) {
-        this.sqlStirng = sqlStirng;
-    }
-
-    public Integer getStartIndex() {
-        return this.startIndex;
-    }
-
-    public void setStartIndex(Integer startIndex) {
-        this.startIndex = startIndex;
-    }
-
-    public Integer getEndIndex() {
-        return this.endIndex;
-    }
-
-    public void setEndIndex(Integer endIndex) {
-        this.endIndex = endIndex;
-    }
-
-    public String getFields() {
-        return this.fields;
-    }
-
-    public void setFields(String fields) {
-        this.fields = fields;
-    }
-    public void setOrderByClause(String orderByClause) {
-        this.orderByClause = orderByClause;
-    }
-
-    public String getOrderByClause() {
-        return this.orderByClause;
-    }
-
-    public void setDistinct(boolean distinct) {
-        this.distinct = distinct;
-    }
-
-    public boolean isDistinct() {
-        return this.distinct;
-    }
-
-    public List<TaobaoSessionMapExample.Criteria> getOredCriteria() {
-        return this.oredCriteria;
-    }
-
-    public void or(TaobaoSessionMapExample.Criteria criteria) {
-        this.oredCriteria.add(criteria);
-    }
-
-    public TaobaoSessionMapExample.Criteria or() {
-        TaobaoSessionMapExample.Criteria criteria = this.createCriteriaInternal();
-        this.oredCriteria.add(criteria);
-        return criteria;
-    }
-
-    public TaobaoSessionMapExample.Criteria createCriteria() {
-        TaobaoSessionMapExample.Criteria criteria = this.createCriteriaInternal();
-        if(this.oredCriteria.size() == 0) {
-            this.oredCriteria.add(criteria);
-        }
-
-        return criteria;
-    }
-
+    @Override
     protected TaobaoSessionMapExample.Criteria createCriteriaInternal() {
-        TaobaoSessionMapExample.Criteria criteria = new TaobaoSessionMapExample.Criteria();
-        return criteria;
+        return new TaobaoSessionMapExample.Criteria(this);
     }
 
-    public void clear() {
-        this.oredCriteria.clear();
-        this.orderByClause = null;
-        this.distinct = false;
-    }
-
-    public static class Criterion {
-        private String condition;
-        private Object value;
-        private Object secondValue;
-        private boolean noValue;
-        private boolean singleValue;
-        private boolean betweenValue;
-        private boolean listValue;
-        private String typeHandler;
-
-        public String getCondition() {
-            return this.condition;
-        }
-
-        public Object getValue() {
-            return this.value;
-        }
-
-        public Object getSecondValue() {
-            return this.secondValue;
-        }
-
-        public boolean isNoValue() {
-            return this.noValue;
-        }
-
-        public boolean isSingleValue() {
-            return this.singleValue;
-        }
-
-        public boolean isBetweenValue() {
-            return this.betweenValue;
-        }
-
-        public boolean isListValue() {
-            return this.listValue;
-        }
-
-        public String getTypeHandler() {
-            return this.typeHandler;
-        }
-
-        protected Criterion(String condition) {
-            this.condition = condition;
-            this.typeHandler = null;
-            this.noValue = true;
-        }
-
-        protected Criterion(String condition, Object value, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.typeHandler = typeHandler;
-            if(value instanceof List) {
-                this.listValue = true;
-            } else {
-                this.singleValue = true;
-            }
-
-        }
-
-        protected Criterion(String condition, Object value) {
-            this(condition, value, (String)null);
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue, String typeHandler) {
-            this.condition = condition;
-            this.value = value;
-            this.secondValue = secondValue;
-            this.typeHandler = typeHandler;
-            this.betweenValue = true;
-        }
-
-        protected Criterion(String condition, Object value, Object secondValue) {
-            this(condition, value, secondValue, (String)null);
-        }
-    }
-
-    public static class Criteria extends TaobaoSessionMapExample.GeneratedCriteria {
-        protected Criteria() {
-        }
-    }
-
-    protected abstract static class GeneratedCriteria {
-        protected List<TaobaoSessionMapExample.Criterion> criteria = new ArrayList();
-
-        protected GeneratedCriteria() {
-        }
-
-        public boolean isValid() {
-            return this.criteria.size() > 0;
-        }
-
-        public List<TaobaoSessionMapExample.Criterion> getAllCriteria() {
-            return this.criteria;
-        }
-
-        public List<TaobaoSessionMapExample.Criterion> getCriteria() {
-            return this.criteria;
-        }
-
-        protected void addCriterion(String condition) {
-            if(condition == null) {
-                throw new RuntimeException("Value for condition cannot be null");
-            } else {
-                this.criteria.add(new TaobaoSessionMapExample.Criterion(condition));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value, String property) {
-            if(value == null) {
-                throw new RuntimeException("Value for " + property + " cannot be null");
-            } else {
-                this.criteria.add(new TaobaoSessionMapExample.Criterion(condition, value));
-            }
-        }
-
-        protected void addCriterion(String condition, Object value1, Object value2, String property) {
-            if(value1 != null && value2 != null) {
-                this.criteria.add(new TaobaoSessionMapExample.Criterion(condition, value1, value2));
-            } else {
-                throw new RuntimeException("Between values for " + property + " cannot be null");
-            }
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInIsNull() {
-            this.addCriterion("w1_expires_in is null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInIsNotNull() {
-            this.addCriterion("w1_expires_in is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInEqualTo(Long value) {
-            this.addCriterion("w1_expires_in =", value, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInNotEqualTo(Long value) {
-            this.addCriterion("w1_expires_in <>", value, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInGreaterThan(Long value) {
-            this.addCriterion("w1_expires_in >", value, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("w1_expires_in >=", value, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInLessThan(Long value) {
-            this.addCriterion("w1_expires_in <", value, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInLessThanOrEqualTo(Long value) {
-            this.addCriterion("w1_expires_in <=", value, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInLike(String value) {
-            this.addCriterion("w1_expires_in like", value, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInNotLike(String value) {
-            this.addCriterion("w1_expires_in not like", value, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andW1ExpiresInIn(List<Long> values) {
-            this.addCriterion("w1_expires_in in", values, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInNotIn(List<Long> values) {
-            this.addCriterion("w1_expires_in not in", values, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInBetween(Long value1, Long value2) {
-            this.addCriterion("w1_expires_in between", value1, value2, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW1ExpiresInNotBetween(Long value1, Long value2) {
-            this.addCriterion("w1_expires_in not between", value1, value2, "w1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+    public static class Criteria extends SgExample.GeneratedCriteria<Criteria> {
+        protected Criteria(SgExample example) {
+            super(example);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionIsNull() {
-            this.addCriterion("session is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(session);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionIsNotNull() {
-            this.addCriterion("session is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(session);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionEqualTo(String value) {
-            this.addCriterion("session =", value, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(session, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionNotEqualTo(String value) {
-            this.addCriterion("session <>", value, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(session, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionGreaterThan(String value) {
-            this.addCriterion("session >", value, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(session, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionGreaterThanOrEqualTo(String value) {
-            this.addCriterion("session >=", value, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(session, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionLessThan(String value) {
-            this.addCriterion("session <", value, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(session, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionLessThanOrEqualTo(String value) {
-            this.addCriterion("session <=", value, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(session, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionLike(String value) {
-            this.addCriterion("session like", value, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(session, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionNotLike(String value) {
-            this.addCriterion("session not like", value, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andSessionIn(List<String> values) {
-            this.addCriterion("session in", values, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(session, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSessionIn(List<String> values) {
+            return in(session, values);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionNotIn(List<String> values) {
-            this.addCriterion("session not in", values, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(session, values);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionBetween(String value1, String value2) {
-            this.addCriterion("session between", value1, value2, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(session, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andSessionNotBetween(String value1, String value2) {
-            this.addCriterion("session not between", value1, value2, "session");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(session, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInIsNull() {
+            return isNull(w1ExpiresIn);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInIsNull() {
-            this.addCriterion("re_expires_in is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInIsNotNull() {
+            return isNotNull(w1ExpiresIn);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInIsNotNull() {
-            this.addCriterion("re_expires_in is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInEqualTo(Long value) {
+            return equalTo(w1ExpiresIn, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInEqualTo(Long value) {
-            this.addCriterion("re_expires_in =", value, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInNotEqualTo(Long value) {
+            return notEqualTo(w1ExpiresIn, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInNotEqualTo(Long value) {
-            this.addCriterion("re_expires_in <>", value, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInGreaterThan(Long value) {
+            return greaterThan(w1ExpiresIn, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInGreaterThan(Long value) {
-            this.addCriterion("re_expires_in >", value, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(w1ExpiresIn, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("re_expires_in >=", value, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInLessThan(Long value) {
+            return lessThan(w1ExpiresIn, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInLessThan(Long value) {
-            this.addCriterion("re_expires_in <", value, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(w1ExpiresIn, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInLessThanOrEqualTo(Long value) {
-            this.addCriterion("re_expires_in <=", value, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInIn(List<Long> values) {
+            return in(w1ExpiresIn, values);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInLike(String value) {
-            this.addCriterion("re_expires_in like", value, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInNotIn(List<Long> values) {
+            return notIn(w1ExpiresIn, values);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInNotLike(String value) {
-            this.addCriterion("re_expires_in not like", value, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andReExpiresInIn(List<Long> values) {
-            this.addCriterion("re_expires_in in", values, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInBetween(Long value1, Long value2) {
+            return between(w1ExpiresIn, value1, value2);
         }
 
-        public TaobaoSessionMapExample.Criteria andReExpiresInNotIn(List<Long> values) {
-            this.addCriterion("re_expires_in not in", values, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW1ExpiresInNotBetween(Long value1, Long value2) {
+            return notBetween(w1ExpiresIn, value1, value2);
         }
-
-        public TaobaoSessionMapExample.Criteria andReExpiresInBetween(Long value1, Long value2) {
-            this.addCriterion("re_expires_in between", value1, value2, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andReExpiresInNotBetween(Long value1, Long value2) {
-            this.addCriterion("re_expires_in not between", value1, value2, "reExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
         public TaobaoSessionMapExample.Criteria andRemarkIsNull() {
-            this.addCriterion("remark is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(remark);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkIsNotNull() {
-            this.addCriterion("remark is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(remark);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkEqualTo(String value) {
-            this.addCriterion("remark =", value, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(remark, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkNotEqualTo(String value) {
-            this.addCriterion("remark <>", value, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(remark, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkGreaterThan(String value) {
-            this.addCriterion("remark >", value, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(remark, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkGreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark >=", value, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(remark, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkLessThan(String value) {
-            this.addCriterion("remark <", value, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(remark, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkLessThanOrEqualTo(String value) {
-            this.addCriterion("remark <=", value, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(remark, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkLike(String value) {
-            this.addCriterion("remark like", value, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(remark, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkNotLike(String value) {
-            this.addCriterion("remark not like", value, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemarkIn(List<String> values) {
-            this.addCriterion("remark in", values, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(remark, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemarkIn(List<String> values) {
+            return in(remark, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkNotIn(List<String> values) {
-            this.addCriterion("remark not in", values, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(remark, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkBetween(String value1, String value2) {
-            this.addCriterion("remark between", value1, value2, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(remark, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemarkNotBetween(String value1, String value2) {
-            this.addCriterion("remark not between", value1, value2, "remark");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(remark, value1, value2);
         }
-
         public TaobaoSessionMapExample.Criteria andSecretIsNull() {
-            this.addCriterion("secret is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(secret);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretIsNotNull() {
-            this.addCriterion("secret is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(secret);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretEqualTo(String value) {
-            this.addCriterion("secret =", value, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(secret, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretNotEqualTo(String value) {
-            this.addCriterion("secret <>", value, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(secret, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretGreaterThan(String value) {
-            this.addCriterion("secret >", value, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(secret, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretGreaterThanOrEqualTo(String value) {
-            this.addCriterion("secret >=", value, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(secret, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretLessThan(String value) {
-            this.addCriterion("secret <", value, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(secret, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretLessThanOrEqualTo(String value) {
-            this.addCriterion("secret <=", value, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(secret, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretLike(String value) {
-            this.addCriterion("secret like", value, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(secret, value);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretNotLike(String value) {
-            this.addCriterion("secret not like", value, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andSecretIn(List<String> values) {
-            this.addCriterion("secret in", values, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(secret, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSecretIn(List<String> values) {
+            return in(secret, values);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretNotIn(List<String> values) {
-            this.addCriterion("secret not in", values, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(secret, values);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretBetween(String value1, String value2) {
-            this.addCriterion("secret between", value1, value2, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(secret, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andSecretNotBetween(String value1, String value2) {
-            this.addCriterion("secret not between", value1, value2, "secret");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(secret, value1, value2);
         }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeIsNull() {
-            this.addCriterion("token_type is null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeIsNotNull() {
-            this.addCriterion("token_type is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeEqualTo(String value) {
-            this.addCriterion("token_type =", value, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeNotEqualTo(String value) {
-            this.addCriterion("token_type <>", value, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeGreaterThan(String value) {
-            this.addCriterion("token_type >", value, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeGreaterThanOrEqualTo(String value) {
-            this.addCriterion("token_type >=", value, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeLessThan(String value) {
-            this.addCriterion("token_type <", value, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeLessThanOrEqualTo(String value) {
-            this.addCriterion("token_type <=", value, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeLike(String value) {
-            this.addCriterion("token_type like", value, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeNotLike(String value) {
-            this.addCriterion("token_type not like", value, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andTokenTypeIn(List<String> values) {
-            this.addCriterion("token_type in", values, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeNotIn(List<String> values) {
-            this.addCriterion("token_type not in", values, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeBetween(String value1, String value2) {
-            this.addCriterion("token_type between", value1, value2, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTokenTypeNotBetween(String value1, String value2) {
-            this.addCriterion("token_type not between", value1, value2, "tokenType");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
         public TaobaoSessionMapExample.Criteria andNickIsNull() {
-            this.addCriterion("nick is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(nick);
         }
 
         public TaobaoSessionMapExample.Criteria andNickIsNotNull() {
-            this.addCriterion("nick is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(nick);
         }
 
         public TaobaoSessionMapExample.Criteria andNickEqualTo(String value) {
-            this.addCriterion("nick =", value, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(nick, value);
         }
 
         public TaobaoSessionMapExample.Criteria andNickNotEqualTo(String value) {
-            this.addCriterion("nick <>", value, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(nick, value);
         }
 
         public TaobaoSessionMapExample.Criteria andNickGreaterThan(String value) {
-            this.addCriterion("nick >", value, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(nick, value);
         }
 
         public TaobaoSessionMapExample.Criteria andNickGreaterThanOrEqualTo(String value) {
-            this.addCriterion("nick >=", value, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(nick, value);
         }
 
         public TaobaoSessionMapExample.Criteria andNickLessThan(String value) {
-            this.addCriterion("nick <", value, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(nick, value);
         }
 
         public TaobaoSessionMapExample.Criteria andNickLessThanOrEqualTo(String value) {
-            this.addCriterion("nick <=", value, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(nick, value);
         }
 
         public TaobaoSessionMapExample.Criteria andNickLike(String value) {
-            this.addCriterion("nick like", value, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(nick, value);
         }
 
         public TaobaoSessionMapExample.Criteria andNickNotLike(String value) {
-            this.addCriterion("nick not like", value, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andNickIn(List<String> values) {
-            this.addCriterion("nick in", values, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(nick, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andNickIn(List<String> values) {
+            return in(nick, values);
         }
 
         public TaobaoSessionMapExample.Criteria andNickNotIn(List<String> values) {
-            this.addCriterion("nick not in", values, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(nick, values);
         }
 
         public TaobaoSessionMapExample.Criteria andNickBetween(String value1, String value2) {
-            this.addCriterion("nick between", value1, value2, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(nick, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andNickNotBetween(String value1, String value2) {
-            this.addCriterion("nick not between", value1, value2, "nick");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(nick, value1, value2);
         }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickIsNull() {
-            this.addCriterion("sub_taobao_user_nick is null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickIsNotNull() {
-            this.addCriterion("sub_taobao_user_nick is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickEqualTo(String value) {
-            this.addCriterion("sub_taobao_user_nick =", value, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickNotEqualTo(String value) {
-            this.addCriterion("sub_taobao_user_nick <>", value, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickGreaterThan(String value) {
-            this.addCriterion("sub_taobao_user_nick >", value, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickGreaterThanOrEqualTo(String value) {
-            this.addCriterion("sub_taobao_user_nick >=", value, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickLessThan(String value) {
-            this.addCriterion("sub_taobao_user_nick <", value, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickLessThanOrEqualTo(String value) {
-            this.addCriterion("sub_taobao_user_nick <=", value, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickLike(String value) {
-            this.addCriterion("sub_taobao_user_nick like", value, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickNotLike(String value) {
-            this.addCriterion("sub_taobao_user_nick not like", value, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickIn(List<String> values) {
-            this.addCriterion("sub_taobao_user_nick in", values, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickNotIn(List<String> values) {
-            this.addCriterion("sub_taobao_user_nick not in", values, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickBetween(String value1, String value2) {
-            this.addCriterion("sub_taobao_user_nick between", value1, value2, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickNotBetween(String value1, String value2) {
-            this.addCriterion("sub_taobao_user_nick not between", value1, value2, "subTaobaoUserNick");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInIsNull() {
-            this.addCriterion("r1_expires_in is null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInIsNotNull() {
-            this.addCriterion("r1_expires_in is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInEqualTo(Long value) {
-            this.addCriterion("r1_expires_in =", value, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInNotEqualTo(Long value) {
-            this.addCriterion("r1_expires_in <>", value, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInGreaterThan(Long value) {
-            this.addCriterion("r1_expires_in >", value, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("r1_expires_in >=", value, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInLessThan(Long value) {
-            this.addCriterion("r1_expires_in <", value, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInLessThanOrEqualTo(Long value) {
-            this.addCriterion("r1_expires_in <=", value, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInLike(String value) {
-            this.addCriterion("r1_expires_in like", value, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInNotLike(String value) {
-            this.addCriterion("r1_expires_in not like", value, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andR1ExpiresInIn(List<Long> values) {
-            this.addCriterion("r1_expires_in in", values, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInNotIn(List<Long> values) {
-            this.addCriterion("r1_expires_in not in", values, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInBetween(Long value1, Long value2) {
-            this.addCriterion("r1_expires_in between", value1, value2, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR1ExpiresInNotBetween(Long value1, Long value2) {
-            this.addCriterion("r1_expires_in not between", value1, value2, "r1ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdIsNull() {
-            this.addCriterion("tsm_id is null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdIsNotNull() {
-            this.addCriterion("tsm_id is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdEqualTo(Long value) {
-            this.addCriterion("tsm_id =", value, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdNotEqualTo(Long value) {
-            this.addCriterion("tsm_id <>", value, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdGreaterThan(Long value) {
-            this.addCriterion("tsm_id >", value, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("tsm_id >=", value, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdLessThan(Long value) {
-            this.addCriterion("tsm_id <", value, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("tsm_id <=", value, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdLike(String value) {
-            this.addCriterion("tsm_id like", value, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdNotLike(String value) {
-            this.addCriterion("tsm_id not like", value, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andTsmIdIn(List<Long> values) {
-            this.addCriterion("tsm_id in", values, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdNotIn(List<Long> values) {
-            this.addCriterion("tsm_id not in", values, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdBetween(Long value1, Long value2) {
-            this.addCriterion("tsm_id between", value1, value2, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andTsmIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("tsm_id not between", value1, value2, "tsmId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeIsNull() {
-            this.addCriterion("fresh_time is null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeIsNotNull() {
-            this.addCriterion("fresh_time is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeEqualTo(Date value) {
-            this.addCriterion("fresh_time =", value, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeNotEqualTo(Date value) {
-            this.addCriterion("fresh_time <>", value, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeGreaterThan(Date value) {
-            this.addCriterion("fresh_time >", value, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeGreaterThanOrEqualTo(Date value) {
-            this.addCriterion("fresh_time >=", value, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeLessThan(Date value) {
-            this.addCriterion("fresh_time <", value, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeLessThanOrEqualTo(Date value) {
-            this.addCriterion("fresh_time <=", value, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeLike(String value) {
-            this.addCriterion("fresh_time like", value, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeNotLike(String value) {
-            this.addCriterion("fresh_time not like", value, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andFreshTimeIn(List<Date> values) {
-            this.addCriterion("fresh_time in", values, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeNotIn(List<Date> values) {
-            this.addCriterion("fresh_time not in", values, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeBetween(Date value1, Date value2) {
-            this.addCriterion("fresh_time between", value1, value2, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andFreshTimeNotBetween(Date value1, Date value2) {
-            this.addCriterion("fresh_time not between", value1, value2, "freshTime");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInIsNull() {
-            this.addCriterion("r2_expires_in is null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInIsNotNull() {
-            this.addCriterion("r2_expires_in is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInEqualTo(Long value) {
-            this.addCriterion("r2_expires_in =", value, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInNotEqualTo(Long value) {
-            this.addCriterion("r2_expires_in <>", value, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInGreaterThan(Long value) {
-            this.addCriterion("r2_expires_in >", value, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("r2_expires_in >=", value, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInLessThan(Long value) {
-            this.addCriterion("r2_expires_in <", value, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInLessThanOrEqualTo(Long value) {
-            this.addCriterion("r2_expires_in <=", value, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInLike(String value) {
-            this.addCriterion("r2_expires_in like", value, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInNotLike(String value) {
-            this.addCriterion("r2_expires_in not like", value, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andR2ExpiresInIn(List<Long> values) {
-            this.addCriterion("r2_expires_in in", values, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInNotIn(List<Long> values) {
-            this.addCriterion("r2_expires_in not in", values, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInBetween(Long value1, Long value2) {
-            this.addCriterion("r2_expires_in between", value1, value2, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andR2ExpiresInNotBetween(Long value1, Long value2) {
-            this.addCriterion("r2_expires_in not between", value1, value2, "r2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
         public TaobaoSessionMapExample.Criteria andExpiresInIsNull() {
-            this.addCriterion("expires_in is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(expiresIn);
         }
 
         public TaobaoSessionMapExample.Criteria andExpiresInIsNotNull() {
-            this.addCriterion("expires_in is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(expiresIn);
         }
 
         public TaobaoSessionMapExample.Criteria andExpiresInEqualTo(Long value) {
-            this.addCriterion("expires_in =", value, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(expiresIn, value);
         }
 
         public TaobaoSessionMapExample.Criteria andExpiresInNotEqualTo(Long value) {
-            this.addCriterion("expires_in <>", value, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(expiresIn, value);
         }
 
         public TaobaoSessionMapExample.Criteria andExpiresInGreaterThan(Long value) {
-            this.addCriterion("expires_in >", value, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(expiresIn, value);
         }
 
         public TaobaoSessionMapExample.Criteria andExpiresInGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("expires_in >=", value, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(expiresIn, value);
         }
 
         public TaobaoSessionMapExample.Criteria andExpiresInLessThan(Long value) {
-            this.addCriterion("expires_in <", value, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(expiresIn, value);
         }
 
         public TaobaoSessionMapExample.Criteria andExpiresInLessThanOrEqualTo(Long value) {
-            this.addCriterion("expires_in <=", value, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(expiresIn, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andExpiresInLike(String value) {
-            this.addCriterion("expires_in like", value, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andExpiresInNotLike(String value) {
-            this.addCriterion("expires_in not like", value, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andExpiresInIn(List<Long> values) {
-            this.addCriterion("expires_in in", values, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andExpiresInIn(List<Long> values) {
+            return in(expiresIn, values);
         }
 
         public TaobaoSessionMapExample.Criteria andExpiresInNotIn(List<Long> values) {
-            this.addCriterion("expires_in not in", values, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(expiresIn, values);
         }
 
         public TaobaoSessionMapExample.Criteria andExpiresInBetween(Long value1, Long value2) {
-            this.addCriterion("expires_in between", value1, value2, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(expiresIn, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andExpiresInNotBetween(Long value1, Long value2) {
-            this.addCriterion("expires_in not between", value1, value2, "expiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(expiresIn, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickIsNull() {
+            return isNull(subTaobaoUserNick);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdIsNull() {
-            this.addCriterion("sub_taobao_user_id is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickIsNotNull() {
+            return isNotNull(subTaobaoUserNick);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdIsNotNull() {
-            this.addCriterion("sub_taobao_user_id is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickEqualTo(String value) {
+            return equalTo(subTaobaoUserNick, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdEqualTo(Long value) {
-            this.addCriterion("sub_taobao_user_id =", value, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickNotEqualTo(String value) {
+            return notEqualTo(subTaobaoUserNick, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdNotEqualTo(Long value) {
-            this.addCriterion("sub_taobao_user_id <>", value, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickGreaterThan(String value) {
+            return greaterThan(subTaobaoUserNick, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdGreaterThan(Long value) {
-            this.addCriterion("sub_taobao_user_id >", value, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(subTaobaoUserNick, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("sub_taobao_user_id >=", value, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickLessThan(String value) {
+            return lessThan(subTaobaoUserNick, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdLessThan(Long value) {
-            this.addCriterion("sub_taobao_user_id <", value, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(subTaobaoUserNick, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("sub_taobao_user_id <=", value, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickLike(String value) {
+            return like(subTaobaoUserNick, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdLike(String value) {
-            this.addCriterion("sub_taobao_user_id like", value, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickNotLike(String value) {
+            return notLike(subTaobaoUserNick, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdNotLike(String value) {
-            this.addCriterion("sub_taobao_user_id not like", value, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdIn(List<Long> values) {
-            this.addCriterion("sub_taobao_user_id in", values, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickIn(List<String> values) {
+            return in(subTaobaoUserNick, values);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdNotIn(List<Long> values) {
-            this.addCriterion("sub_taobao_user_id not in", values, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickNotIn(List<String> values) {
+            return notIn(subTaobaoUserNick, values);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdBetween(Long value1, Long value2) {
-            this.addCriterion("sub_taobao_user_id between", value1, value2, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickBetween(String value1, String value2) {
+            return between(subTaobaoUserNick, value1, value2);
         }
 
-        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("sub_taobao_user_id not between", value1, value2, "subTaobaoUserId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserNickNotBetween(String value1, String value2) {
+            return notBetween(subTaobaoUserNick, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andTsmIdIsNull() {
+            return isNull(tsmId);
         }
 
+        public TaobaoSessionMapExample.Criteria andTsmIdIsNotNull() {
+            return isNotNull(tsmId);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTsmIdEqualTo(Long value) {
+            return equalTo(tsmId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTsmIdNotEqualTo(Long value) {
+            return notEqualTo(tsmId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTsmIdGreaterThan(Long value) {
+            return greaterThan(tsmId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTsmIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(tsmId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTsmIdLessThan(Long value) {
+            return lessThan(tsmId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTsmIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(tsmId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTsmIdIn(List<Long> values) {
+            return in(tsmId, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTsmIdNotIn(List<Long> values) {
+            return notIn(tsmId, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTsmIdBetween(Long value1, Long value2) {
+            return between(tsmId, value1, value2);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTsmIdNotBetween(Long value1, Long value2) {
+            return notBetween(tsmId, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInIsNull() {
+            return isNull(r2ExpiresIn);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInIsNotNull() {
+            return isNotNull(r2ExpiresIn);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInEqualTo(Long value) {
+            return equalTo(r2ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInNotEqualTo(Long value) {
+            return notEqualTo(r2ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInGreaterThan(Long value) {
+            return greaterThan(r2ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(r2ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInLessThan(Long value) {
+            return lessThan(r2ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(r2ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInIn(List<Long> values) {
+            return in(r2ExpiresIn, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInNotIn(List<Long> values) {
+            return notIn(r2ExpiresIn, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInBetween(Long value1, Long value2) {
+            return between(r2ExpiresIn, value1, value2);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR2ExpiresInNotBetween(Long value1, Long value2) {
+            return notBetween(r2ExpiresIn, value1, value2);
+        }
         public TaobaoSessionMapExample.Criteria andShopIdIsNull() {
-            this.addCriterion("shop_id is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(shopId);
         }
 
         public TaobaoSessionMapExample.Criteria andShopIdIsNotNull() {
-            this.addCriterion("shop_id is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(shopId);
         }
 
         public TaobaoSessionMapExample.Criteria andShopIdEqualTo(Long value) {
-            this.addCriterion("shop_id =", value, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(shopId, value);
         }
 
         public TaobaoSessionMapExample.Criteria andShopIdNotEqualTo(Long value) {
-            this.addCriterion("shop_id <>", value, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(shopId, value);
         }
 
         public TaobaoSessionMapExample.Criteria andShopIdGreaterThan(Long value) {
-            this.addCriterion("shop_id >", value, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(shopId, value);
         }
 
         public TaobaoSessionMapExample.Criteria andShopIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("shop_id >=", value, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(shopId, value);
         }
 
         public TaobaoSessionMapExample.Criteria andShopIdLessThan(Long value) {
-            this.addCriterion("shop_id <", value, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(shopId, value);
         }
 
         public TaobaoSessionMapExample.Criteria andShopIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("shop_id <=", value, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(shopId, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andShopIdLike(String value) {
-            this.addCriterion("shop_id like", value, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andShopIdNotLike(String value) {
-            this.addCriterion("shop_id not like", value, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andShopIdIn(List<Long> values) {
-            this.addCriterion("shop_id in", values, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andShopIdIn(List<Long> values) {
+            return in(shopId, values);
         }
 
         public TaobaoSessionMapExample.Criteria andShopIdNotIn(List<Long> values) {
-            this.addCriterion("shop_id not in", values, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(shopId, values);
         }
 
         public TaobaoSessionMapExample.Criteria andShopIdBetween(Long value1, Long value2) {
-            this.addCriterion("shop_id between", value1, value2, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(shopId, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andShopIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("shop_id not between", value1, value2, "shopId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(shopId, value1, value2);
         }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenIsNull() {
-            this.addCriterion("refresh_token is null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenIsNotNull() {
-            this.addCriterion("refresh_token is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenEqualTo(String value) {
-            this.addCriterion("refresh_token =", value, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenNotEqualTo(String value) {
-            this.addCriterion("refresh_token <>", value, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenGreaterThan(String value) {
-            this.addCriterion("refresh_token >", value, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenGreaterThanOrEqualTo(String value) {
-            this.addCriterion("refresh_token >=", value, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenLessThan(String value) {
-            this.addCriterion("refresh_token <", value, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenLessThanOrEqualTo(String value) {
-            this.addCriterion("refresh_token <=", value, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenLike(String value) {
-            this.addCriterion("refresh_token like", value, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenNotLike(String value) {
-            this.addCriterion("refresh_token not like", value, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRefreshTokenIn(List<String> values) {
-            this.addCriterion("refresh_token in", values, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenNotIn(List<String> values) {
-            this.addCriterion("refresh_token not in", values, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenBetween(String value1, String value2) {
-            this.addCriterion("refresh_token between", value1, value2, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andRefreshTokenNotBetween(String value1, String value2) {
-            this.addCriterion("refresh_token not between", value1, value2, "refreshToken");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
         public TaobaoSessionMapExample.Criteria andW2ExpiresInIsNull() {
-            this.addCriterion("w2_expires_in is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(w2ExpiresIn);
         }
 
         public TaobaoSessionMapExample.Criteria andW2ExpiresInIsNotNull() {
-            this.addCriterion("w2_expires_in is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(w2ExpiresIn);
         }
 
         public TaobaoSessionMapExample.Criteria andW2ExpiresInEqualTo(Long value) {
-            this.addCriterion("w2_expires_in =", value, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(w2ExpiresIn, value);
         }
 
         public TaobaoSessionMapExample.Criteria andW2ExpiresInNotEqualTo(Long value) {
-            this.addCriterion("w2_expires_in <>", value, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(w2ExpiresIn, value);
         }
 
         public TaobaoSessionMapExample.Criteria andW2ExpiresInGreaterThan(Long value) {
-            this.addCriterion("w2_expires_in >", value, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(w2ExpiresIn, value);
         }
 
         public TaobaoSessionMapExample.Criteria andW2ExpiresInGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("w2_expires_in >=", value, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(w2ExpiresIn, value);
         }
 
         public TaobaoSessionMapExample.Criteria andW2ExpiresInLessThan(Long value) {
-            this.addCriterion("w2_expires_in <", value, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(w2ExpiresIn, value);
         }
 
         public TaobaoSessionMapExample.Criteria andW2ExpiresInLessThanOrEqualTo(Long value) {
-            this.addCriterion("w2_expires_in <=", value, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(w2ExpiresIn, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andW2ExpiresInLike(String value) {
-            this.addCriterion("w2_expires_in like", value, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andW2ExpiresInNotLike(String value) {
-            this.addCriterion("w2_expires_in not like", value, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andW2ExpiresInIn(List<Long> values) {
-            this.addCriterion("w2_expires_in in", values, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andW2ExpiresInIn(List<Long> values) {
+            return in(w2ExpiresIn, values);
         }
 
         public TaobaoSessionMapExample.Criteria andW2ExpiresInNotIn(List<Long> values) {
-            this.addCriterion("w2_expires_in not in", values, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(w2ExpiresIn, values);
         }
 
         public TaobaoSessionMapExample.Criteria andW2ExpiresInBetween(Long value1, Long value2) {
-            this.addCriterion("w2_expires_in between", value1, value2, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(w2ExpiresIn, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andW2ExpiresInNotBetween(Long value1, Long value2) {
-            this.addCriterion("w2_expires_in not between", value1, value2, "w2ExpiresIn");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(w2ExpiresIn, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andFreshTimeIsNull() {
+            return isNull(freshTime);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9IsNull() {
-            this.addCriterion("remark9 is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeIsNotNull() {
+            return isNotNull(freshTime);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9IsNotNull() {
-            this.addCriterion("remark9 is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeEqualTo(Date value) {
+            return equalTo(freshTime, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9EqualTo(String value) {
-            this.addCriterion("remark9 =", value, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeNotEqualTo(Date value) {
+            return notEqualTo(freshTime, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9NotEqualTo(String value) {
-            this.addCriterion("remark9 <>", value, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeGreaterThan(Date value) {
+            return greaterThan(freshTime, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9GreaterThan(String value) {
-            this.addCriterion("remark9 >", value, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(freshTime, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark9 >=", value, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeLessThan(Date value) {
+            return lessThan(freshTime, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9LessThan(String value) {
-            this.addCriterion("remark9 <", value, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(freshTime, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9LessThanOrEqualTo(String value) {
-            this.addCriterion("remark9 <=", value, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeIn(List<Date> values) {
+            return in(freshTime, values);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9Like(String value) {
-            this.addCriterion("remark9 like", value, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeNotIn(List<Date> values) {
+            return notIn(freshTime, values);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9NotLike(String value) {
-            this.addCriterion("remark9 not like", value, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemark9In(List<String> values) {
-            this.addCriterion("remark9 in", values, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeBetween(Date value1, Date value2) {
+            return between(freshTime, value1, value2);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9NotIn(List<String> values) {
-            this.addCriterion("remark9 not in", values, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andFreshTimeNotBetween(Date value1, Date value2) {
+            return notBetween(freshTime, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andReExpiresInIsNull() {
+            return isNull(reExpiresIn);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9Between(String value1, String value2) {
-            this.addCriterion("remark9 between", value1, value2, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andReExpiresInIsNotNull() {
+            return isNotNull(reExpiresIn);
         }
 
-        public TaobaoSessionMapExample.Criteria andRemark9NotBetween(String value1, String value2) {
-            this.addCriterion("remark9 not between", value1, value2, "remark9");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andReExpiresInEqualTo(Long value) {
+            return equalTo(reExpiresIn, value);
         }
 
+        public TaobaoSessionMapExample.Criteria andReExpiresInNotEqualTo(Long value) {
+            return notEqualTo(reExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andReExpiresInGreaterThan(Long value) {
+            return greaterThan(reExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andReExpiresInGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(reExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andReExpiresInLessThan(Long value) {
+            return lessThan(reExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andReExpiresInLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(reExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andReExpiresInIn(List<Long> values) {
+            return in(reExpiresIn, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andReExpiresInNotIn(List<Long> values) {
+            return notIn(reExpiresIn, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andReExpiresInBetween(Long value1, Long value2) {
+            return between(reExpiresIn, value1, value2);
+        }
+
+        public TaobaoSessionMapExample.Criteria andReExpiresInNotBetween(Long value1, Long value2) {
+            return notBetween(reExpiresIn, value1, value2);
+        }
         public TaobaoSessionMapExample.Criteria andUserIdIsNull() {
-            this.addCriterion("user_id is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(userId);
         }
 
         public TaobaoSessionMapExample.Criteria andUserIdIsNotNull() {
-            this.addCriterion("user_id is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(userId);
         }
 
         public TaobaoSessionMapExample.Criteria andUserIdEqualTo(Long value) {
-            this.addCriterion("user_id =", value, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(userId, value);
         }
 
         public TaobaoSessionMapExample.Criteria andUserIdNotEqualTo(Long value) {
-            this.addCriterion("user_id <>", value, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(userId, value);
         }
 
         public TaobaoSessionMapExample.Criteria andUserIdGreaterThan(Long value) {
-            this.addCriterion("user_id >", value, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(userId, value);
         }
 
         public TaobaoSessionMapExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
-            this.addCriterion("user_id >=", value, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(userId, value);
         }
 
         public TaobaoSessionMapExample.Criteria andUserIdLessThan(Long value) {
-            this.addCriterion("user_id <", value, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(userId, value);
         }
 
         public TaobaoSessionMapExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
-            this.addCriterion("user_id <=", value, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(userId, value);
         }
 
-        public TaobaoSessionMapExample.Criteria andUserIdLike(String value) {
-            this.addCriterion("user_id like", value, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }
-
-        public TaobaoSessionMapExample.Criteria andUserIdNotLike(String value) {
-            this.addCriterion("user_id not like", value, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andUserIdIn(List<Long> values) {
-            this.addCriterion("user_id in", values, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
+        public TaobaoSessionMapExample.Criteria andUserIdIn(List<Long> values) {
+            return in(userId, values);
         }
 
         public TaobaoSessionMapExample.Criteria andUserIdNotIn(List<Long> values) {
-            this.addCriterion("user_id not in", values, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(userId, values);
         }
 
         public TaobaoSessionMapExample.Criteria andUserIdBetween(Long value1, Long value2) {
-            this.addCriterion("user_id between", value1, value2, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(userId, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
-            this.addCriterion("user_id not between", value1, value2, "userId");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(userId, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andRemark9IsNull() {
+            return isNull(remark9);
         }
 
+        public TaobaoSessionMapExample.Criteria andRemark9IsNotNull() {
+            return isNotNull(remark9);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9EqualTo(String value) {
+            return equalTo(remark9, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9NotEqualTo(String value) {
+            return notEqualTo(remark9, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9GreaterThan(String value) {
+            return greaterThan(remark9, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark9, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9LessThan(String value) {
+            return lessThan(remark9, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark9, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9Like(String value) {
+            return like(remark9, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9NotLike(String value) {
+            return notLike(remark9, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9In(List<String> values) {
+            return in(remark9, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9NotIn(List<String> values) {
+            return notIn(remark9, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9Between(String value1, String value2) {
+            return between(remark9, value1, value2);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark9NotBetween(String value1, String value2) {
+            return notBetween(remark9, value1, value2);
+        }
         public TaobaoSessionMapExample.Criteria andRemark8IsNull() {
-            this.addCriterion("remark8 is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(remark8);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8IsNotNull() {
-            this.addCriterion("remark8 is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(remark8);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8EqualTo(String value) {
-            this.addCriterion("remark8 =", value, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(remark8, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8NotEqualTo(String value) {
-            this.addCriterion("remark8 <>", value, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(remark8, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8GreaterThan(String value) {
-            this.addCriterion("remark8 >", value, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(remark8, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark8 >=", value, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(remark8, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8LessThan(String value) {
-            this.addCriterion("remark8 <", value, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(remark8, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8LessThanOrEqualTo(String value) {
-            this.addCriterion("remark8 <=", value, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(remark8, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8Like(String value) {
-            this.addCriterion("remark8 like", value, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(remark8, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8NotLike(String value) {
-            this.addCriterion("remark8 not like", value, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemark8In(List<String> values) {
-            this.addCriterion("remark8 in", values, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(remark8, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark8In(List<String> values) {
+            return in(remark8, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8NotIn(List<String> values) {
-            this.addCriterion("remark8 not in", values, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(remark8, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8Between(String value1, String value2) {
-            this.addCriterion("remark8 between", value1, value2, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(remark8, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark8NotBetween(String value1, String value2) {
-            this.addCriterion("remark8 not between", value1, value2, "remark8");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(remark8, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInIsNull() {
+            return isNull(r1ExpiresIn);
         }
 
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInIsNotNull() {
+            return isNotNull(r1ExpiresIn);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInEqualTo(Long value) {
+            return equalTo(r1ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInNotEqualTo(Long value) {
+            return notEqualTo(r1ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInGreaterThan(Long value) {
+            return greaterThan(r1ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(r1ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInLessThan(Long value) {
+            return lessThan(r1ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(r1ExpiresIn, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInIn(List<Long> values) {
+            return in(r1ExpiresIn, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInNotIn(List<Long> values) {
+            return notIn(r1ExpiresIn, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInBetween(Long value1, Long value2) {
+            return between(r1ExpiresIn, value1, value2);
+        }
+
+        public TaobaoSessionMapExample.Criteria andR1ExpiresInNotBetween(Long value1, Long value2) {
+            return notBetween(r1ExpiresIn, value1, value2);
+        }
         public TaobaoSessionMapExample.Criteria andRemark10IsNull() {
-            this.addCriterion("remark10 is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(remark10);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10IsNotNull() {
-            this.addCriterion("remark10 is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(remark10);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10EqualTo(String value) {
-            this.addCriterion("remark10 =", value, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(remark10, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10NotEqualTo(String value) {
-            this.addCriterion("remark10 <>", value, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(remark10, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10GreaterThan(String value) {
-            this.addCriterion("remark10 >", value, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(remark10, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark10 >=", value, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(remark10, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10LessThan(String value) {
-            this.addCriterion("remark10 <", value, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(remark10, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10LessThanOrEqualTo(String value) {
-            this.addCriterion("remark10 <=", value, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(remark10, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10Like(String value) {
-            this.addCriterion("remark10 like", value, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(remark10, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10NotLike(String value) {
-            this.addCriterion("remark10 not like", value, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemark10In(List<String> values) {
-            this.addCriterion("remark10 in", values, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(remark10, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark10In(List<String> values) {
+            return in(remark10, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10NotIn(List<String> values) {
-            this.addCriterion("remark10 not in", values, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(remark10, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10Between(String value1, String value2) {
-            this.addCriterion("remark10 between", value1, value2, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(remark10, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark10NotBetween(String value1, String value2) {
-            this.addCriterion("remark10 not between", value1, value2, "remark10");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(remark10, value1, value2);
         }
-
         public TaobaoSessionMapExample.Criteria andRemark5IsNull() {
-            this.addCriterion("remark5 is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(remark5);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5IsNotNull() {
-            this.addCriterion("remark5 is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(remark5);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5EqualTo(String value) {
-            this.addCriterion("remark5 =", value, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(remark5, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5NotEqualTo(String value) {
-            this.addCriterion("remark5 <>", value, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(remark5, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5GreaterThan(String value) {
-            this.addCriterion("remark5 >", value, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(remark5, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark5 >=", value, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(remark5, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5LessThan(String value) {
-            this.addCriterion("remark5 <", value, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(remark5, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5LessThanOrEqualTo(String value) {
-            this.addCriterion("remark5 <=", value, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(remark5, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5Like(String value) {
-            this.addCriterion("remark5 like", value, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(remark5, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5NotLike(String value) {
-            this.addCriterion("remark5 not like", value, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemark5In(List<String> values) {
-            this.addCriterion("remark5 in", values, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(remark5, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark5In(List<String> values) {
+            return in(remark5, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5NotIn(List<String> values) {
-            this.addCriterion("remark5 not in", values, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(remark5, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5Between(String value1, String value2) {
-            this.addCriterion("remark5 between", value1, value2, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(remark5, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark5NotBetween(String value1, String value2) {
-            this.addCriterion("remark5 not between", value1, value2, "remark5");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(remark5, value1, value2);
         }
-
         public TaobaoSessionMapExample.Criteria andRemark4IsNull() {
-            this.addCriterion("remark4 is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(remark4);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4IsNotNull() {
-            this.addCriterion("remark4 is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(remark4);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4EqualTo(String value) {
-            this.addCriterion("remark4 =", value, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(remark4, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4NotEqualTo(String value) {
-            this.addCriterion("remark4 <>", value, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(remark4, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4GreaterThan(String value) {
-            this.addCriterion("remark4 >", value, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(remark4, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark4 >=", value, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(remark4, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4LessThan(String value) {
-            this.addCriterion("remark4 <", value, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(remark4, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4LessThanOrEqualTo(String value) {
-            this.addCriterion("remark4 <=", value, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(remark4, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4Like(String value) {
-            this.addCriterion("remark4 like", value, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(remark4, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4NotLike(String value) {
-            this.addCriterion("remark4 not like", value, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemark4In(List<String> values) {
-            this.addCriterion("remark4 in", values, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(remark4, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark4In(List<String> values) {
+            return in(remark4, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4NotIn(List<String> values) {
-            this.addCriterion("remark4 not in", values, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(remark4, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4Between(String value1, String value2) {
-            this.addCriterion("remark4 between", value1, value2, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(remark4, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark4NotBetween(String value1, String value2) {
-            this.addCriterion("remark4 not between", value1, value2, "remark4");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(remark4, value1, value2);
         }
-
         public TaobaoSessionMapExample.Criteria andAppkeyIsNull() {
-            this.addCriterion("appkey is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(appkey);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyIsNotNull() {
-            this.addCriterion("appkey is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(appkey);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyEqualTo(String value) {
-            this.addCriterion("appkey =", value, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(appkey, value);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyNotEqualTo(String value) {
-            this.addCriterion("appkey <>", value, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(appkey, value);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyGreaterThan(String value) {
-            this.addCriterion("appkey >", value, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(appkey, value);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyGreaterThanOrEqualTo(String value) {
-            this.addCriterion("appkey >=", value, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(appkey, value);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyLessThan(String value) {
-            this.addCriterion("appkey <", value, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(appkey, value);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyLessThanOrEqualTo(String value) {
-            this.addCriterion("appkey <=", value, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(appkey, value);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyLike(String value) {
-            this.addCriterion("appkey like", value, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(appkey, value);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyNotLike(String value) {
-            this.addCriterion("appkey not like", value, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andAppkeyIn(List<String> values) {
-            this.addCriterion("appkey in", values, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(appkey, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andAppkeyIn(List<String> values) {
+            return in(appkey, values);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyNotIn(List<String> values) {
-            this.addCriterion("appkey not in", values, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(appkey, values);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyBetween(String value1, String value2) {
-            this.addCriterion("appkey between", value1, value2, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(appkey, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andAppkeyNotBetween(String value1, String value2) {
-            this.addCriterion("appkey not between", value1, value2, "appkey");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(appkey, value1, value2);
         }
-
         public TaobaoSessionMapExample.Criteria andRemark7IsNull() {
-            this.addCriterion("remark7 is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(remark7);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7IsNotNull() {
-            this.addCriterion("remark7 is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(remark7);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7EqualTo(String value) {
-            this.addCriterion("remark7 =", value, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(remark7, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7NotEqualTo(String value) {
-            this.addCriterion("remark7 <>", value, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(remark7, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7GreaterThan(String value) {
-            this.addCriterion("remark7 >", value, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(remark7, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark7 >=", value, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(remark7, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7LessThan(String value) {
-            this.addCriterion("remark7 <", value, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(remark7, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7LessThanOrEqualTo(String value) {
-            this.addCriterion("remark7 <=", value, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(remark7, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7Like(String value) {
-            this.addCriterion("remark7 like", value, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(remark7, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7NotLike(String value) {
-            this.addCriterion("remark7 not like", value, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemark7In(List<String> values) {
-            this.addCriterion("remark7 in", values, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(remark7, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark7In(List<String> values) {
+            return in(remark7, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7NotIn(List<String> values) {
-            this.addCriterion("remark7 not in", values, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(remark7, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7Between(String value1, String value2) {
-            this.addCriterion("remark7 between", value1, value2, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(remark7, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark7NotBetween(String value1, String value2) {
-            this.addCriterion("remark7 not between", value1, value2, "remark7");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(remark7, value1, value2);
         }
-
         public TaobaoSessionMapExample.Criteria andRemark6IsNull() {
-            this.addCriterion("remark6 is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(remark6);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6IsNotNull() {
-            this.addCriterion("remark6 is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(remark6);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6EqualTo(String value) {
-            this.addCriterion("remark6 =", value, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(remark6, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6NotEqualTo(String value) {
-            this.addCriterion("remark6 <>", value, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(remark6, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6GreaterThan(String value) {
-            this.addCriterion("remark6 >", value, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(remark6, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark6 >=", value, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(remark6, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6LessThan(String value) {
-            this.addCriterion("remark6 <", value, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(remark6, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6LessThanOrEqualTo(String value) {
-            this.addCriterion("remark6 <=", value, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(remark6, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6Like(String value) {
-            this.addCriterion("remark6 like", value, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(remark6, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6NotLike(String value) {
-            this.addCriterion("remark6 not like", value, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemark6In(List<String> values) {
-            this.addCriterion("remark6 in", values, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(remark6, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark6In(List<String> values) {
+            return in(remark6, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6NotIn(List<String> values) {
-            this.addCriterion("remark6 not in", values, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(remark6, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6Between(String value1, String value2) {
-            this.addCriterion("remark6 between", value1, value2, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(remark6, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark6NotBetween(String value1, String value2) {
-            this.addCriterion("remark6 not between", value1, value2, "remark6");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(remark6, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andTokenTypeIsNull() {
+            return isNull(tokenType);
         }
 
+        public TaobaoSessionMapExample.Criteria andTokenTypeIsNotNull() {
+            return isNotNull(tokenType);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeEqualTo(String value) {
+            return equalTo(tokenType, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeNotEqualTo(String value) {
+            return notEqualTo(tokenType, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeGreaterThan(String value) {
+            return greaterThan(tokenType, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(tokenType, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeLessThan(String value) {
+            return lessThan(tokenType, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(tokenType, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeLike(String value) {
+            return like(tokenType, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeNotLike(String value) {
+            return notLike(tokenType, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeIn(List<String> values) {
+            return in(tokenType, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeNotIn(List<String> values) {
+            return notIn(tokenType, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeBetween(String value1, String value2) {
+            return between(tokenType, value1, value2);
+        }
+
+        public TaobaoSessionMapExample.Criteria andTokenTypeNotBetween(String value1, String value2) {
+            return notBetween(tokenType, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdIsNull() {
+            return isNull(subTaobaoUserId);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdIsNotNull() {
+            return isNotNull(subTaobaoUserId);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdEqualTo(Long value) {
+            return equalTo(subTaobaoUserId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdNotEqualTo(Long value) {
+            return notEqualTo(subTaobaoUserId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdGreaterThan(Long value) {
+            return greaterThan(subTaobaoUserId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(subTaobaoUserId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdLessThan(Long value) {
+            return lessThan(subTaobaoUserId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(subTaobaoUserId, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdIn(List<Long> values) {
+            return in(subTaobaoUserId, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdNotIn(List<Long> values) {
+            return notIn(subTaobaoUserId, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdBetween(Long value1, Long value2) {
+            return between(subTaobaoUserId, value1, value2);
+        }
+
+        public TaobaoSessionMapExample.Criteria andSubTaobaoUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(subTaobaoUserId, value1, value2);
+        }
         public TaobaoSessionMapExample.Criteria andRemark1IsNull() {
-            this.addCriterion("remark1 is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(remark1);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1IsNotNull() {
-            this.addCriterion("remark1 is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(remark1);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1EqualTo(String value) {
-            this.addCriterion("remark1 =", value, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(remark1, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1NotEqualTo(String value) {
-            this.addCriterion("remark1 <>", value, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(remark1, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1GreaterThan(String value) {
-            this.addCriterion("remark1 >", value, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(remark1, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark1 >=", value, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(remark1, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1LessThan(String value) {
-            this.addCriterion("remark1 <", value, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(remark1, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1LessThanOrEqualTo(String value) {
-            this.addCriterion("remark1 <=", value, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(remark1, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1Like(String value) {
-            this.addCriterion("remark1 like", value, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(remark1, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1NotLike(String value) {
-            this.addCriterion("remark1 not like", value, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemark1In(List<String> values) {
-            this.addCriterion("remark1 in", values, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(remark1, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark1In(List<String> values) {
+            return in(remark1, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1NotIn(List<String> values) {
-            this.addCriterion("remark1 not in", values, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(remark1, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1Between(String value1, String value2) {
-            this.addCriterion("remark1 between", value1, value2, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(remark1, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark1NotBetween(String value1, String value2) {
-            this.addCriterion("remark1 not between", value1, value2, "remark1");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(remark1, value1, value2);
         }
-
         public TaobaoSessionMapExample.Criteria andRemark3IsNull() {
-            this.addCriterion("remark3 is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(remark3);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3IsNotNull() {
-            this.addCriterion("remark3 is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(remark3);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3EqualTo(String value) {
-            this.addCriterion("remark3 =", value, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(remark3, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3NotEqualTo(String value) {
-            this.addCriterion("remark3 <>", value, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(remark3, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3GreaterThan(String value) {
-            this.addCriterion("remark3 >", value, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(remark3, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark3 >=", value, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(remark3, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3LessThan(String value) {
-            this.addCriterion("remark3 <", value, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(remark3, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3LessThanOrEqualTo(String value) {
-            this.addCriterion("remark3 <=", value, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(remark3, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3Like(String value) {
-            this.addCriterion("remark3 like", value, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(remark3, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3NotLike(String value) {
-            this.addCriterion("remark3 not like", value, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemark3In(List<String> values) {
-            this.addCriterion("remark3 in", values, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(remark3, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark3In(List<String> values) {
+            return in(remark3, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3NotIn(List<String> values) {
-            this.addCriterion("remark3 not in", values, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(remark3, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3Between(String value1, String value2) {
-            this.addCriterion("remark3 between", value1, value2, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(remark3, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark3NotBetween(String value1, String value2) {
-            this.addCriterion("remark3 not between", value1, value2, "remark3");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(remark3, value1, value2);
+        }
+        public TaobaoSessionMapExample.Criteria andRefreshTokenIsNull() {
+            return isNull(refreshToken);
         }
 
+        public TaobaoSessionMapExample.Criteria andRefreshTokenIsNotNull() {
+            return isNotNull(refreshToken);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenEqualTo(String value) {
+            return equalTo(refreshToken, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenNotEqualTo(String value) {
+            return notEqualTo(refreshToken, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenGreaterThan(String value) {
+            return greaterThan(refreshToken, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(refreshToken, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenLessThan(String value) {
+            return lessThan(refreshToken, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(refreshToken, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenLike(String value) {
+            return like(refreshToken, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenNotLike(String value) {
+            return notLike(refreshToken, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenIn(List<String> values) {
+            return in(refreshToken, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenNotIn(List<String> values) {
+            return notIn(refreshToken, values);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenBetween(String value1, String value2) {
+            return between(refreshToken, value1, value2);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRefreshTokenNotBetween(String value1, String value2) {
+            return notBetween(refreshToken, value1, value2);
+        }
         public TaobaoSessionMapExample.Criteria andRemark2IsNull() {
-            this.addCriterion("remark2 is null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNull(remark2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2IsNotNull() {
-            this.addCriterion("remark2 is not null");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return isNotNull(remark2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2EqualTo(String value) {
-            this.addCriterion("remark2 =", value, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return equalTo(remark2, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2NotEqualTo(String value) {
-            this.addCriterion("remark2 <>", value, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notEqualTo(remark2, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2GreaterThan(String value) {
-            this.addCriterion("remark2 >", value, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThan(remark2, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2GreaterThanOrEqualTo(String value) {
-            this.addCriterion("remark2 >=", value, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return greaterThanOrEqualTo(remark2, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2LessThan(String value) {
-            this.addCriterion("remark2 <", value, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThan(remark2, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2LessThanOrEqualTo(String value) {
-            this.addCriterion("remark2 <=", value, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return lessThanOrEqualTo(remark2, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2Like(String value) {
-            this.addCriterion("remark2 like", value, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return like(remark2, value);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2NotLike(String value) {
-            this.addCriterion("remark2 not like", value, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
-        }        public TaobaoSessionMapExample.Criteria andRemark2In(List<String> values) {
-            this.addCriterion("remark2 in", values, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notLike(remark2, value);
+        }
+
+        public TaobaoSessionMapExample.Criteria andRemark2In(List<String> values) {
+            return in(remark2, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2NotIn(List<String> values) {
-            this.addCriterion("remark2 not in", values, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notIn(remark2, values);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2Between(String value1, String value2) {
-            this.addCriterion("remark2 between", value1, value2, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return between(remark2, value1, value2);
         }
 
         public TaobaoSessionMapExample.Criteria andRemark2NotBetween(String value1, String value2) {
-            this.addCriterion("remark2 not between", value1, value2, "remark2");
-            return (TaobaoSessionMapExample.Criteria)this;
+            return notBetween(remark2, value1, value2);
         }
     }
 }
