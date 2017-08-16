@@ -49,6 +49,8 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             PackResultVO print = new PackResultVO();
             print.setSendId(send.getSendId());
             print.setGoodsInfo(order.getStoreGoodsCode()+"\t"+order.getPropStr());
+            print.setExpressName(send.getExpressName());
+            print.setExpressCode(send.getExpressCode());
             return print;
         }
         DaifaWaitSendOrder daifaWaitSendOrder=new DaifaWaitSendOrder();
@@ -122,6 +124,8 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         PackResultVO print = new PackResultVO();
         print.setSendId(send.getSendId());
         print.setGoodsInfo(order.getStoreGoodsCode()+"\t"+order.getPropStr());
+        print.setExpressName(send.getExpressName());
+        print.setExpressCode(send.getExpressCode());
 
         return print;
     }
