@@ -132,4 +132,6 @@
         <property name="smtptimeout" value="${xz_smtptimeout}"/>
 
     </bean>
+
+    <import resource="message_queue.xml"/>
 </beans>

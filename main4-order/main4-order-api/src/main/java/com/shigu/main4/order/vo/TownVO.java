@@ -31,4 +31,19 @@ public class TownVO implements Serializable{
     public void setTown(String town) {
         this.town = town;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TownVO townVO = (TownVO) o;
+
+        return townId != null ? townId.equals(townVO.townId) : townVO.townId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return townId != null ? townId.hashCode() : 0;
+    }
 }

@@ -13,6 +13,8 @@ public class ItemOrderVO extends OrderVO {
 
     private Long senderId;
 
+    private Long userId;
+
     private OrderStatus orderStatus;
     /**
      * 单子创建时间
@@ -31,6 +33,14 @@ public class ItemOrderVO extends OrderVO {
 
     public void setSenderId(Long senderId) {
         this.senderId = senderId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public OrderStatus getOrderStatus() {

@@ -1,5 +1,6 @@
 package com.shigu.main4.order.services.impl;
 
+import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
@@ -10,8 +11,9 @@ import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
+import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.services.AfterSaleService;
-import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.*;
@@ -38,13 +40,13 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     private static final Logger logger = LoggerFactory.getLogger(AfterSaleServiceImpl.class);
 
     @Autowired
-    private ItemOrderService itemOrderService;
-
-    @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
 
     @Autowired
-    private ExpressCompanyMapper expressCompanyMapper;
+    private OrderMessageProducter orderMessageProducter;
+
+    @Autowired
+    private OrderConstantService orderConstantService;
 
     /**
      * 售后页面的子单简单数据
@@ -117,8 +119,12 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public Long preRefundApply(Long subOrderId, int refundCount, Long refundMoney) throws OrderException {
-        return SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
+        Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
                 .refundApply(1, refundCount, refundMoney, "发起退款申请");
+
+        // 仅退款消息推送
+        orderMessageProducter.orderRefundNoItem(refundId, subOrderId);
+        return refundId;
     }
 
 
@@ -135,8 +141,12 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public Long returnGoodsApply(Long subOrderId, int refundCount, Long refundMoney,String refundReason, String refundDesc) throws OrderException {
-        return SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
-                .refundApply(2, refundCount, refundMoney, refundReason+"@_@"+refundDesc);
+        SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId);
+        Long refundId = subItemOrder.refundApply(2, refundCount, refundMoney, refundReason + "," + refundDesc);
+
+        // TODO: 退货退款消息推送
+//        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, refundMoney, refundReason + "," + refundDesc);
+        return refundId;
     }
 
     /**
@@ -150,8 +160,12 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public Long exchangeApply(Long subOrderId, String refundReason, String refundDesc) throws OrderException {
-        return SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
-                .refundApply(3, -1, -1L, refundReason+"@_@"+refundDesc);
+        Long refundId = SpringBeanFactory.getBean(SubItemOrder.class, subOrderId)
+                .refundApply(3, -1, -1L, refundReason + "," + refundDesc);
+
+        // TODO: 换货消息推送
+//        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, 0L, refundReason + "," + refundDesc);
+        return refundId;
     }
 
     /**
@@ -285,7 +299,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public List<ExpressVo> selectExpress() {
-        throw new RuntimeException("what are you 弄啥咧.");
+        return orderConstantService.selExpresses();
     }
 
     /**
@@ -298,9 +312,35 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public void chooseExpress(Long refundId, Long expressId, String expressCode) {
-        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCode);
+        modExpress(refundId, expressId, expressCode, false);
     }
 
+    private void modExpress(Long refundId, Long expressId, String expressCode, boolean modify) {
+        SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCode);
+        //TODO: 暂时注释掉，消息接口可能有变化
+//        orderMessageProducter.refundCourierNumberModify(refundId, selCompanyById(expressId), expressCode, modify);
+    }
+
+    private String selCompanyById(Long expressId) {
+        ExpressVo expressCompany = orderConstantService.selByExpressId(expressId);
+        return expressCompany == null ? "" : expressCompany.getExpressName();
+    }
+
+    /**
+     * ====================================================================================
+     * 修改快递公司
+     *
+     * @param refundId
+     * @param expressId
+     * @param expressCode
+     * @create: zf
+     * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
+     * @return:
+     */
+    @Override
+    public void modifyExpress(Long refundId, Long expressId, String expressCode) {
+        modExpress(refundId, expressId, expressCode, true);
+    }
     /**
      * 获取已填写的快递信息
      *
@@ -323,22 +363,6 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 //            throw new Main4Exception(e.getMessage());
 //        }
         return vo;
-    }
-
-    /**
-     * ====================================================================================
-     * 修改快递公司
-     *
-     * @param refundId
-     * @param expressId
-     * @param expressCode
-     * @create: zf
-     * @param: refundId 退换货id   expressId快递公司id，expressCode快递单号
-     * @return:
-     */
-    @Override
-    public void modifyExpress(Long refundId, Long expressId, String expressCode) {
-        chooseExpress(refundId, expressId, expressCode);
     }
 
     /**

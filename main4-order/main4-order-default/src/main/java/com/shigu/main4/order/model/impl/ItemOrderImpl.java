@@ -115,6 +115,7 @@ public class ItemOrderImpl implements ItemOrder {
         orderVO.setCreateTime(order.getCreateTime());
         orderVO.setFinishTime(order.getFinishTime());
         orderVO.setOuterId(order.getOuterId());
+        orderVO.setUserId(order.getUserId());
         return orderVO;
     }
 

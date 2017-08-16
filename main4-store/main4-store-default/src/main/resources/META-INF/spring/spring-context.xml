@@ -26,7 +26,7 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath*:/META-INF/spring/*.properties</value>
+                <value>classpath*:/*.properties</value>
             </list>
         </property>
     </bean>
@@ -95,5 +95,5 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <import resource="store.xml"/>
+    <import resource="../../store.xml"/>
 </beans>
