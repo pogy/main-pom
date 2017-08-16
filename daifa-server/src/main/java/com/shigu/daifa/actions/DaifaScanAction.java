@@ -36,7 +36,7 @@ public class DaifaScanAction {
     public JSONObject doScanBarCode(String barCode) throws DaifaException {
         Long dfOrderId= null;
         try {
-            String barcode = barCode.substring(0,barCode.length()-7);
+            barCode = barCode.substring(0,barCode.length()-7);
             dfOrderId = new Long(barCode);
         } catch (NumberFormatException e) {
             throw new DaifaException("此条码对应的订单编号不存在");
