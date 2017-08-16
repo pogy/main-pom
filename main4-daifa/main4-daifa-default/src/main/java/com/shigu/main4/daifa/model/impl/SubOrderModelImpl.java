@@ -156,15 +156,16 @@ public class SubOrderModelImpl implements SubOrderModel {
         if(order==null){
             throw new DaifaException("子订单不存在");
         }
-        String remark=order.getOrderRemark();
-        if(remark==null){
-            remark=context;
-        }else{
-            remark+="@_@"+context;
-        }
         DaifaOrder updateOrder=new DaifaOrder();
         updateOrder.setDfOrderId(subOrderId);
-        updateOrder.setOrderRemark(remark);
+//        String remark=order.getOrderRemark();
+//        if(remark==null){
+//            remark=context;
+//        }else{
+//            remark+="@_@"+context;
+//        }
+//        updateOrder.setOrderRemark(remark);
+        updateOrder.setOrderRemark(context);
         daifaOrderMapper.updateByPrimaryKeySelective(updateOrder);
     }
 
