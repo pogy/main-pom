@@ -29,7 +29,7 @@
         <dependency>
             <groupId>xinzuo-mybatis</groupId>
             <artifactId>xinzuo-mybatis</artifactId>
-            <version>1.0.3-RELEASE</version>
+            <version>${xinzuo-mybatis-RO.version}</version>
         </dependency>
 
         <!--mysql部分-->

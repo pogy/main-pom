@@ -24,7 +24,7 @@
         <dependency>
             <groupId>xinzuo-mybatis</groupId>
             <artifactId>xinzuo-mybatis</artifactId>
-            <version>1.0.3-SNAPSHOT</version>
+            <version>${xinzuo-mybatis.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
