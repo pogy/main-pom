@@ -106,7 +106,7 @@ public class SubOrderModelImpl implements SubOrderModel {
     }
 
     @Override
-    public void haveGoodsTime(Date time) {
+    public void haveGoodsTime(Date time){
         DaifaOrder order=new DaifaOrder();
         order.setDfOrderId(subOrderId);
         order.setHaveGoodsDate(time);
@@ -124,7 +124,7 @@ public class SubOrderModelImpl implements SubOrderModel {
     }
 
     @Override
-    public void markDown() {
+    public void markDown(){
         DaifaOrder order=new DaifaOrder();
         order.setDfOrderId(subOrderId);
         order.setDelistIs(1);

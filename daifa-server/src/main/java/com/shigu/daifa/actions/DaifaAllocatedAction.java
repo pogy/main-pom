@@ -61,6 +61,9 @@ public class DaifaAllocatedAction {
     @RequestMapping("daifa/setIsGetGoodsJson")
     @ResponseBody
     public JSONObject setIsGetGoodsJson(Integer type,Long takeGoodsId) throws DaifaException {
+        if (type == null||takeGoodsId == null) {
+            throw new DaifaException("缺少参数");
+        }
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         daifaAllocatedService.takeGoods(daifaUser.getDaifaWorkerId(),takeGoodsId,type);
@@ -90,7 +93,11 @@ public class DaifaAllocatedAction {
      */
     @RequestMapping("daifa/printGoodsTabJson")
     @ResponseBody
-    public JSONObject printGoodsTabJson(PrintGoodsTagBO bo){
+    public JSONObject printGoodsTabJson(PrintGoodsTagBO bo) throws DaifaException {
+        if (bo.getType() == null||bo.getIds() == null||bo.getIds().size()==0) {
+            throw new DaifaException("缺少参数");
+        }
+
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION)    ;
         Long sellerId=daifaUser.getDaifaSellerId();

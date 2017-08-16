@@ -77,6 +77,7 @@ public class DaifaAllocatedService {
             for (DaifaGgoodsJoinOrder g : ggoodsForPrints) {
                 DaifaAllocatedVO vo = new DaifaAllocatedVO();
                 vo.setChildOrderId(g.getDfOrderId());
+                vo.setTakeGoodsId(g.getTakeGoodsId());
                 vo.setChildRemark(g.getOrderRemark());
                 vo.setDffs(g.getDaifaType());
                 vo.setGoodsNo(g.getStoreGoodsCode());
