@@ -2,14 +2,21 @@ package com.shigu.daifa.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
+import com.opentae.data.daifa.beans.DaifaOrder;
+import com.opentae.data.daifa.beans.DaifaTrade;
 import com.opentae.data.daifa.beans.GgoodsByStore;
 import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
+import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsTasksMapper;
+import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
+import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.actions.beans.MarketBean;
 import com.shigu.daifa.bo.OrderAllocateBO;
 import com.shigu.daifa.vo.OrderAllocateVO;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
@@ -34,6 +41,13 @@ import java.util.*;
 public class DaifaAllocateService {
     private static List<GgoodsByStore> allocateHouse;
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
+
+    private DaifaTradeMapper daifaTradeMapper;
+
+    @Autowired
+    public void setDaifaTradeMapper(DaifaTradeMapper daifaTradeMapper) {
+        this.daifaTradeMapper = daifaTradeMapper;
+    }
 
     @Autowired
     public void setDaifaGgoodsTasksMapper(DaifaGgoodsTasksMapper daifaGgoodsTasksMapper) {
@@ -68,26 +82,39 @@ public class DaifaAllocateService {
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");
         }
-        daifaGgoodsTasksExample.setOrderByClause("create_time desc");
-        int page = Integer.parseInt(bo.getPage());
-        int rows = 10;
-        daifaGgoodsTasksExample.setStartIndex((page - 1) * rows);
-        daifaGgoodsTasksExample.setEndIndex(rows);
-        List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectByConditionList(daifaGgoodsTasksExample);
-        List<OrderAllocateVO> orderAllocateVOS = new ArrayList<>();
-        for (DaifaGgoodsTasks ggoodsTask : ggoodsTasks) {
-            OrderAllocateVO vo = new OrderAllocateVO();
-            vo.setChildOrderId(ggoodsTask.getDfOrderId());
-            vo.setGoodsNo(ggoodsTask.getGoodsCode());
-            vo.setNum(ggoodsTask.getGoodsNum());
-            vo.setGoodsProperty(ggoodsTask.getPropStr());
-            vo.setImgSrc(ggoodsTask.getPicPath());
-            vo.setPiPrice(ggoodsTask.getSinglePiPrice());
-            vo.setTitle(ggoodsTask.getTitle());
-            orderAllocateVOS.add(vo);
-        }
         int count = daifaGgoodsTasksMapper.countByExample(daifaGgoodsTasksExample);
         bo.setCount(count);
+        List<OrderAllocateVO> orderAllocateVOS = new ArrayList<>();
+        if(count>0){
+            daifaGgoodsTasksExample.setOrderByClause("create_time desc");
+            int page = Integer.parseInt(bo.getPage());
+            int rows = 10;
+            daifaGgoodsTasksExample.setStartIndex((page - 1) * rows);
+            daifaGgoodsTasksExample.setEndIndex(rows);
+            List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectByConditionList(daifaGgoodsTasksExample);
+            if(ggoodsTasks.size()>0){
+                List<Long> tids=new ArrayList<>();
+                for(DaifaGgoodsTasks t:ggoodsTasks){
+                    tids.add(t.getDfTradeId());
+                }
+                DaifaTradeExample daifaTradeExample=new DaifaTradeExample();
+                daifaTradeExample.createCriteria().andDfTradeIdIn(tids);
+                List<DaifaTrade> ts=daifaTradeMapper.selectFieldsByExample(daifaTradeExample,FieldUtil.codeFields("df_trade_id,daifa_type"));
+                Map<Long,DaifaTrade> tradeMap= BeanMapper.list2Map(ts,"dfTradeId",Long.class);
+                for (DaifaGgoodsTasks ggoodsTask : ggoodsTasks) {
+                    OrderAllocateVO vo = new OrderAllocateVO();
+                    vo.setChildOrderId(ggoodsTask.getDfOrderId());
+                    vo.setGoodsNo(ggoodsTask.getGoodsCode());
+                    vo.setNum(ggoodsTask.getGoodsNum());
+                    vo.setGoodsProperty(ggoodsTask.getPropStr());
+                    vo.setImgSrc(ggoodsTask.getPicPath());
+                    vo.setPiPrice(ggoodsTask.getSinglePiPrice());
+                    vo.setTitle(ggoodsTask.getTitle());
+                    vo.setDffs(tradeMap.get(ggoodsTask.getDfTradeId()).getDaifaType());
+                    orderAllocateVOS.add(vo);
+                }
+            }
+        }
         return orderAllocateVOS;
     }
 
