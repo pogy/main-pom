@@ -145,7 +145,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
         Long refundId = subItemOrder.refundApply(2, refundCount, refundMoney, refundReason + "," + refundDesc);
 
         // TODO: 退货退款消息推送
-        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, refundMoney, refundReason + "," + refundDesc);
+//        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, refundMoney, refundReason + "," + refundDesc);
         return refundId;
     }
 
@@ -164,7 +164,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
                 .refundApply(3, -1, -1L, refundReason + "," + refundDesc);
 
         // TODO: 换货消息推送
-        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, 0L, refundReason + "," + refundDesc);
+//        orderMessageProducter.orderRefundHasItem(refundId, subOrderId, 0L, refundReason + "," + refundDesc);
         return refundId;
     }
 
@@ -317,7 +317,8 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     private void modExpress(Long refundId, Long expressId, String expressCode, boolean modify) {
         SpringBeanFactory.getBean(RefundItemOrder.class, refundId).userSended(expressCode);
-        orderMessageProducter.refundCourierNumberModify(refundId, selCompanyById(expressId), expressCode, modify);
+        //TODO: 暂时注释掉，消息接口可能有变化
+//        orderMessageProducter.refundCourierNumberModify(refundId, selCompanyById(expressId), expressCode, modify);
     }
 
     private String selCompanyById(Long expressId) {
