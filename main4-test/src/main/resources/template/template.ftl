@@ -87,9 +87,9 @@
             </Borders>
         </Style>
     </Styles>
-<#list pems as pem>
-    <Worksheet ss:Name="${pem.name}">
-        <Table ss:ExpandedColumnCount="400" ss:ExpandedRowCount="${1 + 4 * pem.datas?size}" x:FullColumns="1"
+<#list pems as term>
+    <Worksheet ss:Name="${term.name}">
+        <Table ss:ExpandedColumnCount="400" ss:ExpandedRowCount="${1 + 4 * term.datas?size}" x:FullColumns="1"
                x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="13.5">
             <Column ss:AutoFitWidth="0" ss:Width="70.5"/>
             <Column ss:AutoFitWidth="0" ss:Width="82.5"/>
@@ -104,7 +104,7 @@
                 <Cell ss:StyleID="s18"><Data ss:Type="String">统计成交量</Data></Cell>
                 <Cell ss:StyleID="s16"/>
             </Row>
-    <#list pem.datas as data>
+    <#list term.datas as data>
             <Row>
                 <Cell ss:MergeDown="3" ss:StyleID="s17"><Data ss:Type="Number">${data.userId}</Data></Cell>
                 <Cell ss:MergeDown="3" ss:StyleID="s17"><Data ss:Type="String">${data.userNick}</Data></Cell>
