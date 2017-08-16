@@ -54,9 +54,10 @@ public class OrderManageProcessImpl implements OrderManageProcess {
      * @param time 有货时间
      */
     @Override
-    public void haveGoodsTime(Long subOrderId, Date time) {
+    public void haveGoodsTime(Long subOrderId, Date time) throws DaifaException {
         SubOrderModel subOrderModel=SpringBeanFactory.getBean(SubOrderModel.class,subOrderId);
         subOrderModel.haveGoodsTime(time);
+        subOrderModel.noTake();
     }
 
     /**
@@ -64,9 +65,10 @@ public class OrderManageProcessImpl implements OrderManageProcess {
      * @param subOrderId 子订单数据
      */
     @Override
-    public void markDown(Long subOrderId) {
+    public void markDown(Long subOrderId) throws DaifaException {
         SubOrderModel subOrderModel=SpringBeanFactory.getBean(SubOrderModel.class,subOrderId);
         subOrderModel.markDown();
+        subOrderModel.noTake();
     }
 
     @Override
