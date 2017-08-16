@@ -16,9 +16,8 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <bean id="alipayClient"
           class="com.alipay.api.DefaultAlipayClient">
@@ -47,11 +46,14 @@
         <property name="smtpauth" value="${xz_smtpauth}"/>
         <property name="smtptimeout" value="${xz_smtptimeout}"/>
     </bean>
-    <dubbo:service interface="com.shigu.main4.order.services.LogisticsService" ref="logisticsService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.services.LogisticsService" ref="logisticsService" />
     <dubbo:service interface="com.shigu.main4.order.services.AfterSaleService" ref="afterSaleService" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.services.ItemOrderService" ref="itemOrderService" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.services.OrderConstantService" ref="orderConstantService" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.services.OrderListService" ref="orderListService" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.process.ItemCartProcess" ref="itemCartProcess" timeout="20000" />
     <dubbo:service interface="com.shigu.main4.order.process.ItemProductProcess" ref="itemProductProcess" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.model.PayerService" ref="xzPayerService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.model.PayerService" ref="wxPayerService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.model.PayerService" ref="aliPayerService" timeout="20000" />
 </beans>
