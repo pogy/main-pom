@@ -18,7 +18,6 @@ import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.vo.AllSubOrderVO;
 import com.shigu.daifa.vo.DaifaAllOrderVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
-import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
@@ -29,6 +28,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +43,7 @@ import java.util.List;
  */
 @Service
 public class DaifaAllOrderIndexService {
-
+    private static String LAST_OUT_TIME;//最后一次超时保存的时间yyyyMMdd
 
     private DaifaTradeMapper daifaTradeMapper;
     @Autowired
@@ -212,5 +212,20 @@ public class DaifaAllOrderIndexService {
     public JSONObject setTallyJson(Long userId,Long childOrderId) throws DaifaException {
         orderManageProcess.markDown(childOrderId);
         return JsonResponseUtil.success("标记下架成功");
+    }
+
+    public void timeOutExcute() {
+        String s = DateUtil.dateToString(new Date(), DateUtil.patternB);
+        if(LAST_OUT_TIME ==null|| !s.equals(LAST_OUT_TIME)) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    orderManageProcess.orderTimeout();
+                    LAST_OUT_TIME = s;
+                }
+            }).start();
+        }
+
+
     }
 }
