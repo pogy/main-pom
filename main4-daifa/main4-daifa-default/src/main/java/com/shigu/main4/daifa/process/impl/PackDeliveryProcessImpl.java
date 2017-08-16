@@ -70,7 +70,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             if(o.getAllocatStatus()==0){
                 throw new DaifaException("此条码对应的部分商品未分配");
             }
-            if(o.getTakeGoodsStatus()==2&&o.getRefundStatus()!=2){
+            if(o.getTakeGoodsStatus()==2&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
                 throw new DaifaException("此条码对应的部分商品未拿到货且未退款,建议入库");
             }
         }
@@ -102,7 +102,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         }
         exbo.setList(list);
         ExpressModel expressModel=SpringBeanFactory.getBean(ExpressModel.class,trade.getExpressId(),trade.getSellerId());
-        ExpressVO exvo= null;
+        ExpressVO exvo;
         try {
             exvo = expressModel.callExpress(exbo);
         } catch (DaifaException e) {
