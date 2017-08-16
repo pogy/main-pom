@@ -1,10 +1,14 @@
 package com.shigu.daifa.actions;
 
+import com.shigu.component.shiro.AuthorityUser;
+import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.OrderAllocateBO;
 import com.shigu.daifa.services.DaifaAllocateService;
 import com.shigu.daifa.vo.OrderAllocateVO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import net.sf.json.JSONObject;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,10 +41,13 @@ public class DaifaAllocateAction {
      */
     @RequestMapping("daifa/orderAllocation")
     public String orderAllocation(OrderAllocateBO bo,Model model){
+        Session session = SecurityUtils.getSubject().getSession();
+        AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         List<OrderAllocateVO> orderAllocateVOList = daifaAllocateService.orderAllcoation(bo);
         model.addAttribute("childOrders",orderAllocateVOList);
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",bo.getCount()+",10,"+bo.getPage());
+        model.addAttribute("userName",auth.getDaifaUserName ());
 
         return "daifa/orderAllocation";
     }
