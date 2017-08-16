@@ -76,11 +76,11 @@ public class DaifaAllOrderIndexService {
         DaifaTradeExample.Criteria ce = dtex.createCriteria();
         ce.andSellerIdEqualTo(sellerId);
         if (StringUtils.hasText(bo.getEndTime())) {
-            Date endDate = DateUtil.stringToDate(bo.getEndTime());
+            Date endDate = DateUtil.getIsEndTime (DateUtil.stringToDate(bo.getEndTime(),"yyyy-MM-dd"));
             ce.andCreateTimeLessThanOrEqualTo(endDate);
         }
         if (StringUtils.hasText(bo.getStartTime())) {
-            Date startDate = DateUtil.stringToDate(bo.getStartTime());
+            Date startDate =DateUtil.getIsStartTime (DateUtil.stringToDate(bo.getStartTime(),"yyyy-MM-dd")) ;
             ce.andCreateTimeGreaterThanOrEqualTo(startDate);
         }
         if (StringUtils.hasText(bo.getOrderId())) {
