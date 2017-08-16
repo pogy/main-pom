@@ -33,11 +33,6 @@ public class ItemProductVO extends ProductVO implements Serializable{
     private String title;
 
     /**
-     * 单价
-     */
-    private Long price;
-
-    /**
      * 所以市场名
      */
     private String marketName;
@@ -136,16 +131,6 @@ public class ItemProductVO extends ProductVO implements Serializable{
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    @Override
-    public Long getPrice() {
-        return price;
-    }
-
-    @Override
-    public void setPrice(Long price) {
-        this.price = price;
     }
 
     public String getMarketName() {

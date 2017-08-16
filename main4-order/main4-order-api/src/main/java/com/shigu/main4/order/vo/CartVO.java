@@ -19,10 +19,10 @@ public class CartVO extends ItemProductVO implements Serializable{
      */
     private Long skuId;
 
-    /**
-     * 店铺ID
-     */
-    private Long shopId;
+//    /**
+//     * 店铺ID
+//     */
+//    private Long shopId;
 
     /**
      * 数量
@@ -53,13 +53,13 @@ public class CartVO extends ItemProductVO implements Serializable{
         this.skuId = skuId;
     }
 
-    public Long getShopId() {
-        return shopId;
-    }
-
-    public void setShopId(Long shopId) {
-        this.shopId = shopId;
-    }
+//    public Long getShopId() {
+//        return shopId;
+//    }
+//
+//    public void setShopId(Long shopId) {
+//        this.shopId = shopId;
+//    }
 
     public Integer getNum() {
         return num;
