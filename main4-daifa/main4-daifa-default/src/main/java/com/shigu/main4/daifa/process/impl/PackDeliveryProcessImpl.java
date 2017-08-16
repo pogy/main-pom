@@ -38,6 +38,9 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     @Override
     public PackResultVO packSubOrder(Long subOrderId) throws DaifaException {
         DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(subOrderId);
+        if(order==null){
+            throw new DaifaException("此条码对应的订单编号不存在");
+        }
         DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(order.getDfTradeId());
         if(trade.getSendStatus()==2){
             DaifaSend send=new DaifaSend();
@@ -47,9 +50,6 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             print.setSendId(send.getSendId());
             print.setGoodsInfo(order.getStoreGoodsCode()+"\t"+order.getPropStr());
             return print;
-        }
-        if(order==null){
-            throw new DaifaException("此条码对应的订单编号不存在");
         }
         DaifaWaitSendOrder daifaWaitSendOrder=new DaifaWaitSendOrder();
         daifaWaitSendOrder.setDfOrderId(subOrderId);
