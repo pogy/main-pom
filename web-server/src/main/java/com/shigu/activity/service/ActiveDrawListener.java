@@ -129,7 +129,7 @@ public class ActiveDrawListener implements MessageListener {
             redisIO.putFixedTemp(key,goodsIdSet,3600*24*10);
         }
         int upNum = goodsIdSet.size();
-        if (goodsIdAdded==true&&(upNum>=3&&upNum<=7)||(upNum>=9&&upNum<=16)||(upNum>=20&&upNum<=30)) {
+        if (goodsIdAdded==true&&upNum>=3) {
             newAutumnDrawQualification.updateQualification(userId,upNum);
         }
     }
