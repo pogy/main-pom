@@ -13,6 +13,7 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.PayerService;
+import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang.StringUtils;
@@ -35,6 +36,9 @@ public abstract class PayerServiceAble implements PayerService{
 
     @Autowired
     private OrderIdGeneratorMapper orderIdGeneratorMapper;
+
+    @Autowired
+    private OrderMessageProducter orderMessageProducter;
 
     @Override
     public Long payedLeft(Long payId) {
@@ -73,8 +77,10 @@ public abstract class PayerServiceAble implements PayerService{
         }
         OrderIdGenerator orderId=orderIdGeneratorMapper.selectByPrimaryKey(apply.getOid());
         if (orderId != null&&orderId.getType()>0) {//商品订单
-            SpringBeanFactory.getBean(ItemOrder.class,apply.getOid())
-                    .payed();
+            ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, apply.getOid());
+            itemOrder.payed();
+
+            orderMessageProducter.orderPush(itemOrder);
         }
     }
 

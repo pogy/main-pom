@@ -1,10 +1,12 @@
 package com.shigu.main4.order.mq.msg;
 
+import java.io.Serializable;
+
 /**
  * 买家信息
  * Created by bugzy on 2017/8/14 0014.
  */
-public class Buyer {
+public class Buyer implements Serializable {
     private String aliWw;
     private String phone;
     private String nickInMarket;

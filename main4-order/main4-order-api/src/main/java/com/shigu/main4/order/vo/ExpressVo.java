@@ -51,4 +51,19 @@ public class ExpressVo implements Serializable{
     public void setExpressName(String expressName) {
         this.expressName = expressName;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ExpressVo expressVo = (ExpressVo) o;
+
+        return expressId != null ? expressId.equals(expressVo.expressId) : expressVo.expressId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return expressId != null ? expressId.hashCode() : 0;
+    }
 }

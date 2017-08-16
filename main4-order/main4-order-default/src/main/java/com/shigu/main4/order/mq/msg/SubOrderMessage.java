@@ -1,12 +1,13 @@
 package com.shigu.main4.order.mq.msg;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 退款子单信息
  * Created by bugzy on 2017/8/14 0014.
  */
-public class SubOrderMessage {
+public class SubOrderMessage implements Serializable {
 
     /**
      * 子单id

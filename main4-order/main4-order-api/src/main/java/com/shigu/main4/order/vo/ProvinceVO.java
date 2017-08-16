@@ -31,4 +31,19 @@ public class ProvinceVO implements Serializable{
     public void setProvinceId(Long provinceId) {
         this.provinceId = provinceId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProvinceVO that = (ProvinceVO) o;
+
+        return provinceId != null ? provinceId.equals(that.provinceId) : that.provinceId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return provinceId != null ? provinceId.hashCode() : 0;
+    }
 }

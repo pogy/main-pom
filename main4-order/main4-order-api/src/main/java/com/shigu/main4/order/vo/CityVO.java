@@ -31,4 +31,19 @@ public class CityVO implements Serializable{
     public void setCityId(Long cityId) {
         this.cityId = cityId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CityVO vo = (CityVO) o;
+
+        return cityId != null ? cityId.equals(vo.cityId) : vo.cityId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return cityId != null ? cityId.hashCode() : 0;
+    }
 }
