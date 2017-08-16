@@ -13,6 +13,7 @@ import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.services.AfterSaleService;
+import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.*;
@@ -45,7 +46,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     private OrderMessageProducter orderMessageProducter;
 
     @Autowired
-    private ExpressCompanyMapper expressCompanyMapper;
+    private OrderConstantService orderConstantService;
 
     /**
      * 售后页面的子单简单数据
@@ -298,7 +299,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
      */
     @Override
     public List<ExpressVo> selectExpress() {
-        throw new RuntimeException("what are you 弄啥咧.");
+        return orderConstantService.selExpresses();
     }
 
     /**
@@ -320,7 +321,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     }
 
     private String selCompanyById(Long expressId) {
-        ExpressCompany expressCompany = expressCompanyMapper.selectByPrimaryKey(expressId);
+        ExpressVo expressCompany = orderConstantService.selByExpressId(expressId);
         return expressCompany == null ? "" : expressCompany.getExpressName();
     }
 

@@ -5,9 +5,12 @@ import com.aliyun.openservices.ons.api.OnExceptionContext;
 import com.aliyun.openservices.ons.api.SendCallback;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
+import com.opentae.data.mall.beans.MemberUser;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.mq.msg.*;
+import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.LogisticsVO;
@@ -50,6 +53,12 @@ public class OrderMessageProducter {
     @Autowired
     private ProducerBean producerBean;
 
+    @Autowired
+    private OrderConstantService orderConstantService;
+
+    @Autowired
+    private MemberUserMapper memberUserMapper;
+
     /**
      * 订单推送
      * @param itemOrder
@@ -91,11 +100,24 @@ public class OrderMessageProducter {
         }
         order.setServices(services);
 
-        List<LogisticMessage> logistics = new ArrayList<>();
-        for (LogisticsVO logisticsVO : itemOrder.selLogisticses()) {
+        order.setLogistics(itemOrder.selLogisticses().stream().map(logisticsVO -> {
             LogisticMessage message = BeanMapper.map(logisticsVO, LogisticMessage.class);
+            message.setCity(orderConstantService.selCityByCid(message.getCityId()).getCity());
+            message.setProv(orderConstantService.selProvByPid(message.getCityId()).getProvince());
+            message.setTown(orderConstantService.selTownByTid(message.getTownId()).getTown());
+            message.setCompany(orderConstantService.selByExpressId(message.getCompanyId()).getExpressName());
+            return message;
+        }).collect(Collectors.toList()));
+
+        Buyer buyer = new Buyer();
+        MemberUser memberUser = memberUserMapper.selectByPrimaryKey(itemOrderVO.getUserId());
+        if (memberUser != null) {
+            buyer.setAliWw(memberUser.getImAliww());
+            buyer.setPhone(memberUser.getPhoneMob());
+            buyer.setNickInMarket(memberUser.getUserNick());
         }
-        order.setLogistics(logistics);
+        order.setBuyer(buyer);
+
         sendAsync(OrderMQTag.order_push, BaseMessage.success(order.getOid().toString(), "订单创建", order));
     }
 

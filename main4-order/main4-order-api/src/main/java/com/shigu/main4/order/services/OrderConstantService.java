@@ -1,11 +1,6 @@
 package com.shigu.main4.order.services;
 
-import com.shigu.main4.order.vo.CityVO;
-import com.shigu.main4.order.vo.LogisticsCompanyVO;
-import com.shigu.main4.order.vo.MetarialVO;
-import com.shigu.main4.order.vo.ProvinceVO;
-import com.shigu.main4.order.vo.ServiceVO;
-import com.shigu.main4.order.vo.TownVO;
+import com.shigu.main4.order.vo.*;
 
 import java.util.List;
 
@@ -81,6 +76,13 @@ public interface OrderConstantService {
     LogisticsCompanyVO selLogisticsById(Long senderId,Long id);
 
     /**
+     * 查询所有快递公司
+     * @return
+     */
+    List<ExpressVo> selExpresses();
+
+    ExpressVo selByExpressId(Long expressId);
+    /**
      * 查询所有省份
      * @return
      */
@@ -100,4 +102,9 @@ public interface OrderConstantService {
      */
     List<TownVO> selTownByCid(Long cityId);
 
+    ProvinceVO selProvByPid(Long pid);
+
+    CityVO selCityByCid(Long cid);
+
+    TownVO selTownByTid(Long tid);
 }

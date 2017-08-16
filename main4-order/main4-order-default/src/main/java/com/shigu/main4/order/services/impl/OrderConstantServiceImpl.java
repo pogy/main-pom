@@ -1,15 +1,8 @@
 package com.shigu.main4.order.services.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.opentae.data.mall.beans.OrderCity;
-import com.opentae.data.mall.beans.OrderConstant;
-import com.opentae.data.mall.beans.OrderProv;
-import com.opentae.data.mall.beans.OrderTown;
-import com.opentae.data.mall.interfaces.OrderCityMapper;
-import com.opentae.data.mall.interfaces.OrderConstantMapper;
-import com.opentae.data.mall.interfaces.OrderProvMapper;
-import com.opentae.data.mall.interfaces.OrderTownMapper;
-import com.shigu.main4.common.util.BeanMapper;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -37,6 +31,9 @@ public class OrderConstantServiceImpl implements OrderConstantService {
 
     @Autowired
     private OrderTownMapper orderTownMapper;
+
+    @Autowired
+    private ExpressCompanyMapper expressCompanyMapper;
 
     /**
      * 订单常量
@@ -189,27 +186,61 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     }
 
 
-    private Map<Long, List<OrderTown>> cityGroup;
-    private Map<Long, List<OrderCity>> provGroup;
-    private Map<Long, OrderProv> provMap;
-    private Map<Long, OrderCity> cityMap;
-    private Map<Long, OrderTown> townMap;
+    private Map<Long, List<TownVO>> cityGroup;
+    private Map<Long, List<CityVO>> provGroup;
+    private Map<Long, ProvinceVO> provMap;
+    private Map<Long, CityVO> cityMap;
+    private Map<Long, TownVO> townMap;
+    private Map<Long, ExpressVo> expressMap;
 
     public void initAddress() {
-        List<CityVO> orderCities = orderCityMapper.select(new OrderCity()).stream().map(c -> {
+        List<OrderCity> orderCities = orderCityMapper.select(new OrderCity());
+        List<OrderTown> orderTowns = orderTownMapper.select(new OrderTown());
+        provMap = orderProvMapper.select(new OrderProv()).stream().collect(Collectors.toMap(OrderProv::getProvId, p -> {
+            ProvinceVO vo = new ProvinceVO();
+            vo.setProvinceId(p.getProvId());
+            vo.setProvince(p.getProvName());
+            return vo;
+        }));
+
+        Function<OrderCity, CityVO> cityTransform = c -> {
             CityVO vo = new CityVO();
             vo.setCityId(c.getCityId());
             vo.setCity(c.getCityName());
             return vo;
-        }).collect(Collectors.toList());
-        List<OrderTown> orderTowns = orderTownMapper.select(new OrderTown());
-        provMap = orderProvMapper.select(new OrderProv()).stream().collect(Collectors.toMap(OrderProv::getProvId, p -> p));
-        cityMap = orderCities.stream().collect(Collectors.toMap(OrderCity::getCityId, c -> c));
-        townMap = orderTowns.stream().collect(Collectors.toMap(OrderTown::getTownId, t -> t));
+        };
 
-        cityGroup = orderTowns.stream().collect(Collectors.groupingBy(OrderTown::getCityId));
-        provGroup = orderCities.stream().collect(Collectors.groupingBy(OrderCity::getProvId));
+        Function<OrderTown, TownVO> townTransform = t -> {
+            TownVO vo = new TownVO();
+            vo.setTownId(t.getTownId());
+            vo.setTown(t.getTownName());
+            return vo;
+        };
+
+        cityMap = orderCities.stream().collect(Collectors.toMap(OrderCity::getCityId, cityTransform));
+        townMap = orderTowns.stream().collect(Collectors.toMap(OrderTown::getTownId, townTransform));
+
+        expressMap = expressCompanyMapper.select(new ExpressCompany()).stream().map(expressCompany -> {
+            ExpressVo vo = new ExpressVo();
+            vo.setExpressId(expressCompany.getExpressCompanyId());
+            vo.setExpressName(expressCompany.getExpressName());
+            return vo;
+        }).collect(Collectors.toMap(ExpressVo::getExpressId, e -> e));
+
+        cityGroup = orderTowns.stream().collect(Collectors.groupingBy(OrderTown::getCityId))
+                .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream().map(townTransform).collect(Collectors.toList())));
+        provGroup = orderCities.stream().collect(Collectors.groupingBy(OrderCity::getProvId))
+                .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream().map(cityTransform).collect(Collectors.toList())));
     }
+
+    public List<ExpressVo> selExpresses() {
+        return new ArrayList<>(expressMap.values());
+    }
+
+    public ExpressVo selByExpressId(Long expressId) {
+        return expressMap.get(expressId);
+    }
+
     /**
      * 查询所有省份
      *
@@ -217,15 +248,7 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public List<ProvinceVO> selProvinces() {
-        List<OrderProv> select = orderProvMapper.select(new OrderProv());
-        List<ProvinceVO> vos = new ArrayList<>(select.size());
-        for (OrderProv orderProv : select) {
-            ProvinceVO vo = new ProvinceVO();
-            vos.add(vo);
-            vo.setProvinceId(orderProv.getProvId());
-            vo.setProvince(orderProv.getProvName());
-        }
-        return vos;
+        return new ArrayList<>(provMap.values());
     }
 
     /**
@@ -236,20 +259,7 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public List<CityVO> selCitysByPid(Long provinceId) {
-        if (provinceId == null) {
-            return Collections.emptyList();
-        }
-        OrderCity orderCity = new OrderCity();
-        orderCity.setProvId(provinceId);
-        List<OrderCity> orderCities = orderCityMapper.select(orderCity);
-        List<CityVO> cityVOS = new ArrayList<>(orderCities.size());
-        for (OrderCity city : orderCities) {
-            CityVO vo = new CityVO();
-            cityVOS.add(vo);
-            vo.setCityId(city.getCityId());
-            vo.setCity(city.getCityName());
-        }
-        return cityVOS;
+        return provGroup.get(provinceId);
     }
 
 
@@ -262,21 +272,18 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      */
     @Override
     public List<TownVO> selTownByCid(Long cityId) {
-        if (cityId == null) {
-            return Collections.emptyList();
-        }
-        OrderTown orderTown = new OrderTown();
-        orderTown.setCityId(cityId);
-        List<OrderTown> orderTowns = orderTownMapper.select(orderTown);
-        List<TownVO> cityVOS = new ArrayList<>(orderTowns.size());
-        for (OrderTown town : orderTowns) {
-            TownVO vo = new TownVO();
-            cityVOS.add(vo);
-            vo.setTownId(town.getTownId());
-            vo.setTown(town.getTownName());
-        }
-        return cityVOS;
+        return cityGroup.get(cityId);
     }
 
+    public ProvinceVO selProvByPid(Long pid) {
+        return provMap.get(pid);
+    }
 
+    public CityVO selCityByCid(Long cid) {
+        return cityMap.get(cid);
+    }
+
+    public TownVO selTownByTid(Long tid) {
+        return townMap.get(tid);
+    }
 }
