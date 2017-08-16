@@ -52,7 +52,7 @@ public class DaifaAllocatedVO {
     /**
      * 	是否下架 true不卖了下架 false还在卖 注：该处为是否标记下架
      */
-    private Boolean isNoSale;
+    private Boolean noSaleIs;
 
     public Long getChildOrderId() {
         return childOrderId;
@@ -150,11 +150,11 @@ public class DaifaAllocatedVO {
         this.haveGoodsTime = haveGoodsTime;
     }
 
-    public Boolean getNoSale() {
-        return isNoSale;
+    public Boolean getNoSaleIs () {
+        return noSaleIs;
     }
 
-    public void setNoSale(Boolean noSale) {
-        isNoSale = noSale;
+    public void setNoSaleIs (Boolean noSaleIs) {
+        this.noSaleIs = noSaleIs;
     }
 }
