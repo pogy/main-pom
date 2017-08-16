@@ -82,7 +82,7 @@ public class DaifaAllocatedService {
                 vo.setDffs(g.getDaifaType());
                 vo.setGoodsNo(g.getStoreGoodsCode());
                 vo.setGoodsProperty(g.getPropStr());
-                vo.setHaveGoodsTime(DateUtil.dateToString(g.getYouhuoDate(), DateUtil.patternC));
+                vo.setHaveGoodsTime(DateUtil.dateToString(g.getYouhuoDate(), DateUtil.patternD));
                 vo.setImgSrc(g.getPicPath());
                 vo.setNoSaleIs(g.getDelistIs() == 1);
                 vo.setNum(g.getGoodsNum());

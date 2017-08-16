@@ -94,10 +94,12 @@ public class DaifaAllocatedAction {
     @RequestMapping("daifa/printGoodsTabJson")
     @ResponseBody
     public JSONObject printGoodsTabJson(PrintGoodsTagBO bo) throws DaifaException {
-        if (bo.getType() == null||bo.getIds() == null||bo.getIds().size()==0) {
+        if (bo.getType() == null) {
             throw new DaifaException("缺少参数");
         }
-
+        if(bo.getType() == 1&&(bo.getIds() == null||bo.getIds().size()==0)){
+            throw new DaifaException("缺少参数");
+        }
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION)    ;
         Long sellerId=daifaUser.getDaifaSellerId();
