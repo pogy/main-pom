@@ -3,6 +3,7 @@ package com.shigu.main4.daifa.process.impl;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
 import com.opentae.data.daifa.beans.DaifaTrade;
+import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsTasksMapper;
@@ -60,12 +61,12 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     @Override
     public void haveGoodsTime(Long subOrderId, Date time) throws DaifaException {
         SubOrderModel subOrderModel=SpringBeanFactory.getBean(SubOrderModel.class,subOrderId);
-        DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
-        daifaOrderExample.createCriteria().andDfOrderIdEqualTo(subOrderId);
-        daifaOrderExample.setOrderByClause("create_time desc");
-        daifaOrderExample.setStartIndex(0);
-        daifaOrderExample.setEndIndex(1);
-        List<DaifaGgoodsTasks> ts=daifaGgoodsTasksMapper.selectByConditionList(daifaOrderExample);
+        DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
+        daifaGgoodsTasksExample.createCriteria().andDfOrderIdEqualTo(subOrderId);
+        daifaGgoodsTasksExample.setOrderByClause("create_time desc");
+        daifaGgoodsTasksExample.setStartIndex(0);
+        daifaGgoodsTasksExample.setEndIndex(1);
+        List<DaifaGgoodsTasks> ts=daifaGgoodsTasksMapper.selectByConditionList(daifaGgoodsTasksExample);
         if(ts.size()==0){
             throw new DaifaException("订单不存在");
         }
@@ -82,12 +83,12 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     @Override
     public void markDown(Long subOrderId) throws DaifaException {
         SubOrderModel subOrderModel=SpringBeanFactory.getBean(SubOrderModel.class,subOrderId);
-        DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
-        daifaOrderExample.createCriteria().andDfOrderIdEqualTo(subOrderId);
-        daifaOrderExample.setOrderByClause("create_time desc");
-        daifaOrderExample.setStartIndex(0);
-        daifaOrderExample.setEndIndex(1);
-        List<DaifaGgoodsTasks> ts=daifaGgoodsTasksMapper.selectByConditionList(daifaOrderExample);
+        DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
+        daifaGgoodsTasksExample.createCriteria().andDfOrderIdEqualTo(subOrderId);
+        daifaGgoodsTasksExample.setOrderByClause("create_time desc");
+        daifaGgoodsTasksExample.setStartIndex(0);
+        daifaGgoodsTasksExample.setEndIndex(1);
+        List<DaifaGgoodsTasks> ts=daifaGgoodsTasksMapper.selectByConditionList(daifaGgoodsTasksExample);
         if(ts.size()==0){
             throw new DaifaException("订单不存在");
         }
