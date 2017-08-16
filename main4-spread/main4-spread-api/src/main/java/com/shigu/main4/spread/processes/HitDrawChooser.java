@@ -21,7 +21,7 @@ public interface HitDrawChooser {
      * @param drawVerifyVO 用户抽奖资格信息
      * @return
      */
-    DrawResult tryHitDraw(ActivityDrawEnum drawEnum, DrawVerifyVO drawVerifyVO);
+    DrawResult tryHitDraw(ActivityDrawEnum drawEnum, DrawVerifyVO drawVerifyVO) throws JsonErrException;
 
     /**
      * 上款更新抽奖资格

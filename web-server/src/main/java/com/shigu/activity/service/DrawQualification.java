@@ -1,5 +1,6 @@
 package com.shigu.activity.service;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.spread.enums.ActivityDrawEnum;
 import com.shigu.main4.spread.processes.HitDrawChooser;
 import com.shigu.main4.spread.vo.active.draw.DrawResult;
@@ -41,7 +42,7 @@ public abstract class DrawQualification {
      * @param userId 用户id
      * @return
      */
-    public DrawResult tryHitDraw(Long userId){
+    public DrawResult tryHitDraw(Long userId) throws JsonErrException {
         DrawVerifyVO drawVerifyVO = hasDrawQualification(userId);
         return hitDrawChooser.tryHitDraw(getActiveIdentity(),drawVerifyVO);
     }

@@ -35,7 +35,7 @@ public interface HitDrawModel {
      * @param prizePool 奖池信息
      * @return 抽奖结果
      */
-    DrawResult tryHitDraw(DrawVerifyVO drawMsg, List<DrawPrizePool> prizePool);
+    DrawResult tryHitDraw(DrawVerifyVO drawMsg, List<DrawPrizePool> prizePool) throws JsonErrException;
 
     /**
      * 获取奖池情况，各活动根据情况具体实现

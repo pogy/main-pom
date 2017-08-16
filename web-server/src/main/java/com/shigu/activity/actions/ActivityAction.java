@@ -11,6 +11,7 @@ import com.shigu.activity.vo.ActiveDrawStyleVo;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.active.vo.ShiguActivityVO;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
@@ -71,12 +72,13 @@ public class ActivityAction {
 
     /**
      * 发现好货
+     *
      * @param model
      * @return
      */
     //@RequestMapping(value = "activity/redbull" , method = RequestMethod.GET)
     @Deprecated
-    public String findGodos(HttpSession session, Model model){
+    public String findGodos(HttpSession session, Model model) {
         // 当前期次
         ActiveDrawPemVo drawPem = activeDrawServiceImpl.selNowDrawPem(null);
         // 发现好货商品
@@ -84,7 +86,7 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_FAGOODS,
                 40,
-                false,false);
+                false, false);
         // 发现好店
         List<ActiveDrawShopVo> faShopVoList = activeDrawServiceImpl.selShopList(drawPem.getId(), false);
         ActiveDrawStyleVo drawStyleVo = new ActiveDrawStyleVo();
@@ -96,31 +98,31 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_DAILYFIND,
                 60,
-                false,false);
+                false, false);
 
         Collections.shuffle(daliyGoodsVoList);
 
         // 获奖数据
-        List<ActiveDrawRecordUserVo> recordUserVoList = activeDrawServiceImpl.selDrawRecordList(null,null, "ben");
+        List<ActiveDrawRecordUserVo> recordUserVoList = activeDrawServiceImpl.selDrawRecordList(null, null, "ben");
 
         // 用户上一期获奖数据
         List<ActiveDrawRecordUserVo> userVoList = new ArrayList<ActiveDrawRecordUserVo>();
         Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(object != null){
+        if (object != null) {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
-            if(drawLastPem != null){
+            if (drawLastPem != null) {
                 // 用户上一期获奖数据
-                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(),ps.getUserId(), null);
+                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
             }
         }
 
-        if(userVoList == null){
+        if (userVoList == null) {
             userVoList = new ArrayList<ActiveDrawRecordUserVo>();
         }
 
         for (int i = 0; i < userVoList.size(); i++) {
-            if(userVoList.get(i).getDrawStatus().intValue() == 1){
+            if (userVoList.get(i).getDrawStatus().intValue() == 1) {
                 userVoList.get(i).setDrawStatus(2);
             }
         }
@@ -129,7 +131,7 @@ public class ActivityAction {
         model.addAttribute("styleItem", drawStyleVo);
         model.addAttribute("likeGoodsList", daliyGoodsVoList);
         model.addAttribute("awardList", recordUserVoList);
-        model.addAttribute("webSite","hz");
+        model.addAttribute("webSite", "hz");
         return "activity/styleHuodong";
     }
 
@@ -139,19 +141,19 @@ public class ActivityAction {
      * @return
      */
     @RequestMapping("member/awardInfo")
-    public String awardInfo(HttpSession session,Model model){
+    public String awardInfo(HttpSession session, Model model) {
         List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
         ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
         model.addAttribute("allInfo", drawPem.getInfo());
 
-        model.addAttribute("thisHdTime",parseToStartEnd(drawPem.getStartTime()));
-        List<ActiveDrawRecordUserVo> userVoList =  Collections.emptyList();
+        model.addAttribute("thisHdTime", parseToStartEnd(drawPem.getStartTime()));
+        List<ActiveDrawRecordUserVo> userVoList = Collections.emptyList();
         Object object = session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (object != null) {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
-            if(drawLastPem != null){
-                model.addAttribute("lastHdTime",parseToStartEnd(drawLastPem.getStartTime()));
+            if (drawLastPem != null) {
+                model.addAttribute("lastHdTime", parseToStartEnd(drawLastPem.getStartTime()));
                 // 用户上一期获奖数据
                 userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
                 for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
@@ -168,17 +170,18 @@ public class ActivityAction {
 
     /**
      * 发现好货开始结束时间显示
+     *
      * @param start
      * @return
      */
-    private String parseToStartEnd(Date start){
-        final String dateFitment="yyyy年MM月dd日";
-        Calendar cal=Calendar.getInstance();
+    private String parseToStartEnd(Date start) {
+        final String dateFitment = "yyyy年MM月dd日";
+        Calendar cal = Calendar.getInstance();
         cal.setTime(start);
-        String thisStart= DateUtil.dateToString(cal.getTime(),dateFitment);
-        cal.add(Calendar.DATE,7);
-        String thisEnd= DateUtil.dateToString(cal.getTime(),dateFitment);
-        return thisStart+" ——— "+thisEnd;
+        String thisStart = DateUtil.dateToString(cal.getTime(), dateFitment);
+        cal.add(Calendar.DATE, 7);
+        String thisEnd = DateUtil.dateToString(cal.getTime(), dateFitment);
+        return thisStart + " ——— " + thisEnd;
     }
 
     @RequestMapping("activity/redbull")
@@ -197,7 +200,7 @@ public class ActivityAction {
                 drawPem.getId(),
                 ActiveDrawGoods.TYPE_DAILYFIND,
                 60,
-                false,false
+                false, false
         );
 
         Collections.shuffle(daliyGoodsVoList);
@@ -209,18 +212,19 @@ public class ActivityAction {
 
     /**
      * 用户中奖记录
+     *
      * @param session
      * @return
      */
-    @RequestMapping(value = "activity/userWard" , method = RequestMethod.POST)
+    @RequestMapping(value = "activity/userWard", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject userWard(HttpSession session){
+    public JSONObject userWard(HttpSession session) {
 
         ResponseBase rsp = new ResponseBase();
 
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
 
-        if(ps == null){
+        if (ps == null) {
             // 未登录
             rsp.setMsg("用户未登陆");
             return JSONObject.fromObject(rsp);
@@ -239,15 +243,16 @@ public class ActivityAction {
 
     /**
      * 查询抽奖
+     *
      * @param tqcode
      * @return
      */
-    @RequestMapping(value = "activity/qtiqucode" , method = RequestMethod.POST)
+    @RequestMapping(value = "activity/qtiqucode", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject qtiqucode(String tqcode){
+    public JSONObject qtiqucode(String tqcode) {
         JSONObject rspJsonObject = new JSONObject();
 
-        if(StringUtils.isEmpty(tqcode)){
+        if (StringUtils.isEmpty(tqcode)) {
             rspJsonObject.put("status", 1);
             rspJsonObject.put("desc", "请输入有效领取码");
             return rspJsonObject;
@@ -257,7 +262,7 @@ public class ActivityAction {
 
         try {
             ActiveDrawRecordUserVo activeDrawRecordUserVo = activeDrawServiceImpl.selUserDrawList(tqcode);
-            if(activeDrawRecordUserVo == null){
+            if (activeDrawRecordUserVo == null) {
                 rspJsonObject.put("desc", "数据有误");
                 return rspJsonObject;
             }
@@ -276,25 +281,26 @@ public class ActivityAction {
 
     /**
      * 领取奖品
+     *
      * @param tqcode
      * @param userId
      * @return
      */
-    @RequestMapping(value = "activity/qzhongjinag" , method = RequestMethod.POST)
+    @RequestMapping(value = "activity/qzhongjinag", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject qzhongjinag(String tqcode, Long userId){
+    public JSONObject qzhongjinag(String tqcode, Long userId) {
         JSONObject rspJsonObject = new JSONObject();
         rspJsonObject.put("status", 1);
 
-        if(StringUtils.isEmpty(tqcode) || userId == null){
+        if (StringUtils.isEmpty(tqcode) || userId == null) {
             rspJsonObject.put("desc", "请输入有效领取码和用户");
             return rspJsonObject;
         }
 
-        try{
+        try {
             activeDrawServiceImpl.receUserWard(tqcode, userId);
             rspJsonObject.put("status", 0);
-        }catch (Main4Exception e){
+        } catch (Main4Exception e) {
             e.printStackTrace();
             rspJsonObject.put("desc", e.getMessage());
         }
@@ -304,10 +310,11 @@ public class ActivityAction {
 
     /**
      * 领取奖地址
+     *
      * @return
      */
-    @RequestMapping(value = "activity/receWards" , method = RequestMethod.GET)
-    public String receWards(){
+    @RequestMapping(value = "activity/receWards", method = RequestMethod.GET)
+    public String receWards() {
         return "activity/fdGdsLqzjb";
     }
 
@@ -320,28 +327,28 @@ public class ActivityAction {
         model.addAttribute("bannerSrc", activity.getBanner());
         model.addAttribute("bgColor", activity.getBkcolor());
         model.addAttribute("goodsStyle", activityService.gfShow(id));
-        model.addAttribute("webSite","hz");
+        model.addAttribute("webSite", "hz");
         return "activity/popular";
     }
 
     @RequestMapping("activity/apply")
-    public String apply(Long id,Model model) throws Main4Exception {
-        model.addAttribute("webSite","hz");
+    public String apply(Long id, Model model) throws Main4Exception {
+        model.addAttribute("webSite", "hz");
 //        if (id == null) {
 //            throw new Main4Exception("页面不存在");
 //        }
         int actState;
-        ShiguActivityVO vo=activityService.activityInfo(id);
-        long current=System.currentTimeMillis();
-        if(vo.getStartApply().getTime()>current){
-            actState=0;
-        }else if(vo.getEndApply().getTime()>current){
-            actState=1;
-        }else {
-            actState=2;
+        ShiguActivityVO vo = activityService.activityInfo(id);
+        long current = System.currentTimeMillis();
+        if (vo.getStartApply().getTime() > current) {
+            actState = 0;
+        } else if (vo.getEndApply().getTime() > current) {
+            actState = 1;
+        } else {
+            actState = 2;
         }
-        model.addAttribute("actState",actState);
-        model.addAttribute("id",id);
+        model.addAttribute("actState", actState);
+        model.addAttribute("id", id);
         return "activity/apply";
     }
 
@@ -366,36 +373,38 @@ public class ActivityAction {
     @RequestMapping("activity/qzxpApply")
     public String qzxpApply(Model model, HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if (ps != null && ps.getLogshop() !=null) {
+        if (ps != null && ps.getLogshop() != null) {
             model.addAttribute("alreadyApply", activeDrawListener.checkSignUp(ps.getUserId(), ps.getLogshop().getShopId()));
         }
         model.addAttribute("webSite", "hz");
         return "activity/qzxpApply";
     }
+
     /**
      * 临时用一下
      */
     @RequestMapping("activity/qzxpShop")
-    public String  qzxpShop(Model model){
-        model.addAttribute("webSite","hz");
+    public String qzxpShop(Model model) {
+        model.addAttribute("webSite", "hz");
         return "activity/qzxpShop";
     }
 
     /**
      * 秋装新品发布会0811临时使用，仅杭州
+     *
      * @param model
      * @return
      */
     @RequestMapping("activity/newPopular")
-    public String newPopular(Model model){
-        model.addAttribute("webSite","hz");
+    public String newPopular(Model model) {
+        model.addAttribute("webSite", "hz");
         model.addAttribute("goodsList", newPopularService.selNewPopularGoodsList());
         return "activity/newPopular";
     }
 
     @RequestMapping("activity/lottery")
-    public String lottery(Model model,HttpSession session) {
-        model.addAttribute("webSite","hz");
+    public String lottery(Model model, HttpSession session) {
+        model.addAttribute("webSite", "hz");
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         DrawVerifyVO qualification = newAutumnDrawQualification.hasDrawQualification(ps.getUserId());
         int lotteryNum = qualification.getOpportunityFrequency() - qualification.getUsedFrequency();
@@ -405,10 +414,19 @@ public class ActivityAction {
 
     @RequestMapping("activity/getAwards")
     @ResponseBody
-    public JSONObject getAwards(HttpSession session) {
+    public JSONObject getAwards(HttpSession session) throws JsonErrException {
         Long userId = ((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId();
-        DrawResult drawResult = newAutumnDrawQualification.tryHitDraw(userId);
-        int awards = drawResult.getRank() == null ? 6 : drawResult.getRank() == 0 ? 5 : drawResult.getRank();
-        return JsonResponseUtil.success().element("awards",awards);
+        int awards = 5;
+        try {
+            DrawResult drawResult = newAutumnDrawQualification.tryHitDraw(userId);
+            awards = drawResult == null || drawResult.getRank() == null ? 6 : drawResult.getRank() == 0 ? 5 : drawResult.getRank();
+        } catch (JsonErrException e){
+            if ("不在抽奖时间内".equals(e.getMessage())) {
+                awards=6;
+            } else {
+                throw e;
+            }
+        }
+        return JsonResponseUtil.success().element("awards", awards);
     }
 }

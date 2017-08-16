@@ -7,6 +7,7 @@ import com.opentae.data.mall.beans.ShiguTemp;
 import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.spread.enums.ActivityDrawEnum;
 import com.shigu.main4.spread.service.HitDrawModel;
@@ -48,7 +49,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
      * @return 抽奖结果 没有抽奖资格则返回null
      */
     @Override
-    public DrawResult tryHitDraw(DrawVerifyVO drawMsg, List<DrawPrizePool> prizePool) {
+    public DrawResult tryHitDraw(DrawVerifyVO drawMsg, List<DrawPrizePool> prizePool) throws JsonErrException {
         ActivityDrawEnum newAutumn = ActivityDrawEnum.NEW_AUTUMN;
         NewAutumnDrawVerifyVO msg = (NewAutumnDrawVerifyVO) drawMsg;
         String hasWard = msg.getHasWard();
@@ -93,7 +94,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
             return drawResult;
         }
         //没有抽奖资格
-        return null;
+        throw new JsonErrException("没有抽奖资格");
     }
 
 
