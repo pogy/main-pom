@@ -95,4 +95,5 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
     <import resource="order.xml"/>
+    <import resource="message_queue.xml"/>
 </beans>

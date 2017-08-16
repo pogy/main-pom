@@ -61,12 +61,8 @@ public class OrderConstantServiceImpl implements OrderConstantService {
         }
 
         void put(Long senderId, OrderConstant constant) {
-            List<OrderConstantVo> orderConstants = orderConstantsMap.get(senderId);
-            if (orderConstants == null) {
-                orderConstants = new ArrayList<>();
-                orderConstantsMap.put(senderId, orderConstants);
-            }
-             orderConstants.add(JSON.parseObject(constant.getContext(), voClazz));
+            orderConstantsMap.computeIfAbsent(senderId, k -> new ArrayList<>())
+                    .add(JSON.parseObject(constant.getContext(), voClazz));
         }
 
         @SuppressWarnings("unchecked")
