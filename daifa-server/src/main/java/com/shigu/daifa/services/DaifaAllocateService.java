@@ -50,7 +50,9 @@ public class DaifaAllocateService {
     public List<OrderAllocateVO> orderAllcoation(OrderAllocateBO bo, Long sellerId) {
         DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
         DaifaGgoodsTasksExample.Criteria criteria = daifaGgoodsTasksExample.createCriteria();
-        criteria.andUseStatusEqualTo(1).andAllocatStatusEqualTo(0).andSellerIdEqualTo(sellerId);//可用的未分配的
+        criteria.andUseStatusEqualTo(1).andAllocatStatusEqualTo(0).andSellerIdEqualTo(sellerId)
+                .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
+                        "format(youhuo_date,'%y%m%d')-create_date<=0 or format(now(),'%y%m%d')-create_date>0,true)))");//可用的未分配的
         if (!StringUtils.isEmpty(bo.getChildOrderId())) {
             criteria.andDfOrderIdEqualTo(bo.getChildOrderId());
         }

@@ -18,6 +18,7 @@ import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.vo.AllSubOrderVO;
 import com.shigu.daifa.vo.DaifaAllOrderVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
@@ -79,6 +80,9 @@ public class DaifaAllOrderIndexService {
             Date endDate = DateUtil.getIsEndTime (DateUtil.stringToDate(bo.getEndTime(),"yyyy-MM-dd"));
             ce.andCreateTimeLessThanOrEqualTo(endDate);
         }
+        if(StringUtils.hasText(bo.getTelephone())){
+            ce.andReceiverPhoneEqualTo(bo.getTelephone());
+        }
         if (StringUtils.hasText(bo.getStartTime())) {
             Date startDate =DateUtil.getIsStartTime (DateUtil.stringToDate(bo.getStartTime(),"yyyy-MM-dd")) ;
             ce.andCreateTimeGreaterThanOrEqualTo(startDate);
@@ -92,7 +96,7 @@ public class DaifaAllOrderIndexService {
         int i = daifaTradeMapper.countByExample(dtex);
         bo.setCount(i);
         List<DaifaAllOrderVO> daifaAllOrderVOS = new ArrayList<>();
-        if(1>0){
+        if(i > 0){
             int page = Integer.parseInt(bo.getPage());
             int rows = 10;
             dtex.setStartIndex((page - 1) * rows);
