@@ -10,8 +10,10 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.bo.SubOrderModelBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.CargoManModel;
+import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.impl.SubOrderModelImpl;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.daifa.vo.PrintTagVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.test.BaseSpringTest;
 import org.junit.Test;
@@ -41,6 +43,19 @@ public class TakeGoodsIssueProcessImplTest extends BaseSpringTest{
     DaifaWaitSendMapper daifaWaitSendMapper;
     @Autowired
     TakeGoodsIssueProcess takeGoodsIssueProcess;
+
+
+    @Test
+    public void printTags_test(){//OK
+        takeGoodsIssueProcess = SpringBeanFactory.getBean(TakeGoodsIssueProcess.class);
+        List<Long> issueIds=new ArrayList<> ();
+        issueIds.add (9063L);
+        issueIds.add (9064L);
+        List<PrintTagVO> list_printTag= takeGoodsIssueProcess.printTags (issueIds);
+        show (list_printTag.get (0));
+        show (list_printTag.get (1));
+        show (list_printTag);
+    }
 
 //    @Test
 //    @Transactional

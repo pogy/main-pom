@@ -15,7 +15,7 @@ public class MarketBean implements Comparable<MarketBean>{
     private Long id;
     private String name;
     private Integer type;//0市场1楼层3档口
-    private Integer num;
+    private Integer orderNumber;
 
     public Long getId() {
         return id;
@@ -40,12 +40,12 @@ public class MarketBean implements Comparable<MarketBean>{
         this.type = type;
     }
 
-    public Integer getNum() {
-        return num;
+    public Integer getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     @Override
@@ -68,9 +68,6 @@ public class MarketBean implements Comparable<MarketBean>{
 
     @Override
     public int compareTo( MarketBean o) {
-        if(this.id >o.getId()){
-            return 1;
-        }
-        return 0;
+        return (int)(this.id - o.getId());
     }
 }

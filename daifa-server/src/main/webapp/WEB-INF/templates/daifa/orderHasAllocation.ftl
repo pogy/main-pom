@@ -343,7 +343,7 @@
         <li class="childOrderId">${childOrder.childOrderId!}</li>
         <li class="goodsInfo">
             <div class="fl imgBox">
-                <img src="${childOrder.imgSrc!}_80x80.jpg" alt width=54 height=54>
+                <img src="${childOrder.imgSrc!}_80x80.jpg" alt width="54" height="54">
             </div>
             <p class="title">${childOrder.title!}</p>
             <p>商品属性：${childOrder.goodsProperty!}</p>
@@ -383,13 +383,13 @@
         
         <li class="remark">
             <#if childOrder.haveGoodsTime??>
-            <p>${childOrder.haveGoodsTime!} 有货</p>
+                <p>${childOrder.haveGoodsTime!} 有货</p>
             </#if>
-            <p><b class="fcBlue" jbtn='setTime'>设置有货时间</b></p>
             <#if childOrder.noSaleIs == true>
-            <p><span class="fcF40">已标记下架</span></p>
+                <p><span class="fcF40">已标记下架</span></p>
             <#else>
-            <p><b class="fcBlue" jbtn="noSale">标记下架</b></p>
+                <p><b class="fcBlue" jbtn='setTime'>设置有货时间</b></p>
+                <p><b class="fcBlue" jbtn="noSale">标记下架</b></p>
             </#if>
             <div class="childOrderRemark pr">
                 <i class="icon-s-message iconfont <#if childOrder.childRemark??>haveRemark</#if>"></i>

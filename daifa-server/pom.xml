@@ -300,7 +300,12 @@
             <artifactId>shiro-freemarker-tags</artifactId>
             <version>0.1</version>
         </dependency>
-
+        <!--freemarker -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.22</version>
+        </dependency>
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-daifa-api</artifactId>

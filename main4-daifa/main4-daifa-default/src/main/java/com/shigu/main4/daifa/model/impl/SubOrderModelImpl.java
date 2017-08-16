@@ -106,7 +106,7 @@ public class SubOrderModelImpl implements SubOrderModel {
     }
 
     @Override
-    public void haveGoodsTime(Date time) {
+    public void haveGoodsTime(Date time){
         DaifaOrder order=new DaifaOrder();
         order.setDfOrderId(subOrderId);
         order.setHaveGoodsDate(time);
@@ -124,18 +124,20 @@ public class SubOrderModelImpl implements SubOrderModel {
     }
 
     @Override
-    public void markDown() {
+    public void markDown(){
         DaifaOrder order=new DaifaOrder();
         order.setDfOrderId(subOrderId);
         order.setDelistIs(1);
         daifaOrderMapper.updateByPrimaryKeySelective(order);
         DaifaGgoodsTasks tasks=new DaifaGgoodsTasks();
         tasks.setDelistIs(1);
+        tasks.setUseStatus(0);
         DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
         daifaGgoodsTasksExample.createCriteria().andDfOrderIdEqualTo(subOrderId);
         daifaGgoodsTasksMapper.updateByExampleSelective(tasks,daifaGgoodsTasksExample);
         DaifaGgoods ggoods=new DaifaGgoods();
         ggoods.setDelistIs(1);
+        ggoods.setUseStatus(0);
         DaifaGgoodsExample daifaGgoodsExample=new DaifaGgoodsExample();
         daifaGgoodsExample.createCriteria().andDfOrderIdEqualTo(subOrderId);
         daifaGgoodsMapper.updateByExampleSelective(ggoods,daifaGgoodsExample);

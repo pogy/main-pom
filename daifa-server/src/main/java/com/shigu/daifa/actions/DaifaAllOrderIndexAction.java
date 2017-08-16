@@ -37,56 +37,60 @@ import java.util.List;
 public class DaifaAllOrderIndexAction {
 
     private DaifaAllOrderIndexService daifaAllOrderIndexService;
+
     @Autowired
     public void setDaifaAllOrderIndexService(DaifaAllOrderIndexService daifaAllOrderIndexService) {
         this.daifaAllOrderIndexService = daifaAllOrderIndexService;
     }
 
     @RequestMapping("daifa/orderAll")
-    public String allOrderPage(AllOrderBO bo,Model model){
-        List<DaifaAllOrderVO> allOrders =  daifaAllOrderIndexService.allOrderPage(bo);
+    public String allOrderPage(AllOrderBO bo, Model model) {
+        daifaAllOrderIndexService.timeOutExcute();
+
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        List<DaifaAllOrderVO> allOrders = daifaAllOrderIndexService.allOrderPage(bo, auth.getDaifaSellerId());
 
-
-        String pageOption = bo.getCount()+","+"10"+","+bo.getPage();
-        model.addAttribute("orders",allOrders);
-        model.addAttribute("query",bo);
-        model.addAttribute("pageOption",pageOption);
-        model.addAttribute("userName",auth.getDaifaUserName ());
+        String pageOption = bo.getCount() + "," + "10" + "," + bo.getPage();
+        model.addAttribute("orders", allOrders);
+        model.addAttribute("query", bo);
+        model.addAttribute("pageOption", pageOption);
+        model.addAttribute("userName", auth.getDaifaUserName());
         return "daifa/orderAll";
     }
 
-    @RequestMapping(value = "daifa/addChildRemarkJson",method = RequestMethod.POST)
+    @RequestMapping(value = "daifa/addChildRemarkJson", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject addChildRemarkJson(@RequestParam(value = "childOrderId") Long childOrderId, String remarkCon) throws DaifaException {
-        return daifaAllOrderIndexService.addChildRemarkJson(childOrderId,remarkCon);
+        return daifaAllOrderIndexService.addChildRemarkJson(childOrderId, remarkCon);
     }
-    @RequestMapping(value="daifa/getUserList",method = RequestMethod.POST)
+
+    @RequestMapping(value = "daifa/getUserList", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject getUserList(){
+    public JSONObject getUserList() {
         List<DaifaWorkerVO> workers = daifaAllOrderIndexService.getUserList();
-        return JsonResponseUtil.success().element("userList",workers);
+        return JsonResponseUtil.success().element("userList", workers);
     }
 
     /**
      * 设置有货时间
+     *
      * @param childOrderId 字单id
-     * @param timeStr 时间
+     * @param timeStr      时间
      * @return json
      */
-    @RequestMapping(value = "daifa/setTimeJson",method = RequestMethod.POST)
+    @RequestMapping(value = "daifa/setTimeJson", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject setTimeJson(@RequestParam(value = "childOrderId") Long childOrderId,String timeStr){
+    public JSONObject setTimeJson(@RequestParam(value = "childOrderId") Long childOrderId, String timeStr) throws DaifaException {
 
-        return daifaAllOrderIndexService.setTimeJson(childOrderId,timeStr);
+        return daifaAllOrderIndexService.setTimeJson(childOrderId, timeStr);
     }
 
-    @RequestMapping(value = "daifa/setTallyJson",method = RequestMethod.POST)
+    @RequestMapping(value = "daifa/setTallyJson", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject setTallyJson(Long userId,@RequestParam("childOrderId") Long childOrderId){
+    public JSONObject setTallyJson(Long userId, @RequestParam("childOrderId") Long childOrderId) throws DaifaException {
 
-        return daifaAllOrderIndexService.setTallyJson(userId,childOrderId);
+        return daifaAllOrderIndexService.setTallyJson(userId, childOrderId);
     }
 
 }
