@@ -48,4 +48,10 @@
         <property name="smtptimeout" value="${xz_smtptimeout}"/>
     </bean>
     <dubbo:service interface="com.shigu.main4.order.services.LogisticsService" ref="logisticsService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.services.AfterSaleService" ref="afterSaleService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.services.ItemOrderService" ref="itemOrderService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.services.OrderConstantService" ref="orderConstantService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.services.OrderListService" ref="orderListService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.process.ItemCartProcess" ref="itemCartProcess" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.order.process.ItemProductProcess" ref="itemProductProcess" timeout="20000" />
 </beans>
