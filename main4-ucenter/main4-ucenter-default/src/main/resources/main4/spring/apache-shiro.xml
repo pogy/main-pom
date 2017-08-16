@@ -27,6 +27,7 @@
 				/jsonScAddGoods.* = member
 				/jsonScAdd.* = member
 				/jsonStoreCollectAdd.* = member
+				/activity/lottery.htm = member
 				/seller/** = shop
 				/activity/lottery.* = member
 				/** = anon

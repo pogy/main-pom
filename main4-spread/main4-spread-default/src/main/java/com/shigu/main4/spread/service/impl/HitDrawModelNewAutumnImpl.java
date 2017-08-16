@@ -65,7 +65,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
                 drawResult = new DrawResult(resultPool.getHitResult(),HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
             }
             //已经中过奖
-            if (!(hasWard == null || NO_PRIZE.equals(hasWard))){
+            if (!(hasWard == null || "".equals(hasWard)||NO_PRIZE.equals(hasWard))){
                 drawResult = new DrawResult((int)(Math.random()*1000)+1,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
             }
             ShiguTemp temp = new ShiguTemp();
@@ -84,7 +84,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
                 activeDrawRecord.setModifyTime(new Date());
                 activeDrawRecord.setDrawCode(StringUtil.str10To37Str());
                 activeDrawRecord.setReceivesYes(false);
-                activeDrawRecord.setEnabled(true);
+                activeDrawRecord.setEnabled(false);
                 activeDrawRecordMapper.insert(activeDrawRecord);
                 ShiguTemp updatePool = new ShiguTemp();
                 updatePool.setId(resultPool.getId());
