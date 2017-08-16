@@ -278,50 +278,35 @@ public class OrderModelImpl implements OrderModel {
         daifaWaitSend.setSendStatus(2);
         daifaWaitSendMapper.updateByExampleSelective(daifaWaitSend,daifaWaitSendExample);
 
-        if (delivery.getDfOrderIds()!=null&&delivery.getDfOrderIds().size()>0){
 
-            //设置待发货子表的查询和修改条件
-            DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
-            daifaWaitSendOrderExample.createCriteria().andDfOrderIdIn(delivery.getDfOrderIds()).andDfTradeIdEqualTo(delivery.getDfTradeId());
-            //发货校验：1.有货先发：缺货部分如果没退款就不发货
-            List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
-            for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
-                if (waitSendOrder.getTakeGoodsStatus()==2&&waitSendOrder.getRefundStatus()!=2){
-                    throw new DaifaException("缺货部分未退款，不能发货。");
-                }
-            }
-            //修改已发货子表状态为已发货
-            DaifaWaitSendOrder daifaWaitSendOrder=new DaifaWaitSendOrder();
-            daifaWaitSendOrder.setSendStatus(2);
-            daifaWaitSendOrderMapper.updateByExampleSelective(daifaWaitSendOrder,daifaWaitSendOrderExample);
-
-
-            //查询子单信息填充已发货子单信息
-            DaifaWaitSendOrderExample daifaWaitSendOrderExample1=new DaifaWaitSendOrderExample();
-            daifaWaitSendOrderExample1.createCriteria().andDfOrderIdIn(delivery.getDfOrderIds());
-            List<DaifaWaitSendOrder> daifaWaitSendOrders1 = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample1);
-
-            List<DaifaSendOrder> daifaSendOrders = BeanMapper.mapList(daifaWaitSendOrders1, DaifaSendOrder.class);
-
-            //查询已发货表得到sendId，把已发货子单信息插入已发货子表
-            DaifaSendExample daifaSendExample=new DaifaSendExample();
-            daifaSendExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
-            List<DaifaSend> sends = daifaSendMapper.selectByExample(daifaSendExample);
-            for (DaifaSendOrder d:daifaSendOrders){
-                d.setCreateDate(date);
-                d.setCreateTime(time);
-                d.setTakeGoodsStatus(1);
-                d.setSendStatus(2);
-
-                if (sends.size()>0){
-                    d.setSendId(sends.get(0).getSendId());
-                }
-                d.setSellerId(delivery.getSellerId());
-                daifaSendOrderMapper.insertSelective(d);
+        //设置待发货子表的查询和修改条件
+        DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
+        daifaWaitSendOrderExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
+        //发货校验：1.有货先发：缺货部分如果没退款就不发货
+        List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
+        for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
+            if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
+                throw new DaifaException("缺货部分未退款，不能发货。");
             }
         }
+        //修改已发货子表状态为已发货
+        DaifaWaitSendOrder daifaWaitSendOrder=new DaifaWaitSendOrder();
+        daifaWaitSendOrder.setSendStatus(2);
+        daifaWaitSendOrderMapper.updateByExampleSelective(daifaWaitSendOrder,daifaWaitSendOrderExample);
 
 
+        //查询子单信息填充已发货子单信息
+        List<DaifaSendOrder> daifaSendOrders = BeanMapper.mapList(daifaWaitSendOrders, DaifaSendOrder.class);
+
+        for (DaifaSendOrder d:daifaSendOrders){
+            d.setCreateDate(date);
+            d.setCreateTime(time);
+            d.setTakeGoodsStatus(1);
+            d.setSendStatus(2);
+            d.setSendId(send.getSendId());
+            d.setSellerId(delivery.getSellerId());
+            daifaSendOrderMapper.insertSelective(d);
+        }
     }
 
     /**
