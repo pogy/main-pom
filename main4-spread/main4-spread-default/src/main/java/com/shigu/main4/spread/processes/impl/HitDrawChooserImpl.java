@@ -1,5 +1,6 @@
 package com.shigu.main4.spread.processes.impl;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.spread.enums.ActivityDrawEnum;
 import com.shigu.main4.spread.processes.HitDrawChooser;
 import com.shigu.main4.spread.service.HitDrawModel;
@@ -27,10 +28,11 @@ public class HitDrawChooserImpl implements HitDrawChooser{
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
-    public DrawResult tryHitDraw(ActivityDrawEnum drawEnum, DrawVerifyVO drawVerifyVO) {
+    public DrawResult tryHitDraw(ActivityDrawEnum drawEnum, DrawVerifyVO drawVerifyVO) throws JsonErrException {
         //不在抽奖活动期间，无法抽奖
-        if (!verifyTime(drawEnum)) {
-            return null;
+        boolean verifyTime = verifyTime(drawEnum);
+        if (!verifyTime) {
+            throw new JsonErrException("不在抽奖时间内");
         }
         //选择对应的抽奖活动
         if (drawEnum != null) {
@@ -38,7 +40,7 @@ public class HitDrawChooserImpl implements HitDrawChooser{
             return hitDraw(hitDrawModel,drawVerifyVO);
         }
         //没有对应的抽奖信息，则返回null
-        return null;
+        throw new JsonErrException("不在活动时间内");
     }
 
     @Override
@@ -59,7 +61,7 @@ public class HitDrawChooserImpl implements HitDrawChooser{
      * @param drawVerifyVO
      * @return
      */
-    private synchronized DrawResult hitDraw(HitDrawModel hitDrawModel,DrawVerifyVO drawVerifyVO) {
+    private synchronized DrawResult hitDraw(HitDrawModel hitDrawModel,DrawVerifyVO drawVerifyVO) throws JsonErrException {
         hitDrawModel.updatePrizePool();
         List<DrawPrizePool> prizePools = hitDrawModel.selDrawPrizePool();
         return hitDrawModel.tryHitDraw(drawVerifyVO,prizePools);

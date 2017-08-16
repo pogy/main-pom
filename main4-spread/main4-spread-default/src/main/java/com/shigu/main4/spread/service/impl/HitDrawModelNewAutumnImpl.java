@@ -7,7 +7,9 @@ import com.opentae.data.mall.beans.ShiguTemp;
 import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
+import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.spread.enums.ActivityDrawEnum;
 import com.shigu.main4.spread.service.HitDrawModel;
 import com.shigu.main4.spread.vo.active.draw.*;
@@ -48,24 +50,29 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
      * @return 抽奖结果 没有抽奖资格则返回null
      */
     @Override
-    public DrawResult tryHitDraw(DrawVerifyVO drawMsg, List<DrawPrizePool> prizePool) {
+    public DrawResult tryHitDraw(DrawVerifyVO drawMsg, List<DrawPrizePool> prizePool) throws JsonErrException {
         ActivityDrawEnum newAutumn = ActivityDrawEnum.NEW_AUTUMN;
         NewAutumnDrawVerifyVO msg = (NewAutumnDrawVerifyVO) drawMsg;
         String hasWard = msg.getHasWard();
         int usedFrequency = msg.getUsedFrequency() == null ? 0 : msg.getUsedFrequency();
-        //有抽奖资格：已抽奖次数小于可抽奖次数，并且没中过奖
-        if (usedFrequency++ < msg.getOpportunityFrequency() && (hasWard == null || NO_PRIZE.equals(hasWard))) {
-            NewAutumnPrizePool resultPool = (NewAutumnPrizePool) new DrawHitter(1000, DrawHitter.PrizeStrategy.PRIZE_CANCLE).tryHitDraw(prizePool);
+        //有抽奖资格：已抽奖次数小于可抽奖次数
+        if (usedFrequency++ < msg.getOpportunityFrequency() ) {
+            NewAutumnPrizePool resultPool = BeanMapper.map(new DrawHitter(1000, DrawHitter.PrizeStrategy.PRIZE_CANCLE).tryHitDraw(prizePool),NewAutumnPrizePool.class);
             DrawResult drawResult = null;
-            if (resultPool != null) {
+            if (resultPool.getRank() != null) {
                 drawResult = new DrawResult(resultPool.getHitResult(),resultPool.getRank(),resultPool.getPrizeGood());
             } else {
                 drawResult = new DrawResult(resultPool.getHitResult(),HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
             }
+            //已经中过奖
+            if (!(hasWard == null || NO_PRIZE.equals(hasWard))){
+                drawResult = new DrawResult((int)(Math.random()*1000)+1,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
+            }
             ShiguTemp temp = new ShiguTemp();
             temp.setId(msg.getDrawVerifyId());
             temp.setKey2(String.valueOf(usedFrequency));
-            if (drawResult.getRank()>0) {
+            //已中过奖
+            if (drawResult.getRank()>0 ) {
                 //更新中奖信息
                 temp.setKey5(drawResult.getPrizeName());
                 ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
@@ -77,6 +84,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
                 activeDrawRecord.setModifyTime(new Date());
                 activeDrawRecord.setDrawCode(StringUtil.str10To37Str());
                 activeDrawRecord.setReceivesYes(false);
+                activeDrawRecord.setEnabled(true);
                 activeDrawRecordMapper.insert(activeDrawRecord);
                 ShiguTemp updatePool = new ShiguTemp();
                 updatePool.setId(resultPool.getId());
@@ -88,7 +96,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
             return drawResult;
         }
         //没有抽奖资格
-        return null;
+        throw new JsonErrException("没有抽奖资格");
     }
 
 
