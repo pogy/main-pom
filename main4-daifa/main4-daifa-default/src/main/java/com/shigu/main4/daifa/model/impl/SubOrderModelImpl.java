@@ -15,6 +15,9 @@ import com.shigu.main4.daifa.utils.CdkeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -73,6 +76,7 @@ public class SubOrderModelImpl implements SubOrderModel {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void init() {
         DaifaOrder order=BeanMapper.map(subOrderBO,DaifaOrder.class);
         order.setCreateTime(new Date());
@@ -106,6 +110,7 @@ public class SubOrderModelImpl implements SubOrderModel {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void haveGoodsTime(Date time){
         DaifaOrder order=new DaifaOrder();
         order.setDfOrderId(subOrderId);
@@ -124,6 +129,7 @@ public class SubOrderModelImpl implements SubOrderModel {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void markDown(){
         DaifaOrder order=new DaifaOrder();
         order.setDfOrderId(subOrderId);
@@ -144,29 +150,33 @@ public class SubOrderModelImpl implements SubOrderModel {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void mark(String context) throws DaifaException {
         DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(subOrderId);
         if(order==null){
             throw new DaifaException("子订单不存在");
         }
-        String remark=order.getOrderRemark();
-        if(remark==null){
-            remark=context;
-        }else{
-            remark+="@_@"+context;
-        }
         DaifaOrder updateOrder=new DaifaOrder();
         updateOrder.setDfOrderId(subOrderId);
-        updateOrder.setOrderRemark(remark);
+//        String remark=order.getOrderRemark();
+//        if(remark==null){
+//            remark=context;
+//        }else{
+//            remark+="@_@"+context;
+//        }
+//        updateOrder.setOrderRemark(remark);
+        updateOrder.setOrderRemark(context);
         daifaOrderMapper.updateByPrimaryKeySelective(updateOrder);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void haveTake() throws DaifaException {
         take(1);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void noTake() throws DaifaException {
         take(2);
     }
@@ -221,8 +231,9 @@ public class SubOrderModelImpl implements SubOrderModel {
         if(daifaWaitSend==null){
             if(status==1){
                 DaifaGgoodsExample daifaGgoodsExample=new DaifaGgoodsExample();
-                daifaGgoodsExample.createCriteria().andGgoodsCodeEqualTo(goods.getGgoodsCode());
-                List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(daifaGgoodsExample, FieldUtil.codeFields("df_order_id,take_goods_id,take_goods_status"));
+                daifaGgoodsExample.createCriteria().andDfTradeIdEqualTo(task.getDfTradeId());
+                daifaGgoodsExample.setOrderByClause("create_time asc");
+                List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(daifaGgoodsExample, FieldUtil.codeFields("df_order_id,goods_num,take_goods_id,take_goods_status"));
                 Map<Long,DaifaGgoods> gmap=BeanMapper.list2Map(gs,"dfOrderId",Long.class);
 
                 DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(task.getDfTradeId());
@@ -244,7 +255,16 @@ public class SubOrderModelImpl implements SubOrderModel {
                     wo.setDaifaWorkerId(task.getDaifaWorkerId());
                     wo.setDaifaWorker(task.getDaifaWorker());
                     wo.setSendStatus(1);//设置待发货
-                    wo.setTakeGoodsStatus(o.getDfOrderId().longValue()==subOrderId?status:gmap.get(o.getDfOrderId()).getTakeGoodsStatus());
+                    int takeGoodsStatus=0;
+                    if(o.getDfOrderId().longValue()==subOrderId){
+                        takeGoodsStatus=status;
+                    }else {
+                        DaifaGgoods g=gmap.get(o.getDfOrderId());
+                        if(g!=null){
+                            takeGoodsStatus=g.getTakeGoodsStatus();
+                        }
+                    }
+                    wo.setTakeGoodsStatus(takeGoodsStatus);
                     wo.setSellerId(task.getSellerId());
                     wo.setWebSite(task.getWebSite());
                     wos.add(wo);

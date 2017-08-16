@@ -32,7 +32,7 @@ public class OrderModelImplTest extends BaseSpringTest{
     @Test
     public void testinit(){//OK
 
-        Long oidinit=50000000L;
+        Long oidinit=10000000L;
         Long soidp=50L;
         for(int i=0;i<10;i++) {
             Long oid=oidinit+1;
@@ -173,7 +173,7 @@ public class OrderModelImplTest extends BaseSpringTest{
         orderModel.send(bo);
     }
     @Test
-    public void  testauto(){
+    public void  testauto() throws DaifaException {
         List<Long> sub=new ArrayList<>();
         sub.add(1L);
         sub.add(40282L);

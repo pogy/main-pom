@@ -38,6 +38,9 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
     @Override
     public PackResultVO packSubOrder(Long subOrderId) throws DaifaException {
         DaifaOrder order=daifaOrderMapper.selectByPrimaryKey(subOrderId);
+        if(order==null){
+            throw new DaifaException("此条码对应的订单编号不存在");
+        }
         DaifaTrade trade=daifaTradeMapper.selectByPrimaryKey(order.getDfTradeId());
         if(trade.getSendStatus()==2){
             DaifaSend send=new DaifaSend();
@@ -47,9 +50,6 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             print.setSendId(send.getSendId());
             print.setGoodsInfo(order.getStoreGoodsCode()+"\t"+order.getPropStr());
             return print;
-        }
-        if(order==null){
-            throw new DaifaException("此条码对应的订单编号不存在");
         }
         DaifaWaitSendOrder daifaWaitSendOrder=new DaifaWaitSendOrder();
         daifaWaitSendOrder.setDfOrderId(subOrderId);
@@ -70,7 +70,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
             if(o.getAllocatStatus()==0){
                 throw new DaifaException("此条码对应的部分商品未分配");
             }
-            if(o.getTakeGoodsStatus()==2&&o.getRefundStatus()!=2){
+            if(o.getTakeGoodsStatus()==2&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
                 throw new DaifaException("此条码对应的部分商品未拿到货且未退款,建议入库");
             }
         }
@@ -102,7 +102,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         }
         exbo.setList(list);
         ExpressModel expressModel=SpringBeanFactory.getBean(ExpressModel.class,trade.getExpressId(),trade.getSellerId());
-        ExpressVO exvo= null;
+        ExpressVO exvo;
         try {
             exvo = expressModel.callExpress(exbo);
         } catch (DaifaException e) {

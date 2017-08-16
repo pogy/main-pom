@@ -97,7 +97,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0)//未结算
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
-                        "format(youhuo_date,'%y%m%d')-create_date<=0 or format(now(),'%y%m%d')-create_date>0,true)))");
+                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or format(now(),'%Y%m%d')-create_date>0,true)))");
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper
                 .selectFieldsByExample(dgtex, FieldUtil.codeFields("tasks_id"));
         List<Long> taskIds = new ArrayList<>();
@@ -116,7 +116,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0)//未结算
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
-                        "format(youhuo_date,'%y%m%d')-create_date<=0 or format(now(),'%y%m%d')-create_date>0,true)))");
+                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or format(now(),'%Y%m%d')-create_date>0,true)))");
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(dgtex
                 , FieldUtil.codeFields("tasks_id"));
         List<Long> taskIds = new ArrayList<>();
@@ -134,7 +134,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0)//未结算
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
-                        "format(youhuo_date,'%y%m%d')-create_date<=0 or format(now(),'%y%m%d')-create_date>0,true)))");
+                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or format(now(),'%Y%m%d')-create_date>0,true)))");
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(dgtex
                 , FieldUtil.codeFields("tasks_id"));
         List<Long> taskIds = new ArrayList<>();
@@ -345,7 +345,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
      * @return 页面显示batch
      */
     private String batchDBconvert(String dbstr) {
-        String[] bas = dbstr.split("_");
+        String[] bas = dbstr.split("-");
         Calendar ca = Calendar.getInstance();
         Date date = DateUtil.stringToDate(bas[0], DateUtil.patternB);
         assert (date) != null;

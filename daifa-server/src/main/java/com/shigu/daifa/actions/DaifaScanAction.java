@@ -34,11 +34,11 @@ public class DaifaScanAction {
     @RequestMapping("daifa/doScanBarCode")
     @ResponseBody
     public JSONObject doScanBarCode(String barCode) throws DaifaException {
-        Long dfOrderId= null;
+        Long dfOrderId;
         try {
-            String barcode = barCode.substring(0,barCode.length()-7);
+            barCode = barCode.substring(0,barCode.length()-7);
             dfOrderId = new Long(barCode);
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             throw new DaifaException("此条码对应的订单编号不存在");
         }
         PackResultVO vo=packDeliveryProcess.packSubOrder(dfOrderId);
