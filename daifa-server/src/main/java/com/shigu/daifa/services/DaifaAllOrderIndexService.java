@@ -69,9 +69,13 @@ public class DaifaAllOrderIndexService {
     }
 
     public List<DaifaAllOrderVO> allOrderPage(AllOrderBO bo) {
+        AuthorityUser user = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        Long sellerId = user.getDaifaSellerId();
+
         DaifaTradeExample dtex = new DaifaTradeExample();
         DaifaOrderExample doex = new DaifaOrderExample();
         DaifaTradeExample.Criteria ce = dtex.createCriteria();
+        ce.andSellerIdEqualTo(sellerId);
         if (StringUtils.hasText(bo.getEndTime())) {
             Date endDate = DateUtil.stringToDate(bo.getEndTime());
             ce.andCreateTimeLessThanOrEqualTo(endDate);
