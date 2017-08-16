@@ -113,7 +113,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0);//未结算
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(dgtex
-                , FieldUtil.codeFields("task_id"));
+                , FieldUtil.codeFields("tasks_id"));
         List<Long> taskIds = new ArrayList<>();
         ggoodsTasks.forEach(gt -> taskIds.add(gt.getTasksId()));
         return distributionTask(wholeId, taskIds);
@@ -129,7 +129,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0);//未结算
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(dgtex
-                , FieldUtil.codeFields("task_id"));
+                , FieldUtil.codeFields("tasks_id"));
         List<Long> taskIds = new ArrayList<>();
         ggoodsTasks.forEach(gt -> taskIds.add(gt.getTasksId()));
         return distributionTask(wholeId, taskIds);
