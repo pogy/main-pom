@@ -77,13 +77,14 @@ public class DaifaAllocatedService {
             for (DaifaGgoodsJoinOrder g : ggoodsForPrints) {
                 DaifaAllocatedVO vo = new DaifaAllocatedVO();
                 vo.setChildOrderId(g.getDfOrderId());
+                vo.setTakeGoodsId(g.getTakeGoodsId());
                 vo.setChildRemark(g.getOrderRemark());
                 vo.setDffs(g.getDaifaType());
                 vo.setGoodsNo(g.getStoreGoodsCode());
                 vo.setGoodsProperty(g.getPropStr());
-                vo.setHaveGoodsTime(DateUtil.dateToString(g.getYouhuoDate(), DateUtil.patternC));
+                vo.setHaveGoodsTime(DateUtil.dateToString(g.getYouhuoDate(), DateUtil.patternD));
                 vo.setImgSrc(g.getPicPath());
-                vo.setNoSale(g.getDelistIs() == 1);
+                vo.setNoSaleIs(g.getDelistIs() == 1);
                 vo.setNum(g.getGoodsNum());
                 vo.setPiPrice(g.getSinglePiPrice());
                 vo.setPayPrice(MoneyUtil.dealPrice(
@@ -104,14 +105,14 @@ public class DaifaAllocatedService {
     }
 
     public void takeGoods(Long workerId,Long takeGoodsId,Integer takeType) throws DaifaException {
-        if (takeType != null) {
+        if (takeType == null) {
             throw new DaifaException("类型为空");
         }
         DaifaGgoods g=new DaifaGgoods();
         g.setDaifaWorkerId(workerId);
         g.setTakeGoodsId(takeGoodsId);
         g=daifaGgoodsMapper.selectOne(g);
-        if (g != null) {
+        if (g == null) {
             throw new DaifaException("不是分配给该拿货员的商品");
         }
         switch (takeType){

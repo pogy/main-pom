@@ -2547,5 +2547,10 @@ public class DaifaGgoodsTasksExample extends SgExample<DaifaGgoodsTasksExample.C
         public DaifaGgoodsTasksExample.Criteria andRemark2NotBetween(String value1, String value2) {
             return notBetween(remark2, value1, value2);
         }
+        public DaifaGgoodsTasksExample.Criteria andCustomSql(String sql){
+            this.addCriterion(sql);
+            return this;
+        }
+
     }
 }

@@ -6,6 +6,10 @@ public class DaifaAllocatedVO {
      */
     private Long childOrderId;
     /**
+     * 已分配ID
+     */
+    private Long takeGoodsId;
+    /**
      * 商品图片
      */
     private String imgSrc;
@@ -52,7 +56,7 @@ public class DaifaAllocatedVO {
     /**
      * 	是否下架 true不卖了下架 false还在卖 注：该处为是否标记下架
      */
-    private Boolean isNoSale;
+    private Boolean noSaleIs;
 
     public Long getChildOrderId() {
         return childOrderId;
@@ -150,11 +154,25 @@ public class DaifaAllocatedVO {
         this.haveGoodsTime = haveGoodsTime;
     }
 
-    public Boolean getNoSale() {
-        return isNoSale;
+    public Boolean getNoSaleIs () {
+        return noSaleIs;
     }
 
-    public void setNoSale(Boolean noSale) {
-        isNoSale = noSale;
+    public void setNoSaleIs (Boolean noSaleIs) {
+        this.noSaleIs = noSaleIs;
+    }
+
+    /**
+     * 获取 已分配ID
+     */
+    public Long getTakeGoodsId() {
+        return this.takeGoodsId;
+    }
+
+    /**
+     * 设置 已分配ID
+     */
+    public void setTakeGoodsId(Long takeGoodsId) {
+        this.takeGoodsId = takeGoodsId;
     }
 }

@@ -18,6 +18,7 @@ import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.vo.AllSubOrderVO;
 import com.shigu.daifa.vo.DaifaAllOrderVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
+import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
@@ -68,16 +69,22 @@ public class DaifaAllOrderIndexService {
         this.orderManageProcess = orderManageProcess;
     }
 
-    public List<DaifaAllOrderVO> allOrderPage(AllOrderBO bo) {
+    public List<DaifaAllOrderVO> allOrderPage(AllOrderBO bo,Long sellerId) {
+
+
         DaifaTradeExample dtex = new DaifaTradeExample();
         DaifaOrderExample doex = new DaifaOrderExample();
         DaifaTradeExample.Criteria ce = dtex.createCriteria();
+        ce.andSellerIdEqualTo(sellerId);
         if (StringUtils.hasText(bo.getEndTime())) {
-            Date endDate = DateUtil.stringToDate(bo.getEndTime());
+            Date endDate = DateUtil.getIsEndTime (DateUtil.stringToDate(bo.getEndTime(),"yyyy-MM-dd"));
             ce.andCreateTimeLessThanOrEqualTo(endDate);
         }
+        if(StringUtils.hasText(bo.getTelephone())){
+            ce.andReceiverPhoneEqualTo(bo.getTelephone());
+        }
         if (StringUtils.hasText(bo.getStartTime())) {
-            Date startDate = DateUtil.stringToDate(bo.getStartTime());
+            Date startDate =DateUtil.getIsStartTime (DateUtil.stringToDate(bo.getStartTime(),"yyyy-MM-dd")) ;
             ce.andCreateTimeGreaterThanOrEqualTo(startDate);
         }
         if (StringUtils.hasText(bo.getOrderId())) {
@@ -86,87 +93,87 @@ public class DaifaAllOrderIndexService {
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");
         }
-
-        int page = Integer.parseInt(bo.getPage());
-        int rows = 10;
-        dtex.setStartIndex((page - 1) * rows);
-        dtex.setEndIndex(rows);
-
-        MultipleExample multipleExample = MultipleExampleBuilder.from(dtex).leftJoin(doex)
-                .on(ce.equalTo(DaifaTradeExample.dfTradeId, DaifaOrderExample.dfTradeId)).build();
-        List<DaifaAllOrder> daifaAllOrders = daifaMultipleMapper.selectFieldsByMultipleExample(multipleExample, DaifaAllOrder.class);
+        int i = daifaTradeMapper.countByExample(dtex);
+        bo.setCount(i);
         List<DaifaAllOrderVO> daifaAllOrderVOS = new ArrayList<>();
-        for (DaifaAllOrder daifaAllOrder : daifaAllOrders) {
-            DaifaAllOrderVO vo = new DaifaAllOrderVO();
-            List<AllSubOrderVO> allSubOrderVOS = new ArrayList<>();
-            vo.setChildOrders(allSubOrderVOS);
-            daifaAllOrderVOS.add(vo);
-            BeanUtils.copyProperties(daifaAllOrder, vo, "childOrders");
-            for (DaifaAllSubOrder daifaAllSubOrder : daifaAllOrder.getChildOrders()) {
-                AllSubOrderVO subvo = new AllSubOrderVO();
-                BeanUtils.copyProperties(daifaAllSubOrder, subvo);
-                allSubOrderVOS.add(subvo);
-            }
-            if (daifaAllOrder.getTradeState() == 2) {
+        if(i > 0){
+            int page = Integer.parseInt(bo.getPage());
+            int rows = 10;
+            dtex.setStartIndex((page - 1) * rows);
+            dtex.setEndIndex(rows);
+
+            MultipleExample multipleExample = MultipleExampleBuilder.from(dtex).leftJoin(doex)
+                    .on(new DaifaTradeExample().createCriteria().equalTo(DaifaTradeExample.dfTradeId, DaifaOrderExample.dfTradeId)).build();
+            List<DaifaAllOrder> daifaAllOrders = daifaMultipleMapper.selectFieldsByMultipleExample(multipleExample, DaifaAllOrder.class);
+            for (DaifaAllOrder daifaAllOrder : daifaAllOrders) {
+                DaifaAllOrderVO vo = new DaifaAllOrderVO();
+                List<AllSubOrderVO> allSubOrderVOS = new ArrayList<>();
+                vo.setChildOrders(allSubOrderVOS);
+                daifaAllOrderVOS.add(vo);
+                BeanUtils.copyProperties(daifaAllOrder, vo, "childOrders");
                 for (DaifaAllSubOrder daifaAllSubOrder : daifaAllOrder.getChildOrders()) {
-                    Integer afterSaleState = 1;//已发货
-                    if (daifaAllSubOrder.getReturnGoodsStatus() != null && daifaAllSubOrder.getReturnGoodsStatus() > 0 ||
-                            (daifaAllSubOrder.getChangeStatus() != null && daifaAllSubOrder.getChangeStatus() > 0)
-                            ) {
-                        switch (daifaAllSubOrder.getReturnGoodsStatus()) {
-                            case 1: {
-                                afterSaleState = 2;//申请退货退款
-                                break;
-                            }
-                            case 2: {
-                                afterSaleState = 4;// 退货完成
-                                break;
-                            }
-                            case 3: {
-                                afterSaleState = 5;//拒绝退货退款
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
+                    AllSubOrderVO subvo = new AllSubOrderVO();
+                    BeanUtils.copyProperties(daifaAllSubOrder, subvo);
+                    allSubOrderVOS.add(subvo);
+                }
+                if (daifaAllOrder.getTradeState() == 2) {
+                    for (DaifaAllSubOrder daifaAllSubOrder : daifaAllOrder.getChildOrders()) {
+                        Integer afterSaleState = 1;//已发货
+                        if (daifaAllSubOrder.getReturnGoodsStatus() != null && daifaAllSubOrder.getReturnGoodsStatus() > 0 ||
+                                (daifaAllSubOrder.getChangeStatus() != null && daifaAllSubOrder.getChangeStatus() > 0)
+                                ) {
+                            switch (daifaAllSubOrder.getReturnGoodsStatus()) {
+                                case 1: {
+                                    afterSaleState = 2;//申请退货退款
+                                    break;
+                                }
+                                case 2: {
+                                    afterSaleState = 4;// 退货完成
+                                    break;
+                                }
+                                case 3: {
+                                    afterSaleState = 5;//拒绝退货退款
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
 
+                            }
+                            switch (daifaAllSubOrder.getChangeStatus()) {
+                                case 1: {
+                                    afterSaleState = 6;//申请换货
+                                    break;
+                                }
+                                case 2: {
+                                    afterSaleState = 8; //换货完成
+                                    break;
+                                }
+                                case 3: {
+                                    afterSaleState = 9;//换货失败
+                                    break;
+                                }
+                                case 4: {
+                                    afterSaleState = 9;//换货失败
+                                    break;
+                                }
+                                default: {
+                                    break;
+                                }
+
+                            }
                         }
-                        switch (daifaAllSubOrder.getChangeStatus()) {
-                            case 1: {
-                                afterSaleState = 6;//申请换货
-                                break;
-                            }
-                            case 2: {
-                                afterSaleState = 8; //换货完成
-                                break;
-                            }
-                            case 3: {
-                                afterSaleState = 9;//换货失败
-                                break;
-                            }
-                            case 4: {
-                                afterSaleState = 9;//换货失败
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
 
-                        }
-                    }
-
-                    for (AllSubOrderVO allSubOrderVO : vo.getChildOrders()) {
-                        allSubOrderVO.setNoSaleIs(true);
-                        if (allSubOrderVO.getChildOrderId().equals(daifaAllSubOrder.getChildOrderId())) {
-                            allSubOrderVO.setAfterSaleState(afterSaleState);
+                        for (AllSubOrderVO allSubOrderVO : vo.getChildOrders()) {
+                            allSubOrderVO.setNoSaleIs(true);
+                            if (allSubOrderVO.getChildOrderId().equals(daifaAllSubOrder.getChildOrderId())) {
+                                allSubOrderVO.setAfterSaleState(afterSaleState);
+                            }
                         }
                     }
                 }
             }
         }
-        int i = daifaTradeMapper.countByExample(dtex);
-        bo.setCount(i);
-
         return daifaAllOrderVOS;
     }
 
@@ -194,15 +201,15 @@ public class DaifaAllOrderIndexService {
         return workerVOS;
     }
 
-    public JSONObject setTimeJson(Long childOrderId, String timeStr) {
+    public JSONObject setTimeJson(Long childOrderId, String timeStr) throws DaifaException {
         if(!StringUtils.hasText(timeStr)){
             return JsonResponseUtil.error("时间不能空");
         }
-        orderManageProcess.haveGoodsTime(childOrderId,DateUtil.stringToDate(timeStr,DateUtil.patternB));
+        orderManageProcess.haveGoodsTime(childOrderId,DateUtil.stringToDate(timeStr,DateUtil.patternD));
         return JsonResponseUtil.success("设置成功");
     }
 
-    public JSONObject setTallyJson(Long userId,Long childOrderId) {
+    public JSONObject setTallyJson(Long userId,Long childOrderId) throws DaifaException {
         orderManageProcess.markDown(childOrderId);
         return JsonResponseUtil.success("标记下架成功");
     }

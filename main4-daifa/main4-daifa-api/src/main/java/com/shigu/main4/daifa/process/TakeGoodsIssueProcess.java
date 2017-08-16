@@ -19,7 +19,7 @@ public interface TakeGoodsIssueProcess {
     String distributionTask(Long wholeId, List<Long> waitIssueIds) throws DaifaException;
 
     /**
-     * 按市场分配
+     * 按店铺分配
      * @param wholeId 拿货人ID
      * @param shopId 店铺ID
      * @return 波次号

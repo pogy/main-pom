@@ -1,9 +1,14 @@
 package com.shigu.daifa.actions;
 
+import com.shigu.component.shiro.AuthorityUser;
+import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.OrderAllocateBO;
 import com.shigu.daifa.services.DaifaAllocateService;
 import com.shigu.daifa.vo.OrderAllocateVO;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import net.sf.json.JSONObject;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,20 +41,57 @@ public class DaifaAllocateAction {
      */
     @RequestMapping("daifa/orderAllocation")
     public String orderAllocation(OrderAllocateBO bo,Model model){
-        List<OrderAllocateVO> orderAllocateVOList = daifaAllocateService.orderAllcoation(bo);
+        Session session = SecurityUtils.getSubject().getSession();
+        AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
+        List<OrderAllocateVO> orderAllocateVOList = daifaAllocateService.orderAllcoation(bo,auth.getDaifaSellerId());
         model.addAttribute("childOrders",orderAllocateVOList);
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",bo.getCount()+",10,"+bo.getPage());
+        model.addAttribute("userName",auth.getDaifaUserName ());
 
         return "daifa/orderAllocation";
     }
 
+    /**
+     * 获取市场列表
+     * @return json
+     */
     @RequestMapping("daifa/getMarketList")
     @ResponseBody
     public JSONObject getMarketList(){
-        JSONObject obj = daifaAllocateService.getMarketList();
-        return null;
+        return daifaAllocateService.getMarketList();
     }
+
+    /**
+     * 获取楼层列表
+     * @param marketId 市场id
+     * @return josn
+     */
+    @RequestMapping("daifa/getFloorList")
+    @ResponseBody
+    public JSONObject getFloorList(Long marketId){
+        return daifaAllocateService.getFloorList(marketId);
+    }
+
+    @RequestMapping("daifa/getShopList")
+    @ResponseBody
+    public JSONObject getShopList(Long floorId){
+        return daifaAllocateService.getShopList(floorId);
+    }
+
+    /**
+     * 分配
+     * @param userId 用户id
+     * @param type 分配的类型：market、floor、shop、childOrder,即市场、楼层、档口、子订单
+     * @param ids 分配的类型下的id的集合
+     * @return
+     */
+    @RequestMapping("daifa/submitAllocation")
+    @ResponseBody
+    public JSONObject submitAllocation(Long userId,String type,String ids) throws DaifaException {
+        return daifaAllocateService.submitAllocation(userId,type,ids);
+    }
+
     public static void main(String[] args) {
 
     }

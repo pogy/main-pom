@@ -29,13 +29,13 @@ public interface OrderManageProcess {
      * @param subOrderId 子订单数据
      * @param time 有货时间
      */
-    void haveGoodsTime(Long subOrderId,Date time);
+    void haveGoodsTime(Long subOrderId,Date time) throws DaifaException;
 
     /**
      * 标记下架
      * @param subOrderId 子订单数据
      */
-    void markDown(Long subOrderId);
+    void markDown(Long subOrderId) throws DaifaException;
 
     /**
      * 订单超时
