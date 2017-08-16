@@ -90,17 +90,17 @@ public class ActiveDrawListener implements MessageListener {
         //5、加操作
         ItemUpRecordVO itemUpRecordVO = JSON.parseObject(message.getBody(),ItemUpRecordVO.class);
         // 当前期次
-        List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
-        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
-        Long pemId=drawPem.getId();
+//        List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
+//        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
+//        Long pemId=drawPem.getId();
         // 验证是发现好货商品
-        if(findGoods(itemUpRecordVO.getSupperGoodsId(),pemId)){
-            doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_FAGOODS);
-        }
+//        if(findGoods(itemUpRecordVO.getSupperGoodsId(),pemId)){
+//            doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_FAGOODS);
+//        }
         //验证是否每日发现
-        if(findDaliy(itemUpRecordVO.getSupperGoodsId(),pemId)){
-            doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_DAILYFIND);
-        }
+//        if(findDaliy(itemUpRecordVO.getSupperGoodsId(),pemId)){
+//            doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_DAILYFIND);
+//        }
         //验证是秋装新品
         if (newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(NewAutumnDrawVerifyVO.UPLOAD_FLAG))) {
             //只从淘宝电脑端上款
