@@ -84,6 +84,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
                 activeDrawRecord.setModifyTime(new Date());
                 activeDrawRecord.setDrawCode(StringUtil.str10To37Str());
                 activeDrawRecord.setReceivesYes(false);
+                activeDrawRecord.setEnabled(false);
                 activeDrawRecordMapper.insert(activeDrawRecord);
                 ShiguTemp updatePool = new ShiguTemp();
                 updatePool.setId(resultPool.getId());
