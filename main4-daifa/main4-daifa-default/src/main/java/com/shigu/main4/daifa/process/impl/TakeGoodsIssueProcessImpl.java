@@ -345,7 +345,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
      * @return 页面显示batch
      */
     private String batchDBconvert(String dbstr) {
-        String[] bas = dbstr.split("_");
+        String[] bas = dbstr.split("-");
         Calendar ca = Calendar.getInstance();
         Date date = DateUtil.stringToDate(bas[0], DateUtil.patternB);
         assert (date) != null;
