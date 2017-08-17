@@ -90,6 +90,8 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
                     activeDrawRecord.setReceivesYes(false);
                     activeDrawRecord.setEnabled(false);
                     activeDrawRecordMapper.insert(activeDrawRecord);
+                }else {
+                    drawResult = new DrawResult(resultPool.getHitResult(),HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
                 }
                 ShiguTemp updatePool = new ShiguTemp();
                 updatePool.setId(resultPool.getId());
