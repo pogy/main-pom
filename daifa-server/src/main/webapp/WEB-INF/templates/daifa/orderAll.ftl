@@ -309,9 +309,26 @@
                 <p class="fcF40">缺货</p>
                 </#if>
                 
+                <#if childOrder.refundState == 1>
+                <p class="fcF40">申请退款</p>
+                <#elseif childOrder.refundState == 2>
+                <p class="fcF40">已退款</p>
+                </#if>
+                
+                
             <#elseif order.tradeState == 2>
+                <#if childOrder.takeGoodsState == 1>
+                <p>已拿到</p>
+                <#elseif childOrder.takeGoodsState == 2>
+                <p class="fcF40">缺货</p>
+                </#if>
+                
+                <#if childOrder.refundState == 2>
+                <p class="fcF40">已退款</p>
+                </#if>
+                
                 <#if childOrder.afterSaleState == 1>
-                <p>已拿货</p>
+                
                 <#elseif childOrder.afterSaleState == 2>
                 <p>申请退货</p>
                 <#elseif childOrder.afterSaleState == 3>
