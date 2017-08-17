@@ -139,7 +139,7 @@ public class MyTbOrderService {
     }
 
     public ShiguPager<GoodsVO> selectglGoods(String keyword,String webSite, Integer page, Integer size){
-        ShiguAggsPager pager= itemSearchService.searchItem(keyword,webSite,null,null,null,null,null,null,null,null, SearchOrderBy.COMMON,page,size,false);
+        ShiguAggsPager pager= itemSearchService.searchItem(keyword,webSite,null, null,null,null,null,null,null,null,null, SearchOrderBy.COMMON,page,size,false);
         ShiguPager<GoodsVO> vo=new ShiguPager<>();
         List<GoodsVO> gs=new ArrayList<>();
         for(SearchItem pa:pager.getContent()){

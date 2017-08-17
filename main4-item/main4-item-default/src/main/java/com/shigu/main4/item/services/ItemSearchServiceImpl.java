@@ -9,6 +9,7 @@ import com.opentae.data.mall.interfaces.SearchCategoryMapper;
 import com.opentae.data.mall.interfaces.SearchCategorySubMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.enums.SearchFrom;
 import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.vo.*;
@@ -81,7 +82,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      * @return
      */
     @Override
-    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
+    public ShiguAggsPager searchItem(String keyword, String webSite, String from, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
         ShiguAggsPager pager = new ShiguAggsPager();
         pager.setCats(Collections.<AggsCount>emptyList());
         pager.setMarkets(Collections.<AggsCount>emptyList());
@@ -96,9 +97,11 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             realSize = 5000 - start;
         }
 
+        // 现依据查询来源匹配 查询排序表达式，现在的规则是：商品库筛选方式不变 搜索粗排    search_project 精排     search_jp
+        SearchFrom searchFrom = SearchFrom.from(from);
         OpenSearch.RequestBuilder<OpenItemVo> requestBuilder
                 = openSearch.searchFrom(SEARCH_APP+webSite,OpenItemVo.class).from(start).size(realSize)
-                .setRank("rough_project_c", "project_c", 2000);
+                .setRank(searchFrom.firstRank, searchFrom.secondRank, 2000);
 
         SearchQuery searchQuery = null;
         if (StringUtils.isNotEmpty(keyword)) {

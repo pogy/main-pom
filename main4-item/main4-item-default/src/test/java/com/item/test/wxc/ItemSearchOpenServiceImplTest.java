@@ -33,7 +33,7 @@ public class ItemSearchOpenServiceImplTest  extends BaseSpringTest {
         Date timeTo = null;
         Date timeFrom = null;
         String sid = "1";
-        ShiguAggsPager pager = itemSearchService.searchItem("101", "hz", null, null, Arrays.asList(stores), sid,null, null, null, null, SearchOrderBy.GOODS_COMMON, 1, 5, true);
+        ShiguAggsPager pager = itemSearchService.searchItem("101", "hz",null, null, null, Arrays.asList(stores), sid,null, null, null, null, SearchOrderBy.GOODS_COMMON, 1, 5, true);
         show(pager);
 
     }

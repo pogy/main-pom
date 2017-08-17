@@ -235,6 +235,8 @@ public class GoodsSearchAction {
         if (orderBy == null) {
             orderBy = SearchOrderBy.COMMON;
         }
+        // 依据来源 from 匹配搜索排序表达式
+        bo.setFrom("goods");
         //带聚合的结果
         ShiguPager<GoodsInSearch> pager = goodsSearchService.search(bo, orderBy, false).getSearchData();
         maxTotalSizeOrPage(pager, bo.getRows());

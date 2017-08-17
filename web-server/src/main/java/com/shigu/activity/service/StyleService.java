@@ -153,6 +153,7 @@ public class StyleService {
         return itemSearchService.searchItem(
                 bo.getKeyword(),
                 bo.getWebSite(),
+                null,
                 bo.getMid(),
                 cids,
                 null,
