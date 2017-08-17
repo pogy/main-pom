@@ -142,7 +142,7 @@ public class DaifaAllocatedService {
         return vos;
     }
 
-    public List<PrintGoodsTagVO> printGoodsTab(Long sellerId,List<Long> ids){
+    public List<PrintGoodsTagVO> printGoodsTab(Long sellerId,List<Long> ids)throws DaifaException{
         List<PrintTagVO> printTagVOS=new ArrayList<>();
         if(ids==null){
             printTagVOS=takeGoodsIssueProcess.printAllTags(sellerId);
