@@ -1,5 +1,6 @@
 package com.shigu.resolver;
 
+import com.openJar.exceptions.OpenException;
 import com.opentae.common.beans.LogUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import net.sf.json.JSONObject;
@@ -30,7 +31,9 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 		String requestUrl = request.getRequestURI();
 
 		// 接口异常处理
-
+        if(requestUrl.indexOf("/api/")!=-1){
+            return apiJsonError(request, response, ex);
+        }
 		//html端.json异常处理
 		if(requestUrl.endsWith(".json")){
 			return htmlJsonErrorHandle(request, response, ex);
@@ -40,7 +43,9 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 		return systemErrorHandle(request, response, arg2, ex);
 	}
 
-	private static boolean isAjaxRequest(HttpServletRequest request) {
+
+
+    private static boolean isAjaxRequest(HttpServletRequest request) {
 		String requestedWith = request.getHeader("X-Requested-With");
 		return StringUtils.equals(requestedWith, "XMLHttpRequest");
 	}
@@ -89,4 +94,21 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 		return view;
 
 	}
+    private ModelAndView apiJsonError(HttpServletRequest request, HttpServletResponse response, Exception ex) {
+        ModelAndView view=new ModelAndView();
+        OpenException e= (OpenException) ex;
+        JSONObject obj=new JSONObject();
+        obj.put("success",false);
+        obj.put("exception",e);
+        try {
+            response.setContentType("application/json;charset=utf-8");
+            PrintWriter writer = response.getWriter();
+            writer.print(obj.toString());
+            writer.flush();
+            writer.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return view;
+    }
 }

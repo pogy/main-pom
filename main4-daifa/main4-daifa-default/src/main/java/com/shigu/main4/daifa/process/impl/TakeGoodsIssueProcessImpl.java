@@ -204,7 +204,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             String barcode = ggoodsForPrint.getDfOrderId().toString() + ggoodsForPrint.getDfTradeId().toString()
                     .substring(ggoodsForPrint.getDfTradeId().toString().length() - EZINT);//计算长度
             vo.setBarCode(barcode);
-            vo.setpAndBarCode((int) Double.parseDouble(ggoodsForPrint.getSinglePiPrice()) + "N" + barcode);
+            vo.setPriceAndBarCode((int) Double.parseDouble(ggoodsForPrint.getSinglePiPrice()) + "N" + barcode);
             vo.setBuyerNick(ggoodsForPrint.getBuyerNick());
             vo.setReceiverName(ggoodsForPrint.getRecieverName());
 
@@ -281,10 +281,10 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     }
 
     @Override
-    public void uncompleteAll (Long wholeId, List<Long> issueIds,Boolean idIsCheck) throws DaifaException {
+    public void uncompleteAll (Long wholeId,Long shopId, List<Long> issueIds,Boolean idIsCheck) throws DaifaException {
         String date=DateUtil.dateToString(new Date(),DateUtil.patternB);
         DaifaGgoodsExample ge=new DaifaGgoodsExample();
-        ge.createCriteria().andDaifaWorkerIdEqualTo(wholeId);
+        ge.createCriteria().andDaifaWorkerIdEqualTo(wholeId).andStoreIdEqualTo(shopId);
         List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(ge,FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
         Map<Long,DaifaGgoods> gmap= BeanMapper.list2Map(gs,"takeGoodsId",Long.class);
         //校验是否存在不可操作数据
