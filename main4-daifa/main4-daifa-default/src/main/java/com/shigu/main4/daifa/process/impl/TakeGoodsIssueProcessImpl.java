@@ -143,7 +143,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     }
 
     @Override
-    public List<PrintTagVO> printAllTags(Long sellerId) {
+    public List<PrintTagVO> printAllTags(Long sellerId) throws DaifaException{
         //查出今天未打印的
 
 
@@ -156,6 +156,9 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andCreateDateEqualTo(nowDate);
         List<DaifaGgoods> ggoods = daifaGgoodsMapper.selectFieldsByExample(dgex
                 ,FieldUtil.codeFields("take_goods_id"));
+        if(ggoods.size ()==0){
+            throw new DaifaException("没有可打印的数据");
+        }
         List<Long> issueIds = new ArrayList<>();
         ggoods.forEach(dg->issueIds.add(dg.getTakeGoodsId()));
 

@@ -114,6 +114,7 @@ public class DaifaAllOrderIndexService {
                 BeanUtils.copyProperties(daifaAllOrder, vo, "childOrders");
                 for (DaifaAllSubOrder daifaAllSubOrder : daifaAllOrder.getChildOrders()) {
                     AllSubOrderVO subvo = new AllSubOrderVO();
+                    subvo.setRefundState(daifaAllSubOrder.getRefundStatus());
                     BeanUtils.copyProperties(daifaAllSubOrder, subvo);
                     allSubOrderVOS.add(subvo);
                 }
