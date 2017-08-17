@@ -1,6 +1,7 @@
 package com.shigu.activity.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
@@ -13,6 +14,7 @@ import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
+import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.spread.service.ActiveDrawService;
@@ -23,10 +25,19 @@ import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.index.Term;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -331,4 +342,29 @@ public class ActiveDrawListener implements MessageListener {
         return false;
     }
 
+    //中奖资格数据初始化
+    //public void initData() throws ParseException {
+    //    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //    Date date = sdf.parse("2017-08-12 01:00:00");
+    //    SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup").setSize(10000);
+    //    BoolQueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("flag", "web-tb"))
+    //            .must(QueryBuilders.rangeQuery("daiTime").from("2017-08-16 00:00:00").to("2017-08-17 00:00:00"));
+    //
+    //    SearchResponse searchResponse = srb.setTypes("hz").setQuery(query).execute().actionGet();
+    //    SearchHit[] hits = searchResponse.getHits().getHits();
+    //    int count=0;
+    //    for (SearchHit hit : hits) {
+    //        ItemUpRecordVO itemUpRecordVO = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
+    //        if (newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(NewAutumnDrawVerifyVO.UPLOAD_FLAG))) {
+    //            //只从淘宝电脑端上款
+    //            if ("web-tb".equals(itemUpRecordVO.getFlag())) {
+    //                doChangeNewAutumn(itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),NewAutumnDrawVerifyVO.DRAW_RECORD_FLAG);
+    //
+    //            }
+    //        }
+    //        System.out.print(++count);
+    //        System.out.println(':');
+    //        System.out.println(itemUpRecordVO.getSupperGoodsId());
+    //    }
+    //}
 }
