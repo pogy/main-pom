@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 DIRPATH="/Users/zhaohongbo/Workspaces/idea-workspace8/main-pom"
 if [ "$1" = "" ]; then
     scp ${DIRPATH}/main4-daifa/main4-daifa-default/target/main4-daifa-default-assembly.zip root@192.168.1.193:/acs/daifa_dubbo/upload/
