@@ -14,6 +14,7 @@ import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class OrderConsumerService {
         this.orderManageProcess = orderManageProcess;
     }
 
-    public void orderConvertTrade(byte[] body) {
+    public void orderConvertTrade(String body) throws UnsupportedEncodingException {
         ResponseBasic res= JSON.parseObject(body,ResponseBasic.class);
         if(res.isStatus()){
             synchronized (this) {
@@ -46,7 +47,7 @@ public class OrderConsumerService {
         }
     }
 
-    public void refund(byte[] body){
+    public void refund(String body) throws UnsupportedEncodingException {
         ResponseBasic res= JSON.parseObject(body,ResponseBasic.class);
         if(res.isStatus()){
             JSONObject refundObj= JSONObject.fromObject(res.getData());

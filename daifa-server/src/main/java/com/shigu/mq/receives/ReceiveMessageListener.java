@@ -9,6 +9,8 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  *
  */
@@ -22,9 +24,12 @@ public class ReceiveMessageListener implements MessageListener {
     }
 
     public Action consume(Message message, ConsumeContext context) {
+        try {
             defaultProcessMessage.dispatchMessage(message.getTag(),message.getKey(),message.getBody());
-
-
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return Action.ReconsumeLater;
+        }
         return Action.CommitMessage;
     }
 
