@@ -165,7 +165,7 @@ public class DaifaAllOrderIndexService {
                         }
 
                         for (AllSubOrderVO allSubOrderVO : vo.getChildOrders()) {
-                            allSubOrderVO.setNoSaleIs(true);
+                           // allSubOrderVO.setNoSaleIs(true);
                             if (allSubOrderVO.getChildOrderId().equals(daifaAllSubOrder.getChildOrderId())) {
                                 allSubOrderVO.setAfterSaleState(afterSaleState);
                             }
