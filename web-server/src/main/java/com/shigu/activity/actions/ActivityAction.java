@@ -14,7 +14,6 @@ import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
-import com.shigu.main4.spread.enums.ActivityDrawEnum;
 import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
 import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -156,7 +155,7 @@ public class ActivityAction {
             if (drawLastPem != null) {
                 model.addAttribute("lastHdTime", parseToStartEnd(drawLastPem.getStartTime()));
                 // 用户上一期获奖数据
-                userVoList = activeDrawServiceImpl.selDrawRecordList(ActivityDrawEnum.NEW_AUTUMN.pemId, ps.getUserId(), null);
+                userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
                 for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
                     ActiveDrawRecordUserVo anUserVoList = iterator.next();
                     if (anUserVoList.getDrawStatus() != 3) {
