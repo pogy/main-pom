@@ -64,28 +64,35 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
             } else {
                 drawResult = new DrawResult(resultPool.getHitResult(),HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
             }
-            //已经中过奖
-            if (!(hasWard == null || "".equals(hasWard)||NO_PRIZE.equals(hasWard))){
-                drawResult = new DrawResult((int)(Math.random()*1000)+1,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
-            }
+            //已经中过非参与奖
+            boolean hasHitBigPrize = !(hasWard == null || "".equals(hasWard) || NO_PRIZE.equals(hasWard));
+            //if (!(hasWard == null || "".equals(hasWard)||NO_PRIZE.equals(hasWard))){
+            //    drawResult = new DrawResult((int)(Math.random()*1000)+1,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
+            //}
             ShiguTemp temp = new ShiguTemp();
             temp.setId(msg.getDrawVerifyId());
             temp.setKey2(String.valueOf(usedFrequency));
-            //已中过奖
             if (drawResult.getRank()>0 ) {
                 //更新中奖信息
-                temp.setKey5(drawResult.getPrizeName());
-                ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
-                activeDrawRecord.setWard(drawResult.getPrizeName());
-                activeDrawRecord.setPemId(newAutumn.pemId);
-                activeDrawRecord.setUserId(msg.getUserId());
-                activeDrawRecord.setDrawStatus(3);
-                activeDrawRecord.setCreateTime(new Date());
-                activeDrawRecord.setModifyTime(new Date());
-                activeDrawRecord.setDrawCode(StringUtil.str10To37Str());
-                activeDrawRecord.setReceivesYes(false);
-                activeDrawRecord.setEnabled(false);
-                activeDrawRecordMapper.insert(activeDrawRecord);
+                //中了1、2、3等奖，不再有中大奖资格
+                if (drawResult.getRank() >= 4 || !hasHitBigPrize) {
+                    if (drawResult.getRank()<4) {
+                        temp.setKey5(drawResult.getPrizeName());
+                    }
+                    ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
+                    activeDrawRecord.setWard(drawResult.getPrizeName());
+                    activeDrawRecord.setPemId(newAutumn.pemId);
+                    activeDrawRecord.setUserId(msg.getUserId());
+                    activeDrawRecord.setDrawStatus(3);
+                    activeDrawRecord.setCreateTime(new Date());
+                    activeDrawRecord.setModifyTime(new Date());
+                    activeDrawRecord.setDrawCode(StringUtil.str10To37Str());
+                    activeDrawRecord.setReceivesYes(false);
+                    activeDrawRecord.setEnabled(false);
+                    activeDrawRecordMapper.insert(activeDrawRecord);
+                }else {
+                    drawResult = new DrawResult(resultPool.getHitResult(),HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
+                }
                 ShiguTemp updatePool = new ShiguTemp();
                 updatePool.setId(resultPool.getId());
                 updatePool.setKey1(resultPool.getCurrentPrizeNum()-1+"");
