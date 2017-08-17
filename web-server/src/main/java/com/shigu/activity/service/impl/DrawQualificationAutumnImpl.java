@@ -2,6 +2,7 @@ package com.shigu.activity.service.impl;
 
 import com.opentae.data.mall.beans.ActiveDrawRecord;
 import com.opentae.data.mall.beans.ShiguTemp;
+import com.opentae.data.mall.examples.ActiveDrawRecordExample;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.activity.service.DrawQualification;
@@ -11,6 +12,8 @@ import com.shigu.main4.spread.vo.active.draw.DrawVerifyVO;
 import com.shigu.main4.spread.vo.active.draw.NewAutumnDrawVerifyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 类名：DrawQualificationAutumnImpl
@@ -58,10 +61,20 @@ public class DrawQualificationAutumnImpl extends DrawQualification {
         //抽奖记录id
         vo.setDrawVerifyId(shiguTemp.getId());
         //获取中奖记录
-        ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
-        activeDrawRecord.setUserId(userId);
-        activeDrawRecord.setPemId(newAutumn.pemId);
-        activeDrawRecord = activeDrawRecordMapper.selectOne(activeDrawRecord);
+        //只会中一次奖
+        //ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
+        //activeDrawRecord.setUserId(userId);
+        //activeDrawRecord.setPemId(newAutumn.pemId);
+        //activeDrawRecord = activeDrawRecordMapper.selectOne(activeDrawRecord);
+        //参与奖与其他奖项独立
+        ActiveDrawRecordExample activeDrawRecordExample = new ActiveDrawRecordExample();
+        activeDrawRecordExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(newAutumn.pemId).andWardNotEqualTo("A1");
+        List<ActiveDrawRecord> activeDrawRecords = activeDrawRecordMapper.selectByExample(activeDrawRecordExample);
+        ActiveDrawRecord activeDrawRecord = null;
+        //有中过非参与奖
+        if (activeDrawRecords.size()>0) {
+            activeDrawRecord = activeDrawRecords.get(0);
+        }
         if (activeDrawRecord != null) {
             vo.setId(activeDrawRecord.getId());
             vo.setHasWard(activeDrawRecord.getWard());
