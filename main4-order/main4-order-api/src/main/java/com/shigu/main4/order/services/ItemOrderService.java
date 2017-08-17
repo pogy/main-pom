@@ -14,6 +14,7 @@ import com.shigu.main4.order.servicevo.RefundInfoVO;
 import com.shigu.main4.order.servicevo.RefundLogVO;
 import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
+import com.shigu.main4.order.vo.ItemOrderVO;
 
 import java.text.ParseException;
 import java.util.List;
@@ -92,4 +93,11 @@ public interface ItemOrderService {
      * @return
      */
     List<OrderLogVO> orderLog(Long orderId);
+
+    /**
+     * 订单信息
+     * @param orderId
+     * @return
+     */
+    ItemOrderVO orderInfo(Long orderId);
 }

@@ -428,5 +428,10 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         return vos;
     }
 
+    @Override
+    public ItemOrderVO orderInfo(Long orderId) {
+        return SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId).orderInfo();
+    }
+
 
 }

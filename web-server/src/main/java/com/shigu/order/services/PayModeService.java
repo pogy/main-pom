@@ -13,6 +13,8 @@ import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.PayerService;
+import com.shigu.main4.order.process.PayProcess;
+import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -45,6 +47,20 @@ public class PayModeService {
     @Autowired
     private OrderPayRelationshipMapper orderPayRelationshipMapper;
 
+    @Autowired
+    private ItemOrderService itemOrderService;
+
+    @Autowired
+    private PayProcess payProcess;
+
+    /**
+     * 订单信息
+     * @param orderId
+     * @return
+     */
+    public ItemOrderVO orderInfo(Long orderId){
+        return itemOrderService.orderInfo(orderId);
+    }
     /**
      * 获取支付方式页面数据
      * @param orderId
@@ -59,7 +75,7 @@ public class PayModeService {
         }
         PayModePageVO payModePageVO = new PayModePageVO();
         payModePageVO.setOrderId(orderId);
-        ItemOrderVO itemOrderVO = itemOrder(orderId).orderInfo();
+        ItemOrderVO itemOrderVO = orderInfo(orderId);
         payModePageVO.setWebSite(itemOrderVO.getWebSite());
         payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
         payModePageVO.setAmountPay(PriceConvertUtils.priceToString(itemOrderVO.getTotalFee()));
@@ -78,12 +94,9 @@ public class PayModeService {
      * @throws PayApplyException 支付申请异常
      */
     public PayApplyVO payApply(Long orderId, PayType payType) throws PayApplyException {
-        return itemOrder(orderId).payApply(payType);
+        return payProcess.payApply(orderId,payType);
     }
 
-    public com.shigu.main4.order.model.ItemOrder itemOrder(Long orderId) {
-        return SpringBeanFactory.getBean(com.shigu.main4.order.model.ItemOrder.class, orderId);
-    }
 
     /**\
      * 验证密码，错误则抛出异常

@@ -116,7 +116,7 @@ public class PayModeAction {
 
     @RequestMapping("paySuccess")
     public String paySuccess(Long orderId, Model model) throws Main4Exception {
-        ItemOrderVO itemOrderVO = payModeService.itemOrder(orderId).orderInfo();
+        ItemOrderVO itemOrderVO = payModeService.orderInfo(orderId);
         model.addAttribute("orderId", orderId);
         model.addAttribute("amountPay", String.format("%.2f", itemOrderVO.getTotalFee() * .01));
         model.addAttribute("payType", payModeService.selPayType(orderId));

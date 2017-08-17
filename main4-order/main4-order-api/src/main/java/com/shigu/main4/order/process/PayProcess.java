@@ -1,0 +1,13 @@
+package com.shigu.main4.order.process;
+
+import com.shigu.main4.order.enums.PayType;
+import com.shigu.main4.order.exceptions.PayApplyException;
+import com.shigu.main4.order.vo.PayApplyVO;
+
+/**
+ * 支付方式的接口
+ */
+public interface PayProcess {
+
+    PayApplyVO payApply(Long orderId, PayType payType) throws PayApplyException;
+}

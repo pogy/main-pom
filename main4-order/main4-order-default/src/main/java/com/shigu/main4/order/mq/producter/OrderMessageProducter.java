@@ -103,7 +103,7 @@ public class OrderMessageProducter {
         order.setLogistics(itemOrder.selLogisticses().stream().map(logisticsVO -> {
             LogisticMessage message = BeanMapper.map(logisticsVO, LogisticMessage.class);
             message.setCity(orderConstantService.selCityByCid(message.getCityId()).getCity());
-            message.setProv(orderConstantService.selProvByPid(message.getCityId()).getProvince());
+            message.setProv(orderConstantService.selProvByPid(message.getProvId()).getProvince());
             message.setTown(orderConstantService.selTownByTid(message.getTownId()).getTown());
             message.setCompany(orderConstantService.selByExpressId(message.getCompanyId()).getExpressName());
             return message;
