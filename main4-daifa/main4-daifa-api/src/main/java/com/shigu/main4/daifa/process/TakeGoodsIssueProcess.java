@@ -47,7 +47,7 @@ public interface TakeGoodsIssueProcess {
      * @param sellerId 代发机构id
      * @return list
      */
-    List<PrintTagVO> printAllTags(Long sellerId);
+    List<PrintTagVO> printAllTags(Long sellerId)throws DaifaException;
 
     /**
      * 打印选中的记录(可重复打印)
