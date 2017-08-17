@@ -7,9 +7,9 @@
     <bean id="consumer" class="com.aliyun.openservices.ons.api.bean.ConsumerBean" init-method="start" destroy-method="shutdown">
         <property name="properties" > <!--消费者配置信息-->
             <props>
-                <prop key="ConsumerId">CID_SDF</prop> <!--请替换CID_SORDER-->
-                <prop key="AccessKey">YsqgyCrBUiYFIdRE</prop>
-                <prop key="SecretKey">KdV0QWhwUbftdfLpOoED1cIq1bHPyA</prop>
+                <prop key="ConsumerId">${MQ_CID}</prop> <!--请替换CID_SORDER-->
+                <prop key="AccessKey">${MQ_AccessKey}</prop>
+                <prop key="SecretKey">${MQ_SecretKey}</prop>
                 <!--将消费者线程数固定为50个
                 <prop key="ConsumeThreadNums">50</prop>
                 -->
@@ -17,12 +17,11 @@
         </property>
         <property name="subscriptionTable">
             <map>
-
                 <entry value-ref="msgListener">
                     <key>
                         <bean class="com.aliyun.openservices.ons.api.bean.Subscription">
-                            <property name="topic" value="SHIGU_TRADE_TEST"/> <!--订阅另外一个Topic -->
-                            <property name="expression" value="order_push||order_refund_noitem||order_refund_hasitem||refund_courier_number||refund_courier_number_modify"/> <!-- 订阅多个Tag -->
+                            <property name="topic" value="${MQ_TRADE_TOPIC}"/> <!--订阅另外一个Topic -->
+                            <property name="expression" value="${MQ_TRADE_TAG1}||${MQ_TRADE_TAG2}"/> <!-- 订阅多个Tag -->
                         </bean>
                     </key>
                 </entry>

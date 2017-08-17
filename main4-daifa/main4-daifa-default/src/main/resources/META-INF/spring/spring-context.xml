@@ -102,5 +102,14 @@
         <property name= "sqlSessionFactoryBeanName" value="tae_daifa_sqlSessionFactory" />
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
     </bean>
-    <import resource="../../daifa.xml"/>
+    <bean id="tae_producer" class="com.aliyun.openservices.ons.api.bean.ProducerBean" init-method="start" destroy-method="shutdown">
+        <!-- Spring接入方式支持Java SDK支持的所有配置项 -->
+        <property name="properties" > <!--生产者配置信息-->
+            <props>
+                <prop key="ProducerId">${MQ_ProducerId}</prop>
+                <prop key="AccessKey">${MQ_AccessKey}</prop>
+                <prop key="SecretKey">${MQ_SecretKey}</prop>
+            </props>
+        </property>
+    </bean>
 </beans>

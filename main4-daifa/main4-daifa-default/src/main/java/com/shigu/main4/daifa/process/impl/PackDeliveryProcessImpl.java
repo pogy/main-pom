@@ -81,7 +81,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         tmpwo.setDfTradeId(order.getDfTradeId());
         List<DaifaWaitSendOrder> wos=daifaWaitSendOrderMapper.select(tmpwo);
         for(DaifaWaitSendOrder wo:wos){
-            if(!lastScanDate.equals(wo.getLastScanDate())){
+            if(!lastScanDate.equals(wo.getLastScanDate())&&wo.getRefundStatus()!=2){
                 throw new DaifaException("此条码对应的部分商品未扫描");
             }
         }

@@ -34,8 +34,11 @@ public class DefaultProcessMessage {
 
         switch (messageTagEnum){
             case ORDER_PUSH:{
-
                 orderConsumerService.orderConvertTrade(s);
+                break;
+            }
+            case ORDER_REFUND_NOITEM:{
+                orderConsumerService.refund(s);
                 break;
             }
             default:{

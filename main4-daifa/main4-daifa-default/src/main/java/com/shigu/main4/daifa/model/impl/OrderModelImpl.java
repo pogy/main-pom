@@ -1,7 +1,6 @@
 package com.shigu.main4.daifa.model.impl;
 import com.alibaba.fastjson.JSONObject;
-import com.aliyun.openservices.ons.api.*;
-import com.opentae.common.beans.LogUtil;
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
@@ -9,18 +8,17 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.daifa.bo.*;
-import com.shigu.main4.daifa.config.MQConfig;
 import com.shigu.main4.daifa.enums.DaifaListDealTypeEnum;
 import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
 import com.shigu.main4.daifa.enums.SubOrderStatus;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
+import com.shigu.main4.daifa.utils.*;
 import com.shigu.main4.daifa.utils.BigNumber;
 import com.shigu.main4.daifa.utils.DaifaListDealUtil;
 import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.tools.SpringBeanFactory;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -74,16 +72,8 @@ public class OrderModelImpl implements OrderModel {
 
     @Autowired
     private DaifaListDealUtil daifaListDealUtil;
-
-
     @Autowired
-    private Producer producer;
-
-    @Autowired
-    private MQConfig mQConfig;
-
-    private final Logger log = LogUtil.getLog(OrderModelImpl.class);
-
+    private MQUtil mqUtil;
     public OrderModelImpl(Long tid) {
         this.tid = tid;
     }
@@ -203,7 +193,7 @@ public class OrderModelImpl implements OrderModel {
         if (createTime.getTime() < new Date().getTime()) {
             DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
             daifaGgoodsTasksExample.createCriteria().andDfTradeIdEqualTo(tid)
-                    .andReturnStatusEqualTo(0).andUseStatusEqualTo(1)
+                    .andReturnStatusEqualTo(0).andUseStatusEqualTo(1).andOperateIsEqualTo(0)
                     .andEndStatusEqualTo(0).andAllocatStatusEqualTo(0);
             DaifaGgoodsTasks daifaGgoodsTask = new DaifaGgoodsTasks();
             daifaGgoodsTask.setEndStatus(1);
@@ -211,21 +201,27 @@ public class OrderModelImpl implements OrderModel {
             //修改代拿货表状态为已截单
             //为发消息，拿到待拿货的id集合
             List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,"df_order_id");
-            List<Long> dfOrderIds=new ArrayList<>();
+            List<Long> dfOrderIds;
             if (daifaGgoodsTasks.size()>0){
                 daifaGgoodsTasksMapper.updateByExampleSelective(daifaGgoodsTask, daifaGgoodsTasksExample);
+                daifaTradeMapper.updateByPrimaryKeySelective(trade);
                 dfOrderIds= BeanMapper.getFieldList(daifaGgoodsTasks, "dfOrderId", Long.class);
+                DaifaOrderExample orderExample=new DaifaOrderExample();
+                orderExample.createCriteria().andDfOrderIdIn(dfOrderIds);
+                List<DaifaOrder> orders=daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id"));
+                List<String> pcodes=BeanMapper.getFieldList(orders, "orderPartitionId", String.class);
+                JSONObject jsonObject=new JSONObject();
+                Map<String,Object>map=new HashMap<>();
+                map.put("orderId",trade.getTradeCode());
+                map.put("refundSubOrderIds",pcodes);
+                jsonObject.put("data",map);
+                jsonObject.put("msg", DaifaSendMqEnum.cutOff.getMsg());
+                jsonObject.put("status","true");
+                String message = jsonObject.toString();
+                mqUtil.sendMessage(DaifaSendMqEnum.cutOff.getMessageTag()+trade.getTradeCode(),
+                        DaifaSendMqEnum.cutOff.getMessageKey(), message);
+
             }
-            daifaTradeMapper.updateByPrimaryKeySelective(trade);
-            JSONObject jsonObject=new JSONObject();
-            Map<String,Object>map=new HashMap<>();
-            map.put("orderId",tid);
-            map.put("refundSubOrderIds",dfOrderIds);
-            jsonObject.put("data",map);
-            jsonObject.put("msg", DaifaSendMqEnum.cutOff.getMsg());
-            jsonObject.put("status","true");
-            String message = jsonObject.toString();
-            sendMessage(DaifaSendMqEnum.cutOff.getMessageTag()+tid, DaifaSendMqEnum.cutOff.getMessageKey(), message);
         }
     }
 
@@ -305,6 +301,15 @@ public class OrderModelImpl implements OrderModel {
             d.setSellerId(delivery.getSellerId());
             daifaSendOrderMapper.insertSelective(d);
         }
+        Map<String,Object>map=new HashMap<>();
+        map.put("orderId",trade.getTradeCode());
+        map.put("expressCode",delivery.getExpressCode());
+        JSONObject obj=new JSONObject();
+        obj.put("data",map);
+        obj.put("msg","全单发货");
+        obj.put("status",true);
+        mqUtil.sendMessage(DaifaSendMqEnum.sendAll.getMessageTag()+trade.getTradeCode(),
+                DaifaSendMqEnum.sendAll.getMessageKey(), obj.toString());
     }
 
     /**
@@ -379,7 +384,7 @@ public class OrderModelImpl implements OrderModel {
             obj.put("msg",msg);
             obj.put("status",false);
         }
-        sendMessage(DaifaSendMqEnum.refund.getMessageTag()+refundId,
+        mqUtil.sendMessage(DaifaSendMqEnum.refund.getMessageTag()+refundId,
                 DaifaSendMqEnum.refund.getMessageKey(),
                 obj.toString());
     }
@@ -401,46 +406,7 @@ public class OrderModelImpl implements OrderModel {
         return tid;
     }
 
-    public void sendMessage(String messageTag, String messageKey, String messages) {
-        log.info(messageTag + "------------" + messages);
 
-        byte[] bs = null;
-        try {
-            bs = messages.getBytes("utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        Message msg = new Message( //
-                // Message所属的Topic
-                mQConfig.topic,
-                // Message Tag 可理解为Gmail中的标签，对消息进行再归类，方便Consumer指定过滤条件在MQ服务器过滤
-                messageTag,
-                // Message Body 可以是任何二进制形式的数据， MQ不做任何干预
-                // 需要Producer与Consumer协商好一致的序列化和反序列化方式
-                bs);
-        // 设置代表消息的业务关键属性，请尽可能全局唯一
-        // 以方便您在无法正常收到消息情况下，可通过MQ 控制台查询消息并补发
-        // 注意：不设置也不会影响消息正常收发
-        msg.setKey(messageKey);
-        log.info("send body: " + new String(msg.getBody()));
-        // 发送消息，只要不抛异常就是成功
-        producer.sendAsync(msg, new SendCallback() {
-            @Override
-            public void onSuccess(final SendResult sendResult) {
-                // 消费发送成功
-                log.info("send success: " + sendResult.getMessageId());
-
-            }
-
-            @Override
-            public void onException(OnExceptionContext context) {
-                // 消息发送失败
-                log.error("发送失败");
-            }
-        });
-
-
-    }
 
     public Long getTid() {
         return tid;
@@ -456,12 +422,5 @@ public class OrderModelImpl implements OrderModel {
 
     public void setOrderBO(OrderBO orderBO) {
         this.orderBO = orderBO;
-    }
-
-    public static void main(String[] args) {
-       BigDecimal bigDecimal = new BigDecimal("5.00");
-        BigDecimal divide = bigDecimal.divide(new BigDecimal("6"), 2, BigDecimal.ROUND_DOWN);
-        System.out.println(divide.toString());
-
     }
 }
