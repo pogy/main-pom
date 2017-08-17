@@ -165,7 +165,7 @@ public class ActivityAction {
                 }
             }
         }
-//        model.addAttribute("lastUserAward", JSON.toJSONString(userVoList));
+        model.addAttribute("lastUserAward", "{}");
         return "buyer/awardInfo";
     }
 
