@@ -219,11 +219,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>sites.main</groupId>
-            <artifactId>main4-common</artifactId>
-            <version>${main4-common.version}</version>
-        </dependency>
         <!--<dependency>
             <groupId>com.taobao</groupId>
             <artifactId>taobao-sdk-java-21720662</artifactId>
