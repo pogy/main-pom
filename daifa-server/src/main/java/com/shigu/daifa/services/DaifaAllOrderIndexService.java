@@ -76,6 +76,7 @@ public class DaifaAllOrderIndexService {
         DaifaOrderExample doex = new DaifaOrderExample();
         DaifaTradeExample.Criteria ce = dtex.createCriteria();
         ce.andSellerIdEqualTo(sellerId);
+        dtex.setOrderByClause("df_trade_id desc");
         if (StringUtils.hasText(bo.getEndTime())) {
             Date endDate = DateUtil.getIsEndTime (DateUtil.stringToDate(bo.getEndTime(),"yyyy-MM-dd"));
             ce.andCreateTimeLessThanOrEqualTo(endDate);
