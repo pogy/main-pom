@@ -10,6 +10,24 @@ import java.util.List;
 public class PackResultVO implements Serializable {
     private Long sendId;
     private String goodsInfo;
+    private String expressName;
+    private String expressCode;
+
+    public String getExpressName() {
+        return expressName;
+    }
+
+    public void setExpressName(String expressName) {
+        this.expressName = expressName;
+    }
+
+    public String getExpressCode() {
+        return expressCode;
+    }
+
+    public void setExpressCode(String expressCode) {
+        this.expressCode = expressCode;
+    }
 
     public Long getSendId() {
         return this.sendId;

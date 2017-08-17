@@ -245,7 +245,8 @@ public class OrderModelImpl implements OrderModel {
         if (delivery.getMarkDestination() == null || delivery.getDfTradeId() == null || delivery.getExpressCode() == null) {
             throw new DaifaException("主单id，三段码，快递单号都不能为空");
         }
-
+        Date time=new Date();
+        String date=DateUtil.dateToString(time,DateUtil.patternB);
         DaifaTrade trade = new DaifaTrade();
         trade.setTradeStatus(3);
         trade.setSendTime(new Date());
@@ -266,6 +267,8 @@ public class OrderModelImpl implements OrderModel {
         //把发货信息写入已发货表
         DaifaSend send = BeanMapper.map(delivery, DaifaSend.class);
         send.setSendStatus(2);
+        send.setCreateTime(time);
+        send.setCreateDate(date);
         daifaSendMapper.insertSelective(send);
 
         //更新代发货主表状态为已发货
@@ -305,8 +308,8 @@ public class OrderModelImpl implements OrderModel {
             daifaSendExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
             List<DaifaSend> sends = daifaSendMapper.selectByExample(daifaSendExample);
             for (DaifaSendOrder d:daifaSendOrders){
-                d.setCreateDate(DateUtil.dateToString(new Date(),DateUtil.patternB));
-                d.setCreateTime(new Date());
+                d.setCreateDate(date);
+                d.setCreateTime(time);
                 d.setTakeGoodsStatus(1);
                 d.setSendStatus(2);
 

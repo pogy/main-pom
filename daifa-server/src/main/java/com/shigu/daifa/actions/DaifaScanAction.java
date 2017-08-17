@@ -43,6 +43,7 @@ public class DaifaScanAction {
         }
         PackResultVO vo=packDeliveryProcess.packSubOrder(dfOrderId);
         JSONObject obj= JsonResponseUtil.success();
+        obj.put("msg","订单全部已拿到货,正在打印快递单,"+vo.getExpressName()+"("+vo.getExpressCode()+")");
         obj.put("goodsInfo",vo.getGoodsInfo());
         obj.put("sendId",vo.getSendId());
         return obj;
