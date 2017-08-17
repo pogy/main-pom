@@ -1,5 +1,6 @@
 package com.shigu.main4.daifa.bo;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,7 +16,10 @@ public class OrderBO implements Serializable {
     private Long senderId;// 代发机构ID
     private BuyerBO buyerBO;//卖家信息
     private String buyRemark;//卖家留言
-
+    private List<SubOrderBO> subOrders;//   子订单
+    private List<ServiceBO> services;//    服务
+    private  List<PackageBO> packages;//   包材
+    private List<LogisticsBO> logistics;//   物流
     public BuyerBO getBuyerBO() {
         return buyerBO;
     }
@@ -23,15 +27,6 @@ public class OrderBO implements Serializable {
     public void setBuyerBO(BuyerBO buyerBO) {
         this.buyerBO = buyerBO;
     }
-
-    private List<SubOrderBO>subOrders;//   子订单
-
-    private List<ServiceBO>services;//    服务
-
-    private  List<PackageBO>packages;//   包材
-
-    private List<LogisticsBO>logistics;//   物流
-
     public Long getOid() {
         return oid;
     }
