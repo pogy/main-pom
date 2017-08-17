@@ -39,12 +39,10 @@ public class ShortCompleteRequest extends Request<ShortCompleteResponse> {
 		this.notCodeSets = notCodeSets;
 	}
 
-	@Override
     public String restApiUrl() {
         return HostEnum.REST_HOST+"shortComplete.json";
     }
 
-    @Override
     public String testApiUrl() {
         return HostEnum.TEST_HOST+"shortComplete.json";
     }

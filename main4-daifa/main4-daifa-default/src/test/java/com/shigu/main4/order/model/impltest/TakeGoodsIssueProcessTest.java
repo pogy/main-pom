@@ -84,7 +84,7 @@ public class TakeGoodsIssueProcessTest extends BaseSpringTest {
             System.out.println("---------------批次号----"+ggood.getPrintBatch());
         });
 
-        System.out.println("-----------打打-----"+printTagVOS.get(0).getpAndBarCode());
+        System.out.println("-----------打打-----"+printTagVOS.get(0).getPriceAndBarCode());
 
 
     }

@@ -17,12 +17,10 @@ public class ThirdLoinRequest extends Request<ThirdLoinResponse> {
     private String passWord;//手机号
     
 
-	@Override
     public String restApiUrl() {
         return HostEnum.REST_HOST+"thirdLoin.json";
     }
 
-    @Override
     public String testApiUrl() {
         return HostEnum.TEST_HOST+"thirdLoin.json";
     }

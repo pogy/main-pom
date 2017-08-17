@@ -27,12 +27,10 @@ public class SelWorkUserGgoodsTasksStoresRequest extends Request<SelWorkUserGgoo
 		this.daifaNahuoId = daifaNahuoId;
 	}
 
-	@Override
     public String restApiUrl() {
         return HostEnum.REST_HOST + "selWorkUserGgoodsTasksStores.json";
     }
 
-    @Override
     public String testApiUrl() {
         return HostEnum.TEST_HOST + "selWorkUserGgoodsTasksStores.json";
     }

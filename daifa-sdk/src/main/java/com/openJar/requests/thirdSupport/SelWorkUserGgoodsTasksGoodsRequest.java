@@ -48,12 +48,10 @@ public class SelWorkUserGgoodsTasksGoodsRequest extends Request<SelWorkUserGgood
 		this.storeId = storeId;
 	}
 
-	@Override
     public String restApiUrl() {
         return HostEnum.REST_HOST + "selWorkUserGgoodsTasksGoods.json";
     }
 
-    @Override
     public String testApiUrl() {
         return HostEnum.TEST_HOST + "selWorkUserGgoodsTasksGoods.json";
     }

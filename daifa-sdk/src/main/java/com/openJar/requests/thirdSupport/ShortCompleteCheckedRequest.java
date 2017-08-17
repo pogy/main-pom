@@ -29,12 +29,10 @@ public class ShortCompleteCheckedRequest extends Request<ShortCompleteCheckedRes
     private List<String> weightCodeList;
 
     private List<String> piPriceCodeList;
-    @Override
     public String restApiUrl() {
         return HostEnum.REST_HOST+"shortCompleteChecked.json";
     }
 
-    @Override
     public String testApiUrl() {
         return HostEnum.TEST_HOST+"shortCompleteChecked.json";
     }
