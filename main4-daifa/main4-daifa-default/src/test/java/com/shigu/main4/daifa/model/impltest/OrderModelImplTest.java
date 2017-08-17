@@ -110,7 +110,7 @@ public class OrderModelImplTest extends BaseSpringTest{
 
 
             LogisticsBO logisticsBO = new LogisticsBO ();
-            logisticsBO.setMoney (12.00);
+            logisticsBO.setMoney ("12.00");
             logisticsBO.setAddress ("芯图大厦11楼");
             logisticsBO.setCity ("杭州市");
             logisticsBO.setProv ("浙江省");

@@ -1,5 +1,4 @@
 package com.shigu.main4.daifa.model.impl;
-
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.ons.api.*;
 import com.opentae.common.beans.LogUtil;
@@ -17,10 +16,9 @@ import com.shigu.main4.daifa.enums.SubOrderStatus;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
-import com.shigu.main4.daifa.utils.CdkeyUtil;
+import com.shigu.main4.daifa.utils.BigNumber;
 import com.shigu.main4.daifa.utils.DaifaListDealUtil;
-import com.shigu.main4.daifa.utils.PinyinUtil;
-import com.shigu.main4.daifa.utils.PriceConvertUtils;
+import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -112,7 +111,7 @@ public class OrderModelImpl implements OrderModel {
         List<SubOrderBO> subOrders = orderBO.getSubOrders();
         daifaTrade.setTradeCode(orderBO.getOid().toString());
         int num=0;
-        Double goodsFee= 0.00;
+        BigNumber goodsFee = new BigNumber("0.00");
         Map<Long, ServiceBO> serviceBOMap = BeanMapper.list2Map(orderBO.getServices(), "soid", Long.class);
         for (SubOrderBO bo:subOrders){
             num+=bo.getNum();
@@ -135,7 +134,7 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setGoodsCode(bo.getGoodsNo());
                     subOrderModelBO.setTitle(bo.getTitle());
                     subOrderModelBO.setPicPath(bo.getPicUrl());
-                    subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadCharToLowerCase(bo.getMarketName())+"_"+bo.getShopNum()+"_"+bo.getGoodsNo());
+                    subOrderModelBO.setStoreGoodsCode(Pingyin.getPinYinHeadChar(bo.getMarketName())+"_"+bo.getShopNum()+"_"+bo.getGoodsNo());
                     subOrderModelBO.setOrderDiscountFee("0.00");
                     subOrderModelBO.setPropStr(bo.getColor()+":"+bo.getSize());
                     subOrderModelBO.setGoodsNum(1);
@@ -143,23 +142,24 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setSinglePay(bo.getSinglePay());
                     subOrderModelBO.setSellerId(orderBO.getSenderId());
                     subOrderModelBO.setTotalFee(bo.getSinglePay());
-                    subOrderModelBO.setOrderStatus(Long.valueOf(1));
+                    subOrderModelBO.setOrderStatus(1L);
                     subOrderModelBO.setAggrement(1);
                     subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
                     subOrderModelBO.setWebSite(bo.getWebSite());
                     subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
                     subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
-                    Double serviceFee = Double.parseDouble(serviceBOMap.get(bo.getSoid()).getMoney()) / Double.valueOf(bo.getNum());
-                    subOrderModelBO.setSingleServicesFee(PriceConvertUtils.doublePriceToString (serviceFee));
-                    subOrderModelBO.setTotalServiceFee (PriceConvertUtils.doublePriceToString (serviceFee));
-
+                    BigDecimal serviceFeeSum = new BigDecimal(serviceBOMap.get(bo.getSoid()).getMoney());
+                    BigDecimal serviceFee = serviceFeeSum.divide(new BigDecimal(bo.getNum()), 2, BigDecimal.ROUND_DOWN);
+                    subOrderModelBO.setSingleServicesFee(serviceFee.toString());
+                    subOrderModelBO.setTotalServiceFee (serviceFee.toString());
                     SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
-                    goodsFee+=Double.parseDouble(bo.getSinglePay());
+                    BigNumber singlePay = new BigNumber(bo.getSinglePay());
+                    goodsFee = goodsFee.Add(singlePay);
                 }
 
             }
         }
-        daifaTrade.setGoodsNum(Long.valueOf(num));
+        daifaTrade.setGoodsNum((long) num);
         LogisticsBO logisticsBO = orderBO.getLogistics().get(0);
         daifaTrade.setReceiverName(logisticsBO.getName());
         daifaTrade.setReceiverPhone(logisticsBO.getTelephone());
@@ -168,29 +168,27 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setDaifaType(orderBO.getType());
         daifaTrade.setExpressId(logisticsBO.getCompanyId());
         daifaTrade.setExpressName(logisticsBO.getCompany());
-        daifaTrade.setTradeStatus(1);
+        daifaTrade.setTradeStatus(1);//已付款待分配
         daifaTrade.setBuyerNick(orderBO.getBuyerBO().getNickInMarket());
-        daifaTrade.setGoodsFee(PriceConvertUtils.doublePriceToString (goodsFee));
+        daifaTrade.setGoodsFee(goodsFee.toString());
         daifaTrade.setBuyerRemark (orderBO.getBuyRemark ());
 
-        daifaTrade.setExpressFee(PriceConvertUtils.doublePriceToString (logisticsBO.getMoney()));
+        daifaTrade.setExpressFee(logisticsBO.getMoney());
         List<ServiceBO> services = orderBO.getServices();
-        Double serviceFee=0.00;
+        BigNumber serviceFee = new BigNumber("0.00");
         for (ServiceBO bo:services){
-            serviceFee+=Double.parseDouble(bo.getMoney());
+            serviceFee = serviceFee.Add(new BigNumber(bo.getMoney()));
         }
-        daifaTrade.setServicesFee(PriceConvertUtils.doublePriceToString (serviceFee));
+        daifaTrade.setServicesFee(serviceFee.toString());
         daifaTrade.setTradeDiscountFee("0.00");
-        daifaTrade.setTotalFee(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
-        daifaTrade.setMoney(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
+        daifaTrade.setTotalFee(serviceFee.Add(goodsFee).Add(new BigNumber(logisticsBO.getMoney())).toString());
+        daifaTrade.setMoney(serviceFee.Add(goodsFee).Add(new BigNumber(logisticsBO.getMoney())).toString());
         daifaTrade.setSendStatus (1);
-        daifaTrade.setRealPayMoney(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
-
+        daifaTrade.setRealPayMoney(serviceFee.Add(goodsFee).Add(new BigNumber(logisticsBO.getMoney())).toString());
         daifaTrade.setCreateTime(new Date());
         daifaTrade.setLastDoTime(new Date());
         daifaTrade.setBarCodeKey(daifaListDealUtil.queryListCode(DaifaListDealTypeEnum.TRADE_SORT,orderBO.getSenderId(),null));
         daifaTradeMapper.insertSelective(daifaTrade);
-        this.tid=daifaTrade.getDfTradeId();
     }
     /**
      * 订单超时
@@ -473,5 +471,12 @@ public class OrderModelImpl implements OrderModel {
 
     public void setOrderBO(OrderBO orderBO) {
         this.orderBO = orderBO;
+    }
+
+    public static void main(String[] args) {
+       BigDecimal bigDecimal = new BigDecimal("5.00");
+        BigDecimal divide = bigDecimal.divide(new BigDecimal("6"), 2, BigDecimal.ROUND_DOWN);
+        System.out.println(divide.toString());
+
     }
 }
