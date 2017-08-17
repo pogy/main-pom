@@ -384,6 +384,15 @@ var webSite = '${webSite!}';
 
 
 <div class="rules">
+    <div class="layout awardsBox">
+        <h2 class="yahei fs18 tac"><span class="pr">活动大揭秘</span></h2>
+        <ol>
+            <li>1、一等奖：三星Galaxy S8+皇帝版6GB+128GB；</li>
+            <li>2、二等奖：华为 HUAWEI nova青春版 4GB+64GB；</li>
+            <li>3、三等奖：耳机，键盘，电子称等电子生活用品随机领取；</li>
+            <li>4、参与奖：小茗同学，红牛等健康饮品随机领取。</li>
+        </ol>
+    </div>
     <div class="layout rulesBox">
         <h2 class="yahei fs18 tac"><span class="pr">活动规则</span></h2>
         <ol>
