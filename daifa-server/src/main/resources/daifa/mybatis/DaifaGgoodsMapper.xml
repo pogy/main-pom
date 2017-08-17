@@ -4,7 +4,7 @@
 
     <resultMap id="workGoodsMarketMap" type="com.openJar.beans.WorkUserGgoodsTasksMarket">
         <result column="market_name" property="parentMarketName" jdbcType="VARCHAR"/>
-        <collection property="stores" ofType="com.opentae.data.custom.beans.WorkUserGgoodsTasksStore"
+        <collection property="stores" ofType="com.openJar.beans.WorkUserGgoodsTasksStore"
                     javaType="ArrayList" resultMap="workGoodsStoresMap"/>
     </resultMap>
     <resultMap id="workGoodsStoresMap" type="com.openJar.beans.WorkUserGgoodsTasksStore">
@@ -29,7 +29,7 @@
         )v
         GROUP BY market_id,store_num,store_id
     </select>
-    <select id="selectTodayWorkGgoodsStoresCount" resultType="com.opentae.data.custom.beans.WorkUserGgoodsTasksCounts">
+    <select id="selectTodayWorkGgoodsStoresCount" resultType="com.openJar.beans.WorkUserGgoodsTasksCounts">
         select
         ifnull(sum(if(allocat_status=1,goods_num,0)),0)totalNum,
         ifnull(sum(if(allocat_status=2,goods_num,0)),0)totalHasNum ,
