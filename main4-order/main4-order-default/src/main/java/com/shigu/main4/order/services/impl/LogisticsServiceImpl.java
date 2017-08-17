@@ -1,8 +1,12 @@
 package com.shigu.main4.order.services.impl;
 
+import com.shigu.main4.order.exceptions.LogisticsRuleException;
+import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.services.LogisticsService;
+import com.shigu.main4.order.vo.BournRuleInfoVO;
 import com.shigu.main4.order.vo.LogisticsShipDetail;
 import com.shigu.main4.order.vo.LogisticsShipVo;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,5 +44,11 @@ public class LogisticsServiceImpl implements LogisticsService {
         list.add(detail1);
         vo.setDetail(list);
         return vo;
+    }
+
+    @Override
+    public List<BournRuleInfoVO> selRulesByProvId(Long senderId, Long provId) throws LogisticsRuleException {
+        LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
+        return logisticsTemplate.rules(provId, null);
     }
 }

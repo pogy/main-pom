@@ -1,6 +1,10 @@
 package com.shigu.main4.order.services;
 
+import com.shigu.main4.order.exceptions.LogisticsRuleException;
+import com.shigu.main4.order.vo.BournRuleInfoVO;
 import com.shigu.main4.order.vo.LogisticsShipVo;
+
+import java.util.List;
 
 /**
  * Created by pc on 2017-07-26.
@@ -18,4 +22,12 @@ public interface LogisticsService {
      * @return 快递信息
      */
     LogisticsShipVo logisticsInfo(Long refundId);
+
+    /**
+     * 根据发件单位取物流规则
+     * @param senderId
+     * @param provId
+     * @return
+     */
+    List<BournRuleInfoVO> selRulesByProvId(Long senderId,Long provId) throws LogisticsRuleException;
 }

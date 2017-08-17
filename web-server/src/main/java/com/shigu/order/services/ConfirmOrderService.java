@@ -15,6 +15,7 @@ import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.process.ItemCartProcess;
 import com.shigu.main4.order.services.ItemOrderService;
+import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
@@ -62,6 +63,9 @@ public class ConfirmOrderService {
 
     @Autowired
     private ItemCartProcess itemCartProcess;
+
+    @Autowired
+    private LogisticsService logisticsService;
 
 
     /**
@@ -265,8 +269,7 @@ public class ConfirmOrderService {
         List<PostRuleVO> vos = new ArrayList<>();
         Map<Long, ExpressCompany> expressCompanyMap = Collections.emptyMap();
         try {
-            LogisticsTemplate logisticsTemplate = SpringBeanFactory.getBean(LogisticsTemplate.class, senderId, null);
-            List<BournRuleInfoVO> rules = logisticsTemplate.rules(provId, null);
+            List<BournRuleInfoVO> rules = logisticsService.selRulesByProvId(senderId,provId);
             List<Long> companyIds = BeanMapper.getFieldList(rules, "companyId", Long.class);
             if (!companyIds.isEmpty()) {
                 ExpressCompanyExample companyExample = new ExpressCompanyExample();
