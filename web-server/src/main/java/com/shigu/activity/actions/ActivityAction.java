@@ -153,7 +153,8 @@ public class ActivityAction {
             PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
             ActiveDrawPemVo drawLastPem = activeDrawServiceImpl.selNowDrawPem(drawPem.getStartTime());
             if (drawLastPem != null) {
-                model.addAttribute("lastHdTime", parseToStartEnd(drawLastPem.getStartTime()));
+//                model.addAttribute("lastHdTime", parseToStartEnd(drawLastPem.getStartTime()));
+                model.addAttribute("lastHdTime", "2017年08月17日——2017年08月26日");
                 // 用户上一期获奖数据
                 userVoList = activeDrawServiceImpl.selDrawRecordList(drawLastPem.getId(), ps.getUserId(), null);
                 for (Iterator<ActiveDrawRecordUserVo> iterator = userVoList.iterator(); iterator.hasNext(); ) {
