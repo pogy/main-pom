@@ -79,7 +79,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
                 activeDrawRecord.setWard(drawResult.getPrizeName());
                 activeDrawRecord.setPemId(newAutumn.pemId);
                 activeDrawRecord.setUserId(msg.getUserId());
-                activeDrawRecord.setDrawStatus(1);
+                activeDrawRecord.setDrawStatus(3);
                 activeDrawRecord.setCreateTime(new Date());
                 activeDrawRecord.setModifyTime(new Date());
                 activeDrawRecord.setDrawCode(StringUtil.str10To37Str());
