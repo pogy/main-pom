@@ -39,7 +39,7 @@
         <img src="http://style.571xz.com/v2/dfgl/css/img/headImg.jpg">
         </#if>
         <span class="fcBlue fs16">${userName!}</span>
-        <a href="#" class="fcF40 fs16">退出</a>
+        <a href="${daifa_host!}init/logout.htm" class="fcF40 fs16">退出</a>
     </div>
 </div>
 
@@ -109,6 +109,10 @@
 </div>
 
 
+
+ 
+ 
+ 
 
 
 
