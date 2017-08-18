@@ -170,7 +170,7 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setExpressId(logisticsBO.getCompanyId());
         daifaTrade.setExpressName(logisticsBO.getCompany());
         daifaTrade.setTradeStatus(1);//已付款待分配
-        daifaTrade.setBuyerNick(orderBO.getBuyerBO().getNickInMarket());
+        daifaTrade.setBuyerNick(orderBO.getBuyer().getNickInMarket());
         daifaTrade.setGoodsFee(goodsFee.toString());
         daifaTrade.setBuyerRemark (orderBO.getBuyRemark ());
 
