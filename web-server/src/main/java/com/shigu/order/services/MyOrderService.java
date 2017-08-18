@@ -1,16 +1,18 @@
 package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.ItemOrder;
+import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.*;
-
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
 import com.shigu.order.vo.MyOrderDetailVO;
@@ -22,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,13 @@ public class MyOrderService {
 
     @Autowired
     private ItemOrderMapper itemOrderMapper;
+
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
+
+    @Autowired
+    private OrderManageProcess orderManageProcess;
+
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
         ShiguPager<MyOrderVO> pager = new ShiguPager<>();
@@ -166,4 +174,9 @@ public class MyOrderService {
         }).collect(Collectors.toList());
     }
 
+
+    public boolean testRefund(Long subId) {
+        ItemOrderSub sub = itemOrderSubMapper.selectByPrimaryKey(subId);
+        return sub != null && orderManageProcess.tryRefund(subId.toString(), sub.getNum());
+    }
 }

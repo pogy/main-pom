@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 商品购物车实现
@@ -132,18 +133,16 @@ public class ItemCartImpl implements Cart {
     }
 
     public List<CartVO> listProduct() {
-        List<CartVO> vos = new ArrayList<>();
         ItemCart cart = new ItemCart();
         cart.setUserId(userId);
-        for (ItemCart itemCart : itemCartMapper.select(cart)) {
+        return itemCartMapper.select(cart).stream().map(itemCart -> {
             ItemProductVO info = SpringBeanFactory.getBean(ItemProductImpl.class, itemCart.getPid(), itemCart.getSkuId()).info();
             CartVO cartVO = BeanMapper.map(info, CartVO.class);
-            vos.add(cartVO);
             cartVO.setCartId(itemCart.getCartId());
             cartVO.setNum(itemCart.getNum());
             cartVO.setUserId(userId);
             cartVO.setSkuId(info.getSelectiveSku().getSkuId());
-        }
-        return vos;
+            return cartVO;
+        }).collect(Collectors.toList());
     }
 }

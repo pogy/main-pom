@@ -3,14 +3,14 @@ package com.shigu.main4.order.model.impl;
 import com.opentae.data.mall.beans.SubOrderSoidps;
 import com.opentae.data.mall.examples.SubOrderSoidpsExample;
 import com.opentae.data.mall.interfaces.SubOrderSoidpsMapper;
-import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.SoidsCreater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 子单拆分生成器
@@ -22,6 +22,7 @@ public class SoidsCreaterImpl implements SoidsCreater {
     SubOrderSoidpsMapper subOrderSoidpsMapper;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<Long> makeSoidps(Long soid, Integer number) {
         SubOrderSoidpsExample example=new SubOrderSoidpsExample();
         example.createCriteria().andSoidEqualTo(soid);
@@ -40,8 +41,7 @@ public class SoidsCreaterImpl implements SoidsCreater {
     public List<Long> soidToSoidps(Long soid) {
         SubOrderSoidpsExample example=new SubOrderSoidpsExample();
         example.createCriteria().andSoidEqualTo(soid);
-        List<SubOrderSoidps> list=subOrderSoidpsMapper.selectByExample(example);
-        return BeanMapper.getFieldList(list,"soidpId",Long.class);
+        return subOrderSoidpsMapper.selectByExample(example).stream().map(SubOrderSoidps::getSoidpId).collect(Collectors.toList());
     }
 
     @Override

@@ -89,6 +89,8 @@ public class OrderMessageProducter {
             subOrder.setShopId(product.getShopId());
             subOrder.setShopNum(product.getShopNum());
             subOrder.setSoidps(soidsCreater.makeSoidps(subItemOrderVO.getSoid(),subItemOrderVO.getNumber()));
+            subOrder.setColor(product.getSelectiveSku().getColor());
+            subOrder.setSize(product.getSelectiveSku().getSize());
             return subOrder;
         }).collect(Collectors.toList()));
 

@@ -8,8 +8,6 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
-import com.shigu.main4.order.servicevo.ShowOrderVO;
-import com.shigu.main4.order.vo.OrderDetailExpressVO;
 import com.shigu.order.services.MyOrderService;
 import com.shigu.order.vo.MyOrderDetailVO;
 import com.shigu.order.vo.MyOrderVO;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
-import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -45,8 +42,6 @@ public class MyOrderAction {
     @Autowired
     MyOrderService myOrderService;
 
-    @Autowired
-    ItemOrderService itemOrderService;
 
     /**
      * ====================================================================================
@@ -82,8 +77,7 @@ public class MyOrderAction {
     @RequestMapping("isCanApplyRefund")
     @ResponseBody
     public JSONObject isCanApplyRefund(Long childOrderId){
-        //TODO: 实现查询代发订单可退情况
-        return JsonResponseUtil.success().element("refundState", 1);
+        return JsonResponseUtil.success().element("refundState", myOrderService.testRefund(childOrderId) ? 1 : 0);
     }
 
     /**

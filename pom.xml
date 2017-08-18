@@ -44,6 +44,8 @@
         <main4-monitor-default.version>${project.version}</main4-monitor-default.version>
         <main4-order-api.version>${project.version}</main4-order-api.version>
         <main4-order-default.version>${project.version}</main4-order-default.version>
+        <main4-daifa-api.version>${project.version}</main4-daifa-api.version>
+        <main4-daifa-default.version>${project.version}</main4-daifa-default.version>
 
 
         <spring.version>4.3.9.RELEASE</spring.version>
