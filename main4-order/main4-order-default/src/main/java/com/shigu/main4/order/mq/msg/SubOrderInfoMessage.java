@@ -71,7 +71,7 @@ public class SubOrderInfoMessage implements Serializable {
     /**
      * 重量
      */
-    private Long weight;
+    private String weight;
     /**
      * 尺码
      */
@@ -209,11 +209,11 @@ public class SubOrderInfoMessage implements Serializable {
         this.goodsNo = goodsNo;
     }
 
-    public Long getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(Long weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
