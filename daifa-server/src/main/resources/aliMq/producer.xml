@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="tae_producer" class="com.aliyun.openservices.ons.api.bean.ProducerBean" init-method="start" destroy-method="shutdown">
+        <!-- Spring接入方式支持Java SDK支持的所有配置项 -->
+        <property name="properties" > <!--生产者配置信息-->
+            <props>
+                <prop key="ProducerId">${MQ_ProducerId}</prop>
+                <prop key="AccessKey">${MQ_AccessKey}</prop>
+                <prop key="SecretKey">${MQ_SecretKey}</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

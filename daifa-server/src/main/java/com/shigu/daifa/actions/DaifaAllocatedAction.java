@@ -97,7 +97,7 @@ public class DaifaAllocatedAction {
         if (bo.getType() == null) {
             throw new DaifaException("缺少参数");
         }
-        if(bo.getType() == 1&&(bo.getIds() == null||bo.getIds().size()==0)){
+        if(bo.getType() == 2&&(bo.getIds() == null||bo.getIds().size()==0)){
             throw new DaifaException("缺少参数");
         }
         Session session = SecurityUtils.getSubject().getSession();

@@ -76,6 +76,7 @@ public class DaifaAllOrderIndexService {
         DaifaOrderExample doex = new DaifaOrderExample();
         DaifaTradeExample.Criteria ce = dtex.createCriteria();
         ce.andSellerIdEqualTo(sellerId);
+        dtex.setOrderByClause("df_trade_id desc");
         if (StringUtils.hasText(bo.getEndTime())) {
             Date endDate = DateUtil.getIsEndTime (DateUtil.stringToDate(bo.getEndTime(),"yyyy-MM-dd"));
             ce.andCreateTimeLessThanOrEqualTo(endDate);
@@ -113,6 +114,7 @@ public class DaifaAllOrderIndexService {
                 BeanUtils.copyProperties(daifaAllOrder, vo, "childOrders");
                 for (DaifaAllSubOrder daifaAllSubOrder : daifaAllOrder.getChildOrders()) {
                     AllSubOrderVO subvo = new AllSubOrderVO();
+                    subvo.setRefundState(daifaAllSubOrder.getRefundStatus());
                     BeanUtils.copyProperties(daifaAllSubOrder, subvo);
                     allSubOrderVOS.add(subvo);
                 }
@@ -165,7 +167,6 @@ public class DaifaAllOrderIndexService {
                         }
 
                         for (AllSubOrderVO allSubOrderVO : vo.getChildOrders()) {
-                            allSubOrderVO.setNoSaleIs(true);
                             if (allSubOrderVO.getChildOrderId().equals(daifaAllSubOrder.getChildOrderId())) {
                                 allSubOrderVO.setAfterSaleState(afterSaleState);
                             }
