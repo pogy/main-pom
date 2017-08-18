@@ -1,7 +1,9 @@
 package com.shigu.main4.order.mq;
 
 import com.shigu.main4.order.BaseTest;
+import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,7 +21,8 @@ public class MessageQueueTest extends BaseTest {
      */
     @Test
     public void testSendOrderPush() {
-//        orderMessageProducter.orderPush(itemOrder);
+        ItemOrder bean = SpringBeanFactory.getBean(ItemOrder.class, 319L);
+        orderMessageProducter.orderPush(bean);
     }
 
     /**
