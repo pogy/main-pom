@@ -150,6 +150,15 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             ItemSkuVO selectiveSku = productVO.getSelectiveSku();
             vo.setSize(selectiveSku.getSize());
             vo.setColor(selectiveSku.getColor());
+            vo.setWeight(productVO.getWeight());
+            vo.setPrice(productVO.getPrice());
+            vo.setFloor(productVO.getFloor());
+            vo.setFloorId(productVO.getFloorId());
+            vo.setGoodsNo(productVO.getGoodsNo());
+            vo.setMarketId(productVO.getMarketId());
+            vo.setMarketName(productVO.getMarketName());
+            vo.setOid(order.getOid());
+            vo.setShopId(productVO.getShopId());
             subOrders.add(vo);
         }
         itemOrder.addSubOrder(subOrders);
