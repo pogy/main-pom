@@ -14,18 +14,18 @@ public class OrderBO implements Serializable {
     private String mark;//  备注
     private Integer aggrement;// 协议1有货先发，2缺货不发
     private Long senderId;// 代发机构ID
-    private BuyerBO buyerBO;//卖家信息
+    private BuyerBO buyer;//卖家信息
     private String buyRemark;//卖家留言
     private List<SubOrderBO> subOrders;//   子订单
     private List<ServiceBO> services;//    服务
     private  List<PackageBO> packages;//   包材
     private List<LogisticsBO> logistics;//   物流
     public BuyerBO getBuyerBO() {
-        return buyerBO;
+        return buyer;
     }
 
     public void setBuyerBO(BuyerBO buyerBO) {
-        this.buyerBO = buyerBO;
+        this.buyer = buyerBO;
     }
     public Long getOid() {
         return oid;
