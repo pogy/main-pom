@@ -68,17 +68,23 @@ public class DrawQualificationAutumnImpl extends DrawQualification {
         //activeDrawRecord = activeDrawRecordMapper.selectOne(activeDrawRecord);
         //参与奖与其他奖项独立
         ActiveDrawRecordExample activeDrawRecordExample = new ActiveDrawRecordExample();
-        activeDrawRecordExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(newAutumn.pemId).andWardNotEqualTo("A1");
+        activeDrawRecordExample.createCriteria().andUserIdEqualTo(userId).andPemIdEqualTo(newAutumn.pemId);
         List<ActiveDrawRecord> activeDrawRecords = activeDrawRecordMapper.selectByExample(activeDrawRecordExample);
-        ActiveDrawRecord activeDrawRecord = null;
+        StringBuilder ward = new StringBuilder();
         //有中过非参与奖
         if (activeDrawRecords.size()>0) {
-            activeDrawRecord = activeDrawRecords.get(0);
-        }
-        if (activeDrawRecord != null) {
-            vo.setId(activeDrawRecord.getId());
-            vo.setHasWard(activeDrawRecord.getWard());
-        }else {
+            for (ActiveDrawRecord drawRecord : activeDrawRecords) {
+                String singleWard = drawRecord.getWard();
+                if ("A1".equals(singleWard)) {
+                    ward.append("A1");
+                }
+                if ("A2".equals(singleWard)||"A3".equals(singleWard)||"A4".equals(singleWard)) {
+                    ward.append("BigWard");
+                    vo.setId(drawRecord.getId());
+                }
+            }
+            vo.setHasWard(ward.toString());
+        } else {
             vo.setHasWard(HitDrawModel.NO_PRIZE);
         }
         return vo;

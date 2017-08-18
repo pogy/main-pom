@@ -56,27 +56,31 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
         String hasWard = msg.getHasWard();
         int usedFrequency = msg.getUsedFrequency() == null ? 0 : msg.getUsedFrequency();
         //有抽奖资格：已抽奖次数小于可抽奖次数
-        if (usedFrequency++ < msg.getOpportunityFrequency() ) {
-            NewAutumnPrizePool resultPool = BeanMapper.map(new DrawHitter(1000, DrawHitter.PrizeStrategy.PRIZE_CANCLE).tryHitDraw(prizePool),NewAutumnPrizePool.class);
+        if (usedFrequency++ < msg.getOpportunityFrequency()) {
+            NewAutumnPrizePool resultPool = BeanMapper.map(new DrawHitter(1000, DrawHitter.PrizeStrategy.PRIZE_CANCLE).tryHitDraw(prizePool), NewAutumnPrizePool.class);
             DrawResult drawResult = null;
             if (resultPool.getRank() != null) {
-                drawResult = new DrawResult(resultPool.getHitResult(),resultPool.getRank(),resultPool.getPrizeGood());
+                drawResult = new DrawResult(resultPool.getHitResult(), resultPool.getRank(), resultPool.getPrizeGood());
             } else {
-                drawResult = new DrawResult(resultPool.getHitResult(),HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
+                drawResult = new DrawResult(resultPool.getHitResult(), HitDrawModel.NO_PRIZE_RANK, HitDrawModel.NO_PRIZE);
             }
             //已经中过非参与奖
-            boolean hasHitBigPrize = !(hasWard == null || "".equals(hasWard) || NO_PRIZE.equals(hasWard));
+            //boolean hasHitBigPrize = !(hasWard == null || "".equals(hasWard) || NO_PRIZE.equals(hasWard));
+            //中过非参与奖
+            boolean hasHitBigPrize = hasWard != null && hasWard.contains("BigWard");
+            //中过参与奖
+            boolean hasHitInspare = hasWard != null && hasWard.contains("A1");
             //if (!(hasWard == null || "".equals(hasWard)||NO_PRIZE.equals(hasWard))){
             //    drawResult = new DrawResult((int)(Math.random()*1000)+1,HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
             //}
             ShiguTemp temp = new ShiguTemp();
             temp.setId(msg.getDrawVerifyId());
             temp.setKey2(String.valueOf(usedFrequency));
-            if (drawResult.getRank()>0 ) {
+            if (drawResult.getRank() > 0) {
                 //更新中奖信息
                 //中了1、2、3等奖，不再有中大奖资格
-                if (drawResult.getRank() >= 4 || !hasHitBigPrize) {
-                    if (drawResult.getRank()<4) {
+                if ((drawResult.getRank() < 4 && !hasHitBigPrize) || (drawResult.getRank() == 4 && !hasHitInspare)) {
+                    if (drawResult.getRank() < 4) {
                         temp.setKey5(drawResult.getPrizeName());
                     }
                     ActiveDrawRecord activeDrawRecord = new ActiveDrawRecord();
@@ -90,13 +94,13 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
                     activeDrawRecord.setReceivesYes(false);
                     activeDrawRecord.setEnabled(false);
                     activeDrawRecordMapper.insert(activeDrawRecord);
-                }else {
-                    drawResult = new DrawResult(resultPool.getHitResult(),HitDrawModel.NO_PRIZE_RANK,HitDrawModel.NO_PRIZE);
+                } else {
+                    drawResult = new DrawResult(resultPool.getHitResult(), HitDrawModel.NO_PRIZE_RANK, HitDrawModel.NO_PRIZE);
                 }
                 ShiguTemp updatePool = new ShiguTemp();
                 updatePool.setId(resultPool.getId());
-                updatePool.setKey1(resultPool.getCurrentPrizeNum()-1+"");
-                updatePool.setKey2(resultPool.getDistributedNum()+1+"");
+                updatePool.setKey1(resultPool.getCurrentPrizeNum() - 1 + "");
+                updatePool.setKey2(resultPool.getDistributedNum() + 1 + "");
                 shiguTempMapper.updateByPrimaryKeySelective(updatePool);
             }
             shiguTempMapper.updateByPrimaryKeySelective(temp);
@@ -156,7 +160,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
     }
 
     @Override
-    public void triggerUpdateQualification(Long userId,Integer upNum) {
+    public void triggerUpdateQualification(Long userId, Integer upNum) {
         if (userId == null) {
             return;
         }
