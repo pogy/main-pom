@@ -56,21 +56,19 @@ public class GoodsSearchAction {
 
     /**
      * 图搜
-     *
      * @return
      */
     @RequestMapping("picSearch")
-    public String picSearch(String webSite, Model model) {
+    public String picSearch(String webSite,Model model){
         if (webSite == null) {
-            webSite = "hz";
+            webSite="hz";
         }
-        model.addAttribute("webSite", webSite);
+        model.addAttribute("webSite",webSite);
         return "search/picSearch";
     }
 
     /**
      * 上传图搜用的图片
-     *
      * @param file
      * @return
      * @throws JsonErrException
@@ -78,45 +76,43 @@ public class GoodsSearchAction {
     @RequestMapping("uploadGoodsImg")
     @ResponseBody
     public JSONObject uploadGoodsImg(@RequestParam(value = "file", required = false) MultipartFile file) throws JsonErrException {
-        String url = "";
+        String url="";
         try {
-            url = ossIO.uploadFile(file.getBytes(), "picsearch/" + System.currentTimeMillis() + ".jpg");
+            url=ossIO.uploadFile(file.getBytes(),"picsearch/"+System.currentTimeMillis() + ".jpg");
 //            url=fileUploadService.fileUpload("item/"+shopSession.getShopId()+"/"+System.currentTimeMillis() + ".jpg",file.getBytes());
         } catch (IOException e) {
-            throw new JsonErrException("").addErrMap("err", "图片数据读取失败");
+            throw new JsonErrException("").addErrMap("err","图片数据读取失败");
         }
-        return JsonResponseUtil.success().element("imgurl", url);
+        return JsonResponseUtil.success().element("imgurl",url);
     }
 
     /**
      * 图搜
      * data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4 JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAC1AI4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4 Tl5ufo6erx8vP09fb3 Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3 Pn6/9oADAMBAAIRAxEAPwDxmiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP//Z
-     * data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4 JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCACVAHgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4 Tl5ufo6erx8vP09fb3 Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3 Pn6/9oADAMBAAIRAxEAPwDxmiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9k=
-     *
+     data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4 JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCACVAHgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4 Tl5ufo6erx8vP09fb3 Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3 Pn6/9oADAMBAAIRAxEAPwDxmiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//9k=
      * @return
      */
     @RequestMapping("goodsUrlSearch")
     @ResponseBody
-    public JSONObject goodsUrlSearch(String imgAdress, String webSite, String baseCode) throws JsonErrException {
+    public JSONObject goodsUrlSearch(String imgAdress,String webSite,String baseCode) throws JsonErrException {
         if (webSite == null) {
-            webSite = "hz";
+            webSite="hz";
         }
-        JSONObject result = JsonResponseUtil.success();
+        JSONObject result=JsonResponseUtil.success();
         try {
-            if (baseCode != null && imgAdress == null) {
+            if(baseCode!=null&&imgAdress==null){
                 System.out.println(baseCode);
                 BASE64Decoder decoder = new BASE64Decoder();
-                byte[] data = decoder.decodeBuffer(baseCode);
-                imgAdress = ossIO.uploadFile(data, "picsearch/" + System.currentTimeMillis() + ".jpg");
+                byte[] data=decoder.decodeBuffer(baseCode);
+                imgAdress=ossIO.uploadFile(data,"picsearch/"+System.currentTimeMillis() + ".jpg");
             }
-            result.element("imgurl", imgAdress);
-            result.element("goodslist", JSONArray.fromObject(goodsSearchService.searchByPic(imgAdress, webSite)));
+            result.element("imgurl",imgAdress);
+            result.element("goodslist",JSONArray.fromObject(goodsSearchService.searchByPic(imgAdress,webSite)));
         } catch (IOException e) {
             throw new JsonErrException("搜索接口调用异常");
         }
         return result;
     }
-
     /**
      * 新品发布
      *
@@ -135,7 +131,7 @@ public class GoodsSearchAction {
             bo.setKeyword(EncodeParamter.iosToUtf8(bo.getKeyword()));
         model.addAttribute("iconCateNav", todayNewGoodsService.selIconCateNav());
         if (bo.getCid() != null) {
-            model.addAttribute("styleCateNavs", categoryInSearchService.selSubCates(todayNewGoodsService.selRealCid(bo.getCid()), SearchCategory.STYLE, bo.getWebSite()));
+            model.addAttribute("styleCateNavs", categoryInSearchService.selSubCates(todayNewGoodsService.selRealCid(bo.getCid()), SearchCategory.STYLE,bo.getWebSite()));
         }
         ShiguPager<GoodsInSearch> pager = todayNewGoodsService.selGoodsNew(bo);
         model.addAttribute("pageOption", pager.selPageOption(bo.getRows()));
@@ -153,7 +149,7 @@ public class GoodsSearchAction {
     @RequestMapping("{website}search")
     public String hzsearch(@PathVariable("website") String website, SearchBO bo, Model model) {
         bo.setWebSite(website);
-        if (StringUtils.isEmpty(website)) {
+        if(StringUtils.isEmpty(website)){
             bo.setWebSite("hz");
         }
         bo.setRows(40);
@@ -184,7 +180,7 @@ public class GoodsSearchAction {
                 vo.getParentCats()));
         //查匹配店铺
         if (bo.getPage() == 1) {
-            model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(), bo.getWebSite()));
+            model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(),bo.getWebSite()));
         }
         model.addAttribute("goodslist", pager.getContent() == null ? Collections.emptyList() : pager.getContent());
         model.addAttribute("tjGoodsList", goodsSearchService.selTj(bo.getWebSite(), 1, bo.getPid()));
@@ -196,11 +192,11 @@ public class GoodsSearchAction {
         model.addAttribute("goodsCount", pager.getTotalCount());
         //搜索路径
 //        model.addAttribute("cateNav",searchNav);
-        model.addAttribute("totalPage", pager.getTotalPages() > 100 ? 100 : pager.getTotalPages());
+        model.addAttribute("totalPage",  pager.getTotalPages()>100?100:pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
         if ("kx".equalsIgnoreCase(website)) {
             return "xieSearch/search";
-        } else {
+        } else  {
             return "search/search";
         }
 
@@ -214,7 +210,7 @@ public class GoodsSearchAction {
      * @return
      */
     @RequestMapping("{website}goods")
-    public String hzgoods(SearchBO bo, @PathVariable("website") String website, Model model) {
+    public String hzgoods(SearchBO bo,@PathVariable("website")String website, Model model) {
         bo.setWebSite(website);
         if (StringUtils.isEmpty(website) || StringUtils.equals("new", website)) {
             bo.setWebSite("hz");
@@ -235,13 +231,6 @@ public class GoodsSearchAction {
         if (bo.getSort() == null) {
             bo.setSort("comp");
         }
-        //todo:前后台按价格排序字段转化，统一后删除
-        if ("price-asc".equals(bo.getSort())) {
-            bo.setSort(SearchOrderBy.PRICEUP.getValue());
-        }
-        if ("price-desc".equals(bo.getSort())) {
-            bo.setSort(SearchOrderBy.PRICEDOWN.getValue());
-        }
         SearchOrderBy orderBy = SearchOrderBy.valueIs(bo.getSort());
         if (orderBy == null) {
             orderBy = SearchOrderBy.COMMON;
@@ -261,7 +250,7 @@ public class GoodsSearchAction {
             model.addAttribute("elements", categoryInSearchService.selSubCates(bo.getPid().toString(), SearchCategory.ELEMENT, website));
         }
         //查匹配店铺
-        model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(), bo.getWebSite()));
+        model.addAttribute("topShopList", storeSelFromEsService.selByShopNum(bo.getKeyword(),bo.getWebSite()));
 
         model.addAttribute("goodslist", pager.getContent());
         model.addAttribute("tjGoodsList", goodsSearchService.selTj(bo.getWebSite(), 0, bo.getPid()));
@@ -275,15 +264,8 @@ public class GoodsSearchAction {
         //搜索路径
         model.addAttribute("totalPage", pager.getTotalPages());
         model.addAttribute("webSite", bo.getWebSite());
-        if (website.equals("hz") && bo.getPid().equals(30L))
-            model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website));
-        //todo:前后台按价格排序字段转化，统一后删除
-        if (SearchOrderBy.PRICEUP.getValue().equals(bo.getSort())) {
-            bo.setSort("price-asc");
-        }
-        if (SearchOrderBy.PRICEDOWN.getValue().equals(bo.getSort())) {
-            bo.setSort("price-desc");
-        }
+        if(website.equals("hz")&&bo.getPid().equals(30L))
+        model.addAttribute("goodsGoats", goodsSearchService.selBottomGoat(website));
         if ("kx".equalsIgnoreCase(website)) {
             return "xieSearch/goods";
         } else {

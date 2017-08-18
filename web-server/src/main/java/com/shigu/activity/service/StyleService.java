@@ -126,9 +126,9 @@ public class StyleService {
             orderCase = SearchOrderBy.NEW;
         } else if (bo.getSort().equals("comp")) {
             orderCase = SearchOrderBy.GOODS_COMMON;
-        } else if (bo.getSort().equals("price-asc")) {
+        } else if (bo.getSort().equals("price_up")) {
             orderCase = SearchOrderBy.PRICEUP;
-        } else if (bo.getSort().equals("price-desc")) {
+        } else if (bo.getSort().equals("price_down")) {
             orderCase = SearchOrderBy.PRICEDOWN;
         } else {
             orderCase = SearchOrderBy.GOODS_COMMON;
