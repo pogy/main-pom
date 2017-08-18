@@ -1,8 +1,9 @@
 package com.shigu.mq.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RefundBean {
+public class RefundBean implements Serializable{
     private Long refundId;
     private SubRefundBean suborders;
 
