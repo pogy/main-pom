@@ -160,6 +160,7 @@ public class DaifaAllocatedService {
         printTagVOS.forEach(printTagVO -> {
             PrintGoodsTagVO vo= BeanMapper.map(printTagVO,PrintGoodsTagVO.class);
             vo.setStockoutDay(printTagVO.getRemarks());
+            vo.setQueNum (printTagVO.getRemarks ());
             vos.add(vo);
         });
         return vos;
