@@ -150,8 +150,7 @@ public class ConfirmOrderAction {
         buyerAddress.setTown(confirmOrderService.selTownById(buyerAddress.getTownId()));
         String addressId;
         if (buyerAddressItem.getType().equalsIgnoreCase("1")) {//确认并且收藏
-            itemOrderService.saveBuyerAddress(buyerAddress);
-            addressId = buyerAddress.getAddressId().toString();
+            addressId = itemOrderService.saveBuyerAddress(buyerAddress).toString();
         } else {
             addressId = confirmOrderService.saveTmpBuyerAddress(buyerAddress);
         }

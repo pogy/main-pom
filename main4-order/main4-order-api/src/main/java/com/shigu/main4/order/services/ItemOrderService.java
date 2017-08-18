@@ -56,7 +56,7 @@ public interface ItemOrderService {
      * 保存地址
      * @param buyerAddressVO
      */
-    void saveBuyerAddress(BuyerAddressVO buyerAddressVO) throws JsonErrException;
+    Long saveBuyerAddress(BuyerAddressVO buyerAddressVO) throws JsonErrException;
 
     /**
      * 删除地址

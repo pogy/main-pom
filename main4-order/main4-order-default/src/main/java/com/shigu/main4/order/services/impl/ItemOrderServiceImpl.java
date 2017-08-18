@@ -251,7 +251,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveBuyerAddress(BuyerAddressVO buyerAddressVO) throws JsonErrException {
+    public Long saveBuyerAddress(BuyerAddressVO buyerAddressVO) throws JsonErrException {
         //信息不足
         boolean isInformationInsufficient = buyerAddressVO.getProvId() == null || buyerAddressVO.getCityId() == null ||
                 buyerAddressVO.getTownId() == null || StringUtil.isNull(buyerAddressVO.getAddress()) ||
@@ -275,7 +275,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         buyerAddress.setCityName(buyerAddressVO.getCity());
         buyerAddress.setTownName(buyerAddressVO.getTown());
         buyerAddressMapper.insert(buyerAddress);
-        buyerAddressVO.setAddressId(buyerAddress.getAddressId());
+        return buyerAddress.getAddressId();
     }
 
     /**

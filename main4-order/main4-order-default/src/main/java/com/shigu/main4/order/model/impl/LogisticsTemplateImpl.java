@@ -147,9 +147,9 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         // 根据规则id集合查询运费规则并包装返回值，公司省份id预留给下一步处理。
         //  其中  supportRules 可能为空，这标志着 省id和公司id全部为null，将返回该 template 下所有规则；如果某项id不为null，这标志
         //  着快递规则设置存在漏洞(或传参错误)，应当检查数据，所有依赖此方法的逻辑将收到异常而不能继续向下执行
-        if ((provId != null || companyId != null) && supportRules.isEmpty()) {
-            throw new LogisticsRuleException(String.format("运费规则数据异常! prov[%d] 或 company[%d] 下没有有效的运费规则", provId, companyId));
-        }
+//        if ((provId != null || companyId != null) && supportRules.isEmpty()) {
+//            throw new LogisticsRuleException(String.format("运费规则数据异常! prov[%d] 或 company[%d] 下没有有效的运费规则", provId, companyId));
+//        }
         List<BournRuleInfoVO> bournRuleInfoVOS = rulesIn(supportRules);
 
         for (BournRuleInfoVO infoVO : bournRuleInfoVOS) {
