@@ -133,8 +133,9 @@ public class DaifaOrder {
 	private String remark1;
 	/***/
 	private String remark2;
+	/**商品重量*/
+	private String goodsWeight;//
 
-	private String goodsWeight;
 	 
 	 //*************************get/set*****************************
     	/**
