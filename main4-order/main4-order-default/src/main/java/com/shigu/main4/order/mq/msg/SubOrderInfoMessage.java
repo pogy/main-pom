@@ -23,7 +23,7 @@ public class SubOrderInfoMessage implements Serializable {
     /**
      * 单价：接口传出来的数值
      */
-    private Long singlePay;
+    private String singlePay;
     /**
      * 商品ID
      */
@@ -113,11 +113,11 @@ public class SubOrderInfoMessage implements Serializable {
         this.mark = mark;
     }
 
-    public Long getSinglePay() {
+    public String getSinglePay() {
         return singlePay;
     }
 
-    public void setSinglePay(Long singlePay) {
+    public void setSinglePay(String singlePay) {
         this.singlePay = singlePay;
     }
 

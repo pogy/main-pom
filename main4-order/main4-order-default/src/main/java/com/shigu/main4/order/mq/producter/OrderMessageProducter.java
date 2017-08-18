@@ -25,7 +25,9 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 订单消息生产
@@ -80,7 +82,7 @@ public class OrderMessageProducter {
             ItemProductVO product = subItemOrderVO.getProduct();
             SubOrderInfoMessage subOrder = BeanMapper.map(subItemOrderVO, SubOrderInfoMessage.class);
             subOrder.setTitle(product.getTitle());
-            subOrder.setSinglePay(product.getPrice());
+            subOrder.setSinglePay(String.format("%.2f", product.getPrice() * .01));
             subOrder.setPicUrl(product.getPicUrl());
             subOrder.setWebSite(product.getWebSite());
             subOrder.setWeight(product.getWeight());
@@ -94,19 +96,28 @@ public class OrderMessageProducter {
             return subOrder;
         }).collect(Collectors.toList()));
 
-        List<ServiceMessage> services = new ArrayList<>();
-        for (OrderServiceVO serviceVO : itemOrder.selServices()) {
-            for (SubOrderInfoMessage orderInfoMessage : order.getSubOrders()) {
-                ServiceMessage serviceMessage = BeanMapper.map(serviceVO, ServiceMessage.class);
-                serviceMessage.setSoid(orderInfoMessage.getSoid());
-                serviceMessage.setId(serviceVO.getServiceId());
-                services.add(serviceMessage);
-            }
-        }
-        order.setServices(services);
+        List<OrderServiceVO> orderServiceVOS = itemOrder.selServices();
+
+        order.setServices(order.getSubOrders().stream().map(subOrderInfoMessage -> orderServiceVOS.stream().map(s -> {
+            ServiceMessage serviceMessage = new ServiceMessage();
+            serviceMessage.setId(s.getServiceId());
+            serviceMessage.setSoid(subOrderInfoMessage.getSoid());
+            serviceMessage.setName(s.getName());
+            serviceMessage.setMoney(String.format("%.2f", s.getMoney() * .01));
+            return serviceMessage;
+        }).collect(Collectors.toList())).flatMap(List::stream).collect(Collectors.toList()));
 
         order.setLogistics(itemOrder.selLogisticses().stream().map(logisticsVO -> {
-            LogisticMessage message = BeanMapper.map(logisticsVO, LogisticMessage.class);
+            LogisticMessage message = new LogisticMessage();
+            message.setCityId(logisticsVO.getCityId());
+            message.setTownId(logisticsVO.getTownId());
+            message.setProvId(logisticsVO.getProvId());
+            message.setCompanyId(logisticsVO.getCompanyId());
+            message.setAddress(logisticsVO.getAddress());
+            message.setMoney(String.format("%.2f", logisticsVO.getMoney() * .01));
+            message.setName(logisticsVO.getName());
+            message.setZipCode(logisticsVO.getZipCode());
+            message.setTelephone(logisticsVO.getTelephone());
             message.setCity(orderConstantService.selCityByCid(message.getCityId()).getCity());
             message.setProv(orderConstantService.selProvByPid(message.getProvId()).getProvince());
             message.setTown(orderConstantService.selTownByTid(message.getTownId()).getTown());

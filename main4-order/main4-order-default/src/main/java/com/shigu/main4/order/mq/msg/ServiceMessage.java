@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class ServiceMessage implements Serializable {
     private Long id;
-    private Long money;
+    private String money;
     private String name;
     private Long soid;
 
@@ -20,11 +20,11 @@ public class ServiceMessage implements Serializable {
         this.id = id;
     }
 
-    public Long getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(Long money) {
+    public void setMoney(String money) {
         this.money = money;
     }
 

@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class PackageMessage implements Serializable {
     private Long id;
-    private Long money;
+    private String money;
     private Long name;
     private Integer num;
 
@@ -20,11 +20,11 @@ public class PackageMessage implements Serializable {
         this.id = id;
     }
 
-    public Long getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(Long money) {
+    public void setMoney(String money) {
         this.money = money;
     }
 

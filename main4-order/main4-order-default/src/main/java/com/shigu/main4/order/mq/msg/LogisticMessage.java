@@ -10,7 +10,7 @@ public class LogisticMessage implements Serializable {
 
     private Long companyId;
     private String company;
-    private Long money;
+    private String money;
     private Long provId;
     private String prov;
     private Long cityId;
@@ -38,11 +38,11 @@ public class LogisticMessage implements Serializable {
         this.company = company;
     }
 
-    public Long getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(Long money) {
+    public void setMoney(String money) {
         this.money = money;
     }
 
