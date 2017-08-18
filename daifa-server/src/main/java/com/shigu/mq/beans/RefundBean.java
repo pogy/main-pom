@@ -1,10 +1,11 @@
 package com.shigu.mq.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class RefundBean {
+public class RefundBean implements Serializable{
     private Long refundId;
-    private SubRefundBean suborders;
+    private List<SubRefundBean> suborders;
 
     public Long getRefundId() {
         return this.refundId;
@@ -14,11 +15,11 @@ public class RefundBean {
         this.refundId = refundId;
     }
 
-    public SubRefundBean getSuborders() {
-        return this.suborders;
+    public List<SubRefundBean> getSuborders () {
+        return suborders;
     }
 
-    public void setSuborders(SubRefundBean suborders) {
+    public void setSuborders (List<SubRefundBean> suborders) {
         this.suborders = suborders;
     }
 }

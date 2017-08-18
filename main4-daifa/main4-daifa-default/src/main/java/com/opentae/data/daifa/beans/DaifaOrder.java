@@ -129,6 +129,8 @@ public class DaifaOrder {
 	private Integer changeStatus;
 	/**换货原因*/
 	private String changeReason;
+	/**商品重量*/
+	private String goodsWeight;//
 	/***/
 	private String remark1;
 	/***/
@@ -1199,4 +1201,12 @@ public class DaifaOrder {
     public void setRemark2(String remark2) {
         this.remark2 = remark2;
     }
+
+	public String getGoodsWeight () {
+		return goodsWeight;
+	}
+
+	public void setGoodsWeight (String goodsWeight) {
+		this.goodsWeight = goodsWeight;
+	}
 }

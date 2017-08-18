@@ -1,8 +1,9 @@
 package com.shigu.mq.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SubRefundBean {
+public class SubRefundBean implements Serializable{
     private String soid;
     private List<String> soidps;
 

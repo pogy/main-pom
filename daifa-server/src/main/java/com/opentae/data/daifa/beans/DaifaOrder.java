@@ -133,6 +133,9 @@ public class DaifaOrder {
 	private String remark1;
 	/***/
 	private String remark2;
+	/**商品重量*/
+	private String goodsWeight;//
+
 	 
 	 //*************************get/set*****************************
     	/**
@@ -1199,4 +1202,12 @@ public class DaifaOrder {
     public void setRemark2(String remark2) {
         this.remark2 = remark2;
     }
+
+	public String getGoodsWeight () {
+		return goodsWeight;
+	}
+
+	public void setGoodsWeight (String goodsWeight) {
+		this.goodsWeight = goodsWeight;
+	}
 }
