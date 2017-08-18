@@ -139,7 +139,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             pidNumBOS.add(numBO);
             numBO.setPid(subItemOrderBO.getPid());
             numBO.setNum(subItemOrderBO.getNum());
-            SubOrderBO vo = new SubOrderBO();
+            SubOrderBO vo = BeanMapper.map(subItemOrderBO,SubOrderBO.class);
             subOrders.add(vo);
         }
         itemOrder.addSubOrder(subOrders);
