@@ -39,7 +39,6 @@ public class OrderConstantServiceImpl implements OrderConstantService {
      * 订单常量
      */
     public enum OrderConstantType {
-        LOGISTICS(LOGISTICS_TYPE, LogisticsCompanyVO.class),
         SERVICE(SERVICE_TYPE, ServiceVO.class),
         PACKAGE(PACKAGE_TYPE, MetarialVO.class);
         private int type;
@@ -160,29 +159,6 @@ public class OrderConstantServiceImpl implements OrderConstantService {
     @Override
     public MetarialVO selMetarialById(Long senderId, Long id) {
         return OrderConstantType.PACKAGE.get(senderId, id);
-    }
-
-    /**
-     * 查询所有物流信息
-     *
-     * @param senderId 发送单位ID
-     * @return 发送单位支持的全部物流
-     */
-    @Override
-    public List<LogisticsCompanyVO> selLogistics(Long senderId) {
-        return OrderConstantType.LOGISTICS.all(senderId);
-    }
-
-    /**
-     * 按物流信息ID查物流
-     *
-     * @param senderId 发送单位ID
-     * @param id 物流ID
-     * @return 某发送单位的某物流
-     */
-    @Override
-    public LogisticsCompanyVO selLogisticsById(Long senderId, Long id) {
-        return OrderConstantType.LOGISTICS.get(senderId, id);
     }
 
 

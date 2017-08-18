@@ -63,19 +63,6 @@ public interface OrderConstantService {
     MetarialVO selMetarialById(Long senderId,Long id);
 
     /**
-     * 查询所有支持的物流公司
-     * @return
-     */
-    List<LogisticsCompanyVO> selLogistics(Long senderId);
-
-    /**
-     * 按物流信息ID查物流
-     * @param id
-     * @return
-     */
-    LogisticsCompanyVO selLogisticsById(Long senderId,Long id);
-
-    /**
      * 查询所有快递公司
      * @return
      */

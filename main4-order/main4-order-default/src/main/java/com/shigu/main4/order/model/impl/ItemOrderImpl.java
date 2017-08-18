@@ -325,12 +325,7 @@ public class ItemOrderImpl implements ItemOrder {
             sub.setPid(product.getPid());
             sub.setSkuId(product.getSkuId());
             ItemProductVO info = product.info();
-            sub.setWebSite(info.getWebSite());
-            sub.setPicUrl(info.getPicUrl());
-            sub.setTitle(info.getTitle());
-            sub.setPrice(info.getPrice());
-            sub.setWeight(info.getWeight());
-            sub.setGoodsNo(info.getGoodsNo());
+            BeanMapper.map(info,sub);
             sub.setDistributionNum(0);
             // 应付总价 产品单价 X 数量
             sub.setShouldPayMoney(sub.getPrice() * sub.getNum());

@@ -48,6 +48,111 @@ public class SubOrderVO implements Serializable{
      */
     private String color;
 
+    /**
+     * 产品价格
+     */
+    private Long price;
+
+    /**
+     * 市场ID
+     */
+    private Long marketId;
+
+    /**
+     * 楼层ID
+     */
+    private Long floorId;
+
+    /**
+     * 店铺ID
+     */
+    private Long shopId;
+
+    /**
+     * 档口号
+     */
+    private String shopNum;
+
+    /**
+     * 市场名字
+     */
+    private String marketName;
+
+    /**
+     * 楼层号
+     */
+    private String floor;
+
+    /**
+     * 重量，克为单位
+     */
+    private Long weight;
+
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public Long getMarketId() {
+        return marketId;
+    }
+
+    public void setMarketId(Long marketId) {
+        this.marketId = marketId;
+    }
+
+    public Long getFloorId() {
+        return floorId;
+    }
+
+    public void setFloorId(Long floorId) {
+        this.floorId = floorId;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
+    public String getShopNum() {
+        return shopNum;
+    }
+
+    public void setShopNum(String shopNum) {
+        this.shopNum = shopNum;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getFloor() {
+        return floor;
+    }
+
+    public void setFloor(String floor) {
+        this.floor = floor;
+    }
+
+    public Long getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Long weight) {
+        this.weight = weight;
+    }
+
     public Long getSoid() {
         return soid;
     }

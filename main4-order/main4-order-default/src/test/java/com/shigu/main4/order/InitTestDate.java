@@ -55,11 +55,6 @@ public class InitTestDate extends BaseTest {
         metarialVO.setSize("480X680X220MM");
         show(initConstants(senderId, OrderConstantService.PACKAGE_TYPE, "飞机盒", metarialVO));
 
-        // 初始化一个物流
-        LogisticsCompanyVO logisticsCompanyVO = new LogisticsCompanyVO();
-        logisticsCompanyVO.setId(1L);
-        logisticsCompanyVO.setName("赵信物流");
-        show(initConstants(senderId, OrderConstantService.LOGISTICS_TYPE, "赵信物流", logisticsCompanyVO));
 
     }
 

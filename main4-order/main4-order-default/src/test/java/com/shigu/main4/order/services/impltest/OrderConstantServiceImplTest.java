@@ -107,14 +107,4 @@ public class OrderConstantServiceImplTest extends BaseTest {
         show(orderConstantService.selMetarialById(-1L, 2L));
     }
 
-    @Test
-    public void selLogistics() throws Exception {
-        show(orderConstantService.selLogistics(-1L));
-    }
-
-    @Test
-    public void selLogisticsById() throws Exception {
-        show(orderConstantService.selLogisticsById(-1L, 1L));
-    }
-
 }

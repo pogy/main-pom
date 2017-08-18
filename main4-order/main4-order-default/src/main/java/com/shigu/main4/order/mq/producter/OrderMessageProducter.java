@@ -8,7 +8,9 @@ import com.aliyun.openservices.ons.api.bean.ProducerBean;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.ItemOrder;
+import com.shigu.main4.order.model.SoidsCreater;
 import com.shigu.main4.order.mq.msg.*;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.ItemOrderVO;
@@ -59,6 +61,9 @@ public class OrderMessageProducter {
     @Autowired
     private MemberUserMapper memberUserMapper;
 
+    @Autowired
+    private SoidsCreater soidsCreater;
+
     /**
      * 订单推送
      * @param itemOrder
@@ -85,7 +90,7 @@ public class OrderMessageProducter {
             subOrder.setFloor(product.getFloor());
             subOrder.setShopId(product.getShopId());
             subOrder.setShopNum(product.getShopNum());
-            //TODO: subOrder.setSoidps();
+            subOrder.setSoidps(soidsCreater.makeSoidps(subItemOrderVO.getSoid(),subItemOrderVO.getNumber()));
             return subOrder;
         }).collect(Collectors.toList()));
 

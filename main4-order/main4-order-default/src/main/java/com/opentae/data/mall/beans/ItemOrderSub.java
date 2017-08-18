@@ -68,34 +68,69 @@ public class ItemOrderSub implements Serializable {
 	private Long logisticsId;
 
     /**
-     * 商品ID
+     * 星座商品ID
      */
 	private Long goodsId;
 
     /**
-     * 商品链接
+     * 图片链接
      */
 	private String picUrl;
 
     /**
-     * 分站
+     * 分站标识
      */
 	private String webSite;
 
     /**
-     * 
+     * 标题
      */
 	private String title;
 
     /**
-     * 单价
+     * 产品价格
      */
 	private Long price;
 
     /**
-     * 重量
+     * 市场ID
+     */
+	private Long marketId;
+
+    /**
+     * 楼层ID
+     */
+	private Long floorId;
+
+    /**
+     * 店铺ID
+     */
+	private Long shopId;
+
+    /**
+     * 档口号
+     */
+	private String shopNum;
+
+    /**
+     * 市场名字
+     */
+	private String marketName;
+
+    /**
+     * 楼层号
+     */
+	private String floor;
+
+    /**
+     * 重量，克为单位
      */
 	private Long weight;
+
+    /**
+     * 货号
+     */
+	private String goodsNo;
 
     /**
      * 尺码
@@ -106,11 +141,6 @@ public class ItemOrderSub implements Serializable {
      * 颜色
      */
 	private String color;
-
-    /**
-     * 货号
-     */
-	private String goodsNo;
 
 	public void setSoid(Long soid) {
 		this.soid = soid;
@@ -248,12 +278,68 @@ public class ItemOrderSub implements Serializable {
 		return this.price;
 	}
 
+	public void setMarketId(Long marketId) {
+		this.marketId = marketId;
+	}
+
+	public Long getMarketId() {
+		return this.marketId;
+	}
+
+	public void setFloorId(Long floorId) {
+		this.floorId = floorId;
+	}
+
+	public Long getFloorId() {
+		return this.floorId;
+	}
+
+	public void setShopId(Long shopId) {
+		this.shopId = shopId;
+	}
+
+	public Long getShopId() {
+		return this.shopId;
+	}
+
+	public void setShopNum(String shopNum) {
+		this.shopNum = shopNum;
+	}
+
+	public String getShopNum() {
+		return this.shopNum;
+	}
+
+	public void setMarketName(String marketName) {
+		this.marketName = marketName;
+	}
+
+	public String getMarketName() {
+		return this.marketName;
+	}
+
+	public void setFloor(String floor) {
+		this.floor = floor;
+	}
+
+	public String getFloor() {
+		return this.floor;
+	}
+
 	public void setWeight(Long weight) {
 		this.weight = weight;
 	}
 
 	public Long getWeight() {
 		return this.weight;
+	}
+
+	public void setGoodsNo(String goodsNo) {
+		this.goodsNo = goodsNo;
+	}
+
+	public String getGoodsNo() {
+		return this.goodsNo;
 	}
 
 	public void setSize(String size) {
@@ -270,14 +356,6 @@ public class ItemOrderSub implements Serializable {
 
 	public String getColor() {
 		return this.color;
-	}
-
-	public void setGoodsNo(String goodsNo) {
-		this.goodsNo = goodsNo;
-	}
-
-	public String getGoodsNo() {
-		return this.goodsNo;
 	}
 
 }

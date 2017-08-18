@@ -2,7 +2,7 @@ package com.opentae.data.mall.interfaces;
 
 import com.opentae.core.mybatis.config.MyBatisRepository;
 import com.opentae.core.mybatis.mapper.Mapper;
-import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.beans.SubOrderSoidps;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Scope;
  * 
  * Created by exampleCreater.
  */
-@MyBatisRepository("tae_mall_itemOrderSubMapper")
+@MyBatisRepository("tae_mall_subOrderSoidpsMapper")
 @Scope("singleton")
 @Lazy(true)
-public interface ItemOrderSubMapper extends Mapper<ItemOrderSub> {
+public interface SubOrderSoidpsMapper extends Mapper<SubOrderSoidps> {
 }

@@ -10,25 +10,31 @@ import java.util.*;
 public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria> {
     public static final Class<ItemOrderSub> beanClass = ItemOrderSub.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
-    public static EntityColumn goodsNo;
     public static EntityColumn soid;
     public static EntityColumn logisticsId;
     public static EntityColumn color;
+    public static EntityColumn shopNum;
     public static EntityColumn goodsId;
     public static EntityColumn num;
     public static EntityColumn distributionNum;
-    public static EntityColumn weight;
     public static EntityColumn pid;
-    public static EntityColumn refundMoney;
     public static EntityColumn oid;
     public static EntityColumn title;
-    public static EntityColumn shouldPayMoney;
+    public static EntityColumn marketId;
+    public static EntityColumn floorId;
     public static EntityColumn webSite;
     public static EntityColumn picUrl;
     public static EntityColumn payMoney;
-    public static EntityColumn size;
     public static EntityColumn price;
+    public static EntityColumn shopId;
+    public static EntityColumn floor;
     public static EntityColumn skuId;
+    public static EntityColumn goodsNo;
+    public static EntityColumn weight;
+    public static EntityColumn refundMoney;
+    public static EntityColumn shouldPayMoney;
+    public static EntityColumn marketName;
+    public static EntityColumn size;
     public static EntityColumn mark;
     public static EntityColumn status;
     static {
@@ -37,25 +43,31 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
-        goodsNo = listMap.get("goodsNo");
         soid = listMap.get("soid");
         logisticsId = listMap.get("logisticsId");
         color = listMap.get("color");
+        shopNum = listMap.get("shopNum");
         goodsId = listMap.get("goodsId");
         num = listMap.get("num");
         distributionNum = listMap.get("distributionNum");
-        weight = listMap.get("weight");
         pid = listMap.get("pid");
-        refundMoney = listMap.get("refundMoney");
         oid = listMap.get("oid");
         title = listMap.get("title");
-        shouldPayMoney = listMap.get("shouldPayMoney");
+        marketId = listMap.get("marketId");
+        floorId = listMap.get("floorId");
         webSite = listMap.get("webSite");
         picUrl = listMap.get("picUrl");
         payMoney = listMap.get("payMoney");
-        size = listMap.get("size");
         price = listMap.get("price");
+        shopId = listMap.get("shopId");
+        floor = listMap.get("floor");
         skuId = listMap.get("skuId");
+        goodsNo = listMap.get("goodsNo");
+        weight = listMap.get("weight");
+        refundMoney = listMap.get("refundMoney");
+        shouldPayMoney = listMap.get("shouldPayMoney");
+        marketName = listMap.get("marketName");
+        size = listMap.get("size");
         mark = listMap.get("mark");
         status = listMap.get("status");
         }
@@ -79,61 +91,6 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
             super(example);
         }
 
-        public ItemOrderSubExample.Criteria andGoodsNoIsNull() {
-            return isNull(goodsNo);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoIsNotNull() {
-            return isNotNull(goodsNo);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoEqualTo(String value) {
-            return equalTo(goodsNo, value);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoNotEqualTo(String value) {
-            return notEqualTo(goodsNo, value);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoGreaterThan(String value) {
-            return greaterThan(goodsNo, value);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoGreaterThanOrEqualTo(String value) {
-            return greaterThanOrEqualTo(goodsNo, value);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoLessThan(String value) {
-            return lessThan(goodsNo, value);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoLessThanOrEqualTo(String value) {
-            return lessThanOrEqualTo(goodsNo, value);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoLike(String value) {
-            return like(goodsNo, value);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoNotLike(String value) {
-            return notLike(goodsNo, value);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoIn(List<String> values) {
-            return in(goodsNo, values);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoNotIn(List<String> values) {
-            return notIn(goodsNo, values);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoBetween(String value1, String value2) {
-            return between(goodsNo, value1, value2);
-        }
-
-        public ItemOrderSubExample.Criteria andGoodsNoNotBetween(String value1, String value2) {
-            return notBetween(goodsNo, value1, value2);
-        }
         public ItemOrderSubExample.Criteria andSoidIsNull() {
             return isNull(soid);
         }
@@ -283,6 +240,61 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
         public ItemOrderSubExample.Criteria andColorNotBetween(String value1, String value2) {
             return notBetween(color, value1, value2);
         }
+        public ItemOrderSubExample.Criteria andShopNumIsNull() {
+            return isNull(shopNum);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumIsNotNull() {
+            return isNotNull(shopNum);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumEqualTo(String value) {
+            return equalTo(shopNum, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumNotEqualTo(String value) {
+            return notEqualTo(shopNum, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumGreaterThan(String value) {
+            return greaterThan(shopNum, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(shopNum, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumLessThan(String value) {
+            return lessThan(shopNum, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(shopNum, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumLike(String value) {
+            return like(shopNum, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumNotLike(String value) {
+            return notLike(shopNum, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumIn(List<String> values) {
+            return in(shopNum, values);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumNotIn(List<String> values) {
+            return notIn(shopNum, values);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumBetween(String value1, String value2) {
+            return between(shopNum, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andShopNumNotBetween(String value1, String value2) {
+            return notBetween(shopNum, value1, value2);
+        }
         public ItemOrderSubExample.Criteria andGoodsIdIsNull() {
             return isNull(goodsId);
         }
@@ -424,53 +436,6 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
         public ItemOrderSubExample.Criteria andDistributionNumNotBetween(Integer value1, Integer value2) {
             return notBetween(distributionNum, value1, value2);
         }
-        public ItemOrderSubExample.Criteria andWeightIsNull() {
-            return isNull(weight);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightIsNotNull() {
-            return isNotNull(weight);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightEqualTo(Long value) {
-            return equalTo(weight, value);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightNotEqualTo(Long value) {
-            return notEqualTo(weight, value);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightGreaterThan(Long value) {
-            return greaterThan(weight, value);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(weight, value);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightLessThan(Long value) {
-            return lessThan(weight, value);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(weight, value);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightIn(List<Long> values) {
-            return in(weight, values);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightNotIn(List<Long> values) {
-            return notIn(weight, values);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightBetween(Long value1, Long value2) {
-            return between(weight, value1, value2);
-        }
-
-        public ItemOrderSubExample.Criteria andWeightNotBetween(Long value1, Long value2) {
-            return notBetween(weight, value1, value2);
-        }
         public ItemOrderSubExample.Criteria andPidIsNull() {
             return isNull(pid);
         }
@@ -517,53 +482,6 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
 
         public ItemOrderSubExample.Criteria andPidNotBetween(Long value1, Long value2) {
             return notBetween(pid, value1, value2);
-        }
-        public ItemOrderSubExample.Criteria andRefundMoneyIsNull() {
-            return isNull(refundMoney);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyIsNotNull() {
-            return isNotNull(refundMoney);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyEqualTo(Long value) {
-            return equalTo(refundMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyNotEqualTo(Long value) {
-            return notEqualTo(refundMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyGreaterThan(Long value) {
-            return greaterThan(refundMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(refundMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyLessThan(Long value) {
-            return lessThan(refundMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(refundMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyIn(List<Long> values) {
-            return in(refundMoney, values);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyNotIn(List<Long> values) {
-            return notIn(refundMoney, values);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyBetween(Long value1, Long value2) {
-            return between(refundMoney, value1, value2);
-        }
-
-        public ItemOrderSubExample.Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
-            return notBetween(refundMoney, value1, value2);
         }
         public ItemOrderSubExample.Criteria andOidIsNull() {
             return isNull(oid);
@@ -667,52 +585,99 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
         public ItemOrderSubExample.Criteria andTitleNotBetween(String value1, String value2) {
             return notBetween(title, value1, value2);
         }
-        public ItemOrderSubExample.Criteria andShouldPayMoneyIsNull() {
-            return isNull(shouldPayMoney);
+        public ItemOrderSubExample.Criteria andMarketIdIsNull() {
+            return isNull(marketId);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyIsNotNull() {
-            return isNotNull(shouldPayMoney);
+        public ItemOrderSubExample.Criteria andMarketIdIsNotNull() {
+            return isNotNull(marketId);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyEqualTo(Long value) {
-            return equalTo(shouldPayMoney, value);
+        public ItemOrderSubExample.Criteria andMarketIdEqualTo(Long value) {
+            return equalTo(marketId, value);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyNotEqualTo(Long value) {
-            return notEqualTo(shouldPayMoney, value);
+        public ItemOrderSubExample.Criteria andMarketIdNotEqualTo(Long value) {
+            return notEqualTo(marketId, value);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyGreaterThan(Long value) {
-            return greaterThan(shouldPayMoney, value);
+        public ItemOrderSubExample.Criteria andMarketIdGreaterThan(Long value) {
+            return greaterThan(marketId, value);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(shouldPayMoney, value);
+        public ItemOrderSubExample.Criteria andMarketIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(marketId, value);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyLessThan(Long value) {
-            return lessThan(shouldPayMoney, value);
+        public ItemOrderSubExample.Criteria andMarketIdLessThan(Long value) {
+            return lessThan(marketId, value);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(shouldPayMoney, value);
+        public ItemOrderSubExample.Criteria andMarketIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(marketId, value);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyIn(List<Long> values) {
-            return in(shouldPayMoney, values);
+        public ItemOrderSubExample.Criteria andMarketIdIn(List<Long> values) {
+            return in(marketId, values);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyNotIn(List<Long> values) {
-            return notIn(shouldPayMoney, values);
+        public ItemOrderSubExample.Criteria andMarketIdNotIn(List<Long> values) {
+            return notIn(marketId, values);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyBetween(Long value1, Long value2) {
-            return between(shouldPayMoney, value1, value2);
+        public ItemOrderSubExample.Criteria andMarketIdBetween(Long value1, Long value2) {
+            return between(marketId, value1, value2);
         }
 
-        public ItemOrderSubExample.Criteria andShouldPayMoneyNotBetween(Long value1, Long value2) {
-            return notBetween(shouldPayMoney, value1, value2);
+        public ItemOrderSubExample.Criteria andMarketIdNotBetween(Long value1, Long value2) {
+            return notBetween(marketId, value1, value2);
+        }
+        public ItemOrderSubExample.Criteria andFloorIdIsNull() {
+            return isNull(floorId);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdIsNotNull() {
+            return isNotNull(floorId);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdEqualTo(Long value) {
+            return equalTo(floorId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdNotEqualTo(Long value) {
+            return notEqualTo(floorId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdGreaterThan(Long value) {
+            return greaterThan(floorId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(floorId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdLessThan(Long value) {
+            return lessThan(floorId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(floorId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdIn(List<Long> values) {
+            return in(floorId, values);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdNotIn(List<Long> values) {
+            return notIn(floorId, values);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdBetween(Long value1, Long value2) {
+            return between(floorId, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIdNotBetween(Long value1, Long value2) {
+            return notBetween(floorId, value1, value2);
         }
         public ItemOrderSubExample.Criteria andWebSiteIsNull() {
             return isNull(webSite);
@@ -871,6 +836,453 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
         public ItemOrderSubExample.Criteria andPayMoneyNotBetween(Long value1, Long value2) {
             return notBetween(payMoney, value1, value2);
         }
+        public ItemOrderSubExample.Criteria andPriceIsNull() {
+            return isNull(price);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceIsNotNull() {
+            return isNotNull(price);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceEqualTo(Long value) {
+            return equalTo(price, value);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceNotEqualTo(Long value) {
+            return notEqualTo(price, value);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceGreaterThan(Long value) {
+            return greaterThan(price, value);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(price, value);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceLessThan(Long value) {
+            return lessThan(price, value);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(price, value);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceIn(List<Long> values) {
+            return in(price, values);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceNotIn(List<Long> values) {
+            return notIn(price, values);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceBetween(Long value1, Long value2) {
+            return between(price, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andPriceNotBetween(Long value1, Long value2) {
+            return notBetween(price, value1, value2);
+        }
+        public ItemOrderSubExample.Criteria andShopIdIsNull() {
+            return isNull(shopId);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdIsNotNull() {
+            return isNotNull(shopId);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdEqualTo(Long value) {
+            return equalTo(shopId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdNotEqualTo(Long value) {
+            return notEqualTo(shopId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdGreaterThan(Long value) {
+            return greaterThan(shopId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(shopId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdLessThan(Long value) {
+            return lessThan(shopId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(shopId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdIn(List<Long> values) {
+            return in(shopId, values);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdNotIn(List<Long> values) {
+            return notIn(shopId, values);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdBetween(Long value1, Long value2) {
+            return between(shopId, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andShopIdNotBetween(Long value1, Long value2) {
+            return notBetween(shopId, value1, value2);
+        }
+        public ItemOrderSubExample.Criteria andFloorIsNull() {
+            return isNull(floor);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIsNotNull() {
+            return isNotNull(floor);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorEqualTo(String value) {
+            return equalTo(floor, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorNotEqualTo(String value) {
+            return notEqualTo(floor, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorGreaterThan(String value) {
+            return greaterThan(floor, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(floor, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorLessThan(String value) {
+            return lessThan(floor, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(floor, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorLike(String value) {
+            return like(floor, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorNotLike(String value) {
+            return notLike(floor, value);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorIn(List<String> values) {
+            return in(floor, values);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorNotIn(List<String> values) {
+            return notIn(floor, values);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorBetween(String value1, String value2) {
+            return between(floor, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andFloorNotBetween(String value1, String value2) {
+            return notBetween(floor, value1, value2);
+        }
+        public ItemOrderSubExample.Criteria andSkuIdIsNull() {
+            return isNull(skuId);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdIsNotNull() {
+            return isNotNull(skuId);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdEqualTo(Long value) {
+            return equalTo(skuId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdNotEqualTo(Long value) {
+            return notEqualTo(skuId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdGreaterThan(Long value) {
+            return greaterThan(skuId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(skuId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdLessThan(Long value) {
+            return lessThan(skuId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(skuId, value);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdIn(List<Long> values) {
+            return in(skuId, values);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdNotIn(List<Long> values) {
+            return notIn(skuId, values);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdBetween(Long value1, Long value2) {
+            return between(skuId, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andSkuIdNotBetween(Long value1, Long value2) {
+            return notBetween(skuId, value1, value2);
+        }
+        public ItemOrderSubExample.Criteria andGoodsNoIsNull() {
+            return isNull(goodsNo);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoIsNotNull() {
+            return isNotNull(goodsNo);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoEqualTo(String value) {
+            return equalTo(goodsNo, value);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoNotEqualTo(String value) {
+            return notEqualTo(goodsNo, value);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoGreaterThan(String value) {
+            return greaterThan(goodsNo, value);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(goodsNo, value);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoLessThan(String value) {
+            return lessThan(goodsNo, value);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(goodsNo, value);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoLike(String value) {
+            return like(goodsNo, value);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoNotLike(String value) {
+            return notLike(goodsNo, value);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoIn(List<String> values) {
+            return in(goodsNo, values);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoNotIn(List<String> values) {
+            return notIn(goodsNo, values);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoBetween(String value1, String value2) {
+            return between(goodsNo, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andGoodsNoNotBetween(String value1, String value2) {
+            return notBetween(goodsNo, value1, value2);
+        }
+        public ItemOrderSubExample.Criteria andWeightIsNull() {
+            return isNull(weight);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightIsNotNull() {
+            return isNotNull(weight);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightEqualTo(Long value) {
+            return equalTo(weight, value);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightNotEqualTo(Long value) {
+            return notEqualTo(weight, value);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightGreaterThan(Long value) {
+            return greaterThan(weight, value);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(weight, value);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightLessThan(Long value) {
+            return lessThan(weight, value);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(weight, value);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightIn(List<Long> values) {
+            return in(weight, values);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightNotIn(List<Long> values) {
+            return notIn(weight, values);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightBetween(Long value1, Long value2) {
+            return between(weight, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andWeightNotBetween(Long value1, Long value2) {
+            return notBetween(weight, value1, value2);
+        }
+        public ItemOrderSubExample.Criteria andRefundMoneyIsNull() {
+            return isNull(refundMoney);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyIsNotNull() {
+            return isNotNull(refundMoney);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyEqualTo(Long value) {
+            return equalTo(refundMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyNotEqualTo(Long value) {
+            return notEqualTo(refundMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyGreaterThan(Long value) {
+            return greaterThan(refundMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(refundMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyLessThan(Long value) {
+            return lessThan(refundMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(refundMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyIn(List<Long> values) {
+            return in(refundMoney, values);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyNotIn(List<Long> values) {
+            return notIn(refundMoney, values);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyBetween(Long value1, Long value2) {
+            return between(refundMoney, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andRefundMoneyNotBetween(Long value1, Long value2) {
+            return notBetween(refundMoney, value1, value2);
+        }
+        public ItemOrderSubExample.Criteria andShouldPayMoneyIsNull() {
+            return isNull(shouldPayMoney);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyIsNotNull() {
+            return isNotNull(shouldPayMoney);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyEqualTo(Long value) {
+            return equalTo(shouldPayMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyNotEqualTo(Long value) {
+            return notEqualTo(shouldPayMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyGreaterThan(Long value) {
+            return greaterThan(shouldPayMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(shouldPayMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyLessThan(Long value) {
+            return lessThan(shouldPayMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(shouldPayMoney, value);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyIn(List<Long> values) {
+            return in(shouldPayMoney, values);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyNotIn(List<Long> values) {
+            return notIn(shouldPayMoney, values);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyBetween(Long value1, Long value2) {
+            return between(shouldPayMoney, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andShouldPayMoneyNotBetween(Long value1, Long value2) {
+            return notBetween(shouldPayMoney, value1, value2);
+        }
+        public ItemOrderSubExample.Criteria andMarketNameIsNull() {
+            return isNull(marketName);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameIsNotNull() {
+            return isNotNull(marketName);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameEqualTo(String value) {
+            return equalTo(marketName, value);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameNotEqualTo(String value) {
+            return notEqualTo(marketName, value);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameGreaterThan(String value) {
+            return greaterThan(marketName, value);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(marketName, value);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameLessThan(String value) {
+            return lessThan(marketName, value);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(marketName, value);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameLike(String value) {
+            return like(marketName, value);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameNotLike(String value) {
+            return notLike(marketName, value);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameIn(List<String> values) {
+            return in(marketName, values);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameNotIn(List<String> values) {
+            return notIn(marketName, values);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameBetween(String value1, String value2) {
+            return between(marketName, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andMarketNameNotBetween(String value1, String value2) {
+            return notBetween(marketName, value1, value2);
+        }
         public ItemOrderSubExample.Criteria andSizeIsNull() {
             return isNull(size);
         }
@@ -925,100 +1337,6 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
 
         public ItemOrderSubExample.Criteria andSizeNotBetween(String value1, String value2) {
             return notBetween(size, value1, value2);
-        }
-        public ItemOrderSubExample.Criteria andPriceIsNull() {
-            return isNull(price);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceIsNotNull() {
-            return isNotNull(price);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceEqualTo(Long value) {
-            return equalTo(price, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceNotEqualTo(Long value) {
-            return notEqualTo(price, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceGreaterThan(Long value) {
-            return greaterThan(price, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(price, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceLessThan(Long value) {
-            return lessThan(price, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(price, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceIn(List<Long> values) {
-            return in(price, values);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceNotIn(List<Long> values) {
-            return notIn(price, values);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceBetween(Long value1, Long value2) {
-            return between(price, value1, value2);
-        }
-
-        public ItemOrderSubExample.Criteria andPriceNotBetween(Long value1, Long value2) {
-            return notBetween(price, value1, value2);
-        }
-        public ItemOrderSubExample.Criteria andSkuIdIsNull() {
-            return isNull(skuId);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdIsNotNull() {
-            return isNotNull(skuId);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdEqualTo(Long value) {
-            return equalTo(skuId, value);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdNotEqualTo(Long value) {
-            return notEqualTo(skuId, value);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdGreaterThan(Long value) {
-            return greaterThan(skuId, value);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(skuId, value);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdLessThan(Long value) {
-            return lessThan(skuId, value);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(skuId, value);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdIn(List<Long> values) {
-            return in(skuId, values);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdNotIn(List<Long> values) {
-            return notIn(skuId, values);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdBetween(Long value1, Long value2) {
-            return between(skuId, value1, value2);
-        }
-
-        public ItemOrderSubExample.Criteria andSkuIdNotBetween(Long value1, Long value2) {
-            return notBetween(skuId, value1, value2);
         }
         public ItemOrderSubExample.Criteria andMarkIsNull() {
             return isNull(mark);
