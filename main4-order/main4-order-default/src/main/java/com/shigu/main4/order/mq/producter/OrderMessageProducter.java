@@ -8,14 +8,12 @@ import com.aliyun.openservices.ons.api.bean.ProducerBean;
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.SoidsCreater;
 import com.shigu.main4.order.mq.msg.*;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.ItemProductVO;
-import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.order.vo.OrderServiceVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 订单消息生产
@@ -85,7 +81,7 @@ public class OrderMessageProducter {
             subOrder.setSinglePay(String.format("%.2f", product.getPrice() * .01));
             subOrder.setPicUrl(product.getPicUrl());
             subOrder.setWebSite(product.getWebSite());
-            subOrder.setWeight(product.getWeight());
+            subOrder.setWeight(String.format("%.3f", product.getWeight() * .001));
             subOrder.setMarketId(product.getMarketId());
             subOrder.setMarketName(product.getMarketName());
             subOrder.setFloorId(product.getFloorId());
