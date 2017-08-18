@@ -560,10 +560,10 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             requestBuilder.addSort(new SortField("created", Order.DECREASE));
         } else {
             switch (orderBy) {
-                case "price_up":
+                case "price-asc":
                     requestBuilder.addSort(new SortField("pi_price", Order.INCREASE));
                     break;
-                case "price_down":
+                case "price-desc":
                     requestBuilder.addSort(new SortField("pi_price", Order.DECREASE));
                     break;
                 case "time_up":
@@ -727,10 +727,10 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             // 默认时间排序
             shiguGoodsSoldoutExample.setOrderByClause("created desc");
         } else {
-            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price_up")) {
+            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price-asc")) {
                 shiguGoodsSoldoutExample.setOrderByClause("pi_price asc");
             }
-            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price_down")) {
+            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price-desc")) {
                 shiguGoodsSoldoutExample.setOrderByClause("pi_price desc");
             }
             if (StringUtils.equals(shopForCdnBo.getOrderBy(), "time_up")) {

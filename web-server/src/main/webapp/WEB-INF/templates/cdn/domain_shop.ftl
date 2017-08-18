@@ -541,13 +541,13 @@ ${vo.shopFitment.description}
                         <a href="javascript:;" jbtn="sortByTime">时间<span class="iconfont"></span></a>
                         </#if>
                     
-                        <#if query.order == 'price_up'>
+                        <#if query.order == 'price-asc'>
                         <a href="javascript:;" jbtn="shortByPrice" class="actived">价格<span class="iconfont"></span></a>
                         <#else>
                         <a href="javascript:;" jbtn="shortByPrice">价格<span class="iconfont"></span></a>
                         </#if>
                         
-                        <#if query.order != 'time_up' && query.order != 'price_up' >
+                        <#if query.order != 'time_up' && query.order != 'price-asc' >
                         <a href="javascript:;" jbtn="shortByDefault" class="actived">默认<span class="iconfont">&nbsp;</span></a>
                         <#else>
                         <a href="javascript:;" jbtn="shortByDefault">默认<span class="iconfont">&nbsp;</span></a>

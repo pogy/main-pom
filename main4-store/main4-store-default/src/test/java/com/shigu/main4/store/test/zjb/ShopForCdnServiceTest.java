@@ -36,7 +36,7 @@ public class ShopForCdnServiceTest {
     public void searchItemOnsale() throws ParseException {
         String keyword = "淘宝客家T691P35–此款是爆款 建议主推 质量好 备货足不断货";
         Long shopId = 32888L;
-        String orderBy = "price_up";
+        String orderBy = "price-asc";
         int pageNo = 1;
         int pageSize = 10;
         Double priceFrom = 50.00;

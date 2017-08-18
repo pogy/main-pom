@@ -337,15 +337,15 @@ var webSite = '${webSite!}';
                 
                 
             </div>
-            <div class="sortPriceBox<#if query.sort == 'price_up' || query.sort == 'price_down'> actived</#if>">
+            <div class="sortPriceBox<#if query.sort == 'price-asc' || query.sort == 'price-desc'> actived</#if>">
                 
-                <#if query.sort == 'price_down'>
+                <#if query.sort == 'price-desc'>
                 <b class="initial">批发价从高到低<i class="imgicon16"></i></b>
                 <div class="hoverBox">
                     <b class="selected">批发价从高到低</b>
                     <b jbtn="searchPriceAsc">批发价从低到高</b>
                 </div>
-                <#elseif query.sort == 'price_up'>
+                <#elseif query.sort == 'price-asc'>
                 <b class="initial">批发价从低到高<i class="imgicon16"></i></b>
                 <div class="hoverBox">
                     <b class="selected">批发价从低到高</b>
