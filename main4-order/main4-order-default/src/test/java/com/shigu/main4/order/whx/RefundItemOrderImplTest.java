@@ -60,10 +60,10 @@ public class RefundItemOrderImplTest extends BaseTest{
 
     @Test
     public void errorTest() throws RefundException, PayerException {
-        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 88L);
+        RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, 94L);
         //refundItemOrder.error("退件失败");
         //测试重复操作
-        refundItemOrder.changeSuccess();
+        refundItemOrder.success();
     }
 
     @Test

@@ -105,7 +105,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent("{" +
                 "    \"out_trade_no\":\"" + orderPayApply.getApplyId() + "\"," +
-                "    \"refund_amount\":" + String.format("$,.2f", money * .01)  + "," +
+                "    \"refund_amount\":" + String.format("%,.2f", money * .01)  + "," +
                 "    \"refund_reason\":\"正常退款\"," +
                 "    \"out_request_no\":\"" + UUIDGenerator.getUUID() + "\"" +
                 "  }");
