@@ -171,12 +171,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         try {
             Long aid = Long.valueOf(logistics.getAddressId());
             buyerAddress = buyerAddressMapper.selectByPrimaryKey(aid);
-            String town = StringUtils.isEmpty(buyerAddress.getTownName()) ? "" : buyerAddress.getTownName();
-            buyerAddress.setAddress(buyerAddress.getProvName() + buyerAddress.getCityName() + town + buyerAddress.getAddress());
+            buyerAddress.setAddress(buyerAddress.getAddress());
         } catch (NumberFormatException e) {
             BuyerAddressVO buyerAddressVO = redisIO.get("tmp_buyer_address_" + logistics.getAddressId(), BuyerAddressVO.class);
             buyerAddress = BeanMapper.map(buyerAddressVO, BuyerAddress.class);
-            buyerAddress.setAddress(buyerAddressVO.getProvince() + buyerAddressVO.getCity() + buyerAddressVO.getTown() + buyerAddressVO.getAddress());
+            buyerAddress.setAddress(buyerAddressVO.getAddress());
         }
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
         logistic.setCompanyId(expressCompany.getExpressCompanyId());

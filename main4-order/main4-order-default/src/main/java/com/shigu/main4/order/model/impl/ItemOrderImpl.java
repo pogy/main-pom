@@ -330,6 +330,8 @@ public class ItemOrderImpl implements ItemOrder {
             BeanMapper.map(info,sub);
             sub.setDistributionNum(0);
             // 应付总价 产品单价 X 数量
+            sub.setColor(info.getSelectiveSku().getColor());
+            sub.setSize(info.getSelectiveSku().getSize());
             sub.setShouldPayMoney(sub.getPrice() * sub.getNum());
             sub.setPayMoney(0L);
             sub.setRefundMoney(0L);
