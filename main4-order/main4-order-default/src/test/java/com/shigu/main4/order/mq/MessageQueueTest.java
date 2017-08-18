@@ -21,7 +21,7 @@ public class MessageQueueTest extends BaseTest {
      */
     @Test
     public void testSendOrderPush() {
-        ItemOrder bean = SpringBeanFactory.getBean(ItemOrder.class, 319L);
+        ItemOrder bean = SpringBeanFactory.getBean(ItemOrder.class, 347L);
         orderMessageProducter.orderPush(bean);
     }
 
