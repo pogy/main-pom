@@ -155,7 +155,7 @@ public class DaifaAllocateService {
 
     }
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
 
 
         TreeMap<MarketBean, MarketBean> map = new TreeMap<>();
@@ -181,7 +181,7 @@ public class DaifaAllocateService {
             System.out.println(next.getKey().getName());
         }
 
-    }
+    }*/
 
     public JSONObject getFloorList(Long marketId) {
         if (allocateHouse == null) {
