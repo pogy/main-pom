@@ -28,6 +28,18 @@ public class SubItemOrderBO implements Serializable{
      * 标题
      */
     private String title;
+    /**
+     * 重量
+     */
+    private Long weight;
+
+    public Long getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Long weight) {
+        this.weight = weight;
+    }
 
     public Long getPid() {
         return pid;

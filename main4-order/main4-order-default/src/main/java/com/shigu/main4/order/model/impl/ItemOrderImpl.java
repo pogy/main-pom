@@ -325,6 +325,7 @@ public class ItemOrderImpl implements ItemOrder {
             ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, bo.getPid(), bo.getSkuId());
             sub.setPid(product.getPid());
             sub.setSkuId(product.getSkuId());
+            sub.setNum(bo.getNumber());
             ItemProductVO info = product.info();
             BeanMapper.map(info,sub);
             sub.setDistributionNum(0);
