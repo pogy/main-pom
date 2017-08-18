@@ -392,11 +392,11 @@ var webSite = '${webSite!}';
         <div class="childOrderItem" name="${childOrder.numiid!}" data-webSite="${childOrder.webSite!}">
     <ul class="clearfix">
         <li class="goods clearfix borderBot" data-imgSrc="${childOrder.imgSrc!}" data-title="${childOrder.title!}" data-goodsNo="${childOrder.goodsNo!}" data-price="<#if childOrder.newTbPrice??>${childOrder.newTbPrice!}<#else>${childOrder.oldTbPrice!}</#if>" data-tbId="${childOrder.numiid!}">
-            <a href="javascript:;" target="_blank" class="imgBox fl">
+            <a href="javascript:;" class="imgBox fl">
                 <img src="${childOrder.imgSrc!}_80x80.jpg" alt width="80" height="80">
             </a>
             <div class="goodsInfo fl">
-                <a href="javascript:;" target="_blank" title="${childOrder.title!}">${childOrder.title!}</a>
+                <a href="javascript:;" title="${childOrder.title!}">${childOrder.title!}</a>
                 <p class="fc9" title="颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}">颜色：${childOrder.color!}&nbsp;&nbsp;&nbsp;&nbsp;尺码：${childOrder.size!}</p>
                 <#if childOrder.goodsNo??>
                 <p class="goodsNoShow" title="已关联货号：${childOrder.goodsNo!}">已关联货号：${childOrder.goodsNo!}</p>
