@@ -31,4 +31,13 @@ public class PriceConvertUtils {
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(priceValue);
     }
+
+    public static String stringPriceToString(String price) {
+        if (price == null) {
+            return "--";
+        }
+        Double priceValue = Double.parseDouble (price);
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(priceValue);
+    }
 }
