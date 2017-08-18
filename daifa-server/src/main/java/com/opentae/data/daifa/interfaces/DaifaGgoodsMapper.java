@@ -1,10 +1,16 @@
 package com.opentae.data.daifa.interfaces;
 
+import com.openJar.beans.WorkUserGgoodsTasksCounts;
+import com.openJar.beans.WorkUserGgoodsTasksMarket;
 import com.opentae.data.daifa.beans.DaifaGgoods;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.Lazy;
 import com.opentae.core.mybatis.mapper.Mapper;
 import com.opentae.core.mybatis.config.MyBatisRepository;
+
+import java.util.List;
+
 /**
  *==========================================================
  *TODO ->这里需要配置 主要是这个类的描述信息
@@ -23,5 +29,6 @@ import com.opentae.core.mybatis.config.MyBatisRepository;
 @Scope("singleton")
 @Lazy(true)
 public interface DaifaGgoodsMapper extends Mapper<DaifaGgoods>{
-
+    List<WorkUserGgoodsTasksMarket> selectWorkGgoodsStores(@Param("daifaWorkerId")Long daifaWorkerId, @Param("status")Integer status);
+    WorkUserGgoodsTasksCounts selectTodayWorkGgoodsStoresCount(@Param("daifaWorkerId")Long daifaWorkerId);
 }

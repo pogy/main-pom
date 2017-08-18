@@ -20,7 +20,7 @@ public class PrintTagVO implements Serializable {
     private String receiverName;//收货人姓名
     private String buyerName;//买家昵称
     private String buyerWw;//
-    private String pAndBarCode;//批发价和条形码内容
+    private String priceAndBarCode;//批发价和条形码内容
     private String postName;//快递名称
     private String buyerNick;//下单人昵称
 
@@ -129,19 +129,19 @@ public class PrintTagVO implements Serializable {
         this.buyerNick = buyerNick;
     }
 
-    public String getpAndBarCode() {
-        return pAndBarCode;
-    }
-
-    public void setpAndBarCode(String pAndBarCode) {
-        this.pAndBarCode = pAndBarCode;
-    }
-
     public String getPostName() {
         return postName;
     }
 
     public void setPostName(String postName) {
         this.postName = postName;
+    }
+
+    public String getPriceAndBarCode() {
+        return this.priceAndBarCode;
+    }
+
+    public void setPriceAndBarCode(String priceAndBarCode) {
+        this.priceAndBarCode = priceAndBarCode;
     }
 }

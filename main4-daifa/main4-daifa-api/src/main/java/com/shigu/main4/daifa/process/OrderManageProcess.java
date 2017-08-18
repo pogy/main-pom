@@ -45,9 +45,17 @@ public interface OrderManageProcess {
     /**
      * 尝试退款
      * @param outerSubOrderId 外部子订单号
-     * @param num 要退的件数
-     * @return true 为可退
+     * @return 可退的拆分ID集合
      */
-    boolean tryRefund(String outerSubOrderId,Integer num);
+    List<Long> tryRefund(String outerSubOrderId);
+
+    /**
+     * 退款
+     * @param refundId
+     * @param soid 外部子单号
+     * @param soidps 外部拆分单号
+     * @throws DaifaException
+     */
+    void autoRefund(Long refundId, String soid, List<String> soidps) throws DaifaException;
 
 }

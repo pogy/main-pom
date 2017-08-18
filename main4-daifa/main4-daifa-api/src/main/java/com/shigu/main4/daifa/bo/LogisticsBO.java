@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class LogisticsBO implements Serializable {
     private Long companyId;//     物流公司ID
     private String company;//        物流公司
-    private Double money;//         支付的费用
+    private String money;//         支付的费用
     private Long provId;//         省份ID
     private String prov;//            省份
     private Long cityId;//           城市ID
@@ -19,7 +19,7 @@ public class LogisticsBO implements Serializable {
     private String address ;//      详细地址
     private String telephone;//    手机号
     private String name;//           收件人姓名
-    private String zip_code;//      邮编
+    private String zipCode;//      邮编
 
     public Long getCompanyId() {
         return companyId;
@@ -37,11 +37,11 @@ public class LogisticsBO implements Serializable {
         this.company = company;
     }
 
-    public Double getMoney() {
+    public String getMoney() {
         return money;
     }
 
-    public void setMoney(Double money) {
+    public void setMoney(String money) {
         this.money = money;
     }
 
@@ -117,11 +117,11 @@ public class LogisticsBO implements Serializable {
         this.name = name;
     }
 
-    public String getZip_code() {
-        return zip_code;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setZip_code(String zip_code) {
-        this.zip_code = zip_code;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 }

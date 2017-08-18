@@ -5,6 +5,8 @@ import com.shigu.mq.services.OrderConsumerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Created by pc on 2017-08-17.
  * 处理接受到的消息
@@ -29,13 +31,16 @@ public class DefaultProcessMessage {
      * @param key
      * @param s
      */
-    public void dispatchMessage(String tag, String key, byte[] s) {
+    public void dispatchMessage(String tag, String key, byte[] s) throws UnsupportedEncodingException {
         MessageTagEnum messageTagEnum = MessageTagEnum.valueOf(tag.toUpperCase());
-
+        String body=new String(s,"utf-8");
         switch (messageTagEnum){
             case ORDER_PUSH:{
-
-                orderConsumerService.orderConvertTrade(s);
+                orderConsumerService.orderConvertTrade(body);
+                break;
+            }
+            case ORDER_REFUND_NOITEM:{
+                orderConsumerService.refund(body);
                 break;
             }
             default:{

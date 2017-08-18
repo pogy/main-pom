@@ -66,7 +66,7 @@ public class DaifaAllocateService {
         DaifaGgoodsTasksExample.Criteria criteria = daifaGgoodsTasksExample.createCriteria();
         criteria.andUseStatusEqualTo(1).andAllocatStatusEqualTo(0).andSellerIdEqualTo(sellerId)
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
-                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or format(now(),'%Y%m%d')-create_date>0,true)))");//可用的未分配的
+                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or date_format(now(),'%Y%m%d')-create_date>0,true)))");//可用的未分配的
         if (!StringUtils.isEmpty(bo.getChildOrderId())) {
             criteria.andDfOrderIdEqualTo(bo.getChildOrderId());
         }
@@ -155,7 +155,7 @@ public class DaifaAllocateService {
 
     }
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
 
 
         TreeMap<MarketBean, MarketBean> map = new TreeMap<>();
@@ -181,7 +181,7 @@ public class DaifaAllocateService {
             System.out.println(next.getKey().getName());
         }
 
-    }
+    }*/
 
     public JSONObject getFloorList(Long marketId) {
         if (allocateHouse == null) {

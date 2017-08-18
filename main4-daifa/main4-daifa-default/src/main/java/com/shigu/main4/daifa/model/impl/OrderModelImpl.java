@@ -1,8 +1,6 @@
 package com.shigu.main4.daifa.model.impl;
-
 import com.alibaba.fastjson.JSONObject;
-import com.aliyun.openservices.ons.api.*;
-import com.opentae.common.beans.LogUtil;
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
@@ -10,19 +8,17 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.daifa.bo.*;
-import com.shigu.main4.daifa.config.MQConfig;
 import com.shigu.main4.daifa.enums.DaifaListDealTypeEnum;
 import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
 import com.shigu.main4.daifa.enums.SubOrderStatus;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
-import com.shigu.main4.daifa.utils.CdkeyUtil;
+import com.shigu.main4.daifa.utils.*;
+import com.shigu.main4.daifa.utils.BigNumber;
 import com.shigu.main4.daifa.utils.DaifaListDealUtil;
-import com.shigu.main4.daifa.utils.PinyinUtil;
-import com.shigu.main4.daifa.utils.PriceConvertUtils;
+import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.tools.SpringBeanFactory;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -31,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -75,16 +72,8 @@ public class OrderModelImpl implements OrderModel {
 
     @Autowired
     private DaifaListDealUtil daifaListDealUtil;
-
-
     @Autowired
-    private Producer producer;
-
-    @Autowired
-    private MQConfig mQConfig;
-
-    private final Logger log = LogUtil.getLog(OrderModelImpl.class);
-
+    private MQUtil mqUtil;
     public OrderModelImpl(Long tid) {
         this.tid = tid;
     }
@@ -105,6 +94,13 @@ public class OrderModelImpl implements OrderModel {
      */
     @Override
     public void init() {
+
+        //
+        DaifaTradeExample example=new DaifaTradeExample ();
+        example.createCriteria ().andTradeCodeEqualTo (orderBO.getOid ().toString ());
+        int ki=daifaTradeMapper.countByExample (example);
+        if(ki==0){//验证这个交易号在代发交易表中不存在
+
         DaifaTrade daifaTrade=new DaifaTrade();
         SubOrderModelBO subOrderModelBO=new SubOrderModelBO();
         daifaTrade.setDfTradeId(selTradeId());
@@ -112,7 +108,7 @@ public class OrderModelImpl implements OrderModel {
         List<SubOrderBO> subOrders = orderBO.getSubOrders();
         daifaTrade.setTradeCode(orderBO.getOid().toString());
         int num=0;
-        Double goodsFee= 0.00;
+        BigNumber goodsFee = new BigNumber("0.00");
         Map<Long, ServiceBO> serviceBOMap = BeanMapper.list2Map(orderBO.getServices(), "soid", Long.class);
         for (SubOrderBO bo:subOrders){
             num+=bo.getNum();
@@ -135,7 +131,7 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setGoodsCode(bo.getGoodsNo());
                     subOrderModelBO.setTitle(bo.getTitle());
                     subOrderModelBO.setPicPath(bo.getPicUrl());
-                    subOrderModelBO.setStoreGoodsCode(PinyinUtil.getPinYinHeadCharToLowerCase(bo.getMarketName())+"_"+bo.getShopNum()+"_"+bo.getGoodsNo());
+                    subOrderModelBO.setStoreGoodsCode(Pingyin.getPinYinHeadChar(bo.getMarketName())+"_"+bo.getShopNum()+"_"+bo.getGoodsNo());
                     subOrderModelBO.setOrderDiscountFee("0.00");
                     subOrderModelBO.setPropStr(bo.getColor()+":"+bo.getSize());
                     subOrderModelBO.setGoodsNum(1);
@@ -143,23 +139,36 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setSinglePay(bo.getSinglePay());
                     subOrderModelBO.setSellerId(orderBO.getSenderId());
                     subOrderModelBO.setTotalFee(bo.getSinglePay());
-                    subOrderModelBO.setOrderStatus(Long.valueOf(1));
-                    subOrderModelBO.setAggrement(1);
+                    subOrderModelBO.setOrderStatus(1L);
+                    subOrderModelBO.setAggrement(orderBO.getAggrement ());
                     subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
                     subOrderModelBO.setWebSite(bo.getWebSite());
                     subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
                     subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
-                    Double serviceFee = Double.parseDouble(serviceBOMap.get(bo.getSoid()).getMoney()) / Double.valueOf(bo.getNum());
-                    subOrderModelBO.setSingleServicesFee(PriceConvertUtils.doublePriceToString (serviceFee));
-                    subOrderModelBO.setTotalServiceFee (PriceConvertUtils.doublePriceToString (serviceFee));
+                    if(serviceBOMap!=null&&serviceBOMap.size ()>0) {
+                        if(serviceBOMap.get (bo.getSoid ())!=null) {
+                            BigDecimal serviceFeeSum = new BigDecimal (serviceBOMap.get (bo.getSoid ()).getMoney ());
+                            BigDecimal serviceFee = serviceFeeSum.divide (new BigDecimal (bo.getNum ()), 2, BigDecimal.ROUND_DOWN);
+                            subOrderModelBO.setSingleServicesFee (PriceConvertUtils.doublePriceToString (serviceFee.doubleValue ()));
+                            subOrderModelBO.setTotalServiceFee (PriceConvertUtils.doublePriceToString (serviceFee.doubleValue ()));
+                        }else{
+                            subOrderModelBO.setSingleServicesFee ("0.00");
+                            subOrderModelBO.setTotalServiceFee ("0.00");
+                        }
+                    }else{
+                        subOrderModelBO.setSingleServicesFee ("0.00");
+                        subOrderModelBO.setTotalServiceFee ("0.00");
+                    }
 
                     SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
-                    goodsFee+=Double.parseDouble(bo.getSinglePay());
+                    BigNumber singlePay = new BigNumber(bo.getSinglePay());
+                    goodsFee = goodsFee.Add(singlePay);
+
                 }
 
             }
         }
-        daifaTrade.setGoodsNum(Long.valueOf(num));
+        daifaTrade.setGoodsNum((long) num);
         LogisticsBO logisticsBO = orderBO.getLogistics().get(0);
         daifaTrade.setReceiverName(logisticsBO.getName());
         daifaTrade.setReceiverPhone(logisticsBO.getTelephone());
@@ -168,29 +177,30 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setDaifaType(orderBO.getType());
         daifaTrade.setExpressId(logisticsBO.getCompanyId());
         daifaTrade.setExpressName(logisticsBO.getCompany());
-        daifaTrade.setTradeStatus(1);
-        daifaTrade.setBuyerNick(orderBO.getBuyerBO().getNickInMarket());
-        daifaTrade.setGoodsFee(PriceConvertUtils.doublePriceToString (goodsFee));
+        daifaTrade.setTradeStatus(1);//已付款待分配
+        daifaTrade.setBuyerNick(orderBO.getBuyer().getNickInMarket());
+        daifaTrade.setGoodsFee(PriceConvertUtils.stringPriceToString(goodsFee.toString ()));
         daifaTrade.setBuyerRemark (orderBO.getBuyRemark ());
 
-        daifaTrade.setExpressFee(PriceConvertUtils.doublePriceToString (logisticsBO.getMoney()));
+        daifaTrade.setExpressFee(logisticsBO.getMoney());
         List<ServiceBO> services = orderBO.getServices();
-        Double serviceFee=0.00;
-        for (ServiceBO bo:services){
-            serviceFee+=Double.parseDouble(bo.getMoney());
+        BigNumber serviceFee = new BigNumber("0.00");
+        if(services!=null) {
+            for (ServiceBO bo : services) {
+                serviceFee = serviceFee.Add (new BigNumber (bo.getMoney ()));
+            }
         }
-        daifaTrade.setServicesFee(PriceConvertUtils.doublePriceToString (serviceFee));
+        daifaTrade.setServicesFee(PriceConvertUtils.stringPriceToString (serviceFee.toString()));
         daifaTrade.setTradeDiscountFee("0.00");
-        daifaTrade.setTotalFee(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
-        daifaTrade.setMoney(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
+        daifaTrade.setTotalFee(PriceConvertUtils.stringPriceToString(serviceFee.Add(goodsFee).Add(new BigNumber(logisticsBO.getMoney())).toString()));
+        daifaTrade.setMoney(PriceConvertUtils.stringPriceToString(serviceFee.Add(goodsFee).Add(new BigNumber(logisticsBO.getMoney())).toString()));
         daifaTrade.setSendStatus (1);
-        daifaTrade.setRealPayMoney(PriceConvertUtils.doublePriceToString(serviceFee+goodsFee+logisticsBO.getMoney()));
-
+        daifaTrade.setRealPayMoney(PriceConvertUtils.stringPriceToString(serviceFee.Add(goodsFee).Add(new BigNumber(logisticsBO.getMoney())).toString()));
         daifaTrade.setCreateTime(new Date());
         daifaTrade.setLastDoTime(new Date());
         daifaTrade.setBarCodeKey(daifaListDealUtil.queryListCode(DaifaListDealTypeEnum.TRADE_SORT,orderBO.getSenderId(),null));
         daifaTradeMapper.insertSelective(daifaTrade);
-        this.tid=daifaTrade.getDfTradeId();
+        }
     }
     /**
      * 订单超时
@@ -205,7 +215,7 @@ public class OrderModelImpl implements OrderModel {
         if (createTime.getTime() < new Date().getTime()) {
             DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
             daifaGgoodsTasksExample.createCriteria().andDfTradeIdEqualTo(tid)
-                    .andReturnStatusEqualTo(0).andUseStatusEqualTo(1)
+                    .andReturnStatusEqualTo(0).andUseStatusEqualTo(1).andOperateIsEqualTo(0)
                     .andEndStatusEqualTo(0).andAllocatStatusEqualTo(0);
             DaifaGgoodsTasks daifaGgoodsTask = new DaifaGgoodsTasks();
             daifaGgoodsTask.setEndStatus(1);
@@ -213,21 +223,27 @@ public class OrderModelImpl implements OrderModel {
             //修改代拿货表状态为已截单
             //为发消息，拿到待拿货的id集合
             List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,"df_order_id");
-            List<Long> dfOrderIds=new ArrayList<>();
+            List<Long> dfOrderIds;
             if (daifaGgoodsTasks.size()>0){
                 daifaGgoodsTasksMapper.updateByExampleSelective(daifaGgoodsTask, daifaGgoodsTasksExample);
+                daifaTradeMapper.updateByPrimaryKeySelective(trade);
                 dfOrderIds= BeanMapper.getFieldList(daifaGgoodsTasks, "dfOrderId", Long.class);
+                DaifaOrderExample orderExample=new DaifaOrderExample();
+                orderExample.createCriteria().andDfOrderIdIn(dfOrderIds);
+                List<DaifaOrder> orders=daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id"));
+                List<String> pcodes=BeanMapper.getFieldList(orders, "orderPartitionId", String.class);
+                JSONObject jsonObject=new JSONObject();
+                Map<String,Object>map=new HashMap<>();
+                map.put("orderId",trade.getTradeCode());
+                map.put("refundSubOrderIds",pcodes);
+                jsonObject.put("data",map);
+                jsonObject.put("msg", DaifaSendMqEnum.cutOff.getMsg());
+                jsonObject.put("status","true");
+                String message = jsonObject.toString();
+                mqUtil.sendMessage(DaifaSendMqEnum.cutOff.getMessageTag()+trade.getTradeCode(),
+                        DaifaSendMqEnum.cutOff.getMessageKey(), message);
+
             }
-            daifaTradeMapper.updateByPrimaryKeySelective(trade);
-            JSONObject jsonObject=new JSONObject();
-            Map<String,Object>map=new HashMap<>();
-            map.put("orderId",tid);
-            map.put("refundSubOrderIds",dfOrderIds);
-            jsonObject.put("data",map);
-            jsonObject.put("msg", DaifaSendMqEnum.cutOff.getMsg());
-            jsonObject.put("status","true");
-            String message = jsonObject.toString();
-            sendMessage(DaifaSendMqEnum.cutOff.getMessageTag()+tid, DaifaSendMqEnum.cutOff.getMessageKey(), message);
         }
     }
 
@@ -278,50 +294,44 @@ public class OrderModelImpl implements OrderModel {
         daifaWaitSend.setSendStatus(2);
         daifaWaitSendMapper.updateByExampleSelective(daifaWaitSend,daifaWaitSendExample);
 
-        if (delivery.getDfOrderIds()!=null&&delivery.getDfOrderIds().size()>0){
 
-            //设置待发货子表的查询和修改条件
-            DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
-            daifaWaitSendOrderExample.createCriteria().andDfOrderIdIn(delivery.getDfOrderIds()).andDfTradeIdEqualTo(delivery.getDfTradeId());
-            //发货校验：1.有货先发：缺货部分如果没退款就不发货
-            List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
-            for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
-                if (waitSendOrder.getTakeGoodsStatus()==2&&waitSendOrder.getRefundStatus()!=2){
-                    throw new DaifaException("缺货部分未退款，不能发货。");
-                }
-            }
-            //修改已发货子表状态为已发货
-            DaifaWaitSendOrder daifaWaitSendOrder=new DaifaWaitSendOrder();
-            daifaWaitSendOrder.setSendStatus(2);
-            daifaWaitSendOrderMapper.updateByExampleSelective(daifaWaitSendOrder,daifaWaitSendOrderExample);
-
-
-            //查询子单信息填充已发货子单信息
-            DaifaWaitSendOrderExample daifaWaitSendOrderExample1=new DaifaWaitSendOrderExample();
-            daifaWaitSendOrderExample1.createCriteria().andDfOrderIdIn(delivery.getDfOrderIds());
-            List<DaifaWaitSendOrder> daifaWaitSendOrders1 = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample1);
-
-            List<DaifaSendOrder> daifaSendOrders = BeanMapper.mapList(daifaWaitSendOrders1, DaifaSendOrder.class);
-
-            //查询已发货表得到sendId，把已发货子单信息插入已发货子表
-            DaifaSendExample daifaSendExample=new DaifaSendExample();
-            daifaSendExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
-            List<DaifaSend> sends = daifaSendMapper.selectByExample(daifaSendExample);
-            for (DaifaSendOrder d:daifaSendOrders){
-                d.setCreateDate(date);
-                d.setCreateTime(time);
-                d.setTakeGoodsStatus(1);
-                d.setSendStatus(2);
-
-                if (sends.size()>0){
-                    d.setSendId(sends.get(0).getSendId());
-                }
-                d.setSellerId(delivery.getSellerId());
-                daifaSendOrderMapper.insertSelective(d);
+        //设置待发货子表的查询和修改条件
+        DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
+        daifaWaitSendOrderExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
+        //发货校验：1.有货先发：缺货部分如果没退款就不发货
+        List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
+        for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
+            if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
+                throw new DaifaException("缺货部分未退款，不能发货。");
             }
         }
+        //修改已发货子表状态为已发货
+        DaifaWaitSendOrder daifaWaitSendOrder=new DaifaWaitSendOrder();
+        daifaWaitSendOrder.setSendStatus(2);
+        daifaWaitSendOrderMapper.updateByExampleSelective(daifaWaitSendOrder,daifaWaitSendOrderExample);
 
 
+        //查询子单信息填充已发货子单信息
+        List<DaifaSendOrder> daifaSendOrders = BeanMapper.mapList(daifaWaitSendOrders, DaifaSendOrder.class);
+
+        for (DaifaSendOrder d:daifaSendOrders){
+            d.setCreateDate(date);
+            d.setCreateTime(time);
+            d.setTakeGoodsStatus(1);
+            d.setSendStatus(2);
+            d.setSendId(send.getSendId());
+            d.setSellerId(delivery.getSellerId());
+            daifaSendOrderMapper.insertSelective(d);
+        }
+        Map<String,Object>map=new HashMap<>();
+        map.put("orderId",trade.getTradeCode());
+        map.put("expressCode",delivery.getExpressCode());
+        JSONObject obj=new JSONObject();
+        obj.put("data",map);
+        obj.put("msg","全单发货");
+        obj.put("status",true);
+        mqUtil.sendMessage(DaifaSendMqEnum.sendAll.getMessageTag()+trade.getTradeCode(),
+                DaifaSendMqEnum.sendAll.getMessageKey(), obj.toString());
     }
 
     /**
@@ -396,7 +406,7 @@ public class OrderModelImpl implements OrderModel {
             obj.put("msg",msg);
             obj.put("status",false);
         }
-        sendMessage(DaifaSendMqEnum.refund.getMessageTag()+refundId,
+        mqUtil.sendMessage(DaifaSendMqEnum.refund.getMessageTag()+refundId,
                 DaifaSendMqEnum.refund.getMessageKey(),
                 obj.toString());
     }
@@ -418,46 +428,7 @@ public class OrderModelImpl implements OrderModel {
         return tid;
     }
 
-    public void sendMessage(String messageTag, String messageKey, String messages) {
-        log.info(messageTag + "------------" + messages);
 
-        byte[] bs = null;
-        try {
-            bs = messages.getBytes("utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        Message msg = new Message( //
-                // Message所属的Topic
-                mQConfig.topic,
-                // Message Tag 可理解为Gmail中的标签，对消息进行再归类，方便Consumer指定过滤条件在MQ服务器过滤
-                messageTag,
-                // Message Body 可以是任何二进制形式的数据， MQ不做任何干预
-                // 需要Producer与Consumer协商好一致的序列化和反序列化方式
-                bs);
-        // 设置代表消息的业务关键属性，请尽可能全局唯一
-        // 以方便您在无法正常收到消息情况下，可通过MQ 控制台查询消息并补发
-        // 注意：不设置也不会影响消息正常收发
-        msg.setKey(messageKey);
-        log.info("send body: " + new String(msg.getBody()));
-        // 发送消息，只要不抛异常就是成功
-        producer.sendAsync(msg, new SendCallback() {
-            @Override
-            public void onSuccess(final SendResult sendResult) {
-                // 消费发送成功
-                log.info("send success: " + sendResult.getMessageId());
-
-            }
-
-            @Override
-            public void onException(OnExceptionContext context) {
-                // 消息发送失败
-                log.error("发送失败");
-            }
-        });
-
-
-    }
 
     public Long getTid() {
         return tid;

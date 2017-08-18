@@ -15,6 +15,7 @@
 		<property name="filters">
 			<map>
 				<entry key="daifa" value-ref="tae_daifaAdminRegularFilter"/>
+                <entry key="api" value-ref="tae_apiRequestFilter"/>
 			</map>
 		</property>
 		<property name="filterChainDefinitions">
@@ -23,6 +24,8 @@
 				/daili/**.css = anon
 				/daili/**.jpg = anon
 				/daili/**.png = anon
+                /api/**.action = api
+                /api/**.json = api
 				/daifa/*.json = daifa
 				/daifa/*.htm = daifa
 				/daifa/** = daifa

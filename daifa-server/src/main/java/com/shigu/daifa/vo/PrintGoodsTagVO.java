@@ -8,9 +8,11 @@ public class PrintGoodsTagVO {
     private String orderSort;//子单编号
     private String receiverName;//收货人姓名
     private String buyerName;//买家昵称
-    private String pAndBarCode;//批发价和条形码内容
+    private String priceAndBarCode;//批发价和条形码内容
     private String postName;//快递名称
     private String buyerNick;//下单人昵称
+    private String specialStr;
+    private String queNum;//缺货天数（先用这个字段）
 
     public String getDateIncBatch() {
         return this.dateIncBatch;
@@ -68,14 +70,6 @@ public class PrintGoodsTagVO {
         this.buyerName = buyerName;
     }
 
-    public String getPAndBarCode() {
-        return this.pAndBarCode;
-    }
-
-    public void setPAndBarCode(String pAndBarCode) {
-        this.pAndBarCode = pAndBarCode;
-    }
-
     public String getPostName() {
         return this.postName;
     }
@@ -90,5 +84,29 @@ public class PrintGoodsTagVO {
 
     public void setBuyerNick(String buyerNick) {
         this.buyerNick = buyerNick;
+    }
+
+    public String getPriceAndBarCode() {
+        return this.priceAndBarCode;
+    }
+
+    public void setPriceAndBarCode(String priceAndBarCode) {
+        this.priceAndBarCode = priceAndBarCode;
+    }
+
+    public String getSpecialStr() {
+        return this.specialStr;
+    }
+
+    public void setSpecialStr(String specialStr) {
+        this.specialStr = specialStr;
+    }
+
+    public String getQueNum () {
+        return queNum;
+    }
+
+    public void setQueNum (String queNum) {
+        this.queNum = queNum;
     }
 }

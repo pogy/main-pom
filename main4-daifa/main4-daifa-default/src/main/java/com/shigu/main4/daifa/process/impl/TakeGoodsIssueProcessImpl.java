@@ -97,7 +97,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0)//未结算
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
-                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or format(now(),'%Y%m%d')-create_date>0,true)))");
+                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or date_format(now(),'%Y%m%d')-create_date>0,true)))");
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper
                 .selectFieldsByExample(dgtex, FieldUtil.codeFields("tasks_id"));
         List<Long> taskIds = new ArrayList<>();
@@ -116,7 +116,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0)//未结算
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
-                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or format(now(),'%Y%m%d')-create_date>0,true)))");
+                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or date_format(now(),'%Y%m%d')-create_date>0,true)))");
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(dgtex
                 , FieldUtil.codeFields("tasks_id"));
         List<Long> taskIds = new ArrayList<>();
@@ -134,7 +134,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0)//未结算
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
-                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or format(now(),'%Y%m%d')-create_date>0,true)))");
+                        "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or date_format(now(),'%Y%m%d')-create_date>0,true)))");
         List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(dgtex
                 , FieldUtil.codeFields("tasks_id"));
         List<Long> taskIds = new ArrayList<>();
@@ -143,7 +143,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     }
 
     @Override
-    public List<PrintTagVO> printAllTags(Long sellerId) {
+    public List<PrintTagVO> printAllTags(Long sellerId) throws DaifaException{
         //查出今天未打印的
 
 
@@ -156,6 +156,9 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 .andCreateDateEqualTo(nowDate);
         List<DaifaGgoods> ggoods = daifaGgoodsMapper.selectFieldsByExample(dgex
                 ,FieldUtil.codeFields("take_goods_id"));
+        if(ggoods.size ()==0){
+            throw new DaifaException("没有可打印的数据");
+        }
         List<Long> issueIds = new ArrayList<>();
         ggoods.forEach(dg->issueIds.add(dg.getTakeGoodsId()));
 
@@ -201,7 +204,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             String barcode = ggoodsForPrint.getDfOrderId().toString() + ggoodsForPrint.getDfTradeId().toString()
                     .substring(ggoodsForPrint.getDfTradeId().toString().length() - EZINT);//计算长度
             vo.setBarCode(barcode);
-            vo.setpAndBarCode((int) Double.parseDouble(ggoodsForPrint.getSinglePiPrice()) + "N" + barcode);
+            vo.setPriceAndBarCode((int) Double.parseDouble(ggoodsForPrint.getSinglePiPrice()) + "N" + barcode);
             vo.setBuyerNick(ggoodsForPrint.getBuyerNick());
             vo.setReceiverName(ggoodsForPrint.getRecieverName());
 
@@ -278,10 +281,10 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     }
 
     @Override
-    public void uncompleteAll (Long wholeId, List<Long> issueIds,Boolean idIsCheck) throws DaifaException {
+    public void uncompleteAll (Long wholeId,Long shopId, List<Long> issueIds,Boolean idIsCheck) throws DaifaException {
         String date=DateUtil.dateToString(new Date(),DateUtil.patternB);
         DaifaGgoodsExample ge=new DaifaGgoodsExample();
-        ge.createCriteria().andDaifaWorkerIdEqualTo(wholeId);
+        ge.createCriteria().andDaifaWorkerIdEqualTo(wholeId).andStoreIdEqualTo(shopId);
         List<DaifaGgoods> gs=daifaGgoodsMapper.selectFieldsByExample(ge,FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
         Map<Long,DaifaGgoods> gmap= BeanMapper.list2Map(gs,"takeGoodsId",Long.class);
         //校验是否存在不可操作数据

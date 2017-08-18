@@ -89,6 +89,6 @@ public class Pingyin {
 
         String cnStr = "圆通";
         System.out.println(getPingYin(cnStr));
-        System.out.println(getPinYinHeadChar(cnStr).toUpperCase());
+        System.out.println(getPinYinHeadChar(cnStr));
     }
 }

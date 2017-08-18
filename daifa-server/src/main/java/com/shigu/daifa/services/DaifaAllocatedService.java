@@ -142,7 +142,7 @@ public class DaifaAllocatedService {
         return vos;
     }
 
-    public List<PrintGoodsTagVO> printGoodsTab(Long sellerId,List<Long> ids){
+    public List<PrintGoodsTagVO> printGoodsTab(Long sellerId,List<Long> ids)throws DaifaException{
         List<PrintTagVO> printTagVOS=new ArrayList<>();
         if(ids==null){
             printTagVOS=takeGoodsIssueProcess.printAllTags(sellerId);
@@ -160,6 +160,7 @@ public class DaifaAllocatedService {
         printTagVOS.forEach(printTagVO -> {
             PrintGoodsTagVO vo= BeanMapper.map(printTagVO,PrintGoodsTagVO.class);
             vo.setStockoutDay(printTagVO.getRemarks());
+            vo.setQueNum (printTagVO.getRemarks ());
             vos.add(vo);
         });
         return vos;
