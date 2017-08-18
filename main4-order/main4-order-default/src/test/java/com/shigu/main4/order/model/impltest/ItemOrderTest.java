@@ -115,17 +115,17 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void addSubOrder() throws Exception {
-        List<SubOrderVO> subs = new ArrayList<>();
-
-        SubOrderVO vo1 = new SubOrderVO();
-        vo1.setGoodsId(20724865L);
-        vo1.setColor("深灰色");
-        vo1.setSize("M 28-29");
-        vo1.setNum(1);
-        subs.add(vo1);
-        order().addSubOrder(subs);
-
-        show(order().orderInfo());
+//        List<SubOrderVO> subs = new ArrayList<>();
+//
+//        SubOrderVO vo1 = new SubOrderVO();
+//        vo1.setGoodsId(20724865L);
+//        vo1.setColor("深灰色");
+//        vo1.setSize("M 28-29");
+//        vo1.setNum(1);
+//        subs.add(vo1);
+//        order().addSubOrder(subs);
+//
+//        show(order().orderInfo());
     }
 
     @Test

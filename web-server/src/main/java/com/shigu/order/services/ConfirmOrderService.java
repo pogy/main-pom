@@ -115,6 +115,7 @@ public class ConfirmOrderService {
         List<SubItemOrderBO> subOrders = Lists.newArrayList();
         Map<Long, CartVO> productsMap = BeanMapper.list2Map(orderSubmitVo.getProducts(),"cartId", Long.class);
         List<ConfirmOrderBO> confirmOrderBOS = bo.getOrders();
+        String webSite = null;
         for (ConfirmOrderBO confirmOrderBO: confirmOrderBOS) {
             List<ConfirmSubOrderBO> confirmSubOrderBOS = confirmOrderBO.getChildOrders();
             for (ConfirmSubOrderBO confirmSubOrderBO: confirmSubOrderBOS) {
@@ -124,36 +125,30 @@ public class ConfirmOrderService {
                 }
                 SubItemOrderBO subOrder = new SubItemOrderBO();
                 subOrder.setMark(confirmOrderBO.getRemark());
+                ItemProductVO productVO=productsMap.get(Long.parseLong(confirmSubOrderBO.getId()));
                 subOrder.setNum(num);
-                subOrder.setProductVO(productsMap.get(Long.parseLong(confirmSubOrderBO.getId())));
+                subOrder.setPid(productVO.getPid());
+                subOrder.setTitle(productVO.getTitle());
+                subOrder.setSkuId(productVO.getSelectiveSku().getSkuId());
                 subOrders.add(subOrder);
+                if (webSite == null) {
+                    webSite=productVO.getWebSite();
+                }
             }
         }
         itemOrderBO.setSubOrders(subOrders);
-        SubItemOrderBO subItemOrderBO = subOrders.get(0);
-        ItemProductVO productVO = subItemOrderBO.getProductVO();
-        String title = productVO.getTitle();
+        SubItemOrderBO  subItemOrderBO= subOrders.get(0);
+        String title = subItemOrderBO.getTitle();
         if (subOrders.size() > 1) {
             title = title.length() > 10 ? title.substring(0, 10) : title;
             title += "...等多件";
         }
         itemOrderBO.setTitle(title);
-        itemOrderBO.setWebSite(productVO.getWebSite());
+        itemOrderBO.setWebSite(webSite);
         itemOrderBO.setMark(subItemOrderBO.getMark());
 
         itemOrderBO.setServiceIds(BeanMapper.getFieldList(orderConstantService.selServices(bo.getSenderId()), "id", Long.class));
 
-        //TODO:订单包材信息
-//        int size = BeanMapper.groupBy(orderSubmitVo.getProducts(), "shopId", Long.class).size();
-//        List<Long> packagesIds = BeanMapper.getFieldList(orderConstantService.selMetarials(bo.getSenderId()), "id", Long.class);
-//        List<PackageBO> packageBOS = Lists.newArrayList();
-//        for (Long packagesId : packagesIds) {
-//            PackageBO packageBO = new PackageBO();
-//            packageBOS.add(packageBO);
-//            packageBO.setMetarialId(packagesId);
-//            packageBO.setNum(size);
-//        }
-//        itemOrderBO.setPackages(packageBOS);
         return itemOrderBO;
     }
 
@@ -164,8 +159,7 @@ public class ConfirmOrderService {
     private void rmCartProductByOrder(ItemOrderBO itemOrderBO) throws JsonErrException {
         //根据用户获取购物车对象
         for (SubItemOrderBO subItemOrderBO: itemOrderBO.getSubOrders()) {
-            ItemProductVO productVO = subItemOrderBO.getProductVO();
-            itemCartProcess.rmProductByNum(itemOrderBO.getUserId(), productVO.getPid(), productVO.getSelectiveSku().getSkuId(), subItemOrderBO.getNum());
+            itemCartProcess.rmProductByNum(itemOrderBO.getUserId(), subItemOrderBO.getPid(), subItemOrderBO.getSkuId(), subItemOrderBO.getNum());
         }
     }
 

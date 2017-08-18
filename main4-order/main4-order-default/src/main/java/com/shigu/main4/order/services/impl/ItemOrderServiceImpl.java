@@ -133,32 +133,13 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             throw new OrderException("订单是空的.");
         }
         List<PidNumBO> pidNumBOS = new ArrayList<>();
-        List<SubOrderVO> subOrders = new ArrayList<>();
+        List<SubOrderBO> subOrders = new ArrayList<>();
         for (SubItemOrderBO subItemOrderBO : orderBO.getSubOrders()) {
-            ItemProductVO productVO = subItemOrderBO.getProductVO();
-
             PidNumBO numBO = new PidNumBO();
             pidNumBOS.add(numBO);
-            numBO.setPid(productVO.getPid());
+            numBO.setPid(subItemOrderBO.getPid());
             numBO.setNum(subItemOrderBO.getNum());
-            numBO.setWeight(productVO.getWeight());
-
-            SubOrderVO vo = new SubOrderVO();
-            vo.setNum(subItemOrderBO.getNum());
-            vo.setMark(subItemOrderBO.getMark());
-            vo.setGoodsId(productVO.getGoodsId());
-            ItemSkuVO selectiveSku = productVO.getSelectiveSku();
-            vo.setSize(selectiveSku.getSize());
-            vo.setColor(selectiveSku.getColor());
-            vo.setWeight(productVO.getWeight());
-            vo.setPrice(productVO.getPrice());
-            vo.setFloor(productVO.getFloor());
-            vo.setFloorId(productVO.getFloorId());
-            vo.setGoodsNo(productVO.getGoodsNo());
-            vo.setMarketId(productVO.getMarketId());
-            vo.setMarketName(productVO.getMarketName());
-            vo.setOid(order.getOid());
-            vo.setShopId(productVO.getShopId());
+            SubOrderBO vo = BeanMapper.map(subItemOrderBO,SubOrderBO.class);
             subOrders.add(vo);
         }
         itemOrder.addSubOrder(subOrders);
