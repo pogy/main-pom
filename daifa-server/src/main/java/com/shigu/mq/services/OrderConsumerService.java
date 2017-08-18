@@ -13,6 +13,8 @@ import com.shigu.mq.receives.SendMessageListener;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -42,11 +44,12 @@ public class OrderConsumerService {
         if(res.isStatus()){
             synchronized (this) {
                 OrderBO orderBean = JSON.parseObject(res.getData().toString(),OrderBO.class);
+               // System.out.println (orderBean);
                 orderManageProcess.newOrder(orderBean);
             }
         }
     }
-
+    @Transactional(rollbackFor={RuntimeException.class, Exception.class},propagation= Propagation.REQUIRED)
     public void refund(String body) throws UnsupportedEncodingException {
         ResponseBasic res= JSON.parseObject(body,ResponseBasic.class);
         if(res.isStatus()){
@@ -54,11 +57,19 @@ public class OrderConsumerService {
             Map<String,Class> cmap=new HashMap<>();
             cmap.put("suborders", SubRefundBean.class);
             RefundBean refund= (RefundBean) JSONObject.toBean(refundObj,RefundBean.class,cmap);
-            if(refund.getSuborders()==null||refund.getSuborders().getSoidps().size()==0){
+           // RefundBean refund=JSON.parseObject(res.getData().toString(),RefundBean.class);
+
+            if(refund.getSuborders()==null||refund.getSuborders().size ()==0){
                 return;
             }
+
             try {
-                orderManageProcess.autoRefund(refund.getRefundId(),refund.getSuborders().getSoid(),refund.getSuborders().getSoidps());
+                //=============事物start=================
+                for(int i=0;i<refund.getSuborders ().size ();i++){
+                    orderManageProcess.autoRefund(refund.getRefundId(),refund.getSuborders().get (i).getSoid(),refund.getSuborders().get (i).getSoidps());
+                }
+                //=============事物end=================
+
             } catch (DaifaException e) {
                 JSONObject obj=new JSONObject();
                 obj.put("msg",e.getMessage());
