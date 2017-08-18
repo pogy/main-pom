@@ -1,7 +1,5 @@
 package com.shigu.main4.order.bo;
 
-import com.shigu.main4.order.vo.ItemProductVO;
-
 import java.io.Serializable;
 
 /**
@@ -10,9 +8,6 @@ import java.io.Serializable;
  */
 public class SubItemOrderBO implements Serializable{
     /**
-     * 产品
-     */
-    private ItemProductVO productVO;
     /**
      * 产品数量
      */
@@ -21,13 +16,33 @@ public class SubItemOrderBO implements Serializable{
      * 备注
      */
     private String mark;
+    /**
+     * 产品ID
+     */
+    private Long pid;
+    /**
+     * sku信息
+     */
+    private Long skuId;
+    /**
+     * 标题
+     */
+    private String title;
 
-    public ItemProductVO getProductVO() {
-        return productVO;
+    public Long getPid() {
+        return pid;
     }
 
-    public void setProductVO(ItemProductVO productVO) {
-        this.productVO = productVO;
+    public void setPid(Long pid) {
+        this.pid = pid;
+    }
+
+    public Long getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Long skuId) {
+        this.skuId = skuId;
     }
 
     public Integer getNum() {
@@ -44,5 +59,13 @@ public class SubItemOrderBO implements Serializable{
 
     public void setMark(String mark) {
         this.mark = mark;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

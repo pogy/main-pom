@@ -6,6 +6,7 @@ import com.opentae.data.mall.examples.OrderPayExample;
 import com.opentae.data.mall.examples.OrderPayRelationshipExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.order.bo.SubOrderBO;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
@@ -318,10 +319,10 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addSubOrder(List<SubOrderVO> subOrders) {
-        List<ItemOrderSub> subs = BeanMapper.mapList(subOrders, ItemOrderSub.class);
-        for (ItemOrderSub sub : subs) {
-            ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, sub.getGoodsId(), sub.getColor(), sub.getSize());
+    public void addSubOrder(List<SubOrderBO> subOrders) {
+        for (SubOrderBO bo : subOrders) {
+            ItemOrderSub sub=new ItemOrderSub();
+            ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, bo.getPid(), bo.getSkuId());
             sub.setPid(product.getPid());
             sub.setSkuId(product.getSkuId());
             ItemProductVO info = product.info();
@@ -335,7 +336,6 @@ public class ItemOrderImpl implements ItemOrder {
             sub.setOid(oid);
             itemOrderSubMapper.insertSelective(sub);
         }
-
         recountTotalOrderAmount();
     }
 

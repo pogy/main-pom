@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model;
 
+import com.shigu.main4.order.bo.SubOrderBO;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
@@ -24,7 +25,7 @@ public interface Order{
      * 追加子订单
      * @param subOrders 子订单
      */
-    void addSubOrder(List<SubOrderVO> subOrders);
+    void addSubOrder(List<SubOrderBO> subOrders);
 
     /**
      * 二次支付申请
