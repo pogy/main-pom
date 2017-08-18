@@ -39,7 +39,8 @@ public class OrderManageProcessImpl implements OrderManageProcess {
 
     @Override
     public void newOrder(OrderBO order) {
-        SpringBeanFactory.getBean(OrderModel.class, order);
+        OrderModel orderModel= SpringBeanFactory.getBean(OrderModel.class, order);
+        orderModel.init ();
     }
 
     /**
