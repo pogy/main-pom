@@ -6,7 +6,12 @@ import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
+import com.shigu.main4.order.exceptions.PayerException;
+import com.shigu.main4.order.exceptions.RefundException;
+import com.shigu.main4.order.model.ItemOrder;
+import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.mq.msg.*;
+import com.shigu.main4.tools.SpringBeanFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -54,19 +59,27 @@ public class DfMessageListener implements MessageListener {
 
         switch (dfMqTag) {
             case refund_agree:
+                refundAgree(baseMessage);
                 break;
             case weight_set:
+                weightSet(baseMessage);
                 break;
             case send_all:
+                sendAll(baseMessage);
                 break;
             case stop_trade:
+                stopTrade(baseMessage);
                 break;
         }
         return Action.CommitMessage;
     }
 
     public void refundAgree(BaseMessage<RefundMessage> msg) {
-
+        try {
+            SpringBeanFactory.getBean(RefundItemOrder.class, msg.getData().getRefundId()).success();
+        } catch (PayerException | RefundException e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
     public void weightSet(BaseMessage<SubOrderInfoMessage> msg) {
@@ -74,7 +87,8 @@ public class DfMessageListener implements MessageListener {
     }
 
     public void sendAll(BaseMessage<SendAllMessage> msg) {
-
+        SendAllMessage sendAllMessage = msg.getData();
+        SpringBeanFactory.getBean(ItemOrder.class, sendAllMessage.getOrderId()).sended(sendAllMessage.getExpressCode());
     }
 
     public void stopTrade(BaseMessage<StopTradeMessage> msg) {
