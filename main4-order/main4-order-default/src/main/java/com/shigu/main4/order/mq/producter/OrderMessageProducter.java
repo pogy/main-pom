@@ -141,7 +141,7 @@ public class OrderMessageProducter {
         ArrayList<SubOrderMessage> soids = new ArrayList<>();
         SubOrderMessage subOrder = new SubOrderMessage();
         subOrder.setSoid(subOrderId);
-        subOrder.setSoidps(Arrays.asList(subOrderId));
+        subOrder.setSoidps(soidsCreater.soidToSoidps(subOrderId));
         soids.add(subOrder);
         refund.setSuborders(soids);
 

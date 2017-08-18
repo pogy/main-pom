@@ -7,6 +7,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.bo.ItemOrderBO;
 import com.shigu.main4.order.model.ItemOrder;
+import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
 import com.shigu.main4.order.servicevo.OrderInfoVO;
@@ -33,7 +34,11 @@ public class ItemOrderServiceImplTest extends BaseTest {
     @Autowired
     private ItemOrderSenderMapper itemOrderSenderMapper;
 
-
+    @Test
+    public void testOrder() {
+        ItemProduct bean = SpringBeanFactory.getBean(ItemProduct.class, 20940313L, "白条", "L");
+        show(bean.info());
+    }
     @Test
 //    @Transactional
     public void createOrder() throws Exception {

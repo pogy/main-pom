@@ -131,7 +131,8 @@ public class ItemOrderImpl implements ItemOrder {
             ItemOrderSub orderSub = subOrderMap.get(vo.getSoid());
             vo.setSubOrderStatus(SubOrderStatus.statusOf(orderSub.getStatus()));
             vo.setNumber(vo.getNum());
-            vo.setProduct(BeanMapper.map(orderSub, ItemProductVO.class));
+            ItemProductVO info = SpringBeanFactory.getBean(ItemProduct.class, vo.getGoodsId(), vo.getColor(), vo.getSize()).info();
+            vo.setProduct(info);
         }
         return vos;
     }

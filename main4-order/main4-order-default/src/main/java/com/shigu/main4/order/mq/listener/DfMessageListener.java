@@ -1,20 +1,28 @@
 package com.shigu.main4.order.mq.listener;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
+import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.mq.msg.*;
+import com.shigu.main4.order.vo.RefundVO;
+import com.shigu.main4.order.vo.SubItemOrderVO;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.shigu.main4.order.mq.listener.DfMessageListener.DfMqTag.refund_agree;
 
@@ -26,6 +34,9 @@ import static com.shigu.main4.order.mq.listener.DfMessageListener.DfMqTag.refund
 public class DfMessageListener implements MessageListener {
 
     private static final Logger logger = LoggerFactory.getLogger(DfMessageListener.class);
+
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
 
     public enum DfMqTag {
         refund_agree(RefundMessage.class),
@@ -76,7 +87,18 @@ public class DfMessageListener implements MessageListener {
 
     public void refundAgree(BaseMessage<RefundMessage> msg) {
         try {
-            SpringBeanFactory.getBean(RefundItemOrder.class, msg.getData().getRefundId()).success();
+            RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, msg.getData().getRefundId());
+            refundItemOrder.success();
+            RefundVO refundinfo = refundItemOrder.refundinfo();
+            ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
+            itemOrderRefund.setOid(refundinfo.getOid());
+            itemOrderRefund.setStatus(RefundStateEnum.ENT_REFUND.refundStatus);
+            List<Long> soids = itemOrderRefundMapper.select(itemOrderRefund).stream().map(ItemOrderRefund::getSoid).collect(Collectors.toList());
+
+            ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
+            if (soids.size() == itemOrder.subOrdersInfo().size()) {
+                itemOrder.closed();
+            }
         } catch (PayerException | RefundException e) {
             logger.error(e.getMessage(), e);
         }
