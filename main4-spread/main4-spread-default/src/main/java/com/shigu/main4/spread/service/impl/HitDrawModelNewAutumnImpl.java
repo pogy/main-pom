@@ -197,6 +197,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
                     pool.setKey1(String.valueOf(Integer.valueOf(pool.getKey1()) + Integer.valueOf(pool.getKey3())));
                     //更新下次奖品投放时间
                     pool.setKey4(sdf.format(new Date(Integer.valueOf(pool.getKey5()) * 60 * 60 * 1000 + updateTime.getTime())));
+                    shiguTempMapper.updateByPrimaryKey(pool);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
