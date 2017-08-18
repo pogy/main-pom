@@ -12,6 +12,7 @@ public class PrintGoodsTagVO {
     private String postName;//快递名称
     private String buyerNick;//下单人昵称
     private String specialStr;
+    private String queNum;//缺货天数（先用这个字段）
 
     public String getDateIncBatch() {
         return this.dateIncBatch;
@@ -99,5 +100,13 @@ public class PrintGoodsTagVO {
 
     public void setSpecialStr(String specialStr) {
         this.specialStr = specialStr;
+    }
+
+    public String getQueNum () {
+        return queNum;
+    }
+
+    public void setQueNum (String queNum) {
+        this.queNum = queNum;
     }
 }
