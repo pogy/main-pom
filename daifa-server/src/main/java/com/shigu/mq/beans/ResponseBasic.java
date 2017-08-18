@@ -1,5 +1,7 @@
 package com.shigu.mq.beans;
 
+import java.io.Serializable;
+
 /**
  * Created by pc on 2017-06-15.
  *
@@ -8,7 +10,7 @@ package com.shigu.mq.beans;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class ResponseBasic {
+public class ResponseBasic implements Serializable{
     private boolean status;
     private Object data;
     private String msg;

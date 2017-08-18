@@ -67,6 +67,7 @@ public class DaifaOrderExample extends SgExample<DaifaOrderExample.Criteria> {
     public static EntityColumn changeReason;
     public static EntityColumn remark1;
     public static EntityColumn remark2;
+    public static EntityColumn goodsWeight;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -129,6 +130,7 @@ public class DaifaOrderExample extends SgExample<DaifaOrderExample.Criteria> {
         changeReason = listMap.get("changeReason");
         remark1 = listMap.get("remark1");
         remark2 = listMap.get("remark2");
+        goodsWeight = listMap.get("goodsWeight");
     }
 
     public DaifaOrderExample() {
@@ -3077,6 +3079,61 @@ public class DaifaOrderExample extends SgExample<DaifaOrderExample.Criteria> {
 
         public Criteria andRemark2NotBetween(String value1, String value2) {
             return notBetween(remark2, value1, value2);
+        }
+        public DaifaOrderExample.Criteria andGoodsWeightIsNull() {
+            return isNull(goodsWeight);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightIsNotNull() {
+            return isNotNull(goodsWeight);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightEqualTo(String value) {
+            return equalTo(goodsWeight, value);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightNotEqualTo(String value) {
+            return notEqualTo(goodsWeight, value);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightGreaterThan(String value) {
+            return greaterThan(goodsWeight, value);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(goodsWeight, value);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightLessThan(String value) {
+            return lessThan(goodsWeight, value);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(goodsWeight, value);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightLike(String value) {
+            return like(goodsWeight, value);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightNotLike(String value) {
+            return notLike(goodsWeight, value);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightIn(List<String> values) {
+            return in(goodsWeight, values);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightNotIn(List<String> values) {
+            return notIn(goodsWeight, values);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightBetween(String value1, String value2) {
+            return between(goodsWeight, value1, value2);
+        }
+
+        public DaifaOrderExample.Criteria andGoodsWeightNotBetween(String value1, String value2) {
+            return notBetween(goodsWeight, value1, value2);
         }
     }
 }
