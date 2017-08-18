@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -122,16 +123,16 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         if (provId != null) {
             LogisticsTemplateProvExample provExample = new LogisticsTemplateProvExample();
             provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId);
-            supportRules.addAll(BeanMapper.getFieldList(logisticsTemplateProvMapper.selectByExample(provExample), "ruleId", Long.class));
+            supportRules.addAll(logisticsTemplateProvMapper.selectByExample(provExample).stream().map(LogisticsTemplateProv::getRuleId).collect(Collectors.toList()));
         } else {// 省份id为NULL 则构建省份-规则映射信息
             LogisticsTemplateProv prov = new LogisticsTemplateProv();
             prov.setTemplateId(templateId);
-            ruleProvMap = BeanMapper.list2Map(logisticsTemplateProvMapper.select(prov), "ruleId", Long.class);
+            ruleProvMap = logisticsTemplateProvMapper.select(prov).stream().collect(Collectors.toMap(LogisticsTemplateProv::getRuleId, r -> r));
         }
         if (companyId != null) {
             LogisticsTemplateCompanyExample companyExample = new LogisticsTemplateCompanyExample();
             companyExample.createCriteria().andCompanyIdEqualTo(companyId).andTemplateIdEqualTo(templateId);
-            List<Long> companyRulesIds = BeanMapper.getFieldList(logisticsTemplateCompanyMapper.selectByExample(companyExample), "ruleId", Long.class);
+            List<Long> companyRulesIds = logisticsTemplateCompanyMapper.selectByExample(companyExample).stream().map(LogisticsTemplateCompany::getRuleId).collect(Collectors.toList());
             if (provId == null) {
                 supportRules.addAll(companyRulesIds);
             } else {// 当指定了省份、快递公司后，取规则交集就是该快递公司在该省份的运费计算规则
@@ -171,15 +172,14 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
 
 
     private List<BournRuleInfoVO> rulesIn(List<Long> rulesIds) {
-        List<BournRuleInfoVO> ruleInfo = new ArrayList<>();
         LogisticsTemplateRuleExample ruleExample = new LogisticsTemplateRuleExample();
         LogisticsTemplateRuleExample.Criteria criteria = ruleExample.createCriteria().andTemplateIdEqualTo(templateId);
         if (!rulesIds.isEmpty()) {
             criteria.andRuleIdIn(rulesIds);
         }
-        for (LogisticsTemplateRule templateRule : logisticsTemplateRuleMapper.selectByExample(ruleExample)) {
+        ruleExample.or().andImDefaultEqualTo(true);
+        return logisticsTemplateRuleMapper.selectByExample(ruleExample).stream().map(templateRule -> {
             BournRuleInfoVO infoVO = new BournRuleInfoVO();
-            ruleInfo.add(infoVO);
             infoVO.setRuleId(templateRule.getRuleId());
             infoVO.setStartPrice(templateRule.getFirstFee());
             infoVO.setStartWeight(templateRule.getFirstUnit());
@@ -187,8 +187,8 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
             infoVO.setAddWeight(templateRule.getPerUnit());
             infoVO.setImDefault(templateRule.getImDefault());
             infoVO.setType(templateRule.getType());
-        }
-        return ruleInfo;
+            return infoVO;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -210,12 +210,12 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         provExample.createCriteria().andTemplateIdEqualTo(templateId).andProvIdEqualTo(provId);
         List<LogisticsTemplateProv> logisticsTemplateProvs = logisticsTemplateProvMapper.selectFieldsByExample(provExample, FieldUtil.codeFields("tp_id,rule_id"));
 
-        List<Long> ruleIds  = BeanMapper.getFieldList(logisticsTemplateProvs, "ruleId", Long.class);
+        List<Long> ruleIds = logisticsTemplateProvs.stream().map(LogisticsTemplateProv::getRuleId).collect(Collectors.toList());
 
         LogisticsTemplateRuleExample logisticsTemplateRuleExample = new LogisticsTemplateRuleExample();
         logisticsTemplateRuleExample.createCriteria().andImDefaultEqualTo(true);
         List<LogisticsTemplateRule> logisticsTemplateRules = logisticsTemplateRuleMapper.selectFieldsByExample(logisticsTemplateRuleExample, "rule_id");
-        List<Long> ruleIdsDefault = BeanMapper.getFieldList(logisticsTemplateRules, "ruleId", Long.class);
+        List<Long> ruleIdsDefault = logisticsTemplateRules.stream().map(LogisticsTemplateRule::getRuleId).collect(Collectors.toList());
         ruleIds.addAll(ruleIdsDefault);
         LogisticsTemplateCompanyExample companyExample = new LogisticsTemplateCompanyExample();
         companyExample.createCriteria().andTemplateIdEqualTo(templateId).andRuleIdIn(ruleIds);

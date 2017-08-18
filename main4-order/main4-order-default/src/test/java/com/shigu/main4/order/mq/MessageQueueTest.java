@@ -19,7 +19,7 @@ public class MessageQueueTest extends BaseTest {
      */
     @Test
     public void testSendOrderPush() {
-        orderMessageProducter.orderPush(itemOrder);
+//        orderMessageProducter.orderPush(itemOrder);
     }
 
     /**

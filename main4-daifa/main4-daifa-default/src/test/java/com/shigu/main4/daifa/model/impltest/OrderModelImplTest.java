@@ -173,7 +173,7 @@ public class OrderModelImplTest extends BaseSpringTest{
         orderModel.send(bo);
     }
     @Test
-    public void  testauto(){
+    public void  testauto() throws DaifaException {
         List<Long> sub=new ArrayList<>();
         sub.add(1L);
         sub.add(40282L);
