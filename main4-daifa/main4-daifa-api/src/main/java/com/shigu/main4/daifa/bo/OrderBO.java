@@ -20,12 +20,12 @@ public class OrderBO implements Serializable {
     private List<ServiceBO> services;//    服务
     private  List<PackageBO> packages;//   包材
     private List<LogisticsBO> logistics;//   物流
-    public BuyerBO getBuyerBO() {
+    public BuyerBO getBuyer() {
         return buyer;
     }
 
-    public void setBuyerBO(BuyerBO buyerBO) {
-        this.buyer = buyerBO;
+    public void setBuyer(BuyerBO buyer) {
+        this.buyer = buyer;
     }
     public Long getOid() {
         return oid;
