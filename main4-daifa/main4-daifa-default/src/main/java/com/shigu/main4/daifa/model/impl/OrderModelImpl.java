@@ -133,15 +133,26 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setSellerId(orderBO.getSenderId());
                     subOrderModelBO.setTotalFee(bo.getSinglePay());
                     subOrderModelBO.setOrderStatus(1L);
-                    subOrderModelBO.setAggrement(1);
+                    subOrderModelBO.setAggrement(orderBO.getAggrement ());
                     subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
                     subOrderModelBO.setWebSite(bo.getWebSite());
                     subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
                     subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
-                    BigDecimal serviceFeeSum = new BigDecimal(serviceBOMap.get(bo.getSoid()).getMoney());
-                    BigDecimal serviceFee = serviceFeeSum.divide(new BigDecimal(bo.getNum()), 2, BigDecimal.ROUND_DOWN);
-                    subOrderModelBO.setSingleServicesFee(serviceFee.toString());
-                    subOrderModelBO.setTotalServiceFee (serviceFee.toString());
+                    if(serviceBOMap!=null&&serviceBOMap.size ()>0) {
+                        if(serviceBOMap.get (bo.getSoid ())!=null) {
+                            BigDecimal serviceFeeSum = new BigDecimal (serviceBOMap.get (bo.getSoid ()).getMoney ());
+                            BigDecimal serviceFee = serviceFeeSum.divide (new BigDecimal (bo.getNum ()), 2, BigDecimal.ROUND_DOWN);
+                            subOrderModelBO.setSingleServicesFee (serviceFee.toString ());
+                            subOrderModelBO.setTotalServiceFee (serviceFee.toString ());
+                        }else{
+                            subOrderModelBO.setSingleServicesFee ("0.00");
+                            subOrderModelBO.setTotalServiceFee ("0.00");
+                        }
+                    }else{
+                        subOrderModelBO.setSingleServicesFee ("0.00");
+                        subOrderModelBO.setTotalServiceFee ("0.00");
+                    }
+
                     SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
                     BigNumber singlePay = new BigNumber(bo.getSinglePay());
                     goodsFee = goodsFee.Add(singlePay);
@@ -166,8 +177,10 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setExpressFee(logisticsBO.getMoney());
         List<ServiceBO> services = orderBO.getServices();
         BigNumber serviceFee = new BigNumber("0.00");
-        for (ServiceBO bo:services){
-            serviceFee = serviceFee.Add(new BigNumber(bo.getMoney()));
+        if(services!=null) {
+            for (ServiceBO bo : services) {
+                serviceFee = serviceFee.Add (new BigNumber (bo.getMoney ()));
+            }
         }
         daifaTrade.setServicesFee(serviceFee.toString());
         daifaTrade.setTradeDiscountFee("0.00");
