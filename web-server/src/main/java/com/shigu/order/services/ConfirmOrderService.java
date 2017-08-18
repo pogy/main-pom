@@ -130,6 +130,7 @@ public class ConfirmOrderService {
                 subOrder.setPid(productVO.getPid());
                 subOrder.setTitle(productVO.getTitle());
                 subOrder.setSkuId(productVO.getSelectiveSku().getSkuId());
+                subOrder.setWeight(productVO.getWeight());
                 subOrders.add(subOrder);
                 if (webSite == null) {
                     webSite=productVO.getWebSite();
