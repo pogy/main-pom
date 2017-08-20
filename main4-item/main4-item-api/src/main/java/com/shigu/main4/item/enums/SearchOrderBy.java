@@ -10,8 +10,8 @@ public enum SearchOrderBy {
     GOODS_COMMON("商品库综合","goods_common"),
     SALE("销量","sale"),
     CLICK("点击量","click"),
-    PRICEUP("价格升序","price_up"),
-    PRICEDOWN("价格降序","price_down"),
+    PRICEUP("价格升序","price-asc"),
+    PRICEDOWN("价格降序","price-desc"),
     POPULAR("人气","popular"),
     GOODSUP("商品上传量","goods_up"),
     USER_LOVE("按用户喜欢程度","user_love");

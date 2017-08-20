@@ -101,7 +101,6 @@ public class GoodsSearchAction {
         JSONObject result=JsonResponseUtil.success();
         try {
             if(baseCode!=null&&imgAdress==null){
-                System.out.println(baseCode);
                 BASE64Decoder decoder = new BASE64Decoder();
                 byte[] data=decoder.decodeBuffer(baseCode);
                 imgAdress=ossIO.uploadFile(data,"picsearch/"+System.currentTimeMillis() + ".jpg");
@@ -233,7 +232,7 @@ public class GoodsSearchAction {
         }
         SearchOrderBy orderBy = SearchOrderBy.valueIs(bo.getSort());
         if (orderBy == null) {
-            orderBy = SearchOrderBy.COMMON;
+            orderBy = SearchOrderBy.GOODS_COMMON;
         }
         //带聚合的结果
         ShiguPager<GoodsInSearch> pager = goodsSearchService.search(bo, orderBy, false).getSearchData();

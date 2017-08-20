@@ -381,10 +381,10 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
                 sort = "popular";
                 break;
             case 4:
-                sort = "price_up";
+                sort = "price-asc";
                 break;
             case 5:
-                sort = "price_down";
+                sort = "price-desc";
                 break;
             default:
                 break;

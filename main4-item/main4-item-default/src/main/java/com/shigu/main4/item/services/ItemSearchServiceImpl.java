@@ -3,10 +3,13 @@ package com.shigu.main4.item.services;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.opensearch.sdk.generated.search.Order;
 import com.aliyun.opensearch.sdk.generated.search.SortField;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.SearchCategorySubExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.SearchCategoryMapper;
 import com.opentae.data.mall.interfaces.SearchCategorySubMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
@@ -64,6 +67,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
 
     @Autowired
     private SearchCategorySubMapper searchCategorySubMapper;
+
+    @Autowired
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
     @Override
     public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
@@ -178,6 +184,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 requestBuilder.addSort(new SortField("created", Order.DECREASE));
                 break;
             case COMMON:
+                requestBuilder.setRank("search_project", "search_jp", 2000);
                 break;
             case GOODS_COMMON:
 //                requestBuilder.addSort(new SortField("sort_order", Order.DECREASE));
@@ -310,28 +317,34 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      */
     @Override
     public ShiguPager<SearchItem> searchItemByIds(List<Long> ids, String webSite, Integer page, Integer pageSize) {
-        ShiguPager<SearchItem> pager = new ShiguPager<>();
-        pager.setNumber(page);
-
-        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder = openSearch.searchFrom(SEARCH_APP+webSite,OpenItemVo.class)
-                .from((page - 1) * pageSize).size(pageSize);
-        if (ids != null && !ids.isEmpty()) {
-            requestBuilder.addFilter(FilterBuilder.termsIn("goods_id", ids.toArray(new Long[ids.size()])));
+        ShiguPager<SearchItem> pager=new ShiguAggsPager();
+        if (ids == null||ids.size()==0) {
+            pager.setNumber(page);
+            pager.setTotalCount(0);
+            pager.setContent(new ArrayList<>());
+            return pager;
         }
-        SearchResponse<OpenItemVo> response = requestBuilder.execute();
-        if (response.isSuccess()) {
-            Result<OpenItemVo> result = response.getResult();
-            pager.calPages(result.getTotal(), pageSize);
-            pager.setContent(new ArrayList<SearchItem>(result.getItems().size()));
-            for (OpenItemVo openItemVo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
-                SearchItem searchItem = BeanMapper.map(openItemVo, SearchItem.class);
-                searchItem.setItemId(openItemVo.getGoodsId());
-                searchItem.setPrice(searchItem.parsePrice(openItemVo.getPiPrice()));
-                searchItem.setHighLightGoodsNo(openItemVo.getGoodsNo());
-                searchItem.setHighLightTitle(openItemVo.getTitle());
-                pager.getContent().add(searchItem);
-            }
+        ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
+        example.createCriteria().andGoodsIdIn(ids);
+        example.setWebSite(webSite);
+        example.setStartIndex((page - 1) * pageSize);
+        example.setEndIndex(pageSize);
+        List<ShiguGoodsTiny> tinies=shiguGoodsTinyMapper.selectFieldsByConditionList(example,
+                "pic_url,title,goods_id,pi_price_string,store_id,created,goods_no");
+        List<SearchItem> items=new ArrayList<>();
+        for (ShiguGoodsTiny sgt:tinies){
+            SearchItem si=new SearchItem();
+            si.setItemId(sgt.getGoodsId());
+            si.setCreated(sgt.getCreated());
+            si.setGoodsNo(sgt.getGoodsNo());
+            si.setPicUrl(sgt.getPicUrl());
+            si.setPrice(sgt.getPiPriceString());
+            si.setStoreId(sgt.getStoreId());
+            si.setTitle(sgt.getTitle());
+            items.add(si);
         }
+        pager.setContent(items);
+        pager.setTotalCount(shiguGoodsTinyMapper.countByExample(example));
         return pager;
     }
 }
