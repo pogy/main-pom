@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,30 +51,31 @@ public class OrderConsumerService {
             }
         }
     }
-    @Transactional(rollbackFor={RuntimeException.class, Exception.class},propagation= Propagation.REQUIRED)
     public void refund(String body) throws UnsupportedEncodingException {
         ResponseBasic res= JSON.parseObject(body,ResponseBasic.class);
         if(res.isStatus()){
-            JSONObject refundObj= JSONObject.fromObject(res.getData());
-            Map<String,Class> cmap=new HashMap<>();
-            cmap.put("suborders", SubRefundBean.class);
-            RefundBean refund= (RefundBean) JSONObject.toBean(refundObj,RefundBean.class,cmap);
+            RefundBean refund= JSON.parseObject(JSON.toJSONString(res.getData()),RefundBean.class);
            // RefundBean refund=JSON.parseObject(res.getData().toString(),RefundBean.class);
-
             if(refund.getSuborders()==null||refund.getSuborders().size ()==0){
                 return;
             }
-
             try {
                 //=============事物start=================
-                for(int i=0;i<refund.getSuborders ().size ();i++){
-                    orderManageProcess.autoRefund(refund.getRefundId(),refund.getSuborders().get (i).getSoid(),refund.getSuborders().get (i).getSoidps());
+                List<String> soidps=new ArrayList<>();
+                List<String> soids=new ArrayList<>();
+                for(SubRefundBean srb:refund.getSuborders()){
+                    soids.add(srb.getSoid());
+                    soidps.addAll(srb.getSoidps());
                 }
+                orderManageProcess.autoRefund(refund.getRefundId(),soids,soidps);
                 //=============事物end=================
-
-            } catch (DaifaException e) {
+            } catch (Exception e) {
                 JSONObject obj=new JSONObject();
-                obj.put("msg",e.getMessage());
+                if(e instanceof DaifaException){
+                    obj.put("msg",e.getMessage());
+                }else{
+                    obj.put("msg","内部错误");
+                }
                 obj.put("status",false);
                 sendMessageListener.sendMessage("refund_"+refund.getRefundId(),
                         "refund_agree",

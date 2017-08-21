@@ -56,6 +56,6 @@ public interface OrderManageProcess {
      * @param soidps 外部拆分单号
      * @throws DaifaException
      */
-    void autoRefund(Long refundId, String soid, List<String> soidps) throws DaifaException;
+    void autoRefund(Long refundId, List<String> soid, List<String> soidps) throws DaifaException;
 
 }
