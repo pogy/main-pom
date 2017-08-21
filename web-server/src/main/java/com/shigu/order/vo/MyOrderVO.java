@@ -1,42 +1,49 @@
 package com.shigu.order.vo;
 
+import com.opentae.core.mybatis.config.Column;
+
 import java.util.List;
 
-/**
- * Created by zf on 2017/7/27.
- */
 public class MyOrderVO {
     /**
      * 订单id
      */
+    @Column("item_order.oid")
     private Long orderId;
     /**
      * 交易时间(支付时间)
      */
+    @Column("item_order.create_time")
     private String tradeTime;
     /**
      * 交易总金额
      */
+    @Column("item_order.total_fee")
     private String tradePay;
     /**
      * 快递费
      */
+    @Column("convert(item_order_logistics.money*0.01,decimal(10,2))")
     private String postPay;
     /**
      * 服务费
      */
+    @Column("convert(item_order_service.money*0.01,decimal(10,2))")
     private String serverPay;
     /**
      * 订单主状态 1待付款，2待配货，3已发货，4交易完成，5交易取消
      */
+    @Column("item_order.order_status")
     private Integer mainState;
     /**
      * 是否淘宝订单
      */
+    @Column("item_order.type=2")
     private Boolean isTbOrder;
     /**
      * 站点
      */
+    @Column("item_order.web_site")
     private String webSite;
     /**
      * 子单数据

@@ -1,7 +1,10 @@
 package com.shigu.order.services;
 
+import com.opentae.core.mybatis.example.MultipleExample;
+import com.opentae.core.mybatis.example.MultipleExampleBuilder;
+import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.data.mall.beans.ItemOrder;
-import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -9,7 +12,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.process.OrderManageProcess;
-import com.shigu.main4.order.bo.OrderBO;
+import com.shigu.order.bo.OrderBO;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.*;
@@ -20,6 +23,7 @@ import com.shigu.order.vo.MyOrderVO;
 import com.shigu.order.vo.SubMyOrderVO;
 import com.shigu.tools.DateParseUtil;
 import com.shigu.zf.utils.PriceConvertUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,10 +59,72 @@ public class MyOrderService {
     @Autowired
     private OrderManageProcess orderManageProcess;
 
+    @Autowired
+    private MultipleMapper multipleMapper;
+
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
         ShiguPager<MyOrderVO> pager = new ShiguPager<>();
-        ShiguPager<ShowOrderVO> myOrder = orderListService.selectCountMyOrder(bo, userId);
+        pager.setNumber(bo.getPage());
+        ItemOrderExample orderExample = new ItemOrderExample();
+        orderExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
+        orderExample.setEndIndex(bo.getPageSize());
+        orderExample.setOrderByClause("create_time DESC");
+        ItemOrderExample.Criteria orderCriteria = orderExample.createCriteria().andUserIdEqualTo(userId);
+
+        if (bo.getOrderId() != null) {
+            orderCriteria.andOidEqualTo(bo.getOrderId());
+        }
+
+        if (bo.getStatus() != null) {
+            orderCriteria.andOrderStatusEqualTo(bo.getStatus());
+        }
+
+        if (bo.getSt() != null) {
+            orderCriteria.andCreateTimeGreaterThanOrEqualTo(bo.getSt());
+        }
+
+        if (bo.getEt() != null) {
+            orderCriteria.andCreateTimeLessThanOrEqualTo(bo.getEt());
+        }
+
+        ItemOrderSubExample subExample = new ItemOrderSubExample();
+        ItemOrderSubExample.Criteria subExampleCriteria = subExample.createCriteria();
+        if (StringUtils.isNotEmpty(bo.getGoodsNo())) {
+            subExampleCriteria.andGoodsNoLike("%" + bo.getGoodsNo() + "%");
+        }
+
+        ItemOrderLogisticsExample logisticsExample = new ItemOrderLogisticsExample();
+        ItemOrderLogisticsExample.Criteria logisticsExampleCriteria = logisticsExample.createCriteria();
+
+        if (StringUtils.isNotEmpty(bo.getReceiver())) {
+            logisticsExampleCriteria.andNameEqualTo(bo.getReceiver());
+        }
+
+        if (StringUtils.isNotEmpty(bo.getTelePhone())) {
+            logisticsExampleCriteria.andTelephoneEqualTo(bo.getTelePhone());
+        }
+
+        ItemOrderServiceExample serviceExample = new ItemOrderServiceExample();
+        ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
+        ItemOrderRefundExample changeRefundExample = new ItemOrderRefundExample();
+
+        MultipleExample multipleExample = MultipleExampleBuilder.from(orderExample)
+                .innerJoin(subExample).on(subExample.createCriteria().equalTo(ItemOrderSubExample.oid, ItemOrderExample.oid))
+                .leftJoin(logisticsExample).on(logisticsExample.createCriteria().equalTo(ItemOrderLogisticsExample.oid, ItemOrderExample.oid))
+                .leftJoin(serviceExample).on(serviceExample.createCriteria().equalTo(ItemOrderServiceExample.oid, ItemOrderExample.oid))
+                .leftJoin(refundExample).on(refundExample.createCriteria().equalTo(ItemOrderRefundExample.oid,ItemOrderExample.oid).equalTo(ItemOrderRefundExample.soid,ItemOrderSubExample.soid).andTypeEqualTo(1))
+                .leftJoin(changeRefundExample).on(changeRefundExample.createCriteria().equalTo(changeRefundExample.getColumn(ItemOrderRefundExample.oid), ItemOrderExample.oid).equalTo(changeRefundExample.getColumn(ItemOrderRefundExample.soid), ItemOrderSubExample.soid).andTypeNotEqualTo(1))
+                .build();
+
+        multipleExample.setDistinctCount(ItemOrderExample.oid);
+        int orderCount = multipleMapper.countByMultipleExample(multipleExample);
+
+        if (orderCount > 0) {
+            pager.calPages(orderCount, bo.getPageSize());
+            pager.setContent(multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class));
+        }
+        /*ShiguPager<ShowOrderVO> myOrder = orderListService.selectCountMyOrder(bo, userId);
         pager.setNumber(myOrder.getNumber());
         pager.calPages(myOrder.getTotalCount(), bo.getPageSize());
         pager.setContent(myOrder.getContent().stream().map(show -> {
@@ -83,7 +149,7 @@ public class MyOrderService {
             List<SubMyOrderVO> subs = toSubMyOrderVO(show.getChildOrders());
             vo.setChildOrders(subs);
             return vo;
-        }).collect(Collectors.toList()));
+        }).collect(Collectors.toList()));*/
         return pager;
     }
 

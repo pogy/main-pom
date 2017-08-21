@@ -2,14 +2,12 @@ package com.shigu.main4.order.services.impl;
 
 import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.ItemOrderRefund;
-import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.order.bo.OrderBO;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.services.ItemOrderService;
@@ -17,13 +15,15 @@ import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.*;
 import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
-import com.shigu.main4.order.zfenums.*;
+import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
+import com.shigu.main4.order.zfenums.RefundTypeEnum;
+import com.shigu.main4.order.zfenums.ShStatusEnum;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,49 +50,6 @@ public class OrderListServiceImpl implements OrderListService {
 
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
-
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    /**
-     * ====================================================================================
-     * @方法名：myOrder
-     * @功能： 我的订单
-     * @param: bo查询条件  bo一定要有所有订单，待付款，已付款，配货中，交易完成，交易关闭的标记
-     * @return: 返回订单列表
-     * @exception:
-     * ====================================================================================
-     *
-     */
-    @Override
-    public List<ShowOrderVO> myOrder(OrderBO bo, Long userId) throws ParseException {
-        List<Long> orderIds = selOrderIdsByBO(bo,userId);
-        List<ShowOrderVO> showOrderVOS = Lists.newArrayList();
-        for (Long orderId:orderIds) {
-            ShowOrderVO vo = BeanMapper.map(selectMyorder(orderId), ShowOrderVO.class);
-            vo.setChildOrders(selectSubList(orderId));
-            showOrderVOS.add(vo);
-        }
-        return showOrderVOS;
-    }
-
-    /**
-     * ====================================================================================
-     * @方法名：分页数据
-     * @功能： selectCountMyOrder
-     * @param: bo查询条件，userId用户ID
-     * @return:
-     * @exception:
-     * ====================================================================================
-     *
-     */
-    @Override
-    public ShiguPager<ShowOrderVO> selectCountMyOrder(OrderBO bo, Long userId) throws ParseException {
-        ShiguPager<ShowOrderVO> pager = new ShiguPager<>();
-        pager.setContent(myOrder(bo,userId));
-        pager.setNumber(bo.getPage());
-        pager.calPages(selCountByBo(bo,userId),bo.getPageSize());
-        return pager;
-    }
 
     /**
      *
@@ -371,42 +328,6 @@ public class OrderListServiceImpl implements OrderListService {
         vo.setServicePriceLong(servicePrice);
         vo.setServicePrice(PriceConvertUtils.priceToString(servicePrice));
         return vo;
-    }
-
-
-
-    /**
-     * 根据bo查询orderIds
-     * @param bo
-     * @param userId
-     * @return
-     * @throws ParseException 输入日期格式错误
-     */
-    private List<Long> selOrderIdsByBO(OrderBO bo, Long userId) throws ParseException {
-        if (bo == null) {
-            bo = new OrderBO();
-        }
-        bo.setPageSize(bo.getPageSize() == null?10:bo.getPageSize());
-        int startRow = bo.getPage() == null ? 1 : (bo.getPage() - 1) * bo.getPageSize();
-        return itemOrderMapper.selOidsByBo(userId, bo.getOrderId(), bo.getStatus() == null ? null : Integer.valueOf(bo.getStatus()),
-                bo.getSt()==null?null:simpleDateFormat.parse(bo.getSt() + " 00:00:00"), bo.getEt()==null?null:simpleDateFormat.parse(bo.getEt() + " 23:59:59"),
-                bo.getGoodsNo(), bo.getReceiver(), bo.getTelePhone(), startRow, bo.getPageSize());
-    }
-
-    /**
-     * 根据bo获取记录总数
-     * @param bo
-     * @param userId
-     * @return
-     * @throws ParseException 输入日期格式错误
-     */
-    private int selCountByBo(OrderBO bo, Long userId) throws ParseException {
-        if (bo == null) {
-            bo = new OrderBO();
-        }
-        return itemOrderMapper.selOidsCountByBo(userId, bo.getOrderId(), bo.getStatus() == null ? null : Integer.valueOf(bo.getStatus()),
-                bo.getSt()==null?null:simpleDateFormat.parse(bo.getSt() + " 00:00:00"), bo.getEt()==null?null:simpleDateFormat.parse(bo.getEt() + " 23:59:59"),
-                bo.getGoodsNo(), bo.getReceiver(), bo.getTelePhone());
     }
 
 }

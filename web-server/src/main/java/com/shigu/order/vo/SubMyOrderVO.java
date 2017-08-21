@@ -1,68 +1,83 @@
 package com.shigu.order.vo;
 
-/**
- * Created by zf on 2017/7/27.
- */
+import com.opentae.core.mybatis.config.Column;
+
 public class SubMyOrderVO {
     /**
      * 子单id
      */
+    @Column("item_order_sub.soid")
     private Long childOrderId;
+
     /**
      * 售前id
      */
+    @Column("item_order_refund.refund_id")
     private Long sqRefundId;
     /**
      * 	售后id
      */
+    @Column("item_order_refund2.refund_id")
     private Long shRefundId;
     /**
      * 	商品Id
      */
+    @Column("item_order_sub.goods_id")
     private Long goodsId;
     /**
      * 商品标题
      */
+    @Column("item_order_sub.title")
     private String title;
     /**
      * 商品图片链接
      */
+    @Column("item_order_sub.pic_url")
     private String imgsrc;
     /**
      * 商品颜色
      */
+    @Column("item_order_sub.color")
     private String color;
     /**
      * 	商品尺码
      */
+    @Column("item_order_sub.size")
     private String size;
     /**
      * 	商品货号
      */
+    @Column("item_order_sub.goods_no")
     private String goodsNo;
     /**
      * 商品单价
      */
+    @Column("convert(item_order_sub.price*0.01,decimal(10,2))")
     private String price;
     /**
      * 	商品数量
      */
+    @Column("item_order_sub.num")
     private Integer num;
     /**
      * 退款数量
      */
+    @Column("item_order_refund.number")
     private Integer tkNum;
     /**
      * 售后退款数量
      */
+    @Column("item_order_refund2.number")
     private Integer shTkNum;
     /**
      * 退款状态 0无，1:申请中,2:成功,3:拒绝
      */
+    @Column("IF(item_order_refund.status=2,1,0)")
     private Integer tkState;
     /**
      * 	售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
      */
+    @Column("IF(item_order_refund2.type=2,IF(item_order_refund2.status=2,2,IF(item_order_refund2.status=4,6,4)),IF(item_order_refund2.status=2,3,IF(item_order_refund2.status=4,7,5)))")
     private Integer shState;
 
     /**

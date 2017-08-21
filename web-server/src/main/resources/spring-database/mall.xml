@@ -61,4 +61,9 @@
         <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
         <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
     </bean>
+    <bean class= "org.mybatis.spring.mapper.MapperScannerConfigurer" >
+        <property name= "basePackage" value= "com/opentae/core/mybatis/mapper" />
+        <property name= "sqlSessionFactoryBeanName" value="tae_mall_sqlSessionFactory" />
+        <property name="annotationClass" value="com.opentae.core.mybatis.config.MyBatisRepository"/>
+    </bean>
 </beans>

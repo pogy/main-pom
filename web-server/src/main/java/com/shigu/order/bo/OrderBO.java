@@ -1,6 +1,6 @@
-package com.shigu.main4.order.bo;
+package com.shigu.order.bo;
 
-import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +14,7 @@ public class OrderBO implements Serializable{
      */
     //private MainOrderStatusEnum status;
 
-    private String status;
+    private Integer status;
     /**
      * 货号
      */
@@ -22,11 +22,13 @@ public class OrderBO implements Serializable{
     /**
      * 开始时间
      */
-    private String st;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date st;
     /**
      * 结束时间
      */
-    private String et;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date et;
     /**
      * 订单ID
      */
@@ -63,19 +65,19 @@ public class OrderBO implements Serializable{
         this.goodsNo = goodsNo;
     }
 
-    public String getSt () {
+    public Date getSt () {
         return st;
     }
 
-    public void setSt (String st) {
+    public void setSt (Date st) {
         this.st = st;
     }
 
-    public String getEt () {
+    public Date getEt () {
         return et;
     }
 
-    public void setEt (String et) {
+    public void setEt (Date et) {
         this.et = et;
     }
 
@@ -149,11 +151,11 @@ public class OrderBO implements Serializable{
         this.pageSize = pageSize;
     }
 
-    public String getStatus () {
+    public Integer getStatus () {
         return status;
     }
 
-    public void setStatus (String status) {
+    public void setStatus (Integer status) {
         this.status = status;
     }
 }

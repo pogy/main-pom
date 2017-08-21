@@ -268,18 +268,26 @@ var webSite = '${webSite!}';
 
 
 
-        
 
-<#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"goodsNo","value":"${query.goodsNo!}"},{"name":"st","value":"${query.st!}"},{"name":"et","value":"${query.et!}"},{"name":"orderId","value":"${query.orderId!}"},{"name":"receiver","value":"${query.receiver!}"},{"name":"telePhone","value":"${query.telePhone!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
-<#assign moduledata1=text?eval />
-<#list [moduledata1] as $it>
-<#if $it.fields??>
-<form id="wgt_search">
-    <#list $it.fields as field>
-    <input type=hidden name="${field.name!}" value="${field.value!}">
-    </#list>
-</form>
-</#if>
+
+    <#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"goodsNo","value":"${query.goodsNo!}"},{"name":"st","value":query.st,"timeFormat":"yyyy-MM-dd"},{"name":"et","value":query.et,"timeFormat":"yyyy-MM-dd"},{"name":"orderId","value":"${query.orderId!}"},{"name":"receiver","value":"${query.receiver!}"},{"name":"telePhone","value":"${query.telePhone!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+    <#assign moduledata1=text?eval />
+    <#list [moduledata1] as $it>
+        <#if $it.fields??>
+            <form id="wgt_search">
+                <#list $it.fields as field>
+                    <#if field.timeFormat??>
+                        <#if field.value??>
+                            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
+                        <#else>
+                            <input type=hidden name="${field.name!}" value="${field.value!}">
+                        </#if>
+                    <#else>
+                        <input type=hidden name="${field.name!}" value="${field.value!}">
+                    </#if>
+                </#list>
+            </form>
+        </#if>
 
 
 
@@ -306,7 +314,7 @@ var webSite = '${webSite!}';
     <ul>
         <li><label>商品货号：</label><input type=text name="goodsNo" <#if query.goodsNo??>value="${query.goodsNo!}"</#if>></li>
         <li>
-            <label>时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="starTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st!}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et!}"</#if>>
+            <label>时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="starTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st?string("yyyy-MM-dd")}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et?string("yyyy-MM-dd")}"</#if>>
         </li>
         <li><label>订单编号：</label><input type=text name="orderId" <#if query.orderId??>value="${query.orderId!}"</#if>></li>
         <li><label>收货人信息：</label><input type=text name="receiver" placeholder="收货人姓名" class="slInput" <#if query.receiver??>value="${query.receiver!}"</#if>><span class="divideLine"></span><input type=text name="telePhone" placeholder="收货人手机号码" class="slInput" <#if query.telePhone??>value="${query.telePhone!}"</#if>></li>
