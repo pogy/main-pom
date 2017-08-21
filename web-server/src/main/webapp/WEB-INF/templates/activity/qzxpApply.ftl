@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>秋装新品发布会活动报名中 - 四季星座网</title>
+    <title></title>
 
     
     
@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/qzxpApply.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/qzxpApply2.css" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/qzxpApply.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/qzxpApply2.js"></script>
 </head>
 <body>
 
@@ -87,7 +87,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -312,11 +312,10 @@ var webSite = '${webSite!}';
 
 
 <div class="grayBg">
-    <div class="banner"></div>
-
-    <div class="applyBtn">
+    <div class="banner">
+    <div class="applyBtn yahei pr">
     <#if alreadyApply == true>
-        <b class="disabled">已报名</b>
+        <b class="disabled">您已报名</b>
     <#else>
         <#if !session_user_redis__> 
             <b onclick="loginBack()">立刻报名</b>
@@ -367,101 +366,31 @@ var webSite = '${webSite!}';
 
 
 </div>
-<div class="blueBg">
-    <div class="actIntroduce yahei layout">
+
+</div>
+<div class="pinkBg">
+    <div class="actIntroduce yahei layout actBox">
     <h2 class="tac">活动介绍</h2>
     <ul class="actText fs14 fc3">
-        <li>报名时间：2017.07.13</li>
-        <li>活动上线时间：待定（由报名审核通过的大部分档口共同协商确定）</li>
-        <li>活动名额：20家档口</li>
-        <li>收费类型：免费</li>
-        <li>报名资质：支持退货、支持换货</li>
-        <li>风格要求：港风、日系、韩风、休闲、原创、情侣、中国风等风格均可报名</li>
+        <li>1. 报名时间：2017.08.21--2017.08.27日</li>
+        <li>2. 开始时间：2017.08.27--2017.09.03日</li>
+        <li>3. 报名商品：有大图下载的秋装，须为7日内新款</li>
+        <li>4. 收费类型：免费</li>
+        <li>5. 报名资质：支持退换货</li>
     </ul>
 </div>
-
-    <div class="actApplyExplain yahei layout">
+    <div class="actApplyExplain yahei layout actBox">
     <h2 class="tac">活动报名说明</h2>
     
     <ul class="actText fs14 fc3">
-        <li>1、 有秋装新品即将发布的档口老板们，点击立即报名，就有机会参与活动；</li>
-        <li>2、 本次活动将从所有报名的档口中精选20家优质档口；</li>
-        <li>3、 活动正式上线前，每家档口将获得一个活动预热广告位，广告位所需图片需档口自行提供（图片尺寸要求：490x260px），<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如在指定时间内无法提供，则视为自动放弃活动资格；</li>
-        <li>4、 满足报名条件并被选中的档口，每家可提供5款活动商品，且5款商品必须属于同一风格/系列；</li>
-        <li>5、 活动上线时展示的商品需为之前未上架过的商品；</li>
-        <li>6、 活动上线时间，将与报名通过的大部分档口统一确认后，再行安排；</li>
-        <li>7、 本次活动四季星座网将给予最大限度的线上、线下推广资源支持，只为助力档口打造今年秋季新品的最爆款；</li>
-        <li>8、 本次活动将采用线上报名，线下确认相结合的方式，确保今年的秋装新品发布会圆满顺利进行；</li>
-        <li>9、 本次活动的最终解释权归四季星座网所有，如有疑问，可咨询网站客服。</li>
-        <li class="last">备注：活动上线前，预热页面档口展示效果图如下</li>
+        <li>1. 报名条件：有秋装新品即将发布且有精修大图下载的所有档口，点击立即报名，就有机会参与活动。</li>
+        <li>2. 活动名额：从所有报名档口中精选10家优质档口。</li>
+        <li>3. 满足报名条件并被选中的档口，每家可提供5款活动商品。</li>
+        <li>4. 活动上线时展示的商品须为之前未上架过的商品且有精修大图下载。</li>
+        <li>5. 本次活动四季星座网将给予最大限度的线上、线下推广支持，只为助力档口打造今秋新品的最爆款。</li>
+        <li>6. 本次活动将采用线上报名，线下确认相结合的方式，确保今年的秋装新品发布会圆满顺利进行。</li>
+        <li>7. 本次活动的最终解释权归四季星座网所有，如有疑问，可咨询网站客服。</li>
     </ul>
-    
-    <div class="shopShow fs14">
-        <ul>
-            <li>
-                <img src="http://style.571xz.com/v2/qzhd/css/img/qzxpApply/show.jpg">
-                <p class="fc6">电商基地 <span class="fc9">|&nbsp;&nbsp;A002</span></p>
-            </li>
-            <li>
-                <img src="http://style.571xz.com/v2/qzhd/css/img/qzxpApply/show.jpg">
-                <p class="fc6">电商基地 <span class="fc9">|&nbsp;&nbsp;A002</span></p>
-            </li>
-        </ul>
-    </div>
-    
-    <div class="applyBtn">
-    <#if alreadyApply == true>
-        <b class="disabled">已报名</b>
-    <#else>
-        <#if !session_user_redis__> 
-            <b onclick="loginBack()">立刻报名</b>
-        <#else> 
-            <#if session_user_redis__.logshop??> 
-            <b class="supplierBtn">立刻报名</b>
-            <#else> 
-            <b class="agentBtn">立刻报名</b>
-            </#if>
-        </#if>
-    </#if>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
 
 
