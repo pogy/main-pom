@@ -776,7 +776,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param oldArea 原区域
      */
     @Transactional(rollbackFor = Exception.class)
-    private void insertBefore(ShopFitmentArea newArea, ShopFitmentArea oldArea) {
+    protected void insertBefore(ShopFitmentArea newArea, ShopFitmentArea oldArea) {
         newArea.setAfterAreaId(oldArea.getAfterAreaId());
         shopFitmentAreaMapper.insertSelective(newArea);
         oldArea.setAfterAreaId(newArea.getAreaId());
@@ -789,7 +789,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param oldModule 原模块
      */
     @Transactional(rollbackFor = Exception.class)
-    private void insertBefore(ShopFitmentModule newModule, ShopFitmentModule oldModule) {
+    protected void insertBefore(ShopFitmentModule newModule, ShopFitmentModule oldModule) {
         newModule.setAfterModuleId(oldModule.getAfterModuleId());
         shopFitmentModuleMapper.insertSelective(newModule);
         oldModule.setAfterModuleId(newModule.getModuleId());
