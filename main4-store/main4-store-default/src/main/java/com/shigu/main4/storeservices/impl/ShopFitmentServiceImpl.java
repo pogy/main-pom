@@ -74,7 +74,10 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         fitmentReset(shopId);
 
         Long index = addPage(shopId, FitmentPageType.INDEX.name, null, FitmentPageType.INDEX.value);
-        Long indexFirstArea = addArea(index, null, FitmentAreaType.LEFTRIGHT.value(), null);
+        Long firstImgArea = addArea(index, null, FitmentAreaType.CENTER.value(), null);
+        addModule(firstImgArea, null, FitmentModuleType.WideImage.value, 3, null);
+
+        Long indexFirstArea = addArea(index, firstImgArea, FitmentAreaType.LEFTRIGHT.value(), 2);
         addModule(indexFirstArea, null, FitmentModuleType.Category.value, 1, null);
         addModule(indexFirstArea, null, FitmentModuleType.Promote.value, 2, null);
 
