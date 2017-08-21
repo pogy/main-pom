@@ -129,7 +129,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
                 .refundApply(1, refundCount, refundMoney, "发起退款申请");
 
         // 仅退款消息推送
-        orderMessageProducter.orderRefundNoItem(refundId, subOrderId, soidsCreater.soidToSoidps(subOrderId).subList(0, refundCount - 1));
+        orderMessageProducter.orderRefundNoItem(refundId, subOrderId, soidsCreater.soidToSoidps(subOrderId).subList(0, refundCount));
         return refundId;
     }
 
