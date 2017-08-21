@@ -217,16 +217,12 @@ public class DaifaAllOrderIndexService {
 
     public void timeOutExcute() {
         String s = DateUtil.dateToString(new Date(), DateUtil.patternB);
-//        if(LAST_OUT_TIME ==null|| !s.equals(LAST_OUT_TIME)) {
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-                    System.out.println(1);
-                    orderManageProcess.orderTimeout();
-                    LAST_OUT_TIME = s;
-//                }
-//            }).start();
-//        }
+        if(LAST_OUT_TIME ==null|| !s.equals(LAST_OUT_TIME)) {
+            new Thread(() -> {
+                orderManageProcess.orderTimeout();
+                LAST_OUT_TIME = s;
+            }).start();
+        }
 
 
     }

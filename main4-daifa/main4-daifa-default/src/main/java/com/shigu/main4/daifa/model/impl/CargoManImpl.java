@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by pc on 2017-08-09.
@@ -36,6 +38,7 @@ import java.util.Objects;
 @Repository
 @Scope("prototype")
 public class CargoManImpl implements CargoManModel {
+    public static Lock takeLock = new ReentrantLock();
     private Long cargoManId;//拿货源Id
     private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
     private DaifaWorkerMapper daifaWorkerMapper;
@@ -104,58 +107,64 @@ public class CargoManImpl implements CargoManModel {
         if (daifaWorker == null) {
             throw new DaifaException("系统无此拿货人");
         }
-        //拿货拿货code
-        String code = daifaListDealUtil.queryListCode(DaifaListDealTypeEnum.GGOODS_CODE
-                , daifaWorker.getDaifaSellerId(), this.cargoManId);
+
+        try {
+            takeLock.lock();
+            //拿货拿货code
+            String code = daifaListDealUtil.queryListCode(DaifaListDealTypeEnum.GGOODS_CODE
+                    , daifaWorker.getDaifaSellerId(), this.cargoManId);
 
 
-        DaifaGgoodsTasksExample dgtex = new DaifaGgoodsTasksExample();
-        dgtex.createCriteria().andTasksIdIn(waitIssueIds)
-                .andAllocatStatusEqualTo(0)//未分配
-                .andUseStatusEqualTo(1)//可用的
-                .andReturnStatusEqualTo(0)//未处于退款流程
-                .andEndStatusEqualTo(0);//未结算
-        List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectByExample(dgtex);
-        List<DaifaGgoods> ggoodsList = new ArrayList<>();
-        for (DaifaGgoodsTasks tasks : daifaGgoodsTasks) {
-            DaifaGgoods ggoods = new DaifaGgoods();
-            BeanUtils.copyProperties(tasks, ggoods);
-            ggoodsList.add(ggoods);
-            tasks.setAllocatStatus(1);//已分配
-            tasks.setAllocatTime(new Date());
-            tasks.setOperateIs(0);//未操作拿货完成
-            tasks.setUseStatus(0);
-            tasks.setGoodsCode(code);
-            tasks.setAllocatDate(DateUtil.dateToString(tasks.getAllocatTime(), DateUtil.patternB));
-            tasks.setDaifaWorkerId(daifaWorker.getDaifaWorkerId());
-            tasks.setDaifaWorker(daifaWorker.getDaifaWorker());
-            ggoods.setCreateTime(tasks.getAllocatTime());
-            ggoods.setCreateDate(tasks.getAllocatDate());
-            ggoods.setDaifaWorkerId(cargoManId);
-            ggoods.setDaifaWorker(daifaWorker.getDaifaWorker());
-            ggoods.setGgoodsCode(code);
-            ggoods.setUseStatus(1);
-            ggoods.setOperateIs(0);
-            ggoods.setTakeGoodsStatus(0);
-            ggoods.setTakeGoodsTime(null);
-            ggoods.setTakeGoodsDate(null);
-            ggoods.setDaifaWorkerId(daifaWorker.getDaifaWorkerId());
-            ggoods.setDaifaWorker(daifaWorker.getDaifaWorker());
-            //修改任务表
-            daifaGgoodsTasksMapper.updateByPrimaryKeySelective(tasks);
-            //修改子订单表状态
-            DaifaOrder order=new DaifaOrder ();
-            order.setDfOrderId (tasks.getDfOrderId ());
-            order.setOrderStatus (2L);
-            order.setAllocatStatus (1);
-            daifaOrderMapper.updateByPrimaryKeySelective (order);
-        }
+            DaifaGgoodsTasksExample dgtex = new DaifaGgoodsTasksExample();
+            dgtex.createCriteria().andTasksIdIn(waitIssueIds)
+                    .andAllocatStatusEqualTo(0)//未分配
+                    .andUseStatusEqualTo(1)//可用的
+                    .andReturnStatusEqualTo(0)//未处于退款流程
+                    .andEndStatusEqualTo(0);//未结算
+            List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectByExample(dgtex);
+            List<DaifaGgoods> ggoodsList = new ArrayList<>();
+            for (DaifaGgoodsTasks tasks : daifaGgoodsTasks) {
+                DaifaGgoods ggoods = new DaifaGgoods();
+                BeanUtils.copyProperties(tasks, ggoods);
+                ggoodsList.add(ggoods);
+                tasks.setAllocatStatus(1);//已分配
+                tasks.setAllocatTime(new Date());
+                tasks.setOperateIs(0);//未操作拿货完成
+                tasks.setUseStatus(0);
+                tasks.setGoodsCode(code);
+                tasks.setAllocatDate(DateUtil.dateToString(tasks.getAllocatTime(), DateUtil.patternB));
+                tasks.setDaifaWorkerId(daifaWorker.getDaifaWorkerId());
+                tasks.setDaifaWorker(daifaWorker.getDaifaWorker());
+                ggoods.setCreateTime(tasks.getAllocatTime());
+                ggoods.setCreateDate(tasks.getAllocatDate());
+                ggoods.setDaifaWorkerId(cargoManId);
+                ggoods.setDaifaWorker(daifaWorker.getDaifaWorker());
+                ggoods.setGgoodsCode(code);
+                ggoods.setUseStatus(1);
+                ggoods.setOperateIs(0);
+                ggoods.setTakeGoodsStatus(0);
+                ggoods.setTakeGoodsTime(null);
+                ggoods.setTakeGoodsDate(null);
+                ggoods.setDaifaWorkerId(daifaWorker.getDaifaWorkerId());
+                ggoods.setDaifaWorker(daifaWorker.getDaifaWorker());
+                //修改任务表
+                daifaGgoodsTasksMapper.updateByPrimaryKeySelective(tasks);
+                //修改子订单表状态
+                DaifaOrder order = new DaifaOrder();
+                order.setDfOrderId(tasks.getDfOrderId());
+                order.setOrderStatus(2L);
+                order.setAllocatStatus(1);
+                daifaOrderMapper.updateByPrimaryKeySelective(order);
+            }
 
 
-        //写入已分配表
-        if (ggoodsList.size() != 0) {
-            daifaGgoodsMapper.insertListNoId(ggoodsList);
-            return code;
+            //写入已分配表
+            if (ggoodsList.size() != 0) {
+                daifaGgoodsMapper.insertListNoId(ggoodsList);
+                return code;
+            }
+        }finally {
+            takeLock.unlock();
         }
         return null;
     }
