@@ -135,13 +135,13 @@ public class OrderMessageProducter {
         sendAsync(OrderMQTag.order_push, BaseMessage.success(order.getOid().toString(), "订单创建", order));
     }
 
-    public void orderRefundNoItem(Long refundId, Long subOrderId) {
+    public void orderRefundNoItem(Long refundId, Long subOrderId, List<Long> refundSoidps) {
         RefundMessage refund = new RefundMessage();
         refund.setRefundId(refundId);
         ArrayList<SubOrderMessage> soids = new ArrayList<>();
         SubOrderMessage subOrder = new SubOrderMessage();
         subOrder.setSoid(subOrderId);
-        subOrder.setSoidps(soidsCreater.soidToSoidps(subOrderId));
+        subOrder.setSoidps(refundSoidps);
         soids.add(subOrder);
         refund.setSuborders(soids);
 

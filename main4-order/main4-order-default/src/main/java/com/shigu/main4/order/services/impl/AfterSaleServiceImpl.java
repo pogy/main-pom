@@ -10,6 +10,7 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
+import com.shigu.main4.order.model.SoidsCreater;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.services.AfterSaleService;
@@ -47,6 +48,9 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
     @Autowired
     private OrderConstantService orderConstantService;
+
+    @Autowired
+    private SoidsCreater soidsCreater;
 
     /**
      * 售后页面的子单简单数据
@@ -125,7 +129,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
                 .refundApply(1, refundCount, refundMoney, "发起退款申请");
 
         // 仅退款消息推送
-        orderMessageProducter.orderRefundNoItem(refundId, subOrderId);
+        orderMessageProducter.orderRefundNoItem(refundId, subOrderId, soidsCreater.soidToSoidps(subOrderId).subList(0, refundCount - 1));
         return refundId;
     }
 

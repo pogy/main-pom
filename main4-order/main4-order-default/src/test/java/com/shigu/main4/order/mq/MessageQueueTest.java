@@ -30,7 +30,7 @@ public class MessageQueueTest extends BaseTest {
      */
     @Test
     public void testSendRefundNoItem() {
-        orderMessageProducter.orderRefundNoItem(2L, 3L);
+//        orderMessageProducter.orderRefundNoItem(2L, 3L, refundCount);
     }
 
     /**

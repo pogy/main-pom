@@ -134,7 +134,7 @@ public class DfMessageListener implements MessageListener {
             try {
                 Long refundId = subItemOrder.refundApply(1, v.size(), subItemOrderVO.getPrice(), msg.getMsg());
 
-                orderMessageProducter.orderRefundNoItem(refundId, k);
+                orderMessageProducter.orderRefundNoItem(refundId, k, v);
             } catch (OrderException e) {
                 logger.error(e.getMessage(), e);
             }
