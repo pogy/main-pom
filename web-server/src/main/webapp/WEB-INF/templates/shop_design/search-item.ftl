@@ -102,17 +102,17 @@
                         </li>
                         <li class="sort has-droplist">
                             <div class="trigger">
-                                <div class="link <#if bo??><#if bo.order=='price_down'>first</#if><#if bo.order=='price_up'>first</#if></#if>">
+                                <div class="link <#if bo??><#if bo.order=='price-desc'>first</#if><#if bo.order=='price-asc'>first</#if></#if>">
                                     <span class="text" title="价格从低到高">价格</span>
                                     <span class="icon icon-btn-arrow-2-h"></span>
                                 </div>
                             </div>
                             <ul class="droplist">
                                 <li class="sort">
-                                    <a class="J_Ajax link" href="/shop/search.htm?${sortparam}&amp;order=price_up" title="价格从低到高">价格从低到高</a>
+                                    <a class="J_Ajax link" href="/shop/search.htm?${sortparam}&amp;order=price-asc" title="价格从低到高">价格从低到高</a>
                                 </li>
                                 <li class="sort">
-                                    <a class="J_Ajax link" href="/shop/search.htm?${sortparam}&amp;order=price_down" title="价格从高到低">价格从高到低</a>
+                                    <a class="J_Ajax link" href="/shop/search.htm?${sortparam}&amp;order=price-desc" title="价格从高到低">价格从高到低</a>
                                 </li>
                             </ul>
                         </li>

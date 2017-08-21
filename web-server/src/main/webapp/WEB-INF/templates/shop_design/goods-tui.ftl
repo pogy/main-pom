@@ -11,8 +11,8 @@
             <a href="/shop/search.htm?id=${shop.shopId}&order=common" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">综合</a>
             <a href="/shop/search.htm?id=${shop.shopId}&order=time_down" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">新品</a>
             <a href="/shop/search.htm?id=${shop.shopId}&order=popular" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">人气</a>
-            <a href="/shop/search.htm?id=${shop.shopId}&order=price_up" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">价格从低到高</a>
-            <a href="/shop/search.htm?id=${shop.shopId}&order=price_down" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">价格从高到低</a>
+            <a href="/shop/search.htm?id=${shop.shopId}&order=price-asc" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">价格从低到高</a>
+            <a href="/shop/search.htm?id=${shop.shopId}&order=price-desc" style="display: inline-block; padding: 5px 10px; border-right: 1px solid #eee;">价格从高到低</a>
             <a href="/shop/search.htm?id=${shop.shopId}" style="display: inline-block; padding: 5px 10px; float: right;">&lt;&lt;查看更多</a>
         </div>
     </#if>
