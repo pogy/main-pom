@@ -34,12 +34,12 @@
         <constructor-arg index="2" value="${host}"/>
     </bean>
 
-    <dubbo:service interface="com.shigu.main4.item.services.ItemAddOrUpdateService" ref="itemAddOrUpdateService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.item.services.ItemCatService" ref="itemCatService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.item.services.ItemPicRelationService" ref="itemPicRelationService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.item.services.ItemSearchService" ref="itemSearchService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.item.services.ItemShowCaseService" ref="itemShowCaseService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.item.services.PriceCalculateService" ref="priceCalculateService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.item.services.ShopsItemService" ref="shopsItemService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.item.services.ShowForCdnService" ref="showForCdnService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ItemAddOrUpdateService" ref="itemAddOrUpdateService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ItemCatService" ref="itemCatService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ItemPicRelationService" ref="itemPicRelationService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ItemSearchService" ref="itemSearchService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ItemShowCaseService" ref="itemShowCaseService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.PriceCalculateService" ref="priceCalculateService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ShopsItemService" ref="shopsItemService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.item.services.ShowForCdnService" ref="showForCdnService" retries="0" timeout="20000" />
 </beans>

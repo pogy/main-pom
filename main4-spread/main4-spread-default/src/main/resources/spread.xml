@@ -26,9 +26,9 @@
         <constructor-arg index="2" value="${host}"/>
     </bean>
 
-    <dubbo:service interface="com.shigu.main4.active.process.ShiguActivityProcess" ref="shiguActivityProcess" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.activity.service.ActivityDubboService" ref="activityDubboService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.goat.service.GoatDubboService" ref="goatDubboService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.spread.service.ActiveDrawService" ref="activeDrawService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.active.process.ShiguActivityProcess" ref="shiguActivityProcess" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.activity.service.ActivityDubboService" ref="activityDubboService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.goat.service.GoatDubboService" ref="goatDubboService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.spread.service.ActiveDrawService" ref="activeDrawService" retries="0" timeout="20000" />
 
 </beans>

@@ -19,9 +19,9 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
-    <dubbo:service interface="com.shigu.main4.daifa.process.OrderManageProcess" ref="orderManageProcess" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.daifa.process.PackDeliveryProcess" ref="packDeliveryProcess" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" ref="takeGoodsIssueProcess" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.OrderManageProcess" ref="orderManageProcess" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.PackDeliveryProcess" ref="packDeliveryProcess" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.daifa.process.TakeGoodsIssueProcess" ref="takeGoodsIssueProcess" retries="0" timeout="20000" />
 
     <bean id="tae_producer" class="com.aliyun.openservices.ons.api.bean.ProducerBean" init-method="start" destroy-method="shutdown">
         <!-- Spring接入方式支持Java SDK支持的所有配置项 -->

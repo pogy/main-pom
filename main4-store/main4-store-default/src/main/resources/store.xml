@@ -40,14 +40,14 @@
         <constructor-arg index="2" value="${taobao.app.secret}"/>
     </bean>
 
-    <dubbo:service interface="com.shigu.main4.storeservices.MarketShopService" ref="marketShopService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.storeservices.ShopBaseService" ref="shopBaseService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.storeservices.ShopDiscusService" ref="shopDiscusService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.storeservices.ShopFitmentService" ref="shopFitmentService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.storeservices.ShopForCdnService" ref="shopForCdnService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.storeservices.ShopLicenseService" ref="shopLicenseService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.storeservices.ShopRegistService" ref="shopRegistService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.storeservices.ShopSearchService" ref="shopSearchService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.storeservices.ShopToEsService" ref="shopToEsService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.storeservices.StoreRelationService" ref="storeRelationService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.MarketShopService" ref="marketShopService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopBaseService" ref="shopBaseService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopDiscusService" ref="shopDiscusService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopFitmentService" ref="shopFitmentService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopForCdnService" ref="shopForCdnService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopLicenseService" ref="shopLicenseService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopRegistService" ref="shopRegistService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopSearchService" ref="shopSearchService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.ShopToEsService" ref="shopToEsService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.storeservices.StoreRelationService" ref="storeRelationService" retries="0" timeout="20000" />
 </beans>

@@ -20,11 +20,11 @@
        xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <dubbo:service interface="com.shigu.main4.monitor.services.BrowerMonitorService" ref="browerMonitorService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.monitor.services.BulkFromRedisService" ref="bulkFromRedisService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.monitor.services.ItemBrowerFixService" ref="itemBrowerFixService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.monitor.services.ItemBrowerService" ref="itemBrowerService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.monitor.services.ItemUpRecordService" ref="itemUpRecordService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.monitor.services.ShopBrowerService" ref="shopBrowerService" timeout="20000" />
-    <dubbo:service interface="com.shigu.main4.monitor.services.StarCaculateService" ref="starCaculateService" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.BrowerMonitorService" ref="browerMonitorService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.BulkFromRedisService" ref="bulkFromRedisService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.ItemBrowerFixService" ref="itemBrowerFixService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.ItemBrowerService" ref="itemBrowerService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.ItemUpRecordService" ref="itemUpRecordService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.ShopBrowerService" ref="shopBrowerService" retries="0" timeout="20000" />
+    <dubbo:service interface="com.shigu.main4.monitor.services.StarCaculateService" ref="starCaculateService" retries="0" timeout="20000" />
 </beans>
