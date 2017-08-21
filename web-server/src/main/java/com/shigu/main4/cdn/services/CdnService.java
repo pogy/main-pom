@@ -248,7 +248,7 @@ public class CdnService {
         example.createCriteria().andFlagEqualTo(FLAG);
         example.setStartIndex((page-1)*size);
         example.setEndIndex(size);
-        List<ShiguTemp> copyrights=shiguTempMapper.selectByExample(example);
+        List<ShiguTemp> copyrights=shiguTempMapper.selectByConditionList(example);
         List<Long> shopIds=new ArrayList<>();
         for(ShiguTemp temp:copyrights){
             shopIds.add(Long.valueOf(temp.getKey2()));
