@@ -11,7 +11,6 @@ import java.io.Serializable;
 public class SubItemOrderVO extends SubOrderVO implements Serializable{
 
     private ItemProductVO product;
-    private Integer number;
     private SubOrderStatus subOrderStatus;
 
     public ItemProductVO getProduct() {
@@ -20,14 +19,6 @@ public class SubItemOrderVO extends SubOrderVO implements Serializable{
 
     public void setProduct(ItemProductVO product) {
         this.product = product;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
     }
 
     public SubOrderStatus getSubOrderStatus() {

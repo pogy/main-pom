@@ -130,7 +130,7 @@ public class ItemOrderImpl implements ItemOrder {
         for (SubItemOrderVO vo : vos) {
             ItemOrderSub orderSub = subOrderMap.get(vo.getSoid());
             vo.setSubOrderStatus(SubOrderStatus.statusOf(orderSub.getStatus()));
-            vo.setNumber(vo.getNum());
+            vo.setNum(vo.getNum());
             ItemProductVO info = SpringBeanFactory.getBean(ItemProduct.class, vo.getGoodsId(), vo.getColor(), vo.getSize()).info();
             vo.setProduct(info);
         }
@@ -228,7 +228,7 @@ public class ItemOrderImpl implements ItemOrder {
         Long total = 0L;
 
         // 子单总额
-        total += subOrdersInfo().stream().mapToLong(vo -> vo.getProduct().getPrice() * vo.getNumber()).sum();
+        total += subOrdersInfo().stream().mapToLong(vo -> vo.getProduct().getPrice() * vo.getNum()).sum();
 
         // 其他费用
         total += orderOtherAmount();
@@ -253,7 +253,7 @@ public class ItemOrderImpl implements ItemOrder {
         Long logisticsAmount = selLogisticses().stream().mapToLong(LogisticsVO::getMoney).sum();
 
         // 统计商品总件数
-        Integer goodsNumbers = subOrdersInfo().stream().mapToInt(SubItemOrderVO::getNumber).sum();
+        Integer goodsNumbers = subOrdersInfo().stream().mapToInt(SubItemOrderVO::getNum).sum();
 
         // 发货服务总额，每种服务都是按件计费 TODO: 不同市场代发费不同，
         return logisticsAmount + selServices().stream().mapToLong(vo -> vo.getMoney() * goodsNumbers).sum();

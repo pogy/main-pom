@@ -137,7 +137,7 @@ public class SubItemOrderImpl implements SubItemOrder{
     public SubItemOrderVO subOrderInfo() {
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         SubItemOrderVO subItemOrderVO = BeanMapper.map(itemOrderSub, SubItemOrderVO.class);
-        subItemOrderVO.setNumber(itemOrderSub.getDistributionNum());
+        subItemOrderVO.setNum(itemOrderSub.getNum());
         subItemOrderVO.setSubOrderStatus(SubOrderStatus.statusOf(itemOrderSub.getStatus()));
         ItemProductVO itemProductVO = BeanMapper.map(itemOrderSub, ItemProductVO.class);
         ItemSkuVO itemSkuVO = BeanMapper.map(itemOrderSub,ItemSkuVO.class);

@@ -107,10 +107,10 @@ public class DfMessageListener implements MessageListener {
             ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
             itemOrderRefund.setOid(refundinfo.getOid());
             itemOrderRefund.setStatus(RefundStateEnum.ENT_REFUND.refundStatus);
-            List<Long> soids = itemOrderRefundMapper.select(itemOrderRefund).stream().map(ItemOrderRefund::getSoid).collect(Collectors.toList());
+            int soidps = itemOrderRefundMapper.select(itemOrderRefund).stream().mapToInt(ItemOrderRefund::getNumber).sum();
 
             ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
-            if (soids.size() == itemOrder.subOrdersInfo().size()) {
+            if (soidps == itemOrder.subOrdersInfo().stream().mapToInt(SubItemOrderVO::getNum).sum()) {
                 itemOrder.closed();
             }
         } catch (PayerException | RefundException e) {

@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -129,7 +130,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
                 .refundApply(1, refundCount, refundMoney, "发起退款申请");
 
         // 仅退款消息推送
-        orderMessageProducter.orderRefundNoItem(refundId, subOrderId, soidsCreater.soidToSoidps(subOrderId).subList(0, refundCount));
+        orderMessageProducter.orderRefundNoItem(refundId, subOrderId, new ArrayList<>(soidsCreater.soidToSoidps(subOrderId).subList(0, refundCount)));
         return refundId;
     }
 

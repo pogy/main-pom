@@ -88,7 +88,7 @@ public class OrderMessageProducter {
             subOrder.setFloor(product.getFloor());
             subOrder.setShopId(product.getShopId());
             subOrder.setShopNum(product.getShopNum());
-            subOrder.setSoidps(soidsCreater.makeSoidps(subItemOrderVO.getSoid(),subItemOrderVO.getNumber()));
+            subOrder.setSoidps(soidsCreater.makeSoidps(subItemOrderVO.getSoid(),subItemOrderVO.getNum()));
             subOrder.setColor(product.getSelectiveSku().getColor());
             subOrder.setSize(product.getSelectiveSku().getSize());
             return subOrder;
