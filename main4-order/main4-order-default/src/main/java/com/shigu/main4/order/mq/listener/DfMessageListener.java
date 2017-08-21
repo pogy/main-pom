@@ -15,6 +15,7 @@ import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.model.SoidsCreater;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.mq.msg.*;
+import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
@@ -43,6 +44,9 @@ public class DfMessageListener implements MessageListener {
 
     @Autowired
     private SoidsCreater soidsCreater;
+
+    @Autowired
+    private OrderMessageProducter orderMessageProducter;
 
     public enum DfMqTag {
         refund_agree(RefundMessage.class),
@@ -129,7 +133,9 @@ public class DfMessageListener implements MessageListener {
             SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, k);
             SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
             try {
-                subItemOrder.refundApply(1, v.size(), subItemOrderVO.getPrice(), msg.getMsg());
+                Long refundId = subItemOrder.refundApply(1, v.size(), subItemOrderVO.getPrice(), msg.getMsg());
+
+                orderMessageProducter.orderRefundNoItem(refundId, k);
             } catch (OrderException e) {
                 logger.error(e.getMessage(), e);
             }
