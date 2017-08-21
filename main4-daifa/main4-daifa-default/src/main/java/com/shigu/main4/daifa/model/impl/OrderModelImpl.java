@@ -222,7 +222,7 @@ public class OrderModelImpl implements OrderModel {
             //查询待拿货表
             //修改代拿货表状态为已截单
             //为发消息，拿到待拿货的id集合
-            List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,"df_order_id");
+            List<DaifaGgoodsTasks> daifaGgoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,FieldUtil.codeFields("tasks_id,df_order_id"));
             List<Long> dfOrderIds;
             if (daifaGgoodsTasks.size()>0){
                 daifaGgoodsTasksMapper.updateByExampleSelective(daifaGgoodsTask, daifaGgoodsTasksExample);
@@ -323,14 +323,15 @@ public class OrderModelImpl implements OrderModel {
             d.setSellerId(delivery.getSellerId());
             daifaSendOrderMapper.insertSelective(d);
         }
+        DaifaTrade t=daifaTradeMapper.selectByPrimaryKey(trade.getDfTradeId());
         Map<String,Object>map=new HashMap<>();
-        map.put("orderId",trade.getTradeCode());
+        map.put("orderId",t.getTradeCode());
         map.put("expressCode",delivery.getExpressCode());
         JSONObject obj=new JSONObject();
         obj.put("data",map);
         obj.put("msg","全单发货");
         obj.put("status",true);
-        mqUtil.sendMessage(DaifaSendMqEnum.sendAll.getMessageTag()+trade.getTradeCode(),
+        mqUtil.sendMessage(DaifaSendMqEnum.sendAll.getMessageTag()+t.getTradeCode(),
                 DaifaSendMqEnum.sendAll.getMessageKey(), obj.toString());
     }
 
@@ -343,10 +344,13 @@ public class OrderModelImpl implements OrderModel {
     @Transactional(propagation=Propagation.REQUIRED,rollbackFor ={Exception.class,RuntimeException.class})
     public void autoRefund(Long refundId, List<Long> subOrderIds) throws DaifaException {
         //检测是否可以自动退款
+        List<Long> sts=new ArrayList<>();
+        sts.add((long)SubOrderStatus.NO_PAY.getValue());
+        sts.add((long)SubOrderStatus.SENDED.getValue());
         DaifaOrderExample orderExample=new DaifaOrderExample();
-        orderExample.createCriteria().andDfOrderIdIn(subOrderIds).andOrderStatusNotEqualTo((long)SubOrderStatus.PAYED.getValue());
+        orderExample.createCriteria().andDfOrderIdIn(subOrderIds).andOrderStatusIn(sts);
         if(daifaOrderMapper.countByExample(orderExample)>0){//有单子处在不可退状态
-            throw new DaifaException("有部分子单已发或已拿");
+            throw new DaifaException("有部分子单暂不可退款");
         }
         //更新子单状态为已退款
         DaifaOrderExample daifaOrderExample=new DaifaOrderExample();

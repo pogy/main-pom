@@ -120,7 +120,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     @Override
     public List<Long> tryRefund(String outerSubOrderId) {
         DaifaOrderExample orderExample = new DaifaOrderExample();
-        orderExample.createCriteria().andOrderCodeEqualTo(outerSubOrderId).andOrderStatusNotEqualTo((long) SubOrderStatus.PAYED.getValue());
+        orderExample.createCriteria().andOrderCodeEqualTo(outerSubOrderId).andOrderStatusNotEqualTo((long) SubOrderStatus.SENDED.getValue());
 //        return daifaOrderMapper.countByExample(orderExample)>num;
         List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id"));
         Map<Long, String> oidpMap = new HashMap<>();
@@ -138,8 +138,12 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         return oidps;
     }
 
-    public void autoRefund(Long refundId, String soid, List<String> soidps) throws DaifaException {
-        List<Long> refundableIds = tryRefund(soid);
+    @Override
+    public void autoRefund(Long refundId, List<String> soids, List<String> soidps) throws DaifaException {
+        List<Long> refundableIds=new ArrayList<>();
+        for(String soid:soids){
+            refundableIds.addAll(tryRefund(soid));
+        }
         checked:
         for (String soidp : soidps) {
             for (Long refundableId : refundableIds) {
@@ -150,11 +154,16 @@ public class OrderManageProcessImpl implements OrderManageProcess {
             throw new DaifaException("退款失败,可退款数量校验失败");
         }
         DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
-        daifaOrderExample.createCriteria().andOrderCodeIn(soidps);
-        List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(daifaOrderExample, FieldUtil.codeFields("df_order_id"));
+        daifaOrderExample.createCriteria().andOrderPartitionIdIn(soidps);
+        List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(daifaOrderExample, FieldUtil.codeFields("df_order_id,df_trade_id"));
         List<Long> oids=BeanMapper.getFieldList(orders,"dfOrderId",Long.class);
-        OrderModel model=SpringBeanFactory.getBean(OrderModel.class);
-        model.autoRefund(refundId,oids);
+        OrderModel model=SpringBeanFactory.getBean(OrderModel.class,orders.get(0).getDfTradeId());
+        try {
+            model.autoRefund(refundId,oids);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
 }
