@@ -25,9 +25,11 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
+import com.shigu.main4.order.bo.GoodsTaoRelationBO;
 import com.shigu.main4.order.bo.TbOrderBO;
 import com.shigu.main4.order.exceptions.NotFindRelationGoodsException;
 import com.shigu.main4.order.exceptions.NotFindSessionException;
+import com.shigu.main4.order.process.ItemProductProcess;
 import com.shigu.main4.order.servicevo.RelationGoodsVO;
 import com.shigu.main4.order.servicevo.SubTbOrderVO;
 import com.shigu.main4.order.servicevo.TbOrderVO;
@@ -86,6 +88,9 @@ public class TaoOrderServiceImpl implements TaoOrderService {
 
     @Autowired
     private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
+
+    @Autowired
+    private ItemProductProcess itemProductProcess;
 
     @Value("${appKey}")
     private String key;
@@ -213,18 +218,12 @@ public class TaoOrderServiceImpl implements TaoOrderService {
         if (goodsIdObj == null) {
             throw new NotFindRelationGoodsException("商品ID非法");
         }
-        ShiguGoodsTaoRelation shiguGoodsTaoRelation=new ShiguGoodsTaoRelation();
+        GoodsTaoRelationBO shiguGoodsTaoRelation=new GoodsTaoRelationBO();
         shiguGoodsTaoRelation.setNumIid(numiid);
         shiguGoodsTaoRelation.setUserId(userId);
         shiguGoodsTaoRelation.setGoodsId(goodsId);
         shiguGoodsTaoRelation.setWebSite(goodsIdObj.getWebSite());
-        try {
-            shiguGoodsTaoRelationMapper.insertSelective(shiguGoodsTaoRelation);
-        } catch (Exception e) {
-            ShiguGoodsTaoRelationExample relationExample=new ShiguGoodsTaoRelationExample();
-            relationExample.createCriteria().andNumIidEqualTo(numiid);
-            shiguGoodsTaoRelationMapper.updateByExampleSelective(shiguGoodsTaoRelation,relationExample);
-        }
+        itemProductProcess.relationTaoGoods(shiguGoodsTaoRelation);
     }
 
     public  SecurityClient getSecurityClient() {

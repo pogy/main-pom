@@ -1,5 +1,6 @@
 package com.shigu.main4.order.process;
 
+import com.shigu.main4.order.bo.GoodsTaoRelationBO;
 import com.shigu.main4.order.vo.ItemProductVO;
 
 /**
@@ -16,4 +17,10 @@ public interface ItemProductProcess {
      * @return 产品详细信息
      */
     ItemProductVO generateProduct(Long goodsId, String color, String size);
+
+    /**
+     * 淘宝商品关联
+     * @param bo
+     */
+    void relationTaoGoods(GoodsTaoRelationBO bo);
 }
