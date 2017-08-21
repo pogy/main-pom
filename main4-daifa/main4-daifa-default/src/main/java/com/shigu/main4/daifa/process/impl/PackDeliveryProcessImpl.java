@@ -69,7 +69,7 @@ public class PackDeliveryProcessImpl implements PackDeliveryProcess {
         tmpo.setDfTradeId(order.getDfTradeId());
         List<DaifaOrder> orders=daifaOrderMapper.select(tmpo);
         for(DaifaOrder o:orders){
-            if(o.getAllocatStatus()==0){
+            if(o.getAllocatStatus()==0&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
                 throw new DaifaException("此条码对应的部分商品未分配");
             }
             if(o.getTakeGoodsStatus()==2&&(o.getRefundStatus() == null||o.getRefundStatus()!=2)){
