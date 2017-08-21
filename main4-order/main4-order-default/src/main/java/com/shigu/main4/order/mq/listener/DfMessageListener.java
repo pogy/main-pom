@@ -76,7 +76,7 @@ public class DfMessageListener implements MessageListener {
             return Action.ReconsumeLater;
         }
         BaseMessage baseMessage = JSON.parseObject(body, BaseMessage.class);
-        baseMessage.setData(JSON.parseObject(baseMessage.getData().toString(), refund_agree.clazz));
+        baseMessage.setData(JSON.parseObject(baseMessage.getData().toString(), dfMqTag.clazz));
 
         if (!baseMessage.getStatus()) {
             logger.error(baseMessage.getMsg());
