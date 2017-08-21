@@ -3,6 +3,7 @@ package com.shigu.main4.order.model;
 import com.shigu.main4.order.exceptions.OrderException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 订单生成
@@ -27,4 +28,11 @@ public interface SoidsCreater {
      * @return
      */
     Long selSoidBySoidp(Long soidp);
+
+    /**
+     * 多个查询
+     * @param soidp
+     * @return
+     */
+    Map<Long, List<Long>> selSoidsBySoidps(List<Long> soidp);
 }

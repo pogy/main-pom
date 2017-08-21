@@ -7,10 +7,13 @@ import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
+import com.shigu.main4.order.model.SoidsCreater;
+import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.mq.msg.*;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
@@ -37,6 +40,9 @@ public class DfMessageListener implements MessageListener {
 
     @Autowired
     private ItemOrderRefundMapper itemOrderRefundMapper;
+
+    @Autowired
+    private SoidsCreater soidsCreater;
 
     public enum DfMqTag {
         refund_agree(RefundMessage.class),
@@ -67,6 +73,11 @@ public class DfMessageListener implements MessageListener {
         }
         BaseMessage baseMessage = JSON.parseObject(body, BaseMessage.class);
         baseMessage.setData(JSON.parseObject(baseMessage.getData().toString(), refund_agree.clazz));
+
+        if (!baseMessage.getStatus()) {
+            logger.error(baseMessage.getMsg());
+            return Action.CommitMessage;
+        }
 
         switch (dfMqTag) {
             case refund_agree:
@@ -114,6 +125,14 @@ public class DfMessageListener implements MessageListener {
     }
 
     public void stopTrade(BaseMessage<StopTradeMessage> msg) {
-
+        soidsCreater.selSoidsBySoidps(msg.getData().getRefundSubOrderIds()).forEach((k, v) -> {
+            SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, k);
+            SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
+            try {
+                subItemOrder.refundApply(1, v.size(), subItemOrderVO.getPrice(), msg.getMsg());
+            } catch (OrderException e) {
+                logger.error(e.getMessage(), e);
+            }
+        });
     }
 }

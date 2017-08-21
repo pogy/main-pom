@@ -69,7 +69,7 @@ public class MyOrderService {
         ItemOrderExample orderExample = new ItemOrderExample();
         orderExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
         orderExample.setEndIndex(bo.getPageSize());
-        orderExample.setOrderByClause("create_time DESC");
+        orderExample.setOrderByClause("item_order.create_time DESC");
         ItemOrderExample.Criteria orderCriteria = orderExample.createCriteria().andUserIdEqualTo(userId);
 
         if (bo.getOrderId() != null) {
@@ -118,38 +118,13 @@ public class MyOrderService {
                 .build();
 
         multipleExample.setDistinctCount(ItemOrderExample.oid);
+        multipleExample.setOrderByClause("item_order.create_time DESC");
         int orderCount = multipleMapper.countByMultipleExample(multipleExample);
 
         if (orderCount > 0) {
             pager.calPages(orderCount, bo.getPageSize());
             pager.setContent(multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class));
         }
-        /*ShiguPager<ShowOrderVO> myOrder = orderListService.selectCountMyOrder(bo, userId);
-        pager.setNumber(myOrder.getNumber());
-        pager.calPages(myOrder.getTotalCount(), bo.getPageSize());
-        pager.setContent(myOrder.getContent().stream().map(show -> {
-            MyOrderVO vo = new MyOrderVO();
-            vo.setIsTbOrder(show.getIsTbOrder());
-            vo.setMainState(show.getMainState().status);
-            vo.setOrderId(show.getOrderId());
-            vo.setPostPay(PriceConvertUtils.priceToString(show.getPostPrice()));
-            vo.setServerPay(PriceConvertUtils.priceToString(show.getServerPrice()));
-            if (show.getPostPrice() == null) {
-                show.setPostPrice(0L);
-            }
-            if (show.getServerPrice() == null) {
-                show.setServerPrice(0L);
-            }
-            if (show.getOrderPrice() == null) {
-                show.setOrderPrice(0L);
-            }
-            vo.setTradePay(PriceConvertUtils.priceToString(show.getServerPrice() + show.getOrderPrice() + show.getPostPrice()));
-            vo.setTradeTime(DateUtil.dateToString(show.getPayTime(), DateUtil.patternD));
-            vo.setWebSite(show.getWebSite());
-            List<SubMyOrderVO> subs = toSubMyOrderVO(show.getChildOrders());
-            vo.setChildOrders(subs);
-            return vo;
-        }).collect(Collectors.toList()));*/
         return pager;
     }
 

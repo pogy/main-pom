@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -48,5 +50,17 @@ public class SoidsCreaterImpl implements SoidsCreater {
     public Long selSoidBySoidp(Long soidp) {
         SubOrderSoidps soidps=subOrderSoidpsMapper.selectByPrimaryKey(soidp);
         return soidps!=null?soidps.getSoidpId():null;
+    }
+
+    @Override
+    public Map<Long, List<Long>> selSoidsBySoidps(List<Long> soidp) {
+        if (soidp.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        SubOrderSoidpsExample subOrderSoidpsExample = new SubOrderSoidpsExample();
+        subOrderSoidpsExample.createCriteria().andSoidIn(soidp);
+        return subOrderSoidpsMapper.selectByExample(subOrderSoidpsExample).stream()
+                .collect(Collectors.groupingBy(SubOrderSoidps::getSoid)).entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream().map(SubOrderSoidps::getSoidpId).collect(Collectors.toList())));
     }
 }
