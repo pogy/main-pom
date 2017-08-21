@@ -362,7 +362,7 @@ public class ActivityAction {
         JSONObject jsonObject = new JSONObject();
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
-        String flag = "autumn_new";
+        String flag = "autumn_new2";
         if (activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()).equals("true")) {
             jsonObject.put("result", "success");
         } else {
