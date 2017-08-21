@@ -17,7 +17,7 @@ public class MQUtil {
     private String topic;
     private final Logger log = LogUtil.getLog(MQUtil.class);
 
-    public void sendMessage(String messageTag, String messageKey, String messages) {
+    public void sendMessage(String messageKey, String messageTag, String messages) {
         byte[] bs = null;
         try {
             bs = messages.getBytes("utf-8");
