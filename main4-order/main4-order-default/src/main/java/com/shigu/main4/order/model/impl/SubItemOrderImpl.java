@@ -95,9 +95,6 @@ public class SubItemOrderImpl implements SubItemOrder{
         //限制一下,如果退过了,不能再退
         ItemOrderRefundExample refundExample=new ItemOrderRefundExample();
         refundExample.createCriteria().andSoidEqualTo(this.getSubOrderId());
-        if(itemOrderRefundMapper.countByExample(refundExample)>0){
-             throw new OrderException("一个子订单最多退一次");
-        }
         ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderId);
         RefundApplyBO refundApply = new RefundApplyBO();
         refundApply.setSoid(itemOrderSub.getSoid());
