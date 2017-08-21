@@ -33,7 +33,7 @@
                         <div class="pannel" style="display: block;">
                             <div class="item clearfix ">
                                 <div class="checkbox">
-                                    <input type="radio" name="type" value="1" checked="checked" class="prepare">
+                                    <input type="radio" name="type" value="2" checked="checked" class="prepare">
                                 </div>
                                 <div class="thumb">
                                     <img src="http://www.571xz.com/design/img/shop/rightleft60.jpg" alt="">
@@ -45,7 +45,7 @@
                             </div>
                             <div class="item clearfix item-last">
                                 <div class="checkbox">
-                                    <input type="radio" name="type" value="2" class="prepare">
+                                    <input type="radio" name="type" value="1" class="prepare">
                                 </div>
                                 <div class="thumb">
                                     <img src="http://www.571xz.com/design/img/shop/topbottom60.jpg" alt="">
