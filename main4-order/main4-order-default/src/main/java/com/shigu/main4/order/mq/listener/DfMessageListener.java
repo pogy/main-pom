@@ -28,8 +28,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.shigu.main4.order.mq.listener.DfMessageListener.DfMqTag.refund_agree;
-
 /**
  * 代发消息队列接收处理
  * Created by bugzy on 2017/8/14 0014.
@@ -65,6 +63,7 @@ public class DfMessageListener implements MessageListener {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Action consume(Message message, ConsumeContext consumeContext) {
         String body = new String(message.getBody());
         logger.info(body);
@@ -76,12 +75,12 @@ public class DfMessageListener implements MessageListener {
             return Action.ReconsumeLater;
         }
         BaseMessage baseMessage = JSON.parseObject(body, BaseMessage.class);
-        baseMessage.setData(JSON.parseObject(baseMessage.getData().toString(), dfMqTag.clazz));
-
-        if (!baseMessage.getStatus()) {
+        if (!baseMessage.getStatus() || baseMessage.getData() == null) {
             logger.error(baseMessage.getMsg());
             return Action.CommitMessage;
         }
+
+        baseMessage.setData(JSON.parseObject(baseMessage.getData().toString(), dfMqTag.clazz));
 
         switch (dfMqTag) {
             case refund_agree:
