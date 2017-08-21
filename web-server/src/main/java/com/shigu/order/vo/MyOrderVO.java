@@ -18,7 +18,7 @@ public class MyOrderVO {
     /**
      * 交易总金额
      */
-    @Column("item_order.total_fee")
+    @Column("convert(item_order.total_fee*0.01,decimal(10,2))")
     private String tradePay;
     /**
      * 快递费
