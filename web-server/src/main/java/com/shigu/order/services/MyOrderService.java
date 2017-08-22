@@ -128,64 +128,52 @@ public class MyOrderService {
         int orderCount = multipleMapper.countByMultipleExample(multipleExample);
 
         if (orderCount > 0) {
+
+            // 查询数据
             pager.calPages(orderCount, bo.getPageSize());
             pager.setContent(multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class));
             List<Long> orderIds = pager.getContent().stream().map(MyOrderVO::getOrderId).collect(Collectors.toList());
 
+            // 查询计算服务费信息， 按主单聚合服务费总数, Long 分 -> String 元
             ItemOrderServiceExample orderServiceExample = new ItemOrderServiceExample();
             orderServiceExample.createCriteria().andOidIn(orderIds);
-            Map<Long, List<com.opentae.data.mall.beans.ItemOrderService>> orderServiceMap
-                    = itemOrderServiceMapper.selectByExample(orderServiceExample).stream().collect(Collectors.groupingBy(com.opentae.data.mall.beans.ItemOrderService::getOid));
+            Map<Long, String> orderServiceMoneyMap = itemOrderServiceMapper.selectByExample(orderServiceExample).stream()
+                    .collect(Collectors.groupingBy(com.opentae.data.mall.beans.ItemOrderService::getOid)).entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.format("%.2f", entry.getValue().stream().mapToLong(com.opentae.data.mall.beans.ItemOrderService::getMoney).sum() * .01)));
 
             ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
             refundExample.createCriteria().andOidIn(orderIds);
-            Map<Long, List<ItemOrderRefund>> refundMap
+            Map<Long, List<ItemOrderRefund>> refundGroup
                     = itemOrderRefundMapper.selectByExample(refundExample).stream().collect(Collectors.groupingBy(ItemOrderRefund::getSoid));
 
-            for (MyOrderVO myOrderVO : pager.getContent()) {
-                List<SubMyOrderVO> childOrders = myOrderVO.getChildOrders();
-
-                List<com.opentae.data.mall.beans.ItemOrderService> services = orderServiceMap.get(myOrderVO.getOrderId());
-                if (services != null) {
-                    myOrderVO.setServerPay(String.format("%.2f", services.stream().mapToLong(com.opentae.data.mall.beans.ItemOrderService::getMoney).sum() * .01));
-                }
-
-                for (SubMyOrderVO subMyOrderVO : childOrders) {
-                    List<ItemOrderRefund> itemOrderRefunds = refundMap.get(subMyOrderVO.getChildOrderId());
-                    if (itemOrderRefunds != null) {
-                        Map<Integer, ItemOrderRefund> typeGroup = itemOrderRefunds.stream().collect(Collectors.toMap(ItemOrderRefund::getType, r -> r));
-
-                        for (Map.Entry<Integer, ItemOrderRefund> entry : typeGroup.entrySet()) {
-                            RefundTypeEnum refundType = RefundTypeEnum.typeOf(entry.getKey());
-                            switch (refundType) {
-//                                case SYSTEM_REFUND:case ONLY_REFUND:
-//                                    refundType == RefundTypeEnum.ONLY_REFUND
-//                                    subMyOrderVO.setSqRefundId(r.getRefundId());
-//                                    subMyOrderVO.setTkNum(r.getNumber());
-//                                    subMyOrderVO.setTkState(RefundStateEnum.statusOf(r.getStatus()) == RefundStateEnum.ENT_REFUND ? 1 : 0);
-//                                    subMyOrderVO.setBefore(entry.getValue().stream().map(r -> {
-//                                        SendBeforeOrderRefundVO refundVO = new SendBeforeOrderRefundVO();
-//                                        return refundVO;
-//                                    }).collect(Collectors.toList()));
-//                                    break;
-//                                case GOODS_REFUND: case GOODS_CHANGE:
-//                                    subMyOrderVO.setAfter(entry.getValue().stream().map(r -> {
-//                                        SendedOrderRefundVO refundVO = new SendedOrderRefundVO();
-//                                        refundVO.setShRefundId(r.getRefundId());
-//                                        refundVO.setShTkNum(r.getNumber());
-//                                        RefundStateEnum refundStateEnum = RefundStateEnum.statusOf(r.getStatus());
-//                                        refundVO.setShState(RefundStateEnum.ENT_REFUND == refundStateEnum ? 2 : RefundStateEnum.NOT_REFUND == refundStateEnum ? 6 : 4);
-//                                        if (refundType == RefundTypeEnum.GOODS_CHANGE) {
-//                                            refundVO.setShState(refundVO.getShState() + 1);
-//                                        }
-//                                        return refundVO;
-//                                    }).collect(Collectors.toList()));
-//                                    break;
-                            }
+            pager.getContent().stream()
+                    .peek(o -> o.setServerPay(orderServiceMoneyMap.get(o.getOrderId())))
+                    .map(MyOrderVO::getChildOrders).flatMap(List::stream).forEach(subMyOrderVO -> {
+                List<ItemOrderRefund> itemOrderRefunds = refundGroup.get(subMyOrderVO.getChildOrderId());
+                subMyOrderVO.setTkState(0);
+                subMyOrderVO.setShState(0);
+                if (itemOrderRefunds != null) {
+                    itemOrderRefunds.forEach(r -> {
+                        RefundTypeEnum refundType = RefundTypeEnum.typeOf(r.getType());
+                        switch (refundType) {
+                            case SYSTEM_REFUND:case ONLY_REFUND:
+                                subMyOrderVO.setSqRefundId(r.getRefundId());
+                                subMyOrderVO.setTkNum(r.getNumber());
+                                subMyOrderVO.setTkState(RefundStateEnum.statusOf(r.getStatus()) == RefundStateEnum.ENT_REFUND ? 1 : 0);
+                                break;
+                            case GOODS_REFUND: case GOODS_CHANGE:
+                                subMyOrderVO.setShRefundId(r.getRefundId());
+                                subMyOrderVO.setShTkNum(r.getNumber());
+                                RefundStateEnum refundStateEnum = RefundStateEnum.statusOf(r.getStatus());
+                                subMyOrderVO.setShState(RefundStateEnum.ENT_REFUND == refundStateEnum ? 2 : RefundStateEnum.NOT_REFUND == refundStateEnum ? 6 : 4);
+                                if (refundType == RefundTypeEnum.GOODS_CHANGE) {
+                                    subMyOrderVO.setShState(subMyOrderVO.getShState() + 1);
+                                }
+                                break;
                         }
-                    }
+                    });
                 }
-            }
+            });
         }
         return pager;
     }
