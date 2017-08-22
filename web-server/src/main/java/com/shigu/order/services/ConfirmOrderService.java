@@ -67,11 +67,6 @@ public class ConfirmOrderService {
     @Autowired
     private LogisticsService logisticsService;
 
-    @Autowired
-    private ItemOrderSenderMapper itemOrderSenderMapper;
-
-    @Autowired
-    private OrderConstantService orderConstantService;
 
     /**
      * 订单确认提交
@@ -109,16 +104,12 @@ public class ConfirmOrderService {
         itemOrderBO.setUserId(orderSubmitVo.getUserId());
         itemOrderBO.setSenderId(bo.getSenderId());
 
-        boolean isDaifa=itemOrderSenderMapper.selectByPrimaryKey(bo.getSenderId()).getType()==1;
-
         // 设置物流信息
         LogisticsBO logisticsBO = new LogisticsBO();
         logisticsBO.setCompanyId(bo.getCourierId());
         logisticsBO.setAddressId(bo.getAddressId());
         itemOrderBO.setLogistics(logisticsBO);
         itemOrderBO.setOuterId(orderSubmitVo.getOuterOrderNo());
-
-        itemOrderBO.setDaifaOrder(isDaifa);
 
         //订单子订单信息，将ConfirmBo中 ConfirmSubOrderBO#id与OrderSubmitVo中CartVO#cartId对应，存入ItemOrderBO#subOrders中
         List<SubItemOrderBO> subOrders = Lists.newArrayList();

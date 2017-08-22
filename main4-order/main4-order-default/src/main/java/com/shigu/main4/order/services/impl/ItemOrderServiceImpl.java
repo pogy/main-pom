@@ -91,6 +91,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
 
+    @Autowired
+    private ItemOrderSenderMapper itemOrderSenderMapper;
+
     /**
      * oid获取器
      *
@@ -147,7 +150,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         }
         itemOrder.addSubOrder(subOrders);
 
-        if(orderBO.getDaifaOrder()){
+        if(itemOrderSenderMapper.selectByPrimaryKey(orderBO.getSenderId()).getType()==1){//查询一下是否代发用户
             ItemOrderSubExample subExample=new ItemOrderSubExample();
             subExample.createCriteria().andOidEqualTo(order.getOid());
             List<ItemOrderSub> orderSubs=itemOrderSubMapper.selectByExample(subExample);
