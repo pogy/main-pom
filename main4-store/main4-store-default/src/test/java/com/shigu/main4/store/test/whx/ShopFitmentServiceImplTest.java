@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  */
 
 /**
- * 测试类com.shigu.main4.storeservices.impl.ShopFitmentServiceImpl
+ * 测试类{@link com.shigu.main4.storeservices.impl.ShopFitmentServiceImpl}
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration( value="/main4/spring/store_test.xml" )
