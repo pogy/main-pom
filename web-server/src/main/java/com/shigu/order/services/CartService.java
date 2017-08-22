@@ -1,7 +1,10 @@
 package com.shigu.order.services;
 
+import com.opentae.data.mall.beans.ShiguMarket;
 import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.examples.ShiguMarketExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
@@ -26,9 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 进货车服务
@@ -41,6 +45,9 @@ public class CartService {
 
     @Autowired
     private ShiguShopMapper shiguShopMapper;
+
+    @Autowired
+    private ShiguMarketMapper shiguMarketMapper;
 
     @Autowired
     private ShowForCdnService showForCdnService;
@@ -56,11 +63,21 @@ public class CartService {
 
     public Map<Long, ShiguShop> selShopIn(List<Long> shopIds) {
         if (shopIds == null || shopIds.isEmpty()) {
-            return new HashMap<>();
+            return Collections.emptyMap();
         }
         ShiguShopExample shiguShopExample = new ShiguShopExample();
         shiguShopExample.createCriteria().andShopIdIn(shopIds);
-        return BeanMapper.list2Map(shiguShopMapper.selectByExample(shiguShopExample), "shopId", Long.class);
+
+        Map<Long, ShiguShop> shopMap = shiguShopMapper.selectByExample(shiguShopExample).stream().collect(Collectors.toMap(ShiguShop::getShopId, s -> s));
+
+        List<Long> markets = shopMap.values().stream().map(ShiguShop::getMarketId).collect(Collectors.toList());
+        if (!markets.isEmpty()) {
+            ShiguMarketExample marketExample = new ShiguMarketExample();
+            marketExample.createCriteria().andMarketIdIn(markets);
+            Map<Long, ShiguMarket> marketMap = shiguMarketMapper.selectByExample(marketExample).stream().collect(Collectors.toMap(ShiguMarket::getMarketId, m -> m));
+            shopMap.values().forEach(shop -> shop.setParentMarketName(marketMap.get(shop.getMarketId()).getMarketName()));
+        }
+        return shopMap;
     }
 
     /**

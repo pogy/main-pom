@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,8 +41,12 @@ public class ItemCartImpl implements Cart {
         ItemProductVO productVO = (ItemProductVO) pro;
         ItemCart cart = BeanMapper.map(productVO, ItemCart.class);
         cart.setSkuId(productVO.getSelectiveSku().getSkuId());
-        cart.setNum(number);
         cart.setUserId(userId);
+        List<ItemCart> itemCarts = itemCartMapper.select(cart);
+        if (!itemCarts.isEmpty()) {
+            number += itemCarts.stream().peek(itemCart -> itemCartMapper.deleteByPrimaryKey(itemCart.getCartId())).mapToInt(ItemCart::getNum).sum();
+        }
+        cart.setNum(number);
         itemCartMapper.insertSelective(cart);
     }
 
