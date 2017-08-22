@@ -364,7 +364,7 @@
                 <p><span class="fcF40">已标记下架</span></p>
             <#else>
                 <#if order.tradeState == 1>
-                    <#if childOrder.takeGoodsState != 1 || childOrder.refundState == 0>
+                    <#if childOrder.takeGoodsState != 1 && childOrder.refundState == 0>
                     <p><b class="fcBlue" jbtn="setTime">设置有货时间</b></p>
                     <p><b class="fcBlue" jbtn="noSale">标记下架</b></p>
                     </#if>
