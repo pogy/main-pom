@@ -181,6 +181,9 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setBuyerNick(orderBO.getBuyer().getNickInMarket());
         daifaTrade.setGoodsFee(PriceConvertUtils.stringPriceToString(goodsFee.toString ()));
         daifaTrade.setBuyerRemark (orderBO.getBuyRemark ());
+        if(orderBO.getBuyer ()!=null) {
+            daifaTrade.setBuyerWw (orderBO.getBuyer ().getAliWw ());
+        }
 
         daifaTrade.setExpressFee(logisticsBO.getMoney());
         List<ServiceBO> services = orderBO.getServices();
