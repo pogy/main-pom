@@ -125,6 +125,13 @@ public class MyOrderService {
         if (orderCount > 0) {
             pager.calPages(orderCount, bo.getPageSize());
             pager.setContent(multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class));
+            for (MyOrderVO myOrderVO : pager.getContent()) {
+                String serverPay = myOrderVO.getServerPay();
+                if (serverPay != null) {
+                    double serviceFee = Double.valueOf(serverPay) * myOrderVO.getChildOrders().stream().mapToInt(SubMyOrderVO::getNum).sum();
+                    myOrderVO.setServerPay(String.format("%.2f", serviceFee));
+                }
+            }
         }
         return pager;
     }

@@ -13,7 +13,6 @@ import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.*;
-import com.shigu.main4.order.utils.PriceConvertUtils;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.MainOrderStatusEnum;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
@@ -309,24 +308,20 @@ public class OrderListServiceImpl implements OrderListService {
         ItemOrderVO itemOrderVO = orderModel.orderInfo();
         List<SubItemOrderVO> subOrdersInfo = orderModel.subOrdersInfo();
         vo.setOrderTotalPriceLong(itemOrderVO.getTotalFee());
-        vo.setOrderTotalPrice(PriceConvertUtils.priceToString(vo.getOrderTotalPriceLong()));
+        vo.setOrderTotalPrice(String.format("%.2f", vo.getOrderTotalPriceLong() * .01));
         List<LogisticsVO> logisticsVOs = orderModel.selLogisticses();
         if (logisticsVOs.size()>0) {
             vo.setExpressPriceLong(logisticsVOs.get(0).getMoney());
-            vo.setExpressPrice(PriceConvertUtils.priceToString(vo.getExpressPriceLong()));
+            vo.setExpressPrice(String.format("%.2f", vo.getExpressPriceLong() * .01));
         }
-        long childOrdersPrice = 0;
-        for (SubItemOrderVO subItemOrderVO: subOrdersInfo) {
-            childOrdersPrice += subItemOrderVO.getNum()*subItemOrderVO.getProduct().getPrice();
-        }
-        vo.setChildOrdersPriceLong(childOrdersPrice);
-        vo.setChildOrdersPrice(PriceConvertUtils.priceToString(childOrdersPrice));
+        vo.setChildOrdersPriceLong(subOrdersInfo.stream().mapToLong(i -> i.getNum() * i.getProduct().getPrice()).sum());
+        vo.setChildOrdersPrice(String.format("%.2f", vo.getChildOrdersPriceLong() * .01));
         long servicePrice = 0;
         for (OrderServiceVO orderServiceVO:orderModel.selServices()) {
             servicePrice += orderServiceVO.getMoney();
         }
         vo.setServicePriceLong(servicePrice);
-        vo.setServicePrice(PriceConvertUtils.priceToString(servicePrice));
+        vo.setServicePrice(String.format("%.2f", servicePrice * .01));
         return vo;
     }
 
