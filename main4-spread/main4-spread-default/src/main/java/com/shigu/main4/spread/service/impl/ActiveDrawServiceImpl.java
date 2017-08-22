@@ -726,12 +726,16 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type){
-        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null,null);
+        ActiveDrawRecordExample activeDrawRecordExample = new ActiveDrawRecordExample();
+        activeDrawRecordExample.createCriteria().andPemIdEqualTo(pemId).andUserIdEqualTo(userId);
+        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selectByExample(activeDrawRecordExample);
+        //List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null,null);
         if(userId != null){
             // 过滤过期
 
         }
-        return BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
+        List<ActiveDrawRecordUserVo> activeDrawRecordUserVos = BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
+        return activeDrawRecordUserVos;
     }
 
     /**

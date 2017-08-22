@@ -1,6 +1,7 @@
 package com.shigu.activity.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
@@ -13,25 +14,32 @@ import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
+import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
+import com.shigu.main4.spread.vo.active.draw.NewAutumnDrawVerifyVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.index.Term;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.TermQueryBuilder;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 发现好货监听
@@ -54,6 +62,9 @@ public class ActiveDrawListener implements MessageListener {
 
     @Autowired
     RedisIO redisIO;
+
+    @Autowired
+    private DrawQualification newAutumnDrawQualification;
 
     List<DrawRule> FAGOODS_RULE;
     List<DrawRule> DAILYFIND_RULE;
@@ -78,6 +89,11 @@ public class ActiveDrawListener implements MessageListener {
 
     @Override
     public Action consume(Message message, ConsumeContext consumeContext) {
+        //doChange(null,userId,null,null);
+        //return Action.CommitMessage;
+
+        ///** 发现好货/每日发现抽奖
+
         //1、拿到消息
         //2、验证是否本期发现好货,如果不是,中止
         //3、修改redis,如果有修改,执行4
@@ -85,18 +101,48 @@ public class ActiveDrawListener implements MessageListener {
         //5、加操作
         ItemUpRecordVO itemUpRecordVO = JSON.parseObject(message.getBody(),ItemUpRecordVO.class);
         // 当前期次
-        List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
-        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
-        Long pemId=drawPem.getId();
+//        List<ActiveDrawPemVo> activeDrawPemVos = activeDrawServiceImpl.selDrawPemQueList();
+//        ActiveDrawPemVo drawPem = activeDrawPemVos.get(0);
+//        Long pemId=drawPem.getId();
         // 验证是发现好货商品
-        if(findGoods(itemUpRecordVO.getSupperGoodsId(),pemId)){
-            doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_FAGOODS);
-        }
+//        if(findGoods(itemUpRecordVO.getSupperGoodsId(),pemId)){
+//            doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_FAGOODS);
+//        }
         //验证是否每日发现
-        if(findDaliy(itemUpRecordVO.getSupperGoodsId(),pemId)){
-            doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_DAILYFIND);
+//        if(findDaliy(itemUpRecordVO.getSupperGoodsId(),pemId)){
+//            doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_DAILYFIND);
+//        }
+        //验证是秋装新品
+        if (newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(NewAutumnDrawVerifyVO.UPLOAD_FLAG))) {
+            //只从淘宝电脑端上款
+            if ("web-tb".equals(itemUpRecordVO.getFlag())) {
+                doChangeNewAutumn(itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),NewAutumnDrawVerifyVO.DRAW_RECORD_FLAG);
+            }
         }
         return Action.CommitMessage;
+
+    }
+
+
+    public void doChangeNewAutumn(Long userId,Long goodsId,String findFlag) {
+        String key=KEY_IN_REDIS+findFlag+"_"+userId;
+        //上了新款
+        boolean goodsIdAdded = false;
+        Set goodsIdSet = redisIO.get(key,Set.class);
+        if (goodsIdSet == null) {
+            goodsIdSet = new HashSet();
+            goodsIdSet.add(goodsId);
+            goodsIdAdded = true;
+            redisIO.putFixedTemp(key,goodsIdSet,3600*24*10);
+        } else if (!goodsIdSet.contains(goodsId)) {
+            goodsIdSet.add(goodsId);
+            goodsIdAdded = true;
+            redisIO.putFixedTemp(key,goodsIdSet,3600*24*10);
+        }
+        int upNum = goodsIdSet.size();
+        if (goodsIdAdded==true&&upNum>=3) {
+            newAutumnDrawQualification.updateQualification(userId,upNum);
+        }
     }
 
     /**
@@ -107,6 +153,7 @@ public class ActiveDrawListener implements MessageListener {
      * @param findType 发现的类别,好货还是每日
      */
     public void doChange(Long pemId,Long userId,Long goodsId,String findType){
+
         //1、得出当前上传过的商品数
         //2、找到对应的规则进行修改数据
 //        redisIO.putFixedTemp("ONEKEY_FOR_FINDGOODS_"+findType+"_"+pemId+"_"+userId,new HashSet<Long>(),3600*24*8);//先放入再说
@@ -255,6 +302,15 @@ public class ActiveDrawListener implements MessageListener {
         return activeDrawGoodsMapper.countByExample(example)>0;
     }
 
+    public Boolean newAutumn(Long goodsId, List<String> pemFlag) {
+        if (goodsId == null) {
+            return false;
+        }
+        ShiguTempExample example = new ShiguTempExample();
+        example.createCriteria().andFlagIn(pemFlag).andKey1EqualTo(goodsId.toString());
+        return shiguTempMapper.countByExample(example)>0;
+    }
+
     @Autowired
     private ShiguTempMapper shiguTempMapper;
     public String signUp(String flag, Long userId, Long shopId){
@@ -262,7 +318,7 @@ public class ActiveDrawListener implements MessageListener {
             return "您还没有店铺";
         }
         ShiguTempExample shiguTempExample =new ShiguTempExample();
-        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
+        shiguTempExample.createCriteria().andFlagEqualTo(flag).andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
         List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
         if (temps.size()>0){
             return "您已经报过名了";
@@ -276,9 +332,9 @@ public class ActiveDrawListener implements MessageListener {
         shiguTempMapper.insertSelective(shiguTemp);
         return "true";
     }
-    public boolean checkSignUp(Long userId,Long shopId) {
+    public boolean checkSignUp(String flag,Long userId,Long shopId) {
         ShiguTempExample shiguTempExample=new ShiguTempExample();
-        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString()).andFlagEqualTo(flag);
         List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
         if (temps.size()>0){
             return true;
@@ -286,4 +342,29 @@ public class ActiveDrawListener implements MessageListener {
         return false;
     }
 
+    //中奖资格数据初始化
+    //public void initData() throws ParseException {
+    //    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //    Date date = sdf.parse("2017-08-12 01:00:00");
+    //    SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup").setSize(10000);
+    //    BoolQueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("flag", "web-tb"))
+    //            .must(QueryBuilders.rangeQuery("daiTime").from("2017-08-16 00:00:00").to("2017-08-17 00:00:00"));
+    //
+    //    SearchResponse searchResponse = srb.setTypes("hz").setQuery(query).execute().actionGet();
+    //    SearchHit[] hits = searchResponse.getHits().getHits();
+    //    int count=0;
+    //    for (SearchHit hit : hits) {
+    //        ItemUpRecordVO itemUpRecordVO = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
+    //        if (newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(NewAutumnDrawVerifyVO.UPLOAD_FLAG))) {
+    //            //只从淘宝电脑端上款
+    //            if ("web-tb".equals(itemUpRecordVO.getFlag())) {
+    //                doChangeNewAutumn(itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),NewAutumnDrawVerifyVO.DRAW_RECORD_FLAG);
+    //
+    //            }
+    //        }
+    //        System.out.print(++count);
+    //        System.out.println(':');
+    //        System.out.println(itemUpRecordVO.getSupperGoodsId());
+    //    }
+    //}
 }
