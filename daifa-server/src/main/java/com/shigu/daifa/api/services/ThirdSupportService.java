@@ -358,7 +358,7 @@ public class ThirdSupportService {
             Integer vi = null;
             for (int v = 0; v < goodsList.size(); v++) {
                 WorkUserGgoodsTasksGoods go = goodsList.get(v);
-                if ((go.getGoodsNo() + "" + go.getSkuStr() + go.getPiPrice()).equals(g.getGoodsCode() + "" + g.getPropStr() + MoneyUtil.StringToLong(g.getSinglePrice()))) {
+                if ((go.getGoodsNo() + "" + go.getSkuStr() + go.getPiPrice()).equals(g.getGoodsCode() + "" + g.getPropStr() + MoneyUtil.StringToLong(g.getSinglePiPrice()))) {
                     goods = go;
                     vi = v;
                     break;
