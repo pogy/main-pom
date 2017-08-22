@@ -17,7 +17,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/gysV1/css/pictureSpace.css?v=20170808" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/gysV1/css/pictureSpace.css?v=20170821" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
             <script src="http://style.571xz.com/v2/gysV1/plupload2.1.2/plupload.full.min.js"></script>
         
     
-    <script src="http://style.571xz.com/v2/gysV1/js/pictureSpace.js?v=20170808"></script>
+    <script src="http://style.571xz.com/v2/gysV1/js/pictureSpace.js?v=20170821"></script>
 </head>
 <body>
 
