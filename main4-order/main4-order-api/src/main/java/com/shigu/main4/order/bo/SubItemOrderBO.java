@@ -1,5 +1,7 @@
 package com.shigu.main4.order.bo;
 
+import com.shigu.main4.order.vo.ServiceVO;
+
 import java.io.Serializable;
 
 /**
@@ -80,4 +82,5 @@ public class SubItemOrderBO implements Serializable{
     public void setTitle(String title) {
         this.title = title;
     }
+
 }

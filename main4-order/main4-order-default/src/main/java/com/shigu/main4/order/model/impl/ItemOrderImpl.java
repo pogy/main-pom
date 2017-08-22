@@ -206,13 +206,13 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addService(Long serviceId) {
+    public void addDfService(ServiceVO serviceVO, Long soid, Integer number) {
         // 记录订单服务信息
-        ServiceVO serviceVO = orderConstantService.selServiceById(selSender().getSenderId(), serviceId);
         ItemOrderService itemOrderService = BeanMapper.map(serviceVO, ItemOrderService.class);
-        itemOrderService.setMoney(serviceVO.getPrice());
+        itemOrderService.setMoney(serviceVO.getPrice()*number);
         itemOrderService.setOid(oid);
-        itemOrderService.setServiceId(serviceId);
+        itemOrderService.setSoid(soid);
+        itemOrderService.setServiceId(serviceVO.getId());
         itemOrderService.setId(null);
         itemOrderServiceMapper.insertSelective(itemOrderService);
 

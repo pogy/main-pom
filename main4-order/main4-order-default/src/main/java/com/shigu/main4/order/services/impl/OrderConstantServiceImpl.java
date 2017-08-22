@@ -130,12 +130,15 @@ public class OrderConstantServiceImpl implements OrderConstantService {
             return null;
         }
         List<ServiceVO> serviceList = selServices(senderId);
+        ServiceVO defaultDfService=null;
         for (ServiceVO item : serviceList) {
             if (Objects.equals(marketId, item.getMarketId())) {
                 return item;
+            }else if(item.getMarketId()==-1){//市场号为-1是默认的
+                defaultDfService=item;
             }
         }
-        return null;
+        return defaultDfService;
     }
 
     /**
