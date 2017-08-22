@@ -44,9 +44,6 @@ public class ConfirmOrderService {
     private ItemOrderService itemOrderService;
 
     @Autowired
-    private ItemOrderSenderMapper itemOrderSenderMapper;
-
-    @Autowired
     private ShiguShopMapper shiguShopMapper;
 
     @Autowired
