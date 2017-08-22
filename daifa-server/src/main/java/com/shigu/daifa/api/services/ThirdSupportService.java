@@ -284,7 +284,7 @@ public class ThirdSupportService {
         res.setStoreName(storename);
         res.setSumNum(sumNum);
         res.setSumPrice(sumPrice);
-        return null;
+        return res;
     }
 
     public ShortCompleteCheckedResponse shortCompleteChecked(Long daifaWorkerId, List<Long> orderIds, Integer status) throws SystemInterfaceException {
