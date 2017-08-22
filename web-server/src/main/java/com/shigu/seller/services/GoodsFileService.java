@@ -654,7 +654,7 @@ public class GoodsFileService extends OssIO {
         return goodsFileMapper.selectByExample(example);
     }
 
-    private static String sChar[] = {"<", ">", "&", "$", "\t", "\n", "\r", "..","/"};
+    private static String sChar[] = {"<", ">", "&", "$", "\t", "\n", "\r", "../"};
     private static int sCharCount = sChar.length;
 
 
