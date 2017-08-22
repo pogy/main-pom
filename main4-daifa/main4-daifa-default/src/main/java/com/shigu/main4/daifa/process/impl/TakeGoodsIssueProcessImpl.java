@@ -340,6 +340,21 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             }
         }
     }
+    @Override
+    public void completeWithDate(String date) throws DaifaException {
+        DaifaGgoodsExample ge=new DaifaGgoodsExample();
+        ge.createCriteria().andCreateDateEqualTo(date).andOperateIsEqualTo(0);
+        List<DaifaGgoods> daifaGgoods =daifaGgoodsMapper.selectFieldsByExample(ge
+                ,FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
+        for (DaifaGgoods daifaGgood : daifaGgoods) {
+             SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,daifaGgood.getDfOrderId());
+             subOrderModel.noTake();
+
+        }
+
+
+
+    }
 
     /**
      * 数据库批次转化到页面显示
