@@ -147,8 +147,7 @@ public class MyOrderService {
 
                 List<com.opentae.data.mall.beans.ItemOrderService> services = orderServiceMap.get(myOrderVO.getOrderId());
                 if (services != null) {
-                    int number = childOrders.stream().mapToInt(SubMyOrderVO::getNum).sum();
-                    myOrderVO.setServerPay(String.format("%.2f", services.stream().mapToLong(s -> s.getMoney() * number).sum() * .01));
+                    myOrderVO.setServerPay(String.format("%.2f", services.stream().mapToLong(com.opentae.data.mall.beans.ItemOrderService::getMoney).sum() * .01));
                 }
 
                 for (SubMyOrderVO subMyOrderVO : childOrders) {
@@ -181,7 +180,7 @@ public class MyOrderService {
 //                                        }
 //                                        return refundVO;
 //                                    }).collect(Collectors.toList()));
-                                    break;
+//                                    break;
                             }
                         }
                     }

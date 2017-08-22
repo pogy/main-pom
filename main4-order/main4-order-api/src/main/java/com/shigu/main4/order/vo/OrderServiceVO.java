@@ -21,6 +21,7 @@ public class OrderServiceVO implements Serializable{
      * 订单ID
      */
     private Long oid;
+    private Long soid;
     /**
      * 服务名
      */
@@ -60,6 +61,14 @@ public class OrderServiceVO implements Serializable{
 
     public void setOid(Long oid) {
         this.oid = oid;
+    }
+
+    public Long getSoid() {
+        return soid;
+    }
+
+    public void setSoid(Long soid) {
+        this.soid = soid;
     }
 
     public String getName() {

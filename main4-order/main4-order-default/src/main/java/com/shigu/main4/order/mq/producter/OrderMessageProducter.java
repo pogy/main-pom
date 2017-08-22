@@ -96,14 +96,14 @@ public class OrderMessageProducter {
 
         List<OrderServiceVO> orderServiceVOS = itemOrder.selServices();
 
-        order.setServices(order.getSubOrders().stream().map(subOrderInfoMessage -> orderServiceVOS.stream().map(s -> {
+        order.setServices(orderServiceVOS.stream().map(s -> {
             ServiceMessage serviceMessage = new ServiceMessage();
             serviceMessage.setId(s.getServiceId());
-            serviceMessage.setSoid(subOrderInfoMessage.getSoid());
+            serviceMessage.setSoid(s.getSoid());
             serviceMessage.setName(s.getName());
             serviceMessage.setMoney(String.format("%.2f", s.getMoney() * .01));
             return serviceMessage;
-        }).collect(Collectors.toList())).flatMap(List::stream).collect(Collectors.toList()));
+        }).collect(Collectors.toList()));
 
         order.setLogistics(itemOrder.selLogisticses().stream().map(logisticsVO -> {
             LogisticMessage message = new LogisticMessage();
