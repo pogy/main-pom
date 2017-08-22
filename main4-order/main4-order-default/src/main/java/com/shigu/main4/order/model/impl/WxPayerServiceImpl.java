@@ -93,7 +93,7 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
             throws Exception {
         Calendar calendar = Calendar.getInstance();
         String timeStart = DateUtil.dateToString(calendar.getTime(), DateUtil.patternF);
-        calendar.add(Calendar.HOUR_OF_DAY, 2);
+        calendar.add(Calendar.HOUR_OF_DAY, 72);
         String timeExpire = DateUtil.dateToString(calendar.getTime(), DateUtil.patternF);
         UnifyPayReqData data = new UnifyPayReqData(
                 title,
