@@ -550,7 +550,7 @@ public class ThirdSupportService {
                 .andOperateIsEqualTo(0);
         List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id,df_order_id"));
         Map maps = BeanMapper.list2Map(daifaGgoods, "dfOrderId", Long.class);
-        Map notMap = new HashMap();
+        Map<Long,Long> notMap = new HashMap<>();
         for (Long uoid : orderIds) {
             if (bostatus == 1 && maps.get(uoid) == null) {
                 notMap.put(uoid, uoid);

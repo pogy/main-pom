@@ -69,7 +69,7 @@ public interface TakeGoodsIssueProcess {
     void uncomplete(Long issueId) throws DaifaException;
 
     /**
-     * 按人头,全部标记未拿
+     * 按人头,拿到货
      * @param wholeId 拿货员ID
      * @param shopId 档口ID
      * @param issueIds 分配记录ID串
@@ -77,4 +77,10 @@ public interface TakeGoodsIssueProcess {
      */
     void uncompleteAll(Long wholeId,Long shopId,List<Long> issueIds,Boolean idIsCheck) throws DaifaException;
 
+    /**
+     * 按日期,拿货完成
+     * @param date yyyyMMdd
+     * @throws DaifaException
+     */
+    void completeWithDate(String date) throws DaifaException;
 }
