@@ -117,4 +117,8 @@ public class ItemShowBlock implements Serializable{
     public void setWebSite(String webSite) {
         this.webSite = webSite;
     }
+
+    public ItemShowBlock getThis() {
+        return this;
+    }
 }
