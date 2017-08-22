@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 供商户中心修改
@@ -370,7 +371,15 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
     @Override
     public ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,String webSite,ItemPromoteModule promoteModule) {
         if (promoteModule.getPromoteType() == 2) {
-            return shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(),webSite, 1, promoteModule.getItemNum());
+            //对推荐商品按推荐顺序进行排序
+            ShiguPager<ItemShowBlock> pager = shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(), webSite, 1, promoteModule.getItemNum());
+            Map<Long, ItemShowBlock> goodsIdShowMap = pager.getContent().stream().collect(Collectors.toMap(ItemShowBlock::getItemId, ItemShowBlock::getThis));
+            List<ItemShowBlock> sortedItemList = new ArrayList<>(promoteModule.getPromoteItems().size());
+            for (Long goodsId : promoteModule.getPromoteItems()) {
+                sortedItemList.add(goodsIdShowMap.get(goodsId));
+            }
+            pager.setContent(sortedItemList);
+            return pager;
         }
         String sort = "time_down";
         switch (promoteModule.getSort()) {
