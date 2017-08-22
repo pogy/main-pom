@@ -1,7 +1,10 @@
 package com.shigu.order.services;
 
+import com.opentae.data.mall.beans.ItemOrderSub;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.services.ItemOrderService;
@@ -39,8 +42,18 @@ public class AfterSaleShowService {
     @Autowired
     private AfterSaleService afterSaleService;
     @Autowired
-    PreSaleShowService preSaleShowService;
+    private PreSaleShowService preSaleShowService;
+    @Autowired
+    private OrderManageProcess orderManageProcess;
+
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
+
     public Long applyReturnOrder(AfterSaleBo bo) throws JsonErrException, OrderException {
+        ItemOrderSub ordersub = itemOrderSubMapper.selectByPrimaryKey(bo.getChildOrderId());
+        if(ordersub != null && orderManageProcess.tryRefund(bo.getChildOrderId().toString()).size() == ordersub.getNum()){
+            throw new OrderException("订单已经被分配，暂时无法退款");
+        }
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(Long.parseLong(bo.getChildOrderId()));
         Long aLong = PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
         Long refundMoney = bo.getRefundCount()*aLong;

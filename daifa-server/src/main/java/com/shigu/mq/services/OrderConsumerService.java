@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.shigu.main4.daifa.bo.OrderBO;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.daifa.exceptions.DaifaException;
-import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.mq.beans.RefundBean;
 import com.shigu.mq.beans.ResponseBasic;
 import org.springframework.beans.factory.annotation.Autowired;

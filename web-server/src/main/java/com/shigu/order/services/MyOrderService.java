@@ -4,6 +4,7 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.data.mall.beans.ItemOrder;
+import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
@@ -217,8 +218,8 @@ public class MyOrderService {
 
 
     public boolean testRefund(Long subId) {
-//        ItemOrderSub sub = itemOrderSubMapper.selectByPrimaryKey(subId);
-//        return sub != null && orderManageProcess.tryRefund(subId.toString()).size() == sub.getNum();
-        return true;
+        ItemOrderSub sub = itemOrderSubMapper.selectByPrimaryKey(subId);
+        return sub != null && orderManageProcess.tryRefund(subId.toString()).size() == sub.getNum();
+//        return true;
     }
 }
