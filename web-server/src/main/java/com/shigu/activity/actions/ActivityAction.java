@@ -355,6 +355,7 @@ public class ActivityAction {
 
     @Autowired
     private ActiveDrawListener activeDrawListener;
+    final String flag = "autumn_new2";
 
     @RequestMapping("activity/jsonapply")
     @ResponseBody
@@ -362,7 +363,7 @@ public class ActivityAction {
         JSONObject jsonObject = new JSONObject();
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
-        String flag = "autumn_new2";
+
         if (activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()).equals("true")) {
             jsonObject.put("result", "success");
         } else {
@@ -375,7 +376,7 @@ public class ActivityAction {
     public String qzxpApply(Model model, HttpSession session) {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps != null && ps.getLogshop() != null) {
-            model.addAttribute("alreadyApply", activeDrawListener.checkSignUp(ps.getUserId(), ps.getLogshop().getShopId()));
+            model.addAttribute("alreadyApply", activeDrawListener.checkSignUp(flag,ps.getUserId(), ps.getLogshop().getShopId()));
         }
         model.addAttribute("webSite", "hz");
         return "activity/qzxpApply";

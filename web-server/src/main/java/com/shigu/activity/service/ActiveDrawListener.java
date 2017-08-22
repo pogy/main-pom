@@ -332,9 +332,9 @@ public class ActiveDrawListener implements MessageListener {
         shiguTempMapper.insertSelective(shiguTemp);
         return "true";
     }
-    public boolean checkSignUp(Long userId,Long shopId) {
+    public boolean checkSignUp(String flag,Long userId,Long shopId) {
         ShiguTempExample shiguTempExample=new ShiguTempExample();
-        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString()).andFlagEqualTo(flag);
         List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
         if (temps.size()>0){
             return true;
