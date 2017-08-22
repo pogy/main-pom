@@ -10,6 +10,7 @@ import java.util.*;
 public class ItemOrderServiceExample extends SgExample<ItemOrderServiceExample.Criteria> {
     public static final Class<ItemOrderService> beanClass = ItemOrderService.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
+    public static EntityColumn soid;
     public static EntityColumn money;
     public static EntityColumn name;
     public static EntityColumn refundMoney;
@@ -22,6 +23,7 @@ public class ItemOrderServiceExample extends SgExample<ItemOrderServiceExample.C
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
+        soid = listMap.get("soid");
         money = listMap.get("money");
         name = listMap.get("name");
         refundMoney = listMap.get("refundMoney");
@@ -49,6 +51,53 @@ public class ItemOrderServiceExample extends SgExample<ItemOrderServiceExample.C
             super(example);
         }
 
+        public ItemOrderServiceExample.Criteria andSoidIsNull() {
+            return isNull(soid);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidIsNotNull() {
+            return isNotNull(soid);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidEqualTo(Long value) {
+            return equalTo(soid, value);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidNotEqualTo(Long value) {
+            return notEqualTo(soid, value);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidGreaterThan(Long value) {
+            return greaterThan(soid, value);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(soid, value);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidLessThan(Long value) {
+            return lessThan(soid, value);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(soid, value);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidIn(List<Long> values) {
+            return in(soid, values);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidNotIn(List<Long> values) {
+            return notIn(soid, values);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidBetween(Long value1, Long value2) {
+            return between(soid, value1, value2);
+        }
+
+        public ItemOrderServiceExample.Criteria andSoidNotBetween(Long value1, Long value2) {
+            return notBetween(soid, value1, value2);
+        }
         public ItemOrderServiceExample.Criteria andMoneyIsNull() {
             return isNull(money);
         }

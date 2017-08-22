@@ -24,10 +24,6 @@ public class ItemOrderBO implements Serializable{
 
     private List<SubItemOrderBO> subOrders;
     /**
-     * 服务
-     */
-    private List<Long> serviceIds;
-    /**
      * 包材
      */
     private List<PackageBO> packages;
@@ -35,6 +31,10 @@ public class ItemOrderBO implements Serializable{
      * 第3方ID
      */
     private String outerId;
+    /**
+     * 是否代发
+     */
+    private Boolean daifaOrder;
 
     public Long getUserId() {
         return userId;
@@ -92,14 +92,6 @@ public class ItemOrderBO implements Serializable{
         this.subOrders = subOrders;
     }
 
-    public List<Long> getServiceIds() {
-        return serviceIds;
-    }
-
-    public void setServiceIds(List<Long> serviceIds) {
-        this.serviceIds = serviceIds;
-    }
-
     public List<PackageBO> getPackages() {
         return packages;
     }
@@ -114,5 +106,13 @@ public class ItemOrderBO implements Serializable{
 
     public void setOuterId(String outerId) {
         this.outerId = outerId;
+    }
+
+    public Boolean getDaifaOrder() {
+        return daifaOrder;
+    }
+
+    public void setDaifaOrder(Boolean daifaOrder) {
+        this.daifaOrder = daifaOrder;
     }
 }

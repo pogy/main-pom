@@ -57,31 +57,53 @@ public abstract class PayerServiceAble implements PayerService{
         if (StringUtils.isEmpty(outerPid)) {
             outerPid = apply.getOid().toString();
         }
+        //验证重复支付
+        OrderPay oldPay=new OrderPay();
+        oldPay.setOuterPid(outerPid);
+        oldPay=orderPayMapper.selectOne(oldPay);
+        if(oldPay!=null&&!oldPay.getApplyId().equals(applyId)){//之前有付过，现在又来付
+            refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//把新支付创建出来，再退款退掉
+        }
+
         OrderPay orderPay = new OrderPay();
         orderPay.setApplyId(apply.getApplyId());
 
         OrderPay tmpOrderPay  = orderPayMapper.selectOne(orderPay);
+        //验证重复通知
         if (tmpOrderPay == null) {
-            orderPay = BeanMapper.map(apply, OrderPay.class);
-            orderPay.setCreateTime(null);
-            orderPay.setOuterPid(outerPid);
-            orderPay.setOuterPuser(outerPuser);
-            orderPay.setMoney(payMoney);
-            orderPayMapper.insertSelective(orderPay);
-
-            // 记录 oid - payid 关系
-            OrderPayRelationship relationship = new OrderPayRelationship();
-            relationship.setOid(apply.getOid());
-            relationship.setPayId(orderPay.getPayId());
-            orderPayRelationshipMapper.insertSelective(relationship);
+            createPay(apply,outerPid,outerPuser,payMoney);
+            OrderIdGenerator orderId=orderIdGeneratorMapper.selectByPrimaryKey(apply.getOid());
+            if (orderId != null&&orderId.getType()>0) {//商品订单
+                ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, apply.getOid());
+                itemOrder.payed();
+                orderMessageProducter.orderPush(itemOrder);
+            }
         }
-        OrderIdGenerator orderId=orderIdGeneratorMapper.selectByPrimaryKey(apply.getOid());
-        if (orderId != null&&orderId.getType()>0) {//商品订单
-            ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, apply.getOid());
-            itemOrder.payed();
+    }
 
-            orderMessageProducter.orderPush(itemOrder);
-        }
+    /**
+     * 创建付款成功记录
+     * @param apply
+     * @param outerPid
+     * @param outerPuser
+     * @param payMoney
+     */
+    private Long createPay(OrderPayApply apply,String outerPid,String outerPuser,Long payMoney){
+        OrderPay orderPay = new OrderPay();
+        orderPay.setApplyId(apply.getApplyId());
+        orderPay = BeanMapper.map(apply, OrderPay.class);
+        orderPay.setCreateTime(null);
+        orderPay.setOuterPid(outerPid);
+        orderPay.setOuterPuser(outerPuser);
+        orderPay.setMoney(payMoney);
+        orderPayMapper.insertSelective(orderPay);
+
+        // 记录 oid - payid 关系
+        OrderPayRelationship relationship = new OrderPayRelationship();
+        relationship.setOid(apply.getOid());
+        relationship.setPayId(orderPay.getPayId());
+        orderPayRelationshipMapper.insertSelective(relationship);
+        return orderPay.getPayId();
     }
 
     @Override

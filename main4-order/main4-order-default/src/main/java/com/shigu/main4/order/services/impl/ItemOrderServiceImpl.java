@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.BuyerAddressExample;
+import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.examples.LogisticsTemplateExample;
 import com.opentae.data.mall.examples.OrderStatusRecordExample;
 import com.opentae.data.mall.interfaces.*;
@@ -90,6 +91,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
 
+    @Autowired
+    private ItemOrderSenderMapper itemOrderSenderMapper;
+
     /**
      * oid获取器
      *
@@ -146,10 +150,13 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         }
         itemOrder.addSubOrder(subOrders);
 
-        // a, 添加服务
-        if (orderBO.getServiceIds() != null) {
-            for (Long sid : orderBO.getServiceIds()) {
-                itemOrder.addService(sid);
+        if(itemOrderSenderMapper.selectByPrimaryKey(orderBO.getSenderId()).getType()==1){//查询一下是否代发用户
+            ItemOrderSubExample subExample=new ItemOrderSubExample();
+            subExample.createCriteria().andOidEqualTo(order.getOid());
+            List<ItemOrderSub> orderSubs=itemOrderSubMapper.selectByExample(subExample);
+            for(ItemOrderSub sub:orderSubs){//如果是代发的单子，要加代发费
+                itemOrder.addDfService(orderConstantService.selDfService(orderBO.getSenderId(),sub.getMarketId()),
+                        sub.getSoid(),sub.getNum());
             }
         }
 

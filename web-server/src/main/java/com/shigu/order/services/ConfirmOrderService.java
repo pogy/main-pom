@@ -148,8 +148,6 @@ public class ConfirmOrderService {
         itemOrderBO.setWebSite(webSite);
         itemOrderBO.setMark(subItemOrderBO.getMark());
 
-        itemOrderBO.setServiceIds(BeanMapper.getFieldList(orderConstantService.selServices(bo.getSenderId()), "id", Long.class));
-
         return itemOrderBO;
     }
 

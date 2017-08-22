@@ -2,11 +2,7 @@ package com.shigu.main4.order.model;
 
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.RefundException;
-import com.shigu.main4.order.vo.ItemOrderVO;
-import com.shigu.main4.order.vo.LogisticsVO;
-import com.shigu.main4.order.vo.OrderServiceVO;
-import com.shigu.main4.order.vo.SenderVO;
-import com.shigu.main4.order.vo.SubItemOrderVO;
+import com.shigu.main4.order.vo.*;
 
 import java.util.List;
 
@@ -59,10 +55,11 @@ public interface ItemOrder extends Order{
     void refundPackage(Long id,Long money) throws RefundException;
 
     /**
-     * 添加服务数据.
-     * @param serviceId 服务Id
+     * 添加代发费的服务
+     * @param serviceVO
+     * @param number
      */
-    void addService(Long serviceId);//添加服务
+    void addDfService(ServiceVO serviceVO,Long soid,Integer number);
 
     /**
      * 除商品外的其他钱

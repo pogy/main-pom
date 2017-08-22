@@ -111,7 +111,7 @@ public class DfMessageListener implements MessageListener {
 
             ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
             if (soidps == itemOrder.subOrdersInfo().stream().mapToInt(SubItemOrderVO::getNum).sum()) {
-                itemOrder.closed();
+                itemOrder.finished();
             }
         } catch (PayerException | RefundException e) {
             logger.error(e.getMessage(), e);
