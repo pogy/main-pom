@@ -116,6 +116,11 @@
 
         <!--其它原先的东西-->
         <dependency>
+            <groupId>com.openJar</groupId>
+            <artifactId>open_base_pc</artifactId>
+            <version>2.0.8-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.opentae.lib</groupId>
             <artifactId>jstl</artifactId>
             <version>1.1.2</version>

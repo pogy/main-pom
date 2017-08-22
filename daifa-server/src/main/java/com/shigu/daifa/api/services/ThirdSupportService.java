@@ -549,28 +549,12 @@ public class ThirdSupportService {
                 .andDaifaWorkerIdEqualTo(daifaWorkerId)
                 .andOperateIsEqualTo(0);
         List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id,df_order_id"));
-        Map maps = BeanMapper.list2Map(daifaGgoods, "dfOrderId", Long.class);
-        Map notMap = new HashMap();
-        for (Long uoid : orderIds) {
-            if (bostatus == 1 && maps.get(uoid) == null) {
-                notMap.put(uoid, uoid);
-            } else if (bostatus == 2 && maps.get(uoid) != null) {
-                notMap.put(uoid, uoid);
-            }
-        }
 
         List<Long> takeIds = BeanMapper.getFieldList(daifaGgoods, "takeGoodsId", Long.class);
         takeGoodsIssueProcess.uncompleteAll(daifaWorkerId, storeId, takeIds, bostatus == 1);
         if (notCodes != null && notCodes.size() != 0) {
             for (NotCodeSets nc : notCodes) {
                 List<Long> upoids = nc.getOrderIds();
-                for (int i = 0; i < upoids.size(); i++) {
-                    Long upLong = upoids.get(i);
-                    if (notMap.get(upLong) == null) {
-                        upoids.remove(i);
-                        i--;
-                    }
-                }
                 int day = nc.getDay();
                 if (day > 0 && upoids.size() > 0) {
                     if (day == 20) {
@@ -590,7 +574,6 @@ public class ThirdSupportService {
                         }
                     }
                 }
-
             }
         }
     }
