@@ -50,10 +50,11 @@ public class AfterSaleShowService {
     private ItemOrderSubMapper itemOrderSubMapper;
 
     public Long applyReturnOrder(AfterSaleBo bo) throws JsonErrException, OrderException {
-        ItemOrderSub ordersub = itemOrderSubMapper.selectByPrimaryKey(bo.getChildOrderId());
-        if(ordersub != null && orderManageProcess.tryRefund(bo.getChildOrderId().toString()).size() == ordersub.getNum()){
-            throw new OrderException("订单已经被分配，暂时无法退款");
-        }
+        //TODO:: 退货为什么要加一个分配验证？？ 能退货不是代表已经收到货了吗？
+//        ItemOrderSub ordersub = itemOrderSubMapper.selectByPrimaryKey(bo.getChildOrderId());
+//        if(ordersub != null && orderManageProcess.tryRefund(bo.getChildOrderId()).size() == ordersub.getNum()){
+//            throw new OrderException("订单已经被分配，暂时无法退款");
+//        }
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(Long.parseLong(bo.getChildOrderId()));
         Long aLong = PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
         Long refundMoney = bo.getRefundCount()*aLong;
