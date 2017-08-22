@@ -316,12 +316,9 @@ public class OrderListServiceImpl implements OrderListService {
         }
         vo.setChildOrdersPriceLong(subOrdersInfo.stream().mapToLong(i -> i.getNum() * i.getProduct().getPrice()).sum());
         vo.setChildOrdersPrice(String.format("%.2f", vo.getChildOrdersPriceLong() * .01));
-        long servicePrice = 0;
-        for (OrderServiceVO orderServiceVO:orderModel.selServices()) {
-            servicePrice += orderServiceVO.getMoney();
-        }
-        vo.setServicePriceLong(servicePrice);
-        vo.setServicePrice(String.format("%.2f", servicePrice * .01));
+        int sumNumber = subOrdersInfo.stream().mapToInt(SubItemOrderVO::getNum).sum();
+        vo.setServicePriceLong(orderModel.selServices().stream().mapToLong(s -> s.getMoney() * sumNumber).sum());
+        vo.setServicePrice(String.format("%.2f", vo.getServicePriceLong() * .01));
         return vo;
     }
 

@@ -172,11 +172,6 @@ public class MyOrderService {
         vo.setChildOrders(subs);
 
         OrderDetailTotalVO totalVO = orderListService.selectTotal(orderId);
-        totalVO.setServicePrice(PriceConvertUtils.priceToString(totalVO.getServicePriceLong()));
-        totalVO.setOrderTotalPrice(PriceConvertUtils.priceToString(totalVO.getOrderTotalPriceLong()));
-        totalVO.setExpressPrice(PriceConvertUtils.priceToString(totalVO.getExpressPriceLong()));
-        totalVO.setChildOrdersPrice(PriceConvertUtils.priceToString(totalVO.getChildOrdersPriceLong()));
-
 
         vo.setExpress(expressVO);
         vo.setOrderAddrInfo(addrVo);
