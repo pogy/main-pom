@@ -5,7 +5,6 @@ import com.openJar.beans.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.thirdSupport.ShortCompleteCheckedResponse;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -17,13 +16,9 @@ import java.util.List;
  */
 public class ShortCompleteCheckedRequest extends Request<ShortCompleteCheckedResponse> {
 
-    @NotNull(message = "workerId is null")
     private Long workId;//拿货人id
 
-    @NotNull(message = "barCodeMore is null")
     private String barCodeMore;//条形码以，为分割
-
-    @NotNull(message = "status is null")
     private Integer status;//1拿货完成2缺货完成
 
     private List<String> weightCodeList;

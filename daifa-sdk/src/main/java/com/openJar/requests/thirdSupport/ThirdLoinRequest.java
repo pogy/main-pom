@@ -4,16 +4,13 @@ import com.openJar.beans.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.thirdSupport.ThirdLoinResponse;
 
-import javax.validation.constraints.NotNull;
 
 /**
  * Created by pc on 2016-03-22.
  */
 public class ThirdLoinRequest extends Request<ThirdLoinResponse> {
 
-    @NotNull(message = "loginName is null")
     private String loginName;//登陆名
-    @NotNull(message="passWord is null")
     private String passWord;//手机号
     
 
