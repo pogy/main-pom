@@ -32,9 +32,6 @@ public class AliPayerServiceImpl extends PayerServiceAble {
     @Autowired
     private AlipayClient alipayClient;
 
-    @Autowired
-    private ItemOrderRefundMapper itemOrderRefundMapper;
-
     @Value("${returnUrl}")
     private String  returnUrl;
 
@@ -108,12 +105,9 @@ public class AliPayerServiceImpl extends PayerServiceAble {
             throw new PayerException("支付宝退款失败， 无法获取对应代发资金分组：payId=" + orderPay.getPayId());
         }
         //查出第几次退
-        ItemOrderRefundExample refundExample=new ItemOrderRefundExample();
-        refundExample.createCriteria().andOidEqualTo(orderPayApply.getOid());
-        int refundCount=itemOrderRefundMapper.countByExample(refundExample);
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent("{" +
-                "    \"out_trade_no\":\"" + orderPayApply.getApplyId() + "_"+refundCount+"\"," +
+                "    \"out_trade_no\":\"" + orderPayApply.getApplyId() +"\"," +
                 "    \"refund_amount\":" + String.format("%,.2f", money * .01)  + "," +
                 "    \"refund_reason\":\"正常退款\"," +
                 "    \"out_request_no\":\"" + UUIDGenerator.getUUID() + "\"" +
