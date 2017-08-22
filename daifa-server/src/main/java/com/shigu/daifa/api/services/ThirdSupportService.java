@@ -64,6 +64,7 @@ public class ThirdSupportService {
         user.setLoginName(worker.getDaifaWorker());
         user.setPhone(worker.getPhone());
         user.setUserName(worker.getUserName());
+        user.setSuccess(true);
         return user;
     }
 
@@ -102,6 +103,7 @@ public class ThirdSupportService {
             throw new SystemInterfaceException("缺少参数");
         }
         SelWorkUserGgoodsTasksGoodsResponse res = new SelWorkUserGgoodsTasksGoodsResponse();
+        res.setSuccess(true);
         res.setSkuList(new ArrayList<>());
         res.setSumNum(0);
         res.setSumPrice(0L);
@@ -533,6 +535,7 @@ public class ThirdSupportService {
         vo.setStoreName(storename);
         vo.setSumNum(sumNum);
         vo.setSumPrice(sumPrice);
+        vo.setSuccess(true);
         return vo;
     }
 
