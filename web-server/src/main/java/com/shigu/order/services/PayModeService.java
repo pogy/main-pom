@@ -78,7 +78,7 @@ public class PayModeService {
         ItemOrderVO itemOrderVO = orderInfo(orderId);
         payModePageVO.setWebSite(itemOrderVO.getWebSite());
         payModePageVO.setTempCode(paySdkClientService.tempcode(userId));
-        payModePageVO.setAmountPay(PriceConvertUtils.priceToString(itemOrderVO.getTotalFee()));
+        payModePageVO.setAmountPay(String.format("%.2f", itemOrderVO.getTotalFee() * .01));
         payModePageVO.setAlipayUrl("/order/alipay.htm");
         payModePageVO.setCurrentAmount(String.format("%.2f", memberUserMapper.userBalance(userId) * .01));
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);

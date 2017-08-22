@@ -209,7 +209,7 @@ public class ItemOrderImpl implements ItemOrder {
     public void addDfService(ServiceVO serviceVO, Long soid, Integer number) {
         // 记录订单服务信息
         ItemOrderService itemOrderService = BeanMapper.map(serviceVO, ItemOrderService.class);
-        itemOrderService.setMoney(serviceVO.getPrice()*number);
+        itemOrderService.setMoney(serviceVO.getPrice() * number);
         itemOrderService.setOid(oid);
         itemOrderService.setSoid(soid);
         itemOrderService.setServiceId(serviceVO.getId());
@@ -252,11 +252,8 @@ public class ItemOrderImpl implements ItemOrder {
         // 物流总额
         Long logisticsAmount = selLogisticses().stream().mapToLong(LogisticsVO::getMoney).sum();
 
-        // 统计商品总件数
-        Integer goodsNumbers = subOrdersInfo().stream().mapToInt(SubItemOrderVO::getNum).sum();
-
         // 发货服务总额，每种服务都是按件计费 TODO: 不同市场代发费不同，
-        return logisticsAmount + selServices().stream().mapToLong(vo -> vo.getMoney() * goodsNumbers).sum();
+        return logisticsAmount + selServices().stream().mapToLong(OrderServiceVO::getMoney).sum();
     }
 
     @Override

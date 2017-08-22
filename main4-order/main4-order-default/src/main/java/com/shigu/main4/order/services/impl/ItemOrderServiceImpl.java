@@ -161,11 +161,11 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         }
 
         // b, 添加包材
-        if (orderBO.getPackages() != null) {
-            for (PackageBO packageBO : orderBO.getPackages()) {
-                itemOrder.addPackage(packageBO.getMetarialId(), packageBO.getNum());
-            }
-        }
+//        if (orderBO.getPackages() != null) {
+//            for (PackageBO packageBO : orderBO.getPackages()) {
+//                itemOrder.addPackage(packageBO.getMetarialId(), packageBO.getNum());
+//            }
+//        }
 
         // d, 添加物流
         LogisticsBO logistics = orderBO.getLogistics();
