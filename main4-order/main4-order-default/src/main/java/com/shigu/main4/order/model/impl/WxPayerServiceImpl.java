@@ -141,7 +141,7 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
                 orderPay.getOuterPid(),
                 wxOutTradeNo(orderPay.getApplyId()),
                 null,
-                "RF" + orderPay.getOuterPid(),
+                "RF" + orderPay.getOuterPid() + orderPay.getRefundMoney(),
                 orderPay.getMoney().intValue(),
                 refundFee,
                 orderPay.getOuterPuser(),
