@@ -2,6 +2,7 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.Date;
 import java.io.Serializable;
 
 public class ItemCart implements Serializable {
@@ -41,6 +42,11 @@ public class ItemCart implements Serializable {
      * 数量
      */
 	private Integer num;
+
+    /**
+     * 进货车最后修改
+     */
+	private Date lastModify;
 
 	public void setCartId(Long cartId) {
 		this.cartId = cartId;
@@ -96,6 +102,14 @@ public class ItemCart implements Serializable {
 
 	public Integer getNum() {
 		return this.num;
+	}
+
+	public void setLastModify(Date lastModify) {
+		this.lastModify = lastModify;
+	}
+
+	public Date getLastModify() {
+		return this.lastModify;
 	}
 
 }

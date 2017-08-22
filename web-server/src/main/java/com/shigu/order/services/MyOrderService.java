@@ -83,7 +83,7 @@ public class MyOrderService {
         orderExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
         orderExample.setEndIndex(bo.getPageSize());
         orderExample.setOrderByClause("item_order.create_time DESC");
-        ItemOrderExample.Criteria orderCriteria = orderExample.createCriteria().andUserIdEqualTo(userId);
+        ItemOrderExample.Criteria orderCriteria = orderExample.createCriteria().andUserIdEqualTo(userId).andDisenableEqualTo(false);
 
         if (bo.getOrderId() != null) {
             orderCriteria.andOidEqualTo(bo.getOrderId());

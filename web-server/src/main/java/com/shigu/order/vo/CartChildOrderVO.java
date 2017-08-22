@@ -1,12 +1,13 @@
 package com.shigu.order.vo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * 进货车子订单页面数据
  * Created by bugzy on 2017/6/20 0020.
  */
-public class CartChildOrderVO {
+public class CartChildOrderVO implements Comparable<CartChildOrderVO> {
 
     private Long childOrderId;
 
@@ -33,6 +34,8 @@ public class CartChildOrderVO {
     private boolean disabled;
 
     private Long weight;
+
+    private Date lastModify;
 
     public Long getChildOrderId() {
         return childOrderId;
@@ -136,5 +139,18 @@ public class CartChildOrderVO {
 
     public void setWeight(Long weight) {
         this.weight = weight;
+    }
+
+    public Date getLastModify() {
+        return lastModify;
+    }
+
+    public void setLastModify(Date lastModify) {
+        this.lastModify = lastModify;
+    }
+
+    @Override
+    public int compareTo(CartChildOrderVO o) {
+        return o == null ? 1 : lastModify.compareTo(o.getLastModify());
     }
 }

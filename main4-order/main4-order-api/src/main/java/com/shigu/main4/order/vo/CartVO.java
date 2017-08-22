@@ -1,12 +1,13 @@
 package com.shigu.main4.order.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 购物车
  * Created by zhaohongbo on 17/6/1.
  */
-public class CartVO extends ItemProductVO implements Serializable{
+public class CartVO extends ItemProductVO implements Serializable, Comparable<CartVO>{
     private Long cartId;
 
     /**
@@ -28,6 +29,8 @@ public class CartVO extends ItemProductVO implements Serializable{
      * 数量
      */
     private Integer num;
+
+    private Date lastModify;
 
     public Long getUserId() {
         return userId;
@@ -67,5 +70,18 @@ public class CartVO extends ItemProductVO implements Serializable{
 
     public void setNum(Integer num) {
         this.num = num;
+    }
+
+    public Date getLastModify() {
+        return lastModify;
+    }
+
+    public void setLastModify(Date lastModify) {
+        this.lastModify = lastModify;
+    }
+
+    @Override
+    public int compareTo(CartVO o) {
+        return o == null ? 1 : lastModify.compareTo(o.getLastModify());
     }
 }

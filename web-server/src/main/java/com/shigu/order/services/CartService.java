@@ -98,7 +98,7 @@ public class CartService {
      */
     public CartPageVO packCartProductVo(List<CartVO> vos) {
         CartPageVO vo = new CartPageVO();
-        Map<Long, List<CartVO>> groupByShop = BeanMapper.groupBy(vos, "shopId", Long.class);
+        Map<Long, List<CartVO>> groupByShop = vos.stream().collect(Collectors.groupingBy(CartVO::getShopId));
         vo.setOrders(new ArrayList<>(groupByShop.size()));
         if (!groupByShop.isEmpty()) {
             Map<Long, ShiguShop> shopMap = selShopIn(new ArrayList<>(groupByShop.keySet()));
@@ -122,6 +122,7 @@ public class CartService {
                 for (CartVO productVO : productVOS) {
                     CartChildOrderVO childOrderVO = new CartChildOrderVO();
                     orderVO.getChildOrders().add(childOrderVO);
+                    childOrderVO.setLastModify(productVO.getLastModify());
                     childOrderVO.setWeight(productVO.getWeight());
                     childOrderVO.setChildOrderId(productVO.getCartId());
                     childOrderVO.setGoodsid(productVO.getGoodsId());
@@ -141,7 +142,12 @@ public class CartService {
                         childOrderVO.setSizes(BeanMapper.getFieldList(cdnItem.getSizes(), "value", String.class));
                     }
                 }
+                Collections.sort(orderVO.getChildOrders());
+                Collections.reverse(orderVO.getChildOrders());
+                orderVO.setLastModify(Collections.max(orderVO.getChildOrders()).getLastModify());
             }
+            Collections.sort(vo.getOrders());
+            Collections.reverse(vo.getOrders());
         }
         return vo;
     }
