@@ -50,7 +50,7 @@ public class ShopFitmentServiceImplTest {
     @Test
     public void InitShopFitment() throws Exception {
         ShiguShopExample example = new ShiguShopExample();
-        example.createCriteria().andMarketIdIn(Arrays.asList(marketIds)).andShopIdNotIn(Arrays.asList(ignoredShopIds));
+        example.createCriteria().andMarketIdIn(Arrays.asList(marketIds)).andShopIdNotIn(Arrays.asList(ignoredShopIds)).andShopStatusEqualTo(0);
         shiguShopMapper.selectFieldsByExample(example,FieldUtil.codeFields("shop_id")).stream().map(ShiguShop::getShopId)
                 .forEach(o->{
                     try {
