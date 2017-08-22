@@ -4,24 +4,29 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.data.mall.beans.ItemOrder;
+import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
 import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.daifa.process.OrderManageProcess;
-import com.shigu.order.bo.OrderBO;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
-import com.shigu.main4.order.servicevo.*;
+import com.shigu.main4.order.servicevo.ExpressInfoVO;
+import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
+import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
+import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
-import com.shigu.order.vo.MyOrderDetailVO;
-import com.shigu.order.vo.MyOrderVO;
-import com.shigu.order.vo.SubMyOrderVO;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
+import com.shigu.main4.order.zfenums.RefundTypeEnum;
+import com.shigu.order.bo.OrderBO;
+import com.shigu.order.vo.*;
 import com.shigu.tools.DateParseUtil;
 import com.shigu.zf.utils.PriceConvertUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +35,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +59,12 @@ public class MyOrderService {
 
     @Autowired
     private ItemOrderMapper itemOrderMapper;
+
+    @Autowired
+    private ItemOrderServiceMapper itemOrderServiceMapper;
+
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
 
     @Autowired
     private ItemOrderSubMapper itemOrderSubMapper;
@@ -106,16 +118,9 @@ public class MyOrderService {
             logisticsExampleCriteria.andTelephoneEqualTo(bo.getTelePhone());
         }
 
-        ItemOrderServiceExample serviceExample = new ItemOrderServiceExample();
-        ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
-        ItemOrderRefundExample changeRefundExample = new ItemOrderRefundExample();
-
         MultipleExample multipleExample = MultipleExampleBuilder.from(orderExample)
                 .innerJoin(subExample).on(subExample.createCriteria().equalTo(ItemOrderSubExample.oid, ItemOrderExample.oid))
                 .leftJoin(logisticsExample).on(logisticsExample.createCriteria().equalTo(ItemOrderLogisticsExample.oid, ItemOrderExample.oid))
-                .leftJoin(serviceExample).on(serviceExample.createCriteria().equalTo(ItemOrderServiceExample.oid, ItemOrderExample.oid))
-                .leftJoin(refundExample).on(refundExample.createCriteria().equalTo(ItemOrderRefundExample.oid,ItemOrderExample.oid).equalTo(ItemOrderRefundExample.soid,ItemOrderSubExample.soid).andTypeEqualTo(1))
-                .leftJoin(changeRefundExample).on(changeRefundExample.createCriteria().equalTo(changeRefundExample.getColumn(ItemOrderRefundExample.oid), ItemOrderExample.oid).equalTo(changeRefundExample.getColumn(ItemOrderRefundExample.soid), ItemOrderSubExample.soid).andTypeNotEqualTo(1))
                 .build();
 
         multipleExample.setDistinctCount(ItemOrderExample.oid);
@@ -125,11 +130,61 @@ public class MyOrderService {
         if (orderCount > 0) {
             pager.calPages(orderCount, bo.getPageSize());
             pager.setContent(multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class));
+            List<Long> orderIds = pager.getContent().stream().map(MyOrderVO::getOrderId).collect(Collectors.toList());
+
+            ItemOrderServiceExample orderServiceExample = new ItemOrderServiceExample();
+            orderServiceExample.createCriteria().andOidIn(orderIds);
+            Map<Long, List<com.opentae.data.mall.beans.ItemOrderService>> orderServiceMap
+                    = itemOrderServiceMapper.selectByExample(orderServiceExample).stream().collect(Collectors.groupingBy(com.opentae.data.mall.beans.ItemOrderService::getOid));
+
+            ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
+            refundExample.createCriteria().andOidIn(orderIds);
+            Map<Long, List<ItemOrderRefund>> refundMap
+                    = itemOrderRefundMapper.selectByExample(refundExample).stream().collect(Collectors.groupingBy(ItemOrderRefund::getSoid));
+
             for (MyOrderVO myOrderVO : pager.getContent()) {
-                String serverPay = myOrderVO.getServerPay();
-                if (serverPay != null) {
-                    double serviceFee = Double.valueOf(serverPay) * myOrderVO.getChildOrders().stream().mapToInt(SubMyOrderVO::getNum).sum();
-                    myOrderVO.setServerPay(String.format("%.2f", serviceFee));
+                List<SubMyOrderVO> childOrders = myOrderVO.getChildOrders();
+
+                List<com.opentae.data.mall.beans.ItemOrderService> services = orderServiceMap.get(myOrderVO.getOrderId());
+                if (services != null) {
+                    int number = childOrders.stream().mapToInt(SubMyOrderVO::getNum).sum();
+                    myOrderVO.setServerPay(String.format("%.2f", services.stream().mapToLong(s -> s.getMoney() * number).sum() * .01));
+                }
+
+                for (SubMyOrderVO subMyOrderVO : childOrders) {
+                    List<ItemOrderRefund> itemOrderRefunds = refundMap.get(subMyOrderVO.getChildOrderId());
+                    if (itemOrderRefunds != null) {
+                        Map<Integer, ItemOrderRefund> typeGroup = itemOrderRefunds.stream().collect(Collectors.toMap(ItemOrderRefund::getType, r -> r));
+
+                        for (Map.Entry<Integer, ItemOrderRefund> entry : typeGroup.entrySet()) {
+                            RefundTypeEnum refundType = RefundTypeEnum.typeOf(entry.getKey());
+                            switch (refundType) {
+//                                case SYSTEM_REFUND:case ONLY_REFUND:
+//                                    refundType == RefundTypeEnum.ONLY_REFUND
+//                                    subMyOrderVO.setSqRefundId(r.getRefundId());
+//                                    subMyOrderVO.setTkNum(r.getNumber());
+//                                    subMyOrderVO.setTkState(RefundStateEnum.statusOf(r.getStatus()) == RefundStateEnum.ENT_REFUND ? 1 : 0);
+//                                    subMyOrderVO.setBefore(entry.getValue().stream().map(r -> {
+//                                        SendBeforeOrderRefundVO refundVO = new SendBeforeOrderRefundVO();
+//                                        return refundVO;
+//                                    }).collect(Collectors.toList()));
+//                                    break;
+//                                case GOODS_REFUND: case GOODS_CHANGE:
+//                                    subMyOrderVO.setAfter(entry.getValue().stream().map(r -> {
+//                                        SendedOrderRefundVO refundVO = new SendedOrderRefundVO();
+//                                        refundVO.setShRefundId(r.getRefundId());
+//                                        refundVO.setShTkNum(r.getNumber());
+//                                        RefundStateEnum refundStateEnum = RefundStateEnum.statusOf(r.getStatus());
+//                                        refundVO.setShState(RefundStateEnum.ENT_REFUND == refundStateEnum ? 2 : RefundStateEnum.NOT_REFUND == refundStateEnum ? 6 : 4);
+//                                        if (refundType == RefundTypeEnum.GOODS_CHANGE) {
+//                                            refundVO.setShState(refundVO.getShState() + 1);
+//                                        }
+//                                        return refundVO;
+//                                    }).collect(Collectors.toList()));
+                                    break;
+                            }
+                        }
+                    }
                 }
             }
         }

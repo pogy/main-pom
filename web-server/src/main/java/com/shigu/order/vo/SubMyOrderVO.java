@@ -12,12 +12,10 @@ public class SubMyOrderVO {
     /**
      * 售前id
      */
-    @Column("item_order_refund.refund_id")
     private Long sqRefundId;
     /**
      * 	售后id
      */
-    @Column("item_order_refund2.refund_id")
     private Long shRefundId;
     /**
      * 	商品Id
@@ -62,22 +60,18 @@ public class SubMyOrderVO {
     /**
      * 退款数量
      */
-    @Column("item_order_refund.number")
     private Integer tkNum;
     /**
      * 售后退款数量
      */
-    @Column("item_order_refund2.number")
     private Integer shTkNum;
     /**
      * 退款状态 0无，1:申请中,2:成功,3:拒绝
      */
-    @Column("IF(item_order_refund.status=2,1,0)")
     private Integer tkState;
     /**
      * 	售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
      */
-    @Column("IF(item_order_refund2.type=2,IF(item_order_refund2.status=2,2,IF(item_order_refund2.status=4,6,4)),IF(item_order_refund2.status=2,3,IF(item_order_refund2.status=4,7,5)))")
     private Integer shState;
 
     /**

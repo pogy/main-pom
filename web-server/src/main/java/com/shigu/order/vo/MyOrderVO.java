@@ -28,7 +28,6 @@ public class MyOrderVO {
     /**
      * 服务费
      */
-    @Column("convert(item_order_service.money*0.01,decimal(10,2))")
     private String serverPay;
     /**
      * 订单主状态 1待付款，2待配货，3已发货，4交易完成，5交易取消

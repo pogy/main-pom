@@ -1,14 +1,11 @@
 package com.shigu.main4.order.services.impl;
 
-import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.examples.ItemOrderRefundExample;
-import com.opentae.data.mall.interfaces.ExpressCompanyMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
-import com.shigu.main4.order.enums.RefundType;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.RefundItemOrder;
@@ -130,7 +127,7 @@ public class AfterSaleServiceImpl implements AfterSaleService{
     public Long preRefundApply(Long subOrderId, int refundCount, Long refundMoney) throws OrderException {
         //1、本订单退过款，不能再发起
         ItemOrderRefundExample refundExample=new ItemOrderRefundExample();
-        refundExample.createCriteria().andSoidEqualTo(subOrderId).andTypeEqualTo(RefundType.NO_ITEM.getValue());
+        refundExample.createCriteria().andSoidEqualTo(subOrderId).andTypeEqualTo(RefundTypeEnum.ONLY_REFUND.type);
         if(itemOrderRefundMapper.countByExample(refundExample)>0){
             throw new OrderException("退款失败，同一子单不能发起两次退款");
         }
