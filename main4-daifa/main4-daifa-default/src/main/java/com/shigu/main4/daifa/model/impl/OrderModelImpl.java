@@ -145,6 +145,7 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setWebSite(bo.getWebSite());
                     subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
                     subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
+                    subOrderModelBO.setGoodsWeight (bo.getWeight ());//重量
                     if(serviceBOMap!=null&&serviceBOMap.size ()>0) {
                         if(serviceBOMap.get (bo.getSoid ())!=null) {
                             BigDecimal serviceFeeSum = new BigDecimal (serviceBOMap.get (bo.getSoid ()).getMoney ());
