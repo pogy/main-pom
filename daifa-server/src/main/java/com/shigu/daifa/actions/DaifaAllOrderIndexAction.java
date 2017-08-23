@@ -9,6 +9,7 @@ import com.shigu.daifa.services.DaifaAllOrderIndexService;
 import com.shigu.daifa.vo.AllSubOrderVO;
 import com.shigu.daifa.vo.DaifaAllOrderVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
+import com.shigu.daifa.vo.OrderStatisticsVO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.tools.JsonResponseUtil;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Created by pc on 2017-08-14.
@@ -44,8 +47,9 @@ public class DaifaAllOrderIndexAction {
     }
 
     @RequestMapping("daifa/orderAll")
-    public String allOrderPage(AllOrderBO bo, Model model) {
+    public String allOrderPage(AllOrderBO bo, Model model) throws ExecutionException, InterruptedException {
         daifaAllOrderIndexService.timeOutExcute();
+        Future<OrderStatisticsVO> future = daifaAllOrderIndexService.statisticsToday();
 
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser auth = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
@@ -56,7 +60,10 @@ public class DaifaAllOrderIndexAction {
         model.addAttribute("query", bo);
         model.addAttribute("pageOption", pageOption);
         model.addAttribute("userName", auth.getDaifaUserName());
+
+        model.addAttribute("orderStatistics",future.get());
         return "daifa/orderAll";
+
     }
 
     @RequestMapping(value = "daifa/addChildRemarkJson", method = RequestMethod.POST)
