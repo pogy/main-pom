@@ -75,6 +75,7 @@ public abstract class PayerServiceAble implements PayerService{
                         ,orderPayExample.createCriteria().andApplyIdNotEqualTo(applyId)).build();
         if(multipleMapper.selectFieldsByMultipleExample(multipleExample, PayAndOrderVO.class)!=null){//之前有付过，现在又来付
             refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//把新支付创建出来，再退款退掉
+            return;
         }
 
         OrderPay orderPay = new OrderPay();
