@@ -22,6 +22,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.exceptions.ShopDomainException;
 import com.shigu.main4.goat.enums.GoatType;
@@ -438,6 +439,13 @@ public class ShopAction {
             synItem.setFloorId(shopSession.getFloorId());
             synItem.setWebSite(shopSession.getWebSite());
             synItem.setItemFrom(ItemFrom.MEMBER);
+            Date created = new Date();
+            synItem.setCreated(created);
+            synItem.setModified(created);
+            //淘宝上架时间，手动发布商品默认为现在
+            synItem.setListTime(created);
+            //淘宝下架时间，手动发布商品默认为七天后
+            synItem.setDelistTime(DateUtil.addDay(created,7));
             itemId=itemAddOrUpdateService.userAddItem(synItem);
             //保存上传记录
             EverUsedCatForAdd usedCat=new EverUsedCatForAdd();
