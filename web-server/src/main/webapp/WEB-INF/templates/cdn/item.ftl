@@ -583,6 +583,7 @@ ${userShopHdHtml}
                 <span class="fcF40 yahei">&yen;<em class="fs18 arail">${goodsInfo.piPrice!}</em></span>
             </li>
             <li class="minprice">
+                <#if goodsInfo.liPrice??>
                 <label class="fc9">电商最低零售价</label>
                 <span class="fcF40 fs14 yahei">&yen;<em class="arail">${goodsInfo.liPrice!}</em>
                     <div class="tipsbox fs12 simsun">
@@ -591,6 +592,7 @@ ${userShopHdHtml}
                         <i class="i2"></i>
                     </div>
                 </span>
+                </#if>
             </li>
             <li class="view">
                 <label class="fc9">浏览</label>
@@ -601,7 +603,9 @@ ${userShopHdHtml}
     </div>
     
     
-    
+    <#if goodsInfo.onSale == false>
+    <p class="noSale">此商品已下架</p>
+    <#else>
     <div class="goodsColors clearfix">
         <label class="fc9 fl">颜色</label>
         <div id="colorsMetabox" class="colors clearfix">
@@ -643,7 +647,13 @@ ${userShopHdHtml}
     
 
     <div class="buttonbox clearfix">
-        <b class="btn btn-lg btn-orange addGwc">加入进货车</b>
+        <b class="btn btn-lg pr btn-orange <#if goodsInfo.onlineSale == true>addGwc<#else>notAddGwc</#if>">加入进货车
+            <div class="pa notOnlineSale">
+                商家暂未开通！
+                <i class="i1"></i>
+                <i class="i2"></i>
+            </div>
+        </b>
         <#if goodsInfo.hasOriginalPic == true>
         <b class="btn btn-lg btn-orange picDownload noLoadIcon" id="picDownload" data-goodsid="${goodsInfo.goodsId!}">
             精修大图下载
@@ -676,6 +686,8 @@ var hasYt = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图下载
 
 
 
+
+
         <b class="btn btn-lg oneKeyUp hover" data-goodsid="${goodsInfo.goodsId!}">一键上传</b>
         
         
@@ -686,6 +698,7 @@ var hasYt = ${goodsInfo.hasOriginalPic!}; // 判断是否存在原图下载
         <span class="weixin">微信</span>
     </div>
     
+    </#if>
 </div>
 
 
@@ -904,7 +917,15 @@ var piPrice = '${goodsInfo.piPrice!}';
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
-    <input type=hidden name="${field.name!}" value="${field.value!}">
+        <#if field.timeFormat??>
+            <#if field.value??>
+            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
+            <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+            </#if>
+        <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+        </#if>
     </#list>
 </form>
 </#if>
