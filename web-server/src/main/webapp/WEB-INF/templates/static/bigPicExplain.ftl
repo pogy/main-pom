@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title></title>
+    <title>大图下载说明 - 四季星座网</title>
 
     
     
@@ -228,8 +228,6 @@ var webSite = '${webSite!}';
 
 
 
-
-
 <div class="footer">
     <div class="inner">
         <p class="sitemap"> 
@@ -273,3 +271,5 @@ var webSite = '${webSite!}';
 <!--省略end，让浏览器自动添加-->
 
 <#include "/common/cnzz.ftl">
+
+
