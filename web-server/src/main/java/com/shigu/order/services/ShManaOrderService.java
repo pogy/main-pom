@@ -26,6 +26,9 @@ public class ShManaOrderService {
     @Autowired
     OrderListService orderListService;
 
+    @Autowired
+    MyOrderService myOrderService;
+
     public ShiguPager<MyOrderVO> selectShList(Integer shStatus,Integer page,Integer size,Long userId) throws ParseException {
         if(page==null){
             page=1;
@@ -46,7 +49,7 @@ public class ShManaOrderService {
             vo.setTradePay(PriceConvertUtils.priceToString(show.getServerPrice()+show.getOrderPrice()+show.getPostPrice()));
             vo.setTradeTime(DateUtil.dateToString(show.getPayTime(),DateUtil.patternD));
             vo.setWebSite(show.getWebSite());
-            List<SubMyOrderVO> subs=MyOrderService.toSubMyOrderVO(show.getChildOrders());
+            List<SubMyOrderVO> subs=myOrderService.toSubMyOrderVO(show.getChildOrders());
             vo.setChildOrders(subs);
             vos.add(vo);
         }

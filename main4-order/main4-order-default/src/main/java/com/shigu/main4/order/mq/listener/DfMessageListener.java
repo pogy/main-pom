@@ -132,7 +132,7 @@ public class DfMessageListener implements MessageListener {
             SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, k);
             SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
             try {
-                Long refundId = subItemOrder.refundApply(1, v.size(), subItemOrderVO.getPrice(), msg.getMsg());
+                Long refundId = subItemOrder.refundApply(4, v.size(), subItemOrderVO.getPrice(), msg.getMsg());
 
                 orderMessageProducter.orderRefundNoItem(refundId, k, v);
             } catch (OrderException e) {
