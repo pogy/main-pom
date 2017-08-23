@@ -96,7 +96,8 @@ public class MemberSimpleService {
         if (memberUser == null) {
             throw new Main4Exception("没有用户信息");
         }
-        return memberUser.getIsPayPassword()>0;
+
+        return memberUser.getIsPayPassword()!=null && memberUser.getIsPayPassword()>0;
     }
 
     public String selUserPayPwdByUserId(Long userId) throws Main4Exception {
