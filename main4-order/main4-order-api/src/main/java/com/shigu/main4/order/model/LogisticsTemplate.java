@@ -19,19 +19,20 @@ public interface LogisticsTemplate {
     LogisticsTemplateVO templateInfo();
 
     /**
-     * 按省份查快递公司
+     * 查快递规则
      * @param provId
      * @return
      */
-    List<LogisticsCompanyVO> provCompanys(Long provId);
+    List<BournRuleInfoVO> rulesByProv(Long provId) throws LogisticsRuleException;
 
     /**
-     * 查快递规则
+     * 取有效的物流规则
      * @param provId
      * @param companyId
      * @return
+     * @throws LogisticsRuleException
      */
-    List<BournRuleInfoVO> rules(Long provId,Long companyId) throws LogisticsRuleException;
+    BournRuleInfoVO rule(Long provId,Long companyId) throws LogisticsRuleException;
 
     /**
      * 计费

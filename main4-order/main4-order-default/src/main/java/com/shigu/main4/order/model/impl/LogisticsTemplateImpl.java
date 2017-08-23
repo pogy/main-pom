@@ -1,11 +1,11 @@
 package com.shigu.main4.order.model.impl;
 
+import com.opentae.core.mybatis.example.MultipleExample;
+import com.opentae.core.mybatis.example.MultipleExampleBuilder;
+import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ExpressCompany;
 import com.opentae.data.mall.beans.LogisticsTemplateCompany;
-import com.opentae.data.mall.beans.LogisticsTemplateProv;
 import com.opentae.data.mall.beans.LogisticsTemplateRule;
-import com.opentae.data.mall.examples.ExpressCompanyExample;
 import com.opentae.data.mall.examples.LogisticsTemplateCompanyExample;
 import com.opentae.data.mall.examples.LogisticsTemplateProvExample;
 import com.opentae.data.mall.examples.LogisticsTemplateRuleExample;
@@ -14,17 +14,14 @@ import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.vo.BournRuleInfoVO;
-import com.shigu.main4.order.vo.LogisticsCompanyVO;
+import com.shigu.main4.order.vo.RuleInfoVO;
 import com.shigu.main4.order.vo.LogisticsTemplateVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -41,6 +38,9 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     private static Long defaultTemplateId;
 
     private Long senderId;
+
+    @Autowired
+    private MultipleMapper multipleMapper;
 
     public LogisticsTemplateImpl(Long templateId) {
         this.templateId = templateId;
@@ -105,137 +105,94 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
     private ExpressCompanyMapper expressCompanyMapper;
 
 
-    /**
-     * 查快递规则
-     * 1. 当 provId 和 companyId 皆不为 Null 时，该方法返回 指定省份的快递公司的所有邮费计算规则
-     * 2. 当 provId 和 companyId 皆为 Null 时，该方法返回 本 template 所有邮费计算规则
-     *
-     * @param provId    省份id  3.当此参数为Null时，方法将返回指定 companyId 的所有省份规则
-     * @param companyId 公司id  4.当此参数为Null时，方法将返回指定 provId 的所有公司规则
-     * @return 规则列表
-     */
-    @Override
-    public List<BournRuleInfoVO> rules(Long provId, Long companyId) throws LogisticsRuleException {
-        List<Long> supportRules = new ArrayList<>();// 规则id列表
-        Map<Long, LogisticsTemplateProv> ruleProvMap = Collections.emptyMap();// 规则 - 省份映射
-        Map<Long, LogisticsTemplateCompany> ruleCompanyMap = Collections.emptyMap();// 规则 - 公司映射
-
-        if (provId != null) {
-            LogisticsTemplateProvExample provExample = new LogisticsTemplateProvExample();
-            provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId);
-            supportRules.addAll(logisticsTemplateProvMapper.selectByExample(provExample).stream().map(LogisticsTemplateProv::getRuleId).collect(Collectors.toList()));
-        } else {// 省份id为NULL 则构建省份-规则映射信息
-            LogisticsTemplateProv prov = new LogisticsTemplateProv();
-            prov.setTemplateId(templateId);
-            ruleProvMap = logisticsTemplateProvMapper.select(prov).stream().collect(Collectors.toMap(LogisticsTemplateProv::getRuleId, r -> r));
-        }
-        if (companyId != null) {
-            LogisticsTemplateCompanyExample companyExample = new LogisticsTemplateCompanyExample();
-            companyExample.createCriteria().andCompanyIdEqualTo(companyId).andTemplateIdEqualTo(templateId);
-            List<Long> companyRulesIds = logisticsTemplateCompanyMapper.selectByExample(companyExample).stream().map(LogisticsTemplateCompany::getRuleId).collect(Collectors.toList());
-            if (provId == null) {
-                supportRules.addAll(companyRulesIds);
-            } else {// 当指定了省份、快递公司后，取规则交集就是该快递公司在该省份的运费计算规则
-                supportRules.retainAll(companyRulesIds);
-            }
-        } else {// 快递公司id为null，则构建快递公司-规则映射信息
-            LogisticsTemplateCompany company = new LogisticsTemplateCompany();
-            company.setTemplateId(templateId);
-            ruleCompanyMap = BeanMapper.list2Map(logisticsTemplateCompanyMapper.select(company), "ruleId", Long.class);
-        }
-
-        // 根据规则id集合查询运费规则并包装返回值，公司省份id预留给下一步处理。
-        //  其中  supportRules 可能为空，这标志着 省id和公司id全部为null，将返回该 template 下所有规则；如果某项id不为null，这标志
-        //  着快递规则设置存在漏洞(或传参错误)，应当检查数据，所有依赖此方法的逻辑将收到异常而不能继续向下执行
-//        if ((provId != null || companyId != null) && supportRules.isEmpty()) {
-//            throw new LogisticsRuleException(String.format("运费规则数据异常! prov[%d] 或 company[%d] 下没有有效的运费规则", provId, companyId));
-//        }
-        List<BournRuleInfoVO> bournRuleInfoVOS = rulesIn(supportRules);
-
-        for (BournRuleInfoVO infoVO : bournRuleInfoVOS) {
-            LogisticsTemplateCompany company;
-            if (companyId == null && (company = ruleCompanyMap.get(infoVO.getRuleId())) != null) {
-                infoVO.setCompanyId(company.getCompanyId());
-            } else {
-                infoVO.setCompanyId(companyId);
-            }
-            LogisticsTemplateProv prov;
-            if (provId == null && (prov = ruleProvMap.get(infoVO.getRuleId())) != null) {
-                infoVO.setProvId(prov.getProvId());
-            } else {
-                infoVO.setProvId(provId);
-            }
-        }
-        return bournRuleInfoVOS;
-    }
-
-
-
-    private List<BournRuleInfoVO> rulesIn(List<Long> rulesIds) {
-        LogisticsTemplateRuleExample ruleExample = new LogisticsTemplateRuleExample();
-        LogisticsTemplateRuleExample.Criteria criteria = ruleExample.createCriteria().andTemplateIdEqualTo(templateId);
-        if (!rulesIds.isEmpty()) {
-            criteria.andRuleIdIn(rulesIds);
-        }
-        ruleExample.or().andImDefaultEqualTo(true);
-        return logisticsTemplateRuleMapper.selectByExample(ruleExample).stream().map(templateRule -> {
-            BournRuleInfoVO infoVO = new BournRuleInfoVO();
-            infoVO.setRuleId(templateRule.getRuleId());
-            infoVO.setStartPrice(templateRule.getFirstFee());
-            infoVO.setStartWeight(templateRule.getFirstUnit());
-            infoVO.setAddPrice(templateRule.getPerFee());
-            infoVO.setAddWeight(templateRule.getPerUnit());
-            infoVO.setImDefault(templateRule.getImDefault());
-            infoVO.setType(templateRule.getType());
-            return infoVO;
-        }).collect(Collectors.toList());
-    }
-
     @Override
     public LogisticsTemplateVO templateInfo() {
         return BeanMapper.map(logisticsTemplateMapper.selectByPrimaryKey(templateId), LogisticsTemplateVO.class);
     }
 
+    @Override
+    public List<BournRuleInfoVO> rulesByProv(Long provId) throws LogisticsRuleException {
+        //查出本模板的所有物流
+        LogisticsTemplateCompanyExample companyExample=new LogisticsTemplateCompanyExample();
+        companyExample.createCriteria().andTemplateIdEqualTo(templateId);
+        companyExample.setDistinct(true);
+        List<LogisticsTemplateCompany> companies=logisticsTemplateCompanyMapper.selectFieldsByExample(companyExample, FieldUtil.codeFields("company_id"));
+        List<Long> companyIds=companies.stream().map(LogisticsTemplateCompany::getCompanyId).collect(Collectors.toList());
+
+        //查出省份对应的规则
+        companyExample.clear();
+        LogisticsTemplateProvExample provExample=new LogisticsTemplateProvExample();
+        LogisticsTemplateRuleExample ruleExample=new LogisticsTemplateRuleExample();
+        MultipleExample multipleExample= MultipleExampleBuilder.from(ruleExample)
+                .innerJoin(companyExample).on(ruleExample.createCriteria().equalTo(LogisticsTemplateRuleExample.ruleId,LogisticsTemplateCompanyExample.ruleId))
+                .innerJoin(provExample).on(provExample.createCriteria().equalTo(LogisticsTemplateCompanyExample.ruleId,LogisticsTemplateProvExample.ruleId))
+                .where(provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId),companyExample.createCriteria()
+                        .andTemplateIdEqualTo(templateId),ruleExample.createCriteria().andImDefaultEqualTo(false)).build();
+        List<BournRuleInfoVO> rules=BeanMapper.mapList(multipleMapper.selectFieldsByMultipleExample(multipleExample,RuleInfoVO.class),BournRuleInfoVO.class);
+        for(BournRuleInfoVO vo:rules){
+            companyIds.remove(vo.getCompanyId());
+        }
+        //如果有遗漏
+        if(companyIds.size()>0){
+            //查出默认规则
+            BournRuleInfoVO defaultRule=defaultRule();
+            defaultRule.setProvId(provId);
+            for(Long companyId:companyIds){
+                BournRuleInfoVO comRule=BeanMapper.map(defaultRule,BournRuleInfoVO.class);
+                comRule.setCompanyId(companyId);
+                rules.add(comRule);
+            }
+        }
+        return rules;
+    }
+
+    @Override
+    public BournRuleInfoVO rule(Long provId, Long companyId) throws LogisticsRuleException {
+        if(provId==null||companyId==null){
+            throw new LogisticsRuleException("省份ID与物流公司ID是必要参数");
+        }
+        //先查出满足条件的规则，如果没有，取默认规则
+        LogisticsTemplateCompanyExample companyExample=new LogisticsTemplateCompanyExample();
+        LogisticsTemplateProvExample provExample=new LogisticsTemplateProvExample();
+        LogisticsTemplateRuleExample ruleExample=new LogisticsTemplateRuleExample();
+        MultipleExample multipleExample= MultipleExampleBuilder.from(ruleExample)
+                .innerJoin(companyExample).on(ruleExample.createCriteria().equalTo(LogisticsTemplateRuleExample.ruleId,LogisticsTemplateCompanyExample.ruleId))
+                .innerJoin(provExample).on(provExample.createCriteria().equalTo(LogisticsTemplateCompanyExample.ruleId,LogisticsTemplateProvExample.ruleId))
+                .where(provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId),companyExample.createCriteria()
+                        .andCompanyIdEqualTo(companyId).andTemplateIdEqualTo(templateId),ruleExample.createCriteria().andImDefaultEqualTo(false)).build();
+        List<RuleInfoVO> rules=multipleMapper.selectFieldsByMultipleExample(multipleExample,RuleInfoVO.class);
+        if (rules.size()>0) {
+            return BeanMapper.map(rules.get(0),BournRuleInfoVO.class);
+        }
+        //取不到对应的，要拿默认规则
+        BournRuleInfoVO rule=defaultRule();
+        rule.setCompanyId(companyId);
+        rule.setProvId(provId);
+        return rule;
+    }
 
     /**
-     * 按省份查快递公司
-     *
-     * @param provId 省份id
-     * @return 快递公司列表
+     * 查出默认模板
+     * @return
+     * @throws LogisticsRuleException
      */
-    @Override
-    public List<LogisticsCompanyVO> provCompanys(Long provId) {
-        List<LogisticsCompanyVO> voList = new ArrayList<>();
-        LogisticsTemplateProvExample provExample = new LogisticsTemplateProvExample();
-        provExample.createCriteria().andTemplateIdEqualTo(templateId).andProvIdEqualTo(provId);
-        List<LogisticsTemplateProv> logisticsTemplateProvs = logisticsTemplateProvMapper.selectFieldsByExample(provExample, FieldUtil.codeFields("tp_id,rule_id"));
-
-        List<Long> ruleIds = logisticsTemplateProvs.stream().map(LogisticsTemplateProv::getRuleId).collect(Collectors.toList());
-
-        LogisticsTemplateRuleExample logisticsTemplateRuleExample = new LogisticsTemplateRuleExample();
-        logisticsTemplateRuleExample.createCriteria().andImDefaultEqualTo(true);
-        List<LogisticsTemplateRule> logisticsTemplateRules = logisticsTemplateRuleMapper.selectFieldsByExample(logisticsTemplateRuleExample, "rule_id");
-        List<Long> ruleIdsDefault = logisticsTemplateRules.stream().map(LogisticsTemplateRule::getRuleId).collect(Collectors.toList());
-        ruleIds.addAll(ruleIdsDefault);
-        LogisticsTemplateCompanyExample companyExample = new LogisticsTemplateCompanyExample();
-        companyExample.createCriteria().andTemplateIdEqualTo(templateId).andRuleIdIn(ruleIds);
-        List<LogisticsTemplateCompany> companies = logisticsTemplateCompanyMapper.selectFieldsByExample(companyExample, FieldUtil.codeFields("tc_id,company_id"));
-        if (!companies.isEmpty()) {
-
-            List<Long> companyIds = BeanMapper.getFieldList(companies, "companyId", Long.class);
-            ExpressCompanyExample expressCompanyExample = new ExpressCompanyExample();
-            expressCompanyExample.createCriteria().andExpressCompanyIdIn(companyIds);
-            List<ExpressCompany> expressCompanies = expressCompanyMapper.selectFieldsByExample(expressCompanyExample, FieldUtil.codeFields("express_company_id,express_name"));
-
-            for (ExpressCompany e : expressCompanies) {
-                LogisticsCompanyVO vo = new LogisticsCompanyVO();
-                vo.setName(e.getExpressName());
-                vo.setId(e.getExpressCompanyId());
-                voList.add(vo);
-            }
-
+    private BournRuleInfoVO defaultRule() throws LogisticsRuleException {
+        LogisticsTemplateRuleExample ruleExample=new LogisticsTemplateRuleExample();
+        ruleExample.createCriteria().andTemplateIdEqualTo(templateId).andImDefaultEqualTo(true);
+        List<LogisticsTemplateRule> defaultRules=logisticsTemplateRuleMapper.selectByExample(ruleExample);
+        if (defaultRules.size()>0) {
+            BournRuleInfoVO rule=new BournRuleInfoVO();
+            LogisticsTemplateRule defaultRule=defaultRules.get(0);
+            rule.setAddPrice(defaultRule.getPerFee());
+            rule.setAddWeight(defaultRule.getPerUnit());
+            rule.setImDefault(defaultRule.getImDefault());
+            rule.setRuleId(defaultRule.getRuleId());
+            rule.setStartPrice(defaultRule.getFirstFee());
+            rule.setStartWeight(defaultRule.getFirstUnit());
+            rule.setType(defaultRule.getType());
+            return rule;
         }
-        return voList;
+        throw new LogisticsRuleException("物流规则出错");
     }
 
     /**
@@ -254,18 +211,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         }
 
         // 算钱
-        List<BournRuleInfoVO> rules = rules(provId, companyId);
-        BournRuleInfoVO vo = null;
-        if (rules.size() == 1) {
-            vo = rules.get(0);
-        } else {
-            for (BournRuleInfoVO rule : rules) {
-                if (!rule.getImDefault()) {
-                    vo = rule;
-                    break;
-                }
-            }
-        }
+        BournRuleInfoVO vo = rule(provId, companyId);
         if (vo == null) {
             throw new LogisticsRuleException(String.format("无默认快递规则; provId[%d],companyId[%d]", provId, companyId));
         }
