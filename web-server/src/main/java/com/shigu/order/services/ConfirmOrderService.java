@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ExpressCompanyExample;
+import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
@@ -12,14 +13,12 @@ import com.shigu.main4.order.bo.LogisticsBO;
 import com.shigu.main4.order.bo.SubItemOrderBO;
 import com.shigu.main4.order.exceptions.LogisticsRuleException;
 import com.shigu.main4.order.exceptions.OrderException;
-import com.shigu.main4.order.model.LogisticsTemplate;
 import com.shigu.main4.order.process.ItemCartProcess;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.LogisticsService;
 import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.tools.RedisIO;
-import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.bo.ConfirmOrderBO;
 import com.shigu.order.bo.ConfirmSubOrderBO;
@@ -29,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 确认订单
@@ -42,6 +42,9 @@ public class ConfirmOrderService {
 
     @Autowired
     private ItemOrderService itemOrderService;
+
+    @Autowired
+    private ShiguShopMapper shiguShopMapper;
 
     @Autowired
     private OrderProvMapper orderProvMapper;
@@ -188,7 +191,17 @@ public class ConfirmOrderService {
      * @return 服务对应表
      */
     public List<ServiceRuleVO> serviceRulePack(List<CartOrderVO> orders, Long senderId) {
-        List<ServiceVO> serviceRulers = orderConstantService.selServices(senderId);//服务费规则
+        ItemOrderSender sender = itemOrderSenderMapper.selectByPrimaryKey(senderId);
+        boolean isDaifa = sender.getType() == 1;
+
+        Map<Long, Long> shopMarketMap = Collections.emptyMap();
+        if (isDaifa) {
+            List<Long> shopIds = orders.stream().map(CartOrderVO::getShopId).distinct().collect(Collectors.toList());
+            ShiguShopExample shopExample = new ShiguShopExample();
+            shopExample.createCriteria().andShopIdIn(shopIds);
+            shopMarketMap = shiguShopMapper.selectByExample(shopExample).stream().collect(Collectors.toMap(ShiguShop::getShopId, ShiguShop::getMarketId));
+        }
+
 //        List<MetarialVO> metarialVOS = orderConstantService.selMetarials(senderId);
         List<ServiceRuleVO> serviceRuleVOS = new ArrayList<>(orders.size());
         for (CartOrderVO orderVO : orders) {
@@ -196,13 +209,16 @@ public class ConfirmOrderService {
             serviceRuleVOS.add(ruleVO);
             ruleVO.setOrderId(orderVO.getShopId());
             ruleVO.setSenderId(senderId);
-            ruleVO.setServices(new ArrayList<ServiceInfoVO>());
-            for (ServiceVO serviceRuler : serviceRulers) {
+            ruleVO.setServices(new ArrayList<>());
+
+            if (isDaifa) {
+                ServiceVO serviceRuler = orderConstantService.selDfService(senderId, shopMarketMap.get(orderVO.getShopId()));
                 ServiceInfoVO infoVO = new ServiceInfoVO();
-                infoVO.setText(serviceRuler.getName());
+                infoVO.setText("代发费");
                 infoVO.setPrice(serviceRuler.getPrice() * .01);
                 ruleVO.getServices().add(infoVO);
             }
+
 //            for (MetarialVO metarialVO : metarialVOS) {TODO: 包材不计算
 //                ServiceInfoVO infoVO = new ServiceInfoVO();
 //                infoVO.setText(metarialVO.getName());

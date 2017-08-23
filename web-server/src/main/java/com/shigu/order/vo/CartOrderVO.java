@@ -1,12 +1,13 @@
 package com.shigu.order.vo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
  * 购物车订单页面对象
  * Created by bugzy on 2017/6/20 0020.
  */
-public class CartOrderVO {
+public class CartOrderVO implements Comparable<CartOrderVO> {
 
     private Long orderId;
 
@@ -21,6 +22,8 @@ public class CartOrderVO {
     private String imQq;
 
     private String webSite;
+
+    private Date lastModify;
 
     private List<CartChildOrderVO> childOrders;
 
@@ -86,5 +89,18 @@ public class CartOrderVO {
 
     public void setChildOrders(List<CartChildOrderVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public Date getLastModify() {
+        return lastModify;
+    }
+
+    public void setLastModify(Date lastModify) {
+        this.lastModify = lastModify;
+    }
+
+    @Override
+    public int compareTo(CartOrderVO o) {
+        return o == null ? 1 : lastModify.compareTo(o.getLastModify());
     }
 }

@@ -144,6 +144,7 @@ public class ItemCartImpl implements Cart {
             cartVO.setCartId(itemCart.getCartId());
             cartVO.setNum(itemCart.getNum());
             cartVO.setUserId(userId);
+            cartVO.setLastModify(itemCart.getLastModify());
             cartVO.setSkuId(info.getSelectiveSku().getSkuId());
             return cartVO;
         }).collect(Collectors.toList());

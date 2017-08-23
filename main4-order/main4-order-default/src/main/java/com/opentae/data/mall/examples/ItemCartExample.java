@@ -11,6 +11,7 @@ public class ItemCartExample extends SgExample<ItemCartExample.Criteria> {
     public static final Class<ItemCart> beanClass = ItemCart.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn webSite;
+    public static EntityColumn lastModify;
     public static EntityColumn cartId;
     public static EntityColumn num;
     public static EntityColumn pid;
@@ -24,6 +25,7 @@ public class ItemCartExample extends SgExample<ItemCartExample.Criteria> {
             listMap.put(column.getProperty(), column);
         }
         webSite = listMap.get("webSite");
+        lastModify = listMap.get("lastModify");
         cartId = listMap.get("cartId");
         num = listMap.get("num");
         pid = listMap.get("pid");
@@ -105,6 +107,53 @@ public class ItemCartExample extends SgExample<ItemCartExample.Criteria> {
 
         public ItemCartExample.Criteria andWebSiteNotBetween(String value1, String value2) {
             return notBetween(webSite, value1, value2);
+        }
+        public ItemCartExample.Criteria andLastModifyIsNull() {
+            return isNull(lastModify);
+        }
+
+        public ItemCartExample.Criteria andLastModifyIsNotNull() {
+            return isNotNull(lastModify);
+        }
+
+        public ItemCartExample.Criteria andLastModifyEqualTo(Date value) {
+            return equalTo(lastModify, value);
+        }
+
+        public ItemCartExample.Criteria andLastModifyNotEqualTo(Date value) {
+            return notEqualTo(lastModify, value);
+        }
+
+        public ItemCartExample.Criteria andLastModifyGreaterThan(Date value) {
+            return greaterThan(lastModify, value);
+        }
+
+        public ItemCartExample.Criteria andLastModifyGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(lastModify, value);
+        }
+
+        public ItemCartExample.Criteria andLastModifyLessThan(Date value) {
+            return lessThan(lastModify, value);
+        }
+
+        public ItemCartExample.Criteria andLastModifyLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(lastModify, value);
+        }
+
+        public ItemCartExample.Criteria andLastModifyIn(List<Date> values) {
+            return in(lastModify, values);
+        }
+
+        public ItemCartExample.Criteria andLastModifyNotIn(List<Date> values) {
+            return notIn(lastModify, values);
+        }
+
+        public ItemCartExample.Criteria andLastModifyBetween(Date value1, Date value2) {
+            return between(lastModify, value1, value2);
+        }
+
+        public ItemCartExample.Criteria andLastModifyNotBetween(Date value1, Date value2) {
+            return notBetween(lastModify, value1, value2);
         }
         public ItemCartExample.Criteria andCartIdIsNull() {
             return isNull(cartId);
