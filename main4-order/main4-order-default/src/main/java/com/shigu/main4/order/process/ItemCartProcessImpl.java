@@ -80,6 +80,9 @@ public class ItemCartProcessImpl implements ItemCartProcess {
      */
     @Override
     public void addProduct(Long userId, ItemProductVO vo, Integer count) {
+        if (count<=0) {
+            return;
+        }
         SpringBeanFactory.getBean(Cart.class, userId).addProduct(vo, count);
     }
 
