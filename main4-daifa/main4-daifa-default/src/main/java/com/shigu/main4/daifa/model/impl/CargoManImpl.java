@@ -131,7 +131,7 @@ public class CargoManImpl implements CargoManModel {
                 tasks.setAllocatTime(new Date());
                 tasks.setOperateIs(0);//未操作拿货完成
                 tasks.setUseStatus(0);
-                tasks.setGoodsCode(code);
+                tasks.setGgoodsCode(code);
                 tasks.setAllocatDate(DateUtil.dateToString(tasks.getAllocatTime(), DateUtil.patternB));
                 tasks.setDaifaWorkerId(daifaWorker.getDaifaWorkerId());
                 tasks.setDaifaWorker(daifaWorker.getDaifaWorker());
