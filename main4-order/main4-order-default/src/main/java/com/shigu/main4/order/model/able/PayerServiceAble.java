@@ -1,9 +1,14 @@
 package com.shigu.main4.order.model.able;
 
+import com.opentae.core.mybatis.example.MultipleExample;
+import com.opentae.core.mybatis.example.MultipleExampleBuilder;
+import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.data.mall.beans.OrderIdGenerator;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
 import com.opentae.data.mall.beans.OrderPayRelationship;
+import com.opentae.data.mall.examples.OrderPayExample;
+import com.opentae.data.mall.examples.OrderPayRelationshipExample;
 import com.opentae.data.mall.interfaces.OrderIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
 import com.opentae.data.mall.interfaces.OrderPayMapper;
@@ -14,6 +19,7 @@ import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
+import com.shigu.main4.order.vo.PayAndOrderVO;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang.StringUtils;
@@ -40,6 +46,9 @@ public abstract class PayerServiceAble implements PayerService{
     @Autowired
     private OrderMessageProducter orderMessageProducter;
 
+    @Autowired
+    private MultipleMapper multipleMapper;
+
     @Override
     public Long payedLeft(Long payId) {
         OrderPay orderPay = orderPayMapper.selectByPrimaryKey(payId);
@@ -58,10 +67,13 @@ public abstract class PayerServiceAble implements PayerService{
             outerPid = apply.getOid().toString();
         }
         //验证重复支付
-        OrderPay oldPay=new OrderPay();
-        oldPay.setOuterPid(outerPid);
-        oldPay=orderPayMapper.selectOne(oldPay);
-        if(oldPay!=null&&!oldPay.getApplyId().equals(applyId)){//之前有付过，现在又来付
+        OrderPayExample orderPayExample=new OrderPayExample();
+        OrderPayRelationshipExample relationshipExample=new OrderPayRelationshipExample();
+        MultipleExample multipleExample= MultipleExampleBuilder.from(orderPayExample).innerJoin(relationshipExample)
+                .on(orderPayExample.createCriteria().equalTo(OrderPayExample.payId,OrderPayRelationshipExample.payId))
+                .where(relationshipExample.createCriteria().andOidEqualTo(apply.getOid())
+                        ,orderPayExample.createCriteria().andApplyIdNotEqualTo(applyId)).build();
+        if(multipleMapper.selectFieldsByMultipleExample(multipleExample, PayAndOrderVO.class)!=null){//之前有付过，现在又来付
             refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//把新支付创建出来，再退款退掉
         }
 
