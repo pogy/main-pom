@@ -223,6 +223,7 @@ public class OrderModelImpl implements OrderModel {
                     .andEndStatusEqualTo(0).andAllocatStatusEqualTo(0);
             DaifaGgoodsTasks daifaGgoodsTask = new DaifaGgoodsTasks();
             daifaGgoodsTask.setEndStatus(1);
+            daifaGgoodsTask.setReturnStatus(1);
             //查询待拿货表
             //修改代拿货表状态为已截单
             //为发消息，拿到待拿货的id集合
@@ -233,6 +234,9 @@ public class OrderModelImpl implements OrderModel {
                 dfOrderIds= BeanMapper.getFieldList(daifaGgoodsTasks, "dfOrderId", Long.class);
                 DaifaOrderExample orderExample=new DaifaOrderExample();
                 orderExample.createCriteria().andDfOrderIdIn(dfOrderIds);
+                DaifaOrder order=new DaifaOrder();
+                order.setRefundStatus(1);
+                daifaOrderMapper.updateByExampleSelective(order,orderExample);
                 List<DaifaOrder> orders=daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id"));
                 List<String> pcodes=BeanMapper.getFieldList(orders, "orderPartitionId", String.class);
                 JSONObject jsonObject=new JSONObject();

@@ -72,6 +72,12 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         if (ts.size() == 0) {
             throw new DaifaException("订单不存在");
         }
+        if(ts.get(0).getEndStatus()==1){
+            throw new DaifaException("订单已截单");
+        }
+        if(ts.get(0).getReturnStatus()==2){
+            throw new DaifaException("订单已退款");
+        }
         if (ts.get(0).getAllocatStatus() == 1) {
             subOrderModel.noTake();
         }
@@ -94,6 +100,12 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         List<DaifaGgoodsTasks> ts = daifaGgoodsTasksMapper.selectByConditionList(daifaGgoodsTasksExample);
         if (ts.size() == 0) {
             throw new DaifaException("订单不存在");
+        }
+        if(ts.get(0).getEndStatus()==1){
+            throw new DaifaException("订单已截单");
+        }
+        if(ts.get(0).getReturnStatus()==2){
+            throw new DaifaException("订单已退款");
         }
         if (ts.get(0).getAllocatStatus() == 1) {
             subOrderModel.noTake();
@@ -119,37 +131,14 @@ public class OrderManageProcessImpl implements OrderManageProcess {
 
     @Override
     public List<Long> tryRefund(String outerSubOrderId) {
-        DaifaOrderExample orderExample = new DaifaOrderExample();
-        orderExample.createCriteria().andOrderCodeEqualTo(outerSubOrderId)
-                .andOrderStatusNotEqualTo((long) SubOrderStatus.SENDED.getValue());
-//        return daifaOrderMapper.countByExample(orderExample)>num;
-        List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id"));
-        Map<Long, String> oidpMap = new HashMap<>();
-        for (DaifaOrder o : orders) {
-            oidpMap.put(o.getDfOrderId(), o.getOrderPartitionId());
-        }
-        DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
-        daifaGgoodsTasksExample.createCriteria().andDfOrderIdIn(new ArrayList<>(oidpMap.keySet()))
-                .andOperateIsEqualTo(0)
-                .andReturnStatusEqualTo(0)
-                .andEndStatusEqualTo(0)
-                .andAllocatStatusEqualTo(0);
-        List<DaifaGgoodsTasks> tasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample, FieldUtil.codeFields("df_order_id,use_status,delist_is"));
-        List<Long> oidps = new ArrayList<>();
-        for (DaifaGgoodsTasks t : tasks) {
-            if(t.getUseStatus()==0&&t.getDelistIs()==0){
-                continue;
-            }
-            oidps.add(new Long(oidpMap.get(t.getDfOrderId())));
-        }
-        return oidps;
+        return refundChecked(outerSubOrderId,1);
     }
 
     @Override
     public void autoRefund(Long refundId, List<String> soids, List<String> soidps) throws DaifaException {
         List<Long> refundableIds=new ArrayList<>();
         for(String soid:soids){
-            refundableIds.addAll(tryRefund(soid));
+            refundableIds.addAll(refundChecked(soid,2));
         }
         checked:
         for (String soidp : soidps) {
@@ -171,6 +160,42 @@ public class OrderManageProcessImpl implements OrderManageProcess {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    /**
+     * 退款校验
+     * @param outerSubOrderId
+     * @param type 1:来自tryRefund查询,由于该查询作用是查询可申请退款的值,所以只查未在退款状态的数据
+     *             2:来自autoRefund操作,该操作是同意退款,即还需要查出申请退款的数据
+     * @return
+     */
+    private List<Long> refundChecked(String outerSubOrderId,int type){
+        DaifaOrderExample orderExample = new DaifaOrderExample();
+        orderExample.createCriteria().andOrderCodeEqualTo(outerSubOrderId)
+                .andOrderStatusNotEqualTo((long) SubOrderStatus.SENDED.getValue());
+        List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id"));
+        Map<Long, String> oidpMap = new HashMap<>();
+        for (DaifaOrder o : orders) {
+            oidpMap.put(o.getDfOrderId(), o.getOrderPartitionId());
+        }
+        DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
+        DaifaGgoodsTasksExample.Criteria ce=daifaGgoodsTasksExample.createCriteria().andDfOrderIdIn(new ArrayList<>(oidpMap.keySet()))
+                .andOperateIsEqualTo(0)
+                .andAllocatStatusEqualTo(0);
+        if(type==1){
+            ce.andReturnStatusEqualTo(0);
+        }else{
+            ce.andReturnStatusNotEqualTo(2);
+        }
+        List<DaifaGgoodsTasks> tasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample, FieldUtil.codeFields("df_order_id,use_status,delist_is"));
+        List<Long> oidps = new ArrayList<>();
+        for (DaifaGgoodsTasks t : tasks) {
+            if(t.getUseStatus()==0&&t.getDelistIs()==0){
+                continue;
+            }
+            oidps.add(new Long(oidpMap.get(t.getDfOrderId())));
+        }
+        return oidps;
     }
 
 }
