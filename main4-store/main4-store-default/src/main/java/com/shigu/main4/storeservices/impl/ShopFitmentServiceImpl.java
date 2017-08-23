@@ -371,9 +371,24 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
             //对推荐商品按推荐顺序进行排序
             ShiguPager<ItemShowBlock> pager = shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(), webSite, 1, promoteModule.getItemNum());
             Map<Long, ItemShowBlock> goodsIdShowMap = pager.getContent().stream().collect(Collectors.toMap(ItemShowBlock::getItemId, ItemShowBlock::getThis));
+            boolean someGoodsSoldOutIs = false;
             List<ItemShowBlock> sortedItemList = new ArrayList<>(promoteModule.getPromoteItems().size());
             for (Long goodsId : promoteModule.getPromoteItems()) {
+                if (goodsIdShowMap.get(goodsId) == null) {
+                    someGoodsSoldOutIs = true;
+                    continue;
+                }
                 sortedItemList.add(goodsIdShowMap.get(goodsId));
+            }
+            if (someGoodsSoldOutIs) {
+                //如果推荐商品中有已下架商品，移除下架商品
+                try {
+                    List<Long> goodsIds = sortedItemList.stream().map(ItemShowBlock::getItemId).collect(Collectors.toList());
+                    promoteModule.setItemNum(goodsIds.size());
+                    revalueModuleOption(promoteModule.getModuleId(),JSON.toJSONString(goodsIds));
+                } catch (ShopFitmentException e) {
+                    e.printStackTrace();
+                }
             }
             pager.setContent(sortedItemList);
             return pager;
