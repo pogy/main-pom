@@ -55,9 +55,15 @@ public class CdnGoodsInfoVO {
      */
     private String descHtml;
     /**
-     * 在售状态,true为在售
+     * 在售状态,true为在售，false已下架
      */
-    private Boolean onsale;
+    private Boolean onSale;
+
+    /**
+     * 是否可线上购买
+     */
+    private Boolean onlineSale;
+
     /**
      * 档口ID
      */
@@ -223,15 +229,23 @@ public class CdnGoodsInfoVO {
     /**
      * 获取 在售状态,true为在售
      */
-    public Boolean getOnsale() {
-        return this.onsale;
+    public Boolean getOnSale() {
+        return this.onSale;
     }
 
     /**
      * 设置 在售状态,true为在售
      */
-    public void setOnsale(Boolean onsale) {
-        this.onsale = onsale;
+    public void setOnSale(Boolean onSale) {
+        this.onSale = onSale;
+    }
+
+    public Boolean getOnlineSale() {
+        return onlineSale;
+    }
+
+    public void setOnlineSale(Boolean onlineSale) {
+        this.onlineSale = onlineSale;
     }
 
     /**

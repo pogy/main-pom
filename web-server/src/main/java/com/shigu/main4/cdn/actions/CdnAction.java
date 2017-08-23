@@ -1,12 +1,18 @@
 package com.shigu.main4.cdn.actions;
 
 import com.alibaba.fastjson.JSON;
-import com.shigu.main4.cdn.bo.*;
+import com.shigu.main4.cdn.bo.ScGoodsBO;
+import com.shigu.main4.cdn.bo.ScStoreBO;
+import com.shigu.main4.cdn.bo.ShopCdnBO;
+import com.shigu.main4.cdn.bo.ShopCommentBO;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.services.OldStoreNumShowService;
-import com.shigu.main4.cdn.vo.*;
+import com.shigu.main4.cdn.vo.IndexGoodsVo;
+import com.shigu.main4.cdn.vo.IndexPageVO;
+import com.shigu.main4.cdn.vo.LoveGoodsList;
+import com.shigu.main4.cdn.vo.ShopCommentVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -17,7 +23,6 @@ import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
-import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.newcdn.vo.*;
@@ -27,7 +32,6 @@ import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.search.bo.NewGoodsBO;
-import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.seller.services.GoodsFileService;
@@ -39,8 +43,6 @@ import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
-import com.shigu.tools.HtmlImgsLazyLoad;
-import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
 import freemarker.template.TemplateException;
@@ -114,12 +116,6 @@ public class CdnAction {
 
     @Autowired
     TodayNewGoodsService todayNewGoodsService;
-
-    @Autowired
-    ItemBrowerService itemBrowerService;
-
-    @Autowired
-    GoodsSelFromEsService goodsSelFromEsService;
 
     @Autowired
     GoodsFileService goodsFileService;
