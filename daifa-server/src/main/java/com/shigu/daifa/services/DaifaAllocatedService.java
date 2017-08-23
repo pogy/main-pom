@@ -45,6 +45,7 @@ public class DaifaAllocatedService {
         DaifaGgoodsExample daifaGgoodsExample = new DaifaGgoodsExample();
         DaifaGgoodsExample.Criteria ce = daifaGgoodsExample.createCriteria().andDaifaWorkerIdEqualTo(workerId)
                 .andUseStatusEqualTo(1).andOperateIsEqualTo(0);
+        daifaGgoodsExample.setOrderByClause("create_time desc");
         if (lastOrderId != null) {
             ce.andDfTradeIdLike("%" + lastOrderId);
         }
