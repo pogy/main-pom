@@ -230,7 +230,6 @@ public class OrderModelImpl implements OrderModel {
             List<Long> dfOrderIds;
             if (daifaGgoodsTasks.size()>0){
                 daifaGgoodsTasksMapper.updateByExampleSelective(daifaGgoodsTask, daifaGgoodsTasksExample);
-                daifaTradeMapper.updateByPrimaryKeySelective(trade);
                 dfOrderIds= BeanMapper.getFieldList(daifaGgoodsTasks, "dfOrderId", Long.class);
                 DaifaOrderExample orderExample=new DaifaOrderExample();
                 orderExample.createCriteria().andDfOrderIdIn(dfOrderIds);

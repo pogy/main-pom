@@ -120,7 +120,8 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     @Override
     public List<Long> tryRefund(String outerSubOrderId) {
         DaifaOrderExample orderExample = new DaifaOrderExample();
-        orderExample.createCriteria().andOrderCodeEqualTo(outerSubOrderId).andOrderStatusNotEqualTo((long) SubOrderStatus.SENDED.getValue());
+        orderExample.createCriteria().andOrderCodeEqualTo(outerSubOrderId)
+                .andOrderStatusNotEqualTo((long) SubOrderStatus.SENDED.getValue());
 //        return daifaOrderMapper.countByExample(orderExample)>num;
         List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id"));
         Map<Long, String> oidpMap = new HashMap<>();
@@ -128,11 +129,17 @@ public class OrderManageProcessImpl implements OrderManageProcess {
             oidpMap.put(o.getDfOrderId(), o.getOrderPartitionId());
         }
         DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
-        daifaGgoodsTasksExample.createCriteria().andDfOrderIdIn(new ArrayList<>(oidpMap.keySet())).andUseStatusEqualTo(1).andOperateIsEqualTo(0)
-                .andReturnStatusEqualTo(0).andAllocatStatusEqualTo(0);
+        daifaGgoodsTasksExample.createCriteria().andDfOrderIdIn(new ArrayList<>(oidpMap.keySet()))
+                .andOperateIsEqualTo(0)
+                .andReturnStatusEqualTo(0)
+                .andEndStatusEqualTo(0)
+                .andAllocatStatusEqualTo(0);
         List<DaifaGgoodsTasks> tasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample, FieldUtil.codeFields("df_order_id"));
         List<Long> oidps = new ArrayList<>();
         for (DaifaGgoodsTasks t : tasks) {
+            if(t.getUseStatus()==0&&t.getDelistIs()==0){
+                continue;
+            }
             oidps.add(new Long(oidpMap.get(t.getDfOrderId())));
         }
         return oidps;
