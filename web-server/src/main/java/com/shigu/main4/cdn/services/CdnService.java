@@ -6,7 +6,6 @@ import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.beans.ShiguShopLicense;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguStoreCollectExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
@@ -41,14 +40,13 @@ import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.zhb.utils.BeanMapper;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -266,7 +264,8 @@ public class CdnService {
     public CdnGoodsInfoVO cdnGoodsInfo(Long goodsId) throws CdnException {
         CdnGoodsInfoVO vo=new CdnGoodsInfoVO();
         CdnItem cdnItem=showForCdnService.selItemById(goodsId);
-        vo.setOnsale(cdnItem!=null&&cdnItem.getOnsale());
+        vo.setOnSale(cdnItem!=null&&cdnItem.getOnsale());
+        vo.setOnlineSale(true);
         if(cdnItem==null){//已经下架
             cdnItem=showForCdnService.selItemInstockById(goodsId);
         }
@@ -308,11 +307,11 @@ public class CdnService {
             c.setValue("图片色");
             colors.add(c);
         }
-        List<String> cs=new ArrayList<>();
+        JSONArray array = new JSONArray();
         for(SaleProp c:colors){
-            cs.add(c.getValue());
+            array.add(new JSONObject().element("text", c.getValue()).element("imgSrc", c.getImgUrl()));
         }
-        vo.setColorsMeta(JSONArray.fromObject(cs).toString());
+        vo.setColorsMeta(array.toString());
 
         List<SaleProp> sizes=cdnItem.getSizes();
         if(sizes==null){
