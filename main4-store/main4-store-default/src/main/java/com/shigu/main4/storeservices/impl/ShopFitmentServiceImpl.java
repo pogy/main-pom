@@ -376,7 +376,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
             Map<Long, ItemShowBlock> goodsIdShowMap = pager.getContent().stream().collect(Collectors.toMap(ItemShowBlock::getItemId, ItemShowBlock::getThis));
             List<ItemShowBlock> sortedItemList = new ArrayList<>(promoteModule.getPromoteItems().size());
             for (Long goodsId : promoteModule.getPromoteItems()) {
-                if (goodsIdShowMap.get(goodsId) != null) {
+                if (goodsIdShowMap.get(goodsId) == null) {
                     continue;
                 }
                 sortedItemList.add(goodsIdShowMap.get(goodsId));
