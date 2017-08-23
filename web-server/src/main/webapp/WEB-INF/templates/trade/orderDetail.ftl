@@ -163,14 +163,15 @@ var webSite = '${webSite!}';
 
 
 
-<div class="headerOrange">
+<div class="header">
     <div class="layout">
         <a href="http://www.571xz.com" class="fl">
             <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width="168" height="28" />
         </a>
-        <ul class="fl fs16 yahei">
-            <li><a href="#">首页</a></li>
-            <li><a href="#">账号管理</a></li>
+        <ul class="fl fs16 yahei clearfix">
+            <li><a href="${main_host!}member/index.htm">首页</a></li>
+            <li><a href="${main_host!}member/userBalance.htm">我的钱包</a></li>
+            <li><a href="${main_host!}member/sysSetsindex.htm">安全中心</a></li>
         </ul>
     </div>
 </div>
