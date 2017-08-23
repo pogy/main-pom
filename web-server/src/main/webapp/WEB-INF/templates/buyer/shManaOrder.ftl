@@ -230,17 +230,6 @@ var webSite = '${webSite!}';
     
     </ul> 
 
-    <h2>代发管理</h2>
-    <ul>
-    
-        
-            
-            <li><a href="http://daifa.571xz.com/daili/offerIndex.htm" >我要代发</a></li>
-            
-        
-    
-    </ul> 
-
     <h2>供应商申请</h2>
     <ul>
     
@@ -276,7 +265,15 @@ var webSite = '${webSite!}';
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
-    <input type=hidden name="${field.name!}" value="${field.value!}">
+        <#if field.timeFormat??>
+            <#if field.value??>
+            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
+            <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+            </#if>
+        <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+        </#if>
     </#list>
 </form>
 </#if>
@@ -336,57 +333,51 @@ var webSite = '${webSite!}';
     <li class="num">${childOrder.num!}</li>
     <li class="opera">
         
-        <#if order.mainState == 3>
-            <#if childOrder.tkState == 2>
-            <p><a class="fcBlue" href="onlyRefund.htm?refundId=${childOrder.sqRefundId!}" target="_blank">退款成功 x${childOrder.tkNum!}</a></p>
-            </#if>
-            
-            <#if childOrder.tkNum != childOrder.num && childOrder.shState == 0>
-            <p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
-            <#elseif childOrder.shState == 4 || childOrder.shState == 5>
-                <#if childOrder.shState == 4>
-                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后处理中</a></p>
-                <#else>
-                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后处理中</a></p>
-                </#if>
-            <#elseif childOrder.shState == 6 || childOrder.shState == 7>
-                <#if childOrder.shState == 6>
-                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">退货申请已拒绝</a></p>
-                <#else>
-                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">换货申请已拒绝</a></p>
-                </#if>
-            <#elseif childOrder.shState == 2>
-            <p class="fcF40">退货退款完成x${childOrder.shTkNum!}</p>
-            <#elseif childOrder.shState == 3>
-            <p class="fcF40">换货完成</p>
-            </#if>
-        <#elseif order.mainState == 4>
-            <#if childOrder.tkState == 2>
-            <p><a class="fcBlue" href="onlyRefund.htm?refundId=${childOrder.sqRefundId!}" target="_blank">退款成功 x${childOrder.tkNum!}</a></p>
-            </#if>
-            
-            <#if childOrder.shState == 4 || childOrder.shState == 5>
-                <#if childOrder.shState == 4>
-                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后处理中</a></p>
-                <#else>
-                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">售后处理中</a></p>
-                </#if>
-            <#elseif childOrder.shState == 6 || childOrder.shState == 7>
-                <#if childOrder.shState == 6>
-                <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${childOrder.shRefundId!}" target="_blank">退货申请已拒绝</a></p>
-                <#else>
-                <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${childOrder.shRefundId!}" target="_blank">换货申请已拒绝</a></p>
-                </#if>
-            <#elseif childOrder.shState == 2>
-            <p class="fcF40">退货退款完成x${childOrder.shTkNum!}</p>
-            <#elseif childOrder.shState == 3>
-            <p class="fcF40">换货完成</p>
-            </#if>
-            
-            <#if childOrder.tkState == 0 && childOrder.shState == 0>
-            ——
-            </#if>
         
+        
+        <#if order.mainState == 3 || order.mainState == 4>
+            <#if childOrder.afterSales?? && (childOrder.afterSales?size) gt 0>
+                <#if childOrder.refundCount != childOrder.num && childOrder.hasAfter == false && order.mainState == 3>
+                <p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+                </#if>
+                
+                <#list childOrder.afterSales as afterSale>
+                    <#if afterSale.type == 1>
+                        <#if afterSale.state == 2>
+                        <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">申请退款成功 x${afterSale.num!}</a></p>
+                        </#if>
+                    </#if>
+                    <#if afterSale.type == 2>
+                        <#if afterSale.state == 2>
+                        <p class="fcF40">退货退款完成x${afterSale.num!}</p>
+                        <#elseif afterSale.state == 1>
+                        <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${afterSale.refundId!}" target="_blank">售后处理中</a></p>
+                        <#elseif afterSale.state == 3>
+                        <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${afterSale.refundId!}" target="_blank">退货申请已拒绝</a></p>
+                        </#if>
+                    </#if>
+                    <#if afterSale.type == 3>
+                        <#if afterSale.state == 2>
+                        <p class="fcF40">换货完成</p>
+                        <#elseif afterSale.state == 1>
+                        <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${afterSale.refundId!}" target="_blank">售后处理中</a></p>
+                        <#elseif afterSale.state == 3>
+                        <p><a class="fcF40" href="${main_host!}order/exchange.htm?refundId=${afterSale.refundId!}" target="_blank">换货申请已拒绝</a></p>
+                        </#if>
+                    </#if>
+                    <#if afterSale.type == 4>
+                        <#if afterSale.state == 2>
+                        <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">自动退款 x${afterSale.num!}</a></p>
+                        </#if>
+                    </#if>
+                </#list>
+            <#else>
+                <#if order.mainState == 3>
+                <p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+                <#elseif order.mainState == 4>
+                ——
+                </#if>
+            </#if>
         </#if>
         
     </li>

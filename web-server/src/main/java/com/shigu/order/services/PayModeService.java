@@ -23,6 +23,7 @@ import com.shigu.order.vo.PayModePageVO;
 import com.shigu.zf.utils.PriceConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -93,6 +94,7 @@ public class PayModeService {
      * @return 支付链接，星座宝没有支付链接
      * @throws PayApplyException 支付申请异常
      */
+    @Transactional(rollbackFor = Exception.class)
     public PayApplyVO payApply(Long orderId, PayType payType) throws PayApplyException {
         return payProcess.payApply(orderId,payType);
     }
@@ -154,6 +156,7 @@ public class PayModeService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void payxz(PayApplyVO payApplyVO, Long userId) throws JsonErrException {
         String outerId = PayerService.OUTER_ID_PRE + payApplyVO.getApplyId();
         paySdkClientService.xzpay(userId, payApplyVO.getMoney(), outerId);

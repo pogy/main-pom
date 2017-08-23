@@ -6,10 +6,14 @@ import com.shigu.main4.order.servicevo.AfterSaleEntVO;
 import com.shigu.main4.order.servicevo.AfterSaleInfoVO;
 import com.shigu.main4.order.servicevo.AfterSaleStatusVO;
 
+import com.shigu.order.services.OrderOptionSafeService;
 import com.shigu.order.services.PreSaleShowService;
 import com.shigu.order.vo.RefundApplyRecordVO;
 import com.shigu.order.vo.RefundOrderVO;
 import com.shigu.order.vo.SubRefundOrderVO;
+import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.tools.JsonResponseUtil;
 import com.shigu.zf.utils.PriceConvertUtils;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -27,6 +32,9 @@ public class PreSaleShowAction {
     AfterSaleService afterSaleService;
     @Autowired
     PreSaleShowService preSaleShowService;
+    @Autowired
+    private OrderOptionSafeService orderOptionSafeService;
+
 
     @RequestMapping("order/onlyRefund")
     public String onlyRefundId(Long childOrderId,Long refundId,Model model){
@@ -76,11 +84,15 @@ public class PreSaleShowAction {
 
     @RequestMapping("order/onlyRefundApply")
     @ResponseBody
-    public JSONObject onlyRefundApply(Long childOrderId,Integer refundCount) throws OrderException {
+    public JSONObject onlyRefundApply(Long childOrderId, Integer refundCount, HttpSession session) throws OrderException {
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(childOrderId);
         Long price=refundCount*PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
         if(sub.getOtherRefundPrice()!=null){
             price+=PriceConvertUtils.StringToLong(sub.getOtherRefundPrice());
+        }
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!orderOptionSafeService.checkBySoid(childOrderId,ps.getUserId())){
+            return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         Long refundId=afterSaleService.preRefundApply(childOrderId,refundCount,price);
         JSONObject obj=new JSONObject();

@@ -440,47 +440,46 @@ $(function(){
             <li class="goodsStatus">
                 <#if orderStateNum == 1>
                     <span class="fcF40">待付款</span>
-                <#elseif orderStateNum == 2>
-                    <#if childOrder.tkState == 1>
-                    <span class="fcBlue">退款成功 x${childOrder.tkNum!}</span>
+                <#elseif orderStateNum == 2 || orderStateNum == 3 || orderStateNum == 4>
+                    <#if childOrder.afterSales?? && (childOrder.afterSales?size) gt 0>
+                        <#list childOrder.afterSales as afterSale>
+                            <#if afterSale.type == 1>
+                                <#if afterSale.state == 2>
+                                <span class="fcBlue">申请退款成功 x${afterSale.num!}</span>
+                                </#if>
+                            </#if>
+                            <#if afterSale.type == 2>
+                                <#if afterSale.state == 2>
+                                <p class="fcF40">退货退款完成x${afterSale.num!}</p>
+                                <#elseif afterSale.state == 1>
+                                <p class="fcF40">售后处理中</p>
+                                <#elseif afterSale.state == 3>
+                                <p class="fcF40">退货申请已拒绝</p>
+                                </#if>
+                            </#if>
+                            <#if afterSale.type == 3>
+                                <#if afterSale.state == 2>
+                                <p class="fcF40">换货完成</p>
+                                <#elseif afterSale.state == 1>
+                                <p class="fcF40">售后处理中</p>
+                                <#elseif afterSale.state == 3>
+                                <p class="fcF40">换货申请已拒绝</p>
+                                </#if>
+                            </#if>
+                            <#if afterSale.type == 4>
+                                <#if afterSale.state == 2>
+                                <p class="fcBlue">自动退款 x${afterSale.num!}</p>
+                                </#if>
+                            </#if>
+                        </#list>
                     <#else>
-                    <span>待配货</span>
-                    </#if>
-                <#elseif orderStateNum == 3>
-                    <#if childOrder.shState == 0>
-                    <span>已发货</span>
-                    <#elseif childOrder.shState == 4 || childOrder.shState == 5>
-                    <span class="fcF40">售后处理中</span>
-                    <#elseif childOrder.shState == 2>
-                    <span class="fcF40">退货退款成功 x${childOrder.shTkNum!}
-                    </span>
-                    <#elseif childOrder.shState == 3>
-                    <span class="fcF40">换货成功</span>
-                    <#elseif childOrder.shState == 6>
-                    <span class="fcF40">退货申请已拒绝</span>
-                    <#elseif childOrder.shState == 7>
-                    <span class="fcF40">换货申请已拒绝</span>
-                    </#if>
-                    
-                    <#if childOrder.tkState == 1>
-                    <br><span class="fcBlue">退款成功 x${childOrder.tkNum!}</span>
-                    </#if>
-                <#elseif orderStateNum == 4>
-                    <span>交易完成</span>
-                    <#if childOrder.tkState == 1>
-                    <br><span class="fcBlue">退款成功 x${childOrder.tkNum!}</span>
-                    </#if>
-                    <#if childOrder.shState == 4 || childOrder.shState == 5>
-                    <br><span class="fcF40">售后处理中</span>
-                    <#elseif childOrder.shState == 2>
-                    <br><span class="fcF40">退货退款成功 x${childOrder.shTkNum!}
-                    </span>
-                    <#elseif childOrder.shState == 3>
-                    <br><span class="fcF40">换货成功</span>
-                    <#elseif childOrder.shState == 6>
-                    <br><span class="fcF40">退货申请已拒绝</span>
-                    <#elseif childOrder.shState == 7>
-                    <br><span class="fcF40">换货申请已拒绝</span>
+                        <#if orderStateNum == 2>
+                        <span>待配货</span>
+                        <#elseif orderStateNum == 3>
+                        <span>已发货</span>
+                        <#elseif orderStateNum == 4>
+                        <span>交易完成</span>
+                        </#if>
                     </#if>
                 <#elseif orderStateNum == 5>
                     <span>交易已取消</span>

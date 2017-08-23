@@ -2,6 +2,8 @@ package com.shigu.order.vo;
 
 import com.opentae.core.mybatis.config.Column;
 
+import java.util.List;
+
 public class SubMyOrderVO {
     /**
      * 子单id
@@ -9,14 +11,6 @@ public class SubMyOrderVO {
     @Column("item_order_sub.soid")
     private Long childOrderId;
 
-    /**
-     * 售前id
-     */
-    private Long sqRefundId;
-    /**
-     * 	售后id
-     */
-    private Long shRefundId;
     /**
      * 	商品Id
      */
@@ -57,22 +51,12 @@ public class SubMyOrderVO {
      */
     @Column("item_order_sub.num")
     private Integer num;
-    /**
-     * 退款数量
-     */
-    private Integer tkNum;
-    /**
-     * 售后退款数量
-     */
-    private Integer shTkNum;
-    /**
-     * 退款状态 0无，1:申请中,2:成功,3:拒绝
-     */
-    private Integer tkState;
-    /**
-     * 	售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
-     */
-    private Integer shState;
+
+    private List<AfterSaleVO> afterSales;
+
+    private boolean hasAfter;
+
+    private int refundCount;
 
     /**
      * 获取 子单id
@@ -200,87 +184,27 @@ public class SubMyOrderVO {
         this.num = num;
     }
 
-    /**
-     * 获取 退款数量
-     */
-    public Integer getTkNum() {
-        return this.tkNum;
+    public List<AfterSaleVO> getAfterSales() {
+        return afterSales;
     }
 
-    /**
-     * 设置 退款数量
-     */
-    public void setTkNum(Integer tkNum) {
-        this.tkNum = tkNum;
+    public void setAfterSales(List<AfterSaleVO> afterSales) {
+        this.afterSales = afterSales;
     }
 
-    /**
-     * 获取 售后退款数量
-     */
-    public Integer getShTkNum() {
-        return this.shTkNum;
+    public boolean isHasAfter() {
+        return hasAfter;
     }
 
-    /**
-     * 设置 售后退款数量
-     */
-    public void setShTkNum(Integer shTkNum) {
-        this.shTkNum = shTkNum;
+    public void setHasAfter(boolean hasAfter) {
+        this.hasAfter = hasAfter;
     }
 
-    /**
-     * 获取 退款状态 0无，1退款成功(对应tkNum)
-     */
-    public Integer getTkState() {
-        return this.tkState;
+    public int getRefundCount() {
+        return refundCount;
     }
 
-    /**
-     * 设置 退款状态 0无，1退款成功(对应tkNum)
-     */
-    public void setTkState(Integer tkState) {
-        this.tkState = tkState;
-    }
-
-    /**
-     * 获取 	售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
-     */
-    public Integer getShState() {
-        return this.shState;
-    }
-
-    /**
-     * 设置 	售后状态 0无，1售后处理中，2已退款，3已换货, 4退款中, 5换货中
-     */
-    public void setShState(Integer shState) {
-        this.shState = shState;
-    }
-
-    /**
-     * 获取 售前id
-     */
-    public Long getSqRefundId() {
-        return this.sqRefundId;
-    }
-
-    /**
-     * 设置 售前id
-     */
-    public void setSqRefundId(Long sqRefundId) {
-        this.sqRefundId = sqRefundId;
-    }
-
-    /**
-     * 获取 	售后id
-     */
-    public Long getShRefundId() {
-        return this.shRefundId;
-    }
-
-    /**
-     * 设置 	售后id
-     */
-    public void setShRefundId(Long shRefundId) {
-        this.shRefundId = shRefundId;
+    public void setRefundCount(int refundCount) {
+        this.refundCount = refundCount;
     }
 }

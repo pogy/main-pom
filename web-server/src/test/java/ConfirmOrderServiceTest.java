@@ -60,7 +60,7 @@ public class ConfirmOrderServiceTest {
         confirmOrderBOList.add(confirmOrderBOShop2);
         confirmBO.setOrders(confirmOrderBOList);
         try {
-            oid = confirmOrderService.confirmOrders(confirmBO);
+            oid = confirmOrderService.confirmOrders(confirmBO,9968L);
         } catch (Main4Exception e) {
             System.out.println("ConfirmOrderService#submit异常");
             System.out.println(e.getMessage());

@@ -26,7 +26,10 @@ import com.shigu.main4.order.vo.OrderDetailExpressVO;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.order.zfenums.RefundTypeEnum;
 import com.shigu.order.bo.OrderBO;
-import com.shigu.order.vo.*;
+import com.shigu.order.vo.AfterSaleVO;
+import com.shigu.order.vo.MyOrderDetailVO;
+import com.shigu.order.vo.MyOrderVO;
+import com.shigu.order.vo.SubMyOrderVO;
 import com.shigu.tools.DateParseUtil;
 import com.shigu.zf.utils.PriceConvertUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -34,6 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -150,28 +154,17 @@ public class MyOrderService {
                     .peek(o -> o.setServerPay(orderServiceMoneyMap.get(o.getOrderId())))
                     .map(MyOrderVO::getChildOrders).flatMap(List::stream).forEach(subMyOrderVO -> {
                 List<ItemOrderRefund> itemOrderRefunds = refundGroup.get(subMyOrderVO.getChildOrderId());
-                subMyOrderVO.setTkState(0);
-                subMyOrderVO.setShState(0);
                 if (itemOrderRefunds != null) {
-                    itemOrderRefunds.forEach(r -> {
-                        RefundTypeEnum refundType = RefundTypeEnum.typeOf(r.getType());
-                        switch (refundType) {
-                            case SYSTEM_REFUND:case ONLY_REFUND:
-                                subMyOrderVO.setSqRefundId(r.getRefundId());
-                                subMyOrderVO.setTkNum(r.getNumber());
-                                subMyOrderVO.setTkState(RefundStateEnum.statusOf(r.getStatus()) == RefundStateEnum.ENT_REFUND ? 1 : 0);
-                                break;
-                            case GOODS_REFUND: case GOODS_CHANGE:
-                                subMyOrderVO.setShRefundId(r.getRefundId());
-                                subMyOrderVO.setShTkNum(r.getNumber());
-                                RefundStateEnum refundStateEnum = RefundStateEnum.statusOf(r.getStatus());
-                                subMyOrderVO.setShState(RefundStateEnum.ENT_REFUND == refundStateEnum ? 2 : RefundStateEnum.NOT_REFUND == refundStateEnum ? 6 : 4);
-                                if (refundType == RefundTypeEnum.GOODS_CHANGE) {
-                                    subMyOrderVO.setShState(subMyOrderVO.getShState() + 1);
-                                }
-                                break;
-                        }
-                    });
+                    subMyOrderVO.setAfterSales(itemOrderRefunds.stream().map(r -> {
+                        AfterSaleVO saleVO = BeanMapper.map(r, AfterSaleVO.class);
+                        saleVO.setNum(r.getNumber());
+                        RefundStateEnum refundStateEnum = RefundStateEnum.statusOf(r.getStatus());
+                        saleVO.setState(RefundStateEnum.ENT_REFUND == refundStateEnum ? 2 : RefundStateEnum.NOT_REFUND == refundStateEnum ? 3 : 1);
+                        return saleVO;
+                    }).collect(Collectors.toList()));
+                    List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
+                    subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getNum).sum());
+                    subMyOrderVO.setHasAfter(afterSales.stream().filter(a -> a.getType() == 2 || a.getType() == 3).count() > 0);
                 }
             });
         }
@@ -249,13 +242,30 @@ public class MyOrderService {
         return vo;
     }
 
-    public static List<SubMyOrderVO> toSubMyOrderVO(List<SubOrderInfoVO> list) {
+    public List<SubMyOrderVO> toSubMyOrderVO(List<SubOrderInfoVO> list) {
+        Map<Long, List<ItemOrderRefund>> refundGroup = Collections.emptyMap();
+        if (!list.isEmpty()) {
+            ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
+            refundExample.createCriteria().andOidEqualTo(list.get(0).getOrderId());
+            refundGroup = itemOrderRefundMapper.selectByExample(refundExample).stream().collect(Collectors.groupingBy(ItemOrderRefund::getSoid));
+        }
+
+        Map<Long, List<ItemOrderRefund>> finalRefundGroup = refundGroup;
         return list.stream().map(so -> {
             SubMyOrderVO sub = BeanMapper.map(so, SubMyOrderVO.class);
             sub.setChildOrderId(so.getSubOrderId());
             sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
-            sub.setSqRefundId(so.getPreSaleRefundId());
-            sub.setShRefundId(so.getAfterSaleRefundId());
+
+            List<ItemOrderRefund> itemOrderRefunds = finalRefundGroup.get(sub.getChildOrderId());
+            if (itemOrderRefunds != null) {
+                sub.setAfterSales(itemOrderRefunds.stream().map(r -> {
+                    AfterSaleVO saleVO = BeanMapper.map(r, AfterSaleVO.class);
+                    saleVO.setNum(r.getNumber());
+                    RefundStateEnum refundStateEnum = RefundStateEnum.statusOf(r.getStatus());
+                    saleVO.setState(RefundStateEnum.ENT_REFUND == refundStateEnum ? 2 : RefundStateEnum.NOT_REFUND == refundStateEnum ? 3 : 1);
+                    return saleVO;
+                }).collect(Collectors.toList()));
+            }
             return sub;
         }).collect(Collectors.toList());
     }

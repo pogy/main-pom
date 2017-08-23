@@ -24,6 +24,7 @@ import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 支付部分实现
@@ -59,6 +60,7 @@ public abstract class PayerServiceAble implements PayerService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void paySure(Long applyId, String outerPid, String outerPuser, Long payMoney) throws PayerException {
         OrderPayApply apply;
         if (applyId == null || (apply = orderPayApplyMapper.selectByPrimaryKey(applyId)) == null)
@@ -73,7 +75,7 @@ public abstract class PayerServiceAble implements PayerService{
                 .on(orderPayExample.createCriteria().equalTo(OrderPayExample.payId,OrderPayRelationshipExample.payId))
                 .where(relationshipExample.createCriteria().andOidEqualTo(apply.getOid())
                         ,orderPayExample.createCriteria().andApplyIdNotEqualTo(applyId)).build();
-        if(multipleMapper.selectFieldsByMultipleExample(multipleExample, PayAndOrderVO.class).size()==0){//之前有付过，现在又来付
+        if(multipleMapper.selectFieldsByMultipleExample(multipleExample, PayAndOrderVO.class).size()>0){//之前有付过，现在又来付
             refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//把新支付创建出来，再退款退掉
             return;
         }
