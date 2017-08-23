@@ -230,17 +230,6 @@ var webSite = '${webSite!}';
     
     </ul> 
 
-    <h2>代发管理</h2>
-    <ul>
-    
-        
-            
-            <li><a href="http://daifa.571xz.com/daili/offerIndex.htm" >我要代发</a></li>
-            
-        
-    
-    </ul> 
-
     <h2>供应商申请</h2>
     <ul>
     

@@ -230,17 +230,6 @@ var webSite = '${webSite!}';
     
     </ul> 
 
-    <h2>代发管理</h2>
-    <ul>
-    
-        
-            
-            <li><a href="http://daifa.571xz.com/daili/offerIndex.htm" >我要代发</a></li>
-            
-        
-    
-    </ul> 
-
     <h2>供应商申请</h2>
     <ul>
     
@@ -276,7 +265,15 @@ var webSite = '${webSite!}';
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
-    <input type=hidden name="${field.name!}" value="${field.value!}">
+        <#if field.timeFormat??>
+            <#if field.value??>
+            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
+            <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+            </#if>
+        <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+        </#if>
     </#list>
 </form>
 </#if>
@@ -728,7 +725,15 @@ var webSite = '${webSite!}';
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
-    <input type=hidden name="${field.name!}" value="${field.value!}">
+        <#if field.timeFormat??>
+            <#if field.value??>
+            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
+            <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+            </#if>
+        <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+        </#if>
     </#list>
 </form>
 </#if>
