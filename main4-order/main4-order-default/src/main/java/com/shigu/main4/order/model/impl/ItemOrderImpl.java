@@ -1,5 +1,6 @@
 package com.shigu.main4.order.model.impl;
 
+import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderSubExample;
 import com.opentae.data.mall.examples.OrderPayExample;
@@ -394,15 +395,19 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public void closed() {
+        if(selOrderStatus().equals(OrderStatus.WAIT_BUYER_PAY))
         changeStatus(OrderStatus.TRADE_CLOSED);
     }
 
     @Override
     public void remove() {
-        com.opentae.data.mall.beans.ItemOrder order = new com.opentae.data.mall.beans.ItemOrder();
-        order.setOid(oid);
-        order.setDisenable(true);
-        itemOrderMapper.updateByPrimaryKeySelective(order);
+        OrderStatus nowStatus=selOrderStatus();
+        if(nowStatus.equals(OrderStatus.TRADE_CLOSED)||nowStatus.equals(OrderStatus.TRADE_FINISHED)) {
+            com.opentae.data.mall.beans.ItemOrder order = new com.opentae.data.mall.beans.ItemOrder();
+            order.setOid(oid);
+            order.setDisenable(true);
+            itemOrderMapper.updateByPrimaryKeySelective(order);
+        }
     }
 
     /**
@@ -420,5 +425,14 @@ public class ItemOrderImpl implements ItemOrder {
         order.setOid(oid);
         order.setOrderStatus(status.status);
         itemOrderMapper.updateByPrimaryKeySelective(order);
+    }
+
+    /**
+     * 查本单的状态
+     * @return
+     */
+    private OrderStatus selOrderStatus(){
+        com.opentae.data.mall.beans.ItemOrder order=itemOrderMapper.selectFieldsByPrimaryKey(oid, FieldUtil.codeFields("oid,order_status"));
+        return OrderStatus.statusOf(order.getOrderStatus());
     }
 }
