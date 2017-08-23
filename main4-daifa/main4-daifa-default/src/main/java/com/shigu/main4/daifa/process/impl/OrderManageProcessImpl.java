@@ -134,7 +134,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
                 .andReturnStatusEqualTo(0)
                 .andEndStatusEqualTo(0)
                 .andAllocatStatusEqualTo(0);
-        List<DaifaGgoodsTasks> tasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample, FieldUtil.codeFields("df_order_id"));
+        List<DaifaGgoodsTasks> tasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample, FieldUtil.codeFields("df_order_id,use_status,delist_is"));
         List<Long> oidps = new ArrayList<>();
         for (DaifaGgoodsTasks t : tasks) {
             if(t.getUseStatus()==0&&t.getDelistIs()==0){
