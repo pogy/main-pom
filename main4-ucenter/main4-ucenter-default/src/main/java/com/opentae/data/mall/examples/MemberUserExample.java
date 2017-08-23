@@ -73,6 +73,7 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
     public static EntityColumn imQqWeibo;
     public static EntityColumn loginPhone;
     public static EntityColumn phoneTel;
+    public static EntityColumn payPassword;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -142,6 +143,7 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
         imQqWeibo = listMap.get("imQqWeibo");
         loginPhone = listMap.get("loginPhone");
         phoneTel = listMap.get("phoneTel");
+        payPassword = listMap.get("payPassword");
         }
 
     public MemberUserExample() {
@@ -3483,6 +3485,61 @@ public class MemberUserExample extends SgExample<MemberUserExample.Criteria> {
 
         public MemberUserExample.Criteria andPhoneTelNotBetween(String value1, String value2) {
             return notBetween(phoneTel, value1, value2);
+        }
+        public MemberUserExample.Criteria andPayPasswordIsNull() {
+            return isNull(payPassword);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordIsNotNull() {
+            return isNotNull(payPassword);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordEqualTo(String value) {
+            return equalTo(payPassword, value);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordNotEqualTo(String value) {
+            return notEqualTo(payPassword, value);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordGreaterThan(String value) {
+            return greaterThan(payPassword, value);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(payPassword, value);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordLessThan(String value) {
+            return lessThan(payPassword, value);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(payPassword, value);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordLike(String value) {
+            return like(payPassword, value);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordNotLike(String value) {
+            return notLike(payPassword, value);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordIn(List<String> values) {
+            return in(payPassword, values);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordNotIn(List<String> values) {
+            return notIn(payPassword, values);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordBetween(String value1, String value2) {
+            return between(payPassword, value1, value2);
+        }
+
+        public MemberUserExample.Criteria andPayPasswordNotBetween(String value1, String value2) {
+            return notBetween(payPassword, value1, value2);
         }
     }
 }

@@ -570,6 +570,48 @@ public class MemberAction {
     }
 
     /**
+     * 修改支付密码页面
+     * @return
+     */
+    @RequestMapping("member/safeXgPaymm")
+    public String safeXgPaymm(HttpSession session, Model model) throws Main4Exception {
+        model.addAttribute("hasPayPwd",userBaseService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId()));
+        return "buyer/safeXgPaymm";
+    }
+
+    @RequestMapping("member/setPayPassword")
+    @ResponseBody
+    public JSONObject setPayPassword(String newPwd,HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        try {
+            if (userBaseService.selIsPayPwdByUserId(ps.getUserId())) {
+                throw new JsonErrException("已经设置过支付密码");
+            }
+        } catch (Main4Exception e) {
+            throw new JsonErrException(e.getMessage());
+        }
+        userBaseService.setNewPayPwd(ps.getUserId(),newPwd);
+        return JsonResponseUtil.success();
+    }
+
+    @RequestMapping("member/savePayPassword")
+    @ResponseBody
+    public JSONObject savePayPassword(String oldPwd,String newPwd,HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        try {
+            String pwd = userBaseService.selUserPayPwdByUserId(ps.getUserId());
+            if (!pwd.equals(EncryptUtil.encrypt(oldPwd))) {
+                throw new JsonErrException("输入原支付密码有误");
+            }
+        } catch (Main4Exception e) {
+            throw new JsonErrException(e.getMessage());
+        }
+        userBaseService.setNewPayPwd(ps.getUserId(),newPwd);
+        return JsonResponseUtil.success();
+    }
+
+
+    /**
      * 验证是否忘记密码来的
      * @param code
      * @param phoneVerify

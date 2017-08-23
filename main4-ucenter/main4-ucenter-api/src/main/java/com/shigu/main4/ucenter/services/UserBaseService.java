@@ -1,5 +1,7 @@
 package com.shigu.main4.ucenter.services;
 
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.vo.OuterUser;
 import com.shigu.main4.ucenter.vo.UserInfo;
@@ -78,4 +80,10 @@ public interface UserBaseService {
      * @return
      */
     Long selTbOuterUser(String tbNick);
+
+    String selUserPayPwdByUserId(Long userId) throws Main4Exception;
+
+    Boolean selIsPayPwdByUserId(Long userId) throws Main4Exception;
+
+    void setNewPayPwd(Long userId,String pwd) throws JsonErrException;
 }

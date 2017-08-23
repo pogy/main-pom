@@ -6,9 +6,12 @@ import com.opentae.data.mall.examples.MemberLicenseExample;
 import com.opentae.data.mall.examples.MemberUserExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
+import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.OuterUser;
 import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.main4.ucenter.vo.UserInfoUpdate;
@@ -288,4 +291,46 @@ public class UserBaseServiceImpl implements UserBaseService {
         MemberUserSub memberUserSubdata = userSubList.get(0);
         return memberUserSubdata.getUserId();
     }
+
+    @Override
+    public String selUserPayPwdByUserId(Long userId) throws Main4Exception {
+        MemberUser memberUser = selMemberFieldsByUserId(userId,"user_id,pay_password");
+        return memberUser.getPayPassword();
+    }
+
+    @Override
+    public Boolean selIsPayPwdByUserId(Long userId) throws Main4Exception {
+        MemberUser memberUser = selMemberFieldsByUserId(userId, "user_id,id_pay_password");
+        return memberUser.getIsPayPassword()>0;
+    }
+
+    @Override
+    public void setNewPayPwd(Long userId, String pwd) throws JsonErrException {
+        if (StringUtils.isEmpty(pwd)) {
+            throw new JsonErrException("支付密码不能为空");
+        }
+        try {
+            MemberUser memberUser = selMemberFieldsByUserId(userId, "user_id");
+            memberUser.setUserId(userId);
+            memberUser.setPayPassword(EncryptUtil.encrypt(pwd));
+            memberUser.setIsPayPassword(1);
+            memberUserMapper.updateByPrimaryKeySelective(memberUser);
+        } catch (Main4Exception e) {
+            throw new JsonErrException(e.getMessage());
+        }
+
+    }
+
+
+    private MemberUser selMemberFieldsByUserId(Long userId,String fields) throws Main4Exception {
+        if (userId == null) {
+            throw new Main4Exception("不存在的用户");
+        }
+        MemberUser memberUser = memberUserMapper.selectFieldsByPrimaryKey(userId, FieldUtil.codeFields(fields));
+        if (memberUser == null) {
+            throw new Main4Exception("不存在的用户");
+        }
+        return memberUser;
+    }
+
 }
