@@ -189,7 +189,9 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         logistic.setAddress(buyerAddress.getAddress());
         logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), company.getExpressCompanyId(), buyerAddress.getProvId(), pidNumBOS));
         itemOrder.addLogistics(null, logistic);
-
+        if (orderBO.getPackages() == null || orderBO.getPackages().isEmpty()) {
+            throw new RuntimeException("test.ERROR");
+        }
         return order.getOid();
     }
 
