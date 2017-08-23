@@ -423,7 +423,7 @@ var webSite = '${webSite!}';
                     </#if>
                     <#if afterSale.type == 2>
                         <#if afterSale.state == 2>
-                        <p class="fcF40">退货退款完成x${childOrder.shTkNum!}</p>
+                        <p class="fcF40">退货退款完成x${afterSale.num!}</p>
                         <#elseif afterSale.state == 1>
                         <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${afterSale.refundId!}" target="_blank">售后处理中</a></p>
                         <#elseif afterSale.state == 3>
