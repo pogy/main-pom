@@ -19,7 +19,6 @@ import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.PayerService;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
-import com.shigu.main4.order.vo.PayAndOrderVO;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang.StringUtils;
@@ -75,7 +74,7 @@ public abstract class PayerServiceAble implements PayerService{
                 .on(orderPayExample.createCriteria().equalTo(OrderPayExample.payId,OrderPayRelationshipExample.payId))
                 .where(relationshipExample.createCriteria().andOidEqualTo(apply.getOid())
                         ,orderPayExample.createCriteria().andApplyIdNotEqualTo(applyId)).build();
-        if(multipleMapper.selectFieldsByMultipleExample(multipleExample, PayAndOrderVO.class).size()>0){//之前有付过，现在又来付
+        if(multipleMapper.countByMultipleExample(multipleExample)>0){//之前有付过，现在又来付
             refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//把新支付创建出来，再退款退掉
             return;
         }
