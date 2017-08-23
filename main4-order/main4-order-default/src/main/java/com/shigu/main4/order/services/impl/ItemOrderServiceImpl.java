@@ -187,7 +187,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         LogisticsVO logistic = BeanMapper.map(buyerAddress, LogisticsVO.class);
         logistic.setCompanyId(expressCompany.getExpressCompanyId());
         logistic.setAddress(buyerAddress.getAddress());
-        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), company.getExpressCompanyId(), buyerAddress.getProvId(), pidNumBOS));
+        logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), expressCompany.getExpressCompanyId(), buyerAddress.getProvId(), pidNumBOS));
         itemOrder.addLogistics(null, logistic);
         return order.getOid();
     }
