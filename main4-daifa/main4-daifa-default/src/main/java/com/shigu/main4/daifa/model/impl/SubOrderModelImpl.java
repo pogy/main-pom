@@ -159,14 +159,13 @@ public class SubOrderModelImpl implements SubOrderModel {
         }
         DaifaOrder updateOrder=new DaifaOrder();
         updateOrder.setDfOrderId(subOrderId);
-//        String remark=order.getOrderRemark();
-//        if(remark==null){
-//            remark=context;
-//        }else{
-//            remark+="@_@"+context;
-//        }
-//        updateOrder.setOrderRemark(remark);
-        updateOrder.setOrderRemark(context);
+        String remark=order.getOrderRemark();
+        if(remark==null){
+            remark=context;
+        }else{
+            remark+="\r\n"+context;
+        }
+        updateOrder.setOrderRemark(remark);
         daifaOrderMapper.updateByPrimaryKeySelective(updateOrder);
     }
 
