@@ -575,38 +575,38 @@ public class MemberAction {
      */
     @RequestMapping("member/safeXgPaymm")
     public String safeXgPaymm(HttpSession session, Model model) throws Main4Exception {
-        model.addAttribute("hasPayPwd",userBaseService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId()));
+        model.addAttribute("hasPayPwd",memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId()));
         return "buyer/safeXgPaymm";
     }
 
+    /**
+     * 设置支付密码
+     * @param newPwd
+     * @param session
+     * @return
+     * @throws JsonErrException
+     */
     @RequestMapping("member/setPayPassword")
     @ResponseBody
     public JSONObject setPayPassword(String newPwd,HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        try {
-            if (userBaseService.selIsPayPwdByUserId(ps.getUserId())) {
-                throw new JsonErrException("已经设置过支付密码");
-            }
-        } catch (Main4Exception e) {
-            throw new JsonErrException(e.getMessage());
-        }
-        userBaseService.setNewPayPwd(ps.getUserId(),newPwd);
+        memberSimpleService.setPayPassword(ps.getUserId(),newPwd);
         return JsonResponseUtil.success();
     }
 
+    /**
+     * 修改支付密码
+     * @param oldPwd
+     * @param newPwd
+     * @param session
+     * @return
+     * @throws JsonErrException
+     */
     @RequestMapping("member/savePayPassword")
     @ResponseBody
     public JSONObject savePayPassword(String oldPwd,String newPwd,HttpSession session) throws JsonErrException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        try {
-            String pwd = userBaseService.selUserPayPwdByUserId(ps.getUserId());
-            if (!pwd.equals(EncryptUtil.encrypt(oldPwd))) {
-                throw new JsonErrException("输入原支付密码有误");
-            }
-        } catch (Main4Exception e) {
-            throw new JsonErrException(e.getMessage());
-        }
-        userBaseService.setNewPayPwd(ps.getUserId(),newPwd);
+        memberSimpleService.savePayPassword(ps.getUserId(),oldPwd,newPwd);
         return JsonResponseUtil.success();
     }
 

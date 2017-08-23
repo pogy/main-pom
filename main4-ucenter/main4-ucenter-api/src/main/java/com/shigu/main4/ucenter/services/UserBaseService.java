@@ -81,9 +81,5 @@ public interface UserBaseService {
      */
     Long selTbOuterUser(String tbNick);
 
-    String selUserPayPwdByUserId(Long userId) throws Main4Exception;
-
-    Boolean selIsPayPwdByUserId(Long userId) throws Main4Exception;
-
     void setNewPayPwd(Long userId,String pwd) throws JsonErrException;
 }
