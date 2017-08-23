@@ -3,7 +3,7 @@
 <mapper namespace="com.opentae.data.daifa.interfaces.DaifaTradeMapper">
 
     <select id="selectTodayCount" resultType="com.opentae.data.daifa.beans.TodayCount">
-        select count(*) totalNumber,truncate(real_pay_money,2) totalMoney from daifa_trade where create_time &gt;=#{startTime} and create_time &lt;=#{endTime}
+        select count(*) totalNumber,ROUND(SUM(real_pay_money),2) totalMoney from daifa_trade where create_time &gt;=#{startTime} and create_time &lt;=#{endTime}
     </select>
     <select id="selectSendCount" resultType="com.opentae.data.daifa.beans.TodayCount">
     SELECT
