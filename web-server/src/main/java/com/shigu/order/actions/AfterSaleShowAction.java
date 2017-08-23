@@ -5,6 +5,9 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.order.bo.AfterSaleBo;
 import com.shigu.order.services.AfterSaleShowService;
+import com.shigu.order.services.OrderOptionSafeService;
+import com.shigu.session.main4.PersonalSession;
+import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.util.Map;
 
@@ -33,6 +37,8 @@ public class AfterSaleShowAction {
     @Autowired
     private AfterSaleShowService afterSaleShowService;
 
+    private OrderOptionSafeService orderOptionSafeService;
+
 
     /**
      * 退换货页面
@@ -42,7 +48,6 @@ public class AfterSaleShowAction {
      */
     @RequestMapping(value = "returnOrChange", method = RequestMethod.GET)
     public String returnOrChange(@RequestParam(value = "childOrderId") String childOrderId, Model model) {
-
         Map<String, Object> map = afterSaleShowService.returnOrChange(childOrderId);
 
         model.addAllAttributes(map);
@@ -109,9 +114,15 @@ public class AfterSaleShowAction {
      */
     @RequestMapping(value = "chooseExpress", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject chooseExpress(String refundId, String expressId, String expressCode) {
+    public JSONObject chooseExpress(String refundId, String expressId, String expressCode, HttpSession session) {
+
         if (StringUtils.isEmpty(refundId)) {
             return JsonResponseUtil.error("售后id不能空");
+        }
+
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!orderOptionSafeService.checkByRefundId(Long.valueOf(refundId),ps.getUserId())){
+            return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         if (StringUtils.isEmpty(expressId)) {
             return JsonResponseUtil.error("快递不能空");
@@ -134,9 +145,14 @@ public class AfterSaleShowAction {
      */
     @RequestMapping(value = "modifyExpress", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject modifyExpress(String refundId, String expressId, String expressCode) {
+    public JSONObject modifyExpress(String refundId, String expressId, String expressCode,HttpSession session) {
         if (StringUtils.isEmpty(refundId)) {
             return JsonResponseUtil.error("售后id不能空");
+        }
+
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!orderOptionSafeService.checkByRefundId(Long.valueOf(refundId),ps.getUserId())){
+            return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         if (StringUtils.isEmpty(expressId)) {
             return JsonResponseUtil.error("快递不能空");
@@ -158,11 +174,15 @@ public class AfterSaleShowAction {
      */
     @RequestMapping(value = "refundApply", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject applyReturnOrder(AfterSaleBo bo) throws JsonErrException, OrderException {
+    public JSONObject applyReturnOrder(AfterSaleBo bo,HttpSession session) throws JsonErrException, OrderException {
 
 
         if (StringUtils.isEmpty(bo.getChildOrderId())) {
             return JsonResponseUtil.error("订单id不能空");
+        }
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!orderOptionSafeService.checkBySoid(Long.valueOf(bo.getChildOrderId()),ps.getUserId())){
+            return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         if (StringUtils.isEmpty(bo.getRefundCount()) || bo.getRefundCount() == 0) {
             return JsonResponseUtil.error("退货数量不能空");
@@ -179,9 +199,13 @@ public class AfterSaleShowAction {
      */
     @RequestMapping(value="exchangeApply",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject exchangeApply(AfterSaleBo bo) throws JsonErrException, OrderException {
+    public JSONObject exchangeApply(AfterSaleBo bo,HttpSession session) throws JsonErrException, OrderException {
         if (StringUtils.isEmpty(bo.getChildOrderId())) {
             return JsonResponseUtil.error("订单id不能空");
+        }
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!orderOptionSafeService.checkBySoid(Long.valueOf(bo.getChildOrderId()),ps.getUserId())){
+            return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         return JsonResponseUtil.success().element("refundId",afterSaleShowService.exchangeApply(bo));
     }
@@ -194,9 +218,13 @@ public class AfterSaleShowAction {
      */
     @RequestMapping(value = "agreeRefundMoney",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject agreeRefundMoney(String refundId,Integer agreeState) throws Main4Exception {
+    public JSONObject agreeRefundMoney(String refundId,Integer agreeState,HttpSession session) throws Main4Exception {
         if(StringUtils.isEmpty(refundId)){
             return JsonResponseUtil.error("售后id不能空");
+        }
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!orderOptionSafeService.checkByRefundId(Long.valueOf(refundId),ps.getUserId())){
+            return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         if(StringUtils.isEmpty(agreeState)){
             return JsonResponseUtil.error("缺少参数同意");

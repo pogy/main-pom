@@ -11,6 +11,7 @@ import com.shigu.order.bo.ConfirmBO;
 import com.shigu.order.exceptions.OrderException;
 import com.shigu.order.services.CartService;
 import com.shigu.order.services.ConfirmOrderService;
+import com.shigu.order.services.OrderOptionSafeService;
 import com.shigu.order.vo.CartOrderVO;
 import com.shigu.order.vo.OrderSubmitVo;
 import com.shigu.order.vo.SenderInfoVO;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
@@ -49,13 +51,16 @@ public class ConfirmOrderAction {
     @Autowired
     ItemOrderService itemOrderService;
 
+    @Autowired
+    private OrderOptionSafeService orderOptionSafeService;
+
     /**
      * 订单确认提交
      * @param request
      */
     @RequestMapping("confirmOrders")
     @ResponseBody
-    public JSONObject confirmOrders(HttpServletRequest request) throws JsonErrException {
+    public JSONObject confirmOrders(HttpServletRequest request, HttpSession session) throws JsonErrException {
         StringBuilder boStr = new StringBuilder();
         try {
             BufferedReader reader = request.getReader();
@@ -66,7 +71,8 @@ public class ConfirmOrderAction {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Long oid = confirmOrderService.confirmOrders(JSON.parseObject(boStr.toString(), ConfirmBO.class));
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Long oid = confirmOrderService.confirmOrders(JSON.parseObject(boStr.toString(), ConfirmBO.class),ps.getUserId());
         String payUrl = "/order/payMode.htm?orderId=" + oid;
         return JsonResponseUtil.success().element("redectUrl", payUrl);
     }
@@ -121,7 +127,11 @@ public class ConfirmOrderAction {
 
     @ResponseBody
     @RequestMapping("deleteCollJson")
-    public JSONObject deleteCollJson(Long id, HttpServletRequest request) {
+    public JSONObject deleteCollJson(Long id, HttpSession session) {
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        if(!orderOptionSafeService.checkByAddressId(ps.getUserId(),id)){
+            return JsonResponseUtil.error("只能操作本用户下的地址");
+        }
         itemOrderService.rmBuyerAddress(id);
         return JsonResponseUtil.success();
     }

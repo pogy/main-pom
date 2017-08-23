@@ -71,12 +71,14 @@ public class ConfirmOrderService {
     private LogisticsService logisticsService;
 
 
+
+
     /**
      * 订单确认提交
      * @param bo
      */
     @Transactional(rollbackFor = Exception.class)
-    public Long confirmOrders(ConfirmBO bo) throws JsonErrException {
+    public Long confirmOrders(ConfirmBO bo,Long userId) throws JsonErrException {
         if (bo == null || Strings.isNullOrEmpty(bo.getCode())) {
             throw new JsonErrException("传入信息不完整");
         }
@@ -86,6 +88,9 @@ public class ConfirmOrderService {
             throw new JsonErrException("没有找到产品信息");
         }
         ItemOrderBO itemOrderBO  = generateItemOrderBO(bo, orderSubmitVo);
+        if(!userId.equals(itemOrderBO.getUserId())){
+            throw new JsonErrException("只能操作本用户下的订单");
+        }
         Long oid;
         try {
             oid = itemOrderService.createOrder(itemOrderBO);
