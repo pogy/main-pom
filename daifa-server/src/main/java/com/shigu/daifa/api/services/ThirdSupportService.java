@@ -233,7 +233,7 @@ public class ThirdSupportService {
                 }
             } else {
                 goods.setNum(goods.getNum() + g.getGoodsNum());
-                if (codeMore == null) {
+                if (codeMore == null||codeMore.size()==0) {
                     goods.setHasNum(goods.getHasNum() + g.getGoodsNum());
                     goods.setCode(goods.getCode() + "," + code);
                 } else {
