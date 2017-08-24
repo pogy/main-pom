@@ -304,18 +304,6 @@ public class CargoManImpl implements CargoManModel {
                 daifaOrderMapper.updateByPrimaryKeySelective(order);
             }
             daifaGgoodsMapper.updateByPrimaryKeySelective(ddgoods);//更新拿货表
-            DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
-            daifaWaitSendOrderExample.createCriteria().andDfTradeIdEqualTo(ddgoods.getDfTradeId());
-            List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
-            for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
-                if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
-                    continue fo;
-                }
-            }
-            DaifaTrade tr=new DaifaTrade();
-            tr.setDfTradeId(ddgoods.getDfTradeId());
-            tr.setTradeStatus(3);
-            daifaTradeMapper.updateByPrimaryKeySelective(tr);
         }
     }
 

@@ -335,19 +335,5 @@ public class SubOrderModelImpl implements SubOrderModel {
         daifaGgoodsMapper.updateByPrimaryKeySelective(updateGgoods);
         daifaGgoodsTasksMapper.updateByPrimaryKeySelective(updateTask);
         daifaOrderMapper.updateByPrimaryKeySelective(order);
-
-        DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
-        daifaWaitSendOrderExample.createCriteria().andDfTradeIdEqualTo(task.getDfTradeId());
-        List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
-        for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
-            if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
-                return;
-            }
-        }
-
-        DaifaTrade tr=new DaifaTrade();
-        tr.setDfTradeId(task.getDfTradeId());
-        tr.setTradeStatus(3);
-        daifaTradeMapper.updateByPrimaryKeySelective(tr);
     }
 }
