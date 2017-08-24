@@ -268,6 +268,15 @@ public class OrderModelImpl implements OrderModel {
         if (delivery.getMarkDestination() == null || delivery.getDfTradeId() == null || delivery.getExpressCode() == null) {
             throw new DaifaException("主单id，三段码，快递单号都不能为空");
         }
+        //发货校验：1.有货先发：缺货部分如果没退款就不发货
+        DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
+        daifaWaitSendOrderExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
+        List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
+        for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
+            if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
+                throw new DaifaException("缺货部分未退款，不能发货。");
+            }
+        }
         Date time=new Date();
         String date=DateUtil.dateToString(time,DateUtil.patternB);
         DaifaTrade trade = new DaifaTrade();
@@ -303,15 +312,7 @@ public class OrderModelImpl implements OrderModel {
 
 
         //设置待发货子表的查询和修改条件
-        DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
-        daifaWaitSendOrderExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
-        //发货校验：1.有货先发：缺货部分如果没退款就不发货
-        List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
-        for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
-            if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
-                throw new DaifaException("缺货部分未退款，不能发货。");
-            }
-        }
+
         //修改已发货子表状态为已发货
         DaifaWaitSendOrder daifaWaitSendOrder=new DaifaWaitSendOrder();
         daifaWaitSendOrder.setSendStatus(2);
@@ -399,6 +400,20 @@ public class OrderModelImpl implements OrderModel {
         daifaWaitSendOrder.setRefundTime(new Date());
         daifaWaitSendOrderMapper.updateByExampleSelective(daifaWaitSendOrder,daifaWaitSendOrderExample);
         sendRefundMq(refundId.toString(),null);
+
+        //在本次退款后,判断订单是否已经可发货,如果可发货,设置订单状态为配货完成
+        daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
+        daifaWaitSendOrderExample.createCriteria().andDfTradeIdEqualTo(tid);
+        List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
+        for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
+            if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
+                return;
+            }
+        }
+        DaifaTrade tr=new DaifaTrade();
+        tr.setDfTradeId(tid);
+        tr.setTradeStatus(3);
+        daifaTradeMapper.updateByPrimaryKeySelective(tr);
     }
     /**
      * 退款

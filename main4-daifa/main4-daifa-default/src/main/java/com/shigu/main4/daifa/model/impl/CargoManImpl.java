@@ -188,7 +188,7 @@ public class CargoManImpl implements CargoManModel {
         //状态修改s
         DaifaGgoodsTasksExample dgtex = new DaifaGgoodsTasksExample();
         DaifaWaitSendOrderExample dfwsoex = new DaifaWaitSendOrderExample();
-        for (DaifaGgoods ddgoods : gglist) {
+        fo:for (DaifaGgoods ddgoods : gglist) {
             ddgoods.setUseStatus(0);//变成不可用了
             ddgoods.setOperateIs(1);
             if (!Objects.equals(ddgoods.getTakeGoodsStatus(), TakeGoodsEnum.HAS_TAKE.getValue())) {//未拿到货的
@@ -304,8 +304,19 @@ public class CargoManImpl implements CargoManModel {
                 daifaOrderMapper.updateByPrimaryKeySelective(order);
             }
             daifaGgoodsMapper.updateByPrimaryKeySelective(ddgoods);//更新拿货表
+            DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
+            daifaWaitSendOrderExample.createCriteria().andDfTradeIdEqualTo(ddgoods.getDfTradeId());
+            List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
+            for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
+                if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
+                    continue fo;
+                }
+            }
+            DaifaTrade tr=new DaifaTrade();
+            tr.setDfTradeId(ddgoods.getDfTradeId());
+            tr.setTradeStatus(3);
+            daifaTradeMapper.updateByPrimaryKeySelective(tr);
         }
-
     }
 
     public Long getCargoManId() {
