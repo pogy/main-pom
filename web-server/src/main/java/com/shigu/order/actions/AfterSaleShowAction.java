@@ -121,7 +121,7 @@ public class AfterSaleShowAction {
         }
 
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(!orderOptionSafeService.checkByRefundId(Long.valueOf(refundId),ps.getUserId())){
+        if(!orderOptionSafeService.checkByRefundId(ps.getUserId(),Long.valueOf(refundId))){
             return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         if (StringUtils.isEmpty(expressId)) {
@@ -151,7 +151,7 @@ public class AfterSaleShowAction {
         }
 
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(!orderOptionSafeService.checkByRefundId(Long.valueOf(refundId),ps.getUserId())){
+        if(!orderOptionSafeService.checkByRefundId(ps.getUserId(),Long.valueOf(refundId))){
             return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         if (StringUtils.isEmpty(expressId)) {
@@ -181,7 +181,7 @@ public class AfterSaleShowAction {
             return JsonResponseUtil.error("订单id不能空");
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(!orderOptionSafeService.checkBySoid(Long.valueOf(bo.getChildOrderId()),ps.getUserId())){
+        if(!orderOptionSafeService.checkBySoid(ps.getUserId(),Long.valueOf(bo.getChildOrderId()))){
             return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         if (StringUtils.isEmpty(bo.getRefundCount()) || bo.getRefundCount() == 0) {
@@ -204,7 +204,7 @@ public class AfterSaleShowAction {
             return JsonResponseUtil.error("订单id不能空");
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(!orderOptionSafeService.checkBySoid(Long.valueOf(bo.getChildOrderId()),ps.getUserId())){
+        if(!orderOptionSafeService.checkBySoid(ps.getUserId(),Long.valueOf(bo.getChildOrderId()))){
             return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         return JsonResponseUtil.success().element("refundId",afterSaleShowService.exchangeApply(bo));
@@ -223,7 +223,7 @@ public class AfterSaleShowAction {
             return JsonResponseUtil.error("售后id不能空");
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(!orderOptionSafeService.checkByRefundId(Long.valueOf(refundId),ps.getUserId())){
+        if(!orderOptionSafeService.checkByRefundId(ps.getUserId(),Long.valueOf(refundId))){
             return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         if(StringUtils.isEmpty(agreeState)){

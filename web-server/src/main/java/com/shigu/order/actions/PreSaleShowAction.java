@@ -91,7 +91,7 @@ public class PreSaleShowAction {
             price+=PriceConvertUtils.StringToLong(sub.getOtherRefundPrice());
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        if(!orderOptionSafeService.checkBySoid(childOrderId,ps.getUserId())){
+        if(!orderOptionSafeService.checkBySoid(ps.getUserId(),childOrderId)){
             return JsonResponseUtil.error("只能操作本用户下的订单");
         }
         Long refundId=afterSaleService.preRefundApply(childOrderId,refundCount,price);
