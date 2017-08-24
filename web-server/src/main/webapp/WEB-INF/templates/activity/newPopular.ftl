@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/newPopularv1.css?v=20180809" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/newPopular2.css?v=20180821" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/newPopularv1.js?v=20180809"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/newPopular2.js?v=20180821"></script>
 </head>
 <body>
 
@@ -87,7 +87,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
