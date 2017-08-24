@@ -1,13 +1,19 @@
 package com.shigu.order.vo;
 
+import com.opentae.core.mybatis.config.Column;
+
 /**
  * Created by bugzy on 2017/8/23 0023.
  */
 public class AfterSaleVO {
 
+    @Column("item_order_refund.refund_id")
     private Long refundId;
-    private Integer num;
+    @Column("item_order_refund.number")
+    private Integer afterSaleNum;
+    @Column("item_order_refund.type")
     private Integer type;
+    @Column("IF(ISNULL(item_order_refund.status),NULL,IF(item_order_refund.status=2,2,IF(item_order_refund.status=4,3,1)))")
     private Integer state;
 
     public Long getRefundId() {
@@ -18,12 +24,12 @@ public class AfterSaleVO {
         this.refundId = refundId;
     }
 
-    public Integer getNum() {
-        return num;
+    public Integer getAfterSaleNum() {
+        return afterSaleNum;
     }
 
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setAfterSaleNum(Integer afterSaleNum) {
+        this.afterSaleNum = afterSaleNum;
     }
 
     public Integer getType() {

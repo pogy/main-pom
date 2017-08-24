@@ -6,6 +6,7 @@ package com.shigu.order.bo;
 public class ShManaOrderBo {
     private Integer shStatus;
     private Integer page;
+    private Integer size = 10;
 
     public Integer getShStatus() {
         return this.shStatus;
@@ -21,5 +22,13 @@ public class ShManaOrderBo {
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
     }
 }

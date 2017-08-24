@@ -1,17 +1,11 @@
 package com.shigu.main4.order.services;
 
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
-import com.shigu.main4.order.servicevo.ShowOrderVO;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
-import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
-import com.shigu.main4.order.zfenums.ShStatusEnum;
 
 import java.text.ParseException;
-import java.util.List;
 
 /**
  * @类编号
@@ -26,18 +20,6 @@ import java.util.List;
  */
 
 public interface OrderListService {
-
-    /**
-     *
-     * 查询售后列表
-     * @param shStatus
-     * @param page
-     * @param pageSize
-     * @param userId
-     * @return
-     */
-    ShiguPager<ShowOrderVO> selectCountShManaOrder(ShStatusEnum shStatus,Integer page,Integer pageSize, Long userId) throws ParseException;
-
 
     /**
      * ====================================================================================
@@ -65,18 +47,6 @@ public interface OrderListService {
 
     /**
      * ====================================================================================
-     * @方法名：selectOrderAddrInfo
-     * @功能： 查询订单地址信息
-     * @param: 
-     * @return:
-     * @exception:
-     * ====================================================================================
-     * 
-     */
-    OrderAddrInfoVO selectOrderAddrInfo(Long orderId);
-
-    /**
-     * ====================================================================================
      * @方法名：selectExpress
      * @功能： 查询订单的快递信息
      * @param: 
@@ -85,7 +55,7 @@ public interface OrderListService {
      * ====================================================================================
      * 
      */
-    OrderDetailExpressVO selectExpress(Long orderId) throws Main4Exception, ParseException, Main4Exception, ParseException;//
+    OrderDetailExpressVO selectExpress(Long orderId) throws Main4Exception, ParseException;//
 
     /**
      * ====================================================================================
@@ -98,30 +68,6 @@ public interface OrderListService {
      * 
      */
     ShowOrderDetailVO selectMyorder(Long orderId);
-
-    /**
-     * ====================================================================================
-     * @方法名：selectSubList
-     * @功能： 根据主单id查询出子单列表
-     * @param: 
-     * @return: 
-     * @exception: 
-     * ====================================================================================
-     * 
-     */
-    List<SubOrderInfoVO> selectSubList(Long orderId);
-
-    /**
-     * ====================================================================================
-     * @方法名：selectTotal
-     * @功能： 根据主单查询总数
-     * @param: 
-     * @return: 
-     * @exception: 
-     * ====================================================================================
-     * 
-     */
-    OrderDetailTotalVO selectTotal(Long orderId);
 
 
 }

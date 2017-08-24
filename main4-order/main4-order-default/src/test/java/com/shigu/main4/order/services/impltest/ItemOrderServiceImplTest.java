@@ -1,6 +1,5 @@
 package com.shigu.main4.order.services.impltest;
 
-import com.opentae.data.mall.beans.ItemOrderSender;
 import com.opentae.data.mall.interfaces.ItemOrderSenderMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -10,14 +9,11 @@ import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.ItemProduct;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.servicevo.ExpressLogVO;
-import com.shigu.main4.order.servicevo.OrderInfoVO;
 import com.shigu.main4.order.servicevo.OrderLogVO;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.BuyerAddressVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.util.List;

@@ -37,6 +37,7 @@ public class AfterSaleShowAction {
     @Autowired
     private AfterSaleShowService afterSaleShowService;
 
+    @Autowired
     private OrderOptionSafeService orderOptionSafeService;
 
 

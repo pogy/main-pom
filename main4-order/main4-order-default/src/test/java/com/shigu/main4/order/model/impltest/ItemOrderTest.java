@@ -3,15 +3,12 @@ package com.shigu.main4.order.model.impltest;
 import com.shigu.main4.order.BaseTest;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.services.ItemOrderService;
-import com.shigu.main4.order.servicevo.OrderInfoVO;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.LogisticsVO;
 import com.shigu.main4.order.vo.PayedVO;
-import com.shigu.main4.order.vo.SubOrderVO;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +95,7 @@ public class ItemOrderTest extends BaseTest {
 
     @Test
     public void sended() throws Exception {
+        order().sended("1273456167254178");
     }
 
     @Test

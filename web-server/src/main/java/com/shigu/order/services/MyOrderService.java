@@ -4,40 +4,30 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.data.mall.beans.ItemOrder;
-import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.beans.ItemOrderLogistics;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.*;
-import com.opentae.data.mall.interfaces.ItemOrderMapper;
-import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
-import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
-import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
-import com.shigu.main4.order.servicevo.OrderDetailTotalVO;
 import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
-import com.shigu.main4.order.servicevo.SubOrderInfoVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
-import com.shigu.main4.order.zfenums.RefundStateEnum;
-import com.shigu.main4.order.zfenums.RefundTypeEnum;
 import com.shigu.order.bo.OrderBO;
 import com.shigu.order.vo.AfterSaleVO;
 import com.shigu.order.vo.MyOrderDetailVO;
 import com.shigu.order.vo.MyOrderVO;
 import com.shigu.order.vo.SubMyOrderVO;
 import com.shigu.tools.DateParseUtil;
-import com.shigu.zf.utils.PriceConvertUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -68,10 +58,10 @@ public class MyOrderService {
     private ItemOrderServiceMapper itemOrderServiceMapper;
 
     @Autowired
-    private ItemOrderRefundMapper itemOrderRefundMapper;
+    private ItemOrderSubMapper itemOrderSubMapper;
 
     @Autowired
-    private ItemOrderSubMapper itemOrderSubMapper;
+    private ItemOrderLogisticsMapper itemOrderLogisticsMapper;
 
     @Autowired
     private OrderManageProcess orderManageProcess;
@@ -81,8 +71,6 @@ public class MyOrderService {
 
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
-        ShiguPager<MyOrderVO> pager = new ShiguPager<>();
-        pager.setNumber(bo.getPage());
         ItemOrderExample orderExample = new ItemOrderExample();
         orderExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
         orderExample.setEndIndex(bo.getPageSize());
@@ -121,11 +109,21 @@ public class MyOrderService {
         if (StringUtils.isNotEmpty(bo.getTelePhone())) {
             logisticsExampleCriteria.andTelephoneEqualTo(bo.getTelePhone());
         }
+        return selectMyOrderPager(bo.getPage(), bo.getPageSize(), orderExample, subExample, logisticsExample, new ItemOrderRefundExample(), false);
+    }
 
-        MultipleExample multipleExample = MultipleExampleBuilder.from(orderExample)
+    public ShiguPager<MyOrderVO> selectMyOrderPager(Integer number, Integer size, ItemOrderExample orderExample, ItemOrderSubExample subExample, ItemOrderLogisticsExample logisticsExample, ItemOrderRefundExample refundExample, boolean onlyRefund) {
+        ShiguPager<MyOrderVO> pager = new ShiguPager<>();
+        pager.setNumber(number);
+        MultipleExampleBuilder multipleExampleBuilder = MultipleExampleBuilder.from(orderExample)
                 .innerJoin(subExample).on(subExample.createCriteria().equalTo(ItemOrderSubExample.oid, ItemOrderExample.oid))
                 .leftJoin(logisticsExample).on(logisticsExample.createCriteria().equalTo(ItemOrderLogisticsExample.oid, ItemOrderExample.oid))
-                .build();
+                .leftJoin(refundExample).on(refundExample.createCriteria().equalTo(ItemOrderRefundExample.soid, ItemOrderSubExample.soid));
+        if (onlyRefund) {
+            multipleExampleBuilder.where(refundExample.createCriteria().andRefundIdIsNotNull());
+        }
+
+        MultipleExample multipleExample = multipleExampleBuilder.build();
 
         multipleExample.setDistinctCount(ItemOrderExample.oid);
         multipleExample.setOrderByClause("item_order.create_time DESC");
@@ -134,7 +132,7 @@ public class MyOrderService {
         if (orderCount > 0) {
 
             // 查询数据
-            pager.calPages(orderCount, bo.getPageSize());
+            pager.calPages(orderCount, size);
             pager.setContent(multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class));
             List<Long> orderIds = pager.getContent().stream().map(MyOrderVO::getOrderId).collect(Collectors.toList());
 
@@ -145,25 +143,12 @@ public class MyOrderService {
                     .collect(Collectors.groupingBy(com.opentae.data.mall.beans.ItemOrderService::getOid)).entrySet().stream()
                     .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.format("%.2f", entry.getValue().stream().mapToLong(com.opentae.data.mall.beans.ItemOrderService::getMoney).sum() * .01)));
 
-            ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
-            refundExample.createCriteria().andOidIn(orderIds);
-            Map<Long, List<ItemOrderRefund>> refundGroup
-                    = itemOrderRefundMapper.selectByExample(refundExample).stream().collect(Collectors.groupingBy(ItemOrderRefund::getSoid));
-
             pager.getContent().stream()
                     .peek(o -> o.setServerPay(orderServiceMoneyMap.get(o.getOrderId())))
                     .map(MyOrderVO::getChildOrders).flatMap(List::stream).forEach(subMyOrderVO -> {
-                List<ItemOrderRefund> itemOrderRefunds = refundGroup.get(subMyOrderVO.getChildOrderId());
-                if (itemOrderRefunds != null) {
-                    subMyOrderVO.setAfterSales(itemOrderRefunds.stream().map(r -> {
-                        AfterSaleVO saleVO = BeanMapper.map(r, AfterSaleVO.class);
-                        saleVO.setNum(r.getNumber());
-                        RefundStateEnum refundStateEnum = RefundStateEnum.statusOf(r.getStatus());
-                        saleVO.setState(RefundStateEnum.ENT_REFUND == refundStateEnum ? 2 : RefundStateEnum.NOT_REFUND == refundStateEnum ? 3 : 1);
-                        return saleVO;
-                    }).collect(Collectors.toList()));
                     List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
-                    subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getNum).sum());
+                if (afterSales != null && !afterSales.isEmpty()) {
+                    subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
                     subMyOrderVO.setHasAfter(afterSales.stream().filter(a -> a.getType() == 2 || a.getType() == 3).count() > 0);
                 }
             });
@@ -189,7 +174,19 @@ public class MyOrderService {
     }
 
     public OrderAddrInfoVO expressAddrInfo(Long orderId) {
-        return orderListService.selectOrderAddrInfo(orderId);
+        ItemOrderLogistics t = new ItemOrderLogistics();
+        t.setOid(orderId);
+        List<ItemOrderLogistics> select = itemOrderLogisticsMapper.select(t);
+        if (!select.isEmpty()) {
+            ItemOrderLogistics logistics = select.get(0);
+            OrderAddrInfoVO vo = new OrderAddrInfoVO();
+            vo.setOrderId(orderId);
+            vo.setAddress(logistics.getAddress());
+            vo.setName(logistics.getName());
+            vo.setPhone(logistics.getTelephone());
+            return vo;
+        }
+        return null;
     }
 
     public ExpressInfoVO expressInfo(Long orderId) throws Main4Exception {
@@ -197,20 +194,19 @@ public class MyOrderService {
     }
 
     public MyOrderDetailVO orderDetail(Long orderId) throws Main4Exception, ParseException {
-        ShowOrderDetailVO orderVO = orderListService.selectMyorder(orderId);
-        OrderAddrInfoVO addrVo = orderListService.selectOrderAddrInfo(orderId);
-        OrderDetailExpressVO expressVO = orderListService.selectExpress(orderId);
-
-        List<SubOrderInfoVO> list = orderListService.selectSubList(orderId);
-        List<SubMyOrderVO> subs = toSubMyOrderVO(list);
         MyOrderDetailVO vo = new MyOrderDetailVO();
-        vo.setChildOrders(subs);
+        ShowOrderDetailVO orderVO = orderListService.selectMyorder(orderId);
 
-        OrderDetailTotalVO totalVO = orderListService.selectTotal(orderId);
+        ItemOrderExample orderExample = new ItemOrderExample();
+        orderExample.createCriteria().andOidEqualTo(orderId);
+        ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, orderExample, new ItemOrderSubExample(), new ItemOrderLogisticsExample(), new ItemOrderRefundExample(), false);
+        vo.setChildOrders(pager.getContent().get(0).getChildOrders());
 
-        vo.setExpress(expressVO);
-        vo.setOrderAddrInfo(addrVo);
-        vo.setTotal(totalVO);
+        vo.setExpress(orderListService.selectExpress(orderId));
+
+        vo.setOrderAddrInfo(expressAddrInfo(orderId));
+
+        vo.setTotal(orderVO.getTotalVO());
         if (orderVO.getOrderCreateTimed() != null) {
             vo.setOrderCreateTime(orderVO.getOrderCreateTimed().getTime());
         }
@@ -241,35 +237,6 @@ public class MyOrderService {
         vo.setOrderStateTime(orderStatusTIme);
         return vo;
     }
-
-    public List<SubMyOrderVO> toSubMyOrderVO(List<SubOrderInfoVO> list) {
-        Map<Long, List<ItemOrderRefund>> refundGroup = Collections.emptyMap();
-        if (!list.isEmpty()) {
-            ItemOrderRefundExample refundExample = new ItemOrderRefundExample();
-            refundExample.createCriteria().andOidEqualTo(list.get(0).getOrderId());
-            refundGroup = itemOrderRefundMapper.selectByExample(refundExample).stream().collect(Collectors.groupingBy(ItemOrderRefund::getSoid));
-        }
-
-        Map<Long, List<ItemOrderRefund>> finalRefundGroup = refundGroup;
-        return list.stream().map(so -> {
-            SubMyOrderVO sub = BeanMapper.map(so, SubMyOrderVO.class);
-            sub.setChildOrderId(so.getSubOrderId());
-            sub.setPrice(PriceConvertUtils.priceToString(so.getPrice()));
-
-            List<ItemOrderRefund> itemOrderRefunds = finalRefundGroup.get(sub.getChildOrderId());
-            if (itemOrderRefunds != null) {
-                sub.setAfterSales(itemOrderRefunds.stream().map(r -> {
-                    AfterSaleVO saleVO = BeanMapper.map(r, AfterSaleVO.class);
-                    saleVO.setNum(r.getNumber());
-                    RefundStateEnum refundStateEnum = RefundStateEnum.statusOf(r.getStatus());
-                    saleVO.setState(RefundStateEnum.ENT_REFUND == refundStateEnum ? 2 : RefundStateEnum.NOT_REFUND == refundStateEnum ? 3 : 1);
-                    return saleVO;
-                }).collect(Collectors.toList()));
-            }
-            return sub;
-        }).collect(Collectors.toList());
-    }
-
 
     public boolean testRefund(Long subId) {
         ItemOrderSub sub = itemOrderSubMapper.selectByPrimaryKey(subId);

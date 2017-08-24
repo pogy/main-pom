@@ -30,19 +30,8 @@ public class ShowOrderDetailVO implements Serializable{
      * 订单状态，1，2，3，4,5; 1等待付款, 2等待配货, 3已发货, 4交易完成, 5交易取消
      */
     private MainOrderStatusEnum mainState;
-    /**
-     * 订单总金额
-     */
-    private Long orderPrice;
-    /**
-     * 快递费
-     */
-    private Long postPrice;
-    /**
-     * 服务费
-     */
-    private Long serverPrice;
 
+    private OrderDetailTotalVO totalVO;
     /**
      * 是否淘宝订单
      */
@@ -134,45 +123,11 @@ public class ShowOrderDetailVO implements Serializable{
         this.mainState = mainState;
     }
 
-    /**
-     * 获取 订单总金额
-     */
-    public Long getOrderPrice() {
-        return this.orderPrice;
+    public OrderDetailTotalVO getTotalVO() {
+        return totalVO;
     }
 
-    /**
-     * 设置 订单总金额
-     */
-    public void setOrderPrice(Long orderPrice) {
-        this.orderPrice = orderPrice;
-    }
-
-    /**
-     * 获取 快递费
-     */
-    public Long getPostPrice() {
-        return this.postPrice;
-    }
-
-    /**
-     * 设置 快递费
-     */
-    public void setPostPrice(Long postPrice) {
-        this.postPrice = postPrice;
-    }
-
-    /**
-     * 获取 服务费
-     */
-    public Long getServerPrice() {
-        return this.serverPrice;
-    }
-
-    /**
-     * 设置 服务费
-     */
-    public void setServerPrice(Long serverPrice) {
-        this.serverPrice = serverPrice;
+    public void setTotalVO(OrderDetailTotalVO totalVO) {
+        this.totalVO = totalVO;
     }
 }

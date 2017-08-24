@@ -32,9 +32,10 @@ public class MyOrderDetailVO {
 
     private OrderDetailExpressVO express;//快递信息
 
-    List<SubMyOrderVO> childOrders;//订单子单
+    private List<SubMyOrderVO> childOrders;//订单子单
 
     private OrderDetailTotalVO total;//总计
+
     private  Integer  orderStateNum;//当前订单处于哪种状态，为1,2,3,4,5; 1提交订单，2待配货，3已发货，4交易完成，5取消订单
 
     private String[] orderStateTime;//订单状态时间，每条状态对应一条时间，当前处于第几种状态刚返回几条时间值，多条用逗号分隔。 状态为5返回两条时间值
