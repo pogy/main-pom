@@ -653,14 +653,18 @@ public class CdnAction {
     }
 
     private boolean noFitment(ContainerVO vo){
-        if(vo.getFitmentAreas()==null||vo.getFitmentAreas().size()!=1
-        ||vo.getFitmentAreas().get(0).getLeftarea()==null||vo.getFitmentAreas().get(0).getLeftarea().size()!=1
-                ||vo.getFitmentAreas().get(0).getLeftarea().get(0).getModuleType()!= FitmentModuleType.Category.value
-                ||vo.getFitmentAreas().get(0).getRightarea()==null||vo.getFitmentAreas().get(0).getRightarea().size()!=1
-                ||vo.getFitmentAreas().get(0).getRightarea().get(0).getModuleType()!=FitmentModuleType.Promote.value){
+        if(vo.getFitmentAreas()==null||vo.getFitmentAreas().size()!=2
+                //上区域
+                ||vo.getFitmentAreas().get(0).getAllarea()==null||vo.getFitmentAreas().get(0).getAllarea().size()!=1
+                ||vo.getFitmentAreas().get(0).getAllarea().get(0).getModuleType()!=FitmentModuleType.WideImage.value
+                //下区域
+                ||vo.getFitmentAreas().get(1).getLeftarea()==null||vo.getFitmentAreas().get(1).getLeftarea().size()!=1
+                ||vo.getFitmentAreas().get(1).getLeftarea().get(0).getModuleType()!= FitmentModuleType.Category.value
+                ||vo.getFitmentAreas().get(1).getRightarea()==null||vo.getFitmentAreas().get(1).getRightarea().size()!=1
+                ||vo.getFitmentAreas().get(1).getRightarea().get(0).getModuleType()!=FitmentModuleType.Promote.value){
             return false;
         }
-        ItemPromoteModule promote= (ItemPromoteModule) vo.getFitmentAreas().get(0).getRightarea().get(0);
+        ItemPromoteModule promote= (ItemPromoteModule) vo.getFitmentAreas().get(1).getRightarea().get(0);
         if(promote.getPromoteType()==1&&promote.getSort()==1&&promote.getItemNum()==16&&promote.getShowPage()==0
                 &&promote.getShowTitle()==1&&promote.getShowGoodsNo()==0&&promote.getShowPrice()==1
                 &&promote.getTitle().equals("推荐宝贝")&&promote.getRadio()==4&&promote.getFilter()==0){

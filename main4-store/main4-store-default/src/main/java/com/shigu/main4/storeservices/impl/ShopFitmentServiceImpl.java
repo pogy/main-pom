@@ -75,7 +75,10 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         fitmentReset(shopId);
 
         Long index = addPage(shopId, FitmentPageType.INDEX.name, null, FitmentPageType.INDEX.value);
-        Long indexFirstArea = addArea(index, null, FitmentAreaType.LEFTRIGHT.value(), null);
+        Long firstImgArea = addArea(index, null, FitmentAreaType.CENTER.value(), null);
+        addModule(firstImgArea, null, FitmentModuleType.WideImage.value, 3, null);
+
+        Long indexFirstArea = addArea(index, firstImgArea, FitmentAreaType.LEFTRIGHT.value(), 2);
         addModule(indexFirstArea, null, FitmentModuleType.Category.value, 1, null);
         addModule(indexFirstArea, null, FitmentModuleType.Promote.value, 2, null);
 
@@ -371,24 +374,12 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
             //对推荐商品按推荐顺序进行排序
             ShiguPager<ItemShowBlock> pager = shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(), webSite, 1, promoteModule.getItemNum());
             Map<Long, ItemShowBlock> goodsIdShowMap = pager.getContent().stream().collect(Collectors.toMap(ItemShowBlock::getItemId, ItemShowBlock::getThis));
-            boolean someGoodsSoldOutIs = false;
             List<ItemShowBlock> sortedItemList = new ArrayList<>(promoteModule.getPromoteItems().size());
             for (Long goodsId : promoteModule.getPromoteItems()) {
                 if (goodsIdShowMap.get(goodsId) == null) {
-                    someGoodsSoldOutIs = true;
                     continue;
                 }
                 sortedItemList.add(goodsIdShowMap.get(goodsId));
-            }
-            if (someGoodsSoldOutIs) {
-                //如果推荐商品中有已下架商品，移除下架商品
-                try {
-                    List<Long> goodsIds = sortedItemList.stream().map(ItemShowBlock::getItemId).collect(Collectors.toList());
-                    promoteModule.setItemNum(goodsIds.size());
-                    revalueModuleOption(promoteModule.getModuleId(),JSON.toJSONString(goodsIds));
-                } catch (ShopFitmentException e) {
-                    e.printStackTrace();
-                }
             }
             pager.setContent(sortedItemList);
             return pager;
