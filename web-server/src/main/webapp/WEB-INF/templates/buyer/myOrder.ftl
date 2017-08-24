@@ -418,12 +418,12 @@ var webSite = '${webSite!}';
                 <#list childOrder.afterSales as afterSale>
                     <#if afterSale.type == 1>
                         <#if afterSale.state == 2>
-                        <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">申请退款成功 x${afterSale.num!}</a></p>
+                        <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">申请退款成功 x${afterSale.afterSaleNum!}</a></p>
                         </#if>
                     </#if>
                     <#if afterSale.type == 2>
                         <#if afterSale.state == 2>
-                        <p class="fcF40">退货退款完成x${afterSale.num!}</p>
+                        <p class="fcF40">退货退款完成x${afterSale.afterSaleNum!}</p>
                         <#elseif afterSale.state == 1>
                         <p><a class="fcF40" href="${main_host!}order/refund.htm?refundId=${afterSale.refundId!}" target="_blank">售后处理中</a></p>
                         <#elseif afterSale.state == 3>
@@ -441,7 +441,7 @@ var webSite = '${webSite!}';
                     </#if>
                     <#if afterSale.type == 4>
                         <#if afterSale.state == 2>
-                        <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">自动退款 x${afterSale.num!}</a></p>
+                        <p><a class="fcBlue" href="onlyRefund.htm?refundId=${afterSale.refundId!}" target="_blank">自动退款 x${afterSale.afterSaleNum!}</a></p>
                         </#if>
                     </#if>
                 </#list>
