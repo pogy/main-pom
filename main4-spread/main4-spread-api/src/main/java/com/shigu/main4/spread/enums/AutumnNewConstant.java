@@ -24,8 +24,7 @@ public class AutumnNewConstant {
     /**
      * 当前期秋装活动
      */
-    //todo:第二期秋装活动要上线时换成第二期的
-    public static final ActivityDrawEnum CURRENT_ACTIVE = ActivityDrawEnum.NEW_AUTUMN;
+    public static final ActivityDrawEnum CURRENT_ACTIVE = ActivityDrawEnum.NEW_AUTUMN_2;
     /**
      * 秋装活动标志，秋装活动使用对应活动AcitivityDrawEnum#name作为标志
      */
@@ -46,4 +45,6 @@ public class AutumnNewConstant {
      * 可参与抽奖的商品查询标志
      */
     public static final String[] UPLOAD_FLAG = {ACTIVE_FLAG};
+    //往期flag
+    public static final String[] PAST_ACTIVE_FLAG = {ActivityDrawEnum.NEW_AUTUMN.name,ActivityDrawEnum.NEW_AUTUMN_2.name};
 }

@@ -10,7 +10,6 @@ import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.activity.tempvo.PopularGoodsVO;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.spread.enums.AutumnNewConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,9 +46,9 @@ public class NewPopularService {
      *
      * @return
      */
-    public List<PopularGoodsVO> selNewPopularGoodsList() {
+    public List<PopularGoodsVO> selNewPopularGoodsList(String flag) {
         ShiguTempExample shiguTempExample = new ShiguTempExample();
-        shiguTempExample.createCriteria().andFlagEqualTo(AutumnNewConstant.ACTIVE_FLAG);
+        shiguTempExample.createCriteria().andFlagEqualTo(flag);
         shiguTempExample.setOrderByClause("key2+0 asc,key4+0 asc");
         List<ShiguTemp> shiguTemps = shiguTempMapper.selectByExample(shiguTempExample);
         if (shiguTemps.size() == 0) {

@@ -14,6 +14,7 @@ import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
 import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -400,7 +401,7 @@ public class ActivityAction {
     @RequestMapping("activity/newPopular")
     public String newPopular(Model model) {
         model.addAttribute("webSite", "hz");
-        model.addAttribute("goodsList", newPopularService.selNewPopularGoodsList());
+        model.addAttribute("goodsList", newPopularService.selNewPopularGoodsList(AutumnNewConstant.ACTIVE_FLAG));
         return "activity/newPopular";
     }
 
