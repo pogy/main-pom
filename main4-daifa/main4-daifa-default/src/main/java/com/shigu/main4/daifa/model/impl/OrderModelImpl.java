@@ -6,6 +6,7 @@ import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.daifa.bo.*;
 import com.shigu.main4.daifa.enums.DaifaListDealTypeEnum;
@@ -136,9 +137,7 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setPropStr(bo.getColor()+":"+bo.getSize());
                     subOrderModelBO.setGoodsNum(1);
                     subOrderModelBO.setSinglePiPrice(bo.getSinglePay());
-                    subOrderModelBO.setSinglePay(bo.getSinglePay());
                     subOrderModelBO.setSellerId(orderBO.getSenderId());
-                    subOrderModelBO.setTotalFee(bo.getSinglePay());
                     subOrderModelBO.setOrderStatus(1L);
                     subOrderModelBO.setAggrement(orderBO.getAggrement ());
                     subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
@@ -160,7 +159,8 @@ public class OrderModelImpl implements OrderModel {
                         subOrderModelBO.setSingleServicesFee ("0.00");
                         subOrderModelBO.setTotalServiceFee ("0.00");
                     }
-
+                    subOrderModelBO.setSinglePay(MoneyUtil.dealPrice(MoneyUtil.StringToLong(bo.getSinglePay())+MoneyUtil.StringToLong(subOrderModelBO.getSingleServicesFee())));
+                    subOrderModelBO.setTotalFee(subOrderModelBO.getSinglePay());
                     SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
                     BigNumber singlePay = new BigNumber(bo.getSinglePay());
                     goodsFee = goodsFee.Add(singlePay);
