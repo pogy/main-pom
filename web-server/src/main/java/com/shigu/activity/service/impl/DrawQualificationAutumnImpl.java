@@ -7,6 +7,7 @@ import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.activity.service.DrawQualification;
 import com.shigu.main4.spread.enums.ActivityDrawEnum;
+import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.HitDrawModel;
 import com.shigu.main4.spread.vo.active.draw.DrawVerifyVO;
 import com.shigu.main4.spread.vo.active.draw.NewAutumnDrawVerifyVO;
@@ -26,13 +27,12 @@ import java.util.List;
 @Service("newAutumnDrawQualification")
 public class DrawQualificationAutumnImpl extends DrawQualification {
 
-
     @Autowired
     private ShiguTempMapper shiguTempMapper;
     @Autowired
     private ActiveDrawRecordMapper activeDrawRecordMapper;
 
-    private ActivityDrawEnum newAutumn = ActivityDrawEnum.NEW_AUTUMN;
+    private ActivityDrawEnum newAutumn = AutumnNewConstant.CURRENT_ACTIVE;
 
     @Override
     public DrawVerifyVO hasDrawQualification(Long userId) {
@@ -45,7 +45,7 @@ public class DrawQualificationAutumnImpl extends DrawQualification {
         vo.setType(newAutumn.type);
         //获取抽奖记录
         ShiguTemp shiguTemp = new ShiguTemp();
-        shiguTemp.setFlag(NewAutumnDrawVerifyVO.DRAW_RECORD_FLAG);
+        shiguTemp.setFlag(AutumnNewConstant.DRAW_RECORD_FLAG);
         shiguTemp.setKey1(userId.toString());
         shiguTemp = shiguTempMapper.selectOne(shiguTemp);
         //没有抽奖资格记录
@@ -92,7 +92,7 @@ public class DrawQualificationAutumnImpl extends DrawQualification {
 
     @Override
     public ActivityDrawEnum getActiveIdentity() {
-        return ActivityDrawEnum.NEW_AUTUMN;
+        return newAutumn;
     }
 
 }

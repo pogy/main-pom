@@ -17,6 +17,7 @@ import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
+import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
 import com.shigu.main4.spread.vo.active.draw.NewAutumnDrawVerifyVO;
@@ -113,10 +114,10 @@ public class ActiveDrawListener implements MessageListener {
 //            doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_DAILYFIND);
 //        }
         //验证是秋装新品
-        if (newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(NewAutumnDrawVerifyVO.UPLOAD_FLAG))) {
+        if (newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(AutumnNewConstant.UPLOAD_FLAG))) {
             //只从淘宝电脑端上款
             if ("web-tb".equals(itemUpRecordVO.getFlag())) {
-                doChangeNewAutumn(itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),NewAutumnDrawVerifyVO.DRAW_RECORD_FLAG);
+                doChangeNewAutumn(itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(), AutumnNewConstant.DRAW_RECORD_FLAG);
             }
         }
         return Action.CommitMessage;
@@ -355,10 +356,10 @@ public class ActiveDrawListener implements MessageListener {
     //    int count=0;
     //    for (SearchHit hit : hits) {
     //        ItemUpRecordVO itemUpRecordVO = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
-    //        if (newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(NewAutumnDrawVerifyVO.UPLOAD_FLAG))) {
+    //        if (newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(AutumnNewConstant.UPLOAD_FLAG))) {
     //            //只从淘宝电脑端上款
     //            if ("web-tb".equals(itemUpRecordVO.getFlag())) {
-    //                doChangeNewAutumn(itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),NewAutumnDrawVerifyVO.DRAW_RECORD_FLAG);
+    //                doChangeNewAutumn(itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),AutumnNewConstant.DRAW_RECORD_FLAG);
     //
     //            }
     //        }

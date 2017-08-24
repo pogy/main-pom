@@ -26,6 +26,10 @@ public abstract class DrawQualification {
      */
     public abstract DrawVerifyVO hasDrawQualification(Long userId);
 
+    /**
+     * 获取对应活动枚举对象，进行活动对应实现类的选择
+     * @return
+     */
     public abstract ActivityDrawEnum getActiveIdentity();
 
     /**

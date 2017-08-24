@@ -9,7 +9,8 @@ package com.shigu.main4.spread.enums;
  * 描述：
  */
 public enum ActivityDrawEnum {
-    NEW_AUTUMN("秋装上新抽奖",20,15,2,"NEW_AUTUMN","hitDrawModelNewAutumn","2017-08-15 23:55:00","2017-08-26 23:59:59"),
+    NEW_AUTUMN("秋装上新抽奖",20,15,2,"new_autumn_0811","hitDrawModelNewAutumn","2017-08-15 23:55:00","2017-08-26 23:59:59"),
+    NEW_AUTUMN_2("秋装活动第二期抽奖",21,16,2,"NEW_AUTUMN_2","hitDrawModelNewAutumn","",""),//todo:第二期秋装活动时间
     ;
     public final long pemId;
     /**
