@@ -1016,7 +1016,7 @@ var piPrice = '${goodsInfo.piPrice!}';
 
 
 
-                <li class="imgDownload" id="picDownload"><b xzclick="imgDownload"><i class="ii"></i><span>图片下载</span></b></li>
+                <li class="imgDownload" id="picDownload" data-goodsid="${goodsInfo.goodsId!}"><b xzclick="imgDownload"><i class="ii"></i><span>图片下载</span></b></li>
                 <li class="copyCode" id="copyCodeBtn">
                     <script src="http://style.571xz.com/v2/xz/js/clipboard/jquery.zeroclipboard.min.js"></script>
 
