@@ -39,42 +39,61 @@ public class HitDrawModelNewAutumnImplTest {
     @Test
     public void initPool() {
         ActivityDrawEnum currentActive = AutumnNewConstant.CURRENT_ACTIVE;
-        ShiguTemp rank1 = generateNewAutumnPrizePool(generateConstant(currentActive, 1, 1, 20, "一等奖"),
-                0, 0, 1, "2017-08-22 00:00:00", 240);
+        ShiguTemp rank1 = generateNewAutumn2PrizePool(generateConstant(currentActive, 1, 1, 5, "A4"),
+                1, "2017-09-02 00:00:00", 25);
         shiguTempMapper.insertSelective(rank1);
-        ShiguTemp rank2 = generateNewAutumnPrizePool(generateConstant(currentActive, 2, 5, 50, "二等奖"),
-                1, 0, 1, "2017-08-19 00:00:00", 48);
+        ShiguTemp rank2 = generateNewAutumn2PrizePool(generateConstant(currentActive, 2, 5, 70, "A3"),
+                 4, "2017-08-30 00:00:00", 24);
         shiguTempMapper.insertSelective(rank2);
-        ShiguTemp rank3 = generateNewAutumnPrizePool(generateConstant(currentActive, 3, 120, 100, "三等奖"),
-                12, 0, 12, "2017-08-18 00:00:00", 24);
+        ShiguTemp rank3 = generateNewAutumn2PrizePool(generateConstant(currentActive, 3, 120, 80, "A2"),
+                14, "2017-08-27 00:00:00", 24);
         shiguTempMapper.insertSelective(rank3);
-        ShiguTemp rank4 = generateNewAutumnPrizePool(generateConstant(currentActive, 4, 250, 150, "参与奖"),
-                25, 0, 250, "2017-08-18 00:00:00", 24);
+        ShiguTemp rank4 = generateNewAutumn2PrizePool(generateConstant(currentActive, 4, 250, 845, "A1"),
+                1000, "2017-08-27 00:00:00", 24);
         shiguTempMapper.insertSelective(rank4);
     }
 
-    /**
-     *
-     * @param constant 秋装奖池常量信息
-     * @param currentPrizeNum 当前可抽奖品数量
-     * @param distributedNum 已被抽中奖品数量
-     * @param throwNum 奖品下次投放数量
-     * @param nextThrowInTime 下次投放时间
-     * @param updatePeriod 投放周期
-     * @return
-     */
-    private ShiguTemp generateNewAutumnPrizePool(JSONObject constant, int currentPrizeNum,int distributedNum,int throwNum,String nextThrowInTime,int updatePeriod){
+
+    private ShiguTemp generateNewAutumn2PrizePool(JSONObject constant,int throwNum,String nextThrowInTime,int updatePeriod) {
         ShiguTemp pool = new ShiguTemp();
-        //设置活动标志
+        //奖池标记
         pool.setFlag(AutumnNewConstant.PRIZE_POOL_FLAG);
+        //奖池常量
         pool.setKey6(constant.toJSONString());
-        pool.setKey1(currentPrizeNum+"");
-        pool.setKey2(distributedNum+"");
+        //当前奖池内数量
+        pool.setKey1("0");
+        //已被抽中奖品数量
+        pool.setKey2("0");
+        //一次投放奖品数量
         pool.setKey3(throwNum+"");
+        //下次投放奖品时间
         pool.setKey4(nextThrowInTime);
+        //奖品投放周期（小时）
         pool.setKey5(updatePeriod+"");
         return pool;
     }
+    ///**
+    // *
+    // * @param constant 秋装奖池常量信息
+    // * @param currentPrizeNum 当前可抽奖品数量
+    // * @param distributedNum 已被抽中奖品数量
+    // * @param throwNum 奖品下次投放数量
+    // * @param nextThrowInTime 下次投放时间
+    // * @param updatePeriod 投放周期
+    // * @return
+    // */
+    //private ShiguTemp generateNewAutumnPrizePool(JSONObject constant, int currentPrizeNum,int distributedNum,int throwNum,String nextThrowInTime,int updatePeriod){
+    //    ShiguTemp pool = new ShiguTemp();
+    //    //设置活动标志
+    //    pool.setFlag(AutumnNewConstant.PRIZE_POOL_FLAG);
+    //    pool.setKey6(constant.toJSONString());
+    //    pool.setKey1(currentPrizeNum+"");
+    //    pool.setKey2(distributedNum+"");
+    //    pool.setKey3(throwNum+"");
+    //    pool.setKey4(nextThrowInTime);
+    //    pool.setKey5(updatePeriod+"");
+    //    return pool;
+    //}
 
     /**
      * 秋装奖池常量信息

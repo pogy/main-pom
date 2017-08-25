@@ -33,12 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 奖品活动
@@ -164,9 +159,10 @@ public class ActivityAction {
                         iterator.remove();
                     }
                 }
+                model.addAttribute("lastUserAward",JSON.toJSONString(userVoList));
             }
         }
-        model.addAttribute("lastUserAward", "{}");
+        //model.addAttribute("lastUserAward", "{}");
         return "buyer/awardInfo";
     }
 
