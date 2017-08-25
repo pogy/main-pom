@@ -815,7 +815,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             throw new Main4Exception("数据有误");
         }
         int xcday = DateUtil.daysOfTwo(drawPemVo.getStartTime(), new Date());
-        if(xcday > 7){
+        if(xcday > 14){
             throw new Main4Exception("已过期，无法领取");
         }
         if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
