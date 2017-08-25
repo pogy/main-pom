@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/shopIconCopyrightv1.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/shopIconCopyright.css" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/shopIconCopyrightv1.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/shopIconCopyright.js"></script>
 </head>
 <body>
 
@@ -250,7 +250,7 @@ var webSite = '${webSite!}';
 <div class="topNav">
     <ul class="clearfix">
     
-        <li>
+        <li >
             <a href="http://hz.571xz.com/market.htm" target="_blank">
                 逛市场
                 <i class="hot"></i>
@@ -258,7 +258,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
                 商品库
                 
@@ -266,7 +266,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://so.571xz.com/newgoods.htm" target="_blank">
                 今日新品
                 
@@ -274,7 +274,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
                 发现好货
                 <i class="hot"></i>
@@ -282,7 +282,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://daifa.571xz.com/" target="_blank">
                 一件代发
                 
@@ -290,7 +290,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li class="select">
             <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
                 知识产权
                 
@@ -298,7 +298,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://zixun.571xz.com/index" target="_blank">
                 资讯
                 
@@ -319,12 +319,15 @@ var webSite = '${webSite!}';
             <#list copyrightList as list>
                 <li>
                     <a href="http://${webSite!}.571xz.com/shop.htm?id=${list.shopId!}" target="_blank">
-                        <img src="${list.imgSrc!}">
+                        <img class="lazyload" src="${list.imgSrc!}">
                     </a>
                     <h3 class="yahei fs14 tac"><a href="http://${webSite!}.571xz.com/shop.htm?id=${list.shopId!}" target="_blank">${list.shopName!}</a></h3>
                 </li>
             </#list>
         </ul>
+        
+        
+        
     </div>
     
     <div class="paginationBox layout">
@@ -363,7 +366,15 @@ var webSite = '${webSite!}';
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
-    <input type=hidden name="${field.name!}" value="${field.value!}">
+        <#if field.timeFormat??>
+            <#if field.value??>
+            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
+            <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+            </#if>
+        <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+        </#if>
     </#list>
 </form>
 </#if>
@@ -373,6 +384,7 @@ var webSite = '${webSite!}';
 
 
 </#list>
+
 
 
 
