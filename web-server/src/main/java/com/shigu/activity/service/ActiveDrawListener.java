@@ -134,11 +134,11 @@ public class ActiveDrawListener implements MessageListener {
             goodsIdSet = new HashSet();
             goodsIdSet.add(goodsId);
             goodsIdAdded = true;
-            redisIO.putFixedTemp(key,goodsIdSet,3600*24*10);
+            redisIO.putFixedTemp(key,goodsIdSet,3600*24*7);
         } else if (!goodsIdSet.contains(goodsId)) {
             goodsIdSet.add(goodsId);
             goodsIdAdded = true;
-            redisIO.putFixedTemp(key,goodsIdSet,3600*24*10);
+            redisIO.putFixedTemp(key,goodsIdSet,3600*24*7);
         }
         int upNum = goodsIdSet.size();
         if (goodsIdAdded==true&&upNum>=3) {
