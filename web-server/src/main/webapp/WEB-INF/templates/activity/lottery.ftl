@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>秋装上上上，幸运大抽奖 - 四季星座网</title>
+    <title></title>
 
     
     
@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/lottery.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/lottery2.css" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/lottery.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/lottery2.js"></script>
 </head>
 <body>
 
@@ -87,7 +87,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -387,8 +387,8 @@ var webSite = '${webSite!}';
     <div class="layout awardsBox">
         <h2 class="yahei fs18 tac"><span class="pr">活动大揭秘</span></h2>
         <ol>
-            <li>1、一等奖：三星Galaxy S8+皇帝版6GB+128GB；</li>
-            <li>2、二等奖：华为 HUAWEI nova青春版 4GB+64GB；</li>
+            <li>1、一等奖：Apple Watch Sport Series 1智能手表；</li>
+            <li>2、二等奖：小米手环2；</li>
             <li>3、三等奖：耳机，键盘，电子称等电子生活用品随机领取；</li>
             <li>4、参与奖：小茗同学，红牛等健康饮品随机领取。</li>
         </ol>
@@ -396,7 +396,7 @@ var webSite = '${webSite!}';
     <div class="layout rulesBox">
         <h2 class="yahei fs18 tac"><span class="pr">活动规则</span></h2>
         <ol>
-            <li>1、活动时间： 上新时间：8.12-.8.26日  / 抽奖时间：8.17-.8.26日。</li>
+            <li>1、活动时间：上新及抽奖时间：2017.08.27--2017.09.03日。</li>
             <li>2、活动商品：仅限“活动页商品”。</li>
             <li>3、抽奖次数：每个ID最多5次，即上新商品个数分别为3、5、9、13、20。</li>
             <li>4、上新商品：须为不同新品，不可同一新品重复上架，否则不计入上新数量。</li>
