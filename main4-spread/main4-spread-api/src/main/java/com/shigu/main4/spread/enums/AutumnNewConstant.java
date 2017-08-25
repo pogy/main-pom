@@ -1,5 +1,9 @@
 package com.shigu.main4.spread.enums;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 类名：AutumnNewConstant
  * 类路径：com.shigu.main4.spread.enums.AutumnNewConstant
@@ -47,4 +51,16 @@ public class AutumnNewConstant {
     public static final String[] UPLOAD_FLAG = {ACTIVE_FLAG};
     //往期flag
     public static final String[] PAST_ACTIVE_FLAG = {ActivityDrawEnum.NEW_AUTUMN.name,ActivityDrawEnum.NEW_AUTUMN_2.name};
+
+    public static Date STARTTIME;
+    public static Date DEADLINE;
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            STARTTIME = sdf.parse(CURRENT_ACTIVE.startTime);
+            DEADLINE = sdf.parse(CURRENT_ACTIVE.deadline);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }

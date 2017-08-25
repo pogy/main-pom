@@ -114,7 +114,8 @@ public class ActiveDrawListener implements MessageListener {
 //            doChange(pemId,itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),ActiveDrawGoods.TYPE_DAILYFIND);
 //        }
         //验证是秋装新品
-        if (newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(AutumnNewConstant.UPLOAD_FLAG))) {
+        Date now = new Date();
+        if (now.after(AutumnNewConstant.STARTTIME)&&now.before(AutumnNewConstant.DEADLINE)&&newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(AutumnNewConstant.UPLOAD_FLAG))) {
             //只从淘宝电脑端上款
             if ("web-tb".equals(itemUpRecordVO.getFlag())) {
                 doChangeNewAutumn(itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(), AutumnNewConstant.DRAW_RECORD_FLAG);
