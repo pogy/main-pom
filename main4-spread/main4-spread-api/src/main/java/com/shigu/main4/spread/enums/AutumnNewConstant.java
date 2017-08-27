@@ -54,7 +54,7 @@ public class AutumnNewConstant {
 
     public static Date STARTTIME;
     public static Date DEADLINE;
-    {
+    static {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             STARTTIME = sdf.parse(CURRENT_ACTIVE.startTime);
