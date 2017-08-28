@@ -327,13 +327,11 @@ public class ItemOrderImpl implements ItemOrder {
             sub.setNum(bo.getNumber());
             ItemProductVO info = product.info();
             BeanMapper.map(info,sub);
-            sub.setDistributionNum(0);
             // 应付总价 产品单价 X 数量
             sub.setColor(info.getSelectiveSku().getColor());
             sub.setSize(info.getSelectiveSku().getSize());
             sub.setWeight(product.selWeight());
             sub.setShouldPayMoney(sub.getPrice() * sub.getNum());
-            sub.setPayMoney(0L);
             sub.setRefundMoney(0L);
             sub.setStatus(SubOrderStatus.ORIGINAL.status);
             sub.setOid(oid);
@@ -385,6 +383,17 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     public void payed() {
+        com.opentae.data.mall.beans.ItemOrder order=itemOrderMapper.selectFieldsByPrimaryKey(oid,
+                FieldUtil.codeFields("oid,total_fee"));
+        payed(order.getTotalFee());
+    }
+
+    @Override
+    public void payed(Long payMoney) {
+        com.opentae.data.mall.beans.ItemOrder order=new com.opentae.data.mall.beans.ItemOrder();
+        order.setOid(oid);
+        order.setPayedFee(payMoney);
+        itemOrderMapper.updateByPrimaryKeySelective(order);
         changeStatus(OrderStatus.BUYER_PAYED);
     }
 

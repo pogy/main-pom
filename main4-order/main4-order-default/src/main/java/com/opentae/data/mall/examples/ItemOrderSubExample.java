@@ -16,7 +16,6 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
     public static EntityColumn shopNum;
     public static EntityColumn goodsId;
     public static EntityColumn num;
-    public static EntityColumn distributionNum;
     public static EntityColumn pid;
     public static EntityColumn oid;
     public static EntityColumn title;
@@ -24,7 +23,6 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
     public static EntityColumn floorId;
     public static EntityColumn webSite;
     public static EntityColumn picUrl;
-    public static EntityColumn payMoney;
     public static EntityColumn price;
     public static EntityColumn shopId;
     public static EntityColumn floor;
@@ -49,7 +47,6 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
         shopNum = listMap.get("shopNum");
         goodsId = listMap.get("goodsId");
         num = listMap.get("num");
-        distributionNum = listMap.get("distributionNum");
         pid = listMap.get("pid");
         oid = listMap.get("oid");
         title = listMap.get("title");
@@ -57,7 +54,6 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
         floorId = listMap.get("floorId");
         webSite = listMap.get("webSite");
         picUrl = listMap.get("picUrl");
-        payMoney = listMap.get("payMoney");
         price = listMap.get("price");
         shopId = listMap.get("shopId");
         floor = listMap.get("floor");
@@ -388,53 +384,6 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
 
         public ItemOrderSubExample.Criteria andNumNotBetween(Integer value1, Integer value2) {
             return notBetween(num, value1, value2);
-        }
-        public ItemOrderSubExample.Criteria andDistributionNumIsNull() {
-            return isNull(distributionNum);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumIsNotNull() {
-            return isNotNull(distributionNum);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumEqualTo(Integer value) {
-            return equalTo(distributionNum, value);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumNotEqualTo(Integer value) {
-            return notEqualTo(distributionNum, value);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumGreaterThan(Integer value) {
-            return greaterThan(distributionNum, value);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumGreaterThanOrEqualTo(Integer value) {
-            return greaterThanOrEqualTo(distributionNum, value);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumLessThan(Integer value) {
-            return lessThan(distributionNum, value);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumLessThanOrEqualTo(Integer value) {
-            return lessThanOrEqualTo(distributionNum, value);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumIn(List<Integer> values) {
-            return in(distributionNum, values);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumNotIn(List<Integer> values) {
-            return notIn(distributionNum, values);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumBetween(Integer value1, Integer value2) {
-            return between(distributionNum, value1, value2);
-        }
-
-        public ItemOrderSubExample.Criteria andDistributionNumNotBetween(Integer value1, Integer value2) {
-            return notBetween(distributionNum, value1, value2);
         }
         public ItemOrderSubExample.Criteria andPidIsNull() {
             return isNull(pid);
@@ -788,53 +737,6 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
 
         public ItemOrderSubExample.Criteria andPicUrlNotBetween(String value1, String value2) {
             return notBetween(picUrl, value1, value2);
-        }
-        public ItemOrderSubExample.Criteria andPayMoneyIsNull() {
-            return isNull(payMoney);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyIsNotNull() {
-            return isNotNull(payMoney);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyEqualTo(Long value) {
-            return equalTo(payMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyNotEqualTo(Long value) {
-            return notEqualTo(payMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyGreaterThan(Long value) {
-            return greaterThan(payMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(payMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyLessThan(Long value) {
-            return lessThan(payMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(payMoney, value);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyIn(List<Long> values) {
-            return in(payMoney, values);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyNotIn(List<Long> values) {
-            return notIn(payMoney, values);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyBetween(Long value1, Long value2) {
-            return between(payMoney, value1, value2);
-        }
-
-        public ItemOrderSubExample.Criteria andPayMoneyNotBetween(Long value1, Long value2) {
-            return notBetween(payMoney, value1, value2);
         }
         public ItemOrderSubExample.Criteria andPriceIsNull() {
             return isNull(price);

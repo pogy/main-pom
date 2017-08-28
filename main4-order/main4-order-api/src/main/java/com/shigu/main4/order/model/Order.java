@@ -58,6 +58,12 @@ public interface Order{
     void payed();//支付完成
 
     /**
+     * 支付完成
+     * @param payMoney
+     */
+    void payed(Long payMoney);
+
+    /**
      * 交易完成
      */
     void finished();//交易完成

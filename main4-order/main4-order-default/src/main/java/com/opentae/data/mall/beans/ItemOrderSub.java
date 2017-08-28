@@ -33,19 +33,9 @@ public class ItemOrderSub implements Serializable {
 	private Integer num;
 
     /**
-     * 到货数量
-     */
-	private Integer distributionNum;
-
-    /**
      * 应付总额
      */
 	private Long shouldPayMoney;
-
-    /**
-     * 实付
-     */
-	private Long payMoney;
 
     /**
      * 实退
@@ -182,28 +172,12 @@ public class ItemOrderSub implements Serializable {
 		return this.num;
 	}
 
-	public void setDistributionNum(Integer distributionNum) {
-		this.distributionNum = distributionNum;
-	}
-
-	public Integer getDistributionNum() {
-		return this.distributionNum;
-	}
-
 	public void setShouldPayMoney(Long shouldPayMoney) {
 		this.shouldPayMoney = shouldPayMoney;
 	}
 
 	public Long getShouldPayMoney() {
 		return this.shouldPayMoney;
-	}
-
-	public void setPayMoney(Long payMoney) {
-		this.payMoney = payMoney;
-	}
-
-	public Long getPayMoney() {
-		return this.payMoney;
 	}
 
 	public void setRefundMoney(Long refundMoney) {

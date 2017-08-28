@@ -5,6 +5,7 @@ import com.opentae.data.mall.beans.ItemRefundLog;
 import com.opentae.data.mall.examples.ItemRefundLogExample;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.opentae.data.mall.interfaces.ItemRefundLogMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.BeanMapper;
@@ -59,6 +60,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
 
     @Autowired
     private ItemOrderMapper itemOrderMapper;
+
+    @Autowired
+    private ItemOrderSubMapper itemOrderSubMapper;
 
     public RefundItemOrderImpl(Long refundId) {
         this.refundId = refundId;
@@ -283,7 +287,14 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     public void success() throws PayerException, RefundException {
+        //更新退款费
+        //得到退单信息
         doRefundMoney(true);
+        RefundVO vo=refundinfo();
+        itemOrderMapper.addRefundMoney(vo.getOid(),vo.getHopeMoney());//更新订单中的退款额
+        if (vo.getSoid() != null) {
+            itemOrderSubMapper.addRefundMoney(vo.getSoid(),vo.getHopeMoney());//更新订单的退款额
+        }
     }
 
 

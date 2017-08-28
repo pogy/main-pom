@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opentae.data.mall.interfaces.ItemOrderMapper" >
+
+	<update	id="addRefundMoney">
+		UPDATE item_order set refund_fee=refund_fee+${money} where oid=${oid}
+	</update>
+
+
+</mapper>
