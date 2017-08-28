@@ -1,6 +1,8 @@
 package com.shigu.main4.daifa.bo;
 
-public class SubOrderModelBO {
+import java.io.Serializable;
+
+public class SubOrderModelBO implements Serializable {
     /**
      * 代发ID
      */
