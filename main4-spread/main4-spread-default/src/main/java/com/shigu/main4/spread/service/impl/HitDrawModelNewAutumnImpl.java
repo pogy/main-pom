@@ -159,7 +159,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
     }
 
     @Override
-    public void triggerUpdateQualification(Long userId, Integer upNum) {
+    public synchronized void triggerUpdateQualification(Long userId, Integer upNum) {
         if (userId == null) {
             return;
         }
