@@ -13,7 +13,7 @@ import java.util.Date;
 public class NewAutumnPrizePool extends DrawPrizePool {
     /**
      * 秋装新品发布会抽奖奖池数据存在shigu_temp表中
-     * flag:PRIZE_POOL_FLAG = "new_autumn_0811_prize_pool";
+     * flag:标记转由{@link com.shigu.main4.spread.enums.AutumnNewConstant}维护
      * key1：目前剩余可抽取奖品数量 currentPrizeNum
      * key2：已被抽中奖品数量 distributedNum
      * key3：奖池下次投放奖品奖品更新数量 throwNum
@@ -31,8 +31,6 @@ public class NewAutumnPrizePool extends DrawPrizePool {
      * 抽奖起始时间->startTime:"startTime"
      * 抽奖截止时间->deadline:"deadline"
      */
-
-    public static final String PRIZE_POOL_FLAG = "new_autumn_0811_prize_pool";
     /**
      * 奖池奖项id，奖池信息存在shigu_temp中
      */

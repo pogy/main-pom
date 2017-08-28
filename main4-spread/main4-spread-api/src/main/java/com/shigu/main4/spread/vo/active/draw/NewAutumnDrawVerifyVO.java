@@ -10,7 +10,7 @@ package com.shigu.main4.spread.vo.active.draw;
  */
 public class NewAutumnDrawVerifyVO extends DrawVerifyVO {
     /**
-     * shigu_temp表记录抽奖资格信息：DRAW_RECORD_FLAG：flag="new_autumn_0811_draw_qualification"
+     * shigu_temp表记录抽奖资格信息：标记转由{@link com.shigu.main4.spread.enums.AutumnNewConstant}维护
      * key1:userId
      * key2:usedFrequency 已用次数
      * key3:可抽奖总次数
@@ -18,18 +18,6 @@ public class NewAutumnDrawVerifyVO extends DrawVerifyVO {
      * key5:已中奖项
      * key6:常量信息
      */
-    /**
-     * 秋装活动上款记录标记
-     */
-    public static final String[] UPLOAD_FLAG = {"new_autumn_0811"};
-    /**
-     * 秋装活动抽奖记录标记
-     */
-    public static final String DRAW_RECORD_FLAG = "new_autumn_0811_draw_qualification";
-    /**
-     * 秋装活动标记
-     */
-    public static final String NEW_AUTUMN_FLAG = "new_autumn_0811";
     /**
      * 秋装新品发布会中对应用户中奖记录id
      */

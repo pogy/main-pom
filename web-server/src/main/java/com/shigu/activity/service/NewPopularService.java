@@ -1,13 +1,11 @@
 package com.shigu.activity.service;
 
-import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.ShiguTemp;
+import com.opentae.data.mall.beans.ShopNumAndMarket;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguMarketExample;
-import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.ShiguMarketMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.activity.tempvo.PopularGoodsVO;
@@ -37,23 +35,20 @@ public class NewPopularService {
     ShiguGoodsTinyMapper shiguGoodsTinyMapper;
 
     @Autowired
-    ShiguMarketMapper shiguMarketMapper;
-
-    @Autowired
     ShiguShopMapper shiguShopMapper;
 
     /**
-     * 获取秋装新品发布会0811数据
-     * 在shigu_temp表中flag=new_autumn_0811的记录上存储数据
+     * 获取秋装新品发布会数据
+     * 在shigu_temp表中，flag标记转由{@link com.shigu.main4.spread.enums.AutumnNewConstant}维护
      * key1 存储对应商品id
      * key2 存储shopId
      * key3 存储商品对应权益
      *
      * @return
      */
-    public List<PopularGoodsVO> selNewPopularGoodsList() {
+    public List<PopularGoodsVO> selNewPopularGoodsList(String flag) {
         ShiguTempExample shiguTempExample = new ShiguTempExample();
-        shiguTempExample.createCriteria().andFlagEqualTo("new_autumn_0811");
+        shiguTempExample.createCriteria().andFlagEqualTo(flag);
         shiguTempExample.setOrderByClause("key2+0 asc,key4+0 asc");
         List<ShiguTemp> shiguTemps = shiguTempMapper.selectByExample(shiguTempExample);
         if (shiguTemps.size() == 0) {

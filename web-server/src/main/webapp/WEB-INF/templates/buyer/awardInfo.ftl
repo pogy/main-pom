@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/fxs2/css/awardInfo.css?t=1502945641608" rel="stylesheet">
+    <link href="http://style.571xz.com/fxs2/css/awardInfo-v1.css?t=1503647815264" rel="stylesheet">
     
   </head>
 <body>
@@ -224,6 +224,22 @@ var webSite = '${webSite!}';
         <div class="awardInfo">
             <h3>秋装新品发布会活动奖品</h3>
             <div class="thisTerm">
+                <p class="hdTime">活动日期：${thisHdTime!}<b class="hdRule" jbtn="thisRule">活动规则</b></p>
+                <div class="awardBox">
+                    <div class="awardList">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                    <div class="findGoods">
+                        <ul class="clearfix">
+                            
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="lastTerm">
                 <p class="hdTime">活动日期：${lastHdTime!}<b class="hdRule" jbtn="lastRule">活动规则</b></p>
                 <div class="awardBox">
                     <div class="awardList">
@@ -286,7 +302,7 @@ var lastUserAward = ${lastUserAward!}; //JSON字符串用于上期奖品
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/awardInfo.js?t=1502945641608"></script>
+<script src="http://style.571xz.com/fxs2/js/awardInfo-v1.js?t=1503647815264"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

@@ -11,6 +11,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.spread.enums.ActivityDrawEnum;
+import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.HitDrawModel;
 import com.shigu.main4.spread.vo.active.draw.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +35,8 @@ import java.util.stream.Collectors;
 public class HitDrawModelNewAutumnImpl implements HitDrawModel {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    //活动对应枚举类型，进行一些活动常量信息获取和活动实现类选择
+    private ActivityDrawEnum newAutumn = AutumnNewConstant.CURRENT_ACTIVE;
 
     @Autowired
     private ShiguTempMapper shiguTempMapper;
@@ -51,7 +53,6 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
      */
     @Override
     public DrawResult tryHitDraw(DrawVerifyVO drawMsg, List<DrawPrizePool> prizePool) throws JsonErrException {
-        ActivityDrawEnum newAutumn = ActivityDrawEnum.NEW_AUTUMN;
         NewAutumnDrawVerifyVO msg = (NewAutumnDrawVerifyVO) drawMsg;
         String hasWard = msg.getHasWard();
         int usedFrequency = msg.getUsedFrequency() == null ? 0 : msg.getUsedFrequency();
@@ -110,12 +111,10 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
         throw new JsonErrException("没有抽奖资格");
     }
 
-
     @Override
     public List<DrawPrizePool> selDrawPrizePool() {
-        ActivityDrawEnum newAutumn = ActivityDrawEnum.NEW_AUTUMN;
         ShiguTempExample example = new ShiguTempExample();
-        example.createCriteria().andFlagEqualTo(NewAutumnPrizePool.PRIZE_POOL_FLAG);
+        example.createCriteria().andFlagEqualTo(AutumnNewConstant.PRIZE_POOL_FLAG);
         return shiguTempMapper.selectByExample(example).stream().map(o -> {
             //在temp表key1中的奖池记录中，在key6存放常量信息
             JSONObject constantMsg = JSON.parseObject(o.getKey6());
@@ -160,7 +159,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
     }
 
     @Override
-    public void triggerUpdateQualification(Long userId, Integer upNum) {
+    public synchronized void triggerUpdateQualification(Long userId, Integer upNum) {
         if (userId == null) {
             return;
         }
@@ -169,7 +168,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
             return;
         }
         ShiguTemp shiguTemp = new ShiguTemp();
-        shiguTemp.setFlag(NewAutumnDrawVerifyVO.DRAW_RECORD_FLAG);
+        shiguTemp.setFlag(AutumnNewConstant.DRAW_RECORD_FLAG);
         shiguTemp.setKey1(userId.toString());
         ShiguTemp temp = shiguTempMapper.selectOne(shiguTemp);
         if (temp != null) {
@@ -192,7 +191,7 @@ public class HitDrawModelNewAutumnImpl implements HitDrawModel {
     @Override
     public void updatePrizePool() {
         ShiguTempExample example = new ShiguTempExample();
-        example.createCriteria().andFlagEqualTo(NewAutumnPrizePool.PRIZE_POOL_FLAG);
+        example.createCriteria().andFlagEqualTo(AutumnNewConstant.PRIZE_POOL_FLAG);
         for (ShiguTemp pool : shiguTempMapper.selectByExample(example)) {
             try {
                 Date updateTime = sdf.parse(pool.getKey4());

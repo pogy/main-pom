@@ -14,6 +14,7 @@ import com.shigu.main4.active.vo.ShiguActivityVO;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
 import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -32,12 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 奖品活动
@@ -163,9 +159,10 @@ public class ActivityAction {
                         iterator.remove();
                     }
                 }
+                model.addAttribute("lastUserAward",JSON.toJSONString(userVoList));
             }
         }
-        model.addAttribute("lastUserAward", "{}");
+        //model.addAttribute("lastUserAward", "{}");
         return "buyer/awardInfo";
     }
 
@@ -400,7 +397,7 @@ public class ActivityAction {
     @RequestMapping("activity/newPopular")
     public String newPopular(Model model) {
         model.addAttribute("webSite", "hz");
-        model.addAttribute("goodsList", newPopularService.selNewPopularGoodsList());
+        model.addAttribute("goodsList", newPopularService.selNewPopularGoodsList(AutumnNewConstant.ACTIVE_FLAG));
         return "activity/newPopular";
     }
 
