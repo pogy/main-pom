@@ -1,6 +1,8 @@
 package com.shigu.daifa.vo;
 
-public class PrintGoodsTagVO {
+import java.io.Serializable;
+
+public class PrintGoodsTagVO implements Serializable {
     private String dateIncBatch;//日期加批次
     private String barCode;//条形码内容
     private String goodsSku;//商品sku

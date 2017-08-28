@@ -1,6 +1,8 @@
 package com.shigu.daifa.vo;
 
-public class DaifaWorkerVO {
+import java.io.Serializable;
+
+public class DaifaWorkerVO implements Serializable {
     private Long id;
     private String name;
 
