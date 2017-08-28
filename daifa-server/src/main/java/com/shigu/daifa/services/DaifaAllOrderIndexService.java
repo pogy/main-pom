@@ -266,9 +266,11 @@ public class DaifaAllOrderIndexService {
             daifaGgoodsExample.createCriteria().andCreateTimeGreaterThanOrEqualTo(isStartTime).andCreateTimeLessThanOrEqualTo(isEndTime).andTakeGoodsStatusEqualTo(2);
             List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectByExample(daifaGgoodsExample);
             Map<Long, DaifaGgoods> goodsMap = BeanMapper.list2Map(daifaGgoods, "dfOrderId", Long.class);
+            if(goodsMap.size ()==0){
+                goodsMap.put (-1L,new DaifaGgoods());
+            }
             Set<Long> orderIds = goodsMap.keySet();
             DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
-
             daifaOrderExample.createCriteria().andDfOrderIdIn(new ArrayList<>(orderIds));
             List<DaifaOrder> daifaOrders = daifaOrderMapper.selectByExample(daifaOrderExample);
 
