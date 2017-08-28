@@ -4,12 +4,9 @@ import com.openJar.beans.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.thirdSupport.SelWorkUserGgoodsTasksStoresResponse;
 
-import javax.validation.constraints.NotNull;
 
 public class SelWorkUserGgoodsTasksStoresRequest extends Request<SelWorkUserGgoodsTasksStoresResponse>{
-	@NotNull(message="用户ID不能为空")
 	private Long daifaNahuoId;
-	@NotNull(message="状态不能为空")
 	private Integer status;
 	public Integer getStatus() {
 		return status;

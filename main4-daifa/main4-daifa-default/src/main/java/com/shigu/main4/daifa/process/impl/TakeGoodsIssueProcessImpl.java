@@ -342,6 +342,28 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
     }
 
     /**
+     * 按日期拿货完成
+     * @param date yyyyMMdd
+     * @param sellerId 代发机构id
+     * @throws DaifaException
+     */
+    @Override
+    public void completeWithDate(String date,Long sellerId) throws DaifaException {
+        DaifaGgoodsExample ge=new DaifaGgoodsExample();
+        ge.createCriteria().andCreateDateEqualTo(date).andOperateIsEqualTo(0).andSellerIdEqualTo(sellerId);
+        List<DaifaGgoods> daifaGgoods =daifaGgoodsMapper.selectFieldsByExample(ge
+                ,FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
+        for (DaifaGgoods daifaGgood : daifaGgoods) {
+             SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,daifaGgood.getDfOrderId());
+             subOrderModel.noTake();
+
+        }
+
+
+
+    }
+
+    /**
      * 数据库批次转化到页面显示
      *
      * @param dbstr 数据库显示batch

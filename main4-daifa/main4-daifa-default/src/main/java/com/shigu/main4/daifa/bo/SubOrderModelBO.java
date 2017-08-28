@@ -117,6 +117,8 @@ public class SubOrderModelBO {
 
     private Long sellerId;
 
+    private String goodsWeight;//商品重量
+
     public String getWebSite() {
         return webSite;
     }
@@ -364,6 +366,14 @@ public class SubOrderModelBO {
 
     public void setGiftCode(String giftCode) {
         this.giftCode = giftCode;
+    }
+
+    public String getGoodsWeight () {
+        return goodsWeight;
+    }
+
+    public void setGoodsWeight (String goodsWeight) {
+        this.goodsWeight = goodsWeight;
     }
 
     /**

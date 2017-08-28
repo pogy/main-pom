@@ -16,7 +16,7 @@
     </resultMap>
 
     <select id="selectWorkGgoodsStores" resultMap="workGoodsMarketMap">
-        select market_name,store_id,store_num,sum(goods_num)num,ifnull(sum(if(allocat_status=2,goods_num,0)),0)has_num,0 not_num
+        select market_name,store_id,store_num,sum(goods_num)num,ifnull(sum(if(take_goods_status=1,goods_num,0)),0)has_num,0 not_num
         from (
         select * from(
         select * from daifa_ggoods
@@ -31,10 +31,10 @@
     </select>
     <select id="selectTodayWorkGgoodsStoresCount" resultType="com.openJar.beans.WorkUserGgoodsTasksCounts">
         select
-        ifnull(sum(if(allocat_status=1,goods_num,0)),0)totalNum,
-        ifnull(sum(if(allocat_status=2,goods_num,0)),0)totalHasNum ,
-        ifnull(sum(if(allocat_status=1,goods_num*single_price,0)),0)totalFee,
-        ifnull(sum(if(allocat_status=2,goods_num*single_price,0)),0)totalHasFee
+        ifnull(sum(if(take_goods_status=0,goods_num,0)),0)totalNum,
+        ifnull(sum(if(take_goods_status=1,goods_num,0)),0)totalHasNum ,
+        ifnull(sum(if(take_goods_status=0,goods_num*single_price,0)),0)totalFee,
+        ifnull(sum(if(take_goods_status=1,goods_num*single_price,0)),0)totalHasFee
         from (
         select * from(
         select * from daifa_ggoods

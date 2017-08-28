@@ -64,6 +64,7 @@ public class ThirdSupportService {
         user.setLoginName(worker.getDaifaWorker());
         user.setPhone(worker.getPhone());
         user.setUserName(worker.getUserName());
+        user.setSuccess(true);
         return user;
     }
 
@@ -102,6 +103,7 @@ public class ThirdSupportService {
             throw new SystemInterfaceException("缺少参数");
         }
         SelWorkUserGgoodsTasksGoodsResponse res = new SelWorkUserGgoodsTasksGoodsResponse();
+        res.setSuccess(true);
         res.setSkuList(new ArrayList<>());
         res.setSumNum(0);
         res.setSumPrice(0L);
@@ -231,7 +233,7 @@ public class ThirdSupportService {
                 }
             } else {
                 goods.setNum(goods.getNum() + g.getGoodsNum());
-                if (codeMore == null) {
+                if (codeMore == null||codeMore.size()==0) {
                     goods.setHasNum(goods.getHasNum() + g.getGoodsNum());
                     goods.setCode(goods.getCode() + "," + code);
                 } else {
@@ -284,7 +286,7 @@ public class ThirdSupportService {
         res.setStoreName(storename);
         res.setSumNum(sumNum);
         res.setSumPrice(sumPrice);
-        return null;
+        return res;
     }
 
     public ShortCompleteCheckedResponse shortCompleteChecked(Long daifaWorkerId, List<Long> orderIds, Integer status) throws SystemInterfaceException {
@@ -356,7 +358,7 @@ public class ThirdSupportService {
             Integer vi = null;
             for (int v = 0; v < goodsList.size(); v++) {
                 WorkUserGgoodsTasksGoods go = goodsList.get(v);
-                if ((go.getGoodsNo() + "" + go.getSkuStr() + go.getPiPrice()).equals(g.getGoodsCode() + "" + g.getPropStr() + MoneyUtil.StringToLong(g.getSinglePrice()))) {
+                if ((go.getGoodsNo() + "" + go.getSkuStr() + go.getPiPrice()).equals(g.getGoodsCode() + "" + g.getPropStr() + MoneyUtil.StringToLong(g.getSinglePiPrice()))) {
                     goods = go;
                     vi = v;
                     break;
@@ -533,6 +535,7 @@ public class ThirdSupportService {
         vo.setStoreName(storename);
         vo.setSumNum(sumNum);
         vo.setSumPrice(sumPrice);
+        vo.setSuccess(true);
         return vo;
     }
 
@@ -546,28 +549,12 @@ public class ThirdSupportService {
                 .andDaifaWorkerIdEqualTo(daifaWorkerId)
                 .andOperateIsEqualTo(0);
         List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id,df_order_id"));
-        Map maps = BeanMapper.list2Map(daifaGgoods, "dfOrderId", Long.class);
-        Map notMap = new HashMap();
-        for (Long uoid : orderIds) {
-            if (bostatus == 1 && maps.get(uoid) == null) {
-                notMap.put(uoid, uoid);
-            } else if (bostatus == 2 && maps.get(uoid) != null) {
-                notMap.put(uoid, uoid);
-            }
-        }
 
         List<Long> takeIds = BeanMapper.getFieldList(daifaGgoods, "takeGoodsId", Long.class);
         takeGoodsIssueProcess.uncompleteAll(daifaWorkerId, storeId, takeIds, bostatus == 1);
         if (notCodes != null && notCodes.size() != 0) {
             for (NotCodeSets nc : notCodes) {
                 List<Long> upoids = nc.getOrderIds();
-                for (int i = 0; i < upoids.size(); i++) {
-                    Long upLong = upoids.get(i);
-                    if (notMap.get(upLong) == null) {
-                        upoids.remove(i);
-                        i--;
-                    }
-                }
                 int day = nc.getDay();
                 if (day > 0 && upoids.size() > 0) {
                     if (day == 20) {
@@ -587,7 +574,6 @@ public class ThirdSupportService {
                         }
                     }
                 }
-
             }
         }
     }

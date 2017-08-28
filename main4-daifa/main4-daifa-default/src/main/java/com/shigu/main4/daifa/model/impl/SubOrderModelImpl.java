@@ -5,6 +5,7 @@ import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaGgoodsExample;
 import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
+import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -159,14 +160,13 @@ public class SubOrderModelImpl implements SubOrderModel {
         }
         DaifaOrder updateOrder=new DaifaOrder();
         updateOrder.setDfOrderId(subOrderId);
-//        String remark=order.getOrderRemark();
-//        if(remark==null){
-//            remark=context;
-//        }else{
-//            remark+="@_@"+context;
-//        }
-//        updateOrder.setOrderRemark(remark);
-        updateOrder.setOrderRemark(context);
+        String remark=order.getOrderRemark();
+        if(remark==null){
+            remark=context;
+        }else{
+            remark+="\r\n"+context;
+        }
+        updateOrder.setOrderRemark(remark);
         daifaOrderMapper.updateByPrimaryKeySelective(updateOrder);
     }
 

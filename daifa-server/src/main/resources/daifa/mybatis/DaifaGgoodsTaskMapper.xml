@@ -83,11 +83,22 @@
 
     <select id="selDaifaGoodsGroupByShop" resultType="com.opentae.data.daifa.beans.GgoodsByStore">
 
-        select  market_id marketId,market_name marketName,floor_id floorId,floor_name floorName,store_id storeId,
-        store_num storeNum, sum(goods_num) goodsNum
-          from daifa_ggoods_tasks where seller_id=${sellerId} and use_status =1 and allocat_status =0 and (youhuo_date is null or (if(youhuo_date is not null,
-date_format(youhuo_date,"%Y%m%d")-create_date &lt;=0 or date_format(now(),"%Y%m%d")-create_date &gt;0
-,true)))GROUP BY store_id
+        select
+            market_id marketId,
+            market_name marketName,
+            floor_id floorId,
+            floor_name floorName,
+            store_id storeId,
+            store_num storeNum,
+            sum(goods_num) goodsNum
+        from daifa_ggoods_tasks
+        where seller_id = ${sellerId}
+          and use_status = 1
+          and end_status = 0
+          and allocat_status = 0
+          and (youhuo_date is null
+            or (if(youhuo_date is not null,date_format(youhuo_date,"%Y%m%d")-create_date &lt;=0 or date_format(now(),"%Y%m%d")-create_date &gt;0,true)))
+        GROUP BY store_id
 
     </select>
 

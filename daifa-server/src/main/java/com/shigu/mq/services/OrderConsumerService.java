@@ -3,23 +3,18 @@ package com.shigu.mq.services;
 import com.alibaba.fastjson.JSON;
 import com.shigu.main4.daifa.bo.OrderBO;
 import com.shigu.main4.daifa.process.OrderManageProcess;
-import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.mq.beans.RefundBean;
 import com.shigu.mq.beans.ResponseBasic;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.shigu.mq.beans.SubRefundBean;
 import com.shigu.mq.receives.SendMessageListener;
-import net.sf.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by pc on 2017-08-17.
@@ -31,6 +26,7 @@ import java.util.Map;
  */
 @Service
 public class OrderConsumerService {
+    private static final Logger logger = LoggerFactory.getLogger(OrderConsumerService.class);
     @Autowired
     SendMessageListener sendMessageListener;
 
@@ -69,16 +65,7 @@ public class OrderConsumerService {
                 orderManageProcess.autoRefund(refund.getRefundId(),soids,soidps);
                 //=============事物end=================
             } catch (Exception e) {
-                JSONObject obj=new JSONObject();
-                if(e instanceof DaifaException){
-                    obj.put("msg",e.getMessage());
-                }else{
-                    obj.put("msg","内部错误");
-                }
-                obj.put("status",false);
-                sendMessageListener.sendMessage("refund_"+refund.getRefundId(),
-                        "refund_agree",
-                        obj.toString());
+                logger.error(e.getMessage());
             }
         }
     }

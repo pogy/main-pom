@@ -5,7 +5,6 @@ import com.openJar.beans.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.thirdSupport.ShortCompleteResponse;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -17,15 +16,11 @@ import java.util.List;
  */
 public class ShortCompleteRequest extends Request<ShortCompleteResponse> {
 
-    @NotNull(message = "workerId is null")
     private Long workId;//拿货人id
-    @NotNull(message = "storeNumId is null")
     private Long storeNumId;//档口号id
 
-    @NotNull(message = "status is null")
     private Integer status;//1拿货完成2缺货完成
 
-    @NotNull(message = "barCodeMore is null")
     private String barCodeMore;//条形码以，为分割
 
     private List<String> notCodeSets;

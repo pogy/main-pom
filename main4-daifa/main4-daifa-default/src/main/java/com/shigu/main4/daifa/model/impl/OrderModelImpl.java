@@ -6,6 +6,7 @@ import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.common.util.TypeConvert;
 import com.shigu.main4.daifa.bo.*;
 import com.shigu.main4.daifa.enums.DaifaListDealTypeEnum;
@@ -136,15 +137,14 @@ public class OrderModelImpl implements OrderModel {
                     subOrderModelBO.setPropStr(bo.getColor()+":"+bo.getSize());
                     subOrderModelBO.setGoodsNum(1);
                     subOrderModelBO.setSinglePiPrice(bo.getSinglePay());
-                    subOrderModelBO.setSinglePay(bo.getSinglePay());
                     subOrderModelBO.setSellerId(orderBO.getSenderId());
-                    subOrderModelBO.setTotalFee(bo.getSinglePay());
                     subOrderModelBO.setOrderStatus(1L);
                     subOrderModelBO.setAggrement(orderBO.getAggrement ());
                     subOrderModelBO.setTradeCode(daifaTrade.getTradeCode());
                     subOrderModelBO.setWebSite(bo.getWebSite());
                     subOrderModelBO.setDfTradeId(daifaTrade.getDfTradeId());
                     subOrderModelBO.setBarCodeKeyNum (num+"-"+i);
+                    subOrderModelBO.setGoodsWeight (bo.getWeight ());//重量
                     if(serviceBOMap!=null&&serviceBOMap.size ()>0) {
                         if(serviceBOMap.get (bo.getSoid ())!=null) {
                             BigDecimal serviceFeeSum = new BigDecimal (serviceBOMap.get (bo.getSoid ()).getMoney ());
@@ -159,7 +159,8 @@ public class OrderModelImpl implements OrderModel {
                         subOrderModelBO.setSingleServicesFee ("0.00");
                         subOrderModelBO.setTotalServiceFee ("0.00");
                     }
-
+                    subOrderModelBO.setSinglePay(MoneyUtil.dealPrice(MoneyUtil.StringToLong(bo.getSinglePay())+MoneyUtil.StringToLong(subOrderModelBO.getSingleServicesFee())));
+                    subOrderModelBO.setTotalFee(subOrderModelBO.getSinglePay());
                     SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
                     BigNumber singlePay = new BigNumber(bo.getSinglePay());
                     goodsFee = goodsFee.Add(singlePay);
@@ -178,9 +179,12 @@ public class OrderModelImpl implements OrderModel {
         daifaTrade.setExpressId(logisticsBO.getCompanyId());
         daifaTrade.setExpressName(logisticsBO.getCompany());
         daifaTrade.setTradeStatus(1);//已付款待分配
-        daifaTrade.setBuyerNick(orderBO.getBuyer().getNickInMarket());
         daifaTrade.setGoodsFee(PriceConvertUtils.stringPriceToString(goodsFee.toString ()));
         daifaTrade.setBuyerRemark (orderBO.getBuyRemark ());
+        if(orderBO.getBuyer ()!=null) {
+            daifaTrade.setBuyerWw (orderBO.getBuyer().getAliWw ());
+            daifaTrade.setBuyerNick(orderBO.getBuyer().getNickInMarket());
+        }
 
         daifaTrade.setExpressFee(logisticsBO.getMoney());
         List<ServiceBO> services = orderBO.getServices();
@@ -219,6 +223,7 @@ public class OrderModelImpl implements OrderModel {
                     .andEndStatusEqualTo(0).andAllocatStatusEqualTo(0);
             DaifaGgoodsTasks daifaGgoodsTask = new DaifaGgoodsTasks();
             daifaGgoodsTask.setEndStatus(1);
+            daifaGgoodsTask.setReturnStatus(1);
             //查询待拿货表
             //修改代拿货表状态为已截单
             //为发消息，拿到待拿货的id集合
@@ -226,10 +231,12 @@ public class OrderModelImpl implements OrderModel {
             List<Long> dfOrderIds;
             if (daifaGgoodsTasks.size()>0){
                 daifaGgoodsTasksMapper.updateByExampleSelective(daifaGgoodsTask, daifaGgoodsTasksExample);
-                daifaTradeMapper.updateByPrimaryKeySelective(trade);
                 dfOrderIds= BeanMapper.getFieldList(daifaGgoodsTasks, "dfOrderId", Long.class);
                 DaifaOrderExample orderExample=new DaifaOrderExample();
                 orderExample.createCriteria().andDfOrderIdIn(dfOrderIds);
+                DaifaOrder order=new DaifaOrder();
+                order.setRefundStatus(1);
+                daifaOrderMapper.updateByExampleSelective(order,orderExample);
                 List<DaifaOrder> orders=daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id"));
                 List<String> pcodes=BeanMapper.getFieldList(orders, "orderPartitionId", String.class);
                 JSONObject jsonObject=new JSONObject();
@@ -260,6 +267,15 @@ public class OrderModelImpl implements OrderModel {
         }
         if (delivery.getMarkDestination() == null || delivery.getDfTradeId() == null || delivery.getExpressCode() == null) {
             throw new DaifaException("主单id，三段码，快递单号都不能为空");
+        }
+        //发货校验：1.有货先发：缺货部分如果没退款就不发货
+        DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
+        daifaWaitSendOrderExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
+        List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
+        for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
+            if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
+                throw new DaifaException("缺货部分未退款，不能发货。");
+            }
         }
         Date time=new Date();
         String date=DateUtil.dateToString(time,DateUtil.patternB);
@@ -296,15 +312,7 @@ public class OrderModelImpl implements OrderModel {
 
 
         //设置待发货子表的查询和修改条件
-        DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
-        daifaWaitSendOrderExample.createCriteria().andDfTradeIdEqualTo(delivery.getDfTradeId());
-        //发货校验：1.有货先发：缺货部分如果没退款就不发货
-        List<DaifaWaitSendOrder> daifaWaitSendOrders = daifaWaitSendOrderMapper.selectByExample(daifaWaitSendOrderExample);
-        for (DaifaWaitSendOrder waitSendOrder :daifaWaitSendOrders){
-            if (waitSendOrder.getTakeGoodsStatus()==2&&(waitSendOrder.getRefundStatus()==null||waitSendOrder.getRefundStatus()!=2)){
-                throw new DaifaException("缺货部分未退款，不能发货。");
-            }
-        }
+
         //修改已发货子表状态为已发货
         DaifaWaitSendOrder daifaWaitSendOrder=new DaifaWaitSendOrder();
         daifaWaitSendOrder.setSendStatus(2);
