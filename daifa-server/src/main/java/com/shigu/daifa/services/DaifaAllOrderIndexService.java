@@ -262,24 +262,25 @@ public class DaifaAllOrderIndexService {
                 orderStatisticsVO.setSendMoney(sendCount.getSendMoney());
                 orderStatisticsVO.setSendNumber(sendCount.getSendNumber());
             }
+            int queCount = 0;
+
+
             DaifaGgoodsExample daifaGgoodsExample = new DaifaGgoodsExample();
             daifaGgoodsExample.createCriteria().andCreateTimeGreaterThanOrEqualTo(isStartTime).andCreateTimeLessThanOrEqualTo(isEndTime).andTakeGoodsStatusEqualTo(2);
             List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectByExample(daifaGgoodsExample);
-            Map<Long, DaifaGgoods> goodsMap = BeanMapper.list2Map(daifaGgoods, "dfOrderId", Long.class);
-            if(goodsMap.size ()==0){
-                goodsMap.put (-1L,new DaifaGgoods());
-            }
-            Set<Long> orderIds = goodsMap.keySet();
-            DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
-            daifaOrderExample.createCriteria().andDfOrderIdIn(new ArrayList<>(orderIds));
-            List<DaifaOrder> daifaOrders = daifaOrderMapper.selectByExample(daifaOrderExample);
-
-            int queCount = 0;
-            for (DaifaOrder daifaOrder : daifaOrders) {
-                if(daifaOrder.getTakeGoodsStatus() ==2){
-                    queCount+=daifaOrder.getGoodsNum();
+            if(daifaGgoods.size()>0){
+                Map<Long, DaifaGgoods> goodsMap = BeanMapper.list2Map(daifaGgoods, "dfOrderId", Long.class);
+                Set<Long> orderIds = goodsMap.keySet();
+                DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
+                daifaOrderExample.createCriteria().andDfOrderIdIn(new ArrayList<>(orderIds));
+                List<DaifaOrder> daifaOrders = daifaOrderMapper.selectByExample(daifaOrderExample);
+                for (DaifaOrder daifaOrder : daifaOrders) {
+                    if(daifaOrder.getTakeGoodsStatus() ==2){
+                        queCount+=daifaOrder.getGoodsNum();
+                    }
                 }
             }
+
             orderStatisticsVO.setStockoutNumber(queCount);
             return orderStatisticsVO;
         }
