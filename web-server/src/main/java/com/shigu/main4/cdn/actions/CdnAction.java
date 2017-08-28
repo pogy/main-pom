@@ -884,4 +884,13 @@ public class CdnAction {
         model.addAttribute("copyrightList",pager.getContent());
         return "activity/shopIconCopyright";
     }
+
+    /**
+     * 大图下载宣传页面
+     * @return
+     */
+    @RequestMapping("bigPicExplain")
+    public String bigPicExplain(){
+        return "static/bigPicExplain";
+    }
 }
