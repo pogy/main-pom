@@ -1,6 +1,8 @@
 package com.shigu.daifa.bo;
 
-public class SelectDaifaGgoodsListBo {
+import java.io.Serializable;
+
+public class SelectDaifaGgoodsListBO implements Serializable {
     private String orderId;
     private String childOrderId;
     private String startTime;
