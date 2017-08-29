@@ -415,7 +415,7 @@
         <dependency>
             <groupId>webs.pay_site</groupId>
             <artifactId>pay_sdk</artifactId>
-            <version>5.2.2-RELEASE</version>
+            <version>5.2.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>data-mall</groupId>
