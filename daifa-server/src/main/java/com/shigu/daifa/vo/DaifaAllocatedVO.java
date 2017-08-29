@@ -1,6 +1,8 @@
 package com.shigu.daifa.vo;
 
-public class DaifaAllocatedVO {
+import java.io.Serializable;
+
+public class DaifaAllocatedVO implements Serializable {
     /**
      * 子单id
      */

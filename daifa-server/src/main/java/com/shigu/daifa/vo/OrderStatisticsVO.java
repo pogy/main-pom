@@ -1,5 +1,7 @@
 package com.shigu.daifa.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by pc on 2017-08-23.
  *
@@ -8,7 +10,7 @@ package com.shigu.daifa.vo;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class OrderStatisticsVO {
+public class OrderStatisticsVO implements Serializable {
     /**
      * 今日订单总数
      */

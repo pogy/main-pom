@@ -1,11 +1,12 @@
 package com.shigu.daifa.api.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by zf on 2017/6/2.
  */
-public class NotCodeSets {
+public class NotCodeSets implements Serializable {
     private List<Long> orderIds;
     /**
      * 1-9:1-9天后有货,10:下架,20:价格不符

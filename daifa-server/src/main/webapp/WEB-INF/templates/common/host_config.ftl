@@ -7,7 +7,6 @@
 <#assign qiyePhone="400-076-1116" />
 
 <#assign daifa_host="http://127.0.0.1:8080/" />
-<#--<#assign daifa_host="http://local.571xz.net:9001/daifa/" />-->
 <#--<#assign main_host="http://127.0.0.1:8084/" />-->
 <#--<#assign main_host="http://ttt.571xz.com:8080/" />-->
 
