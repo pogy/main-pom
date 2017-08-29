@@ -43,7 +43,6 @@ public class PhoneGoodsSearchService {
         SearchBO bo = new SearchBO();
         bo.setWebSite(request.getWebSite());
         bo.setKeyword(request.getKeyword());
-        //todo:mid不是marketId
         bo.setMid(request.getMarketId());
         bo.setCid(request.getCid());
         bo.setPid(request.getCid());
