@@ -32,8 +32,9 @@ public interface ItemOrder extends Order{
     /**
      * 添加物流信息.
      * @param logistics
+     * @param needReprice 是否需要重新计算价格
      */
-    Long addLogistics(List<Long> soids,LogisticsVO logistics);
+    Long addLogistics(List<Long> soids,LogisticsVO logistics,boolean needReprice);
 
     /**
      * 修改物流信息.
@@ -46,7 +47,7 @@ public interface ItemOrder extends Order{
      * 添加包材.
      * @param metarialId 材料ID
      */
-    void addPackage(Long metarialId,Integer num);
+    void addPackage(Long metarialId,Integer num,boolean needReprice);
 
     /**
      * 退包材.
@@ -59,7 +60,7 @@ public interface ItemOrder extends Order{
      * @param serviceVO
      * @param number
      */
-    void addDfService(ServiceVO serviceVO,Long soid,Integer number);
+    void addDfService(ServiceVO serviceVO,Long soid,Integer number,boolean needReprice);
 
     /**
      * 除商品外的其他钱

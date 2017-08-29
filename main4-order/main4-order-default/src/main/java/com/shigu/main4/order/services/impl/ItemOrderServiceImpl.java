@@ -148,7 +148,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             vo.setNumber(subItemOrderBO.getNum());
             subOrders.add(vo);
         }
-        itemOrder.addSubOrder(subOrders);
+        itemOrder.addSubOrder(subOrders,false);
 
         if(itemOrderSenderMapper.selectByPrimaryKey(orderBO.getSenderId()).getType()==1){//查询一下是否代发用户
             ItemOrderSubExample subExample=new ItemOrderSubExample();
@@ -156,7 +156,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
             List<ItemOrderSub> orderSubs=itemOrderSubMapper.selectByExample(subExample);
             for(ItemOrderSub sub:orderSubs){//如果是代发的单子，要加代发费
                 itemOrder.addDfService(orderConstantService.selDfService(orderBO.getSenderId(),sub.getMarketId()),
-                        sub.getSoid(),sub.getNum());
+                        sub.getSoid(),sub.getNum(),false);
             }
         }
 
@@ -188,7 +188,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         logistic.setCompanyId(expressCompany.getExpressCompanyId());
         logistic.setAddress(buyerAddress.getAddress());
         logistic.setMoney(calculateLogisticsFee(orderBO.getSenderId(), expressCompany.getExpressCompanyId(), buyerAddress.getProvId(), pidNumBOS));
-        itemOrder.addLogistics(null, logistic);
+        itemOrder.addLogistics(null, logistic,true);//最后一步才重怎么价格
         return order.getOid();
     }
 

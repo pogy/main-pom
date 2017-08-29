@@ -25,7 +25,7 @@ public interface Order{
      * 追加子订单
      * @param subOrders 子订单
      */
-    void addSubOrder(List<SubOrderBO> subOrders);
+    void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice);
 
     /**
      * 二次支付申请
