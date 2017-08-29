@@ -42,6 +42,7 @@ public class OrderConsumerService {
             synchronized (this) {
                 OrderBO orderBean = JSON.parseObject(res.getData().toString(),OrderBO.class);
                // System.out.println (orderBean);
+                orderBean.getOid().toString();
                 orderManageProcess.newOrder(orderBean);
             }
         }
