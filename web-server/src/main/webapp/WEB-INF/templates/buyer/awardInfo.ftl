@@ -260,8 +260,8 @@ var webSite = '${webSite!}';
         <div class="rightBox yahei fr">
     <div class="awardInfo">
         <h3>发现好货活动奖品</h3>
-        <div class="lastTerm">
-            <p class="hdTime">活动日期：${lastHdTime!}<b class="hdRule" jbtn="lastRule">活动规则</b></p>
+        <div class="thisTerm">
+            <p class="hdTime">活动日期：${thisHdTime!}<b class="hdRule" jbtn="thisRule">活动规则</b></p>
             <div class="awardBox">
                 <div class="awardList">
                     <ul class="clearfix">
@@ -280,8 +280,8 @@ var webSite = '${webSite!}';
                 </div>
             </div>
         </div>
-        <div class="thisTerm">
-            <p class="hdTime">活动日期：${thisHdTime!}<b class="hdRule" jbtn="thisRule">活动规则</b></p>
+        <div class="lastTerm">
+            <p class="hdTime">活动日期：${lastHdTime!}<b class="hdRule" jbtn="lastRule">活动规则</b></p>
             <div class="awardBox">
                 <div class="awardList">
                     <ul class="clearfix">
@@ -350,7 +350,7 @@ var lastUserAward = ${lastUserAward!}; //JSON字符串用于上期奖品
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

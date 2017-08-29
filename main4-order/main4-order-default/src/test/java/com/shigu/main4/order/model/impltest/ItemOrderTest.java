@@ -56,7 +56,7 @@ public class ItemOrderTest extends BaseTest {
         vo.setTownId(2L);
         vo.setZipCode("UUID");
         vo.setCourierNumber("1231");
-        order().addLogistics(soids, vo);
+        order().addLogistics(soids, vo,true);
         show(order().orderInfo());
         selLogisticses();
     }
@@ -74,7 +74,7 @@ public class ItemOrderTest extends BaseTest {
 //    @Transactional
     public void addPackage() throws Exception {
 
-        order().addPackage(1L, 5);
+        order().addPackage(1L, 5,true);
         show(order().orderInfo());
     }
 

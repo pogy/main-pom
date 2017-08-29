@@ -881,4 +881,27 @@ public class MemberAction {
         return "buyer/userBalance";
     }
 
+    /**
+     * 资金流水
+     * @return
+     */
+    @RequestMapping("member/capStatistic")
+    public String capStatistic(HttpSession session, Model model){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String tempCode = paySdkClientService.tempcode(ps.getUserId());
+        model.addAttribute("tempCode",tempCode);
+        return "buyer/capStatistic";
+    }
+
+    /**
+     * 申请提现链接
+     * @return
+     */
+    @RequestMapping("member/rechargeJson")
+    @ResponseBody
+    public JSONObject rechargeJson(Double money){
+
+        return null;
+    }
+
 }

@@ -14,7 +14,7 @@ public class ItemOrder implements Serializable {
 	private Long oid;
 
     /**
-     * 1星座商品类别
+     * 
      */
 	private Integer type;
 
@@ -54,7 +54,7 @@ public class ItemOrder implements Serializable {
 	private String webSite;
 
     /**
-     * 1、等待买家付款，2、已支付，3、已发货，4、交易完成，5、交易关闭
+     * 1、等待买家付款，2、已支付，3、已发货，4、交易完成，5、交易关闭，6、卖家已发货
      */
 	private Integer orderStatus;
 
@@ -74,10 +74,18 @@ public class ItemOrder implements Serializable {
 	private Date finishTime;
 
     /**
-     * 
+     * 外部交易号，如果是淘宝订单来的，取淘宝订单号
      */
 	private String outerId;
 
+    /**
+     * 发货时间
+     */
+	private Date sendTime;
+
+    /**
+     * 是否被删除
+     */
 	private Boolean disenable;
 
 	public void setOid(Long oid) {
@@ -192,11 +200,20 @@ public class ItemOrder implements Serializable {
 		return this.outerId;
 	}
 
-	public Boolean getDisenable() {
-		return disenable;
+	public void setSendTime(Date sendTime) {
+		this.sendTime = sendTime;
+	}
+
+	public Date getSendTime() {
+		return this.sendTime;
 	}
 
 	public void setDisenable(Boolean disenable) {
 		this.disenable = disenable;
 	}
+
+	public Boolean getDisenable() {
+		return this.disenable;
+	}
+
 }

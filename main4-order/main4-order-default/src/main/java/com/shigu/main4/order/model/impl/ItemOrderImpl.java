@@ -140,13 +140,14 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long addLogistics(List<Long> soids, LogisticsVO logistics) {
+    public Long addLogistics(List<Long> soids, LogisticsVO logistics,boolean needReprice) {
         ItemOrderLogistics orderLogistics = BeanMapper.map(logistics, ItemOrderLogistics.class);
         orderLogistics.setOid(oid);
         itemOrderLogisticsMapper.insertSelective(orderLogistics);
-
-        // 重新计算订单总额
-        recountTotalOrderAmount();
+        if (needReprice) {
+            // 重新计算订单总额
+            recountTotalOrderAmount();
+        }
 
         // 子订单设置物流关联
         if (soids != null && !soids.isEmpty()) {
@@ -172,7 +173,7 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addPackage(Long metarialId, Integer num) {
+    public void addPackage(Long metarialId, Integer num,boolean needReprice) {
         MetarialVO metarialVO = orderConstantService.selMetarialById(selSender().getSenderId(), metarialId);
         ItemOrderPackage orderPackage = BeanMapper.map(metarialVO, ItemOrderPackage.class);
         orderPackage.setId(null);
@@ -181,8 +182,9 @@ public class ItemOrderImpl implements ItemOrder {
         orderPackage.setOid(oid);
         orderPackage.setMetarialId(metarialId);
         itemOrderPackageMapper.insertSelective(orderPackage);
-
-        recountTotalOrderAmount();
+        if (needReprice) {
+            recountTotalOrderAmount();
+        }
     }
 
     @Override
@@ -207,7 +209,7 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addDfService(ServiceVO serviceVO, Long soid, Integer number) {
+    public void addDfService(ServiceVO serviceVO, Long soid, Integer number,boolean needReprice) {
         // 记录订单服务信息
         ItemOrderService itemOrderService = BeanMapper.map(serviceVO, ItemOrderService.class);
         itemOrderService.setMoney(serviceVO.getPrice() * number);
@@ -216,9 +218,10 @@ public class ItemOrderImpl implements ItemOrder {
         itemOrderService.setServiceId(serviceVO.getId());
         itemOrderService.setId(null);
         itemOrderServiceMapper.insertSelective(itemOrderService);
-
-        // 重新计算订单总额
-        recountTotalOrderAmount();
+        if (needReprice) {
+            // 重新计算订单总额
+            recountTotalOrderAmount();
+        }
     }
 
     /**
@@ -318,7 +321,7 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addSubOrder(List<SubOrderBO> subOrders) {
+    public void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice) {
         for (SubOrderBO bo : subOrders) {
             ItemOrderSub sub=new ItemOrderSub();
             ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, bo.getPid(), bo.getSkuId());
@@ -337,7 +340,9 @@ public class ItemOrderImpl implements ItemOrder {
             sub.setOid(oid);
             itemOrderSubMapper.insertSelective(sub);
         }
-        recountTotalOrderAmount();
+        if (needReprice) {
+            recountTotalOrderAmount();
+        }
     }
 
     @Override
@@ -433,6 +438,9 @@ public class ItemOrderImpl implements ItemOrder {
         com.opentae.data.mall.beans.ItemOrder order = new com.opentae.data.mall.beans.ItemOrder();
         order.setOid(oid);
         order.setOrderStatus(status.status);
+        if(status==OrderStatus.SELLER_SENDED_GOODS){
+            order.setSendTime(new Date());
+        }
         itemOrderMapper.updateByPrimaryKeySelective(order);
     }
 
