@@ -37,10 +37,11 @@ public class XzPayerServiceImpl extends PayerServiceAble {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayApplyVO payApply(Long oid, Long money, String title) {
+    public PayApplyVO payApply(Long userId,Long oid, Long money, String title) {
         OrderPayApply apply = new OrderPayApply();
         apply.setOid(oid);
         apply.setMoney(money);
+        apply.setUserId(userId);
         apply.setType(PayType.XZ.getValue());
         orderPayApplyMapper.insertSelective(apply);
 

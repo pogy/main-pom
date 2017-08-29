@@ -41,11 +41,12 @@ public class AliPayerServiceImpl extends PayerServiceAble {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayApplyVO payApply(Long oid, Long money, String title) throws PayApplyException {
+    public PayApplyVO payApply(Long userId,Long oid, Long money, String title) throws PayApplyException {
 
         OrderPayApply apply = new OrderPayApply();
         apply.setOid(oid);
         apply.setMoney(money);
+        apply.setUserId(userId);
         apply.setType(PayType.ALI.getValue());
         orderPayApplyMapper.insertSelective(apply);
 

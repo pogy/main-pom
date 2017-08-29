@@ -208,17 +208,6 @@
             <artifactId>gson</artifactId>
             <version>2.2.4</version>
         </dependency>
-        <dependency>
-            <groupId>webs.pay_site</groupId>
-            <artifactId>pay_sdk</artifactId>
-            <version>5.2.2-RELEASE</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>data-mall</groupId>
-                    <artifactId>shigu_store_id_generator</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <!--<dependency>
             <groupId>com.taobao</groupId>
             <artifactId>taobao-sdk-java-21720662</artifactId>
@@ -293,6 +282,27 @@
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>${javassist.version}</version>
+        </dependency>
+
+        <!--支付的对接-->
+        <dependency>
+            <groupId>webs.pay_site</groupId>
+            <artifactId>pay_sdk</artifactId>
+            <version>5.2.2-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>data-mall</groupId>
+                    <artifactId>shigu_store_id_generator</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>data-mall</groupId>
+                    <artifactId>xinzuo_mybatis</artifactId>
+                </exclusion>
+                <!--<exclusion>-->
+                <!--<groupId>com.openJar</groupId>-->
+                <!--<artifactId>open_order_endsdk</artifactId>-->
+                <!--</exclusion>-->
+            </exclusions>
         </dependency>
     </dependencies>
 </project>

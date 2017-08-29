@@ -14,11 +14,6 @@ public class OrderPayApply implements Serializable {
 	private Long applyId;
 
     /**
-     * item_order_id
-     */
-	private Long oid;
-
-    /**
      * 钱数
      */
 	private Long money;
@@ -39,9 +34,19 @@ public class OrderPayApply implements Serializable {
 	private Date createTime;
 
     /**
-     * 支付理由，1星座进货
+     * 支付理由，1星座进货，2充值
      */
 	private Integer payFor;
+
+    /**
+     * 订单ID
+     */
+	private Long oid;
+
+    /**
+     * 用户ID
+     */
+	private Long userId;
 
 	public void setApplyId(Long applyId) {
 		this.applyId = applyId;
@@ -49,14 +54,6 @@ public class OrderPayApply implements Serializable {
 
 	public Long getApplyId() {
 		return this.applyId;
-	}
-
-	public void setOid(Long oid) {
-		this.oid = oid;
-	}
-
-	public Long getOid() {
-		return this.oid;
 	}
 
 	public void setMoney(Long money) {
@@ -97,6 +94,22 @@ public class OrderPayApply implements Serializable {
 
 	public Integer getPayFor() {
 		return this.payFor;
+	}
+
+	public void setOid(Long oid) {
+		this.oid = oid;
+	}
+
+	public Long getOid() {
+		return this.oid;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getUserId() {
+		return this.userId;
 	}
 
 }

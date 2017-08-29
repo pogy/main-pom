@@ -14,8 +14,9 @@ public class OrderPayApplyExample extends SgExample<OrderPayApplyExample.Criteri
     public static EntityColumn money;
     public static EntityColumn createTime;
     public static EntityColumn oid;
-    public static EntityColumn type;
     public static EntityColumn payFor;
+    public static EntityColumn type;
+    public static EntityColumn userId;
     public static EntityColumn payLink;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -27,8 +28,9 @@ public class OrderPayApplyExample extends SgExample<OrderPayApplyExample.Criteri
         money = listMap.get("money");
         createTime = listMap.get("createTime");
         oid = listMap.get("oid");
-        type = listMap.get("type");
         payFor = listMap.get("payFor");
+        type = listMap.get("type");
+        userId = listMap.get("userId");
         payLink = listMap.get("payLink");
         }
 
@@ -239,6 +241,53 @@ public class OrderPayApplyExample extends SgExample<OrderPayApplyExample.Criteri
         public OrderPayApplyExample.Criteria andOidNotBetween(Long value1, Long value2) {
             return notBetween(oid, value1, value2);
         }
+        public OrderPayApplyExample.Criteria andPayForIsNull() {
+            return isNull(payFor);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForIsNotNull() {
+            return isNotNull(payFor);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForEqualTo(Integer value) {
+            return equalTo(payFor, value);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForNotEqualTo(Integer value) {
+            return notEqualTo(payFor, value);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForGreaterThan(Integer value) {
+            return greaterThan(payFor, value);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(payFor, value);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForLessThan(Integer value) {
+            return lessThan(payFor, value);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(payFor, value);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForIn(List<Integer> values) {
+            return in(payFor, values);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForNotIn(List<Integer> values) {
+            return notIn(payFor, values);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForBetween(Integer value1, Integer value2) {
+            return between(payFor, value1, value2);
+        }
+
+        public OrderPayApplyExample.Criteria andPayForNotBetween(Integer value1, Integer value2) {
+            return notBetween(payFor, value1, value2);
+        }
         public OrderPayApplyExample.Criteria andTypeIsNull() {
             return isNull(type);
         }
@@ -286,52 +335,52 @@ public class OrderPayApplyExample extends SgExample<OrderPayApplyExample.Criteri
         public OrderPayApplyExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
             return notBetween(type, value1, value2);
         }
-        public OrderPayApplyExample.Criteria andPayForIsNull() {
-            return isNull(payFor);
+        public OrderPayApplyExample.Criteria andUserIdIsNull() {
+            return isNull(userId);
         }
 
-        public OrderPayApplyExample.Criteria andPayForIsNotNull() {
-            return isNotNull(payFor);
+        public OrderPayApplyExample.Criteria andUserIdIsNotNull() {
+            return isNotNull(userId);
         }
 
-        public OrderPayApplyExample.Criteria andPayForEqualTo(Integer value) {
-            return equalTo(payFor, value);
+        public OrderPayApplyExample.Criteria andUserIdEqualTo(Long value) {
+            return equalTo(userId, value);
         }
 
-        public OrderPayApplyExample.Criteria andPayForNotEqualTo(Integer value) {
-            return notEqualTo(payFor, value);
+        public OrderPayApplyExample.Criteria andUserIdNotEqualTo(Long value) {
+            return notEqualTo(userId, value);
         }
 
-        public OrderPayApplyExample.Criteria andPayForGreaterThan(Integer value) {
-            return greaterThan(payFor, value);
+        public OrderPayApplyExample.Criteria andUserIdGreaterThan(Long value) {
+            return greaterThan(userId, value);
         }
 
-        public OrderPayApplyExample.Criteria andPayForGreaterThanOrEqualTo(Integer value) {
-            return greaterThanOrEqualTo(payFor, value);
+        public OrderPayApplyExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(userId, value);
         }
 
-        public OrderPayApplyExample.Criteria andPayForLessThan(Integer value) {
-            return lessThan(payFor, value);
+        public OrderPayApplyExample.Criteria andUserIdLessThan(Long value) {
+            return lessThan(userId, value);
         }
 
-        public OrderPayApplyExample.Criteria andPayForLessThanOrEqualTo(Integer value) {
-            return lessThanOrEqualTo(payFor, value);
+        public OrderPayApplyExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(userId, value);
         }
 
-        public OrderPayApplyExample.Criteria andPayForIn(List<Integer> values) {
-            return in(payFor, values);
+        public OrderPayApplyExample.Criteria andUserIdIn(List<Long> values) {
+            return in(userId, values);
         }
 
-        public OrderPayApplyExample.Criteria andPayForNotIn(List<Integer> values) {
-            return notIn(payFor, values);
+        public OrderPayApplyExample.Criteria andUserIdNotIn(List<Long> values) {
+            return notIn(userId, values);
         }
 
-        public OrderPayApplyExample.Criteria andPayForBetween(Integer value1, Integer value2) {
-            return between(payFor, value1, value2);
+        public OrderPayApplyExample.Criteria andUserIdBetween(Long value1, Long value2) {
+            return between(userId, value1, value2);
         }
 
-        public OrderPayApplyExample.Criteria andPayForNotBetween(Integer value1, Integer value2) {
-            return notBetween(payFor, value1, value2);
+        public OrderPayApplyExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(userId, value1, value2);
         }
         public OrderPayApplyExample.Criteria andPayLinkIsNull() {
             return isNull(payLink);

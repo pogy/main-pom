@@ -15,9 +15,12 @@ import com.opentae.data.mall.interfaces.OrderPayMapper;
 import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.order.enums.OrderType;
+import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.PayerService;
+import com.shigu.main4.order.model.RechargeOrder;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.tools.SpringBeanFactory;
@@ -91,6 +94,15 @@ public abstract class PayerServiceAble implements PayerService{
                 ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, apply.getOid());
                 itemOrder.payed();
                 orderMessageProducter.orderPush(itemOrder);
+            }else if(orderId != null&&orderId.getType()== OrderType.INCHANGE.type){//假如是走充值的
+                RechargeOrder rechargeOrder=SpringBeanFactory.getBean(RechargeOrder.class,apply.getUserId(),apply.getOid(),apply.getMoney());
+                try {
+                    rechargeOrder.payed(outerPuser);
+                    createPay(apply,outerPid,outerPuser,payMoney);
+                } catch (PayApplyException e) {
+                    refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//充值失败，退回
+                }
+
             }
         }
     }
