@@ -52,6 +52,10 @@ public class SearchBO extends PageInSearchBO implements Serializable{
      * 筛选关键字
      */
     private String keyword;
+    /**
+     * 档口id
+     */
+    private Long shopId;
 
     public String getFrom() {
         return from;
@@ -147,5 +151,13 @@ public class SearchBO extends PageInSearchBO implements Serializable{
 
     public void setEt(String et) {
         this.et = et;
+    }
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
     }
 }
