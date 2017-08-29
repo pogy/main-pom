@@ -24,6 +24,7 @@
         <module>main4-daifa</module>
         <module>daifa-server</module>
         <module>daifa-sdk</module>
+        <module>main4-app-sdk</module>
     </modules>
     <packaging>pom</packaging>
 
