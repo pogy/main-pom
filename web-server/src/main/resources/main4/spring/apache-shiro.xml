@@ -18,6 +18,7 @@
 			<map>
 				<entry key="member" value-ref="memberFilter"/>
 				<entry key="shop" value-ref="shopFilter"/>
+				<entry key="sdk" value-ref="tae_apiRequestFilter"/>
 			</map>
 		</property>
 		<property name="filterChainDefinitions">
@@ -29,6 +30,7 @@
 				/jsonScAdd.* = member
 				/jsonStoreCollectAdd.* = member
 				/seller/** = shop
+				/app/** = sdk
 				/** = anon
 			</value>
 		</property>
