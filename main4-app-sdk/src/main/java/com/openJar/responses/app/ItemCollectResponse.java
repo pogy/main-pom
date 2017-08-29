@@ -1,35 +1,35 @@
 package com.openJar.responses.app;
 import com.openJar.responses.Response;
 import java.util.List;
-import com.openJar.beans.app.AppShopBlock;
+import com.openJar.beans.app.AppGoodsBlock;
 /**
- * 类名:ShopSearchResponse
- * 类路径:com.openJar.responses.appShopSearchResponse
+ * 类名:ItemCollectResponse
+ * 类路径:com.openJar.responses.appItemCollectResponse
  * 创建者:自动生成
  * 创建时间:2017-08-29
- * 描述:档口搜索
+ * 描述:商品收藏夹？
  */
-public class ShopSearchResponse extends Response {
-	//店铺数据
-	private List<AppShopBlock> shops;
+public class ItemCollectResponse extends Response {
 	//是否有下一页
 	private Boolean hasNext;
-	//总数
+	//商品数据
+	private List<AppGoodsBlock> items;
+	//总条数
 	private Integer total;
-	public List<AppShopBlock> getShops(){
-		return shops;
-	}
-
-	public void setShops(List<AppShopBlock> shops){
-		this.shops=shops;
-	}
-
 	public Boolean getHasNext(){
 		return hasNext;
 	}
 
 	public void setHasNext(Boolean hasNext){
 		this.hasNext=hasNext;
+	}
+
+	public List<AppGoodsBlock> getItems(){
+		return items;
+	}
+
+	public void setItems(List<AppGoodsBlock> items){
+		this.items=items;
 	}
 
 	public Integer getTotal(){

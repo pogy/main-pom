@@ -1,76 +1,61 @@
 package com.openJar.requests.app;
-
-import com.openJar.beans.enums.HostEnum;
+import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.ShopSearchResponse;
-
 /**
- * 类名：ShopSearchRequest
- * 类路径：com.openJar.requests.app.ShopSearchRequest
- * 创建者：王浩翔
- * 创建时间：2017-08-29 12:21
- * 项目：main-pom
- * 描述：app端档口搜索请求
+ * 类名:ShopSearchRequest
+ * 类路径:com.openJar.requests.appShopSearchRequest
+ * 创建者:自动生成
+ * 创建时间:2017-08-29
+ * 描述:档口搜索
  */
 public class ShopSearchRequest extends Request<ShopSearchResponse> {
-    //todo
-    //档口搜索请求url
-    private final String url = "xxxxxxxx.json";
-    //关键词
-    private String keyword;
-    //分站标识
-    private String webSite;
-    //页码，默认1开始
-    private Integer index;
-    //页长
-    private Integer size;
+	//关键词
+	private String keyword;
+	//分站标识
+	private String webSite;
+	//页码，默认1开始
+	private Integer index;
+	//页长
+	private Integer size;
+	public String getKeyword(){
+		return keyword;
+	}
 
-    //app端/wap端标志
-    private HostEnum host = HostEnum.APP_HOST;
+	public void setKeyword(String keyword){
+		this.keyword=keyword;
+	}
 
-    public String getKeyword() {
-        return keyword;
-    }
+	public String getWebSite(){
+		return webSite;
+	}
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
+	public void setWebSite(String webSite){
+		this.webSite=webSite;
+	}
 
-    public String getWebSite() {
-        return webSite;
-    }
+	public Integer getIndex(){
+		return index;
+	}
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
+	public void setIndex(Integer index){
+		this.index=index;
+	}
 
-    public Integer getIndex() {
-        return index;
-    }
+	public Integer getSize(){
+		return size;
+	}
 
-    public void setIndex(Integer index) {
-        this.index = index;
-    }
+	public void setSize(Integer size){
+		this.size=size;
+	}
 
-    public Integer getSize() {
-        return size;
-    }
+	public String testApiUrl(){
+		return HostEnum.TEST+"shopSearch.json";
+	}
 
-    public void setSize(Integer size) {
-        this.size = size;
-    }
+	public String restApiUrl(){
+		return HostEnum.REST+"shopSearch.json";
+	}
 
-    public void setHost(HostEnum host) {
-        this.host = host;
-    }
-
-    @Override
-    public String restApiUrl() {
-        return host.getRestUrl() + url;
-    }
-
-    @Override
-    public String testApiUrl() {
-        return host.getTestUrl() + url;
-    }
 }
