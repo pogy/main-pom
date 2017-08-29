@@ -2,6 +2,7 @@ package com.shigu.main4.daifa.process;
 
 import com.shigu.main4.daifa.bo.OrderBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 
 import java.util.Date;
 import java.util.List;
@@ -47,7 +48,7 @@ public interface OrderManageProcess {
      * @param outerSubOrderId 外部子订单号
      * @return 可退的拆分ID集合
      */
-    List<Long> tryRefund(String outerSubOrderId);
+    List<Long> tryRefund(String outerSubOrderId) throws OrderNotFindException;
 
     /**
      * 退款
