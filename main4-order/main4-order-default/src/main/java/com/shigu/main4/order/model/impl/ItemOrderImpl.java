@@ -433,6 +433,9 @@ public class ItemOrderImpl implements ItemOrder {
         com.opentae.data.mall.beans.ItemOrder order = new com.opentae.data.mall.beans.ItemOrder();
         order.setOid(oid);
         order.setOrderStatus(status.status);
+        if(status==OrderStatus.SELLER_SENDED_GOODS){
+            order.setSendTime(new Date());
+        }
         itemOrderMapper.updateByPrimaryKeySelective(order);
     }
 
