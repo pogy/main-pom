@@ -97,7 +97,7 @@ public abstract class PayerServiceAble implements PayerService{
             }else if(orderId != null&&orderId.getType()== OrderType.INCHANGE.type){//假如是走充值的
                 RechargeOrder rechargeOrder=SpringBeanFactory.getBean(RechargeOrder.class,apply.getUserId(),apply.getOid(),apply.getMoney());
                 try {
-                    rechargeOrder.payed(outerPuser);
+                    rechargeOrder.payed(outerPid);
                     createPay(apply,outerPid,outerPuser,payMoney);
                 } catch (PayApplyException e) {
                     refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//充值失败，退回

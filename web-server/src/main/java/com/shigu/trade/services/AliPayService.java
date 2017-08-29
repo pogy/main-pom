@@ -28,11 +28,12 @@ public class AliPayService {
     @Transactional(rollbackFor = Exception.class)
     public void payNotice(Map<String, String> paramsMapAli) throws PayerException {
         String outTradeNo = paramsMapAli.get("out_trade_no");
+        String tradeNo=paramsMapAli.get("trade_no");
         String totalAmount = paramsMapAli.get("total_amount");
         String buyerId = paramsMapAli.get("buyer_id");
         Long totalFee = ((Double) (Double.valueOf(totalAmount.replaceAll("[$￥,]", "")) * 100.0)).longValue();
 
-        payerService.paySure(Long.valueOf(outTradeNo), "", buyerId, totalFee);
+        payerService.paySure(Long.valueOf(outTradeNo), tradeNo, buyerId, totalFee);
     }
 
     public String getPublicKey() {
