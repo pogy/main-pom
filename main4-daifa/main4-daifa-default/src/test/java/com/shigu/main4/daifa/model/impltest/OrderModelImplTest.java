@@ -135,7 +135,7 @@ public class OrderModelImplTest extends BaseSpringTest{
             BuyerBO buyerBO = new BuyerBO ();
             buyerBO.setNickInMarket ("小红");
             buyerBO.setPhone ("13523656891");
-            bo.setBuyerBO (buyerBO);
+//            bo.setBuyerBO (buyerBO);
             orderModel = SpringBeanFactory.getBean (OrderModel.class, bo);
 //        orderModel = SpringBeanFactory.getBean(OrderModel.class,2L);
             show (orderModel);
