@@ -21,6 +21,9 @@ public class OneItemRequest extends Request<OneItemResponse> {
     //分站标志
     private String webSite;
 
+    //app端/wap端标志
+    private HostEnum host = HostEnum.APP_HOST;
+
     public Long getItemId() {
         return itemId;
     }
@@ -37,13 +40,17 @@ public class OneItemRequest extends Request<OneItemResponse> {
         this.webSite = webSite;
     }
 
+    public void setHost(HostEnum host) {
+        this.host = host;
+    }
+
     @Override
     public String restApiUrl() {
-        return HostEnum.APP_REST_HOST + url;
+        return host.getRestUrl() + url;
     }
 
     @Override
     public String testApiUrl() {
-        return HostEnum.APP_TEST_HOST + url;
+        return host.getTestUrl() + url;
     }
 }

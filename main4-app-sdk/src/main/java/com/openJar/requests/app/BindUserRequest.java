@@ -1,5 +1,6 @@
 package com.openJar.requests.app;
 
+import com.openJar.beans.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.BindUserResponse;
 
@@ -21,6 +22,9 @@ public class BindUserRequest extends Request<BindUserResponse>{
     private String telephone;
     //验证码 必须
     private String code;
+
+    //app端/wap端标志
+    private HostEnum host = HostEnum.APP_HOST;
 
     public String getTempId() {
         return tempId;
@@ -46,14 +50,18 @@ public class BindUserRequest extends Request<BindUserResponse>{
         this.code = code;
     }
 
+    public void setHost(HostEnum host) {
+        this.host = host;
+    }
+
     //todo
     @Override
     public String restApiUrl() {
-        return null;
+        return host.getRestUrl() + url;
     }
     //todo
     @Override
     public String testApiUrl() {
-        return null;
+        return host.getTestUrl() + url;
     }
 }

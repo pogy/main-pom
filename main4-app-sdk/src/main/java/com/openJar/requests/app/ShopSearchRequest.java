@@ -25,6 +25,9 @@ public class ShopSearchRequest extends Request<ShopSearchResponse> {
     //页长
     private Integer size;
 
+    //app端/wap端标志
+    private HostEnum host = HostEnum.APP_HOST;
+
     public String getKeyword() {
         return keyword;
     }
@@ -57,13 +60,17 @@ public class ShopSearchRequest extends Request<ShopSearchResponse> {
         this.size = size;
     }
 
+    public void setHost(HostEnum host) {
+        this.host = host;
+    }
+
     @Override
     public String restApiUrl() {
-        return HostEnum.APP_REST_HOST + url;
+        return host.getRestUrl() + url;
     }
 
     @Override
     public String testApiUrl() {
-        return HostEnum.APP_TEST_HOST + url;
+        return host.getTestUrl() + url;
     }
 }

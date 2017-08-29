@@ -9,19 +9,27 @@ package com.openJar.beans.enums;
  * 描述：
  */
 public enum HostEnum {
-    APP_TEST_HOST("http://127.0.0.1/app/"),
-    APP_REST_HOST("http://www.571xz.com/app/"),
-    WAP_TEST_HOST("http://127.0.0.1/wap/"),
-    WAP_REST_HOST("http://www.571xz.com/wap/")
+    APP_HOST("http://www.571xz.com/app/","http://127.0.0.1/app/"),
+    WAP_HOST("http://www.571xz.com/wap/","http://127.0.0.1/wap/")
     ,
     ;
-    private String url;
-    HostEnum(String url) {
-        this.url = url;
+    private String restUrl;
+    private String testUrl;
+    HostEnum(String restUrl, String testUrl) {
+        this.restUrl = restUrl;
+        this.testUrl = testUrl;
     }
 
     @Override
     public String toString() {
-        return url;
+        return restUrl;
+    }
+
+    public String getTestUrl() {
+        return testUrl;
+    }
+
+    public String getRestUrl() {
+        return restUrl;
     }
 }

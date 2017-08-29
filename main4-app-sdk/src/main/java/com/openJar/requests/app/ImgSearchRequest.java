@@ -20,6 +20,8 @@ public class ImgSearchRequest extends Request<ImgSearchResponse> {
     private String imgurl;
     //分站标识
     private String webSite;
+    //app端/wap端标志
+    private HostEnum host = HostEnum.APP_HOST;
 
     public String getImgurl() {
         return imgurl;
@@ -37,13 +39,17 @@ public class ImgSearchRequest extends Request<ImgSearchResponse> {
         this.webSite = webSite;
     }
 
+    public void setHost(HostEnum host) {
+        this.host = host;
+    }
+
     @Override
     public String restApiUrl() {
-        return HostEnum.APP_REST_HOST + url;
+        return host.getRestUrl() + url;
     }
 
     @Override
     public String testApiUrl() {
-        return HostEnum.APP_TEST_HOST + url;
+        return host.getTestUrl() + url;
     }
 }
