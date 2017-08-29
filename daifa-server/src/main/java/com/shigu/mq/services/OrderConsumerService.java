@@ -31,38 +31,41 @@ public class OrderConsumerService {
     SendMessageListener sendMessageListener;
 
     private OrderManageProcess orderManageProcess;
+
     @Autowired
     public void setOrderManageProcess(OrderManageProcess orderManageProcess) {
         this.orderManageProcess = orderManageProcess;
     }
 
     public void orderConvertTrade(String body) throws UnsupportedEncodingException {
-        ResponseBasic res= JSON.parseObject(body,ResponseBasic.class);
-        if(res.isStatus()){
-            synchronized (this) {
-                OrderBO orderBean = JSON.parseObject(res.getData().toString(),OrderBO.class);
-               // System.out.println (orderBean);
+        ResponseBasic res = JSON.parseObject(body, ResponseBasic.class);
+        if (res.isStatus()) {
+            OrderBO orderBean = JSON.parseObject(res.getData().toString(), OrderBO.class);
+            // System.out.println (orderBean);
+            synchronized (orderBean.getOid().toString()){
                 orderManageProcess.newOrder(orderBean);
             }
+
         }
     }
+
     public void refund(String body) throws UnsupportedEncodingException {
-        ResponseBasic res= JSON.parseObject(body,ResponseBasic.class);
-        if(res.isStatus()){
-            RefundBean refund= JSON.parseObject(JSON.toJSONString(res.getData()),RefundBean.class);
-           // RefundBean refund=JSON.parseObject(res.getData().toString(),RefundBean.class);
-            if(refund.getSuborders()==null||refund.getSuborders().size ()==0){
+        ResponseBasic res = JSON.parseObject(body, ResponseBasic.class);
+        if (res.isStatus()) {
+            RefundBean refund = JSON.parseObject(JSON.toJSONString(res.getData()), RefundBean.class);
+            // RefundBean refund=JSON.parseObject(res.getData().toString(),RefundBean.class);
+            if (refund.getSuborders() == null || refund.getSuborders().size() == 0) {
                 return;
             }
             try {
                 //=============事物start=================
-                List<String> soidps=new ArrayList<>();
-                List<String> soids=new ArrayList<>();
-                for(SubRefundBean srb:refund.getSuborders()){
+                List<String> soidps = new ArrayList<>();
+                List<String> soids = new ArrayList<>();
+                for (SubRefundBean srb : refund.getSuborders()) {
                     soids.add(srb.getSoid());
                     soidps.addAll(srb.getSoidps());
                 }
-                orderManageProcess.autoRefund(refund.getRefundId(),soids,soidps);
+                orderManageProcess.autoRefund(refund.getRefundId(), soids, soidps);
                 //=============事物end=================
             } catch (Exception e) {
                 logger.error(e.getMessage());
