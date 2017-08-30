@@ -10,18 +10,19 @@ import com.openJar.utils.OpenBean;
  */
 public class AppMarketTag extends OpenBean {
 	//市场ID
-	private Long marketId;
+	private Long mid;
 	//市场名称
 	private String name;
-	public Long getMarketId(){
-		return marketId;
-	}
 
-	public void setMarketId(Long marketId){
-		this.marketId=marketId;
-	}
+    public Long getMid() {
+        return mid;
+    }
 
-	public String getName(){
+    public void setMid(Long mid) {
+        this.mid = mid;
+    }
+
+    public String getName(){
 		return name;
 	}
 

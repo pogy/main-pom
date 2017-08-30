@@ -2,6 +2,9 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.UpToWxResponse;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * 类名:UpToWxRequest
  * 类路径:com.openJar.requests.appUpToWxRequest
@@ -11,12 +14,16 @@ import com.openJar.responses.app.UpToWxResponse;
  */
 public class UpToWxRequest extends Request<UpToWxResponse> {
 	//用户ID	必须
+	@NotNull(message = "userId is null")
 	private Long userId;
 	//分站	必须
+	@NotNull(message = "webSite is null")
 	private String webSite;
 	//商品ID	必须
+	@NotNull(message = "goodsId is null")
 	private Long goodsId;
 	//每次登陆用户的唯一码	必须
+	@NotNull(message = "goodsId is null")
 	private String token;
 	public Long getUserId(){
 		return userId;
