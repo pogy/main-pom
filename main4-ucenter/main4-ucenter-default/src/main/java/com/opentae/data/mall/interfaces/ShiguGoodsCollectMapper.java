@@ -24,8 +24,10 @@ public interface ShiguGoodsCollectMapper extends Mapper<ShiguGoodsCollect> {
             @Param("keyword") String keyword,
             @Param("webSite")String webSite,
             @Param("start")int start,
-            @Param("size")int size
-    );
+            @Param("size")int size,
+            @Param("type") int type);
     int countTinyGoodsCollect(@Param("userId")Long userId,@Param("keyword") String keyword,
-                              @Param("webSite")String webSite);
+                              @Param("webSite")String webSite,
+                              @Param("type")int type
+                              );
 }
