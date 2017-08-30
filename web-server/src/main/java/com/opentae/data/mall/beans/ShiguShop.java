@@ -2,6 +2,7 @@ package com.opentae.data.mall.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.Date;
 import java.io.Serializable;
 
@@ -17,6 +18,8 @@ public class ShiguShop implements Serializable {
      * 市场ID
      */
 	private Long marketId;
+	@Transient
+	private String parentMarketName;
 
     /**
      * 楼层ID
@@ -437,4 +440,11 @@ public class ShiguShop implements Serializable {
 		return this.everUserId;
 	}
 
+	public String getParentMarketName () {
+		return parentMarketName;
+	}
+
+	public void setParentMarketName (String parentMarketName) {
+		this.parentMarketName = parentMarketName;
+	}
 }
