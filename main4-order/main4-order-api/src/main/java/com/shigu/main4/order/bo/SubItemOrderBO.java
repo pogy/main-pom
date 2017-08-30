@@ -8,13 +8,6 @@ import java.io.Serializable;
  */
 public class SubItemOrderBO implements Serializable{
     /**
-     * 产品ID
-     */
-    private Long pid;
-    /**
-     * skuId
-     */
-    private Long skuId;
     /**
      * 产品数量
      */
@@ -23,6 +16,30 @@ public class SubItemOrderBO implements Serializable{
      * 备注
      */
     private String mark;
+    /**
+     * 产品ID
+     */
+    private Long pid;
+    /**
+     * sku信息
+     */
+    private Long skuId;
+    /**
+     * 标题
+     */
+    private String title;
+    /**
+     * 重量
+     */
+    private Long weight;
+
+    public Long getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Long weight) {
+        this.weight = weight;
+    }
 
     public Long getPid() {
         return pid;
@@ -55,4 +72,13 @@ public class SubItemOrderBO implements Serializable{
     public void setMark(String mark) {
         this.mark = mark;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 }

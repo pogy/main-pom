@@ -1,20 +1,18 @@
 package com.shigu.main4.cdn.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
-import com.opentae.data.mall.interfaces.ShiguTempMapper;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.vo.CatPolyFormatVO;
-import com.shigu.main4.cdn.vo.ShopIconCopyrightVO;
 import com.shigu.main4.cdn.vo.ShopShowVO;
 import com.shigu.main4.common.tools.ShiguPager;
-import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -33,7 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * cdn服务
@@ -68,6 +70,14 @@ public class CdnService {
 
     @Autowired
     ShopDesignService shopDesignService;
+    @Autowired
+    ShowForCdnService showForCdnService;
+    @Autowired
+    ItemBrowerService itemBrowerService;
+    @Autowired
+    ShiguShopLicenseMapper shiguShopLicenseMapper;
+    @Autowired
+    GoodsFileService goodsFileService;
 
     @Autowired
     ShiguTempMapper shiguTempMapper;
@@ -228,6 +238,180 @@ public class CdnService {
             blocks.add(isb);
         }
         return blocks;
+    }
+
+
+
+
+
+//===================================================20170725张峰=======================================================
+
+    /**
+     * 商品详情页,商品数据
+     * @param goodsId
+     * @return
+     * @throws CdnException
+     */
+    public CdnGoodsInfoVO cdnGoodsInfo(Long goodsId) throws CdnException {
+        CdnGoodsInfoVO vo=new CdnGoodsInfoVO();
+        CdnItem cdnItem=showForCdnService.selItemById(goodsId);
+        vo.setOnSale(cdnItem!=null&&cdnItem.getOnsale());
+        vo.setOnlineSale(true);
+        if(cdnItem==null){//已经下架
+            cdnItem=showForCdnService.selItemInstockById(goodsId);
+        }
+        if(cdnItem==null){//商品不存在
+            throw new CdnException("商品不存在");
+        }
+        vo.setGoodsId(goodsId);
+        vo.setGoodsNo(cdnItem.getHuohao());
+        vo.setImgUrls(cdnItem.getImgUrl());
+        vo.setLiPrice(cdnItem.getPrice());
+        vo.setPiPrice(cdnItem.getPiPrice());
+        vo.setShopId(cdnItem.getShopId());
+        vo.setWebSite(cdnItem.getWebSite());
+        vo.setPostTime(cdnItem.getListTime());
+        vo.setTitle(cdnItem.getTitle());
+        vo.setTbGoodsId(cdnItem.getTbNumIid());
+        vo.setViewNum(itemBrowerService.selItemBrower(goodsId));
+        if(cdnItem.getDescription()!=null){
+            vo.setDescHtml(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
+                    .replace("<script>","")
+                    .replace("</script>",""));
+        }
+        List<NormalProp> nps=cdnItem.getNormalProps();
+        List<CdnGoodsPropVO> props=new ArrayList<>();
+        for(NormalProp np:nps){
+            CdnGoodsPropVO prop=new CdnGoodsPropVO();
+            prop.setName(np.getPname());
+            prop.setValue(np.getValue());
+            props.add(prop);
+        }
+        vo.setNormalAttrs(props);
+        List<String> qys=showForCdnService.selItemLicenses(goodsId,cdnItem.getShopId());
+        vo.setServices(qys);
+
+        List<SaleProp> colors=cdnItem.getColors();
+        if(colors==null){
+            colors=new ArrayList<>();
+            SaleProp c=new SaleProp();
+            c.setValue("图片色");
+            colors.add(c);
+        }
+        JSONArray array = new JSONArray();
+        for(SaleProp c:colors){
+            array.add(new JSONObject().element("text", c.getValue()).element("imgSrc", c.getImgUrl()));
+        }
+        vo.setColorsMeta(array.toString());
+
+        List<SaleProp> sizes=cdnItem.getSizes();
+        if(sizes==null){
+            sizes=new ArrayList<>();
+            SaleProp s=new SaleProp();
+            s.setValue("均码");
+            sizes.add(s);
+        }
+        List<String> ss=new ArrayList<>();
+        for(SaleProp s:sizes){
+            ss.add(s.getValue());
+        }
+        vo.setSizesMeta(JSONArray.fromObject(ss).toString());
+        vo.setHasOriginalPic(goodsFileService.hasDatu(goodsId)+"");
+
+        return vo;
+    }
+
+    /**
+     * 商品详情页,档口数据
+     * @param shopId
+     * @return
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public CdnShopInfoVO cdnShopInfo(Long shopId) throws IOException, TemplateException {
+        CdnShopInfoVO vo=new CdnShopInfoVO();
+        StoreRelation shop=storeRelationService.selRelationById(shopId);
+        if(shop==null){
+            return null;
+        }
+        vo.setFloor(shop.getFloor());
+        vo.setImQq(shop.getImQq());
+        vo.setImWw(shop.getImWw());
+        vo.setMarketName(shop.getMarketName());
+        vo.setShopId(shopId);
+        vo.setShopNo(shop.getStoreNum());
+        vo.setMobile(shop.getTelephone());
+        //星星数
+        Long starNum=shopForCdnService.selShopStarById(shopId);
+        starNum=starNum==null?0:starNum;
+        vo.setStarNum(starNum);
+        //其他信息
+        ShopBaseForCdn other=shopForCdnService.selShopBase(shopId);
+        if(other!=null){
+            vo.setOpenTime(other.getOpenTime());
+            vo.setMainBus(other.getMainBus());
+            vo.setTbUrl(other.getTaobaoUrl());
+        }
+        //是否实体认证
+        ShiguShopLicense license = new ShiguShopLicense();
+        license.setLicenseType(ShopLicenseTypeEnum.TAGS.ordinal());
+        license.setShopId(shopId);
+        license.setLicenseFailure(0);//有效
+        license.setLicenseType(3);
+        int count = shiguShopLicenseMapper.selectCount(license);
+        vo.setIsStrz(count>0);
+        //授权状态
+        vo.setTbAuthState(shopBaseService.shopAuthState(shopId));
+        //二级域名
+        vo.setXzUrl(shopBaseService.selDomain(shopId));
+        return vo;
+    }
+    /**
+     * 店内类目
+     * @param shopId
+     * @return
+     */
+    public List<CdnShopCatVO> cdnShopCat(Long shopId){
+        List<ShopCat> cats=shopForCdnService.selShopCatsById(shopId);
+        List<CdnShopCatVO> cdnCats= BeanMapper.mapList(cats,CdnShopCatVO.class);
+        return cdnCats;
+    }
+
+    /**
+     * 看了有看
+     * @param shopId
+     * @return
+     */
+    public List<CdnSimpleGoodsVO> cdnSimpleGoods(Long shopId, String webSite){
+        ShiguPager<ItemShowBlock> pager= shopForCdnService.searchItemOnsale(null,shopId,webSite,"common",1,3);
+        List<CdnSimpleGoodsVO> list=new ArrayList<>();
+        for(ItemShowBlock item:pager.getContent()){
+            CdnSimpleGoodsVO v=new CdnSimpleGoodsVO();
+            v.setGoodsId(item.getItemId());
+            v.setImgSrc(item.getImgUrl());
+            v.setPrice(item.getPrice());
+            v.setTitle(item.getTitle());
+            list.add(v);
+        }
+        return list;
+    }
+
+    /**
+     * 商品详情页,我收藏的店铺
+     * @param userId
+     * @param webSite
+     * @return
+     */
+    public List<CdnCollectShopVO> colloectShop(Long userId,String webSite){
+        ShiguPager<ShopCollectVO> pager=userCollectService.selShopCollections(userId,webSite,1,6);
+        List<CdnCollectShopVO> vos=new ArrayList<>();
+        for(ShopCollectVO p:pager.getContent()){
+            CdnCollectShopVO vo=new CdnCollectShopVO();
+            vo.setId(p.getShopId());
+            vo.setName(p.getMarket()+p.getShopNum());
+            vos.add(vo);
+        }
+        return vos;
     }
 
     /**

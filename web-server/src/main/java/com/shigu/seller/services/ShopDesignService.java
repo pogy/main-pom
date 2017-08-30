@@ -540,12 +540,7 @@ public class ShopDesignService {
         DesignJsonVO vo = new DesignJsonVO();
         vo.setStatus(0);
         vo.setMessage("应用成功");
-        ShopFitmentPage page = new ShopFitmentPage();
-        page.setBackgroundPic(bo.getPic());
-        page.setBackgroundType(bo.getType());
-        ShopFitmentPageExample pageExample = new ShopFitmentPageExample();
-        pageExample.createCriteria().andPageIdEqualTo(bo.getPage()).andShopIdEqualTo(shopId);
-        if (shopFitmentPageMapper.updateByExampleSelective(page, pageExample) == 0) {
+        if (shopFitmentService.updatePageBackground(shopId,bo.getPage(),bo.getType(),bo.getPic()) == 0) {
             vo.setStatus(1);
             vo.setMessage("更新失败");
         }

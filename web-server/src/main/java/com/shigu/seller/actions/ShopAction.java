@@ -2,12 +2,10 @@ package com.shigu.seller.actions;
 
 import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.GoatLicense;
-import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.GoatLicenseExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.GoatLicenseMapper;
-import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
@@ -22,7 +20,6 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.exceptions.ShopDomainException;
 import com.shigu.main4.goat.enums.GoatType;
@@ -121,8 +118,6 @@ public class ShopAction {
     @Autowired
     ShopBaseService shopBaseService;
 
-    @Autowired
-    DubboAllService dubboAllService;
 
     @Autowired
     ShopsItemService shopsItemService;
@@ -168,6 +163,18 @@ public class ShopAction {
 
     @Autowired
     UserBaseService userBaseService;
+
+    @Autowired
+    MainTbOnsaleService tbOnsaleService;
+
+    @Autowired
+    TaobaoSynService taobaoSynService;
+
+    @Autowired
+    TbPropsService tbPropsService;
+
+    @Autowired
+    TaobaoTmcService taobaoTmcService;
 
     @Autowired
     OssIO ossIO;
@@ -248,7 +255,6 @@ public class ShopAction {
                 get.setFeedback(1);
             } else if (authstatu == 1) {//授权正常的情况
                 get.setFeedback(-1);
-                MainTbOnsaleService tbOnsaleService=dubboAllService.getMaintbOnsaleService();
                 if(tbOnsaleService==null){
                     throw new TbOnsaleException("dubbo 注入失败");
                 }
@@ -294,7 +300,7 @@ public class ShopAction {
             throw new JsonErrException("参数异常");
         }
         try {
-            dubboAllService.getTaobaoSynService().synOneItem(shopSession.getShopId(),numIid,shopSession.getTbNick());
+            taobaoSynService.synOneItem(shopSession.getShopId(),numIid,shopSession.getTbNick());
         } catch (TbItemSynException e) {
             throw new JsonErrException(e.getMessage());
         }
@@ -320,7 +326,7 @@ public class ShopAction {
             throw new Main4Exception(result.getAllErrors().get(0).getDefaultMessage());
         }
         model.addAttribute("category_text",goodsSendService.selCatPath(bo.getCid()));
-        PropsVO propsVO=dubboAllService.getTbPropsService().selProps(bo.getCid());
+        PropsVO propsVO=tbPropsService.selProps(bo.getCid());
         //转化成老的pageProps
         List<FormAttrVO> formAttribute=new ArrayList<>();
         List<SKUVO> skuAttribute=new ArrayList<>();
@@ -741,7 +747,7 @@ public class ShopAction {
                 throw new JsonErrException("商品不存在numIid,可能不是淘宝商品");
             }
             try {
-                dubboAllService.getTaobaoSynService().synOneItem(shopSession.getShopId(), numIid, shopSession.getTbNick());
+                taobaoSynService.synOneItem(shopSession.getShopId(), numIid, shopSession.getTbNick());
             } catch (TbItemSynException e) {
                 throw new JsonErrException(e.getMessage());
             }
@@ -767,7 +773,7 @@ public class ShopAction {
     public JSONObject jsonsynstorecat(HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
         try {
-            dubboAllService.getTaobaoSynService().repairStorecat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairStorecat(shopSession.getShopId(),shopSession.getTbNick());
         } catch (Exception e) {// TODO: 17/3/15 等开发完,把真正的exception放进去
             throw new JsonErrException(e.getMessage());
         }
@@ -792,7 +798,7 @@ public class ShopAction {
     public JSONObject jsonsyngoodscat(HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
         try {
-            dubboAllService.getTaobaoSynService().repairGoodscat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairGoodscat(shopSession.getShopId(),shopSession.getTbNick());
         } catch (Exception e) {// TODO: 17/3/15 等开发完,把真正的exception放进去
             throw new JsonErrException(e.getMessage());
         }
@@ -808,8 +814,8 @@ public class ShopAction {
     public JSONObject jsonsynAlltbgoods(HttpSession session) throws JsonErrException {
         ShopSession shopSession = getShopSession(session);
         try {
-            dubboAllService.getTaobaoSynService().repairStorecat(shopSession.getShopId(),shopSession.getTbNick());
-            dubboAllService.getTaobaoSynService().repairGoodscat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairStorecat(shopSession.getShopId(),shopSession.getTbNick());
+            taobaoSynService.repairGoodscat(shopSession.getShopId(),shopSession.getTbNick());
         } catch (Exception e) {// TODO: 17/3/15 等开发完,把真正的exception放进去
             throw new JsonErrException(e.getMessage());
         }
@@ -968,8 +974,8 @@ public class ShopAction {
     public JSONObject synWholeShop(Long shopId, HttpSession session){
         ShopSession shopSession = getShopSession(session);
         try{
-            dubboAllService.getTaobaoSynService().synOneShop(shopId,shopSession.getTbNick());
-            dubboAllService.getTaobaoTmcService().addToTmc(shopSession.getTbNick());
+            taobaoSynService.synOneShop(shopId,shopSession.getTbNick());
+            taobaoTmcService.addToTmc(shopSession.getTbNick());
             return JSONObject.fromObject(JsonResponseUtil.success());
         }catch (Exception e){
             e.printStackTrace();

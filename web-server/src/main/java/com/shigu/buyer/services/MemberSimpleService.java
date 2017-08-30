@@ -1,14 +1,33 @@
 package com.shigu.buyer.services;
 
+import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.MemberUserSub;
-import com.opentae.data.mall.beans.ShiguShop;
 import com.opentae.data.mall.examples.MemberUserSubExample;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.opentae.data.mall.interfaces.MemberUserSubMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.shigu.component.shiro.enums.CacheEnum;
+import com.shigu.main4.common.exceptions.JsonErrException;
+import com.shigu.main4.common.exceptions.Main4Exception;
+import com.shigu.main4.storeservices.ShopBaseService;
+import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
+import com.shigu.main4.ucenter.services.UserBaseService;
+import com.shigu.main4.ucenter.util.EncryptUtil;
+import com.shigu.main4.ucenter.vo.UserInfoUpdate;
+import com.shigu.main4.vo.ShopBase;
+import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.enums.LoginFromType;
+import com.shigu.session.main4.names.SessionEnum;
+import com.shigu.session.main4.tool.BeanMapper;
+import net.sf.json.JSONObject;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
+import org.apache.shiro.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -21,7 +40,16 @@ public class MemberSimpleService {
     MemberUserSubMapper memberUserSubMapper;
 
     @Autowired
-    ShiguShopMapper shiguShopMapper;
+    ShopBaseService shopBaseService;
+
+    @Autowired
+    EhCacheManager ehCacheManager;
+
+    @Autowired
+    MemberUserMapper memberUserMapper;
+
+    @Autowired
+    UserBaseService userBaseService;
 
     /**
      * 查用户的淘宝昵称,如果有多个淘宝账号,只取第一个
@@ -41,9 +69,66 @@ public class MemberSimpleService {
     }
 
     public void updateShopNick(Long shopId,String nick){
-        ShiguShop shop=new ShiguShop();
-        shop.setShopId(shopId);
+        ShopBase shop = shopBaseService.shopBaseForUpdate(shopId);
         shop.setTbNick(nick);
-        shiguShopMapper.updateByPrimaryKeySelective(shop);
+        shopBaseService.modifyShopBase(shopId, shop);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public int updateUser(UserInfoUpdate userinfo) throws UpdateUserInfoException {
+        //2、重取本用户登陆缓存
+        int i=userBaseService.updateUserInfo(userinfo);
+        //      a.清除cache名memberuserCache，其中memberuserCache的key为userName_登陆方式标志
+        Session session = SecurityUtils.getSubject().getSession();
+        PersonalSession sessionUser = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+
+        Cache<Object, Object> cache = ehCacheManager.getCache(CacheEnum.MEMBERUSER_CACHE.getValue());
+        cache.remove(sessionUser.getLoginName() + "_" + sessionUser.getLoginFromType().getValue());
+
+        //      b.重取登陆对象，更新session中的session_user对象，
+        PersonalSession ps = userBaseService.selUserForSessionByUserName(sessionUser.getLoginName(), sessionUser.getLoginFromType());
+        session.setAttribute(SessionEnum.LOGIN_SESSION_USER.getValue(), ps);
+        return i;
+    }
+
+    public Boolean selIsPayPwdByUserId(Long userId) throws Main4Exception {
+        MemberUser memberUser = memberUserMapper.selectFieldsByPrimaryKey(userId, "user_id,is_pay_password");
+        if (memberUser == null) {
+            throw new Main4Exception("没有用户信息");
+        }
+
+        return memberUser.getIsPayPassword()!=null && memberUser.getIsPayPassword()>0;
+    }
+
+    public String selUserPayPwdByUserId(Long userId) throws Main4Exception {
+        MemberUser memberUser = memberUserMapper.selectFieldsByPrimaryKey(userId,"user_id,pay_password");
+        if (memberUser == null) {
+            throw new Main4Exception("没有用户信息");
+        }
+        return memberUser.getPayPassword();
+    }
+
+    public void savePayPassword(Long userId,String oldPwd,String newPwd) throws JsonErrException {
+        String pwd = null;
+        try {
+            pwd = selUserPayPwdByUserId(userId);
+        } catch (Main4Exception e) {
+            throw new JsonErrException(e.getMessage());
+        }
+        if (!pwd.equals(EncryptUtil.encrypt(oldPwd))) {
+            throw new JsonErrException("输入原支付密码有误");
+        }
+        userBaseService.setNewPayPwd(userId,newPwd);
+    }
+
+    public void setPayPassword(Long userId,String newPwd) throws JsonErrException{
+        try {
+            if (selIsPayPwdByUserId(userId)) {
+                throw new JsonErrException("已经设置过支付密码");
+            }
+        } catch (Main4Exception e) {
+            throw new JsonErrException(e.getMessage());
+        }
+        userBaseService.setNewPayPwd(userId,newPwd);
     }
 }

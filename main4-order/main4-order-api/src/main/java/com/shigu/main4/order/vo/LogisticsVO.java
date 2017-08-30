@@ -29,6 +29,8 @@ public class LogisticsVO implements Serializable{
 
     private String courierNumber;
 
+    private String name;
+
     private List<Long> soids;
 
     public List<Long> getSoids() {
@@ -117,5 +119,31 @@ public class LogisticsVO implements Serializable{
 
     public void setCourierNumber(String courierNumber) {
         this.courierNumber = courierNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "LogisticsVO{" +
+                "id=" + id +
+                ", companyId=" + companyId +
+                ", money=" + money +
+                ", provId=" + provId +
+                ", cityId=" + cityId +
+                ", townId=" + townId +
+                ", address='" + address + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", courierNumber='" + courierNumber + '\'' +
+                ", name='" + name + '\'' +
+                ", soids=" + soids +
+                '}';
     }
 }

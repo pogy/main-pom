@@ -1,6 +1,6 @@
 package com.shigu.main4.activity.beans;
 
-import com.shigu.main4.activity.service.Activity;
+import com.shigu.main4.activity.model.Activity;
 import com.shigu.main4.activity.vo.LedActivityVO;
 
 /**

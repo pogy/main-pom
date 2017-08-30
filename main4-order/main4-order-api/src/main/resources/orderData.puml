@@ -10,10 +10,6 @@ class OrderVO{
 
 class ItemOrderVO{
 -OrderStatus status;
--List<packageVO> packages;//包材
--List<LogisticsVO> logistics;//物流
--SenderVO sender;//发件单位
--List<ServiceVO> services;//服务信息
 }
 
 class SubOrderVO{
@@ -25,7 +21,7 @@ class SubOrderVO{
 class SubItemOrderVO{
 -ProductVO product;
 -Integer number;
--OrderStatus status;
+-OrderStatus subOrderStatus;
 }
 
 class SenderVO{

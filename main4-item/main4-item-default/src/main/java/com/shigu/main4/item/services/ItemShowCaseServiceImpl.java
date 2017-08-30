@@ -32,7 +32,7 @@ import java.util.List;
  * showcase服务
  * Created by zhaohongbo on 17/3/9.
  */
-@Service
+@Service("itemShowCaseService")
 public class ItemShowCaseServiceImpl implements ItemShowCaseService{
 
     private static final Logger logger = LoggerFactory.getLogger(ItemShowCaseServiceImpl.class);

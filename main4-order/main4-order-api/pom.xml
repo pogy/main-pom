@@ -10,4 +10,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>main4-order-api</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-common</artifactId>
+            <version>${main4-common.version}</version>
+        </dependency>
+    </dependencies>
 </project>

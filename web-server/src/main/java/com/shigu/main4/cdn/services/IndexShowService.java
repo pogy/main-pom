@@ -8,7 +8,6 @@ import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.activity.exceptions.ActivityException;
 import com.shigu.main4.cdn.vo.IndexNavVO;
 import com.shigu.main4.cdn.vo.LoveGoodsList;
-import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.goat.beans.GoatLocation;
 import com.shigu.main4.goat.beans.TextGoat;
 import com.shigu.main4.goat.exceptions.GoatException;
@@ -16,20 +15,13 @@ import com.shigu.main4.goat.service.GoatFactory;
 import com.shigu.main4.goat.vo.GoatVO;
 import com.shigu.main4.goat.vo.TextGoatVO;
 import com.shigu.main4.item.enums.SearchCategory;
-import com.shigu.main4.item.enums.SearchOrderBy;
-import com.shigu.main4.item.services.ItemSearchService;
-import com.shigu.main4.item.vo.SearchItem;
-import com.shigu.main4.item.vo.ShiguAggsPager;
 import com.shigu.search.services.CategoryInSearchService;
-import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.vo.CateNav;
-import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.EhCacheForIndexPage;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.RedisForIndexPage;
 import com.shigu.spread.services.SpreadService;
-import com.shigu.spread.vo.ItemSpreadVO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +47,7 @@ public class IndexShowService {
     private ShiguGoodsIdGeneratorMapper shiguGoodsIdGeneratorMapper;
 
     @Autowired
-    GoatFactory goatFactory;
+    GoatDubboService goatDubboService;
     /**
      * 类目服务
      */
@@ -133,8 +125,7 @@ public class IndexShowService {
             public List<IndexNavVO> selReal() {
                 List<IndexNavVO> navVOs=new ArrayList<>();
                 try {
-                    GoatLocation location = goatFactory.getALocation(spread.getCode());
-                    List<TextGoatVO> goats = location.selGoats();
+                    List<TextGoatVO> goats = goatDubboService.selGoatsFromLocalCode(spread.getCode());
                     for (TextGoatVO tgv : goats) {
                         navVOs.add(new IndexNavVO(tgv.getHref(), tgv.getText()));
                     }

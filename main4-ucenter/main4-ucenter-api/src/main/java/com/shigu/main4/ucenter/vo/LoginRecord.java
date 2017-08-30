@@ -2,13 +2,14 @@ package com.shigu.main4.ucenter.vo;
 
 import com.shigu.session.main4.enums.LoginFromType;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 创建记录
  * Created by Licca on 17/2/20.
  */
-public class LoginRecord {
+public class LoginRecord  implements Serializable {
     private Long subUserId;
     private Long userId;
     private String subUserName;

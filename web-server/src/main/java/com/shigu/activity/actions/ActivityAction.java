@@ -5,24 +5,22 @@ import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
 import com.shigu.activity.service.ActiveDrawListener;
-import com.shigu.activity.service.DrawQualification;
-import com.shigu.activity.service.NewPopularService;
 import com.shigu.activity.vo.ActiveDrawStyleVo;
 import com.shigu.component.common.globality.constant.SystemConStant;
 import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.active.vo.ShiguActivityVO;
-import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
-import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.impl.ActiveDrawServiceImpl;
-import com.shigu.main4.spread.vo.active.draw.*;
+import com.shigu.main4.spread.vo.active.draw.ActiveDrawGoodsVo;
+import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
+import com.shigu.main4.spread.vo.active.draw.ActiveDrawRecordUserVo;
+import com.shigu.main4.spread.vo.active.draw.ActiveDrawShopVo;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.seller.services.ActivityService;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
-import com.shigu.tools.JsonResponseUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +31,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * 奖品活动
@@ -47,10 +49,7 @@ public class ActivityAction {
     private ActivityService activityService;
 
     @Autowired
-    private ActiveDrawServiceImpl activeDrawServiceImpl;
-
-    @Autowired
-    private ShopForCdnService shopForCdnService;
+    private ActiveDrawService activeDrawServiceImpl;
 
     @Autowired
     private ShiguActivityMapper shiguActivityMapper;
@@ -169,7 +168,6 @@ public class ActivityAction {
 
     /**
      * 发现好货开始结束时间显示
-     *
      * @param start
      * @return
      */

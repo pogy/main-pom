@@ -6,7 +6,7 @@ import java.util.Date;
  * 浏览记录
  * Created by zhaohongbo on 17/2/16.
  */
-public class BrowerRecord {
+public class BrowerRecord implements java.io.Serializable {
     /**
      * 唯一主键
      */

@@ -1,10 +1,12 @@
 package com.shigu.main4.vo.fitment;
 
+import java.io.Serializable;
+
 /**
  * banner 图配置
  * Created by Administrator on 2017/4/18 0018.
  */
-public class BannerImage {
+public class BannerImage implements Serializable {
 
     /**
      * 招牌类型 1: 默认招牌 2：自定招牌

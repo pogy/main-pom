@@ -1,10 +1,11 @@
 package com.shigu.buyer.actions;
 
+import com.openJar.commons.ResponseUtil;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
+import com.shigu.buyer.services.UserAccountService;
 import com.shigu.buyer.vo.*;
-import com.shigu.component.encrypt.EncryptUtil;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -12,6 +13,8 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
+import com.shigu.main4.order.exceptions.PayApplyException;
+import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
@@ -19,6 +22,7 @@ import com.shigu.main4.ucenter.exceptions.UpdateUserInfoException;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
+import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.*;
 import com.shigu.main4.ucenter.webvo.ItemCollectVO;
 import com.shigu.main4.ucenter.webvo.ShopCollectVO;
@@ -102,6 +106,9 @@ public class MemberAction {
 
     @Autowired
     SpreadService spreadService;
+
+    @Autowired
+    UserAccountService userAccountService;
     /**
      * 分销商首页
      * @return
@@ -517,7 +524,7 @@ public class MemberAction {
             UserInfoUpdate userInfoUpdate=new UserInfoUpdate();
             userInfoUpdate.setUserId(ps.getUserId());
             userInfoUpdate.setHeadUrl(url);
-            userBaseService.updateUserInfo(userInfoUpdate);
+            memberSimpleService.updateUser(userInfoUpdate);
         } catch (IOException e) {
             throw new JsonErrException("图片数据读取失败");
         } catch (UpdateUserInfoException e) {
@@ -568,6 +575,48 @@ public class MemberAction {
         }
         return JsonResponseUtil.success();
     }
+
+    /**
+     * 修改支付密码页面
+     * @return
+     */
+    @RequestMapping("member/safeXgPaymm")
+    public String safeXgPaymm(HttpSession session, Model model) throws Main4Exception {
+        model.addAttribute("hasPayPwd",memberSimpleService.selIsPayPwdByUserId(((PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue())).getUserId()));
+        return "buyer/safeXgPaymm";
+    }
+
+    /**
+     * 设置支付密码
+     * @param newPwd
+     * @param session
+     * @return
+     * @throws JsonErrException
+     */
+    @RequestMapping("member/setPayPassword")
+    @ResponseBody
+    public JSONObject setPayPassword(String newPwd,HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        memberSimpleService.setPayPassword(ps.getUserId(),newPwd);
+        return JsonResponseUtil.success();
+    }
+
+    /**
+     * 修改支付密码
+     * @param oldPwd
+     * @param newPwd
+     * @param session
+     * @return
+     * @throws JsonErrException
+     */
+    @RequestMapping("member/savePayPassword")
+    @ResponseBody
+    public JSONObject savePayPassword(String oldPwd,String newPwd,HttpSession session) throws JsonErrException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        memberSimpleService.savePayPassword(ps.getUserId(),oldPwd,newPwd);
+        return JsonResponseUtil.success();
+    }
+
 
     /**
      * 验证是否忘记密码来的
@@ -828,4 +877,40 @@ public class MemberAction {
     public JSONObject jsonUserCentergetUpStore(){
         return JsonResponseUtil.success();
     }
+
+    @RequestMapping("member/userBalance")
+    public String userBalance(HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String tempCode = paySdkClientService.tempcode(ps.getUserId());
+        model.addAttribute("tempCode", tempCode);
+        model.addAttribute("webSite", "hz");
+        model.addAttribute("excelUrl", "");
+        return "buyer/userBalance";
+    }
+
+    /**
+     * 资金流水
+     * @return
+     */
+    @RequestMapping("member/capStatistic")
+    public String capStatistic(HttpSession session, Model model){
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        String tempCode = paySdkClientService.tempcode(ps.getUserId());
+        model.addAttribute("tempCode",tempCode);
+        return "buyer/capStatistic";
+    }
+
+    /**
+     * 申请提现链接
+     * @return
+     */
+    @RequestMapping("member/rechargeJson")
+    @ResponseBody
+    public JSONObject rechargeJson(HttpSession session,Double money) throws PayApplyException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Double moneyfen=money*100;
+        PayApplyVO applyVO=userAccountService.rechargeApply(ps.getUserId(),moneyfen.longValue());
+        return JsonResponseUtil.success().element("href","/order/alipayByApplyId.htm?applyId="+applyVO.getApplyId());
+    }
+
 }

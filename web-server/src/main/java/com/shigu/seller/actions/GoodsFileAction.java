@@ -1,6 +1,5 @@
 package com.shigu.seller.actions;
 
-import com.opentae.data.mall.beans.GoodsFile;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.tools.OssIO;

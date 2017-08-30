@@ -1,7 +1,6 @@
 package com.shigu.activity.service;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
@@ -14,33 +13,25 @@ import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.ActiveDrawGoodsMapper;
 import com.opentae.data.mall.interfaces.ActiveDrawRecordMapper;
 import com.opentae.data.mall.interfaces.ShiguTempMapper;
-import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.tools.StringUtil;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
-import com.shigu.main4.spread.enums.AutumnNewConstant;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.ActiveDrawPemVo;
-import com.shigu.main4.spread.vo.active.draw.NewAutumnDrawVerifyVO;
 import com.shigu.main4.tools.RedisIO;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.index.Term;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.TermQueryBuilder;
-import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 发现好货监听
@@ -205,24 +196,7 @@ public class ActiveDrawListener implements MessageListener {
      * @param activeDrawRecord
      */
     public void addActiveDrawRecord(ActiveDrawRecord activeDrawRecord){
-        if(activeDrawRecord == null || activeDrawRecord.getPemId() == null ||
-                activeDrawRecord.getUserId() == null || StringUtils.isEmpty(activeDrawRecord.getWard())){
-            return;
-        }
-        ActiveDrawRecord drawRecord = new ActiveDrawRecord();
-        drawRecord.setPemId(activeDrawRecord.getPemId());
-        drawRecord.setUserId(activeDrawRecord.getUserId());
-        activeDrawRecord.setEnabled(false);
-        activeDrawRecord.setReceivesYes(false);
-        activeDrawRecord.setCreateTime(new Date());
-        activeDrawRecord.setModifyTime(new Date());
-        drawRecord.setWard(activeDrawRecord.getWard());
-        int count = activeDrawRecordMapper.selectCount(drawRecord);
-        if(count > 0){
-            // 已经新增数据
-            return;
-        }
-        activeDrawRecordMapper.insertSelective(activeDrawRecord);
+        activeDrawServiceImpl.addActiveDrawRecord(BeanMapper.map(activeDrawRecord, ActiveDrawRecordBO.class));
     }
 
 
@@ -316,23 +290,7 @@ public class ActiveDrawListener implements MessageListener {
     @Autowired
     private ShiguTempMapper shiguTempMapper;
     public String signUp(String flag, Long userId, Long shopId){
-        if (userId==null||shopId==null){
-            return "您还没有店铺";
-        }
-        ShiguTempExample shiguTempExample =new ShiguTempExample();
-        shiguTempExample.createCriteria().andFlagEqualTo(flag).andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
-        List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
-        if (temps.size()>0){
-            return "您已经报过名了";
-        }
-        ShiguTemp shiguTemp=new ShiguTemp();
-        shiguTemp.setFlag(flag);
-        shiguTemp.setKey1(userId.toString());
-        shiguTemp.setKey2(shopId.toString());
-        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        shiguTemp.setKey3(dateFormat.format(new Date()));
-        shiguTempMapper.insertSelective(shiguTemp);
-        return "true";
+        return activeDrawServiceImpl.shiguTempSigup(flag,userId,shopId);
     }
     public boolean checkSignUp(String flag,Long userId,Long shopId) {
         ShiguTempExample shiguTempExample=new ShiguTempExample();
@@ -344,29 +302,4 @@ public class ActiveDrawListener implements MessageListener {
         return false;
     }
 
-    //中奖资格数据初始化
-    //public void initData() throws ParseException {
-    //    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    //    Date date = sdf.parse("2017-08-12 01:00:00");
-    //    SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup").setSize(10000);
-    //    BoolQueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("flag", "web-tb"))
-    //            .must(QueryBuilders.rangeQuery("daiTime").from("2017-08-28 12:00:00").to("2017-08-28 19:00:00"));
-    //
-    //    SearchResponse searchResponse = srb.setTypes("hz").setQuery(query).execute().actionGet();
-    //    SearchHit[] hits = searchResponse.getHits().getHits();
-    //    int count=0;
-    //    for (SearchHit hit : hits) {
-    //        ItemUpRecordVO itemUpRecordVO = JSON.parseObject(hit.getSourceAsString(), ItemUpRecordVO.class);
-    //        if (newAutumn(itemUpRecordVO.getSupperGoodsId(), Arrays.asList(AutumnNewConstant.UPLOAD_FLAG))) {
-    //            //只从淘宝电脑端上款
-    //            if ("web-tb".equals(itemUpRecordVO.getFlag())) {
-    //                doChangeNewAutumn(itemUpRecordVO.getFenUserId(),itemUpRecordVO.getSupperGoodsId(),AutumnNewConstant.DRAW_RECORD_FLAG);
-    //
-    //            }
-    //        }
-    //        System.out.print(++count);
-    //        System.out.println(':');
-    //        System.out.println(itemUpRecordVO.getSupperGoodsId());
-    //    }
-    //}
 }

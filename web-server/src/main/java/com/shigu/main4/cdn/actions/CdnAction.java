@@ -24,6 +24,7 @@ import com.shigu.main4.item.vo.CdnItem;
 import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
+import com.shigu.main4.newcdn.vo.*;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopDiscusService;
 import com.shigu.main4.storeservices.ShopForCdnService;
@@ -44,7 +45,6 @@ import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.AreaVO;
 import com.shigu.seller.vo.ContainerVO;
-import com.shigu.seller.vo.DatuVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
@@ -127,12 +127,6 @@ public class CdnAction {
 
     @Autowired
     TodayNewGoodsService todayNewGoodsService;
-
-    @Autowired
-    ItemBrowerService itemBrowerService;
-
-    @Autowired
-    GoodsSelFromEsService goodsSelFromEsService;
 
     @Autowired
     GoodsFileService goodsFileService;
@@ -496,73 +490,6 @@ public class CdnAction {
     }
 
     /**
-     * 商品点击量
-     * @param id
-     * @return
-     */
-    @RequestMapping("itemclicks")
-    @ResponseBody
-    public JSONObject itemclicks(Long id){
-        if(id==null){
-            return JsonResponseUtil.success().element("number",-1);
-        }
-        return JsonResponseUtil.success().element("number",itemBrowerService.addUnrealBrower(id,1).getNumber());
-    }
-    /**
-     * 商品页面
-     * @param bo
-     * @return
-     */
-    @RequestMapping("item")
-    public String item(ItemBO bo, Model model) throws CdnException, IOException, TemplateException {
-        Long id=bo.getId();
-        //如果东北商品,用东北的模板
-        ItemShowVO itemShowVO=new ItemShowVO();
-        itemShowVO.setItemId(id);
-        CdnItem cdnItem=showForCdnService.selItemById(id);
-        itemShowVO.setOnsale(cdnItem!=null&&cdnItem.getOnsale());
-        if(cdnItem==null){//已经下架
-            cdnItem=showForCdnService.selItemInstockById(id);
-        }
-        if(cdnItem==null){//商品不存在
-            throw new CdnException("商品不存在");
-        }
-        //店招
-        model.addAttribute("navCon",cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite()));
-        // 商品详情懒加载
-        if(cdnItem.getDescription()!=null)
-            cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
-                    .replace("<script>","")
-                    .replace("</script>",""));
-        itemShowVO.setCdnItem(cdnItem);
-//        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
-        itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
-        Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
-        starNum=starNum==null?0:    starNum;
-        itemShowVO.setStarNum(starNum);
-        itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
-        itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
-        itemShowVO.setDomain(shopBaseService.selDomain(cdnItem.getShopId()));
-        itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
-        model.addAttribute("vo",itemShowVO);
-        model.addAttribute("bo",bo);
-        model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
-        model.addAttribute("hasYt",goodsFileService.hasDatu(id)+"");
-//        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
-        if ("kx".equalsIgnoreCase(cdnItem.getWebSite())) {
-            return "cdn/xieItem";
-        } else {
-            return "cdn/item";
-        }
-
-    }
-
-    @RequestMapping("shopnew")
-    public String shopnew(Long id,String webSite,Model model){
-        model.addAttribute("newGoodsList",cdnService.selShopNew(id,webSite,5));
-        return "cdn/item_shopnew";
-    }
-    /**
      * 收藏商品
      * @param bo
      */
@@ -892,5 +819,59 @@ public class CdnAction {
     @RequestMapping("bigPicExplain")
     public String bigPicExplain(){
         return "static/bigPicExplain";
+    }
+
+    //===================================================20170527张峰=======================================================
+
+    /**
+     * 商品详情
+     * @param id
+     * @param model
+     * @return
+     * @throws CdnException
+     * @throws IOException
+     * @throws TemplateException
+     */
+    @RequestMapping("item")
+    public String item(Long id, Model model) throws CdnException, IOException, TemplateException {
+        CdnGoodsInfoVO goods=cdnService.cdnGoodsInfo(id);
+        CdnShopInfoVO shop=cdnService.cdnShopInfo(goods.getShopId());
+        String dzhtml=cdnService.bannerHtml(goods.getShopId(),goods.getWebSite());
+        List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
+        List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
+        model.addAttribute("webSite",goods.getWebSite());
+        model.addAttribute("shopInfo",shop);
+        model.addAttribute("userShopHdHtml",dzhtml);
+        model.addAttribute("goodsInfo",goods);
+        model.addAttribute("tjGoodsList",see);
+        model.addAttribute("shopCats",cats);
+        if ("kx".equalsIgnoreCase(goods.getWebSite())) {
+            return "cdn/xieItem";
+        } else {
+            return "cdn/item";
+        }
+    }
+
+    /**
+     * 档口今日新品
+     */
+    @RequestMapping("newGoods")
+    public String newGoods(Long shopId,String webSite,Model model){
+        model.addAttribute("newGoodsList",cdnService.selShopNew(shopId,webSite,5));
+        return "cdn/item_shopnew";
+    }
+
+    @RequestMapping("getShopCollection")
+    public void getShopCollection(HttpSession session,HttpServletResponse response,String webSite,String callback) throws IOException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        List<CdnCollectShopVO> vos=cdnService.colloectShop(ps.getUserId(), webSite);
+        JSONObject obj=new JSONObject();
+        obj.put("result","success");
+        obj.put("shops",vos);
+        ResultRetUtil.returnJsonp(callback,obj.toString(),response);
+    }
+    @RequestMapping("loginWindow")
+    public String loginWindow(){
+        return "cdn/loginWindow";
     }
 }

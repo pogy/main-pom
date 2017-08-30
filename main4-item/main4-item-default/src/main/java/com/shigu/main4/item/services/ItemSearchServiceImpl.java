@@ -3,17 +3,13 @@ package com.shigu.main4.item.services;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.opensearch.sdk.generated.search.Order;
 import com.aliyun.opensearch.sdk.generated.search.SortField;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.SearchCategorySubExample;
-import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.SearchCategoryMapper;
 import com.opentae.data.mall.interfaces.SearchCategorySubMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.item.enums.SearchCategory;
-import com.shigu.main4.item.enums.SearchCheckd;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.vo.*;
 import com.shigu.opensearchsdk.OpenSearch;
@@ -46,7 +42,7 @@ import java.util.regex.Pattern;
  * @version main_site4.0 4.0.0
  * @since main_site4.0 4.0.0
  */
-@Service
+@Service("itemSearchService")
 public class ItemSearchServiceImpl implements ItemSearchService {
 
     private static final Logger logger = LoggerFactory.getLogger(ItemSearchServiceImpl.class);
@@ -93,7 +89,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      * @return
      */
     @Override
-    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<SearchCheckd> checkds, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
+    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
         ShiguAggsPager pager = new ShiguAggsPager();
         pager.setCats(Collections.<AggsCount>emptyList());
         pager.setMarkets(Collections.<AggsCount>emptyList());

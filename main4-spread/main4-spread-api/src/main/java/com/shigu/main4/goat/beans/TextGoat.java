@@ -1,6 +1,6 @@
 package com.shigu.main4.goat.beans;
 
-import com.shigu.main4.goat.service.Goat;
+import com.shigu.main4.goat.model.Goat;
 import com.shigu.main4.goat.vo.TextGoatVO;
 
 /**

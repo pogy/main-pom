@@ -1,144 +1,120 @@
-<#assign text>{}</#assign><#assign $it=text?eval /><!doctype html>
+<!doctype html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>提现 - 分销商中心 - 四季星座网</title>
+
     
-    <title>四季星座网-分销商中心-提现</title>
     
-        <#if $it.keywords??>
-        <meta name="keywords" content="${$it.keywords!}">
-        </#if>
     
-        <#if $it.description??>
-        <meta name="description" content="${$it.description!}">
-        </#if>
     
-    <link href="http://style.571xz.com/fxs2/css/withdraw5Apply.css?t=1498814568159" rel="stylesheet">
-    
-  </head>
-<body>
-<input id="mainhost" value="http://192.168.1.66/fxs2/" type="hidden">
 <#include "/common/host_config.ftl">
 
+
+
+
+
+
+
+
+
+
+
+    
+    <link href="http://style.571xz.com/v2/fxsV1/css/withdraw5Apply.css" rel="stylesheet">
+    
+
+    
+
+    
+
+    
+    <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
+    
+    <script src="http://style.571xz.com/v2/fxsV1/js/withdraw5Apply.js"></script>
+</head>
+<body>
+
+
+<#assign text>{}</#assign>
+<#assign moduledata0=text?eval />
+<#list [moduledata0] as $it>
 <div class="topbar">
     <div class="layout">
-        <div class="leftbox">
-            <div class="login">
-                <span>你好，</span>
-                <em>请</em>
-                <a class="simpleLogin" onclick="loginBack()" target="_blank">登录</a>
-                <a href="http://www.571xz.com/regedit.htm"  target="_blank">注册</a>
-                <a class="tbLogin" href="http://www.571xz.com/ortherLogin.htm?ortherLoginType=1">淘宝登录</a>
+        <div class="fl">
+            
+            <div class="loginBox fl">
                 
             </div>
         </div>
-        
-        <div class="rightbox">
-            <ul>
+        <div class="fr">
+            <ul class="menuContainer">
+                
+                 
                 <li class="noIndex">
-                    <a href="${main_host!}" class="c_ff4400">四季星座网首页</a>
+                    <a href="${main_host!}" class="fcF40">四季星座网首页</a>
                 </li>
-                <#if session_user_redis__??>
-                    <#if session_user_redis__.logshop??>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
-                            <div class="myStore cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}seller/createGoods21init.htm">发布新商品</a></li>
-                                    <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
-                                </ul>
-                            </div>
-                        </div>    
-                    </li>
-                    <#else>
-                    <li class="noDown">
-                        <a href="${main_host!}carts.htm">
-                            <i class="cgcatIcon"></i>
-                            <span>购物车</span>
-                            <em class="cgNum"></em>
-                        </a>
-                    </li>
-                    <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}member/index.htm">我的星座<i class="downArrow"></i></a>
-                            <div class="myxz cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
-                                </ul>
-                            </div>
+                
+                <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
+                <li class="noDown">
+                    <a href="${main_host!}order/cart.htm">
+                        <i class="cgcatIcon"></i>
+                        <span>进货车</span>
+                        
+                        
+                    </a>
+                </li>
+                <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
+                <li>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr" href="${main_host!}member/index.htm">我的星座<i class="downArrow"></i></a>
+                        <div class="myxz cnBoxCon pa">
+                            <ul>
+                                <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li>
+                                <li><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
+                            </ul>
                         </div>
-                    </li>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}member/storeCollectinit.htm">我的收藏<i class="downArrow"></i></a>
-                            <div class="myColle cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
-                                </ul>
-                            </div>
-                        </div>    
-                    </li>
-                    </#if>
-                    
-                <#else>
-                    <li class="noDown">
-                        <a href="${main_host!}carts.htm">
-                            <i class="cgcatIcon"></i>
-                            <span>购物车</span>
-                            <em class="cgNum"></em>
-                        </a>
-                    </li>
-                    <li class="noDown"><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}member/index.htm">我的星座<i class="downArrow"></i></a>
-                            <div class="myxz cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm">已上传的商品</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">我的数据包</a></li>
-                                </ul>
-                            </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr" href="${main_host!}member/storeCollectinit.htm">我的收藏<i class="downArrow"></i></a>
+                        <div class="myColle cnBoxCon pa">
+                            <ul>
+                                <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
+                                <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
+                            </ul>
                         </div>
-                    </li>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}member/storeCollectinit.htm">我的收藏<i class="downArrow"></i></a>
-                            <div class="myColle cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}member/storeCollectinit.htm">收藏的档口</a></li>
-                                    <li><a href="${main_host!}member/goodsCollectinit.htm">收藏的宝贝</a></li>
-                                </ul>
-                            </div>
-                        </div>    
-                    </li>
-                    <li>
-                        <div class="cnBox">
-                            <a class="cgcom" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
-                            <div class="myStore cnBoxCon">
-                                <ul>
-                                    <li><a href="${main_host!}seller/createGoods21init.htm">发布新商品</a></li>
-                                    <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
-                                </ul>
-                            </div>
-                        </div>    
-                    </li>
+                    </div>    
+                </li>
+                </#if>
+                
+                <#if !session_user_redis__ || $it.isGys?? || session_user_redis__.logshop?? > 
+                <li>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr" href="${main_host!}seller/index.htm">我是档口<i class="downArrow"></i></a>
+                        <div class="myStore cnBoxCon pa">
+                            <ul>
+                                <li><a href="${main_host!}seller/createGoods21init.htm">发布新商品</a></li>
+                                <li><a href="${main_host!}seller/storeGoodsList21init.htm">已发布的商品</a></li>
+                            </ul>
+                        </div>
+                    </div>    
+                </li>
                 </#if>
                 <li class="noDown">
                     <a href="http://www.571xz.com/contact.htm" target="_blank">联系客服</a>
-                    
                 </li>
+                <#if webSite?? && webSite != ''>
                 <li>
-                    <div class="cnBox">
-                        <a class="cgcom noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
-                        <div class="webNav cnBoxCon">
-                            <h4>市场大全</h4>
+                    <div class="cnBox pr">
+                        <a class="cgcom pr noRig"><i class="webIcon"></i><em>网站导航</em><i class="downArrow"></i></a>
+                        <div class="webNav cnBoxCon pa">
+                            <h4 class="fs14 fcF40">市场大全</h4>
+                            
                             <ul>
-                                
                                 <li><a href="http://hz.571xz.com/market.htm?mid=1">电商基地</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=2">精品男装</a></li>
                                 <li><a href="http://hz.571xz.com/market.htm?mid=3">四季星座</a></li>
@@ -163,127 +139,217 @@
                         </div>
                     </div>    
                 </li>
-                    
+                </#if>
             </ul>
         </div>
     </div>
 </div>
-<script>/*============ xz/page#topbar BEGIN ============*/
 
+
+
+
+
+
+
+
+
+
+</#list>
+
+
+<script>
 var webSite = '${webSite!}';
-
-/*============ xz/page#topbar END ============*/
-
-
 </script>
+
+
+
+
+
+
 <div class="header">
     <div class="layout">
-        <a class="logo iconfont" href="http://www.571xz.com">&#xe653;</a>
-        
-        <ul>
-            <li ><a href="${main_host!}member/index.htm">首页</a></li>
-            <li ><a href="${main_host!}member/sysSetsindex.htm">账号管理</a></li>
-            
+        <a href="http://www.571xz.com" class="fl">
+            <img src="http://style.571xz.com/v2/xz/css/img/whiteLogo.png" width="168" height="28" />
+        </a>
+        <ul class="fl fs16 yahei clearfix">
+            <li><a href="${main_host!}member/index.htm"  >首页</a></li>
+            <li><a href="${main_host!}member/userBalance.htm" class="selected">我的钱包</a></li>
+            <li><a href="${main_host!}member/sysSetsindex.htm" >安全中心</a></li>
         </ul>
     </div>
 </div>
-<div class="wrapper layout">
+
+
+<div class="wrapper">
+    <div class="layout">
+        <div class="leftSidebar yahei">
+
+    <h2>我的钱包</h2>
+    <ul>
     
+        
+            
+            <li><a class="selected" href="${main_host!}member/userBalance.htm">我的资金</a></li> 
+            
+        
     
-    <div class="sidebar">
-        <h2>商品管理</h2>
-        <ul>
-                <li><a href="${main_host!}member/shiguOnekeyRecordinit.htm" >已上传的商品</a></li>
-                <li><a href="${main_host!}member/goodsCollectinit.htm" >我的数据包</a></li>
-                <li><a href="${main_host!}member/storeCollectinit.htm" >我的收藏</a></li>
-        </ul> 
-        <h2>代发管理</h2>
-        <ul>
-                <li><a href="http://daifa.571xz.com/daili/offerIndex.htm" >我要代发</a></li>
-        </ul> 
-        <h2>财务信息</h2>
-        <ul>
-                <li><a href="${main_host!}member/iwantToRechargein5.htm" >充值</a></li>
-            <li><a class="selected" href="${main_host!}member/withdraw5Apply.htm">提现</a></li> 
-        </ul> 
-        <h2>账号管理</h2>
-        <ul>
-                <li><a href="${main_host!}member/safeindex.htm" >安全设置</a></li>
-                <li><a href="${main_host!}member/sysSetsindex.htm" >个人设置</a></li>
-                <li><a href="${main_host!}member/fenxiaoZhanghao.htm" >应用绑定</a></li>
-        </ul> 
-        <h2>供应商申请</h2>
-        <ul>
-                <li><a href="${main_host!}member/storeIn.htm" >店铺申请</a></li>
-        </ul> 
-        <h2>会员俱乐部</h2>
-        <ul>
-                <li><a href="${main_host!}member/awardInfo.htm" >开奖结果</a></li>
-        </ul> 
+        
+            
+            <li><a href="${main_host!}member/capStatistic.htm" >资金明细</a></li>
+            
+        
+    
+    </ul> 
+
+</div>
+
+
+
+
+        <div class="rightBox fr">
+    <h1>我的资金>提现</h1>
+    <div class="remainSum">
+    <div class="remainSumTop">
+        <div class="myRemain">
+            <h3>我的余额（元）</h3>
+            <p id="yuerBalance" data-m="">加载中…</p>
+        </div>
+        <div class="amountFrozen">
+            <h3>冻结金额（元）</h3>
+            <p>加载中…</p>
+        </div>
     </div>
-    <div class="content shadow-box">
-        <div class="info-head clearfix">
-            <div class="lf">
-                <img width="100" height="100" src="${session_user_redis__.headUrl!}">
-                <div class="myinfo">
-                    <p class="welcome"><em>${session_user_redis__.userNick!}</em></p>
-                    <p>星座宝账户</p>
-                </div>
-            </div>
-            <div class="rt">
-                <input type=hidden id="tempCode" value="${tempCode!}">
-                <p>
-                    <em>账户余额（元）</em>
-                    <span id="yuer_balance">加载中...</span>
-                </p>
-                <p>
-                    <em>账户冻结余额（元）</em>
-                    <span id="yuer_blockMoney">加载中...</span>
-                </p>
-            </div>
+    
+    <input type="hidden" class="tempCode" value="${tempCode!}" />
+</div>
+
+
+
+
+
+
+
+
+    <h1></h1>
+    <div class="formbox">
+    <ul>
+        <li class="clearfix">
+            <label>提现类型：</label><input class="textinput" readonly value="支付宝">
+        </li>
+        <li class="clearfix">
+            <label>支付宝账号：</label><input id="alipay" class="textinput" placeholder="支付宝账户邮箱号或手机号">
+        </li>
+        <li class="clearfix">
+            <label>支付宝实名：</label><input id="payname" class="textinput" placeholder="正确输入支付宝账户实名，防止打错账">
+        </li>
+        <li class="clearfix">
+            <label>金额：</label><input id="paynum" class="textinput" placeholder="请输入提现金额">元
+        </li>
+        <li class="clearfix">
+            
+
+<#assign text>{}</#assign>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+        
+         fmButton-orange
+         dosubmit"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+    
+        id="dosubmit"
+    
+>
+
+    
+        提交提现申请信息
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+
+</#list>
+
+        </li>
+    </ul>
+    <div class="wxTip" style="height: 90px">
+        <em></em>
+        <h2 class="fc6">温馨提示：</h2>
+        <p>1.余额小于100时不能提现<br>2.提现金额会在两个工作日内打到您支付宝内。<br>
+        <span style="color: red;">3.请正确输入实名，如实名有误将不予提现！</span>
+        </p>
+    </div>
+    <div class="ewmWk">
+        <div class="imgewm">
+            <img src="http://wxpublish.hz.taeapp.com/otlink/qrcode.htm?secret_id=5&amp;outer_id=1000000808&amp;t=1483668924057&amp;sign=8533b1f836a9f1ffa6459abf1cc2572d" alt="" width="140" height="140"><!--二维码-->
         </div>
-        <div class="formbox">
-            <ul>
-                <li class="clearfix">
-                    <label>提现类型：</label><input class="textinput" readonly value="支付宝">
-                </li>
-                <li class="clearfix">
-                    <label>支付宝账号：</label><input id="alipay" class="textinput" placeholder="支付宝账户邮箱号或手机号">
-                </li>
-                <li class="clearfix">
-                    <label>支付宝实名：</label><input id="payname" class="textinput" placeholder="正确输入支付宝账户实名，防止打错账">
-                </li>
-                <li class="clearfix">
-                    <label>金额：</label><input id="paynum" class="textinput" placeholder="请输入提现金额">元
-                </li>
-                <li class="clearfix">
-                                <button
-id="dosubmit"                        class="button1"
-                    >提交提现申请信息</button>
-                </li>
-            </ul>
-            <div class="wxTip" style="height: 90px">
-                <em></em>
-                <h2>温馨提示：</h2>
-                <p>1.余额小于100时不能提现<br>2.提现金额会在两个工作日内打到您支付宝内。<br>
-                <span style="color: red;">3.请正确输入实名，如实名有误将不予提现！</span>
-                </p>
-            </div>
-            <div class="ewm_wk">
-                <div class="imgewm">
-                    <img src="http://wxpublish.hz.taeapp.com/otlink/qrcode.htm?secret_id=5&amp;outer_id=1000000808&amp;t=1483668924057&amp;sign=8533b1f836a9f1ffa6459abf1cc2572d" alt="" width="140" height="140"><!--二维码-->
-                </div>
-                <p class="ewmtip">关注二维码，及时查收提现信息</p>
-            </div>
-        </div>
-        
-        
-        
+        <p class="ewmtip">关注二维码，及时查收提现信息</p>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
     </div>
 </div>
 <div class="footer">
     <div class="inner">
-        <p class="sitemap" style="width:650px;"> 
+        <p class="sitemap"> 
             <a href="/" target="_blank">首页</a>
             <a href="http://hz.571xz.com" target="_blank">杭州站</a>
             <a href="http://bj.571xz.com" target="_blank">北京站</a>
@@ -301,19 +367,30 @@ id="dosubmit"                        class="button1"
         <p class="imgs">
             <a class="img-aqlm" href="http://www.anquan.org/authenticate/cert/?site=www.571xz.com" target="_blank"></a>
             <a class="img-yyzz" href="http://idinfo.zjaic.gov.cn/bscx.do?method=hddoc&amp;id=33010200000476" target="_blank" ></a>
-            <a class="img-jyxkz" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" title="互联网经营许可证" target="_blank"></a>
+            <a class="img-jyxkz" href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank"></a>
             <a class="img-jybz" href="http://www.315online.com.cn/" target="_blank"></a>
             <a class="img-cxwz" href="https://credit.szfw.org/CX20131217003383003800.html" target="_blank"></a>
         </p>
         <p class="jyga">
-            <span>&copy; 2009-2017 571xz.com 版权所有</span> <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
+            <span>&copy; 2009-2017 571xz.com 版权所有</span>
+            <a href="http://www.571xz.com/templets/xingzuo/images/footer/scdjz.jpg" target="_blank" rel="nofollow">网上交易市场登记证</a>
             <br> 
-            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank" rel="nofollow">增值电信业务经营许可证： 浙B2-20120165</a> | <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank"> <img src="http://style.571xz.com/global/css/img/beian.png" alt="浙公网安备"> 浙公网安备 33010202000302号 </a> 
+            <a href="http://www.zca.gov.cn/txzf/bulletinLatest.htm?method=getBulletinDetail&amp;id=4063" target="_blank">增值电信业务经营许可证： 浙B2-20120165</a>
+            | 
+            <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010202000302" target="_blank">
+                <img src="http://style.571xz.com/v2/global/css/img/beian.png" alt="浙公网安备">
+                浙公网安备 33010202000302号
+            </a> 
         </p>
     </div>
 </div>
-<script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/fxs2/js/withdraw5Apply.js?t=1498814568159"></script>
+
+
+
+<!--省略end，让浏览器自动添加-->
+
 <#include "/common/cnzz.ftl">
-</body>
-</html>
+
+
+
+

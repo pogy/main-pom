@@ -40,6 +40,7 @@
             </bean>
         </mvc:interceptor>
 
+
         <!-- 手机密度拦截器 - 发送短信-->
         <mvc:interceptor>
             <mvc:mapping path="/loginPhoneVerification.*"/>

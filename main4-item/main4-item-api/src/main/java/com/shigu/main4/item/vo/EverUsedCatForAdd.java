@@ -1,9 +1,11 @@
 package com.shigu.main4.item.vo;
 
+import java.io.Serializable;
+
 /**
  * Created by zhaohongbo on 17/3/15.
  */
-public class EverUsedCatForAdd {
+public class EverUsedCatForAdd  implements Serializable {
 
     /**
      * 类目路径
