@@ -1,19 +1,25 @@
 package com.shigu.main4.cdn.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguShop;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.opentae.data.mall.examples.ShiguTempExample;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
+import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.vo.CatPolyFormatVO;
+import com.shigu.main4.cdn.vo.ShopIconCopyrightVO;
 import com.shigu.main4.cdn.vo.ShopShowVO;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.item.services.ShowForCdnService;
+import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.item.vo.NormalProp;
+import com.shigu.main4.item.vo.SaleProp;
+import com.shigu.main4.monitor.services.ItemBrowerService;
+import com.shigu.main4.newcdn.vo.*;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopLicenseService;
@@ -23,19 +29,19 @@ import com.shigu.main4.ucenter.exceptions.ShopCollectionException;
 import com.shigu.main4.ucenter.services.UserCollectService;
 import com.shigu.main4.ucenter.vo.ItemCollect;
 import com.shigu.main4.ucenter.vo.ShopCollect;
-import com.shigu.main4.vo.CatPolymerization;
-import com.shigu.main4.vo.ItemShowBlock;
+import com.shigu.main4.ucenter.webvo.ShopCollectVO;
+import com.shigu.main4.vo.*;
+import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
+import com.shigu.tools.HtmlImgsLazyLoad;
 import freemarker.template.TemplateException;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * cdn服务
@@ -420,7 +426,7 @@ public class CdnService {
      * @param size 每页条数
      * @return
      */
-    public ShiguPager<ShopIconCopyrightVO> shopCopyrights(Integer page,Integer size){
+    public ShiguPager<ShopIconCopyrightVO> shopCopyrights(Integer page, Integer size){
         final String FLAG="shop_copyright";//shigu_temp表中的flag，key1=图片链接，key2=店铺ID
         if (page == null) {
             page=1;
