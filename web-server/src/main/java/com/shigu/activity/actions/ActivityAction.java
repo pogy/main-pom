@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -352,7 +353,7 @@ public class ActivityAction {
 
     @Autowired
     private ActiveDrawListener activeDrawListener;
-    final String flag = "autumn_new2";
+    final String flag = "autumn_new3";
 
     @RequestMapping("activity/jsonapply")
     @ResponseBody
@@ -428,4 +429,5 @@ public class ActivityAction {
         }
         return JsonResponseUtil.success().element("awards", awards);
     }
+
 }

@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/qzxpApply2.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/qzxpApply3.css" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/qzxpApply2.js"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/qzxpApply3.js"></script>
 </head>
 <body>
 
@@ -250,7 +250,7 @@ var webSite = '${webSite!}';
 <div class="topNav">
     <ul class="clearfix">
     
-        <li>
+        <li >
             <a href="http://hz.571xz.com/market.htm" target="_blank">
                 逛市场
                 <i class="hot"></i>
@@ -258,7 +258,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
                 商品库
                 
@@ -266,7 +266,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://so.571xz.com/newgoods.htm" target="_blank">
                 今日新品
                 
@@ -274,7 +274,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
                 发现好货
                 <i class="hot"></i>
@@ -282,7 +282,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://daifa.571xz.com/" target="_blank">
                 一件代发
                 
@@ -290,7 +290,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
                 知识产权
                 
@@ -298,7 +298,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://zixun.571xz.com/index" target="_blank">
                 资讯
                 
@@ -311,8 +311,7 @@ var webSite = '${webSite!}';
 
 
 
-<div class="grayBg">
-    <div class="banner">
+<div class="banner">
     <div class="applyBtn yahei pr">
     <#if alreadyApply == true>
         <b class="disabled">您已报名</b>
@@ -367,13 +366,12 @@ var webSite = '${webSite!}';
 
 </div>
 
-</div>
 <div class="pinkBg">
     <div class="actIntroduce yahei layout actBox">
     <h2 class="tac">活动介绍</h2>
     <ul class="actText fs14 fc3">
-        <li>1. 报名时间：2017.08.21--2017.08.27日</li>
-        <li>2. 开始时间：2017.08.27--2017.09.03日</li>
+        <li>1. 报名时间：2017.08.30--2017.09.03</li>
+        <li>2. 活动时间：2017.09.04--2017.09.11</li>
         <li>3. 报名商品：有大图下载的秋装，须为7日内新款</li>
         <li>4. 收费类型：免费</li>
         <li>5. 报名资质：支持退换货</li>
@@ -383,12 +381,12 @@ var webSite = '${webSite!}';
     <h2 class="tac">活动报名说明</h2>
     
     <ul class="actText fs14 fc3">
-        <li>1. 报名条件：有秋装新品即将发布且有精修大图下载的所有档口，点击立即报名，就有机会参与活动。</li>
-        <li>2. 活动名额：从所有报名档口中精选10家优质档口。</li>
-        <li>3. 满足报名条件并被选中的档口，每家可提供5款活动商品。</li>
-        <li>4. 活动上线时展示的商品须为之前未上架过的商品且有精修大图下载。</li>
-        <li>5. 本次活动四季星座网将给予最大限度的线上、线下推广支持，只为助力档口打造今秋新品的最爆款。</li>
-        <li>6. 本次活动将采用线上报名，线下确认相结合的方式，确保今年的秋装新品发布会圆满顺利进行。</li>
+        <li>1. 报名条件：有秋装新品即将发布且有精修大图下载的所有档口，点击立即报名，就有机会参与活动； </li>
+        <li>2. 活动名额：从所有报名档口中精选10家优质档口；</li>
+        <li>3. 满足报名条件并被选中的档口，每家可提供5款活动商品； </li>
+        <li>4. 活动上线时展示的商品须为之前未上架过的商品且有精修大图下载；</li>
+        <li>5. 本次活动四季星座网将给予最大限度的线上、线下推广支持，只为助力档口打造今秋新品的最爆款；</li>
+        <li>6. 本次活动将采用线上报名，线下确认相结合的方式，确保今年的秋装新品发布会圆满顺利进行；</li>
         <li>7. 本次活动的最终解释权归四季星座网所有，如有疑问，可咨询网站客服。</li>
     </ul>
 </div>
@@ -408,7 +406,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

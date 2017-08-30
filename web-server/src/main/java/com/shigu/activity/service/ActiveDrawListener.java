@@ -350,7 +350,7 @@ public class ActiveDrawListener implements MessageListener {
     //    Date date = sdf.parse("2017-08-12 01:00:00");
     //    SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup").setSize(10000);
     //    BoolQueryBuilder query = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("flag", "web-tb"))
-    //            .must(QueryBuilders.rangeQuery("daiTime").from("2017-08-16 00:00:00").to("2017-08-17 00:00:00"));
+    //            .must(QueryBuilders.rangeQuery("daiTime").from("2017-08-28 12:00:00").to("2017-08-28 19:00:00"));
     //
     //    SearchResponse searchResponse = srb.setTypes("hz").setQuery(query).execute().actionGet();
     //    SearchHit[] hits = searchResponse.getHits().getHits();
