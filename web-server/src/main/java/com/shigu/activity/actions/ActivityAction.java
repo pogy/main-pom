@@ -353,7 +353,7 @@ public class ActivityAction {
 
     @Autowired
     private ActiveDrawListener activeDrawListener;
-    final String flag = "autumn_new2";
+    final String flag = "autumn_new3";
 
     @RequestMapping("activity/jsonapply")
     @ResponseBody
