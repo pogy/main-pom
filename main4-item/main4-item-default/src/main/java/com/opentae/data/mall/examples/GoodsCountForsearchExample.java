@@ -10,15 +10,16 @@ import java.util.*;
 public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExample.Criteria> {
     public static final Class<GoodsCountForsearch> beanClass = GoodsCountForsearch.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
-    public static EntityColumn webSite;
     public static EntityColumn flowFixedTime;
+    public static EntityColumn webSite;
     public static EntityColumn trade;
     public static EntityColumn searchId;
     public static EntityColumn clickIp;
     public static EntityColumn goodsId;
     public static EntityColumn hadGoat;
-    public static EntityColumn up;
+    public static EntityColumn hadBigzip;
     public static EntityColumn upMan;
+    public static EntityColumn up;
     public static EntityColumn click;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -26,15 +27,16 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
         for (EntityColumn column : columns) {
             listMap.put(column.getProperty(), column);
         }
-        webSite = listMap.get("webSite");
         flowFixedTime = listMap.get("flowFixedTime");
+        webSite = listMap.get("webSite");
         trade = listMap.get("trade");
         searchId = listMap.get("searchId");
         clickIp = listMap.get("clickIp");
         goodsId = listMap.get("goodsId");
         hadGoat = listMap.get("hadGoat");
-        up = listMap.get("up");
+        hadBigzip = listMap.get("hadBigzip");
         upMan = listMap.get("upMan");
+        up = listMap.get("up");
         click = listMap.get("click");
         }
 
@@ -57,6 +59,53 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
             super(example);
         }
 
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeIsNull() {
+            return isNull(flowFixedTime);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeIsNotNull() {
+            return isNotNull(flowFixedTime);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeEqualTo(Date value) {
+            return equalTo(flowFixedTime, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotEqualTo(Date value) {
+            return notEqualTo(flowFixedTime, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeGreaterThan(Date value) {
+            return greaterThan(flowFixedTime, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(flowFixedTime, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeLessThan(Date value) {
+            return lessThan(flowFixedTime, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(flowFixedTime, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeIn(List<Date> values) {
+            return in(flowFixedTime, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotIn(List<Date> values) {
+            return notIn(flowFixedTime, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeBetween(Date value1, Date value2) {
+            return between(flowFixedTime, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotBetween(Date value1, Date value2) {
+            return notBetween(flowFixedTime, value1, value2);
+        }
         public GoodsCountForsearchExample.Criteria andWebSiteIsNull() {
             return isNull(webSite);
         }
@@ -111,53 +160,6 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andWebSiteNotBetween(String value1, String value2) {
             return notBetween(webSite, value1, value2);
-        }
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeIsNull() {
-            return isNull(flowFixedTime);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeIsNotNull() {
-            return isNotNull(flowFixedTime);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeEqualTo(Date value) {
-            return equalTo(flowFixedTime, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotEqualTo(Date value) {
-            return notEqualTo(flowFixedTime, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeGreaterThan(Date value) {
-            return greaterThan(flowFixedTime, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeGreaterThanOrEqualTo(Date value) {
-            return greaterThanOrEqualTo(flowFixedTime, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeLessThan(Date value) {
-            return lessThan(flowFixedTime, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeLessThanOrEqualTo(Date value) {
-            return lessThanOrEqualTo(flowFixedTime, value);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeIn(List<Date> values) {
-            return in(flowFixedTime, values);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotIn(List<Date> values) {
-            return notIn(flowFixedTime, values);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeBetween(Date value1, Date value2) {
-            return between(flowFixedTime, value1, value2);
-        }
-
-        public GoodsCountForsearchExample.Criteria andFlowFixedTimeNotBetween(Date value1, Date value2) {
-            return notBetween(flowFixedTime, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andTradeIsNull() {
             return isNull(trade);
@@ -394,52 +396,52 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
         public GoodsCountForsearchExample.Criteria andHadGoatNotBetween(Integer value1, Integer value2) {
             return notBetween(hadGoat, value1, value2);
         }
-        public GoodsCountForsearchExample.Criteria andUpIsNull() {
-            return isNull(up);
+        public GoodsCountForsearchExample.Criteria andHadBigzipIsNull() {
+            return isNull(hadBigzip);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpIsNotNull() {
-            return isNotNull(up);
+        public GoodsCountForsearchExample.Criteria andHadBigzipIsNotNull() {
+            return isNotNull(hadBigzip);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpEqualTo(Long value) {
-            return equalTo(up, value);
+        public GoodsCountForsearchExample.Criteria andHadBigzipEqualTo(Integer value) {
+            return equalTo(hadBigzip, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpNotEqualTo(Long value) {
-            return notEqualTo(up, value);
+        public GoodsCountForsearchExample.Criteria andHadBigzipNotEqualTo(Integer value) {
+            return notEqualTo(hadBigzip, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpGreaterThan(Long value) {
-            return greaterThan(up, value);
+        public GoodsCountForsearchExample.Criteria andHadBigzipGreaterThan(Integer value) {
+            return greaterThan(hadBigzip, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpGreaterThanOrEqualTo(Long value) {
-            return greaterThanOrEqualTo(up, value);
+        public GoodsCountForsearchExample.Criteria andHadBigzipGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(hadBigzip, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpLessThan(Long value) {
-            return lessThan(up, value);
+        public GoodsCountForsearchExample.Criteria andHadBigzipLessThan(Integer value) {
+            return lessThan(hadBigzip, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpLessThanOrEqualTo(Long value) {
-            return lessThanOrEqualTo(up, value);
+        public GoodsCountForsearchExample.Criteria andHadBigzipLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(hadBigzip, value);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpIn(List<Long> values) {
-            return in(up, values);
+        public GoodsCountForsearchExample.Criteria andHadBigzipIn(List<Integer> values) {
+            return in(hadBigzip, values);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpNotIn(List<Long> values) {
-            return notIn(up, values);
+        public GoodsCountForsearchExample.Criteria andHadBigzipNotIn(List<Integer> values) {
+            return notIn(hadBigzip, values);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpBetween(Long value1, Long value2) {
-            return between(up, value1, value2);
+        public GoodsCountForsearchExample.Criteria andHadBigzipBetween(Integer value1, Integer value2) {
+            return between(hadBigzip, value1, value2);
         }
 
-        public GoodsCountForsearchExample.Criteria andUpNotBetween(Long value1, Long value2) {
-            return notBetween(up, value1, value2);
+        public GoodsCountForsearchExample.Criteria andHadBigzipNotBetween(Integer value1, Integer value2) {
+            return notBetween(hadBigzip, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andUpManIsNull() {
             return isNull(upMan);
@@ -487,6 +489,53 @@ public class GoodsCountForsearchExample extends SgExample<GoodsCountForsearchExa
 
         public GoodsCountForsearchExample.Criteria andUpManNotBetween(Long value1, Long value2) {
             return notBetween(upMan, value1, value2);
+        }
+        public GoodsCountForsearchExample.Criteria andUpIsNull() {
+            return isNull(up);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpIsNotNull() {
+            return isNotNull(up);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpEqualTo(Long value) {
+            return equalTo(up, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpNotEqualTo(Long value) {
+            return notEqualTo(up, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpGreaterThan(Long value) {
+            return greaterThan(up, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(up, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpLessThan(Long value) {
+            return lessThan(up, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(up, value);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpIn(List<Long> values) {
+            return in(up, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpNotIn(List<Long> values) {
+            return notIn(up, values);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpBetween(Long value1, Long value2) {
+            return between(up, value1, value2);
+        }
+
+        public GoodsCountForsearchExample.Criteria andUpNotBetween(Long value1, Long value2) {
+            return notBetween(up, value1, value2);
         }
         public GoodsCountForsearchExample.Criteria andClickIsNull() {
             return isNull(click);

@@ -44,4 +44,15 @@ public interface ItemPicRelationService {
      * @return
      */
     int updateFileRelationByDir(String from,String to);
+
+    /**
+     * 修改大图权重
+     * @param hadBigPic
+     * @param goodsId
+     * @param webSite
+     * @return
+     */
+    int updateBigPicWeight(Boolean hadBigPic,Long goodsId,String webSite);
+
+    void updateFileOuter(Long goodsId,String webSite,String password,String link,Integer type);
 }

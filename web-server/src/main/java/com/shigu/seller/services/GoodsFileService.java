@@ -8,6 +8,7 @@ import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
@@ -387,17 +388,7 @@ public class GoodsFileService extends OssIO {
      * @param hadBigzip
      */
     private void updateGoodsCountForSearch(Long goodsId,String webSite,Boolean hadBigzip){
-        GoodsCountForsearchExample countForsearchExample=new GoodsCountForsearchExample();
-        countForsearchExample.createCriteria().andGoodsIdEqualTo(goodsId);
-        GoodsCountForsearch countForsearch=new GoodsCountForsearch();
-        countForsearch.setHadBigzip(hadBigzip?1:0);
-        countForsearch.setWebSite(webSite);
-        countForsearch.setGoodsId(goodsId);
-        try {
-            goodsCountForsearchMapper.insertSelective(countForsearch);
-        } catch (Exception e) {
-            goodsCountForsearchMapper.updateByExampleSelective(countForsearch,countForsearchExample);
-        }
+        itemPicRelationService.updateBigPicWeight(hadBigzip,goodsId,webSite);
     }
 
     /**
@@ -540,27 +531,9 @@ public class GoodsFileService extends OssIO {
     }
 
     private void saveOrUpdateOuterLinkSingle(BigPicOuterLinkBO bo,String webSite, Long goodsId) {
-        GoodsFile goodsFile = new GoodsFile();
-        goodsFile.setGoodsId(goodsId);
-        goodsFileMapper.delete(goodsFile);
-        goodsFile.setNeedPwd(bo.getPsw() != null && !bo.getPsw().isEmpty());
-        if (goodsFile.getNeedPwd()) {
-            goodsFile.setPasswd(bo.getPsw());
-        }
-        goodsFile.setFileKey(bo.getLink());
-        goodsFile.setType(2);
-        goodsFileMapper.insertSelective(goodsFile);
-        updateGoodsCountForSearch(goodsId,webSite,true);
+       itemPicRelationService.updateFileOuter(bo.getGoodsId(),webSite,bo.getPsw(),bo.getLink(),2);
     }
 
-    private void modifyDataGoodsFile(String from, String to) {
-        //修改表
-        GoodsFileExample example = new GoodsFileExample();
-        example.createCriteria().andFileKeyEqualTo(from);
-        GoodsFile df = new GoodsFile();
-        df.setFileKey(to);
-        goodsFileMapper.updateByExampleSelective(df, example);
-    }
 
     /**
      * 移动文件
