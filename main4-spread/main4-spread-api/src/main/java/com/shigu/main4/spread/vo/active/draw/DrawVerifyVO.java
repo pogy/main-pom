@@ -1,5 +1,7 @@
 package com.shigu.main4.spread.vo.active.draw;
 
+import java.io.Serializable;
+
 /**
  * 类名：DrawVerifyVO
  * 类路径：com.shigu.main4.spread.vo.active.draw.DrawVerifyVO
@@ -8,7 +10,7 @@ package com.shigu.main4.spread.vo.active.draw;
  * 项目：main-pom
  * 描述：
  */
-public class DrawVerifyVO {
+public class DrawVerifyVO implements Serializable {
     /**
      * 用户id
      */

@@ -1,10 +1,12 @@
 package com.shigu.main4.spread.bo;
 
+import java.io.Serializable;
+
 /**
  * 用户抽奖
  * Created by zhaohongbo on 17/7/31.
  */
-public class ActiveDrawRecordBO {
+public class ActiveDrawRecordBO implements Serializable {
 
     private Long pemId;
 

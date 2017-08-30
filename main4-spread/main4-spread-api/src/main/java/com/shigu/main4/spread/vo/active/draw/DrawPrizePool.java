@@ -1,5 +1,6 @@
 package com.shigu.main4.spread.vo.active.draw;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  * 项目：main-pom
  * 描述：活动奖池
  */
-public class DrawPrizePool {
+public class DrawPrizePool implements Serializable {
     /**
      * 活动类型
      */
