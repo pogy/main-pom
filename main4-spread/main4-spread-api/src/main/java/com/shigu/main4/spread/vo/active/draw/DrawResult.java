@@ -1,5 +1,7 @@
 package com.shigu.main4.spread.vo.active.draw;
 
+import java.io.Serializable;
+
 /**
  * 类名：DrawResult
  * 类路径：com.shigu.main4.spread.vo.active.draw.DrawResult
@@ -8,7 +10,10 @@ package com.shigu.main4.spread.vo.active.draw;
  * 项目：main-pom
  * 描述：中奖结果
  */
-public class DrawResult {
+public class DrawResult implements Serializable {
+
+    public DrawResult() {
+    }
 
     public DrawResult(Integer hitResult, Integer rank, String prizeName) {
         this.hitResult = hitResult;

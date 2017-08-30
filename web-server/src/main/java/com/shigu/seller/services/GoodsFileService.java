@@ -8,6 +8,7 @@ import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
@@ -553,14 +554,6 @@ public class GoodsFileService extends OssIO {
         updateGoodsCountForSearch(goodsId,webSite,true);
     }
 
-    private void modifyDataGoodsFile(String from, String to) {
-        //修改表
-        GoodsFileExample example = new GoodsFileExample();
-        example.createCriteria().andFileKeyEqualTo(from);
-        GoodsFile df = new GoodsFile();
-        df.setFileKey(to);
-        goodsFileMapper.updateByExampleSelective(df, example);
-    }
 
     /**
      * 移动文件
