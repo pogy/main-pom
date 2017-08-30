@@ -45,6 +45,7 @@ import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.seller.vo.AreaVO;
 import com.shigu.seller.vo.ContainerVO;
+import com.shigu.seller.vo.DatuVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;

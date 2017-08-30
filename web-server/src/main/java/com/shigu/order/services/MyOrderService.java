@@ -10,6 +10,7 @@ import com.opentae.data.mall.examples.*;
 import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
@@ -238,7 +239,7 @@ public class MyOrderService {
         return vo;
     }
 
-    public boolean testRefund(Long subId) {
+    public boolean testRefund(Long subId) throws OrderNotFindException {
         ItemOrderSub sub = itemOrderSubMapper.selectByPrimaryKey(subId);
         return sub != null && orderManageProcess.tryRefund(subId.toString()).size() == sub.getNum();
     }

@@ -1,11 +1,11 @@
 package com.shigu.seller.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ActiveDrawGoods;
-import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.examples.GoodsFileExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
@@ -13,15 +13,18 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
+import com.shigu.main4.item.services.ItemPicRelationService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopLicense;
+import com.shigu.seller.bo.BigPicOuterLinkBO;
+import com.shigu.seller.vo.DatuVO;
 import com.shigu.seller.vo.FileSizeVO;
 import com.shigu.seller.vo.GoodsFileSearchVO;
 import com.shigu.seller.vo.GoodsFileVO;
-import com.shigu.tools.Arith;
+import com.shigu.session.main4.ShopSession;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,12 +33,8 @@ import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 商品文件关联类
@@ -61,6 +60,8 @@ public class GoodsFileService extends OssIO {
     @Autowired
     ItemPicRelationService itemPicRelationService;
 
+    @Autowired
+    ShiguShopMapper shiguShopMapper;
     @Autowired
     GoodsCountForsearchMapper goodsCountForsearchMapper;
 
