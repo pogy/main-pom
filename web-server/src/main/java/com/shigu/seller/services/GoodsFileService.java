@@ -6,6 +6,7 @@ import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.*;
+import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.opentae.data.mall.interfaces.ShiguShopMapper;
@@ -19,6 +20,7 @@ import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopLicense;
+import com.shigu.seller.vo.DatuVO;
 import com.shigu.seller.vo.FileSizeVO;
 import com.shigu.seller.vo.GoodsFileSearchVO;
 import com.shigu.seller.vo.GoodsFileVO;
@@ -61,6 +63,9 @@ public class GoodsFileService extends OssIO {
 
     @Autowired
     ItemPicRelationService itemPicRelationService;
+
+    @Autowired
+    ShiguShopMapper shiguShopMapper;
 
     @Autowired
     GoodsCountForsearchMapper goodsCountForsearchMapper;
