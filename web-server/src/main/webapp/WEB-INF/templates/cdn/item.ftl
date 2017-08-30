@@ -1001,7 +1001,7 @@ var piPrice = '${goodsInfo.piPrice!}';
                 <li><a href="http://www.571xz.net/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
                 <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
                 <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox"></div></li>
-                <li class="addData"><b xzclick="addGoodsData"><i class="ii"></i><span>加入数据包</span></b></li>
+                <li class="addData"><b xzclick="addGoodsData" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>加入数据包</span></b></li>
                 
 
 
@@ -1136,7 +1136,7 @@ var shopId = '${shopInfo.shopId!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             
