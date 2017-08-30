@@ -47,13 +47,13 @@ public class PhoneGoodsUpService {
     private MemberUserMapper memberUserMapper;
 
     public UpToWxResponse upToWx(UpToWxRequest request) {
+        String token = request.getToken();
         ItemUpRecordVO bo = new ItemUpRecordVO();
         bo.setFlag("wx");
         bo.setDaiTime(DateUtil.dateToString(new Date(),DateUtil.patternD));
         MemberUser memberUser = memberUserMapper.selectFieldsByPrimaryKey(request.getUserId(), FieldUtil.codeFields("user_id,user_nick"));
         bo.setFenUserId(request.getUserId());
         bo.setFenUserNick(memberUser.getUserNick());
-
         CdnItem cdnItem = showForCdnService.selItemById(request.getGoodsId(), request.getWebSite());
         bo.setFenPrice(cdnItem.getPiPrice());
         bo.setSupperPiPrice(cdnItem.getPiPrice());

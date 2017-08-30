@@ -52,6 +52,12 @@ public class OpenToBean {
         for (Element tr : trs) {
             Elements tds = tr.select("td");
             t.append("\t//").append(tds.get(5).html().trim()).append(tds.get(2).html().trim().equals("必须")?"\t必须":"").append("\n");
+            if (tds.get(2).html().trim().equals("必须")) {
+                if (!imp.toString().contains("import javax.validation.constraints.NotNull;")) {
+                    imp.append("import javax.validation.constraints.NotNull;\n");
+                }
+                t.append("\t@NotNull(message = \"").append(tds.get(0).html().trim().replace("[]", "")).append(" is null\")\n");
+            }
             if (tds.html().contains("Date") && !imp.toString().contains("import java.util.Date;")) {
                 imp.append("import java.util.Date;\n");
             }
