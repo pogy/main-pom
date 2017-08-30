@@ -13,7 +13,10 @@ public class ShiguTempExample extends SgExample<ShiguTempExample.Criteria> {
     public static EntityColumn key1;
     public static EntityColumn key2;
     public static EntityColumn flag;
+    public static EntityColumn key5;
+    public static EntityColumn key6;
     public static EntityColumn key3;
+    public static EntityColumn key4;
     public static EntityColumn id;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -24,7 +27,10 @@ public class ShiguTempExample extends SgExample<ShiguTempExample.Criteria> {
         key1 = listMap.get("key1");
         key2 = listMap.get("key2");
         flag = listMap.get("flag");
+        key5 = listMap.get("key5");
+        key6 = listMap.get("key6");
         key3 = listMap.get("key3");
+        key4 = listMap.get("key4");
         id = listMap.get("id");
         }
 
@@ -212,6 +218,116 @@ public class ShiguTempExample extends SgExample<ShiguTempExample.Criteria> {
         public ShiguTempExample.Criteria andFlagNotBetween(String value1, String value2) {
             return notBetween(flag, value1, value2);
         }
+        public ShiguTempExample.Criteria andKey5IsNull() {
+            return isNull(key5);
+        }
+
+        public ShiguTempExample.Criteria andKey5IsNotNull() {
+            return isNotNull(key5);
+        }
+
+        public ShiguTempExample.Criteria andKey5EqualTo(String value) {
+            return equalTo(key5, value);
+        }
+
+        public ShiguTempExample.Criteria andKey5NotEqualTo(String value) {
+            return notEqualTo(key5, value);
+        }
+
+        public ShiguTempExample.Criteria andKey5GreaterThan(String value) {
+            return greaterThan(key5, value);
+        }
+
+        public ShiguTempExample.Criteria andKey5GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(key5, value);
+        }
+
+        public ShiguTempExample.Criteria andKey5LessThan(String value) {
+            return lessThan(key5, value);
+        }
+
+        public ShiguTempExample.Criteria andKey5LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(key5, value);
+        }
+
+        public ShiguTempExample.Criteria andKey5Like(String value) {
+            return like(key5, value);
+        }
+
+        public ShiguTempExample.Criteria andKey5NotLike(String value) {
+            return notLike(key5, value);
+        }
+
+        public ShiguTempExample.Criteria andKey5In(List<String> values) {
+            return in(key5, values);
+        }
+
+        public ShiguTempExample.Criteria andKey5NotIn(List<String> values) {
+            return notIn(key5, values);
+        }
+
+        public ShiguTempExample.Criteria andKey5Between(String value1, String value2) {
+            return between(key5, value1, value2);
+        }
+
+        public ShiguTempExample.Criteria andKey5NotBetween(String value1, String value2) {
+            return notBetween(key5, value1, value2);
+        }
+        public ShiguTempExample.Criteria andKey6IsNull() {
+            return isNull(key6);
+        }
+
+        public ShiguTempExample.Criteria andKey6IsNotNull() {
+            return isNotNull(key6);
+        }
+
+        public ShiguTempExample.Criteria andKey6EqualTo(String value) {
+            return equalTo(key6, value);
+        }
+
+        public ShiguTempExample.Criteria andKey6NotEqualTo(String value) {
+            return notEqualTo(key6, value);
+        }
+
+        public ShiguTempExample.Criteria andKey6GreaterThan(String value) {
+            return greaterThan(key6, value);
+        }
+
+        public ShiguTempExample.Criteria andKey6GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(key6, value);
+        }
+
+        public ShiguTempExample.Criteria andKey6LessThan(String value) {
+            return lessThan(key6, value);
+        }
+
+        public ShiguTempExample.Criteria andKey6LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(key6, value);
+        }
+
+        public ShiguTempExample.Criteria andKey6Like(String value) {
+            return like(key6, value);
+        }
+
+        public ShiguTempExample.Criteria andKey6NotLike(String value) {
+            return notLike(key6, value);
+        }
+
+        public ShiguTempExample.Criteria andKey6In(List<String> values) {
+            return in(key6, values);
+        }
+
+        public ShiguTempExample.Criteria andKey6NotIn(List<String> values) {
+            return notIn(key6, values);
+        }
+
+        public ShiguTempExample.Criteria andKey6Between(String value1, String value2) {
+            return between(key6, value1, value2);
+        }
+
+        public ShiguTempExample.Criteria andKey6NotBetween(String value1, String value2) {
+            return notBetween(key6, value1, value2);
+        }
         public ShiguTempExample.Criteria andKey3IsNull() {
             return isNull(key3);
         }
@@ -266,6 +382,61 @@ public class ShiguTempExample extends SgExample<ShiguTempExample.Criteria> {
 
         public ShiguTempExample.Criteria andKey3NotBetween(String value1, String value2) {
             return notBetween(key3, value1, value2);
+        }
+        public ShiguTempExample.Criteria andKey4IsNull() {
+            return isNull(key4);
+        }
+
+        public ShiguTempExample.Criteria andKey4IsNotNull() {
+            return isNotNull(key4);
+        }
+
+        public ShiguTempExample.Criteria andKey4EqualTo(String value) {
+            return equalTo(key4, value);
+        }
+
+        public ShiguTempExample.Criteria andKey4NotEqualTo(String value) {
+            return notEqualTo(key4, value);
+        }
+
+        public ShiguTempExample.Criteria andKey4GreaterThan(String value) {
+            return greaterThan(key4, value);
+        }
+
+        public ShiguTempExample.Criteria andKey4GreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(key4, value);
+        }
+
+        public ShiguTempExample.Criteria andKey4LessThan(String value) {
+            return lessThan(key4, value);
+        }
+
+        public ShiguTempExample.Criteria andKey4LessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(key4, value);
+        }
+
+        public ShiguTempExample.Criteria andKey4Like(String value) {
+            return like(key4, value);
+        }
+
+        public ShiguTempExample.Criteria andKey4NotLike(String value) {
+            return notLike(key4, value);
+        }
+
+        public ShiguTempExample.Criteria andKey4In(List<String> values) {
+            return in(key4, values);
+        }
+
+        public ShiguTempExample.Criteria andKey4NotIn(List<String> values) {
+            return notIn(key4, values);
+        }
+
+        public ShiguTempExample.Criteria andKey4Between(String value1, String value2) {
+            return between(key4, value1, value2);
+        }
+
+        public ShiguTempExample.Criteria andKey4NotBetween(String value1, String value2) {
+            return notBetween(key4, value1, value2);
         }
         public ShiguTempExample.Criteria andIdIsNull() {
             return isNull(id);
