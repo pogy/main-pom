@@ -14,12 +14,12 @@ public class GoodsCountForsearch implements Serializable {
 	private Long searchId;
 
     /**
-     * 
+     * 0
      */
 	private Long goodsId;
 
     /**
-     * 
+     * 0
      */
 	private Long click;
 
@@ -54,12 +54,12 @@ public class GoodsCountForsearch implements Serializable {
 	private String webSite;
 
     /**
-     * 浏览量最后固化时间
+     * 
      */
 	private Date flowFixedTime;
 
     /**
-     * 有大图
+     * 是否有大图，0没有，1有
      */
 	private Integer hadBigzip;
 

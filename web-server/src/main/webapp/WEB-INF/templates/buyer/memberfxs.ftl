@@ -589,7 +589,36 @@ var webSite = '${webSite!}';
 
     <input type="hidden" id="userId" value="${session_user_redis__.userId!}">
 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script >
+var imgsrc = '${imgsrc!}';
+var tHref = '${tHref!}';
+</script>
+
+
 </div>
+
+
 
 
     </div>

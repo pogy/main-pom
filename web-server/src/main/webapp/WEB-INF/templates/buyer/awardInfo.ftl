@@ -259,7 +259,7 @@ var webSite = '${webSite!}';
 
         <div class="rightBox yahei fr">
     <div class="awardInfo">
-        <h3>发现好货活动奖品</h3>
+        <h3>秋装新品发布会活动奖品</h3>
         <div class="thisTerm">
             <p class="hdTime">活动日期：${thisHdTime!}<b class="hdRule" jbtn="thisRule">活动规则</b></p>
             <div class="awardBox">

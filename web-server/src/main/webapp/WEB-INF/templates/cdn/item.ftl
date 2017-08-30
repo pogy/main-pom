@@ -596,7 +596,7 @@ ${userShopHdHtml}
             </li>
             <li class="view">
                 <label class="fc9">浏览</label>
-                <span class="fc3 yahei fs14"><em class="arail">${goodsInfo.viewNum!}</em></span>
+                <span class="fc3 yahei fs14"><em class="arail imClicks">-</em></span>
             </li>
         </ul>
         
@@ -714,6 +714,8 @@ var colorsMeta = ${goodsInfo.colorsMeta!};
 var sizesMeta = ${goodsInfo.sizesMeta!};
 var piPrice = '${goodsInfo.piPrice!}';
 </script>
+
+
 
 
 

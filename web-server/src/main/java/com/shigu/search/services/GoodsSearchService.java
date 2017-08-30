@@ -7,6 +7,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.main4.item.enums.SearchCheckd;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.AggsCount;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 商品搜索服务
