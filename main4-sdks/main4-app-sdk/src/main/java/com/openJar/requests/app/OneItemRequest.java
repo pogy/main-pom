@@ -2,6 +2,8 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.OneItemResponse;
+import com.sun.istack.internal.NotNull;
+
 /**
  * 类名:OneItemRequest
  * 类路径:com.openJar.requests.appOneItemRequest
@@ -13,6 +15,7 @@ public class OneItemRequest extends Request<OneItemResponse> {
 	//分站标识
 	private String webSite;
 	//商品ID	必须
+	@NotNull
 	private Long itemId;
 	public String getWebSite(){
 		return webSite;

@@ -5,9 +5,12 @@ import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.MarketsRequest;
 import com.openJar.requests.app.OneShopRequest;
 import com.openJar.requests.app.ShopCatRequest;
+import com.openJar.requests.app.ShopSearchRequest;
 import com.openJar.responses.app.OneShopResponse;
+import com.openJar.responses.app.ShopSearchResponse;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.phone.apps.services.AppStoreService;
+import com.shigu.phone.services.PhoneSearchService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +32,10 @@ import javax.validation.Valid;
 @RequestMapping("/app")
 public class AppStoreAction {
     private AppStoreService appStoreService;
+
+    @Autowired
+    private PhoneSearchService phoneSearchService;
+
     @Autowired
     public void setAppStoreService(AppStoreService appStoreService) {
         this.appStoreService = appStoreService;
@@ -58,4 +65,16 @@ public class AppStoreAction {
         return JSONObject.fromObject(ResponseUtil.dealResponse(appStoreService.selShopCat(request)));
     }
 
+
+    /**
+     * 店铺搜索
+     * @param request
+     * @return
+     */
+    @RequestMapping("")
+    @ResponseBody
+    public JSONObject shopSearch(ShopSearchRequest request) {
+        ShopSearchResponse response = phoneSearchService.shopSearch(request);
+        return JSONObject.fromObject(response);
+    }
 }

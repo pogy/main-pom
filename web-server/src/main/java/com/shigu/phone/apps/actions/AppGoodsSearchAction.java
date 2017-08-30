@@ -2,12 +2,16 @@ package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.ImgSearchRequest;
 import com.openJar.requests.app.ItemSearchRequest;
+import com.openJar.requests.app.OneItemRequest;
 import com.shigu.phone.services.PhoneGoodsSearchService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.validation.Valid;
 
 /**
  * 类名：AppGoodsSearchAction
@@ -18,21 +22,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 描述：App商品搜索
  */
 @Controller
-@RequestMapping("/app/")
+@RequestMapping("app/")
 public class AppGoodsSearchAction {
 
     @Autowired
     private PhoneGoodsSearchService phoneGoodsSearchService;
 
-    @RequestMapping("")
-    @ResponseBody
+    //@RequestMapping("")
+    //@ResponseBody
     public JSONObject itemSearch(ItemSearchRequest request) {
         return JSONObject.fromObject(phoneGoodsSearchService.itemSearch(request));
     }
 
-    @RequestMapping("")
-    @ResponseBody
+    //@RequestMapping("")
+    //@ResponseBody
     public JSONObject imgSearch(ImgSearchRequest request) {
         return JSONObject.fromObject(phoneGoodsSearchService.imgSearch(request));
     }
+
+    //@RequestMapping("")
+    //@ResponseBody
+    public JSONObject oneItem(@Valid OneItemRequest request, BindingResult bindingResult) {
+        return JSONObject.fromObject(phoneGoodsSearchService.oneItem(request));
+    }
+
 }
