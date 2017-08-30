@@ -12,6 +12,7 @@ import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.storeservices.ShopBaseService;
 import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.vo.ShopBase;
 import com.shigu.main4.vo.StoreRelation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,16 @@ public class PhoneGoodsUpService {
     @Autowired
     private MemberUserMapper memberUserMapper;
 
+    @Autowired
+    private RegisterAndLoginService registerAndLoginService;
+
     public UpToWxResponse upToWx(UpToWxRequest request) {
-        String token = request.getToken();
+        UpToWxResponse resp = new UpToWxResponse();
+        //验证不通过
+        if (!registerAndLoginService.checkToken(request.getUserId(),request.getToken())) {
+            resp.setSuccess(false);
+            return resp;
+        }
         ItemUpRecordVO bo = new ItemUpRecordVO();
         bo.setFlag("wx");
         bo.setDaiTime(DateUtil.dateToString(new Date(),DateUtil.patternD));
@@ -102,7 +111,6 @@ public class PhoneGoodsUpService {
         }
         bo.setSupperServers(sb.toString());
         itemUpRecordService.addItemUpRecord(bo);
-        UpToWxResponse resp = new UpToWxResponse();
         resp.setSuccess(true);
         return resp;
     }
