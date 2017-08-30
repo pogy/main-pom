@@ -1,5 +1,7 @@
 package com.shigu.daifa.bo;
 
+import java.io.Serializable;
+
 /**
  * Created by pc on 2017-08-15.
  *
@@ -8,7 +10,7 @@ package com.shigu.daifa.bo;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class OrderAllocateBO{
+public class OrderAllocateBO implements Serializable {
     private Long orderId;//订单id
     private Long childOrderId;//子弹id
     private String startTime;//开始时间

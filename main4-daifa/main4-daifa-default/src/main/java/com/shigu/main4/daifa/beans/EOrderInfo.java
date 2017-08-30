@@ -1,5 +1,6 @@
 package com.shigu.main4.daifa.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * @author Administrator
  *
  */
-public class EOrderInfo {
+public class EOrderInfo implements Serializable {
 	private String OrderCode;//订单号
 	private String ShipperCode;//快递公司编码(快递英文简称)
 	private String CustomerName;//电子面单客户账号（与快递网点申请）

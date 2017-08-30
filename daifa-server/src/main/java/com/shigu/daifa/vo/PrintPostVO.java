@@ -1,8 +1,9 @@
 package com.shigu.daifa.vo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PrintPostVO {
+public class PrintPostVO implements Serializable {
     private String receiverName;//收件人姓名
     private String recieverAddress;//收件人地址
     private String recieverZip;//收件人邮编

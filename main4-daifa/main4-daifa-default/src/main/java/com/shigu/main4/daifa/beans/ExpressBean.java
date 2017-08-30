@@ -1,6 +1,8 @@
 package com.shigu.main4.daifa.beans;
 
-public class ExpressBean {
+import java.io.Serializable;
+
+public class ExpressBean implements Serializable {
 	private String kdType;//快递简称
 	private String kdSite;//快递网点名
 	private String kdName;//电子面单账户名

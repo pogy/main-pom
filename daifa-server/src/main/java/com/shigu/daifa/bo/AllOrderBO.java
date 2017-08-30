@@ -1,5 +1,7 @@
 package com.shigu.daifa.bo;
 
+import java.io.Serializable;
+
 /**
  * Created by pc on 2017-08-14.
  *
@@ -8,7 +10,7 @@ package com.shigu.daifa.bo;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class AllOrderBO {
+public class AllOrderBO implements Serializable {
     /**
      * 订单id
      */

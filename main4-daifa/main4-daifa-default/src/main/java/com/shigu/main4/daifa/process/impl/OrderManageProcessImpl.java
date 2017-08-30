@@ -15,6 +15,7 @@ import com.shigu.main4.daifa.bo.OrderBO;
 import com.shigu.main4.daifa.enums.DaifaTradeStatus;
 import com.shigu.main4.daifa.enums.SubOrderStatus;
 import com.shigu.main4.daifa.exceptions.DaifaException;
+import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.OrderManageProcess;
@@ -130,7 +131,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     }
 
     @Override
-    public List<Long> tryRefund(String outerSubOrderId) {
+    public List<Long> tryRefund(String outerSubOrderId) throws OrderNotFindException {
         return refundChecked(outerSubOrderId,1);
     }
 
@@ -138,7 +139,11 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     public void autoRefund(Long refundId, List<String> soids, List<String> soidps) throws DaifaException {
         List<Long> refundableIds=new ArrayList<>();
         for(String soid:soids){
-            refundableIds.addAll(refundChecked(soid,2));
+            try {
+                refundableIds.addAll(refundChecked(soid,2));
+            } catch (OrderNotFindException e) {
+                throw new DaifaException("退款失败,存在错误的单号");
+            }
         }
         checked:
         for (String soidp : soidps) {
@@ -169,14 +174,18 @@ public class OrderManageProcessImpl implements OrderManageProcess {
      *             2:来自autoRefund操作,该操作是同意退款,即还需要查出申请退款的数据
      * @return
      */
-    private List<Long> refundChecked(String outerSubOrderId,int type){
+    private List<Long> refundChecked(String outerSubOrderId,int type) throws OrderNotFindException {
         DaifaOrderExample orderExample = new DaifaOrderExample();
-        orderExample.createCriteria().andOrderCodeEqualTo(outerSubOrderId)
-                .andOrderStatusNotEqualTo((long) SubOrderStatus.SENDED.getValue());
+        orderExample.createCriteria().andOrderCodeEqualTo(outerSubOrderId);
         List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id"));
+        if(orders.size()==0){
+            throw new OrderNotFindException();
+        }
         Map<Long, String> oidpMap = new HashMap<>();
         for (DaifaOrder o : orders) {
-            oidpMap.put(o.getDfOrderId(), o.getOrderPartitionId());
+            if(o.getOrderStatus()!=SubOrderStatus.SENDED.getValue()){
+                oidpMap.put(o.getDfOrderId(), o.getOrderPartitionId());
+            }
         }
         DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
         DaifaGgoodsTasksExample.Criteria ce=daifaGgoodsTasksExample.createCriteria().andDfOrderIdIn(new ArrayList<>(oidpMap.keySet()))

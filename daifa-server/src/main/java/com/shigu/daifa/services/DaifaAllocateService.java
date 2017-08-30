@@ -110,7 +110,7 @@ public class DaifaAllocateService {
                     vo.setImgSrc(ggoodsTask.getPicPath());
                     vo.setPiPrice(ggoodsTask.getSinglePiPrice());
                     vo.setTitle(ggoodsTask.getTitle());
-                    vo.setDffs(tradeMap.get(ggoodsTask.getDfTradeId()).getDaifaType());
+                    vo.setDffs(tradeMap.get(ggoodsTask.getDfTradeId())==null?1:tradeMap.get(ggoodsTask.getDfTradeId()).getDaifaType());
                     orderAllocateVOS.add(vo);
                 }
             }

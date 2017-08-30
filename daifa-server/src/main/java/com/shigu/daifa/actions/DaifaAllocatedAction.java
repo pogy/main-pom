@@ -4,7 +4,7 @@ import com.opentae.data.daifa.beans.DaifaWorker;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.PrintGoodsTagBO;
-import com.shigu.daifa.bo.SelectDaifaGgoodsListBo;
+import com.shigu.daifa.bo.SelectDaifaGgoodsListBO;
 import com.shigu.daifa.services.DaifaAllocatedService;
 import com.shigu.daifa.vo.DaifaAllocatedVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
@@ -35,7 +35,7 @@ public class DaifaAllocatedAction {
      * @return
      */
     @RequestMapping("daifa/orderHasAllocation")
-    public String selectDaifaGgoodsList(SelectDaifaGgoodsListBo bo, Model model) {
+    public String selectDaifaGgoodsList(SelectDaifaGgoodsListBO bo, Model model) {
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         if (bo.getPage() == null) {

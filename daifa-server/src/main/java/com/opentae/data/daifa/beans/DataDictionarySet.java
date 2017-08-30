@@ -2,6 +2,7 @@ package com.opentae.data.daifa.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  *==========================================================
@@ -17,7 +18,7 @@ import javax.persistence.Id;
  *
  *=========================================================
  */
-public class DataDictionarySet {
+public class DataDictionarySet implements Serializable {
 	
 	/**代发数据字典ID*/
 	@Id
