@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>一件代发- 拿货、发货、退货等一站式服务，轻松解决配送难题</title>
+    <title>一件代发，您身边的服务</title>
 
     
     
