@@ -404,11 +404,7 @@ var webSite = '${webSite!}';
                     <h3>方便快捷</h3>
                     <p>支持手动下单与淘宝同步一键下单<br>两种方式可根据需要任意选择</p>
                 </li>
-                <li>
-                    <span class="icon-qgtp"></span>
-                    <h3>全国通票4.5元</h3>
-                    <p>超低快递费，为您节约发货成本</p>
-                </li>
+                
                 <li>
                     <span class="icon-jsfh"></span>
                     <h3>发货及时</h3>
