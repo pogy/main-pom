@@ -2,7 +2,9 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.OneItemResponse;
-import com.sun.istack.internal.NotNull;
+
+import javax.validation.constraints.NotNull;
+
 
 /**
  * 类名:OneItemRequest

@@ -71,7 +71,7 @@ public class AppStoreAction {
      * @param request
      * @return
      */
-    @RequestMapping("")
+    @RequestMapping("shopSearch")
     @ResponseBody
     public JSONObject shopSearch(ShopSearchRequest request) {
         ShopSearchResponse response = phoneSearchService.shopSearch(request);
