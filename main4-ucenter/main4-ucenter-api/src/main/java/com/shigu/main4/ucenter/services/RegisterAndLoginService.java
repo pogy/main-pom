@@ -11,6 +11,20 @@ import com.shigu.session.main4.enums.LoginFromType;
  * Created by Licca on 17/2/20.
  */
 public interface RegisterAndLoginService {
+    /**
+     * 产生用户token
+     * @param userId
+     * @return
+     */
+    String createToken(Long userId);
+
+    /**
+     * 验证token的准确性
+     * @param userId
+     * @param token
+     * @return
+     */
+    boolean checkToken(Long userId,String token);
 
     /**
      * 注册用户
