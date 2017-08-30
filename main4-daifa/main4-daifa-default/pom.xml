@@ -5,13 +5,13 @@
     <parent>
         <artifactId>main4-daifa</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.0-SNAPSHOT</version>
+        <version>4.2.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>sites.main</groupId>
     <artifactId>main4-daifa-default</artifactId>
-    <version>4.2.0-SNAPSHOT</version>
+    <version>4.2.1-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 

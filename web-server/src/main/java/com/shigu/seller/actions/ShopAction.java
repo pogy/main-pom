@@ -12,8 +12,6 @@ import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
 import com.shigu.buyer.vo.SafeRzVO;
 import com.shigu.buyer.vo.UserInfoVO;
-import com.shigu.component.common.globality.constant.SystemConStant;
-import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.component.shiro.MemberRealm;
 import com.shigu.component.shiro.exceptions.ChangeStoreException;
 import com.shigu.component.shiro.filters.MemberFilter;
