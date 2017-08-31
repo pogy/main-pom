@@ -529,6 +529,9 @@ public class UserLoginAction {
         }else{
             vo.setFromTaobao(false);
         }
+        if (ps.getLogshop()!=null) {
+            vo.setImSeller(true);
+        }
         return JSONObject.fromObject(vo).element("result","success");
     }
     /**
