@@ -44,7 +44,7 @@ public class DaifaAfterSaleAction {
         model.addAttribute("orders",pager.getContent());
         model.addAttribute("pageOption",pager.selPageOption(10));
         model.addAttribute("query",bo);
-
+        model.addAttribute("userName",auth.getDaifaUserName ());
         return "daifa/orderForServer";
     }
 
