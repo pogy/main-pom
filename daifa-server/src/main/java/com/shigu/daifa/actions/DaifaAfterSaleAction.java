@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -47,15 +48,15 @@ public class DaifaAfterSaleAction {
         return "daifa/orderForServer";
     }
 
-    @RequestMapping("daifa/addChildRemarkJson")
+    @RequestMapping(value = "daifa/addServerRemarkJson",method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject addChildRemarkJson(Long orderId,String remarkCon){
+    public JSONObject addServerRemarkJson(Long orderId,String remarkCon){
         if(orderId == null){
             return JsonResponseUtil.error("单号不能空");
         }
         if(StringUtils.isEmpty(remarkCon)){
             return JsonResponseUtil.error("备注不能为空");
         }
-        return daifaAfterSaleService.addChildRemarkJson(orderId,remarkCon);
+        return daifaAfterSaleService.addServerRemarkJson(orderId,remarkCon);
     }
 }

@@ -27,8 +27,8 @@ public interface OrderManageProcess {
 
     /**
      * 售后备注
-     * @param orderId
-     * @param mark
+     * @param orderId 单号
+     * @param mark 备注
      */
     void addAfterRemark(Long orderId,String mark) throws DaifaException;
     /**

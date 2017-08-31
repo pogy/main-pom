@@ -312,7 +312,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-daifa-api</artifactId>
-            <version>4.2.2-SNAPSHOT</version>
+            <version>${main4-daifa-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>

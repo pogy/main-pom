@@ -121,7 +121,7 @@ public class DaifaAfterSaleService {
         return pager;
     }
 
-    public JSONObject addChildRemarkJson(Long orderId, String remarkCon) {
+    public JSONObject addServerRemarkJson(Long orderId, String remarkCon) {
 
         try {
             orderManageProcess.addAfterRemark(orderId,remarkCon);
