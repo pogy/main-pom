@@ -63,6 +63,16 @@ public class RegisterAndLoginServiceImpl implements RegisterAndLoginService{
     @Resource(name = "tae_mall_shiguShopMapper")
     private ShiguShopMapper shiguShopMapper;
 
+    @Override
+    public String createToken(Long userId) {
+        return null;
+    }
+
+    @Override
+    public boolean checkToken(Long userId, String token) {
+        return false;
+    }
+
     /**
      * 注册新用户
      * @param user

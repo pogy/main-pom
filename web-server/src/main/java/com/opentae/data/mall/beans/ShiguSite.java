@@ -3,218 +3,129 @@ package com.opentae.data.mall.beans;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
- * Created by wxc on 2017/2/25.
+ * Created by wxc on 2017/2/23.
  *
  * @author wxc
  * @version domwiki 4.0.0
  * @since domwiki 4.0.0
  */
-public class ShiguGoodsCollect implements Serializable {
-    private static final long serialVersionUID = 6119793151295306994L;
-
-    /**
-     * 商品收藏ID
-     */
+public class ShiguSite implements Serializable, Comparable<ShiguSite> {
+    private static final long serialVersionUID = -4901628175795696263L;
     @Id
-    @GeneratedValue(generator = "JDBC")
-    private Long goodsCollectId;
-
-    /**
-     * 用户ID
-     */
-    private Long userId;
-
-    /**
-     * 商品ID
-     */
-    private Long goodsId;
-    /**
-     * 类别@ 1加数据包，2普通收藏
-     */
-    public Integer type;
-
-    /**
-     * 状态@0删除1有效
-     */
-    private Integer useStatus;
-
-    /**
-     * 店铺ID
-     */
-    private Long storeId;
-
-    /**
-     * 站点
-     */
-    private String website;
-
-    /**
-     * 排序
-     */
-    private Integer sortOrder;
-
-    /**
-     * 备用1
-     */
+    @GeneratedValue(
+            generator = "JDBC"
+    )
+    private Long buycityId;
+    private String siteName;
+    private String domain;
+    private String siteIp;
+    private String citySite;
+    private Long sortOrder;
+    private Long provinceId;
+    private String provinceName;
+    private Long cityId;
+    private String cityName;
     private String remark1;
-
-    /**
-     * 备用2
-     */
     private String remark2;
-
-    /**
-     * 备用3
-     */
     private String remark3;
-
-    /**
-     * 备用4
-     */
     private String remark4;
-
-    /**
-     * 备用5
-     */
     private String remark5;
-
-    /**
-     * 备用6
-     */
     private String remark6;
-
-    /**
-     * 备用7
-     */
     private String remark7;
-
-    /**
-     * 备用8
-     */
     private String remark8;
-
-    /**
-     * 备用9
-     */
     private String remark9;
-
-    /**
-     * 备用10
-     */
     private String remark10;
-
-    /**
-     * 备用11
-     */
     private String remark11;
-
-    /**
-     * 备用12
-     */
     private String remark12;
-
-    /**
-     * 备用13
-     */
     private String remark13;
-
-    /**
-     * 备用14
-     */
     private String remark14;
-
-    /**
-     * 备用15
-     */
     private String remark15;
-
-    /**
-     * 备用16
-     */
     private String remark16;
-
-    /**
-     * 备用17
-     */
     private String remark17;
-
-    /**
-     * 备用18
-     */
     private String remark18;
-
-    /**
-     * 备用19
-     */
     private String remark19;
-
-    /**
-     * 备用20
-     */
     private String remark20;
 
-    /**
-     *
-     */
-    private Date lastTime;
-
-    public Long getGoodsCollectId() {
-        return goodsCollectId;
+    public Long getBuycityId() {
+        return buycityId;
     }
 
-    public void setGoodsCollectId(Long goodsCollectId) {
-        this.goodsCollectId = goodsCollectId;
+    public void setBuycityId(Long buycityId) {
+        this.buycityId = buycityId;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getSiteName() {
+        return siteName;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
     }
 
-    public Long getGoodsId() {
-        return goodsId;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
-    public Integer getUseStatus() {
-        return useStatus;
+    public String getSiteIp() {
+        return siteIp;
     }
 
-    public void setUseStatus(Integer useStatus) {
-        this.useStatus = useStatus;
+    public void setSiteIp(String siteIp) {
+        this.siteIp = siteIp;
     }
 
-    public Long getStoreId() {
-        return storeId;
+    public String getCitySite() {
+        return citySite;
     }
 
-    public void setStoreId(Long storeId) {
-        this.storeId = storeId;
+    public void setCitySite(String citySite) {
+        this.citySite = citySite;
     }
 
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public Integer getSortOrder() {
+    public Long getSortOrder() {
         return sortOrder;
     }
 
-    public void setSortOrder(Integer sortOrder) {
+    public void setSortOrder(Long sortOrder) {
         this.sortOrder = sortOrder;
+    }
+
+    public Long getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Long provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
     public String getRemark1() {
@@ -377,19 +288,8 @@ public class ShiguGoodsCollect implements Serializable {
         this.remark20 = remark20;
     }
 
-    public Date getLastTime() {
-        return lastTime;
-    }
-
-    public void setLastTime(Date lastTime) {
-        this.lastTime = lastTime;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
+    @Override
+    public int compareTo(ShiguSite o) {
+        return (int) (this.getSortOrder() - o.getSortOrder());
     }
 }

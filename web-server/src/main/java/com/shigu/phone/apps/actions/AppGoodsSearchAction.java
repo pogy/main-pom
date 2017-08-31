@@ -28,20 +28,20 @@ public class AppGoodsSearchAction {
     @Autowired
     private PhoneGoodsSearchService phoneGoodsSearchService;
 
-    //@RequestMapping("")
-    //@ResponseBody
+    @RequestMapping("itemSearch")
+    @ResponseBody
     public JSONObject itemSearch(ItemSearchRequest request) {
         return JSONObject.fromObject(phoneGoodsSearchService.itemSearch(request));
     }
 
-    //@RequestMapping("")
-    //@ResponseBody
+    @RequestMapping("imgSearch")
+    @ResponseBody
     public JSONObject imgSearch(ImgSearchRequest request) {
         return JSONObject.fromObject(phoneGoodsSearchService.imgSearch(request));
     }
 
-    //@RequestMapping("")
-    //@ResponseBody
+    @RequestMapping("oneItem")
+    @ResponseBody
     public JSONObject oneItem(@Valid OneItemRequest request, BindingResult bindingResult) {
         return JSONObject.fromObject(phoneGoodsSearchService.oneItem(request));
     }

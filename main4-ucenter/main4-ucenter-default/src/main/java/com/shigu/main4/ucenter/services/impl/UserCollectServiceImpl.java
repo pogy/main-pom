@@ -103,12 +103,12 @@ public class UserCollectServiceImpl implements UserCollectService {
         if (userId == null)
             return pager;
 
-        int count = shiguGoodsCollectMapper.countTinyGoodsCollect(userId, keyword, webSite);
+        int count = shiguGoodsCollectMapper.countTinyGoodsCollect(userId, keyword, webSite,1);//1表示类型为数据包
         pager.calPages(count, pageSize);
         if (count > 0) {
             List<TinyItemCollect> shiguGoodsCollects
                     = shiguGoodsCollectMapper.tinyGoodsCollect(
-                    userId, keyword, webSite, (pageNo - 1) * pageSize, pageSize);
+                    userId, keyword, webSite, (pageNo - 1) * pageSize, pageSize,1);//1表示类型为数据包
             pager.setContent(BeanMapper.mapList(shiguGoodsCollects, ItemCollectVO.class));
         }
         return pager;
@@ -132,7 +132,7 @@ public class UserCollectServiceImpl implements UserCollectService {
     }
 
     /**
-     * 添加商品收藏
+     * 添加数据包
      *
      * @param collect 收藏
      */
@@ -143,14 +143,18 @@ public class UserCollectServiceImpl implements UserCollectService {
         }
         ShiguGoodsCollectExample collectExample = new ShiguGoodsCollectExample();
         collectExample.createCriteria().andGoodsIdEqualTo(collect.getItemId())
-                .andUserIdEqualTo(collect.getUserId());
+                .andUserIdEqualTo(collect.getUserId())
+                .andTypeEqualTo(1);//1为数据包
         List<ShiguGoodsCollect> shiguGoodsCollects = shiguGoodsCollectMapper.selectByExample(collectExample);
         if (shiguGoodsCollects.isEmpty()) {
             ShiguGoodsCollect goodsCollect = BeanMapper.map(collect, ShiguGoodsCollect.class);
             goodsCollect.setGoodsId(collect.getItemId());
+            goodsCollect.setType(1);//1为数据包
+            goodsCollect.setUseStatus(1);
             shiguGoodsCollectMapper.insertSelective(goodsCollect);
-        } else
+        } else {
             throw new ItemCollectionException(ItemCollectionException.ItemCollecExcpEnum.CollectionAlreadyExist);
+        }
     }
 
 

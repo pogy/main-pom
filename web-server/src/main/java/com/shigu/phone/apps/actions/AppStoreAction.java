@@ -77,7 +77,7 @@ public class AppStoreAction {
      * @param request
      * @return
      */
-    @RequestMapping("")
+    @RequestMapping("shopSearch")
     @ResponseBody
     public JSONObject shopSearch(ShopSearchRequest request) throws Main4Exception {
         ShopSearchResponse response = phoneSearchService.shopSearch(request);

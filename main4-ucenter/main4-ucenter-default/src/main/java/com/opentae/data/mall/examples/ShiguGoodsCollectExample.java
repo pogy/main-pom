@@ -38,6 +38,7 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
     public static EntityColumn remark1;
     public static EntityColumn remark3;
     public static EntityColumn remark2;
+    public static EntityColumn type;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -72,6 +73,7 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
         remark1 = listMap.get("remark1");
         remark3 = listMap.get("remark3");
         remark2 = listMap.get("remark2");
+        type = listMap.get("type");
         }
 
     public ShiguGoodsCollectExample() {
@@ -1576,6 +1578,9 @@ public class ShiguGoodsCollectExample extends SgExample<ShiguGoodsCollectExample
 
         public ShiguGoodsCollectExample.Criteria andRemark2NotBetween(String value1, String value2) {
             return notBetween(remark2, value1, value2);
+        }
+        public ShiguGoodsCollectExample.Criteria andTypeEqualTo(Integer value){
+            return equalTo(type,value);
         }
     }
 }
