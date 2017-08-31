@@ -11,6 +11,7 @@ import com.openJar.requests.app.OneItemRequest;
 import com.openJar.responses.app.ImgSearchResponse;
 import com.openJar.responses.app.ItemSearchResponse;
 import com.openJar.responses.app.OneItemResponse;
+import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.tools.ShiguPager;
@@ -27,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -146,5 +148,25 @@ public class PhoneGoodsSearchService {
             resp.setException(new OpenException());
         }
         return resp;
+    }
+    /**
+     * 收藏店铺
+     * @param userId
+     * @param bo
+     * @return
+     */
+    public boolean addShopCollect(Long userId, ScStoreBO bo){
+        boolean result=cdnService.addShopCollect(userId,bo);
+        return result;
+    }
+    /**
+     * 按主键删除店铺收藏
+     * @param userId
+     * @param collectIds
+     * @return
+     */
+    public boolean delShopCollection(Long userId, List<Long> collectIds){
+        boolean result=cdnService.delShopCollection(userId,collectIds);
+        return result;
     }
 }
