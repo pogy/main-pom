@@ -107,7 +107,7 @@
     <ul class="orderSearchBox">
         <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
         <li><label>下单人ID：</label><input type="text" class="fmInput" name="buyerId" <#if query.buyerId??> value="${query.buyerId!}" </#if>></li>
-        <li><label>收件人姓名：</label><input type="text" class="fmInput" name="recevier" <#if query.recevier??> value="${query.recevier!}" </#if>></li>
+        <li><label>收件人姓名：</label><input type="text" class="fmInput" name="receiver" <#if query.receiver??> value="${query.receiver!}" </#if>></li>
         <li><label>收件人手机号码：</label><input type="text" class="fmInput" name="telphone" <#if query.telphone??> value="${query.telphone!}" </#if>></li>
         <li>
 
@@ -173,7 +173,7 @@
 
 
 
-<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"buyerId","value":"${query.buyerId!}"},{"name":"recevier","value":"${query.recevier!}"},{"name":"telphone","value":"${query.telphone!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"buyerId","value":"${query.buyerId!}"},{"name":"receiver","value":"${query.receiver!}"},{"name":"telphone","value":"${query.telphone!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
