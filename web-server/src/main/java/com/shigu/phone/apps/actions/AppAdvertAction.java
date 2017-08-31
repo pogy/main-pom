@@ -6,6 +6,7 @@ import com.openJar.requests.app.ImgSpreadRequest;
 import com.openJar.requests.app.ItemSpreadRequest;
 import com.openJar.responses.app.ImgSpreadResponse;
 import com.openJar.responses.app.ItemSpreadResponse;
+import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.phone.apps.services.AppAdvertService;
 import com.shigu.spread.enums.SpreadEnum;
 import com.shigu.spread.services.SpreadService;
@@ -40,9 +41,9 @@ public class AppAdvertAction {
      */
     @RequestMapping("app/imgSpread")
     @ResponseBody
-    public JSONObject imgSpread(ImgSpreadRequest request){
+    public JSONObject imgSpread(ImgSpreadRequest request) throws Main4Exception {
         if(request.getSpreadCode() == null || request.getWebSite() == null){
-
+            throw new Main4Exception("缺少参数");
         }
         SpreadEnum spread=null;
         for(SpreadEnum spreadEnum:SpreadEnum.values()){
@@ -52,7 +53,7 @@ public class AppAdvertAction {
             }
         }
         if (spread == null) {
-
+            throw new Main4Exception("缺少错误:spreadCode="+request.getSpreadCode());
         }
         return JSONObject.fromObject(appAdvertService.imgSpread(spread));
     }
@@ -64,9 +65,9 @@ public class AppAdvertAction {
      */
     @RequestMapping("app/itemSpread")
     @ResponseBody
-    public JSONObject itemSpread(ItemSpreadRequest request){
+    public JSONObject itemSpread(ItemSpreadRequest request) throws Main4Exception {
         if(request.getSpreadCode() == null || request.getWebSite() == null){
-
+            throw new Main4Exception("缺少参数");
         }
         SpreadEnum spread=null;
         for(SpreadEnum spreadEnum:SpreadEnum.values()){
@@ -76,7 +77,7 @@ public class AppAdvertAction {
             }
         }
         if (spread == null) {
-
+            throw new Main4Exception("缺少错误:spreadCode="+request.getSpreadCode());
         }
         return JSONObject.fromObject(appAdvertService.itemSpread(request.getWebSite(),spread));
     }
