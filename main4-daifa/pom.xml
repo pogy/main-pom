@@ -5,14 +5,12 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.1-SNAPSHOT</version>
+        <version>4.2.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>sites.main</groupId>
     <artifactId>main4-daifa</artifactId>
     <packaging>pom</packaging>
-    <version>4.2.1-SNAPSHOT</version>
     <modules>
         <module>main4-daifa-api</module>
         <module>main4-daifa-default</module>

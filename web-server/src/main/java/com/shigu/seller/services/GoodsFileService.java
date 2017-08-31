@@ -360,7 +360,6 @@ public class GoodsFileService extends OssIO {
         }
         for(Long id:longIds){
             try {
-                // TODO: 2017/8/30 需要 密码
                 itemPicRelationService.addFileRelation(id,getHomeDir(shopId)+fileKey);
             } catch (Exception e) {
             }
