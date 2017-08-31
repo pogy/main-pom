@@ -3,11 +3,36 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>全部订单 - 星帮后台管理 - 四季星座网</title>
+
+    
+    
+    
+    
 <#include "/common/host_config.ftl">
+
+
+
+
+
+    
     <link href="http://style.571xz.com/v2/dfgl/css/orderAll.css" rel="stylesheet">
+    
+
+    
+
+    
+
+    
+        
+    
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
+    
+        
+            <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
+        
+    
     <script src="http://style.571xz.com/v2/dfgl/js/orderAll.js"></script>
 </head>
 <body>
@@ -23,6 +48,9 @@
         <a href="${daifa_host!}init/logout.htm" class="fcF40 fs16">退出</a>
     </div>
 </div>
+
+
+
 
 <div class="mainContent">
     <div class="sideBarBox">
@@ -56,6 +84,9 @@
     </@shiro.hasAnyPermissions>
     </ul>
 </div>
+
+
+
 
     </div>
     <div class="contentBox">
@@ -361,6 +392,7 @@
         </#list>
     </div>
     </#list>
+</div>
     
 
 <#assign text>{}</#assign>
@@ -383,7 +415,21 @@
 
 </#list>
 
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
