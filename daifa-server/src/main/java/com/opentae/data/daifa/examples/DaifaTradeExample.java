@@ -1094,7 +1094,13 @@ public class DaifaTradeExample extends SgExample<DaifaTradeExample.Criteria> {
         public DaifaTradeExample.Criteria andDfTradeIdGreaterThanOrEqualTo(Long value) {
             return greaterThanOrEqualTo(dfTradeId, value);
         }
+        public DaifaTradeExample.Criteria andDfTradeIdLike(String value) {
+            return like(dfTradeId, value);
+        }
 
+        public DaifaTradeExample.Criteria andDfTradeIdNotLike(String value) {
+            return notLike(dfTradeId, value);
+        }
         public DaifaTradeExample.Criteria andDfTradeIdLessThan(Long value) {
             return lessThan(dfTradeId, value);
         }
