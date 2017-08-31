@@ -2,6 +2,9 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.ShopCatResponse;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * 类名:ShopCatRequest
  * 类路径:com.openJar.requests.appShopCatRequest
@@ -11,8 +14,10 @@ import com.openJar.responses.app.ShopCatResponse;
  */
 public class ShopCatRequest extends Request<ShopCatResponse> {
 	//分站标识	必须
+	@NotNull(message = "webSite is null")
 	private String webSite;
 	//店铺ID	必须
+	@NotNull(message = "shopId is null")
 	private Long shopId;
 	public String getWebSite(){
 		return webSite;

@@ -2,6 +2,9 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.OneShopResponse;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * 类名:OneShopRequest
  * 类路径:com.openJar.requests.appOneShopRequest
@@ -11,8 +14,10 @@ import com.openJar.responses.app.OneShopResponse;
  */
 public class OneShopRequest extends Request<OneShopResponse> {
 	//	必须
+	@NotNull(message = "shopId is null")
 	private Long shopId;
 	//分站标识	必须
+	@NotNull(message = "webSite is null")
 	private String webSite;
 	public Long getShopId(){
 		return shopId;

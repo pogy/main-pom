@@ -31,6 +31,10 @@ public class ShiguGoodsCollect implements Serializable {
      * 商品ID
      */
     private Long goodsId;
+    /**
+     * 类别@ 1加数据包，2普通收藏
+     */
+    public Integer type;
 
     /**
      * 状态@0删除1有效
@@ -379,5 +383,13 @@ public class ShiguGoodsCollect implements Serializable {
 
     public void setLastTime(Date lastTime) {
         this.lastTime = lastTime;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 }

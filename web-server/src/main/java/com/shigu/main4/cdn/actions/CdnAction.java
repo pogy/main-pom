@@ -478,6 +478,7 @@ public class CdnAction {
 
     /**
      * 收藏商品
+     * 改为加数据包
      * @param bo
      */
     @RequestMapping({"jsonScAddGoods","jsonScAdd"})
