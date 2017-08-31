@@ -2,6 +2,7 @@ package com.shigu.main4.cdn.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ItemTradeForbidExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.ShiguTempExample;
 import com.opentae.data.mall.interfaces.*;
@@ -87,6 +88,12 @@ public class CdnService {
 
     @Autowired
     ShiguTempMapper shiguTempMapper;
+
+    /**
+     * 禁止销售的
+     */
+    @Autowired
+    ItemTradeForbidMapper itemTradeForbidMapper;
 
     /**
      * banner部分的html
@@ -253,6 +260,26 @@ public class CdnService {
 //===================================================20170725张峰=======================================================
 
     /**
+     * 检测是否可销售
+     * @param marketId
+     * @param storeId
+     * @param goodsId
+     * @param webSite
+     * @return
+     */
+    public boolean canSale(Long marketId,Long storeId,Long goodsId,String webSite){
+        if (!webSite.equals("hz")){
+            return false;
+        }
+        ItemTradeForbidExample example=new ItemTradeForbidExample();
+        example.createCriteria().andTypeEqualTo(1).andTargetIdEqualTo(marketId);//市场的
+        example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来
+        example.or().andTypeEqualTo(3).andTargetIdEqualTo(goodsId);//按商品
+//        example.or().andTypeEqualTo(4).andTargetIdEqualTo(cid);//按类目
+        return itemTradeForbidMapper.countByExample(example)==0;
+    }
+
+    /**
      * 商品详情页,商品数据
      * @param goodsId
      * @return
@@ -262,13 +289,13 @@ public class CdnService {
         CdnGoodsInfoVO vo=new CdnGoodsInfoVO();
         CdnItem cdnItem=showForCdnService.selItemById(goodsId);
         vo.setOnSale(cdnItem!=null&&cdnItem.getOnsale());
-        vo.setOnlineSale(true);
         if(cdnItem==null){//已经下架
             cdnItem=showForCdnService.selItemInstockById(goodsId);
         }
         if(cdnItem==null){//商品不存在
             throw new CdnException("商品不存在");
         }
+        vo.setOnlineSale(canSale(cdnItem.getMarketId(),cdnItem.getShopId(),goodsId,cdnItem.getWebSite()));
         vo.setGoodsId(goodsId);
         vo.setGoodsNo(cdnItem.getHuohao());
         vo.setImgUrls(cdnItem.getImgUrl());
