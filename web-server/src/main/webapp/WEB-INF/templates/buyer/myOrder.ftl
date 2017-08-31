@@ -450,7 +450,8 @@ var webSite = '${webSite!}';
                 <#if order.mainState == 2>
                 <p><a href="javascript:;" onclick="applyRefund(${childOrder.childOrderId!})">申请退款</a></p>
                 <#elseif order.mainState == 3>
-                <p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+                <p><a href="JavaScript:;" class="fc9" jbtn="returnOrChange">申请售后</a></p>
+                <!--<p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>-->
                 <#elseif order.mainState == 4>
                 ——
                 </#if>
@@ -538,6 +539,8 @@ var webSite = '${webSite!}';
         </#if>
     </li>
 </ul>
+
+
 
 
 
