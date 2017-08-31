@@ -904,7 +904,7 @@ public class MemberAction {
      * 申请提现链接
      * @return
      */
-    @RequestMapping("member/rechargeJson")
+    @RequestMapping({"member/rechargeJson","seller/rechargeJson"})
     @ResponseBody
     public JSONObject rechargeJson(HttpSession session,Double money) throws PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
