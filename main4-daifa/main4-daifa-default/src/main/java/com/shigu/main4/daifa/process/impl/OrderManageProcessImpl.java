@@ -177,7 +177,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     private List<Long> refundChecked(String outerSubOrderId,int type) throws OrderNotFindException {
         DaifaOrderExample orderExample = new DaifaOrderExample();
         orderExample.createCriteria().andOrderCodeEqualTo(outerSubOrderId);
-        List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id"));
+        List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(orderExample, FieldUtil.codeFields("df_order_id,order_partition_id,order_status"));
         if(orders.size()==0){
             throw new OrderNotFindException();
         }
