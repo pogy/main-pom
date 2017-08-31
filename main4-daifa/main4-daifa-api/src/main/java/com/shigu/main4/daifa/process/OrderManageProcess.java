@@ -26,6 +26,12 @@ public interface OrderManageProcess {
     void markSubOrder(Long subOrderId,String mark) throws DaifaException;
 
     /**
+     * 售后备注
+     * @param orderId
+     * @param mark
+     */
+    void addAfterRemark(Long orderId,String mark) throws DaifaException;
+    /**
      * 设置有货时间
      * @param subOrderId 子订单数据
      * @param time 有货时间
