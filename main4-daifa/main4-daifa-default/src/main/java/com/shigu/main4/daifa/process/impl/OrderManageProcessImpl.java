@@ -20,6 +20,7 @@ import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.tools.SpringBeanFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,26 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     public void markSubOrder(Long subOrderId, String mark) throws DaifaException {
         SubOrderModel subOrderModel = SpringBeanFactory.getBean(SubOrderModel.class, subOrderId);
         subOrderModel.mark(mark);
+    }
+
+    /**
+     * 售后备注
+     * @param orderId 单号
+     * @param mark 备注内容给
+     */
+    @Override
+    public void addAfterRemark(Long orderId, String mark) throws DaifaException {
+        DaifaTrade trade = daifaTradeMapper.selectFieldsByPrimaryKey(orderId,
+                FieldUtil.codeFields("df_trade_id,after_remark"));
+        if(trade == null){
+            throw new DaifaException("不存在此订单");
+        }
+        if(StringUtils.isEmpty(trade.getAfterRemark())){
+            trade.setAfterRemark(mark);
+        }else{
+            trade.setAfterRemark(trade.getAfterRemark()+"\n"+mark);
+        }
+        daifaTradeMapper.updateByPrimaryKeySelective(trade);
     }
 
     /**

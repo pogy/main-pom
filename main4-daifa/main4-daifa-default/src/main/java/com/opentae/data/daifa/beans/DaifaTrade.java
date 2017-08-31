@@ -118,6 +118,10 @@ public class DaifaTrade implements Serializable {
 	private String receiverQq;
 	/**买家昵称*/
 	private String buyerNick;
+	/**
+	 * 售后备注
+	 */
+	private String afterRemark;
 	 
 	 //*************************get/set*****************************
     	/**
@@ -1032,4 +1036,12 @@ public class DaifaTrade implements Serializable {
     public void setBuyerNick(String buyerNick) {
         this.buyerNick = buyerNick;
     }
+
+	public String getAfterRemark() {
+		return afterRemark;
+	}
+
+	public void setAfterRemark(String afterRemark) {
+		this.afterRemark = afterRemark;
+	}
 }

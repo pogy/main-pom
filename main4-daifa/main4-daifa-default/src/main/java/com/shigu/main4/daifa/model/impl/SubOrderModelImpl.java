@@ -164,7 +164,7 @@ public class SubOrderModelImpl implements SubOrderModel {
         if(remark==null){
             remark=context;
         }else{
-            remark+="\r\n"+context;
+            remark+="\n"+context;
         }
         updateOrder.setOrderRemark(remark);
         daifaOrderMapper.updateByPrimaryKeySelective(updateOrder);
