@@ -405,12 +405,14 @@ var webSite = '${webSite!}';
                     <h3>方便快捷</h3>
                     <p>支持手动下单与淘宝同步一键下单<br>两种方式可根据需要任意选择</p>
                 </li>
+                <li class="icon-step"></li>
                 
                 <li>
                     <span class="icon-jsfh"></span>
                     <h3>发货及时</h3>
                     <p>一般每日16点前下的不缺货订单<br>保证当天发货</p>
                 </li>
+                <li class="icon-step"></li>
                 <li>
                     <span class="icon-fwbz"></span>
                     <h3>服务保障</h3>
