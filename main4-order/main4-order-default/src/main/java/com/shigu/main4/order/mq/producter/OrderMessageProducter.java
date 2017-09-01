@@ -34,7 +34,7 @@ public class OrderMessageProducter {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderMessageProducter.class);
 
-    public static final String TOPIC = "SHIGU_TRADE_TEST";
+    public static String TOPIC;
 
     public enum OrderMQTag {
         order_push("oid_"),
@@ -48,6 +48,10 @@ public class OrderMessageProducter {
         OrderMQTag(String preKey) {
             this.preKey = preKey;
         }
+    }
+
+    public void init(){
+        TOPIC=producerBean.getProperties().getProperty("topic");
     }
 
     @Autowired
@@ -67,6 +71,7 @@ public class OrderMessageProducter {
      * @param itemOrder
      */
     public void orderPush(ItemOrder itemOrder) {
+
         OrderMessage order = new OrderMessage();
         ItemOrderVO itemOrderVO = itemOrder.orderInfo();
 
