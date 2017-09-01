@@ -9,7 +9,6 @@ import com.opentae.data.daifa.custom.beans.DaifaGgoodsJoinOrder;
 import com.opentae.data.daifa.examples.DaifaGgoodsExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
-import com.opentae.data.daifa.examples.DaifaWorkerExample;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsMapper;
 import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
 import com.opentae.data.daifa.interfaces.DaifaWorkerMapper;
@@ -133,6 +132,7 @@ public class DaifaAllocatedService {
         DaifaWorker tmpw=new DaifaWorker();
         tmpw.setDaifaSellerId(sellerId);
         tmpw.setUseStatus(1);
+        tmpw.setWorkType(1);
         List<DaifaWorker> ws=daifaWorkerMapper.select(tmpw);
         List<DaifaWorkerVO> vos=new ArrayList<>();
         for(DaifaWorker w:ws){
