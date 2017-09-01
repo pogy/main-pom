@@ -253,6 +253,9 @@
             <div class="leftConBox fl">
                 <span>订单编号：${order.orderId!}</span>
                 <span>时间：${order.tradeTime!}</span>
+                <#if order.oldOrder == true>
+                <i class="fcF40 icon-old oldOrder"></i>
+                </#if>
                 
             </div>
             <div class="rightConBox fr">

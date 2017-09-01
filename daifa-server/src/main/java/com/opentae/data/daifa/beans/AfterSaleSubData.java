@@ -17,24 +17,24 @@ public class AfterSaleSubData implements Serializable {
     @Transient
     private static final long serialVersionUID = 2305293469566510639L;
 
-    @Column("daifa_after_sale_sub.df_order_id")
+    @Column("daifa_order.df_order_id")
     private String childOrderId;//子单id
-    @Column("daifa_after_sale_sub.pic_path")
+    @Column("daifa_order.pic_path")
     private String imgSrc;//商品图片
-    @Column("daifa_after_sale_sub.title")
+    @Column("daifa_order.title")
     private String title;//商品标题
-    @Column("daifa_after_sale_sub.prop_str")
+    @Column("daifa_order.prop_str")
     private String goodsProperty;//商品属性 颜色 尺码
-    @Column("daifa_after_sale_sub.goods_code")
+    @Column("daifa_order.goods_code")
     private String goodsNo;//商品货号
-    @Column("daifa_after_sale_sub.single_price")
+    @Column("daifa_order.single_price")
     private String piPrice;//商品批发价
-    @Column("daifa_after_sale_sub.single_pi_price")
+    @Column("daifa_order.single_pi_price")
     private String payPrice;//商品实际支付价
-    @Column("daifa_after_sale_sub.goods_num")
+    @Column("daifa_order.goods_num")
     private String num;//商品数量
-//    @Column("daifa_after_sale_sub.single_services_fee")
-//    private String childServersFee;//子单服务费用
+    @Column("daifa_order.single_services_fee")
+    private String childServersFee;//子单服务费用
 
 
     public String getChildOrderId() {
@@ -99,5 +99,13 @@ public class AfterSaleSubData implements Serializable {
 
     public void setNum(String num) {
         this.num = num;
+    }
+
+    public String getChildServersFee() {
+        return childServersFee;
+    }
+
+    public void setChildServersFee(String childServersFee) {
+        this.childServersFee = childServersFee;
     }
 }
