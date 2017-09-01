@@ -88,6 +88,7 @@ public class MyTbOrderService {
             TbOrderVO vo=taoOrderService.myTbOrder(orderId,TbOrderStatusEnum.WAIT_SELLER_SEND_GOODS,sessionKey);
             List<TbOrderVO> list=new ArrayList<>();
             if(vo!=null){
+                linkGoodsNo(vo);
                 list.add(vo);
             }
             v.setContent(list);
@@ -112,28 +113,7 @@ public class MyTbOrderService {
         ShiguPager<TbOrderVO> tvo=taoOrderService.myTbOrders(bo,sessionKey);
         List<TbOrderVO> vos=tvo.getContent();
         for(TbOrderVO vo:vos){
-            vo.setCanOrder(true);
-            vo.setProfits(null);
-
-            Long lr=0l;
-            for(SubTbOrderVO subvo:vo.getChildOrders()){
-                if(StringUtils.isEmpty(subvo.getGoodsNo())){
-                    try {
-                        TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(subvo.getNumiid());
-                        if (rgv != null) {
-                            subvo.setGoodsNo(rgv.getGoodsNo());
-                            subvo.setXzPrice(rgv.getPiPriceString());
-                            subvo.setWebSite(rgv.getWebSite());
-                            lr+= subvo.getNewTbPriceLong()-rgv.getPiPrice();
-                        }
-                    } catch (NotFindRelationGoodsException e) {
-                        vo.setCanOrder(false);
-                    }
-                }
-            }
-            if(vo.isCanOrder()){
-                vo.setProfits(PriceConvertUtils.priceToString(lr));
-            }
+            linkGoodsNo(vo);
         }
         return tvo;
     }
@@ -277,5 +257,30 @@ public class MyTbOrderService {
             }
         }
         return similarityTownMap;
+    }
+
+    private void linkGoodsNo(TbOrderVO vo){
+        vo.setCanOrder(true);
+        vo.setProfits(null);
+
+        Long lr= 0L;
+        for(SubTbOrderVO subvo:vo.getChildOrders()){
+            if(StringUtils.isEmpty(subvo.getGoodsNo())){
+                try {
+                    TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(subvo.getNumiid());
+                    if (rgv != null) {
+                        subvo.setGoodsNo(rgv.getGoodsNo());
+                        subvo.setXzPrice(rgv.getPiPriceString());
+                        subvo.setWebSite(rgv.getWebSite());
+                        lr+= subvo.getNewTbPriceLong()-rgv.getPiPrice();
+                    }
+                } catch (NotFindRelationGoodsException e) {
+                    vo.setCanOrder(false);
+                }
+            }
+        }
+        if(vo.isCanOrder()){
+            vo.setProfits(PriceConvertUtils.priceToString(lr));
+        }
     }
 }
