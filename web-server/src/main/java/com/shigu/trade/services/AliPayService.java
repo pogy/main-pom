@@ -25,6 +25,9 @@ public class AliPayService {
     @Value("${alipayPulicKey}")
     private String alipayPulicKey;
 
+    @Value("${signType}")
+    private String signType;
+
     @Transactional(rollbackFor = Exception.class)
     public void payNotice(Map<String, String> paramsMapAli) throws PayerException {
         String outTradeNo = paramsMapAli.get("out_trade_no");
@@ -38,5 +41,9 @@ public class AliPayService {
 
     public String getPublicKey() {
         return alipayPulicKey;
+    }
+
+    public String getSignType() {
+        return signType;
     }
 }
