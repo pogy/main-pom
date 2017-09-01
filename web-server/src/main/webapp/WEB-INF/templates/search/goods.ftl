@@ -259,7 +259,7 @@ var webSite = '${webSite!}';
                 <#if webSite == "hz">
                 <li ><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 </#if>
-                <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
+                <li><a href="/daifaIndex.htm" target="_blank">一件代发</a></li>
                 <#if webSite == "hz">
                 <li><a href="http://www.571xz.com/shopIconCopyright.htm">知识产权</a></li>
                 </#if>
@@ -378,7 +378,7 @@ var webSite = '${webSite!}';
             </div>
             <div class="sortPriceBox<#if query.sort == 'price-asc' || query.sort == 'price-desc'> actived</#if>">
                 
-                <#if query.sort == 'price-desc'>
+                <#if query.sort == 'price-desc'> 
                 <b class="initial">批发价从高到低<i class="imgicon16"></i></b>
                 <div class="hoverBox">
                     <b class="selected">批发价从高到低</b>

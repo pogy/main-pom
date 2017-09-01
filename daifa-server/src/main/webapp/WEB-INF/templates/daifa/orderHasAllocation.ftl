@@ -55,8 +55,8 @@
 <div class="mainContent">
     <div class="sideBarBox">
         <div class="sidebar fl yahei">
-            <ul>
-            <@shiro.hasAnyPermissions name="df:admin,df:kefu">
+    <ul>
+        <@shiro.hasAnyPermissions name="df:admin,df:kefu">
                 <li>
                     <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
                 </li>
@@ -94,7 +94,7 @@
 
                 </li>
             </@shiro.hasAnyPermissions>
-            </ul>
+    </ul>
 </div>
 
 
@@ -179,7 +179,15 @@
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
-    <input type=hidden name="${field.name!}" value="${field.value!}">
+        <#if field.timeFormat??>
+            <#if field.value??>
+            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
+            <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+            </#if>
+        <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+        </#if>
     </#list>
 </form>
 </#if>
@@ -437,6 +445,21 @@
 </#list>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

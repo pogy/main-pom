@@ -283,7 +283,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li >
-            <a href="http://daifa.571xz.com/" target="_blank">
+            <a href="/daifaIndex.htm" target="_blank">
                 一件代发
                 
                 

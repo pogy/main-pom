@@ -3,10 +3,30 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>客服查询 - 星帮后台管理 - 四季星座网</title>
+
+    
+    
+    
+    
 <#include "/common/host_config.ftl">
+
+
+
+
+
+    
     <link href="http://style.571xz.com/v2/dfgl/css/orderForServer.css" rel="stylesheet">
+    
+
+    
+
+    
+
+    
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
+    
     <script src="http://style.571xz.com/v2/dfgl/js/orderForServer.js"></script>
 </head>
 <body>
@@ -23,49 +43,54 @@
     </div>
 </div>
 
+
+
+
 <div class="mainContent">
     <div class="sideBarBox">
         <div class="sidebar fl yahei">
-            <ul>
-            <@shiro.hasAnyPermissions name="df:admin,df:kefu">
-                <li>
-                    <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
-                </li>
-            </@shiro.hasAnyPermissions>
-            <@shiro.hasAnyPermissions name="df:kefu">
-                <li>
-                    <a class="current" href="orderForServer.htm"><i class="icon-allorders"></i>客服查询</a>
-                </li>
-            </@shiro.hasAnyPermissions>
-            <@shiro.hasAnyPermissions name="df:admin">
-                <li>
+    <ul>
+        
+		<@shiro.hasAnyPermissions name="df:admin,df:kefu">
+			<li>
+				<a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
+			</li>
+		</@shiro.hasAnyPermissions>
+		<@shiro.hasAnyPermissions name="df:kefu">
+			<li>
+				<a class="current" href="orderForServer.htm"><i class="icon-allorders"></i>客服查询</a>
+			</li>
+		</@shiro.hasAnyPermissions>
+		<@shiro.hasAnyPermissions name="df:admin">
+			<li>
 
-                    <a  href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
+				<a  href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
 
 
-                    <ul>
+				<ul>
 
-                        <li>
+					<li>
 
-                            <a   href="orderAllocation.htm"><i></i>任务分配</a>
+						<a   href="orderAllocation.htm"><i></i>任务分配</a>
 
-                        </li>
+					</li>
 
-                        <li>
+					<li>
 
-                            <a href="orderHasAllocation.htm"><i></i>我的任务</a>
+						<a href="orderHasAllocation.htm"><i></i>我的任务</a>
 
-                        </li>
+					</li>
 
-                        <li>
-                            <a href="scanBarCode.htm"><i></i>扫描打印</a>
-                        </li>
+					<li>
+						<a href="scanBarCode.htm"><i></i>扫描打印</a>
+					</li>
 
-                    </ul>
+				</ul>
 
-                </li>
-            </@shiro.hasAnyPermissions>
-            </ul>
+			</li>
+		</@shiro.hasAnyPermissions>
+        
+    </ul>
 </div>
 
 
@@ -235,12 +260,9 @@
         </li>
         <li class="tradeState">
             <#if childOrder_index == 0>
-                <#if order.tradeState == 1>
-                <p>未发货</p>
-                <#elseif order.tradeState == 2>
+                
                 <p>已发货</p>
                 <p>${order.sendTime!}</p>
-                </#if>
                 <p>${order.expressName!}</p>
                 <#if order.tradeState == 2>
                     <p>（${order.expressCode!}）</p>
@@ -250,11 +272,7 @@
         <li class="remark">
             <#if childOrder_index == 0>
             <div class="childOrderRemark pr">
-                <#if order.childRemark??>
-                <#list order.childRemark as remark>
-                    <p>${remark!}</p>
-                </#list>
-                </#if>
+                <p class="childRemark">${order.childRemark!}</p>
                 <!--<i class="icon-s-message iconfont <#if childOrder.childRemark??>haveRemark</#if>"></i>-->
                 <p><b class="addChildRemark" jbtn="addChildRemark">添加备注</b></p>
             </div>
@@ -262,6 +280,8 @@
         </li>
     </ul>
 </div>
+
+
 
 
         </#list>

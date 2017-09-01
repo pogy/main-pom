@@ -130,6 +130,9 @@ public class CdnAction {
     TodayNewGoodsService todayNewGoodsService;
 
     @Autowired
+    ItemBrowerService itemBrowerService;
+
+    @Autowired
     GoodsFileService goodsFileService;
 
     /**
@@ -488,6 +491,20 @@ public class CdnAction {
         model.addAttribute("baseUrl","http://"+webSite+".571xz.com/");
         return shop(bo,null, model);
         //拼baseUrl
+    }
+
+    /**
+     * 商品点击量
+     * @param id
+     * @return
+     */
+    @RequestMapping("itemclicks")
+    @ResponseBody
+    public JSONObject itemclicks(Long id){
+        if(id==null){
+            return JsonResponseUtil.success().element("number",-1);
+        }
+        return JsonResponseUtil.success().element("number",itemBrowerService.addUnrealBrower(id,1).getNumber());
     }
 
     /**

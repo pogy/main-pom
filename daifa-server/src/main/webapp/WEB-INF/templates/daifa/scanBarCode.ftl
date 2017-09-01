@@ -3,10 +3,30 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     <title>扫描订单 - 星帮后台管理 - 四季星座网</title>
+
+    
+    
+    
+    
 <#include "/common/host_config.ftl">
+
+
+
+
+
+    
     <link href="http://style.571xz.com/v2/dfgl/css/scanBarCode.css" rel="stylesheet">
+    
+
+    
+
+    
+
+    
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
+    
     <script src="http://style.571xz.com/v2/dfgl/js/scanBarCode.js"></script>
 </head>
 <body>
@@ -23,11 +43,14 @@
     </div>
 </div>
 
+
+
+
 <div class="mainContent">
     <div class="sideBarBox">
         <div class="sidebar fl yahei">
-            <ul>
-            <@shiro.hasAnyPermissions name="df:admin,df:kefu">
+    <ul>
+        <@shiro.hasAnyPermissions name="df:admin,df:kefu">
                 <li>
                     <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
                 </li>
@@ -53,8 +76,11 @@
                     </ul>
                 </li>
             </@shiro.hasAnyPermissions>
-            </ul>
+    </ul>
 </div>
+
+
+
 
     </div>
     <div class="contentBox">
