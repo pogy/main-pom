@@ -287,6 +287,7 @@ var webSite = '${webSite!}';
 
 
 <div class="rightBox fr">
+    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat.png" >
     <div class="tabBox clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>
