@@ -76,8 +76,12 @@ public class MyOrderAction {
      */
     @RequestMapping("isCanApplyRefund")
     @ResponseBody
-    public JSONObject isCanApplyRefund(Long childOrderId) throws OrderNotFindException {
-        return JsonResponseUtil.success().element("refundState", myOrderService.testRefund(childOrderId) ? 1 : 0);
+    public JSONObject isCanApplyRefund(Long childOrderId){
+        try {
+            return JsonResponseUtil.success().element("refundState", myOrderService.testRefund(childOrderId) ? 1 : 0);
+        } catch (OrderNotFindException e) {
+            return JsonResponseUtil.success().element("refundState","代发接单中...");
+        }
     }
 
     /**

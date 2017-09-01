@@ -20,10 +20,10 @@ public class RefundWx extends BaseTest {
     @Test
     public void testRefundWx() throws PayerException {
         RefundReqData reqData = new RefundReqData(
-                "4004942001201708288693630162",
-                "OA385",
+                "4004942001201709019473252181",
+                "OA66281",
                 null,
-                "fga4004942001201708288693630162",
+                "fga4004942001201709019473252181",
                 1200,
                 1200,
                 "o6mmVt3kI-BLwWMTItTi2sbuS1hA",
