@@ -82,7 +82,7 @@
 
                         <li>
 
-                            <a class="current" href="orderHasAllocation.htm"><i></i>已分配任务</a>
+                            <a class="current" href="orderHasAllocation.htm"><i></i>我的任务</a>
 
                         </li>
 
@@ -383,8 +383,10 @@
         </li>
         <li class="operator">
             <#if childOrder.takeGoodsState == 0>
-            <p><b class="fcBlue" jbtn="isGetGoods" data-type="1">已拿到</b></p>
-            <p><b class="fcBlue" jbtn="isGetGoods" data-type="2">未拿到</b></p>
+                <#if childOrder.isMyTask == true>
+                <p><b class="fcBlue" jbtn="isGetGoods" data-type="1">已拿到</b></p>
+                <p><b class="fcBlue" jbtn="isGetGoods" data-type="2">未拿到</b></p>
+                </#if>
             <#else>
             <p class="fcBlue">——</p>
             </#if>
