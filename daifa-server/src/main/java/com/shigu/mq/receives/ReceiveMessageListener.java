@@ -26,7 +26,7 @@ public class ReceiveMessageListener implements MessageListener {
     public Action consume(Message message, ConsumeContext context) {
         try {
             defaultProcessMessage.dispatchMessage(message.getTag(),message.getKey(),message.getBody());
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return Action.ReconsumeLater;
         }
