@@ -73,7 +73,7 @@ public class DaifaAfterSaleService {
             bo.setPage("1");
         }
         if (bo.getOrderId() != null) {
-            salece.andDfTradeIdLike("%" + bo.getOrderId());
+            salece.andDfTradeIdLike("%" + bo.getOrderId()).or().andTradeCodeLike("%"+bo.getOrderId());
         }
         if (StringUtils.hasText(bo.getTelphone())) {
             salece.andReceiverMobileEqualTo(bo.getTelphone());

@@ -13,6 +13,7 @@ import java.util.List;
 public class AfterSaleDataVO {
     private Long afterSaleId;
     private Long orderId;
+    private String tradeCode;
     private String receiverName;
     private String receiverPhone;
     private String buyerRemark;
@@ -145,5 +146,13 @@ public class AfterSaleDataVO {
 
     public void setChildOrders(List<AfterSaleDataSubVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public String getTradeCode() {
+        return tradeCode;
+    }
+
+    public void setTradeCode(String tradeCode) {
+        this.tradeCode = tradeCode;
     }
 }
