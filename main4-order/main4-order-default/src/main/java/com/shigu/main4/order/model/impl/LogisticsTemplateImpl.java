@@ -125,7 +125,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         LogisticsTemplateRuleExample ruleExample=new LogisticsTemplateRuleExample();
         MultipleExample multipleExample= MultipleExampleBuilder.from(ruleExample)
                 .innerJoin(companyExample).on(ruleExample.createCriteria().equalTo(LogisticsTemplateRuleExample.ruleId,LogisticsTemplateCompanyExample.ruleId))
-                .innerJoin(provExample).on(provExample.createCriteria().equalTo(LogisticsTemplateCompanyExample.ruleId,LogisticsTemplateProvExample.ruleId))
+                .innerJoin(provExample).on(companyExample.createCriteria().equalTo(LogisticsTemplateCompanyExample.ruleId,LogisticsTemplateProvExample.ruleId))
                 .where(provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId),companyExample.createCriteria()
                         .andTemplateIdEqualTo(templateId),ruleExample.createCriteria().andImDefaultEqualTo(false)).build();
         List<BournRuleInfoVO> rules=BeanMapper.mapList(multipleMapper.selectFieldsByMultipleExample(multipleExample,RuleInfoVO.class),BournRuleInfoVO.class);
