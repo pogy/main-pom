@@ -146,6 +146,7 @@ public class MyTbOrderService {
         if (ids.size()>0) {
             ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
             example.createCriteria().andGoodsIdIn(ids);
+            example.setWebSite(webSite);
             List<ShiguGoodsTiny> tinys=shiguGoodsTinyMapper.selectFieldsByExample(example,FieldUtil.codeFields("goods_id,goods_no"));
             for(ShiguGoodsTiny tiny:tinys){
                 map.get(tiny.getGoodsId()).setGoodsNo(tiny.getGoodsNo());
