@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +51,7 @@ public class OrderMessageProducter {
         }
     }
 
+    @PostConstruct
     public void init(){
         TOPIC=producerBean.getProperties().getProperty("topic");
     }
