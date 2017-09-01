@@ -97,6 +97,19 @@ public class DaifaAfterSaleService {
 
             for (AfterSaleData afterSaleDatum : afterSaleData) {
                 AfterSaleDataVO vo = new AfterSaleDataVO();
+                switch (afterSaleDatum.getOldOrder()){
+                    case 0:{
+                        vo.setOldOrder(false);
+                        break;
+                    }
+                    case 1:{
+                        vo.setOldOrder(true);
+                        break;
+                    }
+                    default:{
+                        break;
+                    }
+                }
                 BeanUtils.copyProperties(afterSaleDatum, vo, "childOrders");
                 vo.setSendTime(DateUtil.dateToString(afterSaleDatum.getSendTime(), DateUtil.patternA));
                 vo.setTradeTime(DateUtil.dateToString(afterSaleDatum.getCreateTime(), DateUtil.patternA));
