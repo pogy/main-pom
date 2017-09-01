@@ -2,6 +2,9 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.ChangePasswordResponse;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * 类名:ChangePasswordRequest
  * 类路径:com.openJar.requests.appChangePasswordRequest
@@ -11,12 +14,16 @@ import com.openJar.responses.app.ChangePasswordResponse;
  */
 public class ChangePasswordRequest extends Request<ChangePasswordResponse> {
 	//用户ID	必须
+	@NotNull(message = "userId is null")
 	private Long userId;
 	//老密码	必须
+	@NotNull(message = "原密码不能为空")
 	private String oldPwd;
 	//新密码	必须
+	@NotNull(message = "新密码不能为空")
 	private String newPwd;
 	//每次登陆，用户的唯一码	必须
+	@NotNull(message = "token is null")
 	private String token;
 	public Long getUserId(){
 		return userId;

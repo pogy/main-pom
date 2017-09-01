@@ -2,6 +2,9 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.BindUserResponse;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * 类名:BindUserRequest
  * 类路径:com.openJar.requests.appBindUserRequest
@@ -11,10 +14,13 @@ import com.openJar.responses.app.BindUserResponse;
  */
 public class BindUserRequest extends Request<BindUserResponse> {
 	//临时ID，第三方登陆以后能过链接返回	必须
+	@NotNull
 	private String tempId;
 	//手机号	必须
+	@NotNull
 	private String telephone;
 	//验证码	必须
+	@NotNull
 	private String code;
 	public String getTempId(){
 		return tempId;

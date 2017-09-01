@@ -1,6 +1,7 @@
 package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.AboutMeRequest;
+import com.openJar.requests.app.ChangePasswordRequest;
 import com.shigu.phone.services.PhoneUserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,13 @@ public class AppUserAction {
     public JSONObject aboutMe(@Valid AboutMeRequest request, BindingResult bindingResult) {
         return JSONObject.fromObject(phoneUserService.aboutMe(request));
     }
+
+
+    @RequestMapping("changePassword")
+    @ResponseBody
+    public JSONObject appChangePassword(@Valid ChangePasswordRequest request, BindingResult bindingResult) {
+        return JSONObject.fromObject(phoneUserService.changePassword(request));
+    }
+
 
 }

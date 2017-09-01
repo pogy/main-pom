@@ -31,12 +31,15 @@ public class AppShopBlockBean {
     //主营类目
     @Column("shigu_shop.main_bus")
     private String mainCase;
-    //商品数
-    @Column("count(shigu_goods_tiny_{webSite}.goods_id)")
-    private Integer itemNum;
+    //分站
+    @Column("shigu_shop.web_site")
+    private String webSite;
     //市场
     @Column("shigu_market.market_name")
     private String market;
+    //商品数 从ShopCdn拿
+    @Transient
+    private Integer itemNum;
     //星星数 从缓存拿
     @Transient
     private String starNum;
@@ -112,5 +115,13 @@ public class AppShopBlockBean {
 
     public void setItemNum(Integer itemNum) {
         this.itemNum = itemNum;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
     }
 }

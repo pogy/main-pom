@@ -128,6 +128,8 @@ public class PhoneStoreService {
         }
         resp.setShops(appShopBlockBeans.parallelStream().map(o->{
             AppShopBlock shop = BeanMapper.map(o,AppShopBlock.class);
+            //从ShopCdn拿档口商品数量
+            shop.setItemNum(shopForCdnService.selItemNumberById(o.getShopId(),o.getWebSite()).intValue());
             //从缓存拿星星数
             shop.setStarNum(shopForCdnService.selShopStarById(o.getShopId()).toString());
             return shop;
