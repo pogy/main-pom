@@ -26,7 +26,7 @@ public class AfterSaleDataVO {
     private String childRemark;
     private String sendTime;
     private String tradeTime;
-    private Integer oldOrder;
+    private Boolean oldOrder;
     private List<AfterSaleDataSubVO> childOrders;
 
     public Long getAfterSaleId() {
@@ -157,11 +157,11 @@ public class AfterSaleDataVO {
         this.tradeCode = tradeCode;
     }
 
-    public Integer getOldOrder() {
+    public Boolean getOldOrder() {
         return oldOrder;
     }
 
-    public void setOldOrder(Integer oldOrder) {
+    public void setOldOrder(Boolean oldOrder) {
         this.oldOrder = oldOrder;
     }
 }
