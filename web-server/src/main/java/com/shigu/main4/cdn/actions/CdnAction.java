@@ -892,4 +892,9 @@ public class CdnAction {
     public String loginWindow(){
         return "cdn/loginWindow";
     }
+
+    @RequestMapping("daifaIndex")
+    public String daifaIndex(){
+        return "trade/daifaIndex";
+    }
 }

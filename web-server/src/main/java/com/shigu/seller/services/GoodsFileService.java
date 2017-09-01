@@ -583,6 +583,9 @@ public class GoodsFileService extends OssIO {
 
     public List<GoodsFile> selGoodsFileInfo(List<Long> goodsIds) {
         GoodsFileExample example = new GoodsFileExample();
+        if (goodsIds == null||goodsIds.size()==0) {
+            return new ArrayList<>();
+        }
         example.createCriteria().andGoodsIdIn(goodsIds);
         return goodsFileMapper.selectByExample(example);
     }
