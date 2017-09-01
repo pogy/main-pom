@@ -24,7 +24,7 @@
         paramsMap1.put(item.getKey(), item.getValue()[0]);
     }
     try {
-        boolean signVerified = AlipaySignature.rsaCheckV1(paramsMap1, ALIPAY_PUBLIC_KEY, "utf-8", "RSA") ;//调用SDK验证签名
+        boolean signVerified = AlipaySignature.rsaCheckV1(paramsMap1, ALIPAY_PUBLIC_KEY, "utf-8", "RSA2") ;//调用SDK验证签名
         if(signVerified){
             // TODO 验签成功后，按照支付结果异步通知中的描述，对支付结果中的业务内容进行二次校验，校验成功后在response中返回success并继续商户自身业务处理，校验失败返回failure
             out.print("验签成功");
