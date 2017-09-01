@@ -59,6 +59,10 @@ public class DaifaAllocatedVO implements Serializable {
      * 	是否下架 true不卖了下架 false还在卖 注：该处为是否标记下架
      */
     private Boolean noSaleIs;
+    /**
+     * 是否未自己任务
+     */
+    private Boolean isMyTask;
 
     public Long getChildOrderId() {
         return childOrderId;
@@ -176,5 +180,19 @@ public class DaifaAllocatedVO implements Serializable {
      */
     public void setTakeGoodsId(Long takeGoodsId) {
         this.takeGoodsId = takeGoodsId;
+    }
+
+    /**
+     * 获取 是否未自己任务
+     */
+    public Boolean getIsMyTask() {
+        return this.isMyTask;
+    }
+
+    /**
+     * 设置 是否未自己任务
+     */
+    public void setIsMyTask(Boolean isMyTask) {
+        this.isMyTask = isMyTask;
     }
 }

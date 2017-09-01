@@ -41,7 +41,7 @@ public class DaifaAllocatedAction {
         if (bo.getPage() == null) {
             bo.setPage(1);
         }
-        ShiguPager<DaifaAllocatedVO> pager= daifaAllocatedService.selectDaifaGgoodsList(daifaUser.getDaifaWorkerId(), bo.getOrderId(), bo.getChildOrderId(),
+        ShiguPager<DaifaAllocatedVO> pager= daifaAllocatedService.selectDaifaGgoodsList(daifaUser.getDaifaSellerId(),daifaUser.getDaifaWorkerId(), bo.getOrderId(), bo.getChildOrderId(),
                 bo.getStartTime(), bo.getEndTime(), bo.getPage(), 10);
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.getTotalCount()+","+10+","+bo.getPage());
