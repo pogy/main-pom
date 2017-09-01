@@ -26,6 +26,7 @@ public class AfterSaleDataVO {
     private String childRemark;
     private String sendTime;
     private String tradeTime;
+    private Integer oldOrder;
     private List<AfterSaleDataSubVO> childOrders;
 
     public Long getAfterSaleId() {
@@ -154,5 +155,13 @@ public class AfterSaleDataVO {
 
     public void setTradeCode(String tradeCode) {
         this.tradeCode = tradeCode;
+    }
+
+    public Integer getOldOrder() {
+        return oldOrder;
+    }
+
+    public void setOldOrder(Integer oldOrder) {
+        this.oldOrder = oldOrder;
     }
 }
