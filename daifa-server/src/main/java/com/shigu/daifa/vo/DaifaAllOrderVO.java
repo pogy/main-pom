@@ -30,6 +30,7 @@ public class DaifaAllOrderVO implements Serializable{
     private String expressCode;//快递单号
     private String discountFee;//减免费用
     private String serversFee;//服务费用
+    private Boolean oldOrder;//是否是老代发数据
     private List<AllSubOrderVO> childOrders;//子单数据
 
     public static long getSerialVersionUID() {
@@ -146,5 +147,13 @@ public class DaifaAllOrderVO implements Serializable{
 
     public void setChildOrders(List<AllSubOrderVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public Boolean getOldOrder() {
+        return this.oldOrder;
+    }
+
+    public void setOldOrder(Boolean oldOrder) {
+        this.oldOrder = oldOrder;
     }
 }
