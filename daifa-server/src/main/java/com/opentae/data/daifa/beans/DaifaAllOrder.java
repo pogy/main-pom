@@ -44,7 +44,7 @@ public class DaifaAllOrder implements Serializable{
     private String discountFee;//减免费用
     @Column("daifa_trade.services_fee")
     private String serversFee;//服务费用
-    @Column("daifa_trade.isOld")
+    @Column("daifa_trade.is_old")
     private Integer isOld;//是否是老订单
     private List<DaifaAllSubOrder> childOrders;//子单数据
 

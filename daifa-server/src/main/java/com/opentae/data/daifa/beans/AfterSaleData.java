@@ -15,16 +15,14 @@ import java.util.List;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class AfterSaleData implements Serializable{
+public class AfterSaleData implements Serializable {
     @Transient
     private static final long serialVersionUID = -5227521944795611053L;
-    @Column("daifa_after_sale.after_sale_id")
-    private Long afterSaleId;
-    @Column("daifa_after_sale.df_trade_id")
+    @Column("daifa_trade.df_trade_id")
     private Long orderId;
-    @Column("daifa_after_sale.receiver_name")
+    @Column("daifa_trade.receiver_name")
     private String receiverName;
-    @Column("daifa_after_sale.receiver_mobile")
+    @Column("daifa_trade.receiver_phone")
     private String receiverPhone;
     @Column("daifa_trade.buyer_remark")
     private String buyerRemark;
@@ -161,11 +159,5 @@ public class AfterSaleData implements Serializable{
         this.childOrders = childOrders;
     }
 
-    public Long getAfterSaleId() {
-        return afterSaleId;
-    }
 
-    public void setAfterSaleId(Long afterSaleId) {
-        this.afterSaleId = afterSaleId;
-    }
 }
