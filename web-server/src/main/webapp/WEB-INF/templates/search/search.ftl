@@ -11,11 +11,11 @@
     
     <meta name="description" content="四季星座网是最专业的网店货源分销平台，提供一键上传、一键代发等服务，找货源就上www.571xz.com！">
     
-    <link href="http://style.571xz.com/searchV5/css/search.css?t=1504175240384" rel="stylesheet">
+    <link href="http://style.571xz.com/searchV5/css/search.css?t=1504256351432" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/searchV5/js/search.js?t=1504175240384"></script>
+    <script src="http://style.571xz.com/searchV5/js/search.js?t=1504256351432"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -67,9 +67,9 @@
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
