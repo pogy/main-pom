@@ -74,7 +74,7 @@
                     <a href="orderAllocation.htm"><i></i>任务分配</a>
                 </li>
                 <li>
-                    <a href="orderHasAllocation.htm"><i></i>我的任务</a>
+                    <a href="orderHasAllocation.htm"><i></i>已分配任务</a>
                 </li>
                 <li>
                     <a href="scanBarCode.htm"><i></i>扫描打印</a>

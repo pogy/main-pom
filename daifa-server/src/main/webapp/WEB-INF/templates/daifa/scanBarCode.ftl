@@ -65,13 +65,13 @@
                     <a  href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
                     <ul>
                         <li>
-                            <a   href="orderAllocation.htm"><i></i>任务分配</a>
+                            <a href="orderAllocation.htm"><i></i>任务分配</a>
                         </li>
                         <li>
-                            <a class="current" href="orderHasAllocation.htm"><i></i>我的任务</a>
+                            <a href="orderHasAllocation.htm"><i></i>我的任务</a>
                         </li>
                         <li>
-                            <a href="scanBarCode.htm"><i></i>扫描打印</a>
+                            <a class="current" href="scanBarCode.htm"><i></i>扫描打印</a>
                         </li>
                     </ul>
                 </li>

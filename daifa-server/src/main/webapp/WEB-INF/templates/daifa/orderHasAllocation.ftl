@@ -383,8 +383,10 @@
         </li>
         <li class="operator">
             <#if childOrder.takeGoodsState == 0>
-            <p><b class="fcBlue" jbtn="isGetGoods" data-type="1">已拿到</b></p>
-            <p><b class="fcBlue" jbtn="isGetGoods" data-type="2">未拿到</b></p>
+                <#if childOrder.isMyTask == true>
+                <p><b class="fcBlue" jbtn="isGetGoods" data-type="1">已拿到</b></p>
+                <p><b class="fcBlue" jbtn="isGetGoods" data-type="2">未拿到</b></p>
+                </#if>
             <#else>
             <p class="fcBlue">——</p>
             </#if>

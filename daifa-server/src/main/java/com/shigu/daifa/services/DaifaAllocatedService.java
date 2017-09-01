@@ -40,10 +40,10 @@ public class DaifaAllocatedService {
     @Autowired
     private TakeGoodsIssueProcess takeGoodsIssueProcess;
 
-    public ShiguPager<DaifaAllocatedVO> selectDaifaGgoodsList(Long workerId, String lastOrderId, String lastSubOrderId,
+    public ShiguPager<DaifaAllocatedVO> selectDaifaGgoodsList(Long sellerId,Long workerId, String lastOrderId, String lastSubOrderId,
                                                               String startDate, String endDate, Integer page, Integer size) {
         DaifaGgoodsExample daifaGgoodsExample = new DaifaGgoodsExample();
-        DaifaGgoodsExample.Criteria ce = daifaGgoodsExample.createCriteria().andDaifaWorkerIdEqualTo(workerId)
+        DaifaGgoodsExample.Criteria ce = daifaGgoodsExample.createCriteria().andSellerIdEqualTo(sellerId)
                 .andUseStatusEqualTo(1).andOperateIsEqualTo(0);
         daifaGgoodsExample.setOrderByClause("create_time desc");
         if (lastOrderId != null) {
@@ -95,6 +95,7 @@ public class DaifaAllocatedService {
                 );
                 vo.setTitle(g.getTitle());
                 vo.setTakeGoodsState(g.getTakeGoodsStatus());
+                vo.setIsMyTask(workerId.longValue()==g.getDaifaWorkerId());
                 vos.add(vo);
             }
         }
