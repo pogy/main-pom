@@ -71,7 +71,7 @@ public class DaifaAllocatedAction {
     }
 
     /**
-     * 代发人员列表
+     * 代发拿货人员列表
      * @return
      */
     @RequestMapping("daifa/getUserList")
