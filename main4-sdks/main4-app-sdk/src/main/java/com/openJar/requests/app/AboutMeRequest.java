@@ -2,6 +2,9 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.AboutMeResponse;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * 类名:AboutMeRequest
  * 类路径:com.openJar.requests.appAboutMeRequest
@@ -11,6 +14,7 @@ import com.openJar.responses.app.AboutMeResponse;
  */
 public class AboutMeRequest extends Request<AboutMeResponse> {
 	//用户ID	必须
+	@NotNull(message = "userId is null")
 	private Long userId;
 	public Long getUserId(){
 		return userId;

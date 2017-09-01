@@ -3,33 +3,33 @@ package com.openJar.requests.app;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.DoStoreCollectResponse;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by jmb on 2017/8/31.
  * Path com.openJar.requests.app.DoStoreCollectResponse
  */
 public class DoStoreCollectRequest extends Request<DoStoreCollectResponse> {
     //收藏ID
-    private Long collectId;
+    @NotNull(message = "shopId is null")
+    private Long shopId;
     //收藏or取消收藏
+    @NotNull(message = "yesOrNo is null")
     private Boolean yesOrNo;
     //用户ID	必须
+    @NotNull(message = "userId is null")
     private Long userId;
     //临时授权码
+    @NotNull(message = "token is null")
     private String token;
 
-    public Long getStore_id() {
-        return Store_id;
+    public Long getShopId() {
+        return shopId;
     }
 
-    public void setStore_id(Long store_id) {
-        Store_id = store_id;
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
     }
-
-    private Long Store_id;
-
-    public Long getCollectId() { return collectId; }
-
-    public void setCollectId(Long collectId) { this.collectId = collectId; }
 
     public Boolean getYesOrNo() { return yesOrNo; }
 

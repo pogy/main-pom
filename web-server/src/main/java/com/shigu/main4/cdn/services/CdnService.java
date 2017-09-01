@@ -195,20 +195,7 @@ public class CdnService {
         }
         return true;
     }
-    /**
-     * 按主键删除店铺收藏
-     * @param userId
-     * @param
-     * @return
-     */
-    public boolean delShopCollection(Long userId, List<Long> collectIds){
-        try {
-            userCollectService.delShopCollection(userId,collectIds);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
+
     /**
      * 店铺页面基本信息
      * @param shopId

@@ -631,9 +631,10 @@ public class UserCollectServiceImpl implements UserCollectService {
         collectExample.setOrderByClause("store_collect_id DESC");
         collectExample.setStartIndex((pageNo - 1) * pageSize);
         collectExample.setEndIndex(pageSize);
-        collectExample.createCriteria()
-                .andUserIdEqualTo(userId)
-                .andWebSiteEqualTo(webSite);
+        ShiguStoreCollectExample.Criteria criteria = collectExample.createCriteria().andUserIdEqualTo(userId);
+        if (webSite != null) {
+            criteria.andWebSiteEqualTo(webSite);
+        }
         int count = shiguStoreCollectMapper.countByExample(collectExample);
         pager.calPages(count, pageSize);
         if (count > 0) {
@@ -723,6 +724,21 @@ public class UserCollectServiceImpl implements UserCollectService {
                 .andUserIdEqualTo(userId)
                 .andStoreCollectIdIn(collectIds);
         shiguStoreCollectMapper.deleteByExample(collectExample);
+    }
+
+    /**
+     * 按店铺id删除
+     * @param userId
+     * @param shopIds
+     */
+    @Override
+    public void delShopCollectionByShopIds(Long userId, List<Long> shopIds) {
+        if (userId == null || shopIds == null || shopIds.isEmpty()){
+            return;
+        }
+        ShiguStoreCollectExample example = new ShiguStoreCollectExample();
+        example.createCriteria().andUserIdEqualTo(userId).andStoreIdIn(shopIds);
+        shiguStoreCollectMapper.deleteByExample(example);
     }
 
     /**

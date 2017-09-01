@@ -62,10 +62,6 @@ public class CdnShopInfoVO {
      * 淘宝地址
      */
     private String tbUrl;
-    /**
-     * 档口图标，没有设置则用默认图标
-     */
-    private String imgsrc="http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=回车间&width=80&height=80&type=sns";
 
     /**
      * 获取 档口ID
@@ -261,13 +257,5 @@ public class CdnShopInfoVO {
      */
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getImgsrc() {
-        return imgsrc;
-    }
-
-    public void setImgsrc(String imgsrc) {
-        this.imgsrc = imgsrc;
     }
 }

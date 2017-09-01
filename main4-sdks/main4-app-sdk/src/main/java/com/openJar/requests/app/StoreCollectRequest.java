@@ -2,6 +2,9 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.StoreCollectResponse;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * 类名:StoreCollectRequest
  * 类路径:com.openJar.requests.appStoreCollectRequest
@@ -11,6 +14,7 @@ import com.openJar.responses.app.StoreCollectResponse;
  */
 public class StoreCollectRequest extends Request<StoreCollectResponse> {
 	//用户ID	必须
+	@NotNull
 	private Long userId;
 	//页码
 	private Integer index;

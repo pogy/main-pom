@@ -93,4 +93,11 @@ public interface UserCollectService {
      * @param collect
      */
     void addShopCollection(ShopCollect collect) throws ShopCollectionException;
+
+    /**
+     * 按店铺id删除
+     * @param userId
+     * @param shopIds
+     */
+    void delShopCollectionByShopIds(Long userId,List<Long> shopIds);
 }

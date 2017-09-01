@@ -31,8 +31,8 @@ public class AppShopBlock extends OpenBean {
 	private String mainCase;
 	//商品数
 	private Integer itemNum;
-	//店铺头像
-	private String shopHeadUrl;
+	//店铺默认头像
+	private String shopHeadUrl="http://wwc.taobaocdn.com/avatar/getAvatar.do?userNick=回车间&width=80&height=80&type=sns";
 	public Long getShopId(){
 		return shopId;
 	}

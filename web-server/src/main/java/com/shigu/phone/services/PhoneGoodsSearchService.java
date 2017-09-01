@@ -2,12 +2,15 @@ package com.shigu.phone.services;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.aliyun.opensearch.sdk.dependencies.com.google.common.collect.Lists;
 import com.openJar.beans.app.AppGoodsBlock;
 import com.openJar.beans.app.AppItemKv;
 import com.openJar.exceptions.OpenException;
+import com.openJar.requests.app.DoStoreCollectRequest;
 import com.openJar.requests.app.ImgSearchRequest;
 import com.openJar.requests.app.ItemSearchRequest;
 import com.openJar.requests.app.OneItemRequest;
+import com.openJar.responses.app.DoStoreCollectResponse;
 import com.openJar.responses.app.ImgSearchResponse;
 import com.openJar.responses.app.ItemSearchResponse;
 import com.openJar.responses.app.OneItemResponse;
@@ -20,6 +23,8 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.newcdn.vo.CdnGoodsInfoVO;
 import com.shigu.main4.newcdn.vo.CdnShopInfoVO;
+import com.shigu.main4.ucenter.services.UserCollectService;
+import com.shigu.main4.ucenter.vo.ShopCollect;
 import com.shigu.search.bo.SearchBO;
 import com.shigu.search.services.GoodsSearchService;
 import com.shigu.search.vo.GoodsInSearch;
@@ -149,24 +154,6 @@ public class PhoneGoodsSearchService {
         }
         return resp;
     }
-    /**
-     * 收藏店铺
-     * @param userId
-     * @param bo
-     * @return
-     */
-    public boolean addShopCollect(Long userId, ScStoreBO bo){
-        boolean result=cdnService.addShopCollect(userId,bo);
-        return result;
-    }
-    /**
-     * 按主键删除店铺收藏
-     * @param userId
-     * @param collectIds
-     * @return
-     */
-    public boolean delShopCollection(Long userId, List<Long> collectIds){
-        boolean result=cdnService.delShopCollection(userId,collectIds);
-        return result;
-    }
+
+
 }
