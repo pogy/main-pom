@@ -51,6 +51,7 @@
         <div class="sidebar fl yahei">
     <ul>
         
+        
         <@shiro.hasAnyPermissions name="df:admin,df:kefu">
             <li>
                 <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
@@ -77,7 +78,7 @@
 
                     <li>
 
-                        <a href="orderHasAllocation.htm"><i></i>我的任务</a>
+                        <a href="orderHasAllocation.htm"><i></i>已分配任务</a>
 
                     </li>
 
@@ -89,7 +90,6 @@
 
             </li>
         </@shiro.hasAnyPermissions>
-        
     </ul>
 </div>
 
@@ -220,6 +220,9 @@
                 <span>订单编号：${order.orderId!}</span>
                 <span>交易编号：${order.tradeCode!}</span>
                 <span>时间：${order.tradeTime!}</span>
+                <#if order.oldOrder == true>
+                <i class="fcF40 icon-old oldOrder"></i>
+                </#if>
                 
             </div>
             <div class="rightConBox fr">
