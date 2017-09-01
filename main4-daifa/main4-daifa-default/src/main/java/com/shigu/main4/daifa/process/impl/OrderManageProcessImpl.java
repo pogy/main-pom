@@ -208,6 +208,9 @@ public class OrderManageProcessImpl implements OrderManageProcess {
                 oidpMap.put(o.getDfOrderId(), o.getOrderPartitionId());
             }
         }
+        if(oidpMap.size()==0){
+            return new ArrayList<>();
+        }
         DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
         DaifaGgoodsTasksExample.Criteria ce=daifaGgoodsTasksExample.createCriteria().andDfOrderIdIn(new ArrayList<>(oidpMap.keySet()))
                 .andOperateIsEqualTo(0)

@@ -37,7 +37,7 @@ public class OrderConsumerService {
         this.orderManageProcess = orderManageProcess;
     }
 
-    public void orderConvertTrade(String body) throws UnsupportedEncodingException {
+    public void orderConvertTrade(String body){
         ResponseBasic res = JSON.parseObject(body, ResponseBasic.class);
         if (res.isStatus()) {
             OrderBO orderBean = JSON.parseObject(res.getData().toString(), OrderBO.class);
@@ -49,7 +49,7 @@ public class OrderConsumerService {
         }
     }
 
-    public void refund(String body) throws UnsupportedEncodingException {
+    public void refund(String body){
         ResponseBasic res = JSON.parseObject(body, ResponseBasic.class);
         if (res.isStatus()) {
             RefundBean refund = JSON.parseObject(JSON.toJSONString(res.getData()), RefundBean.class);
