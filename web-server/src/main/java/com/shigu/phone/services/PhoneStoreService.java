@@ -33,7 +33,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -68,6 +67,7 @@ public class PhoneStoreService {
 
     /**
      * 移动端店铺搜索
+     *
      * @param request
      * @return
      */
@@ -80,8 +80,8 @@ public class PhoneStoreService {
         ShiguPager<StoreInSearch> result = storeSelFromEsService.searchStore(bo);
         ShopSearchResponse resp = new ShopSearchResponse();
         resp.setTotal(result.getTotalCount());
-        resp.setHasNext(result.getNumber()<result.getTotalPages());
-        resp.setShops(result.getContent().parallelStream().map(o->{
+        resp.setHasNext(result.getNumber() < result.getTotalPages());
+        resp.setShops(result.getContent().parallelStream().map(o -> {
             AppShopBlock vo = new AppShopBlock();
             vo.setShopId(Long.valueOf(o.getId()));
             vo.setMarket(o.getFullMarketText());
@@ -103,6 +103,7 @@ public class PhoneStoreService {
 
     /**
      * 店铺收藏夹
+     *
      * @param request
      * @return
      */
@@ -111,31 +112,24 @@ public class PhoneStoreService {
         ShiguPager<ShopCollectVO> shopCollectVOShiguPager = userCollectService.selShopCollections(request.getUserId(), null, request.getIndex(), request.getSize());
         List<ShopCollectVO> shopCollectVOS = shopCollectVOShiguPager.getContent();
         List<Long> shopIds = shopCollectVOS.stream().map(ShopCollectVO::getShopId).collect(Collectors.toList());
-        Set<String> webSites = shopCollectVOS.parallelStream().map(ShopCollectVO::getWebsite).collect(Collectors.toSet());
         ArrayList<AppShopBlockBean> appShopBlockBeans = new ArrayList<>(request.getSize());
-        //按分站获取店铺信息
-        for (String webSite : webSites) {
-            ShiguGoodsTinyExample goodsTinyExample = new ShiguGoodsTinyExample();
-            goodsTinyExample.setWebSite(webSite);
-            ShiguMarketExample marketExample = new ShiguMarketExample();
-            ShiguShopExample shopExample = new ShiguShopExample();
-            MultipleExample example = MultipleExampleBuilder.from(shopExample)
-                    .join(marketExample).on(shopExample.createCriteria().andShopIdIn(shopIds).andWebSiteEqualTo(webSite).equalTo(ShiguGoodsTinyExample.marketId,ShiguMarketExample.marketId))
-                    .join(goodsTinyExample).on(goodsTinyExample.createCriteria().equalTo(ShiguGoodsTinyExample.storeId,ShiguShopExample.shopId))
-                    .build();
-            example.setGroupByClause("shigu_shop.shop_id");
-            appShopBlockBeans.addAll(tae_mall_multipleMapper.selectFieldsByMultipleExample(example, AppShopBlockBean.class));
-        }
-        resp.setShops(appShopBlockBeans.parallelStream().map(o->{
-            AppShopBlock shop = BeanMapper.map(o,AppShopBlock.class);
+        ShiguMarketExample marketExample = new ShiguMarketExample();
+        ShiguShopExample shopExample = new ShiguShopExample();
+        MultipleExample example = MultipleExampleBuilder.from(shopExample)
+                .join(marketExample).on(shopExample.createCriteria().andShopIdIn(shopIds).equalTo(ShiguGoodsTinyExample.marketId, ShiguMarketExample.marketId))
+                .build();
+        example.setGroupByClause("shigu_shop.shop_id");
+        appShopBlockBeans.addAll(tae_mall_multipleMapper.selectFieldsByMultipleExample(example, AppShopBlockBean.class));
+        resp.setShops(appShopBlockBeans.parallelStream().map(o -> {
+            AppShopBlock shop = BeanMapper.map(o, AppShopBlock.class);
             //从ShopCdn拿档口商品数量
-            shop.setItemNum(shopForCdnService.selItemNumberById(o.getShopId(),o.getWebSite()).intValue());
+            shop.setItemNum(shopForCdnService.selItemNumberById(o.getShopId(), o.getWebSite()).intValue());
             //从缓存拿星星数
             shop.setStarNum(shopForCdnService.selShopStarById(o.getShopId()).toString());
             return shop;
         }).collect(Collectors.toList()));
         resp.setTotal(shopCollectVOShiguPager.getTotalCount());
-        resp.setHasNext(shopCollectVOShiguPager.getNumber()<shopCollectVOShiguPager.getTotalPages());
+        resp.setHasNext(shopCollectVOShiguPager.getNumber() < shopCollectVOShiguPager.getTotalPages());
         resp.setSuccess(true);
         return resp;
     }

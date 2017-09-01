@@ -83,4 +83,16 @@ public class AppStoreAction {
     public JSONObject doStoreCollectRequest(@Valid DoStoreCollectRequest request, BindingResult bindingResult) {
         return JSONObject.fromObject(phoneStoreService.doStoreCollect(request));
     }
+
+    /**
+     * 查询收藏的档口
+     * @param request
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping("storeCollect")
+    @ResponseBody
+    public JSONObject storeCollect(StoreCollectRequest request, BindingResult bindingResult) {
+        return JSONObject.fromObject(phoneStoreService.storeCollect(request));
+    }
 }
