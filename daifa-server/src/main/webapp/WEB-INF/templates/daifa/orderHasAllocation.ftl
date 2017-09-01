@@ -82,7 +82,7 @@
 
                         <li>
 
-                            <a class="current" href="orderHasAllocation.htm"><i></i>我的任务</a>
+                            <a class="current" href="orderHasAllocation.htm"><i></i>已分配任务</a>
 
                         </li>
 

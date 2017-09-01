@@ -80,7 +80,7 @@ public class MyOrderAction {
         try {
             return JsonResponseUtil.success().element("refundState", myOrderService.testRefund(childOrderId) ? 1 : 0);
         } catch (OrderNotFindException e) {
-            return JsonResponseUtil.error("代发接单中...");
+            return JsonResponseUtil.success().element("refundState","代发接单中...");
         }
     }
 
