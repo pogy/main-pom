@@ -27,6 +27,11 @@ public class ShiguGoodsTaoRelation implements Serializable {
      */
 	private String webSite;
 
+    /**
+     * 
+     */
+	private Long userId;
+
 	public void setRelationId(Long relationId) {
 		this.relationId = relationId;
 	}
@@ -57,6 +62,14 @@ public class ShiguGoodsTaoRelation implements Serializable {
 
 	public String getWebSite() {
 		return this.webSite;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getUserId() {
+		return this.userId;
 	}
 
 }
