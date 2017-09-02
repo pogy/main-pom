@@ -11,6 +11,7 @@ import com.shigu.main4.order.bo.SubOrderBO;
 import com.shigu.main4.order.enums.OrderStatus;
 import com.shigu.main4.order.enums.OrderType;
 import com.shigu.main4.order.enums.PayType;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
@@ -21,6 +22,7 @@ import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.*;
 import com.shigu.main4.order.zfenums.SubOrderStatus;
 import com.shigu.main4.tools.SpringBeanFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -321,7 +323,7 @@ public class ItemOrderImpl implements ItemOrder {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice) {
+    public void addSubOrder(List<SubOrderBO> subOrders,boolean needReprice) throws OrderException {
         for (SubOrderBO bo : subOrders) {
             ItemOrderSub sub=new ItemOrderSub();
             ItemProduct product = SpringBeanFactory.getBean(ItemProduct.class, bo.getPid(), bo.getSkuId());
@@ -329,7 +331,7 @@ public class ItemOrderImpl implements ItemOrder {
             sub.setSkuId(product.getSkuId());
             sub.setNum(bo.getNumber());
             ItemProductVO info = product.info();
-            BeanMapper.map(info,sub);
+            BeanMapper.map(info, sub);
             // 应付总价 产品单价 X 数量
             sub.setColor(info.getSelectiveSku().getColor());
             sub.setSize(info.getSelectiveSku().getSize());
@@ -338,6 +340,9 @@ public class ItemOrderImpl implements ItemOrder {
             sub.setRefundMoney(0L);
             sub.setStatus(SubOrderStatus.ORIGINAL.status);
             sub.setOid(oid);
+            if(StringUtils.isEmpty(sub.getGoodsNo())){
+                throw new OrderException("没有货号不允许下单");
+            }
             itemOrderSubMapper.insertSelective(sub);
         }
         if (needReprice) {
