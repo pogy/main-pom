@@ -341,7 +341,7 @@ public class ItemOrderImpl implements ItemOrder {
             sub.setStatus(SubOrderStatus.ORIGINAL.status);
             sub.setOid(oid);
             if(StringUtils.isEmpty(sub.getGoodsNo())){
-                throw new OrderException("没有货号不允许下单");
+                throw new OrderException("没有货号不允许下单，请先联系商家补全货号");
             }
             itemOrderSubMapper.insertSelective(sub);
         }
