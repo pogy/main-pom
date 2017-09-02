@@ -14,6 +14,7 @@ public class ShiguGoodsTaoRelationExample extends SgExample<ShiguGoodsTaoRelatio
     public static EntityColumn goodsId;
     public static EntityColumn numIid;
     public static EntityColumn relationId;
+    public static EntityColumn userId;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -24,6 +25,7 @@ public class ShiguGoodsTaoRelationExample extends SgExample<ShiguGoodsTaoRelatio
         goodsId = listMap.get("goodsId");
         numIid = listMap.get("numIid");
         relationId = listMap.get("relationId");
+        userId = listMap.get("userId");
         }
 
     public ShiguGoodsTaoRelationExample() {
@@ -240,6 +242,53 @@ public class ShiguGoodsTaoRelationExample extends SgExample<ShiguGoodsTaoRelatio
 
         public ShiguGoodsTaoRelationExample.Criteria andRelationIdNotBetween(Long value1, Long value2) {
             return notBetween(relationId, value1, value2);
+        }
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdIsNull() {
+            return isNull(userId);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdIsNotNull() {
+            return isNotNull(userId);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdEqualTo(Long value) {
+            return equalTo(userId, value);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdNotEqualTo(Long value) {
+            return notEqualTo(userId, value);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdGreaterThan(Long value) {
+            return greaterThan(userId, value);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdGreaterThanOrEqualTo(Long value) {
+            return greaterThanOrEqualTo(userId, value);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdLessThan(Long value) {
+            return lessThan(userId, value);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdLessThanOrEqualTo(Long value) {
+            return lessThanOrEqualTo(userId, value);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdIn(List<Long> values) {
+            return in(userId, values);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdNotIn(List<Long> values) {
+            return notIn(userId, values);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdBetween(Long value1, Long value2) {
+            return between(userId, value1, value2);
+        }
+
+        public ShiguGoodsTaoRelationExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
+            return notBetween(userId, value1, value2);
         }
     }
 }

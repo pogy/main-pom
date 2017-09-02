@@ -180,7 +180,9 @@ public class MyTbOrderService {
             vo.setShopId(goods.getShopId());
             vo.setMarketId(goods.getMarketId());
             vo.setMarketName(info.getMarketName());
-            vo.setSelectiveSku(BeanMapper.map(info, ItemSkuVO.class));
+            ItemSkuVO itemSkuVO=BeanMapper.map(info, ItemSkuVO.class);
+            itemSkuVO.setSkuId(info.getSelectiveSku().getSkuId());
+            vo.setSelectiveSku(itemSkuVO);
             vo.setShopNum(info.getShopNum());
             vo.setFloor(info.getFloor());
             vo.setFloorId(goods.getFloorId());
