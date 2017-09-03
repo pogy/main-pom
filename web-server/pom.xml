@@ -509,6 +509,12 @@
             <version>${main4-daifa-api.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>dh3t_sms_util</groupId>
+            <artifactId>dh3t_sms_util</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>
