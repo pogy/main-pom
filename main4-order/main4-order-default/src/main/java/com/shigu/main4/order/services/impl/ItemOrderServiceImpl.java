@@ -251,7 +251,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     public Long saveBuyerAddress(BuyerAddressVO buyerAddressVO) throws JsonErrException {
         //信息不足
         boolean isInformationInsufficient = buyerAddressVO.getProvId() == null || buyerAddressVO.getCityId() == null ||
-                buyerAddressVO.getTownId() == null || StringUtil.isNull(buyerAddressVO.getAddress()) ||
+                StringUtil.isNull(buyerAddressVO.getAddress()) ||
                 buyerAddressVO.getUserId() == null || StringUtil.isNull(buyerAddressVO.getTelephone()) ||
                 StringUtil.isNull(buyerAddressVO.getName());
         if (isInformationInsufficient) {
