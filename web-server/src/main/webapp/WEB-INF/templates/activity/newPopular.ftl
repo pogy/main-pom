@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/qzhd/css/newPopular2.css?v=20180821" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/qzhd/css/newPopular3.css?v=20180821" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/qzhd/js/newPopular2.js?v=20180821"></script>
+    <script src="http://style.571xz.com/v2/qzhd/js/newPopular3.js?v=20180821"></script>
 </head>
 <body>
 
