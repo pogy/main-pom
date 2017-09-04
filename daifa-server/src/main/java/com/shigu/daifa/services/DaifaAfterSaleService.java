@@ -81,6 +81,9 @@ public class DaifaAfterSaleService {
         if (StringUtils.hasText(bo.getReceiver())) {
             salece.andReceiverNameEqualTo(bo.getReceiver());
         }
+        if(bo.getBuyerId()!= null){
+            salece.andBuyerIdEqualTo(bo.getBuyerId());
+        }
 
         int count = daifaTradeMapper.countByExample(daifaTradeExample);
         List<AfterSaleDataVO> afterSaleDataVOS = new ArrayList<>();
