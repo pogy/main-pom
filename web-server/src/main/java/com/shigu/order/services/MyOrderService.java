@@ -116,6 +116,7 @@ public class MyOrderService {
     public ShiguPager<MyOrderVO> selectMyOrderPager(Integer number, Integer size, ItemOrderExample orderExample, ItemOrderSubExample subExample, ItemOrderLogisticsExample logisticsExample, ItemOrderRefundExample refundExample, boolean onlyRefund) {
         ShiguPager<MyOrderVO> pager = new ShiguPager<>();
         pager.setNumber(number);
+        //todo: bug createCriteria直接创建新的条件，example里老的条件会清空,用了createCriteria的搜索条件都会无效
         MultipleExampleBuilder multipleExampleBuilder = MultipleExampleBuilder.from(orderExample)
                 .innerJoin(subExample).on(subExample.createCriteria().equalTo(ItemOrderSubExample.oid, ItemOrderExample.oid))
                 .leftJoin(logisticsExample).on(logisticsExample.createCriteria().equalTo(ItemOrderLogisticsExample.oid, ItemOrderExample.oid))
