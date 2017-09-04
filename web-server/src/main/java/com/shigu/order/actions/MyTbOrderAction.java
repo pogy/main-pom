@@ -99,6 +99,21 @@ public class MyTbOrderAction {
         return obj;
     }
 
+    @RequestMapping("ttttt")
+    @ResponseBody
+    public JSONObject ttttt(){
+//        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        JSONObject obj=new JSONObject();
+        try {
+            myTbOrderService.glGoodsJson(556613638156L,21195361L,1000074682L);
+            obj.put("result","success");
+        } catch (NotFindRelationGoodsException e) {
+            obj.put("result","error");
+            obj.put("msg","未找到可关联的商品");
+        }
+        return obj;
+    }
+
 
     /**
      * 解析淘宝订单,返回

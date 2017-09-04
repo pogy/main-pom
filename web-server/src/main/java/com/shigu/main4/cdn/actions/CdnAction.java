@@ -894,7 +894,8 @@ public class CdnAction {
     }
 
     @RequestMapping("daifaIndex")
-    public String daifaIndex(){
+    public String daifaIndex(Model model){
+        model.addAttribute("webSite","hz");
         return "trade/daifaIndex";
     }
 }

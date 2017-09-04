@@ -101,6 +101,9 @@ public class CartOrderVO implements Comparable<CartOrderVO> {
 
     @Override
     public int compareTo(CartOrderVO o) {
-        return o == null ? 1 : lastModify.compareTo(o.getLastModify());
+        if(lastModify == null){
+            return -1;
+        }
+        return o == null||o.getLastModify() == null ? 1 : lastModify.compareTo(o.getLastModify());
     }
 }
