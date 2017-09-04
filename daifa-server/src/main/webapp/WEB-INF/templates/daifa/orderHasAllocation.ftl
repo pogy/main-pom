@@ -92,6 +92,14 @@
 
                     </ul>
 
+                </li>
+            </@shiro.hasAnyPermissions>
+    </ul>
+</div>
+
+
+
+
     </div>
     <div class="contentBox">
         <div class="printTypeTabs">
