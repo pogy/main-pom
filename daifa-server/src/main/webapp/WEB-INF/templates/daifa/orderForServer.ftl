@@ -51,8 +51,7 @@
         <div class="sidebar fl yahei">
     <ul>
         
-        
-        <@shiro.hasAnyPermissions name="df:admin,df:kefu">
+           <@shiro.hasAnyPermissions name="df:admin,df:kefu">
             <li>
                 <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
             </li>
@@ -248,7 +247,7 @@
             </div>
             <p class="title">${childOrder.title!}</p>
             <p>商品属性：${childOrder.goodsProperty!}</p>
-            <p>商品货号：${childOrder.goodsNo!}</p>
+            <p>商家编码：${childOrder.storeGoodsCode!}</p>
         </li>
         <li class="price">
             <p>批价：${childOrder.piPrice!}</p>

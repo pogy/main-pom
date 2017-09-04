@@ -74,7 +74,7 @@
                     <a href="orderAllocation.htm"><i></i>任务分配</a>
                 </li>
                 <li>
-                    <a href="orderHasAllocation.htm"><i></i>已分配任务</a>
+                    <a href="orderHasAllocation.htm"><i></i>我的任务</a>
                 </li>
                 <li>
                     <a href="scanBarCode.htm"><i></i>扫描打印</a>
@@ -281,7 +281,7 @@
             </div>
             <p class="title">${childOrder.title!}</p>
             <p>商品属性：${childOrder.goodsProperty!}</p>
-            <p>商品货号：${childOrder.goodsNo!}</p>
+            <p>商家编码：${childOrder.storeGoodsCode!}</p>
         </li>
         <li class="price">
             <p>批价：${childOrder.piPrice!}</p>
