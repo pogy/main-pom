@@ -263,8 +263,11 @@
         </li>
         <li class="tradeState">
             <#if childOrder_index == 0>
-                
+                <#if order.sendStatus == 1>
+                <p>未发货</p>
+                <#elseif order.sendStatus == 2>
                 <p>已发货</p>
+                </#if>
                 <p>${order.sendTime!}</p>
                 <p>${order.expressName!}</p>
                 <p>（${order.expressCode!}）</p>
