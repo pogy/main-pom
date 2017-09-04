@@ -179,6 +179,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                         .equalTo(DaifaGgoodsExample.dfTradeId, DaifaTradeExample.dfTradeId))
                 .join(daifaOrderExample)
                 .on(daifaOrderExample.createCriteria().equalTo(DaifaOrderExample.dfOrderId, DaifaGgoodsExample.dfOrderId)).build();
+        multipleExample.setOrderByClause("daifa_ggoods.market_id asc,daifa_ggoods.store_id asc,daifa_ggoods.goods_code asc,daifa_ggoods.take_goods_id asc");
         List<GgoodsForPrint> ggoodsForPrints = multipleMapper
                 .selectFieldsByMultipleExample(multipleExample, GgoodsForPrint.class);
 
