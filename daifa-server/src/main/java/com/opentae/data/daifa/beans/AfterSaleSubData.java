@@ -35,6 +35,8 @@ public class AfterSaleSubData implements Serializable {
     private String num;//商品数量
     @Column("daifa_order.single_services_fee")
     private String childServersFee;//子单服务费用
+    @Column("daifa_order.store_goods_code")
+    private String storeGoodsCode;
 
 
     public String getChildOrderId() {
@@ -107,5 +109,13 @@ public class AfterSaleSubData implements Serializable {
 
     public void setChildServersFee(String childServersFee) {
         this.childServersFee = childServersFee;
+    }
+
+    public String getStoreGoodsCode() {
+        return storeGoodsCode;
+    }
+
+    public void setStoreGoodsCode(String storeGoodsCode) {
+        this.storeGoodsCode = storeGoodsCode;
     }
 }

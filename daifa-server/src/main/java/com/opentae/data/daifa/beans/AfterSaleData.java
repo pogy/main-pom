@@ -48,6 +48,8 @@ public class AfterSaleData implements Serializable {
     private String tradeCode;
     @Column("daifa_trade.is_old")
     private Integer oldOrder;
+    @Column("daifa_trade.send_status")
+    private Integer sendStatus;
 
     private List<AfterSaleSubData> childOrders;
 
@@ -177,5 +179,13 @@ public class AfterSaleData implements Serializable {
 
     public void setOldOrder(Integer oldOrder) {
         this.oldOrder = oldOrder;
+    }
+
+    public Integer getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(Integer sendStatus) {
+        this.sendStatus = sendStatus;
     }
 }

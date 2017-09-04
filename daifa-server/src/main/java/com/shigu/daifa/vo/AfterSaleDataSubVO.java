@@ -17,6 +17,7 @@ public class AfterSaleDataSubVO {
     private String piPrice;//商品批发价
     private String payPrice;//商品实际支付价
     private String num;//商品数量
+    private String storeGoodsCode;//商家编码
 
     public String getChildOrderId() {
         return childOrderId;
@@ -80,5 +81,13 @@ public class AfterSaleDataSubVO {
 
     public void setNum(String num) {
         this.num = num;
+    }
+
+    public String getStoreGoodsCode() {
+        return storeGoodsCode;
+    }
+
+    public void setStoreGoodsCode(String storeGoodsCode) {
+        this.storeGoodsCode = storeGoodsCode;
     }
 }
