@@ -316,7 +316,7 @@ var webSite = '${webSite!}';
     <h2 class="fs18">【公告】</h2>
     <h3 class="fs16 fc3">四季星座网一件代发功能，您身边的服务</h3>
     <p>四季星座网致力于为您提供高效、优质的服务。在使用过程中有任何问题、意见与建议，请与客服联系。我们会及时跟进解决。</p>
-    <p>目前代发开通的市场：杭州男装市场，电商基地，四季星座，钱塘大厦，精品男装，潮鞋基地。</p>
+    <p>目前代发开通的市场：电商基地，四季星座，钱塘大厦。</p>
     <ul>
         <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后悠悠&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺1</span></a></li>
         <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后小匀&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺2</span></a></li>
@@ -405,12 +405,14 @@ var webSite = '${webSite!}';
                     <h3>方便快捷</h3>
                     <p>支持手动下单与淘宝同步一键下单<br>两种方式可根据需要任意选择</p>
                 </li>
+                <li class="icon-step"></li>
                 
                 <li>
                     <span class="icon-jsfh"></span>
                     <h3>发货及时</h3>
                     <p>一般每日16点前下的不缺货订单<br>保证当天发货</p>
                 </li>
+                <li class="icon-step"></li>
                 <li>
                     <span class="icon-fwbz"></span>
                     <h3>服务保障</h3>
@@ -525,7 +527,7 @@ var webSite = '${webSite!}';
                     </ul>
                 </div>
                 <div class="none">
-                    <p>目前开通市场： 电商基地 四季星座 钱塘大厦 精品男装 潮鞋基地</p>
+                    <p>目前开通市场： 电商基地，四季星座，钱塘大厦</p>
                 </div>
             </div>
             

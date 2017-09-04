@@ -515,7 +515,7 @@ public class GoodsFileService extends OssIO {
             shiguGoodsTiny.setGoodsId(bo.getGoodsId());
             shiguGoodsTiny.setStoreId(shop.getShopId());
             ShiguGoodsTiny shiguGoodsTiny1 = shiguGoodsTinyMapper.selectOne(shiguGoodsTiny);
-            if (shiguGoodsTiny1 != null) {
+            if (shiguGoodsTiny1 != null && StringUtils.isNotEmpty(shiguGoodsTiny1.getGoodsNo())) {
                 shiguGoodsTiny.setGoodsNo(shiguGoodsTiny1.getGoodsNo());
                 shiguGoodsTiny.setGoodsId(null);
             }
@@ -530,7 +530,7 @@ public class GoodsFileService extends OssIO {
     }
 
     private void saveOrUpdateOuterLinkSingle(BigPicOuterLinkBO bo,String webSite, Long goodsId) {
-       itemPicRelationService.updateFileOuter(bo.getGoodsId(),webSite,bo.getPsw(),bo.getLink(),2);
+       itemPicRelationService.updateFileOuter(goodsId,webSite,bo.getPsw(),bo.getLink(),2);
     }
 
 
@@ -583,6 +583,9 @@ public class GoodsFileService extends OssIO {
 
     public List<GoodsFile> selGoodsFileInfo(List<Long> goodsIds) {
         GoodsFileExample example = new GoodsFileExample();
+        if (goodsIds == null||goodsIds.size()==0) {
+            return new ArrayList<>();
+        }
         example.createCriteria().andGoodsIdIn(goodsIds);
         return goodsFileMapper.selectByExample(example);
     }

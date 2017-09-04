@@ -15,11 +15,11 @@
         <meta name="description" content="${$it.description!}">
         </#if>
     
-    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1504176155949" rel="stylesheet">
+    <link href="http://style.571xz.com/fdGoodsV5/css/findGoods1.css?t=1504256331245" rel="stylesheet">
     
     
     <script src="http://style.571xz.com/global/js/jquery.js"></script>
-    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1504176155949"></script>
+    <script src="http://style.571xz.com/fdGoodsV5/js/findGoods1.js?t=1504256331245"></script>
   </head>
 <body>
 <#include "/common/host_config.ftl">
@@ -71,9 +71,9 @@
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -104,9 +104,9 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>

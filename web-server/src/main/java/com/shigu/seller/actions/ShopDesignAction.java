@@ -202,7 +202,7 @@ public class ShopDesignAction {
         ShopSession shopSession = getShopSession(session);
         Long shopId = shopSession.getShopId();
         List<Long> goodsIds = shopDesignService.selPromoteItemIds(bo);
-        List<Long> onsaleGoodsIds = shopForCdnService.searchItemOnsale(goodsIds, shopSession.getWebSite(), 1, bo.getSize()).getContent().stream().map(ItemShowBlock::getItemId).collect(Collectors.toList());
+        List<Long> onsaleGoodsIds = shopForCdnService.searchItemOnsale(goodsIds, shopSession.getWebSite(), 1, 20).getContent().stream().map(ItemShowBlock::getItemId).collect(Collectors.toList());
         if (goodsIds.size()>onsaleGoodsIds.size()) {
             //有已下架的商品
             try {

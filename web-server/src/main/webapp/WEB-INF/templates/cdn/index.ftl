@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1504176303729" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1504256300092" rel="stylesheet">
     
   </head>
 <body>
@@ -61,9 +61,9 @@
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -94,9 +94,9 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -414,7 +414,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1504176303729"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1504256300092"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

@@ -73,13 +73,16 @@ public class DaifaAfterSaleService {
             bo.setPage("1");
         }
         if (bo.getOrderId() != null) {
-            salece.andDfTradeIdLike("%" + bo.getOrderId());
+            salece.andDfTradeIdLike("%" + bo.getOrderId()).or().andTradeCodeLike("%"+bo.getOrderId());
         }
         if (StringUtils.hasText(bo.getTelphone())) {
             salece.andReceiverMobileEqualTo(bo.getTelphone());
         }
         if (StringUtils.hasText(bo.getReceiver())) {
             salece.andReceiverNameEqualTo(bo.getReceiver());
+        }
+        if(bo.getBuyerId()!= null){
+            salece.andBuyerIdEqualTo(bo.getBuyerId());
         }
 
         int count = daifaTradeMapper.countByExample(daifaTradeExample);
@@ -97,6 +100,19 @@ public class DaifaAfterSaleService {
 
             for (AfterSaleData afterSaleDatum : afterSaleData) {
                 AfterSaleDataVO vo = new AfterSaleDataVO();
+                switch (afterSaleDatum.getOldOrder()){
+                    case 0:{
+                        vo.setOldOrder(false);
+                        break;
+                    }
+                    case 1:{
+                        vo.setOldOrder(true);
+                        break;
+                    }
+                    default:{
+                        break;
+                    }
+                }
                 BeanUtils.copyProperties(afterSaleDatum, vo, "childOrders");
                 vo.setSendTime(DateUtil.dateToString(afterSaleDatum.getSendTime(), DateUtil.patternA));
                 vo.setTradeTime(DateUtil.dateToString(afterSaleDatum.getCreateTime(), DateUtil.patternA));

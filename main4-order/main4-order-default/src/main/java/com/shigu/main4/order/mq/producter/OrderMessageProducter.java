@@ -125,7 +125,7 @@ public class OrderMessageProducter {
             message.setTelephone(logisticsVO.getTelephone());
             message.setCity(orderConstantService.selCityByCid(message.getCityId()).getCity());
             message.setProv(orderConstantService.selProvByPid(message.getProvId()).getProvince());
-            message.setTown(orderConstantService.selTownByTid(message.getTownId()).getTown());
+            message.setTown(message.getTownId()==null?null:orderConstantService.selTownByTid(message.getTownId()).getTown());
             message.setCompany(orderConstantService.selByExpressId(message.getCompanyId()).getExpressName());
             return message;
         }).collect(Collectors.toList()));

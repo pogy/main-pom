@@ -257,6 +257,9 @@ public class ConfirmOrderService {
     }
 
     public String selTownById(Long townId) {
+        if (townId == null) {
+            return null;
+        }
         OrderTown town = orderTownMapper.selectByPrimaryKey(townId);
         return town.getTownName();
     }

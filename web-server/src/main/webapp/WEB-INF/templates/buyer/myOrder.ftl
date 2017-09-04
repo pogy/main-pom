@@ -287,6 +287,7 @@ var webSite = '${webSite!}';
 
 
 <div class="rightBox fr">
+    <img class="goatImg" src="http://shigu.oss-cn-hangzhou.aliyuncs.com/goat/imgs/850362067.jpg" >
     <div class="tabBox clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>

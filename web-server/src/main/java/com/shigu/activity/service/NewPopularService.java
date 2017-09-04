@@ -85,6 +85,10 @@ public class NewPopularService {
         Map<String,List<PopularGoodsVO>> lineMap=new HashMap<>();
         shiguTemps.forEach(o ->{
             ShiguGoodsTiny tiny=tinyMap.get(Long.valueOf(o.getKey1()));
+            if (tiny == null) {
+                //处理已下架商品数据
+                return;
+            }
             ShopNumAndMarket store=marketMap.get(Long.valueOf(o.getKey2()));
             PopularGoodsVO vo = new PopularGoodsVO();
             vo.setGoodsId(tiny.getGoodsId());

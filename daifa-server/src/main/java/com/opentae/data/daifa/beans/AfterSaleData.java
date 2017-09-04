@@ -44,6 +44,10 @@ public class AfterSaleData implements Serializable {
     private Date sendTime;
     @Column("daifa_trade.create_time")
     private Date createTime;
+    @Column("daifa_trade.trade_code")
+    private String tradeCode;
+    @Column("daifa_trade.is_old")
+    private Integer oldOrder;
 
     private List<AfterSaleSubData> childOrders;
 
@@ -159,5 +163,19 @@ public class AfterSaleData implements Serializable {
         this.childOrders = childOrders;
     }
 
+    public String getTradeCode() {
+        return tradeCode;
+    }
 
+    public void setTradeCode(String tradeCode) {
+        this.tradeCode = tradeCode;
+    }
+
+    public Integer getOldOrder() {
+        return oldOrder;
+    }
+
+    public void setOldOrder(Integer oldOrder) {
+        this.oldOrder = oldOrder;
+    }
 }
