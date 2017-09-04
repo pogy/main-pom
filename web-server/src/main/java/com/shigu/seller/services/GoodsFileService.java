@@ -530,7 +530,7 @@ public class GoodsFileService extends OssIO {
     }
 
     private void saveOrUpdateOuterLinkSingle(BigPicOuterLinkBO bo,String webSite, Long goodsId) {
-       itemPicRelationService.updateFileOuter(bo.getGoodsId(),webSite,bo.getPsw(),bo.getLink(),2);
+       itemPicRelationService.updateFileOuter(goodsId,webSite,bo.getPsw(),bo.getLink(),2);
     }
 
 
