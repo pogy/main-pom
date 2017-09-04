@@ -287,7 +287,7 @@ var webSite = '${webSite!}';
 
 
 <div class="rightBox fr">
-    <img class="goatImg" src="http://shigu.oss-cn-hangzhou.aliyuncs.com/goat/imgs/850362067.jpg" >
+    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat.png" >
     <div class="tabBox clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>
@@ -523,7 +523,7 @@ var webSite = '${webSite!}';
 </#list>
 
             <#elseif order.mainState == 2>
-            <p>待配货</p>
+            <p>配货中</p>
             <#elseif order.mainState == 3>
             <p>已发货</p>
             <#elseif order.mainState == 4>
