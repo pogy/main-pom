@@ -515,7 +515,7 @@ public class GoodsFileService extends OssIO {
             shiguGoodsTiny.setGoodsId(bo.getGoodsId());
             shiguGoodsTiny.setStoreId(shop.getShopId());
             ShiguGoodsTiny shiguGoodsTiny1 = shiguGoodsTinyMapper.selectOne(shiguGoodsTiny);
-            if (shiguGoodsTiny1 != null && shiguGoodsTiny1.getGoodsNo() != null && StringUtils.isNotEmpty(shiguGoodsTiny1.getGoodsNo())) {
+            if (shiguGoodsTiny1 != null && StringUtils.isNotEmpty(shiguGoodsTiny1.getGoodsNo())) {
                 shiguGoodsTiny.setGoodsNo(shiguGoodsTiny1.getGoodsNo());
                 shiguGoodsTiny.setGoodsId(null);
             }
