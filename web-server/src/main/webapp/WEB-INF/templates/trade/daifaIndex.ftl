@@ -16,7 +16,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/daifaV1/css/daifaIndex.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/daifaV1/css/daifaIndex.css?v=2017090401" rel="stylesheet">
     
 
     
@@ -26,7 +26,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/daifaV1/js/daifaIndex.js"></script>
+    <script src="http://style.571xz.com/v2/daifaV1/js/daifaIndex.js?v=2017090401"></script>
 </head>
 <body>
 
@@ -280,7 +280,7 @@ var webSite = '${webSite!}';
         </li>
     
         <li class="select">
-            <a href="http://daifa.571xz.com/" target="_blank">
+            <a href="/daifaIndex.htm" target="_blank">
                 一件代发
                 
                 
@@ -540,6 +540,8 @@ var webSite = '${webSite!}';
 
 
 </div>
+
+
 
 
 
