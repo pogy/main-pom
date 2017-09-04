@@ -120,7 +120,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         // 初始化一个订单
         ItemOrder order = BeanMapper.map(orderBO, ItemOrder.class);
         order.setOid(idGenerator(OrderType.XZ));
-        order.setType(OrderType.XZ.type);
+        //判断订单是淘宝订单还是星座订单
+        order.setType(StringUtils.isNotBlank(orderBO.getOuterId())?OrderType.TB.type:OrderType.XZ.type);
         order.setTotalFee(0L);
         order.setPayedFee(0L);
         order.setRefundFee(0L);
