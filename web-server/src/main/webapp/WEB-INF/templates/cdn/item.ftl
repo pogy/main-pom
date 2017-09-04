@@ -1002,7 +1002,7 @@ var piPrice = '${goodsInfo.piPrice!}';
          <ul class="keybox">
                 <li><a href="http://www.571xz.net/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
                 <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
-                <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox"></div></li>
+                <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox" data-goodsid="${goodsInfo.goodsId!}"></div></li>
                 <li class="addData"><b xzclick="addGoodsData" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>加入数据包</span></b></li>
                 
 
