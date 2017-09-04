@@ -12,6 +12,8 @@ import com.openJar.responses.app.SearchNavResponse;
 public class SearchNavRequest extends Request<SearchNavResponse> {
 	//1类目，2市场	必须
 	private Integer type;
+	//站点 必须
+	private String webSite;
 	//上级类目ID，不传意思为查顶级
 	private Long sid;
 	public Integer getType(){
@@ -30,7 +32,15 @@ public class SearchNavRequest extends Request<SearchNavResponse> {
 		this.sid=sid;
 	}
 
-	public String testApiUrl(){
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
+    }
+
+    public String testApiUrl(){
 		return HostEnum.TEST+"searchNav.json";
 	}
 

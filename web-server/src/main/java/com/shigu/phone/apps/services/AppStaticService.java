@@ -42,7 +42,7 @@ public class AppStaticService {
                 s1.setWebSite(s.getCitySite());
                 sites.add(s1);
             }
-            ehCacheManager.getCache("appWebSite").put("appWebSite",sites);
+            cache.put("appWebSite",sites);
         }
         SitesResponse response=new SitesResponse();
         response.setSites(sites);

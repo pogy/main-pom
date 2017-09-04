@@ -147,7 +147,6 @@ public class PhoneGoodsSearchService {
             resp.setStoreNum(shop.getShopNo());
             resp.setMarket(shop.getMarketName());
             resp.setStarNum(shop.getStarNum().intValue());
-            resp.setShopHeadUrl(shop.getImgsrc());
             resp.setSuccess(true);
         } catch (CdnException | TemplateException | IOException e) {
             resp.setException(new OpenException());
