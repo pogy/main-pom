@@ -543,7 +543,7 @@ ${userShopHdHtml}
         <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
             <a xzclick="addGoodsDataCannot" href="javascript:;" class="store">收藏此商品</a>
         <#else>
-            <a xzclick="addGoodsData" href="javascript:;" class="store">收藏此商品</a>
+            <a xzclick="addGoodsData" href="javascript:;" class="store" data-goodsid="${goodsInfo.goodsId!}">收藏此商品</a>
         </#if>
         <a class="find_error" href="http://www.571xz.com/contact.htm" target="_blank">我要纠错<span class="text-999">（如价格有误请联系我们客服修改）</span></a>
         
