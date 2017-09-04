@@ -39,7 +39,7 @@ public class DaifaAllocatedService {
     @Autowired
     private TakeGoodsIssueProcess takeGoodsIssueProcess;
 
-    public ShiguPager<DaifaAllocatedVO> selectDaifaGgoodsList(Long sellerId,Long workerId, String lastOrderId, String lastSubOrderId,
+    public ShiguPager<DaifaAllocatedVO> selectDaifaGgoodsList(Long sellerId,Long workerId,Long searchWorkerId,Integer status, String lastOrderId, String lastSubOrderId,
                                                               String startDate, String endDate, Integer page, Integer size) {
         DaifaGgoodsExample daifaGgoodsExample = new DaifaGgoodsExample();
         DaifaGgoodsExample.Criteria ce = daifaGgoodsExample.createCriteria().andSellerIdEqualTo(sellerId)
@@ -58,6 +58,12 @@ public class DaifaAllocatedService {
         if (endDate != null) {
             String et = DateUtil.dateToString(DateUtil.stringToDate(endDate, DateUtil.patternA), DateUtil.patternB);
             ce.andCreateDateLessThanOrEqualTo(et);
+        }
+        if(searchWorkerId!=null){
+            ce.andDaifaWorkerIdEqualTo(searchWorkerId);
+        }
+        if(status!=null){
+            ce.andPrintBarcodeStatusEqualTo(status);
         }
         Integer count = daifaGgoodsMapper.countByExample(daifaGgoodsExample);
         List<DaifaAllocatedVO> vos = new ArrayList<>();
@@ -138,7 +144,7 @@ public class DaifaAllocatedService {
         for(DaifaWorker w:ws){
             DaifaWorkerVO vo=new DaifaWorkerVO();
             vo.setId(w.getDaifaWorkerId());
-            vo.setName(w.getDaifaWorker());
+            vo.setName(w.getUserName());
             vos.add(vo);
         }
         return vos;

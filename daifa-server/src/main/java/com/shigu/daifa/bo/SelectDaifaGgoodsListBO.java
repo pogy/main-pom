@@ -7,7 +7,25 @@ public class SelectDaifaGgoodsListBO implements Serializable {
     private String childOrderId;
     private String startTime;
     private String endTime;
+    private Long searchWorkerId;
+    private Integer status;
     private Integer page;
+
+    public Long getSearchWorkerId() {
+        return searchWorkerId;
+    }
+
+    public void setSearchWorkerId(Long searchWorkerId) {
+        this.searchWorkerId = searchWorkerId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public String getOrderId() {
         return orderId;

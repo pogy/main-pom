@@ -41,13 +41,14 @@ public class DaifaAllocatedAction {
         if (bo.getPage() == null) {
             bo.setPage(1);
         }
-        ShiguPager<DaifaAllocatedVO> pager= daifaAllocatedService.selectDaifaGgoodsList(daifaUser.getDaifaSellerId(),daifaUser.getDaifaWorkerId(), bo.getOrderId(), bo.getChildOrderId(),
+        ShiguPager<DaifaAllocatedVO> pager= daifaAllocatedService.selectDaifaGgoodsList(daifaUser.getDaifaSellerId(),daifaUser.getDaifaWorkerId(),bo.getSearchWorkerId(),bo.getStatus(), bo.getOrderId(), bo.getChildOrderId(),
                 bo.getStartTime(), bo.getEndTime(), bo.getPage(), 10);
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.getTotalCount()+","+10+","+bo.getPage());
         model.addAttribute("childOrders",pager.getContent());
         model.addAttribute("userIcon","");
         model.addAttribute("userName",daifaUser.getDaifaUserName());
+        model.addAttribute("workers",daifaAllocatedService.selWorkerList(daifaUser.getDaifaSellerId()));
         return "daifa/orderHasAllocation";
     }
 
