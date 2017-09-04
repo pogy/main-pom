@@ -27,6 +27,7 @@ public class AfterSaleDataVO {
     private String sendTime;
     private String tradeTime;
     private Boolean oldOrder;
+    private Integer sendStatus;
     private List<AfterSaleDataSubVO> childOrders;
 
     public Long getAfterSaleId() {
@@ -163,5 +164,13 @@ public class AfterSaleDataVO {
 
     public void setOldOrder(Boolean oldOrder) {
         this.oldOrder = oldOrder;
+    }
+
+    public Integer getSendStatus() {
+        return sendStatus;
+    }
+
+    public void setSendStatus(Integer sendStatus) {
+        this.sendStatus = sendStatus;
     }
 }

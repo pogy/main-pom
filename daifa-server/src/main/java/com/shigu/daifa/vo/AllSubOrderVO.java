@@ -31,7 +31,7 @@ public class AllSubOrderVO implements Serializable{
     private Integer refundState;
     private Integer afterSaleState;//售后子单状态 2申请退款 3已受理退款
     // 4退款完成 5拒绝退款 6申请换货 7换货中 8换货完成 9拒绝换货
-
+    private String storeGoodsCode;//商家编码
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -163,5 +163,13 @@ public class AllSubOrderVO implements Serializable{
 
     public void setRefundState(Integer refundState) {
         this.refundState = refundState;
+    }
+
+    public String getStoreGoodsCode() {
+        return storeGoodsCode;
+    }
+
+    public void setStoreGoodsCode(String storeGoodsCode) {
+        this.storeGoodsCode = storeGoodsCode;
     }
 }
