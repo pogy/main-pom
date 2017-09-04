@@ -1,5 +1,6 @@
 package com.shigu.order.services;
 
+import com.opentae.core.mybatis.SgExample;
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
@@ -18,6 +19,7 @@ import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.main4.order.servicevo.ShowOrderDetailVO;
 import com.shigu.main4.order.vo.OrderAddrInfoVO;
 import com.shigu.main4.order.vo.OrderDetailExpressVO;
+import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.order.bo.OrderBO;
 import com.shigu.order.vo.AfterSaleVO;
 import com.shigu.order.vo.MyOrderDetailVO;
@@ -29,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -118,18 +121,15 @@ public class MyOrderService {
         pager.setNumber(number);
         MultipleExampleBuilder multipleExampleBuilder = MultipleExampleBuilder.from(orderExample)
                 .innerJoin(subExample).on(subExample.createCriteria().equalTo(ItemOrderSubExample.oid, ItemOrderExample.oid))
-                .leftJoin(logisticsExample).on(logisticsExample.createCriteria().equalTo(ItemOrderLogisticsExample.oid, ItemOrderExample.oid))
+                .innerJoin(logisticsExample).on(logisticsExample.createCriteria().equalTo(ItemOrderLogisticsExample.oid, ItemOrderExample.oid))
                 .leftJoin(refundExample).on(refundExample.createCriteria().equalTo(ItemOrderRefundExample.soid, ItemOrderSubExample.soid));
         if (onlyRefund) {
             multipleExampleBuilder.where(refundExample.createCriteria().andRefundIdIsNotNull());
         }
-
         MultipleExample multipleExample = multipleExampleBuilder.build();
-
         multipleExample.setDistinctCount(ItemOrderExample.oid);
         multipleExample.setOrderByClause("item_order.create_time DESC");
         int orderCount = multipleMapper.countByMultipleExample(multipleExample);
-
         if (orderCount > 0) {
 
             // 查询数据
