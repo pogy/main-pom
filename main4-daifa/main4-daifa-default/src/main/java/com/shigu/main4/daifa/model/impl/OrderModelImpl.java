@@ -328,7 +328,6 @@ public class OrderModelImpl implements OrderModel {
         for (DaifaSendOrder d:daifaSendOrders){
             d.setCreateDate(date);
             d.setCreateTime(time);
-            d.setTakeGoodsStatus(1);
             d.setSendStatus(2);
             d.setSendId(send.getSendId());
             d.setSellerId(delivery.getSellerId());
