@@ -1,5 +1,5 @@
 
-<#assign main_host="http://www.571xz.com/" />
+<#--<#assign main_host="http://www.571xz.com/" />-->
 <#assign qiye_qq="4000761116" />
 <#assign qiye_wwFir="杭州石谷网络科技有限公司" />
 <#assign qiye_wwSec="杭州石谷网络科技有限公司" />
