@@ -24,6 +24,8 @@ public class AfterSaleData implements Serializable {
     private String receiverName;
     @Column("daifa_trade.receiver_phone")
     private String receiverPhone;
+    @Column("daifa_trade.receiver_address")
+    private String receiverAddress;
     @Column("daifa_trade.buyer_remark")
     private String buyerRemark;
     @Column("daifa_trade.money")
@@ -52,6 +54,14 @@ public class AfterSaleData implements Serializable {
     private Integer sendStatus;
 
     private List<AfterSaleSubData> childOrders;
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
+    }
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;

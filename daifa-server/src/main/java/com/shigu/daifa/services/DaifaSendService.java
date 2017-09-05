@@ -4,20 +4,14 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.data.daifa.beans.DaifaSendOrderSimple;
 import com.opentae.data.daifa.beans.DaifaSendSimple;
-import com.opentae.data.daifa.beans.DaifaWaitSendOrderSimple;
-import com.opentae.data.daifa.beans.DaifaWaitSendSimple;
 import com.opentae.data.daifa.examples.DaifaSendExample;
-import com.opentae.data.daifa.examples.DaifaWaitSendExample;
+import com.opentae.data.daifa.examples.DaifaSendOrderExample;
 import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
 import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
 import com.opentae.data.daifa.interfaces.DaifaSendMapper;
-import com.opentae.data.daifa.interfaces.DaifaWaitSendMapper;
-import com.shigu.daifa.bo.AllOrderBO;
 import com.shigu.daifa.bo.WaitSendBO;
 import com.shigu.daifa.vo.DaifaSendVO;
-import com.shigu.daifa.vo.DaifaWaitSendVO;
 import com.shigu.daifa.vo.SendOrderVO;
-import com.shigu.daifa.vo.WaitSendOrderVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +76,7 @@ public class DaifaSendService {
             MultipleExample multipleExample = MultipleExampleBuilder.from(daifaWaitSendExample)
                     .leftJoin(daifaWaitSendOrderExample)
                     .on(daifaWaitSendExample.createCriteria()
-                            .equalTo(DaifaWaitSendExample.dwsId, DaifaWaitSendOrderExample.dwsId)).build();
+                            .equalTo(DaifaSendExample.sendId, DaifaSendOrderExample.sendId)).build();
             List<DaifaSendSimple> daifaWaitSendSimples = daifaMultipleMapper.selectFieldsByMultipleExample(multipleExample, DaifaSendSimple.class);
 
             for (DaifaSendSimple daifaWaitSendSimple : daifaWaitSendSimples) {
