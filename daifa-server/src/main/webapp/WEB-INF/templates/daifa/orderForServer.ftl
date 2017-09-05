@@ -51,7 +51,7 @@
         <div class="sidebar fl yahei">
     <ul>
         
-           <@shiro.hasAnyPermissions name="df:admin,df:kefu">
+         <@shiro.hasAnyPermissions name="df:admin,df:kefu">
             <li>
                 <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
             </li>
@@ -225,7 +225,12 @@
                 
             </div>
             <div class="rightConBox fr">
-                <span class="fl">${order.receiverName!}（${order.receiverPhone!}）</span>
+                <div class="fl pr receiverAddress">
+                    <span class="">${order.receiverName!}（${order.receiverPhone!}）</span>
+                    <div class="pa addressCon">
+                        ${order.receiverAddress!}
+                    </div>
+                </div>
                 <#if order.buyerRemark??>
                 <div class="pr fl buyerRemark">
                     <i class="icon-s-message iconfont haveRemark"></i>
