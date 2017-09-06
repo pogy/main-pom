@@ -90,7 +90,15 @@
 
     </div>
     <div class="contentBox">
-        <div class="statistics yahei fc9">
+        <div class="printTypeTabs">
+    <ul>
+        <li class="select"><a href="orderAll.htm">全部订单</a></li>
+        <li ><a href="noGoodsnoOrder.htm">无货号订单</a></li>
+    </ul>
+</div>
+
+
+<div class="statistics yahei fc9">
     <ul>
         <li>
             <span class="fs20 arail fc3">${orderStatistics.totalNumber!}</span>
