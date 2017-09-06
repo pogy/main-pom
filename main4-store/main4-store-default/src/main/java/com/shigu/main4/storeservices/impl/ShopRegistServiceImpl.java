@@ -77,7 +77,7 @@ public class ShopRegistServiceImpl extends ShopServiceImpl implements ShopRegist
     private TaobaoSessionMapMapper taobaoSessionMapMapper;
 
     @Value("${taobao.app.key}")
-    private static String appKey;
+    private String appKey;
 
     @Autowired
     private TaobaoClient taobaoClient;
