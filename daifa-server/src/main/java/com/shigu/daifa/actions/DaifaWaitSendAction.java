@@ -29,16 +29,16 @@ public class DaifaWaitSendAction {
         this.daifaWaitSendService = daifaWaitSendService;
     }
 
-    @RequestMapping("daifaWaitSendIndex")
+    @RequestMapping("daifa/notYetSipped")
     public String daifaWaitSendIndex(WaitSendBO bo , Model model){
         AuthorityUser auth = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         ShiguPager<DaifaWaitSendVO> pager = daifaWaitSendService.selPageData(bo,auth.getDaifaSellerId());
 
-        model.addAttribute("",pager.getContent());
-        model.addAttribute("",pager.selPageOption(10));
+        model.addAttribute("orders",pager.getContent());
+        model.addAttribute("pageOption",pager.selPageOption(10));
         model.addAttribute("query",bo);
 
-        return "";
+        return "daifa/notYetSipped";
     }
 
 }
