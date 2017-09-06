@@ -29,6 +29,11 @@ public class AfterSaleServiceImplTest extends BaseTest{
     ItemOrderRefundMapper itemOrderRefundMapper;
 
     @Test
+    public void subAfterSaleSimpleOrderTest(){
+        show(afterSaleService.subAfterSaleSimpleOrder(97105L));
+    }
+
+    @Test
     public void refundApplyTest() throws OrderException {
         Long soid=96022l;
         Long money=774880l;
