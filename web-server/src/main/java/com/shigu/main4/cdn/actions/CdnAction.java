@@ -853,6 +853,12 @@ public class CdnAction {
     @RequestMapping("item")
     public String item(Long id, Model model) throws CdnException, IOException, TemplateException {
         CdnGoodsInfoVO goods=cdnService.cdnGoodsInfo(id);
+        if(StringUtils.isEmpty(goods.getColorsMeta())||"[]".equals(goods.getColorsMeta())){
+            goods.setColorsMeta("[{\"text\":\"图片色\",\"imgSrc\":\"\"}]");
+        }
+        if(StringUtils.isEmpty(goods.getSizesMeta())||"[]".equals(goods.getSizesMeta())){
+            goods.setSizesMeta("[\"均码\"]");
+        }
         if ("kx".equalsIgnoreCase(goods.getWebSite())) {
             return oldItemForKx(id,model);
         }
