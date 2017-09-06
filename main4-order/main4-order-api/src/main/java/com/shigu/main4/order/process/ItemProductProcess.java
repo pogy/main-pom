@@ -1,6 +1,7 @@
 package com.shigu.main4.order.process;
 
 import com.shigu.main4.order.bo.GoodsTaoRelationBO;
+import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.vo.ItemProductVO;
 
 /**
@@ -23,4 +24,11 @@ public interface ItemProductProcess {
      * @param bo
      */
     void relationTaoGoods(GoodsTaoRelationBO bo);
+
+    /**
+     * 修改订单系统中的货号
+     * @param goodsId
+     * @param goodsNo
+     */
+    void updateGoodsNo(Long goodsId, String goodsNo) throws OrderException;
 }
