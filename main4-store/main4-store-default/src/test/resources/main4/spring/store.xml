@@ -31,4 +31,10 @@
         <constructor-arg index="1" value="${secret}"/>
         <constructor-arg index="2" value="${host}"/>
     </bean>
+
+    <bean id="taobaoClient" class="com.taobao.api.DefaultTaobaoClient">
+        <constructor-arg index="0" value="${taobao.app.server.url}"/>
+        <constructor-arg index="1" value="${taobao.app.key}"/>
+        <constructor-arg index="2" value="${taobao.app.secret}"/>
+    </bean>
 </beans>

@@ -16,6 +16,7 @@ public class AfterSaleDataVO {
     private String tradeCode;
     private String receiverName;
     private String receiverPhone;
+    private String receiverAddress;
     private String buyerRemark;
     private String totalFee;
     private String expressFee;
@@ -29,6 +30,14 @@ public class AfterSaleDataVO {
     private Boolean oldOrder;
     private Integer sendStatus;
     private List<AfterSaleDataSubVO> childOrders;
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
+    }
 
     public Long getAfterSaleId() {
         return afterSaleId;

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.ActiveDrawGoods;
 import com.opentae.data.mall.beans.ShiguActivity;
 import com.opentae.data.mall.interfaces.ShiguActivityMapper;
-import com.shigu.activity.service.ActiveDrawListener;
 import com.shigu.activity.service.DrawQualification;
 import com.shigu.activity.service.NewPopularService;
 import com.shigu.activity.vo.ActiveDrawStyleVo;
@@ -32,12 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * 奖品活动
@@ -348,8 +342,6 @@ public class ActivityAction {
         return "activity/apply";
     }
 
-    @Autowired
-    private ActiveDrawListener activeDrawListener;
     final String flag = "autumn_new3";
 
     @RequestMapping("activity/jsonapply")
@@ -358,20 +350,21 @@ public class ActivityAction {
         JSONObject jsonObject = new JSONObject();
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
-
-        if (activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()).equals("true")) {
+        String checkResult = activeDrawServiceImpl.shiguTempSigup(flag, userId, ps.getLogshop().getShopId());
+        if (checkResult.equals("true")) {
             jsonObject.put("result", "success");
         } else {
-            jsonObject.put("msg", activeDrawListener.signUp(flag, userId, ps.getLogshop().getShopId()));
+            jsonObject.put("msg", checkResult);
         }
         return jsonObject;
     }
 
     @RequestMapping("activity/qzxpApply")
     public String qzxpApply(Model model, HttpSession session) {
+        final String ALREADY_APPLY = "您已经报过名了";
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps != null && ps.getLogshop() != null) {
-            model.addAttribute("alreadyApply", activeDrawListener.checkSignUp(flag,ps.getUserId(), ps.getLogshop().getShopId()));
+            model.addAttribute("alreadyApply", ALREADY_APPLY.equals(activeDrawServiceImpl.shiguTempSigup(flag,ps.getUserId(), ps.getLogshop().getShopId())));
         }
         model.addAttribute("webSite", "hz");
         return "activity/qzxpApply";

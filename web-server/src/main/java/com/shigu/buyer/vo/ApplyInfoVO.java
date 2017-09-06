@@ -86,10 +86,13 @@ public class ApplyInfoVO implements Serializable{
         List<ShiguTags> taglist=detail.getTagsList();
         if(taglist!=null)
         for(ShiguTags st:taglist){
-            if(tagsstr.equals("0")){
-                tagsstr=st.getValue();
-            }else{
-                tagsstr+=","+st.getValue();
+            if (st != null) {
+                if(tagsstr.equals("0")){
+
+                    tagsstr=st.getValue();
+                }else{
+                    tagsstr+=","+st.getValue();
+                }
             }
         }
         setServerLevel(tagsstr);

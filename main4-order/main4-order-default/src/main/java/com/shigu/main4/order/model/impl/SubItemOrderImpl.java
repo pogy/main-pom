@@ -151,28 +151,11 @@ public class SubItemOrderImpl implements SubItemOrder{
     private SubItemOrderVO filledSubItemOrderVO(SubItemOrderVO subItemOrderVO) {
         subItemOrderVO.setGoodsNo("");
         ItemProductVO product = subItemOrderVO.getProduct();
-        ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
-        shiguGoodsTiny.setWebSite(subItemOrderVO.getProduct().getWebSite());
-        shiguGoodsTiny.setGoodsId(subItemOrderVO.getProduct().getGoodsId());
-        ShiguGoodsTiny result = shiguGoodsTinyMapper.selectOne(shiguGoodsTiny);
-        if (result != null) {
-            subItemOrderVO.setGoodsNo(result.getGoodsNo());
-            product.setMarketId(result.getMarketId());
-            product.setMarketName(result.getParentMarketName());
-            product.setShopId(result.getStoreId());
-            product.setShopNum(result.getStoreNum());
+        product.setMarketId(subItemOrderVO.getMarketId());
+        product.setMarketName(subItemOrderVO.getMarketName());
+            product.setShopId(subItemOrderVO.getShopId());
+            product.setShopNum(subItemOrderVO.getShopNum());
             return subItemOrderVO;
-        }
-        ShiguGoodsSoldout shiguGoodsSoldout = BeanMapper.map(shiguGoodsTiny,ShiguGoodsSoldout.class);
-        ShiguGoodsSoldout soldoutResult = shiguGoodsSoldoutMapper.selectOne(shiguGoodsSoldout);
-        if (soldoutResult != null) {
-            subItemOrderVO.setGoodsNo(soldoutResult.getGoodsNo());
-            product.setMarketId(soldoutResult.getMarketId());
-            product.setMarketName(soldoutResult.getMarket());
-            product.setShopId(soldoutResult.getStoreId());
-            product.setShopNum(soldoutResult.getStoreNum());
-        }
-        return subItemOrderVO;
     }
 
     public Long getSubOrderId() {

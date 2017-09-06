@@ -853,6 +853,15 @@ public class CdnAction {
     @RequestMapping("item")
     public String item(Long id, Model model) throws CdnException, IOException, TemplateException {
         CdnGoodsInfoVO goods=cdnService.cdnGoodsInfo(id);
+        if(StringUtils.isEmpty(goods.getColorsMeta())||"[]".equals(goods.getColorsMeta())){
+            goods.setColorsMeta("[{\"text\":\"图片色\",\"imgSrc\":\"\"}]");
+        }
+        if(StringUtils.isEmpty(goods.getSizesMeta())||"[]".equals(goods.getSizesMeta())){
+            goods.setSizesMeta("[\"均码\"]");
+        }
+        if ("kx".equalsIgnoreCase(goods.getWebSite())) {
+            return oldItemForKx(id,model);
+        }
         CdnShopInfoVO shop=cdnService.cdnShopInfo(goods.getShopId());
         String dzhtml=cdnService.bannerHtml(goods.getShopId(),goods.getWebSite());
         List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
@@ -863,11 +872,46 @@ public class CdnAction {
         model.addAttribute("goodsInfo",goods);
         model.addAttribute("tjGoodsList",see);
         model.addAttribute("shopCats",cats);
-        if ("kx".equalsIgnoreCase(goods.getWebSite())) {
-            return "cdn/xieItem";
-        } else {
-            return "cdn/item";
+        return "cdn/item";
+    }
+
+    public String oldItemForKx(Long id, Model model) throws CdnException, IOException, TemplateException {
+        //如果东北商品,用东北的模板
+        ItemShowVO itemShowVO=new ItemShowVO();
+        itemShowVO.setItemId(id);
+        CdnItem cdnItem=showForCdnService.selItemById(id);
+        itemShowVO.setOnsale(cdnItem!=null&&cdnItem.getOnsale());
+        if(cdnItem==null){//已经下架
+            cdnItem=showForCdnService.selItemInstockById(id);
         }
+        if(cdnItem==null){//商品不存在
+            throw new CdnException("商品不存在");
+        }
+        //店招
+        model.addAttribute("navCon",cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite()));
+        // 商品详情懒加载
+        if(cdnItem.getDescription()!=null)
+            cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
+                    .replace("<script>","")
+                    .replace("</script>",""));
+        itemShowVO.setCdnItem(cdnItem);
+//        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
+        itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
+        Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
+        starNum=starNum==null?0:    starNum;
+        itemShowVO.setStarNum(starNum);
+        itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
+        itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
+        itemShowVO.setDomain(shopBaseService.selDomain(cdnItem.getShopId()));
+        itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
+        model.addAttribute("vo",itemShowVO);
+        ItemBO bo=new ItemBO();
+        bo.setId(id);
+        model.addAttribute("bo",bo);
+        model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
+        model.addAttribute("hasYt",goodsFileService.hasDatu(id)+"");
+//        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
+        return "cdn/xieItem";
     }
 
     /**

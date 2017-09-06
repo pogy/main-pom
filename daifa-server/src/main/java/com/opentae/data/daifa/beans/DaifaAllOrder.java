@@ -30,6 +30,8 @@ public class DaifaAllOrder implements Serializable{
     private String receiverName;//收货人姓名
     @Column("daifa_trade.receiver_phone")
     private String receiverPhone;//收货人电话
+    @Column("daifa_trade.receiver_address")
+    private String receiverAddress;
     @Column("daifa_trade.buyer_remark")
     private String buyerRemark;//分销商留言
     @Column("daifa_trade.money")
@@ -50,6 +52,14 @@ public class DaifaAllOrder implements Serializable{
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
     }
 
     public String getOrderId() {

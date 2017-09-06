@@ -23,6 +23,7 @@ public class DaifaAllOrderVO implements Serializable{
     private String imWw;//分销商ww
     private String receiverName;//收货人姓名
     private String receiverPhone;//收货人电话
+    private String receiverAddress;
     private String buyerRemark;//分销商留言
     private String totalFee;//总费用
     private String expressFee;//快递费用
@@ -35,6 +36,14 @@ public class DaifaAllOrderVO implements Serializable{
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
     }
 
     public String getOrderId() {

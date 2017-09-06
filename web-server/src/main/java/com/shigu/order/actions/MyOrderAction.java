@@ -78,9 +78,9 @@ public class MyOrderAction {
     @ResponseBody
     public JSONObject isCanApplyRefund(Long childOrderId){
         try {
-            return JsonResponseUtil.success().element("refundState", myOrderService.testRefund(childOrderId) ? 1 : 0);
+            return JsonResponseUtil.success().element("refundState", myOrderService.testRefund(childOrderId) ? 1 : 2);
         } catch (OrderNotFindException e) {
-            return JsonResponseUtil.success().element("refundState","代发接单中...");
+            return JsonResponseUtil.success().element("refundState",3);
         }
     }
 
