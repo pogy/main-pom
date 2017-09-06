@@ -30,8 +30,8 @@ public class RefundWx extends BaseTest {
     public void testRefundAlipay() throws PayerException, AlipayApiException {
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent("{" +
-                "    \"out_trade_no\":\"66729\"," +
-                "    \"refund_amount\":66.0," +
+                "    \"trade_no\":\"2017090321001004910269852695\"," +
+                "    \"refund_amount\":6.0," +
                 "    \"refund_reason\":\"正常退款\"," +
                 "    \"out_request_no\":\"" + UUIDGenerator.getUUID() + "\"" +
                 "  }");
