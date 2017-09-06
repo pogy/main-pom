@@ -122,6 +122,7 @@ public class DaifaTrade implements Serializable {
 	 * 售后备注
 	 */
 	private String afterRemark;
+	private Integer isOld;
 	 
 	 //*************************get/set*****************************
     	/**
@@ -1043,5 +1044,13 @@ public class DaifaTrade implements Serializable {
 
 	public void setAfterRemark(String afterRemark) {
 		this.afterRemark = afterRemark;
+	}
+
+	public Integer getIsOld () {
+		return isOld;
+	}
+
+	public void setIsOld (Integer isOld) {
+		this.isOld = isOld;
 	}
 }

@@ -41,10 +41,12 @@ public class DaifaWaitSendSimple implements Serializable{
     private String expressName;//快递名
     @Column("daifa_wait_send.express_code")
     private String expressCode;//快递单号
-    @Column("daifa_wait_send.trade_discount_fee")
+    @Column("daifa_trade.trade_discount_fee")
     private String discountFee;//减免费用
-    @Column("daifa_wait_send.services_fee")
+    @Column("daifa_trade.services_fee")
     private String serversFee;//服务费用
+    @Column("daifa_wait_send.receiver_address")
+    private String receiverAddress;
 
     private List<DaifaWaitSendOrderSimple> childOrders;//子单数据
 
@@ -172,5 +174,13 @@ public class DaifaWaitSendSimple implements Serializable{
 
     public void setDswId(String dswId) {
         this.dswId = dswId;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
     }
 }

@@ -28,6 +28,7 @@ public class DaifaWaitSendVO {
     private String tradeTime;
     private Boolean oldOrder;
     private Integer sendStatus;
+    private String receiverAddress;
     private List<WaitSendOrderVO> childOrders;
 
     public Long getDwsId() {
@@ -172,5 +173,13 @@ public class DaifaWaitSendVO {
 
     public void setChildOrders(List<WaitSendOrderVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
     }
 }

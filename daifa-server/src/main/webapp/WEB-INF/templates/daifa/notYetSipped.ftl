@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>客服查询 - 星帮后台管理 - 四季星座网</title>
+    <title>未发货订单 - 星帮后台管理 - 四季星座网</title>
 
     
     
@@ -17,17 +17,23 @@
 
 
     
-    <link href="http://style.571xz.com/v2/dfgl/css/orderForServer.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/dfgl/css/notYetSipped.css" rel="stylesheet">
     
 
     
 
     
 
+    
+        
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/dfgl/js/orderForServer.js"></script>
+        
+            <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
+        
+    
+    <script src="http://style.571xz.com/v2/dfgl/js/notYetSipped.js"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -50,15 +56,14 @@
     <div class="sideBarBox">
         <div class="sidebar fl yahei">
     <ul>
-        
-        <@shiro.hasAnyPermissions name="df:admin,df:kefu">
+       <@shiro.hasAnyPermissions name="df:admin,df:kefu">
         <li>
-            <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
+            <a href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
         </li>
     </@shiro.hasAnyPermissions>
     <@shiro.hasAnyPermissions name="df:kefu">
         <li>
-            <a class="current" href="orderForServer.htm"><i class="icon-allorders"></i>客服查询</a>
+            <a href="orderForServer.htm"><i class="icon-allorders"></i>客服查询</a>
         </li>
     </@shiro.hasAnyPermissions>
     <@shiro.hasAnyPermissions name="df:admin">
@@ -80,7 +85,7 @@
                     <a href="scanBarCode.htm"><i></i>扫描打印</a>
                 </li>
                 <li>
-                    <a href="notYetSipped.htm"><i></i>未发货订单</a>
+                    <a class="current" href="notYetSipped.htm"><i></i>未发货订单</a>
                 </li>
             </ul>
         </li>
@@ -93,14 +98,46 @@
 
     </div>
     <div class="contentBox">
-        
+        <div class="statistics yahei fc9">
+    <ul>
+        <li>
+            <span class="fs20 arail fc3">${orderStatistics.notYetOrder!}</span>
+            <p>未发货订单（单）</p>
+        </li>
+        <li>
+            <span class="fs20 arail fc3">${orderStatistics.notYetGoods!}</span>
+            <p>未发货商品（件）</p>
+        </li>
+        <li>
+            <span class="fs20 arail fc3">${orderStatistics.notYetGoodsFee!}</span>
+            <p>未发货商品金额（元）</p>
+        </li>
+    </ul>
+</div>
 
-<div class="orderSearch">
-    <ul class="orderSearchBox">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="orderSearch orderSearchBox">
+    <ul>
         <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
-        <li><label>下单人ID：</label><input type="text" class="fmInput" name="buyerId" <#if query.buyerId??> value="${query.buyerId!}" </#if>></li>
-        <li><label>收件人姓名：</label><input type="text" class="fmInput" name="receiver" <#if query.receiver??> value="${query.receiver!}" </#if>></li>
-        <li><label>收件人手机号码：</label><input type="text" class="fmInput" name="telphone" <#if query.telphone??> value="${query.telphone!}" </#if>></li>
+        <li><label>手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
+        <li><label>订单日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择起始时间" <#if query.startTime??> value="${query.startTime!}" </#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间" <#if query.endTime??>value="${query.endTime!}"</#if>></li>
         <li>
 
 <#assign text>{}</#assign>
@@ -165,7 +202,10 @@
 
 
 
-<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"buyerId","value":"${query.buyerId!}"},{"name":"receiver","value":"${query.receiver!}"},{"name":"telphone","value":"${query.telphone!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+
+
+
+<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -194,8 +234,6 @@
 
 
 
-
-
 <div class="orderCon">
     <div class="theadCon">
         <ul class="">
@@ -204,16 +242,15 @@
             <li class="price">价格（元）</li>
             <li class="goodsNum">数量</li>
             <li class="otherFee">其他费用</li>
+            <li class="orderState">订单状态</li>
             <li class="tradeState">交易状态</li>
-            <li class="remark">备注</li>
         </ul>
     </div>
     <#list orders as order>
-    <div class="orderItem" data-id="${order.orderId!}">
+    <div class="orderItem">
         <div class="orderItemHead">
             <div class="leftConBox fl">
                 <span>订单编号：${order.orderId!}</span>
-                <span>交易编号：${order.tradeCode!}</span>
                 <span>时间：${order.tradeTime!}</span>
                 <#if order.oldOrder == true>
                 <i class="fcF40 icon-old oldOrder"></i>
@@ -262,31 +299,38 @@
         <li class="otherFee">
             <p>服务费：${childOrder.childServersFee!}</p>
         </li>
-        <li class="tradeState">
-            <#if childOrder_index == 0>
-                <#if order.sendStatus == 1>
-                <p>未发货</p>
-                <#elseif order.sendStatus == 2>
-                <p>已发货</p>
+        <li class="orderState">
+            <#if order.tradeState == 1>
+                <#if childOrder.allotState == 0>
+                <p class="fc3 fcG">未分配</p>
+                <#elseif childOrder.allotState == 1>
+                <p class="fcG">已分配</p>
                 </#if>
-                <p>${order.sendTime!}</p>
-                <p>${order.expressName!}</p>
-                <p>（${order.expressCode!}）</p>
+                
+                <#if childOrder.takeGoodsState == 1>
+                <p>已拿到</p>
+                <#elseif childOrder.takeGoodsState == 2>
+                <p class="fcF40">缺货</p>
+                </#if>
+                
+                <#if childOrder.refundState == 1>
+                <p>申请退款</p>
+                <#elseif childOrder.refundState == 2>
+                <p>已申请退款成功</p>
+                <#elseif childOrder.refundState == 3>
+                <p>自动退款成功</p>
+                </#if>
+                
             </#if>
         </li>
-        <li class="remark">
+        <li class="tradeState">
             <#if childOrder_index == 0>
-            <div class="childOrderRemark pr">
-                <p class="childRemark">${order.childRemark!}</p>
-                <!--<i class="icon-s-message iconfont <#if childOrder.childRemark??>haveRemark</#if>"></i>-->
-                <p><b class="addChildRemark" jbtn="addChildRemark">添加备注</b></p>
-            </div>
+                <p>未发货</p>
+                <p>${order.expressName!}</p>
             </#if>
         </li>
     </ul>
 </div>
-
-
 
 
         </#list>
@@ -314,6 +358,69 @@
 
 
 </#list>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -7,6 +7,7 @@ import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
+import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.exceptions.RefundException;
@@ -16,6 +17,8 @@ import com.shigu.main4.order.model.SoidsCreater;
 import com.shigu.main4.order.model.SubItemOrder;
 import com.shigu.main4.order.mq.msg.*;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
+import com.shigu.main4.order.services.AfterSaleService;
+import com.shigu.main4.order.servicevo.SubAfterSaleSimpleOrderVO;
 import com.shigu.main4.order.vo.RefundVO;
 import com.shigu.main4.order.vo.SubItemOrderVO;
 import com.shigu.main4.order.zfenums.RefundStateEnum;
@@ -42,6 +45,9 @@ public class DfMessageListener implements MessageListener {
 
     @Autowired
     private SoidsCreater soidsCreater;
+
+    @Autowired
+    private AfterSaleService afterSaleService;
 
     @Autowired
     private OrderMessageProducter orderMessageProducter;
@@ -130,9 +136,13 @@ public class DfMessageListener implements MessageListener {
     public void stopTrade(BaseMessage<StopTradeMessage> msg) {
         soidsCreater.selSoidsBySoidps(msg.getData().getRefundSubOrderIds()).forEach((k, v) -> {
             SubItemOrder subItemOrder = SpringBeanFactory.getBean(SubItemOrder.class, k);
-            SubItemOrderVO subItemOrderVO = subItemOrder.subOrderInfo();
             try {
-                Long refundId = subItemOrder.refundApply(4, v.size(), subItemOrderVO.getPrice(), msg.getMsg());
+                SubAfterSaleSimpleOrderVO subSimple=afterSaleService.subAfterSaleSimpleOrder(k);
+                Long price=v.size()* subSimple.getPrice();
+                if(subSimple.getOtherRefundPrice()!=null){
+                    price+=subSimple.getOtherRefundPrice();
+                }
+                Long refundId = subItemOrder.refundApply(4, v.size(), price, msg.getMsg());
 
                 orderMessageProducter.orderRefundNoItem(refundId, k, v);
             } catch (OrderException e) {
