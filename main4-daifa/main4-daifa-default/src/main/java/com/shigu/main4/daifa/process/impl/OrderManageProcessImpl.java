@@ -1,16 +1,11 @@
 package com.shigu.main4.daifa.process.impl;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
-import com.opentae.data.daifa.beans.DaifaOrder;
-import com.opentae.data.daifa.beans.DaifaTrade;
-import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
-import com.opentae.data.daifa.examples.DaifaOrderExample;
-import com.opentae.data.daifa.examples.DaifaTradeExample;
-import com.opentae.data.daifa.interfaces.DaifaGgoodsTasksMapper;
-import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
-import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
+import com.opentae.data.daifa.beans.*;
+import com.opentae.data.daifa.examples.*;
+import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.daifa.bo.AutoRefundBo;
 import com.shigu.main4.daifa.bo.OrderBO;
 import com.shigu.main4.daifa.enums.DaifaTradeStatus;
 import com.shigu.main4.daifa.enums.SubOrderStatus;
@@ -38,6 +33,12 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     DaifaOrderMapper daifaOrderMapper;
     @Autowired
     DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
+    @Autowired
+    DaifaGgoodsMapper daifaGgoodsMapper;
+    @Autowired
+    DaifaWaitSendOrderMapper daifaWaitSendOrderMapper;
+    @Autowired
+    DaifaSendOrderMapper daifaSendOrderMapper;
 
     @Override
     public void newOrder(OrderBO order) {
@@ -157,24 +158,54 @@ public class OrderManageProcessImpl implements OrderManageProcess {
     }
 
     @Override
-    public void autoRefund(Long refundId, List<String> soids, List<String> soidps) throws DaifaException {
+    public void autoRefund(Long refundId, List<AutoRefundBo> bos) throws DaifaException {
         List<Long> refundableIds=new ArrayList<>();
-        for(String soid:soids){
+        List<String> soidps=new ArrayList<>();
+        List<String> soidpsNum=new ArrayList<>();
+        for(AutoRefundBo bo:bos){
             try {
-                refundableIds.addAll(refundChecked(soid,2));
+                List<Long> tmps=refundChecked(bo.getSoid(),2);
+                refundableIds.addAll(tmps);
+                if(bo.getSoidps()!=null&&bo.getSoidps().size()>0){
+                    if(soidpsNum.size()>0){
+                        throw new DaifaException("退款失败,soidps和num只能存在一个");
+                    }
+                    soidps.addAll(bo.getSoidps());
+                }else{
+                    if(soidps.size()>0){
+                        throw new DaifaException("退款失败,soidps和num只能存在一个");
+                    }
+                    if(bo.getNum()==null){
+                        throw new DaifaException("退款失败,soidps和num至少存在一个");
+                    }
+                    if(bo.getNum()<1){
+                        throw new DaifaException("退款失败,数量不能小于1");
+                    }
+                    if(bo.getNum()>tmps.size()){
+                        throw new DaifaException("退款失败,申请数量大于可退数量");
+                    }
+                    for(int i=0;i<bo.getNum();i++){
+                        soidpsNum.add(tmps.get(i).toString());
+                    }
+                }
             } catch (OrderNotFindException e) {
                 throw new DaifaException("退款失败,存在错误的单号");
             }
         }
-        checked:
-        for (String soidp : soidps) {
-            for (Long refundableId : refundableIds) {
-                if (soidp.equals(refundableId + "")) {
-                    continue checked;
+        if(soidps.size()>0){
+            checked:
+            for (String soidp : soidps) {
+                for (Long refundableId : refundableIds) {
+                    if (soidp.equals(refundableId + "")) {
+                        continue checked;
+                    }
                 }
+                throw new DaifaException("退款失败,可退款数量校验失败");
             }
-            throw new DaifaException("退款失败,可退款数量校验失败");
+        }else{
+            soidps=soidpsNum;
         }
+
         DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
         daifaOrderExample.createCriteria().andOrderPartitionIdIn(soidps);
         List<DaifaOrder> orders = daifaOrderMapper.selectFieldsByExample(daifaOrderExample, FieldUtil.codeFields("df_order_id,df_trade_id"));
@@ -187,6 +218,7 @@ public class OrderManageProcessImpl implements OrderManageProcess {
             throw e;
         }
     }
+
 
     /**
      * 退款校验
@@ -230,5 +262,42 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         }
         return oidps;
     }
+
+    @Override
+    public void putGoodsCode(Long goodsId, String goodsNo) throws DaifaException {
+        if(goodsId==-1){
+            throw new DaifaException("不支持修改");
+        }
+        DaifaOrder o1=new DaifaOrder();
+        o1.setGoodsCode(goodsNo);
+        DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+        daifaOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        daifaOrderMapper.updateByExampleSelective(o1,daifaOrderExample);
+
+        DaifaGgoodsTasks t=new DaifaGgoodsTasks();
+        t.setGoodsCode(goodsNo);
+        DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
+        daifaGgoodsTasksExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        daifaGgoodsTasksMapper.updateByExampleSelective(t,daifaGgoodsTasksExample);
+
+        DaifaGgoods g=new DaifaGgoods();
+        g.setGoodsCode(goodsNo);
+        DaifaGgoodsExample daifaGgoodsExample=new DaifaGgoodsExample();
+        daifaGgoodsExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        daifaGgoodsMapper.updateByExampleSelective(g,daifaGgoodsExample);
+
+        DaifaWaitSendOrder wso=new DaifaWaitSendOrder();
+        wso.setGoodsCode(goodsNo);
+        DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
+        daifaWaitSendOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        daifaWaitSendOrderMapper.updateByExampleSelective(wso,daifaWaitSendOrderExample);
+
+        DaifaSendOrder so=new DaifaSendOrder();
+        so.setGoodsCode(goodsNo);
+        DaifaSendOrderExample daifaSendOrderExample=new DaifaSendOrderExample();
+        daifaSendOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        daifaSendOrderMapper.updateByExampleSelective(so,daifaSendOrderExample);
+    }
+
 
 }

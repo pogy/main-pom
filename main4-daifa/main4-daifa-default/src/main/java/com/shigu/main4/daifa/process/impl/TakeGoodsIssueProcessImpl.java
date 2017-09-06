@@ -4,10 +4,8 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.daifa.beans.CountTrans;
+import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.beans.DaifaGgoods;
-import com.opentae.data.daifa.beans.DaifaGgoods;
-import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
 import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.CountTransMapper;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsMapper;
@@ -27,6 +25,7 @@ import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.daifa.vo.PrintTagVO;
 import com.shigu.main4.tools.SpringBeanFactory;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -94,6 +93,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         dgtex.createCriteria()
                 .andStoreIdEqualTo(shopId)
                 .andUseStatusEqualTo(1)//可用
+                .andGoodsCodeIsNotNull()
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0)//未结算
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
@@ -113,6 +113,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         dgtex.createCriteria()
                 .andUseStatusEqualTo(1)//可用
                 .andFloorIdEqualTo(floorId)
+                .andGoodsCodeIsNotNull()
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0)//未结算
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
@@ -131,6 +132,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         dgtex.createCriteria()
                 .andUseStatusEqualTo(1)//可用
                 .andMarketIdEqualTo(marketId)
+                .andGoodsCodeIsNotNull()
                 .andAllocatStatusEqualTo(0)//未分配
                 .andEndStatusEqualTo(0)//未结算
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
@@ -179,7 +181,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                         .equalTo(DaifaGgoodsExample.dfTradeId, DaifaTradeExample.dfTradeId))
                 .join(daifaOrderExample)
                 .on(daifaOrderExample.createCriteria().equalTo(DaifaOrderExample.dfOrderId, DaifaGgoodsExample.dfOrderId)).build();
-        multipleExample.setOrderByClause("daifa_ggoods.market_id asc,daifa_ggoods.store_id asc,daifa_ggoods.goods_code asc,daifa_ggoods.take_goods_id asc");
+        multipleExample.setOrderByClause("daifa_ggoods.market_id asc,lpad(daifa_ggoods.floor_name,10,0) asc,lpad(daifa_ggoods.store_num,10,0) asc,daifa_ggoods.goods_code asc,daifa_ggoods.take_goods_id asc");
         List<GgoodsForPrint> ggoodsForPrints = multipleMapper
                 .selectFieldsByMultipleExample(multipleExample, GgoodsForPrint.class);
 
@@ -243,7 +245,6 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             countTransMapper.insertSelective(ct);
 
         }
-
         return pvos;
     }
 

@@ -84,4 +84,5 @@ public interface TakeGoodsIssueProcess {
      */
 
     void completeWithDate(String date, Long sellerId) throws DaifaException;
+
 }

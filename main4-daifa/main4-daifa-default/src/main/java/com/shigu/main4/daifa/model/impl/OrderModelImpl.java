@@ -20,6 +20,7 @@ import com.shigu.main4.daifa.utils.BigNumber;
 import com.shigu.main4.daifa.utils.DaifaListDealUtil;
 import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.tools.SpringBeanFactory;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
@@ -162,7 +163,7 @@ public class OrderModelImpl implements OrderModel {
                         subOrderModelBO.setStoreId(bo.getShopId());
                         subOrderModelBO.setStoreNum(bo.getShopNum());
                         subOrderModelBO.setGoodsId(bo.getGoodsId());
-                        subOrderModelBO.setGoodsCode(bo.getGoodsNo());
+                        subOrderModelBO.setGoodsCode(StringUtils.isEmpty(bo.getGoodsNo())?null:bo.getGoodsNo());
                         subOrderModelBO.setTitle(bo.getTitle());
                         subOrderModelBO.setPicPath(bo.getPicUrl());
                         subOrderModelBO.setStoreGoodsCode(Pingyin.getPinYinHeadChar(bo.getMarketName())+"_"+bo.getShopNum()+"_"+bo.getGoodsNo());
@@ -224,6 +225,9 @@ public class OrderModelImpl implements OrderModel {
             daifaGgoodsTasksExample.createCriteria().andDfTradeIdEqualTo(tid)
                     .andReturnStatusEqualTo(0).andUseStatusEqualTo(1).andOperateIsEqualTo(0)
                     .andEndStatusEqualTo(0).andAllocatStatusEqualTo(0);
+            daifaGgoodsTasksExample.or().andDfTradeIdEqualTo(tid)
+                    .andReturnStatusEqualTo(0).andUseStatusEqualTo(0).andDelistIsEqualTo(1)
+                    .andOperateIsEqualTo(0).andEndStatusEqualTo(0).andAllocatStatusEqualTo(0);
             DaifaGgoodsTasks daifaGgoodsTask = new DaifaGgoodsTasks();
             daifaGgoodsTask.setEndStatus(1);
             daifaGgoodsTask.setReturnStatus(1);
