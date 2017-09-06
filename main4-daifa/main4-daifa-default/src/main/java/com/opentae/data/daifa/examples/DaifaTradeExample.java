@@ -59,6 +59,8 @@ public class DaifaTradeExample extends SgExample<DaifaTradeExample.Criteria> {
     public static EntityColumn payTime;
     public static EntityColumn receiverQq;
     public static EntityColumn buyerNick;
+    public static EntityColumn isOld;
+
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -113,6 +115,7 @@ public class DaifaTradeExample extends SgExample<DaifaTradeExample.Criteria> {
         payTime = listMap.get("payTime");
         receiverQq = listMap.get("receiverQq");
         buyerNick = listMap.get("buyerNick");
+        isOld=listMap.get ("isOld");
     }
 
     public DaifaTradeExample() {
@@ -2685,6 +2688,54 @@ public class DaifaTradeExample extends SgExample<DaifaTradeExample.Criteria> {
 
         public Criteria andBuyerNickNotBetween(String value1, String value2) {
             return notBetween(buyerNick, value1, value2);
+        }
+
+        public Criteria andIsOldIsNull() {
+            return isNull(isOld);
+        }
+
+        public Criteria andIsOldIsNotNull() {
+            return isNotNull(isOld);
+        }
+
+        public Criteria andIsOldEqualTo(Integer value) {
+            return equalTo(isOld, value);
+        }
+
+        public Criteria andIsOldNotEqualTo(Integer value) {
+            return notEqualTo(isOld, value);
+        }
+
+        public Criteria andIsOldGreaterThan(Integer value) {
+            return greaterThan(isOld, value);
+        }
+
+        public Criteria andIsOldGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isOld, value);
+        }
+
+        public Criteria andIsOldLessThan(Integer value) {
+            return lessThan(isOld, value);
+        }
+
+        public Criteria andIsOldLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isOld, value);
+        }
+
+        public Criteria andIsOldIn(List<Integer> values) {
+            return in(isOld, values);
+        }
+
+        public Criteria andIsOldNotIn(List<Integer> values) {
+            return notIn(isOld, values);
+        }
+
+        public Criteria andIsOldetween(Integer value1, Integer value2) {
+            return between(isOld, value1, value2);
+        }
+
+        public Criteria andIsOldNotBetween(Integer value1, Integer value2) {
+            return notBetween(isOld, value1, value2);
         }
     }
 }

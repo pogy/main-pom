@@ -58,7 +58,7 @@
     <ul>
     <@shiro.hasAnyPermissions name="df:admin,df:kefu">
         <li>
-            <a class="current"  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
+            <a class="current" href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
         </li>
     </@shiro.hasAnyPermissions>
     <@shiro.hasAnyPermissions name="df:kefu">
@@ -68,7 +68,7 @@
     </@shiro.hasAnyPermissions>
     <@shiro.hasAnyPermissions name="df:admin">
         <li>
-            <a  href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
+            <a href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
             <ul>
                 <li>
                     <a href="orderAllocation.htm"><i></i>任务分配</a>
@@ -76,8 +76,16 @@
                 <li>
                     <a href="orderHasAllocation.htm"><i></i>我的任务</a>
                 </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" ><i class="icon-allocation"></i>发货管理</a>
+            <ul>
                 <li>
                     <a href="scanBarCode.htm"><i></i>扫描打印</a>
+                </li>
+                <li>
+                    <a href="notYetSipped.htm"><i></i>未发货订单</a>
                 </li>
             </ul>
         </li>
