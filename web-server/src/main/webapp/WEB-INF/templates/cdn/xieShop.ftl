@@ -27,6 +27,8 @@ var main_host = 'http://www.kxie.com/';
 /*============ xieShopItem/host_config#base END ============*/
 
 
+
+
 </script>
 <div class="topbar">
     <div class="layout">

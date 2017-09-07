@@ -30,5 +30,5 @@ public interface ItemProductProcess {
      * @param goodsId
      * @param goodsNo
      */
-    void updateGoodsNo(Long goodsId, String goodsNo) throws OrderException;
+    void updateGoodsNo(Long goodsId,String goodsNo) throws OrderException;
 }

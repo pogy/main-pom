@@ -18,9 +18,9 @@ public class DaifaWaitSendSimple implements Serializable{
     @Transient
     private static final long serialVersionUID = -2685689810091540070L;
     @Column("daifa_wait_send.dws_id")
-    private String dswId;//代发id
+    private Long dwsId;//代发id
     @Column("daifa_wait_send.df_trade_id")
-    private String orderId;//订单id
+    private Long orderId;//订单id
     @Column("daifa_wait_send.send_status")
     private Integer tradeState;//交易状态1未发货2已发货
     @Column("daifa_wait_send.create_time")
@@ -41,10 +41,12 @@ public class DaifaWaitSendSimple implements Serializable{
     private String expressName;//快递名
     @Column("daifa_wait_send.express_code")
     private String expressCode;//快递单号
-    @Column("daifa_wait_send.trade_discount_fee")
+    @Column("daifa_trade.trade_discount_fee")
     private String discountFee;//减免费用
-    @Column("daifa_wait_send.services_fee")
+    @Column("daifa_trade.services_fee")
     private String serversFee;//服务费用
+    @Column("daifa_wait_send.receiver_address")
+    private String receiverAddress;
 
     private List<DaifaWaitSendOrderSimple> childOrders;//子单数据
 
@@ -52,13 +54,7 @@ public class DaifaWaitSendSimple implements Serializable{
         return serialVersionUID;
     }
 
-    public String getOrderId() {
-        return orderId;
-    }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
 
     public Integer getTradeState() {
         return tradeState;
@@ -166,11 +162,27 @@ public class DaifaWaitSendSimple implements Serializable{
         this.childOrders = childOrders;
     }
 
-    public String getDswId() {
-        return dswId;
+    public Long getDwsId () {
+        return dwsId;
     }
 
-    public void setDswId(String dswId) {
-        this.dswId = dswId;
+    public void setDwsId (Long dwsId) {
+        this.dwsId = dwsId;
+    }
+
+    public Long getOrderId () {
+        return orderId;
+    }
+
+    public void setOrderId (Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
     }
 }
