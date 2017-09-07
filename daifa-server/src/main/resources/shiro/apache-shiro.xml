@@ -16,6 +16,7 @@
 			<map>
 				<entry key="daifa" value-ref="tae_daifaAdminRegularFilter"/>
                 <entry key="api" value-ref="tae_apiRequestFilter"/>
+                <entry key="admin" value-ref="tae_daifaAdminRequestFilter"/>
 			</map>
 		</property>
 		<property name="filterChainDefinitions">
@@ -29,6 +30,9 @@
 				/daifa/*.json = daifa
 				/daifa/*.htm = daifa
 				/daifa/** = daifa
+                /admin/*.json = admin
+                /admin/*.htm = admin
+                /admin/** = admin
 
 				<!--登录初始化页面-->
 				/init/*.htm = anon
