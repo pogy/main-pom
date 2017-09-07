@@ -300,28 +300,26 @@
             <p>服务费：${childOrder.childServersFee!}</p>
         </li>
         <li class="orderState">
-            <#if order.tradeState == 1>
-                <#if childOrder.allotState == 0>
-                <p class="fc3 fcG">未分配</p>
-                <#elseif childOrder.allotState == 1>
-                <p class="fcG">已分配</p>
-                </#if>
-                
-                <#if childOrder.takeGoodsState == 1>
-                <p>已拿到</p>
-                <#elseif childOrder.takeGoodsState == 2>
-                <p class="fcF40">缺货</p>
-                </#if>
-                
-                <#if childOrder.refundState == 1>
-                <p>申请退款</p>
-                <#elseif childOrder.refundState == 2>
-                <p>已申请退款成功</p>
-                <#elseif childOrder.refundState == 3>
-                <p>自动退款成功</p>
-                </#if>
-                
+            <#if childOrder.allotState == 0>
+            <p class="fc3 fcG">未分配</p>
+            <#elseif childOrder.allotState == 1>
+            <p class="fcG">已分配</p>
             </#if>
+            
+            <#if childOrder.takeGoodsState == 1>
+            <p>已拿到</p>
+            <#elseif childOrder.takeGoodsState == 2>
+            <p class="fcF40">缺货</p>
+            </#if>
+            
+            <#if childOrder.refundState == 1>
+            <p>申请退款</p>
+            <#elseif childOrder.refundState == 2>
+            <p>已申请退款成功</p>
+            <#elseif childOrder.refundState == 3>
+            <p>自动退款成功</p>
+            </#if>
+                
         </li>
         <li class="tradeState">
             <#if childOrder_index == 0>
