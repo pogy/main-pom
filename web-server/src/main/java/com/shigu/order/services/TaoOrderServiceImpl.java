@@ -273,6 +273,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             address+=","+t.getReceiverState()+" "+t.getReceiverCity()+" "+t.getReceiverDistrict()+" "+t.getReceiverAddress();
         }
         tbOrderVO.setAddress(address);
+        tbOrderVO.setSimpleAddress(t.getReceiverAddress());
         if (t.getPayTime()!=null){
             tbOrderVO.setTime(DateUtil.dateToString(t.getPayTime(),"yyyy-MM-dd HH:mm:ss"));
         }
@@ -283,7 +284,7 @@ public class TaoOrderServiceImpl implements TaoOrderService {
             tbOrderVO.setProv(t.getReceiverState());
         }
         if (!StringUtils.isEmpty(t.getReceiverDistrict())){
-            tbOrderVO.setSimpleAddress(t.getReceiverDistrict());
+            tbOrderVO.setTown(t.getReceiverDistrict());
         }
         if (!StringUtils.isEmpty(t.getReceiverName())){
             tbOrderVO.setReceiverName(t.getReceiverName());
