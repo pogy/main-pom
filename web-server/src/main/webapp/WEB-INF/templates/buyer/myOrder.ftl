@@ -403,7 +403,12 @@ var webSite = '${webSite!}';
         </div>
     </li>
     <li class="price yahei">&yen;${childOrder.price!}</li>
-    <li class="num">${childOrder.num!}</li>
+    <li class="num">
+        <p>${childOrder.num!}</p>
+        <#if childOrder.stockoutNum??>
+        <p class="fcF40">缺货 x${childOrder.stockoutNum!}</p>
+        </#if>
+    </li>
     <li class="opera">
         <#if order.mainState == 1 || order.mainState == 5>
         ——

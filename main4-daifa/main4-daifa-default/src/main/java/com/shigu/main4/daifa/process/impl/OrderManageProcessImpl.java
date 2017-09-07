@@ -143,8 +143,8 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         cal.add(Calendar.DATE, -3);
         Date minTime = cal.getTime();
         DaifaTradeExample example = new DaifaTradeExample();
-        example.createCriteria().andCreateTimeLessThan(minTime).andTradeStatusEqualTo(DaifaTradeStatus.PAYED.getValue());
-        example.or().andCreateTimeLessThan(minTime).andTradeStatusEqualTo(DaifaTradeStatus.PACKING.getValue());
+        example.createCriteria().andCreateTimeLessThan(minTime).andTradeStatusEqualTo(DaifaTradeStatus.PAYED.getValue()).andIsOldEqualTo (0);
+        example.or().andCreateTimeLessThan(minTime).andTradeStatusEqualTo(DaifaTradeStatus.PACKING.getValue()).andIsOldEqualTo (0);
         List<DaifaTrade> timeoutTrades = daifaTradeMapper.selectFieldsByExample(example, FieldUtil.codeFields("df_trade_id"));
         timeoutTrades.forEach(t -> {
             OrderModel orderModel = SpringBeanFactory.getBean(OrderModel.class, t.getDfTradeId());

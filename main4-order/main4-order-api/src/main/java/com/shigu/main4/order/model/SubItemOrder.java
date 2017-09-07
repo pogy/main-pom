@@ -19,7 +19,7 @@ public interface SubItemOrder extends SubOrder{
 
     /**
      * 退款申请
-     * @param type 0未确定,1退款，2A类退货，3B类退货,4换货
+     * @param type 0未确定,1退款，2退货，3换货，4截单
      * @param number 退件数
      * @param money 退钱数
      */
