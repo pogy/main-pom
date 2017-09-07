@@ -300,9 +300,9 @@
             <p>服务费：${childOrder.childServersFee!}</p>
         </li>
         <li class="orderState">
-            <#if childOrder.allotState == 0>
+            <#if !childOrder.takeGoodsState && !childOrder.refundState>
             <p class="fc3 fcG">未分配</p>
-            <#elseif childOrder.allotState == 1>
+            <#else>
             <p class="fcG">已分配</p>
             </#if>
             
