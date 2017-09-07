@@ -259,6 +259,12 @@
             <version>20160607</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.opentae.lib</groupId>
+            <artifactId>ezmorph</artifactId>
+            <version>${ezmorph.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
  * 代发消息队列接收处理
  * Created by bugzy on 2017/8/14 0014.
  */
-@Component
+@Component("dfMessageListener")
 public class DfMessageListener implements MessageListener {
 
     private static final Logger logger = LoggerFactory.getLogger(DfMessageListener.class);

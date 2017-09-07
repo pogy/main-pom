@@ -137,6 +137,17 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
         orderPayMapper.updateByPrimaryKeySelective(pay);
     }
 
+    @Override
+    public void payRollback(Long applyId, String outerPid, String outerPuser, Long payMoney, Long money) throws PayerException {
+        OrderPay orderPay=new OrderPay();
+        orderPay.setOuterPid(outerPid);
+        orderPay.setApplyId(applyId);
+        orderPay.setOuterPuser(outerPuser);
+        orderPay.setMoney(payMoney);
+        orderPay.setRefundMoney(0L);
+        weixinRefund(orderPay,money.intValue());
+    }
+
     private void weixinRefund(OrderPay orderPay, int refundFee) throws PayerException {
         RefundReqData reqData = new RefundReqData(
                 orderPay.getOuterPid(),
