@@ -302,8 +302,6 @@
         <li class="orderState">
             <#if !childOrder.takeGoodsState && !childOrder.refundState>
             <p class="fc3 fcG">未分配</p>
-            <#else>
-            <p class="fcG">已分配</p>
             </#if>
             
             <#if childOrder.takeGoodsState == 1>
