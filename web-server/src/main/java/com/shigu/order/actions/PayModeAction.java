@@ -4,7 +4,6 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.order.enums.PayType;
 import com.shigu.main4.order.exceptions.PayApplyException;
-import com.shigu.main4.order.exceptions.PayerException;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.order.services.PayModeService;
 import com.shigu.order.vo.PayModePageVO;
@@ -83,7 +82,7 @@ public class PayModeAction {
      */
     @RequestMapping("xzpayJson")
     @ResponseBody
-    public JSONObject xzpayJson(Long orderId, String pwd, HttpSession session) throws JsonErrException, PayerException {
+    public JSONObject xzpayJson(Long orderId, String pwd, HttpSession session) throws JsonErrException, PayApplyException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         payModeService.checkPwd(pwd, ps.getUserId());
 

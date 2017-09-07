@@ -168,15 +168,19 @@ public class PayModeService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void payxz(PayApplyVO payApplyVO, Long userId) throws JsonErrException, PayerException {
+    public void payxz(PayApplyVO payApplyVO, Long userId) throws JsonErrException {
         String outerId = PayerService.OUTER_ID_PRE + payApplyVO.getApplyId();
+        paySdkClientService.xzpay(userId, payApplyVO.getMoney(), outerId);
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(userId);
+        try {
             SpringBeanFactory.getBean("xzPayerService", PayerService.class)
                     .paySure(
                             payApplyVO.getApplyId(),
                             outerId,
                             memberUser.getUserName(),
                             payApplyVO.getMoney());
-        paySdkClientService.xzpay(userId, payApplyVO.getMoney(), outerId);
+        } catch (PayerException e) {
+            throw new JsonErrException("扣款异常");
+        }
     }
 }
