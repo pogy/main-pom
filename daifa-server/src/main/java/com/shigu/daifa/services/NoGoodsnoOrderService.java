@@ -21,7 +21,6 @@ import java.util.List;
 public class NoGoodsnoOrderService {
     @Autowired
     DaifaOrderMapper daifaOrderMapper;
-
     @Autowired
     OrderManageProcess orderManageProcess;
     @Autowired
@@ -44,6 +43,7 @@ public class NoGoodsnoOrderService {
                 vo.setImgSrc(o.getPicPath());
                 vo.setGoodsProperty(o.getPropStr());
                 vo.setTitle(o.getTitle());
+                vo.setGoodsId(o.getGoodsId());
                 vos.add(vo);
             }
             pager.setContent(vos);

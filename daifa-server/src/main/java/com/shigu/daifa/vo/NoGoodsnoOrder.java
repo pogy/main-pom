@@ -12,6 +12,8 @@ public class NoGoodsnoOrder {
     //子单服务费
     private String childServersFee;
 
+    private Long goodsId;
+
     //子单id
     public Long getChildOrderId() {
         return this.childOrderId;
@@ -60,5 +62,13 @@ public class NoGoodsnoOrder {
     //子单服务费
     public void setChildServersFee(String childServersFee) {
         this.childServersFee = childServersFee;
+    }
+
+    public Long getGoodsId() {
+        return this.goodsId;
+    }
+
+    public void setGoodsId(Long goodsId) {
+        this.goodsId = goodsId;
     }
 }
