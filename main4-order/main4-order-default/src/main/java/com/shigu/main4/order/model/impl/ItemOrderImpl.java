@@ -340,9 +340,9 @@ public class ItemOrderImpl implements ItemOrder {
             sub.setRefundMoney(0L);
             sub.setStatus(SubOrderStatus.ORIGINAL.status);
             sub.setOid(oid);
-            if(StringUtils.isEmpty(sub.getGoodsNo())){
-                throw new OrderException("没有货号不允许下单，请先联系商家补全货号");
-            }
+//            if(StringUtils.isEmpty(sub.getGoodsNo())){
+//                throw new OrderException("没有货号不允许下单，请先联系商家补全货号");
+//            }
             itemOrderSubMapper.insertSelective(sub);
         }
         if (needReprice) {
