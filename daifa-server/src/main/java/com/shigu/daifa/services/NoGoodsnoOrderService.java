@@ -69,6 +69,6 @@ public class NoGoodsnoOrderService {
         } catch (OrderException e) {
             throw new DaifaException("订单系统修改失败:"+e.getMessage());
         }
-        orderManageProcess.putGoodsCode(dfOrderId,goodsNo);
+        orderManageProcess.putGoodsCode(o.getGoodsId(),goodsNo);
     }
 }
