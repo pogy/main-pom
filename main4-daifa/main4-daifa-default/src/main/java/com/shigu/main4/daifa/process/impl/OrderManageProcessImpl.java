@@ -14,6 +14,7 @@ import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.daifa.model.OrderModel;
 import com.shigu.main4.daifa.model.SubOrderModel;
 import com.shigu.main4.daifa.process.OrderManageProcess;
+import com.shigu.main4.daifa.utils.Pingyin;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -268,32 +269,49 @@ public class OrderManageProcessImpl implements OrderManageProcess {
         if(goodsId==-1){
             throw new DaifaException("不支持修改");
         }
+        DaifaOrderExample searchDaifaOrderExample=new DaifaOrderExample();
+        searchDaifaOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        searchDaifaOrderExample.setStartIndex(0);
+        searchDaifaOrderExample.setEndIndex(1);
+        searchDaifaOrderExample.setOrderByClause("df_order_id desc");
+        List<DaifaOrder> os=daifaOrderMapper.selectByConditionList(searchDaifaOrderExample);
+        String storeGoodsCode=null;
+        if(os.size()>0){
+            storeGoodsCode= Pingyin.getPinYinHeadChar(os.get(0).getMarketName())+"_"+os.get(0).getStoreNum()+"_"+goodsNo;
+        }
         DaifaOrder o1=new DaifaOrder();
         o1.setGoodsCode(goodsNo);
+        if(!StringUtils.isEmpty(storeGoodsCode)){
+            o1.setStoreGoodsCode(storeGoodsCode);
+        }
         DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
         daifaOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
         daifaOrderMapper.updateByExampleSelective(o1,daifaOrderExample);
 
         DaifaGgoodsTasks t=new DaifaGgoodsTasks();
         t.setGoodsCode(goodsNo);
+        t.setStoreGoodsCode(o1.getStoreGoodsCode());
         DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
         daifaGgoodsTasksExample.createCriteria().andGoodsIdEqualTo(goodsId);
         daifaGgoodsTasksMapper.updateByExampleSelective(t,daifaGgoodsTasksExample);
 
         DaifaGgoods g=new DaifaGgoods();
         g.setGoodsCode(goodsNo);
+        g.setStoreGoodsCode(o1.getStoreGoodsCode());
         DaifaGgoodsExample daifaGgoodsExample=new DaifaGgoodsExample();
         daifaGgoodsExample.createCriteria().andGoodsIdEqualTo(goodsId);
         daifaGgoodsMapper.updateByExampleSelective(g,daifaGgoodsExample);
 
         DaifaWaitSendOrder wso=new DaifaWaitSendOrder();
         wso.setGoodsCode(goodsNo);
+        wso.setGgoodsCode(o1.getStoreGoodsCode());
         DaifaWaitSendOrderExample daifaWaitSendOrderExample=new DaifaWaitSendOrderExample();
         daifaWaitSendOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
         daifaWaitSendOrderMapper.updateByExampleSelective(wso,daifaWaitSendOrderExample);
 
         DaifaSendOrder so=new DaifaSendOrder();
         so.setGoodsCode(goodsNo);
+        so.setStoreGoodsCode(o1.getStoreGoodsCode());
         DaifaSendOrderExample daifaSendOrderExample=new DaifaSendOrderExample();
         daifaSendOrderExample.createCriteria().andGoodsIdEqualTo(goodsId);
         daifaSendOrderMapper.updateByExampleSelective(so,daifaSendOrderExample);
