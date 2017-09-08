@@ -125,7 +125,7 @@ public class NewPopularService {
      */
     public boolean checkTempSignUp(String flag, Long userId, Long shopId) {
         ShiguTempExample shiguTempExample =new ShiguTempExample();
-        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString()).andFlagEqualTo(flag);
         List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
         return temps.size()>0;
     }
