@@ -388,7 +388,7 @@ var webSite = '${webSite!}';
         <h2 class="yahei fs18 tac"><span class="pr">活动大揭秘</span></h2>
         <ol>
             <li>1、一等奖：斐尔可键盘；</li>
-            <li>2、二等奖：ikbo茶轴键盘；</li>
+            <li>2、二等奖：ikbc茶轴键盘；</li>
             <li>3、三等奖：耳机，键盘，电子称等电子生活用品随机领取；</li>
             <li>4、参与奖：小茗同学，红牛等健康饮品随机领取。</li>
         </ol>
