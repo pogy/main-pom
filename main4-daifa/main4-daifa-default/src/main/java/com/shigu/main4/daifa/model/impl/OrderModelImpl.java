@@ -95,9 +95,8 @@ public class OrderModelImpl implements OrderModel {
      * 创建订单
      */
     @Override
+    @Transactional(propagation= Propagation.REQUIRED,rollbackFor ={Exception.class,RuntimeException.class})
     public void init() {
-
-        //
         DaifaTradeExample example=new DaifaTradeExample ();
         example.createCriteria ().andTradeCodeEqualTo (orderBO.getOid ().toString ());
         int ki=daifaTradeMapper.countByExample (example);
@@ -195,7 +194,7 @@ public class OrderModelImpl implements OrderModel {
                         }
                         subOrderModelBO.setSinglePay(MoneyUtil.dealPrice(MoneyUtil.StringToLong(bo.getSinglePay())+MoneyUtil.StringToLong(subOrderModelBO.getSingleServicesFee())));
                         subOrderModelBO.setTotalFee(subOrderModelBO.getSinglePay());
-                        SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
+                        SpringBeanFactory.getBean(SubOrderModelImpl.class,subOrderModelBO);
                         BigNumber singlePay = new BigNumber(bo.getSinglePay());
                         goodsFee = goodsFee.Add(singlePay);
                     }
