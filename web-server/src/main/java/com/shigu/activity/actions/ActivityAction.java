@@ -342,7 +342,7 @@ public class ActivityAction {
         return "activity/apply";
     }
 
-    final String flag = "autumn_new3";
+    final String flag = "autumn_new4";
 
     @RequestMapping("activity/jsonapply")
     @ResponseBody
