@@ -221,7 +221,7 @@ var webSite = '${webSite!}';
         <em>更换头像</em>
     </div>
     <div class="uidbox">
-        <em>${userInfo.userId!}</em>
+        <em>${userInfo.userName!}</em>
         <span>星座宝账户</span>
     </div>
 </div>
