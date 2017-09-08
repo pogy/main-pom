@@ -27,7 +27,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js"></script>
+    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?t=2017090801"></script>
 </head>
 <body>
 
