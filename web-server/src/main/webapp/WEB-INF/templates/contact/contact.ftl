@@ -305,7 +305,7 @@ var webSite = '${webSite!}';
                 </div>
                 <div class="desc">
                     <h3 class="title">代发电话</h3>
-                    <p>${daifaPhone!}</p>
+                    <p>0571-86070380</p>
                 </div>
             </div>
             <div class="byPhone contactBy">
