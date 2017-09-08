@@ -38,7 +38,6 @@ import com.shigu.tools.HtmlImgsLazyLoad;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -397,8 +396,7 @@ public class CdnService {
         //授权状态
         vo.setTbAuthState(shopBaseService.shopAuthState(shopId));
         //二级域名
-        String xzUrl=shopBaseService.selDomain(shopId);
-        vo.setXzUrl(StringUtils.isEmpty(xzUrl)?null:("http://"+xzUrl+".571xz.com"));
+        vo.setXzUrl(shopBaseService.selDomain(shopId));
         return vo;
     }
     /**
