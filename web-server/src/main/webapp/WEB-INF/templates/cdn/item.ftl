@@ -27,7 +27,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?t=2017090801"></script>
+    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js"></script>
 </head>
 <body>
 
@@ -210,10 +210,10 @@ var webSite = '${webSite!}';
             
             <div class="storeNamebox">
                 <h3 
-                <#if shopInfo.xzUrl??>
-                    onclick="jumpShopLink('${shopInfo.xzUrl!}')"
+                <#if shopInfo.domain??>
+                    onclick="jumpShopLink('http://${shopInfo.domain!}.571xz.com')"
                 <#else> 
-                    onclick="javascript:void(0)"
+                    onclick="jumpShopLink('http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}')"
                 </#if>
                 >${shopInfo.marketName!}${shopInfo.shopNo!}</h3>
                 
