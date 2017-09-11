@@ -66,63 +66,68 @@
 		FROM
 			(
 				SELECT
-					e.*,t.trade_discount_fee,t.services_fee
+					e.*,c.trade_discount_fee,c.services_fee
 				FROM
 					daifa_wait_send e,
 					(
 						SELECT
-							t1.DWS_ID,
-							t2.df_trade_id
+							v.DWS_ID,
+							v.df_trade_id,
+							t.trade_discount_fee,
+							t.services_fee
 						FROM
+                          (select t1.df_trade_id,t1.dws_id FROM
 							daifa_wait_send t1
-						LEFT JOIN (
-							SELECT
-								a.df_trade_id,
-								a.dws_id
-							FROM
-								daifa_wait_send a,
-								daifa_wait_send_order b
+							LEFT JOIN (
+								SELECT
+									a.df_trade_id,
+									a.dws_id
+								FROM
+									daifa_wait_send a,
+									daifa_wait_send_order b
+								WHERE
+									a.SELLER_ID = ${dfSellerId}
+								AND a.SEND_STATUS = 1
+								AND a.DWS_ID = b.DWS_ID
+								AND b.take_goods_status != 1
+								AND b.refund_status = 0
+								GROUP BY
+									df_trade_id
+							) t2 ON t1.dws_id = t2.dws_id
 							WHERE
-								a.SELLER_ID = ${dfSellerId}
-							AND a.SEND_STATUS = 1
-							AND a.DWS_ID = b.DWS_ID
-							AND b.take_goods_status != 1
-							AND b.refund_status = 0
-							GROUP BY
-								df_trade_id
-						) t2 ON t1.dws_id = t2.dws_id
-						WHERE
-							SEND_STATUS = 1
-						AND SELLER_ID = ${dfSellerId}
-						<if test="status==1">
-                            AND t2.df_trade_id IS NULL
-                        </if>
-						<if test="status==2">
-                            AND t2.df_trade_id IS NOT NULL
-                        </if>
-                        <if test="lastTradeId!=null">
-                            AND t1.df_trade_id like("%${lastTradeId}")
-                        </if>
-                        <if test="phone!=null">
-                            AND t1.receiver_phone = #{phone}
-                        </if>
-                        <if test="buyerId!=null">
-                            AND t1.buyer_id = ${buyerId}
-                        </if>
-                        <if test="startTime!=null">
-                            AND t1.create_time &gt; #{startTime}
+								SEND_STATUS = 1
+							AND SELLER_ID = ${dfSellerId}
+							<if test="status==1">
+								AND t2.df_trade_id IS NULL
+							</if>
+							<if test="status==2">
+								AND t2.df_trade_id IS NOT NULL
+							</if>
+							<if test="lastTradeId!=null">
+								AND t1.df_trade_id like("%${lastTradeId}")
+							</if>
+							<if test="phone!=null">
+								AND t1.receiver_phone = #{phone}
+							</if>
+							<if test="buyerId!=null">
+								AND t1.buyer_id = ${buyerId}
+							</if>
+						) v
+                        JOIN daifa_trade t
+                        ON v.df_trade_id=t.df_trade_id
+						WHERE t.df_trade_id>0
+						<if test="startTime!=null">
+                            AND t.create_time &gt; #{startTime}
                         </if>
                         <if test="endTime!=null">
-                            AND t1.create_time &lt; #{endTime}
+                            AND t.create_time &lt; #{endTime}
                         </if>
 						ORDER BY
-							t1.dws_id DESC
+							v.dws_id DESC
 						limit ${start},${end}
-					) c,
-				daifa_trade t
+					) c
 				WHERE
 					c.DWS_ID = e.DWS_ID
-					and t.df_trade_id=e.df_trade_id
 			) as f
 		LEFT JOIN daifa_wait_send_order as d ON f.DWS_ID = d.DWS_ID
 
@@ -136,9 +141,12 @@
         daifa_wait_send e,
         (
         SELECT
-        t1.DWS_ID,
-        t2.df_trade_id
+        v.DWS_ID,
+        v.df_trade_id,
+        t.trade_discount_fee,
+        t.services_fee
         FROM
+        (select t1.df_trade_id,t1.dws_id from
         daifa_wait_send t1
         LEFT JOIN (
         SELECT
@@ -174,14 +182,18 @@
         <if test="buyerId!=null">
             AND t1.buyer_id = ${buyerId}
         </if>
+        ) v
+        JOIN daifa_trade t
+        ON v.df_trade_id=t.df_trade_id
+        WHERE t.df_trade_id>0
         <if test="startTime!=null">
-            AND t1.create_time &gt; #{startTime}
+            AND t.create_time &gt; #{startTime}
         </if>
         <if test="endTime!=null">
-            AND t1.create_time &lt; #{endTime}
+            AND t.create_time &lt; #{endTime}
         </if>
         ORDER BY
-        t1.dws_id DESC
+        v.dws_id DESC
         ) c
         WHERE
         c.DWS_ID = e.DWS_ID

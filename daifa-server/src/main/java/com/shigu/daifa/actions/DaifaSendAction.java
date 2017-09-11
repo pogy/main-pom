@@ -2,12 +2,9 @@ package com.shigu.daifa.actions;
 
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
-import com.shigu.daifa.bo.AllOrderBO;
-import com.shigu.daifa.bo.WaitSendBO;
+import com.shigu.daifa.bo.SendBO;
 import com.shigu.daifa.services.DaifaSendService;
-import com.shigu.daifa.services.DaifaWaitSendService;
 import com.shigu.daifa.vo.DaifaSendVO;
-import com.shigu.daifa.vo.DaifaWaitSendVO;
 import com.shigu.main4.common.tools.ShiguPager;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +28,16 @@ public class DaifaSendAction {
     public void setDaifaWaitSendService(DaifaSendService daifaSendService) {
         this.daifaSendService = daifaSendService;
     }
-    @RequestMapping("daifaSendIndex")
-    public String daifaSendIndex(WaitSendBO bo , Model model){
+    @RequestMapping("daifa/hasBeenShipped")
+    public String daifaSendIndex(SendBO bo , Model model){
         AuthorityUser auth = (AuthorityUser) SecurityUtils.getSubject().getSession().getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         ShiguPager<DaifaSendVO> pager = daifaSendService.selPageData(bo,auth.getDaifaSellerId());
 
-        model.addAttribute("",pager.getContent());
-        model.addAttribute("",pager.selPageOption(10));
+        model.addAttribute("orders",pager.getContent());
+        model.addAttribute("pageOption",pager.selPageOption(10));
         model.addAttribute("query",bo);
 
-        return "";
+        return "daifa/hasBeenShipped";
     }
 
 }

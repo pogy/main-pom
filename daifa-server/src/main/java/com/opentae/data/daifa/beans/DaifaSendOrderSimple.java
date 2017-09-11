@@ -33,24 +33,10 @@ public class DaifaSendOrderSimple implements Serializable{
     private String payPrice;//商品实际支付价
     @Column("daifa_send_order.goods_num")
     private String num;//商品数量
-    @Column("daifa_send_order.single_services_fee")
-    private String childServersFee;//子单服务费用
-    @Column("daifa_send_order.order_remark")
-    private String childRemark;//子弹备注
-    @Column("daifa_send_order.allocat_status")
-    private Integer allotState;//分配状态 1待分配2已分配
     @Column("daifa_send_order.take_goods_status")
     private Integer takeGoodsState;//拿货状态 0拿货中 1已拿到 2缺货
-    @Column("daifa_send_order.have_goods_date")
-    private String haveGoodsTime;//有货时间
-    @Column("daifa_send_order.delist_is")
-    private Boolean noSaleIs;//是否下架true不卖了下架 false还在卖 注：该处为是否标记下架
     @Column("daifa_send_order.refund_status")
     private Integer refundStatus;
-    @Column("daifa_send_order.return_goods_status")
-    private Integer returnGoodsStatus;//退货状态@1等待退货2已退货3退货失败
-    @Column("daifa_send_order.change_status")
-    private Integer changeStatus;//换货状态'1申请换货2已换货3换货失败发回4换货失败不发回'
     @Column("daifa_send_order.store_goods_code")
     private String storeGoodsCode; //商家编码
 
@@ -123,68 +109,12 @@ public class DaifaSendOrderSimple implements Serializable{
         this.num = num;
     }
 
-    public String getChildServersFee() {
-        return childServersFee;
-    }
-
-    public void setChildServersFee(String childServersFee) {
-        this.childServersFee = childServersFee;
-    }
-
-    public String getChildRemark() {
-        return childRemark;
-    }
-
-    public void setChildRemark(String childRemark) {
-        this.childRemark = childRemark;
-    }
-
-    public Integer getAllotState() {
-        return allotState;
-    }
-
-    public void setAllotState(Integer allotState) {
-        this.allotState = allotState;
-    }
-
     public Integer getTakeGoodsState() {
         return takeGoodsState;
     }
 
     public void setTakeGoodsState(Integer takeGoodsState) {
         this.takeGoodsState = takeGoodsState;
-    }
-
-    public String getHaveGoodsTime() {
-        return haveGoodsTime;
-    }
-
-    public void setHaveGoodsTime(String haveGoodsTime) {
-        this.haveGoodsTime = haveGoodsTime;
-    }
-
-    public Boolean getNoSaleIs () {
-        return noSaleIs;
-    }
-
-    public void setNoSaleIs (Boolean noSaleIs) {
-        this.noSaleIs = noSaleIs;
-    }
-
-    public Integer getReturnGoodsStatus() {
-        return returnGoodsStatus;
-    }
-
-    public void setReturnGoodsStatus(Integer returnGoodsStatus) {
-        this.returnGoodsStatus = returnGoodsStatus;
-    }
-
-    public Integer getChangeStatus() {
-        return changeStatus;
-    }
-
-    public void setChangeStatus(Integer changeStatus) {
-        this.changeStatus = changeStatus;
     }
 
     public Integer getRefundStatus() {

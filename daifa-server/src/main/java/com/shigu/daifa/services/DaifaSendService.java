@@ -6,13 +6,14 @@ import com.opentae.data.daifa.beans.DaifaSendOrderSimple;
 import com.opentae.data.daifa.beans.DaifaSendSimple;
 import com.opentae.data.daifa.examples.DaifaSendExample;
 import com.opentae.data.daifa.examples.DaifaSendOrderExample;
-import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
+import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
 import com.opentae.data.daifa.interfaces.DaifaSendMapper;
-import com.shigu.daifa.bo.WaitSendBO;
+import com.shigu.daifa.bo.SendBO;
 import com.shigu.daifa.vo.DaifaSendVO;
 import com.shigu.daifa.vo.SendOrderVO;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.DateUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,18 +41,42 @@ public class DaifaSendService {
         this.daifaMultipleMapper = daifaMultipleMapper;
     }
 
-    private DaifaSendMapper daifaSendMapper;
 
-    @Autowired
-    public void setDaifaWaitSendMapper(DaifaSendMapper daifaSendMapper) {
-        this.daifaSendMapper = daifaSendMapper;
+    public ShiguPager<DaifaSendVO> selPageData(SendBO bo, Long daifaSellerId) {
+
+
+
+        List<DaifaSendVO> sends = new ArrayList<>();
+        int count = daifaMultipleMapper.countByMultipleExample(build(daifaSellerId,bo,false));
+        if (count > 0) {
+            List<DaifaSendSimple> daifaSendSimples = daifaMultipleMapper.selectFieldsByMultipleExample(build(daifaSellerId,bo,true), DaifaSendSimple.class);
+
+            for (DaifaSendSimple daifaSendSimple : daifaSendSimples) {
+                DaifaSendVO vo = new DaifaSendVO();
+                sends.add(vo);
+                BeanUtils.copyProperties(daifaSendSimple, vo, "childOrders");
+                List<SendOrderVO> subList = new ArrayList<>();
+                for (DaifaSendOrderSimple daifaSendOrderSimple : daifaSendSimple.getChildOrders()) {
+                    SendOrderVO subVo = new SendOrderVO();
+                    BeanUtils.copyProperties(daifaSendOrderSimple, subVo);
+                    subList.add(subVo);
+                }
+                vo.setChildOrders(subList);
+
+            }
+        }
+        ShiguPager<DaifaSendVO> pager = new ShiguPager<>();
+        pager.setTotalCount(count);
+        pager.setContent(sends);
+        pager.setNumber(bo.getPage());
+        return pager;
     }
 
-    public ShiguPager<DaifaSendVO> selPageData(WaitSendBO bo, Long daifaSellerId) {
-         DaifaSendExample daifaWaitSendExample = new DaifaSendExample();
-        DaifaWaitSendOrderExample daifaWaitSendOrderExample = new DaifaWaitSendOrderExample();
-        DaifaSendExample.Criteria ce = daifaWaitSendExample.createCriteria();
-        daifaWaitSendExample.setOrderByClause("dws_id desc");
+    private MultipleExample build(Long daifaSellerId,SendBO bo,boolean isList){
+        DaifaSendExample daifaSendExample = new DaifaSendExample();
+        DaifaSendOrderExample daifaSendOrderExample = new DaifaSendOrderExample();
+        DaifaSendExample.Criteria ce = daifaSendExample.createCriteria();
+        daifaSendExample.setOrderByClause("send_id desc");
         ce.andSellerIdEqualTo(daifaSellerId);
         if (StringUtils.hasText(bo.getReceiver())) {
             ce.andReceiverNameEqualTo(bo.getReceiver());
@@ -65,38 +90,29 @@ public class DaifaSendService {
         if (bo.getOrderId() != null) {
             ce.andDfTradeIdLike("%" + bo.getOrderId());
         }
+        if(StringUtils.hasText(bo.getPostCode())){
+            ce.andExpressCodeEqualTo(bo.getPostCode());
+        }
         if (bo.getPage() <= 0) {
             bo.setPage(1);
         }
-        daifaWaitSendExample.setStartIndex((bo.getPage() - 1) * 10);
-        daifaWaitSendExample.setEndIndex(10);
-        List<DaifaSendVO> sends = new ArrayList<>();
-        int count = daifaSendMapper.countByExample(daifaWaitSendExample);
-        if (count > 0) {
-            MultipleExample multipleExample = MultipleExampleBuilder.from(daifaWaitSendExample)
-                    .leftJoin(daifaWaitSendOrderExample)
-                    .on(daifaWaitSendExample.createCriteria()
-                            .equalTo(DaifaSendExample.sendId, DaifaSendOrderExample.sendId)).build();
-            List<DaifaSendSimple> daifaWaitSendSimples = daifaMultipleMapper.selectFieldsByMultipleExample(multipleExample, DaifaSendSimple.class);
-
-            for (DaifaSendSimple daifaWaitSendSimple : daifaWaitSendSimples) {
-                DaifaSendVO vo = new DaifaSendVO();
-                sends.add(vo);
-                BeanUtils.copyProperties(daifaWaitSendSimple, vo, "childOrders");
-                List<SendOrderVO> subList = new ArrayList<>();
-                for (DaifaSendOrderSimple daifaWaitSendOrderSimple : daifaWaitSendSimple.getChildOrders()) {
-                    SendOrderVO subVo = new SendOrderVO();
-                    BeanUtils.copyProperties(daifaWaitSendOrderSimple, subVo);
-                    subList.add(subVo);
-                }
-                vo.setChildOrders(subList);
-
-            }
+        DaifaTradeExample daifaTradeExample=new DaifaTradeExample();
+        DaifaTradeExample.Criteria ce1=daifaTradeExample.createCriteria();
+        if(StringUtils.hasText(bo.getStartTime())){
+            ce1.andCreateTimeGreaterThanOrEqualTo(DateUtil.stringToDate(bo.getStartTime()+" 00:00:00"));
         }
-        ShiguPager<DaifaSendVO> pager = new ShiguPager<>();
-        pager.setTotalCount(count);
-        pager.setContent(sends);
-        pager.setNumber(bo.getPage());
-        return pager;
+        if(StringUtils.hasText(bo.getEndTime())){
+            ce1.andCreateTimeLessThanOrEqualTo(DateUtil.stringToDate(bo.getEndTime()+" 23:59:59"));
+        }
+        if(isList){
+            daifaSendExample.setStartIndex((bo.getPage() - 1) * 10);
+            daifaSendExample.setEndIndex(10);
+        }
+        return MultipleExampleBuilder.from(daifaSendExample)
+                .join(daifaTradeExample)
+                .on(daifaSendExample.createCriteria().equalTo(DaifaSendExample.dfTradeId,DaifaTradeExample.dfTradeId))
+                .leftJoin(daifaSendOrderExample)
+                .on(daifaSendExample.createCriteria()
+                        .equalTo(DaifaSendExample.sendId, DaifaSendOrderExample.sendId)).build();
     }
 }
