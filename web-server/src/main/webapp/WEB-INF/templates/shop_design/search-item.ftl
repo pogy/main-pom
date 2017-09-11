@@ -253,7 +253,7 @@
                 </div>
             </#list>
             <#else>
-                <div style="background: url(http://style.571xz.com/xz/css/img/ku.png) no-repeat center 100px; padding: 200px 0">
+                <div style="background: url(http://style.571xz.com/xz/css/img/ku.png) no-repeat center 70px; padding: 200px 0">
                     <p style="font-size: 18px; text-align: center;">Sorry, 未查询到相应商品~</p>
                 </div>
             </#if>
