@@ -86,6 +86,7 @@ public class DaifaWaitSendService {
         if (bo.getPage() <= 0) {
             bo.setPage(1);
         }
+        ce.andSendStatusEqualTo (1);
         daifaWaitSendExample.setStartIndex((bo.getPage() - 1) * 10);
         daifaWaitSendExample.setEndIndex(10);
         List<DaifaWaitSendVO> sends = new ArrayList<>();

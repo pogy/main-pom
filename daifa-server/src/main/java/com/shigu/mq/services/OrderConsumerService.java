@@ -1,6 +1,7 @@
 package com.shigu.mq.services;
 
 import com.alibaba.fastjson.JSON;
+import com.shigu.main4.daifa.bo.AutoRefundBo;
 import com.shigu.main4.daifa.bo.OrderBO;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.mq.beans.RefundBean;
@@ -59,13 +60,15 @@ public class OrderConsumerService {
             }
             try {
                 //=============事物start=================
-                List<String> soidps = new ArrayList<>();
-                List<String> soids = new ArrayList<>();
+                List<AutoRefundBo> bos=new ArrayList<>();
                 for (SubRefundBean srb : refund.getSuborders()) {
-                    soids.add(srb.getSoid());
-                    soidps.addAll(srb.getSoidps());
+                    AutoRefundBo bo=new AutoRefundBo();
+                    bo.setSoid(srb.getSoid());
+                    bo.setSoidps(srb.getSoidps());
+                    bo.setNum(srb.getNum());
+                    bos.add(bo);
                 }
-                orderManageProcess.autoRefund(refund.getRefundId(), soids, soidps);
+                orderManageProcess.autoRefund(refund.getRefundId(), bos);
                 //=============事物end=================
             } catch (Exception e) {
                 logger.error(e.getMessage());

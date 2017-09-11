@@ -321,7 +321,7 @@ var webSite = '${webSite!}';
         <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后悠悠&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺1</span></a></li>
         <li><a href="http://www.taobao.com/webww/ww.php?ver=3&amp;touid=杭州石谷网络科技有限公司:售后小匀&amp;siteid=cntaobao&amp;status=1&amp;charset=utf-8" target="_blank"><i class="icon-s-aliww"></i><span>代发旺旺2</span></a></li>
         
-        <li class="tel"><i class="icon-s-phone"></i><span>15558016957</span></li>
+        <li class="tel"><i class="icon-s-phone"></i><span>0571-86070380</span></li>
     </ul>
     <p class="serviceTime">服务时间 :  9:00-18:00  （周六，周日不休息）</p>
     
@@ -366,7 +366,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 

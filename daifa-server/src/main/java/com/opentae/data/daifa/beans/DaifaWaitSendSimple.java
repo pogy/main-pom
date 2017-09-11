@@ -18,9 +18,9 @@ public class DaifaWaitSendSimple implements Serializable{
     @Transient
     private static final long serialVersionUID = -2685689810091540070L;
     @Column("daifa_wait_send.dws_id")
-    private String dswId;//代发id
+    private Long dwsId;//代发id
     @Column("daifa_wait_send.df_trade_id")
-    private String orderId;//订单id
+    private Long orderId;//订单id
     @Column("daifa_wait_send.send_status")
     private Integer tradeState;//交易状态1未发货2已发货
     @Column("daifa_wait_send.create_time")
@@ -54,13 +54,7 @@ public class DaifaWaitSendSimple implements Serializable{
         return serialVersionUID;
     }
 
-    public String getOrderId() {
-        return orderId;
-    }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
 
     public Integer getTradeState() {
         return tradeState;
@@ -168,12 +162,20 @@ public class DaifaWaitSendSimple implements Serializable{
         this.childOrders = childOrders;
     }
 
-    public String getDswId() {
-        return dswId;
+    public Long getDwsId () {
+        return dwsId;
     }
 
-    public void setDswId(String dswId) {
-        this.dswId = dswId;
+    public void setDwsId (Long dwsId) {
+        this.dwsId = dwsId;
+    }
+
+    public Long getOrderId () {
+        return orderId;
+    }
+
+    public void setOrderId (Long orderId) {
+        this.orderId = orderId;
     }
 
     public String getReceiverAddress() {

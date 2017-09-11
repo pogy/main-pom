@@ -14,4 +14,6 @@ package com.shigu.config;
 public class DaifaSessionConfig {
 
     public static String DAIFA_SESSION="daifaSession";//代发后台登录session
+
+    public static String DAIFA_SYS_SESSION="daifaSysSession";//代发系统后台session
 }

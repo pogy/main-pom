@@ -62,6 +62,7 @@ public class DaifaAllocateService {
         DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
         DaifaGgoodsTasksExample.Criteria criteria = daifaGgoodsTasksExample.createCriteria();
         criteria.andUseStatusEqualTo(1).andAllocatStatusEqualTo(0).andSellerIdEqualTo(sellerId).andEndStatusEqualTo(0)
+                .andGoodsCodeIsNotNull()
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
                         "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or date_format(now(),'%Y%m%d')-create_date>0,true)))");//可用的未分配的
         if (!StringUtils.isEmpty(bo.getChildOrderId())) {
@@ -259,6 +260,7 @@ public class DaifaAllocateService {
                 DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
                 daifaGgoodsTasksExample.createCriteria()
                         .andDfOrderIdIn(childOrderIds)//子弹
+                        .andGoodsCodeIsNotNull()
                         .andUseStatusEqualTo(1)//可用
                         .andEndStatusEqualTo(0)
                         .andAllocatStatusEqualTo(0);//未分配

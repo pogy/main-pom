@@ -96,6 +96,7 @@
           and use_status = 1
           and end_status = 0
           and allocat_status = 0
+          and goods_code is not null
           and (youhuo_date is null
             or (if(youhuo_date is not null,date_format(youhuo_date,"%Y%m%d")-create_date &lt;=0 or date_format(now(),"%Y%m%d")-create_date &gt;0,true)))
         GROUP BY store_id
