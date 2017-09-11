@@ -17,6 +17,11 @@ public class SubOrderSoidps implements Serializable {
      */
 	private Long soid;
 
+    /**
+     * 0默认状态，1缺货，2已到货
+     */
+	private Integer stockStatus;
+
 	public void setSoidpId(Long soidpId) {
 		this.soidpId = soidpId;
 	}
@@ -31,6 +36,14 @@ public class SubOrderSoidps implements Serializable {
 
 	public Long getSoid() {
 		return this.soid;
+	}
+
+	public void setStockStatus(Integer stockStatus) {
+		this.stockStatus = stockStatus;
+	}
+
+	public Integer getStockStatus() {
+		return this.stockStatus;
 	}
 
 }
