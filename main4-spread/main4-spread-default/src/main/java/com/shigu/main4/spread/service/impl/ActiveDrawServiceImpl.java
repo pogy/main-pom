@@ -954,7 +954,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             return "您还没有店铺";
         }
         ShiguTempExample shiguTempExample =new ShiguTempExample();
-        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString()).andFlagEqualTo(flag);
         List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
         if (temps.size()>0){
             return "您已经报过名了";
