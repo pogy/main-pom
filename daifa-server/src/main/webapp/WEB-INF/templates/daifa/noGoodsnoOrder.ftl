@@ -125,7 +125,7 @@
             <div class="fl imgBox">
                 <img src="${childOrder.imgSrc!}_80x80.jpg" alt width="54" height="54">
             </div>
-            <p class="title">${childOrder.title!}</p>
+            <p class="title"><a href="http://www.571xz.com/item.htm?id=${childOrder.goodsId!}" target="_blank">${childOrder.title!}</a></p>
             <p>商品属性：${childOrder.goodsProperty!}</p>
         </li>
         <li class="marketCode">
@@ -233,6 +233,7 @@
 
 
 </#list>
+
 
 
     </div>
