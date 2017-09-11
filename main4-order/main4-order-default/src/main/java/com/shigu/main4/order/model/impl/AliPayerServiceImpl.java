@@ -98,6 +98,17 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         orderPayMapper.updateByPrimaryKeySelective(pay);
     }
 
+    @Override
+    public void payRollback(Long applyId, String outerPid, String outerPuser, Long payMoney, Long money) throws PayerException {
+        OrderPay orderPay=new OrderPay();
+        orderPay.setOuterPid(outerPid);
+        orderPay.setApplyId(applyId);
+        orderPay.setOuterPuser(outerPuser);
+        orderPay.setMoney(payMoney);
+        orderPay.setRefundMoney(0L);
+        alipayRefund(orderPay,money);
+    }
+
 
     private void alipayRefund(OrderPay orderPay, Long money) throws PayerException {
         OrderPayApply orderPayApply = orderPayApplyMapper.selectByPrimaryKey(orderPay.getApplyId());

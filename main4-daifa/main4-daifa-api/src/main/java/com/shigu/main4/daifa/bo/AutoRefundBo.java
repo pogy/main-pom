@@ -1,9 +1,9 @@
-package com.shigu.mq.beans;
+package com.shigu.main4.daifa.bo;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class SubRefundBean implements Serializable{
+public class AutoRefundBo implements Serializable {
     private String soid;
     private List<String> soidps;
     private Integer num;

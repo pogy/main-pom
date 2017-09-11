@@ -342,7 +342,7 @@ public class ActivityAction {
         return "activity/apply";
     }
 
-    final String flag = "autumn_new3";
+    final String flag = "autumn_new4";
 
     @RequestMapping("activity/jsonapply")
     @ResponseBody
@@ -361,10 +361,9 @@ public class ActivityAction {
 
     @RequestMapping("activity/qzxpApply")
     public String qzxpApply(Model model, HttpSession session) {
-        final String ALREADY_APPLY = "您已经报过名了";
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         if (ps != null && ps.getLogshop() != null) {
-            model.addAttribute("alreadyApply", ALREADY_APPLY.equals(activeDrawServiceImpl.shiguTempSigup(flag,ps.getUserId(), ps.getLogshop().getShopId())));
+            model.addAttribute("alreadyApply", newPopularService.checkTempSignUp(flag,ps.getUserId(), ps.getLogshop().getShopId()));
         }
         model.addAttribute("webSite", "hz");
         return "activity/qzxpApply";

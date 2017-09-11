@@ -373,7 +373,12 @@
         <dependency>
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>ons-client</artifactId>
-            <version>1.2.7.Final</version>
+            <version>${ons-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-order-api</artifactId>
+            <version>${main4-order-api.version}</version>
         </dependency>
     </dependencies>
 </project>

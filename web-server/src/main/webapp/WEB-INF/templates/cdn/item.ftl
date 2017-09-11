@@ -27,7 +27,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js"></script>
+    <script src="http://style.571xz.com/v2/goodsDetail/js/item.js?t=2017090801"></script>
 </head>
 <body>
 
@@ -520,7 +520,11 @@ ${userShopHdHtml}
         <ul>
             <#list goodsInfo.imgUrls as imgUrl>
                 <#if imgUrl_index == 0>
-                <li><a href="javascript:;"><img id="conImage" src="${imgUrl!}_400x400.jpg"></a></li>
+                    <#if goodsInfo.tbGoodsId?? && goodsInfo.tbGoodsId != "">
+                    <li><a data-href="https://item.taobao.com/item.htm?id=${goodsInfo.tbGoodsId!}" target="_blank"><img id="conImage" src="${imgUrl!}_400x400.jpg"></a></li>
+                    <#else>
+                    <li><a href="javascript:;"><img id="conImage" src="${imgUrl!}_400x400.jpg"></a></li>
+                    </#if>
                 </#if>
             </#list>
         </ul>
@@ -530,7 +534,7 @@ ${userShopHdHtml}
         <ul>
             <#list goodsInfo.imgUrls as imgUrl>
                 <#if img_index lt 6>
-                <li class="" data-img='${imgUrl!}'><a href="javascript:;"><img src='${imgUrl!}_72x72.jpg'></a></li>
+                <li class="" data-img='${imgUrl!}'><a href="${imgUrl!}" target="_blank"><img src='${imgUrl!}_72x72.jpg'></a></li>
                 </#if>
             </#list>
         </ul>
@@ -549,6 +553,8 @@ ${userShopHdHtml}
         
     </div>
 </div>
+
+
 
         </div>
         <div class="leftCol2">
@@ -583,16 +589,7 @@ ${userShopHdHtml}
                 <span class="fcF40 yahei">&yen;<em class="fs18 arail">${goodsInfo.piPrice!}</em></span>
             </li>
             <li class="minprice">
-                <#if goodsInfo.liPrice??>
-                <label class="fc9">电商最低零售价</label>
-                <span class="fcF40 fs14 yahei">&yen;<em class="arail">${goodsInfo.liPrice!}</em>
-                    <div class="tipsbox fs12 simsun">
-                        售卖时不能低于此价格，否则会被厂家投诉
-                        <i class="i1"></i>
-                        <i class="i2"></i>
-                    </div>
-                </span>
-                </#if>
+                
             </li>
             <li class="view">
                 <label class="fc9">浏览</label>
@@ -629,16 +626,7 @@ ${userShopHdHtml}
         <div class="menuButtonbox yahei tac">已选商品清单<i class="icon-uparrow"></i></div>
         <div class="menuListbox">
             <table>
-                <tr>
-                    <td class="colorText"><span title="卡其色（长袖）">卡其色（长袖）</span></td>
-                    <td class="countText"><span>22件</span></td>
-                    <td class="allSelectedbox">aaa</td>
-                </tr>
-                <tr>
-                    <td class="colorText"><span title="卡其色（长袖）">卡其色（长袖）</span></td>
-                    <td class="countText"><span>22件</span></td>
-                    <td class="allSelectedbox">aaa</td>
-                </tr>
+                
             </table>
         </div>
         

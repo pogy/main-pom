@@ -115,4 +115,18 @@ public class NewPopularService {
         });
         return results;
     }
+
+    /**
+     * 检测是否已经报过名
+     * @param flag
+     * @param userId
+     * @param shopId
+     * @return
+     */
+    public boolean checkTempSignUp(String flag, Long userId, Long shopId) {
+        ShiguTempExample shiguTempExample =new ShiguTempExample();
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString()).andFlagEqualTo(flag);
+        List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
+        return temps.size()>0;
+    }
 }

@@ -39,17 +39,17 @@ public class HitDrawModelNewAutumnImplTest {
     @Test
     public void initPool() {
         ActivityDrawEnum currentActive = AutumnNewConstant.CURRENT_ACTIVE;
-        ShiguTemp rank1 = generateNewAutumn2PrizePool(generateConstant(currentActive, 1, 1, 0, "A4"),
-                0, "2017-09-04 00:00:00", 192);
+        ShiguTemp rank1 = generateNewAutumn2PrizePool(generateConstant(currentActive, 1, 2, 10, "A4"),
+                0, "2017-09-11 00:00:00", 192);
         shiguTempMapper.insertSelective(rank1);
-        ShiguTemp rank2 = generateNewAutumn2PrizePool(generateConstant(currentActive, 2, 5, 0, "A3"),
-                 0, "2017-09-04 00:00:00", 192);
+        ShiguTemp rank2 = generateNewAutumn2PrizePool(generateConstant(currentActive, 2, 3, 20, "A3"),
+                 0, "2017-09-11 00:00:00", 192);
         shiguTempMapper.insertSelective(rank2);
-        ShiguTemp rank3 = generateNewAutumn2PrizePool(generateConstant(currentActive, 3, 96, 80, "A2"),
-                14, "2017-09-04 00:00:00", 24);
+        ShiguTemp rank3 = generateNewAutumn2PrizePool(generateConstant(currentActive, 3, 100, 80, "A2"),
+                14, "2017-09-11 00:00:00", 24);
         shiguTempMapper.insertSelective(rank3);
-        ShiguTemp rank4 = generateNewAutumn2PrizePool(generateConstant(currentActive, 4, 7000, 920, "A1"),
-                1000, "2017-09-04 00:00:00", 24);
+        ShiguTemp rank4 = generateNewAutumn2PrizePool(generateConstant(currentActive, 4, 7000, 890, "A1"),
+                1000, "2017-09-11 00:00:00", 24);
         shiguTempMapper.insertSelective(rank4);
     }
 

@@ -1,8 +1,16 @@
 package com.shigu.main4.order.mq;
 
+import com.opentae.data.mall.beans.ItemOrderRefund;
+import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
 import com.shigu.main4.order.BaseTest;
+import com.shigu.main4.order.exceptions.PayerException;
+import com.shigu.main4.order.exceptions.RefundException;
 import com.shigu.main4.order.model.ItemOrder;
+import com.shigu.main4.order.model.RefundItemOrder;
 import com.shigu.main4.order.mq.producter.OrderMessageProducter;
+import com.shigu.main4.order.vo.RefundVO;
+import com.shigu.main4.order.vo.SubItemOrderVO;
+import com.shigu.main4.order.zfenums.RefundStateEnum;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +24,30 @@ public class MessageQueueTest extends BaseTest {
     @Autowired
     private OrderMessageProducter orderMessageProducter;
 
+    @Autowired
+    private ItemOrderRefundMapper itemOrderRefundMapper;
+
+
+    @Test
+    public void testAgreeRefund(){
+        Long refundId=36482L;
+        try {
+            RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, refundId);
+            refundItemOrder.success();
+            RefundVO refundinfo = refundItemOrder.refundinfo();
+            ItemOrderRefund itemOrderRefund = new ItemOrderRefund();
+            itemOrderRefund.setOid(refundinfo.getOid());
+            itemOrderRefund.setStatus(RefundStateEnum.ENT_REFUND.refundStatus);
+            int soidps = itemOrderRefundMapper.select(itemOrderRefund).stream().mapToInt(ItemOrderRefund::getNumber).sum();
+
+            ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, refundinfo.getOid());
+            if (soidps == itemOrder.subOrdersInfo().stream().mapToInt(SubItemOrderVO::getNum).sum()) {
+                itemOrder.finished();
+            }
+        } catch (PayerException | RefundException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 测试订单推送
      */
