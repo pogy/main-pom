@@ -57,7 +57,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + apply.getApplyId() + "\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                "    \"total_amount\":" + String.format("%,.2f", money * .01) + "," +
+                "    \"total_amount\":" + String.format("%.2f", money * .01) + "," +
                 "    \"subject\":\"" + title + "\"" +
                 "  }");//填充业务参数
         String form = "";
