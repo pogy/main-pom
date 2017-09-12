@@ -146,6 +146,9 @@ public class MyOrderService {
             pager.getContent().stream()
                     .peek(o -> o.setServerPay(orderServiceMoneyMap.get(o.getOrderId())))
                     .map(MyOrderVO::getChildOrders).flatMap(List::stream).forEach(subMyOrderVO -> {
+                if (subMyOrderVO.getStockoutNum() == null || subMyOrderVO.getStockoutNum() == 0) {
+                    subMyOrderVO.setStockoutNum(null);
+                }
                     List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
                 if (afterSales != null && !afterSales.isEmpty()) {
                     subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
