@@ -30,7 +30,7 @@ public class MessageQueueTest extends BaseTest {
 
     @Test
     public void testAgreeRefund(){
-        Long refundId=36482L;
+        Long refundId=36548L;
         try {
             RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, refundId);
             refundItemOrder.success();

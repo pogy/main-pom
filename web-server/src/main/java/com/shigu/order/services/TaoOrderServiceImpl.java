@@ -2,24 +2,13 @@ package com.shigu.order.services;
 
 import com.alibaba.fastjson.JSON;
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ItemOrder;
-import com.opentae.data.mall.beans.MemberUserSub;
-import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
-import com.opentae.data.mall.beans.ShiguGoodsTaoRelation;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.TaobaoSessionMap;
+import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ItemOrderExample;
 import com.opentae.data.mall.examples.MemberUserSubExample;
 import com.opentae.data.mall.examples.ShiguGoodsTaoRelationExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.examples.TaobaoSessionMapExample;
-import com.opentae.data.mall.interfaces.ItemOrderMapper;
-import com.opentae.data.mall.interfaces.MemberStoreTaobaoSessionMapper;
-import com.opentae.data.mall.interfaces.MemberUserSubMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTaoRelationMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.TaobaoSessionMapMapper;
+import com.opentae.data.mall.interfaces.*;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -91,6 +80,9 @@ public class TaoOrderServiceImpl implements TaoOrderService {
 
     @Autowired
     private ItemProductProcess itemProductProcess;
+
+    @Autowired
+    private ShiguShopMapper shiguShopMapper;
 
     @Value("${appKey}")
     private String key;
@@ -366,12 +358,25 @@ public class TaoOrderServiceImpl implements TaoOrderService {
                 tinyExample.createCriteria().andGoodsIdIn(goodsIds);
                 tinyExample.setWebSite(webSite);
                 List<ShiguGoodsTiny> shiguGoodsTinies=shiguGoodsTinyMapper.selectFieldsByExample(tinyExample,
-                        FieldUtil.codeFields("goods_id,num_iid,goods_no,pi_price,pi_price_string,web_site"));
+                        FieldUtil.codeFields("goods_id,num_iid,store_id,goods_no,pi_price,pi_price_string,web_site"));
                 List<TinyVO> webSiteTinys=BeanMapper.mapList(shiguGoodsTinies,TinyVO.class);
                 webSiteTinys.forEach(t -> {
                     t.setNumIid(goodsIdAndNumIid.get(t.getGoodsId()));
                 });
                 tinyVOs.addAll(webSiteTinys);
+                //处理货号为空的情况
+                List<Long> emptyStoreIds=new ArrayList<>();
+                shiguGoodsTinies.forEach(t -> {
+                    if (StringUtils.isEmpty(t.getGoodsNo())) {
+                        emptyStoreIds.add(t.getStoreId());
+                    }
+                });
+                if (emptyStoreIds.size()>0) {
+                    List<ShopNumAndMarket> shops=shiguShopMapper.selShopNumAndMarkets(emptyStoreIds.stream().distinct().collect(Collectors.toList()));
+                    Map<Long,ShopNumAndMarket> map=shops.stream().collect(Collectors.toMap(ShopNumAndMarket::getShopId,(p)->p));
+                    tinyVOs.stream().filter((s) -> StringUtils.isEmpty(s.getGoodsNo())).forEach(t ->
+                            t.setGoodsNo(map.get(t.getStoreId()).getMarket()+"_"+map.get(t.getStoreId()).getShopNum()));
+                }
             }
         }
         return tinyVOs;
