@@ -4,19 +4,21 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
+import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaWaitSendOrderSimple;
 import com.opentae.data.daifa.beans.DaifaWaitSendSimple;
-import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
-import com.opentae.data.daifa.examples.DaifaTradeExample;
-import com.opentae.data.daifa.examples.DaifaWaitSendExample;
-import com.opentae.data.daifa.examples.DaifaWaitSendOrderExample;
+import com.opentae.data.daifa.examples.*;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsTasksMapper;
 import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
+import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
 import com.opentae.data.daifa.interfaces.DaifaWaitSendMapper;
 import com.shigu.daifa.bo.WaitSendBO;
+import com.shigu.daifa.vo.DaifaSendVO;
 import com.shigu.daifa.vo.DaifaWaitSendVO;
+import com.shigu.daifa.vo.SendOrderVO;
 import com.shigu.daifa.vo.WaitSendOrderVO;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by pc on 2017-09-05.
@@ -57,6 +60,12 @@ public class DaifaWaitSendService {
     public void setDaifaGgoodsTasksMapper(DaifaGgoodsTasksMapper daifaGgoodsTasksMapper) {
         this.daifaGgoodsTasksMapper = daifaGgoodsTasksMapper;
     }
+    private DaifaOrderMapper daifaOrderMapper;
+    @Autowired
+    public void setDaifaOrderMapper(DaifaOrderMapper daifaOrderMapper) {
+        this.daifaOrderMapper = daifaOrderMapper;
+    }
+
 
     public ShiguPager<DaifaWaitSendVO> selPageData(WaitSendBO bo, Long daifaSellerId) {
         if(bo.getPage()<1){
@@ -87,31 +96,50 @@ public class DaifaWaitSendService {
                     (bo.getPage() - 1) * 10,
                     10);
 
-            DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
-            daifaGgoodsTasksExample.setOrderByClause("tasks_id desc");
 
+            List<Long> oids=new ArrayList<>();
             for (DaifaWaitSendSimple daifaWaitSendSimple : daifaWaitSendSimples) {
                 DaifaWaitSendVO vo = new DaifaWaitSendVO();
                 sends.add(vo);
                 BeanUtils.copyProperties(daifaWaitSendSimple, vo, "childOrders");
                 List<WaitSendOrderVO> subList = new ArrayList<>();
                 for (DaifaWaitSendOrderSimple daifaWaitSendOrderSimple : daifaWaitSendSimple.getChildOrders()) {
-                    daifaGgoodsTasksExample.clear();
-                    daifaGgoodsTasksExample.createCriteria()
-                            .andDfOrderIdEqualTo(Long.parseLong(daifaWaitSendOrderSimple.getChildOrderId()));
-
-                    List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,FieldUtil.codeFields("end_status"));
-                    DaifaGgoodsTasks tasks = ggoodsTasks.get(0);
                     WaitSendOrderVO subVo = new WaitSendOrderVO();
                     subVo.setRefundState(daifaWaitSendOrderSimple.getRefundStatus());
-                    if(tasks.getEndStatus() == 1 && daifaWaitSendOrderSimple.getRefundStatus() == 2){
-                        subVo.setRefundState(3);
-                    }
                     BeanUtils.copyProperties(daifaWaitSendOrderSimple, subVo);
                     subList.add(subVo);
+                    oids.add(new Long(daifaWaitSendOrderSimple.getChildOrderId()));
                 }
                 vo.setChildOrders(subList);
+            }
+            if(oids.size()>0){
+                DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+                daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
+                List<DaifaOrder> os=daifaOrderMapper.selectByExample(daifaOrderExample);
+                Map<Long,DaifaOrder> map= BeanMapper.list2Map(os,"dfOrderId",Long.class);
 
+                DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
+                daifaGgoodsTasksExample.setOrderByClause("tasks_id desc");
+                daifaGgoodsTasksExample.createCriteria()
+                        .andDfOrderIdIn(oids);
+                List<DaifaGgoodsTasks> ggoodsTasks = daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,FieldUtil.codeFields("df_order_id,end_status"));
+                Map<Long,List<DaifaGgoodsTasks>> taskMap=BeanMapper.groupBy(ggoodsTasks,"dfOrderId",Long.class);
+
+                for(DaifaWaitSendVO send:sends){
+                    for(WaitSendOrderVO so:send.getChildOrders()){
+                        DaifaOrder o=map.get(new Long(so.getChildOrderId()));
+                        if(o!=null){
+                            so.setChildServersFee(o.getSingleServicesFee());
+                            so.setChildRemark(o.getOrderRemark());
+                        }
+                        List<DaifaGgoodsTasks> t=taskMap.get(new Long(so.getChildOrderId()));
+                        if(t!=null&&t.size()>0){
+                            if(so.getRefundState()==2&&t.get(0).getEndStatus()==1){
+                                so.setRefundState(3);
+                            }
+                        }
+                    }
+                }
             }
         }
         ShiguPager<DaifaWaitSendVO> pager = new ShiguPager<>();
