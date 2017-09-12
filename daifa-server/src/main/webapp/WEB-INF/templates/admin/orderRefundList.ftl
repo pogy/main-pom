@@ -123,7 +123,7 @@
                         </div>
                         <p class="title">${order.title!}</p>
                         <p>商品属性：${order.propStr!}</p>
-                        <p>商家编码：${order.storeoodsCode!}</p>
+                        <p>商家编码：${order.storeGoodsCode!}</p>
                         <p>${order.marketName!}|${order.floorName!}|${order.storeNum!}</p>
                     </li>
 
