@@ -1,5 +1,6 @@
 package com.shigu.order.actions;
 
+import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.order.exceptions.OrderException;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.AfterSaleEntVO;
@@ -37,12 +38,13 @@ public class PreSaleShowAction {
 
 
     @RequestMapping("order/onlyRefund")
-    public String onlyRefundId(Long childOrderId,Long refundId,Model model){
+    public String onlyRefundId(Long childOrderId,Long refundId,Model model) throws OrderNotFindException {
         if(childOrderId==null&&refundId==null){
             return "trade/noOrderInfo";
         }
         if(childOrderId!=null){
             SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(childOrderId);
+            sub.setRefundNumber(preSaleShowService.maxCanPreRefund(childOrderId));
             RefundOrderVO order=preSaleShowService.selRefundOrderVO(childOrderId);
             model=toModel(model,sub,order);
             model.addAttribute("onlyRefundStateNum",1);
@@ -84,8 +86,12 @@ public class PreSaleShowAction {
 
     @RequestMapping("order/onlyRefundApply")
     @ResponseBody
-    public JSONObject onlyRefundApply(Long childOrderId, Integer refundCount, HttpSession session) throws OrderException {
+    public JSONObject onlyRefundApply(Long childOrderId, Integer refundCount, HttpSession session) throws OrderException, OrderNotFindException {
         SubRefundOrderVO sub=preSaleShowService.selSubRefundOrderVO(childOrderId);
+        int maxCount=preSaleShowService.maxCanPreRefund(childOrderId);
+        if(refundCount<0||refundCount>maxCount){
+            return JsonResponseUtil.error("没有足够的退款商品数");
+        }
         Long price=refundCount*PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
         if(sub.getOtherRefundPrice()!=null){
             price+=PriceConvertUtils.StringToLong(sub.getOtherRefundPrice());

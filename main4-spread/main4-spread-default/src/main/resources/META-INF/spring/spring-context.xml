@@ -122,4 +122,5 @@
     </bean>
 
     <import resource="../../spread.xml"/>
+    <import resource="../../message_queue.xml"/>
 </beans>

@@ -11,6 +11,7 @@ public class SubOrderSoidpsExample extends SgExample<SubOrderSoidpsExample.Crite
     public static final Class<SubOrderSoidps> beanClass = SubOrderSoidps.class;
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn soid;
+    public static EntityColumn stockStatus;
     public static EntityColumn soidpId;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
@@ -19,6 +20,7 @@ public class SubOrderSoidpsExample extends SgExample<SubOrderSoidpsExample.Crite
             listMap.put(column.getProperty(), column);
         }
         soid = listMap.get("soid");
+        stockStatus = listMap.get("stockStatus");
         soidpId = listMap.get("soidpId");
         }
 
@@ -87,6 +89,53 @@ public class SubOrderSoidpsExample extends SgExample<SubOrderSoidpsExample.Crite
 
         public SubOrderSoidpsExample.Criteria andSoidNotBetween(Long value1, Long value2) {
             return notBetween(soid, value1, value2);
+        }
+        public SubOrderSoidpsExample.Criteria andStockStatusIsNull() {
+            return isNull(stockStatus);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusIsNotNull() {
+            return isNotNull(stockStatus);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusEqualTo(Integer value) {
+            return equalTo(stockStatus, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusNotEqualTo(Integer value) {
+            return notEqualTo(stockStatus, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusGreaterThan(Integer value) {
+            return greaterThan(stockStatus, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(stockStatus, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusLessThan(Integer value) {
+            return lessThan(stockStatus, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(stockStatus, value);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusIn(List<Integer> values) {
+            return in(stockStatus, values);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusNotIn(List<Integer> values) {
+            return notIn(stockStatus, values);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusBetween(Integer value1, Integer value2) {
+            return between(stockStatus, value1, value2);
+        }
+
+        public SubOrderSoidpsExample.Criteria andStockStatusNotBetween(Integer value1, Integer value2) {
+            return notBetween(stockStatus, value1, value2);
         }
         public SubOrderSoidpsExample.Criteria andSoidpIdIsNull() {
             return isNull(soidpId);
