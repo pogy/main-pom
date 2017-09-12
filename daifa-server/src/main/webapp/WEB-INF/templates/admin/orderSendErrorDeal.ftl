@@ -138,7 +138,7 @@
                     <li class="goodsInfo"><input type="text" id="receiverAddrs" name="receiverAddrs" value="${order.receiverAddress!}" style="width:400px" class="fmInput"/></li>
                     <li class="otherFee">${order.expressName!}</li>
                     <li class="orderState">${order.tradeStatus!}</li>
-                    <li class="tradeState"><input type="button" id="deal" name="deal" value="提交" onclick="editAddr(this,'${order.dfTradeId!}')"/></li>
+                    <li class="tradeState"><input type="button" id="deal" name="deal" value="修改完提交" onclick="editAddr(this,'${order.dfTradeId!}')" class="fmButton fmButton-blue"/></li>
                 </ul>
             </div>
 
