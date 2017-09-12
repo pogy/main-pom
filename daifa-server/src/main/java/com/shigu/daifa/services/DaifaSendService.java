@@ -2,17 +2,21 @@ package com.shigu.daifa.services;
 
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
+import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaSendOrderSimple;
 import com.opentae.data.daifa.beans.DaifaSendSimple;
+import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaSendExample;
 import com.opentae.data.daifa.examples.DaifaSendOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
+import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
 import com.opentae.data.daifa.interfaces.DaifaSendMapper;
 import com.shigu.daifa.bo.SendBO;
 import com.shigu.daifa.vo.DaifaSendVO;
 import com.shigu.daifa.vo.SendOrderVO;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by pc on 2017-09-05.
@@ -35,12 +40,16 @@ public class DaifaSendService {
 
 
     private DaifaMultipleMapper daifaMultipleMapper;
-
     @Autowired
     public void setDaifaMultipleMapper(DaifaMultipleMapper daifaMultipleMapper) {
         this.daifaMultipleMapper = daifaMultipleMapper;
     }
 
+    private DaifaOrderMapper daifaOrderMapper;
+    @Autowired
+    public void setDaifaOrderMapper(DaifaOrderMapper daifaOrderMapper) {
+        this.daifaOrderMapper = daifaOrderMapper;
+    }
 
     public ShiguPager<DaifaSendVO> selPageData(SendBO bo, Long daifaSellerId) {
 
@@ -50,7 +59,7 @@ public class DaifaSendService {
         int count = daifaMultipleMapper.countByMultipleExample(build(daifaSellerId,bo,false));
         if (count > 0) {
             List<DaifaSendSimple> daifaSendSimples = daifaMultipleMapper.selectFieldsByMultipleExample(build(daifaSellerId,bo,true), DaifaSendSimple.class);
-
+            List<Long> oids=new ArrayList<>();
             for (DaifaSendSimple daifaSendSimple : daifaSendSimples) {
                 DaifaSendVO vo = new DaifaSendVO();
                 sends.add(vo);
@@ -60,9 +69,24 @@ public class DaifaSendService {
                     SendOrderVO subVo = new SendOrderVO();
                     BeanUtils.copyProperties(daifaSendOrderSimple, subVo);
                     subList.add(subVo);
+                    oids.add(new Long(daifaSendOrderSimple.getChildOrderId()));
                 }
                 vo.setChildOrders(subList);
-
+            }
+            if(oids.size()>0){
+                DaifaOrderExample daifaOrderExample=new DaifaOrderExample();
+                daifaOrderExample.createCriteria().andDfOrderIdIn(oids);
+                List<DaifaOrder> os=daifaOrderMapper.selectByExample(daifaOrderExample);
+                Map<Long,DaifaOrder> map= BeanMapper.list2Map(os,"dfOrderId",Long.class);
+                for(DaifaSendVO send:sends){
+                    for(SendOrderVO so:send.getChildOrders()){
+                        DaifaOrder o=map.get(new Long(so.getChildOrderId()));
+                        if(o!=null){
+                            so.setChildServersFee(o.getSingleServicesFee());
+                            so.setChildRemark(o.getOrderRemark());
+                        }
+                    }
+                }
             }
         }
         ShiguPager<DaifaSendVO> pager = new ShiguPager<>();

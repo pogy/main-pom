@@ -105,7 +105,7 @@ public class DfMessageListener implements MessageListener {
         return Action.CommitMessage;
     }
 
-    public void refundAgree(BaseMessage<RefundMessage> msg) {
+    public synchronized void refundAgree(BaseMessage<RefundMessage> msg) {
         try {
             RefundItemOrder refundItemOrder = SpringBeanFactory.getBean(RefundItemOrder.class, msg.getData().getRefundId());
             refundItemOrder.success();

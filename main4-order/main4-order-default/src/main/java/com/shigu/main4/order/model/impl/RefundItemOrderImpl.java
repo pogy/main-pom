@@ -2,6 +2,7 @@ package com.shigu.main4.order.model.impl;
 
 import com.opentae.data.mall.beans.ItemOrderRefund;
 import com.opentae.data.mall.beans.ItemRefundLog;
+import com.opentae.data.mall.examples.ItemOrderRefundExample;
 import com.opentae.data.mall.examples.ItemRefundLogExample;
 import com.opentae.data.mall.interfaces.ItemOrderMapper;
 import com.opentae.data.mall.interfaces.ItemOrderRefundMapper;
@@ -287,11 +288,17 @@ public class RefundItemOrderImpl implements RefundItemOrder {
      */
     @Override
     public void success() throws PayerException, RefundException {
+        //验证一下退款状态是否正常
+        ItemOrderRefundExample refundExample=new ItemOrderRefundExample();
+        refundExample.createCriteria().andRefundIdEqualTo(refundId).andStatusEqualTo(0);
+        if(itemOrderRefundMapper.countByExample(refundExample)==0){
+            throw new RefundException("重复退款");
+        }
         //更新退款费
         //得到退单信息
         doRefundMoney(true);
         RefundVO vo=refundinfo();
-        itemOrderMapper.addRefundMoney(vo.getOid(),vo.getHopeMoney());//更新订单中的退款额
+        itemOrderMapper.addRefundMoney(vo.getOid(), vo.getHopeMoney());//更新订单中的退款额
         if (vo.getSoid() != null) {
             itemOrderSubMapper.addRefundMoney(vo.getSoid(),vo.getHopeMoney());//更新订单的退款额
         }

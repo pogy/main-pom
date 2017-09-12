@@ -1,5 +1,6 @@
 package com.shigu.daifa.admin.actions;
 
+import com.shigu.daifa.services.DaifaAllocatedService;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.tools.JsonResponseUtil;
@@ -16,6 +17,8 @@ import java.util.List;
 public class DaifaSysAdminAction {
     @Autowired
     TakeGoodsIssueProcess takeGoodsIssueProcess;
+    @Autowired
+    DaifaAllocatedService daifaAllocatedService;
     @RequestMapping("admin/index")
     public String index(){
         return "admin/index";
@@ -30,5 +33,11 @@ public class DaifaSysAdminAction {
         }
         takeGoodsIssueProcess.adminRefund(oidList,tid,refundId);
         return JsonResponseUtil.success();
+    }
+
+    @RequestMapping("admin/tongbuquehuo")
+    @ResponseBody
+    public void tongbuquehuo(){
+        daifaAllocatedService.tongbuquehuo();
     }
 }

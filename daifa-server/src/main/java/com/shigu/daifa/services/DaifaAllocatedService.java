@@ -4,14 +4,15 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoods;
+import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
+import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaWorker;
 import com.opentae.data.daifa.custom.beans.DaifaGgoodsJoinOrder;
 import com.opentae.data.daifa.examples.DaifaGgoodsExample;
+import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
-import com.opentae.data.daifa.interfaces.DaifaGgoodsMapper;
-import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
-import com.opentae.data.daifa.interfaces.DaifaWorkerMapper;
+import com.opentae.data.daifa.interfaces.*;
 import com.shigu.daifa.vo.DaifaAllocatedVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
 import com.shigu.daifa.vo.PrintGoodsTagVO;
@@ -22,11 +23,13 @@ import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
 import com.shigu.main4.daifa.vo.PrintTagVO;
+import com.shigu.main4.order.process.ItemOrderProcess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DaifaAllocatedService {
@@ -37,7 +40,13 @@ public class DaifaAllocatedService {
     @Autowired
     private DaifaWorkerMapper daifaWorkerMapper;
     @Autowired
+    private DaifaOrderMapper daifaOrderMapper;
+    @Autowired
+    private DaifaGgoodsTasksMapper daifaGgoodsTasksMapper;
+    @Autowired
     private TakeGoodsIssueProcess takeGoodsIssueProcess;
+    @Autowired
+    private ItemOrderProcess itemOrderProcess;
 
     public ShiguPager<DaifaAllocatedVO> selectDaifaGgoodsList(Long sellerId,Long workerId,Long searchWorkerId,Integer status, String lastOrderId, String lastSubOrderId,
                                                               String startDate, String endDate, Integer page, Integer size) {
@@ -129,6 +138,8 @@ public class DaifaAllocatedService {
             }
             case 2:{
                 takeGoodsIssueProcess.uncomplete(takeGoodsId);
+                //发送缺货信息到order-server
+                orderServerNotTake(g.getDfOrderId());
                 break;
             }
         }
@@ -172,5 +183,26 @@ public class DaifaAllocatedService {
             vos.add(vo);
         });
         return vos;
+    }
+
+    public void orderServerNotTake(Long dfOrderId){
+        DaifaOrder o=daifaOrderMapper.selectFieldsByPrimaryKey(dfOrderId,FieldUtil.codeFields("df_order_id,order_partition_id"));
+        if(o!=null){
+            //todo 调缺货dubbo
+            itemOrderProcess.outOfStock(new Long(o.getOrderPartitionId()));
+        }
+    }
+
+    public void tongbuquehuo(){
+        DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
+        daifaGgoodsTasksExample.createCriteria().andTakeGoodsStatusEqualTo(2).andOperateIsEqualTo(0).andUseStatusEqualTo(1)
+                .andReturnStatusEqualTo(0).andEndStatusEqualTo(0).andAllocatStatusEqualTo(0);
+        List<DaifaGgoodsTasks> tasks=daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,FieldUtil.codeFields("tasks_id,df_order_id"));
+        Map<Long,List<DaifaGgoodsTasks>> tsMap=BeanMapper.groupBy(tasks,"dfOrderId",Long.class);
+        for(List<DaifaGgoodsTasks> ts:tsMap.values()){
+            if(ts.size()>0){
+                orderServerNotTake(ts.get(0).getDfOrderId());
+            }
+        }
     }
 }
