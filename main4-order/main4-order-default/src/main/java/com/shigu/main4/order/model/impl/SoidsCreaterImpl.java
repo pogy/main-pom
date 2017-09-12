@@ -33,6 +33,7 @@ public class SoidsCreaterImpl implements SoidsCreater {
         for(int i=0;i<number;i++){
             SubOrderSoidps soidps=new SubOrderSoidps();
             soidps.setSoid(soid);
+            soidps.setStockStatus(0);
             waitInsert.add(soidps);
         }
         subOrderSoidpsMapper.insertListNoId(waitInsert);
