@@ -240,6 +240,6 @@ public class MyOrderService {
 
     public boolean testRefund(Long subId) throws OrderNotFindException {
         ItemOrderSub sub = itemOrderSubMapper.selectByPrimaryKey(subId);
-        return sub != null && orderManageProcess.tryRefund(subId.toString()).size() == sub.getNum();
+        return sub != null && orderManageProcess.tryRefund(subId.toString()).size() > 0;
     }
 }
