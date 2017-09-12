@@ -4,6 +4,7 @@ import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoods;
+import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaWorker;
 import com.opentae.data.daifa.custom.beans.DaifaGgoodsJoinOrder;
 import com.opentae.data.daifa.examples.DaifaGgoodsExample;
@@ -11,6 +12,7 @@ import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsMapper;
 import com.opentae.data.daifa.interfaces.DaifaMultipleMapper;
+import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
 import com.opentae.data.daifa.interfaces.DaifaWorkerMapper;
 import com.shigu.daifa.vo.DaifaAllocatedVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
@@ -36,6 +38,8 @@ public class DaifaAllocatedService {
     private DaifaMultipleMapper daifaMultipleMapper;
     @Autowired
     private DaifaWorkerMapper daifaWorkerMapper;
+    @Autowired
+    private DaifaOrderMapper daifaOrderMapper;
     @Autowired
     private TakeGoodsIssueProcess takeGoodsIssueProcess;
 
@@ -129,6 +133,8 @@ public class DaifaAllocatedService {
             }
             case 2:{
                 takeGoodsIssueProcess.uncomplete(takeGoodsId);
+                //发送缺货信息到order-server
+                orderServerNotTake(g.getDfOrderId());
                 break;
             }
         }
@@ -172,5 +178,12 @@ public class DaifaAllocatedService {
             vos.add(vo);
         });
         return vos;
+    }
+
+    public void orderServerNotTake(Long dfOrderId){
+        DaifaOrder o=daifaOrderMapper.selectFieldsByPrimaryKey(dfOrderId,FieldUtil.codeFields("df_order_id,order_partition_id"));
+        if(o!=null){
+            //todo 调缺货dubbo
+        }
     }
 }

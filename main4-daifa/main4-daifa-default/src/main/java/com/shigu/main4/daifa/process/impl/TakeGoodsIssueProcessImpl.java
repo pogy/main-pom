@@ -303,9 +303,17 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
         SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,g.getDfOrderId());
         subOrderModel.noTake();
     }
-
+    /**
+     * 按人头,拿到货
+     * @param wholeId 拿货员ID
+     * @param shopId 档口ID
+     * @param issueIds 分配记录ID串
+     * @param idIsCheck  true时issueIds是已拿，其余未拿，false则反过来
+     * @return 缺货了的子单ID
+     */
     @Override
-    public void uncompleteAll (Long wholeId,Long shopId, List<Long> issueIds,Boolean idIsCheck) throws DaifaException {
+    public List<Long> uncompleteAll (Long wholeId,Long shopId, List<Long> issueIds,Boolean idIsCheck) throws DaifaException {
+        List<Long> notTakeDfOrderIds=new ArrayList<>();
         String date=DateUtil.dateToString(new Date(),DateUtil.patternB);
         DaifaGgoodsExample ge=new DaifaGgoodsExample();
         ge.createCriteria().andDaifaWorkerIdEqualTo(wholeId).andStoreIdEqualTo(shopId);
@@ -348,6 +356,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
             for(DaifaGgoods g:gmap.values()){
                 SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,g.getDfOrderId());
                 subOrderModel.noTake();
+                notTakeDfOrderIds.add(g.getDfOrderId());
             }
         }else{
             //缺货
@@ -355,6 +364,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 DaifaGgoods g=gmap.get(id);
                 SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,g.getDfOrderId());
                 subOrderModel.noTake();
+                notTakeDfOrderIds.add(g.getDfOrderId());
                 gmap.remove(id);
             }
             //剩下的已拿
@@ -363,6 +373,7 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
                 subOrderModel.haveTake();
             }
         }
+        return notTakeDfOrderIds;
     }
 
     /**
@@ -370,21 +381,21 @@ public class TakeGoodsIssueProcessImpl implements TakeGoodsIssueProcess {
      * @param date yyyyMMdd
      * @param sellerId 代发机构id
      * @throws DaifaException
+     * @return 缺货了的子单ID
      */
     @Override
-    public void completeWithDate(String date,Long sellerId) throws DaifaException {
+    public List<Long> completeWithDate(String date,Long sellerId) throws DaifaException {
         DaifaGgoodsExample ge=new DaifaGgoodsExample();
         ge.createCriteria().andCreateDateEqualTo(date).andOperateIsEqualTo(0).andSellerIdEqualTo(sellerId);
         List<DaifaGgoods> daifaGgoods =daifaGgoodsMapper.selectFieldsByExample(ge
                 ,FieldUtil.codeFields("take_goods_id,df_order_id,use_status,operate_is,create_date"));
+        List<Long> notTakeDfOrderIds=new ArrayList<>();
         for (DaifaGgoods daifaGgood : daifaGgoods) {
              SubOrderModel subOrderModel= SpringBeanFactory.getBean(SubOrderModel.class,daifaGgood.getDfOrderId());
              subOrderModel.noTake();
-
+            notTakeDfOrderIds.add(daifaGgood.getDfOrderId());
         }
-
-
-
+        return notTakeDfOrderIds;
     }
 
 

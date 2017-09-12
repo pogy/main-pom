@@ -8,7 +8,7 @@ package com.shigu.daifa.bo;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class WaitSendBO{
+public class SendBO {
 
      /**
      * 主单号
@@ -39,15 +39,8 @@ public class WaitSendBO{
      */
     private int page;
 
-    private Integer canSendState;
+    private String postCode;
 
-    public Integer getCanSendState() {
-        return canSendState;
-    }
-
-    public void setCanSendState(Integer canSendState) {
-        this.canSendState = canSendState;
-    }
 
     public Long getOrderId() {
         return orderId;
@@ -103,5 +96,13 @@ public class WaitSendBO{
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getPostCode() {
+        return this.postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
     }
 }
