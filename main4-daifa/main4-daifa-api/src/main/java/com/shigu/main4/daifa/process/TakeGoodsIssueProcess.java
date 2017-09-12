@@ -74,16 +74,18 @@ public interface TakeGoodsIssueProcess {
      * @param shopId 档口ID
      * @param issueIds 分配记录ID串
      * @param idIsCheck  true时issueIds是已拿，其余未拿，false则反过来
+     * @return 缺货了的子单ID
      */
-    void uncompleteAll(Long wholeId,Long shopId,List<Long> issueIds,Boolean idIsCheck) throws DaifaException;
+    List<Long> uncompleteAll(Long wholeId,Long shopId,List<Long> issueIds,Boolean idIsCheck) throws DaifaException;
 
     /**
      * 按日期,拿货完成
      * @param date yyyyMMdd
      * @throws DaifaException
+     * @return 缺货了的子单ID
      */
 
-    void completeWithDate(String date, Long sellerId) throws DaifaException;
+    List<Long> completeWithDate(String date, Long sellerId) throws DaifaException;
 
     /**
      * 手动退款,系统后台专用
