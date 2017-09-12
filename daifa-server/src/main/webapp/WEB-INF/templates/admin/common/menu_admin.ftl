@@ -13,7 +13,7 @@
             <a href="javascript:;" ><i class="icon-allocation"></i>订单退款</a>
             <ul>
                 <li>
-                    <a href="orderAllocation.htm"><i></i>订单退款</a>
+                    <a href="orderRefundList.htm"><i></i>订单退款</a>
                 </li>
                 <!--
                 <li>

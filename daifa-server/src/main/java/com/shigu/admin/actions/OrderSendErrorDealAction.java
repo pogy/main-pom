@@ -35,7 +35,17 @@ public class OrderSendErrorDealAction {
 
     @Autowired
     OrderSendErrorDealService orderSendErrorDealService;
-
+    /**
+     * ====================================================================================
+     * @方法名： orderSendErrorDealindex
+     * @user gzy 2017/9/12 17:47
+     * @功能：
+     * @param: [bo, model]
+     * @return: java.lang.String
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("admin/orderSendErrorindex")
     public String orderSendErrorDealindex(OrderSendErrorDealBO bo, Model model){
 
@@ -61,10 +71,21 @@ public class OrderSendErrorDealAction {
 
         return "admin/orderSendErrorDeal";
     }
-
+    /**
+     * ====================================================================================
+     * @方法名： dealOrderSendError
+     * @user gzy 2017/9/12 17:47
+     * @功能：
+     * @param: [dfTradeId, receiverName, receiverAddr]
+     * @return: net.sf.json.JSONObject
+     * @exception:
+     * ====================================================================================
+     *
+     */
     @RequestMapping("admin/dealOrderSendErrorJson")
     @ResponseBody
     public JSONObject dealOrderSendError(Long dfTradeId,String receiverName,String receiverAddr) throws DaifaException {
+
         if (dfTradeId == null||receiverName == null||receiverAddr == null) {
             throw new DaifaException("缺少参数");
         }
