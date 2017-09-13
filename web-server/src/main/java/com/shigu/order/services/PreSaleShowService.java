@@ -34,6 +34,7 @@ public class PreSaleShowService {
         sub.setChildOrderColor(subSimple.getColor());
         sub.setChildOrderImgSrc(subSimple.getPicUrl());
         sub.setChildOrderSize(subSimple.getSize());
+        sub.setChildOrderNum(subSimple.getNum());
         sub.setRefundGoodsPrice(PriceConvertUtils.priceToString(subSimple.getPrice()));
         sub.setRefundNumber(subSimple.getNum()-(subSimple.getRefundNum()==null?0:subSimple.getRefundNum()));
         if(subSimple.getOtherRefundPrice()!=null){
