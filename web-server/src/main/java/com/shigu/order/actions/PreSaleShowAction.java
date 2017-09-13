@@ -93,7 +93,7 @@ public class PreSaleShowAction {
             return JsonResponseUtil.error("没有足够的退款商品数");
         }
         Long price=refundCount*PriceConvertUtils.StringToLong(sub.getRefundGoodsPrice());
-        if(sub.getOtherRefundPrice()!=null){
+        if(sub.getOtherRefundPrice()!=null&&refundCount.equals(sub.getChildOrderNum())){
             price+=PriceConvertUtils.StringToLong(sub.getOtherRefundPrice());
         }
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());

@@ -4,7 +4,9 @@ import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.SoidsModel;
 import com.shigu.main4.tools.SpringBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component("itemOrderProcess")
 public class ItemOrderProcessImpl implements ItemOrderProcess{
 
     @Autowired
@@ -19,5 +21,10 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
     @Override
     public void outOfStock(Long soidpid) {
         soidsModel.outOfStock(soidpid);
+    }
+
+    @Override
+    public void cancleOutOfStock(Long soidpid) {
+        soidsModel.cancleOutOfStock(soidpid);
     }
 }

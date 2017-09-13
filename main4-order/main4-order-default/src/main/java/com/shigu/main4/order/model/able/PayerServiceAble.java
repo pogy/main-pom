@@ -1,5 +1,7 @@
 package com.shigu.main4.order.model.able;
 
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
@@ -34,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public abstract class PayerServiceAble implements PayerService{
 
+    private static final Logger logger = LoggerFactory.getLogger(PayerServiceAble.class);
     @Autowired
     protected OrderPayApplyMapper orderPayApplyMapper;
 
@@ -99,15 +102,16 @@ public abstract class PayerServiceAble implements PayerService{
                     RechargeOrder rechargeOrder=SpringBeanFactory.getBean(RechargeOrder.class,apply.getUserId(),apply.getOid(),apply.getMoney());
                     try {
                         rechargeOrder.payed(outerPid);
-                        createPay(apply,outerPid,outerPuser,payMoney);
                     } catch (PayApplyException e) {
-                        refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//充值失败，退回
+                        logger.error("oid="+orderId.getOid()+",type="+orderId.getType()+",applyId="+applyId
+                                +",payMoney="+payMoney+",充值失败，需要退回",e);
+//
                     }
 
                 }
             }
         } catch (Exception e) {
-            payRollback(applyId,outerPid,outerPuser,payMoney,payMoney);
+            logger.error("支付确认失败",e);
             throw e;
         }
     }
