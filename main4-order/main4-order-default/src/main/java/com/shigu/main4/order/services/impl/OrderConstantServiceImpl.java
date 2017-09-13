@@ -95,10 +95,7 @@ public class OrderConstantServiceImpl implements OrderConstantService {
         for (OrderConstant constant : orderConstantMapper.select(new OrderConstant())) {
             OrderConstantType.typeOf(constant.getType()).put(constant.getSenderId(), constant);
         }
-        logger.error("hahaha,im log4j");
-        System.out.println("log4j print");
         initAddress();
-        throw new RuntimeException("111");
     }
 
     /**
