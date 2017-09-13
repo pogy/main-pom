@@ -186,10 +186,16 @@ public class DaifaAllocatedService {
     }
 
     public void orderServerNotTake(Long dfOrderId){
-        DaifaOrder o=daifaOrderMapper.selectFieldsByPrimaryKey(dfOrderId,FieldUtil.codeFields("df_order_id,order_partition_id"));
-        if(o!=null){
-            //todo 调缺货dubbo
-            itemOrderProcess.outOfStock(new Long(o.getOrderPartitionId()));
+        if(dfOrderId==null){
+            return;
+        }
+        try {
+            DaifaOrder o=daifaOrderMapper.selectFieldsByPrimaryKey(dfOrderId,FieldUtil.codeFields("df_order_id,order_partition_id"));
+            if(o!=null){
+                itemOrderProcess.outOfStock(new Long(o.getOrderPartitionId()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
