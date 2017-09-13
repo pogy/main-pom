@@ -35,9 +35,4 @@ public class DaifaSysAdminAction {
         return JsonResponseUtil.success();
     }
 
-    @RequestMapping("admin/tongbuquehuo")
-    @ResponseBody
-    public void tongbuquehuo(){
-        daifaAllocatedService.tongbuquehuo();
-    }
 }
