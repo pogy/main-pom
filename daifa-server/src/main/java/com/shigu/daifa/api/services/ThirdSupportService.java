@@ -28,6 +28,7 @@ import com.shigu.main4.common.util.MoneyUtil;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.daifa.process.TakeGoodsIssueProcess;
+import com.shigu.main4.daifa.vo.UnComleteAllVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -554,7 +555,7 @@ public class ThirdSupportService {
         List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectFieldsByExample(example, FieldUtil.codeFields("take_goods_id,df_order_id"));
 
         List<Long> takeIds = BeanMapper.getFieldList(daifaGgoods, "takeGoodsId", Long.class);
-        List<Long> notTakeDfOrderIds=takeGoodsIssueProcess.uncompleteAll(daifaWorkerId, storeId, takeIds, bostatus == 1);
+        UnComleteAllVO vo =takeGoodsIssueProcess.uncompleteAllNew(daifaWorkerId, storeId, takeIds, bostatus == 1);
         if (notCodes != null && notCodes.size() != 0) {
             for (NotCodeSets nc : notCodes) {
                 List<Long> upoids = nc.getOrderIds();
@@ -580,8 +581,11 @@ public class ThirdSupportService {
             }
         }
         //发送缺货信息到order-server
-        for(Long notTakeDfOrderId:notTakeDfOrderIds){
+        for(Long notTakeDfOrderId:vo.getNotTakeIds()){
             daifaAllocatedService.orderServerNotTake(notTakeDfOrderId);
+        }
+        for(Long takeDfOrderId:vo.getTakeIds()){
+            daifaAllocatedService.orderServerTake(takeDfOrderId);
         }
     }
 
