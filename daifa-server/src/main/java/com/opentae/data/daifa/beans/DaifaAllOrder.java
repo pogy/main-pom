@@ -20,6 +20,9 @@ public class DaifaAllOrder implements Serializable{
     private static final long serialVersionUID = -2685689810091540070L;
     @Column("daifa_trade.df_trade_id")
     private String orderId;//订单id
+
+    @Column("daifa_trade.trade_code")
+    private String tradeCode;//订单编号
     @Column("daifa_trade.send_status")
     private Integer tradeState;//交易状态1未发货2已发货
     @Column("daifa_trade.create_time")
@@ -172,6 +175,14 @@ public class DaifaAllOrder implements Serializable{
 
     public void setIsOld(Integer isOld) {
         this.isOld = isOld;
+    }
+
+    public String getTradeCode () {
+        return tradeCode;
+    }
+
+    public void setTradeCode (String tradeCode) {
+        this.tradeCode = tradeCode;
     }
 
     public List<DaifaAllSubOrder> getChildOrders() {
