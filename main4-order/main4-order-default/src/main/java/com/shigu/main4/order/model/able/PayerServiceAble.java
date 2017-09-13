@@ -103,6 +103,7 @@ public abstract class PayerServiceAble implements PayerService{
                     try {
                         rechargeOrder.payed(outerPid);
                     } catch (PayApplyException e) {
+                        logger.error("oid="+orderId.getOid()+",type="+orderId.getType()+",applyId="+applyId+",充值失败，退回",e);
                         refund(payId,payMoney);//充值失败，退回
                     }
 
