@@ -23,6 +23,8 @@ public class DaifaSysAdminAction {
     public String index(){
         return "admin/index";
     }
+
+
     @RequestMapping("admin/adminRefund")
     @ResponseBody
     public JSONObject adminRefund(Long tid,String oids,Long refundId) throws DaifaException {
