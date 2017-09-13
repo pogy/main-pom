@@ -20,6 +20,10 @@ public class UserInfo implements Serializable{
      */
     private String userNick;
     /**
+     * 用户名
+     */
+    private String userName;
+    /**
      * email
      */
     private String email;
@@ -114,6 +118,14 @@ public class UserInfo implements Serializable{
 
     public void setUserNick(String userNick) {
         this.userNick = userNick;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
 
