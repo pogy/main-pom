@@ -14,7 +14,10 @@ import java.io.Serializable;
 public class AllSubOrderVO implements Serializable{
     @Transient
     private static final long serialVersionUID = -4039183803628953148L;
-    private String childOrderId;//子单id
+    private String childOrderId;//代发子单id
+    private String orderCode;//子订单号
+    private String  orderPartitionId;//折单ID
+
     private String imgSrc;//商品图片
     private String title;//商品标题
     private String goodsProperty;//商品属性 颜色 尺码
@@ -171,5 +174,21 @@ public class AllSubOrderVO implements Serializable{
 
     public void setStoreGoodsCode(String storeGoodsCode) {
         this.storeGoodsCode = storeGoodsCode;
+    }
+
+    public String getOrderCode () {
+        return orderCode;
+    }
+
+    public void setOrderCode (String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    public String getOrderPartitionId () {
+        return orderPartitionId;
+    }
+
+    public void setOrderPartitionId (String orderPartitionId) {
+        this.orderPartitionId = orderPartitionId;
     }
 }

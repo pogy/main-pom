@@ -3,37 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
     <title>全部订单 - 星帮后台管理 - 四季星座网</title>
-
-
-
-
-
 <#include "/common/host_config.ftl">
-
-
-
-
-
-
     <link href="http://style.571xz.com/v2/dfgl/css/orderAll.css" rel="stylesheet">
-
-
-
-
-
-
-
-
-
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
-
-
     <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
-
-
-    <script src="http://style.571xz.com/v2/dfgl/js/orderAll.js?t=2017091101"></script>
+    <script src="${daifa_host}/js/admin/adminorder/adminorder.js?t=201709121011"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -49,76 +24,24 @@
     </div>
 </div>
 
-
-
-
 <div class="mainContent">
     <div class="sideBarBox">
-
     <#include "/admin/common/menu_admin.ftl">
-
-
-
     </div>
     <div class="contentBox">
-        <div class="printTypeTabs">
-            <ul>
-                <li class="select"><a href="orderAll.htm">全部订单</a></li>
-                <li ><a href="noGoodsnoOrder.htm">无货号订单</a></li>
-            </ul>
-        </div>
-
 
         <div class="statistics yahei fc9">
-            <ul>
-                <li>
-                    <span class="fs20 arail fc3">${orderStatistics.totalNumber!}</span>
-                    <p>今日总订单（单）</p>
-                </li>
-                <li>
-                    <span class="fs20 arail fc3">${orderStatistics.totalMoney!}</span>
-                    <p>今日订单总额（元）</p>
-                </li>
-                <li>
-                    <span class="fs20 arail fc3">${orderStatistics.sendNumber!}</span>
-                    <p>今日发货商品（件）</p>
-                </li>
-                <li>
-                    <span class="fs20 arail fc3">${orderStatistics.sendMoney!}</span>
-                    <p>今日发货金额（元）</p>
-                </li>
-                <li>
-                    <span class="fs20 arail fc3">${orderStatistics.stockoutNumber!}</span>
-                    <p>今日缺货（件）</p>
-                </li>
-            </ul>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <div class="orderSearch orderSearchBox">
             <ul>
                 <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
                 <li><label>手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
                 <li><label>发货快递单：</label><input type="text" class="fmInput" name="postCode" <#if query.postCode??> value="${query.postCode!}" </#if>></li>
+                <li><label>买家昵称：</label><input type="text" class="fmInput" name="buyerNick" <#if query.buyerNick??> value="${query.buyerNick!}" </#if>></li>
                 <li><label>订单日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择起始时间" <#if query.startTime??> value="${query.startTime!}" </#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间" <#if query.endTime??>value="${query.endTime!}"</#if>></li>
+
                 <li>
+
 
                 <#assign text>{}</#assign>
                 <#assign moduledata0=text?eval />
@@ -129,62 +52,27 @@
                     <#else>
                             <b
                     </#if>
-
-
-                        class="fmButton
-
-         fmButton-blue
-         searchBtn"
-
-                        jbtn="searchBtn"
-
-
-
+                    class="fmButton fmButton-blue searchBtn" jbtn="searchBtn"
                     <#if $it.title??>
                         title=""
                     </#if>
-
-
-
                     <#if $it.id??>
                         id=""
                     </#if>
-
-                >
-
-
+                    >
                     搜索
-
-
-
                     <#if $it.href??>
                         </a>
                     <#else>
                     </b>
                     </#if>
 
-
-
-
-
                 </#list>
                 </li>
             </ul>
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-    <#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"postCode","value":"${query.postCode!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+    <#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"postCode","value":"${query.postCode!}"},{"name":"buyerNick","value":"${query.buyerNick!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
     <#assign moduledata1=text?eval />
     <#list [moduledata1] as $it>
         <#if $it.fields??>
@@ -203,15 +91,7 @@
             </form>
         </#if>
 
-
-
-
-
     </#list>
-
-
-
-
 
         <div class="orderCon">
             <div class="theadCon">
@@ -230,7 +110,7 @@
             <div class="orderItem">
                 <div class="orderItemHead">
                     <div class="leftConBox fl">
-                        <span>订单编号：${order.orderId!}</span>
+                        <span>订单编号：${order.orderId!}|${order.tradeCode!}</span>
                         <span>时间：${order.tradeTime!}</span>
                         <#if order.oldOrder == true>
                             <i class="fcF40 icon-old oldOrder"></i>
@@ -256,7 +136,11 @@
                 <#list order.childOrders as childOrder>
                     <div class="childOrderItem" data-id="${childOrder.childOrderId!}">
                         <ul class="clearfix">
-                            <li class="childOrderId">${childOrder.childOrderId!}</li>
+                            <li class="childOrderId">
+                                <p>代发子单号：${childOrder.childOrderId!}</p>
+                                <p>子订单号：${childOrder.orderCode!}</p>
+                                <p>折单号：${childOrder.orderPartitionId!}</p>
+                            </li>
                             <li class="goodsInfo">
                                 <div class="fl imgBox">
                                     <img src="${childOrder.imgSrc!}_80x80.jpg" alt width="54" height="54">
@@ -391,125 +275,8 @@
              data-option="${pageOption!}"
             </#if>
         ></div>
-
-
-
-
-
-
-
     </#list>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     </div>
 </div>
 <!--省略end，让浏览器自动添加-->
-
-
-
-

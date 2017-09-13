@@ -17,6 +17,7 @@ public class DaifaAllOrderVO implements Serializable{
     @Transient
     private static final long serialVersionUID = -2685689810091540070L;
     private String orderId;//订单id
+    private String tradeCode;//订单编号
 
     private Integer tradeState;//交易状态1未发货2已发货
     private String tradeTime;//交易时间
@@ -164,5 +165,13 @@ public class DaifaAllOrderVO implements Serializable{
 
     public void setOldOrder(Boolean oldOrder) {
         this.oldOrder = oldOrder;
+    }
+
+    public String getTradeCode () {
+        return tradeCode;
+    }
+
+    public void setTradeCode (String tradeCode) {
+        this.tradeCode = tradeCode;
     }
 }

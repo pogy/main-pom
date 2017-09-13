@@ -2,7 +2,7 @@
     <ul>
 
         <li>
-            <a class="current" href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
+            <a class="current" href="adminOrder.htm" ><i class="icon-allorders"></i>全部订单</a>
         </li>
 
         <li>

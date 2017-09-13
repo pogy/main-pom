@@ -83,6 +83,9 @@ public class DaifaAllOrderIndexService {
 
         DaifaTradeExample dtex = new DaifaTradeExample();
         DaifaOrderExample doex = new DaifaOrderExample();
+        if(bo.getStockoutFlag ()!=null&&bo.getStockoutFlag ()==1) {
+            doex.createCriteria ().andTakeGoodsStatusNotEqualTo (1);
+        }
         DaifaTradeExample.Criteria ce = dtex.createCriteria();
         ce.andSellerIdEqualTo(sellerId);
         dtex.setOrderByClause("df_trade_id desc");
@@ -106,6 +109,10 @@ public class DaifaAllOrderIndexService {
         if(StringUtils.hasText(bo.getPostCode())){
             ce.andExpressCodeEqualTo(bo.getPostCode());
         }
+        if(StringUtils.hasText(bo.getBuyerNick ())){
+            ce.andBuyerNickEqualTo (bo.getBuyerNick());
+        }
+
         int i = daifaTradeMapper.countByExample(dtex);
         bo.setCount(i);
         List<DaifaAllOrderVO> daifaAllOrderVOS = new ArrayList<>();
