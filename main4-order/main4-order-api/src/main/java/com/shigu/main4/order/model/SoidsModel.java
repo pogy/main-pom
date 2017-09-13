@@ -14,4 +14,6 @@ public interface SoidsModel {
      * @param soidpid
      */
     void outOfStock(Long soidpid);
+
+    void cancleOutOfStock(Long soidpid);
 }

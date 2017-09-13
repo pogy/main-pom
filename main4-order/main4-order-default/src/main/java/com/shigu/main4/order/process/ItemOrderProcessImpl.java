@@ -22,4 +22,9 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
     public void outOfStock(Long soidpid) {
         soidsModel.outOfStock(soidpid);
     }
+
+    @Override
+    public void cancleOutOfStock(Long soidpid) {
+        soidsModel.cancleOutOfStock(soidpid);
+    }
 }
