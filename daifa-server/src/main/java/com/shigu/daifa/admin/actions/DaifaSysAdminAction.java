@@ -36,5 +36,10 @@ public class DaifaSysAdminAction {
         takeGoodsIssueProcess.adminRefund(oidList,tid,refundId);
         return JsonResponseUtil.success();
     }
+    @RequestMapping("admin/tongbuquehuo")
+    @ResponseBody
+    public void tongbuquehuo(){
+        daifaAllocatedService.tongbuquehuo();
+    }
 
 }

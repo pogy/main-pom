@@ -198,5 +198,15 @@ public class DaifaAllocatedService {
             e.printStackTrace();
         }
     }
-
+    public void tongbuquehuo(){
+        DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
+        daifaGgoodsTasksExample.createCriteria().andTakeGoodsStatusEqualTo(2).andOperateIsEqualTo(0).andAllocatStatusEqualTo(0);
+        List<DaifaGgoodsTasks> tasks=daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,FieldUtil.codeFields("tasks_id,df_order_id"));
+        Map<Long,List<DaifaGgoodsTasks>> tsMap=BeanMapper.groupBy(tasks,"dfOrderId",Long.class);
+        for(List<DaifaGgoodsTasks> ts:tsMap.values()){
+            if(ts.size()>0){
+                orderServerNotTake(ts.get(0).getDfOrderId());
+            }
+        }
+    }
 }

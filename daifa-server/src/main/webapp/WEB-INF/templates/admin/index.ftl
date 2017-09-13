@@ -9,6 +9,17 @@
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
     <script src="${daifa_host}/js/admin/adminorder/adminorder.js?t=201709121011"></script>
+    <script>
+        function downloadExcelSubmit(){
+            var nick=$("input[name='buyerNick']").val();
+            if(!nick){
+                alert("请输入昵称");
+                return false;
+            }
+            window.open("${daifa_host}admin/printExcel.htm?buyerNick="+nick);
+        }
+
+    </script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -69,6 +80,7 @@
 
                 </#list>
                 </li>
+                <li><a  class="fmButton fmButton-blue searchBtn" onclick="downloadExcelSubmit()">导出Excel</a></li>
             </ul>
         </div>
 
