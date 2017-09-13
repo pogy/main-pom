@@ -92,7 +92,7 @@ public abstract class PayerServiceAble implements PayerService{
             OrderPay tmpOrderPay  = orderPayMapper.selectOne(orderPay);
             //验证重复通知
             if (tmpOrderPay == null) {
-                Long payId=createPay(apply,outerPid,outerPuser,payMoney);
+                createPay(apply,outerPid,outerPuser,payMoney);
                 OrderIdGenerator orderId=orderIdGeneratorMapper.selectByPrimaryKey(apply.getOid());
                 if (orderId != null&&orderId.getType()>0) {//商品订单
                     ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, apply.getOid());
@@ -105,13 +105,12 @@ public abstract class PayerServiceAble implements PayerService{
                     } catch (PayApplyException e) {
                         logger.error("oid="+orderId.getOid()+",type="+orderId.getType()+",applyId="+applyId
                                 +",payMoney="+payMoney+",充值失败，需要退回",e);
-//                        refund(payId,payMoney);//充值失败，退回
+//
                     }
 
                 }
             }
         } catch (Exception e) {
-//            payRollback(applyId,outerPid,outerPuser,payMoney,payMoney);
             logger.error("支付确认失败",e);
             throw e;
         }
