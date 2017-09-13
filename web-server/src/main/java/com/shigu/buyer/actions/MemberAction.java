@@ -913,4 +913,19 @@ public class MemberAction {
         return JsonResponseUtil.success().element("href","/order/alipayByApplyId.htm?applyId="+applyVO.getApplyId());
     }
 
+
+    /**
+     * 已上传的商品列表
+     * @param bo
+     * @param session
+     * @param model
+     * @return
+     */
+    public String goodsupRecordList(GoodsupSearchBO bo, HttpSession session, Model model) {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ps.getUserId();
+        ps.getUserNick();
+        return null;
+    }
+
 }

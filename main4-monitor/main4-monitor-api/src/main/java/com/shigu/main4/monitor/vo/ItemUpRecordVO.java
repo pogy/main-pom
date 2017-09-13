@@ -123,6 +123,14 @@ public class ItemUpRecordVO implements Serializable{
      * 下游numIid
      */
     private Long fenNumiid;
+    /**
+     * 档口下架
+     */
+    private Boolean shopSoldout;
+    /**
+     * 淘宝下架
+     */
+    private Boolean tbSoldout;
 
 
     public String getSupperImww() {
