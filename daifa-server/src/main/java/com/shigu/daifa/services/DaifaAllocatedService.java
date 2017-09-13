@@ -209,7 +209,7 @@ public class DaifaAllocatedService {
         try {
             DaifaOrder o=daifaOrderMapper.selectFieldsByPrimaryKey(dfOrderId,FieldUtil.codeFields("df_order_id,order_partition_id"));
             if(o!=null){
-//                itemOrderProcess.cancleOutOfStock(new Long(o.getOrderPartitionId()));
+                itemOrderProcess.cancleOutOfStock(new Long(o.getOrderPartitionId()));
             }
         } catch (Exception e) {
             e.printStackTrace();
