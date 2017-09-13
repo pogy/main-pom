@@ -396,8 +396,7 @@ public class CdnService {
         //授权状态
         vo.setTbAuthState(shopBaseService.shopAuthState(shopId));
         //二级域名
-        vo.setXzUrl(shopBaseService.selDomain(shopId));
-        vo.setDomain(vo.getXzUrl());
+        vo.setDomain(shopBaseService.selDomain(shopId));
         return vo;
     }
     /**
