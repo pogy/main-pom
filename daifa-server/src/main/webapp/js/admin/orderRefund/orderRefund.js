@@ -1295,23 +1295,15 @@ $(function(){
 });
 
 //===================具体操作==================//
-//修改
-function editAddr(obj,dfTradeId){
+//退款
+function refunddeal(tid,oids,refundId){
 
-   var receiverName= $(obj).parent().prev().prev().prev().prev().children().val();
-    var receiverAddr= $(obj).parent().prev().prev().prev().children().val();
-    //alert("receiverName="+receiverName+" @@@receiverAddr="+receiverAddr);
-    $$.post('dealOrderSendErrorJson.json', function(resp){
-        if(resp.err){
-            $$.windowOperate.errorTip(resp.err);
+    $.post(daifa_host+"admin/adminRefund.json",{"tid":tid,"oids":oids,"refundId":refundId},function(data){
+        if(data.result=="success"){
+            alert("退款完成");
         }else{
-            $$.alert('设置成功', function(){
-                location.reload();
-            });
+            alert("退款失败,"+data.msg);
         }
-    },{dfTradeId: dfTradeId, receiverName: receiverName,receiverAddr:receiverAddr});
+    })
 }
-
-
-
 
