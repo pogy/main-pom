@@ -51,6 +51,11 @@ public class SubMyOrderVO {
      */
     @Column("item_order_sub.num")
     private Integer num;
+    /**
+     * 缺货数量
+     */
+    @Column("item_order_sub.out_of_stok")
+    private Integer stockoutNum;
 
     private List<AfterSaleVO> afterSales;
 
@@ -206,5 +211,13 @@ public class SubMyOrderVO {
 
     public void setRefundCount(int refundCount) {
         this.refundCount = refundCount;
+    }
+
+    public Integer getStockoutNum() {
+        return stockoutNum;
+    }
+
+    public void setStockoutNum(Integer stockoutNum) {
+        this.stockoutNum = stockoutNum;
     }
 }

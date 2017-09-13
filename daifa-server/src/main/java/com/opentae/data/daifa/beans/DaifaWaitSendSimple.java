@@ -17,34 +17,21 @@ import java.util.List;
 public class DaifaWaitSendSimple implements Serializable{
     @Transient
     private static final long serialVersionUID = -2685689810091540070L;
-    @Column("daifa_wait_send.dws_id")
-    private String dswId;//代发id
-    @Column("daifa_wait_send.df_trade_id")
-    private String orderId;//订单id
-    @Column("daifa_wait_send.send_status")
+    private Long dwsId;//代发id
+    private Long orderId;//订单id
     private Integer tradeState;//交易状态1未发货2已发货
-    @Column("daifa_wait_send.create_time")
     private String tradeTime;//交易时间
-    @Column("daifa_wait_send.buyer_ww")
     private String imWw;//分销商ww
-    @Column("daifa_wait_send.receiver_name")
     private String receiverName;//收货人姓名
-    @Column("daifa_wait_send.receiver_phone")
     private String receiverPhone;//收货人电话
-    @Column("daifa_wait_send.buyer_remark")
     private String buyerRemark;//分销商留言
-    @Column("daifa_wait_send.money")
     private String totalFee;//总费用
-    @Column("daifa_wait_send.express_fee")
     private String expressFee;//快递费用
-    @Column("daifa_wait_send.express_name")
     private String expressName;//快递名
-    @Column("daifa_wait_send.express_code")
     private String expressCode;//快递单号
-    @Column("daifa_wait_send.trade_discount_fee")
     private String discountFee;//减免费用
-    @Column("daifa_wait_send.services_fee")
     private String serversFee;//服务费用
+    private String receiverAddress;
 
     private List<DaifaWaitSendOrderSimple> childOrders;//子单数据
 
@@ -52,13 +39,7 @@ public class DaifaWaitSendSimple implements Serializable{
         return serialVersionUID;
     }
 
-    public String getOrderId() {
-        return orderId;
-    }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
 
     public Integer getTradeState() {
         return tradeState;
@@ -166,11 +147,27 @@ public class DaifaWaitSendSimple implements Serializable{
         this.childOrders = childOrders;
     }
 
-    public String getDswId() {
-        return dswId;
+    public Long getDwsId () {
+        return dwsId;
     }
 
-    public void setDswId(String dswId) {
-        this.dswId = dswId;
+    public void setDwsId (Long dwsId) {
+        this.dwsId = dwsId;
+    }
+
+    public Long getOrderId () {
+        return orderId;
+    }
+
+    public void setOrderId (Long orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
     }
 }

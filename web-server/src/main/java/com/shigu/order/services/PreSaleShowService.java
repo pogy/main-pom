@@ -1,5 +1,8 @@
 package com.shigu.order.services;
 
+import com.opentae.data.mall.beans.ItemOrderSub;
+import com.shigu.main4.daifa.exceptions.OrderNotFindException;
+import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.services.AfterSaleService;
 import com.shigu.main4.order.servicevo.AfterSaleSimpleOrderVO;
 import com.shigu.main4.order.servicevo.RefundLogVO;
@@ -20,6 +23,9 @@ public class PreSaleShowService {
     @Autowired
     AfterSaleService afterSaleService;
 
+    @Autowired
+    OrderManageProcess orderManageProcess;
+
     public SubRefundOrderVO selSubRefundOrderVO(Long subOrderId){
         SubAfterSaleSimpleOrderVO subSimple=afterSaleService.subAfterSaleSimpleOrder(subOrderId);
         SubRefundOrderVO sub=new SubRefundOrderVO();
@@ -28,6 +34,7 @@ public class PreSaleShowService {
         sub.setChildOrderColor(subSimple.getColor());
         sub.setChildOrderImgSrc(subSimple.getPicUrl());
         sub.setChildOrderSize(subSimple.getSize());
+        sub.setChildOrderNum(subSimple.getNum());
         sub.setRefundGoodsPrice(PriceConvertUtils.priceToString(subSimple.getPrice()));
         sub.setRefundNumber(subSimple.getNum()-(subSimple.getRefundNum()==null?0:subSimple.getRefundNum()));
         if(subSimple.getOtherRefundPrice()!=null){
@@ -63,6 +70,8 @@ public class PreSaleShowService {
         return vos;
     }
 
-
+    public int maxCanPreRefund(Long subId) throws OrderNotFindException {
+        return orderManageProcess.tryRefund(subId.toString()).size();
+    }
 
 }

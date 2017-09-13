@@ -17,7 +17,14 @@ public class WaitSendOrderVO {
     private String piPrice;//商品批发价
     private String payPrice;//商品实际支付价
     private String num;//商品数量
+    private Integer takeGoodsState;
+    private Integer refundState;
     private String storeGoodsCode;//商家编码
+
+
+    private String childServersFee;//子单服务费
+    private String childRemark;//子单备注
+
 
     public String getChildOrderId() {
         return childOrderId;
@@ -89,5 +96,37 @@ public class WaitSendOrderVO {
 
     public void setStoreGoodsCode(String storeGoodsCode) {
         this.storeGoodsCode = storeGoodsCode;
+    }
+
+    public Integer getTakeGoodsState() {
+        return takeGoodsState;
+    }
+
+    public void setTakeGoodsState(Integer takeGoodsState) {
+        this.takeGoodsState = takeGoodsState;
+    }
+
+    public Integer getRefundState() {
+        return refundState;
+    }
+
+    public void setRefundState(Integer refundState) {
+        this.refundState = refundState;
+    }
+
+    public String getChildServersFee() {
+        return this.childServersFee;
+    }
+
+    public void setChildServersFee(String childServersFee) {
+        this.childServersFee = childServersFee;
+    }
+
+    public String getChildRemark() {
+        return this.childRemark;
+    }
+
+    public void setChildRemark(String childRemark) {
+        this.childRemark = childRemark;
     }
 }

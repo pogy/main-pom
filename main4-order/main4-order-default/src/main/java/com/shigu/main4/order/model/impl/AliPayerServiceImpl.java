@@ -57,7 +57,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + apply.getApplyId() + "\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                "    \"total_amount\":" + String.format("%,.2f", money * .01) + "," +
+                "    \"total_amount\":" + String.format("%.2f", money * .01) + "," +
                 "    \"subject\":\"" + title + "\"" +
                 "  }");//填充业务参数
         String form = "";
@@ -98,6 +98,17 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         orderPayMapper.updateByPrimaryKeySelective(pay);
     }
 
+    @Override
+    public void payRollback(Long applyId, String outerPid, String outerPuser, Long payMoney, Long money) throws PayerException {
+        OrderPay orderPay=new OrderPay();
+        orderPay.setOuterPid(outerPid);
+        orderPay.setApplyId(applyId);
+        orderPay.setOuterPuser(outerPuser);
+        orderPay.setMoney(payMoney);
+        orderPay.setRefundMoney(0L);
+        alipayRefund(orderPay,money);
+    }
+
 
     private void alipayRefund(OrderPay orderPay, Long money) throws PayerException {
         OrderPayApply orderPayApply = orderPayApplyMapper.selectByPrimaryKey(orderPay.getApplyId());
@@ -109,7 +120,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent("{" +
                 "    \"out_trade_no\":\"" + orderPayApply.getApplyId() +"\"," +
-                "    \"refund_amount\":" + String.format("%,.2f", money * .01)  + "," +
+                "    \"refund_amount\":" + String.format("%.2f", money * .01)  + "," +
                 "    \"refund_reason\":\"正常退款\"," +
                 "    \"out_request_no\":\"" + UUIDGenerator.getUUID() + "\"" +
                 "  }");

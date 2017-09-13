@@ -36,7 +36,7 @@
                     <p class="j_passError c_none">您输入的密码有误！</p>
                 </div>
                 <div class="forgetP fr">
-                    <a href="javascript" >忘记密码了？</a>
+                    <a href="${daifa_host}admin/index.htm" >系统后台</a>
                 </div>
             </div>
             <div class="loginBtn c_cb">

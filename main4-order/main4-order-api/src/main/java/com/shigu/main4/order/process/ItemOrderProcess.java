@@ -6,4 +6,10 @@ package com.shigu.main4.order.process;
 public interface ItemOrderProcess {
 
     void finish(Long oid);
+
+    /**
+     * 缺货
+     * @param soidpid
+     */
+    void outOfStock(Long soidpid);
 }

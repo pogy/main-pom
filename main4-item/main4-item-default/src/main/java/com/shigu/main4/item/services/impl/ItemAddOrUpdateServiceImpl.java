@@ -104,6 +104,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Autowired
     private ShiguGoodsStyleMapper shiguGoodsStyleMapper;
 
+    @Autowired
+    private ItemProductMapper itemProductMapper;
+
     /**
      * 系统上架一款商品
      * <p>
@@ -627,7 +630,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         if (StringUtils.isEmpty(tiny.getCity())) {
             tiny.setCity(shiguSite.getCityName());
         }
-        shiguGoodsTinyMapper.insertSelective(tiny);
+        try {
+            shiguGoodsTinyMapper.insertSelective(tiny);
+        } catch (Exception e) {
+            throw new ItemModifyException(item.getNumIid()+"_"+item.getShopId()+" 重复插入");
+        }
 
 
         //3.添加shigu_goods_extends //下面简称extends
@@ -849,6 +856,20 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
         //5、商品操作清除缓存
         cleanItemCache(synItem.getGoodsId());
+
+        //6、更新代发的产品表
+        try {
+            if (synItem.getGoodsId()!=null&&StringUtils.isNotEmpty(synItem.getPiPriceString())) {
+                ItemProductExample productExample=new ItemProductExample();
+                productExample.createCriteria().andGoodsIdEqualTo(synItem.getGoodsId());
+                ItemProduct itemProduct=new ItemProduct();
+                Double priceDouble=Double.parseDouble(synItem.getPiPriceString())*100;
+                itemProduct.setPrice(priceDouble.longValue());
+                itemProductMapper.updateByExampleSelective(itemProduct,productExample);
+            }
+        } catch (Exception e) {
+            logger.error("更新订单中product价格信息失败",e);
+        }
         return 1;
     }
 

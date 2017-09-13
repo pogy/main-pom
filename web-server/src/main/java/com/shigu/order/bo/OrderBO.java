@@ -48,7 +48,13 @@ public class OrderBO implements Serializable{
     /**
      * 页长
      */
+    private Integer stockoutNum;
+
+    /**
+     * 缺货数量
+     */
     private Integer pageSize;
+
 
 
     /**
@@ -158,4 +164,11 @@ public class OrderBO implements Serializable{
     public void setStatus (Integer status) {
         this.status = status;
     }
+
+    /**
+     * 缺货数量
+     */
+    public Integer getStockoutNum() { return stockoutNum; }
+
+    public void setStockoutNum(Integer stockoutNum) { this.stockoutNum = stockoutNum; }
 }

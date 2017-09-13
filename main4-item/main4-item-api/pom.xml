@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>RELEASE</version>
+            <version>${fastjson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.aliyun</groupId>

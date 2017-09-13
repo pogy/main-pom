@@ -19,6 +19,10 @@ public class SendOrderVO {
     private String num;//商品数量
     private String storeGoodsCode;//商家编码
 
+    private String childServersFee;//子单服务费
+    private String childRemark;//子单备注
+
+
     public String getChildOrderId() {
         return childOrderId;
     }
@@ -89,5 +93,21 @@ public class SendOrderVO {
 
     public void setStoreGoodsCode(String storeGoodsCode) {
         this.storeGoodsCode = storeGoodsCode;
+    }
+
+    public String getChildServersFee() {
+        return this.childServersFee;
+    }
+
+    public void setChildServersFee(String childServersFee) {
+        this.childServersFee = childServersFee;
+    }
+
+    public String getChildRemark() {
+        return this.childRemark;
+    }
+
+    public void setChildRemark(String childRemark) {
+        this.childRemark = childRemark;
     }
 }

@@ -1,5 +1,7 @@
 package com.shigu.main4.order.model.able;
 
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.core.mybatis.example.MultipleExample;
 import com.opentae.core.mybatis.example.MultipleExampleBuilder;
 import com.opentae.core.mybatis.mapper.MultipleMapper;
@@ -34,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public abstract class PayerServiceAble implements PayerService{
 
+    private static final Logger logger = LoggerFactory.getLogger(PayerServiceAble.class);
     @Autowired
     protected OrderPayApplyMapper orderPayApplyMapper;
 
@@ -64,46 +67,51 @@ public abstract class PayerServiceAble implements PayerService{
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void paySure(Long applyId, String outerPid, String outerPuser, Long payMoney) throws PayerException {
-        OrderPayApply apply;
-        if (applyId == null || (apply = orderPayApplyMapper.selectByPrimaryKey(applyId)) == null)
-            throw new PayerException(String.format("支付请求不存在：[%d]", applyId));
-        if (StringUtils.isEmpty(outerPid)) {
-            outerPid = apply.getOid().toString();
-        }
-        //验证重复支付
-        OrderPayExample orderPayExample=new OrderPayExample();
-        OrderPayRelationshipExample relationshipExample=new OrderPayRelationshipExample();
-        MultipleExample multipleExample= MultipleExampleBuilder.from(orderPayExample).innerJoin(relationshipExample)
-                .on(orderPayExample.createCriteria().equalTo(OrderPayExample.payId,OrderPayRelationshipExample.payId))
-                .where(relationshipExample.createCriteria().andOidEqualTo(apply.getOid())
-                        ,orderPayExample.createCriteria().andApplyIdNotEqualTo(applyId)).build();
-        if(multipleMapper.countByMultipleExample(multipleExample)>0){//之前有付过，现在又来付
-            refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//把新支付创建出来，再退款退掉
-            return;
-        }
-
-        OrderPay orderPay = new OrderPay();
-        orderPay.setApplyId(apply.getApplyId());
-
-        OrderPay tmpOrderPay  = orderPayMapper.selectOne(orderPay);
-        //验证重复通知
-        if (tmpOrderPay == null) {
-            createPay(apply,outerPid,outerPuser,payMoney);
-            OrderIdGenerator orderId=orderIdGeneratorMapper.selectByPrimaryKey(apply.getOid());
-            if (orderId != null&&orderId.getType()>0) {//商品订单
-                ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, apply.getOid());
-                itemOrder.payed();
-                orderMessageProducter.orderPush(itemOrder);
-            }else if(orderId != null&&orderId.getType()== OrderType.INCHANGE.type){//假如是走充值的
-                RechargeOrder rechargeOrder=SpringBeanFactory.getBean(RechargeOrder.class,apply.getUserId(),apply.getOid(),apply.getMoney());
-                try {
-                    rechargeOrder.payed(outerPid);
-                    createPay(apply,outerPid,outerPuser,payMoney);
-                } catch (PayApplyException e) {
-                    refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//充值失败，退回
-                }
-
+        try {
+            OrderPayApply apply;
+            if (applyId == null || (apply = orderPayApplyMapper.selectByPrimaryKey(applyId)) == null)
+                throw new PayerException(String.format("支付请求不存在：[%d]", applyId));
+            if (StringUtils.isEmpty(outerPid)) {
+                outerPid = apply.getOid().toString();
             }
+            //验证重复支付
+            OrderPayExample orderPayExample=new OrderPayExample();
+            OrderPayRelationshipExample relationshipExample=new OrderPayRelationshipExample();
+            MultipleExample multipleExample= MultipleExampleBuilder.from(orderPayExample).innerJoin(relationshipExample)
+                    .on(orderPayExample.createCriteria().equalTo(OrderPayExample.payId,OrderPayRelationshipExample.payId))
+                    .where(relationshipExample.createCriteria().andOidEqualTo(apply.getOid())
+                            ,orderPayExample.createCriteria().andApplyIdNotEqualTo(applyId)).build();
+            if(multipleMapper.countByMultipleExample(multipleExample)>0){//之前有付过，现在又来付
+                refund(createPay(apply,outerPid,outerPuser,payMoney),payMoney);//把新支付创建出来，再退款退掉
+                return;
+            }
+
+            OrderPay orderPay = new OrderPay();
+            orderPay.setApplyId(apply.getApplyId());
+
+            OrderPay tmpOrderPay  = orderPayMapper.selectOne(orderPay);
+            //验证重复通知
+            if (tmpOrderPay == null) {
+                Long payId=createPay(apply,outerPid,outerPuser,payMoney);
+                OrderIdGenerator orderId=orderIdGeneratorMapper.selectByPrimaryKey(apply.getOid());
+                if (orderId != null&&orderId.getType()>0) {//商品订单
+                    ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, apply.getOid());
+                    itemOrder.payed();
+                    orderMessageProducter.orderPush(itemOrder);
+                }else if(orderId != null&&orderId.getType()== OrderType.INCHANGE.type){//假如是走充值的
+                    RechargeOrder rechargeOrder=SpringBeanFactory.getBean(RechargeOrder.class,apply.getUserId(),apply.getOid(),apply.getMoney());
+                    try {
+                        rechargeOrder.payed(outerPid);
+                    } catch (PayApplyException e) {
+                        refund(payId,payMoney);//充值失败，退回
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+//            payRollback(applyId,outerPid,outerPuser,payMoney,payMoney);
+            logger.error("支付确认失败",e);
+            throw e;
         }
     }
 

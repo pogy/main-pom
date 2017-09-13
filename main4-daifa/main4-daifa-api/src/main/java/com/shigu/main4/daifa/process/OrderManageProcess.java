@@ -1,5 +1,6 @@
 package com.shigu.main4.daifa.process;
 
+import com.shigu.main4.daifa.bo.AutoRefundBo;
 import com.shigu.main4.daifa.bo.OrderBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
@@ -59,10 +60,14 @@ public interface OrderManageProcess {
     /**
      * 退款
      * @param refundId
-     * @param soid 外部子单号
-     * @param soidps 外部拆分单号
+     * @param bos 外部单号对象
      * @throws DaifaException
      */
-    void autoRefund(Long refundId, List<String> soid, List<String> soidps) throws DaifaException;
-
+    void autoRefund(Long refundId, List<AutoRefundBo> bos) throws DaifaException;
+    /**
+     * 设置货号
+     * @param dfOrderId
+     * @param goodsNo
+     */
+    void putGoodsCode(Long dfOrderId,String goodsNo) throws DaifaException;
 }
