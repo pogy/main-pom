@@ -12,6 +12,6 @@ public class TestAboutMe {
         AboutMeRequest request=new AboutMeRequest();
         request.setUserId(9968L);
         AboutMeResponse response=client.execute(request);
-        System.out.println(response.getUserNick());
+        System.out.println(response.getBody());
     }
 }
