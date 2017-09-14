@@ -113,7 +113,7 @@ public class SpreadService {
                     List<ImgGoatVO> goats = goatDubboService.selGoatsFromLocalCode(spread.getCode());
                     Date now = new Date();
                     for (ImgGoatVO gv : goats) {
-                        if (gv.getToTime().before(now)) {
+                        if ((SpreadEnum.BACK_MEMBER.equals(spread)||SpreadEnum.BACK_SHOP.equals(spread))&&gv.getToTime().before(now)) {
                             continue;
                         }
                         vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), gv.getText()));
