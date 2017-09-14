@@ -27,4 +27,9 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
     public void cancleOutOfStock(Long soidpid) {
         soidsModel.cancleOutOfStock(soidpid);
     }
+
+    @Override
+    public void tbSend(String nick, Long tid, String companyCode) {
+
+    }
 }

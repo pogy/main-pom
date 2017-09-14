@@ -26,6 +26,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
     public static EntityColumn totalFee;
     public static EntityColumn outerId;
     public static EntityColumn mark;
+    public static EntityColumn isTbSend;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -48,6 +49,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         totalFee = listMap.get("totalFee");
         outerId = listMap.get("outerId");
         mark = listMap.get("mark");
+        isTbSend = listMap.get("listMap");
         }
 
     public ItemOrderExample() {
@@ -852,6 +854,55 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
 
         public ItemOrderExample.Criteria andMarkNotBetween(String value1, String value2) {
             return notBetween(mark, value1, value2);
+        }
+
+
+        public ItemOrderExample.Criteria andIsTbSendIsNull() {
+            return isNull(isTbSend);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendIsNotNull() {
+            return isNotNull(isTbSend);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendEqualTo(Integer value) {
+            return equalTo(isTbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendNotEqualTo(Integer value) {
+            return notEqualTo(isTbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendGreaterThan(Integer value) {
+            return greaterThan(isTbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(isTbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendLessThan(Integer value) {
+            return lessThan(isTbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(isTbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendIn(List<Integer> values) {
+            return in(isTbSend, values);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendNotIn(List<Integer> values) {
+            return notIn(isTbSend, values);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendBetween(Integer value1, Integer value2) {
+            return between(isTbSend, value1, value2);
+        }
+
+        public ItemOrderExample.Criteria andIsTbSendNotBetween(Integer value1, Integer value2) {
+            return notBetween(isTbSend, value1, value2);
         }
     }
 }
