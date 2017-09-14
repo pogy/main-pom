@@ -1,7 +1,7 @@
 package com.openJar.enums;
 
 public enum HostEnum {
-    TEST("http://127.0.0.1/app/"),REST("http://");
+    TEST("http://www.571xz.com/app/"),REST("http://");
 
     private String host;
     HostEnum(String host){
