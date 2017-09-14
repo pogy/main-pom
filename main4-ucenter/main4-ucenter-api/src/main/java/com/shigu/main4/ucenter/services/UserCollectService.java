@@ -26,6 +26,7 @@ public interface UserCollectService {
      */
     ShiguPager<ItemCollectVO> selItemCollections(Long userId,String keyword, String webSite,int pageNo,int pageSize);
 
+    ShiguPager<ItemCollectVO> selItemCollectionsByType(Long userId,String keyword, String webSite,int pageNo,int pageSize,int type);
     /**
      * 按主键批量删除收藏记录
      * @param userId 用户ID

@@ -15,7 +15,6 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
-import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.storeservices.ShopRegistService;
@@ -216,6 +215,25 @@ public class MemberAction {
     }
 
     /**
+     * 个人中心,我的收藏,
+     * @return
+     */
+    @RequestMapping("member/goodsCollect")
+    public String goodsCollect(GoodsCollectBO bo,HttpSession session,Model model){
+        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShiguPager<ItemCollectVO> pager = userCollectService.selItemCollectionsByType(ps.getUserId(), bo.getKeyword(), bo.getWebsite(),
+                bo.getPage(), bo.getRows(), bo.getType());
+        if(pager.getContent()!=null)
+            model.addAttribute("goodslist",BeanMapper.mapList(pager.getContent(),GoodsCollectVO.class));
+        model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
+        model.addAttribute("get",bo);
+        model.addAttribute("website",bo.getWebsite());
+        model.addAttribute("keyword", bo.getKeyword());
+
+        return "buyer/goodsCollect";
+    }
+
+    /**
      * 创建数据包
      * @return
      */
@@ -286,25 +304,6 @@ public class MemberAction {
     @RequestMapping("member/shiguOnekeyRecordinit")
     public String shiguOnekeyRecordinit(OnekeyRecordBO bo,HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        String nick;
-        //查出用户nick
-//        if(ps.getLoginFromType().equals(LoginFromType.TAOBAO)){
-//            nick=ps.getLoginName();
-//        }else{
-//            nick=memberSimpleService.selNick(ps.getUserId());
-//        }
-//        if(nick==null){
-//            pager=itemUpRecordService.uploadedItems(ps.getUserId(),bo.getTarget(),bo.getTitle(),
-//                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
-//                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
-//                    bo.getPage(),bo.getRows());
-//        }else{
-//            pager=itemUpRecordService.uploadedItems(ps.getUserId(),nick,bo.getTarget(),bo.getTitle(),
-//                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
-//                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
-//                    bo.getPage(),bo.getRows());
-//        }
-        //查找shigugoodsup_v2索引下 某个用户的上传到淘宝且未下架的产品
         SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
         QueryBuilder userQuery = QueryBuilders.termQuery("fenUserId", ps.getUserId());
         QueryBuilder flagQuery = QueryBuilders.termsQuery("flag", "web-tb");
@@ -357,10 +356,6 @@ public class MemberAction {
         return "buyer/shiguOnekeyRecordinit";
     }
 
-
-/**
- *
- */
 
     /**
      * 删除一键上传商品
@@ -420,6 +415,7 @@ public class MemberAction {
         userCollectService.delShopCollection(ps.getUserId(),parseIds(ids));
         return JsonResponseUtil.success().element("msg","删除成功");
     }
+
     /**
      * 安全设置首页
      * @return
