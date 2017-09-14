@@ -1,8 +1,9 @@
 package com.shigu.main4.daifa.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SendBean {
+public class SendBean implements Serializable {
 	private String outTradeId;
 	private String receiverName;//收件人
 	private String receiverPhone;//收货人手机号

@@ -338,7 +338,7 @@ var webSite = '${webSite!}';
         </div>
     </div>
     
-    <input type="hidden" class="tempCode" value="${tempCode!}" />
+    <input type="hidden" id="tempCode" class="tempCode" value="${tempCode!}" />
 </div>
 
 

@@ -2,6 +2,7 @@ package com.shigu.main4.item.services;
 
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.main4.item.enums.SearchCheckd;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.vo.CategoryValue;
 import com.shigu.main4.item.vo.SearchItem;
@@ -32,7 +33,26 @@ public interface ItemSearchService {
      * @param pageSize 每页条数
      * @return
      */
-    ShiguAggsPager searchItem(String keyword, String webSite, String from, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid,
+    ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid,
+                              Double priceFrom, Double priceTo,
+                              Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs);
+    /**
+     * 搜索主方法
+     * @param keyword 关键词
+     * @param mid 市场ID
+     * @param cids 叶子类目ID
+     * @param shouldStoreIds 应该关联的店铺
+     * @param sid 风格ID
+     * @param priceFrom 批价开始
+     * @param priceTo 批价结束
+     * @param timeForm created时间开始
+     * @param timeTo created时间结束
+     * @param orderCase 条件
+     * @param page 当前页码
+     * @param pageSize 每页条数
+     * @return
+     */
+    ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<SearchCheckd> checkds, List<Long> cids, List<Long> shouldStoreIds, String sid,
                               Double priceFrom, Double priceTo,
                               Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs);
 

@@ -103,5 +103,4 @@
     <import resource="classpath*:/order.xml"/>
     <import resource="classpath*:/message_queue.xml"/>
 
-
 </beans>

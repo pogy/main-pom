@@ -103,6 +103,9 @@ public class DaifaAllOrderIndexService {
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");
         }
+        if(StringUtils.hasText(bo.getPostCode())){
+            ce.andExpressCodeEqualTo(bo.getPostCode());
+        }
         int i = daifaTradeMapper.countByExample(dtex);
         bo.setCount(i);
         List<DaifaAllOrderVO> daifaAllOrderVOS = new ArrayList<>();
@@ -121,6 +124,7 @@ public class DaifaAllOrderIndexService {
                 vo.setChildOrders(allSubOrderVOS);
                 daifaAllOrderVOS.add(vo);
                 BeanUtils.copyProperties(daifaAllOrder, vo, "childOrders");
+                vo.setOldOrder(daifaAllOrder.getIsOld()==1);
                 for (DaifaAllSubOrder daifaAllSubOrder : daifaAllOrder.getChildOrders()) {
                     AllSubOrderVO subvo = new AllSubOrderVO();
                     subvo.setRefundState(daifaAllSubOrder.getRefundStatus());
@@ -262,22 +266,25 @@ public class DaifaAllOrderIndexService {
                 orderStatisticsVO.setSendMoney(sendCount.getSendMoney());
                 orderStatisticsVO.setSendNumber(sendCount.getSendNumber());
             }
+            int queCount = 0;
+
+
             DaifaGgoodsExample daifaGgoodsExample = new DaifaGgoodsExample();
             daifaGgoodsExample.createCriteria().andCreateTimeGreaterThanOrEqualTo(isStartTime).andCreateTimeLessThanOrEqualTo(isEndTime).andTakeGoodsStatusEqualTo(2);
             List<DaifaGgoods> daifaGgoods = daifaGgoodsMapper.selectByExample(daifaGgoodsExample);
-            Map<Long, DaifaGgoods> goodsMap = BeanMapper.list2Map(daifaGgoods, "dfOrderId", Long.class);
-            Set<Long> orderIds = goodsMap.keySet();
-            DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
-
-            daifaOrderExample.createCriteria().andDfOrderIdIn(new ArrayList<>(orderIds));
-            List<DaifaOrder> daifaOrders = daifaOrderMapper.selectByExample(daifaOrderExample);
-
-            int queCount = 0;
-            for (DaifaOrder daifaOrder : daifaOrders) {
-                if(daifaOrder.getTakeGoodsStatus() ==2){
-                    queCount+=daifaOrder.getGoodsNum();
+            if(daifaGgoods.size()>0){
+                Map<Long, DaifaGgoods> goodsMap = BeanMapper.list2Map(daifaGgoods, "dfOrderId", Long.class);
+                Set<Long> orderIds = goodsMap.keySet();
+                DaifaOrderExample daifaOrderExample = new DaifaOrderExample();
+                daifaOrderExample.createCriteria().andDfOrderIdIn(new ArrayList<>(orderIds));
+                List<DaifaOrder> daifaOrders = daifaOrderMapper.selectByExample(daifaOrderExample);
+                for (DaifaOrder daifaOrder : daifaOrders) {
+                    if(daifaOrder.getTakeGoodsStatus() ==2){
+                        queCount+=daifaOrder.getGoodsNum();
+                    }
                 }
             }
+
             orderStatisticsVO.setStockoutNumber(queCount);
             return orderStatisticsVO;
         }

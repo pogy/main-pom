@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.opentae.data.mall.interfaces.GoatOneItemMapper" >
-
-    <select id="selTypeByGoatId" resultType="java.lang.Integer">
-        select b.goat_type from goat_one_item a,goat_one_location b where a.local_id = b.local_id and a.goat_id = ${goatId}
-    </select>
-</mapper>

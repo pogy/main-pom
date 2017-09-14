@@ -1,6 +1,5 @@
 package com.shigu.resolver;
 
-import com.openJar.exceptions.OpenException;
 import com.opentae.common.beans.LogUtil;
 import com.shigu.api.responses.SystemResponse;
 import com.shigu.main4.common.exceptions.JsonErrException;

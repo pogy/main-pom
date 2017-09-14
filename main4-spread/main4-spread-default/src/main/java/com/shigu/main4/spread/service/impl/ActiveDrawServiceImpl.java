@@ -734,12 +734,16 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
      * @return
      */
     public List<ActiveDrawRecordUserVo> selDrawRecordList(Long pemId,Long userId, String type){
-        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null,null);
+        ActiveDrawRecordExample activeDrawRecordExample = new ActiveDrawRecordExample();
+        activeDrawRecordExample.createCriteria().andPemIdEqualTo(pemId).andUserIdEqualTo(userId);
+        List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selectByExample(activeDrawRecordExample);
+        //List<ActiveDrawRecord> drawRecordList = activeDrawRecordMapper.selDrawRecordList(pemId, userId, type, null,null,null,null);
         if(userId != null){
             // 过滤过期
 
         }
-        return BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
+        List<ActiveDrawRecordUserVo> activeDrawRecordUserVos = BeanMapper.mapList(drawRecordList, ActiveDrawRecordUserVo.class);
+        return activeDrawRecordUserVos;
     }
 
     /**
@@ -818,16 +822,13 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
         if(drawPemVo == null){
             throw new Main4Exception("数据有误");
         }
-
+        int xcday = DateUtil.daysOfTwo(drawPemVo.getStartTime(), new Date());
+        if(xcday > 14){
+            throw new Main4Exception("已过期，无法领取");
+        }
         if(drawPemVo.getId().intValue() == activeDrawRecord.getPemId().intValue()){
             return drawRecordUserVo;
         }
-
-        int xcday = DateUtil.daysOfTwo(drawPemVo.getStartTime(), new Date());
-        if(xcday > 7){
-            throw new Main4Exception("已过期，无法领取");
-        }
-
         return drawRecordUserVo;
     }
 
@@ -953,7 +954,7 @@ public class ActiveDrawServiceImpl implements ActiveDrawService{
             return "您还没有店铺";
         }
         ShiguTempExample shiguTempExample =new ShiguTempExample();
-        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString());
+        shiguTempExample.createCriteria().andKey1EqualTo(userId.toString()).andKey2EqualTo(shopId.toString()).andFlagEqualTo(flag);
         List<ShiguTemp> temps = shiguTempMapper.selectByExample(shiguTempExample);
         if (temps.size()>0){
             return "您已经报过名了";

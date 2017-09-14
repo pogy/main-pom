@@ -4,7 +4,7 @@ import com.opentae.data.daifa.beans.DaifaWorker;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
 import com.shigu.daifa.bo.PrintGoodsTagBO;
-import com.shigu.daifa.bo.SelectDaifaGgoodsListBo;
+import com.shigu.daifa.bo.SelectDaifaGgoodsListBO;
 import com.shigu.daifa.services.DaifaAllocatedService;
 import com.shigu.daifa.vo.DaifaAllocatedVO;
 import com.shigu.daifa.vo.DaifaWorkerVO;
@@ -35,19 +35,20 @@ public class DaifaAllocatedAction {
      * @return
      */
     @RequestMapping("daifa/orderHasAllocation")
-    public String selectDaifaGgoodsList(SelectDaifaGgoodsListBo bo, Model model) {
+    public String selectDaifaGgoodsList(SelectDaifaGgoodsListBO bo, Model model) {
         Session session = SecurityUtils.getSubject().getSession();
         AuthorityUser daifaUser = (AuthorityUser) session.getAttribute(DaifaSessionConfig.DAIFA_SESSION);
         if (bo.getPage() == null) {
             bo.setPage(1);
         }
-        ShiguPager<DaifaAllocatedVO> pager= daifaAllocatedService.selectDaifaGgoodsList(daifaUser.getDaifaWorkerId(), bo.getOrderId(), bo.getChildOrderId(),
+        ShiguPager<DaifaAllocatedVO> pager= daifaAllocatedService.selectDaifaGgoodsList(daifaUser.getDaifaSellerId(),daifaUser.getDaifaWorkerId(),bo.getSearchWorkerId(),bo.getStatus(), bo.getOrderId(), bo.getChildOrderId(),
                 bo.getStartTime(), bo.getEndTime(), bo.getPage(), 10);
         model.addAttribute("query",bo);
         model.addAttribute("pageOption",pager.getTotalCount()+","+10+","+bo.getPage());
         model.addAttribute("childOrders",pager.getContent());
         model.addAttribute("userIcon","");
         model.addAttribute("userName",daifaUser.getDaifaUserName());
+        model.addAttribute("workers",daifaAllocatedService.selWorkerList(daifaUser.getDaifaSellerId()));
         return "daifa/orderHasAllocation";
     }
 
@@ -71,7 +72,7 @@ public class DaifaAllocatedAction {
     }
 
     /**
-     * 代发人员列表
+     * 代发拿货人员列表
      * @return
      */
     @RequestMapping("daifa/getUserList")
@@ -109,4 +110,6 @@ public class DaifaAllocatedAction {
         obj.put("tabList",vos);
         return obj;
     }
+
+
 }

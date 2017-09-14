@@ -102,17 +102,17 @@
                         </li>
                         <li class="sort has-droplist">
                             <div class="trigger">
-                                <div class="link <#if bo??><#if bo.order=='price_down'>first</#if><#if bo.order=='price_up'>first</#if></#if>">
+                                <div class="link <#if bo??><#if bo.order=='price-desc'>first</#if><#if bo.order=='price-asc'>first</#if></#if>">
                                     <span class="text" title="价格从低到高">价格</span>
                                     <span class="icon icon-btn-arrow-2-h"></span>
                                 </div>
                             </div>
                             <ul class="droplist">
                                 <li class="sort">
-                                    <a class="J_Ajax link" href="/shop/search.htm?${sortparam}&amp;order=price_up" title="价格从低到高">价格从低到高</a>
+                                    <a class="J_Ajax link" href="/shop/search.htm?${sortparam}&amp;order=price-asc" title="价格从低到高">价格从低到高</a>
                                 </li>
                                 <li class="sort">
-                                    <a class="J_Ajax link" href="/shop/search.htm?${sortparam}&amp;order=price_down" title="价格从高到低">价格从高到低</a>
+                                    <a class="J_Ajax link" href="/shop/search.htm?${sortparam}&amp;order=price-desc" title="价格从高到低">价格从高到低</a>
                                 </li>
                             </ul>
                         </li>
@@ -215,6 +215,7 @@
         </div>
         <div class="goods_list clearfix" id="content">
             <div class="goods_list_bd">
+            <#if goodsList.content?size gt 0>
             <#list goodsList.content as g>
                 <div class="item-c">
                     <div class="item">
@@ -251,6 +252,11 @@
                     </div>
                 </div>
             </#list>
+            <#else>
+                <div style="background: url(http://style.571xz.com/xz/css/img/ku.png) no-repeat center 70px; padding: 200px 0">
+                    <p style="font-size: 18px; text-align: center;">Sorry, 未查询到相应商品~</p>
+                </div>
+            </#if>
             </div>
         </div>
     <#assign pageparam="id="+shop.shopId/>

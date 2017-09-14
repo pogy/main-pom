@@ -37,10 +37,11 @@ public class XzPayerServiceImpl extends PayerServiceAble {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayApplyVO payApply(Long oid, Long money, String title) {
+    public PayApplyVO payApply(Long userId,Long oid, Long money, String title) {
         OrderPayApply apply = new OrderPayApply();
         apply.setOid(oid);
         apply.setMoney(money);
+        apply.setUserId(userId);
         apply.setType(PayType.XZ.getValue());
         orderPayApplyMapper.insertSelective(apply);
 
@@ -68,6 +69,17 @@ public class XzPayerServiceImpl extends PayerServiceAble {
         pay.setPayId(orderPay.getPayId());
         pay.setRefundMoney(orderPay.getRefundMoney() + money);
         orderPayMapper.updateByPrimaryKeySelective(pay);
+    }
+
+    @Override
+    public void payRollback(Long applyId, String outerPid, String outerPuser, Long payMoney, Long money) throws PayerException {
+        OrderPay orderPay=new OrderPay();
+        orderPay.setOuterPid(outerPid);
+        orderPay.setApplyId(applyId);
+        orderPay.setOuterPuser(outerPuser);
+        orderPay.setMoney(payMoney);
+        orderPay.setRefundMoney(0L);
+        XzRefund(orderPay,money.intValue());
     }
 
     private void XzRefund(OrderPay orderPay, int refundFee) throws PayerException {

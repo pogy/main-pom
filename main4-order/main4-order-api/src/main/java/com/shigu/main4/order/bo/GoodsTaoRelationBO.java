@@ -1,9 +1,11 @@
 package com.shigu.main4.order.bo;
 
+import java.io.Serializable;
+
 /**
  * 淘宝商品关联
  */
-public class GoodsTaoRelationBO {
+public class GoodsTaoRelationBO implements Serializable{
 
     private Long userId;//用户ID
     private Long numIid;//淘宝numIid

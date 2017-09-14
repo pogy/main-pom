@@ -42,10 +42,11 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PayApplyVO payApply(Long oid, Long money, String title) throws PayApplyException {
+    public PayApplyVO payApply(Long userId,Long oid, Long money, String title) throws PayApplyException {
         OrderPayApply apply = new OrderPayApply();
         apply.setOid(oid);
         apply.setMoney(money);
+        apply.setUserId(userId);
         apply.setType(PayType.WX.getValue());
         orderPayApplyMapper.insertSelective(apply);
 
@@ -134,6 +135,17 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
         pay.setPayId(orderPay.getPayId());
         pay.setRefundMoney(orderPay.getRefundMoney() + money);
         orderPayMapper.updateByPrimaryKeySelective(pay);
+    }
+
+    @Override
+    public void payRollback(Long applyId, String outerPid, String outerPuser, Long payMoney, Long money) throws PayerException {
+        OrderPay orderPay=new OrderPay();
+        orderPay.setOuterPid(outerPid);
+        orderPay.setApplyId(applyId);
+        orderPay.setOuterPuser(outerPuser);
+        orderPay.setMoney(payMoney);
+        orderPay.setRefundMoney(0L);
+        weixinRefund(orderPay,money.intValue());
     }
 
     private void weixinRefund(OrderPay orderPay, int refundFee) throws PayerException {

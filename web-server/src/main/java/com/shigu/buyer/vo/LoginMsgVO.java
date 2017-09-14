@@ -19,6 +19,10 @@ public class LoginMsgVO implements Serializable{
      * 是否来自淘宝
      */
     private Boolean fromTaobao;
+    /**
+     * 是否商家
+     */
+    private Boolean imSeller;
 
     public Long getUserId() {
         return userId;
@@ -42,5 +46,13 @@ public class LoginMsgVO implements Serializable{
 
     public void setFromTaobao(Boolean fromTaobao) {
         this.fromTaobao = fromTaobao;
+    }
+
+    public Boolean getImSeller() {
+        return imSeller;
+    }
+
+    public void setImSeller(Boolean imSeller) {
+        this.imSeller = imSeller;
     }
 }

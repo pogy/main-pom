@@ -1,8 +1,10 @@
 package com.shigu.buyer.actions;
 
+import com.openJar.commons.ResponseUtil;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
+import com.shigu.buyer.services.UserAccountService;
 import com.shigu.buyer.vo.*;
 import com.shigu.component.shiro.enums.RoleEnum;
 import com.shigu.main4.common.exceptions.JsonErrException;
@@ -11,6 +13,8 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
+import com.shigu.main4.order.exceptions.PayApplyException;
+import com.shigu.main4.order.vo.PayApplyVO;
 import com.shigu.main4.storeservices.ShopRegistService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
@@ -102,6 +106,9 @@ public class MemberAction {
 
     @Autowired
     SpreadService spreadService;
+
+    @Autowired
+    UserAccountService userAccountService;
     /**
      * 分销商首页
      * @return
@@ -897,11 +904,13 @@ public class MemberAction {
      * 申请提现链接
      * @return
      */
-    @RequestMapping("member/rechargeJson")
+    @RequestMapping({"member/rechargeJson","seller/rechargeJson"})
     @ResponseBody
-    public JSONObject rechargeJson(Double money){
-
-        return null;
+    public JSONObject rechargeJson(HttpSession session,Double money) throws PayApplyException {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        Double moneyfen=money*100;
+        PayApplyVO applyVO=userAccountService.rechargeApply(ps.getUserId(),moneyfen.longValue());
+        return JsonResponseUtil.success().element("href","/order/alipayByApplyId.htm?applyId="+applyVO.getApplyId());
     }
 
 }

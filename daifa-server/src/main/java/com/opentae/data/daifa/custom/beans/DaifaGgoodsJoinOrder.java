@@ -1,10 +1,12 @@
 package com.opentae.data.daifa.custom.beans;
 
 import com.opentae.core.mybatis.config.Column;
+import org.springframework.stereotype.Controller;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class DaifaGgoodsJoinOrder {
+public class DaifaGgoodsJoinOrder implements Serializable {
     /**子订单ID@从daifa_order中获得*/
     @Column("daifa_order.df_order_id")
     private Long dfOrderId;
@@ -52,6 +54,16 @@ public class DaifaGgoodsJoinOrder {
     /**是否下架@0可售1下架*/
     @Column("daifa_ggoods.delist_is")
     private Integer delistIs;
+    @Column("daifa_ggoods.daifa_worker_id")
+    private Long daifaWorkerId;
+
+    public Long getDaifaWorkerId() {
+        return daifaWorkerId;
+    }
+
+    public void setDaifaWorkerId(Long daifaWorkerId) {
+        this.daifaWorkerId = daifaWorkerId;
+    }
 
     public Long getTakeGoodsId() {
         return takeGoodsId;

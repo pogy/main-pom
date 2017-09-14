@@ -1,7 +1,13 @@
 package com.shigu.seller.actions;
 
+import com.google.common.collect.Lists;
 import com.opentae.data.mall.beans.GoatLicense;
+import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
+import com.opentae.data.mall.examples.GoatLicenseExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.interfaces.GoatLicenseMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.vo.MailBindVO;
 import com.shigu.buyer.vo.SafeRzVO;
@@ -13,6 +19,7 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.vo.ShiguTags;
 import com.shigu.main4.exceptions.ShopDomainException;
 import com.shigu.main4.goat.enums.GoatType;
@@ -87,6 +94,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -174,6 +182,10 @@ public class ShopAction {
 
     @Autowired
     GoatShopService goatShopService;
+
+    @Autowired
+    GoodsFileService goodsFileService;
+
 
     /**
      * 当前登陆的session
@@ -431,6 +443,13 @@ public class ShopAction {
             synItem.setFloorId(shopSession.getFloorId());
             synItem.setWebSite(shopSession.getWebSite());
             synItem.setItemFrom(ItemFrom.MEMBER);
+            Date created = new Date();
+            synItem.setCreated(created);
+            synItem.setModified(created);
+            //淘宝上架时间，手动发布商品默认为现在
+            synItem.setListTime(created);
+            //淘宝下架时间，手动发布商品默认为七天后
+            synItem.setDelistTime(DateUtil.addDay(created,7));
             itemId=itemAddOrUpdateService.userAddItem(synItem);
             //保存上传记录
             EverUsedCatForAdd usedCat=new EverUsedCatForAdd();
@@ -467,9 +486,19 @@ public class ShopAction {
                     ,shopSession.getShopId(),bo.getPage(),bo.getPageSize());
             model.addAttribute("pageOption",pager.selPageOption(bo.getPageSize()));
             List<OnsaleItem> list=pager.getContent();
+            List<Long> goodIds = BeanMapper.getFieldList(list, "itemId", Long.class);
+            Map<Long, GoodsFile> goodsIdFileMap = BeanMapper.list2Map(goodsFileService.selGoodsFileInfo(goodIds), "goodsId", Long.class);
             List<OnsaleItemVO> goodsList=new ArrayList<>();
             for(OnsaleItem oi:list){
-                goodsList.add(new OnsaleItemVO(oi));
+                OnsaleItemVO vo = new OnsaleItemVO(oi);
+                GoodsFile fileInfo = goodsIdFileMap.get(vo.getId());
+                vo.setSetCorrelateType(fileInfo==null?1:2);
+                vo.setBigPicType(fileInfo==null?2:fileInfo.getNeedPwd()?1:2);
+                if (fileInfo != null) {
+                    vo.setLinkHref(fileInfo.getFileKey());
+                    vo.setLinkHrefPassword(fileInfo.getPasswd());
+                }
+                goodsList.add(vo);
             }
             model.addAttribute("goodslist",goodsList);
         } catch (ItemException e) {

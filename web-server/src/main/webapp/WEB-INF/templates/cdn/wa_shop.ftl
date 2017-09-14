@@ -165,7 +165,7 @@ var webSite = '${vo.storeRelation.webSite!}';
                                 <div class="c_all_cat_snd">
                                     <ul class="c_cat_snd_ul clearfix">
                                         <li class="c_cat_snd_li"><h4><a href="${main_host!}shop.htm?id=${vo.storeRelation.storeId!}&timeflag=2&order=time_up">按新品</a></h4></li>
-                                        <li class="c_cat_snd_li"><h4><a href="${main_host!}shop.htm?id=${vo.storeRelation.storeId!}&timeflag=2&order=price_up">按价格</a></h4></li>
+                                        <li class="c_cat_snd_li"><h4><a href="${main_host!}shop.htm?id=${vo.storeRelation.storeId!}&timeflag=2&order=price-asc">按价格</a></h4></li>
                                     </ul>
                                 </div>
                             </li>
@@ -316,10 +316,10 @@ var webSite = '${vo.storeRelation.webSite!}';
                 <#else>
                     <a href="javascript:;" jbtn="sortByTime" data-status=${query.order!} >时间<i class="iconfont"><#if query.order == "time_up">&#xe64d;<#else>&#xe664;</#if></i></a>
                 </#if>
-                <#if query.order == "price_up" || query.order == "price_down">
-                    <a href="javascript:;" jbtn="shortByPrice" data-status=${query.order!} class="select" >价格<i class="iconfont"><#if query.order == "price_up">&#xe64d;<#else>&#xe664;</#if></i></a>
+                <#if query.order == "price-asc" || query.order == "price-desc">
+                    <a href="javascript:;" jbtn="shortByPrice" data-status=${query.order!} class="select" >价格<i class="iconfont"><#if query.order == "price-asc">&#xe64d;<#else>&#xe664;</#if></i></a>
                 <#else>
-                    <a href="javascript:;" jbtn="shortByPrice" data-status=${query.order!} >价格<i class="iconfont"><#if query.order == "price_up">&#xe64d;<#else>&#xe664;</#if></i></a>
+                    <a href="javascript:;" jbtn="shortByPrice" data-status=${query.order!} >价格<i class="iconfont"><#if query.order == "price-asc">&#xe64d;<#else>&#xe664;</#if></i></a>
                 </#if>
             <#else>
                 <a href="javascript:;" jbtn="shortByDefault" class="select" >默认</a>

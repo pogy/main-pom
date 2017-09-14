@@ -4,12 +4,15 @@ import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.mall.beans.OrderCity;
 import com.opentae.data.mall.beans.OrderProv;
 import com.opentae.data.mall.beans.OrderTown;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.OrderCityExample;
 import com.opentae.data.mall.examples.OrderProvExample;
 import com.opentae.data.mall.examples.OrderTownExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.OrderCityMapper;
 import com.opentae.data.mall.interfaces.OrderProvMapper;
 import com.opentae.data.mall.interfaces.OrderTownMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
@@ -43,9 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by zf on 2017/7/21.
@@ -65,6 +66,9 @@ public class MyTbOrderService {
 
     @Autowired
     private ItemProductProcess itemProductProcess;
+
+    @Autowired
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
     @Autowired
     private RedisIO redisIO;
 
@@ -88,6 +92,7 @@ public class MyTbOrderService {
             TbOrderVO vo=taoOrderService.myTbOrder(orderId,TbOrderStatusEnum.WAIT_SELLER_SEND_GOODS,sessionKey);
             List<TbOrderVO> list=new ArrayList<>();
             if(vo!=null){
+                linkGoodsNo(vo);
                 list.add(vo);
             }
             v.setContent(list);
@@ -112,28 +117,7 @@ public class MyTbOrderService {
         ShiguPager<TbOrderVO> tvo=taoOrderService.myTbOrders(bo,sessionKey);
         List<TbOrderVO> vos=tvo.getContent();
         for(TbOrderVO vo:vos){
-            vo.setCanOrder(true);
-            vo.setProfits(null);
-
-            Long lr=0l;
-            for(SubTbOrderVO subvo:vo.getChildOrders()){
-                if(StringUtils.isEmpty(subvo.getGoodsNo())){
-                    try {
-                        TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(subvo.getNumiid());
-                        if (rgv != null) {
-                            subvo.setGoodsNo(rgv.getGoodsNo());
-                            subvo.setXzPrice(rgv.getPiPriceString());
-                            subvo.setWebSite(rgv.getWebSite());
-                            lr+= subvo.getNewTbPriceLong()-rgv.getPiPrice();
-                        }
-                    } catch (NotFindRelationGoodsException e) {
-                        vo.setCanOrder(false);
-                    }
-                }
-            }
-            if(vo.isCanOrder()){
-                vo.setProfits(PriceConvertUtils.priceToString(lr));
-            }
+            linkGoodsNo(vo);
         }
         return tvo;
     }
@@ -142,6 +126,8 @@ public class MyTbOrderService {
         ShiguAggsPager pager= itemSearchService.searchItem(keyword,webSite,null, null,null,null,null,null,null,null,null, SearchOrderBy.COMMON,page,size,false);
         ShiguPager<GoodsVO> vo=new ShiguPager<>();
         List<GoodsVO> gs=new ArrayList<>();
+        List<Long> ids=new ArrayList<>();
+        Map<Long,GoodsVO> map=new HashMap<>();
         for(SearchItem pa:pager.getContent()){
             GoodsVO g=new GoodsVO();
             g.setTitle(pa.getTitle());
@@ -151,9 +137,22 @@ public class MyTbOrderService {
             g.setMarketName(shop.getMarketName());
             g.setImgSrc(pa.getPicUrl());
             g.setId(pa.getItemId());
-            g.setGoodsNo(pa.getGoodsNo());
+//            g.setGoodsNo(pa.getGoodsNo());//搜索中其实没有货号
             gs.add(g);
+            ids.add(pa.getItemId());
+            map.put(pa.getItemId(),g);
         }
+
+        if (ids.size()>0) {
+            ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
+            example.createCriteria().andGoodsIdIn(ids);
+            example.setWebSite(webSite);
+            List<ShiguGoodsTiny> tinys=shiguGoodsTinyMapper.selectFieldsByExample(example,FieldUtil.codeFields("goods_id,goods_no"));
+            for(ShiguGoodsTiny tiny:tinys){
+                map.get(tiny.getGoodsId()).setGoodsNo(tiny.getGoodsNo());
+            }
+        }
+
         vo.setTotalPages(pager.getTotalPages());
         vo.setContent(gs);
         vo.setTotalCount(pager.getTotalCount());
@@ -181,7 +180,9 @@ public class MyTbOrderService {
             vo.setShopId(goods.getShopId());
             vo.setMarketId(goods.getMarketId());
             vo.setMarketName(info.getMarketName());
-            vo.setSelectiveSku(BeanMapper.map(info, ItemSkuVO.class));
+            ItemSkuVO itemSkuVO=BeanMapper.map(info, ItemSkuVO.class);
+            itemSkuVO.setSkuId(info.getSelectiveSku().getSkuId());
+            vo.setSelectiveSku(itemSkuVO);
             vo.setShopNum(info.getShopNum());
             vo.setFloor(info.getFloor());
             vo.setFloorId(goods.getFloorId());
@@ -277,5 +278,30 @@ public class MyTbOrderService {
             }
         }
         return similarityTownMap;
+    }
+
+    private void linkGoodsNo(TbOrderVO vo){
+        vo.setCanOrder(true);
+        vo.setProfits(null);
+
+        Long lr= 0L;
+        for(SubTbOrderVO subvo:vo.getChildOrders()){
+            if(StringUtils.isEmpty(subvo.getGoodsNo())){
+                try {
+                    TinyVO rgv=taoOrderService.selSourceGoodsByNumIid(subvo.getNumiid());
+                    if (rgv != null) {
+                        subvo.setGoodsNo(rgv.getGoodsNo());
+                        subvo.setXzPrice(rgv.getPiPriceString());
+                        subvo.setWebSite(rgv.getWebSite());
+                        lr+= subvo.getNewTbPriceLong()-rgv.getPiPrice();
+                    }
+                } catch (NotFindRelationGoodsException e) {
+                    vo.setCanOrder(false);
+                }
+            }
+        }
+        if(vo.isCanOrder()){
+            vo.setProfits(PriceConvertUtils.priceToString(lr));
+        }
     }
 }

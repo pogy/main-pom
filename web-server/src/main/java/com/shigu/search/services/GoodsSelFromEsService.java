@@ -52,7 +52,7 @@ public class GoodsSelFromEsService {
         if (cid != null) {
             cids=categoryInSearchService.selCidsFromCid(cid);
         }
-        ShiguPager<SearchItem> pager=itemSearchService.searchItem(keyword, webSite,null,mid,cids,null,null,null,null,from,to
+        ShiguPager<SearchItem> pager=itemSearchService.searchItem(keyword, webSite,mid,cids,null,null,null,null,from,to
                 , SearchOrderBy.NEW,page.getPage(),page.getRows(), true);
         //加工对象
         return addShopInfoToGoods(pager,webSite);
@@ -98,6 +98,8 @@ public class GoodsSelFromEsService {
                 if (shop != null) {
                     g.setAliww(shop.getImAliww());
                     g.setFullStoreName(shop.getMarket()+" "+shop.getShopNum());
+                    g.setStoreNum(shop.getShopNum());
+                    g.setMarketName(shop.getMarket());
                 }
                 g.setStoreid(si.getStoreId());
                 goods.add(g);

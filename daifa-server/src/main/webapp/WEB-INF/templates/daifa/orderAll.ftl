@@ -33,7 +33,7 @@
             <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
         
     
-    <script src="http://style.571xz.com/v2/dfgl/js/orderAll.js"></script>
+    <script src="http://style.571xz.com/v2/dfgl/js/orderAll.js?t=2017091101"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -56,43 +56,40 @@
     <div class="sideBarBox">
         <div class="sidebar fl yahei">
     <ul>
-        
-            <li>
-                
-                <a class="current"  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
-                
-                
-            </li>
-        
-            <li>
-                
-                <a  href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
-                
-                
-                <ul>
-                    
-                    <li>
-                        
-                        <a href="orderAllocation.htm"><i></i>任务分配</a>
-                        
-                    </li>
-                    
-                    <li>
-                        
-                        <a href="orderHasAllocation.htm"><i></i>我的任务</a>
-                        
-                    </li>
-                    
-                    <li>
-                        
-                        <a href="scanBarCode.htm"><i></i>扫描打印</a>
-                        
-                    </li>
-                    
-                </ul>
-                
-            </li>
-        
+    <@shiro.hasAnyPermissions name="df:admin,df:kefu">
+        <li>
+            <a class="current" href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
+        </li>
+    </@shiro.hasAnyPermissions>
+    <@shiro.hasAnyPermissions name="df:kefu">
+        <li>
+            <a href="orderForServer.htm"><i class="icon-allorders"></i>客服查询</a>
+        </li>
+    </@shiro.hasAnyPermissions>
+    <@shiro.hasAnyPermissions name="df:admin">
+        <li>
+            <a href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
+            <ul>
+                <li>
+                    <a href="orderAllocation.htm"><i></i>任务分配</a>
+                </li>
+                <li>
+                    <a href="orderHasAllocation.htm"><i></i>我的任务</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" ><i class="icon-allocation"></i>发货管理</a>
+            <ul>
+                <li>
+                    <a href="scanBarCode.htm"><i></i>扫描打印</a>
+                </li>
+                <li>
+                    <a href="notYetSipped.htm"><i></i>未发货订单</a>
+                </li>
+            </ul>
+        </li>
+    </@shiro.hasAnyPermissions>
     </ul>
 </div>
 
@@ -101,7 +98,15 @@
 
     </div>
     <div class="contentBox">
-        <div class="statistics yahei fc9">
+        <div class="printTypeTabs">
+    <ul>
+        <li class="select"><a href="orderAll.htm">全部订单</a></li>
+        <li ><a href="noGoodsnoOrder.htm">无货号订单</a></li>
+    </ul>
+</div>
+
+
+<div class="statistics yahei fc9">
     <ul>
         <li>
             <span class="fs20 arail fc3">${orderStatistics.totalNumber!}</span>
@@ -148,6 +153,7 @@
     <ul>
         <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
         <li><label>手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
+        <li><label>发货快递单：</label><input type="text" class="fmInput" name="postCode" <#if query.postCode??> value="${query.postCode!}" </#if>></li>
         <li><label>订单日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择起始时间" <#if query.startTime??> value="${query.startTime!}" </#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间" <#if query.endTime??>value="${query.endTime!}"</#if>></li>
         <li>
 
@@ -198,7 +204,6 @@
 
 
 
-
 </#list>
 </li>
     </ul>
@@ -216,7 +221,7 @@
 
 
 
-<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"postCode","value":"${query.postCode!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -264,10 +269,16 @@
             <div class="leftConBox fl">
                 <span>订单编号：${order.orderId!}</span>
                 <span>时间：${order.tradeTime!}</span>
+                <#if order.oldOrder == true>
+                <i class="fcF40 icon-old oldOrder"></i>
+                </#if>
                 
             </div>
             <div class="rightConBox fr">
-                <span class="fl">${order.receiverName!}（${order.receiverPhone!}）</span>
+                <div class="fl pr receiverAddress">
+                    <span class="">${order.receiverName!}（${order.receiverPhone!}）</span>
+                    <div class="pa addressCon">${order.receiverName!},${order.receiverPhone!},${order.receiverAddress!}</div>
+                </div>
                 <#if order.buyerRemark??>
                 <div class="pr fl buyerRemark">
                     <i class="icon-s-message iconfont haveRemark"></i>
@@ -289,7 +300,7 @@
             </div>
             <p class="title">${childOrder.title!}</p>
             <p>商品属性：${childOrder.goodsProperty!}</p>
-            <p>商品货号：${childOrder.goodsNo!}</p>
+            <p>商家编码：${childOrder.storeGoodsCode!}</p>
         </li>
         <li class="price">
             <p>批价：${childOrder.piPrice!}</p>
@@ -403,6 +414,7 @@
         </#list>
     </div>
     </#list>
+</div>
     
 
 <#assign text>{}</#assign>
@@ -425,7 +437,21 @@
 
 </#list>
 
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

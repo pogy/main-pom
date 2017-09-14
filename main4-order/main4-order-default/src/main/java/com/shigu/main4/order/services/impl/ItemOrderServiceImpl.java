@@ -120,7 +120,8 @@ public class ItemOrderServiceImpl implements ItemOrderService {
         // 初始化一个订单
         ItemOrder order = BeanMapper.map(orderBO, ItemOrder.class);
         order.setOid(idGenerator(OrderType.XZ));
-        order.setType(OrderType.XZ.type);
+        //判断订单是淘宝订单还是星座订单
+        order.setType(StringUtils.isNotBlank(orderBO.getOuterId())?OrderType.TB.type:OrderType.XZ.type);
         order.setTotalFee(0L);
         order.setPayedFee(0L);
         order.setRefundFee(0L);
@@ -251,7 +252,7 @@ public class ItemOrderServiceImpl implements ItemOrderService {
     public Long saveBuyerAddress(BuyerAddressVO buyerAddressVO) throws JsonErrException {
         //信息不足
         boolean isInformationInsufficient = buyerAddressVO.getProvId() == null || buyerAddressVO.getCityId() == null ||
-                buyerAddressVO.getTownId() == null || StringUtil.isNull(buyerAddressVO.getAddress()) ||
+                StringUtil.isNull(buyerAddressVO.getAddress()) ||
                 buyerAddressVO.getUserId() == null || StringUtil.isNull(buyerAddressVO.getTelephone()) ||
                 StringUtil.isNull(buyerAddressVO.getName());
         if (isInformationInsufficient) {

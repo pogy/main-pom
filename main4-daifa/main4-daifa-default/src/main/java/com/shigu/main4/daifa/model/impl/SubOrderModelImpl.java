@@ -77,7 +77,6 @@ public class SubOrderModelImpl implements SubOrderModel {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public void init() {
         DaifaOrder order=BeanMapper.map(subOrderBO,DaifaOrder.class);
         order.setCreateTime(new Date());
@@ -164,7 +163,7 @@ public class SubOrderModelImpl implements SubOrderModel {
         if(remark==null){
             remark=context;
         }else{
-            remark+="\r\n"+context;
+            remark+="\n"+context;
         }
         updateOrder.setOrderRemark(remark);
         daifaOrderMapper.updateByPrimaryKeySelective(updateOrder);

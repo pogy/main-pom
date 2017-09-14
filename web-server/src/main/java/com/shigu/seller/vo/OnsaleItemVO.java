@@ -54,6 +54,50 @@ public class OnsaleItemVO {
 
     private String sid;
 
+    private Integer setCorrelateType;
+
+    private Integer bigPicType;
+
+    private String linkHref;
+
+    private String linkHrefPassword;
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getSetCorrelateType() {
+        return setCorrelateType;
+    }
+
+    public void setSetCorrelateType(Integer setCorrelateType) {
+        this.setCorrelateType = setCorrelateType;
+    }
+
+    public Integer getBigPicType() {
+        return bigPicType;
+    }
+
+    public void setBigPicType(Integer bigPicType) {
+        this.bigPicType = bigPicType;
+    }
+
+    public String getLinkHref() {
+        return linkHref;
+    }
+
+    public void setLinkHref(String linkHref) {
+        this.linkHref = linkHref;
+    }
+
+    public String getLinkHrefPassword() {
+        return linkHrefPassword;
+    }
+
+    public void setLinkHrefPassword(String linkHrefPassword) {
+        this.linkHrefPassword = linkHrefPassword;
+    }
+
     public OnsaleItemVO(OnsaleItem onsaleItem) {
         this.setGoodsNo(onsaleItem.getGoodsNo());
         this.setId(onsaleItem.getItemId());

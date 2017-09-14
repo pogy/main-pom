@@ -1,6 +1,9 @@
 package com.shigu.main4.daifa.beans;
 
-public class SeReBean {
+import java.io.Serializable;
+
+public class SeReBean implements Serializable {
+
 	private String Name;//姓名
 	private String Tel;//电话
 	private String ProvinceName;//省份

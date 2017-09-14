@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 供商户中心修改
@@ -74,7 +75,10 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
         fitmentReset(shopId);
 
         Long index = addPage(shopId, FitmentPageType.INDEX.name, null, FitmentPageType.INDEX.value);
-        Long indexFirstArea = addArea(index, null, FitmentAreaType.LEFTRIGHT.value(), null);
+        Long firstImgArea = addArea(index, null, FitmentAreaType.CENTER.value(), null);
+        addModule(firstImgArea, null, FitmentModuleType.WideImage.value, 3, null);
+
+        Long indexFirstArea = addArea(index, firstImgArea, FitmentAreaType.LEFTRIGHT.value(), 2);
         addModule(indexFirstArea, null, FitmentModuleType.Category.value, 1, null);
         addModule(indexFirstArea, null, FitmentModuleType.Promote.value, 2, null);
 
@@ -377,7 +381,18 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
     @Override
     public ShiguPager<ItemShowBlock> selItemByPromote(Long shopId,String webSite,ItemPromoteModule promoteModule) {
         if (promoteModule.getPromoteType() == 2) {
-            return shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(),webSite, 1, promoteModule.getItemNum());
+            //对推荐商品按推荐顺序进行排序
+            ShiguPager<ItemShowBlock> pager = shopForCdnService.searchItemOnsale(promoteModule.getPromoteItems(), webSite, 1, promoteModule.getItemNum());
+            Map<Long, ItemShowBlock> goodsIdShowMap = pager.getContent().stream().collect(Collectors.toMap(ItemShowBlock::getItemId, ItemShowBlock::getThis));
+            List<ItemShowBlock> sortedItemList = new ArrayList<>(promoteModule.getPromoteItems().size());
+            for (Long goodsId : promoteModule.getPromoteItems()) {
+                if (goodsIdShowMap.get(goodsId) == null) {
+                    continue;
+                }
+                sortedItemList.add(goodsIdShowMap.get(goodsId));
+            }
+            pager.setContent(sortedItemList);
+            return pager;
         }
         String sort = "time_down";
         switch (promoteModule.getSort()) {
@@ -391,10 +406,10 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
                 sort = "popular";
                 break;
             case 4:
-                sort = "price_up";
+                sort = "price-asc";
                 break;
             case 5:
-                sort = "price_down";
+                sort = "price-desc";
                 break;
             default:
                 break;
@@ -786,7 +801,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param oldArea 原区域
      */
     @Transactional(rollbackFor = Exception.class)
-    private void insertBefore(ShopFitmentArea newArea, ShopFitmentArea oldArea) {
+    protected void insertBefore(ShopFitmentArea newArea, ShopFitmentArea oldArea) {
         newArea.setAfterAreaId(oldArea.getAfterAreaId());
         shopFitmentAreaMapper.insertSelective(newArea);
         oldArea.setAfterAreaId(newArea.getAreaId());
@@ -799,7 +814,7 @@ public class ShopFitmentServiceImpl extends ShopServiceImpl implements ShopFitme
      * @param oldModule 原模块
      */
     @Transactional(rollbackFor = Exception.class)
-    private void insertBefore(ShopFitmentModule newModule, ShopFitmentModule oldModule) {
+    protected void insertBefore(ShopFitmentModule newModule, ShopFitmentModule oldModule) {
         newModule.setAfterModuleId(oldModule.getAfterModuleId());
         shopFitmentModuleMapper.insertSelective(newModule);
         oldModule.setAfterModuleId(newModule.getModuleId());

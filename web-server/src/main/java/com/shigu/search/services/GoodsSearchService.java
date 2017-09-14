@@ -8,6 +8,7 @@ import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.main4.item.enums.SearchCheckd;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.services.ItemSearchService;
 import com.shigu.main4.item.vo.AggsCount;
@@ -33,6 +34,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 商品搜索服务
@@ -139,6 +141,21 @@ public class GoodsSearchService {
     }
 
     /**
+     * 获取男装商品库底部广告
+     * @param webSite
+     * @return
+     */
+    public List<BottomGoodsGoat> selBottomGoat(String webSite) {
+        List<ItemSpreadVO> list = spreadService.selItemSpreads(webSite, SpreadEnum.MAN_GOODS_BOTTOM).selObj();
+        Collections.shuffle(list);
+        return list.stream().map(o->{
+            BottomGoodsGoat result = BeanMapper.map(o, BottomGoodsGoat.class);
+            result.setFullStoreName(o.getStoreText());
+            return result;
+        }).collect(Collectors.toList());
+    }
+
+    /**
      * 取广告类别
      * @param webSite
      * @param type   0是商品库  否则 搜索
@@ -232,7 +249,13 @@ public class GoodsSearchService {
                 end = DateUtil.stringToDate(bo.getEt(),"yyyy.MM.dd");
             }
         }
-        ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),bo.getWebSite(),bo.getFrom(), bo.getMid(),
+        List<SearchCheckd> checkds=null;
+        if(bo.getBpic()!=null&&bo.getBpic()==1){
+            checkds=new ArrayList<>();
+            checkds.add(SearchCheckd.BIGZIP);
+        }
+        ShiguAggsPager pager=itemSearchService.searchItem(bo.getKeyword(),bo.getWebSite(),bo.getMid(),
+                checkds,//大图
                 cids.size()==0?null:cids,
                 shouldShopId.size()==0?null:shouldShopId,null,
                 bo.getSp(),bo.getEp(),start,end,orderBy,bo.getPage(),bo.getRows(), needaggs

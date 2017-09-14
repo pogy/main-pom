@@ -22,7 +22,7 @@ public class LogisticsTemplateImplTest extends BaseTest{
 
     @Test
     public void rules() throws Exception {
-        LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 4L);
+        LogisticsTemplate template = SpringBeanFactory.getBean(LogisticsTemplate.class, 6L);
         template.rulesByProv(13L);
 //        show(template.rules(5L, 3L));
 //        show(template.rules(5L, null));

@@ -477,6 +477,11 @@ public class UserLoginAction {
             obj.element("userName",ps.getLoginName());
             obj.element("loginName",ps.getLoginName());
             obj.element("userId",ps.getUserId());
+            if (ps.getLogshop() != null) {
+                obj.element("userType","gys");
+            }else{
+                obj.element("userType","fxs");
+            }
         }else{
             obj.element("OK","error");
             obj.element("result", URLEncoder.encode(URLEncoder.encode("没有登陆","utf-8"),"utf-8"));
@@ -523,6 +528,9 @@ public class UserLoginAction {
             vo.setTbNick(ps.getLoginName());
         }else{
             vo.setFromTaobao(false);
+        }
+        if (ps.getLogshop()!=null) {
+            vo.setImSeller(true);
         }
         return JSONObject.fromObject(vo).element("result","success");
     }

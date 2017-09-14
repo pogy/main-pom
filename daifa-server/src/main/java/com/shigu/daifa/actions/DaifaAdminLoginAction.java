@@ -74,7 +74,9 @@ public class DaifaAdminLoginAction {
             token.setRememberMe(true);
             try {
                 currentUser.login(token);
-
+                /*if("kf".equals (bo.getUsername())){
+                    return "redirect:/daifa/orderForServer.htm";//客服售后
+                }*/
                 //登陆成功
                 return "redirect:/daifa/orderAll.htm";
             } catch (AuthenticationException e) {
@@ -104,7 +106,7 @@ public class DaifaAdminLoginAction {
 
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
-        return "redirect:init/login.htm";
+        return "redirect:/init/login.htm";
     }
     
 }

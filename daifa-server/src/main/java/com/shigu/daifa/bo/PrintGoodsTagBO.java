@@ -1,8 +1,9 @@
 package com.shigu.daifa.bo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PrintGoodsTagBO {
+public class PrintGoodsTagBO implements Serializable {
     private Integer type;
     private List<Long> ids;
 

@@ -2,8 +2,10 @@ package com.shigu.order.services;
 
 import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.beans.OrderPay;
+import com.opentae.data.mall.beans.OrderPayApply;
 import com.opentae.data.mall.beans.OrderPayRelationship;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
+import com.opentae.data.mall.interfaces.OrderPayApplyMapper;
 import com.opentae.data.mall.interfaces.OrderPayMapper;
 import com.opentae.data.mall.interfaces.OrderPayRelationshipMapper;
 import com.shigu.buyer.services.PaySdkClientService;
@@ -21,6 +23,7 @@ import com.shigu.main4.tools.SpringBeanFactory;
 import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.order.vo.PayModePageVO;
 import com.shigu.zf.utils.PriceConvertUtils;
+import com.shigu.zhb.utils.BeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +56,9 @@ public class PayModeService {
 
     @Autowired
     private PayProcess payProcess;
+
+    @Autowired
+    private OrderPayApplyMapper orderPayApplyMapper;
 
     /**
      * 订单信息
@@ -97,6 +103,11 @@ public class PayModeService {
     @Transactional(rollbackFor = Exception.class)
     public PayApplyVO payApply(Long orderId, PayType payType) throws PayApplyException {
         return payProcess.payApply(orderId,payType);
+    }
+
+    public PayApplyVO payApplyByApplyId(Long applyId) throws PayApplyException {
+        OrderPayApply apply=orderPayApplyMapper.selectByPrimaryKey(applyId);
+        return BeanMapper.map(apply,PayApplyVO.class);
     }
 
 

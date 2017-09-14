@@ -6,6 +6,7 @@ import java.util.List;
 public class SubRefundBean implements Serializable{
     private String soid;
     private List<String> soidps;
+    private Integer num;
 
     public String getSoid() {
         return this.soid;
@@ -21,5 +22,13 @@ public class SubRefundBean implements Serializable{
 
     public void setSoidps(List<String> soidps) {
         this.soidps = soidps;
+    }
+
+    public Integer getNum() {
+        return this.num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 }

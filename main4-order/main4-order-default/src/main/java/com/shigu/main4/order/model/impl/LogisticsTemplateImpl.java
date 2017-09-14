@@ -125,7 +125,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         LogisticsTemplateRuleExample ruleExample=new LogisticsTemplateRuleExample();
         MultipleExample multipleExample= MultipleExampleBuilder.from(ruleExample)
                 .innerJoin(companyExample).on(ruleExample.createCriteria().equalTo(LogisticsTemplateRuleExample.ruleId,LogisticsTemplateCompanyExample.ruleId))
-                .innerJoin(provExample).on(provExample.createCriteria().equalTo(LogisticsTemplateCompanyExample.ruleId,LogisticsTemplateProvExample.ruleId))
+                .innerJoin(provExample).on(companyExample.createCriteria().equalTo(LogisticsTemplateCompanyExample.ruleId,LogisticsTemplateProvExample.ruleId))
                 .where(provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId),companyExample.createCriteria()
                         .andTemplateIdEqualTo(templateId),ruleExample.createCriteria().andImDefaultEqualTo(false)).build();
         List<BournRuleInfoVO> rules=BeanMapper.mapList(multipleMapper.selectFieldsByMultipleExample(multipleExample,RuleInfoVO.class),BournRuleInfoVO.class);
@@ -157,7 +157,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         LogisticsTemplateRuleExample ruleExample=new LogisticsTemplateRuleExample();
         MultipleExample multipleExample= MultipleExampleBuilder.from(ruleExample)
                 .innerJoin(companyExample).on(ruleExample.createCriteria().equalTo(LogisticsTemplateRuleExample.ruleId,LogisticsTemplateCompanyExample.ruleId))
-                .innerJoin(provExample).on(provExample.createCriteria().equalTo(LogisticsTemplateCompanyExample.ruleId,LogisticsTemplateProvExample.ruleId))
+                .innerJoin(provExample).on(provExample.createCriteria().equalTo(LogisticsTemplateProvExample.ruleId, LogisticsTemplateCompanyExample.ruleId))
                 .where(provExample.createCriteria().andProvIdEqualTo(provId).andTemplateIdEqualTo(templateId),companyExample.createCriteria()
                         .andCompanyIdEqualTo(companyId).andTemplateIdEqualTo(templateId),ruleExample.createCriteria().andImDefaultEqualTo(false)).build();
         List<RuleInfoVO> rules=multipleMapper.selectFieldsByMultipleExample(multipleExample,RuleInfoVO.class);
@@ -217,7 +217,7 @@ public class LogisticsTemplateImpl implements LogisticsTemplate {
         }
         Long unit = vo.getType() == 1 ? goodsNumber.longValue() : vo.getType() == 2 ? weight : 0; // 计费单元
         Long add = vo.getAddWeight() == 0 ? 0L  // Double数除以0会发生奇怪的事情、比如取到极值，比如取到 NaN
-                : ((Double)((unit - vo.getStartWeight()) * (vo.getAddPrice() * 1.0 / vo.getAddWeight()))).longValue();
+                : ((Double) (Math.ceil((unit - vo.getStartWeight()) * 1.0 / vo.getAddWeight()) * vo.getAddPrice())).longValue();
 
         return vo.getStartPrice() + (add > 0 ? add : 0);
     }

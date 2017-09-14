@@ -5,6 +5,7 @@ import com.shigu.component.common.globality.response.ResponseBase;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.order.bo.OrderBO;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
 import com.shigu.order.services.MyOrderService;
@@ -76,7 +77,11 @@ public class MyOrderAction {
     @RequestMapping("isCanApplyRefund")
     @ResponseBody
     public JSONObject isCanApplyRefund(Long childOrderId){
-        return JsonResponseUtil.success().element("refundState", myOrderService.testRefund(childOrderId) ? 1 : 0);
+        try {
+            return JsonResponseUtil.success().element("refundState", myOrderService.testRefund(childOrderId) ? 1 : 2);
+        } catch (OrderNotFindException e) {
+            return JsonResponseUtil.success().element("refundState",3);
+        }
     }
 
     /**

@@ -1,21 +1,19 @@
 package com.shigu.main4.cdn.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ShiguGoodsIdGenerator;
-import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.beans.ShiguShop;
-import com.opentae.data.mall.beans.ShiguShopLicense;
+import com.opentae.data.mall.beans.*;
+import com.opentae.data.mall.examples.ItemTradeForbidExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
-import com.opentae.data.mall.interfaces.ShiguGoodsIdGeneratorMapper;
-import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
-import com.opentae.data.mall.interfaces.ShiguShopLicenseMapper;
-import com.opentae.data.mall.interfaces.ShiguShopMapper;
+import com.opentae.data.mall.examples.ShiguTempExample;
+import com.opentae.data.mall.interfaces.*;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.vo.CatPolyFormatVO;
+import com.shigu.main4.cdn.vo.ShopIconCopyrightVO;
 import com.shigu.main4.cdn.vo.ShopShowVO;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.enums.ShopLicenseTypeEnum;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
@@ -37,7 +35,6 @@ import com.shigu.main4.vo.*;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
 import com.shigu.tools.HtmlImgsLazyLoad;
-import com.shigu.zhb.utils.BeanMapper;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -45,9 +42,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * cdn服务
@@ -90,6 +85,15 @@ public class CdnService {
     ShiguShopLicenseMapper shiguShopLicenseMapper;
     @Autowired
     GoodsFileService goodsFileService;
+
+    @Autowired
+    ShiguTempMapper shiguTempMapper;
+
+    /**
+     * 禁止销售的
+     */
+    @Autowired
+    ItemTradeForbidMapper itemTradeForbidMapper;
 
     /**
      * banner部分的html
@@ -255,6 +259,26 @@ public class CdnService {
 //===================================================20170725张峰=======================================================
 
     /**
+     * 检测是否可销售
+     * @param marketId
+     * @param storeId
+     * @param goodsId
+     * @param webSite
+     * @return
+     */
+    public boolean canSale(Long marketId,Long storeId,Long goodsId,String webSite){
+        if (!webSite.equals("hz")){
+            return false;
+        }
+        ItemTradeForbidExample example=new ItemTradeForbidExample();
+        example.createCriteria().andTypeEqualTo(1).andTargetIdEqualTo(marketId);//市场的
+        example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来
+        example.or().andTypeEqualTo(3).andTargetIdEqualTo(goodsId);//按商品
+//        example.or().andTypeEqualTo(4).andTargetIdEqualTo(cid);//按类目
+        return itemTradeForbidMapper.countByExample(example)==0;
+    }
+
+    /**
      * 商品详情页,商品数据
      * @param goodsId
      * @return
@@ -264,13 +288,13 @@ public class CdnService {
         CdnGoodsInfoVO vo=new CdnGoodsInfoVO();
         CdnItem cdnItem=showForCdnService.selItemById(goodsId);
         vo.setOnSale(cdnItem!=null&&cdnItem.getOnsale());
-        vo.setOnlineSale(true);
         if(cdnItem==null){//已经下架
             cdnItem=showForCdnService.selItemInstockById(goodsId);
         }
         if(cdnItem==null){//商品不存在
             throw new CdnException("商品不存在");
         }
+        vo.setOnlineSale(canSale(cdnItem.getMarketId(),cdnItem.getShopId(),goodsId,cdnItem.getWebSite()));
         vo.setGoodsId(goodsId);
         vo.setGoodsNo(cdnItem.getHuohao());
         vo.setImgUrls(cdnItem.getImgUrl());
@@ -371,7 +395,7 @@ public class CdnService {
         //授权状态
         vo.setTbAuthState(shopBaseService.shopAuthState(shopId));
         //二级域名
-        vo.setXzUrl(shopBaseService.selDomain(shopId));
+        vo.setDomain(shopBaseService.selDomain(shopId));
         return vo;
     }
     /**
@@ -420,5 +444,49 @@ public class CdnService {
             vos.add(vo);
         }
         return vos;
+    }
+
+    /**
+     * 店铺权益信息获取
+     * @param page 页数
+     * @param size 每页条数
+     * @return
+     */
+    public ShiguPager<ShopIconCopyrightVO> shopCopyrights(Integer page, Integer size){
+        final String FLAG="shop_copyright";//shigu_temp表中的flag，key1=图片链接，key2=店铺ID
+        if (page == null) {
+            page=1;
+        }
+        if (size == null) {
+            size=100;
+        }
+        ShiguTempExample example=new ShiguTempExample();
+        example.createCriteria().andFlagEqualTo(FLAG);
+        example.setStartIndex((page-1)*size);
+        example.setEndIndex(size);
+        List<ShiguTemp> copyrights=shiguTempMapper.selectByConditionList(example);
+        List<Long> shopIds=new ArrayList<>();
+        for(ShiguTemp temp:copyrights){
+            shopIds.add(Long.valueOf(temp.getKey2()));
+        }
+        final Map<Long,ShopNumAndMarket> shopMap=new HashMap<>();
+        if (shopIds.size()>0) {
+            List<ShopNumAndMarket> shops = shiguShopMapper.selShopNumAndMarkets(shopIds);
+            shopMap.putAll(BeanMapper.list2Map(shops,"shopId",Long.class));
+        }
+        ShiguPager<ShopIconCopyrightVO> pager=new ShiguPager<>();
+        pager.setNumber(page);
+        pager.setTotalCount(shiguTempMapper.countByExample(example));
+        List<ShopIconCopyrightVO> content=new ArrayList<>();
+        pager.setContent(content);
+        copyrights.forEach(cr ->{
+            ShopIconCopyrightVO vo=new ShopIconCopyrightVO();
+            vo.setImgSrc(cr.getKey1());
+            Long shopId=Long.valueOf(cr.getKey2());
+            vo.setShopId(shopId);
+            vo.setShopName(shopMap.get(shopId).getMarket()+" "+shopMap.get(shopId).getShopNum());
+            content.add(vo);
+        });
+        return pager;
     }
 }

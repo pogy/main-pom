@@ -59,7 +59,7 @@ public class SpreadService {
 //                        String element=igv.getElement();
 //                        String shopTitle=igv.getShopTitle();
                         if (igv.getItemId() != null) {
-                            itemMap.put(igv.getItemId(),new ItemSimpleInfo(igv.getItemId(),tag,tag,tag));
+                            itemMap.put(igv.getItemId(),new ItemSimpleInfo(igv.getItemId(),tag,tag,tag,igv.getTitle()));
                             goodsIds.add(igv.getItemId());
                         }
                     }

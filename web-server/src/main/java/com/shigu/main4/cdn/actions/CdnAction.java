@@ -1,6 +1,7 @@
 package com.shigu.main4.cdn.actions;
 
 import com.alibaba.fastjson.JSON;
+import com.shigu.main4.cdn.bo.ItemBO;
 import com.shigu.main4.cdn.bo.ScGoodsBO;
 import com.shigu.main4.cdn.bo.ScStoreBO;
 import com.shigu.main4.cdn.bo.ShopCdnBO;
@@ -9,10 +10,7 @@ import com.shigu.main4.cdn.exceptions.CdnException;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.cdn.services.IndexShowService;
 import com.shigu.main4.cdn.services.OldStoreNumShowService;
-import com.shigu.main4.cdn.vo.IndexGoodsVo;
-import com.shigu.main4.cdn.vo.IndexPageVO;
-import com.shigu.main4.cdn.vo.LoveGoodsList;
-import com.shigu.main4.cdn.vo.ShopCommentVO;
+import com.shigu.main4.cdn.vo.*;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -23,31 +21,46 @@ import com.shigu.main4.item.enums.SearchCategory;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
+import com.shigu.main4.monitor.services.ItemBrowerService;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
 import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.newcdn.vo.*;
-import com.shigu.main4.storeservices.*;
+import com.shigu.main4.storeservices.ShopBaseService;
+import com.shigu.main4.storeservices.ShopDiscusService;
+import com.shigu.main4.storeservices.ShopForCdnService;
+import com.shigu.main4.storeservices.ShopLicenseService;
+import com.shigu.main4.storeservices.StoreRelationService;
+import com.shigu.main4.vo.FitmentArea;
+import com.shigu.main4.vo.FitmentModule;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopBase;
+import com.shigu.main4.vo.ShopBaseForCdn;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.search.bo.NewGoodsBO;
+import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
+import com.shigu.seller.vo.AreaVO;
 import com.shigu.seller.vo.ContainerVO;
+import com.shigu.seller.vo.DatuVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
+import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
+import com.shigu.tools.HtmlImgsLazyLoad;
+import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,12 +70,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -116,6 +128,9 @@ public class CdnAction {
 
     @Autowired
     TodayNewGoodsService todayNewGoodsService;
+
+    @Autowired
+    ItemBrowerService itemBrowerService;
 
     @Autowired
     GoodsFileService goodsFileService;
@@ -191,17 +206,20 @@ public class CdnAction {
 //                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_STYLEBOT:SpreadEnum.MAN_STYLEBOT)));
         //猜喜欢
         List<LoveGoodsList> loves=new ArrayList<>();
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHTX:SpreadEnum.MAN_XHTX)));
+
         if(manOrWoman.equals("Woman")){
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔",webSite,
-                    SpreadEnum.WOMAN_XHNZ)));
+
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("上装",webSite,indexShowService.womanUp())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("下装",webSite,
+                    indexShowService.womanBottom())));
         }else{
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
-                    SpreadEnum.MAN_XHNZ)));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("夹克",webSite,
+                    indexShowService.manJack())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("休闲裤",webSite,
+                    indexShowService.manFree())));
         }
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
+//        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
+//                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_XHXZ:SpreadEnum.MAN_XHXZ)));
         model.addAttribute("loveGoodslist",loves);
         model.addAttribute("webSite",webSite);
         return "index/hz"+manOrWoman;
@@ -347,7 +365,7 @@ public class CdnAction {
 
         //猜喜欢
         List<LoveGoodsList> loves = new ArrayList<>();
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("看鞋",webSite,SpreadEnum.KX_MAN_XH)));
+        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("看鞋",webSite,indexShowService.xie())));
         model.addAttribute("loveGoodslist",loves);
 
         model.addAttribute("webSite", webSite);
@@ -415,17 +433,16 @@ public class CdnAction {
 //                manOrWoman.equals("Woman")?SpreadEnum.WOMAN_STYLEBOT:SpreadEnum.MAN_STYLEBOT)));
         //猜喜欢
         List<LoveGoodsList> loves=new ArrayList<>();
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("T恤",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XHTX:SpreadEnum.CS_MAN_XHTX)));
         if(manOrWoman.equals("Woman")){
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("牛仔",webSite,
-                    SpreadEnum.CS_WOMAN_XHNZ)));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("上装",webSite,indexShowService.womanUp())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("下装",webSite,
+                    indexShowService.womanBottom())));
         }else{
-            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("短裤",webSite,
-                    SpreadEnum.CS_MAN_XHNZ)));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("夹克",webSite,
+                    indexShowService.manJack())));
+            loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("休闲裤",webSite,
+                    indexShowService.manFree())));
         }
-        loves.add((LoveGoodsList) selFromCache(indexShowService.loveGoods("鞋子",webSite,
-                manOrWoman.equals("Woman")?SpreadEnum.CS_WOMAN_XHXZ:SpreadEnum.CS_MAN_XHXZ)));
         model.addAttribute("loveGoodslist",loves);
         model.addAttribute("webSite",webSite);
 
@@ -438,10 +455,10 @@ public class CdnAction {
      * @param fromCache
      */
     private Object selFromCache(ObjFromCache fromCache){
-        Object obj=fromCache.selObj();
+//        Object obj=fromCache.selReal();
 //        if(fromCache.getType().equals(SpreadCacheException.CacheType.LONG))//如果是从长缓存得到的,需要创建缓存
 //            spreadService.createBySync(fromCache);
-        return obj;
+        return fromCache.selObj();
     }
 
 
@@ -474,6 +491,20 @@ public class CdnAction {
         model.addAttribute("baseUrl","http://"+webSite+".571xz.com/");
         return shop(bo,null, model);
         //拼baseUrl
+    }
+
+    /**
+     * 商品点击量
+     * @param id
+     * @return
+     */
+    @RequestMapping("itemclicks")
+    @ResponseBody
+    public JSONObject itemclicks(Long id){
+        if(id==null){
+            return JsonResponseUtil.success().element("number",-1);
+        }
+        return JsonResponseUtil.success().element("number",itemBrowerService.addUnrealBrower(id,1).getNumber());
     }
 
     /**
@@ -568,14 +599,18 @@ public class CdnAction {
     }
 
     private boolean noFitment(ContainerVO vo){
-        if(vo.getFitmentAreas()==null||vo.getFitmentAreas().size()!=1
-        ||vo.getFitmentAreas().get(0).getLeftarea()==null||vo.getFitmentAreas().get(0).getLeftarea().size()!=1
-                ||vo.getFitmentAreas().get(0).getLeftarea().get(0).getModuleType()!= FitmentModuleType.Category.value
-                ||vo.getFitmentAreas().get(0).getRightarea()==null||vo.getFitmentAreas().get(0).getRightarea().size()!=1
-                ||vo.getFitmentAreas().get(0).getRightarea().get(0).getModuleType()!=FitmentModuleType.Promote.value){
+        if(vo.getFitmentAreas()==null||vo.getFitmentAreas().size()!=2
+                //上区域
+                ||vo.getFitmentAreas().get(0).getAllarea()==null||vo.getFitmentAreas().get(0).getAllarea().size()!=1
+                ||vo.getFitmentAreas().get(0).getAllarea().get(0).getModuleType()!=FitmentModuleType.WideImage.value
+                //下区域
+                ||vo.getFitmentAreas().get(1).getLeftarea()==null||vo.getFitmentAreas().get(1).getLeftarea().size()!=1
+                ||vo.getFitmentAreas().get(1).getLeftarea().get(0).getModuleType()!= FitmentModuleType.Category.value
+                ||vo.getFitmentAreas().get(1).getRightarea()==null||vo.getFitmentAreas().get(1).getRightarea().size()!=1
+                ||vo.getFitmentAreas().get(1).getRightarea().get(0).getModuleType()!=FitmentModuleType.Promote.value){
             return false;
         }
-        ItemPromoteModule promote= (ItemPromoteModule) vo.getFitmentAreas().get(0).getRightarea().get(0);
+        ItemPromoteModule promote= (ItemPromoteModule) vo.getFitmentAreas().get(1).getRightarea().get(0);
         if(promote.getPromoteType()==1&&promote.getSort()==1&&promote.getItemNum()==16&&promote.getShowPage()==0
                 &&promote.getShowTitle()==1&&promote.getShowGoodsNo()==0&&promote.getShowPrice()==1
                 &&promote.getTitle().equals("推荐宝贝")&&promote.getRadio()==4&&promote.getFilter()==0){
@@ -712,6 +747,12 @@ public class CdnAction {
         }
     }
 
+    @RequestMapping("smallpic")
+    @ResponseBody
+    public JSONObject smallPic(Long id){
+        return JsonResponseUtil.success().element("pic", shopsItemService.itemImgzipUrl(id));
+    }
+
     @RequestMapping("downloadImg")
     public void downloadImg(HttpServletResponse response, String callback, Long goodsId,Integer type, HttpSession session) throws IOException {
         PersonalSession personalSession = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
@@ -720,11 +761,10 @@ public class CdnAction {
             ResultRetUtil.returnJsonp(callback,"{'result':'error','msg':'档口不支持代理功能'}",response);
             return ;
         }
-        if(type!=null &&type == 2){
-            String content = "{'result':'success','msg':'成功','sourceHref':'" + goodsFileService.datuUrl(goodsId) + "'}";
-            ResultRetUtil.returnJsonp(callback,content,response);
-        }
-        String url = shopsItemService.itemImgzipUrl(goodsId);
+        String upflag="imgzip";
+        DatuVO bigVo=goodsFileService.datuUrl(goodsId);
+        String url = "smallpic.htm?id="+goodsId;//shopsItemService.itemImgzipUrl(goodsId);
+//        String url="11";
         String content;
         if (StringUtils.isEmpty(url)) {
             content = "{'result':'error','msg':'图片打包失败'}";
@@ -749,7 +789,7 @@ public class CdnAction {
                 record.setSupperImage(img);
                 record.setFenImage(img);
             }
-            record.setFlag("imgzip");
+            record.setFlag(upflag);
             record.setSupperGoodsName(cdnItem.getTitle());
             record.setWebSite(cdnItem.getWebSite());
             record.setDaiTime(DateUtil.dateToString(new Date(),DateUtil.patternD));
@@ -765,11 +805,40 @@ public class CdnAction {
                 record.setSupperQq(storeRelation.getImQq());
             }
             itemUpRecordService.addItemUpRecord(record);
-            content = "{'result':'success','msg':'成功','sourceHref':'" + url + "'}";
+            content = "{'result':'success','msg':'成功','sourceHref':'" + url + "'";
+            if(bigVo!=null){
+                content+=",'bigPicSource':'"+bigVo.getUrl()+"'";
+                if(StringUtils.isNotEmpty(bigVo.getPwd())){//是否有密码
+                    content+=",'extractPsw':'"+bigVo.getPwd()+"'";
+                }
+            }
+            content+="}";
         }
         ResultRetUtil.returnJsonp(callback,content,response);
     }
 
+    /**
+     * 著作权
+     * @param model
+     * @return
+     */
+    @RequestMapping("shopIconCopyright")
+    public String shopIconCopyright(Integer page,Model model){
+        model.addAttribute("webSite","hz");
+        ShiguPager<ShopIconCopyrightVO> pager=cdnService.shopCopyrights(page,100);
+        model.addAttribute("pageOption",pager.selPageOption(100));
+        model.addAttribute("copyrightList",pager.getContent());
+        return "activity/shopIconCopyright";
+    }
+
+    /**
+     * 大图下载宣传页面
+     * @return
+     */
+    @RequestMapping("bigPicExplain")
+    public String bigPicExplain(){
+        return "static/bigPicExplain";
+    }
 
     //===================================================20170527张峰=======================================================
 
@@ -785,21 +854,65 @@ public class CdnAction {
     @RequestMapping("item")
     public String item(Long id, Model model) throws CdnException, IOException, TemplateException {
         CdnGoodsInfoVO goods=cdnService.cdnGoodsInfo(id);
+        if(StringUtils.isEmpty(goods.getColorsMeta())||"[]".equals(goods.getColorsMeta())){
+            goods.setColorsMeta("[{\"text\":\"图片色\",\"imgSrc\":\"\"}]");
+        }
+        if(StringUtils.isEmpty(goods.getSizesMeta())||"[]".equals(goods.getSizesMeta())){
+            goods.setSizesMeta("[\"均码\"]");
+        }
+        if ("kx".equalsIgnoreCase(goods.getWebSite())) {
+            return oldItemForKx(id,model);
+        }
         CdnShopInfoVO shop=cdnService.cdnShopInfo(goods.getShopId());
         String dzhtml=cdnService.bannerHtml(goods.getShopId(),goods.getWebSite());
         List<CdnShopCatVO> cats=cdnService.cdnShopCat(shop.getShopId());
-        List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(),goods.getWebSite());
+        List<CdnSimpleGoodsVO> see=cdnService.cdnSimpleGoods(goods.getShopId(), goods.getWebSite());
         model.addAttribute("webSite",goods.getWebSite());
         model.addAttribute("shopInfo",shop);
         model.addAttribute("userShopHdHtml",dzhtml);
         model.addAttribute("goodsInfo",goods);
         model.addAttribute("tjGoodsList",see);
         model.addAttribute("shopCats",cats);
-        if ("kx".equalsIgnoreCase(goods.getWebSite())) {
-            return "cdn/xieItem";
-        } else {
-            return "cdn/item";
+        return "cdn/item";
+    }
+
+    public String oldItemForKx(Long id, Model model) throws CdnException, IOException, TemplateException {
+        //如果东北商品,用东北的模板
+        ItemShowVO itemShowVO=new ItemShowVO();
+        itemShowVO.setItemId(id);
+        CdnItem cdnItem=showForCdnService.selItemById(id);
+        itemShowVO.setOnsale(cdnItem!=null&&cdnItem.getOnsale());
+        if(cdnItem==null){//已经下架
+            cdnItem=showForCdnService.selItemInstockById(id);
         }
+        if(cdnItem==null){//商品不存在
+            throw new CdnException("商品不存在");
+        }
+        //店招
+        model.addAttribute("navCon",cdnService.bannerHtml(cdnItem.getShopId(),cdnItem.getWebSite()));
+        // 商品详情懒加载
+        if(cdnItem.getDescription()!=null)
+            cdnItem.setDescription(HtmlImgsLazyLoad.replaceLazyLoad(cdnItem.getDescription()).replace("<script ","")
+                    .replace("<script>","")
+                    .replace("</script>",""));
+        itemShowVO.setCdnItem(cdnItem);
+//        itemShowVO.setClicks(itemBrowerService.selItemBrower(id));
+        itemShowVO.setShopCats(shopForCdnService.selShopCatsById(cdnItem.getShopId()));
+        Long starNum=shopForCdnService.selShopStarById(cdnItem.getShopId());
+        starNum=starNum==null?0:    starNum;
+        itemShowVO.setStarNum(starNum);
+        itemShowVO.setStoreRelation(storeRelationService.selRelationById(cdnItem.getShopId()));
+        itemShowVO.setTags(showForCdnService.selItemLicenses(id, cdnItem.getShopId()));
+        itemShowVO.setDomain(shopBaseService.selDomain(cdnItem.getShopId()));
+        itemShowVO.setOther(shopForCdnService.selShopBase(cdnItem.getShopId()));
+        model.addAttribute("vo",itemShowVO);
+        ItemBO bo=new ItemBO();
+        bo.setId(id);
+        model.addAttribute("bo",bo);
+        model.addAttribute("webSite",itemShowVO.getCdnItem().getWebSite());
+        model.addAttribute("hasYt",goodsFileService.hasDatu(id)+"");
+//        return "wa".equals(cdnItem.getWebSite())?"cdn/wa_item":"cdn/item";
+        return "cdn/xieItem";
     }
 
     /**
@@ -814,7 +927,7 @@ public class CdnAction {
     @RequestMapping("getShopCollection")
     public void getShopCollection(HttpSession session,HttpServletResponse response,String webSite,String callback) throws IOException {
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        List<CdnCollectShopVO> vos=cdnService.colloectShop(ps.getUserId(),webSite);
+        List<CdnCollectShopVO> vos=cdnService.colloectShop(ps.getUserId(), webSite);
         JSONObject obj=new JSONObject();
         obj.put("result","success");
         obj.put("shops",vos);
@@ -823,5 +936,11 @@ public class CdnAction {
     @RequestMapping("loginWindow")
     public String loginWindow(){
         return "cdn/loginWindow";
+    }
+
+    @RequestMapping("daifaIndex")
+    public String daifaIndex(Model model){
+        model.addAttribute("webSite","hz");
+        return "trade/daifaIndex";
     }
 }

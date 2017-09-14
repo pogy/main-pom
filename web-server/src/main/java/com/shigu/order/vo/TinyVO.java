@@ -10,11 +10,21 @@ public class TinyVO {
 
     private String goodsNo;
 
+    private Long storeId;
+
     private Long piPrice;
 
     private String piPriceString;
 
     private String webSite;
+
+    public Long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Long storeId) {
+        this.storeId = storeId;
+    }
 
     public Long getGoodsId() {
         return goodsId;

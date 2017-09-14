@@ -1,7 +1,10 @@
 package com.shigu.main4.item.services;
 
+import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.GoodsFile;
+import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
+import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,9 @@ public class ItemPicRelationServiceImpl implements ItemPicRelationService{
 
     @Autowired
     GoodsFileMapper goodsFileMapper;
+
+    @Autowired
+    GoodsCountForsearchMapper goodsCountForsearchMapper;
 
     @Override
     public boolean removeFileRelation(String fileId, Long goodsId) {
@@ -55,5 +61,36 @@ public class ItemPicRelationServiceImpl implements ItemPicRelationService{
     public int updateFileRelationByDir(String from, String to) {
         return goodsFileMapper.replaceFileDir(from,to);
     }
+
+    @Override
+    public int updateBigPicWeight(Boolean hadBigPic, Long goodsId, String webSite) {
+        GoodsCountForsearchExample countForsearchExample=new GoodsCountForsearchExample();
+        countForsearchExample.createCriteria().andGoodsIdEqualTo(goodsId);
+        GoodsCountForsearch countForsearch=new GoodsCountForsearch();
+        countForsearch.setHadBigzip(hadBigPic?1:0);
+        countForsearch.setWebSite(webSite);
+        countForsearch.setGoodsId(goodsId);
+        try {
+            return goodsCountForsearchMapper.insertSelective(countForsearch);
+        } catch (Exception e) {
+            return goodsCountForsearchMapper.updateByExampleSelective(countForsearch, countForsearchExample);
+        }
+    }
+
+    @Override
+    public void updateFileOuter(Long goodsId,String webSite, String password, String link, Integer type) {
+        GoodsFile goodsFile = new GoodsFile();
+        goodsFile.setGoodsId(goodsId);
+        goodsFileMapper.delete(goodsFile);
+        goodsFile.setNeedPwd(password != null && !password.isEmpty());
+        if (goodsFile.getNeedPwd()) {
+            goodsFile.setPasswd(password);
+        }
+        goodsFile.setFileKey(link);
+        goodsFile.setType(2);
+        goodsFileMapper.insertSelective(goodsFile);
+        updateBigPicWeight(true,goodsId,webSite);
+    }
+
 
 }

@@ -87,7 +87,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -250,7 +250,7 @@ var webSite = '${webSite!}';
 <div class="topNav">
     <ul class="clearfix">
     
-        <li>
+        <li >
             <a href="http://hz.571xz.com/market.htm" target="_blank">
                 逛市场
                 <i class="hot"></i>
@@ -258,7 +258,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://so.571xz.com/hzgoods.htm" target="_blank">
                 商品库
                 
@@ -266,7 +266,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://so.571xz.com/newgoods.htm" target="_blank">
                 今日新品
                 
@@ -274,7 +274,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://www.571xz.com/activity/redbull.htm" target="_blank">
                 发现好货
                 <i class="hot"></i>
@@ -282,15 +282,15 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
-            <a href="http://daifa.571xz.com/" target="_blank">
+        <li >
+            <a href="/daifaIndex.htm" target="_blank">
                 一件代发
                 
                 
             </a>
         </li>
     
-        <li>
+        <li class="select">
             <a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">
                 知识产权
                 
@@ -298,7 +298,7 @@ var webSite = '${webSite!}';
             </a>
         </li>
     
-        <li>
+        <li >
             <a href="http://zixun.571xz.com/index" target="_blank">
                 资讯
                 
@@ -316,298 +316,83 @@ var webSite = '${webSite!}';
 <div class="copyrightList">
     <div class="layout">
         <ul>
-            
-                
+            <#list copyrightList as list>
                 <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-01.jpg">
+                    <a href="http://${webSite!}.571xz.com/shop.htm?id=${list.shopId!}" target="_blank">
+                        <img class="lazyload" src="${list.imgSrc!}">
                     </a>
+                    <h3 class="yahei fs14 tac"><a href="http://${webSite!}.571xz.com/shop.htm?id=${list.shopId!}" target="_blank">${list.shopName!}</a></h3>
                 </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-02.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-03.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-04.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-05.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-06.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-07.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-08.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-09.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-10.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-11.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-12.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-13.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-14.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-15.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-16.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-17.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=35452" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/xhp392-18.jpg">
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=29820" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA137-01.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=29820" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA137-02.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=29820" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA137-03.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=29820" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA137-04.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=29820" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA137-05.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=29820" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA137-06.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=29820" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA137-07.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=29820" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA137-08.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=29820" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA137-09.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=29820" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA137-10.jpg">
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=41060" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA032-01.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=41060" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA032-02.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=41060" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA032-03.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=41060" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA032-04.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=41060" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA032-05.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=41060" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA032-06.jpg">
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=40599" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdC231-01.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=40599" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdC231-02.jpg">
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=31806" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA093-01.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=31806" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA093-02.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=31806" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA093-03.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=31806" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA093-04.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=31806" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA093-05.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=31806" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA093-06.jpg">
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=40506" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA055-01.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=40506" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA055-02.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=40506" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA055-03.jpg">
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="http://hz.571xz.com/shop.htm?id=40506" target="_blank">
-                        <img src="http://style.571xz.com/v2/qzhd/copyrightImg/dsjdA055-04.jpg">
-                    </a>
-                </li>
-                
-            
+            </#list>
         </ul>
+        
+        
+        
+    </div>
+    
+    <div class="paginationBox layout">
+    
+
+<#assign text>{}</#assign>
+<#assign moduledata1=text?eval />
+<#list [moduledata1] as $it>
+
+<div class="jqPagination " id="pageSearch" 
+    <#if $it.pageOption??>
+        data-option="${$it.pageOption!}" 
+    <#else>
+        data-option="${pageOption!}"
+    </#if>
+></div>
+
+
+
+
+
+
+
+</#list>
+
     </div>
 </div>
+
+
+
+
+
+<#assign text>{}</#assign>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
+<#if $it.fields??>
+<form id="wgt_search">
+    <#list $it.fields as field>
+        <#if field.timeFormat??>
+            <#if field.value??>
+            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
+            <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+            </#if>
+        <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+        </#if>
+    </#list>
+</form>
+</#if>
+
+
+
+
+
+</#list>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -623,7 +408,7 @@ var webSite = '${webSite!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

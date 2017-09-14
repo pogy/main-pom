@@ -104,6 +104,9 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
     @Autowired
     private ShiguGoodsStyleMapper shiguGoodsStyleMapper;
 
+    @Autowired
+    private ItemProductMapper itemProductMapper;
+
     /**
      * 系统上架一款商品
      * <p>
@@ -133,7 +136,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @throws ItemUpException 上架异常
      */
     @Transactional(rollbackFor = Exception.class)
-    private void upItem(Long itemId) throws ItemModifyException {
+    protected void upItem(Long itemId) throws ItemModifyException {
         ShiguGoodsIdGenerator generator;
         if (itemId == null || (generator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(itemId)) == null) {
             throw new ItemUpException(ItemUpException.ItemUpExceptionEnum.ITEM_DOES_NOT_EXIST, itemId);
@@ -301,7 +304,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @throws ItemDownException 下架异常
      */
     @Transactional(rollbackFor = Exception.class)
-    private void downItem(Long itemId) throws ItemModifyException {
+    protected void downItem(Long itemId) throws ItemModifyException {
         ShiguGoodsIdGenerator generator;
 
         // 验证参数，并查询分站存在
@@ -562,7 +565,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @return 商品ID
      */
     @Transactional(rollbackFor = Exception.class)
-    private Long addItem(SynItem item, boolean isSys) throws ItemModifyException {
+    protected Long addItem(SynItem item, boolean isSys) throws ItemModifyException {
         if (item == null || StringUtils.isEmpty(item.getWebSite()) || item.getShopId() == null)
             throw new ItemAddException(ItemAddException.ItemAddExceptionEnum.IllegalArgumentException, null);
         //1.添加shigu_goods_id_generator  //下面简称generator
@@ -605,14 +608,14 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         ItemHelper.SynItemContainer container = ItemHelper.helpMe(item);
         ShiguGoodsTiny tiny = container.getTiny();
         tiny.setGoodsId(idGenerator.getGoodId());
-        tiny.setCreated(now);
+        tiny.setCreated(item.getCreated());
         tiny.setDetailUrl("http://item.taobao.com/item.htm?id=" + tiny.getNumIid());
         tiny.setNick(shiguShop.getTbNick());
 //        tiny.setCidAll();
         tiny.setLoadDate(now);
-        tiny.setListTime(now);
-        tiny.setDelistTime(now);
-        tiny.setModified(now);
+        tiny.setListTime(item.getListTime());
+        tiny.setDelistTime(item.getDelistTime());
+        tiny.setModified(item.getModified());
 
         ShiguSiteExample siteExample = new ShiguSiteExample();
         siteExample.createCriteria().andCitySiteEqualTo(tiny.getWebSite());
@@ -627,7 +630,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         if (StringUtils.isEmpty(tiny.getCity())) {
             tiny.setCity(shiguSite.getCityName());
         }
-        shiguGoodsTinyMapper.insertSelective(tiny);
+        try {
+            shiguGoodsTinyMapper.insertSelective(tiny);
+        } catch (Exception e) {
+            throw new ItemModifyException(item.getNumIid()+"_"+item.getShopId()+" 重复插入");
+        }
 
 
         //3.添加shigu_goods_extends //下面简称extends
@@ -818,7 +825,7 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
      * @param synItem 通讯对象
      */
     @Transactional(rollbackFor = Exception.class)
-    private int updateItem(SynItem synItem) {
+    protected int updateItem(SynItem synItem) {
         //3、更新shigu_goods_tiny表数据、shigu_goods_extends表数据，shigu_prop_imgs表数据。
         ItemHelper.SynItemContainer container = ItemHelper.helpMe(synItem);
         ShiguGoodsTiny goodsTiny = container.getTiny();
@@ -849,6 +856,20 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
 
         //5、商品操作清除缓存
         cleanItemCache(synItem.getGoodsId());
+
+        //6、更新代发的产品表
+        try {
+            if (synItem.getGoodsId()!=null&&StringUtils.isNotEmpty(synItem.getPiPriceString())) {
+                ItemProductExample productExample=new ItemProductExample();
+                productExample.createCriteria().andGoodsIdEqualTo(synItem.getGoodsId());
+                ItemProduct itemProduct=new ItemProduct();
+                Double priceDouble=Double.parseDouble(synItem.getPiPriceString())*100;
+                itemProduct.setPrice(priceDouble.longValue());
+                itemProductMapper.updateByExampleSelective(itemProduct,productExample);
+            }
+        } catch (Exception e) {
+            logger.error("更新订单中product价格信息失败",e);
+        }
         return 1;
     }
 

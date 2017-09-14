@@ -1,10 +1,13 @@
 package com.shigu.seller.actions;
 
+import com.alibaba.fastjson.JSON;
 import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.storeservices.ShopBaseService;
+import com.shigu.main4.storeservices.ShopFitmentService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.vo.FitmentModule;
+import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.fitment.CustomModule;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.main4.vo.fitment.ItemSearchModule;
@@ -35,6 +38,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 店铺装修
@@ -57,6 +62,8 @@ public class ShopDesignAction {
     @Autowired
     CdnService cdnService;
 
+    @Autowired
+    ShopFitmentService shopFitmentService;
 
     /**
      * 店铺装修
@@ -192,11 +199,21 @@ public class ShopDesignAction {
      */
     @RequestMapping("design/goods-tui-get-goods-list")
     public String goodsTuiGetGoodsList(PromotePagerBo bo, HttpSession session, Model model){
-        Long shopId = getShopSession(session).getShopId();
-        bo.setIds(shopDesignService.selPromoteItemIds(bo));
+        ShopSession shopSession = getShopSession(session);
+        Long shopId = shopSession.getShopId();
+        List<Long> goodsIds = shopDesignService.selPromoteItemIds(bo);
+        List<Long> onsaleGoodsIds = shopForCdnService.searchItemOnsale(goodsIds, shopSession.getWebSite(), 1, 20).getContent().stream().map(ItemShowBlock::getItemId).collect(Collectors.toList());
+        if (goodsIds.size()>onsaleGoodsIds.size()) {
+            //有已下架的商品
+            try {
+                shopFitmentService.revalueModuleOption(bo.getMid(), JSON.toJSONString(onsaleGoodsIds));
+            } catch (ShopFitmentException ignore) {
+            }
+        }
+        bo.setIds(goodsIds);
         model.addAttribute("bo", bo);
-        model.addAttribute("pager", shopDesignService.selPromoteItems(bo, shopId,getShopSession(session).getWebSite()));
-        model.addAttribute("totalOnsale", shopForCdnService.selItemNumberById(shopId,getShopSession(session).getWebSite()));
+        model.addAttribute("pager", shopDesignService.selPromoteItems(bo, shopId, shopSession.getWebSite()));
+        model.addAttribute("totalOnsale", shopForCdnService.selItemNumberById(shopId, shopSession.getWebSite()));
         return "/shop_design/goods-tui-get-goods-list";
     }
 

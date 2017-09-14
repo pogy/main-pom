@@ -50,6 +50,8 @@ public class DaifaAllSubOrder implements Serializable{
     private Integer returnGoodsStatus;//退货状态@1等待退货2已退货3退货失败
     @Column("daifa_order.change_status")
     private Integer changeStatus;//换货状态'1申请换货2已换货3换货失败发回4换货失败不发回'
+    @Column("daifa_order.store_goods_code")
+    private String storeGoodsCode; //商家编码
 
 
     public static long getSerialVersionUID() {
@@ -190,5 +192,13 @@ public class DaifaAllSubOrder implements Serializable{
 
     public void setRefundStatus(Integer refundStatus) {
         this.refundStatus = refundStatus;
+    }
+
+    public String getStoreGoodsCode() {
+        return storeGoodsCode;
+    }
+
+    public void setStoreGoodsCode(String storeGoodsCode) {
+        this.storeGoodsCode = storeGoodsCode;
     }
 }

@@ -192,6 +192,7 @@ public class UserBaseServiceImpl implements UserBaseService {
         }
         info.setRealName(memberUser.getRealName());
         info.setUserNick(memberUser.getUserNick());
+        info.setUserName(memberUser.getUserName());
         info.setEmail(memberUser.getEmail());
         info.setTelephone(memberUser.getPhoneMob());
         info.setSex(memberUser.getSex());

@@ -7,9 +7,13 @@ import com.opentae.data.mall.beans.ItemOrder;
 import com.opentae.data.mall.beans.ItemOrderLogistics;
 import com.opentae.data.mall.beans.ItemOrderSub;
 import com.opentae.data.mall.examples.*;
-import com.opentae.data.mall.interfaces.*;
+import com.opentae.data.mall.interfaces.ItemOrderLogisticsMapper;
+import com.opentae.data.mall.interfaces.ItemOrderMapper;
+import com.opentae.data.mall.interfaces.ItemOrderServiceMapper;
+import com.opentae.data.mall.interfaces.ItemOrderSubMapper;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
+import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
@@ -21,7 +25,6 @@ import com.shigu.order.bo.OrderBO;
 import com.shigu.order.vo.AfterSaleVO;
 import com.shigu.order.vo.MyOrderDetailVO;
 import com.shigu.order.vo.MyOrderVO;
-import com.shigu.order.vo.SubMyOrderVO;
 import com.shigu.tools.DateParseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,18 +120,15 @@ public class MyOrderService {
         pager.setNumber(number);
         MultipleExampleBuilder multipleExampleBuilder = MultipleExampleBuilder.from(orderExample)
                 .innerJoin(subExample).on(subExample.createCriteria().equalTo(ItemOrderSubExample.oid, ItemOrderExample.oid))
-                .leftJoin(logisticsExample).on(logisticsExample.createCriteria().equalTo(ItemOrderLogisticsExample.oid, ItemOrderExample.oid))
+                .innerJoin(logisticsExample).on(logisticsExample.createCriteria().equalTo(ItemOrderLogisticsExample.oid, ItemOrderExample.oid))
                 .leftJoin(refundExample).on(refundExample.createCriteria().equalTo(ItemOrderRefundExample.soid, ItemOrderSubExample.soid));
         if (onlyRefund) {
             multipleExampleBuilder.where(refundExample.createCriteria().andRefundIdIsNotNull());
         }
-
         MultipleExample multipleExample = multipleExampleBuilder.build();
-
         multipleExample.setDistinctCount(ItemOrderExample.oid);
         multipleExample.setOrderByClause("item_order.create_time DESC");
         int orderCount = multipleMapper.countByMultipleExample(multipleExample);
-
         if (orderCount > 0) {
 
             // 查询数据
@@ -146,6 +146,9 @@ public class MyOrderService {
             pager.getContent().stream()
                     .peek(o -> o.setServerPay(orderServiceMoneyMap.get(o.getOrderId())))
                     .map(MyOrderVO::getChildOrders).flatMap(List::stream).forEach(subMyOrderVO -> {
+                if (subMyOrderVO.getStockoutNum() == null || subMyOrderVO.getStockoutNum() == 0) {
+                    subMyOrderVO.setStockoutNum(null);
+                }
                     List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
                 if (afterSales != null && !afterSales.isEmpty()) {
                     subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
@@ -238,8 +241,8 @@ public class MyOrderService {
         return vo;
     }
 
-    public boolean testRefund(Long subId) {
+    public boolean testRefund(Long subId) throws OrderNotFindException {
         ItemOrderSub sub = itemOrderSubMapper.selectByPrimaryKey(subId);
-        return sub != null && orderManageProcess.tryRefund(subId.toString()).size() == sub.getNum();
+        return sub != null && orderManageProcess.tryRefund(subId.toString()).size() > 0;
     }
 }

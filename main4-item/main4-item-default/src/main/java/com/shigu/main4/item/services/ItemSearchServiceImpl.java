@@ -3,14 +3,17 @@ package com.shigu.main4.item.services;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.opensearch.sdk.generated.search.Order;
 import com.aliyun.opensearch.sdk.generated.search.SortField;
+import com.opentae.data.mall.beans.ShiguGoodsTiny;
 import com.opentae.data.mall.examples.SearchCategoryExample;
 import com.opentae.data.mall.examples.SearchCategorySubExample;
+import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
 import com.opentae.data.mall.interfaces.SearchCategoryMapper;
 import com.opentae.data.mall.interfaces.SearchCategorySubMapper;
+import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
-import com.shigu.main4.enums.SearchFrom;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.main4.item.enums.SearchCheckd;
 import com.shigu.main4.item.enums.SearchOrderBy;
 import com.shigu.main4.item.vo.*;
 import com.shigu.opensearchsdk.OpenSearch;
@@ -65,6 +68,14 @@ public class ItemSearchServiceImpl implements ItemSearchService {
     @Autowired
     private SearchCategorySubMapper searchCategorySubMapper;
 
+    @Autowired
+    private ShiguGoodsTinyMapper shiguGoodsTinyMapper;
+
+    @Override
+    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
+        return searchItem(keyword,webSite,mid,null,cids,shouldStoreIds,sid,priceFrom,priceTo,timeForm,timeTo,orderCase,page,pageSize,aggs);
+    }
+
     /**
      * 搜索主方法
      *
@@ -82,7 +93,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      * @return
      */
     @Override
-    public ShiguAggsPager searchItem(String keyword, String webSite, String from, Long mid, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
+    public ShiguAggsPager searchItem(String keyword, String webSite, Long mid,List<SearchCheckd> checkds, List<Long> cids, List<Long> shouldStoreIds, String sid, Double priceFrom, Double priceTo, Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs) {
         ShiguAggsPager pager = new ShiguAggsPager();
         pager.setCats(Collections.<AggsCount>emptyList());
         pager.setMarkets(Collections.<AggsCount>emptyList());
@@ -97,11 +108,9 @@ public class ItemSearchServiceImpl implements ItemSearchService {
             realSize = 5000 - start;
         }
 
-        // 现依据查询来源匹配 查询排序表达式，现在的规则是：商品库筛选方式不变 搜索粗排    search_project 精排     search_jp
-        SearchFrom searchFrom = SearchFrom.from(from);
         OpenSearch.RequestBuilder<OpenItemVo> requestBuilder
                 = openSearch.searchFrom(SEARCH_APP+webSite,OpenItemVo.class).from(start).size(realSize)
-                .setRank(searchFrom.firstRank, searchFrom.secondRank, 2000);
+                .setRank("rough_project_c", "project_c", 2000);
 
         SearchQuery searchQuery = null;
         if (StringUtils.isNotEmpty(keyword)) {
@@ -158,6 +167,15 @@ public class ItemSearchServiceImpl implements ItemSearchService {
         if (timeTo != null) {
             filters.and(FilterBuilder.number("created").lte(timeTo.getTime()));
         }
+
+        if (webSite.equals("hz")&&checkds!=null) {//只有杭州的有checkeds
+            for(SearchCheckd sc:checkds){
+                switch (sc){
+                    case BIGZIP:filters.and(FilterBuilder.number("had_bigzip",1));
+                }
+
+            }
+        }
         requestBuilder.addFilter(filters);
 
         // 6. 排序规则
@@ -166,6 +184,7 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 requestBuilder.addSort(new SortField("created", Order.DECREASE));
                 break;
             case COMMON:
+                requestBuilder.setRank("search_project", "search_jp", 2000);
                 break;
             case GOODS_COMMON:
 //                requestBuilder.addSort(new SortField("sort_order", Order.DECREASE));
@@ -186,6 +205,10 @@ public class ItemSearchServiceImpl implements ItemSearchService {
                 break;
             case GOODSUP:
                 break;
+            case USER_LOVE:
+                requestBuilder.setRank("rough_user_love", "user_love", 2000);
+                break;
+
         }
 
         if (aggs) {
@@ -294,28 +317,34 @@ public class ItemSearchServiceImpl implements ItemSearchService {
      */
     @Override
     public ShiguPager<SearchItem> searchItemByIds(List<Long> ids, String webSite, Integer page, Integer pageSize) {
-        ShiguPager<SearchItem> pager = new ShiguPager<>();
-        pager.setNumber(page);
-
-        OpenSearch.RequestBuilder<OpenItemVo> requestBuilder = openSearch.searchFrom(SEARCH_APP+webSite,OpenItemVo.class)
-                .from((page - 1) * pageSize).size(pageSize);
-        if (ids != null && !ids.isEmpty()) {
-            requestBuilder.addFilter(FilterBuilder.termsIn("goods_id", ids.toArray(new Long[ids.size()])));
+        ShiguPager<SearchItem> pager=new ShiguAggsPager();
+        if (ids == null||ids.size()==0) {
+            pager.setNumber(page);
+            pager.setTotalCount(0);
+            pager.setContent(new ArrayList<>());
+            return pager;
         }
-        SearchResponse<OpenItemVo> response = requestBuilder.execute();
-        if (response.isSuccess()) {
-            Result<OpenItemVo> result = response.getResult();
-            pager.calPages(result.getTotal(), pageSize);
-            pager.setContent(new ArrayList<SearchItem>(result.getItems().size()));
-            for (OpenItemVo openItemVo : BeanMapper.getFieldList(result.getItems(), "fields", OpenItemVo.class)) {
-                SearchItem searchItem = BeanMapper.map(openItemVo, SearchItem.class);
-                searchItem.setItemId(openItemVo.getGoodsId());
-                searchItem.setPrice(searchItem.parsePrice(openItemVo.getPiPrice()));
-                searchItem.setHighLightGoodsNo(openItemVo.getGoodsNo());
-                searchItem.setHighLightTitle(openItemVo.getTitle());
-                pager.getContent().add(searchItem);
-            }
+        ShiguGoodsTinyExample example=new ShiguGoodsTinyExample();
+        example.createCriteria().andGoodsIdIn(ids);
+        example.setWebSite(webSite);
+        example.setStartIndex((page - 1) * pageSize);
+        example.setEndIndex(pageSize);
+        List<ShiguGoodsTiny> tinies=shiguGoodsTinyMapper.selectFieldsByConditionList(example,
+                "pic_url,title,goods_id,pi_price_string,store_id,created,goods_no");
+        List<SearchItem> items=new ArrayList<>();
+        for (ShiguGoodsTiny sgt:tinies){
+            SearchItem si=new SearchItem();
+            si.setItemId(sgt.getGoodsId());
+            si.setCreated(sgt.getCreated());
+            si.setGoodsNo(sgt.getGoodsNo());
+            si.setPicUrl(sgt.getPicUrl());
+            si.setPrice(sgt.getPiPriceString());
+            si.setStoreId(sgt.getStoreId());
+            si.setTitle(sgt.getTitle());
+            items.add(si);
         }
+        pager.setContent(items);
+        pager.setTotalCount(shiguGoodsTinyMapper.countByExample(example));
         return pager;
     }
 }

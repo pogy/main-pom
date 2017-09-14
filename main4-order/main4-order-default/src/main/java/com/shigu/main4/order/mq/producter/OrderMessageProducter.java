@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +35,7 @@ public class OrderMessageProducter {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderMessageProducter.class);
 
-    public static final String TOPIC = "SHIGU_TRADE_TEST";
+    public static String TOPIC;
 
     public enum OrderMQTag {
         order_push("oid_"),
@@ -48,6 +49,11 @@ public class OrderMessageProducter {
         OrderMQTag(String preKey) {
             this.preKey = preKey;
         }
+    }
+
+    @PostConstruct
+    public void init(){
+        TOPIC=producerBean.getProperties().getProperty("topic");
     }
 
     @Autowired
@@ -67,6 +73,7 @@ public class OrderMessageProducter {
      * @param itemOrder
      */
     public void orderPush(ItemOrder itemOrder) {
+
         OrderMessage order = new OrderMessage();
         ItemOrderVO itemOrderVO = itemOrder.orderInfo();
 
@@ -118,7 +125,7 @@ public class OrderMessageProducter {
             message.setTelephone(logisticsVO.getTelephone());
             message.setCity(orderConstantService.selCityByCid(message.getCityId()).getCity());
             message.setProv(orderConstantService.selProvByPid(message.getProvId()).getProvince());
-            message.setTown(orderConstantService.selTownByTid(message.getTownId()).getTown());
+            message.setTown(message.getTownId()==null?null:orderConstantService.selTownByTid(message.getTownId()).getTown());
             message.setCompany(orderConstantService.selByExpressId(message.getCompanyId()).getExpressName());
             return message;
         }).collect(Collectors.toList()));

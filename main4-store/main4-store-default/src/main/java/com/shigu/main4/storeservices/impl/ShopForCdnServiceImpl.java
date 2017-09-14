@@ -29,6 +29,7 @@ import com.shigu.opensearchsdk.response.Result;
 import com.shigu.opensearchsdk.response.SearchResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
@@ -559,10 +560,10 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             requestBuilder.addSort(new SortField("created", Order.DECREASE));
         } else {
             switch (orderBy) {
-                case "price_up":
+                case "price-asc":
                     requestBuilder.addSort(new SortField("pi_price", Order.INCREASE));
                     break;
-                case "price_down":
+                case "price-desc":
                     requestBuilder.addSort(new SortField("pi_price", Order.DECREASE));
                     break;
                 case "time_up":
@@ -593,7 +594,15 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
         if (shopId != null && shopForCdnBo.getScid() != null) {
             Long scid = Long.valueOf(shopForCdnBo.getScid());
             String scidStr = selScidStr(shopId,scid);
-            TermQuery cidAllQuery = QueryBuilder.termSearch("cid_all", scidStr);
+            TermQuery cidAllQuery = null;
+            for (String scidOneCat : scidStr.split(",")) {
+                if (cidAllQuery == null) {
+                    cidAllQuery = QueryBuilder.termSearch("cid_all", scidOneCat);
+                }else {
+                    cidAllQuery.or(QueryBuilder.termSearch("cid_all", scidOneCat));
+                }
+            }
+            //TermQuery cidAllQuery = QueryBuilder.termSearch("cid_all", scidStr);
             if (searchQuery != null) {
                 searchQuery.and(cidAllQuery);
             } else {
@@ -718,10 +727,10 @@ public class ShopForCdnServiceImpl extends ShopServiceImpl implements ShopForCdn
             // 默认时间排序
             shiguGoodsSoldoutExample.setOrderByClause("created desc");
         } else {
-            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price_up")) {
+            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price-asc")) {
                 shiguGoodsSoldoutExample.setOrderByClause("pi_price asc");
             }
-            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price_down")) {
+            if (StringUtils.equals(shopForCdnBo.getOrderBy(), "price-desc")) {
                 shiguGoodsSoldoutExample.setOrderByClause("pi_price desc");
             }
             if (StringUtils.equals(shopForCdnBo.getOrderBy(), "time_up")) {

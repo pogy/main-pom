@@ -37,6 +37,8 @@ public class ItemSpreadVO implements Serializable{
      */
     private String userText;
 
+    private String title;
+
     public ItemSpreadVO() {
     }
 
@@ -48,6 +50,7 @@ public class ItemSpreadVO implements Serializable{
         setStoreNum(item.getStoreNum());
         setMarketText(item.getMarket());
         setStoreText(getMarketText()+" "+getStoreNum());
+        setTitle(item.getTitle());
     }
 
     public String getMarketText() {
@@ -128,5 +131,13 @@ public class ItemSpreadVO implements Serializable{
 
     public void setUserText(String userText) {
         this.userText = userText;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

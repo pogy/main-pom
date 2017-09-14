@@ -19,14 +19,11 @@ import java.util.List;
 @Lazy(true)
 public interface ShiguShopMapper extends Mapper<ShiguShop> {
 
-
     /** 店铺COUNT */
-    int selectShopCountByBo(@Param("website")String website,@Param("userName")String userName,
-                            @Param("userId")Long userId,@Param("marketId") Long marketId,@Param("floorId")Long floorId,
-                            @Param("shopId")Long shopId,@Param("taobaoUrl")String taobaoUrl,@Param("shopName")String shopName,
+    int selectShopCountByBo(@Param("website")String website, @Param("userName")String userName,
+                            @Param("userId")Long userId, @Param("marketId") Long marketId, @Param("floorId")Long floorId,
+                            @Param("shopId")Long shopId, @Param("taobaoUrl")String taobaoUrl, @Param("shopName")String shopName,
                             @Param("shopNum") String shopNum);
 
     List<ShopNumAndMarket> selShopNumAndMarkets(@Param("shopIdList") List<Long> shopIdList);
-
-
 }

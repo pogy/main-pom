@@ -2,6 +2,7 @@ package com.opentae.data.daifa.beans;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  *==========================================================
@@ -17,7 +18,7 @@ import javax.persistence.Id;
  *
  *=========================================================
  */
-public class DaifaTrade {
+public class DaifaTrade implements Serializable {
 	
 	/***/
 	@Id
@@ -117,6 +118,11 @@ public class DaifaTrade {
 	private String receiverQq;
 	/**买家昵称*/
 	private String buyerNick;
+	/**
+	 * 售后备注
+	 */
+	private String afterRemark;
+	private Integer isOld;
 	 
 	 //*************************get/set*****************************
     	/**
@@ -1031,4 +1037,20 @@ public class DaifaTrade {
     public void setBuyerNick(String buyerNick) {
         this.buyerNick = buyerNick;
     }
+
+	public String getAfterRemark() {
+		return afterRemark;
+	}
+
+	public void setAfterRemark(String afterRemark) {
+		this.afterRemark = afterRemark;
+	}
+
+	public Integer getIsOld () {
+		return isOld;
+	}
+
+	public void setIsOld (Integer isOld) {
+		this.isOld = isOld;
+	}
 }

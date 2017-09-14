@@ -1,5 +1,7 @@
 package com.shigu.daifa.bo;
 
+import java.io.Serializable;
+
 /**
  * Created by pc on 2017-08-14.
  *
@@ -8,7 +10,7 @@ package com.shigu.daifa.bo;
  * @description
  * @since 3.0.0-SNAPSHOT
  */
-public class AllOrderBO {
+public class AllOrderBO implements Serializable {
     /**
      * 订单id
      */
@@ -33,6 +35,8 @@ public class AllOrderBO {
      * 总数量
      */
     private Integer count;
+
+    private String postCode;
 
     public String getOrderId() {
         return orderId;
@@ -80,5 +84,13 @@ public class AllOrderBO {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public String getPostCode() {
+        return this.postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
     }
 }

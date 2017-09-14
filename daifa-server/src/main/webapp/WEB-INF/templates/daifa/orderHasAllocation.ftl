@@ -56,43 +56,40 @@
     <div class="sideBarBox">
         <div class="sidebar fl yahei">
     <ul>
-        
-            <li>
-                
-                <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
-                
-                
-            </li>
-        
-            <li>
-                
-                <a  href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
-                
-                
-                <ul>
-                    
-                    <li>
-                        
-                        <a href="orderAllocation.htm"><i></i>任务分配</a>
-                        
-                    </li>
-                    
-                    <li>
-                        
-                        <a class="current" href="orderHasAllocation.htm"><i></i>我的任务</a>
-                        
-                    </li>
-                    
-                    <li>
-                        
-                        <a href="scanBarCode.htm"><i></i>扫描打印</a>
-                        
-                    </li>
-                    
-                </ul>
-                
-            </li>
-        
+        <@shiro.hasAnyPermissions name="df:admin,df:kefu">
+        <li>
+            <a href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
+        </li>
+    </@shiro.hasAnyPermissions>
+    <@shiro.hasAnyPermissions name="df:kefu">
+        <li>
+            <a href="orderForServer.htm"><i class="icon-allorders"></i>客服查询</a>
+        </li>
+    </@shiro.hasAnyPermissions>
+    <@shiro.hasAnyPermissions name="df:admin">
+        <li>
+            <a href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
+            <ul>
+                <li>
+                    <a href="orderAllocation.htm"><i></i>任务分配</a>
+                </li>
+                <li>
+                    <a class="current" href="orderHasAllocation.htm"><i></i>我的任务</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" ><i class="icon-allocation"></i>发货管理</a>
+            <ul>
+                <li>
+                    <a href="scanBarCode.htm"><i></i>扫描打印</a>
+                </li>
+                <li>
+                    <a href="notYetSipped.htm"><i></i>未发货订单</a>
+                </li>
+            </ul>
+        </li>
+    </@shiro.hasAnyPermissions>
     </ul>
 </div>
 
@@ -101,13 +98,33 @@
 
     </div>
     <div class="contentBox">
-        
+        <div class="printTypeTabs">
+    <ul>
+        <li <#if !query.status>class="select"</#if> data-type="0" jbtn='searchBtn'>全部子订单</li>
+        <li <#if query.status == 1>class="select"</#if> data-type='1' jbtn='searchBtn'>未打印子订单</li>
+        <li <#if query.status == 2>class="select"</#if> data-type='2' jbtn='searchBtn'>已打印子订单</li>
+    </ul>
+    <input type="hidden" id="stateType" <#if query.status??>value="${query.status!}"</#if>>
+</div>
+
+
+
+
+
 
 <div class="orderSearch">
     <ul class="orderSearchBox">
         <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
         <li><label>子订单ID：</label><input type="text" class="fmInput" name="childOrderId" <#if query.childOrderId??> value="${query.childOrderId!}" </#if>></li>
         <li><label>订单日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择起始时间" <#if query.startTime??> value="${query.startTime!}" </#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间" <#if query.endTime??>value="${query.endTime!}"</#if>></li>
+        <li>
+            <label>拿货人：</label><select class="fmInput" name="searchWorkerId" <#if query.searchWorkerId??> value="${query.searchWorkerId!}" </#if>>
+                <option val="">请选择</option>
+                <#list workers as worker>
+                <option value="${worker.id!}" <#if query.searchWorkerId == worker.id>selected</#if>>${worker.name!}</option>
+                </#list>
+            </select>
+        </li>
         <li>
 
 <#assign text>{}</#assign>
@@ -172,13 +189,21 @@
 
 
 
-<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"childOrderId","value":"${query.childOrderId!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"orderId","value":"${query.orderId!}"},{"name":"childOrderId","value":"${query.childOrderId!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
 <form id="wgt_search">
     <#list $it.fields as field>
-    <input type=hidden name="${field.name!}" value="${field.value!}">
+        <#if field.timeFormat??>
+            <#if field.value??>
+            <input type=hidden name="${field.name!}" value="${field.value?string(field.timeFormat)}">
+            <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+            </#if>
+        <#else>
+            <input type=hidden name="${field.name!}" value="${field.value!}">
+        </#if>
     </#list>
 </form>
 </#if>
@@ -374,8 +399,10 @@
         </li>
         <li class="operator">
             <#if childOrder.takeGoodsState == 0>
-            <p><b class="fcBlue" jbtn="isGetGoods" data-type="1">已拿到</b></p>
-            <p><b class="fcBlue" jbtn="isGetGoods" data-type="2">未拿到</b></p>
+                <#if childOrder.isMyTask == true>
+                <p><b class="fcBlue" jbtn="isGetGoods" data-type="1">已拿到</b></p>
+                <p><b class="fcBlue" jbtn="isGetGoods" data-type="2">未拿到</b></p>
+                </#if>
             <#else>
             <p class="fcBlue">——</p>
             </#if>
@@ -436,6 +463,21 @@
 </#list>
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

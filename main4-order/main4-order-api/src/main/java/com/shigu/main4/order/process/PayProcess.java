@@ -10,4 +10,6 @@ import com.shigu.main4.order.vo.PayApplyVO;
 public interface PayProcess {
 
     PayApplyVO payApply(Long orderId, PayType payType) throws PayApplyException;
+
+    PayApplyVO rechargeApply(Long userId,PayType payType,Long money) throws PayApplyException;
 }

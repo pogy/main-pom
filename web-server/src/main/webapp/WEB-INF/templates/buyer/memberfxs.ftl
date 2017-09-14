@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/memberfxs.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/memberfxs.css?v=2017091301" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/memberfxs.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/memberfxs.js?v=2017091301"></script>
 </head>
 <body>
 
@@ -331,7 +331,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
         
@@ -378,7 +377,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -549,7 +547,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
     </p>
@@ -589,7 +586,36 @@ var webSite = '${webSite!}';
 
     <input type="hidden" id="userId" value="${session_user_redis__.userId!}">
 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script >
+var imgsrc = '${imgsrc!}';
+var tHref = '${tHref!}';
+</script>
+
+
 </div>
+
+
 
 
     </div>

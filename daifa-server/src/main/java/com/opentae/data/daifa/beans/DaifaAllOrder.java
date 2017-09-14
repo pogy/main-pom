@@ -30,6 +30,8 @@ public class DaifaAllOrder implements Serializable{
     private String receiverName;//收货人姓名
     @Column("daifa_trade.receiver_phone")
     private String receiverPhone;//收货人电话
+    @Column("daifa_trade.receiver_address")
+    private String receiverAddress;
     @Column("daifa_trade.buyer_remark")
     private String buyerRemark;//分销商留言
     @Column("daifa_trade.money")
@@ -44,10 +46,20 @@ public class DaifaAllOrder implements Serializable{
     private String discountFee;//减免费用
     @Column("daifa_trade.services_fee")
     private String serversFee;//服务费用
+    @Column("daifa_trade.is_old")
+    private Integer isOld;//是否是老订单
     private List<DaifaAllSubOrder> childOrders;//子单数据
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
     }
 
     public String getOrderId() {
@@ -152,6 +164,14 @@ public class DaifaAllOrder implements Serializable{
 
     public void setServersFee(String serversFee) {
         this.serversFee = serversFee;
+    }
+
+    public Integer getIsOld() {
+        return isOld;
+    }
+
+    public void setIsOld(Integer isOld) {
+        this.isOld = isOld;
     }
 
     public List<DaifaAllSubOrder> getChildOrders() {

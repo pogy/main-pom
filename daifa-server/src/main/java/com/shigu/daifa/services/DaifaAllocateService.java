@@ -2,18 +2,15 @@ package com.shigu.daifa.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
 import com.opentae.data.daifa.beans.DaifaGgoodsTasks;
-import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaTrade;
 import com.opentae.data.daifa.beans.GgoodsByStore;
 import com.opentae.data.daifa.examples.DaifaGgoodsTasksExample;
-import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.DaifaGgoodsTasksMapper;
-import com.opentae.data.daifa.interfaces.DaifaOrderMapper;
 import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.component.shiro.AuthorityUser;
 import com.shigu.config.DaifaSessionConfig;
-import com.shigu.daifa.actions.beans.MarketBean;
+import com.shigu.daifa.beans.MarketBean;
 import com.shigu.daifa.bo.OrderAllocateBO;
 import com.shigu.daifa.vo.OrderAllocateVO;
 import com.shigu.main4.common.util.BeanMapper;
@@ -65,6 +62,7 @@ public class DaifaAllocateService {
         DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
         DaifaGgoodsTasksExample.Criteria criteria = daifaGgoodsTasksExample.createCriteria();
         criteria.andUseStatusEqualTo(1).andAllocatStatusEqualTo(0).andSellerIdEqualTo(sellerId).andEndStatusEqualTo(0)
+                .andGoodsCodeIsNotNull()
                 .andCustomSql("(youhuo_date is null or (if(youhuo_date is not null, " +
                         "date_format(youhuo_date,'%Y%m%d')-create_date<=0 or date_format(now(),'%Y%m%d')-create_date>0,true)))");//可用的未分配的
         if (!StringUtils.isEmpty(bo.getChildOrderId())) {
@@ -110,7 +108,7 @@ public class DaifaAllocateService {
                     vo.setImgSrc(ggoodsTask.getPicPath());
                     vo.setPiPrice(ggoodsTask.getSinglePiPrice());
                     vo.setTitle(ggoodsTask.getTitle());
-                    vo.setDffs(tradeMap.get(ggoodsTask.getDfTradeId()).getDaifaType());
+                    vo.setDffs(tradeMap.get(ggoodsTask.getDfTradeId())==null?1:tradeMap.get(ggoodsTask.getDfTradeId()).getDaifaType());
                     orderAllocateVOS.add(vo);
                 }
             }
@@ -262,6 +260,7 @@ public class DaifaAllocateService {
                 DaifaGgoodsTasksExample daifaGgoodsTasksExample = new DaifaGgoodsTasksExample();
                 daifaGgoodsTasksExample.createCriteria()
                         .andDfOrderIdIn(childOrderIds)//子弹
+                        .andGoodsCodeIsNotNull()
                         .andUseStatusEqualTo(1)//可用
                         .andEndStatusEqualTo(0)
                         .andAllocatStatusEqualTo(0);//未分配

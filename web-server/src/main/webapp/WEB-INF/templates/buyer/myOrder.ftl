@@ -287,6 +287,7 @@ var webSite = '${webSite!}';
 
 
 <div class="rightBox fr">
+    <img class="goatImg" src="http://style.571xz.com/v2/fxsV1/css/img/goat.png" >
     <div class="tabBox clearfix yahei">
     <ul>
         <li <#if !query.status>class="select"</#if>><a href="myOrder.htm">所有订单</a></li>
@@ -402,7 +403,12 @@ var webSite = '${webSite!}';
         </div>
     </li>
     <li class="price yahei">&yen;${childOrder.price!}</li>
-    <li class="num">${childOrder.num!}</li>
+    <li class="num">
+        <p>${childOrder.num!}</p>
+        <#if childOrder.stockoutNum??>
+        <p class="fcF40">缺货 x${childOrder.stockoutNum!}</p>
+        </#if>
+    </li>
     <li class="opera">
         <#if order.mainState == 1 || order.mainState == 5>
         ——
@@ -412,7 +418,8 @@ var webSite = '${webSite!}';
         <#if order.mainState == 2 || order.mainState == 3 || order.mainState == 4>
             <#if childOrder.afterSales?? && (childOrder.afterSales?size) gt 0>
                 <#if childOrder.refundCount != childOrder.num && childOrder.hasAfter == false && order.mainState == 3>
-                <p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+                <p><a href="JavaScript:;" class="fc9" jbtn="returnOrChange">申请售后</a></p>
+                <!--<p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>-->
                 </#if>
                 
                 <#list childOrder.afterSales as afterSale>
@@ -449,7 +456,8 @@ var webSite = '${webSite!}';
                 <#if order.mainState == 2>
                 <p><a href="javascript:;" onclick="applyRefund(${childOrder.childOrderId!})">申请退款</a></p>
                 <#elseif order.mainState == 3>
-                <p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>
+                <p><a href="JavaScript:;" class="fc9" jbtn="returnOrChange">申请售后</a></p>
+                <!--<p><a href="${main_host!}order/returnOrChange.htm?childOrderId=${childOrder.childOrderId!}" target="_blank" class="fc9">申请售后</a></p>-->
                 <#elseif order.mainState == 4>
                 ——
                 </#if>
@@ -520,7 +528,7 @@ var webSite = '${webSite!}';
 </#list>
 
             <#elseif order.mainState == 2>
-            <p>待配货</p>
+            <p>配货中</p>
             <#elseif order.mainState == 3>
             <p>已发货</p>
             <#elseif order.mainState == 4>
@@ -537,6 +545,10 @@ var webSite = '${webSite!}';
         </#if>
     </li>
 </ul>
+
+
+
+
 
 
 

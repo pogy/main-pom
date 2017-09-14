@@ -5,15 +5,24 @@
     <parent>
         <artifactId>main-pom</artifactId>
         <groupId>sites.main</groupId>
-        <version>4.2.0-SNAPSHOT</version>
+        <version>4.2.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>sites.main</groupId>
     <artifactId>daifa-server</artifactId>
-    <version>4.2.0-SNAPSHOT</version>
     <packaging>war</packaging>
-
+<build>
+    <plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8.2</version>
+        <configuration>
+            <skip>true</skip>
+        </configuration>
+    </plugin>
+    </plugins>
+</build>
     <dependencies>
         <!--mybatis部分-->
         <dependency>
@@ -299,11 +308,17 @@
             <artifactId>shiro-quartz</artifactId>
             <version>1.2.3</version>
         </dependency>
-
+<!--
         <dependency>
             <groupId>com.shiro</groupId>
             <artifactId>shiro-freemarker-tags</artifactId>
             <version>0.1</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>com.jagregory</groupId>
+            <artifactId>shiro-freemarker-tags</artifactId>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
         <!--freemarker -->
         <dependency>
@@ -314,7 +329,7 @@
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-daifa-api</artifactId>
-            <version>4.2.0-SNAPSHOT</version>
+            <version>${main4-daifa-api.version}</version>
         </dependency>
         <dependency>
             <groupId>sites.main</groupId>
@@ -358,7 +373,12 @@
         <dependency>
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>ons-client</artifactId>
-            <version>1.2.7.Final</version>
+            <version>${ons-client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>sites.main</groupId>
+            <artifactId>main4-order-api</artifactId>
+            <version>${main4-order-api.version}</version>
         </dependency>
     </dependencies>
 </project>

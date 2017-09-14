@@ -1,14 +1,17 @@
 package com.shigu.seller.services;
 
 import com.opentae.core.mybatis.utils.FieldUtil;
-import com.opentae.data.mall.beans.ActiveDrawGoods;
+import com.opentae.data.mall.beans.GoodsCountForsearch;
 import com.opentae.data.mall.beans.GoodsFile;
 import com.opentae.data.mall.beans.ShiguGoodsTiny;
-import com.opentae.data.mall.examples.ActiveDrawGoodsExample;
+import com.opentae.data.mall.examples.GoodsCountForsearchExample;
 import com.opentae.data.mall.examples.GoodsFileExample;
 import com.opentae.data.mall.examples.ShiguGoodsTinyExample;
+import com.opentae.data.mall.examples.ShiguShopExample;
+import com.opentae.data.mall.interfaces.GoodsCountForsearchMapper;
 import com.opentae.data.mall.interfaces.GoodsFileMapper;
 import com.opentae.data.mall.interfaces.ShiguGoodsTinyMapper;
+import com.opentae.data.mall.interfaces.ShiguShopMapper;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.common.util.BeanMapper;
@@ -19,30 +22,29 @@ import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.tools.OssIO;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopLicense;
+import com.shigu.seller.bo.BigPicOuterLinkBO;
+import com.shigu.seller.vo.DatuVO;
 import com.shigu.seller.vo.FileSizeVO;
 import com.shigu.seller.vo.GoodsFileSearchVO;
 import com.shigu.seller.vo.GoodsFileVO;
-import com.shigu.tools.Arith;
+import com.shigu.session.main4.ShopSession;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 商品文件关联类
  * Created by zlm on 2017/7/25.
  */
 @Service
-public class GoodsFileService {
+public class GoodsFileService extends OssIO {
     @Autowired
     GoodsFileMapper goodsFileMapper;
 
@@ -61,19 +63,35 @@ public class GoodsFileService {
     @Autowired
     ItemPicRelationService itemPicRelationService;
 
-    final String ROOT_PATH="udf/";
+    @Autowired
+    ShiguShopMapper shiguShopMapper;
+    @Autowired
+    GoodsCountForsearchMapper goodsCountForsearchMapper;
 
-    final long DEFAULT_SIZE=1048576;
+    final String ROOT_PATH = "udf/";
+
+    final long DEFAULT_SIZE = 1048576;
+
+    @PostConstruct
+    private void init() {
+        super.setAccessKeyId(ossIO.getAccessKeyId());
+        super.setAccessKeySecret(ossIO.getAccessKeySecret());
+        super.setEndpoint(ossIO.getEndpoint());
+        super.setDomain("http://imgzip.571xz.com/");
+        super.setBucketName("imgzip");
+    }
 
     /**
      * web真传认证
+     *
      * @param shopId
      * @return
      * @throws UnsupportedEncodingException
      */
     public Map<String, String> createPostSignInfo(Long shopId) throws UnsupportedEncodingException {
-        return ossIO.createPostSignInfo(getTempDir(shopId));
+        return super.createPostSignInfo(getTempDir(shopId));
     }
+
     /**
      * 查店铺的容量支持
      * @param shopId
@@ -82,7 +100,15 @@ public class GoodsFileService {
     public Long shopDataSize(Long shopId){
         ShopLicense license=shopLicenseService.selShopLIcenseByType(shopId, ShopLicenseTypeEnum.SHOPDATA);
         if (license == null) {
-            return DEFAULT_SIZE;
+            //判断是否电商
+            ShiguShopExample example=new ShiguShopExample();
+            List<Long> marketIds=new ArrayList<>();
+            marketIds.add(1087L);
+            marketIds.add(617L);
+            marketIds.add(621L);
+            example.createCriteria().andShopIdEqualTo(shopId).andMarketIdIn(marketIds);
+            int much=shiguShopMapper.countByExample(example)>0?3:1;
+            return much*DEFAULT_SIZE;
         }
         return Long.valueOf(license.getContext());
     }
@@ -93,16 +119,16 @@ public class GoodsFileService {
      */
     public GoodsFileVO uploadFile(Long shopId,String fileId) throws JsonErrException {
         //取新文件大小
-        Long newSize=ossIO.getSizeInfo(getTempDir(shopId)+fileId)/1024;
+        Long newSize=super.getSizeInfo(getTempDir(shopId)+fileId)/1024;
         //取已存总大小
-        Long hadSize=ossIO.getSizeInfo(getHomeDir(shopId))/1024;
+        Long hadSize=super.getSizeInfo(getHomeDir(shopId))/1024;
         //取容量
         Long shopSize=shopDataSize(shopId);
         if(newSize+hadSize>shopSize){//超了
             throw new JsonErrException("容量超出,上传失败");
         }
         //迁移
-        ossIO.moveFile(getTempDir(shopId)+fileId, getHomeDir(shopId)+fileId);
+        super.moveFile(getTempDir(shopId)+fileId, getHomeDir(shopId)+fileId);
         GoodsFileVO fileVO=new GoodsFileVO();
         fileVO.setFileId(fileId);
         fileVO.setFileType("picBkg");
@@ -134,7 +160,7 @@ public class GoodsFileService {
      * 获取文件列表
      */
     public List<GoodsFileVO> selFilesByFileId(Long shopId , String fileKey) {
-        List<GoodsFileVO> files = BeanMapper.mapList(ossIO.getFileList(parseMyFilePath(shopId,fileKey)), GoodsFileVO.class);
+        List<GoodsFileVO> files = BeanMapper.mapList(super.getFileList(parseMyFilePath(shopId,fileKey)), GoodsFileVO.class);
         List<GoodsFileVO> newFiles = new ArrayList<GoodsFileVO>();
         List<String> fileKeys=BeanMapper.getFieldList(files,"fileId",String.class);//文件ID
         List<String> hasConnected=new ArrayList<>();
@@ -302,13 +328,17 @@ public class GoodsFileService {
      * @param goodsId
      * @return
      */
-    public String datuUrl(Long goodsId){
-        GoodsFileExample example=new GoodsFileExample();
+    public DatuVO datuUrl(Long goodsId) {
+        GoodsFileExample example = new GoodsFileExample();
         example.createCriteria().andGoodsIdEqualTo(goodsId);
-        List<GoodsFile> files=goodsFileMapper.selectByExample(example);
-        if(files.size()>0){
-            return ossIO.getDomain()+files.get(0).getFileKey();
-        }else{
+        List<GoodsFile> files = goodsFileMapper.selectByExample(example);
+        if (files.size() > 0) {
+            GoodsFile goodsFile=files.get(0);
+            DatuVO vo=new DatuVO();
+            vo.setUrl(goodsFile.getType()==1?super.getDomain() + files.get(0).getFileKey():files.get(0).getFileKey());
+            vo.setPwd(goodsFile.getPasswd());
+            return vo;
+        } else {
             return null;
         }
     }
@@ -349,6 +379,15 @@ public class GoodsFileService {
         GoodsFileExample example=new GoodsFileExample();
         example.createCriteria().andFileKeyEqualTo(getHomeDir(shopId)+fileId).andGoodsIdEqualTo(goodsId);
         return itemPicRelationService.removeFileRelation(getHomeDir(shopId)+fileId,goodsId)?1:0;
+    }
+
+    /**
+     * 修改商品统计中的数量
+     * @param goodsId
+     * @param hadBigzip
+     */
+    private void updateGoodsCountForSearch(Long goodsId,String webSite,Boolean hadBigzip){
+        itemPicRelationService.updateBigPicWeight(hadBigzip,goodsId,webSite);
     }
 
     /**
@@ -415,10 +454,10 @@ public class GoodsFileService {
         if(fileKey.contains("/") && !fileType.equalsIgnoreCase("folder")) {
             newFileKey = fileKey.substring(0, fileKey.indexOf("/"))+"/"+ newName;
         }
-        if(ossIO.fileExist(getHomeDir(shopId)+newFileKey)){
+        if(super.fileExist(getHomeDir(shopId)+newFileKey)){
             throw new JsonErrException("存在同名文件");
         }
-        boolean result=ossIO.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newFileKey);
+        boolean result=super.renameFile(getHomeDir(shopId)+fileKey, getHomeDir(shopId)+newFileKey);
         if(result){
             //修改表
             //如果文件夹
@@ -447,15 +486,51 @@ public class GoodsFileService {
         if(fileId.equals(targetFileId)){
             return false;
         }
-        if(ossIO.fileExist(getHomeDir(shopId)+targetFileId)){
+        if(super.fileExist(getHomeDir(shopId)+targetFileId)){
             throw new JsonErrException("目标文件夹下已经存在同名文件");
         }
-        boolean result=ossIO.moveFile(getHomeDir(shopId)+fileId, getHomeDir(shopId)+targetFileId);
+        boolean result=super.moveFile(getHomeDir(shopId)+fileId, getHomeDir(shopId)+targetFileId);
         if(result){
             //修改表
             itemPicRelationService.updateFileRelation(getHomeDir(shopId)+fileId,getHomeDir(shopId)+targetFileId);
         }
         return result;
+    }
+
+    /**
+     * 更新外链
+     *
+     * @param bo
+     * @throws JsonErrException
+     */
+    public void saveOrUpdateOuterLink(BigPicOuterLinkBO bo, ShopSession shop) throws JsonErrException {
+        if (bo == null || bo.getGoodsId() == null || bo.getLink() == null) {
+            throw new JsonErrException("无法关联商品到链接");
+        }
+        if (bo.getIsChecked() == null || !bo.getIsChecked()) {
+            saveOrUpdateOuterLinkSingle(bo,shop.getWebSite(), bo.getGoodsId());
+        } else {
+            ShiguGoodsTiny shiguGoodsTiny = new ShiguGoodsTiny();
+            shiguGoodsTiny.setWebSite(shop.getWebSite());
+            shiguGoodsTiny.setGoodsId(bo.getGoodsId());
+            shiguGoodsTiny.setStoreId(shop.getShopId());
+            ShiguGoodsTiny shiguGoodsTiny1 = shiguGoodsTinyMapper.selectOne(shiguGoodsTiny);
+            if (shiguGoodsTiny1 != null && StringUtils.isNotEmpty(shiguGoodsTiny1.getGoodsNo())) {
+                shiguGoodsTiny.setGoodsNo(shiguGoodsTiny1.getGoodsNo());
+                shiguGoodsTiny.setGoodsId(null);
+            }
+            List<ShiguGoodsTiny> select = shiguGoodsTinyMapper.select(shiguGoodsTiny);
+            if (select.size() > 0) {
+                for (Long aLong : select.stream().map(ShiguGoodsTiny::getGoodsId).collect(Collectors.toList())) {
+                    saveOrUpdateOuterLinkSingle(bo,shop.getWebSite(), aLong);
+                }
+            }
+        }
+
+    }
+
+    private void saveOrUpdateOuterLinkSingle(BigPicOuterLinkBO bo,String webSite, Long goodsId) {
+       itemPicRelationService.updateFileOuter(goodsId,webSite,bo.getPsw(),bo.getLink(),2);
     }
 
 
@@ -465,23 +540,23 @@ public class GoodsFileService {
      * @return
      */
     public String createDir(Long shopId, String dir) throws JsonErrException {
-        if(ossIO.fileExist(getHomeDir(shopId)+dir+"/")){
+        if(super.fileExist(getHomeDir(shopId)+dir+"/")){
             throw new JsonErrException("文件夹已经存在");
         }
-        String fildPath=ossIO.createDir(getHomeDir(shopId), dir);
+        String fildPath=super.createDir(getHomeDir(shopId), dir);
         return fildPath.replace(getHomeDir(shopId),"");
     }
 
     public double getSizeInfo(Long shopId) {
-        return div((double)ossIO.getSizeInfo(getHomeDir(shopId)), (double)1024*1024, 3);
+        return div((double)super.getSizeInfo(getHomeDir(shopId)), (double)1024*1024, 3);
     }
 
     public boolean fileExist(String filePath) {
-        return ossIO.fileExist(filePath);
+        return super.fileExist(filePath);
     }
 
     public String zipUrl(Long shopId,String key){
-        return ossIO.getDomain()+getHomeDir(shopId)+key;
+        return super.getDomain()+getHomeDir(shopId)+key;
     }
 
     /**
@@ -506,7 +581,16 @@ public class GoodsFileService {
         return true;
     }
 
-    private static  String sChar[] = {"<",">","&","$","\t","\n","\r","../"};
+    public List<GoodsFile> selGoodsFileInfo(List<Long> goodsIds) {
+        GoodsFileExample example = new GoodsFileExample();
+        if (goodsIds == null||goodsIds.size()==0) {
+            return new ArrayList<>();
+        }
+        example.createCriteria().andGoodsIdIn(goodsIds);
+        return goodsFileMapper.selectByExample(example);
+    }
+
+    private static String sChar[] = {"<", ">", "&", "$", "\t", "\n", "\r", "../"};
     private static int sCharCount = sChar.length;
 
 

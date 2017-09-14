@@ -8,7 +8,7 @@
     
     <meta name="description" content="发现好货-发现好货，每天实时推荐档口最新热卖商品！">
     
-    <link href="http://style.571xz.com/marketV3/css/index.css?t=1502171368430" rel="stylesheet">
+    <link href="http://style.571xz.com/marketV3/css/index.css?t=1504256300092" rel="stylesheet">
     
   </head>
 <body>
@@ -61,9 +61,9 @@
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -94,9 +94,9 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -248,7 +248,7 @@ var webSite = '${webSite!}';
                 <#if webSite == 'hz'>
                 <li><a href="http://www.571xz.com/activity/redbull.htm" target="_blank">发现好货<i class="hot"></i></a></li>
                 </#if>
-                <li><a href="http://daifa.571xz.com/" target="_blank">一件代发</a></li>
+                <li><a href="/daifaIndex.htm" target="_blank">一件代发</a></li>
                 <#if webSite == 'hz'>
                 <li><a href="http://www.571xz.com/shopIconCopyright.htm" target="_blank">知识产权</a></li>
                 </#if>
@@ -414,7 +414,7 @@ if(this.$wgt){
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
         <script src="http://style.571xz.com/marketV3/js/jquery.pjax.js"></script>
         <script src="http://style.571xz.com/marketV3/js/nprogress.js"></script>
-<script src="http://style.571xz.com/marketV3/js/index.js?t=1502171368430"></script>
+<script src="http://style.571xz.com/marketV3/js/index.js?t=1504256300092"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

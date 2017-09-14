@@ -100,6 +100,16 @@ public class PayModeAction {
         writer.close();
     }
 
+    @RequestMapping("alipayByApplyId")
+    public void alipayByApplyId(Long applyId, HttpServletResponse response) throws PayApplyException, IOException {
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html");
+        PrintWriter writer = response.getWriter();
+        writer.println(payModeService.payApplyByApplyId(applyId).getPayLink());
+        writer.flush();
+        writer.close();
+    }
+
     /**
      * 支付轮询
      * @return

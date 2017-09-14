@@ -210,10 +210,10 @@ var webSite = '${webSite!}';
             
             <div class="storeNamebox">
                 <h3 
-                <#if shopInfo.xzUrl??>
-                    onclick="jumpShopLink('${shopInfo.xzUrl!}')"
+                <#if shopInfo.domain??>
+                    onclick="jumpShopLink('http://${shopInfo.domain!}.571xz.com')"
                 <#else> 
-                    onclick="javascript:void(0)"
+                    onclick="jumpShopLink('http://${webSite!}.571xz.com/shop.htm?id=${shopInfo.shopId!}')"
                 </#if>
                 >${shopInfo.marketName!}${shopInfo.shopNo!}</h3>
                 
@@ -520,7 +520,11 @@ ${userShopHdHtml}
         <ul>
             <#list goodsInfo.imgUrls as imgUrl>
                 <#if imgUrl_index == 0>
-                <li><a href="javascript:;"><img id="conImage" src="${imgUrl!}_400x400.jpg"></a></li>
+                    <#if goodsInfo.tbGoodsId?? && goodsInfo.tbGoodsId != "">
+                    <li><a data-href="https://item.taobao.com/item.htm?id=${goodsInfo.tbGoodsId!}" target="_blank"><img id="conImage" src="${imgUrl!}_400x400.jpg"></a></li>
+                    <#else>
+                    <li><a href="javascript:;"><img id="conImage" src="${imgUrl!}_400x400.jpg"></a></li>
+                    </#if>
                 </#if>
             </#list>
         </ul>
@@ -530,7 +534,7 @@ ${userShopHdHtml}
         <ul>
             <#list goodsInfo.imgUrls as imgUrl>
                 <#if img_index lt 6>
-                <li class="" data-img='${imgUrl!}'><a href="javascript:;"><img src='${imgUrl!}_72x72.jpg'></a></li>
+                <li class="" data-img='${imgUrl!}'><a href="${imgUrl!}" target="_blank"><img src='${imgUrl!}_72x72.jpg'></a></li>
                 </#if>
             </#list>
         </ul>
@@ -543,12 +547,14 @@ ${userShopHdHtml}
         <#if session_user_redis__?? && session_user_redis__.logshop.shopId??>
             <a xzclick="addGoodsDataCannot" href="javascript:;" class="store">收藏此商品</a>
         <#else>
-            <a xzclick="addGoodsData" href="javascript:;" class="store">收藏此商品</a>
+            <a xzclick="addGoodsData" href="javascript:;" class="store" data-goodsid="${goodsInfo.goodsId!}">收藏此商品</a>
         </#if>
         <a class="find_error" href="http://www.571xz.com/contact.htm" target="_blank">我要纠错<span class="text-999">（如价格有误请联系我们客服修改）</span></a>
         
     </div>
 </div>
+
+
 
         </div>
         <div class="leftCol2">
@@ -583,20 +589,11 @@ ${userShopHdHtml}
                 <span class="fcF40 yahei">&yen;<em class="fs18 arail">${goodsInfo.piPrice!}</em></span>
             </li>
             <li class="minprice">
-                <#if goodsInfo.liPrice??>
-                <label class="fc9">电商最低零售价</label>
-                <span class="fcF40 fs14 yahei">&yen;<em class="arail">${goodsInfo.liPrice!}</em>
-                    <div class="tipsbox fs12 simsun">
-                        售卖时不能低于此价格，否则会被厂家投诉
-                        <i class="i1"></i>
-                        <i class="i2"></i>
-                    </div>
-                </span>
-                </#if>
+                
             </li>
             <li class="view">
                 <label class="fc9">浏览</label>
-                <span class="fc3 yahei fs14"><em class="arail">${goodsInfo.viewNum!}</em></span>
+                <span class="fc3 yahei fs14"><em class="arail imClicks">-</em></span>
             </li>
         </ul>
         
@@ -629,16 +626,7 @@ ${userShopHdHtml}
         <div class="menuButtonbox yahei tac">已选商品清单<i class="icon-uparrow"></i></div>
         <div class="menuListbox">
             <table>
-                <tr>
-                    <td class="colorText"><span title="卡其色（长袖）">卡其色（长袖）</span></td>
-                    <td class="countText"><span>22件</span></td>
-                    <td class="allSelectedbox">aaa</td>
-                </tr>
-                <tr>
-                    <td class="colorText"><span title="卡其色（长袖）">卡其色（长袖）</span></td>
-                    <td class="countText"><span>22件</span></td>
-                    <td class="allSelectedbox">aaa</td>
-                </tr>
+                
             </table>
         </div>
         
@@ -714,6 +702,8 @@ var colorsMeta = ${goodsInfo.colorsMeta!};
 var sizesMeta = ${goodsInfo.sizesMeta!};
 var piPrice = '${goodsInfo.piPrice!}';
 </script>
+
+
 
 
 
@@ -1000,8 +990,8 @@ var piPrice = '${goodsInfo.piPrice!}';
          <ul class="keybox">
                 <li><a href="http://www.571xz.net/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到淘宝</span></a></li>
                 <li><a href="http://1688.571xz.com/offer/publish.htm?id=${goodsInfo.goodsId!}" target="_blank"><i class="ii"></i><span>上传到阿里</span></a></li>
-                <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox"></div></li>
-                <li class="addData"><b xzclick="addGoodsData"><i class="ii"></i><span>加入数据包</span></b></li>
+                <li class="wxContainer"><b xzclick="showGoodsWx" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>分享朋友圈</span></b><div id="wxEwmbox" data-goodsid="${goodsInfo.goodsId!}"></div></li>
+                <li class="addData"><b xzclick="addGoodsData" data-goodsid="${goodsInfo.goodsId!}"><i class="ii"></i><span>加入数据包</span></b></li>
                 
 
 
@@ -1136,7 +1126,7 @@ var shopId = '${shopInfo.shopId!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

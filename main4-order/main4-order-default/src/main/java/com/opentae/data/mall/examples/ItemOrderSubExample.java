@@ -27,6 +27,7 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
     public static EntityColumn shopId;
     public static EntityColumn floor;
     public static EntityColumn skuId;
+    public static EntityColumn outOfStok;
     public static EntityColumn goodsNo;
     public static EntityColumn weight;
     public static EntityColumn refundMoney;
@@ -58,6 +59,7 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
         shopId = listMap.get("shopId");
         floor = listMap.get("floor");
         skuId = listMap.get("skuId");
+        outOfStok = listMap.get("outOfStok");
         goodsNo = listMap.get("goodsNo");
         weight = listMap.get("weight");
         refundMoney = listMap.get("refundMoney");
@@ -933,6 +935,53 @@ public class ItemOrderSubExample extends SgExample<ItemOrderSubExample.Criteria>
 
         public ItemOrderSubExample.Criteria andSkuIdNotBetween(Long value1, Long value2) {
             return notBetween(skuId, value1, value2);
+        }
+        public ItemOrderSubExample.Criteria andOutOfStokIsNull() {
+            return isNull(outOfStok);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokIsNotNull() {
+            return isNotNull(outOfStok);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokEqualTo(Integer value) {
+            return equalTo(outOfStok, value);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokNotEqualTo(Integer value) {
+            return notEqualTo(outOfStok, value);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokGreaterThan(Integer value) {
+            return greaterThan(outOfStok, value);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokGreaterThanOrEqualTo(Integer value) {
+            return greaterThanOrEqualTo(outOfStok, value);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokLessThan(Integer value) {
+            return lessThan(outOfStok, value);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokLessThanOrEqualTo(Integer value) {
+            return lessThanOrEqualTo(outOfStok, value);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokIn(List<Integer> values) {
+            return in(outOfStok, values);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokNotIn(List<Integer> values) {
+            return notIn(outOfStok, values);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokBetween(Integer value1, Integer value2) {
+            return between(outOfStok, value1, value2);
+        }
+
+        public ItemOrderSubExample.Criteria andOutOfStokNotBetween(Integer value1, Integer value2) {
+            return notBetween(outOfStok, value1, value2);
         }
         public ItemOrderSubExample.Criteria andGoodsNoIsNull() {
             return isNull(goodsNo);
