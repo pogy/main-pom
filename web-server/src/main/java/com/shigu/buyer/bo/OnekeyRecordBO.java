@@ -3,8 +3,6 @@ package com.shigu.buyer.bo;
 import com.shigu.tools.EncodeParamter;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
 
 /**
  * 一键上传记录
@@ -27,6 +25,34 @@ public class OnekeyRecordBO implements Serializable{
      * 结束时间
      */
     private String endTime;
+
+    public boolean isTbSoldout() {
+        return tbSoldout;
+    }
+
+    public void setTbSoldout(boolean tbSoldout) {
+        this.tbSoldout = tbSoldout;
+    }
+
+    public boolean isShopSoldout() {
+        return shopSoldout;
+    }
+
+    public void setShopSoldout(boolean shopSoldout) {
+        this.shopSoldout = shopSoldout;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    private boolean tbSoldout;
+    private boolean shopSoldout;
+    private String flag;
 
     private Integer page;
 

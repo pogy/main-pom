@@ -1,6 +1,7 @@
 package com.shigu.buyer.actions;
 
-import com.openJar.commons.ResponseUtil;
+import com.alibaba.fastjson.JSON;
+import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.buyer.bo.*;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
@@ -12,6 +13,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
+import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
@@ -46,6 +48,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
+import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -62,6 +71,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -266,37 +276,107 @@ public class MemberAction {
     }
 
     /**
-     * 一键上传记录
+     * 展示淘宝一键上传的商品
      * @return
      */
     @RequestMapping("member/shiguOnekeyRecordinit")
     public String shiguOnekeyRecordinit(OnekeyRecordBO bo,HttpSession session,Model model){
         PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        String nick;
+//        String nick;
         //查出用户nick
-        if(ps.getLoginFromType().equals(LoginFromType.TAOBAO)){
-            nick=ps.getLoginName();
-        }else{
-            nick=memberSimpleService.selNick(ps.getUserId());
+//        if(ps.getLoginFromType().equals(LoginFromType.TAOBAO)){
+//            nick=ps.getLoginName();
+//        }else{
+//            nick=memberSimpleService.selNick(ps.getUserId());
+//        }
+//        if(nick==null){
+//            pager=itemUpRecordService.uploadedItems(ps.getUserId(),bo.getTarget(),bo.getTitle(),
+//                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
+//                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
+//                    bo.getPage(),bo.getRows());
+//        }else{
+//            pager=itemUpRecordService.uploadedItems(ps.getUserId(),nick,bo.getTarget(),bo.getTitle(),
+//                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
+//                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
+//                    bo.getPage(),bo.getRows());
+//        }
+        //查找shigugoodsup_v2索引下 某个用户的上传到淘宝且未下架的产品
+        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+        QueryBuilder userQuery = QueryBuilders.termQuery("fenUserId", ps.getUserId());
+        QueryBuilder flagQuery = QueryBuilders.termsQuery("flag", bo.getFlag());
+        QueryBuilder tbSoldoutQuery = QueryBuilders.termsQuery("tbSoldout", bo.isTbSoldout());
+        QueryBuilder shopSoldoutQuery = QueryBuilders.termsQuery("shopSoldout", bo.isShopSoldout());
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        boolQuery.must(userQuery);
+        boolQuery.must(flagQuery);
+        boolQuery.mustNot(tbSoldoutQuery);
+        boolQuery.mustNot(shopSoldoutQuery);
+        srb.setQuery(boolQuery);
+        SearchResponse response = srb.execute().actionGet();
+        //聚合结果
+        SearchHits hits = response.getHits();
+        //总数
+        long totalHits = hits.getTotalHits();
+
+        List<ItemUpRecordVO> list = new ArrayList<>();
+        SearchHit[] searchHits = hits.hits();
+        for (SearchHit s : searchHits) {
+            //单条数据
+            String json = s.getSourceAsString();
+            //字符串转对象
+            ItemUpRecordVO itemUpRecordVO = JSON.parseObject(json, ItemUpRecordVO.class);
+            list.add(itemUpRecordVO);
+            System.out.println(itemUpRecordVO);
         }
-        ShiguPager<OnekeyRecoreVO> pager;
-        if(nick==null){
-            pager=itemUpRecordService.uploadedItems(ps.getUserId(),bo.getTarget(),bo.getTitle(),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
-                    bo.getPage(),bo.getRows());
-        }else{
-            pager=itemUpRecordService.uploadedItems(ps.getUserId(),nick,bo.getTarget(),bo.getTitle(),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getStartTime()),
-                    DateParseUtil.parseFromString("yyyy.MM.dd",bo.getEndTime()),
-                    bo.getPage(),bo.getRows());
-        }
+
+        ShiguPager<ItemUpRecordVO> pager = new ShiguPager<ItemUpRecordVO>();
+        pager.setTotalCount(Integer.parseInt(String.valueOf(totalHits)));
+        pager.setContent(list);
         model.addAttribute("get",bo);
         model.addAttribute("page",bo.getPage());
         model.addAttribute("pageOption",pager.selPageOption(bo.getRows()));
-        model.addAttribute("goodslist",pager.getContent());
+        model.addAttribute("goodslist", list);
+
+        //淘宝在售
+        if (bo.isTbSoldout() == false) {
+            //仅【档口在售】且【淘宝在售】；
+            if (bo.isShopSoldout() == false) {
+                return "buyer/shiguOnekeyRecordinit";
+            }else{
+                //仅【档口已下架】且【淘宝在售】；
+                return "buyer/shiguOnekeyRecordinit";
+            }
+
+        }
+        //【档口在售】和【档口已下架】，且【淘宝已下架】
         return "buyer/shiguOnekeyRecordinit";
     }
+
+////根据条件查
+//    private static SearchResponse searchItemUpRecordVO(OnekeyRecordBO bo,HttpSession session){
+//        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+//        //查找shigugoodsup_v2索引下 某个用户的上传到淘宝且未下架的产品
+//        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
+//        QueryBuilder userQuery = QueryBuilders.termQuery("fenUserId", ps.getUserId());
+//        QueryBuilder flagQuery = QueryBuilders.termsQuery("flag", "web-tb");
+//
+//
+//
+//        QueryBuilder tbSoldoutQuery = QueryBuilders.termsQuery("tbSoldout", true);
+//        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+//        boolQuery.must(userQuery);
+//        boolQuery.must(flagQuery);
+//        boolQuery.mustNot(tbSoldoutQuery);
+//        srb.setQuery(boolQuery);
+//        SearchResponse response = srb.execute().actionGet();
+//
+//        return response;
+//    }
+
+
+/**
+ *
+ */
 
     /**
      * 删除一键上传商品

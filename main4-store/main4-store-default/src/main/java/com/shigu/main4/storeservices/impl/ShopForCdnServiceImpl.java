@@ -29,7 +29,6 @@ import com.shigu.opensearchsdk.response.Result;
 import com.shigu.opensearchsdk.response.SearchResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
