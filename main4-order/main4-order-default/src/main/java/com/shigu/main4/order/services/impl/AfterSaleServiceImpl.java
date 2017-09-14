@@ -79,11 +79,17 @@ public class AfterSaleServiceImpl implements AfterSaleService{
 
         Long oid = subItemOrderVO.getOid();
         ItemOrder order = SpringBeanFactory.getBean(ItemOrder.class, oid);
-        List<Long> allSubId = order.subOrdersInfo().stream().map(SubItemOrderVO::getSoid).collect(Collectors.toList());
+        List<SubItemOrderVO> subOrders=order.subOrdersInfo();
+        List<Long> allSubId = subOrders.stream().map(SubItemOrderVO::getSoid).collect(Collectors.toList());
+        int allSubNum=subOrders.stream().mapToInt(SubItemOrderVO::getNum).sum();
         ItemOrderRefund refund = new ItemOrderRefund();
         refund.setOid(oid);
-        allSubId.removeAll(itemOrderRefundMapper.select(refund).stream().map(ItemOrderRefund::getSoid).distinct().collect(Collectors.toList()));
-        if (allSubId.size() == 1 && allSubId.get(0).equals(subOrderId)) {
+        List<ItemOrderRefund> refunds=itemOrderRefundMapper.select(refund);
+        allSubId.removeAll(refunds.stream().map(ItemOrderRefund::getSoid).distinct().collect(Collectors.toList()));
+        //除本单以外，其它全部已经退款成功
+        int allrefunded=refunds.stream().mapToInt(ItemOrderRefund::getNumber).sum();
+        //除本单外，其它都已退
+        if (allrefunded==allSubNum-subItemOrderVO.getNum()&&allSubId.size() == 1 && allSubId.get(0).equals(subOrderId)) {
             vo.setOtherRefundPrice(order.orderOtherAmount());
         }
         return vo;

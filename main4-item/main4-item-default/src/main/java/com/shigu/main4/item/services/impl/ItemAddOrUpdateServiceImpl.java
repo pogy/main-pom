@@ -630,7 +630,11 @@ public class ItemAddOrUpdateServiceImpl implements ItemAddOrUpdateService {
         if (StringUtils.isEmpty(tiny.getCity())) {
             tiny.setCity(shiguSite.getCityName());
         }
-        shiguGoodsTinyMapper.insertSelective(tiny);
+        try {
+            shiguGoodsTinyMapper.insertSelective(tiny);
+        } catch (Exception e) {
+            throw new ItemModifyException(item.getNumIid()+"_"+item.getShopId()+" 重复插入");
+        }
 
 
         //3.添加shigu_goods_extends //下面简称extends

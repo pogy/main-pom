@@ -12,4 +12,10 @@ public interface ItemOrderProcess {
      * @param soidpid
      */
     void outOfStock(Long soidpid);
+
+    /**
+     * 缺货后，重新拿到货
+     * @param soidpid
+     */
+    void cancleOutOfStock(Long soidpid);
 }

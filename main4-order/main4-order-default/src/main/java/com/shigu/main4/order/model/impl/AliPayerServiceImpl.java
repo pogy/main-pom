@@ -57,7 +57,7 @@ public class AliPayerServiceImpl extends PayerServiceAble {
         alipayRequest.setBizContent("{" +
                 "    \"out_trade_no\":\"" + apply.getApplyId() + "\"," +
                 "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                "    \"total_amount\":" + String.format("%,.2f", money * .01) + "," +
+                "    \"total_amount\":" + String.format("%.2f", money * .01) + "," +
                 "    \"subject\":\"" + title + "\"" +
                 "  }");//填充业务参数
         String form = "";
@@ -112,15 +112,15 @@ public class AliPayerServiceImpl extends PayerServiceAble {
 
     private void alipayRefund(OrderPay orderPay, Long money) throws PayerException {
         OrderPayApply orderPayApply = orderPayApplyMapper.selectByPrimaryKey(orderPay.getApplyId());
-        ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, orderPayApply.getOid());
-        if (itemOrder == null || itemOrder.selSender() == null) {
-            throw new PayerException("支付宝退款失败， 无法获取对应代发资金分组：payId=" + orderPay.getPayId());
-        }
+//        ItemOrder itemOrder = SpringBeanFactory.getBean(ItemOrder.class, orderPayApply.getOid());
+//        if (itemOrder == null || itemOrder.selSender() == null) {
+//            throw new PayerException("支付宝退款失败， 无法获取对应代发资金分组：payId=" + orderPay.getPayId());
+//        }
         //查出第几次退
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent("{" +
                 "    \"out_trade_no\":\"" + orderPayApply.getApplyId() +"\"," +
-                "    \"refund_amount\":" + String.format("%,.2f", money * .01)  + "," +
+                "    \"refund_amount\":" + String.format("%.2f", money * .01)  + "," +
                 "    \"refund_reason\":\"正常退款\"," +
                 "    \"out_request_no\":\"" + UUIDGenerator.getUUID() + "\"" +
                 "  }");

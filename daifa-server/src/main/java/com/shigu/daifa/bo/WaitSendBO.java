@@ -39,6 +39,16 @@ public class WaitSendBO{
      */
     private int page;
 
+    private Integer canSendState;
+
+    public Integer getCanSendState() {
+        return canSendState;
+    }
+
+    public void setCanSendState(Integer canSendState) {
+        this.canSendState = canSendState;
+    }
+
     public Long getOrderId() {
         return orderId;
     }

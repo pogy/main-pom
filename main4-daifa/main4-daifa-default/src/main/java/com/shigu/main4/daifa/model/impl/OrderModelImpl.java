@@ -84,12 +84,6 @@ public class OrderModelImpl implements OrderModel {
         this.orderBO = bo;
     }
 
-    @PostConstruct
-    public void  beforeInit(){
-        if (orderBO!=null){
-            init();
-        }
-    }
 
     /**
      * 创建订单
@@ -194,7 +188,7 @@ public class OrderModelImpl implements OrderModel {
                         }
                         subOrderModelBO.setSinglePay(MoneyUtil.dealPrice(MoneyUtil.StringToLong(bo.getSinglePay())+MoneyUtil.StringToLong(subOrderModelBO.getSingleServicesFee())));
                         subOrderModelBO.setTotalFee(subOrderModelBO.getSinglePay());
-                        SpringBeanFactory.getBean(SubOrderModelImpl.class,subOrderModelBO);
+                        SpringBeanFactory.getBean(SubOrderModel.class,subOrderModelBO);
                         BigNumber singlePay = new BigNumber(bo.getSinglePay());
                         goodsFee = goodsFee.Add(singlePay);
                     }

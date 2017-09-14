@@ -36,6 +36,8 @@ public class AllOrderBO implements Serializable {
      */
     private Integer count;
 
+    private String postCode;
+
     public String getOrderId() {
         return orderId;
     }
@@ -82,5 +84,13 @@ public class AllOrderBO implements Serializable {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    public String getPostCode() {
+        return this.postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
     }
 }

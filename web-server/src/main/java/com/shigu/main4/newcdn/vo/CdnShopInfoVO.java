@@ -62,6 +62,10 @@ public class CdnShopInfoVO {
      * 淘宝地址
      */
     private String tbUrl;
+    /**
+     * 店铺二级域名
+     */
+    private String domain;
 
     /**
      * 获取 档口ID
@@ -257,5 +261,13 @@ public class CdnShopInfoVO {
      */
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 }

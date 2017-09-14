@@ -103,6 +103,9 @@ public class DaifaAllOrderIndexService {
         if (StringUtils.isEmpty(bo.getPage())) {
             bo.setPage("1");
         }
+        if(StringUtils.hasText(bo.getPostCode())){
+            ce.andExpressCodeEqualTo(bo.getPostCode());
+        }
         int i = daifaTradeMapper.countByExample(dtex);
         bo.setCount(i);
         List<DaifaAllOrderVO> daifaAllOrderVOS = new ArrayList<>();

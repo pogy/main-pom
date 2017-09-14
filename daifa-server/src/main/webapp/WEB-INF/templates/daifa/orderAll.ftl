@@ -33,7 +33,7 @@
             <script src="http://style.571xz.com/v2/dfgl/js/laydate/laydate.js"></script>
         
     
-    <script src="http://style.571xz.com/v2/dfgl/js/orderAll.js"></script>
+    <script src="http://style.571xz.com/v2/dfgl/js/orderAll.js?t=2017091101"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -153,6 +153,7 @@
     <ul>
         <li><label>主订单ID：</label><input type="text" class="fmInput" name="orderId" <#if query.orderId??> value="${query.orderId!}" </#if> ></li>
         <li><label>手机：</label><input type="text" class="fmInput" name="telephone" <#if query.telephone??> value="${query.telephone!}" </#if>></li>
+        <li><label>发货快递单：</label><input type="text" class="fmInput" name="postCode" <#if query.postCode??> value="${query.postCode!}" </#if>></li>
         <li><label>订单日期：</label><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="startTime" placeholder="请选择起始时间" <#if query.startTime??> value="${query.startTime!}" </#if>><span class="divideLine">-</span><input type="text" class="jqDatepicker fmInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择结束时间" <#if query.endTime??>value="${query.endTime!}"</#if>></li>
         <li>
 
@@ -203,7 +204,6 @@
 
 
 
-
 </#list>
 </li>
     </ul>
@@ -221,7 +221,7 @@
 
 
 
-<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"orderId","value":"${query.orderId!}"},{"name":"telephone","value":"${query.telephone!}"},{"name":"postCode","value":"${query.postCode!}"},{"name":"startTime","value":"${query.startTime!}"},{"name":"endTime","value":"${query.endTime!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -277,9 +277,7 @@
             <div class="rightConBox fr">
                 <div class="fl pr receiverAddress">
                     <span class="">${order.receiverName!}（${order.receiverPhone!}）</span>
-                    <div class="pa addressCon">
-                        ${order.receiverAddress!}
-                    </div>
+                    <div class="pa addressCon">${order.receiverName!},${order.receiverPhone!},${order.receiverAddress!}</div>
                 </div>
                 <#if order.buyerRemark??>
                 <div class="pr fl buyerRemark">

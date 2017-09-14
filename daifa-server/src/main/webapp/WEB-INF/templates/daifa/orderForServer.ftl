@@ -27,7 +27,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/dfgl/js/orderForServer.js"></script>
+    <script src="http://style.571xz.com/v2/dfgl/js/orderForServer.js?t=2017091101"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -150,7 +150,6 @@
 
 
 
-
 </#list>
 </li>
     </ul>
@@ -223,9 +222,7 @@
             <div class="rightConBox fr">
                 <div class="fl pr receiverAddress">
                     <span class="">${order.receiverName!}（${order.receiverPhone!}）</span>
-                    <div class="pa addressCon">
-                        ${order.receiverAddress!}
-                    </div>
+                    <div class="pa addressCon">${order.receiverName!},${order.receiverPhone!},${order.receiverAddress!}</div>
                 </div>
                 <#if order.buyerRemark??>
                 <div class="pr fl buyerRemark">
