@@ -120,6 +120,7 @@ public class ItemOrderImpl implements ItemOrder {
         orderVO.setFinishTime(order.getFinishTime());
         orderVO.setOuterId(order.getOuterId());
         orderVO.setUserId(order.getUserId());
+        orderVO.setTbSend(order.getTbSend());
         return orderVO;
     }
 

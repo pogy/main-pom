@@ -91,7 +91,7 @@ public class ItemOrder implements Serializable {
     /**
      * 是否已设置淘宝发货,0:未设置,1:已设置
      */
-	private Integer isTbSend;
+	private Boolean tbSend;
 
 	public void setOid(Long oid) {
 		this.oid = oid;
@@ -221,11 +221,11 @@ public class ItemOrder implements Serializable {
 		return this.disenable;
 	}
 
-    public Integer getIsTbSend() {
-        return isTbSend;
+    public Boolean getTbSend() {
+        return tbSend;
     }
 
-    public void setIsTbSend(Integer isTbSend) {
-        this.isTbSend = isTbSend;
+    public void setTbSend(Boolean tbSend) {
+        this.tbSend = tbSend;
     }
 }

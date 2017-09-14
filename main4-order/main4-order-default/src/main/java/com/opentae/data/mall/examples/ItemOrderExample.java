@@ -26,7 +26,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
     public static EntityColumn totalFee;
     public static EntityColumn outerId;
     public static EntityColumn mark;
-    public static EntityColumn isTbSend;
+    public static EntityColumn tbSend;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -49,7 +49,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         totalFee = listMap.get("totalFee");
         outerId = listMap.get("outerId");
         mark = listMap.get("mark");
-        isTbSend = listMap.get("listMap");
+        tbSend = listMap.get("tbSend");
         }
 
     public ItemOrderExample() {
@@ -118,6 +118,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andRefundFeeNotBetween(Long value1, Long value2) {
             return notBetween(refundFee, value1, value2);
         }
+
         public ItemOrderExample.Criteria andFinishTimeIsNull() {
             return isNull(finishTime);
         }
@@ -165,6 +166,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andFinishTimeNotBetween(Date value1, Date value2) {
             return notBetween(finishTime, value1, value2);
         }
+
         public ItemOrderExample.Criteria andPayedFeeIsNull() {
             return isNull(payedFee);
         }
@@ -212,6 +214,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andPayedFeeNotBetween(Long value1, Long value2) {
             return notBetween(payedFee, value1, value2);
         }
+
         public ItemOrderExample.Criteria andDisenableIsNull() {
             return isNull(disenable);
         }
@@ -259,6 +262,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andDisenableNotBetween(Boolean value1, Boolean value2) {
             return notBetween(disenable, value1, value2);
         }
+
         public ItemOrderExample.Criteria andOrderStatusIsNull() {
             return isNull(orderStatus);
         }
@@ -306,6 +310,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andOrderStatusNotBetween(Integer value1, Integer value2) {
             return notBetween(orderStatus, value1, value2);
         }
+
         public ItemOrderExample.Criteria andOidIsNull() {
             return isNull(oid);
         }
@@ -353,6 +358,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andOidNotBetween(Long value1, Long value2) {
             return notBetween(oid, value1, value2);
         }
+
         public ItemOrderExample.Criteria andTypeIsNull() {
             return isNull(type);
         }
@@ -400,6 +406,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andTypeNotBetween(Integer value1, Integer value2) {
             return notBetween(type, value1, value2);
         }
+
         public ItemOrderExample.Criteria andTitleIsNull() {
             return isNull(title);
         }
@@ -455,6 +462,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andTitleNotBetween(String value1, String value2) {
             return notBetween(title, value1, value2);
         }
+
         public ItemOrderExample.Criteria andUserIdIsNull() {
             return isNull(userId);
         }
@@ -502,6 +510,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andUserIdNotBetween(Long value1, Long value2) {
             return notBetween(userId, value1, value2);
         }
+
         public ItemOrderExample.Criteria andSendTimeIsNull() {
             return isNull(sendTime);
         }
@@ -549,6 +558,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andSendTimeNotBetween(Date value1, Date value2) {
             return notBetween(sendTime, value1, value2);
         }
+
         public ItemOrderExample.Criteria andWebSiteIsNull() {
             return isNull(webSite);
         }
@@ -604,6 +614,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andWebSiteNotBetween(String value1, String value2) {
             return notBetween(webSite, value1, value2);
         }
+
         public ItemOrderExample.Criteria andSenderIdIsNull() {
             return isNull(senderId);
         }
@@ -651,6 +662,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andSenderIdNotBetween(Long value1, Long value2) {
             return notBetween(senderId, value1, value2);
         }
+
         public ItemOrderExample.Criteria andCreateTimeIsNull() {
             return isNull(createTime);
         }
@@ -698,6 +710,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andCreateTimeNotBetween(Date value1, Date value2) {
             return notBetween(createTime, value1, value2);
         }
+
         public ItemOrderExample.Criteria andTotalFeeIsNull() {
             return isNull(totalFee);
         }
@@ -745,6 +758,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andTotalFeeNotBetween(Long value1, Long value2) {
             return notBetween(totalFee, value1, value2);
         }
+
         public ItemOrderExample.Criteria andOuterIdIsNull() {
             return isNull(outerId);
         }
@@ -800,6 +814,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andOuterIdNotBetween(String value1, String value2) {
             return notBetween(outerId, value1, value2);
         }
+
         public ItemOrderExample.Criteria andMarkIsNull() {
             return isNull(mark);
         }
@@ -856,53 +871,53 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
             return notBetween(mark, value1, value2);
         }
 
-
-        public ItemOrderExample.Criteria andIsTbSendIsNull() {
-            return isNull(isTbSend);
+        public ItemOrderExample.Criteria andTbSendIsNull() {
+            return isNull(tbSend);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendIsNotNull() {
-            return isNotNull(isTbSend);
+        public ItemOrderExample.Criteria andTbSendIsNotNull() {
+            return isNotNull(tbSend);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendEqualTo(Integer value) {
-            return equalTo(isTbSend, value);
+        public ItemOrderExample.Criteria andTbSendEqualTo(Boolean value) {
+            return equalTo(tbSend, value);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendNotEqualTo(Integer value) {
-            return notEqualTo(isTbSend, value);
+        public ItemOrderExample.Criteria andTbSendNotEqualTo(Boolean value) {
+            return notEqualTo(tbSend, value);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendGreaterThan(Integer value) {
-            return greaterThan(isTbSend, value);
+        public ItemOrderExample.Criteria andTbSendGreaterThan(Boolean value) {
+            return greaterThan(tbSend, value);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendGreaterThanOrEqualTo(Integer value) {
-            return greaterThanOrEqualTo(isTbSend, value);
+        public ItemOrderExample.Criteria andTbSendGreaterThanOrEqualTo(Boolean value) {
+            return greaterThanOrEqualTo(tbSend, value);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendLessThan(Integer value) {
-            return lessThan(isTbSend, value);
+        public ItemOrderExample.Criteria andTbSendLessThan(Boolean value) {
+            return lessThan(tbSend, value);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendLessThanOrEqualTo(Integer value) {
-            return lessThanOrEqualTo(isTbSend, value);
+        public ItemOrderExample.Criteria andTbSendLessThanOrEqualTo(Boolean value) {
+            return lessThanOrEqualTo(tbSend, value);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendIn(List<Integer> values) {
-            return in(isTbSend, values);
+        public ItemOrderExample.Criteria andTbSendIn(List<Boolean> values) {
+            return in(tbSend, values);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendNotIn(List<Integer> values) {
-            return notIn(isTbSend, values);
+        public ItemOrderExample.Criteria andTbSendNotIn(List<Boolean> values) {
+            return notIn(tbSend, values);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendBetween(Integer value1, Integer value2) {
-            return between(isTbSend, value1, value2);
+        public ItemOrderExample.Criteria andTbSendBetween(Boolean value1, Boolean value2) {
+            return between(tbSend, value1, value2);
         }
 
-        public ItemOrderExample.Criteria andIsTbSendNotBetween(Integer value1, Integer value2) {
-            return notBetween(isTbSend, value1, value2);
+        public ItemOrderExample.Criteria andTbSendNotBetween(Boolean value1, Boolean value2) {
+            return notBetween(tbSend, value1, value2);
         }
     }
+
 }

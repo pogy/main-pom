@@ -3,6 +3,8 @@ package com.shigu.main4.order.process;
 import com.shigu.main4.order.model.ItemOrder;
 import com.shigu.main4.order.model.SoidsModel;
 import com.shigu.main4.tools.SpringBeanFactory;
+import com.taobao.api.request.LogisticsOfflineSendRequest;
+import com.taobao.api.response.LogisticsOfflineSendResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +31,19 @@ public class ItemOrderProcessImpl implements ItemOrderProcess{
     }
 
     @Override
-    public void tbSend(String nick, Long tid, String companyCode) {
-
+    public void tbSend(String nick, Long tid, String companyCode,String expressCode) {
+        LogisticsOfflineSendRequest req = new LogisticsOfflineSendRequest();
+        req.setTid(tid);
+        req.setIsSplit(0L);//这边没有拆单的
+        req.setOutSid(expressCode);
+        req.setCompanyCode(companyCode);
+//        LogisticsOfflineSendResponse rsp = getClient().execute(req,session);
+//        System.out.println(rsp.getBody());
+//        try {
+//            boolean b=rsp.getShipping().getIsSuccess();
+//            return b;
+//        } catch (Exception e) {
+//            return false;
+//        }
     }
 }

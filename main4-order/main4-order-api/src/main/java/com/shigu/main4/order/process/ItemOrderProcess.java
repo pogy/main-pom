@@ -24,6 +24,7 @@ public interface ItemOrderProcess {
      * @param nick
      * @param tid
      * @param companyCode
+     * @param expressCode
      */
-    void tbSend(String nick,Long tid,String companyCode);
+    void tbSend(String nick,Long tid,String companyCode,String expressCode);
 }
