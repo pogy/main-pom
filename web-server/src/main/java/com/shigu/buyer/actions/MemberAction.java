@@ -303,7 +303,7 @@ public class MemberAction {
         //查找shigugoodsup_v2索引下 某个用户的上传到淘宝且未下架的产品
         SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
         QueryBuilder userQuery = QueryBuilders.termQuery("fenUserId", ps.getUserId());
-        QueryBuilder flagQuery = QueryBuilders.termsQuery("flag", bo.getFlag());
+        QueryBuilder flagQuery = QueryBuilders.termsQuery("flag", "web-tb");
         QueryBuilder tbSoldoutQuery = QueryBuilders.termsQuery("tbSoldout", bo.isTbSoldout());
         QueryBuilder shopSoldoutQuery = QueryBuilders.termsQuery("shopSoldout", bo.isShopSoldout());
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
@@ -311,6 +311,7 @@ public class MemberAction {
         boolQuery.must(flagQuery);
         boolQuery.mustNot(tbSoldoutQuery);
         boolQuery.mustNot(shopSoldoutQuery);
+
         srb.setQuery(boolQuery);
         SearchResponse response = srb.execute().actionGet();
         //聚合结果
@@ -328,7 +329,6 @@ public class MemberAction {
             list.add(itemUpRecordVO);
             System.out.println(itemUpRecordVO);
         }
-
         ShiguPager<ItemUpRecordVO> pager = new ShiguPager<ItemUpRecordVO>();
         pager.setTotalCount(Integer.parseInt(String.valueOf(totalHits)));
         pager.setContent(list);
@@ -342,36 +342,16 @@ public class MemberAction {
             //仅【档口在售】且【淘宝在售】；
             if (bo.isShopSoldout() == false) {
                 return "buyer/shiguOnekeyRecordinit";
-            }else{
+            }
+            if (bo.isShopSoldout() == true){
                 //仅【档口已下架】且【淘宝在售】；
                 return "buyer/shiguOnekeyRecordinit";
             }
-
+            return "buyer/shiguOnekeyRecordinit";
         }
         //【档口在售】和【档口已下架】，且【淘宝已下架】
         return "buyer/shiguOnekeyRecordinit";
     }
-
-////根据条件查
-//    private static SearchResponse searchItemUpRecordVO(OnekeyRecordBO bo,HttpSession session){
-//        PersonalSession ps= (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-//        //查找shigugoodsup_v2索引下 某个用户的上传到淘宝且未下架的产品
-//        SearchRequestBuilder srb = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
-//        QueryBuilder userQuery = QueryBuilders.termQuery("fenUserId", ps.getUserId());
-//        QueryBuilder flagQuery = QueryBuilders.termsQuery("flag", "web-tb");
-//
-//
-//
-//        QueryBuilder tbSoldoutQuery = QueryBuilders.termsQuery("tbSoldout", true);
-//        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-//        boolQuery.must(userQuery);
-//        boolQuery.must(flagQuery);
-//        boolQuery.mustNot(tbSoldoutQuery);
-//        srb.setQuery(boolQuery);
-//        SearchResponse response = srb.execute().actionGet();
-//
-//        return response;
-//    }
 
 
 /**
