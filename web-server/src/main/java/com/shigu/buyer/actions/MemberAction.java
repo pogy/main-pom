@@ -3,6 +3,7 @@ package com.shigu.buyer.actions;
 import com.alibaba.fastjson.JSON;
 import com.searchtool.configs.ElasticConfiguration;
 import com.shigu.buyer.bo.*;
+import com.shigu.buyer.services.GoodsupRecordSimpleService;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.services.UserAccountService;
@@ -119,6 +120,9 @@ public class MemberAction {
 
     @Autowired
     UserAccountService userAccountService;
+
+    @Autowired
+    GoodsupRecordSimpleService goodsupRecordSimpleService;
     /**
      * 分销商首页
      * @return
@@ -971,6 +975,23 @@ public class MemberAction {
         Double moneyfen=money*100;
         PayApplyVO applyVO=userAccountService.rechargeApply(ps.getUserId(),moneyfen.longValue());
         return JsonResponseUtil.success().element("href","/order/alipayByApplyId.htm?applyId="+applyVO.getApplyId());
+    }
+
+
+    /**
+     * 已上传的商品列表
+     * @param bo
+     * @param session
+     * @param model
+     * @return
+     */
+    //todo:前端url没定
+    public String goodsupRecordList(GoodsupSearchBO bo, HttpSession session, Model model) {
+        //todo:前端搜索条件字段没定
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        ShiguPager<ItemUpRecordVO> pager = goodsupRecordSimpleService.goodsupRecordList(ps.getUserId(), ps.getUserNick(), bo);
+        //todo:前端没开始，字段没定，模板还没有
+        return null;
     }
 
 }
