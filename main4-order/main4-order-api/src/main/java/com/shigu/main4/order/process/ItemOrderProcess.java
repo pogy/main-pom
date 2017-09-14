@@ -1,5 +1,7 @@
 package com.shigu.main4.order.process;
 
+import com.shigu.main4.order.exceptions.TbSendException;
+
 /**
  * 订单服务
  */
@@ -23,5 +25,5 @@ public interface ItemOrderProcess {
      * 回标运单号
      * @param oid
      */
-    void tbSend(Long oid);
+    void tbSend(Long oid) throws TbSendException;
 }
