@@ -75,8 +75,8 @@ public class MyOrderService {
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
         ItemOrderExample orderExample = new ItemOrderExample();
-        //orderExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
-        //orderExample.setEndIndex(bo.getPageSize());
+        orderExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
+        orderExample.setEndIndex(bo.getPageSize());
         orderExample.setOrderByClause("item_order.create_time DESC");
         ItemOrderExample.Criteria orderCriteria = orderExample.createCriteria().andUserIdEqualTo(userId).andDisenableEqualTo(false);
 
@@ -130,8 +130,8 @@ public class MyOrderService {
         int orderCount = multipleMapper.countByMultipleExample(multipleExample);
         if (orderCount > 0) {
 
-            multipleExample.setStartIndex((number-1)*size);
-            multipleExample.setEndIndex(size);
+//            multipleExample.setStartIndex((number-1)*size);
+//            multipleExample.setEndIndex(size);
             // 查询数据
             pager.calPages(orderCount, size);
             pager.setContent(multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class));
