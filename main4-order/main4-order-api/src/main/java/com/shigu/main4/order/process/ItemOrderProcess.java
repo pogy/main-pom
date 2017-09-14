@@ -18,4 +18,12 @@ public interface ItemOrderProcess {
      * @param soidpid
      */
     void cancleOutOfStock(Long soidpid);
+
+    /**
+     * 回标运单号
+     * @param nick
+     * @param tid
+     * @param companyCode
+     */
+    void tbSend(String nick,Long tid,String companyCode);
 }
