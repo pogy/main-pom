@@ -42,4 +42,14 @@ public class DoStoreCollectRequest extends Request<DoStoreCollectResponse> {
     public String getToken() { return token; }
 
     public void setToken(String token) { this.token = token; }
+
+    @Override
+    public String restApiUrl() {
+        return null;
+    }
+
+    @Override
+    public String testApiUrl() {
+        return null;
+    }
 }
