@@ -21,10 +21,7 @@ public interface ItemOrderProcess {
 
     /**
      * 回标运单号
-     * @param nick
-     * @param tid
-     * @param companyCode
-     * @param expressCode
+     * @param oid
      */
-    void tbSend(String nick,Long tid,String companyCode,String expressCode);
+    void tbSend(Long oid);
 }
