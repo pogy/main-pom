@@ -268,6 +268,7 @@ var webSite = '${webSite!}';
         </li>
         <li class="d3">
             <#if info_payPwd == true>
+            <a href="${main_host!}member/safeXgPaymm.htm">找回密码</a>
             <a href="${main_host!}member/safeXgPaymm.htm">修改密码</a>
             <#else>
             <a href="${main_host!}member/safeXgPaymm.htm">立即设置</a>
