@@ -1,6 +1,7 @@
 package com.shigu.mq.services;
 
 import com.alibaba.fastjson.JSON;
+import com.shigu.main4.daifa.bo.AutoRefundBo;
 import com.shigu.main4.daifa.bo.OrderBO;
 import com.shigu.main4.daifa.process.OrderManageProcess;
 import com.shigu.mq.beans.RefundBean;
