@@ -7,6 +7,7 @@ import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.stereotype.Service;
 
 /**
  * 类名：GoodsupRecordSimpleService
@@ -16,11 +17,18 @@ import org.elasticsearch.index.query.QueryBuilders;
  * 项目：main-pom
  * 描述：
  */
+@Service("goodsupRecordSimpleService")
 public class GoodsupRecordSimpleService {
 
     public ShiguPager<ItemUpRecordVO> goodsupRecordList(Long userId,String userNick,GoodsupSearchBO bo) {
         SearchRequestBuilder shigugoodsup = ElasticConfiguration.searchClient.prepareSearch("shigugoodsup");
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        boolQuery.must(QueryBuilders.termQuery("fenUserId",userId)).must(QueryBuilders.termQuery("fenUserNick",userNick));
+        //todo:前端确定字段后，根据前端搜索条件，进行搜索
+        //{条件搜索代码段  boolQuery....   }
+        //todo:分页，字段名要由前端确认
+        shigugoodsup.setQuery(boolQuery).setFrom((bo.getNumber()-1)*bo.getSize()).setSize(bo.getSize());
+
         return null;
     }
 }

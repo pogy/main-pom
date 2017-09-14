@@ -2,6 +2,7 @@ package com.shigu.buyer.actions;
 
 import com.openJar.commons.ResponseUtil;
 import com.shigu.buyer.bo.*;
+import com.shigu.buyer.services.GoodsupRecordSimpleService;
 import com.shigu.buyer.services.MemberSimpleService;
 import com.shigu.buyer.services.PaySdkClientService;
 import com.shigu.buyer.services.UserAccountService;
@@ -12,6 +13,7 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.exceptions.ShopRegistException;
 import com.shigu.main4.monitor.services.ItemUpRecordService;
+import com.shigu.main4.monitor.vo.ItemUpRecordVO;
 import com.shigu.main4.monitor.vo.OnekeyRecoreVO;
 import com.shigu.main4.order.exceptions.PayApplyException;
 import com.shigu.main4.order.vo.PayApplyVO;
@@ -109,6 +111,9 @@ public class MemberAction {
 
     @Autowired
     UserAccountService userAccountService;
+
+    @Autowired
+    GoodsupRecordSimpleService goodsupRecordSimpleService;
     /**
      * 分销商首页
      * @return
@@ -921,10 +926,12 @@ public class MemberAction {
      * @param model
      * @return
      */
+    //todo:前端url没定
     public String goodsupRecordList(GoodsupSearchBO bo, HttpSession session, Model model) {
+        //todo:前端搜索条件字段没定
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
-        ps.getUserId();
-        ps.getUserNick();
+        ShiguPager<ItemUpRecordVO> pager = goodsupRecordSimpleService.goodsupRecordList(ps.getUserId(), ps.getUserNick(), bo);
+        //todo:前端没开始，字段没定，模板还没有
         return null;
     }
 

@@ -9,7 +9,7 @@ import java.util.Date;
  * 创建者：王浩翔
  * 创建时间：2017-09-13 14:58
  * 项目：main-pom
- * 描述：
+ * 描述：已上传的商品搜索条件，前端确定字段后需要进行修改
  */
 public class GoodsupSearchBO implements Serializable {
     //当前页
@@ -26,6 +26,9 @@ public class GoodsupSearchBO implements Serializable {
     private Date et;
 
     public Integer getNumber() {
+        if (number == null || number < 1) {
+            return 1;
+        }
         return number;
     }
 
@@ -34,6 +37,9 @@ public class GoodsupSearchBO implements Serializable {
     }
 
     public Integer getSize() {
+        if (size == null || size < 1) {
+            return 12;
+        }
         return size;
     }
 
