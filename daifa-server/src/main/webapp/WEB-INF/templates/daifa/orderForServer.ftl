@@ -27,7 +27,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/dfgl/js/orderForServer.js?t=2017091101"></script>
+    <script src="http://style.571xz.com/v2/dfgl/js/orderForServer.js"></script>
 </head>
 <body>
 <div class="pageHeader yahei">
@@ -218,6 +218,9 @@
                 <i class="fcF40 icon-old oldOrder"></i>
                 </#if>
                 
+            </div>
+            <div class="buyerInfo fl">
+                <span>下单人：${order.imTel!}<a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${order.imWw!}&siteid=cntaobao&status=1&charset=utf-8"><img border="0" src="http://style.571xz.com/v2/xz/css/img/aliww.png" alt="点击这里给我发消息" /></a><a href="http://wpa.qq.com/msgrd?v=3&uin=461242831&site=qq&menu=yes" target="_blank"><img src="http://style.571xz.com/v2/xz/css/img/imqq.png" alt=""></a></span>
             </div>
             <div class="rightConBox fr">
                 <div class="fl pr receiverAddress">
