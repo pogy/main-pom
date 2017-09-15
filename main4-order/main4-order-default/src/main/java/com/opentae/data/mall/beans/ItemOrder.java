@@ -89,11 +89,6 @@ public class ItemOrder implements Serializable {
 	private Date sendTime;
 
     /**
-     * 
-     */
-	private Boolean tbSend;
-
-    /**
      * 支付时间
      */
 	private Date payTime;
@@ -247,11 +242,4 @@ public class ItemOrder implements Serializable {
 		return this.payTime;
 	}
 
-    public Boolean getTbSend() {
-        return tbSend;
-    }
-
-    public void setTbSend(Boolean tbSend) {
-        this.tbSend = tbSend;
-    }
 }
