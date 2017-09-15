@@ -59,6 +59,12 @@
         <if test="bo.telePhone!=null and bo.telePhone!=''">
             AND item_order_logistics.telephone = #{bo.telePhone}
         </if>
+        <if test="bo.orderType!=null and bo.orderType==1">
+            AND item_order.type=2
+        </if>
+        <if test="bo.orderType!=null and bo.orderType==2">
+            AND item_order.type!=2
+        </if>
         ORDER BY item_order.create_time DESC
         LIMIT #{startIndex},#{endIndex}
         ) item_order
