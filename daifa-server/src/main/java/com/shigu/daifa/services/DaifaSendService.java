@@ -64,6 +64,9 @@ public class DaifaSendService {
                 DaifaSendVO vo = new DaifaSendVO();
                 sends.add(vo);
                 BeanUtils.copyProperties(daifaSendSimple, vo, "childOrders");
+                if("无".equals(vo.getImWw())){
+                    vo.setImWw(null);
+                }
                 List<SendOrderVO> subList = new ArrayList<>();
                 for (DaifaSendOrderSimple daifaSendOrderSimple : daifaSendSimple.getChildOrders()) {
                     SendOrderVO subVo = new SendOrderVO();

@@ -1,5 +1,7 @@
 package com.shigu.daifa.vo;
 
+import com.opentae.core.mybatis.config.Column;
+
 import java.util.List;
 
 /**
@@ -28,6 +30,9 @@ public class DaifaSendVO {
     private String tradeTime;
     private Boolean oldOrder;
     private Integer sendStatus;
+    private String imWw;
+    private String imQq;
+    private String imTel;
     private List<SendOrderVO> childOrders;
 
     public Long getDwsId() {
@@ -172,5 +177,29 @@ public class DaifaSendVO {
 
     public void setChildOrders(List<SendOrderVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public String getImWw() {
+        return this.imWw;
+    }
+
+    public void setImWw(String imWw) {
+        this.imWw = imWw;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
     }
 }

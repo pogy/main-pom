@@ -45,6 +45,10 @@ public class DaifaSendSimple implements Serializable{
     private String discountFee;//减免费用
     @Column("daifa_trade.services_fee")
     private String serversFee;//服务费用
+    @Column("daifa_trade.buyer_qq")
+    private String imQq;
+    @Column("daifa_trade.buyer_telephone")
+    private String imTel;
 
     private List<DaifaSendOrderSimple> childOrders;//子单数据
 
@@ -169,5 +173,21 @@ public class DaifaSendSimple implements Serializable{
 
     public void setSendId(String sendId) {
         this.sendId = sendId;
+    }
+
+    public String getImQq() {
+        return imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public String getImTel() {
+        return imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
     }
 }

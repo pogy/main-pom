@@ -29,6 +29,12 @@ public class DaifaAllOrder implements Serializable{
     private String tradeTime;//交易时间
     @Column("daifa_trade.buyer_ww")
     private String imWw;//分销商ww
+
+    @Column("daifa_trade.buyer_telephone")
+    private String imTel;
+    @Column("daifa_trade.buyer_qq")
+    private String imQq;
+
     @Column("daifa_trade.receiver_name")
     private String receiverName;//收货人姓名
     @Column("daifa_trade.receiver_phone")
@@ -191,5 +197,21 @@ public class DaifaAllOrder implements Serializable{
 
     public void setChildOrders(List<DaifaAllSubOrder> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
     }
 }

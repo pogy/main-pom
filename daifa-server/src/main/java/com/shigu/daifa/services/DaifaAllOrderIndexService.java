@@ -131,6 +131,9 @@ public class DaifaAllOrderIndexService {
                 vo.setChildOrders(allSubOrderVOS);
                 daifaAllOrderVOS.add(vo);
                 BeanUtils.copyProperties(daifaAllOrder, vo, "childOrders");
+                if("无".equals(vo.getImWw())){
+                    vo.setImWw(null);
+                }
                 vo.setOldOrder(daifaAllOrder.getIsOld()==1);
                 for (DaifaAllSubOrder daifaAllSubOrder : daifaAllOrder.getChildOrders()) {
                     AllSubOrderVO subvo = new AllSubOrderVO();
