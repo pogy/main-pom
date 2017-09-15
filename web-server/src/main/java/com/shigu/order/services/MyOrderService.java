@@ -111,10 +111,10 @@ public class MyOrderService {
         if (StringUtils.isNotEmpty(bo.getTelePhone())) {
             logisticsExampleCriteria.andTelephoneEqualTo(bo.getTelePhone());
         }
-        return selectMyOrderPager(bo.getPage(), bo.getPageSize(), orderExample, subExample, logisticsExample, new ItemOrderRefundExample(), false);
+        return selectMyOrderPager(bo.getPage(), bo.getPageSize(), orderExample, subExample, logisticsExample, new ItemOrderRefundExample(), false,bo,userId);
     }
 
-    public ShiguPager<MyOrderVO> selectMyOrderPager(Integer number, Integer size, ItemOrderExample orderExample, ItemOrderSubExample subExample, ItemOrderLogisticsExample logisticsExample, ItemOrderRefundExample refundExample, boolean onlyRefund) {
+    public ShiguPager<MyOrderVO> selectMyOrderPager(Integer number, Integer size, ItemOrderExample orderExample, ItemOrderSubExample subExample, ItemOrderLogisticsExample logisticsExample, ItemOrderRefundExample refundExample, boolean onlyRefund,OrderBO bo,Long userId) {
         ShiguPager<MyOrderVO> pager = new ShiguPager<>();
         pager.setNumber(number);
         MultipleExampleBuilder multipleExampleBuilder = MultipleExampleBuilder.from(orderExample)
@@ -129,35 +129,50 @@ public class MyOrderService {
         multipleExample.setOrderByClause("item_order.create_time DESC");
         int orderCount = multipleMapper.countByMultipleExample(multipleExample);
         if (orderCount > 0) {
-
-//            multipleExample.setStartIndex((number-1)*size);
-//            multipleExample.setEndIndex(size);
+            List<MyOrderVO> myOrderVOS;
             // 查询数据
             pager.calPages(orderCount, size);
-            pager.setContent(multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class));
-            List<Long> orderIds = pager.getContent().stream().map(MyOrderVO::getOrderId).collect(Collectors.toList());
+            //从售后来，查原本的
+            if (onlyRefund) {
+                myOrderVOS = multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class);
+            } else {
+                //从订单来查,用mapper
+                int startIndex = (number - 1) * size;
+                myOrderVOS = itemOrderMapper.selectMyOrderList(userId,bo,startIndex,size);
+            }
 
-            // 查询计算服务费信息， 按主单聚合服务费总数, Long 分 -> String 元
-            ItemOrderServiceExample orderServiceExample = new ItemOrderServiceExample();
-            orderServiceExample.createCriteria().andOidIn(orderIds);
-            Map<Long, String> orderServiceMoneyMap = itemOrderServiceMapper.selectByExample(orderServiceExample).stream()
-                    .collect(Collectors.groupingBy(com.opentae.data.mall.beans.ItemOrderService::getOid)).entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.format("%.2f", entry.getValue().stream().mapToLong(com.opentae.data.mall.beans.ItemOrderService::getMoney).sum() * .01)));
-
-            pager.getContent().stream()
-                    .peek(o -> o.setServerPay(orderServiceMoneyMap.get(o.getOrderId())))
-                    .map(MyOrderVO::getChildOrders).flatMap(List::stream).forEach(subMyOrderVO -> {
-                if (subMyOrderVO.getStockoutNum() == null || subMyOrderVO.getStockoutNum() == 0) {
-                    subMyOrderVO.setStockoutNum(null);
-                }
-                    List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
-                if (afterSales != null && !afterSales.isEmpty()) {
-                    subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
-                    subMyOrderVO.setHasAfter(afterSales.stream().filter(a -> a.getType() == 2 || a.getType() == 3).count() > 0);
-                }
-            });
+            pager.setContent(myOrderVOS);
+            packageMyOrderVO(pager.getContent());
         }
         return pager;
+    }
+
+    /**
+     * 订单列表信息填充
+     * @param myOrderVOList
+     */
+    public void packageMyOrderVO(List<MyOrderVO> myOrderVOList) {
+        List<Long> orderIds = myOrderVOList.stream().map(MyOrderVO::getOrderId).collect(Collectors.toList());
+
+        // 查询计算服务费信息， 按主单聚合服务费总数, Long 分 -> String 元
+        ItemOrderServiceExample orderServiceExample = new ItemOrderServiceExample();
+        orderServiceExample.createCriteria().andOidIn(orderIds);
+        Map<Long, String> orderServiceMoneyMap = itemOrderServiceMapper.selectByExample(orderServiceExample).stream()
+                .collect(Collectors.groupingBy(com.opentae.data.mall.beans.ItemOrderService::getOid)).entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.format("%.2f", entry.getValue().stream().mapToLong(com.opentae.data.mall.beans.ItemOrderService::getMoney).sum() * .01)));
+
+        myOrderVOList.stream()
+                .peek(o -> o.setServerPay(orderServiceMoneyMap.get(o.getOrderId())))
+                .map(MyOrderVO::getChildOrders).flatMap(List::stream).forEach(subMyOrderVO -> {
+            if (subMyOrderVO.getStockoutNum() == null || subMyOrderVO.getStockoutNum() == 0) {
+                subMyOrderVO.setStockoutNum(null);
+            }
+            List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
+            if (afterSales != null && !afterSales.isEmpty()) {
+                subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
+                subMyOrderVO.setHasAfter(afterSales.stream().filter(a -> a.getType() == 2 || a.getType() == 3).count() > 0);
+            }
+        });
     }
 
     public boolean orderBelongTo(Long orderId, Long userId) {
@@ -203,7 +218,9 @@ public class MyOrderService {
 
         ItemOrderExample orderExample = new ItemOrderExample();
         orderExample.createCriteria().andOidEqualTo(orderId);
-        ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, orderExample, new ItemOrderSubExample(), new ItemOrderLogisticsExample(), new ItemOrderRefundExample(), false);
+        OrderBO orderBO = new OrderBO();
+        orderBO.setOrderId(orderId);
+        ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, orderExample, new ItemOrderSubExample(), new ItemOrderLogisticsExample(), new ItemOrderRefundExample(), false,orderBO,null);
         vo.setChildOrders(pager.getContent().get(0).getChildOrders());
 
         vo.setExpress(orderListService.selectExpress(orderId));
