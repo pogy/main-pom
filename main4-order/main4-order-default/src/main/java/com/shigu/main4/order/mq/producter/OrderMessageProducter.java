@@ -6,6 +6,7 @@ import com.aliyun.openservices.ons.api.SendCallback;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
 import com.opentae.data.mall.beans.MemberUser;
+import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.ItemOrder;
@@ -64,6 +65,9 @@ public class OrderMessageProducter {
 
     @Autowired
     private MemberUserMapper memberUserMapper;
+
+    @Autowired
+    private MemberLicenseMapper memberLicenseMapper;
 
     @Autowired
     private SoidsCreater soidsCreater;
@@ -134,8 +138,10 @@ public class OrderMessageProducter {
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(itemOrderVO.getUserId());
         if (memberUser != null) {
             buyer.setAliWw(memberUser.getImAliww());
+
             buyer.setPhone(memberUser.getPhoneMob());
             buyer.setNickInMarket(memberUser.getUserNick());
+            buyer.setImQq(memberUser.getImQq());
         }
         order.setBuyer(buyer);
 
