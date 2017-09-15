@@ -25,6 +25,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
     public static EntityColumn totalFee;
     public static EntityColumn outerId;
     public static EntityColumn mark;
+    public static EntityColumn tbSend;
     static {
         Set<EntityColumn> columns = entityTable.getEntityClassColumns();
         Map<String, EntityColumn> listMap = new HashMap<>();
@@ -46,6 +47,7 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         totalFee = listMap.get("totalFee");
         outerId = listMap.get("outerId");
         mark = listMap.get("mark");
+        tbSend = listMap.get("tbSend");
         }
 
     public ItemOrderExample() {
@@ -803,6 +805,53 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
 
         public ItemOrderExample.Criteria andMarkNotBetween(String value1, String value2) {
             return notBetween(mark, value1, value2);
+        }
+        public ItemOrderExample.Criteria andTbSendIsNull() {
+            return isNull(tbSend);
+        }
+
+        public ItemOrderExample.Criteria andTbSendIsNotNull() {
+            return isNotNull(tbSend);
+        }
+
+        public ItemOrderExample.Criteria andTbSendEqualTo(Boolean value) {
+            return equalTo(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendNotEqualTo(Boolean value) {
+            return notEqualTo(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendGreaterThan(Boolean value) {
+            return greaterThan(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendGreaterThanOrEqualTo(Boolean value) {
+            return greaterThanOrEqualTo(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendLessThan(Boolean value) {
+            return lessThan(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendLessThanOrEqualTo(Boolean value) {
+            return lessThanOrEqualTo(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendIn(List<Boolean> values) {
+            return in(tbSend, values);
+        }
+
+        public ItemOrderExample.Criteria andTbSendNotIn(List<Boolean> values) {
+            return notIn(tbSend, values);
+        }
+
+        public ItemOrderExample.Criteria andTbSendBetween(Boolean value1, Boolean value2) {
+            return between(tbSend, value1, value2);
+        }
+
+        public ItemOrderExample.Criteria andTbSendNotBetween(Boolean value1, Boolean value2) {
+            return notBetween(tbSend, value1, value2);
         }
     }
 }

@@ -15,6 +15,8 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
+import com.shigu.main4.order.exceptions.TbSendException;
+import com.shigu.main4.order.process.ItemOrderProcess;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
@@ -68,7 +70,8 @@ public class MyOrderService {
 
     @Autowired
     private OrderManageProcess orderManageProcess;
-
+    @Autowired
+    private ItemOrderProcess itemOrderProcess;
     @Autowired
     private MultipleMapper multipleMapper;
 
@@ -204,5 +207,22 @@ public class MyOrderService {
     public boolean testRefund(Long subId) throws OrderNotFindException {
         ItemOrderSub sub = itemOrderSubMapper.selectByPrimaryKey(subId);
         return sub != null && orderManageProcess.tryRefund(subId.toString()).size() > 0;
+    }
+
+    public void tbSend(Long userId,Long oid) throws Main4Exception {
+        ItemOrder o=itemOrderMapper.selectByPrimaryKey(oid);
+        if(o==null){
+            //订单不存在
+            throw new Main4Exception("订单不存在");
+        }
+        if(o.getUserId().longValue()!=userId){
+            //不是该用户的订单
+            throw new Main4Exception("不是该用户的订单");
+        }
+        try {
+            itemOrderProcess.tbSend(oid);
+        } catch (TbSendException e) {
+            throw new Main4Exception(e.getMessage());
+        }
     }
 }

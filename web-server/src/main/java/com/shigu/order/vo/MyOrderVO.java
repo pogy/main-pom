@@ -44,6 +44,12 @@ public class MyOrderVO {
      */
     @Column("item_order.web_site")
     private String webSite;
+
+    /**
+     * 是否已标记淘宝发货
+     */
+    @Column("item_order.tb_send")
+    private Boolean isTbShipments;
     /**
      * 子单数据
      */
@@ -173,5 +179,19 @@ public class MyOrderVO {
      */
     public void setChildOrders(List<SubMyOrderVO> childOrders) {
         this.childOrders = childOrders;
+    }
+
+    /**
+     * 获取 是否已标记淘宝发货
+     */
+    public Boolean getIsTbShipments() {
+        return this.isTbShipments;
+    }
+
+    /**
+     * 设置 是否已标记淘宝发货
+     */
+    public void setIsTbShipments(Boolean isTbShipments) {
+        this.isTbShipments = isTbShipments;
     }
 }
