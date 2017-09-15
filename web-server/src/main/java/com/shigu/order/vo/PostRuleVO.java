@@ -4,7 +4,7 @@ package com.shigu.order.vo;
  * 发货价格规则
  * Created by bugzy on 2017/7/17 0017.
  */
-public class PostRuleVO {
+public class PostRuleVO implements Comparable<PostRuleVO>{
 
     /**
      * 快递英文名
@@ -95,5 +95,13 @@ public class PostRuleVO {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    @Override
+    public int compareTo(PostRuleVO o) {
+        if(this.name!=null&&this.name.equals("yunda")&&o.getName()!=null&&!o.name.equals("yunda")){
+            return -1;
+        }
+        return 0;
     }
 }
