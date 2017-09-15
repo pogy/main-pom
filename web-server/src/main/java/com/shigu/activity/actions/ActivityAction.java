@@ -14,7 +14,6 @@ import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.spread.enums.AutumnNewConstant;
-import com.shigu.main4.spread.processes.ActivityApply;
 import com.shigu.main4.spread.service.ActiveDrawService;
 import com.shigu.main4.spread.vo.active.draw.*;
 import com.shigu.main4.tools.RedisIO;
@@ -345,15 +344,13 @@ public class ActivityAction {
 
     final String flag = "autumn_new5";
 
-    @Autowired
-    ActivityApply qzxpActivityApply;
     @RequestMapping("activity/jsonapply")
     @ResponseBody
     public JSONObject signUp(HttpSession session) {
         JSONObject jsonObject = new JSONObject();
         PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
         Long userId = ps.getUserId();
-        String checkResult = qzxpActivityApply.apply(flag, userId, ps.getLogshop().getShopId());
+        String checkResult = activeDrawServiceImpl.shiguTempSigup(flag, userId, ps.getLogshop().getShopId());
         if (checkResult.equals("true")) {
             jsonObject.put("result", "success");
         } else {
