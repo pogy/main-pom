@@ -74,73 +74,20 @@ public class MyOrderService {
 
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
-        ItemOrderExample orderExample = new ItemOrderExample();
-        orderExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
-        orderExample.setEndIndex(bo.getPageSize());
-        orderExample.setOrderByClause("item_order.create_time DESC");
-        ItemOrderExample.Criteria orderCriteria = orderExample.createCriteria().andUserIdEqualTo(userId).andDisenableEqualTo(false);
-
-        if (bo.getOrderId() != null) {
-            orderCriteria.andOidEqualTo(bo.getOrderId());
-        }
-
-        if (bo.getStatus() != null) {
-            orderCriteria.andOrderStatusEqualTo(bo.getStatus());
-        }
-
-        if (bo.getSt() != null) {
-            orderCriteria.andCreateTimeGreaterThanOrEqualTo(bo.getSt());
-        }
-
-        if (bo.getEt() != null) {
-            orderCriteria.andCreateTimeLessThanOrEqualTo(bo.getEt());
-        }
-
-        ItemOrderSubExample subExample = new ItemOrderSubExample();
-        ItemOrderSubExample.Criteria subExampleCriteria = subExample.createCriteria();
-        if (StringUtils.isNotEmpty(bo.getGoodsNo())) {
-            subExampleCriteria.andGoodsNoLike("%" + bo.getGoodsNo() + "%");
-        }
-
-        ItemOrderLogisticsExample logisticsExample = new ItemOrderLogisticsExample();
-        ItemOrderLogisticsExample.Criteria logisticsExampleCriteria = logisticsExample.createCriteria();
-        if (StringUtils.isNotEmpty(bo.getReceiver())) {
-            logisticsExampleCriteria.andNameEqualTo(bo.getReceiver());
-        }
-
-        if (StringUtils.isNotEmpty(bo.getTelePhone())) {
-            logisticsExampleCriteria.andTelephoneEqualTo(bo.getTelePhone());
-        }
-        return selectMyOrderPager(bo.getPage(), bo.getPageSize(), orderExample, subExample, logisticsExample, new ItemOrderRefundExample(), false,bo,userId);
+        return selectMyOrderPager(bo.getPage(), bo.getPageSize(), false,userId,bo,null);
     }
 
-    public ShiguPager<MyOrderVO> selectMyOrderPager(Integer number, Integer size, ItemOrderExample orderExample, ItemOrderSubExample subExample, ItemOrderLogisticsExample logisticsExample, ItemOrderRefundExample refundExample, boolean onlyRefund,OrderBO bo,Long userId) {
+    public ShiguPager<MyOrderVO> selectMyOrderPager(Integer number, Integer size, boolean onlyRefund,Long userId,OrderBO bo,Integer shStatus) {
         ShiguPager<MyOrderVO> pager = new ShiguPager<>();
         pager.setNumber(number);
-        MultipleExampleBuilder multipleExampleBuilder = MultipleExampleBuilder.from(orderExample)
-                .innerJoin(subExample).on(subExample.createCriteria().equalTo(ItemOrderSubExample.oid, ItemOrderExample.oid))
-                .innerJoin(logisticsExample).on(logisticsExample.createCriteria().equalTo(ItemOrderLogisticsExample.oid, ItemOrderExample.oid))
-                .leftJoin(refundExample).on(refundExample.createCriteria().equalTo(ItemOrderRefundExample.soid, ItemOrderSubExample.soid));
-        if (onlyRefund) {
-            multipleExampleBuilder.where(refundExample.createCriteria().andRefundIdIsNotNull());
-        }
-        MultipleExample multipleExample = multipleExampleBuilder.build();
-        multipleExample.setDistinctCount(ItemOrderExample.oid);
-        multipleExample.setOrderByClause("item_order.create_time DESC");
-        int orderCount = multipleMapper.countByMultipleExample(multipleExample);
+        int orderCount = itemOrderMapper.countMyOrderList(userId,bo,onlyRefund,shStatus);
         if (orderCount > 0) {
             List<MyOrderVO> myOrderVOS;
             // 查询数据
             pager.calPages(orderCount, size);
-            //从售后来，查原本的
-            if (onlyRefund) {
-                myOrderVOS = multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class);
-            } else {
-                //从订单来查,用mapper
-                int startIndex = (number - 1) * size;
-                myOrderVOS = itemOrderMapper.selectMyOrderList(userId,bo,startIndex,size);
-            }
-
+            //从订单来查,用mapper
+            int startIndex = (number - 1) * size;
+            myOrderVOS = itemOrderMapper.selectMyOrderList(userId,bo,startIndex,size,onlyRefund,shStatus);
             pager.setContent(myOrderVOS);
             packageMyOrderVO(pager.getContent());
         }
@@ -215,16 +162,11 @@ public class MyOrderService {
     public MyOrderDetailVO orderDetail(Long orderId) throws Main4Exception, ParseException {
         MyOrderDetailVO vo = new MyOrderDetailVO();
         ShowOrderDetailVO orderVO = orderListService.selectMyorder(orderId);
-
-        ItemOrderExample orderExample = new ItemOrderExample();
-        orderExample.createCriteria().andOidEqualTo(orderId);
         OrderBO orderBO = new OrderBO();
         orderBO.setOrderId(orderId);
-        ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, orderExample, new ItemOrderSubExample(), new ItemOrderLogisticsExample(), new ItemOrderRefundExample(), false,orderBO,null);
+        ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, false,null,orderBO,null);
         vo.setChildOrders(pager.getContent().get(0).getChildOrders());
-
         vo.setExpress(orderListService.selectExpress(orderId));
-
         vo.setOrderAddrInfo(expressAddrInfo(orderId));
 
         vo.setTotal(orderVO.getTotalVO());

@@ -51,6 +51,12 @@
         <if test="bo.et!=null">
             AND item_order.CREATE_TIME &lt;= #{bo.et}
         </if>
+        <if test="bo.status!=null">
+            AND item_order.order_status = #{bo.status}
+        </if>
+        <if test="onlyRefund==true">
+            AND (item_order.order_status = 3 OR item_order.order_status = 4)
+        </if>
         <if test="bo.receiver!=null and bo.receiver!=''">
             AND item_order_logistics.NAME = #{bo.receiver}
         </if>
@@ -64,7 +70,22 @@
         <if test="bo.goodsNo!=null and bo.goodsNo!=''">
             AND item_order_sub.goods_no LIKE CONCAT('%', #{bo.goodsNo}, '%')
         </if>
-        LEFT JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
+        <choose>
+            <when test="onlyRefund==false">
+                LEFT JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
+            </when>
+            <otherwise>
+                INNER JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
+                <choose>
+                    <when test="shStatus!=null">
+                        AND item_order_refund.type = (#{shStatus}+1)
+                    </when>
+                    <otherwise>
+                        AND (item_order_refund.type = 2 OR item_order_refund.type = 3)
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
     </select>
 
     <resultMap id="MyOrderVO" type="com.shigu.order.vo.MyOrderVO">
@@ -98,5 +119,56 @@
         <result column="type" property="type"/>
         <result column="state" property="state"/>
     </resultMap>
+
+    <select id="countMyOrderList" resultType="int">
+        SELECT count(DISTINCT item_order.OID)
+        FROM `item_order` item_order
+        INNER JOIN `item_order_logistics` item_order_logistics ON item_order.oid = item_order_logistics.oid
+        <if test="userId!=null">
+            AND item_order.USER_ID = #{userId}
+        </if>
+        AND item_order.DISENABLE = 0
+        <if test="bo.orderId!=null">
+            AND item_order.OID = #{bo.orderId}
+        </if>
+        <if test="bo.st!=null">
+            AND item_order.CREATE_TIME &gt;= #{bo.st}
+        </if>
+        <if test="bo.et!=null">
+            AND item_order.CREATE_TIME &lt;= #{bo.et}
+        </if>
+        <if test="bo.status!=null">
+            AND item_order.order_status = #{bo.status}
+        </if>
+        <if test="onlyRefund==true">
+            AND (item_order.order_status = 3 OR item_order.order_status = 4)
+        </if>
+        <if test="bo.receiver!=null and bo.receiver!=''">
+            AND item_order_logistics.NAME = #{bo.receiver}
+        </if>
+        <if test="bo.telePhone!=null and bo.telePhone!=''">
+            AND item_order_logistics.telephone = #{bo.telePhone}
+        </if>
+        INNER JOIN `item_order_sub` item_order_sub ON item_order.oid = item_order_sub.oid
+        <if test="bo.goodsNo!=null and bo.goodsNo!=''">
+            AND item_order_sub.goods_no LIKE CONCAT('%', #{bo.goodsNo}, '%')
+        </if>
+        <choose>
+            <when test="onlyRefund==false">
+                LEFT JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
+            </when>
+            <otherwise>
+                INNER JOIN `item_order_refund` item_order_refund ON item_order_refund.soid = item_order_sub.soid
+                <choose>
+                    <when test="shStatus!=null">
+                        AND item_order_refund.type = (#{shStatus}+1)
+                    </when>
+                    <otherwise>
+                        AND (item_order_refund.type = 2 OR item_order_refund.type = 3)
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </select>
 
 </mapper>
