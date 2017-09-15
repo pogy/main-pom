@@ -17,7 +17,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/order/css/onlyRefund.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/order/css/onlyRefund.css?v=2017091301" rel="stylesheet">
     
 
     
@@ -27,7 +27,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/order/js/onlyRefund.js"></script>
+    <script src="http://style.571xz.com/v2/order/js/onlyRefund.js?v=2017091301"></script>
 </head>
 <body>
 
@@ -283,7 +283,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
 </div>
@@ -502,7 +501,7 @@ var otherRefundPrice = ${otherRefundPrice!};
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

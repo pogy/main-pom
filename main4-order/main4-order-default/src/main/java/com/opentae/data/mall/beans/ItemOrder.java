@@ -98,6 +98,11 @@ public class ItemOrder implements Serializable {
      */
 	private Date payTime;
 
+    /**
+     * 是否已设置淘宝发货,0:未设置,1:已设置
+     */
+	private Boolean tbSend;
+
 	public void setOid(Long oid) {
 		this.oid = oid;
 	}
@@ -242,4 +247,11 @@ public class ItemOrder implements Serializable {
 		return this.payTime;
 	}
 
+    public Boolean getTbSend() {
+        return tbSend;
+    }
+
+    public void setTbSend(Boolean tbSend) {
+        this.tbSend = tbSend;
+    }
 }

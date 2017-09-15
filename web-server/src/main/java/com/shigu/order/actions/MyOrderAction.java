@@ -206,4 +206,12 @@ public class MyOrderAction {
     }
 
 
+    @RequestMapping("markingTbShipments")
+    @ResponseBody
+    public JSONObject tbSend(HttpSession session,Long orderId) throws Main4Exception {
+        PersonalSession ps = (PersonalSession) session.getAttribute(SessionEnum.LOGIN_SESSION_USER.getValue());
+        myOrderService.tbSend(ps.getUserId(),orderId);
+        return JsonResponseUtil.success();
+    }
+
 }

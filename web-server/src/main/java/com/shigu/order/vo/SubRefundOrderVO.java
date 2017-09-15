@@ -18,6 +18,10 @@ public class SubRefundOrderVO {
      */
     private String childOrderColor;
     /**
+     * 子单商品数
+     */
+    private Integer childOrderNum;
+    /**
      * 退换货商品尺码
      */
     private String childOrderSize;
@@ -35,6 +39,14 @@ public class SubRefundOrderVO {
      * 返回该值
      */
     private String otherRefundPrice;
+
+    public Integer getChildOrderNum() {
+        return childOrderNum;
+    }
+
+    public void setChildOrderNum(Integer childOrderNum) {
+        this.childOrderNum = childOrderNum;
+    }
 
     /**
      * 获取 	退换货子单id

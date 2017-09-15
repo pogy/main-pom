@@ -1,5 +1,6 @@
 package com.shigu.resolver;
 
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.common.beans.LogUtil;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class ExceptionResolver extends SimpleMappingExceptionResolver {
 
 	private static final Logger log = LogUtil.getLog(ExceptionResolver.class);
+	private static final com.alibaba.dubbo.common.logger.Logger  logger = LoggerFactory.getLogger(ExceptionResolver.class);
 
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request,
@@ -63,6 +65,7 @@ public class ExceptionResolver extends SimpleMappingExceptionResolver {
 		}else{//页面未知的错误
 			request.setAttribute("errMsg","系统异常");
 			ex.printStackTrace();
+			logger.error("系统异常",ex);
 		}
 		//记录异常日志...
 		return getModelAndView("500", ex, request);

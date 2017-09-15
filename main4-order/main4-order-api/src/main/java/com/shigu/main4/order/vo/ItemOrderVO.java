@@ -25,6 +25,10 @@ public class ItemOrderVO extends OrderVO {
      * 未结束时为null
      */
     private Date finishTime;
+    /**
+     * 是否已淘宝发货
+     */
+    private Boolean tbSend;
 
 
     public Long getSenderId() {
@@ -65,5 +69,13 @@ public class ItemOrderVO extends OrderVO {
 
     public void setFinishTime(Date finishTime) {
         this.finishTime = finishTime;
+    }
+
+    public Boolean getTbSend() {
+        return tbSend;
+    }
+
+    public void setTbSend(Boolean tbSend) {
+        this.tbSend = tbSend;
     }
 }

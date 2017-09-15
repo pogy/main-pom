@@ -47,4 +47,19 @@ public class SoidsModelImpl implements SoidsModel {
         itemOrderSub.setOutOfStok(stockNum);
         itemOrderSubMapper.updateByPrimaryKeySelective(itemOrderSub);
     }
+
+    @Override
+    public void cancleOutOfStock(Long soidpid) {
+        //更新拆单状态
+        SubOrderSoidps subOrderSoidps = subOrderSoidpsMapper.selectByPrimaryKey(soidpid);
+        subOrderSoidps.setStockStatus(SubOrderSoidpsEnum.DEFAULT_STATUS.status);
+        subOrderSoidpsMapper.updateByPrimaryKeySelective(subOrderSoidps);
+        //更新子单状态
+        SubOrderSoidpsExample subOrderSoidpsExample = new SubOrderSoidpsExample();
+        subOrderSoidpsExample.createCriteria().andSoidEqualTo(subOrderSoidps.getSoid()).andStockStatusEqualTo(SubOrderSoidpsEnum.OUT_OF_STOCK.getStatus());
+        int stockNum = subOrderSoidpsMapper.countByExample(subOrderSoidpsExample);
+        ItemOrderSub itemOrderSub = itemOrderSubMapper.selectByPrimaryKey(subOrderSoidps.getSoid());
+        itemOrderSub.setOutOfStok(stockNum);
+        itemOrderSubMapper.updateByPrimaryKeySelective(itemOrderSub);
+    }
 }
