@@ -13,6 +13,16 @@ public class Buyer implements Serializable {
 
     private String imQq;
 
+    private Long buyerId;
+
+    public Long getBuyerId() {
+        return buyerId;
+    }
+
+    public void setBuyerId(Long buyerId) {
+        this.buyerId = buyerId;
+    }
+
     public String getImQq() {
         return imQq;
     }

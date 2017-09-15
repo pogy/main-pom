@@ -153,6 +153,7 @@ public class OrderMessageProducter {
             }else{
                 buyer.setPhone(memberUser.getPhoneMob());
             }
+            buyer.setBuyerId(memberUser.getUserId());
             buyer.setNickInMarket(memberUser.getUserNick());
             buyer.setImQq(memberUser.getImQq());
         }
