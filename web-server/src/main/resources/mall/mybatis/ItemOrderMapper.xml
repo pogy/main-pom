@@ -57,7 +57,7 @@
         <if test="bo.telePhone!=null and bo.telePhone!=''">
             AND item_order_logistics.telephone = #{bo.telePhone}
         </if>
-        ORDER BY item_order.create_time
+        ORDER BY item_order.create_time DESC
         LIMIT #{startIndex},#{endIndex}
         ) item_order
         INNER JOIN `item_order_sub` item_order_sub ON item_order.oid = item_order_sub.oid
