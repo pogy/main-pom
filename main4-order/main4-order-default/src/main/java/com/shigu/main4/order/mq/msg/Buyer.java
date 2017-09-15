@@ -11,6 +11,16 @@ public class Buyer implements Serializable {
     private String phone;
     private String nickInMarket;
 
+    private String imQq;
+
+    public String getImQq() {
+        return imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
     public String getAliWw() {
         return aliWw;
     }

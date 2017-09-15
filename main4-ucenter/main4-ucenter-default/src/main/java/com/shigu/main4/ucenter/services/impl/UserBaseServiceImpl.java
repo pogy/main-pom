@@ -308,5 +308,8 @@ public class UserBaseServiceImpl implements UserBaseService {
         memberUserMapper.updateByPrimaryKeySelective(memberUser);
     }
 
+    @Override
+    public void changePayPwd(Long userId, String oldPwd, String newPwd) {
 
+    }
 }

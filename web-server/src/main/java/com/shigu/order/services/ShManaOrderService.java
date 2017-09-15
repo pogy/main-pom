@@ -32,6 +32,6 @@ public class ShManaOrderService {
         } else {
             criteria.andTypeBetween(2, 3);
         }
-        return myOrderService.selectMyOrderPager(bo.getPage(), bo.getSize(), orderExample, new ItemOrderSubExample(), new ItemOrderLogisticsExample(), refundExample, true);
+        return myOrderService.selectMyOrderPager(bo.getPage(), bo.getSize(), orderExample, new ItemOrderSubExample(), new ItemOrderLogisticsExample(), refundExample, true,null,null);
     }
 }

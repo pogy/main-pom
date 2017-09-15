@@ -5,7 +5,10 @@ import com.aliyun.openservices.ons.api.OnExceptionContext;
 import com.aliyun.openservices.ons.api.SendCallback;
 import com.aliyun.openservices.ons.api.SendResult;
 import com.aliyun.openservices.ons.api.bean.ProducerBean;
+import com.opentae.data.mall.beans.MemberLicense;
 import com.opentae.data.mall.beans.MemberUser;
+import com.opentae.data.mall.examples.MemberLicenseExample;
+import com.opentae.data.mall.interfaces.MemberLicenseMapper;
 import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.model.ItemOrder;
@@ -15,6 +18,7 @@ import com.shigu.main4.order.services.OrderConstantService;
 import com.shigu.main4.order.vo.ItemOrderVO;
 import com.shigu.main4.order.vo.ItemProductVO;
 import com.shigu.main4.order.vo.OrderServiceVO;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +68,9 @@ public class OrderMessageProducter {
 
     @Autowired
     private MemberUserMapper memberUserMapper;
+
+    @Autowired
+    private MemberLicenseMapper memberLicenseMapper;
 
     @Autowired
     private SoidsCreater soidsCreater;
@@ -134,8 +141,20 @@ public class OrderMessageProducter {
         MemberUser memberUser = memberUserMapper.selectByPrimaryKey(itemOrderVO.getUserId());
         if (memberUser != null) {
             buyer.setAliWw(memberUser.getImAliww());
-            buyer.setPhone(memberUser.getPhoneMob());
+            if (StringUtils.isEmpty(memberUser.getPhoneMob())) {
+                MemberLicenseExample licenseExample=new MemberLicenseExample();
+                licenseExample.createCriteria().andUserIdEqualTo(memberUser.getUserId()).andLicenseTypeEqualTo(4);//把绑定的手机查出
+                licenseExample.setStartIndex(0);
+                licenseExample.setEndIndex(1);
+                List<MemberLicense> licenses=memberLicenseMapper.selectByConditionList(licenseExample);
+                if (licenses.size()>0) {
+                    buyer.setPhone(licenses.get(0).getContext());
+                }
+            }else{
+                buyer.setPhone(memberUser.getPhoneMob());
+            }
             buyer.setNickInMarket(memberUser.getUserNick());
+            buyer.setImQq(memberUser.getImQq());
         }
         order.setBuyer(buyer);
 
