@@ -11,6 +11,7 @@ public class BuyerBO implements Serializable {
     private String phone;//    手机号
     private String nickInMarket;//    市场内昵称
     private String imQq;
+    private Long buyerId;
 
     public String getAliWw() {
         return aliWw;
@@ -42,5 +43,13 @@ public class BuyerBO implements Serializable {
 
     public void setImQq(String imQq) {
         this.imQq = imQq;
+    }
+
+    public Long getBuyerId() {
+        return this.buyerId;
+    }
+
+    public void setBuyerId(Long buyerId) {
+        this.buyerId = buyerId;
     }
 }
