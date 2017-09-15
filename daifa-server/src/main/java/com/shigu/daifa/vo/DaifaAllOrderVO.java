@@ -22,6 +22,10 @@ public class DaifaAllOrderVO implements Serializable{
     private Integer tradeState;//交易状态1未发货2已发货
     private String tradeTime;//交易时间
     private String imWw;//分销商ww
+
+    private String imTel;
+    private String imQq;
+
     private String receiverName;//收货人姓名
     private String receiverPhone;//收货人电话
     private String receiverAddress;
@@ -173,5 +177,22 @@ public class DaifaAllOrderVO implements Serializable{
 
     public void setTradeCode (String tradeCode) {
         this.tradeCode = tradeCode;
+    }
+
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
     }
 }

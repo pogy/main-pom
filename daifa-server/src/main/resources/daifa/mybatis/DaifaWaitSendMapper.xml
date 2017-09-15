@@ -8,6 +8,8 @@
         <result column="send_status" property="tradeState" jdbcType="DECIMAL"/>
         <result column="create_time" property="tradeTime" jdbcType="VARCHAR"/>
         <result column="buyer_ww" property="imWw" jdbcType="VARCHAR"/>
+        <result column="buyer_qq" property="imQq" jdbcType="VARCHAR"/>
+        <result column="buyer_tetephone" property="imTel" jdbcType="VARCHAR"/>
         <result column="receiver_name" property="receiverName" jdbcType="VARCHAR"/>
         <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR"/>
         <result column="buyer_remark" property="buyerRemark" jdbcType="VARCHAR"/>
@@ -42,6 +44,8 @@
 			f.send_status,
 			f.create_time,
 			f.buyer_ww,
+            f.buyer_qq,
+            f.buyer_telephone,
 			f.receiver_name,
 			f.receiver_phone,
 			f.buyer_remark,
