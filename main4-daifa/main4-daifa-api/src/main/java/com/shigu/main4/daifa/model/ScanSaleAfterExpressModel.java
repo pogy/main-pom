@@ -6,7 +6,7 @@ import com.shigu.main4.daifa.exceptions.DaifaException;
  * @类编号
  * @类名称：ScanSaleAfterExpressModel
  * @文件路径：com.shigu.main4.daifa.model.ScanSaleAfterExpressModel
- * @内容摘要：
+ * @内容摘要：售后快递处理
  * @编码作者：gzy
  * @创建日期：2017/9/15 11:58
  * @version: main-pom
