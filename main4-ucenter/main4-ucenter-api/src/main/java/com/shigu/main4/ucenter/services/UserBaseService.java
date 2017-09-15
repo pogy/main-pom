@@ -82,4 +82,12 @@ public interface UserBaseService {
     Long selTbOuterUser(String tbNick);
 
     void setNewPayPwd(Long userId,String pwd) throws JsonErrException;
+
+    /**
+     * 修改支付密码
+     * @param userId
+     * @param oldPwd
+     * @param newPwd
+     */
+    void changePayPwd(Long userId,String oldPwd,String newPwd);
 }

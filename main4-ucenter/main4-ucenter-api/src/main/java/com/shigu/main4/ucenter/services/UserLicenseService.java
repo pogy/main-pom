@@ -104,4 +104,12 @@ public interface UserLicenseService {
      */
     Long findUserIdByPhone(String phone);
 
+
+    /**
+     * 根据userId查询权益手机号
+     * @param userId
+     * @return
+     */
+    String findPhoneByUserId(Long userId);
+
 }
