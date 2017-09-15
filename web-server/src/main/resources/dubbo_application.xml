@@ -43,6 +43,7 @@
     <dubbo:reference interface="com.shigu.main4.monitor.services.ShopBrowerService" id="shopBrowerService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.activity.service.ActivityDubboService" id="activityDubboService" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.spread.processes.HitDrawChooser" id="hitDrawChooser" timeout="10000"/>
+    <dubbo:reference interface="com.shigu.main4.spread.processes.ActivityApply" id="qzxpActivityApply" timeout="10000"/>
     <!-- 17/08/12 拆服务 -->
     <dubbo:reference interface="com.shigu.main4.order.process.ItemCartProcess" id="itemCartProcess" timeout="10000"/>
     <dubbo:reference interface="com.shigu.main4.order.process.ItemProductProcess" id="itemProductProcess" timeout="10000"/>
