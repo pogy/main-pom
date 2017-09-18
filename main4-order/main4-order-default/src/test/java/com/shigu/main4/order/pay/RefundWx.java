@@ -30,8 +30,8 @@ public class RefundWx extends BaseTest {
     public void testRefundAlipay() throws PayerException, AlipayApiException {
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent("{" +
-                "    \"trade_no\":\"2017090321001004910269852695\"," +
-                "    \"refund_amount\":6.0," +
+                "    \"trade_no\":\"4006042001201709050351231403\"," +
+                "    \"refund_amount\":303.9," +
                 "    \"refund_reason\":\"正常退款\"," +
                 "    \"out_request_no\":\"" + UUIDGenerator.getUUID() + "\"" +
                 "  }");
@@ -44,13 +44,13 @@ public class RefundWx extends BaseTest {
     @Test
     public void testRefundWx() throws PayerException {
         RefundReqData reqData = new RefundReqData(
-                "4001162001201709029713350183",
-                "OA66679",
+                "4006042001201709050351231403",
+                "OA67306",
                 null,
-                "fga4001162001201709029713350183",
-                6600,
-                6600,
-                "o6mmVt3kI-BLwWMTItTi2sbuS1hA",
+                "fga4006042001201709050351231403",
+                102690,
+                30390,
+                "o6mmVt8p0RHdK8LBi3PzpoaTfXwU",
                 null
         );
         ResultListener resultListener = new ResultListener();

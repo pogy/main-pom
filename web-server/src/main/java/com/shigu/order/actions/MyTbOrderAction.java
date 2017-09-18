@@ -75,11 +75,12 @@ public class MyTbOrderAction {
             page=1;
         }
         Integer size=4;
+        Integer maxPage=5000/size;
         ShiguPager<GoodsVO> pager=myTbOrderService.selectglGoods(keyword,webSite,page,size);
         JSONObject obj=new JSONObject();
         obj.put("result","success");
         obj.put("goodsList",pager.getContent());
-        obj.put("pageOption",pager.getTotalCount()+","+size+","+page);
+        obj.put("pageOption",(pager.getTotalCount()>maxPage?maxPage:pager.getTotalCount())+","+size+","+page);
         return obj;
     }
     //手动关联

@@ -16,10 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 广告服务
@@ -114,7 +111,11 @@ public class SpreadService {
                 List<ImgBannerVO> vos=new ArrayList<>();
                 try {
                     List<ImgGoatVO> goats = goatDubboService.selGoatsFromLocalCode(spread.getCode());
+                    Date now = new Date();
                     for (ImgGoatVO gv : goats) {
+                        if ((SpreadEnum.BACK_MEMBER.equals(spread)||SpreadEnum.BACK_SHOP.equals(spread))&&gv.getToTime().before(now)) {
+                            continue;
+                        }
                         vos.add(new ImgBannerVO(gv.getLinkUrl(), gv.getPicUrl(), gv.getText()));
                     }
                 }catch (GoatException e){
