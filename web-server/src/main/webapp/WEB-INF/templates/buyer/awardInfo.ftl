@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/awardInfov1.css?v=2017090401" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/awardInfo.css?v=2017090401" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/awardInfov1.js?v=2017090401"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/awardInfo.js?v=2017090401"></script>
 </head>
 <body>
 
