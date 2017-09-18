@@ -6,6 +6,7 @@ import com.opentae.data.mall.beans.*;
 import com.opentae.data.mall.examples.ExpressCompanyExample;
 import com.opentae.data.mall.examples.ShiguShopExample;
 import com.opentae.data.mall.interfaces.*;
+import com.shigu.main4.cdn.services.CdnService;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.order.bo.ItemOrderBO;
@@ -70,6 +71,8 @@ public class ConfirmOrderService {
     @Autowired
     private LogisticsService logisticsService;
 
+    @Autowired
+    private CdnService cdnService;
 
 
 
@@ -134,6 +137,9 @@ public class ConfirmOrderService {
                 SubItemOrderBO subOrder = new SubItemOrderBO();
                 subOrder.setMark(confirmOrderBO.getRemark());
                 ItemProductVO productVO=productsMap.get(Long.parseLong(confirmSubOrderBO.getId()));
+                if (cdnService.canSale(productVO.getMarketId(),productVO.getShopId(),productVO.getGoodsId(),productVO.getWebSite())) {
+                    continue;
+                }
                 subOrder.setNum(num);
                 subOrder.setPid(productVO.getPid());
                 subOrder.setTitle(productVO.getTitle());
