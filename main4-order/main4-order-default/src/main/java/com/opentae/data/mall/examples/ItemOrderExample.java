@@ -12,7 +12,9 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
     public static final EntityTable entityTable = EntityHelper.getEntityTable(beanClass);
     public static EntityColumn refundFee;
     public static EntityColumn finishTime;
+    public static EntityColumn payTime;
     public static EntityColumn payedFee;
+    public static EntityColumn tbSend;
     public static EntityColumn disenable;
     public static EntityColumn orderStatus;
     public static EntityColumn oid;
@@ -34,7 +36,9 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         }
         refundFee = listMap.get("refundFee");
         finishTime = listMap.get("finishTime");
+        payTime = listMap.get("payTime");
         payedFee = listMap.get("payedFee");
+        tbSend = listMap.get("tbSend");
         disenable = listMap.get("disenable");
         orderStatus = listMap.get("orderStatus");
         oid = listMap.get("oid");
@@ -163,6 +167,53 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
         public ItemOrderExample.Criteria andFinishTimeNotBetween(Date value1, Date value2) {
             return notBetween(finishTime, value1, value2);
         }
+        public ItemOrderExample.Criteria andPayTimeIsNull() {
+            return isNull(payTime);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeIsNotNull() {
+            return isNotNull(payTime);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeEqualTo(Date value) {
+            return equalTo(payTime, value);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeNotEqualTo(Date value) {
+            return notEqualTo(payTime, value);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeGreaterThan(Date value) {
+            return greaterThan(payTime, value);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeGreaterThanOrEqualTo(Date value) {
+            return greaterThanOrEqualTo(payTime, value);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeLessThan(Date value) {
+            return lessThan(payTime, value);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeLessThanOrEqualTo(Date value) {
+            return lessThanOrEqualTo(payTime, value);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeIn(List<Date> values) {
+            return in(payTime, values);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeNotIn(List<Date> values) {
+            return notIn(payTime, values);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeBetween(Date value1, Date value2) {
+            return between(payTime, value1, value2);
+        }
+
+        public ItemOrderExample.Criteria andPayTimeNotBetween(Date value1, Date value2) {
+            return notBetween(payTime, value1, value2);
+        }
         public ItemOrderExample.Criteria andPayedFeeIsNull() {
             return isNull(payedFee);
         }
@@ -209,6 +260,53 @@ public class ItemOrderExample extends SgExample<ItemOrderExample.Criteria> {
 
         public ItemOrderExample.Criteria andPayedFeeNotBetween(Long value1, Long value2) {
             return notBetween(payedFee, value1, value2);
+        }
+        public ItemOrderExample.Criteria andTbSendIsNull() {
+            return isNull(tbSend);
+        }
+
+        public ItemOrderExample.Criteria andTbSendIsNotNull() {
+            return isNotNull(tbSend);
+        }
+
+        public ItemOrderExample.Criteria andTbSendEqualTo(Boolean value) {
+            return equalTo(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendNotEqualTo(Boolean value) {
+            return notEqualTo(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendGreaterThan(Boolean value) {
+            return greaterThan(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendGreaterThanOrEqualTo(Boolean value) {
+            return greaterThanOrEqualTo(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendLessThan(Boolean value) {
+            return lessThan(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendLessThanOrEqualTo(Boolean value) {
+            return lessThanOrEqualTo(tbSend, value);
+        }
+
+        public ItemOrderExample.Criteria andTbSendIn(List<Boolean> values) {
+            return in(tbSend, values);
+        }
+
+        public ItemOrderExample.Criteria andTbSendNotIn(List<Boolean> values) {
+            return notIn(tbSend, values);
+        }
+
+        public ItemOrderExample.Criteria andTbSendBetween(Boolean value1, Boolean value2) {
+            return between(tbSend, value1, value2);
+        }
+
+        public ItemOrderExample.Criteria andTbSendNotBetween(Boolean value1, Boolean value2) {
+            return notBetween(tbSend, value1, value2);
         }
         public ItemOrderExample.Criteria andDisenableIsNull() {
             return isNull(disenable);
