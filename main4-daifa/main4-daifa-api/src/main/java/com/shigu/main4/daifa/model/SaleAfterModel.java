@@ -66,7 +66,7 @@ public interface SaleAfterModel {
      * ====================================================================================
      * 
      */
-    String saleAfterRemark(Long refundId,Long orderId,String remark)throws DaifaException;
+    int saleAfterRemark(Long afterSaleId,String remark)throws DaifaException;
     /**
      * ====================================================================================
      * @方法名： storeRefundMoney

@@ -275,8 +275,23 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     }
 
     @Override
-    public String saleAfterRemark(Long refundId, Long orderId, String remark) throws DaifaException {
-        return null;
+    public int saleAfterRemark(Long afterSaleId, String remark) throws DaifaException {
+        DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
+        tmp.setRefundId(refundId);
+        List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
+        if (subs.size() == 0) {
+            //售后申请不存在
+            throw new DaifaException("售后申请不存在");
+        }
+
+        DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
+        daifaAfterSale.setAfterSaleId(afterSaleId);
+        daifaAfterSale = daifaAfterSaleMapper.selectByPrimaryKey(afterSaleId);
+        if (daifaAfterSale == null) {
+            throw new DaifaException("售后申请不存在");
+        }
+        daifaAfterSale.setRemark(daifaAfterSale.getRemark()+":"+remark);
+        return daifaAfterSaleMapper.updateByPrimaryKey(daifaAfterSale);
     }
 
     /**
