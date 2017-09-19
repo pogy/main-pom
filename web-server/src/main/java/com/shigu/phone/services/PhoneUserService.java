@@ -11,6 +11,7 @@ import com.openJar.responses.app.ChangePasswordResponse;
 import com.openJar.responses.app.RegistResponse;
 import com.opentae.data.mall.beans.MemberLicense;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
+import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.buyer.services.UserAccountService;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
@@ -24,7 +25,7 @@ import com.shigu.main4.ucenter.vo.RegisterUser;
 import com.shigu.main4.ucenter.vo.UserInfo;
 import com.shigu.phone.api.actions.PhoneMsgAction;
 import com.shigu.phone.api.enums.PhoneMsgTypeEnum;
-import com.shigu.phone.apps.vo.PhoneSimpleUserInfoVO;
+import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.PhoneVerify;
 import com.shigu.session.main4.Rds3TempUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,7 +149,7 @@ public class PhoneUserService {
      * @param request
      * @return
      */
-    public BindUserResponse bindUser(BindUserRequest request){
+    public BindUserResponse bindUser(BindUserRequest request,String remoteAddr){
         BindUserResponse resp = new BindUserResponse();
         PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_BIND_TYPE_MSG,PhoneVerify.class);
         if (phoneMsg==null||!phoneMsg.getVerify().equals(request.getCode())|| !phoneMsg.getPhone().equals(request.getTelephone())) {
@@ -159,20 +160,32 @@ public class PhoneUserService {
             return resp;
         }
         Rds3TempUser rds3TempUser = phoneMsgAction.getPhoneMsg(request.getTempId(), PhoneMsgTypeEnum.PHONE_RDS3_TEMP_USER_TYPE_MSG, Rds3TempUser.class);
+        if (!request.getTempId().equals(rds3TempUser.getSubUserKey())) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("账号或手机号错误");
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
+        }
         try {
-            userAccountService.bindAccount(rds3TempUser,request.getTelephone(),null);
+            userAccountService.bindAccount(rds3TempUser,request.getTelephone(),remoteAddr);
         } catch (JsonErrException e) {
             resp.setException(new OpenException());
             resp.setSuccess(false);
             return resp;
         }
-        //todo:respinfo
-
-        return null;
+        PersonalSession personalSession = userBaseService.selUserForSessionByUserName(rds3TempUser.getSubUserName(), rds3TempUser.getLoginFromType());
+        resp.setUserId(personalSession.getUserId());
+        resp.setUserNick(personalSession.getUserNick());
+        resp.setImgsrc(personalSession.getHeadUrl());
+        boolean isSeller = personalSession.getLogshop() != null || (personalSession.getLogshop() == null && personalSession.getOtherShops().size() > 0);
+        resp.setImSeller(isSeller);
+        String token = EncryptUtil.genRandomPwd(36);
+        //todo:之后使用的是tempID还是登陆唯一标志需要确认，token保存时长暂时用1小时，保存用户信息
+        redisIO.putTemp(PhoneMsgTypeEnum.PHONE_USER_INFO.getType()+rds3TempUser.getLoginFromType().getValue()+"_"+rds3TempUser.getSubUserKey()+"_"+token,personalSession,3600*1);
+        resp.setToken(token);
+        resp.setSuccess(true);
+        return resp;
     }
 
-    private PhoneSimpleUserInfoVO getSimpleUserInfo(String telephone) {
-        //redisIO.putTemp(+telephone+token);//把临时码放入redis
-        return null;
-    }
 }

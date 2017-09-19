@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -50,8 +51,9 @@ public class AppUserAction {
 
     @RequestMapping("bindUser")
     @ResponseBody
-    public JSONObject appBindUser(@Valid BindUserRequest request,BindingResult bindingResult) {
-        return null;
+    public JSONObject appBindUser(@Valid BindUserRequest request, HttpServletRequest httpRequest,BindingResult bindingResult) {
+        String remoteAddr = httpRequest.getRemoteAddr();
+        return JSONObject.fromObject(phoneUserService.bindUser(request,remoteAddr));
     }
 
 
