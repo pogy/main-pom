@@ -133,7 +133,11 @@ public class DaifaAllocatedService {
         }
         switch (takeType){
             case 1:{
+                DaifaOrder o=daifaOrderMapper.selectFieldsByPrimaryKey(g.getDfOrderId(),FieldUtil.codeFields("take_goods_status"));
                 takeGoodsIssueProcess.complete(takeGoodsId);
+                if(o.getTakeGoodsStatus()==2){
+                    orderServerTake(g.getDfOrderId());
+                }
                 break;
             }
             case 2:{
@@ -198,11 +202,24 @@ public class DaifaAllocatedService {
             e.printStackTrace();
         }
     }
+    public void orderServerTake(Long dfOrderId){
+        if(dfOrderId==null){
+            return;
+        }
+        try {
+            DaifaOrder o=daifaOrderMapper.selectFieldsByPrimaryKey(dfOrderId,FieldUtil.codeFields("df_order_id,order_partition_id"));
+            if(o!=null){
+                itemOrderProcess.cancleOutOfStock(new Long(o.getOrderPartitionId()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void tongbuquehuo(){
         DaifaGgoodsTasksExample daifaGgoodsTasksExample=new DaifaGgoodsTasksExample();
-        daifaGgoodsTasksExample.createCriteria().andTakeGoodsStatusEqualTo(2).andOperateIsEqualTo(0).andUseStatusEqualTo(1)
-                .andReturnStatusEqualTo(0).andEndStatusEqualTo(0).andAllocatStatusEqualTo(0);
+        daifaGgoodsTasksExample.createCriteria().andTakeGoodsStatusEqualTo(2).andOperateIsEqualTo(0).andAllocatStatusEqualTo(0);
         List<DaifaGgoodsTasks> tasks=daifaGgoodsTasksMapper.selectFieldsByExample(daifaGgoodsTasksExample,FieldUtil.codeFields("tasks_id,df_order_id"));
         Map<Long,List<DaifaGgoodsTasks>> tsMap=BeanMapper.groupBy(tasks,"dfOrderId",Long.class);
         for(List<DaifaGgoodsTasks> ts:tsMap.values()){

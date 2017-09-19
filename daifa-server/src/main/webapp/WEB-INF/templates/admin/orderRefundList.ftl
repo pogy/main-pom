@@ -160,7 +160,15 @@
 
                     </li>
 
-                    <li class="tradeState"></li>
+                    <li class="tradeState">
+                            要自己判断<br>
+                                <#if order.refundId??>
+                                    <input type="button" name="refundfax" id="refundfax" class="fmButton fmButton-blue" value="退款" onclick="refunddeal('${order.dfTradeId!}','${order.dfOrderId!}','${order.refundId!}')">
+                                <#else>
+
+                                </#if>
+
+                    </li>
                 </ul>
             </div>
 
