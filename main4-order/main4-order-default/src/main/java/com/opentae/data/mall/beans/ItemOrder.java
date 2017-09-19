@@ -14,7 +14,7 @@ public class ItemOrder implements Serializable {
 	private Long oid;
 
     /**
-     * 
+     * 1星座商品类别
      */
 	private Integer type;
 
@@ -54,7 +54,7 @@ public class ItemOrder implements Serializable {
 	private String webSite;
 
     /**
-     * 1、等待买家付款，2、已支付，3、已发货，4、交易完成，5、交易关闭，6、卖家已发货
+     * 1、等待买家付款，2、已支付，3、已发货，4、交易完成，5、交易关闭
      */
 	private Integer orderStatus;
 
@@ -74,9 +74,14 @@ public class ItemOrder implements Serializable {
 	private Date finishTime;
 
     /**
-     * 外部交易号，如果是淘宝订单来的，取淘宝订单号
+     * 
      */
 	private String outerId;
+
+    /**
+     * 被删除1/0正常
+     */
+	private Boolean disenable;
 
     /**
      * 发货时间
@@ -84,9 +89,14 @@ public class ItemOrder implements Serializable {
 	private Date sendTime;
 
     /**
-     * 是否被删除
+     * 支付时间
      */
-	private Boolean disenable;
+	private Date payTime;
+
+    /**
+     * 是否已设置淘宝发货,0:未设置,1:已设置
+     */
+	private Boolean tbSend;
 
 	public void setOid(Long oid) {
 		this.oid = oid;
@@ -200,6 +210,14 @@ public class ItemOrder implements Serializable {
 		return this.outerId;
 	}
 
+	public void setDisenable(Boolean disenable) {
+		this.disenable = disenable;
+	}
+
+	public Boolean getDisenable() {
+		return this.disenable;
+	}
+
 	public void setSendTime(Date sendTime) {
 		this.sendTime = sendTime;
 	}
@@ -208,12 +226,20 @@ public class ItemOrder implements Serializable {
 		return this.sendTime;
 	}
 
-	public void setDisenable(Boolean disenable) {
-		this.disenable = disenable;
+	public void setTbSend(Boolean tbSend) {
+		this.tbSend = tbSend;
 	}
 
-	public Boolean getDisenable() {
-		return this.disenable;
+	public Boolean getTbSend() {
+		return this.tbSend;
+	}
+
+	public void setPayTime(Date payTime) {
+		this.payTime = payTime;
+	}
+
+	public Date getPayTime() {
+		return this.payTime;
 	}
 
 }

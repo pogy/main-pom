@@ -294,6 +294,8 @@ public class MyTbOrderService {
                         subvo.setXzPrice(rgv.getPiPriceString());
                         subvo.setWebSite(rgv.getWebSite());
                         lr+= subvo.getNewTbPriceLong()-rgv.getPiPrice();
+                    }else {
+                        vo.setCanOrder(false);
                     }
                 } catch (NotFindRelationGoodsException e) {
                     vo.setCanOrder(false);

@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/myOrder.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/myOrder.css?v=2017091401" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/myOrder.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/myOrder.js?v=2017091401"></script>
 </head>
 <body>
 
@@ -259,7 +259,7 @@ var webSite = '${webSite!}';
 
         
 
-<#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"goodsNo","value":"${query.goodsNo!}"},{"name":"st","value":query.st,"timeFormat":"yyyy-MM-dd"},{"name":"et","value":query.et,"timeFormat":"yyyy-MM-dd"},{"name":"orderId","value":"${query.orderId!}"},{"name":"receiver","value":"${query.receiver!}"},{"name":"telePhone","value":"${query.telePhone!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
+<#assign text>{"fields":[{"name":"status","value":"${query.status!}"},{"name":"goodsNo","value":"${query.goodsNo!}"},{"name":"st","value":query.st,"timeFormat":"yyyy-MM-dd"},{"name":"et","value":query.et,"timeFormat":"yyyy-MM-dd"},{"name":"orderId","value":"${query.orderId!}"},{"name":"receiver","value":"${query.receiver!}"},{"name":"telePhone","value":"${query.telePhone!}"},{"name":"orderType","value":"${query.orderType!}"},{"name":"page","value":"${query.page!}"}]}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
 <#if $it.fields??>
@@ -306,9 +306,17 @@ var webSite = '${webSite!}';
         <li>
             <label>时间：</label><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="starTime" placeholder="请选择时间范围起始" <#if query.st??>value="${query.st?string('yyyy-MM-dd')}"</#if>><span class="divideLine">-</span><input type=text class="jqDatepicker slInput" data-format="%Y-%M-%D" name="endTime" placeholder="请选择时间范围起始" <#if query.et??>value="${query.et?string('yyyy-MM-dd')}"</#if>>
         </li>
+        <li>
+            <label>订单类型：</label>
+            <select name="orderType">
+                <option>全部</option>
+                <option value="1" <#if query.orderType == "1">selected</#if>>淘宝</option>
+                <option value="2" <#if query.orderType == "2">selected</#if>>非淘宝</option>
+            </select>
+        </li>
         <li><label>订单编号：</label><input type=text name="orderId" <#if query.orderId??>value="${query.orderId!}"</#if>></li>
         <li><label>收货人信息：</label><input type=text name="receiver" placeholder="收货人姓名" class="slInput" <#if query.receiver??>value="${query.receiver!}"</#if>><span class="divideLine"></span><input type=text name="telePhone" placeholder="收货人手机号码" class="slInput" <#if query.telePhone??>value="${query.telePhone!}"</#if>></li>
-        <li class="noMargin">
+        <li class="marginLeft">
             
 
 <#assign text>{}</#assign>
@@ -353,7 +361,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -524,7 +531,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
             <#elseif order.mainState == 2>
@@ -542,9 +548,20 @@ var webSite = '${webSite!}';
             <#elseif order.mainState == 3>
             <p><a href="${main_host!}order/expressDetail.htm?orderId=${order.orderId!}" target="_blank" class="fc9">查看物流</a></p>
             </#if>
+            <#if order.mainState == 3>
+                <#if order.isTbOrder == true>
+                    <#if order.isTbShipments == true>
+                    <p>淘宝已发货</p>
+                    <#else>
+                    <p><b class="markingTb" jbtn="markingTb" data-id="${order.orderId!}">标记淘宝发货</b></p>
+                    </#if>
+                </#if>
+            </#if>
         </#if>
     </li>
 </ul>
+
+
 
 
 

@@ -1,5 +1,8 @@
 package com.shigu.main4.order.model.impl;
 
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
+import com.alibaba.fastjson.JSON;
 import com.opentae.data.mall.beans.OrderPay;
 import com.opentae.data.mall.beans.OrderPayApply;
 import com.shigu.main4.common.tools.StringUtil;
@@ -31,6 +34,8 @@ import java.util.Calendar;
  */
 @Service("wxPayerService")
 public class WxPayerServiceImpl extends  PayerServiceAble {
+
+    private static final Logger logger = LoggerFactory.getLogger(WxPayerServiceImpl.class);
 
     @Value("${weixin.pay.notify.url}")
     private String notifyUrl;
@@ -175,22 +180,22 @@ public class WxPayerServiceImpl extends  PayerServiceAble {
 
         @Override
         public void onFailByReturnCodeError(RefundResData refundResData) {
-
+            logger.error("[onFailByReturnCodeError]"+JSON.toJSONString(refundResData));
         }
 
         @Override
         public void onFailByReturnCodeFail(RefundResData refundResData) {
-
+            logger.error("[onFailByReturnCodeFail]"+JSON.toJSONString(refundResData));
         }
 
         @Override
         public void onFailBySignInvalid(RefundResData refundResData) {
-
+            logger.error("[onFailBySignInvalid]"+JSON.toJSONString(refundResData));
         }
 
         @Override
         public void onRefundFail(RefundResData refundResData) {
-
+            logger.error("[onRefundFail]"+JSON.toJSONString(refundResData));
         }
 
         @Override

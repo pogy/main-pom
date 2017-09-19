@@ -50,6 +50,11 @@ public interface SaleAfterProcess {
      * @方法名： storeRefundDeal  客服发起
      * @user gzy 2017/9/15 11:42
      * @功能： 档口退货处理  可能是退货成功，也可能是拒绝退货
+     * 1、退货失败(单件商品操作)
+     * 2、退货成功（按申请的refundId对应，一次操作除失败以外的所有单件）
+     *     a、价格与申请时候的价格一样，退货成功
+     *     b、价格（包括退失败的）与申请价格不一样，发起议价
+     *
      * SaleAfterModel.storeRefundMoney或SaleAfterModel.storeRefundRefuse
      * @param: bo
      * @return: 

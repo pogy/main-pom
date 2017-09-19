@@ -286,7 +286,7 @@ var webSite = '${vo.storeRelation.webSite!}';
                     <div class="selectsUpc gyselect j_weixin_boss">
                         <div class="ewmK j_ewmK"><div class="j_erweima erweima"><img src="" alt width=134 height=134 /></div><i class="c_jt"></i></div>
                         <p class="up_button">
-                            <a class="wa_buttion_up" href="http://www.571xz.net/publish.htm?id=${vo.itemId!}&wsit="  title="上传淘宝" target="_blank" >淘宝</a>
+                            <a class="wa_buttion_up" href="http://upload.571xz.com/publish.htm?id=${vo.itemId!}&wsit="  title="上传淘宝" target="_blank" >淘宝</a>
                             <a class="wa_buttion_up" href="http://1688.571xz.com/offer/publish.htm?id=${vo.itemId!}"  title="上传阿里" target="_blank">阿里</a>
                             <a href="javascript:;" class="wa_buttion_up j_weixin" title="上传微信" data-id="${vo.itemId!}">微信</a>
                             <a class="wa_buttion_up wa_buttion_add" href="javascript:;" onclick="sc_goods(${vo.itemId!})" title="加数据包">数据包</a>

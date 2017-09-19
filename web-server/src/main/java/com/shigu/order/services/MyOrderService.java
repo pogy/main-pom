@@ -15,6 +15,8 @@ import com.shigu.main4.common.exceptions.Main4Exception;
 import com.shigu.main4.common.tools.ShiguPager;
 import com.shigu.main4.daifa.exceptions.OrderNotFindException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
+import com.shigu.main4.order.exceptions.TbSendException;
+import com.shigu.main4.order.process.ItemOrderProcess;
 import com.shigu.main4.order.services.ItemOrderService;
 import com.shigu.main4.order.services.OrderListService;
 import com.shigu.main4.order.servicevo.ExpressInfoVO;
@@ -68,95 +70,59 @@ public class MyOrderService {
 
     @Autowired
     private OrderManageProcess orderManageProcess;
-
+    @Autowired
+    private ItemOrderProcess itemOrderProcess;
     @Autowired
     private MultipleMapper multipleMapper;
 
 
     public ShiguPager<MyOrderVO> selectMyOrderPager(OrderBO bo, Long userId) throws ParseException {
-        ItemOrderExample orderExample = new ItemOrderExample();
-        orderExample.setStartIndex((bo.getPage() - 1) * bo.getPageSize());
-        orderExample.setEndIndex(bo.getPageSize());
-        orderExample.setOrderByClause("item_order.create_time DESC");
-        ItemOrderExample.Criteria orderCriteria = orderExample.createCriteria().andUserIdEqualTo(userId).andDisenableEqualTo(false);
-
-        if (bo.getOrderId() != null) {
-            orderCriteria.andOidEqualTo(bo.getOrderId());
-        }
-
-        if (bo.getStatus() != null) {
-            orderCriteria.andOrderStatusEqualTo(bo.getStatus());
-        }
-
-        if (bo.getSt() != null) {
-            orderCriteria.andCreateTimeGreaterThanOrEqualTo(bo.getSt());
-        }
-
-        if (bo.getEt() != null) {
-            orderCriteria.andCreateTimeLessThanOrEqualTo(bo.getEt());
-        }
-
-        ItemOrderSubExample subExample = new ItemOrderSubExample();
-        ItemOrderSubExample.Criteria subExampleCriteria = subExample.createCriteria();
-        if (StringUtils.isNotEmpty(bo.getGoodsNo())) {
-            subExampleCriteria.andGoodsNoLike("%" + bo.getGoodsNo() + "%");
-        }
-
-        ItemOrderLogisticsExample logisticsExample = new ItemOrderLogisticsExample();
-        ItemOrderLogisticsExample.Criteria logisticsExampleCriteria = logisticsExample.createCriteria();
-
-        if (StringUtils.isNotEmpty(bo.getReceiver())) {
-            logisticsExampleCriteria.andNameEqualTo(bo.getReceiver());
-        }
-
-        if (StringUtils.isNotEmpty(bo.getTelePhone())) {
-            logisticsExampleCriteria.andTelephoneEqualTo(bo.getTelePhone());
-        }
-        return selectMyOrderPager(bo.getPage(), bo.getPageSize(), orderExample, subExample, logisticsExample, new ItemOrderRefundExample(), false);
+        return selectMyOrderPager(bo.getPage(), bo.getPageSize(), false,userId,bo,null);
     }
 
-    public ShiguPager<MyOrderVO> selectMyOrderPager(Integer number, Integer size, ItemOrderExample orderExample, ItemOrderSubExample subExample, ItemOrderLogisticsExample logisticsExample, ItemOrderRefundExample refundExample, boolean onlyRefund) {
+    public ShiguPager<MyOrderVO> selectMyOrderPager(Integer number, Integer size, boolean onlyRefund,Long userId,OrderBO bo,Integer shStatus) {
         ShiguPager<MyOrderVO> pager = new ShiguPager<>();
         pager.setNumber(number);
-        MultipleExampleBuilder multipleExampleBuilder = MultipleExampleBuilder.from(orderExample)
-                .innerJoin(subExample).on(subExample.createCriteria().equalTo(ItemOrderSubExample.oid, ItemOrderExample.oid))
-                .innerJoin(logisticsExample).on(logisticsExample.createCriteria().equalTo(ItemOrderLogisticsExample.oid, ItemOrderExample.oid))
-                .leftJoin(refundExample).on(refundExample.createCriteria().equalTo(ItemOrderRefundExample.soid, ItemOrderSubExample.soid));
-        if (onlyRefund) {
-            multipleExampleBuilder.where(refundExample.createCriteria().andRefundIdIsNotNull());
-        }
-        MultipleExample multipleExample = multipleExampleBuilder.build();
-        multipleExample.setDistinctCount(ItemOrderExample.oid);
-        multipleExample.setOrderByClause("item_order.create_time DESC");
-        int orderCount = multipleMapper.countByMultipleExample(multipleExample);
+        int orderCount = itemOrderMapper.countMyOrderList(userId,bo,onlyRefund,shStatus);
         if (orderCount > 0) {
-
+            List<MyOrderVO> myOrderVOS;
             // 查询数据
             pager.calPages(orderCount, size);
-            pager.setContent(multipleMapper.selectFieldsByMultipleExample(multipleExample, MyOrderVO.class));
-            List<Long> orderIds = pager.getContent().stream().map(MyOrderVO::getOrderId).collect(Collectors.toList());
-
-            // 查询计算服务费信息， 按主单聚合服务费总数, Long 分 -> String 元
-            ItemOrderServiceExample orderServiceExample = new ItemOrderServiceExample();
-            orderServiceExample.createCriteria().andOidIn(orderIds);
-            Map<Long, String> orderServiceMoneyMap = itemOrderServiceMapper.selectByExample(orderServiceExample).stream()
-                    .collect(Collectors.groupingBy(com.opentae.data.mall.beans.ItemOrderService::getOid)).entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.format("%.2f", entry.getValue().stream().mapToLong(com.opentae.data.mall.beans.ItemOrderService::getMoney).sum() * .01)));
-
-            pager.getContent().stream()
-                    .peek(o -> o.setServerPay(orderServiceMoneyMap.get(o.getOrderId())))
-                    .map(MyOrderVO::getChildOrders).flatMap(List::stream).forEach(subMyOrderVO -> {
-                if (subMyOrderVO.getStockoutNum() == null || subMyOrderVO.getStockoutNum() == 0) {
-                    subMyOrderVO.setStockoutNum(null);
-                }
-                    List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
-                if (afterSales != null && !afterSales.isEmpty()) {
-                    subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
-                    subMyOrderVO.setHasAfter(afterSales.stream().filter(a -> a.getType() == 2 || a.getType() == 3).count() > 0);
-                }
-            });
+            //从订单来查,用mapper
+            int startIndex = (number - 1) * size;
+            myOrderVOS = itemOrderMapper.selectMyOrderList(userId,bo,startIndex,size,onlyRefund,shStatus);
+            pager.setContent(myOrderVOS);
+            packageMyOrderVO(pager.getContent());
         }
         return pager;
+    }
+
+    /**
+     * 订单列表信息填充
+     * @param myOrderVOList
+     */
+    public void packageMyOrderVO(List<MyOrderVO> myOrderVOList) {
+        List<Long> orderIds = myOrderVOList.stream().map(MyOrderVO::getOrderId).collect(Collectors.toList());
+
+        // 查询计算服务费信息， 按主单聚合服务费总数, Long 分 -> String 元
+        ItemOrderServiceExample orderServiceExample = new ItemOrderServiceExample();
+        orderServiceExample.createCriteria().andOidIn(orderIds);
+        Map<Long, String> orderServiceMoneyMap = itemOrderServiceMapper.selectByExample(orderServiceExample).stream()
+                .collect(Collectors.groupingBy(com.opentae.data.mall.beans.ItemOrderService::getOid)).entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.format("%.2f", entry.getValue().stream().mapToLong(com.opentae.data.mall.beans.ItemOrderService::getMoney).sum() * .01)));
+
+        myOrderVOList.stream()
+                .peek(o -> o.setServerPay(orderServiceMoneyMap.get(o.getOrderId())))
+                .map(MyOrderVO::getChildOrders).flatMap(List::stream).forEach(subMyOrderVO -> {
+            if (subMyOrderVO.getStockoutNum() == null || subMyOrderVO.getStockoutNum() == 0) {
+                subMyOrderVO.setStockoutNum(null);
+            }
+            List<AfterSaleVO> afterSales = subMyOrderVO.getAfterSales();
+            if (afterSales != null && !afterSales.isEmpty()) {
+                subMyOrderVO.setRefundCount(afterSales.stream().filter(a -> a.getType() == 1 || a.getType() == 4).mapToInt(AfterSaleVO::getAfterSaleNum).sum());
+                subMyOrderVO.setHasAfter(afterSales.stream().filter(a -> a.getType() == 2 || a.getType() == 3).count() > 0);
+            }
+        });
     }
 
     public boolean orderBelongTo(Long orderId, Long userId) {
@@ -199,14 +165,11 @@ public class MyOrderService {
     public MyOrderDetailVO orderDetail(Long orderId) throws Main4Exception, ParseException {
         MyOrderDetailVO vo = new MyOrderDetailVO();
         ShowOrderDetailVO orderVO = orderListService.selectMyorder(orderId);
-
-        ItemOrderExample orderExample = new ItemOrderExample();
-        orderExample.createCriteria().andOidEqualTo(orderId);
-        ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, orderExample, new ItemOrderSubExample(), new ItemOrderLogisticsExample(), new ItemOrderRefundExample(), false);
+        OrderBO orderBO = new OrderBO();
+        orderBO.setOrderId(orderId);
+        ShiguPager<MyOrderVO> pager = selectMyOrderPager(1, 1, false,null,orderBO,null);
         vo.setChildOrders(pager.getContent().get(0).getChildOrders());
-
         vo.setExpress(orderListService.selectExpress(orderId));
-
         vo.setOrderAddrInfo(expressAddrInfo(orderId));
 
         vo.setTotal(orderVO.getTotalVO());
@@ -244,5 +207,22 @@ public class MyOrderService {
     public boolean testRefund(Long subId) throws OrderNotFindException {
         ItemOrderSub sub = itemOrderSubMapper.selectByPrimaryKey(subId);
         return sub != null && orderManageProcess.tryRefund(subId.toString()).size() > 0;
+    }
+
+    public void tbSend(Long userId,Long oid) throws Main4Exception {
+        ItemOrder o=itemOrderMapper.selectByPrimaryKey(oid);
+        if(o==null){
+            //订单不存在
+            throw new Main4Exception("订单不存在");
+        }
+        if(o.getUserId().longValue()!=userId){
+            //不是该用户的订单
+            throw new Main4Exception("不是该用户的订单");
+        }
+        try {
+            itemOrderProcess.tbSend(oid);
+        } catch (TbSendException e) {
+            throw new Main4Exception(e.getMessage());
+        }
     }
 }

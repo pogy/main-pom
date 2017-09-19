@@ -305,6 +305,7 @@ public class ConfirmOrderService {
         } catch (LogisticsRuleException e) {
             throw new JsonErrException(e.getMessage());
         }
+        Collections.sort(vos);
         return vos;
     }
 }
