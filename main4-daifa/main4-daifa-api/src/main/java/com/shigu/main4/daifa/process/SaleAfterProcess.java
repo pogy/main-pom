@@ -79,7 +79,7 @@ public interface SaleAfterProcess {
      * ====================================================================================
      *
      */
-    String storeRefundRefuse(Long orderId,String reason,String stockLocktion) throws DaifaException;
+    String storeRefundRefuse(Long orderId,String reason,String stockLocktion,String sendPhone) throws DaifaException;
 
     /**
      * ====================================================================================
