@@ -7,6 +7,8 @@ import com.opentae.data.daifa.examples.DaifaAfterSaleSubExample;
 import com.opentae.data.daifa.interfaces.DaifaAfterReceiveExpresStockMapper;
 import com.opentae.data.daifa.interfaces.DaifaAfterSaleSubMapper;
 import com.shigu.main4.common.util.BeanMapper;
+import com.shigu.main4.common.util.DateUtil;
+import com.shigu.main4.daifa.bo.RebackPrintExpressBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.ScanSaleAfterExpressModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +93,35 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
     }
 
     @Override
-    public String rebackPrintExpress(Long orderId) throws DaifaException {
+    public String rebackPrintExpress(RebackPrintExpressBO bo) throws DaifaException {
+        DaifaAfterSaleSub daifaAfterSaleSub = new DaifaAfterSaleSub();
+        daifaAfterSaleSub.setDfOrderId(bo.getOrderId());
+        DaifaAfterSaleSub oldSub = daifaAfterSaleSubMapper.selectOne(daifaAfterSaleSub);
+        if (oldSub == null){
+            throw new DaifaException("not find after-sale");
+        }
+        Date now = new Date();
+        daifaAfterSaleSub.setAfterSaleSubId(oldSub.getAfterSaleSubId());//设置主键
+        daifaAfterSaleSub.setSendReturnDate(DateUtil.dateToString(now,DateUtil.patternB));
+        daifaAfterSaleSub.setSendReturnTime(now);
+        daifaAfterSaleSub.setLastDoTime(now);
+        daifaAfterSaleSub.setApplyExpressName(bo.getApplyExpressName());
+        daifaAfterSaleSub.setApplyExpressCode(bo.getApplyExpressCode());
+        daifaAfterSaleSub.setRemark(daifaAfterSaleSub.getRemark()+":"+bo.getRemark());//备注信息
+
+        switch (daifaAfterSaleSub.getAfterType()){//售后类型@1退货2换货
+            case 1:
+                daifaAfterSaleSub.setReturnExpressCode(bo.getReturnExpressCode());
+                daifaAfterSaleSub.setReturnExpressName(bo.getReturnExpressName());
+                break;
+            case 2:
+                daifaAfterSaleSub.setChangeExpressCode(bo.getChangeExpressCode());
+                daifaAfterSaleSub.setChangeExpressName(bo.getChangeExpressName());
+                break;
+            default:
+                throw new DaifaException("未定义的售后类型");
+        }
+        daifaAfterSaleSubMapper.updateByPrimaryKeySelective(daifaAfterSaleSub);
         return null;
     }
 

@@ -286,12 +286,12 @@ public class SaleAfterModelImpl implements SaleAfterModel {
 
         DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
         daifaAfterSale.setAfterSaleId(afterSaleId);
-        daifaAfterSale = daifaAfterSaleMapper.selectByPrimaryKey(afterSaleId);
-        if (daifaAfterSale == null) {
+        DaifaAfterSale oldSale = daifaAfterSaleMapper.selectByPrimaryKey(afterSaleId);
+        if (oldSale == null) {
             throw new DaifaException("售后申请不存在");
         }
         daifaAfterSale.setRemark(daifaAfterSale.getRemark()+":"+remark);
-        return daifaAfterSaleMapper.updateByPrimaryKey(daifaAfterSale);
+        return daifaAfterSaleMapper.updateByPrimaryKeySelective(daifaAfterSale);
     }
 
     /**

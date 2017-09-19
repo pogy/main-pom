@@ -133,7 +133,8 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
     }
 
     @Override
-    public String saleAfterRemark(SaleAfterBO bo) throws DaifaException {
+    public String saleAfterRemark(SaleAfterRemarkerBO bo) throws DaifaException {
+        SpringBeanFactory.getBean(SaleAfterModel.class, bo.getRefundId()).saleAfterRemark(bo.getAfterSaleId(),bo.getRemark());
         return null;
     }
 

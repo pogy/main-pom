@@ -105,7 +105,7 @@ public interface SaleAfterProcess {
      * ====================================================================================
      * 
      */
-    String saleAfterRemark(SaleAfterBO bo)throws DaifaException;
+    String saleAfterRemark(SaleAfterRemarkerBO bo)throws DaifaException;
 
     /**
      * ====================================================================================
