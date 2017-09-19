@@ -11,7 +11,6 @@ import com.openJar.responses.app.ChangePasswordResponse;
 import com.openJar.responses.app.RegistResponse;
 import com.opentae.data.mall.beans.MemberLicense;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
-import com.opentae.data.mall.interfaces.MemberUserMapper;
 import com.shigu.buyer.services.UserAccountService;
 import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
