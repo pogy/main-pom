@@ -14,4 +14,14 @@ import java.io.Serializable;
  * @commonents:
  */
 public class MoneyConsultBO implements Serializable{
+    //售后ID
+    private Long refundId;
+
+    public Long getRefundId() {
+        return this.refundId;
+    }
+
+    public void setRefundId(Long refundId) {
+        this.refundId = refundId;
+    }
 }
