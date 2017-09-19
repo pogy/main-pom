@@ -15,7 +15,9 @@ public enum SessionEnum {
     PHONE_LOGIN_MSG("手机登陆,短信内容","phone_login_msg"),
     SEND_REGISTER_MSG("发送短信前验证码","send_register_msg"),
     RDS3_TEMPUSER("第3方登陆成功以后，用户不存在，临时存储","rds3_tempuser"),
-    OTHEER_LOGIN_CALLBACK("第三方用户登陆时的回调地址 ，本来不想放这里，但不放要改的系统太多","other_login_callback");
+    OTHEER_LOGIN_CALLBACK("第三方用户登陆时的回调地址 ，本来不想放这里，但不放要改的系统太多","other_login_callback"),
+
+    ITEM_GOODS_ID("请求商品详情页面时暂存商品ID","ITEM_GOODS_ID");
 
     SessionEnum(String title, String value) {
         this.title = title;
