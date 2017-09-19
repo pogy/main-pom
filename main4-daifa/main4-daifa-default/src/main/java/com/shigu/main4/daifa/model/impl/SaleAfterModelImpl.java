@@ -205,6 +205,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         DaifaAfterSaleSub daifaAfterSaleSub = new DaifaAfterSaleSub();
         daifaAfterSaleSub.setAfterStatus(2);
         daifaAfterSaleSub.setApplyDealStatus(status);
+        daifaAfterSaleSub.setApplyDealTime(new Date());
         if (status == 2) {
             if(StringUtils.isEmpty(reason)){
                 throw new DaifaException("请填写拒绝理由");
@@ -215,8 +216,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         switch (status) {
             case 1: {
                 //todo 同意
-                DaifaSeller seller = daifaSellerMapper.selectByPrimaryKey(subs.get(0).getSellerId());
-                String address = seller.getTelephone() + " , " + seller.getName() + "," + seller.getAddress();
+//                DaifaSeller seller = daifaSellerMapper.selectByPrimaryKey(subs.get(0).getSellerId());
+//                String address = seller.getTelephone() + " , " + seller.getName() + "," + seller.getAddress();
 
                 break;
             }
@@ -447,6 +448,9 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         sub.setAfterSaleSubId(tmp.getAfterSaleSubId());
         sub.setInStock(inStockType);
         sub.setStockLocation(stockLocktion);
+        if(inStockType==1){
+            sub.setReceivedTime(new Date());
+        }
         daifaAfterSaleSubMapper.updateByPrimaryKeySelective(sub);
         if(inStockType==1){
             if(StringUtils.isEmpty(tmp.getApplyExpressCode())){

@@ -4,6 +4,7 @@ import com.opentae.data.daifa.beans.DaifaAfterSale;
 import com.opentae.data.daifa.beans.DaifaAfterSaleSub;
 import com.opentae.data.daifa.beans.DaifaOrder;
 import com.opentae.data.daifa.beans.DaifaTrade;
+import com.opentae.data.daifa.examples.DaifaAfterSaleSubExample;
 import com.opentae.data.daifa.examples.DaifaOrderExample;
 import com.opentae.data.daifa.examples.DaifaTradeExample;
 import com.opentae.data.daifa.interfaces.DaifaAfterSaleMapper;
@@ -40,9 +41,10 @@ public class SaleAfterProcessTest extends BaseSpringTest{
     private DaifaAfterSaleMapper daifaAfterSaleMapper;
 
     static Long refundId=999999L;
+    static Long errorRefundId=888888L;
 
-    @Test
-    @Transactional
+//    @Test
+//    @Transactional
     public void newSaleAfter_test(){
         DaifaTradeExample daifaTradeExample=new DaifaTradeExample();
         daifaTradeExample.createCriteria().andSendStatusEqualTo(2).andGoodsNumGreaterThan(1L);
@@ -159,4 +161,69 @@ public class SaleAfterProcessTest extends BaseSpringTest{
             }
         }
     }
+
+
+    @Test
+    @Transactional
+    public void afterApplyDeal_test(){
+        newSaleAfter_test();
+        boolean isError=false;
+        try {
+            saleAfterProcess.afterApplyDeal(errorRefundId,1,null);
+        } catch (DaifaException e) {
+            isError=true;
+            assertEquals(e.getMessage(),"售后申请不存在");
+        }
+        assertTrue(isError);
+
+        //测试二,状态错误,临时修改状态
+        DaifaAfterSaleSubExample daifaAfterSaleSubExample=new DaifaAfterSaleSubExample();
+        daifaAfterSaleSubExample.createCriteria().andRefundIdEqualTo(refundId).andAfterStatusEqualTo(1);
+        DaifaAfterSaleSub update=new DaifaAfterSaleSub();
+        update.setAfterStatus(2);
+        daifaAfterSaleSubMapper.updateByExampleSelective(update,daifaAfterSaleSubExample);
+        isError=false;
+        try {
+            saleAfterProcess.afterApplyDeal(refundId,1,null);
+        } catch (DaifaException e) {
+            isError=true;
+            assertEquals(e.getMessage(),"售后状态错误,不是申请中的订单");
+        }
+        assertTrue(isError);
+        //还原
+        update.setAfterStatus(1);
+        daifaAfterSaleSubExample.clear();
+        daifaAfterSaleSubExample.createCriteria().andRefundIdEqualTo(refundId).andAfterStatusEqualTo(2);
+        daifaAfterSaleSubMapper.updateByExampleSelective(update,daifaAfterSaleSubExample);
+
+        //测试三 拒绝,无理由
+        isError=false;
+        try {
+            saleAfterProcess.afterApplyDeal(refundId,2,null);
+        } catch (DaifaException e) {
+            isError=true;
+            assertEquals(e.getMessage(),"请填写拒绝理由");
+        }
+        assertTrue(isError);
+
+        //测试四,正常
+        isError=false;
+        try {
+            saleAfterProcess.afterApplyDeal(refundId,1,null);
+        } catch (DaifaException e) {
+            isError=true;
+        }
+        assertFalse(isError);
+
+        daifaAfterSaleSubExample.clear();
+        daifaAfterSaleSubExample.createCriteria().andRefundIdEqualTo(refundId);
+        List<DaifaAfterSaleSub> subs=daifaAfterSaleSubMapper.selectByExample(daifaAfterSaleSubExample);
+        for(DaifaAfterSaleSub sub:subs){
+            assertEquals(sub.getAfterStatus(),new Integer(2));
+            assertEquals(sub.getApplyDealStatus(),new Integer(1));
+            assertNotEquals(sub.getApplyDealTime(),null);
+        }
+    }
+
+
 }

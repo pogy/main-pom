@@ -95,14 +95,14 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
-    public String storeRefundRefuse(Long orderId,String reason,String stockLocktion) throws DaifaException {
+    public String storeRefundRefuse(Long orderId,String reason,String stockLocktion,String sendPhone) throws DaifaException {
         SaleAfterModel model=SpringBeanFactory.getBean(SaleAfterModel.class);
         model.storeRefundRefuse(orderId,reason);
         DaifaAfterSaleSub sub=new DaifaAfterSaleSub();
         sub.setDfOrderId(orderId);
         sub=daifaAfterSaleSubMapper.selectOne(sub);
         if(sub.getInStock()!=null){
-            model.refundFailInStock(orderId,2,stockLocktion);
+            model.refundFailInStock(orderId,2,stockLocktion,sendPhone);
         }
         return null;
     }
