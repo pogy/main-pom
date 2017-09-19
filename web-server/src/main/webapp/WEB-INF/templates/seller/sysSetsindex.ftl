@@ -13,7 +13,7 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/sysSetsindex.css?t=1504754150541" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/sysSetsindex.css?t=1505784045421" rel="stylesheet">
     
   </head>
 <body>
@@ -240,7 +240,7 @@ var webSite = '${webSite!}';
     <ul>
         <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
         <li><a href="https://shop121675953.taobao.com" target="_blank" style="color:#f40">广告位竞拍</a></li> 
-        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
+        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >广告申请</a></li> 
         <li><a href="${main_host!}seller/promotion.htm"  >广告展示管理</a></li> 
         <li><a href="${main_host!}seller/actRegister.htm"  >立即报名活动</a></li> 
     </ul> 
@@ -335,7 +335,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/sysSetsindex.js?t=1504754150541"></script>
+<script src="http://style.571xz.com/gys5/js/sysSetsindex.js?t=1505784045421"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>

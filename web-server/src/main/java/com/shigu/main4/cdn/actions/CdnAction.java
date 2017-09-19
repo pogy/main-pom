@@ -18,6 +18,7 @@ import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.enums.FitmentModuleType;
 import com.shigu.main4.exceptions.ShopFitmentException;
 import com.shigu.main4.item.enums.SearchCategory;
+import com.shigu.main4.item.services.ItemCatService;
 import com.shigu.main4.item.services.ShopsItemService;
 import com.shigu.main4.item.services.ShowForCdnService;
 import com.shigu.main4.item.vo.CdnItem;
@@ -30,26 +31,20 @@ import com.shigu.main4.storeservices.ShopDiscusService;
 import com.shigu.main4.storeservices.ShopForCdnService;
 import com.shigu.main4.storeservices.ShopLicenseService;
 import com.shigu.main4.storeservices.StoreRelationService;
-import com.shigu.main4.vo.FitmentArea;
-import com.shigu.main4.vo.FitmentModule;
 import com.shigu.main4.vo.ItemShowBlock;
 import com.shigu.main4.vo.ShopBase;
-import com.shigu.main4.vo.ShopBaseForCdn;
 import com.shigu.main4.vo.StoreRelation;
 import com.shigu.main4.vo.fitment.ItemPromoteModule;
 import com.shigu.search.bo.NewGoodsBO;
-import com.shigu.search.services.GoodsSelFromEsService;
 import com.shigu.search.services.TodayNewGoodsService;
 import com.shigu.search.vo.GoodsInSearch;
 import com.shigu.seller.services.GoodsFileService;
 import com.shigu.seller.services.ShopDesignService;
-import com.shigu.seller.vo.AreaVO;
 import com.shigu.seller.vo.ContainerVO;
 import com.shigu.seller.vo.DatuVO;
 import com.shigu.session.main4.PersonalSession;
 import com.shigu.session.main4.names.SessionEnum;
 import com.shigu.spread.enums.SpreadEnum;
-import com.shigu.spread.exceptions.SpreadCacheException;
 import com.shigu.spread.services.ObjFromCache;
 import com.shigu.spread.services.SpreadService;
 import com.shigu.spread.vo.ItemSpreadVO;
@@ -57,10 +52,11 @@ import com.shigu.tools.HtmlImgsLazyLoad;
 import com.shigu.tools.JsonResponseUtil;
 import com.shigu.tools.ResultRetUtil;
 import com.shigu.tools.XzSdkClient;
+import com.shigu.vo.ItemGoatVO;
 import freemarker.template.TemplateException;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,8 +69,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.*;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -134,6 +128,9 @@ public class CdnAction {
 
     @Autowired
     GoodsFileService goodsFileService;
+
+    @Autowired
+    ItemCatService itemCatService;
 
     /**
      * 联系我们
@@ -851,7 +848,9 @@ public class CdnAction {
      * @throws TemplateException
      */
     @RequestMapping("item")
-    public String item(Long id, Model model) throws CdnException, IOException, TemplateException {
+    public String item(Long id, Model model,HttpSession sessionm) throws CdnException, IOException, TemplateException {
+        sessionm.setAttribute(SessionEnum.ITEM_GOODS_ID.getValue(),id); //暂存商品id，查询广告位时通过此id区分广告
+
         CdnGoodsInfoVO goods=cdnService.cdnGoodsInfo(id);
         if(StringUtils.isEmpty(goods.getColorsMeta())||"[]".equals(goods.getColorsMeta())){
             goods.setColorsMeta("[{\"text\":\"图片色\",\"imgSrc\":\"\"}]");
@@ -873,6 +872,80 @@ public class CdnAction {
         model.addAttribute("tjGoodsList",see);
         model.addAttribute("shopCats",cats);
         return "cdn/item";
+    }
+
+    /**
+     * 获取商品详情页左侧广告  随机显示9条
+     * @param request
+     * @param session
+     * @return
+     */
+    @RequestMapping("/itemGoat")
+    @ResponseBody
+    public Object itemGoat (HttpServletRequest request,HttpSession session){
+        Long goodsId = (Long)session.getAttribute(SessionEnum.ITEM_GOODS_ID.getValue());
+        boolean instanOfWoman = itemCatService.instanOfWoman(goodsId);
+
+        Object objFormCache = null;
+        if(instanOfWoman){//父级或父父级cid=16的为女装
+            objFormCache = selFromCache(spreadService.selItemSpreads(getWebSite(request),SpreadEnum.ITEM_GOAT_WOMAN));
+        }else{
+            objFormCache = selFromCache(spreadService.selItemSpreads(getWebSite(request),SpreadEnum.ITEM_GOAT_MAN));
+        }
+        List<ItemGoatVO> goatLists = ItemGoatVO.copyListFromCache(objFormCache);
+        if (goatLists.size() > 9)goatLists = goatLists.subList(0,9);
+        Set<ItemGoatVO>  goatList = new HashSet<>(goatLists);
+        return JsonResponseUtil.success().element("goatList",goatList);
+    }
+
+    /**
+     * 获取商品详情页底部广告  固定显示5条
+     * @param request
+     * @param session
+     * @return
+     */
+    @RequestMapping("/itemBottomGoat")
+    @ResponseBody
+    public Object itemBottomGoat (HttpServletRequest request, HttpSession session){
+        Long goodsId = (Long)session.getAttribute(SessionEnum.ITEM_GOODS_ID.getValue());
+        boolean instanOfWoman = itemCatService.instanOfWoman(goodsId);
+
+        Object objFormCache = null;
+        if(instanOfWoman){//父级或父父级cid=16的为女装
+            objFormCache = selFromCache(spreadService.selItemSpreads(getWebSite(request),SpreadEnum.ITEM_BOTTOM_GOAT_WOMAN));
+        }else{
+            objFormCache = selFromCache(spreadService.selItemSpreads(getWebSite(request),SpreadEnum.ITEM_BOTTOM_GOAT_MAN));
+        }
+        List<ItemGoatVO> goatList = ItemGoatVO.copyListFromCache(objFormCache);
+        if (goatList.size() > 5 ){
+            goatList = goatList.subList(0,5);
+        }
+        return JsonResponseUtil.success().element("goatList",goatList);
+    }
+
+    /**
+     * 获取站点信息
+     * @param request
+     * @return
+     */
+    private String getWebSite(HttpServletRequest request){
+        //获取站点信息
+        String website=request.getRequestURL().toString();
+        website=website.substring(7,website.indexOf(".571xz.com"));
+        if (StringUtils.isEmpty(website) || StringUtils.equals("new", website)) {
+            website = "hz";
+        }
+        return  website;
+    }
+
+    /**
+     * 根据商品Id查出商品类别（man ：woman）
+     * @param goodsId
+     * @return
+     */
+    public int getManOrWoman(Long goodsId){
+
+        return  0;
     }
 
     public String oldItemForKx(Long id, Model model) throws CdnException, IOException, TemplateException {

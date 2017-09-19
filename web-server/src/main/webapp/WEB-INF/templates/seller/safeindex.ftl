@@ -13,11 +13,11 @@
         <#if $it.description??>
         <meta name="description" content="${$it.description!}">
         </#if>
-    <link href="http://style.571xz.com/gys5/css/safeindex.css?t=1501227513855" rel="stylesheet">
+    <link href="http://style.571xz.com/gys5/css/safeindex.css?t=1505784048900" rel="stylesheet">
     
   </head>
 <body>
-<input id="mainhost" value="http://192.168.1.66/gys5/" type="hidden">
+<input id="mainhost" value="http://192.168.1.66:555/gys5/" type="hidden">
 <#include "/common/host_config.ftl">
 
 <div class="topbar">
@@ -53,9 +53,9 @@
                     </li>
                     <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -86,9 +86,9 @@
                     
                 <#else>
                     <li class="noDown">
-                        <a href="${main_host!}carts.htm">
+                        <a href="${main_host!}order/cart.htm">
                             <i class="cgcatIcon"></i>
-                            <span>购物车</span>
+                            <span>进货车</span>
                             <em class="cgNum"></em>
                         </a>
                     </li>
@@ -240,13 +240,13 @@ var webSite = '${webSite!}';
     <ul>
         <li><a href="${main_host!}seller/dtggapply.htm?id=1001" class='dtgg' >免费LED广告</a></li> 
         <li><a href="https://shop121675953.taobao.com" target="_blank" style="color:#f40">广告位竞拍</a></li> 
-        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
+        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >广告申请</a></li> 
         <li><a href="${main_host!}seller/promotion.htm"  >广告展示管理</a></li> 
         <li><a href="${main_host!}seller/actRegister.htm"  >立即报名活动</a></li> 
     </ul> 
 </div>
-    <div class="content">
-        <ul class="safe_level shadow-box">
+    <div class="safe_level shadow-box content">
+        <ul class="">
             <li class="d1">安全等级</li>
             <li class="d2">${safe_level!}</li>
             <li class="d3">
@@ -256,94 +256,94 @@ var webSite = '${webSite!}';
                 </div>
             </li>
         </ul>
-        
-        <div class="infobox shadow-box">
-            
-            
-            <ul class="clearfix">
-                <li class="d1"><i class="iconfont rz"></i></li>
-                <li class="d2">
-                    <p>
-                        身份认证 
-                        <#if info_card == true>
-                        <em class="yes"><i class="iconfont">&#xe68a;</i>已认证</em>
-                        <#else>
-                        <em class="no"><i class="iconfont">&#xe697;</i>未认证</em>
-                        </#if>
-                    </p>
-                    <p class="desc">用于提升账号的安全性和信任级别。认证后的有卖家记录的账号不能修改认证信息。</p>
-                </li>
-                <li class="d3">
-                    <a href="${main_host!}seller/saferz.htm">实名认证</a>
-                </li>
-            </ul>
-            
-            
-            <ul class="clearfix">
-                <li class="d1"><i class="iconfont mm"></i></li>
-                <li class="d2">
-                    <p>
-                        登录密码 
-                        <#if info_pwd == 'low'>
-                        <em class="no"><i class="iconfont">&#xe697;</i>低</em>
-                        <#elseif info_pwd == 'hign'>
-                        <em class="yes"><i class="iconfont">&#xe68a;</i>高</em>
-                        <#else>
-                        <em class="yes"><i class="iconfont">&#xe68a;</i>中</em>
-                        </#if>
-                    </p>
-                    <p class="desc">安全性高的密码可以使账号更安全。建议您定期更换密码，且设置一个包含数字和字母，并长度超过6位以上的密码。</p>
-                </li>
-                <li class="d3">
-                    <a href="${main_host!}seller/safexgmm.htm">修改密码</a>
-                </li>
-            </ul>
-            
-            
-            <ul class="clearfix">
-                <li class="d1"><i class="iconfont yx"></i></li>
-                <li class="d2">
-                    <p>
-                        安全邮箱 
-                        <#if info_email == true>
-                        <em class="yes"><i class="iconfont">&#xe68a;</i>已绑定</em>
-                        <#else>
-                        <em class="no"><i class="iconfont">&#xe697;</i>未绑定</em>
-                        </#if>
-                    </p>
-                    <p class="desc">是您找回登陆密码的方式之一，更有效的保障你的密码安全。</p>
-                </li>
-                <li class="d3">
-                    <a href="${main_host!}seller/safeszyx.htm">设置邮箱</a>
-                </li>
-            </ul>
-            
-            
-            <ul class="clearfix">
-                <li class="d1"><i class="iconfont phone"></i></li>
-                <li class="d2">
-                    <p>
-                        手机绑定 
-                        <#if info_mobile == true>
-                        <em class="mobileNum">${text_mobile!}</em>
-                        <#else>
-                        <em class="no"><i class="iconfont">&#xe697;</i>未绑定</em>
-                        </#if>
-                    </p>
-                    <p class="desc">绑定手机后，便于支付时接收动态密码及发货等方便用户的功能。</p>
-                </li>
-                <li class="d3">
-                    
-                    
-                    
-                    
-                </li>
-            </ul>
-            
-            
-        </div>
-    
     </div>
+        
+    <div class="infobox content shadow-box">
+        
+        
+        <ul class="clearfix">
+            <li class="d1"><i class="iconfont rz"></i></li>
+            <li class="d2">
+                <p>
+                    身份认证 
+                    <#if info_card == true>
+                    <em class="yes"><i class="iconfont">&#xe68a;</i>已认证</em>
+                    <#else>
+                    <em class="no"><i class="iconfont">&#xe697;</i>未认证</em>
+                    </#if>
+                </p>
+                <p class="desc">用于提升账号的安全性和信任级别。认证后的有卖家记录的账号不能修改认证信息。</p>
+            </li>
+            <li class="d3">
+                <a href="${main_host!}seller/saferz.htm">实名认证</a>
+            </li>
+        </ul>
+        
+        
+        <ul class="clearfix">
+            <li class="d1"><i class="iconfont mm"></i></li>
+            <li class="d2">
+                <p>
+                    登录密码 
+                    <#if info_pwd == 'low'>
+                    <em class="no"><i class="iconfont">&#xe697;</i>低</em>
+                    <#elseif info_pwd == 'hign'>
+                    <em class="yes"><i class="iconfont">&#xe68a;</i>高</em>
+                    <#else>
+                    <em class="yes"><i class="iconfont">&#xe68a;</i>中</em>
+                    </#if>
+                </p>
+                <p class="desc">安全性高的密码可以使账号更安全。建议您定期更换密码，且设置一个包含数字和字母，并长度超过6位以上的密码。</p>
+            </li>
+            <li class="d3">
+                <a href="${main_host!}seller/safexgmm.htm">修改密码</a>
+            </li>
+        </ul>
+        
+        
+        <ul class="clearfix">
+            <li class="d1"><i class="iconfont yx"></i></li>
+            <li class="d2">
+                <p>
+                    安全邮箱 
+                    <#if info_email == true>
+                    <em class="yes"><i class="iconfont">&#xe68a;</i>已绑定</em>
+                    <#else>
+                    <em class="no"><i class="iconfont">&#xe697;</i>未绑定</em>
+                    </#if>
+                </p>
+                <p class="desc">是您找回登陆密码的方式之一，更有效的保障你的密码安全。</p>
+            </li>
+            <li class="d3">
+                <a href="${main_host!}seller/safeszyx.htm">设置邮箱</a>
+            </li>
+        </ul>
+        
+        
+        <ul class="clearfix">
+            <li class="d1"><i class="iconfont phone"></i></li>
+            <li class="d2">
+                <p>
+                    手机绑定 
+                    <#if info_mobile == true>
+                    <em class="mobileNum">${text_mobile!}</em>
+                    <#else>
+                    <em class="no"><i class="iconfont">&#xe697;</i>未绑定</em>
+                    </#if>
+                </p>
+                <p class="desc">绑定手机后，便于支付时接收动态密码及发货等方便用户的功能。</p>
+            </li>
+            <li class="d3">
+                
+                
+                
+                
+            </li>
+        </ul>
+        
+        
+    </div>
+    
     
     
     
@@ -380,7 +380,7 @@ var webSite = '${webSite!}';
     </div>
 </div>
 <script src="http://style.571xz.com/global/js/jquery.js"></script>
-<script src="http://style.571xz.com/gys5/js/safeindex.js?t=1501227513855"></script>
+<script src="http://style.571xz.com/gys5/js/safeindex.js?t=1505784048900"></script>
 <#include "/common/cnzz.ftl">
 </body>
 </html>
