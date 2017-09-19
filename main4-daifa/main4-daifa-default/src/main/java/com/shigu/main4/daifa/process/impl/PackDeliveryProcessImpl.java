@@ -1,6 +1,7 @@
 package com.shigu.main4.daifa.process.impl;
 
-import com.opentae.core.mybatis.utils.FieldUtil;
+import com.alibaba.dubbo.common.logger.Logger;
+import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.opentae.data.daifa.beans.*;
 import com.opentae.data.daifa.examples.DaifaWaitSendExample;
 import com.opentae.data.daifa.interfaces.*;
@@ -27,6 +28,7 @@ import java.util.*;
 
 @Service("packDeliveryProcess")
 public class PackDeliveryProcessImpl implements PackDeliveryProcess {
+    private static final Logger logger = LoggerFactory.getLogger(PackDeliveryProcessImpl.class);
     @Autowired
     private DaifaOrderMapper daifaOrderMapper;
     @Autowired

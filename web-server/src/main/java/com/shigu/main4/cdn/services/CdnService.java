@@ -493,4 +493,16 @@ public class CdnService {
         });
         return pager;
     }
+
+    /**
+     * 根据goodsId获取对应站点信息
+     * @return
+     */
+    public String getWebsite(Long goodsId){
+        ShiguGoodsIdGenerator shiguGoodsIdGenerator = shiguGoodsIdGeneratorMapper.selectByPrimaryKey(goodsId);
+        if (shiguGoodsIdGenerator == null) {
+            return null;
+        }
+        return shiguGoodsIdGenerator.getWebSite();
+    }
 }

@@ -59,7 +59,7 @@
                 
                 <#if !session_user_redis__ || $it.isFxs?? ||  !session_user_redis__.logshop> 
                 <li class="noDown">
-                    <a href="${main_host!}carts.htm">
+                    <a href="${main_host!}order/cart.htm">
                         <i class="cgcatIcon"></i>
                         <span>进货车</span>
                         
@@ -306,7 +306,7 @@ var webSite = '${webSite!}';
     
         
         
-        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >首页广告申请</a></li> 
+        <li><a href="${main_host!}seller/indexgglist.htm" class='indexgg' >广告申请</a></li> 
         
         
     
@@ -390,7 +390,6 @@ var shopId = '${session_user_redis__.logshop.shopId!}';
 
 
 
-
 </#list>
 
     
@@ -437,7 +436,6 @@ var shopId = '${session_user_redis__.logshop.shopId!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -635,7 +633,7 @@ var shopId = '${session_user_redis__.logshop.shopId!}';
             <a href="http://ss.571xz.com" target="_blank">石狮站</a>
             <a href="http://cs.571xz.com" target="_blank">常熟站</a>
             <a href="http://wa.571xz.com" target="_blank">辽源站</a>
-            <a href="http://py.571xz.com" target="_blank">濮院站</a>
+            <a href="http://jx.571xz.com" target="_blank">濮院站</a>
             <a href="http://zixun.571xz.com" target="_blank">资讯</a>
             
             

@@ -57,6 +57,18 @@ public interface ItemSearchService {
                               Date timeForm, Date timeTo, SearchOrderBy orderCase, Integer page, Integer pageSize, boolean aggs);
 
     /**
+     * 支持多市场的搜索方法
+     * @param keyword
+     * @param webSite
+     * @param mids
+     * @param orderCase
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    ShiguAggsPager searchForTbItem(String keyword, String webSite, List<Long> mids, SearchOrderBy orderCase, Integer page, Integer pageSize);
+
+    /**
      * 按ID查询
      * @param ids
      * @param webSite

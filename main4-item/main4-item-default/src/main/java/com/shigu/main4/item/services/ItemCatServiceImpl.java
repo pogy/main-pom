@@ -13,9 +13,7 @@ import com.shigu.main4.item.vo.TbCat;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 类目服务
@@ -88,5 +86,29 @@ public class ItemCatServiceImpl implements ItemCatService{
         example.createCriteria().andParentCidEqualTo(cid);
         List<ShiguTaobaocat> cats=shiguTaobaocatMapper.selectByExample(example);
         return BeanMapper.mapList(cats,TbCat.class);
+    }
+
+    @Override
+    public Long parentCats(Long cid) {
+
+        ShiguTaobaocat shiguTaobaocat = new ShiguTaobaocat();
+        shiguTaobaocat.setCid(cid);
+        shiguTaobaocat  = shiguTaobaocatMapper.selectOne(shiguTaobaocat);
+        if (shiguTaobaocat == null) {
+            return null;
+        }
+        return shiguTaobaocat.getParentCid();
+    }
+
+    @Override
+    public boolean instanOfWoman(Long cid) {
+        Long parentId = parentCats(cid);
+        if (parentId == null || parentId != 16){//父级或者父父级的cid等于16为女装
+            parentId =  parentCats(cid);
+            if (parentId == null || parentId != 16) {
+                return false;
+            }
+        }
+        return true;
     }
 }

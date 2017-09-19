@@ -114,6 +114,9 @@ public class DaifaAfterSaleService {
                     }
                 }
                 BeanUtils.copyProperties(afterSaleDatum, vo, "childOrders");
+                if("无".equals(vo.getImWw())){
+                    vo.setImWw(null);
+                }
                 vo.setSendTime(DateUtil.dateToString(afterSaleDatum.getSendTime(), DateUtil.patternA));
                 vo.setTradeTime(DateUtil.dateToString(afterSaleDatum.getCreateTime(), DateUtil.patternA));
                 afterSaleDataVOS.add(vo);

@@ -2,6 +2,7 @@ package com.shigu.main4.daifa.process;
 
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.vo.PrintTagVO;
+import com.shigu.main4.daifa.vo.UnComleteAllVO;
 
 import java.util.List;
 
@@ -97,5 +98,11 @@ public interface TakeGoodsIssueProcess {
      * @throws DaifaException
      */
     void adminRefund(List<Long> dfOrderIds,Long tid,Long refundId) throws DaifaException;
+
+
+
+
+
+    UnComleteAllVO uncompleteAllNew(Long wholeId,Long shopId,List<Long> issueIds,Boolean idIsCheck) throws DaifaException;
 
 }
