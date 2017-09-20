@@ -36,7 +36,7 @@ public class ItemTest {
     public void testImgSearch() {
         ImgSearchRequest req = new ImgSearchRequest();
         req.setImgurl("https://img.alicdn.com/bao/uploaded/i4/1979258373/TB2VH2Ob3sSMeJjSspeXXa77VXa_!!1979258373.jpg_300x300.jpg");
-        //req.setWebSite("hz");
+        req.setWebSite("hz");
         ImgSearchResponse resp = client.execute(req);
         System.out.println(JSON.toJSONString(resp));
     }

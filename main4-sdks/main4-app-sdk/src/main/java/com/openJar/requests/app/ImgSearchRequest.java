@@ -27,6 +27,9 @@ public class ImgSearchRequest extends Request<ImgSearchResponse> {
 	}
 
 	public String getWebSite(){
+		if (webSite == null) {
+			return "hz";
+		}
 		return webSite;
 	}
 
