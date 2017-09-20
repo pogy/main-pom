@@ -23,7 +23,7 @@
 
 
     
-    <link href="http://style.571xz.com/v2/fxsV1/css/myTbOrder.css" rel="stylesheet">
+    <link href="http://style.571xz.com/v2/fxsV1/css/myTbOrder.css?v=2017091901" rel="stylesheet">
     
 
     
@@ -33,7 +33,7 @@
     
     <script src="http://style.571xz.com/v2/global/js/jquery.js"></script>
     
-    <script src="http://style.571xz.com/v2/fxsV1/js/myTbOrder.js"></script>
+    <script src="http://style.571xz.com/v2/fxsV1/js/myTbOrder.js?v=2017091901"></script>
 </head>
 <body>
 
@@ -343,7 +343,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
         </li>
@@ -446,7 +445,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 </p>
                 <#else>
@@ -495,7 +493,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -575,7 +572,6 @@ var webSite = '${webSite!}';
 
 
 
-
 </#list>
 
                 <#else>
@@ -621,7 +617,6 @@ var webSite = '${webSite!}';
     <#else>
     </b>
     </#if>
-
 
 
 
@@ -743,6 +738,8 @@ var webSite = '${webSite!}';
 
 
 </#list>
+
+
 
 
 
