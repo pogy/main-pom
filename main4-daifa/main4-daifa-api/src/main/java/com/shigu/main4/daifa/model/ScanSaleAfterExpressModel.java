@@ -1,5 +1,6 @@
 package com.shigu.main4.daifa.model;
 
+import com.shigu.main4.daifa.bo.RebackPrintExpressBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 
 /**
@@ -52,6 +53,6 @@ public interface ScanSaleAfterExpressModel {
      * ====================================================================================
      * 
      */
-    String rebackPrintExpress(Long orderId)throws DaifaException;
+    String rebackPrintExpress(RebackPrintExpressBO bo)throws DaifaException;
 
 }

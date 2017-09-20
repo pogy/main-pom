@@ -37,18 +37,21 @@ public interface SaleAfterProcess {
      * @user gzy 2017/9/15 11:33
      * @功能： 售后申请处理 1可能是同意并发回快递收货地址2可能是拒绝
      * SaleAfterModel.saleAfterApplyDeal
-     * @param: bo
+     * @param: refundId售后ID,status(1同意2拒绝),reason拒绝理由
      * @return: 
      * @exception: 
      * ====================================================================================
      * 
      */
-    String afterApplyDeal(SaleAfterBO bo)throws DaifaException;
+    String afterApplyDeal(Long refundId,Integer status,String reason)throws DaifaException;
 
     /**
      * ====================================================================================
      * @方法名： storeRefundDeal  客服发起
      * @user gzy 2017/9/15 11:42
+     * @功能： 档口同意
+     * SaleAfterModel.storeRefundMoney
+     * @param: refundId售后ID,money档口退款金额(元)
      * @功能： 档口退货处理  可能是退货成功，也可能是拒绝退货
      * 1、退货失败(单件商品操作)
      * 2、退货成功（按申请的refundId对应，一次操作除失败以外的所有单件）
@@ -57,12 +60,26 @@ public interface SaleAfterProcess {
      *
      * SaleAfterModel.storeRefundMoney或SaleAfterModel.storeRefundRefuse
      * @param: bo
-     * @return: 
+     * @return:
      * @exception: 
      * ====================================================================================
      * 
      */
-    String storeRefundDeal(StoreRefundDealBO bo)throws DaifaException;
+    String storeRefundAgree(Long refundId,String money)throws DaifaException;
+
+    /**
+     * ====================================================================================
+     * @方法名： storeRefundDeal  客服发起
+     * @user gzy 2017/9/15 11:42
+     * @功能： 档口拒绝
+     * SaleAfterModel.storeRefundRefuse和SaleAfterModel.refundFailInStock
+     * @param: refundId售后ID,reason理由,stockLocktion货架
+     * @return:
+     * @exception:
+     * ====================================================================================
+     *
+     */
+    String storeRefundRefuse(Long orderId,String reason,String stockLocktion,String sendPhone) throws DaifaException;
 
     /**
      * ====================================================================================
@@ -72,6 +89,7 @@ public interface SaleAfterProcess {
      * @param:bo
      * @return:
      * @exception:
+     * @PS: 消息类dubbo,需记录异常
      * ====================================================================================
      *
      */
@@ -87,20 +105,8 @@ public interface SaleAfterProcess {
      * ====================================================================================
      * 
      */
-    String saleAfterRemark(SaleAfterBO bo)throws DaifaException;
+    String saleAfterRemark(SaleAfterRemarkerBO bo)throws DaifaException;
 
-    /**
-     * ====================================================================================
-     * @方法名： refundFailInStock  客服发起
-     * @user gzy 2017/9/15 11:56
-     * @功能： 退货失败入库   SaleAfterModel.refundFailInStock
-     * @param: bo
-     * @return: 
-     * @exception: 
-     * ====================================================================================
-     * 
-     */
-    String refundFailInStock(InStockBO bo)throws DaifaException;
     /**
      * ====================================================================================
      * @方法名： moneyConsultRefuse  客户发起
@@ -109,6 +115,7 @@ public interface SaleAfterProcess {
      * @param: bo
      * @return:
      * @exception:
+     * @PS: 消息类dubbo,需记录异常
      * ====================================================================================
      *
      */
@@ -118,13 +125,13 @@ public interface SaleAfterProcess {
      * @方法名： moneyConsult  客服发起
      * @user gzy 2017/9/15 11:54
      * @功能： 客服重新把商量的金额写入  SaleAfterModel.moneyConsult
-     * @param:bo
+     * @param: refundId售后ID,money金额
      * @return:
      * @exception:
      * ====================================================================================
      *
      */
-    String moneyConsult(MoneyConsultBO bo)throws DaifaException;
+    String moneyConsult(Long refundId,String money)throws DaifaException;
 
 
 }

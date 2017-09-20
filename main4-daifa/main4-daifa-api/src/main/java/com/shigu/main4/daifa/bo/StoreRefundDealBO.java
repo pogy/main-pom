@@ -14,7 +14,5 @@ import java.io.Serializable;
  * @commonents:
  */
 public class StoreRefundDealBO implements Serializable{
-    private Boolean refundSucceed;//是否退成功
-    private Double money;//退得的金额
-    private Long whoDoIt;//操作人ID
+
 }

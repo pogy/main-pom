@@ -14,6 +14,7 @@ public class DaifaAfterSaleExample extends SgExample<DaifaAfterSaleExample.Crite
     public static EntityColumn receiverName;
     public static EntityColumn receiverMobile;
     public static EntityColumn tradeCode;
+    public static EntityColumn remark;
     public static EntityColumn afterSaleId;
     public static EntityColumn buyerName;
     public static EntityColumn buyerId;
@@ -41,6 +42,7 @@ public class DaifaAfterSaleExample extends SgExample<DaifaAfterSaleExample.Crite
         receiverName = listMap.get("receiverName");
         receiverMobile = listMap.get("receiverMobile");
         tradeCode = listMap.get("tradeCode");
+        remark = listMap.get("remark");
         afterSaleId = listMap.get("afterSaleId");
         buyerName = listMap.get("buyerName");
         buyerId = listMap.get("buyerId");
@@ -58,7 +60,7 @@ public class DaifaAfterSaleExample extends SgExample<DaifaAfterSaleExample.Crite
         receiverZip = listMap.get("receiverZip");
         createDate = listMap.get("createDate");
         remark2 = listMap.get("remark2");
-        }
+    }
 
     public DaifaAfterSaleExample() {
         this.setTableAlias(entityTable.getName());
@@ -298,6 +300,61 @@ public class DaifaAfterSaleExample extends SgExample<DaifaAfterSaleExample.Crite
 
         public DaifaAfterSaleExample.Criteria andTradeCodeNotBetween(String value1, String value2) {
             return notBetween(tradeCode, value1, value2);
+        }
+        public DaifaAfterSaleExample.Criteria andRemarkIsNull() {
+            return isNull(remark);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkIsNotNull() {
+            return isNotNull(remark);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkEqualTo(String value) {
+            return equalTo(remark, value);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkNotEqualTo(String value) {
+            return notEqualTo(remark, value);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkGreaterThan(String value) {
+            return greaterThan(remark, value);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkGreaterThanOrEqualTo(String value) {
+            return greaterThanOrEqualTo(remark, value);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkLessThan(String value) {
+            return lessThan(remark, value);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkLessThanOrEqualTo(String value) {
+            return lessThanOrEqualTo(remark, value);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkLike(String value) {
+            return like(remark, value);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkNotLike(String value) {
+            return notLike(remark, value);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkIn(List<String> values) {
+            return in(remark, values);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkNotIn(List<String> values) {
+            return notIn(remark, values);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkBetween(String value1, String value2) {
+            return between(remark, value1, value2);
+        }
+
+        public DaifaAfterSaleExample.Criteria andRemarkNotBetween(String value1, String value2) {
+            return notBetween(remark, value1, value2);
         }
         public DaifaAfterSaleExample.Criteria andAfterSaleIdIsNull() {
             return isNull(afterSaleId);
