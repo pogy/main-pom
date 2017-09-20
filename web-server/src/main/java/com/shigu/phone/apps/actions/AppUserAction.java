@@ -1,8 +1,10 @@
 package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.AboutMeRequest;
+import com.openJar.requests.app.BindUserRequest;
 import com.openJar.requests.app.ChangePasswordRequest;
 import com.openJar.requests.app.LoginRequest;
+import com.openJar.requests.app.RegistRequest;
 import com.shigu.phone.services.PhoneUserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,19 @@ public class AppUserAction {
     @ResponseBody
     public JSONObject login( @Valid LoginRequest request, BindingResult bindingResult,HttpServletRequest servletRequest) {
         return JSONObject.fromObject(phoneUserService.login(request,servletRequest));
+    }
+
+    @RequestMapping("regist")
+    @ResponseBody
+    public JSONObject appRegist(@Valid RegistRequest request,BindingResult bindingResult) {
+        return JSONObject.fromObject(phoneUserService.regist(request));
+    }
+
+    @RequestMapping("bindUser")
+    @ResponseBody
+    public JSONObject appBindUser(@Valid BindUserRequest request, HttpServletRequest httpRequest,BindingResult bindingResult) {
+        String remoteAddr = httpRequest.getRemoteAddr();
+        return JSONObject.fromObject(phoneUserService.bindUser(request,remoteAddr));
     }
 
 

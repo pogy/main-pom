@@ -2,6 +2,9 @@ package com.openJar.requests.app;
 import com.openJar.enums.HostEnum;
 import com.openJar.requests.Request;
 import com.openJar.responses.app.RegistResponse;
+
+import javax.validation.constraints.NotNull;
+
 /**
  * 类名:RegistRequest
  * 类路径:com.openJar.requests.appRegistRequest
@@ -11,10 +14,13 @@ import com.openJar.responses.app.RegistResponse;
  */
 public class RegistRequest extends Request<RegistResponse> {
 	//手机号	必须
+	@NotNull
 	private String telephone;
 	//手机验证码	必须
+	@NotNull
 	private String code;
 	//密码	必须
+	@NotNull
 	private String password;
 	public String getTelephone(){
 		return telephone;

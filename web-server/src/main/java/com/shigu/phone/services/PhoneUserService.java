@@ -3,40 +3,20 @@ package com.shigu.phone.services;
 import com.openJar.exceptions.OpenException;
 import com.openJar.requests.app.AboutMeRequest;
 import com.openJar.requests.app.ChangePasswordRequest;
-import com.openJar.requests.app.LoginRequest;
 import com.openJar.responses.app.AboutMeResponse;
 import com.openJar.responses.app.ChangePasswordResponse;
-import com.openJar.responses.app.LoginResponse;
 import com.opentae.data.mall.beans.MemberLicense;
-import com.opentae.data.mall.beans.MemberUser;
 import com.opentae.data.mall.interfaces.MemberLicenseMapper;
-import com.opentae.data.mall.interfaces.MemberUserMapper;
-import com.shigu.buyer.bo.LoginBO;
-import com.shigu.buyer.bo.LoginByPhoneBO;
 import com.shigu.buyer.services.UserAccountService;
-import com.shigu.component.shiro.CaptchaUsernamePasswordToken;
-import com.shigu.component.shiro.enums.RoleEnum;
-import com.shigu.component.shiro.enums.UserType;
-import com.shigu.main4.common.exceptions.JsonErrException;
 import com.shigu.main4.common.exceptions.Main4Exception;
-import com.shigu.main4.common.tools.StringUtil;
-import com.shigu.main4.common.util.UUIDGenerator;
 import com.shigu.main4.ucenter.enums.MemberLicenseType;
 import com.shigu.main4.ucenter.services.RegisterAndLoginService;
 import com.shigu.main4.ucenter.services.UserBaseService;
 import com.shigu.main4.ucenter.services.UserLicenseService;
 import com.shigu.main4.ucenter.util.EncryptUtil;
 import com.shigu.main4.ucenter.vo.UserInfo;
-import com.shigu.session.main4.PersonalSession;
-import com.shigu.session.main4.ShopSession;
-import com.shigu.session.main4.enums.LoginFromType;
-import com.shigu.tools.JsonResponseUtil;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 类名：PhoneUserService
@@ -52,7 +32,6 @@ public class PhoneUserService {
     @Autowired
     private MemberLicenseMapper memberLicenseMapper;
 
-
     @Autowired
     private UserBaseService userBaseService;
 
@@ -64,6 +43,12 @@ public class PhoneUserService {
 
     @Autowired
     private UserAccountService userAccountService;
+
+    @Autowired
+    private PhoneMsgAction phoneMsgAction;
+
+    @Autowired
+    private RedisIO redisIO;
 
     /**
      * 移动端我的信息
@@ -171,6 +156,85 @@ public class PhoneUserService {
         } catch (Main4Exception e) {
             resp.setException(new OpenException());
         }
+        return resp;
+    }
+
+    /**
+     * 移动端用户注册
+     * @param request
+     * @return
+     */
+    public RegistResponse regist(RegistRequest request){
+        RegistResponse resp = new RegistResponse();
+        PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_REGIST_TYPE_MSG,PhoneVerify.class);
+        if (phoneMsg==null||!phoneMsg.getVerify().equals(request.getCode())|| !phoneMsg.getPhone().equals(request.getTelephone())) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("手机验证码错误");
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
+        }
+        RegisterUser registerUser=new RegisterUser();
+        registerUser.setPassword(request.getPassword());
+        registerUser.setTelephone(request.getTelephone());
+        try {
+            if(registerAndLoginService.registerByPhone(registerUser)==null){
+                OpenException openException = new OpenException();
+                openException.setErrMsg("用户已经存在");
+                resp.setException(openException);
+                resp.setSuccess(false);
+                return resp;
+            }
+        } catch (Main4Exception e) {
+            resp.setException(new OpenException());
+            resp.setSuccess(false);
+            return resp;
+        }
+        resp.setSuccess(true);
+        return resp;
+    }
+
+    /**
+     * 移动端绑定手机
+     * @param request
+     * @return
+     */
+    public BindUserResponse bindUser(BindUserRequest request,String remoteAddr){
+        BindUserResponse resp = new BindUserResponse();
+        PhoneVerify phoneMsg = phoneMsgAction.getPhoneMsg(request.getTelephone(), PhoneMsgTypeEnum.PHONE_BIND_TYPE_MSG,PhoneVerify.class);
+        if (phoneMsg==null||!phoneMsg.getVerify().equals(request.getCode())|| !phoneMsg.getPhone().equals(request.getTelephone())) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("验证码错误");
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
+        }
+        Rds3TempUser rds3TempUser = phoneMsgAction.getPhoneMsg(request.getTempId(), PhoneMsgTypeEnum.PHONE_RDS3_TEMP_USER_TYPE_MSG, Rds3TempUser.class);
+        if (!request.getTempId().equals(rds3TempUser.getSubUserKey())) {
+            OpenException openException = new OpenException();
+            openException.setErrMsg("账号或手机号错误");
+            resp.setException(openException);
+            resp.setSuccess(false);
+            return resp;
+        }
+        try {
+            userAccountService.bindAccount(rds3TempUser,request.getTelephone(),remoteAddr);
+        } catch (JsonErrException e) {
+            resp.setException(new OpenException());
+            resp.setSuccess(false);
+            return resp;
+        }
+        PersonalSession personalSession = userBaseService.selUserForSessionByUserName(rds3TempUser.getSubUserName(), rds3TempUser.getLoginFromType());
+        resp.setUserId(personalSession.getUserId());
+        resp.setUserNick(personalSession.getUserNick());
+        resp.setImgsrc(personalSession.getHeadUrl());
+        boolean isSeller = personalSession.getLogshop() != null || (personalSession.getLogshop() == null && personalSession.getOtherShops().size() > 0);
+        resp.setImSeller(isSeller);
+        String token = EncryptUtil.genRandomPwd(36);
+        //todo:之后使用的是tempID还是登陆唯一标志需要确认，token保存时长暂时用1小时，保存用户信息
+        redisIO.putTemp(PhoneMsgTypeEnum.PHONE_USER_INFO.getType()+rds3TempUser.getLoginFromType().getValue()+"_"+rds3TempUser.getSubUserKey()+"_"+token,personalSession,3600*1);
+        resp.setToken(token);
+        resp.setSuccess(true);
         return resp;
     }
 

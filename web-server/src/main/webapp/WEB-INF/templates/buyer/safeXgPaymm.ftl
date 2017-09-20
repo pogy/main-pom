@@ -214,19 +214,31 @@ var webSite = '${webSite!}';
 
         <div class="rightBox fr">
     <div class="headTop clearfix">
-    <#if hasPayPwd == false>
+    <#if forPayPswType == 1>
     <em>设置支付密码</em>
-    <#else>
+    <#elseif forPayPswType == 2>
     <em>修改支付密码</em>
+    <#elseif forPayPswType == 3>
+    <em>找回支付密码</em>
     </#if>
 </div>
 
 
     <ul class="formbox">
-        <#if hasPayPwd == true>
+        <#if forPayPswType == 2>
         <li class="clearfix">
             <label>原密码：</label>
             <input type="password" class="textinput" id="pwd1" placeholder="请输入原密码">
+        </li>
+        <#elseif forPayPswType == 3>
+        <li class="clearfix">
+            <label>手机号码：</label>
+            <span>${telphone?substring(0, 3)}****${telphone?substring(7, 11)}</span>
+        </li>
+        <li class="clearfix">
+            <label>短信验证码：</label>
+            <input type="text" class="textinput verCodeText" placeholder="请输入短信验证码">
+            <b class="getVerCode" data-tel="${telphone!}">获取验证码</b>
         </li>
         </#if>
         <li class="clearfix">
@@ -238,61 +250,12 @@ var webSite = '${webSite!}';
             <input type="password" class="textinput" id="pwd3" placeholder="请输入确认密码">
         </li>
         <li class="clearfix">
-            <#if hasPayPwd == true>
+            <#if forPayPswType == 1>
             
 
 <#assign text>{}</#assign>
 <#assign moduledata1=text?eval />
 <#list [moduledata1] as $it>
-
-    <#if $it.href??>
-    <a href="${$it.href!}"
-    <#else>
-    <b 
-    </#if>
-
-
-    class="fmButton
-        
-         fmButton-orange
-         button1"
-    
-    
-        
-        <#if $it.title??>
-            title=""
-        </#if>
-    
-    
-    
-        id="dosubmit"
-    
->
-
-    
-        保存
-    
-
-
-    <#if $it.href??>
-    </a>
-    <#else>
-    </b>
-    </#if>
-
-
-
-
-
-
-</#list>
-
-            <#else>
-            
-
-<#assign text>{}</#assign>
-<#assign moduledata2=text?eval />
-<#list [moduledata2] as $it>
 
     <#if $it.href??>
     <a href="${$it.href!}"
@@ -333,6 +296,101 @@ var webSite = '${webSite!}';
 
 
 
+</#list>
+
+            <#elseif forPayPswType == 2>
+            
+
+<#assign text>{}</#assign>
+<#assign moduledata2=text?eval />
+<#list [moduledata2] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+        
+         fmButton-orange
+         button1"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+    
+        id="dosubmit"
+    
+>
+
+    
+        保存
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
+
+</#list>
+
+            <#elseif forPayPswType == 3>
+            
+
+<#assign text>{}</#assign>
+<#assign moduledata3=text?eval />
+<#list [moduledata3] as $it>
+
+    <#if $it.href??>
+    <a href="${$it.href!}"
+    <#else>
+    <b 
+    </#if>
+
+
+    class="fmButton
+        
+         fmButton-orange
+         button1"
+    
+    
+        
+        <#if $it.title??>
+            title=""
+        </#if>
+    
+    
+    
+        id="doBackSubmit"
+    
+>
+
+    
+        保存
+    
+
+
+    <#if $it.href??>
+    </a>
+    <#else>
+    </b>
+    </#if>
+
+
+
+
 
 </#list>
 
@@ -340,6 +398,12 @@ var webSite = '${webSite!}';
         </li>
     </ul>
 </div>
+
+
+
+
+
+
 
 
 

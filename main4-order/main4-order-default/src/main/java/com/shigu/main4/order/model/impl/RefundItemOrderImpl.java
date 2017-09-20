@@ -337,9 +337,9 @@ public class RefundItemOrderImpl implements RefundItemOrder {
             }
         }
         throw new RefundException(String.format(
-                "支付记录中单笔数目[%s]不足以支持希望的退款数目[%d]",
+                "支付记录中单笔数目[%s]不足以支持希望的退款数目[%d],退单号[%d]",
                 StringUtils.join(BeanMapper.getFieldList(payedVOS, "money", Long.class), ','),
-                money
+                money,refundId
         ));
     }
 
