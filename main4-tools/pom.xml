@@ -72,12 +72,12 @@
             <artifactId>fastjson</artifactId>
             <version>${fastjson.version}</version>
         </dependency>
-        <dependency>
-            <groupId>xinzuo-mybatis</groupId>
-            <artifactId>xinzuo-mybatis</artifactId>
-            <version>${xinzuo-mybatis.version}</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>xinzuo-mybatis</groupId>-->
+            <!--<artifactId>xinzuo-mybatis</artifactId>-->
+            <!--<version>${xinzuo-mybatis.version}</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>sites.main</groupId>
             <artifactId>main4-dao</artifactId>
