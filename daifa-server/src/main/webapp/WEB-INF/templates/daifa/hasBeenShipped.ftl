@@ -56,40 +56,125 @@
     <div class="sideBarBox">
         <div class="sidebar fl yahei">
     <ul>
-        <@shiro.hasAnyPermissions name="df:admin,df:kefu">
-        <li>
-            <a href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
-        </li>
-    </@shiro.hasAnyPermissions>
-    <@shiro.hasAnyPermissions name="df:kefu">
-        <li>
-            <a href="orderForServer.htm"><i class="icon-allorders"></i>客服查询</a>
-        </li>
-    </@shiro.hasAnyPermissions>
-    <@shiro.hasAnyPermissions name="df:admin">
-        <li>
-            <a href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
-            <ul>
-                <li>
-                    <a href="orderAllocation.htm"><i></i>任务分配</a>
-                </li>
-                <li>
-                    <a href="orderHasAllocation.htm"><i></i>我的任务</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="javascript:;" ><i class="icon-allocation"></i>发货管理</a>
-            <ul>
-                <li>
-                    <a href="scanBarCode.htm"><i></i>扫描打印</a>
-                </li>
-                <li>
-                    <a href="notYetSipped.htm"><i></i>未发货订单</a>
-                </li>
-            </ul>
-        </li>
-    </@shiro.hasAnyPermissions>
+        
+            <li>
+                
+                <a  href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
+                
+                
+            </li>
+        
+            <li>
+                
+                <a  href="orderForServer.htm" ><i class="icon-allorders"></i>客服查询</a>
+                
+                
+            </li>
+        
+            <li>
+                
+                <a  href="javascript:;" ><i class="icon-allocation"></i>订单分配</a>
+                
+                
+                <ul>
+                    
+                    <li>
+                        
+                        <a href="orderAllocation.htm"><i></i>任务分配</a>
+                        
+                    </li>
+                    
+                    <li>
+                        
+                        <a href="orderHasAllocation.htm"><i></i>我的任务</a>
+                        
+                    </li>
+                    
+                </ul>
+                
+            </li>
+        
+            <li>
+                
+                <a  href="javascript:;" ><i class="icon-allocation"></i>发货管理</a>
+                
+                
+                <ul>
+                    
+                    <li>
+                        
+                        <a href="scanBarCode.htm"><i></i>扫描打印</a>
+                        
+                    </li>
+                    
+                    <li>
+                        
+                        <a  class="current" href="hasBeenShipped.htm"><i></i>已发货订单</a>
+                        
+                    </li>
+                    
+                    <li>
+                        
+                        <a href="notYetSipped.htm"><i></i>未发货订单</a>
+                        
+                    </li>
+                    
+                </ul>
+                
+            </li>
+        
+            <li>
+                
+                <a  href="javascript:;" ><i class="icon-allocation"></i>售后管理</a>
+                
+                
+                <ul>
+                    
+                    <li>
+                        
+                        <a href="afterSaleOrder.htm"><i></i>售后订单</a>
+                        
+                    </li>
+                    
+                    <li>
+                        
+                        <a href="parcelSweepCode.htm"><i></i>包裹扫码</a>
+                        
+                    </li>
+                    
+                    <li>
+                        
+                        <a href="afterSaleProcess.htm"><i></i>售后处理</a>
+                        
+                    </li>
+                    
+                    <li>
+                        
+                        <a href="parcelSearch.htm"><i></i>包裹查询</a>
+                        
+                    </li>
+                    
+                </ul>
+                
+            </li>
+        
+            <li>
+                
+                <a  href="javascript:;" ><i class="icon-allocation"></i>财务管理</a>
+                
+                
+                <ul>
+                    
+                    <li>
+                        
+                        <a href="financialStatistic.htm"><i></i>财务统计</a>
+                        
+                    </li>
+                    
+                </ul>
+                
+            </li>
+        
     </ul>
 </div>
 
@@ -250,13 +335,16 @@
         <#list orders as order>
         <tbody class="orderItem">
             <tr class="orderItemHead">
-                <td class="leftConBox" colspan="4">
+                <td class="leftConBox" colspan="2">
                     <span>订单编号：${order.orderId!}</span>
                     <span>时间：${order.tradeTime!}</span>
                     <#if order.oldOrder == true>
                     <i class="fcF40 icon-old oldOrder"></i>
                     </#if>
                     
+                </td>
+                <td class="buyerInfo"  colspan="2">
+                    <span>下单人：${order.imTel!}<#if order.imWw??><a target="_blank" href="http://www.taobao.com/webww/ww.php?ver=3&touid=${order.imWw!}&siteid=cntaobao&status=1&charset=utf-8"><img border="0" src="http://style.571xz.com/v2/xz/css/img/aliww.png" alt="点击这里给我发消息" /></a></#if><#if order.imQq??><a href="http://wpa.qq.com/msgrd?v=3&uin=${order.imQq!}&site=qq&menu=yes" target="_blank"><img src="http://style.571xz.com/v2/xz/css/img/imqq.png" alt=""></a></#if></span>
                 </td>
                 <td class="rightConBox" colspan="3">
                     <span class="fr">总费用：${order.totalFee!}（含快递：${order.expressFee!}，服务费：${order.serversFee!}，减免：${order.discountFee!}）</span>
