@@ -18,7 +18,6 @@
             text-align: right;
         }
         .orderCon .tddiv{width:14%;}
-
     </style>
 </head>
 <body>
