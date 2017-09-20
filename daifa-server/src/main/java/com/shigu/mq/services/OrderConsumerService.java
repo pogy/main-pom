@@ -1,12 +1,11 @@
 package com.shigu.mq.services;
 
 import com.alibaba.fastjson.JSON;
-import com.shigu.main4.daifa.bo.AutoRefundBo;
-import com.shigu.main4.daifa.bo.OrderBO;
+import com.shigu.main4.daifa.bo.*;
+import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.OrderManageProcess;
-import com.shigu.mq.beans.RefundBean;
-import com.shigu.mq.beans.ResponseBasic;
-import com.shigu.mq.beans.SubRefundBean;
+import com.shigu.main4.daifa.process.SaleAfterProcess;
+import com.shigu.mq.beans.*;
 import com.shigu.mq.receives.SendMessageListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,13 +29,11 @@ public class OrderConsumerService {
     private static final Logger logger = LoggerFactory.getLogger(OrderConsumerService.class);
     @Autowired
     SendMessageListener sendMessageListener;
-
-    private OrderManageProcess orderManageProcess;
-
     @Autowired
-    public void setOrderManageProcess(OrderManageProcess orderManageProcess) {
-        this.orderManageProcess = orderManageProcess;
-    }
+    private OrderManageProcess orderManageProcess;
+    @Autowired
+    private SaleAfterProcess saleAfterProcess;
+
 
     public void orderConvertTrade(String body){
         ResponseBasic res = JSON.parseObject(body, ResponseBasic.class);
@@ -73,6 +70,63 @@ public class OrderConsumerService {
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
+        }
+    }
+
+    public void returnOrChange(String body){
+        ResponseBasic res = JSON.parseObject(body, ResponseBasic.class);
+        if(res.isStatus()){
+            ReturnOrChangeBean rg=JSON.parseObject(JSON.toJSONString(res.getData()), ReturnOrChangeBean.class);
+            synchronized (rg.getRefundId().toString().intern()){
+                SaleAfterBO bo=new SaleAfterBO();
+                bo.setSubOid(rg.getSoid());
+                bo.setRefundId(rg.getRefundId());
+                bo.setReason(rg.getReason());
+                bo.setNum(rg.getNum());
+                bo.setAfterType(rg.getType());
+                try {
+                    saleAfterProcess.newSaleAfter(bo);
+                } catch (DaifaException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void setPost(String body){
+        ResponseBasic res = JSON.parseObject(body, ResponseBasic.class);
+        if(res.isStatus()){
+            ReturnExpress ex=JSON.parseObject(JSON.toJSONString(res.getData()), ReturnExpress.class);
+            SaleAfterExpressBO bo=new SaleAfterExpressBO();
+            bo.setRefundId(ex.getRefundId());
+            bo.setExpressCode(ex.getCourier());
+            try {
+                saleAfterProcess.saleAfterExpress(bo);
+            } catch (DaifaException e) {
+                logger.error(e.getMessage());
+            }
+        }
+    }
+    public void reproce(String body){
+        ResponseBasic res = JSON.parseObject(body, ResponseBasic.class);
+        if(res.isStatus()){
+            Reproce ex=JSON.parseObject(JSON.toJSONString(res.getData()), Reproce.class);
+            MoneyConsultBO bo=new MoneyConsultBO();
+            bo.setRefundId(ex.getRefundId());
+            if(!ex.getAgree()){
+                try {
+                    saleAfterProcess.moneyConsultRefuse(bo);
+                } catch (DaifaException e) {
+                    logger.error(e.getMessage());
+                }
+            }else{
+                try {
+                    saleAfterProcess.moneyConsult(bo);
+                } catch (DaifaException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+
         }
     }
 }

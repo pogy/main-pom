@@ -120,6 +120,8 @@ public interface SaleAfterProcess {
      *
      */
     String moneyConsultRefuse(MoneyConsultBO bo)throws DaifaException;
+
+    String moneyConsult(MoneyConsultBO bo)throws DaifaException;
     /**
      * ====================================================================================
      * @方法名： moneyConsult  客服发起

@@ -9,10 +9,13 @@ import com.opentae.data.daifa.interfaces.*;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
+import com.shigu.main4.daifa.enums.DaifaSendMqEnum;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.model.SaleAfterModel;
 import com.shigu.main4.daifa.model.ScanSaleAfterExpressModel;
+import com.shigu.main4.daifa.utils.MQUtil;
 import com.shigu.main4.tools.SpringBeanFactory;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -22,10 +25,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Repository
 @Scope("prototype")
@@ -45,6 +45,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     private DaifaAfterMoneyConsultMapper daifaAfterMoneyConsultMapper;
     @Autowired
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
+    @Autowired
+    private MQUtil mqUtil;
 
 
     private Long refundId;
@@ -213,21 +215,32 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             daifaAfterSaleSub.setApplyRefuseReason(reason);
         }
         updateAfterSubs(daifaAfterSaleSub);
+
+        Map<String,Object> map=new HashMap<>();
         switch (status) {
             case 1: {
-                //todo 同意
-//                DaifaSeller seller = daifaSellerMapper.selectByPrimaryKey(subs.get(0).getSellerId());
-//                String address = seller.getTelephone() + " , " + seller.getName() + "," + seller.getAddress();
-
+                //同意受理
+                DaifaSeller seller = daifaSellerMapper.selectByPrimaryKey(subs.get(0).getSellerId());
+                String address = seller.getTelephone() + " , " + seller.getName() + "," + seller.getAddress();
+                map.put("refundId",refundId);
+                map.put("canRefund",true);
+                map.put("daifaReceiveAddr",address);
                 break;
             }
             case 2: {
-                //todo 拒绝
-
+                //拒绝受理
+                map.put("refundId",refundId);
+                map.put("canRefund",false);
+                map.put("reason",reason);
                 break;
             }
         }
-
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("data",map);
+        jsonObject.put("msg", DaifaSendMqEnum.afterSaleAccept.getMsg());
+        jsonObject.put("status","true");
+        mqUtil.sendMessage(DaifaSendMqEnum.afterSaleAccept.getMessageTag()+refundId,
+                DaifaSendMqEnum.afterSaleAccept.getMessageKey(), jsonObject.toString());
         return null;
     }
 
@@ -352,21 +365,21 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         tmp = new DaifaAfterSaleSub();
         tmp.setRefundId(refundId);
         subs = daifaAfterSaleSubMapper.select(tmp);
-        Long refundMoney = 0L;
-        Long tradeMoney=0L;
         for (DaifaAfterSaleSub s : subs) {
             if (s.getAfterStatus() != 5) {
                 return null;
             }
-            refundMoney += MoneyUtil.StringToLong(s.getStoreReturnMoney());
-            tradeMoney += MoneyUtil.StringToLong(s.getSinglePiPrice())*s.getGoodsNum();
         }
-        //todo 发送档口退款消息
-        if(refundMoney.longValue()!=tradeMoney){
-            //todo 议价消息
-        }else{
-            //todo 退款消息
-        }
+        //议价消息
+        JSONObject jsonObject=new JSONObject();
+        Map<String,Object> map=new HashMap<>();
+        map.put("refundId",refundId);
+        map.put("storeMoney",money);
+        jsonObject.put("data",map);
+        jsonObject.put("msg", DaifaSendMqEnum.repriceApply.getMsg());
+        jsonObject.put("status","true");
+        mqUtil.sendMessage(DaifaSendMqEnum.repriceApply.getMessageTag()+refundId,
+                DaifaSendMqEnum.repriceApply.getMessageKey(), jsonObject.toString());
         return null;
     }
 
@@ -402,30 +415,44 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         update.setStoreReturnMoney("0.00");
         daifaAfterSaleSubMapper.updateByPrimaryKeySelective(update);
 
-
         //校验是否处理完整个refund
+        int num=0;
+        boolean isLast=true;
         DaifaAfterSaleSub tmp = new DaifaAfterSaleSub();
         tmp.setRefundId(sub.getRefundId());
         List<DaifaAfterSaleSub> subs = daifaAfterSaleSubMapper.select(tmp);
         for (DaifaAfterSaleSub s : subs) {
             if (s.getAfterStatus() != 5&&s.getInStock()!=null) {
-                return null;
+                isLast=false;
+                continue;
+            }
+            num++;
+        }
+        if(isLast){
+            for(DaifaAfterSaleSub s : subs){
+                if(s.getAfterStatus() != 5&&s.getInStock()==null){
+                    update = new DaifaAfterSaleSub();
+                    update.setStoreDealStatus(2);
+                    update.setAfterStatus(5);
+                    update.setStoreDealTime(new Date());
+                    update.setStoreRefuseReason("未收到货");
+                    update.setAfterSaleSubId(s.getAfterSaleSubId());
+                    update.setStoreReturnMoney("0.00");
+                    daifaAfterSaleSubMapper.updateByPrimaryKeySelective(update);
+                    num++;
+                }
             }
         }
-        for(DaifaAfterSaleSub s : subs){
-            if(s.getAfterStatus() != 5&&s.getInStock()==null){
-                update = new DaifaAfterSaleSub();
-                update.setStoreDealStatus(2);
-                update.setAfterStatus(5);
-                update.setStoreDealTime(new Date());
-                update.setStoreRefuseReason("未收到货");
-                update.setAfterSaleSubId(s.getAfterSaleSubId());
-                update.setStoreReturnMoney("0.00");
-                daifaAfterSaleSubMapper.updateByPrimaryKeySelective(update);
-            }
-        }
-
-        //todo 发送档口拒绝消息
+        //发送档口拒绝消息
+        JSONObject jsonObject=new JSONObject();
+        Map<String,Object> map=new HashMap<>();
+        map.put("refundId",refundId);
+        map.put("num",num);
+        jsonObject.put("data",map);
+        jsonObject.put("msg", DaifaSendMqEnum.shopRefuse.getMsg());
+        jsonObject.put("status","true");
+        mqUtil.sendMessage(DaifaSendMqEnum.shopRefuse.getMessageTag()+refundId,
+                DaifaSendMqEnum.shopRefuse.getMessageKey(), jsonObject.toString());
         return null;
     }
 
@@ -528,6 +555,14 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     }
 
     @Override
+    public String moneyConsultAgree() throws DaifaException {
+        DaifaAfterSaleSub update=new DaifaAfterSaleSub();
+        update.setAfterStatus(6);
+        updateAfterSubs(update);
+        return null;
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class}, isolation = Isolation.DEFAULT)
     public String moneyConsult(String money) throws DaifaException {
         DaifaAfterMoneyConsultExample daifaAfterMoneyConsultExample = new DaifaAfterMoneyConsultExample();
@@ -552,9 +587,16 @@ public class SaleAfterModelImpl implements SaleAfterModel {
             update.setConsultMoney(MoneyUtil.dealPrice(MoneyUtil.StringToLong(money)));
             daifaAfterMoneyConsultMapper.updateByPrimaryKeySelective(update);
         }
-
-
-        //todo 发送改金额消息
+        //发送改金额消息
+        JSONObject jsonObject=new JSONObject();
+        Map<String,Object> map=new HashMap<>();
+        map.put("refundId",refundId);
+        map.put("storeMoney",money);
+        jsonObject.put("data",map);
+        jsonObject.put("msg", DaifaSendMqEnum.repriceApply.getMsg());
+        jsonObject.put("status","true");
+        mqUtil.sendMessage(DaifaSendMqEnum.repriceApply.getMessageTag()+refundId,
+                DaifaSendMqEnum.repriceApply.getMessageKey(), jsonObject.toString());
         return null;
     }
 

@@ -162,6 +162,13 @@ public class SaleAfterProcessImpl implements SaleAfterProcess {
         }
         return null;
     }
+
+    @Override
+    public String moneyConsult(MoneyConsultBO bo) throws DaifaException {
+        SpringBeanFactory.getBean(SaleAfterModel.class, bo.getRefundId()).moneyConsultAgree();
+        return null;
+    }
+
     /**
      * ====================================================================================
      * @方法名： moneyConsult  客服发起

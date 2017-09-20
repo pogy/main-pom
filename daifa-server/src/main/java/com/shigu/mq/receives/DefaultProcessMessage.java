@@ -43,6 +43,18 @@ public class DefaultProcessMessage {
                 orderConsumerService.refund(body);
                 break;
             }
+            case ORDER_REFUND_HASITEM:{
+                orderConsumerService.returnOrChange(body);
+                break;
+            }
+            case REFUND_COURIER_NUMBER:{
+                orderConsumerService.setPost(body);
+                break;
+            }
+            case REPROCE_AGREE:{
+                orderConsumerService.reproce(body);
+                break;
+            }
             default:{
                 break;
             }

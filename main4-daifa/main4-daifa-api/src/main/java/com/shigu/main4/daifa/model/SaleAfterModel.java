@@ -117,6 +117,8 @@ public interface SaleAfterModel {
      * 
      */
     String moneyConsultRefuse()throws DaifaException;
+
+    String moneyConsultAgree()throws DaifaException;
     /**
      * ====================================================================================
      * @方法名： moneyConsult
