@@ -47,7 +47,7 @@ public class DefaultProcessMessage {
                 orderConsumerService.returnOrChange(body);
                 break;
             }
-            case REFUND_COURIER_NUMBER:{
+            case REFUND_COURIER_NUMBER: case REFUND_COURIER_NUMBER_MODIFY:{
                 orderConsumerService.setPost(body);
                 break;
             }
