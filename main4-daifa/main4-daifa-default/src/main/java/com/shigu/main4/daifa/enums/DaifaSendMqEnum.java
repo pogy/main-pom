@@ -30,18 +30,18 @@ public enum DaifaSendMqEnum {
     ;
 
 
-    DaifaSendMqEnum(String messageKey, String messageTag, String msg){
+    DaifaSendMqEnum(String messageTag, String messageKey, String msg){
         this.messageKey=messageKey;
         this.messageTag=messageTag;
         this.msg=msg;
     }
-    DaifaSendMqEnum(String messageKey, String messageTag, String msg, String errMsg){
+    DaifaSendMqEnum(String messageTag, String messageKey, String msg, String errMsg){
         this.messageKey=messageKey;
         this.messageTag=messageTag;
         this.msg=msg;
         this.errMsg=errMsg;
     }
-    DaifaSendMqEnum(String messageKey, String messageTag){
+    DaifaSendMqEnum(String messageTag, String messageKey){
         this.messageKey=messageKey;
         this.messageTag=messageTag;
     }

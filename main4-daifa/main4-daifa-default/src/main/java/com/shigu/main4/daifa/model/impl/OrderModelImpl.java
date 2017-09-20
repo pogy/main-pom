@@ -250,8 +250,8 @@ public class OrderModelImpl implements OrderModel {
                 jsonObject.put("msg", DaifaSendMqEnum.cutOff.getMsg());
                 jsonObject.put("status","true");
                 String message = jsonObject.toString();
-                mqUtil.sendMessage(DaifaSendMqEnum.cutOff.getMessageTag()+trade.getTradeCode(),
-                        DaifaSendMqEnum.cutOff.getMessageKey(), message);
+                mqUtil.sendMessage(DaifaSendMqEnum.cutOff.getMessageKey()+trade.getTradeCode(),
+                        DaifaSendMqEnum.cutOff.getMessageTag(), message);
 
             }
         }
@@ -341,8 +341,8 @@ public class OrderModelImpl implements OrderModel {
         obj.put("data",map);
         obj.put("msg","全单发货");
         obj.put("status",true);
-        mqUtil.sendMessage(DaifaSendMqEnum.sendAll.getMessageTag()+t.getTradeCode(),
-                DaifaSendMqEnum.sendAll.getMessageKey(), obj.toString());
+        mqUtil.sendMessage(DaifaSendMqEnum.sendAll.getMessageKey()+t.getTradeCode(),
+                DaifaSendMqEnum.sendAll.getMessageTag(), obj.toString());
     }
 
     /**
@@ -420,8 +420,8 @@ public class OrderModelImpl implements OrderModel {
             obj.put("msg",msg);
             obj.put("status",false);
         }
-        mqUtil.sendMessage(DaifaSendMqEnum.refund.getMessageTag()+refundId,
-                DaifaSendMqEnum.refund.getMessageKey(),
+        mqUtil.sendMessage(DaifaSendMqEnum.refund.getMessageKey()+refundId,
+                DaifaSendMqEnum.refund.getMessageTag(),
                 obj.toString());
     }
 

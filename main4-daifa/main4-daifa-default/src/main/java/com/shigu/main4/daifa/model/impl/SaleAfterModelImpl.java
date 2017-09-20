@@ -239,8 +239,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.afterSaleAccept.getMsg());
         jsonObject.put("status","true");
-        mqUtil.sendMessage(DaifaSendMqEnum.afterSaleAccept.getMessageTag()+refundId,
-                DaifaSendMqEnum.afterSaleAccept.getMessageKey(), jsonObject.toString());
+        mqUtil.sendMessage(DaifaSendMqEnum.afterSaleAccept.getMessageKey()+refundId,
+                DaifaSendMqEnum.afterSaleAccept.getMessageTag(), jsonObject.toString());
         return null;
     }
 
@@ -378,8 +378,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.repriceApply.getMsg());
         jsonObject.put("status","true");
-        mqUtil.sendMessage(DaifaSendMqEnum.repriceApply.getMessageTag()+refundId,
-                DaifaSendMqEnum.repriceApply.getMessageKey(), jsonObject.toString());
+        mqUtil.sendMessage(DaifaSendMqEnum.repriceApply.getMessageKey()+refundId,
+                DaifaSendMqEnum.repriceApply.getMessageTag(), jsonObject.toString());
         return null;
     }
 
@@ -451,8 +451,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.shopRefuse.getMsg());
         jsonObject.put("status","true");
-        mqUtil.sendMessage(DaifaSendMqEnum.shopRefuse.getMessageTag()+refundId,
-                DaifaSendMqEnum.shopRefuse.getMessageKey(), jsonObject.toString());
+        mqUtil.sendMessage(DaifaSendMqEnum.shopRefuse.getMessageKey()+refundId,
+                DaifaSendMqEnum.shopRefuse.getMessageTag(), jsonObject.toString());
         return null;
     }
 
@@ -595,8 +595,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         jsonObject.put("data",map);
         jsonObject.put("msg", DaifaSendMqEnum.repriceApply.getMsg());
         jsonObject.put("status","true");
-        mqUtil.sendMessage(DaifaSendMqEnum.repriceApply.getMessageTag()+refundId,
-                DaifaSendMqEnum.repriceApply.getMessageKey(), jsonObject.toString());
+        mqUtil.sendMessage(DaifaSendMqEnum.repriceApply.getMessageKey()+refundId,
+                DaifaSendMqEnum.repriceApply.getMessageTag(), jsonObject.toString());
         return null;
     }
 
