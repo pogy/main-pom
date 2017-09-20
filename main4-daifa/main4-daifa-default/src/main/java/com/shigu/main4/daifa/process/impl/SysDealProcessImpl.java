@@ -1,6 +1,8 @@
 package com.shigu.main4.daifa.process.impl;
 
+import com.opentae.data.daifa.beans.TsysPermission;
 import com.opentae.data.daifa.beans.TsysRole;
+import com.opentae.data.daifa.interfaces.TsysPermissionMapper;
 import com.opentae.data.daifa.interfaces.TsysRoleMapper;
 import com.shigu.main4.daifa.bo.TsysRoleBO;
 import com.shigu.main4.daifa.process.SysDealProcess;
@@ -23,6 +25,8 @@ import java.util.Date;
 public class SysDealProcessImpl implements SysDealProcess{
     @Resource(name = "tae_daifa_tsysRoleMapper")
     TsysRoleMapper tsysRoleMapper;
+    @Resource(name = "tae_daifa_tsysPermissionMapper")
+    TsysPermissionMapper tsysPermissionMapper;
 
     /**
      * ====================================================================================
@@ -45,7 +49,7 @@ public class SysDealProcessImpl implements SysDealProcess{
         role.setStatus (status);
         role.setRoleComment (roleComment);
         role.setCreateTime (new Date ());
-        return tsysRoleMapper.insert (role);
+        return tsysRoleMapper.insertSelective (role);
     }
     /**
      * ====================================================================================
@@ -70,5 +74,30 @@ public class SysDealProcessImpl implements SysDealProcess{
         role.setRoleComment (roleComment);
         return tsysRoleMapper.updateByPrimaryKeySelective (role);
 
+    }
+
+    @Override public int permissionInsert (String namespace, String permissionTag, Long createUserId, Long status, String permissionComment, Long parentPid) {
+        TsysPermission record=new TsysPermission ();
+        record.setNamespace (namespace);
+        record.setCreateUserId (createUserId);
+        record.setParentPid (parentPid);
+        record.setPermissionTag (permissionTag);
+        record.setPermissionComment (permissionComment);
+        record.setStatus (status);
+        return tsysPermissionMapper.insertSelective (record);
+    }
+
+    @Override public int permissionUpdate (Long permissionId, String namespace, String permissionTag, Long createUserId, Long status, String permissionComment, Long parentPid) {
+        TsysPermission record=new TsysPermission ();
+        record.setPermissionId (permissionId);
+        record.setNamespace (namespace);
+        record.setCreateUserId (createUserId);
+        record.setParentPid (parentPid);
+        record.setPermissionTag (permissionTag);
+        record.setPermissionComment (permissionComment);
+        record.setStatus (status);
+
+
+        return tsysPermissionMapper.updateByPrimaryKeySelective (record);
     }
 }

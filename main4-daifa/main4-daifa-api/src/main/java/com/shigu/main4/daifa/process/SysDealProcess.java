@@ -19,4 +19,8 @@ public interface SysDealProcess {
     int roleInsert(String roleName,String roleTag,Long createUserId,Long status,String roleComment);
 
     int roleUpdate(Long roleId,String roleName,String roleTag,Long createUserId,Long status,String roleComment);
+    ////TsysPermission
+    int permissionInsert(String namespace,String permissionTag,Long createUserId,Long status,String permissionComment,Long parentPid);
+
+    int permissionUpdate(Long permissionId,String namespace,String permissionTag,Long createUserId,Long status,String permissionComment,Long parentPid);
 }
