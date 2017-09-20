@@ -93,6 +93,8 @@ public class AppStaticAction {
                     ac.setCid(new Long(subcate.getId()));
                     ac.setKeyword(subcate.getKeyword());
                     ac.setName(subcate.getText());
+                    //缺少封装参数
+                   // ac.setImgsrc();
                     if(SEXCIDS.contains(subcate.getId())){
                         acg1.getCats().add(ac);
                     }else{
@@ -109,6 +111,8 @@ public class AppStaticAction {
                     ac.setCid(new Long(subcate.getId()));
                     ac.setKeyword(subcate.getKeyword());
                     ac.setName(subcate.getText());
+                    //缺少封装参数
+                    // ac.setImgsrc();
                     acs.add(ac);
                 }
                 acg.setCats(acs);
@@ -120,6 +124,7 @@ public class AppStaticAction {
         response.setSuccess(true);
         return JSONObject.fromObject(response);
     }
+
     @RequestMapping("app/searchNav")
     @ResponseBody
     public JSONObject searchNav(SearchNavRequest request) throws Main4Exception {

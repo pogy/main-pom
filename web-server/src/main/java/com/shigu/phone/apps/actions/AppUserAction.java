@@ -2,6 +2,7 @@ package com.shigu.phone.apps.actions;
 
 import com.openJar.requests.app.AboutMeRequest;
 import com.openJar.requests.app.ChangePasswordRequest;
+import com.openJar.requests.app.LoginRequest;
 import com.shigu.phone.services.PhoneUserService;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -33,11 +35,17 @@ public class AppUserAction {
         return JSONObject.fromObject(phoneUserService.aboutMe(request));
     }
 
-
+    //修改密码
     @RequestMapping("changePassword")
     @ResponseBody
     public JSONObject appChangePassword(@Valid ChangePasswordRequest request, BindingResult bindingResult) {
         return JSONObject.fromObject(phoneUserService.changePassword(request));
+    }
+    //登录请求
+    @RequestMapping("login")
+    @ResponseBody
+    public JSONObject login( @Valid LoginRequest request, BindingResult bindingResult,HttpServletRequest servletRequest) {
+        return JSONObject.fromObject(phoneUserService.login(request,servletRequest));
     }
 
 

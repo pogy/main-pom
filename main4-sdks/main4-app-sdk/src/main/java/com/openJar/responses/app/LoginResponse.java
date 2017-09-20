@@ -34,7 +34,7 @@ public class LoginResponse extends Response {
 		this.imSeller=imSeller;
 	}
 
-	public String getImgsrc(){
+	public String getImgsrc( String headUrl ){
 		return imgsrc;
 	}
 
@@ -42,8 +42,8 @@ public class LoginResponse extends Response {
 		this.imgsrc=imgsrc;
 	}
 
-	public String getUserNick(){
-		return userNick;
+	public String getUserNick( String userNick ){
+		return this.userNick;
 	}
 
 	public void setUserNick(String userNick){
