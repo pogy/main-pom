@@ -44,6 +44,8 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     @Autowired
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
     @Autowired
+    private DaifaSellerMapper daifaSellerMapper;
+    @Autowired
     private MQUtil mqUtil;
 
 
