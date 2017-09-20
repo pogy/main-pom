@@ -43,6 +43,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * cdn服务
@@ -276,7 +277,36 @@ public class CdnService {
         example.or().andTypeEqualTo(2).andTargetIdEqualTo(storeId);//按店来
         example.or().andTypeEqualTo(3).andTargetIdEqualTo(goodsId);//按商品
 //        example.or().andTypeEqualTo(4).andTargetIdEqualTo(cid);//按类目
-        return itemTradeForbidMapper.countByExample(example)==0;
+        List<ItemTradeForbid> itemTradeForbids = itemTradeForbidMapper.selectByExample(example);
+        if (itemTradeForbids.size() == 0) {
+            return true;
+        }
+        Map<Integer, ItemTradeForbid> typeMap = itemTradeForbids.parallelStream().collect(Collectors.toMap(ItemTradeForbid::getType, o -> o));
+        //按商品允许/禁止
+        ItemTradeForbid itemTradeForbid;
+        if ((itemTradeForbid = typeMap.get(3)) != null) {
+            return itemTradeForbid.getCanSale()==1;
+        }
+        //按店允许/禁止
+        if ((itemTradeForbid = typeMap.get(2)) != null) {
+            return itemTradeForbid.getCanSale()==1;
+        }
+        //按楼层
+        if ((itemTradeForbid = typeMap.get(5)) != null) {
+            return itemTradeForbid.getCanSale()==1;
+        }
+        //按市场
+        if ((itemTradeForbid = typeMap.get(1)) != null) {
+            return itemTradeForbid.getCanSale()==1;
+        }
+        //todo:目前没有按类目分的
+        ////按类目
+        //if ((itemTradeForbid = typeMap.get(4)) != null) {
+        //    return itemTradeForbid.getCanSale()==1;
+        //}
+
+        //不走到这一步
+        return true;
     }
 
     /**
