@@ -29,6 +29,10 @@ public class AfterSaleDataVO {
     private String tradeTime;
     private Boolean oldOrder;
     private Integer sendStatus;
+
+    private String imWw;
+    private String imQq;
+    private String imTel;
     private List<AfterSaleDataSubVO> childOrders;
 
     public String getReceiverAddress() {
@@ -181,5 +185,29 @@ public class AfterSaleDataVO {
 
     public void setSendStatus(Integer sendStatus) {
         this.sendStatus = sendStatus;
+    }
+
+    public String getImWw() {
+        return this.imWw;
+    }
+
+    public void setImWw(String imWw) {
+        this.imWw = imWw;
+    }
+
+    public String getImQq() {
+        return this.imQq;
+    }
+
+    public void setImQq(String imQq) {
+        this.imQq = imQq;
+    }
+
+    public String getImTel() {
+        return this.imTel;
+    }
+
+    public void setImTel(String imTel) {
+        this.imTel = imTel;
     }
 }

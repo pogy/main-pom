@@ -2,7 +2,7 @@
     <ul>
 
         <li>
-            <a class="current" href="orderAll.htm" ><i class="icon-allorders"></i>全部订单</a>
+            <a class="current" href="adminOrder.htm" ><i class="icon-allorders"></i>全部订单</a>
         </li>
 
         <li>
@@ -22,18 +22,24 @@
                 -->
             </ul>
         </li>
-        <!--
+
         <li>
-            <a href="javascript:;" ><i class="icon-allocation"></i>发货管理</a>
+            <a href="javascript:;" ><i class="icon-allocation"></i>系统管理</a>
             <ul>
                 <li>
-                    <a href="scanBarCode.htm"><i></i>扫描打印</a>
+                    <a href="roleListByPage.htm"><i></i>角色管理</a>
                 </li>
                 <li>
-                    <a href="notYetSipped.htm"><i></i>未发货订单</a>
+                    <a href="userAndRole.htm"><i></i>用户角色</a>
+                </li>
+                <li>
+                    <a href="permissionListByPage.htm"><i></i>权限管理</a>
+                </li>
+                <li>
+                    <a href="roleAndPermission.htm"><i></i>角色权限</a>
                 </li>
             </ul>
         </li>
-        -->
+
     </ul>
 </div>

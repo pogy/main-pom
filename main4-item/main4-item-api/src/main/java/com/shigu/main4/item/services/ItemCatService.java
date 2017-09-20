@@ -32,5 +32,19 @@ public interface ItemCatService {
      */
     List<TbCat> subCats(Long cid);
 
+    /**
+     * 父类目id(parent_id)
+     * @param cid
+     * @return
+     */
+    Long parentCats(Long cid);
+
+    /**
+     *查看商品是否属于女装
+     * @param cid
+     * @return
+     */
+    boolean instanOfWoman(Long cid);
+
 
 }

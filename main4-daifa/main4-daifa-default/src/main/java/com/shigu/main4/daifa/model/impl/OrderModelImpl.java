@@ -125,6 +125,9 @@ public class OrderModelImpl implements OrderModel {
             if(orderBO.getBuyer ()!=null) {
                 daifaTrade.setBuyerWw (orderBO.getBuyer().getAliWw ());
                 daifaTrade.setBuyerNick(orderBO.getBuyer().getNickInMarket());
+                daifaTrade.setBuyerQq(orderBO.getBuyer().getImQq());
+                daifaTrade.setBuyerTelephone(orderBO.getBuyer().getPhone());
+                daifaTrade.setBuyerId(orderBO.getBuyer().getBuyerId());
             }
             List<ServiceBO> services = orderBO.getServices();
             BigNumber serviceTradeFee = new BigNumber("0.00");

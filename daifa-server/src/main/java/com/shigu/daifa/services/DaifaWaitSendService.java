@@ -102,6 +102,9 @@ public class DaifaWaitSendService {
                 DaifaWaitSendVO vo = new DaifaWaitSendVO();
                 sends.add(vo);
                 BeanUtils.copyProperties(daifaWaitSendSimple, vo, "childOrders");
+                if("无".equals(vo.getImWw())){
+                    vo.setImWw(null);
+                }
                 List<WaitSendOrderVO> subList = new ArrayList<>();
                 for (DaifaWaitSendOrderSimple daifaWaitSendOrderSimple : daifaWaitSendSimple.getChildOrders()) {
                     WaitSendOrderVO subVo = new WaitSendOrderVO();
