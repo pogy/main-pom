@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service
+@Service("scanSaleAfterExpressProcess")
 public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProcess{
     @Autowired
     private DaifaAfterSaleMapper daifaAfterSaleMapper;

@@ -7,6 +7,7 @@ import com.opentae.data.daifa.interfaces.TsysRoleMapper;
 import com.shigu.main4.daifa.bo.TsysRoleBO;
 import com.shigu.main4.daifa.process.SysDealProcess;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -22,6 +23,7 @@ import java.util.Date;
  * @since: main-pom
  * @commonents:
  */
+@Service("sysDealProcess")
 public class SysDealProcessImpl implements SysDealProcess{
     @Resource(name = "tae_daifa_tsysRoleMapper")
     TsysRoleMapper tsysRoleMapper;

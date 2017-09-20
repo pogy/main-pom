@@ -505,6 +505,14 @@ public class DaifaAfterSaleExample extends SgExample<DaifaAfterSaleExample.Crite
         public DaifaAfterSaleExample.Criteria andBuyerIdNotBetween(Integer value1, Integer value2) {
             return notBetween(buyerId, value1, value2);
         }
+        public DaifaAfterSaleExample.Criteria andDfTradeIdLike(String value) {
+            return like(dfTradeId, value);
+        }
+
+        public DaifaAfterSaleExample.Criteria andDfTradeIdNotLike(String value) {
+            return notLike(dfTradeId, value);
+        }
+
         public DaifaAfterSaleExample.Criteria andDfTradeIdIsNull() {
             return isNull(dfTradeId);
         }

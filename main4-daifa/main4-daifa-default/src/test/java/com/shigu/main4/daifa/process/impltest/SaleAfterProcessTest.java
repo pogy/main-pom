@@ -47,8 +47,8 @@ public class SaleAfterProcessTest extends BaseSpringTest {
     @Autowired
     private DaifaAfterMoneyConsultMapper daifaAfterMoneyConsultMapper;
 
-    static Long refundId = 999999L;
-    static Long errorRefundId = 888888L;
+    static Long refundId = 999991L;
+    static Long errorRefundId = 888881L;
     static Long daifaAfterSaleId = 1l;
     static Long daifaTradeId = 1l;
 
@@ -60,12 +60,12 @@ public class SaleAfterProcessTest extends BaseSpringTest {
     static String huojia = "1";
     static String errorHuojia = "2";
 
-    //        @Test
+//            @Test
 //    @Transactional
 //    售后写入
     public void newSaleAfter_test() {
         DaifaTradeExample daifaTradeExample = new DaifaTradeExample();
-        daifaTradeExample.createCriteria().andSendStatusEqualTo(2).andGoodsNumGreaterThan(1L).andDfTradeIdEqualTo(62017090295790L);
+        daifaTradeExample.createCriteria().andSendStatusEqualTo(2).andGoodsNumGreaterThan(1L);
         daifaTradeExample.setOrderByClause("df_trade_id desc");
         daifaTradeExample.setEndIndex(1);
         Map<String, List<DaifaOrder>> orderGroup;
@@ -910,8 +910,8 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         assertTrue(isError);
     }
 
-    @Test
-    @Transactional
+//    @Test
+//    @Transactional
 //    改价
     public void moneyConsult_test() {
         moneyConsultRefuse_test();
@@ -970,8 +970,8 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         assertEquals(cs.get(1).getConsultMoney(), "20.00");
     }
 
-    @Test
-    @Transactional
+//    @Test
+//    @Transactional
     public void saleAfterRemark_test() throws DaifaException{
         //插入主表数据
         DaifaAfterSale daifaAfterSale = new DaifaAfterSale();

@@ -1,0 +1,105 @@
+package com.shigu.daifa.vo;
+
+import java.util.List;
+
+public class DaifaSaleAfterRefund {
+    private Long refundId;
+    private Integer afterSaleState;
+    private String afterSalePostCode;
+    private String afterSalePostName;
+    private String opeReason;
+    private Integer refundState;
+    private Integer refundFeeType;
+    private String refundForShop;
+    private List<String> editIndo;
+    private List<DaifaSaleAfterStock> putInStorageState;
+    private List<DaifaSaleAfterSub> childOrders;
+
+    public Long getRefundId() {
+        return this.refundId;
+    }
+
+    public void setRefundId(Long refundId) {
+        this.refundId = refundId;
+    }
+
+    public Integer getAfterSaleState() {
+        return this.afterSaleState;
+    }
+
+    public void setAfterSaleState(Integer afterSaleState) {
+        this.afterSaleState = afterSaleState;
+    }
+
+    public String getAfterSalePostCode() {
+        return this.afterSalePostCode;
+    }
+
+    public void setAfterSalePostCode(String afterSalePostCode) {
+        this.afterSalePostCode = afterSalePostCode;
+    }
+
+    public String getAfterSalePostName() {
+        return this.afterSalePostName;
+    }
+
+    public void setAfterSalePostName(String afterSalePostName) {
+        this.afterSalePostName = afterSalePostName;
+    }
+
+    public String getOpeReason() {
+        return this.opeReason;
+    }
+
+    public void setOpeReason(String opeReason) {
+        this.opeReason = opeReason;
+    }
+
+    public Integer getRefundState() {
+        return this.refundState;
+    }
+
+    public void setRefundState(Integer refundState) {
+        this.refundState = refundState;
+    }
+
+    public Integer getRefundFeeType() {
+        return this.refundFeeType;
+    }
+
+    public void setRefundFeeType(Integer refundFeeType) {
+        this.refundFeeType = refundFeeType;
+    }
+
+    public String getRefundForShop() {
+        return this.refundForShop;
+    }
+
+    public void setRefundForShop(String refundForShop) {
+        this.refundForShop = refundForShop;
+    }
+
+    public List<String> getEditIndo() {
+        return this.editIndo;
+    }
+
+    public void setEditIndo(List<String> editIndo) {
+        this.editIndo = editIndo;
+    }
+
+    public List<DaifaSaleAfterStock> getPutInStorageState() {
+        return this.putInStorageState;
+    }
+
+    public void setPutInStorageState(List<DaifaSaleAfterStock> putInStorageState) {
+        this.putInStorageState = putInStorageState;
+    }
+
+    public List<DaifaSaleAfterSub> getChildOrders() {
+        return this.childOrders;
+    }
+
+    public void setChildOrders(List<DaifaSaleAfterSub> childOrders) {
+        this.childOrders = childOrders;
+    }
+}

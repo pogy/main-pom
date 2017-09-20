@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service("saleAfterProcess")
 public class SaleAfterProcessImpl implements SaleAfterProcess {
     private static final Logger logger = LoggerFactory.getLogger(SaleAfterProcessImpl.class);
     @Autowired
