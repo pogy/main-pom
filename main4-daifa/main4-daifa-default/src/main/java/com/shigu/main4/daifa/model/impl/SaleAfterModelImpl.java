@@ -40,8 +40,6 @@ public class SaleAfterModelImpl implements SaleAfterModel {
     @Autowired
     private DaifaAfterSaleSubMapper daifaAfterSaleSubMapper;
     @Autowired
-    private DaifaSellerMapper daifaSellerMapper;
-    @Autowired
     private DaifaAfterMoneyConsultMapper daifaAfterMoneyConsultMapper;
     @Autowired
     private DaifaAfterReceiveExpresStockMapper daifaAfterReceiveExpresStockMapper;
@@ -303,7 +301,7 @@ public class SaleAfterModelImpl implements SaleAfterModel {
         if (oldSale == null) {
             throw new DaifaException("售后申请不存在");
         }
-        daifaAfterSale.setRemark(daifaAfterSale.getRemark()+":"+remark);
+        daifaAfterSale.setRemark(oldSale.getRemark()+":"+remark);
         return daifaAfterSaleMapper.updateByPrimaryKeySelective(daifaAfterSale);
     }
 

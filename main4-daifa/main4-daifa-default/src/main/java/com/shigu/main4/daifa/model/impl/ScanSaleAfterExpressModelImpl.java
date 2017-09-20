@@ -116,9 +116,9 @@ public class ScanSaleAfterExpressModelImpl implements ScanSaleAfterExpressModel{
         daifaAfterSaleSub.setLastDoTime(now);
         daifaAfterSaleSub.setApplyExpressName(bo.getApplyExpressName());
         daifaAfterSaleSub.setApplyExpressCode(bo.getApplyExpressCode());
-        daifaAfterSaleSub.setRemark(daifaAfterSaleSub.getRemark()+":"+bo.getRemark());//备注信息
+        daifaAfterSaleSub.setRemark(oldSub.getRemark()+":"+bo.getRemark());//备注信息
 
-        switch (daifaAfterSaleSub.getAfterType()){//售后类型@1退货2换货
+        switch (oldSub.getAfterType()){//售后类型@1退货2换货
             case 1:
                 daifaAfterSaleSub.setReturnExpressCode(bo.getReturnExpressCode());
                 daifaAfterSaleSub.setReturnExpressName(bo.getReturnExpressName());
