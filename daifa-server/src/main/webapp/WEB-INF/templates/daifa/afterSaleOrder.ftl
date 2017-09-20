@@ -433,29 +433,7 @@
             <b jbtn="agreeBtn" data-id="${afterSale.refundId!}">同意</b>
             <b jbtn="refuseBtn" data-id="${afterSale.refundId!}">拒绝</b>
         <#else>
-            <#if afterSale.refundState??>
-                <#if afterSale.refundState == 1>
-                <p>档口已退款</p>
-                <p class="fcF40">
-                    <div class="pr moneyBox fcF40">
-                        ${afterSale.refundForShop!}
-                        <#if afterSale.refundFeeType == 1>
-                        <span class="spanIcon editIcon">改</span>
-                        <#elseif afterSale.refundFeeType == 2>
-                        <span class="spanIcon">拒</span>
-                        </#if>
-                        <div class="editInfo pa">
-                            ${afterSale.editInfo}
-                        </div>
-                    </div>
-                </p>
-                <p><b class="fcBlue editBtn" jbtn="editBtn">修改</b></p>
-                <#elseif afterSale.refundState == 2>
-                <p class="fcG">已退款</p>
-                <p class="fcF40">${afterSale.refundForShop!}</p>
-                </#if>
-            <#else>
-                <#if (afterSale.putInStorageState?size) gt 0>
+            <#if (afterSale.putInStorageState?size) gt 0>
                 <#list afterSale.putInStorageState as sto>
                     <#if sto.type == 1>
                     <p>商品已入库x${sto.storageNum!}</p>
@@ -463,9 +441,28 @@
                     <p>退货失败入库x${sto.storageNum!}</p>
                     </#if>
                 </#list>
-                </#if>
             </#if>
             
+            <#if afterSale.refundState == 1>
+            <p>档口已退款</p>
+            <p class="fcF40">
+                <div class="pr moneyBox fcF40">
+                    ${afterSale.refundForShop!}
+                    <#if afterSale.refundFeeType == 1>
+                    <span class="spanIcon editIcon">改</span>
+                    <#elseif afterSale.refundFeeType == 2>
+                    <span class="spanIcon">拒</span>
+                    </#if>
+                    <div class="editInfo pa">
+                        ${afterSale.editInfo}
+                    </div>
+                </div>
+            </p>
+            <p><b class="fcBlue editBtn" jbtn="editBtn">修改</b></p>
+            <#elseif afterSale.refundState == 2>
+            <p class="fcG">已退款</p>
+            <p class="fcF40">${afterSale.refundForShop!}</p>
+            </#if>
         </#if>
         </td>
     </#if>
@@ -511,6 +508,8 @@
 
 
 </#list>
+
+
 
 
 
