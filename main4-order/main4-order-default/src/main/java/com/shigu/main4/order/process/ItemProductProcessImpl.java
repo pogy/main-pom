@@ -109,20 +109,35 @@ public class ItemProductProcessImpl implements ItemProductProcess {
             //各维度禁止、允许销售
             List<ItemTradeForbid> typeForbid;
             //商品有不可售
-            if (!typeCanSale(collect.get(3))) {
-                return false;
+            if ((typeForbid=collect.get(3)) != null) {
+                if (!typeCanSale(typeForbid)) {
+                    return false;
+                }
+                //查到商品全部可售
+                if (typeForbid.size() == goodsIds.size()) {
+                    return true;
+                }
             }
             //店铺不可售
-            if (!typeCanSale(collect.get(2))) {
-                return false;
+            if ((typeForbid=collect.get(2)) != null) {
+                if (!typeCanSale(typeForbid)) {
+                    return false;
+                }
+                return true;
             }
             //楼层不可售
-            if (!typeCanSale(collect.get(5))) {
-                return false;
+            if ((typeForbid=collect.get(5)) != null) {
+                if (!typeCanSale(typeForbid)) {
+                    return false;
+                }
+                return true;
             }
             //市场不可售
-            if (!typeCanSale(collect.get(1))) {
-                return false;
+            if ((typeForbid=collect.get(1)) != null) {
+                if (!typeCanSale(typeForbid)) {
+                    return false;
+                }
+                return true;
             }
         }
         //在禁止销售表里没有记录，可售
