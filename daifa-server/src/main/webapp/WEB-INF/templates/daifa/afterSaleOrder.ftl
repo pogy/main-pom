@@ -433,30 +433,39 @@
             <b jbtn="agreeBtn" data-id="${afterSale.refundId!}">同意</b>
             <b jbtn="refuseBtn" data-id="${afterSale.refundId!}">拒绝</b>
         <#else>
-            <#if afterSale.warehousingState == 1>
-            <p>商品已入库</p>
-            <#elseif afterSale.warehousingState == 2>
-            <p>退货失败入库</p>
-            <#elseif afterSale.warehousingState == 3>
-            <p>档口已退款</p>
-            <p class="fcF40">
-                <div class="pr moneyBox fcF40">
-                    ${afterSale.refundForShop!}
-                    <#if afterSale.refundFeeType == 1>
-                    <span class="spanIcon editIcon">改</span>
-                    <#elseif afterSale.refundFeeType == 2>
-                    <span class="spanIcon">拒</span>
-                    </#if>
-                    <div class="editInfo pa">
-                        ${afterSale.editInfo}
+            <#if afterSale.refundState??>
+                <#if afterSale.refundState == 1>
+                <p>档口已退款</p>
+                <p class="fcF40">
+                    <div class="pr moneyBox fcF40">
+                        ${afterSale.refundForShop!}
+                        <#if afterSale.refundFeeType == 1>
+                        <span class="spanIcon editIcon">改</span>
+                        <#elseif afterSale.refundFeeType == 2>
+                        <span class="spanIcon">拒</span>
+                        </#if>
+                        <div class="editInfo pa">
+                            ${afterSale.editInfo}
+                        </div>
                     </div>
-                </div>
-            </p>
-            <p><b class="fcBlue editBtn" jbtn="editBtn">修改</b></p>
-            <#elseif afterSale.warehousingState == 4>
-            <p class="fcG">已退款</p>
-            <p class="fcF40">${afterSale.refundForShop!}</p>
+                </p>
+                <p><b class="fcBlue editBtn" jbtn="editBtn">修改</b></p>
+                <#elseif afterSale.refundState == 2>
+                <p class="fcG">已退款</p>
+                <p class="fcF40">${afterSale.refundForShop!}</p>
+                </#if>
+            <#else>
+                <#if (afterSale.putInStorageState?size) gt 0>
+                <#list afterSale.putInStorageState as sto>
+                    <#if sto.type == 1>
+                    <p>商品已入库x${sto.storageNum!}</p>
+                    <#elseif sto.type == 2>
+                    <p>退货失败入库x${sto.storageNum!}</p>
+                    </#if>
+                </#list>
+                </#if>
             </#if>
+            
         </#if>
         </td>
     </#if>
