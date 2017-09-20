@@ -68,7 +68,7 @@ public class PhoneGoodsSearchService {
         bo.setCid(request.getCid());
         bo.setPid(request.getCid());
         bo.setShopId(request.getStoreId());
-        if (request.getType() == 2) {
+        if (request.getType() != null && request.getType() == 2) {
             //商品库搜索顺序
             bo.setFrom("goods");
         }

@@ -631,10 +631,9 @@ public class UserCollectServiceImpl implements UserCollectService {
         collectExample.setOrderByClause("store_collect_id DESC");
         collectExample.setStartIndex((pageNo - 1) * pageSize);
         collectExample.setEndIndex(pageSize);
-        ShiguStoreCollectExample.Criteria criteria = collectExample.createCriteria().andUserIdEqualTo(userId);
-        if (webSite != null) {
-            criteria.andWebSiteEqualTo(webSite);
-        }
+        collectExample.createCriteria()
+                .andUserIdEqualTo(userId)
+                .andWebSiteEqualTo(webSite);
         int count = shiguStoreCollectMapper.countByExample(collectExample);
         pager.calPages(count, pageSize);
         if (count > 0) {

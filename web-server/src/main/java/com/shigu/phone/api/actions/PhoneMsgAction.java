@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 描述：用户手机验证信息获取
  */
 @Service
-@RequestMapping("api/")
+//@RequestMapping("api/")
 public class PhoneMsgAction {
 
     @Autowired
@@ -31,8 +31,8 @@ public class PhoneMsgAction {
      * @param <T> 返回类型
      * @return
      */
-    @RequestMapping("getPhoneMsg")
-    @ResponseBody
+    //@RequestMapping("getPhoneMsg")
+    //@ResponseBody
     public <T> T getPhoneMsg(String unique, PhoneMsgTypeEnum type, Class<T> clazz) {
         return redisIO.get(type.getType() + unique, clazz);
     }

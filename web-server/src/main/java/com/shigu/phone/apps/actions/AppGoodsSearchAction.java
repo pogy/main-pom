@@ -36,7 +36,7 @@ public class AppGoodsSearchAction {
 
     @RequestMapping("imgSearch")
     @ResponseBody
-    public JSONObject imgSearch(ImgSearchRequest request) {
+    public JSONObject imgSearch(@Valid ImgSearchRequest request,BindingResult bindingResult) {
         return JSONObject.fromObject(phoneGoodsSearchService.imgSearch(request));
     }
 
