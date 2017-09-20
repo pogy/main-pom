@@ -13,7 +13,6 @@ import com.opentae.data.daifa.interfaces.DaifaTradeMapper;
 import com.shigu.main4.common.util.BeanMapper;
 import com.shigu.main4.common.util.DateUtil;
 import com.shigu.main4.common.util.MoneyUtil;
-import com.shigu.main4.daifa.bo.ExpressScanBO;
 import com.shigu.main4.daifa.bo.ExpressScanInStockBO;
 import com.shigu.main4.daifa.bo.RebackPrintExpressBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
@@ -112,6 +111,7 @@ public class ScanSaleAfterExpressProcessImpl implements ScanSaleAfterExpressProc
 
     @Override
     public String rebackPrintExpress(RebackPrintExpressBO bo) throws DaifaException {
+        SpringBeanFactory.getBean(ScanSaleAfterExpressModel.class).rebackPrintExpress(bo);
         return null;
     }
 }

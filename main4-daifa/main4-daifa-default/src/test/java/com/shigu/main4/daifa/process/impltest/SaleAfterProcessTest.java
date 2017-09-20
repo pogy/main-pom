@@ -12,6 +12,7 @@ import com.shigu.main4.daifa.bo.ExpressScanInStockBO;
 import com.shigu.main4.daifa.bo.MoneyConsultBO;
 import com.shigu.main4.daifa.bo.SaleAfterBO;
 import com.shigu.main4.daifa.bo.SaleAfterExpressBO;
+import com.shigu.main4.daifa.bo.SaleAfterRemarkerBO;
 import com.shigu.main4.daifa.exceptions.DaifaException;
 import com.shigu.main4.daifa.process.SaleAfterProcess;
 import com.shigu.main4.daifa.process.ScanSaleAfterExpressProcess;
@@ -22,10 +23,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -51,6 +49,9 @@ public class SaleAfterProcessTest extends BaseSpringTest {
 
     static Long refundId = 999999L;
     static Long errorRefundId = 888888L;
+    static Long daifaAfterSaleId = 1l;
+    static Long daifaTradeId = 1l;
+
 
     static String postCode = "111111111";
     static String errPostCode = "111111112";
@@ -967,5 +968,38 @@ public class SaleAfterProcessTest extends BaseSpringTest {
         assertEquals(cs.get(1).getConsultType(), new Integer(1));
         assertEquals(cs.get(1).getConsultBatch(), new Integer(2));
         assertEquals(cs.get(1).getConsultMoney(), "20.00");
+    }
+
+    @Test
+    @Transactional
+    public void saleAfterRemark_test() throws DaifaException{
+        //插入主表数据
+        DaifaAfterSale daifaAfterSale = new DaifaAfterSale();
+        daifaAfterSale.setAfterSaleId(daifaAfterSaleId);
+        daifaAfterSale.setDfTradeId(daifaTradeId);
+        daifaAfterSale.setRemark("remark1");
+        daifaAfterSale.setReceiverState("1");
+        daifaAfterSale.setBuyerQq("110");
+        daifaAfterSaleMapper.insert(daifaAfterSale);
+        DaifaAfterSale daifaAfterSale1 = daifaAfterSaleMapper.selectByPrimaryKey(daifaAfterSaleId);
+        assertEquals("remark1",daifaAfterSale1.getRemark());
+
+        //插入附表数据
+        DaifaAfterSaleSub daifaAfterSaleSub = new DaifaAfterSaleSub();
+        daifaAfterSaleSub.setRefundId(refundId);
+        daifaAfterSaleSub.setAfterSaleId(daifaAfterSaleId);
+        int effectNum = daifaAfterSaleSubMapper.insert(daifaAfterSaleSub);
+        assertEquals(1,effectNum);
+
+        SaleAfterRemarkerBO bo = new SaleAfterRemarkerBO();
+        bo.setRefundId(refundId);
+        bo.setAfterSaleId(daifaAfterSaleId);
+        bo.setRemark("remark2");
+        saleAfterProcess.saleAfterRemark(bo);
+
+        DaifaAfterSale result = daifaAfterSaleMapper.selectByPrimaryKey(daifaAfterSaleId);
+        //remark以 " : "分割追加
+        assertEquals("remark1:remark2",result.getRemark());
+
     }
 }
